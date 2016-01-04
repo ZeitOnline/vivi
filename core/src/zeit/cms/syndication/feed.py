@@ -3,6 +3,7 @@ from zeit.cms.redirect.interfaces import IRenameInfo
 import grokcore.component as grok
 import logging
 import lxml.etree
+import os.path
 import rwproperty
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
@@ -291,6 +292,7 @@ class FakeEntry(object):
         for field in zeit.cms.content.interfaces.ICommonMetadata:
             setattr(self, field, None)
         self.uniqueId = id
+        self.__name__ = os.path.basename(id)
         self.title = unicode(entry.find('title'))
 
 

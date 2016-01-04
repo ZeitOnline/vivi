@@ -4,7 +4,7 @@ zeit.cms changes
 2.62.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make FakeEntry actually conform to ICMSContent. 
 
 
 2.62.0 (2015-11-17)

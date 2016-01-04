@@ -32,15 +32,22 @@ class MoveReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
 
 class FakeEntryTest(zeit.cms.testing.ZeitCmsTestCase):
 
-    def test_fake_entry_object_should_conform_to_ICommonMetadata(self):
+    def test_fake_entry_object_should_conform_to_ICMSContent(self):
+        uniqueId = 'http://xml.zeit.de/fake'
         fake_entry = zeit.cms.syndication.feed.FakeEntry(
-            lxml.objectify.E.entry(), 'foo')
+            uniqueId, lxml.objectify.E.entry())
+        self.assertEqual(uniqueId, fake_entry.uniqueId)
+        self.assertEqual('fake', fake_entry.__name__)
+
+    def test_fake_entry_object_should_conform_to_ICommonMetadata(self):
+        ANY = ''
+        fake_entry = zeit.cms.syndication.feed.FakeEntry(
+            ANY, lxml.objectify.E.entry())
         iface = zeit.cms.content.interfaces.ICommonMetadata
         self.assertTrue(zope.interface.verify.verifyObject(iface, fake_entry))
 
-    def test_fake_entry_should_have_uniqueId_and_title_attributes(self):
-        uniqueId = 'http://xml.zeit.de/fake'
+    def test_fake_entry_should_try_to_retrieve_title_attributes(self):
+        ANY = ''
         entry = lxml.objectify.XML('<entry><title>fake</title></entry>')
-        fake_entry = zeit.cms.syndication.feed.FakeEntry(uniqueId, entry)
-        self.assertEqual(fake_entry.uniqueId, uniqueId)
+        fake_entry = zeit.cms.syndication.feed.FakeEntry(ANY, entry)
         self.assertEqual(fake_entry.title, 'fake')
