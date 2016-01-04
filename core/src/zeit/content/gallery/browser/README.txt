@@ -103,7 +103,7 @@ LinkNotFoundError
 
 The 'text' field enforces a maximum length:
 
->>> browser.getControl('Text').value = 'a' * 600
+>>> browser.getControl('Text', index=0).value = 'a' * 600
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...class="error">Text is to long. Allowed: 560, got: 600...
