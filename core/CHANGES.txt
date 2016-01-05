@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.63.0 (unreleased)
+2.63.0 (2016-01-05)
 -------------------
 
 - Add ``find(type_id)`` to CMSContentTypeSource.
