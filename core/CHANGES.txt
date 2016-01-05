@@ -1,16 +1,16 @@
 zeit.cms changes
 ================
 
-2.62.2 (unreleased)
+2.63.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``find(type_id)`` to CMSContentTypeSource.
 
 
 2.62.1 (2016-01-04)
 -------------------
 
-- Make FakeEntry actually conform to ICMSContent. 
+- Make FakeEntry actually conform to ICMSContent.
 
 
 2.62.0 (2015-11-17)

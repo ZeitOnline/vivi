@@ -383,6 +383,13 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
         except KeyError:
             return unicode(value)
 
+    def find(self, type_id):
+        # XXX Should typegrokker register the interface with name=type_id
+        # instead of/in addition to the dotted name?
+        for iface in self.getValues():
+            if iface.getTaggedValue('zeit.cms.type') == type_id:
+                return iface
+
 
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
