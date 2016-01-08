@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.11.2 (unreleased)
+1.11.2 (2016-01-08)
 -------------------
 
 - Adjust maximum twitter message length (t.co switched to https, so needs one
