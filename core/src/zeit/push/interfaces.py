@@ -61,12 +61,12 @@ class IPushMessages(zope.interface.Interface):
     short_text = zope.schema.TextLine(
         title=_('Short push text'),
         required=False,
-        # 117 + 1 Space + 22 characters t.co-URL = 140
+        # 117 + 1 Space + 23 characters t.co-URL = 140
         #
         # XXX It's not yet clear what we can do when the user enters another
         # URL as part of the tweet and that URL gets *longer* during the
         # shortening process.
-        max_length=117)
+        max_length=116)
 
     """A message configuration is a dict with at least the following keys:
        - type: Kind of service (twitter, facebook, ...). Must correspond
