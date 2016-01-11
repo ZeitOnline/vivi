@@ -249,6 +249,6 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         input = 'form.short_text'
         s = self.selenium
         s.waitForElementPresent(input)
-        original = 'a' * 100 + ' This is not long'
+        original = 'a' * 99 + ' This is not long'
         s.type(input, original + '\n')
         self.assertEqual(original, s.getValue(input))
