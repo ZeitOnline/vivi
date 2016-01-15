@@ -14,7 +14,6 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
     social_fields = gocept.form.grouped.Fields(
         _("Social media"),
         ('facebook_main_text', 'facebook_main_enabled',
-         'facebook_magazin_text', 'facebook_magazin_enabled',
          'short_text', 'twitter_main_enabled',
          'twitter_ressort_enabled', 'twitter_ressort',
          'mobile_text', 'mobile_enabled'),
@@ -22,11 +21,14 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
 
     def __init__(self, *args, **kw):
         super(SocialBase, self).__init__(*args, **kw)
-        self.form_fields += (
+        self.form_fields += self.social_form_fields
+
+    @property
+    def social_form_fields(self):
+        return (
             self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
-                    'facebook_main_text', 'facebook_main_enabled',
-                    'facebook_magazin_text', 'facebook_magazin_enabled')
+                    'facebook_main_text', 'facebook_main_enabled')
             + self.FormFieldsFactory(
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + self.FormFieldsFactory(
@@ -42,8 +44,6 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         self.set_charlimit('short_text')
         if self.request.form.get('%s.facebook_main_enabled' % self.prefix):
             self._set_widget_required('facebook_main_text')
-        if self.request.form.get('%s.facebook_magazin_enabled' % self.prefix):
-            self._set_widget_required('facebook_magazin_text')
         if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
             self._set_widget_required('twitter_ressort')
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
