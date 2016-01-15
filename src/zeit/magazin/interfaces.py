@@ -5,6 +5,8 @@ import zeit.cms.related.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
+import zeit.content.gallery.interfaces
+import zeit.content.link.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.magazin.sources
 import zope.interface
@@ -35,6 +37,18 @@ class IZMOArticle(
 
 class IZMOCenterPage(
         zeit.content.cp.interfaces.ICenterPage,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
+
+
+class IZMOGallery(
+        zeit.content.gallery.interfaces.IGallery,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
+
+
+class IZMOLink(
+        zeit.content.link.interfaces.ILink,
         zeit.cms.section.interfaces.ISectionMarker):
     pass
 
