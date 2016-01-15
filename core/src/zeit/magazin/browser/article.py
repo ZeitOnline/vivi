@@ -1,7 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.browser.form import FormFields
 import zeit.cms.browser.interfaces
+import zeit.content.article.edit.browser.social
 import zeit.edit.browser.form
+import zeit.magazin.browser.social
 import zope.interface
 
 
@@ -22,3 +24,8 @@ class NextRead(zeit.edit.browser.form.InlineForm):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(NextRead, self).__call__()
+
+
+class Social(zeit.magazin.browser.social.SocialBase,
+             zeit.content.article.edit.browser.social.Social):
+    pass
