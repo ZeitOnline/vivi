@@ -30,3 +30,93 @@ class ZMOLinkCRUD(zeit.cms.testing.BrowserTestCase,
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...mymagazin...', b.contents)
+
+
+class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.magazin.testing.LAYER
+
+    def setUp(self):
+        super(ZMOFacebookFields, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                link = zeit.content.link.link.Link()
+                link.title = 'title'
+                link.ressort = u'Leben'
+                link.teaserTitle = 'teaser'
+                link.year = 2010
+                link.url = 'http://example.com'
+                self.repository['magazin']['mylink'] = link
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/'
+            'magazin/mylink/@@checkout')
+
+    def get_content(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                return zeit.cms.interfaces.ICMSWCContent(
+                    'http://xml.zeit.de/magazin/mylink')
+
+    def open_form(self):
+        # XXX A simple browser.reload() does not work, why?
+        self.browser.open(
+            'http://localhost/++skin++vivi/workingcopy/zope.user/'
+            'mylink/@@edit.html')
+
+    def test_converts_account_checkboxes_to_message_config(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Enable Facebook Magazin').selected = True
+        b.getControl('Facebook Magazin Text').value = 'fb-magazin'
+        b.getControl('Apply').click()
+        content = self.get_content()
+        push = zeit.push.interfaces.IPushMessages(content)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin',
+             'override_text': 'fb-magazin'},
+            push.message_config)
+        self.open_form()
+        self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
+
+        b.getControl('Enable Facebook Magazin').selected = False
+        b.getControl('Apply').click()
+        content = self.get_content()
+        push = zeit.push.interfaces.IPushMessages(content)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': False, 'account': 'fb-magazin',
+             'override_text': 'fb-magazin'},
+            push.message_config)
+
+        self.open_form()
+        self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
+
+    def test_shows_long_text_as_bbb_for_facebook_override_text(self):
+        content = self.get_content()
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.long_text = 'facebook'
+        self.open_form()
+        b = self.browser
+        self.assertEqual(
+            'facebook', b.getControl('Facebook Main Text').value)
+        self.assertEqual(
+            'facebook', b.getControl('Facebook Magazin Text').value)
+
+    def test_stores_facebook_magazin_override_text(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Facebook Magazin Text').value = 'facebook'
+        b.getControl('Apply').click()
+        content = self.get_content()
+        push = zeit.push.interfaces.IPushMessages(content)
+        for service in push.message_config:
+            if (service['type'] != 'facebook'
+                or service.get('account') != 'fb-magazin'):
+                continue
+            self.assertEqual('facebook', service['override_text'])
+            break
+        else:
+            self.fail('facebook message_config is missing')
+        self.open_form()
+        self.assertEqual(
+            'facebook', b.getControl('Facebook Magazin Text').value)
+
