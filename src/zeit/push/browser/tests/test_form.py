@@ -42,8 +42,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Additional Twitter').displayValue = ['Wissen']
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
-        b.getControl('Enable Facebook Magazin').selected = True
-        b.getControl('Facebook Magazin Text').value = 'fb-magazin'
         b.getControl('Enable mobile push').selected = True
         b.getControl('Mobile title').value = 'mobile'
         b.getControl('Apply').click()
@@ -61,10 +59,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin',
-             'override_text': 'fb-magazin'},
-            push.message_config)
-        self.assertIn(
             {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
@@ -73,13 +67,11 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertTrue(b.getControl('Enable Twitter', index=0).selected)
         self.assertTrue(b.getControl('Enable Twitter Ressort').selected)
         self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
-        self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
         self.assertTrue(b.getControl('Enable mobile push').selected)
 
         b.getControl('Enable Twitter', index=0).selected = False
         b.getControl('Enable Twitter Ressort').selected = False
         b.getControl('Enable Facebook', index=0).selected = False
-        b.getControl('Enable Facebook Magazin').selected = False
         b.getControl('Enable mobile push').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
@@ -97,10 +89,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'facebook', 'enabled': False, 'account': 'fb-magazin',
-             'override_text': 'fb-magazin'},
-            push.message_config)
-        self.assertIn(
             {'type': 'parse', 'enabled': False, 'override_text': 'mobile',
              'channels': 'parse-channel-news'},
             push.message_config)
@@ -109,7 +97,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
         self.assertFalse(b.getControl('Enable Twitter Ressort').selected)
         self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
-        self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
         self.assertFalse(b.getControl('Enable mobile push').selected)
 
     def test_converts_ressorts_to_message_config(self):
@@ -155,25 +142,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertEqual('facebook', b.getControl('Facebook Main Text').value)
 
-    def test_stores_facebook_magazin_override_text(self):
-        self.open_form()
-        b = self.browser
-        b.getControl('Facebook Magazin Text').value = 'facebook'
-        b.getControl('Apply').click()
-        article = self.get_article()
-        push = zeit.push.interfaces.IPushMessages(article)
-        for service in push.message_config:
-            if (service['type'] != 'facebook'
-                or service.get('account') != 'fb-magazin'):
-                continue
-            self.assertEqual('facebook', service['override_text'])
-            break
-        else:
-            self.fail('facebook message_config is missing')
-        self.open_form()
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Magazin Text').value)
-
     def test_shows_long_text_as_bbb_for_facebook_override_text(self):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -182,8 +150,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         self.assertEqual(
             'facebook', b.getControl('Facebook Main Text').value)
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Magazin Text').value)
 
     def test_stores_mobile_override_text(self):
         self.open_form()
