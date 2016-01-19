@@ -179,11 +179,12 @@ error_if(True, type)
         self.assertEqual('__NONE__', s.message)
 
 
-class RulesManagerTest(unittest.TestCase):
+class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        import gocept.cache.method
-        gocept.cache.method.clear()
+        import pyramid_dogpile_cache2
+        super(RulesManagerTest, self).setUp()
+        pyramid_dogpile_cache2.clear()
 
     def get_manager(self):
         import zeit.edit.rule

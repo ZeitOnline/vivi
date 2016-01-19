@@ -1,4 +1,5 @@
 from datetime import datetime
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
@@ -6,7 +7,6 @@ from zeit.content.cp.i18n import MessageFactory as _
 from zeit.workflow.interfaces import ITimeBasedPublishing
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException
-import gocept.cache.method
 import grokcore.component
 import logging
 import pytz
@@ -131,7 +131,7 @@ class RulesManager(grokcore.component.GlobalUtility):
     def __init__(self):
         self._rules = []
 
-    @gocept.cache.method.Memoize(360)
+    @CONFIG_CACHE.cache_on_arguments()
     def get_rules(self):
         rules = []
         config = zope.app.appsetup.product.getProductConfiguration('zeit.edit')

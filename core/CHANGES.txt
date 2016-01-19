@@ -4,7 +4,7 @@ Changes
 2.13.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Replace gocept.cache.method with dogpile.cache (ZON-2576).
 
 
 2.13.1 (2015-10-06)
