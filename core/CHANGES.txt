@@ -1,10 +1,11 @@
 zeit.cms changes
 ================
 
-2.63.1 (unreleased)
+2.64.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Replace gocept.cache.method with dogpile.cache, so the caching backend is
+  configurable, and compatible with zeit.web (ZON-2576).
 
 
 2.63.0 (2016-01-05)

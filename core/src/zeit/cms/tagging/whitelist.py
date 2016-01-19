@@ -1,5 +1,5 @@
+from zeit.cms.application import CONFIG_CACHE
 import UserDict
-import gocept.cache.method
 import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
@@ -41,7 +41,7 @@ class Whitelist(UserDict.UserDict,
         log.info('Loading keyword whitelist from %s', url)
         return urllib2.urlopen(url)
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
         tags = {}
         tags_xml = gocept.lxml.objectify.fromfile(self._fetch())

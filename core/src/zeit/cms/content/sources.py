@@ -1,17 +1,16 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import collections
-import gocept.cache.method
 import gocept.lxml.objectify
 import logging
 import operator
-import threading
+import pyramid_dogpile_cache2
 import urllib2
 import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zeit.cms.interfaces
 import zope.app.appsetup.product
-import zope.app.publication.interfaces
 import zope.component
 import zope.dottedname
 import zope.i18n
@@ -33,7 +32,7 @@ class SimpleXMLSourceBase(object):
         url = cms_config[self.config_url]
         return self._get_tree_from_url(url)
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
@@ -291,7 +290,7 @@ class SerieSource(SimpleContextualXMLSource):
     def values(self):
         return self._fill_values()
 
-    @gocept.cache.method.Memoize(600)
+    @CONFIG_CACHE.cache_on_arguments()
     def _fill_values(self):
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
@@ -411,35 +410,7 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
                 zeit.cms.type.SKIP_ADD)
 
 
-_collect_lock = threading.Lock()
-_collect_counter = 0
-
-
-@zope.component.adapter(zope.app.publication.interfaces.IBeforeTraverseEvent)
-def collect_caches(event):
-    """Collect method cache every 100 requests.
-
-    Don't collect on every request because collect is O(n**2) in regard to the
-    number of cached methods/functions and the amount of cached values.
-
-    """
-    global _collect_counter
-    _collect_counter += 1
-    if _collect_counter < 100:
-        return
-    locked = _collect_lock.acquire(False)
-    if not locked:
-        return
-    try:
-        logger.debug("Collecting caches.")
-        # collect every 100 requests
-        gocept.cache.method.collect()
-        _collect_counter = 0
-    finally:
-        _collect_lock.release()
-
-
-zope.testing.cleanup.addCleanUp(gocept.cache.method.clear)
+zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 
 
 class ObjectSource(object):

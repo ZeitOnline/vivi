@@ -151,9 +151,6 @@
       />
   </class>
 
-  <!-- source cache cleaner -->
-  <subscriber handler=".sources.collect_caches" />
-
   <!-- semantic changes -->
   <class class=".semanticchange.SemanticChange">
     <require

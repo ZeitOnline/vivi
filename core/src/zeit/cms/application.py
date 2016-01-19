@@ -1,6 +1,7 @@
 import fanstatic
 import os
 import pkg_resources
+import pyramid_dogpile_cache2
 import werkzeug.debug
 import zope.app.wsgi.paste
 
@@ -36,6 +37,7 @@ class Application(object):
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
         app = zope.app.wsgi.paste.ZopeApplication(
             global_conf, local_conf['zope_conf'], handle_errors=not debug)
+        pyramid_dogpile_cache2.configure_dogpile_cache(local_conf)
         if debug:
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
@@ -53,3 +55,6 @@ class Application(object):
 
 
 APPLICATION = Application()
+
+
+CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
