@@ -7,7 +7,7 @@ XXX this is supposed to be user documentation. writeme
 >>> zeit.cms.testing.set_site()
 
 >>> import tempfile
->>> import gocept.cache.method
+>>> import pyramid_dogpile_cache2
 >>> rules_file, rules_filename = tempfile.mkstemp()
 >>> import zope.app.appsetup.product
 >>> config = zope.app.appsetup.product.getProductConfiguration(
@@ -19,7 +19,7 @@ XXX this is supposed to be user documentation. writeme
 ...     rules_file = open(rules_filename, 'w')
 ...     rules_file.write(rules_str)
 ...     rules_file.close()
-...     gocept.cache.method.clear()
+...     pyramid_dogpile_cache2.clear()
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()

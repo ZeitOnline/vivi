@@ -1,6 +1,5 @@
+from zeit.cms.application import CONFIG_CACHE
 import collections
-import gocept.cache.method
-import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.interface
 
@@ -114,7 +113,7 @@ class TeaserBlockLayoutSource(
     config_url = 'block-layout-source'
     attribute = 'id'
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
@@ -150,7 +149,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.cp'
     config_url = 'region-config-source'
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
@@ -175,7 +174,7 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.cp'
     config_url = 'area-config-source'
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
@@ -196,7 +195,7 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.cp'
     config_url = 'module-config-source'
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()

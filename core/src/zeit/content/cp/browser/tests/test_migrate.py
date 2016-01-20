@@ -2,8 +2,8 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import IPublish
 from zeit.content.cp.centerpage import CenterPage
 from zeit.content.cp.interfaces import ICP2009, ICP2015
-import gocept.cache.method
 import pkg_resources
+import pyramid_dogpile_cache2
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.workflow.testing
@@ -22,7 +22,7 @@ class MigrateTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_publish_does_not_cycle_mismatched_cp(self):
         # Clear rules cache so we get the empty ruleset, so we can publish.
-        gocept.cache.method.clear()
+        pyramid_dogpile_cache2.clear()
         zope.app.appsetup.product.getProductConfiguration(
             'zeit.edit')['rules-url'] = 'file://%s' % (
                 pkg_resources.resource_filename(
