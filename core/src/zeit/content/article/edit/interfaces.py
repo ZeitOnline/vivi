@@ -1,6 +1,6 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.content.article.i18n import MessageFactory as _
 import collections
-import gocept.cache.method
 import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
@@ -239,7 +239,7 @@ class ImageLayoutSource(
     config_url = 'image-layout-source'
     attribute = 'id'
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
