@@ -22,10 +22,12 @@ class Social(zeit.push.browser.form.SocialBase,
     form_fields = FormFieldsFactory()
 
     def __init__(self, context, request):
-        super(Social, self).__init__(context, request)
         self.form_fields += self.FormFieldsFactory(
             zeit.content.article.interfaces.IArticle).select(
-                'is_instant_article', 'is_amp')
+                'is_instant_article')
+        super(Social, self).__init__(context, request)
+        self.form_fields += self.FormFieldsFactory(
+            zeit.content.article.interfaces.IArticle).select('is_amp')
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
