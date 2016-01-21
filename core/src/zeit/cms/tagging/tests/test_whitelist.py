@@ -1,12 +1,15 @@
 from __future__ import absolute_import
 import mock
 import pkg_resources
-import unittest
-import zope.testing.cleanup
+import pyramid_dogpile_cache2
+import zeit.cms.testing
 
 
-class TestWhitelist(zope.testing.cleanup.CleanUp,
-                    unittest.TestCase):
+class TestWhitelist(zeit.cms.testing.ZeitCmsTestCase):
+
+    def setUp(self):
+        super(TestWhitelist, self).setUp()
+        pyramid_dogpile_cache2.clear()
 
     def whitelist(self):
         from ..whitelist import Whitelist
