@@ -4,7 +4,7 @@ zeit.cms changes
 2.64.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove some spacing around widgets
 
 
 2.64.0 (2016-01-20)
