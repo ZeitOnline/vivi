@@ -1901,9 +1901,8 @@
     width: 100%;
 }
 
-.type-article #form-social .field.fieldname-short_text,
-.type-article #form-social .field.fieldname-mobile_text {
-    margin-top: 0.5em;
+.type-article #form-social .field.fieldname-short_text {
+    margin-top: 10em; /* XXX margin against previous non-float? */
 }
 
 .type-article #form-social .field.fieldname-twitter_ressort_enabled {
@@ -1929,9 +1928,21 @@
     margin-top: -4px;  /* vertically centered appearance */
 }
 
+.type-article #form-social .field.fieldname-mobile_text {
+    margin-top: 8em; /* XXX margin against previous non-float? */
+}
 
 .type-article #form-social .field.fieldname-is_amp {
-    margin-top: 4em;
+    margin-top: 4em; /* XXX margin against previous non-float? */
+}
+
+/* XXX We should use <fieldset>, but we'd have to combine the templates of
+   zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
+.type-article #form-social .field.fieldname-short_text,
+.type-article #form-social .field.fieldname-mobile_text,
+.type-article #form-social .field.fieldname-is_amp {
+    padding-top: 1em;
+    border-top: 1px solid #d5dee7;
 }
 
 /* breaking news */
