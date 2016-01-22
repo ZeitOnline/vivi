@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.64.2 (unreleased)
+2.64.2 (2016-01-22)
 -------------------
 
 - Configure dogpile.cache via product config, not paste.ini, since only the
