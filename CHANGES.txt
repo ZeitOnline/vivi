@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.12.0 (unreleased)
+1.12.0 (2016-01-22)
 -------------------
 
 - Remove facebook magazin fields from form, now handled by zeit.magazin.
