@@ -4,7 +4,7 @@ zeit.imp changes
 0.17.2 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Fix overly generic CSS spacing selector for widgets
 
 
 0.17.1 (2015-06-09)

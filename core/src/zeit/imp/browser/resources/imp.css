@@ -99,16 +99,16 @@
     display: block;
 }
 
-.widget.radio-group > label {
+#imp-configuration .widget.radio-group > label {
     display: block;
 }
 
-.widget.radio-group > label.cropped:after {
+#imp-configuration .widget.radio-group > label.cropped:after {
   color: green;
   content: "✔";
 }
 
-.widget {
+#imp-configuration .widget {
   margin-bottom: 1em;
 }
 
@@ -122,7 +122,7 @@ input.mask-size[disabled="disabled"] {
     cursor: default;
 }
 
-.widget.mask-size {
+#imp-configuration .widget.mask-size {
     padding-left: 2.25em;
     margin-bottom: 1em;
 }
