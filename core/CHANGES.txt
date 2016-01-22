@@ -4,7 +4,7 @@ Changes
 2.13.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix overly generic CSS selector that messed up non-article fieldset/legend styling
 
 
 2.13.2 (2016-01-20)

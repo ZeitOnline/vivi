@@ -661,7 +661,7 @@ textarea {
 
 /* Fieldsets */
 
-fieldset {
+#cp-content fieldset {
   background: none 0;
   border: medium none;
   margin: 0 0 0 10px;
@@ -702,7 +702,7 @@ fieldset .hlink a:active {
 
 /* Legend */
 
-legend {
+#cp-content legend {
   border-bottom: 1px dotted #999999;
   color: #999999;
   display: block;
