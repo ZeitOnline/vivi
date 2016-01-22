@@ -21,7 +21,8 @@
    padding-top: 13px; /* XXX vertical alignment */
 }
 
-.field.fieldname-twitter_ressort .label {
+.field.fieldname-twitter_ressort .label,
+.field.fieldname-twitter_ressort label {
     display: none;
 }
 
