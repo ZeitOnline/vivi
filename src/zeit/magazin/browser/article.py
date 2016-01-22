@@ -26,6 +26,6 @@ class NextRead(zeit.edit.browser.form.InlineForm):
         return super(NextRead, self).__call__()
 
 
-class Social(zeit.magazin.browser.social.SocialBase,
-             zeit.content.article.edit.browser.social.Social):
+class Social(zeit.content.article.edit.browser.social.Social,
+             zeit.magazin.browser.social.SocialBase):
     pass
