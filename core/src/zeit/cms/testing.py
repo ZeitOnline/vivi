@@ -14,7 +14,6 @@ import logging
 import os
 import pkg_resources
 import plone.testing
-import pyramid_dogpile_cache2
 import random
 import re
 import socket
@@ -58,11 +57,6 @@ class ZCMLLayer(plone.testing.Layer):
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
             self.config_file, product_config=self.product_config)
         self['functional_setup'] = self.setup
-        pyramid_dogpile_cache2.configure_dogpile_cache({
-            'dogpile_cache.backend': 'dogpile.cache.memory',
-            'dogpile_cache.regions': 'config',
-            'dogpile_cache.config.expiration_time': '600',
-        })
 
     def tearDown(self):
         self.setup.tearDownCompletely()
@@ -208,6 +202,7 @@ cms_product_config = string.Template("""\
 
   task-queue-async events
   sitecontrol-prefer-2015 False
+  cache-expiration-config 600
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))

@@ -1,8 +1,11 @@
 import fanstatic
+import grokcore.component as grok
 import os
 import pkg_resources
 import pyramid_dogpile_cache2
 import werkzeug.debug
+import zope.app.appsetup.interfaces
+import zope.app.appsetup.product
 import zope.app.wsgi.paste
 
 
@@ -37,7 +40,6 @@ class Application(object):
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
         app = zope.app.wsgi.paste.ZopeApplication(
             global_conf, local_conf['zope_conf'], handle_errors=not debug)
-        pyramid_dogpile_cache2.configure_dogpile_cache(local_conf)
         if debug:
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
@@ -58,3 +60,14 @@ APPLICATION = Application()
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
+
+
+@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+def configure_dogpile_cache(event):
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    pyramid_dogpile_cache2.configure_dogpile_cache({
+        'dogpile_cache.backend': 'dogpile.cache.memory',
+        'dogpile_cache.regions': 'config',
+        'dogpile_cache.config.expiration_time': config[
+            'cache-expiration-config']
+    })
