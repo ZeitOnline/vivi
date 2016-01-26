@@ -6,7 +6,8 @@ import zeit.cms.testing
 import zeit.content.portraitbox.interfaces
 
 
-PortraitboxLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+PortraitboxLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
 
 class PortraitboxSourceTest(
