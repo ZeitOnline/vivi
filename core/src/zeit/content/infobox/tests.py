@@ -6,7 +6,8 @@ import zeit.cms.testing
 import zeit.content.infobox.interfaces
 
 
-InfoboxLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+InfoboxLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
 
 class InfoboxSourceTest(
