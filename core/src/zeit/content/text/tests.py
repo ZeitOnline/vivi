@@ -1,7 +1,8 @@
 import zeit.cms.testing
 
 
-TextLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+TextLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
 
 def test_suite():
