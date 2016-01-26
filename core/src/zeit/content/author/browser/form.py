@@ -44,8 +44,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
         source = zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
             self.context)
         for name in source:
-            field = zope.schema.Text(
-                title=source.title(name), required=False, max_length=350)
+            field = zope.schema.Text(title=source.title(name), required=False)
             field.__name__ = name
             field.interface = (
                 zeit.content.author.interfaces.IBiographyQuestions)

@@ -4,7 +4,7 @@ zeit.content.author changes
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove max length from biography questions (ZON-2717).
 
 
 2.5.0 (2015-12-07)
