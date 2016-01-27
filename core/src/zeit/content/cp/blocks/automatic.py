@@ -7,6 +7,7 @@ import zope.component
 import zope.interface
 
 
+# XXX Should we inherit from TeaserBlock?
 class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
     zope.interface.implements(
