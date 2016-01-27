@@ -6,7 +6,8 @@ import zeit.workflow.testing
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.workflow.testing.product_config)
+    product_config=zeit.cms.testing.cms_product_config
+    + zeit.workflow.testing.product_config)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
