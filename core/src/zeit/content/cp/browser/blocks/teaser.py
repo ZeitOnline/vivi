@@ -92,22 +92,26 @@ class Display(zeit.cms.browser.view.Base):
         teasers = []
         self.header_image = None
         for i, content in enumerate(self.context):
-
+            texts = []
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
-            if metadata is None:
-                # XXX warn? Actually such a content shouldn't be here in the
-                # first place. We'll see.
-                continue
-
-            texts = []
-            supertitle_property = (
-                'teaserSupertitle' if metadata.teaserSupertitle
-                else 'supertitle')
-            texts.append(self._make_text_entry(
-                metadata, 'supertitle', supertitle_property))
-            for name in ('teaserTitle', 'teaserText'):
-                texts.append(self._make_text_entry(metadata, name))
+            if metadata is not None:
+                supertitle_property = (
+                    'teaserSupertitle' if metadata.teaserSupertitle
+                    else 'supertitle')
+                texts.append(self._make_text_entry(
+                    metadata, 'supertitle', supertitle_property))
+                for name in ('teaserTitle', 'teaserText'):
+                    texts.append(self._make_text_entry(metadata, name))
+            else:
+                # General-purpose fallback, mostly to support IAuthor teasers.
+                list_repr = zope.component.queryMultiAdapter(
+                    (content, self.request),
+                    zeit.cms.browser.interfaces.IListRepresentation)
+                if list_repr is None:
+                    continue
+                texts.append(self._make_text_entry(
+                    list_repr, 'teaserTitle', 'title'))
 
             if i == 0:
                 self.header_image = self.get_image(content)
