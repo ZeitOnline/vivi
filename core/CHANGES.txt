@@ -4,7 +4,7 @@ zeit.cms changes
 2.64.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't call style_dropdowns for the whole document for each fragment.
 
 
 2.64.2 (2016-01-22)

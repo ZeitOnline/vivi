@@ -121,5 +121,5 @@ MochiKit.Signal.connect(window, 'onload', function(event) {
 
 
 jQuery(document).bind('fragment-ready', function(event) {
-    zeit.cms.style_dropdowns(event.target);
+    zeit.cms.style_dropdowns(event.__target);
 });
