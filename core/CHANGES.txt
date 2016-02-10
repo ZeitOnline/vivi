@@ -1,0 +1,8 @@
+zeit.campus changes
+====================
+
+
+1.0.0 (unreleased)
+------------------
+
+- ZON-2507: Add zeit.campus specific interfaces
