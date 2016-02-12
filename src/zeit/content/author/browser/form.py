@@ -6,6 +6,7 @@ import transaction
 import zeit.cms.browser.form
 import zeit.content.author.author
 import zeit.content.author.interfaces
+import zeit.content.image.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -17,6 +18,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
 
     _form_fields = zope.formlib.form.FormFields(
         zeit.content.author.interfaces.IAuthor,
+        zeit.content.image.interfaces.IImages,
         zeit.cms.interfaces.ICMSContent)
     omit_fields = []
 

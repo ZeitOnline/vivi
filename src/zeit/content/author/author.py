@@ -54,9 +54,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     community_profile = zeit.cms.content.property.ObjectPathProperty(
         '.communityprofile')
 
-    image_group = zeit.cms.content.reference.SingleResource(
-        '.image_group', 'image')
-
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
@@ -71,6 +68,11 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     def bio_questions(self):
         return zeit.content.author.interfaces.IBiographyQuestions(self)
 
+    @property
+    def image_group(self):
+        # BBB Deprecated in favor of a separate images adapter
+        return zeit.content.image.interfaces.IImages(self).image
+
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 
@@ -79,6 +81,21 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'author'
     title = _('Author')
     addform = 'zeit.content.author.add_contextfree'
+
+
+@grok.implementer(zeit.content.image.interfaces.IImages)
+@grok.adapter(zeit.content.author.interfaces.IAuthor)
+class AuthorImages(object):
+
+    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
+
+    image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
+
+    def __init__(self, context):
+        self.context = context
+        self.__parent__ = context
+        self.xml = context.xml
+        self.uniqueId = context.uniqueId
 
 
 @grok.subscribe(

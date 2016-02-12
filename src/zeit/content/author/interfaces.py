@@ -69,12 +69,6 @@ class IAuthor(zope.interface.Interface):
     external = zope.schema.Bool(
         title=_(u'External?'))
 
-    image_group = zope.schema.Choice(
-        title=_('Image group'),
-        description=_('Drag an image group here'),
-        required=False,
-        source=zeit.content.image.interfaces.imageGroupSource)
-
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
 
