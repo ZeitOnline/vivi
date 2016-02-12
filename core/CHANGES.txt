@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.5.2 (unreleased)
+2.6.0 (2016-02-12)
 ------------------
 
 - Retrieve author images via standard interface instead of attribute.
