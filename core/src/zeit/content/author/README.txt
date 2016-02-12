@@ -7,8 +7,9 @@ Authors
 >>> principal = zeit.cms.testing.create_interaction()
 
 >>> import lxml.etree
->>> import zeit.content.author.author
 >>> import zeit.cms.repository.interfaces
+>>> import zeit.content.author.author
+>>> import zeit.content.image.interfaces
 >>> import zope.component
 
 >>> repository = zope.component.getUtility(
@@ -18,7 +19,6 @@ Authors
 >>> shakespeare.firstname = 'William'
 >>> shakespeare.lastname = 'Shakespeare'
 >>> shakespeare.vgwortid = 12345
->>> shakespeare.image_group = repository['2007']['03']['group']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
@@ -27,9 +27,6 @@ Authors
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
-  ...
-  </image_group>
   <display_name>William Shakespeare</display_name>
 </author>
 
@@ -45,9 +42,6 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
-  ...
-  </image_group>
   <display_name>Flub</display_name>
   <entered_display_name>Flub</entered_display_name>
 </author>
@@ -61,14 +55,24 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
-  ...
-  </image_group>
   <display_name>William Shakespeare</display_name>
   <entered_display_name xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:nil="true"/>
 </author>
 
+The author image group is stored using the IImages interface.
+
+>>> images = zeit.content.image.interfaces.IImages(shakespeare)
+>>> images.image = repository['2007']['03']['group']
+>>> repository['shakespeare'] = shakespeare
+>>> shakespeare = repository['shakespeare']
+>>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
+<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  ...
+  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
+  ...
+  </image_group>
+</author>
 
 Using authors
 =============
@@ -87,6 +91,9 @@ It takes precedence over the freetext authors:
 <testtype>
   <head>
     <author ... href="http://xml.zeit.de/shakespeare" ...>
+      <image base-id="http://xml.zeit.de/2007/03/group/" ...>
+      ...
+      </image>
       <display_name py:pytype="str">William Shakespeare</display_name>
     </author>
     <attribute ... name="author">William Shakespeare</attribute>
