@@ -307,7 +307,7 @@ class IImages(zope.interface.Interface):
     """An object which references images."""
 
     image = zope.schema.Choice(
-        title=_('Image'),
+        title=_('Image group'),
         description=_("Drag an image group here"),
         required=False,
         source=imageGroupSource)
