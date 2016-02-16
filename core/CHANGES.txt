@@ -4,7 +4,7 @@ zeit.cms changes
 2.64.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Limit display size of search result images (BUG-331).
 
 
 2.64.3 (2016-02-03)

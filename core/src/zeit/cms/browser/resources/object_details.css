@@ -153,6 +153,10 @@
   float: right;
 }
 
+.object-details .graphical_preview img {
+    max-width: 120px;
+}
+
 .object-details .goto-object {
   clear: right;
 }
