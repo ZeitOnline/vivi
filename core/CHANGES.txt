@@ -4,7 +4,7 @@ zeit.content.article changes
 3.12.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Support legacy ``<initial>`` paragraphs (BUG-320).
 
 
 3.12.4 (2016-01-22)

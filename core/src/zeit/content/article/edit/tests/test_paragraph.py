@@ -129,6 +129,16 @@ class IntertitleTest(ParagraphTest):
         return Intertitle(None, body.intertitle)
 
 
+class LegacyInitialParagraphTest(ParagraphTest):
+
+    def get_paragraph(self, p=''):
+        from zeit.content.article.edit.paragraph import LegacyInitialParagraph
+        import lxml.objectify
+        body = lxml.objectify.E.body(lxml.objectify.XML(
+            '<initial>%s</initial>' % p))
+        return LegacyInitialParagraph(None, body.initial)
+
+
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def assert_factory(self, name):

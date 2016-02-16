@@ -71,6 +71,18 @@ class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
     produces = Paragraph
 
 
+class LegacyInitialParagraph(Paragraph):
+
+    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
+    type = 'initial'
+
+
+class LegacyInitialParagraphFactory(
+        zeit.content.article.edit.block.BlockFactory):
+
+    produces = LegacyInitialParagraph
+
+
 class UnorderedList(Paragraph):
 
     grok.implements(zeit.content.article.edit.interfaces.IUnorderedList)
