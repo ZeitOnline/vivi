@@ -1,12 +1,12 @@
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-import cStringIO
 import lxml.objectify
 import magic
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
 import zeit.cms.type
+import zeit.cms.util
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
@@ -75,23 +75,11 @@ class TemporaryImage(LocalImage):
             if mode == 'r':
                 raise ValueError("Cannot open for reading, no data available.")
             if mode == 'w':
-                self.local_data = MemoryFile()
+                self.local_data = zeit.cms.util.MemoryFile()
         else:
             self.local_data.close()
 
         return self.local_data
-
-
-class MemoryFile(object):
-
-    def __init__(self):
-        self.data = cStringIO.StringIO()
-
-    def __getattr__(self, name):
-        return getattr(self.data, name)
-
-    def close(self):
-        self.seek(0)
 
 
 @zope.component.adapter(RepositoryImage)
