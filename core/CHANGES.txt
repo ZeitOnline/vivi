@@ -1,8 +1,11 @@
 zeit.cms changes
 ================
 
-2.64.4 (unreleased)
+2.65.0 (unreleased)
 -------------------
+
+- Introduce ``zeit.cms.util.MemoryFile``, a closeable StringIO. Use it for
+  resource bodies (BUG-338).
 
 - Limit display size of search result images (BUG-331).
 

@@ -1,10 +1,10 @@
-import StringIO
 import grokcore.component as grok
 import logging
 import lxml.etree
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.util
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zope.interface
@@ -135,7 +135,7 @@ class XMLContentTypeDeclaration(TypeDeclaration):
             return None
 
     def resource_body(self, content):
-        return StringIO.StringIO(
+        return zeit.cms.util.MemoryFile(
             zeit.cms.content.interfaces.IXMLSource(content))
 
     def resource_content_type(self, content):

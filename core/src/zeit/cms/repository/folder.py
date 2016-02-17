@@ -1,11 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
-import StringIO
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
-import zeit.connector.interfaces
-import zeit.connector.resource
+import zeit.cms.util
 import zope.interface
 
 
@@ -29,7 +27,7 @@ class FolderType(zeit.cms.type.TypeDeclaration):
         return folder
 
     def resource_body(self, content):
-        return StringIO.StringIO()
+        return zeit.cms.util.MemoryFile()
 
     def resource_content_type(self, content):
         return 'httpd/unix-directory'

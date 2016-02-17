@@ -1,14 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
-import StringIO
-import datetime
 import persistent
-import zeit.cms.connector
 import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.type
+import zeit.cms.util
 import zope.app.container.contained
-import zope.component
 import zope.interface
 
 
@@ -60,4 +56,4 @@ class UnknownResourceType(zeit.cms.type.TypeDeclaration):
             unicode(resource.data.read(), 'latin1'), resource.type)
 
     def resource_body(self, content):
-        return StringIO.StringIO(content.data.encode('latin1'))
+        return zeit.cms.util.MemoryFile(content.data.encode('latin1'))
