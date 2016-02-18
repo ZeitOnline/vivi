@@ -46,4 +46,11 @@
     name="link"
     />
 
+  <adapter
+    factory=".interfaces.IZCOSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="Campus"
+    />
+
 </configure>
