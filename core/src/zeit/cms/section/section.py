@@ -1,5 +1,7 @@
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.section.interfaces import ISection, ISectionMarker
+from zeit.cms.section.interfaces import (
+    ISection, ISectionMarker, IRessortSection)
 import grokcore.component as grok
 import os.path
 import zeit.cms.interfaces
@@ -19,27 +21,50 @@ def mark_section_content_on_checkout(context, event):
     apply_markers(context)
 
 
+@grok.subscribe(
+    ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def mark_section_content_on_checkin(context, event):
+    apply_markers(context)
+
+
 def apply_markers(content):
     content = zope.security.proxy.getObject(content)
+
     for iface in zope.interface.providedBy(content):
         if issubclass(iface, ISectionMarker):
             zope.interface.noLongerProvides(content, iface)
-    section = ISection(content, None)
-    if section is None:
-        return
-    for iface in get_section_markers(section, content):
+
+    # Ressort markers take precedence over section markers (ZON-2507)
+    for iface in (get_ressort_markers(content) or
+                  get_folder_markers(content)):
         zope.interface.alsoProvides(content, iface)
 
 
-def get_section_markers(section, content):
-    section_ifaces = [x for x in zope.interface.providedBy(section)
-                      if issubclass(x, ISection)]
-    if not section_ifaces:
+def get_ressort_markers(content):
+    meta = ICommonMetadata(content, None)
+    if meta is None:
         return []
     sm = zope.component.getSiteManager()
-    result = []
+    section = sm.adapters.lookup(
+        (zope.interface.providedBy(content),), IRessortSection,
+        name=meta.ressort)
+    if section is None:
+        return []
+    return get_markers_for_section([section], content)
+
+
+def get_folder_markers(content):
+    section = ISection(content, None)
     # XXX unclear whether we really want to support the case that a folder
-    # signifies more than one section
+    # signifies more than one section.
+    section_ifaces = [x for x in zope.interface.providedBy(section)
+                      if issubclass(x, ISection)]
+    return get_markers_for_section(section_ifaces, content)
+
+
+def get_markers_for_section(section_ifaces, content):
+    sm = zope.component.getSiteManager()
+    result = []
     for iface in section_ifaces:
         result.append(sm.adapters.lookup((iface,), ISectionMarker))
         result.append(sm.adapters.lookup(

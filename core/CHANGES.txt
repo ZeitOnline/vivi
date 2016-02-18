@@ -4,6 +4,8 @@ zeit.cms changes
 2.65.0 (unreleased)
 -------------------
 
+- Introduce ressort-based section markers for zeit.campus (ZON-2507)
+
 - Introduce ``zeit.cms.util.MemoryFile``, a closeable StringIO. Use it for
   resource bodies (BUG-338).
 

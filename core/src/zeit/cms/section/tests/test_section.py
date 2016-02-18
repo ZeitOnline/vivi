@@ -64,6 +64,18 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         self.assertFalse(
             zeit.cms.section.interfaces.IZONContent.providedBy(obj))
 
+    def test_content_is_marked_according_to_ressort(self):
+        obj = TestContentType()
+        obj.ressort = u'Sport'
+
+        self.repository['sport'] = obj
+        obj = self.repository['sport']
+
+        self.assertTrue(
+            zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertFalse(
+            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
+
 
 class FindSectionTest(zeit.cms.testing.FunctionalTestCase):
 

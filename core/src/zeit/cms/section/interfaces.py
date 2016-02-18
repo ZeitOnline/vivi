@@ -35,6 +35,21 @@ class ISectionMarker(zope.interface.Interface):
     """
 
 
+class IRessortSection(zope.interface.Interface):
+    """Marks an ``ICommonMetadata.ressort`` value as a section.
+
+    Usage:
+    * Create a spefic section interface, e.g. IMySection(ISection)
+    * Register it an adapter to IRessortSection with the name of the ressort:
+      <adapter
+        factory="IMySection"
+        for="zeit.cms.content.interfaces.ICommonMetadata"
+        provides="zeit.cms.section.interfaces.IRessortSection"
+        name="MyRessort"
+        />
+    """
+
+
 class IZONSection(ISection):
     """Marker for the ZEIT ONLINE section (which is 95% of all content ;-)"""
 
