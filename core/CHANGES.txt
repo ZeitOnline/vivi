@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.65.0 (unreleased)
+2.65.0 (2016-02-22)
 -------------------
 
 - Introduce ressort-based section markers for zeit.campus (ZON-2507)
