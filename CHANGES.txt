@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.7 (unreleased)
+2.11.7 (2016-02-22)
 -------------------
 
 - Move ``MemoryFile`` to zeit.cms.
