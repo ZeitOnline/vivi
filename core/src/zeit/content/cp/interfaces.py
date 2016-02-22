@@ -371,6 +371,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
+    count_to_replace_duplicates = zope.interface.Attribute('')
 
     referenced_cp = zope.schema.Choice(
         title=_('Get teasers from CenterPage'),

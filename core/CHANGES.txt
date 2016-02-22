@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- AutomaticArea delegates only IArea properties, preventing unwanted
+  interactions e.g. with zope.interface.
 
 
 3.5.2 (2016-02-03)

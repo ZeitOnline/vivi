@@ -19,13 +19,15 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         self.xml = self.context.xml
         self.__parent__ = self.context
 
-    # Delegate everything to our context.
+    # Convenience: Delegate IArea to our context, so we can be used like one.
     def __getattr__(self, name):
         # There's no interface for xmlsupport.Persistent which could tell us
         # that this attribute needs special treatment.
         if name == '__parent__':
             return super(AutomaticArea, self).__getattr__(name)
-        return getattr(self.context, name)
+        if name in zeit.content.cp.interfaces.IArea:
+            return getattr(self.context, name)
+        raise AttributeError(name)
 
     SOLR_FIELD = {
         'Channel': 'channels',
