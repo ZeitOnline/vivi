@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.5.3 (unreleased)
+3.5.3 (2016-02-22)
 ------------------
 
 - AutomaticArea delegates only IArea properties, preventing unwanted
