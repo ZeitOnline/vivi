@@ -108,7 +108,8 @@ def update_display_name(obj, event):
         obj.display_name = u'%s %s' % (obj.firstname, obj.lastname)
 
 
-# Note: This is needed by zeit.vgwort, among others.
+# Note: This is needed by the publisher and zeit.vgwort, among others.
+# Publisher only indexes the freetext field at the moment.
 # zeit.vgwort.report uses the fact that the references to author objects are
 # copied to the freetext 'author' webdav property to filter out which content
 # objects to report.
