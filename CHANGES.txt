@@ -4,7 +4,8 @@ zeit.content.image changes
 2.11.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Determine XML reference attribute ``type`` from MIME if image filename has no
+  extension (BUG-357).
 
 
 2.11.7 (2016-02-22)

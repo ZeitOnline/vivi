@@ -3,6 +3,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
+import zope.component
 
 
 class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
@@ -41,3 +42,19 @@ class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
         del self.group[self.img.__name__]
         metadata = zeit.content.image.interfaces.IImageMetadata(co)
         self.assertEqual(None, metadata.title)
+
+
+class TestImageXMLReference(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_master_image_without_filename_extension_sets_mime_as_type(self):
+        fh = self.repository['2006']['DSC00109_2.JPG'].open()
+        image = zeit.content.image.image.LocalImage()
+        image.mimeType = 'image/jpeg'
+        image.open('w').write(fh.read())
+        self.repository['example-image'] = image
+        ref = zope.component.getAdapter(
+            self.repository['example-image'],
+            zeit.cms.content.interfaces.IXMLReference, name='image')
+        self.assertEqual('jpeg', ref.get('type'))
