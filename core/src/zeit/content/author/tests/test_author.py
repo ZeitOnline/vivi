@@ -72,6 +72,25 @@ class ModifiedHandlerTest(unittest.TestCase):
         update_author_freetext(content, event)
         self.assertEqual([], content.authors)
 
+    def test_authorships_should_be_copied_to_freetext_for_subclasses(self):
+        from zope.lifecycleevent import ObjectModifiedEvent, Attributes
+        from zeit.cms.content.interfaces import ICommonMetadata
+        from zeit.content.author.author import update_author_freetext
+
+        class IArticle(ICommonMetadata):
+            pass
+
+        content = mock.Mock()
+        author1, author2 = mock.Mock(), mock.Mock()
+        author1.target.display_name = mock.sentinel.author1
+        author2.target.display_name = mock.sentinel.author2
+        content.authorships = (author1, author2)
+        event = ObjectModifiedEvent(
+            content, Attributes(IArticle, 'authorships'))
+        update_author_freetext(content, event)
+        self.assertEqual([mock.sentinel.author1, mock.sentinel.author2],
+                         content.authors)
+
 
 class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
 
