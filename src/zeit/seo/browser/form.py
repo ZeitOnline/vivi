@@ -20,7 +20,8 @@ class SEOBaseForm(object):
             'column-left wide-widgets'),
         gocept.form.grouped.Fields(
             _('Standard metadata'),
-            ('keywords', 'ressort', 'sub_ressort', 'serie'),
+            ('keywords', 'keyword_entity_type',
+             'ressort', 'sub_ressort', 'serie'),
             'column-right'))
 
 
