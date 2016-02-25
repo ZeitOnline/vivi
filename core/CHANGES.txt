@@ -1,10 +1,10 @@
 zeit.seo changes
 ================
 
-1.6.1 (unreleased)
+1.7.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add DAV property ``keyword_entity_type`` (ZON-2779).
 
 
 1.6.0 (2014-07-17)

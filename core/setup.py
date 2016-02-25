@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.seo',
-    version='1.6.1.dev0',
+    version='1.7.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -18,6 +18,7 @@ setup(
         'gocept.form',
         'setuptools',
         'z3c.etestbrowser',
+        'zc.sourcefactory',
         'zeit.cms>=2.51.0.dev0',
         'zeit.connector',
         'zope.app.testing',

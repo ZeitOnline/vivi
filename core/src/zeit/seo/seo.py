@@ -31,6 +31,10 @@ class SEO(object):
         zeit.seo.interfaces.ISEO['hide_timestamp'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-hide-timestamp')
 
+    keyword_entity_type = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['keyword_entity_type'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'seo-keyword-entity-type')
+
     def __init__(self, context):
         self.context = context
 
