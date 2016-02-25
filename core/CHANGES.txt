@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.8 (unreleased)
+2.11.8 (2016-02-25)
 -------------------
 
 - Determine XML reference attribute ``type`` from MIME if image filename has no
