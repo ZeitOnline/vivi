@@ -104,6 +104,8 @@ def XMLReference(context):
     if '.' in context.__name__:
         base, ext = context.__name__.rsplit('.', 1)
         image.set('type', ext)
+    else:
+        image.set('type', context.format.lower())
     # The image reference can be seen like an element in a feed. Let the magic
     # update the xml node.
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
