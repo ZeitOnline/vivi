@@ -20,10 +20,6 @@
           tal:replace="view/metadata/year" />
       </td>
     </tr>
-    <tr>
-      <td i18n:translate="">Alignment</td>
-      <td tal:content="view/metadata/alignment" />
-    </tr>
   </table>
   <a href="#" target="_new"
     tal:attributes="href string:${context/@@absolute_url}/@@raw">

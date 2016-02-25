@@ -96,9 +96,6 @@ Fill out some values:
 >>> browser.getControl('Volume').value = '9'
 >>> browser.getControl('Alternative').value = 'Zwei Taenzer'
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
->>> browser.getControl('Alignment').displayOptions
-['left', 'center', 'right']
->>> browser.getControl('Alignment').displayValue = ['center']
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
@@ -177,10 +174,6 @@ Make sure the image is not changed by looking at the image view:
       <td>
         9/2007
       </td>
-    </tr>
-    <tr>
-      <td>Alignment</td>
-      <td>center</td>
     </tr>
   ...
   <ol class="image-copyrights">
