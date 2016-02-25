@@ -23,11 +23,6 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 
 
-class AlignmentSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = (u'left', u'center', u'right')
-
-
 class ILinkField(zope.interface.Interface):
     """Marker interface so we can register a custom widget for this field."""
 
@@ -87,11 +82,6 @@ class IImageMetadata(zope.interface.Interface):
     # XXX Disabled because the frontend does not interpret rewritten links
     # correctly yet.
     # zope.interface.alsoProvides(links_to, ILinkField)
-
-    alignment = zope.schema.Choice(
-        title=_('Alignment'),
-        source=AlignmentSource(),
-        default='left')
 
     acquire_metadata = zope.schema.Bool(
         title=u'True if metadata should be acquired from the parent.')
