@@ -15,7 +15,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to', 'alignment'))
+        ('alt', 'caption', 'links_to'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -97,7 +97,6 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
         set_attribute('title', context.title)
         set_attribute('alt', context.alt)
-        set_attribute('align', context.alignment)
 
         # XXX This is really ugly: XMLReference type 'related' uses href for
         # the uniqueId, but type 'image' uses 'src' or 'base-id' instead, and

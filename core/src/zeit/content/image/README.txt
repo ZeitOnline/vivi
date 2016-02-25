@@ -125,15 +125,13 @@ Set metadata:
 >>> metadata.copyrights = (
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
->>> metadata.alignment = u'right'
 >>> metadata.caption = u'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    align="right"...>
+<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">Caption</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -155,8 +153,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    align="right"...>
+<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -173,7 +170,7 @@ Set the link:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    align="right"...href="http://www.asdf.com"...>
+    href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -197,7 +194,7 @@ in x140 is used:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="gif"...
-    align="right"...href="http://www.asdf.com"...>
+    href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -217,7 +214,7 @@ one is used:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    align="right"...href="http://www.asdf.com"...>
+    href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -236,7 +233,7 @@ Images whose names have no extension at all will be ignored:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    align="right"...href="http://www.asdf.com"...>
+    href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -252,7 +249,7 @@ If there is no image in the image group the ``type`` will be an empty string:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True),
 <image ...base-id="http://xml.zeit.de/image-group/" type=""...
-    align="right"...href="http://www.asdf.com"...>
+    href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
