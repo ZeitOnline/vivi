@@ -118,8 +118,8 @@ def update_display_name(obj, event):
 def update_author_freetext(obj, event):
     if event.descriptions:
         for description in event.descriptions:
-            if (description.interface ==
-                zeit.cms.content.interfaces.ICommonMetadata and
+            if (issubclass(description.interface,
+                zeit.cms.content.interfaces.ICommonMetadata) and
                     'authorships' in description.attributes):
                 ref_names = [x.target.display_name for x in obj.authorships]
                 obj.authors = ref_names

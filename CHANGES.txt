@@ -4,7 +4,7 @@ zeit.content.author changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Copy author references to old freetext field for all content types.
 
 
 2.6.0 (2016-02-12)
