@@ -234,11 +234,11 @@ Sadly the xml is not updated, yet:
     ...
         <block name="03.jpg">
         <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ... src="http://xml.zeit.de/online/2007/01/gallery/03.jpg" type="jpg" align="left"...>
+          <image ... src="http://xml.zeit.de/online/2007/01/gallery/03.jpg"...>
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg" type="jpg" align="left"...>
+          <thumbnail ...src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg"...>
             <bu xsi:nil="true"/>
             <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
