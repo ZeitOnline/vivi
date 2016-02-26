@@ -14,6 +14,8 @@ log = logging.getLogger(__name__)
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_index_on_checkin(context, event):
+    if getattr(event, 'publishing', False):
+        return
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
@@ -24,6 +26,8 @@ def update_index_on_checkin(context, event):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_referencing_objects_handler(context, event):
     """Update metadata in objects which reference the checked-in object."""
+    if event.publishing:
+        return
     # prevent recursion
     if not gocept.async.is_async():
         update_referencing_objects(context)
