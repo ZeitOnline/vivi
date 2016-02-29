@@ -43,3 +43,12 @@ class IText(zeit.cms.repository.interfaces.IDAVContent):
                 raise CannotEncode(data.text, data.encoding, e)
 
         return True
+
+
+class TextSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.text'
+    check_interfaces = (IText,)
+
+
+textSource = TextSource()
