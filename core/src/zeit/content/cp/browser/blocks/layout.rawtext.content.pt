@@ -1,0 +1,10 @@
+<div i18n:domain="zeit.cms">
+  <div class="header">
+    <tal:block condition="context/supertitle">
+    <span class="supertitle" tal:content="context/supertitle"/><br/>
+    </tal:block>
+  </div>
+
+  <div class="cpextra-title">RAW Code</div>
+  <div tal:condition="context/raw" class="xml-block" tal:content="view/raw_code"/>
+</div>

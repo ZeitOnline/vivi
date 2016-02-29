@@ -17,6 +17,7 @@ import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
+import zeit.content.text.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.i18n
@@ -868,6 +869,15 @@ class ILeadTimeWorklist(zope.interface.Interface):
 
 class IRenderedXML(zope.interface.Interface):
     """Recursively converts a CenterPage to an lxml tree."""
+
+
+class IRawTextBlock(IBlock):
+
+    raw = zope.schema.Choice(
+        title=_('RawText'),
+        description=_("Drag text content here"),
+        required=False,
+        source=zeit.content.text.interfaces.textSource)
 
 
 class IFrameBlock(IBlock):

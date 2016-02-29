@@ -102,6 +102,7 @@
   <include file="fullgraphical.zcml" />
   <include file="frame.zcml" />
   <include file="headerimage.zcml" />
+  <include file="rawtext.zcml" />
   <include file="markup.zcml" />
   <include file="cardstack.zcml" />
 
