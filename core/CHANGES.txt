@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.65.1 (unreleased)
+2.65.1 (2016-02-29)
 -------------------
 
 - Don't update relationship index during cycling while publishing.
