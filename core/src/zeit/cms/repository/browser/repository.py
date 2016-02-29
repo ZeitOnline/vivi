@@ -171,5 +171,7 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
                     mapping=dict(id=unique_id))
             return '<div class="error">%s</div>' % zope.i18n.translate(
                 msg, context=self.request)
+        self.request.response.setHeader(
+            'Cache-Control', 'no-cache')
         self.redirect(self.url(obj, view), status=301)
         return u''
