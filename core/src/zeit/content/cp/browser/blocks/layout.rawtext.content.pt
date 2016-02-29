@@ -5,6 +5,6 @@
     </tal:block>
   </div>
 
-  <div class="cpextra-title">RAW Code</div>
-  <div tal:condition="context/raw" class="xml-block" tal:content="view/raw_code"/>
+  <div class="rawtext-title">RAW Code</div>
+  <div class="rawtext-content" tal:content="view/raw_code"/>
 </div>

@@ -873,11 +873,16 @@ class IRenderedXML(zope.interface.Interface):
 
 class IRawTextBlock(IBlock):
 
-    raw = zope.schema.Choice(
+    text_reference = zope.schema.Choice(
         title=_('RawText'),
         description=_("Drag text content here"),
         required=False,
         source=zeit.content.text.interfaces.textSource)
+
+    text = zope.schema.Text(
+        title=_('Contents'),
+        description=_('Use plain text'),
+        required=False)
 
 
 class IFrameBlock(IBlock):

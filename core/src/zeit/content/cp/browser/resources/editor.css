@@ -384,19 +384,23 @@ margin-top: 4px;
 
 .block-title,
 .block-item,
+.rawtext-content,
+.rawtext-title,
 .cpextra-id,
 .cpextra-title {
   text-align: center;
 }
 
 .block-title,
-.cpextra-title {
+.cpextra-title,
+.rawtext-title {
   margin: 2em 2em 0.5em 2em;
   text-transform: uppercase;
 }
 
 .block-item,
-.cpextra-id {
+.cpextra-id,
+.rawtext-content {
   margin: 0 0 2em 0;
 }
 
