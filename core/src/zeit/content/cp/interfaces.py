@@ -875,13 +875,11 @@ class IRawTextBlock(IBlock):
 
     text_reference = zope.schema.Choice(
         title=_('RawText'),
-        description=_("Drag text content here"),
         required=False,
         source=zeit.content.text.interfaces.textSource)
 
     text = zope.schema.Text(
         title=_('Contents'),
-        description=_('Use plain text'),
         required=False)
 
     raw_code = zope.interface.Attribute('Raw code from text or text_reference')
