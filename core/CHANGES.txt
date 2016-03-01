@@ -6,7 +6,7 @@ zeit.content.cp changes
 ------------------
 
 - Add a rawtext block which allows references of plain text
-  or plain text input form
+  or plain text input form (ZON-2826)
 
 
 3.5.3 (2016-02-22)
