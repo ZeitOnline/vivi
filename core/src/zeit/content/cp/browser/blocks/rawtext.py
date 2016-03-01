@@ -16,10 +16,4 @@ class Display(zeit.cms.browser.view.Base):
 
     @property
     def raw_code(self):
-        if self.context.text_reference:
-            return self.context.text_reference.text
-
-        if self.context.text:
-            return self.context.text
-
-        return '<code />'
+        return self.context.raw_code or '<code />'

@@ -59,3 +59,12 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;rawcode_reference...', b.contents)
+
+    def test_rawtext_should_display_default_if_empty(self):
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Contents').value = ''
+        b.getControl('RawText').value = ''
+        b.getControl('Apply').click()
+        b.open(self.content_url)
+        self.assertEllipsis('...&lt;code...', b.contents)

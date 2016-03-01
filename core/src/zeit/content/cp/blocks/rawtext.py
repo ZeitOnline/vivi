@@ -16,6 +16,16 @@ class RawTextBlock(zeit.content.cp.blocks.block.Block):
     text = zeit.cms.content.property.ObjectPathProperty(
         '.text', zeit.content.cp.interfaces.IRawTextBlock['text'])
 
+    @property
+    def raw_code(self):
+        if self.text_reference:
+            return self.text_reference.text
+
+        if self.text:
+            return self.text
+
+        return ''
+
 
 zeit.edit.block.register_element_factory(
     [zeit.content.cp.interfaces.IArea],

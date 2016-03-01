@@ -884,6 +884,8 @@ class IRawTextBlock(IBlock):
         description=_('Use plain text'),
         required=False)
 
+    raw_code = zope.interface.Attribute('Raw code from text or text_reference')
+
 
 class IFrameBlock(IBlock):
 
