@@ -190,6 +190,22 @@
     factory=".frame.FrameBlock"
     />
 
+  <!-- Raw block -->
+  <class class=".rawtext.RawTextBlock">
+    <require
+      interface="..interfaces.IRawTextBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IRawTextBlock"
+      permission="zeit.EditContent"/>
+  </class>
+
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="rawtext"
+    factory=".rawtext.RawTextBlock"
+    />
+
   <!-- Headerimage block -->
   <class class=".headerimage.HeaderImageBlock">
     <require

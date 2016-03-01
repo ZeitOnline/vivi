@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a rawtext block which allows references of plain text
+  or plain text input form
 
 
 3.5.3 (2016-02-22)
