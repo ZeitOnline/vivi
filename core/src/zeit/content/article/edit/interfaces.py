@@ -4,6 +4,7 @@ import collections
 import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
+import zeit.content.text.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
@@ -351,6 +352,18 @@ class IRawXML(zeit.edit.interfaces.IBlock):
         title=_('XML source'),
         tidy_input=True,
         constraint=validate_rawxml)
+
+
+class IRawText(zeit.edit.interfaces.IBlock):
+
+    text_reference = zope.schema.Choice(
+        title=_("Raw text reference"),
+        source=zeit.content.text.interfaces.textSource,
+        required=False)
+
+    text = zope.schema.Text(
+        title=_('Text'),
+        required=False)
 
 
 class IAudio(zeit.edit.interfaces.IBlock):

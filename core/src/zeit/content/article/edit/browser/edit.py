@@ -177,6 +177,19 @@ class EditRawXML(zeit.edit.browser.form.InlineForm):
         return 'rawxml.{0}'.format(self.context.__name__)
 
 
+class EditRawText(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IRawText).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit raw text block')
+
+    @property
+    def prefix(self):
+        return 'rawtext.{0}'.format(self.context.__name__)
+
+
 class EditAudio(zeit.edit.browser.form.InlineForm):
 
     legend = None

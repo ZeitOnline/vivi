@@ -306,6 +306,26 @@
     permission="zope.View"
     />
 
+  <!-- rawtext -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRawText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-rawtext"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IRawText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-rawtext"
+    class=".edit.EditRawText"
+    permission="zope.View"
+    />
+
   <!-- audio -->
 
   <browser:page
