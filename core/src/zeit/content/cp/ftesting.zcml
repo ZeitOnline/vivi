@@ -10,6 +10,9 @@
   <include package="zeit.content.cp" />
   <include package="zeit.content.cp.browser" />
 
+  <include package="zeit.content.text" />
+  <include package="zeit.content.text.browser" />
+
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
