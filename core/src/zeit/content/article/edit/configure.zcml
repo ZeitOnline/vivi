@@ -193,6 +193,17 @@
       />
   </class>
 
+  <class class=".rawtext.RawText">
+    <require
+      interface=".interfaces.IRawText"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRawText"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".audio.Audio">
     <require
       interface=".interfaces.IAudio"
