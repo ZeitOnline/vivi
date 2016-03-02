@@ -166,7 +166,10 @@ class AccessTimes(object):
                         i += 1
                         log.info('Evicting %s', id)
                         self._last_access_time.pop(id, None)
-                        self.remove(id)
+                        try:
+                            self.remove(id)
+                        except KeyError:
+                            pass  # already gone
                         if i % 100 == 0:
                             try:
                                 log.info('Sub-commit')
