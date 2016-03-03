@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.65.2 (unreleased)
+2.65.2 (2016-03-03)
 -------------------
 
 - Mark redirects to content as not cacheable (BUG-352).
