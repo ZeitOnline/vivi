@@ -53,4 +53,20 @@
     name="Campus"
     />
 
+  <adapter
+    factory=".article.TopicpageLink"
+    provides=".interfaces.ITopicpageLink"
+    trusted="yes" />
+
+  <class class=".article.TopicpageLink">
+    <require
+      interface=".interfaces.ITopicpageLink"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITopicpageLink"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

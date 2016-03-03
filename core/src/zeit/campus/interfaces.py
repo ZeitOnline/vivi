@@ -1,3 +1,7 @@
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
+
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
@@ -44,3 +48,13 @@ class IZCOLink(
         zeit.content.link.interfaces.ILink,
         zeit.cms.section.interfaces.ISectionMarker):
     pass
+
+
+class ITopicpageLink(zope.interface.Interface):
+
+    nextread = zope.schema.Tuple(
+        title=_("Topicpage link"),
+        default=(),
+        required=False,
+        value_type=zope.schema.Choice(
+            source=zeit.content.cp.interfaces.centerPageSource))
