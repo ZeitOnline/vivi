@@ -10,7 +10,7 @@ class TopicpageLink(zeit.cms.related.related.RelatedBase):
     zope.interface.implements(zeit.campus.interfaces.ITopicpageLink)
 
     topicpagelink = zeit.cms.content.reference.SingleResource(
-        '.head.topicpagelink.url', 'related')
+        '.head.topicpagelink', 'related')
 
     topicpagelink_label = zeit.cms.content.dav.mapProperties(
         zeit.campus.interfaces.ITopicpageLink,
