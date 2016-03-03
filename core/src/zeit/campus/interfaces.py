@@ -52,9 +52,12 @@ class IZCOLink(
 
 class ITopicpageLink(zope.interface.Interface):
 
-    nextread = zope.schema.Tuple(
+    topicpagelink = zope.schema.Choice(
         title=_("Topicpage link"),
-        default=(),
         required=False,
-        value_type=zope.schema.Choice(
-            source=zeit.content.cp.interfaces.centerPageSource))
+        source=zeit.content.cp.interfaces.centerPageSource)
+
+    topicpagelink_label = zope.schema.TextLine(
+        title=_("Topicpagelink label"),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_name)

@@ -11,7 +11,7 @@ class TopicpageLink(zeit.edit.browser.form.InlineForm):
     prefix = 'topicpagelink'
     undo_description = _('edit topicpage link')
     form_fields = FormFields(
-        zeit.magazin.interfaces.ITopicpageLink)
+        zeit.campus.interfaces.ITopicpageLink)
 
     def setUpWidgets(self, *args, **kw):
         super(TopicpageLink, self).setUpWidgets(*args, **kw)
