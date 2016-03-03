@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-3.13.1 (unreleased)
--------------------
+3.14 (2016-03-03)
+-----------------
 
 - Add a raw text module (ZON-2826).
 
