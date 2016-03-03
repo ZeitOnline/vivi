@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.0.2 (unreleased)
+2.0.2 (2016-03-03)
 ------------------
 
 - Add text source for references
