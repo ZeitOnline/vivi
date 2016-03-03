@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.5.4 (unreleased)
+3.5.4 (2016-03-03)
 ------------------
 
 - Add a rawtext block which allows references of plain text
