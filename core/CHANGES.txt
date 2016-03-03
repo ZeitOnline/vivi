@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Mark redirects to content as not cacheable (BUG-352).
 
+- Add new logo for zeit.campus (ZON-2507).
+
 
 2.65.1 (2016-02-29)
 -------------------
