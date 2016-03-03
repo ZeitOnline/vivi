@@ -1,0 +1,32 @@
+===============
+Campus article
+===============
+
+
+A referenced topicpage can become a topicpagelink
+
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> import zope.component
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+
+Add content to repository:
+
+>>> repository['content'] = content
+
+Adapt it to ITopicpageLink:
+
+>>> tplink = zeit.campus.interfaces.ITopicpageLink(content)
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     zeit.campus.interfaces.ITopicpageLink, tplink)
+True
+
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.content.interfaces.IXMLRepresentation, tplink)
+True
+
