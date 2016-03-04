@@ -8,12 +8,12 @@
   <browser:viewlet
     for="..interfaces.IZCOArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.content.article.edit.browser.form.InternalLinksForms"
+    view="zeit.content.article.edit.browser.form.OptionFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.topicpagelink"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="30"
+    weight="39"
     />
 
   <browser:page
