@@ -4,7 +4,7 @@ CHANGES
 2.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Catch strange "the bucket being iterated changed size" error in cache sweeper.
 
 
 2.7.5 (2016-03-03)
@@ -496,8 +496,8 @@ retracting).
 1.10 (2009-04-09)
 -----------------
 
-- Fixed »AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
-  'add'« which occured on existing databases.
+- Fixed "AttributeError: 'BTrees.OOBTree.OOTreeSet' object has no attribute
+  'add'" which occured on existing databases.
 
 - Fixed refresh-cache to not fail with a bogus property cache.
 

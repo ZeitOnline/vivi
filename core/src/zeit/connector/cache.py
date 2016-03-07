@@ -157,7 +157,18 @@ class AccessTimes(object):
             try:
                 access_time = iter(self._access_time_to_ids.keys(
                     min=start, max=timeout)).next()
-                id_set = list(self._access_time_to_ids[access_time])
+                id_set = []
+                # For reasons unknown we sometimes get "the bucket being
+                # iterated changed size" here, which according to
+                # http://mail.zope.org/pipermail/zodb-dev/2004-June/007452.html
+                # "can never happen". So we try to sweep all the IDs we can and
+                # leave the rest to rot, rather than get stuck on one broken
+                # access_time bucket and not be able to sweep anything after it
+                try:
+                    for id in self._access_time_to_ids[access_time]:
+                        id_set.append(id)
+                except RuntimeError:
+                    pass
                 try:
                     i = 0
                     retries = 0
