@@ -52,6 +52,7 @@ setup(
         'zeit.content.infobox',
         'zeit.content.gallery',
         'zeit.content.portraitbox',
+        'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video',
         'zeit.edit>=2.11.3.dev0',
         'zeit.objectlog>=0.2',
