@@ -65,10 +65,10 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
             result.docs[0]['uniqueId'])
         req = self.layer.solr._send_request
         self.assertEqual(1, req.call_count)
-        self.assertEqual('GET', req.call_args[0][0])
+        self.assertEqual('get', req.call_args[0][0])
         query = req.call_args[0][1]
         self.assertTrue(query.startswith(
-            '/select/?q=%28text%3A%28Obama%29+AND+NOT+ressort%3A%28News'))
+            'select/?q=%28text%3A%28Obama%29+AND+NOT+ressort%3A%28News'))
         self.assertTrue('range' in query)
         self.assertTrue('range_details' in query)
 
@@ -82,7 +82,7 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
         req = self.layer.solr._send_request
         query = req.call_args[0][1]
         self.assertTrue(query.startswith(
-            '/select/?q=%28%28title%3A%28diet%2A%29+'+
+            'select/?q=%28%28title%3A%28diet%2A%29+'+
             'OR+title%3A%28diet%29%29+AND+%28type%3A%28'+
             'author%29%29%29&sort=title+asc'),
             query)
