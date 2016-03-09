@@ -362,7 +362,7 @@ class IRawText(zeit.edit.interfaces.IBlock):
         required=False)
 
     text = zope.schema.Text(
-        title=_('Text'),
+        title=_('Raw text'),
         required=False)
 
 
