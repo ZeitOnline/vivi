@@ -213,7 +213,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
 
     zope.interface.implements(zeit.connector.interfaces.IResourceCache)
 
-    CACHE_TIMEOUT = 30 * 24 * 3600
+    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def __init__(self):
@@ -423,7 +423,7 @@ class PropertyCache(PersistentCache):
 
     CACHE_VALUE_CLASS = Properties
 
-    CACHE_TIMEOUT = 30 * 24 * 3600
+    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
@@ -461,7 +461,7 @@ class ChildNameCache(PersistentCache):
 
     CACHE_VALUE_CLASS = ChildNames
 
-    CACHE_TIMEOUT = 30 * 24 * 3600
+    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
