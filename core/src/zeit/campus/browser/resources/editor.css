@@ -1,8 +1,8 @@
-.type-article #topicpagelink\.topicpagelink a[rel="remove"] {
+.type-article #topicpagelink\.topicpage a[rel="remove"] {
   right: 0;
   top: -28px;
 }
 
-#topicpagelink\.topicpagelink .landing-zone-candidate {
+#topicpagelink\.topicpage .landing-zone-candidate {
   margin-bottom: 1em
 }

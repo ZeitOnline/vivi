@@ -15,7 +15,7 @@ class TopicpageLink(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TopicpageLink, self).setUpWidgets(*args, **kw)
-        self.widgets['topicpagelink'].detail_view_name = '@@related-details'
+        self.widgets['topicpage'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
