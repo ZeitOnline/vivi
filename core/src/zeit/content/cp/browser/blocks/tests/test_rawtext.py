@@ -35,18 +35,18 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
     def test_rawtext_is_edited(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('Contents').value = '<rawcode_text>'
+        b.getControl('Raw text', index=1).value = '<rawcode_text>'
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;rawcode_text...', b.contents)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual(
-            '<rawcode_text>',b.getControl('Contents').value.strip())
+            '<rawcode_text>', b.getControl('Raw text', index=1).value.strip())
 
     def test_rawtext_is_referenced(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('RawText').value = self.plaintext.uniqueId
+        b.getControl('Raw text reference').value = self.plaintext.uniqueId
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;rawcode_reference...', b.contents)
@@ -54,8 +54,8 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
     def test_rawtext_reference_should_be_preferred(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('Contents').value = '<rawcode_text>'
-        b.getControl('RawText').value = self.plaintext.uniqueId
+        b.getControl('Raw text', index=1).value = '<rawcode_text>'
+        b.getControl('Raw text reference').value = self.plaintext.uniqueId
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;rawcode_reference...', b.contents)
@@ -63,8 +63,8 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
     def test_rawtext_should_display_default_if_empty(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
-        b.getControl('Contents').value = ''
-        b.getControl('RawText').value = ''
+        b.getControl('Raw text', index=1).value = ''
+        b.getControl('Raw text reference').value = ''
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;code...', b.contents)

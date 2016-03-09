@@ -874,12 +874,12 @@ class IRenderedXML(zope.interface.Interface):
 class IRawTextBlock(IBlock):
 
     text_reference = zope.schema.Choice(
-        title=_('RawText'),
+        title=_('Raw text reference'),
         required=False,
         source=zeit.content.text.interfaces.textSource)
 
     text = zope.schema.Text(
-        title=_('Contents'),
+        title=_('Raw text'),
         required=False)
 
     raw_code = zope.interface.Attribute('Raw code from text or text_reference')
