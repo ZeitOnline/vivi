@@ -279,8 +279,8 @@ class EditHTMLBlock(zeit.edit.browser.form.InlineForm):
     legend = u''
     undo_description = _('edit html block')
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IHTMLBlock).omit(
-        '__name__', 'xml')
+        zeit.content.article.edit.interfaces.IHTMLBlock).select(
+        'layout', 'title', 'contents')
     form_fields['contents'].custom_widget = ConvertingRestructuredTextWidget
 
     @property
