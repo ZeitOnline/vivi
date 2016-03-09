@@ -76,7 +76,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     is_instant_article = zope.schema.Bool(
         title=_('Is instant article'),
-        default=True,
+        default=False,
         required=False)
 
     is_amp = zope.schema.Bool(
