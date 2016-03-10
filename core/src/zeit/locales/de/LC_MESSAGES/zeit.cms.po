@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Mar 10 08:33:21 2016\n"
-"PO-Revision-Date: 2016-03-10 08:34+0100\n"
+"PO-Revision-Date: 2016-03-10 12:43+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1736,7 +1736,7 @@ msgstr "Bearbeitung abbrechen"
 #: zeit/content/advertisement/advertisement.py:47
 #: zeit/content/advertisement/interfaces.py:13
 msgid "Publisher advertisement"
-msgstr "Verlagsangebot/Anzeige"
+msgstr "Verlag/Anzeige"
 
 #: zeit/content/advertisement/browser/form.py:24
 msgid "Add publisher advertisement"
@@ -3800,7 +3800,7 @@ msgstr "Quiz"
 #: zeit/content/rawxml/browser/form.py:15 zeit/content/rawxml/rawxml.py:28
 #: zeit/content/rawxml/browser/configure.zcml:6
 msgid "Raw XML"
-msgstr "Embed Code (Raw XML)"
+msgstr "Rohes XML"
 
 #: zeit/content/rawxml/browser/form.py:24
 msgid "Add Raw XML"
