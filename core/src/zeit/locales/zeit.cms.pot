@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Mar  9 16:35:49 2016\n"
+"POT-Creation-Date: Thu Mar 10 08:33:21 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2389,7 +2389,6 @@ msgid "Raw text reference"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:365
-#: zeit/content/article/edit/rawtext.py:34
 #: zeit/content/cp/interfaces.py:882
 msgid "Raw text"
 msgstr ""
@@ -2484,11 +2483,13 @@ msgstr ""
 msgid "Quiz block"
 msgstr ""
 
+#: zeit/content/article/edit/rawtext.py:35
+msgid "Raw text block"
+msgstr ""
+
 #: zeit/content/article/edit/rawxml.py:20
-#: zeit/content/rawxml/browser/form.py:15
-#: zeit/content/rawxml/rawxml.py:28
-#: zeit/content/rawxml/browser/configure.zcml:6
-msgid "Raw XML"
+#: zeit/content/cp/blocks/xml.py:21
+msgid "Raw XML block"
 msgstr ""
 
 #: zeit/content/article/edit/reference.py:130
@@ -2777,10 +2778,6 @@ msgstr ""
 
 #: zeit/content/cp/blocks/teaser.py:97
 msgid "No default teaser layout defined for this area."
-msgstr ""
-
-#: zeit/content/cp/blocks/xml.py:21
-msgid "Raw XML block"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:65
@@ -3841,6 +3838,12 @@ msgstr ""
 #: zeit/content/quiz/quiz.py:48
 #: zeit/content/quiz/browser/configure.zcml:30
 msgid "Quiz"
+msgstr ""
+
+#: zeit/content/rawxml/browser/form.py:15
+#: zeit/content/rawxml/rawxml.py:28
+#: zeit/content/rawxml/browser/configure.zcml:6
+msgid "Raw XML"
 msgstr ""
 
 #: zeit/content/rawxml/browser/form.py:24

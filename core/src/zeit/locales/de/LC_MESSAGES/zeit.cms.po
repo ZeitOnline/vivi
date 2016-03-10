@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar  9 16:35:49 2016\n"
-"PO-Revision-Date: 2016-03-09 16:40+0100\n"
+"POT-Creation-Date: Thu Mar 10 08:33:21 2016\n"
+"PO-Revision-Date: 2016-03-10 08:34+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2337,7 +2337,7 @@ msgid "Raw text reference"
 msgstr "Embed-Link"
 
 #: zeit/content/article/edit/interfaces.py:365
-#: zeit/content/article/edit/rawtext.py:34 zeit/content/cp/interfaces.py:882
+#: zeit/content/cp/interfaces.py:882
 msgid "Raw text"
 msgstr "Embed-Code (optional)"
 
@@ -2424,17 +2424,19 @@ msgstr "Liveblog"
 
 #: zeit/content/article/edit/paragraph.py:165
 msgid "HTML block"
-msgstr "HTML-Block"
+msgstr "HTML-Block (Daten/Zutaten)"
 
 #: zeit/content/article/edit/quiz.py:31 zeit/content/cp/blocks/quiz.py:19
 msgid "Quiz block"
 msgstr "Quiz"
 
-#: zeit/content/article/edit/rawxml.py:20
-#: zeit/content/rawxml/browser/form.py:15 zeit/content/rawxml/rawxml.py:28
-#: zeit/content/rawxml/browser/configure.zcml:6
-msgid "Raw XML"
-msgstr "Embed Code (Raw XML)"
+#: zeit/content/article/edit/rawtext.py:35
+msgid "Raw text block"
+msgstr "Embed-Link"
+
+#: zeit/content/article/edit/rawxml.py:20 zeit/content/cp/blocks/xml.py:21
+msgid "Raw XML block"
+msgstr "Embed Code"
 
 #: zeit/content/article/edit/reference.py:130
 msgid "Timeline"
@@ -2728,10 +2730,6 @@ msgstr "Teaser"
 #: zeit/content/cp/blocks/teaser.py:97
 msgid "No default teaser layout defined for this area."
 msgstr "Kein Default-Layout für diese Fläche vorhanden"
-
-#: zeit/content/cp/blocks/xml.py:21
-msgid "Raw XML block"
-msgstr "Rohes XML"
 
 #: zeit/content/cp/browser/area.py:65
 msgid "Invalid solr query"
@@ -3799,6 +3797,11 @@ msgstr "Es darf nur eine Antwort (innerhalb der Frage) richtig sein."
 msgid "Quiz"
 msgstr "Quiz"
 
+#: zeit/content/rawxml/browser/form.py:15 zeit/content/rawxml/rawxml.py:28
+#: zeit/content/rawxml/browser/configure.zcml:6
+msgid "Raw XML"
+msgstr "Embed Code (Raw XML)"
+
 #: zeit/content/rawxml/browser/form.py:24
 msgid "Add Raw XML"
 msgstr "Rohes XML hinzufügen"
@@ -3813,7 +3816,7 @@ msgstr "Rohes XML anzeigen"
 
 #: zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
-msgstr "Text/HTML"
+msgstr "Embed"
 
 #: zeit/content/text/browser/form.py:21
 msgid "Add plain text"
