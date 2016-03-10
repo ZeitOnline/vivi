@@ -29,7 +29,7 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
             article, article.xml.body)
         factory = zope.component.getAdapter(
             body, zeit.edit.interfaces.IElementFactory, 'raw')
-        self.assertEqual('Raw XML', factory.title)
+        self.assertEqual('Raw XML block', factory.title)
         div = factory()
         self.assertTrue(
             zeit.content.article.edit.interfaces.IRawXML.providedBy(div))
