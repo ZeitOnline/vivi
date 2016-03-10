@@ -27,7 +27,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
 
     interface = zeit.content.text.interfaces.IText
     type = 'text'
-    title = _('Text')
+    title = _('Plain text')
 
     def content(self, resource):
         data = resource.data.read()

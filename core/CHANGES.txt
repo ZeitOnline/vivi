@@ -4,7 +4,7 @@ zeit.content.text changes
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve wording (ZON-2826).
 
 
 2.0.2 (2016-03-03)
