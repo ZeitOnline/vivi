@@ -1,8 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
-import zeit.workflow.interfaces
 import zope.container.contained
 import zope.container.interfaces
 import zope.interface
