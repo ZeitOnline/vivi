@@ -4,7 +4,7 @@ zeit.content.article changes
 3.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix default value of infobox layout.
 
 
 3.15.0 (2016-03-10)

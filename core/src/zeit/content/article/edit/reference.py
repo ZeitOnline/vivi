@@ -101,12 +101,9 @@ class Infobox(Reference):
     type = 'infobox'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'layout', zope.schema.TextLine())
-
-    def __init__(self, *args, **kw):
-        super(Infobox, self).__init__(*args, **kw)
-        self.layout = zeit.content.article.edit.interfaces.IInfobox[
-            'layout'].default
+        '.', 'layout', zope.schema.TextLine(
+            default=zeit.content.article.edit.interfaces.IInfobox[
+                'layout'].default), use_default=True)
 
 
 class InfoboxFactory(ReferenceFactory):
@@ -159,8 +156,9 @@ class Portraitbox(Reference):
 
     def __init__(self, *args, **kw):
         super(Portraitbox, self).__init__(*args, **kw)
-        self.layout = zeit.content.article.edit.interfaces.IPortraitbox[
-            'layout'].default
+        if not self.layout:
+            self.layout = zeit.content.article.edit.interfaces.IPortraitbox[
+                'layout'].default
 
 
 class PortraitboxFactory(ReferenceFactory):

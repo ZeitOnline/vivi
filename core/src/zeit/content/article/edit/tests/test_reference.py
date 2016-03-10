@@ -90,9 +90,9 @@ class TestInfobox(ReferenceTest):
         from zeit.content.article.edit.reference import Infobox
         return Infobox
 
-    def test_default_layout_should_be_set(self):
+    def test_no_layout_set_should_return_default(self):
         ref = self.get_ref()
-        self.assertEquals('default', ref.xml.get('layout'))
+        self.assertEquals('default', ref.layout)
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
@@ -118,6 +118,12 @@ class TestPortraitbox(ReferenceTest):
     def test_default_layout_should_be_set(self):
         ref = self.get_ref()
         self.assertEquals('short', ref.xml.get('layout'))
+
+    def test_stored_layout_should_be_returned(self):
+        ref = self.get_ref()
+        ref.layout = u'wide'
+        ref = self.test_class(None, ref.xml)
+        self.assertEquals('wide', ref.xml.get('layout'))
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
