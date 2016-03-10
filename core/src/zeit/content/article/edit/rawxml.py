@@ -17,7 +17,7 @@ class RawXML(zeit.edit.block.SimpleElement):
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = RawXML
-    title = _('Raw XML')
+    title = _('Raw XML block')
 
     def get_xml(self):
         E = lxml.objectify.E

@@ -13,7 +13,7 @@ class RawText(zeit.edit.block.SimpleElement):
         zeit.content.article.edit.interfaces.IRawText)
     type = 'rawtext'
     text_reference = zeit.cms.content.reference.SingleResource(
-        '.text_reference','related')
+        '.text_reference', 'related')
     text = zeit.cms.content.property.ObjectPathProperty(
         '.text',
         zeit.content.article.edit.interfaces.IRawText['text'])
@@ -28,7 +28,8 @@ class RawText(zeit.edit.block.SimpleElement):
 
         return ''
 
+
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = RawText
-    title = _('Raw text')
+    title = _('Raw text block')
