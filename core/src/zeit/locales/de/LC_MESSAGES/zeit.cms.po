@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Mar 10 08:33:21 2016\n"
-"PO-Revision-Date: 2016-03-10 12:43+0100\n"
+"PO-Revision-Date: 2016-03-10 12:44+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -3800,19 +3800,19 @@ msgstr "Quiz"
 #: zeit/content/rawxml/browser/form.py:15 zeit/content/rawxml/rawxml.py:28
 #: zeit/content/rawxml/browser/configure.zcml:6
 msgid "Raw XML"
-msgstr "Rohes XML"
+msgstr "XML-Datei"
 
 #: zeit/content/rawxml/browser/form.py:24
 msgid "Add Raw XML"
-msgstr "Rohes XML hinzufügen"
+msgstr "XML-Datei hinzufügen"
 
 #: zeit/content/rawxml/browser/form.py:30
 msgid "Edit Raw XML"
-msgstr "Rohes XML bearbeiten"
+msgstr "XML-Datei bearbeiten"
 
 #: zeit/content/rawxml/browser/form.py:36
 msgid "View Raw XML"
-msgstr "Rohes XML anzeigen"
+msgstr "XML-Datei anzeigen"
 
 #: zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
