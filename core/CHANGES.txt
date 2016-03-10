@@ -4,7 +4,7 @@ zeit.content.article changes
 3.14.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``layout`` to infobox block (ZON-2491).
 
 
 3.14.2 (2016-03-10)

@@ -100,6 +100,14 @@ class Infobox(Reference):
         zeit.content.article.edit.interfaces.IInfobox)
     type = 'infobox'
 
+    layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'layout', zope.schema.TextLine())
+
+    def __init__(self, *args, **kw):
+        super(Infobox, self).__init__(*args, **kw)
+        self.layout = zeit.content.article.edit.interfaces.IInfobox[
+            'layout'].default
+
 
 class InfoboxFactory(ReferenceFactory):
 

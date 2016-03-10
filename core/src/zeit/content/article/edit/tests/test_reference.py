@@ -90,6 +90,15 @@ class TestInfobox(ReferenceTest):
         from zeit.content.article.edit.reference import Infobox
         return Infobox
 
+    def test_default_layout_should_be_set(self):
+        ref = self.get_ref()
+        self.assertEquals('default', ref.xml.get('layout'))
+
+    def test_layout_should_set_attribute(self):
+        ref = self.get_ref()
+        ref.layout = u'debatte'
+        self.assertEquals('debatte', ref.xml.get('layout'))
+
 
 class TestTimeline(ReferenceTest):
 

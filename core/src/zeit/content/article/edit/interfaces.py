@@ -284,7 +284,14 @@ class IGallery(IReference):
         required=False)
 
 
-class IInfobox(IReference):
+class InfoboxLayoutSource(BodyAwareXMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'infobox-layout-source'
+    attribute = 'id'
+
+
+class IInfobox(IReference, ILayoutable):
     """block for <infobox/> tags."""
 
     references = zope.schema.Choice(
@@ -292,6 +299,12 @@ class IInfobox(IReference):
         description=_("Drag an infobox here"),
         source=zeit.content.infobox.interfaces.infoboxSource,
         required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=InfoboxLayoutSource(),
+        required=False,
+        default=u'default')
 
 
 class ITimeline(IReference):

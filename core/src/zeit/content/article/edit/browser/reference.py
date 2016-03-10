@@ -70,6 +70,7 @@ class EditPortraitbox(EditBase):
 class EditInfobox(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IInfobox
+    fields = ('references', 'layout')
     undo_description = _('edit infobox block')
 
 

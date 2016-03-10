@@ -25,6 +25,7 @@ product_config = """
     image-layout-source file://{base}/edit/tests/image-layouts.xml
     video-layout-source file://{base}/edit/tests/video-layouts.xml
     htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
+    infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
     template-source file://{base}/edit/tests/templates.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
