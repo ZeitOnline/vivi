@@ -1,0 +1,27 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <!-- article -->
+
+  <browser:viewlet
+    for="..interfaces.IZCOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.content.article.edit.browser.form.OptionFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.topic"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="39"
+    />
+
+  <browser:page
+    for="..interfaces.IZCOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.topic"
+    class=".article.Topic"
+    permission="zope.View"
+    />
+
+</configure>

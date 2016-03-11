@@ -53,4 +53,20 @@
     name="Campus"
     />
 
+  <adapter
+    factory=".article.Topic"
+    provides=".interfaces.ITopic"
+    trusted="yes" />
+
+  <class class=".article.Topic">
+    <require
+      interface=".interfaces.ITopic"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITopic"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

@@ -31,5 +31,9 @@ setup(
         'zope.schema',
     ],
     entry_points={
+        'fanstatic.libraries': [
+            'zeit_campus=zeit.campus'
+            '.browser.resources:lib',
+        ],
     },
 )

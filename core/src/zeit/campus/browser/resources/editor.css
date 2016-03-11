@@ -1,0 +1,8 @@
+.type-article #topic\.page a[rel="remove"] {
+  right: 0;
+  top: -28px;
+}
+
+#topic\.page .landing-zone-candidate {
+  margin-bottom: 1em
+}

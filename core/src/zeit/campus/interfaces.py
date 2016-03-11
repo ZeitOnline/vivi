@@ -1,3 +1,7 @@
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
+
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
@@ -44,3 +48,16 @@ class IZCOLink(
         zeit.content.link.interfaces.ILink,
         zeit.cms.section.interfaces.ISectionMarker):
     pass
+
+
+class ITopic(zope.interface.Interface):
+
+    page = zope.schema.Choice(
+        title=_("Topic page"),
+        required=False,
+        source=zeit.content.cp.interfaces.centerPageSource)
+
+    label = zope.schema.TextLine(
+        title=_("Topic label"),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_name)
