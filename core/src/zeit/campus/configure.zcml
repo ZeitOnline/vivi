@@ -54,17 +54,17 @@
     />
 
   <adapter
-    factory=".article.TopicpageLink"
-    provides=".interfaces.ITopicpageLink"
+    factory=".article.Topic"
+    provides=".interfaces.ITopic"
     trusted="yes" />
 
-  <class class=".article.TopicpageLink">
+  <class class=".article.Topic">
     <require
-      interface=".interfaces.ITopicpageLink"
+      interface=".interfaces.ITopic"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.ITopicpageLink"
+      set_schema=".interfaces.ITopic"
       permission="zeit.EditContent"
       />
   </class>

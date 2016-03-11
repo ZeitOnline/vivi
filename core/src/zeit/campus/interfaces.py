@@ -50,14 +50,14 @@ class IZCOLink(
     pass
 
 
-class ITopicpageLink(zope.interface.Interface):
+class ITopic(zope.interface.Interface):
 
-    topicpage = zope.schema.Choice(
-        title=_("Topicpage link"),
+    page = zope.schema.Choice(
+        title=_("Topic page"),
         required=False,
         source=zeit.content.cp.interfaces.centerPageSource)
 
     label = zope.schema.TextLine(
-        title=_("Topicpagelink label"),
+        title=_("Topic label"),
         required=False,
         constraint=zeit.cms.interfaces.valid_name)

@@ -5,19 +5,19 @@ import zeit.edit.browser.form
 import zope.interface
 
 
-class TopicpageLink(zeit.edit.browser.form.InlineForm):
+class Topic(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    prefix = 'topicpagelink'
-    undo_description = _('edit topicpage link')
+    prefix = 'topic'
+    undo_description = _('edit topic page')
     form_fields = FormFields(
-        zeit.campus.interfaces.ITopicpageLink)
+        zeit.campus.interfaces.ITopic)
 
     def setUpWidgets(self, *args, **kw):
-        super(TopicpageLink, self).setUpWidgets(*args, **kw)
-        self.widgets['topicpage'].detail_view_name = '@@related-details'
+        super(Topic, self).setUpWidgets(*args, **kw)
+        self.widgets['page'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(TopicpageLink, self).__call__()
+        return super(Topic, self).__call__()
