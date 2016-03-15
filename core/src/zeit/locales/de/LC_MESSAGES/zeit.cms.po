@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Mar 11 11:40:57 2016\n"
-"PO-Revision-Date: 2016-03-11 12:34+0100\n"
+"POT-Creation-Date: Tue Mar 15 14:01:29 2016\n"
+"PO-Revision-Date: 2016-03-15 14:02+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -348,13 +348,33 @@ msgstr "⇈ zwingend"
 msgid "edit topic page"
 msgstr "Link zur Themenseite bearbeiten"
 
-#: zeit/campus/interfaces.py:56
+#: zeit/campus/browser/infobox.py:24 zeit/content/infobox/browser/form.py:71
+msgid "Add infobox"
+msgstr "Infobox hinzufügen"
+
+#: zeit/campus/browser/infobox.py:29 zeit/content/infobox/browser/form.py:76
+msgid "Edit infobox"
+msgstr "Infobox bearbeiten"
+
+#: zeit/campus/browser/infobox.py:35 zeit/content/infobox/browser/form.py:87
+msgid "View infobox"
+msgstr "Infobox anzeigen"
+
+#: zeit/campus/interfaces.py:62
 msgid "Topic page"
 msgstr "Link zur Themenseite"
 
-#: zeit/campus/interfaces.py:61
+#: zeit/campus/interfaces.py:67
 msgid "Topic label"
 msgstr "Linktext (Themenseite)"
+
+#: zeit/campus/interfaces.py:75
+msgid "Debate action URL"
+msgstr "Debatten-URL"
+
+#: zeit/campus/interfaces.py:76
+msgid "debate-action-url-description"
+msgstr "z.B. mailto:leser-studium@zeit.de"
 
 #: zeit/cms/admin/browser/admin.py:15
 msgid "admin-field-group"
@@ -3638,18 +3658,6 @@ msgstr "Verlinkt nach"
 #: zeit/content/image/interfaces.py:80
 msgid "Enter a URL this image should link to."
 msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
-
-#: zeit/content/infobox/browser/form.py:71
-msgid "Add infobox"
-msgstr "Infobox hinzufügen"
-
-#: zeit/content/infobox/browser/form.py:76
-msgid "Edit infobox"
-msgstr "Infobox bearbeiten"
-
-#: zeit/content/infobox/browser/form.py:87
-msgid "View infobox"
-msgstr "Infobox anzeigen"
 
 #: zeit/content/link/browser/form.py:29
 msgid "Add link"

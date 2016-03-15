@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Mar 11 11:40:57 2016\n"
+"POT-Creation-Date: Tue Mar 15 14:01:29 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -382,12 +382,35 @@ msgstr ""
 msgid "edit topic page"
 msgstr ""
 
-#: zeit/campus/interfaces.py:56
+#: zeit/campus/browser/infobox.py:24
+#: zeit/content/infobox/browser/form.py:71
+msgid "Add infobox"
+msgstr ""
+
+#: zeit/campus/browser/infobox.py:29
+#: zeit/content/infobox/browser/form.py:76
+msgid "Edit infobox"
+msgstr ""
+
+#: zeit/campus/browser/infobox.py:35
+#: zeit/content/infobox/browser/form.py:87
+msgid "View infobox"
+msgstr ""
+
+#: zeit/campus/interfaces.py:62
 msgid "Topic page"
 msgstr ""
 
-#: zeit/campus/interfaces.py:61
+#: zeit/campus/interfaces.py:67
 msgid "Topic label"
+msgstr ""
+
+#: zeit/campus/interfaces.py:75
+msgid "Debate action URL"
+msgstr ""
+
+#: zeit/campus/interfaces.py:76
+msgid "debate-action-url-description"
 msgstr ""
 
 #: zeit/cms/admin/browser/admin.py:15
@@ -3681,18 +3704,6 @@ msgstr ""
 
 #: zeit/content/image/interfaces.py:80
 msgid "Enter a URL this image should link to."
-msgstr ""
-
-#: zeit/content/infobox/browser/form.py:71
-msgid "Add infobox"
-msgstr ""
-
-#: zeit/content/infobox/browser/form.py:76
-msgid "Edit infobox"
-msgstr ""
-
-#: zeit/content/infobox/browser/form.py:87
-msgid "View infobox"
 msgstr ""
 
 #: zeit/content/link/browser/form.py:29
