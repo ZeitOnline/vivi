@@ -168,10 +168,6 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
 
         If thumbnail is True, return a path for an image that was generated
         by a downsampled version instead of the full master image.
-
-        If a `variant-secret` is configured in the zeit.content.image product
-        config, adds a signed hash of width and height to the URL, to prevent
-        URL spoofing.
         """
 
     def create_variant_image(key, source=None):
