@@ -47,6 +47,13 @@
     />
 
   <adapter
+    factory=".interfaces.IZCOInfobox"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="infobox"
+    />
+
+  <adapter
     factory=".interfaces.IZCOSection"
     for="zeit.cms.content.interfaces.ICommonMetadata"
     provides="zeit.cms.section.interfaces.IRessortSection"
@@ -65,6 +72,17 @@
       />
     <require
       set_schema=".interfaces.ITopic"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".infobox.Debate">
+    <require
+      interface=".interfaces.IDebate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IDebate"
       permission="zeit.EditContent"
       />
   </class>

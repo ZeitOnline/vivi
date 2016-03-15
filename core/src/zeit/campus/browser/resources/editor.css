@@ -6,3 +6,7 @@
 #topic\.page .landing-zone-candidate {
   margin-bottom: 1em
 }
+
+label[for="form.action_url"] + .hint {
+  display: block;
+}

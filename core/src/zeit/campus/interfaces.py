@@ -50,6 +50,12 @@ class IZCOLink(
     pass
 
 
+class IZCOInfobox(
+        zeit.content.infobox.interfaces.IInfobox,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
+
+
 class ITopic(zope.interface.Interface):
 
     page = zope.schema.Choice(
@@ -61,3 +67,11 @@ class ITopic(zope.interface.Interface):
         title=_("Topic label"),
         required=False,
         constraint=zeit.cms.interfaces.valid_name)
+
+
+class IDebate(zope.interface.Interface):
+
+    action_url = zope.schema.TextLine(
+        title=_("Debate action URL"),
+        description=_('debate-action-url-description'),
+        required=False)

@@ -10,8 +10,10 @@
   <include package="zeit.content.article" file="ftesting.zcml"/>
   <include package="zeit.content.cp" file="ftesting.zcml"/>
   <include package="zeit.content.gallery" file="ftesting.zcml"/>
+  <include package="zeit.content.infobox" file="ftesting.zcml"/>
   <include package="zeit.content.link" file="ftesting.zcml"/>
 
   <include package="zeit.campus" />
+  <include package="zeit.campus.browser" />
 
 </configure>

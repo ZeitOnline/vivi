@@ -2,10 +2,10 @@ zeit.campus changes
 ====================
 
 
-1.2.1 (unreleased)
+1.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-2491: Add ``IDebate.action_url`` for infoboxes
 
 
 1.2.0 (2016-03-11)
