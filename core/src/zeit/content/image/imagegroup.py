@@ -2,7 +2,6 @@ from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import collections
 import grokcore.component as grok
-import hashlib
 import lxml.objectify
 import persistent
 import sys
@@ -50,21 +49,12 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    @property
-    def _variant_secret(self):
-        """Secret for Spoof Protection."""
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        return config.get('variant-secret')
-
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
 
         See ImageGroup.__getitem__ for allowed URLs.
 
         """
-        key = self._verify_signature(key)
-
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
         if source is None:
@@ -184,40 +174,7 @@ class ImageGroupBase(object):
         else:
             url = '{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
-        if self._variant_secret:
-            url += '__{signature}'.format(signature=compute_signature(
-                name, width, height, self._variant_secret))
         return url
-
-    def _verify_signature(self, key):
-        """Verification for Spoof Protection."""
-        if not self._variant_secret:
-            return key
-        try:
-            parts = key.split('__')
-            if len(parts) == 2:
-                name, signature = parts
-                width = height = None
-                stripped = name
-            elif len(parts) == 3:
-                name, size, signature = parts
-                width, height = size.split('x')
-                stripped = '{name}__{size}'.format(name=name, size=size)
-            if verify_signature(
-                    name, width, height, self._variant_secret, signature):
-                return stripped
-        except:
-            pass
-        raise KeyError(key)
-
-
-def compute_signature(name, width, height, secret):
-    return hashlib.sha1(':'.join(
-        [str(x) for x in [name, width, height, secret]])).hexdigest()
-
-
-def verify_signature(name, width, height, secret, signature):
-    return signature == compute_signature(name, width, height, secret)
 
 
 class ImageGroup(ImageGroupBase,
