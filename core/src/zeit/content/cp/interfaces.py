@@ -202,15 +202,6 @@ class IRegion(
     zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
-def hex_literal(value):
-    try:
-        int(value, base=16)
-    except ValueError:
-        raise zeit.cms.interfaces.ValidationError(_("Invalid hex literal"))
-    else:
-        return True
-
-
 class BelowAreaSource(
         zc.sourcefactory.contextual.BasicContextualSourceFactory):
     """All IAreas of this CenterPage below the current one."""
@@ -505,7 +496,7 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
     background_color = zope.schema.TextLine(
         title=_("Background color (ZMO only)"),
         required=False,
-        max_length=6, constraint=hex_literal)
+        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
 
 #
 # Teaser block (aka teaser list)
