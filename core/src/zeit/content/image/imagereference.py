@@ -19,6 +19,10 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
     image = zeit.cms.content.reference.SingleResource(
         '.head.image', 'image')
 
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.head.image', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
+
 
 class LocalOverride(object):
 
