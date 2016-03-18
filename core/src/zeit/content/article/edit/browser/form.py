@@ -408,7 +408,8 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         try:
             master = zeit.content.image.interfaces.IMasterImage(
                 zeit.content.image.interfaces.IImages(self.context).image)
-            if master.format == 'PNG':
+            if master.format == 'PNG' and (
+                    self.form_fields.get('fill_color') is None):
                 self.form_fields += FormFields(
                     zeit.content.image.interfaces.IImages).select('fill_color')
                 self.form_fields['fill_color'].custom_widget = (
