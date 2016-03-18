@@ -132,7 +132,10 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        value = self.getNode(instance).get(self.attribute_name)
+        try:
+            value = self.getNode(instance).get(self.attribute_name)
+        except AttributeError:
+            return None
         if value is None:
             if self.field:
                 if self.use_default:
@@ -157,7 +160,11 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         else:
             if not isinstance(value, basestring):
                 value = unicode(value)
-            self.getNode(instance).set(self.attribute_name, value)
+            node = self.getNode(instance)
+            if node is None:
+                super(ObjectPathAttributeProperty, self).__set__(instance, '')
+                node = self.getNode(instance)
+            node.set(self.attribute_name, value)
 
 
 class MultiPropertyBase(object):
