@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.65.3 (unreleased)
+2.66.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Support DAV type conversion for ObjectSource (ZON-2931).
 
 
 2.65.2 (2016-03-03)
