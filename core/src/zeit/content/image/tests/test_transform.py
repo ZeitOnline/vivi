@@ -33,14 +33,18 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
 
     ascii_to_color = {
         ' ': (255, 255, 255, 255),
-        'x': (0, 0, 0, 255)
+        'x': (0, 0, 0, 255),
+        '/': (0, 0, 0, 0),
+        'r': (255, 0, 0, 255),
+        'g': (0, 255, 0, 255),
+        'b': (0, 0, 255, 255)
     }
     color_to_ascii = {value: key for key, value in ascii_to_color.items()}
 
     def draw_image(self, pixels):
         width = len(pixels[0])
         height = len(pixels)
-        image = PIL.Image.new('RGB', (width, height), (255, 255, 255))
+        image = PIL.Image.new('RGBA', (width, height), (255, 255, 255, 255))
         draw = PIL.ImageDraw.ImageDraw(image)
         for x in range(width):
             for y in range(height):
@@ -60,7 +64,8 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         for y in range(height):
             line = []
             for x in range(width):
-                line.append(self.color_to_ascii[pil_image.getpixel((x, y))])
+                pixel = (pil_image.getpixel((x, y)) + (255,))[:4]
+                line.append(self.color_to_ascii[pixel])
             result.append(''.join(line))
         return result
 
@@ -170,3 +175,41 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         factors = [list(x)[0][2] for x in blend.call_args_list]
         self.assertEqual(4, blend.call_count)
         self.assertEqual([0.1, 0.2, 0.3, 0.4], sorted(factors))
+
+    def test_variant_fill_color_is_ignored_if_image_has_no_alpha(self):
+        img = zeit.content.image.testing.create_local_image(
+            'Opaque.PNG', 'tests/')
+        transform = zeit.content.image.interfaces.ITransform(img)
+        variant = Variant(
+            id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1',
+            fill_color='ff0000')
+
+        self.assertImage([
+            '        ',
+            '        ',
+            '        ',
+            '        ',
+            '        ',
+            '        ',
+            '        ',
+            '        ',
+        ], transform.create_variant_image(variant))
+
+    def test_variant_fill_color_is_applied_if_image_has_alpha_channel(self):
+        img = zeit.content.image.testing.create_local_image(
+            'Frame.PNG', 'tests/')
+        transform = zeit.content.image.interfaces.ITransform(img)
+        variant = Variant(
+            id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1',
+            fill_color='ff0000')
+
+        self.assertImage([
+            '        ',
+            ' ////// ',
+            ' ////// ',
+            ' ////// ',
+            ' ////// ',
+            ' ////// ',
+            ' ////// ',
+            '        ',
+        ], transform.create_variant_image(variant))

@@ -218,6 +218,8 @@ class IVariant(zope.interface.Interface):
         description=u'Factor to enhance saturation, 1.0 for original value')
     sharpness = zope.schema.Float(
         description=u'Factor to enhance sharpness, 1.0 for original value')
+    fill_color = zope.schema.TextLine(
+        description=u'RGB hexadecimal color code to use as an opaque fill')
     fallback_size = zope.schema.TextLine(
         description=u"Fallback width / height, e.g. 1200x514. "
                     u"Used by Friedbert to limit the size of large variants.")
