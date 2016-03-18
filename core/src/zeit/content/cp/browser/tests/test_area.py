@@ -1,4 +1,5 @@
 # coding: utf-8
+import json
 import lxml.cssselect
 import unittest
 import z3c.etestbrowser.testing
@@ -232,3 +233,31 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         self.open_centerpage()
         self.make_one()
         self.selenium.assertText('css=.type-region .kind', 'Duo')
+
+
+class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(AreaConfigurationTest, self).setUp()
+        zeit.content.cp.browser.testing.create_cp(self.browser)
+        self.browser.open('contents')
+
+    def test_applies_additional_parameters_and_type_converts_them(self):
+        self.browser.handleErrors = False
+        params = {'kind': 'ranking', 'areas': [{
+            'kind': 'ranking',
+            'apply_teaser_layouts_automatically': 'true',
+            'first_teaser_layout': 'leader',
+        }]}
+        self.browser.open(
+            'body/landing-zone-drop-module?order=top&block_type=region'
+            '&block_params=%s' % json.dumps(params))
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                cp = zeit.cms.interfaces.ICMSWCContent(
+                    'http://xml.zeit.de/online/2007/01/island')
+                area = cp.body.values()[0].values()[0]
+                self.assertEqual(True, area.apply_teaser_layouts_automatically)
+                self.assertEqual('leader', area.first_teaser_layout.id)

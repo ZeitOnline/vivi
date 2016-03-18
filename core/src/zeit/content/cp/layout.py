@@ -161,7 +161,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             result[id] = RegionConfig(
                 id, self._get_title_for(node),
                 node.get('kind'),
-                [{'kind': x.get('kind')} for x in node.iterchildren('area')],
+                [dict(x.attrib) for x in node.iterchildren('area')],
                 node.get('available', None), node.get('types', None),
             )
         return result
