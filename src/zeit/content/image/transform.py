@@ -1,4 +1,5 @@
 import PIL.Image
+import PIL.ImageColor
 import PIL.ImageEnhance
 import os
 import os.path
@@ -80,6 +81,13 @@ class ImageTransform(object):
             image = PIL.ImageEnhance.Sharpness(image).enhance(
                 variant.sharpness)
 
+        # Optionally fill the background of transparent images
+        if variant.fill_color is not None and self._color_mode == 'RGBA':
+            fill = PIL.ImageColor.getrgb(variant.fill_color)
+            opaque = PIL.Image.new('RGB', image.size, fill)
+            opaque.paste(image, (0, 0), image)
+            image = opaque
+
         return self._construct_image(image)
 
     def _crop_variant_image(self, variant, size=None):
@@ -138,12 +146,15 @@ class ImageTransform(object):
         pil_image = self._enable_alpha_channel(pil_image)
         return pil_image
 
+    @property
+    def _color_mode(self):
+        # XXX This is a rather crude heuristic.
+        return 'RGBA' if self.context.format == 'PNG' else 'RGB'
+
     def _enable_alpha_channel(self, pil_image):
         """Enable alpha channel for PNG images by converting to RGBA."""
-        # XXX This is a rather crude heuristic.
-        mode = 'RGBA' if self.context.format == 'PNG' else 'RGB'
-        if pil_image.mode != mode:
-            pil_image = pil_image.convert(mode)
+        if pil_image.mode != self._color_mode:
+            pil_image = pil_image.convert(self._color_mode)
         return pil_image
 
     def _construct_image(self, pil_image):
