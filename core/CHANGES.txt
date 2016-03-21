@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.5.6 (unreleased)
+3.6.0 (2016-03-21)
 ------------------
 
 - Make arbitrary area attributes configurable via region-config (ZON-2931).
