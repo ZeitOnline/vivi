@@ -4,7 +4,7 @@ zeit.content.text changes
 2.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Configure default view properly.
 
 
 2.0.3 (2016-03-10)
