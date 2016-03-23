@@ -916,6 +916,11 @@ class IMarkupBlock(IBlock):
         title=_('Contents'),
         description=_('Use Markdown'),
         required=False)
+    alignment = zope.schema.Choice(
+        title=_('Alignment'),
+        description=_('Choose alignment'),
+        source=AlignmentSource(),
+        default='left')
 
 
 class ICardstackBlock(IBlock):
