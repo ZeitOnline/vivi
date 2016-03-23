@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 15 14:01:29 2016\n"
-"PO-Revision-Date: 2016-03-15 14:02+0100\n"
+"POT-Creation-Date: Wed Mar 23 12:55:08 2016\n"
+"PO-Revision-Date: 2016-03-23 12:55+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -55,7 +55,7 @@ msgstr "Id"
 
 #: zeit/brightcove/interfaces.py:30 zeit/calendar/interfaces.py:30
 #: zeit/cms/browser/listing.py:266 zeit/cms/content/browser/template.py:43
-#: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:510
+#: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:519
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
@@ -184,7 +184,7 @@ msgstr "Kalender"
 msgid "Day"
 msgstr "Tag"
 
-#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:645
+#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:654
 msgid "Month"
 msgstr "Monat"
 
@@ -304,7 +304,7 @@ msgid "Where should the article be placed."
 msgstr "Wo soll der Artikel erscheinen?"
 
 #: zeit/calendar/interfaces.py:51 zeit/cms/browser/listing.py:279
-#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:630
+#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:639
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -1079,50 +1079,54 @@ msgstr "Auszeichnungs-Titel"
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:417 zeit/content/cp/interfaces.py:649
+#: zeit/cms/content/interfaces.py:346 zeit/content/cp/interfaces.py:209
+msgid "Invalid hex literal"
+msgstr "Kein gültiger Farbwert"
+
+#: zeit/cms/content/interfaces.py:426 zeit/content/cp/interfaces.py:649
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:550
+#: zeit/cms/content/interfaces.py:559
 msgid "Hits today"
 msgstr "Treffer heute"
 
-#: zeit/cms/content/interfaces.py:551
+#: zeit/cms/content/interfaces.py:560
 msgid "Indicates how many times a page viewed today."
 msgstr "Gibt an wie oft die Seite heute angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:556
+#: zeit/cms/content/interfaces.py:565
 msgid "Total hits"
 msgstr "Gesamttreffer"
 
-#: zeit/cms/content/interfaces.py:557
+#: zeit/cms/content/interfaces.py:566
 msgid ""
 "Indicates how many times a page was viewed in total, i.e. during its entire "
 "life time."
 msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:563
+#: zeit/cms/content/interfaces.py:572
 msgid "URI to the access counting details"
 msgstr "URI für counting Details"
 
-#: zeit/cms/content/interfaces.py:592
+#: zeit/cms/content/interfaces.py:601
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:598
+#: zeit/cms/content/interfaces.py:607
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:640
+#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:649
 #: zeit/content/article/interfaces.py:183 zeit/content/image/interfaces.py:38
 msgid "Year"
 msgstr "Jahr"
 
-#: zeit/cms/content/interfaces.py:619
+#: zeit/cms/content/interfaces.py:628
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:626
+#: zeit/cms/content/interfaces.py:635
 #: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr "Typ"
@@ -1131,7 +1135,7 @@ msgstr "Typ"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:635
+#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:644
 msgid "Sub ressort"
 msgstr "Unterressort"
 
@@ -1929,7 +1933,7 @@ msgstr "Artikeltext bearbeiten"
 
 #. Default: ""
 #: zeit/content/article/edit/browser/edit.py:97
-#: zeit/content/cp/browser/landing.py:45
+#: zeit/content/cp/browser/landing.py:51
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
@@ -3006,10 +3010,6 @@ msgstr "Typ"
 msgid "Kind Title"
 msgstr "Titel"
 
-#: zeit/content/cp/interfaces.py:209
-msgid "Invalid hex literal"
-msgstr "Kein gültiger Farbwert"
-
 #. Default: ""
 #: zeit/content/cp/interfaces.py:234
 msgid "${kind} area ${title}"
@@ -3613,7 +3613,11 @@ msgstr "Bildergruppe"
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:309
+#: zeit/content/image/interfaces.py:306
+msgid "Alpha channel fill color"
+msgstr "Hintergrundfarbe"
+
+#: zeit/content/image/interfaces.py:314
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Mar 15 14:01:29 2016\n"
+"POT-Creation-Date: Wed Mar 23 12:55:08 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:266
 #: zeit/cms/content/browser/template.py:43
 #: zeit/cms/content/interfaces.py:152
-#: zeit/cms/content/interfaces.py:510
+#: zeit/cms/content/interfaces.py:519
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
@@ -210,7 +210,7 @@ msgid "Day"
 msgstr ""
 
 #: zeit/calendar/browser/configure.zcml:43
-#: zeit/cms/content/interfaces.py:645
+#: zeit/cms/content/interfaces.py:654
 msgid "Month"
 msgstr ""
 
@@ -338,7 +338,7 @@ msgstr ""
 #: zeit/calendar/interfaces.py:51
 #: zeit/cms/browser/listing.py:279
 #: zeit/cms/content/interfaces.py:77
-#: zeit/cms/content/interfaces.py:630
+#: zeit/cms/content/interfaces.py:639
 msgid "Ressort"
 msgstr ""
 
@@ -1122,51 +1122,56 @@ msgstr ""
 msgid "Advertisement text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:417
+#: zeit/cms/content/interfaces.py:346
+#: zeit/content/cp/interfaces.py:209
+msgid "Invalid hex literal"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:426
 #: zeit/content/cp/interfaces.py:649
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:550
+#: zeit/cms/content/interfaces.py:559
 msgid "Hits today"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:551
+#: zeit/cms/content/interfaces.py:560
 msgid "Indicates how many times a page viewed today."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:556
+#: zeit/cms/content/interfaces.py:565
 msgid "Total hits"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:557
+#: zeit/cms/content/interfaces.py:566
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:563
+#: zeit/cms/content/interfaces.py:572
 msgid "URI to the access counting details"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:592
+#: zeit/cms/content/interfaces.py:601
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:598
+#: zeit/cms/content/interfaces.py:607
 msgid "Update last semantic change"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:61
-#: zeit/cms/content/interfaces.py:640
+#: zeit/cms/content/interfaces.py:649
 #: zeit/content/article/interfaces.py:183
 #: zeit/content/image/interfaces.py:38
 msgid "Year"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:619
+#: zeit/cms/content/interfaces.py:628
 msgid "Memo"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:626
+#: zeit/cms/content/interfaces.py:635
 #: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr ""
@@ -1177,7 +1182,7 @@ msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:81
-#: zeit/cms/content/interfaces.py:635
+#: zeit/cms/content/interfaces.py:644
 msgid "Sub ressort"
 msgstr ""
 
@@ -1971,7 +1976,7 @@ msgid "edit body text"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:97
-#: zeit/content/cp/browser/landing.py:45
+#: zeit/content/cp/browser/landing.py:51
 #. Default: ""
 msgid "The object \"${name}\" does not exist."
 msgstr ""
@@ -3058,10 +3063,6 @@ msgstr ""
 msgid "Kind Title"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:209
-msgid "Invalid hex literal"
-msgstr ""
-
 #: zeit/content/cp/interfaces.py:234
 #. Default: ""
 msgid "${kind} area ${title}"
@@ -3658,7 +3659,11 @@ msgstr ""
 msgid "Setting for variants"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:309
+#: zeit/content/image/interfaces.py:306
+msgid "Alpha channel fill color"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:314
 msgid "Objects using this image"
 msgstr ""
 
