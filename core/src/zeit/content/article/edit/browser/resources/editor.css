@@ -1559,6 +1559,12 @@
   width: 9em;
 }
 
+.type-article #edit-form-teaser #teaser-image\.fill_color {
+  margin-top: 10px;
+  width: 137px;
+}
+
+
 .type-article #form-teaser-supertitle .widget,
 .type-article #form-teaser-title .widget,
 .type-article #form-teaser-text .widget {
