@@ -901,6 +901,15 @@ class IHeaderImageBlock(IBlock):
         source=zeit.content.image.interfaces.imageGroupSource)
 
 
+class AlignmentSource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        ('left', _('left')),
+        ('center', _('center')),
+        ('right', _('right')),
+    ))
+
+
 class IMarkupBlock(IBlock):
 
     text = zope.schema.Text(
