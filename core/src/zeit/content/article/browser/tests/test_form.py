@@ -114,38 +114,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         self.assertTrue(ISemanticChange(article).last_semantic_change)
 
-    def test_png_teaser_images_should_enable_colorpicker(self):
-        from zeit.content.image.testing import (
-            create_image_group_with_master_image)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                group = create_image_group_with_master_image(
-                    file_name='http://xml.zeit.de/2016/DSC00109_2.PNG')
-                zeit.content.image.interfaces.IImages(article).image = group
-                self.repository['article'] = article
-        b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/article/@@checkout')
-        b.open('@@edit.form.teaser-image?show_form=1')
-        b.getControl(name='teaser-image.fill_color')
-
-    def test_non_png_teaser_images_should_not_enable_colorpicker(self):
-        from zeit.content.image.testing import (
-            create_image_group_with_master_image)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                group = create_image_group_with_master_image()
-                zeit.content.image.interfaces.IImages(article).image = group
-                self.repository['article'] = article
-        b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/article/@@checkout')
-        b.open('@@edit.form.teaser-image?show_form=1')
-        with self.assertRaises(LookupError):
-            b.getControl(name='teaser-image.fill_color')
-
 
 class DefaultView(zeit.cms.testing.BrowserTestCase):
 
