@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Mar 23 12:55:08 2016\n"
-"PO-Revision-Date: 2016-03-23 12:55+0100\n"
+"POT-Creation-Date: Thu Mar 24 08:42:29 2016\n"
+"PO-Revision-Date: 2016-03-24 08:45+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -55,7 +55,7 @@ msgstr "Id"
 
 #: zeit/brightcove/interfaces.py:30 zeit/calendar/interfaces.py:30
 #: zeit/cms/browser/listing.py:266 zeit/cms/content/browser/template.py:43
-#: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:519
+#: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:510
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
@@ -184,7 +184,7 @@ msgstr "Kalender"
 msgid "Day"
 msgstr "Tag"
 
-#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:654
+#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:645
 msgid "Month"
 msgstr "Monat"
 
@@ -304,7 +304,7 @@ msgid "Where should the article be placed."
 msgstr "Wo soll der Artikel erscheinen?"
 
 #: zeit/calendar/interfaces.py:51 zeit/cms/browser/listing.py:279
-#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:639
+#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:630
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -1079,54 +1079,50 @@ msgstr "Auszeichnungs-Titel"
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:346 zeit/content/cp/interfaces.py:209
-msgid "Invalid hex literal"
-msgstr "Kein gültiger Farbwert"
-
-#: zeit/cms/content/interfaces.py:426 zeit/content/cp/interfaces.py:649
+#: zeit/cms/content/interfaces.py:417 zeit/content/cp/interfaces.py:649
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:559
+#: zeit/cms/content/interfaces.py:550
 msgid "Hits today"
 msgstr "Treffer heute"
 
-#: zeit/cms/content/interfaces.py:560
+#: zeit/cms/content/interfaces.py:551
 msgid "Indicates how many times a page viewed today."
 msgstr "Gibt an wie oft die Seite heute angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:565
+#: zeit/cms/content/interfaces.py:556
 msgid "Total hits"
 msgstr "Gesamttreffer"
 
-#: zeit/cms/content/interfaces.py:566
+#: zeit/cms/content/interfaces.py:557
 msgid ""
 "Indicates how many times a page was viewed in total, i.e. during its entire "
 "life time."
 msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:572
+#: zeit/cms/content/interfaces.py:563
 msgid "URI to the access counting details"
 msgstr "URI für counting Details"
 
-#: zeit/cms/content/interfaces.py:601
+#: zeit/cms/content/interfaces.py:592
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:607
+#: zeit/cms/content/interfaces.py:598
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:649
+#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:640
 #: zeit/content/article/interfaces.py:183 zeit/content/image/interfaces.py:38
 msgid "Year"
 msgstr "Jahr"
 
-#: zeit/cms/content/interfaces.py:628
+#: zeit/cms/content/interfaces.py:619
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:635
+#: zeit/cms/content/interfaces.py:626
 #: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr "Typ"
@@ -1135,7 +1131,7 @@ msgstr "Typ"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:644
+#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:635
 msgid "Sub ressort"
 msgstr "Unterressort"
 
@@ -3010,6 +3006,10 @@ msgstr "Typ"
 msgid "Kind Title"
 msgstr "Titel"
 
+#: zeit/content/cp/interfaces.py:209
+msgid "Invalid hex literal"
+msgstr "Kein gültiger Farbwert"
+
 #. Default: ""
 #: zeit/content/cp/interfaces.py:234
 msgid "${kind} area ${title}"
@@ -3321,6 +3321,116 @@ msgstr "URL (http://…)"
 #: zeit/content/cp/interfaces.py:908
 msgid "Use Markdown"
 msgstr "verwendet Markdown"
+
+#: zeit/content/cp/interfaces.py:921
+msgid "Autopilot"
+msgstr "Autopilot"
+
+#: zeit/content/cp/interfaces.py:922
+msgid "Parquet"
+msgstr "Parkett"
+
+#: zeit/content/cp/interfaces.py:923
+msgid "Display image at these positions"
+msgstr "Bild anzeigen bei"
+
+#: zeit/content/cp/interfaces.py:924
+msgid "Get teasers from (autopilot)"
+msgstr "Autopilot-Teaser beziehen von"
+
+#: zeit/content/cp/interfaces.py:925
+msgid "Autopilot active"
+msgstr "Autopilot aktiviert"
+
+#: zeit/content/cp/interfaces.py:926
+msgid "Amount of teasers to display"
+msgstr "Anzahl Teaser"
+
+#: zeit/content/cp/interfaces.py:927
+msgid "Cannot activate autopilot without referenced centerpage"
+msgstr ""
+"Der Autopilot kann nicht aktiviert werden, wenn kein anderes Objekt "
+"referenziert wurde."
+
+#: zeit/content/cp/interfaces.py:928
+msgid "Edit teaser layouts"
+msgstr "Teaser-Layouts"
+
+#: zeit/content/cp/interfaces.py:929
+msgid "Remaining teaser layout"
+msgstr "Layout weitere Teaser"
+
+#: zeit/content/cp/interfaces.py:930
+msgid "Cannot enable automatic without count"
+msgstr "Anzahl Teaser erforderlich für automatische Bestückung"
+
+#: zeit/content/cp/interfaces.py:931
+msgid "Automatic contents"
+msgstr "Automatische Bestückung"
+
+#: zeit/content/cp/interfaces.py:932
+msgid "Publisher URL"
+msgstr "Verlags-URL"
+
+#: zeit/content/cp/interfaces.py:933
+msgid "Supertitle URL"
+msgstr "Spitzmarken-URL"
+
+#: zeit/content/cp/interfaces.py:934
+msgid "Create teaser group"
+msgstr "Teasergruppe anlegen"
+
+#: zeit/content/cp/interfaces.py:935
+msgid "Display teaser group"
+msgstr "Teasergruppe anzeigen"
+
+#: zeit/content/cp/interfaces.py:936
+msgid "Save teasers as group"
+msgstr "Teaser als Teasergruppe speichern"
+
+#: zeit/content/cp/interfaces.py:937
+msgid "Name of teaser group"
+msgstr "Name der Teasergruppe"
+
+#: zeit/content/cp/interfaces.py:938
+msgid "Linked teasers"
+msgstr "Verlinkte Teaser"
+
+#: zeit/content/cp/interfaces.py:939
+msgid "Automatically remove"
+msgstr "Automatisch löschen (nach 7 Tagen)?"
+
+#: zeit/content/cp/interfaces.py:940
+msgid "Teasergroup"
+msgstr "Teasergruppe"
+
+#: zeit/content/cp/interfaces.py:941
+msgid "Common"
+msgstr "Allgemein"
+
+#: zeit/content/cp/interfaces.py:942
+msgid "No changes"
+msgstr "Keine Änderungen"
+
+#: zeit/content/cp/interfaces.py:943
+msgid "Landing Zone"
+msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
+
+#: zeit/content/cp/interfaces.py:944
+msgid "Variants"
+msgstr "Bearbeiten (beta)"
+
+#: zeit/content/cp/interfaces.py:945
+msgid "Edit in place"
+msgstr "Im CPE bearbeiten"
+
+#: zeit/content/cp/interfaces.py:946
+msgid "Apply for article"
+msgstr "Im Artikel speichern"
+
+#: zeit/content/cp/interfaces.py:947
+msgid "Apply only for this page"
+msgstr "Als freien Teaser speichern"
 
 #: zeit/content/cp/source.py:30
 msgid "None"
@@ -4633,95 +4743,3 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
-
-msgid "Image for a column teaser"
-msgstr "Bild für Kolumnenteaser"
-
-msgid "Autopilot"
-msgstr "Autopilot"
-
-msgid "Parquet"
-msgstr "Parkett"
-
-msgid "Display image at these positions"
-msgstr "Bild anzeigen bei"
-
-msgid "Get teasers from (autopilot)"
-msgstr "Autopilot-Teaser beziehen von"
-
-msgid "Autopilot active"
-msgstr "Autopilot aktiviert"
-
-msgid "Amount of teasers to display"
-msgstr "Anzahl Teaser"
-
-msgid "Cannot activate autopilot without referenced centerpage"
-msgstr ""
-"Der Autopilot kann nicht aktiviert werden, wenn kein anderes Objekt "
-"referenziert wurde."
-
-msgid "Edit teaser layouts"
-msgstr "Teaser-Layouts"
-
-msgid "Remaining teaser layout"
-msgstr "Layout weitere Teaser"
-
-msgid "Cannot enable automatic without count"
-msgstr "Anzahl Teaser erforderlich für automatische Bestückung"
-
-msgid "or"
-msgstr "oder"
-
-msgid "Automatic contents"
-msgstr "Automatische Bestückung"
-
-msgid "Publisher URL"
-msgstr "Verlags-URL"
-
-msgid "Supertitle URL"
-msgstr "Spitzmarken-URL"
-
-msgid "Create teaser group"
-msgstr "Teasergruppe anlegen"
-
-msgid "Display teaser group"
-msgstr "Teasergruppe anzeigen"
-
-msgid "Save teasers as group"
-msgstr "Teaser als Teasergruppe speichern"
-
-msgid "Name of teaser group"
-msgstr "Name der Teasergruppe"
-
-msgid "Linked teasers"
-msgstr "Verlinkte Teaser"
-
-msgid "Automatically remove"
-msgstr "Automatisch löschen (nach 7 Tagen)?"
-
-msgid "Teasergroup"
-msgstr "Teasergruppe"
-
-msgid "Common"
-msgstr "Allgemein"
-
-msgid "No changes"
-msgstr "Keine Änderungen"
-
-msgid "+ Add block"
-msgstr "+ Block hinzufügen"
-
-msgid "Landing Zone"
-msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
-
-msgid "Variants"
-msgstr "Bearbeiten (beta)"
-
-msgid "Edit in place"
-msgstr "Im CPE bearbeiten"
-
-msgid "Apply for article"
-msgstr "Im Artikel speichern"
-
-msgid "Apply only for this page"
-msgstr "Als freien Teaser speichern"

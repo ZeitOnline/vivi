@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Mar 23 12:55:08 2016\n"
+"POT-Creation-Date: Thu Mar 24 08:42:29 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:266
 #: zeit/cms/content/browser/template.py:43
 #: zeit/cms/content/interfaces.py:152
-#: zeit/cms/content/interfaces.py:519
+#: zeit/cms/content/interfaces.py:510
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
@@ -210,7 +210,7 @@ msgid "Day"
 msgstr ""
 
 #: zeit/calendar/browser/configure.zcml:43
-#: zeit/cms/content/interfaces.py:654
+#: zeit/cms/content/interfaces.py:645
 msgid "Month"
 msgstr ""
 
@@ -338,7 +338,7 @@ msgstr ""
 #: zeit/calendar/interfaces.py:51
 #: zeit/cms/browser/listing.py:279
 #: zeit/cms/content/interfaces.py:77
-#: zeit/cms/content/interfaces.py:639
+#: zeit/cms/content/interfaces.py:630
 msgid "Ressort"
 msgstr ""
 
@@ -1122,56 +1122,51 @@ msgstr ""
 msgid "Advertisement text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:346
-#: zeit/content/cp/interfaces.py:209
-msgid "Invalid hex literal"
-msgstr ""
-
-#: zeit/cms/content/interfaces.py:426
+#: zeit/cms/content/interfaces.py:417
 #: zeit/content/cp/interfaces.py:649
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:559
+#: zeit/cms/content/interfaces.py:550
 msgid "Hits today"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:560
+#: zeit/cms/content/interfaces.py:551
 msgid "Indicates how many times a page viewed today."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:565
+#: zeit/cms/content/interfaces.py:556
 msgid "Total hits"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:566
+#: zeit/cms/content/interfaces.py:557
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:572
+#: zeit/cms/content/interfaces.py:563
 msgid "URI to the access counting details"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:601
+#: zeit/cms/content/interfaces.py:592
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:607
+#: zeit/cms/content/interfaces.py:598
 msgid "Update last semantic change"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:61
-#: zeit/cms/content/interfaces.py:649
+#: zeit/cms/content/interfaces.py:640
 #: zeit/content/article/interfaces.py:183
 #: zeit/content/image/interfaces.py:38
 msgid "Year"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:628
+#: zeit/cms/content/interfaces.py:619
 msgid "Memo"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:635
+#: zeit/cms/content/interfaces.py:626
 #: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr ""
@@ -1182,7 +1177,7 @@ msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:81
-#: zeit/cms/content/interfaces.py:644
+#: zeit/cms/content/interfaces.py:635
 msgid "Sub ressort"
 msgstr ""
 
@@ -3063,6 +3058,10 @@ msgstr ""
 msgid "Kind Title"
 msgstr ""
 
+#: zeit/content/cp/interfaces.py:209
+msgid "Invalid hex literal"
+msgstr ""
+
 #: zeit/content/cp/interfaces.py:234
 #. Default: ""
 msgid "${kind} area ${title}"
@@ -3378,6 +3377,114 @@ msgstr ""
 msgid "Use Markdown"
 msgstr ""
 
+#: zeit/content/cp/interfaces.py:921
+msgid "Autopilot"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:922
+msgid "Parquet"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:923
+msgid "Display image at these positions"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:924
+msgid "Get teasers from (autopilot)"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:925
+msgid "Autopilot active"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:926
+msgid "Amount of teasers to display"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:927
+msgid "Cannot activate autopilot without referenced centerpage"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:928
+msgid "Edit teaser layouts"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:929
+msgid "Remaining teaser layout"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:930
+msgid "Cannot enable automatic without count"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:931
+msgid "Automatic contents"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:932
+msgid "Publisher URL"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:933
+msgid "Supertitle URL"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:934
+msgid "Create teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:935
+msgid "Display teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:936
+msgid "Save teasers as group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:937
+msgid "Name of teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:938
+msgid "Linked teasers"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:939
+msgid "Automatically remove"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:940
+msgid "Teasergroup"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:941
+msgid "Common"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:942
+msgid "No changes"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:943
+msgid "Landing Zone"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:944
+msgid "Variants"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:945
+msgid "Edit in place"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:946
+msgid "Apply for article"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:947
+msgid "Apply only for this page"
+msgstr ""
+
 #: zeit/content/cp/source.py:30
 msgid "None"
 msgstr ""
@@ -3659,11 +3766,7 @@ msgstr ""
 msgid "Setting for variants"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:306
-msgid "Alpha channel fill color"
-msgstr ""
-
-#: zeit/content/image/interfaces.py:314
+#: zeit/content/image/interfaces.py:309
 msgid "Objects using this image"
 msgstr ""
 
