@@ -21,6 +21,10 @@
         <area kind="parquet"/>
     </region>
     <region kind="solo" title="Ranking">
-        <area kind="ranking"/>
+        <area
+          kind="ranking"
+          apply_teaser_layouts_automatically="true"
+          first_teaser_layout="leader"
+          />
     </region>
 </regions>
