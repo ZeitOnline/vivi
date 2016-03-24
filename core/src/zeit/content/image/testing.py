@@ -64,7 +64,10 @@ def create_image_group_with_master_image(file_name=None):
         file_name = 'DSC00109_2.JPG'
         fh = repository['2006'][file_name].open()
     else:
-        fh = open(file_name)
+        try:
+            fh = zeit.cms.interfaces.ICMSContent(file_name).open()
+        except TypeError:
+            fh = open(file_name)
     extension = os.path.splitext(file_name)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()

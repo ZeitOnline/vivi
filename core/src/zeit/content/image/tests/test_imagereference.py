@@ -97,6 +97,12 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
                     content)
                 updater.update(content.xml, suppress_errors=True)
 
+    def test_colorpicker_should_generate_proper_xml(self):
+        content = self.repository['testcontent']
+        zeit.content.image.interfaces.IImages(content).fill_color = u'F00F00'
+        assert len(content.xml.xpath(
+            '//head/image[@fill_color="F00F00"]')) == 1
+
 
 class MoveReferencesTest(zeit.cms.testing.FunctionalTestCase):
 
