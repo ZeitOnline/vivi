@@ -162,7 +162,7 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
                 '__name__', 'rename_to')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            self.context).renameable:
+                self.context).renameable:
             form_fields = form_fields.omit('__name__')
         else:
             form_fields = form_fields.omit('rename_to')
@@ -405,6 +405,16 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         return super(TeaserImage, self).__call__()
 
     def setUpWidgets(self, *args, **kw):
+        try:
+            master = zeit.content.image.interfaces.IMasterImage(
+                zeit.content.image.interfaces.IImages(self.context).image)
+            if master.format == 'PNG':
+                self.form_fields += FormFields(
+                    zeit.content.image.interfaces.IImages).select('fill_color')
+                self.form_fields['fill_color'].custom_widget = (
+                    zeit.cms.browser.widget.ColorpickerWidget)
+        except TypeError:
+            pass
         super(TeaserImage, self).setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
 
