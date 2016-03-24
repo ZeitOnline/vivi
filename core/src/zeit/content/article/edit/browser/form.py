@@ -408,14 +408,13 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         try:
             master = zeit.content.image.interfaces.IMasterImage(
                 zeit.content.image.interfaces.IImages(self.context).image)
-            if master.format == 'PNG' and (
-                    self.form_fields.get('fill_color') is None):
+            if master.format == 'PNG':
                 self.form_fields += FormFields(
                     zeit.content.image.interfaces.IImages).select('fill_color')
                 self.form_fields['fill_color'].custom_widget = (
                     zeit.cms.browser.widget.ColorpickerWidget)
         except TypeError:
-            self.form_fields = self.form_fields.omit('fill_color')
+            pass
         super(TeaserImage, self).setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
 
