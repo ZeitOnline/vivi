@@ -80,6 +80,9 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         with self.assertRaises(LookupError):
             b.getControl(name='teaser-image.fill_color')
 
+    # XXX Need test for removal of color picker through removal of image
+    # reference
+
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
