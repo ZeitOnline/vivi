@@ -1,13 +1,13 @@
-import zope.interface
-
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
-
+import collections
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.link.interfaces
+import zope.interface
 
 
 class IZCOSection(zeit.cms.section.interfaces.ISection):
@@ -75,3 +75,59 @@ class IDebate(zope.interface.Interface):
         title=_("Debate action URL"),
         description=_('debate-action-url-description'),
         required=False)
+
+
+class StudyCourse(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, available, text, href, button_text):
+        super(StudyCourse, self).__init__(id, title, available)
+        self.text = text
+        self.href = href
+        self.button_text = button_text
+
+    def is_allowed(self, context):
+        return super(StudyCourse, self).is_allowed(context.context)
+
+
+class StudyCourseSource(
+        zeit.cms.content.sources.ObjectSource,
+        zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.campus'
+    config_url = 'article-stoa-source'
+    attribute = 'id'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        tree = self._get_tree()
+        result = collections.OrderedDict()
+        for node in tree.iterchildren('*'):
+            g = node.get
+            id = node.get(self.attribute)
+            result[id] = StudyCourse(
+                id, g('vivi_title'), g('available', None),
+                self._get_title_for(node), g('href', None),
+                g('button_text', None))
+        return result
+
+STUDY_COURSE_SOURCE = StudyCourseSource()
+
+
+class IStudyCourse(zope.interface.Interface):
+
+    # For editing
+    course = zope.schema.Choice(
+        title=_('Study course'),
+        required=True,
+        source=STUDY_COURSE_SOURCE)
+
+    # For display by zeit.web
+    text = zope.schema.Text(
+        title=_("Advertisement teaser"),
+        readonly=True)
+
+    button_text = zope.schema.TextLine(
+        title=_('Button text'),
+        readonly=True)
+
+    url = zope.schema.URI(title=_(u"Link address"), readonly=True)
