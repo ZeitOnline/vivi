@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.6.1 (unreleased)
 ------------------
 
+- Move ``hex_literal`` to zeit.cms (ZON-2898).
+
 - Make markup module alignable (ZON-2905).
 
 
