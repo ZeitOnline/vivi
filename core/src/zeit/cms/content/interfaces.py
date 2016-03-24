@@ -339,6 +339,15 @@ class ISerie(zope.interface.Interface):
     video = zope.interface.Attribute('')
 
 
+def hex_literal(value):
+    try:
+        int(value, base=16)
+    except ValueError:
+        raise zeit.cms.interfaces.ValidationError(_("Invalid hex literal"))
+    else:
+        return True
+
+
 WRITEABLE_ON_CHECKIN = object()
 WRITEABLE_LIVE = object()
 WRITEABLE_ALWAYS = object()
