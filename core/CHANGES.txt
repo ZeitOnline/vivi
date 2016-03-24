@@ -1,10 +1,16 @@
 zeit.cms changes
 ================
 
-2.66.0 (unreleased)
+2.67.0 (unreleased)
 -------------------
 
 - Move ``hex_literal`` here from zeit.content.cp (ZON-2898).
+
+
+2.66.0 (2016-03-21)
+-------------------
+
+- Support DAV type conversion for ObjectSource (ZON-2931).
 
 
 2.65.2 (2016-03-03)

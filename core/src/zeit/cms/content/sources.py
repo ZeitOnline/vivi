@@ -413,9 +413,15 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
 zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 
 
+class IObjectSource(zope.schema.interfaces.IIterableSource):
+    pass
+
+
 class ObjectSource(object):
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        zope.interface.implements(IObjectSource)
 
         def find(self, id):
             return self.factory.find(self.context, id)

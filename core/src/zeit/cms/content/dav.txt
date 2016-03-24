@@ -296,6 +296,35 @@ Here we don't check for valid users:
 >>> converter.toProperty(u'foo.bar')
 u'foo.bar'
 
+
+Object source
+-------------
+
+Object sources are used mostly by configuration files (e.g. centerpage layouts)
+
+>>> import zc.sourcefactory.contextual
+>>> class Thing(object):
+...     def __init__(self, id, title):
+...         self.id = id
+...         self.title = title
+...     def is_allowed(self, context):
+...         return True
+...     def __repr__(self):
+...         return 'Thing <id=%s>' % self.id
+>>> class ThingSource(
+...     zeit.cms.content.sources.ObjectSource,
+...     zc.sourcefactory.contextual.BasicContextualSourceFactory):
+...     def _values(self):
+...         return {
+...             'one': Thing('one', 'T1'),
+...             'two': Thing('two', 'T2'),
+...         }
+>>> field = zope.schema.Choice(source=ThingSource()).bind(None)
+>>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter.fromProperty('one')
+Thing <id=one>
+
+
 Vocabularies
 ------------
 

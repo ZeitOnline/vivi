@@ -207,6 +207,39 @@ class ChoicePropertyWithPrincipalSource(object):
         return unicode(value)
 
 
+DUMMY_REQUEST = zope.publisher.browser.TestRequest()
+
+
+class ChoicePropertyWithObjectSource(object):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(zope.schema.interfaces.IChoice,
+                          zeit.cms.content.sources.IObjectSource)
+
+    def __init__(self, context, source):
+        self.context = context
+        self.source = source
+
+    @property
+    def terms(self):
+        return zope.component.getMultiAdapter(
+            (self.source, DUMMY_REQUEST), zope.browser.interfaces.ITerms)
+
+    def fromProperty(self, value):
+        # XXX We should think about using the token mechanism for all sources,
+        # but we would need to generate a special (non-browser) token for this
+        # purpose, since the default token is base64 encoded.
+        try:
+            return self.terms.getValue(value)
+        except KeyError:
+            # XXX Should we raise instead?
+            return value
+
+    def toProperty(self, value):
+        return self.terms.getTerm(value).token
+
+
 class ChoicePropertyWithIterableVocabulary(object):
 
     zope.interface.implements(
