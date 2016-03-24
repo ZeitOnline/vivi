@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Mar 24 08:42:29 2016\n"
+"POT-Creation-Date: Thu Mar 24 14:02:07 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -382,6 +382,10 @@ msgstr ""
 msgid "edit topic page"
 msgstr ""
 
+#: zeit/campus/browser/article.py:30
+msgid "edit study course"
+msgstr ""
+
 #: zeit/campus/browser/infobox.py:24
 #: zeit/content/infobox/browser/form.py:71
 msgid "Add infobox"
@@ -395,6 +399,26 @@ msgstr ""
 #: zeit/campus/browser/infobox.py:35
 #: zeit/content/infobox/browser/form.py:87
 msgid "View infobox"
+msgstr ""
+
+#: zeit/campus/interfaces.py:120
+msgid "Study course"
+msgstr ""
+
+#: zeit/campus/interfaces.py:126
+#: zeit/content/advertisement/interfaces.py:30
+msgid "Advertisement teaser"
+msgstr ""
+
+#: zeit/campus/interfaces.py:130
+#: zeit/content/advertisement/interfaces.py:34
+msgid "Button text"
+msgstr ""
+
+#: zeit/campus/interfaces.py:133
+#: zeit/content/advertisement/interfaces.py:52
+#: zeit/content/link/interfaces.py:24
+msgid "Link address"
 msgstr ""
 
 #: zeit/campus/interfaces.py:62
@@ -1550,7 +1574,7 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/article/edit/interfaces.py:126
-#: zeit/content/cp/interfaces.py:907
+#: zeit/content/cp/interfaces.py:916
 #: zeit/content/infobox/interfaces.py:14
 msgid "Contents"
 msgstr ""
@@ -1817,14 +1841,6 @@ msgstr ""
 msgid "Publisher offering"
 msgstr ""
 
-#: zeit/content/advertisement/interfaces.py:30
-msgid "Advertisement teaser"
-msgstr ""
-
-#: zeit/content/advertisement/interfaces.py:34
-msgid "Button text"
-msgstr ""
-
 #: zeit/content/advertisement/interfaces.py:38
 msgid "Button color"
 msgstr ""
@@ -1856,11 +1872,6 @@ msgstr ""
 
 #: zeit/content/advertisement/interfaces.py:48
 msgid "Advertisement supertitle"
-msgstr ""
-
-#: zeit/content/advertisement/interfaces.py:52
-#: zeit/content/link/interfaces.py:24
-msgid "Link address"
 msgstr ""
 
 #: zeit/content/article/article.py:157
@@ -2476,12 +2487,12 @@ msgid "Liveblog id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:440
-#: zeit/content/cp/interfaces.py:915
+#: zeit/content/cp/interfaces.py:929
 msgid "Cardstack id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:442
-#: zeit/content/cp/interfaces.py:917
+#: zeit/content/cp/interfaces.py:931
 msgid "Advertorial?"
 msgstr ""
 
@@ -2792,7 +2803,7 @@ msgstr ""
 msgid "Header image block"
 msgstr ""
 
-#: zeit/content/cp/blocks/markup.py:18
+#: zeit/content/cp/blocks/markup.py:20
 msgid "Markup block"
 msgstr ""
 
@@ -3373,115 +3384,135 @@ msgstr ""
 msgid "URL to include (http://...)"
 msgstr ""
 
+#: zeit/content/cp/interfaces.py:907
+msgid "left"
+msgstr ""
+
 #: zeit/content/cp/interfaces.py:908
+msgid "center"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:909
+msgid "right"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:917
 msgid "Use Markdown"
 msgstr ""
 
+#: zeit/content/cp/interfaces.py:920
+msgid "Alignment"
+msgstr ""
+
 #: zeit/content/cp/interfaces.py:921
-msgid "Autopilot"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:922
-msgid "Parquet"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:923
-msgid "Display image at these positions"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:924
-msgid "Get teasers from (autopilot)"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:925
-msgid "Autopilot active"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:926
-msgid "Amount of teasers to display"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:927
-msgid "Cannot activate autopilot without referenced centerpage"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:928
-msgid "Edit teaser layouts"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:929
-msgid "Remaining teaser layout"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:930
-msgid "Cannot enable automatic without count"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:931
-msgid "Automatic contents"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:932
-msgid "Publisher URL"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:933
-msgid "Supertitle URL"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:934
-msgid "Create teaser group"
+msgid "Choose alignment"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:935
-msgid "Display teaser group"
+msgid "Autopilot"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:936
-msgid "Save teasers as group"
+msgid "Parquet"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:937
-msgid "Name of teaser group"
+msgid "Display image at these positions"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:938
-msgid "Linked teasers"
+msgid "Get teasers from (autopilot)"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:939
-msgid "Automatically remove"
+msgid "Autopilot active"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:940
-msgid "Teasergroup"
+msgid "Amount of teasers to display"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:941
-msgid "Common"
+msgid "Cannot activate autopilot without referenced centerpage"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:942
-msgid "No changes"
+msgid "Edit teaser layouts"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:943
-msgid "Landing Zone"
+msgid "Remaining teaser layout"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:944
-msgid "Variants"
+msgid "Cannot enable automatic without count"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:945
-msgid "Edit in place"
+msgid "Automatic contents"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:946
-msgid "Apply for article"
+msgid "Publisher URL"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:947
+msgid "Supertitle URL"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:948
+msgid "Create teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:949
+msgid "Display teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:950
+msgid "Save teasers as group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:951
+msgid "Name of teaser group"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:952
+msgid "Linked teasers"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:953
+msgid "Automatically remove"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:954
+msgid "Teasergroup"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:955
+msgid "Common"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:956
+msgid "No changes"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:957
+msgid "Landing Zone"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:958
+msgid "Variants"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:959
+msgid "Edit in place"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:960
+msgid "Apply for article"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:961
 msgid "Apply only for this page"
 msgstr ""
 
