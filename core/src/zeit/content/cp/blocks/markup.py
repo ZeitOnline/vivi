@@ -11,6 +11,8 @@ class MarkupBlock(zeit.content.cp.blocks.block.Block):
     zope.interface.implements(zeit.content.cp.interfaces.IMarkupBlock)
 
     text = zeit.cms.content.property.Structure('.text')
+    alignment = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'align', zeit.content.cp.interfaces.IMarkupBlock['alignment'])
 
 
 zeit.edit.block.register_element_factory(

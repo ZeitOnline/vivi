@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make markup module alignable (ZON-2905).
 
 
 3.6.0 (2016-03-21)
