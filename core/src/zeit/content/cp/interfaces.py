@@ -892,12 +892,26 @@ class IHeaderImageBlock(IBlock):
         source=zeit.content.image.interfaces.imageGroupSource)
 
 
+class AlignmentSource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        ('left', _('left')),
+        ('center', _('center')),
+        ('right', _('right')),
+    ))
+
+
 class IMarkupBlock(IBlock):
 
     text = zope.schema.Text(
         title=_('Contents'),
         description=_('Use Markdown'),
         required=False)
+    alignment = zope.schema.Choice(
+        title=_('Alignment'),
+        description=_('Choose alignment'),
+        source=AlignmentSource(),
+        default='left')
 
 
 class ICardstackBlock(IBlock):
@@ -907,3 +921,32 @@ class ICardstackBlock(IBlock):
     is_advertorial = zope.schema.Bool(
         title=_('Advertorial?'),
         default=False)
+
+# BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.
+_("Autopilot")
+_("Parquet")
+_("Display image at these positions")
+_("Get teasers from (autopilot)")
+_("Autopilot active")
+_("Amount of teasers to display")
+_("Cannot activate autopilot without referenced centerpage")
+_("Edit teaser layouts")
+_("Remaining teaser layout")
+_("Cannot enable automatic without count")
+_("Automatic contents")
+_("Publisher URL")
+_("Supertitle URL")
+_("Create teaser group")
+_("Display teaser group")
+_("Save teasers as group")
+_("Name of teaser group")
+_("Linked teasers")
+_("Automatically remove")
+_("Teasergroup")
+_("Common")
+_("No changes")
+_("Landing Zone")
+_("Variants")
+_("Edit in place")
+_("Apply for article")
+_("Apply only for this page")

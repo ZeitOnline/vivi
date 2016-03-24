@@ -4,7 +4,7 @@
         id="leader"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
-        areas="solo duo minor major"
+        areas="solo duo minor major ranking"
         default="solo minor"
         />
     <layout
@@ -34,8 +34,8 @@
         id="buttons"
         title="Kleiner Teaser mit kleinem Bild und Teaserliste"
         image_pattern="140x140"
-        areas="solo duo minor major"
-        default="major"
+        areas="solo duo minor major ranking"
+        default="major ranking"
         />
     <layout
         id="two-side-by-side"

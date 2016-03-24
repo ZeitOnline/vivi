@@ -28,7 +28,13 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
         super(BodyLandingZone, self).initialize_block()
         for config in self.areas:
             area = self.block.create_item('area')
-            area.kind = config['kind']
+            for name, value in config.items():
+                field = zeit.content.cp.interfaces.IArea[name].bind(area)
+                # We (ab)use the DAV type conversion for a `fromUnicode` that
+                # supports Sources, because the mechanics are all there already
+                value = zeit.cms.content.interfaces.IDAVPropertyConverter(
+                    field).fromProperty(value)
+                field.set(area, value)
 
 
 class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
