@@ -18,6 +18,8 @@ class TestMarkup(zeit.cms.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
+        self.xml_url = 'http://localhost/++skin++vivi/workingcopy/zope.user/' \
+                       'centerpage/@@xml_source_edit.html'
 
     def test_can_create_markup_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser
