@@ -205,11 +205,11 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
 
         self.assertImage([
             '        ',
-            ' ////// ',
-            ' ////// ',
-            ' ////// ',
-            ' ////// ',
-            ' ////// ',
-            ' ////// ',
+            ' rrrrrr ',
+            ' rrrrrr ',
+            ' rrrrrr ',
+            ' rrrrrr ',
+            ' rrrrrr ',
+            ' rrrrrr ',
             '        ',
         ], transform.create_variant_image(variant))
