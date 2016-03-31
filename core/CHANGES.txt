@@ -7,6 +7,8 @@ zeit.content.image changes
 - Deprecate image spoof protection signature;
   Implement fill color for RGBA PNGs (ZON-2878).
 
+- Add ``IImages.fill_color`` (ZON-2898).
+
 
 2.12.0 (2016-02-29)
 -------------------
