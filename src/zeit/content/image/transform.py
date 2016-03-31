@@ -1,9 +1,6 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
-import os
-import os.path
-import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
 import zeit.connector.zopeconnector
