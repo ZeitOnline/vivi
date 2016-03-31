@@ -36,7 +36,12 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 
 
 def create_local_image(filename, path='browser/testdata/'):
-    image = zeit.content.image.image.LocalImage(mimeType='image/jpeg')
+    filetype = filename.rsplit('.', 1)[-1].lower()
+    if filetype == 'jpg':
+        image = zeit.content.image.image.LocalImage(mimeType='image/jpeg')
+    else:
+        image = zeit.content.image.image.LocalImage(
+            mimeType="image/{}".format(filetype))
     fh = image.open('w')
     file_name = pkg_resources.resource_filename(
         __name__, '%s%s' % (path, filename))

@@ -80,7 +80,7 @@ class ImageTransform(object):
 
         # Optionally fill the background of transparent images
         if variant.fill_color is not None and self._color_mode == 'RGBA':
-            fill = PIL.ImageColor.getrgb(variant.fill_color)
+            fill = PIL.ImageColor.getrgb('#' + variant.fill_color)
             opaque = PIL.Image.new('RGB', image.size, fill)
             opaque.paste(image, (0, 0), image)
             image = opaque
