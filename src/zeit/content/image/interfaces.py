@@ -137,7 +137,7 @@ class IThumbnailFolder(zope.interface.Interface):
 
 
 class MasterImageSource(
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getValues(self, context):
         repository = zope.component.getUtility(
@@ -299,6 +299,11 @@ class IImages(zope.interface.Interface):
         description=_("Drag an image group here"),
         required=False,
         source=imageGroupSource)
+
+    fill_color = zope.schema.TextLine(
+        title=_("Alpha channel fill color"),
+        required=False,
+        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
 
 
 class IReferences(zope.interface.Interface):
