@@ -120,7 +120,7 @@ class ImageGroupBase(object):
             for seg in set([segment, '#' + segment]):
                 try:
                     fill = PIL.ImageColor.getrgb(seg)
-                    return ''.join(str(hex(i)) for i in fill)
+                    return ''.join(format(i, '02x') for i in fill)
                 except ValueError:
                     continue
         return None
