@@ -4,8 +4,9 @@ zeit.content.image changes
 2.13.0 (unreleased)
 -------------------
 
-- Deprecate image spoof protection signature;
-  Implement fill color for RGBA PNGs (ZON-2878).
+- Deprecate image spoof protection signature (ZON-2878).
+
+- Prepare image server for RGBA PNGs (ZON-2900).
 
 - Add ``IImages.fill_color`` (ZON-2898).
 
