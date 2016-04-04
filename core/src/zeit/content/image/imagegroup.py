@@ -2,9 +2,9 @@ from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import collections
 import grokcore.component as grok
-import hashlib
 import lxml.objectify
 import persistent
+import PIL.ImageColor
 import sys
 import urlparse
 import z3c.traverser.interfaces
@@ -50,21 +50,12 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    @property
-    def _variant_secret(self):
-        """Secret for Spoof Protection."""
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        return config.get('variant-secret')
-
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
 
         See ImageGroup.__getitem__ for allowed URLs.
 
         """
-        key = self._verify_signature(key)
-
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
         if source is None:
@@ -73,6 +64,12 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         variant = self.get_variant_by_key(key)
         size = self.get_variant_size(key)
+        fill = self.get_variant_fill(key)
+
+        # Make sure no invalid or redundant modifiers were provided
+        if sum(map(bool, (variant.name, size, fill))) != len(key.split('__')):
+            raise KeyError(key)
+
         if not size and variant.legacy_size:
             size = variant.legacy_size
 
@@ -97,41 +94,58 @@ class ImageGroupBase(object):
         transform = zeit.content.image.interfaces.ITransform(source, None)
         if transform is None:
             return None
-        image = transform.create_variant_image(variant, size=size)
+
+        image = transform.create_variant_image(
+            variant, size=size, fill_color=fill)
         image.__name__ = key
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, key)
         return image
 
     def get_variant_size(self, key):
-        """Keys look like `square__20x20`. Retrieve size as [20, 20] or None"""
-        try:
-            size = [int(x) for x in key.split('__')[1].split('x')]
-        except (IndexError, ValueError):
-            return None
-        if any([x <= 0 for x in size]):
-            return INVALID_SIZE
-        return size
+        """If key contains `__120x90`, retrieve size as [120, 90] else None"""
+        for segment in key.split('__')[1:]:
+            try:
+                width, height = [int(x) for x in segment.split('x')]
+            except (IndexError, ValueError):
+                continue
+            else:
+                if any(i <= 0 for i in [width, height]):
+                    return INVALID_SIZE
+                return [width, height]
+        return None
+
+    def get_variant_fill(self, key):
+        """If key contains `__blue`, retrieve fill as `0000ff` else None"""
+        for segment in key.split('__')[1:]:
+            for seg in set([segment, '#' + segment]):
+                try:
+                    fill = PIL.ImageColor.getrgb(seg)
+                    return ''.join(format(i, '02x') for i in fill)
+                except ValueError:
+                    continue
+        return None
 
     def get_variant_by_key(self, key):
         """Retrieve Variant by using as much information as given in key."""
-        if '__' in key:
-            variant = self.get_variant_by_size(key)
-        else:
-            variant = self.get_variant_by_name(key)
+        variant = self.get_variant_by_size(key)
+        if variant is not None:
+            return variant
 
-        if variant is None:
-            raise KeyError(key)
+        variant = self.get_variant_by_name(key)
+        if variant is not None:
+            return variant
 
-        return variant
+        raise KeyError(key)
 
-    def get_variant_by_name(self, name):
+    def get_variant_by_name(self, key):
         """Select the biggest Variant among those with the given name.
 
         The biggest Variant is the one that has no max-limit given or the
         biggest max-limit, if all Variants have a max-limit set.
 
         """
+        name = key.split('__')[0]
         for variant in self.get_all_variants_with_name(name, reverse=True):
             return variant
         # BBB New ImageGroups must respond to the legacy names (for XSLT).
@@ -172,7 +186,8 @@ class ImageGroupBase(object):
         result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
         return result
 
-    def variant_url(self, name, width=None, height=None, thumbnail=False):
+    def variant_url(self, name, width=None, height=None,
+                    fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
         path = urlparse.urlparse(self.uniqueId).path
         if path.endswith('/'):
@@ -184,40 +199,9 @@ class ImageGroupBase(object):
         else:
             url = '{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
-        if self._variant_secret:
-            url += '__{signature}'.format(signature=compute_signature(
-                name, width, height, self._variant_secret))
+        if fill_color is not None:
+            url += '__{fill}'.format(fill=fill_color)
         return url
-
-    def _verify_signature(self, key):
-        """Verification for Spoof Protection."""
-        if not self._variant_secret:
-            return key
-        try:
-            parts = key.split('__')
-            if len(parts) == 2:
-                name, signature = parts
-                width = height = None
-                stripped = name
-            elif len(parts) == 3:
-                name, size, signature = parts
-                width, height = size.split('x')
-                stripped = '{name}__{size}'.format(name=name, size=size)
-            if verify_signature(
-                    name, width, height, self._variant_secret, signature):
-                return stripped
-        except:
-            pass
-        raise KeyError(key)
-
-
-def compute_signature(name, width, height, secret):
-    return hashlib.sha1(':'.join(
-        [str(x) for x in [name, width, height, secret]])).hexdigest()
-
-
-def verify_signature(name, width, height, secret, signature):
-    return signature == compute_signature(name, width, height, secret)
 
 
 class ImageGroup(ImageGroupBase,
@@ -237,6 +221,7 @@ class ImageGroup(ImageGroupBase,
         Virtual Image:
         * /imagegroup/zon-large
         * /imagegroup/zon-large__200x200
+        * /imagegroup/zon-large__200x200__0000ff
 
         JSON API:
         * /imagegroup/variants/zon-large
