@@ -15,6 +15,7 @@ import zeit.content.author.interfaces
 import zeit.find.search
 import zeit.workflow.interfaces
 import zope.interface
+import zope.security.proxy
 
 
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -91,10 +92,14 @@ class AuthorImages(object):
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.image_group', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
+
     def __init__(self, context):
         self.context = context
         self.__parent__ = context
-        self.xml = context.xml
+        self.xml = zope.security.proxy.getObject(context.xml)
         self.uniqueId = context.uniqueId
 
 
