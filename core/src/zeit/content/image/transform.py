@@ -45,7 +45,7 @@ class ImageTransform(object):
         image = self.image.resize((width, height), filter)
         return self._construct_image(image)
 
-    def create_variant_image(self, variant, size=None):
+    def create_variant_image(self, variant, size=None, fill_color=None):
         """Create variant image from source image.
 
         Will crop the image according to the zoom, focus point and size. In
@@ -79,9 +79,9 @@ class ImageTransform(object):
                 variant.sharpness)
 
         # Optionally fill the background of transparent images
-        if variant.fill_color is not None and self._color_mode == 'RGBA':
-            fill = PIL.ImageColor.getrgb('#' + variant.fill_color)
-            opaque = PIL.Image.new('RGB', image.size, fill)
+        if fill_color is not None and self._color_mode == 'RGBA':
+            fill_color = PIL.ImageColor.getrgb('#' + fill_color)
+            opaque = PIL.Image.new('RGB', image.size, fill_color)
             opaque.paste(image, (0, 0), image)
             image = opaque
 
