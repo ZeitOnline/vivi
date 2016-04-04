@@ -66,6 +66,11 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         with self.assertRaises(KeyError):
             self.group['square__-1x200']
 
+    def test_variant_url_returns_path_with_fill_color_if_given(self):
+        self.assertEqual(
+            '/group/square__200x200__0000ff', self.group.variant_url(
+                'square', 200, 200, '0000ff'))
+
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.group['square'].getImageSize())
         self.group['square'] = zeit.content.image.testing.create_local_image(

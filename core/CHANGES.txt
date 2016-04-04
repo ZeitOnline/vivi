@@ -6,9 +6,10 @@ zeit.content.image changes
 
 - Deprecate image spoof protection signature (ZON-2878).
 
-- Prepare image server for RGBA PNGs (ZON-2900).
-
-- Add ``IImages.fill_color`` (ZON-2898).
+- Support rendering a fill color for images with alpha channel, e.g.
+  ``cinema__100x200__0000ff`` (ZON-2878).
+  * Add parameter ``fill_color`` to ``variant_url()``
+  * Add property ``IImages.fill_color``
 
 
 2.12.0 (2016-02-29)
