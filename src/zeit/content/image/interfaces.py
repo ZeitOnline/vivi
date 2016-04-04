@@ -117,14 +117,17 @@ class ITransform(zope.interface.Interface):
 
         """
 
-    def create_variant_image(variant, size=None):
+    def create_variant_image(variant, size=None, fill=None):
         """Create a cropped version of the image, using the configuration
         information (focus point, zoom, etc.) of the given IVariant.
 
         A tuple `size` can be given to resize the resulting image to a certain
-        size.
+        size. For images with an alpha channel (mostly: PNG), `fill` can
+        specify a RGB hexadecimal color code, transparent parts will be
+        filled with that color.
 
         returns IImage object.
+
         """
 
 
@@ -158,7 +161,8 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
 
-    def variant_url(name, width=None, height=None, thumbnail=False):
+    def variant_url(name, width=None, height=None, fill_color=None,
+                    thumbnail=False):
         """Return an URL path to the variant with the given name that matches
         the width/height requirements most closely.
 
@@ -166,12 +170,10 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
         so e.g. vivi can generate URLs that point to its own repository as well
         as to www.zeit.de, for example.
 
+        Optionally a fill_color can be given (for images with an alpha channel)
+
         If thumbnail is True, return a path for an image that was generated
         by a downsampled version instead of the full master image.
-
-        If a `variant-secret` is configured in the zeit.content.image product
-        config, adds a signed hash of width and height to the URL, to prevent
-        URL spoofing.
         """
 
     def create_variant_image(key, source=None):

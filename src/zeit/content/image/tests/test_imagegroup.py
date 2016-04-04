@@ -3,7 +3,6 @@ from zeit.content.image.testing import create_local_image
 import mock
 import zeit.cms.testing
 import zeit.content.image.testing
-import zope.traversing.api
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
@@ -60,11 +59,17 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             (200, 200), self.group['square__200x200'].getImageSize())
 
-    def test_ignores_invalid_size(self):
+    def test_invalid_size_raises_keyerror(self):
+        with self.assertRaises(KeyError):
+            self.group['square__0x200']
+
+        with self.assertRaises(KeyError):
+            self.group['square__-1x200']
+
+    def test_variant_url_returns_path_with_fill_color_if_given(self):
         self.assertEqual(
-            (1536, 1536), self.group['square__0x200'].getImageSize())
-        self.assertEqual(
-            (1536, 1536), self.group['square__-1x200'].getImageSize())
+            '/group/square__200x200__0000ff', self.group.variant_url(
+                'square', 200, 200, '0000ff'))
 
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.group['square'].getImageSize())
@@ -102,36 +107,3 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 Variant(name='foo', id='small', max_size='100x100')]):
             self.assertEqual(
                 None, self.group.get_variant_by_size('foo__9999x9999'))
-
-
-class SpoofProtectionTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
-
-    def setUp(self):
-        super(SpoofProtectionTest, self).setUp()
-        self.group = create_image_group_with_master_image()
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        config['variant-secret'] = 'secret'
-
-    def test_no_signature_raises_keyerror(self):
-        with self.assertRaises(KeyError):
-            self.group['square']
-        with self.assertRaises(KeyError):
-            self.group['square__200x200']
-
-    def test_invalid_signature_raises_keyerror(self):
-        with self.assertRaises(KeyError):
-            self.group['square__invalid']
-        with self.assertRaises(KeyError):
-            self.group['square__200x200__invalid']
-
-    def test_valid_signature_returns_image(self):
-        path = self.group.variant_url('square')
-        image = zope.traversing.api.traverse(self.repository, path[1:])
-        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
-
-        path = self.group.variant_url('square', 200, 200)
-        image = zope.traversing.api.traverse(self.repository, path[1:])
-        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))

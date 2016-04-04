@@ -83,6 +83,7 @@ class Variant(object):
     brightness = None
     contrast = None
     fallback_size = None
+    fill_color = None
     legacy_name = None
     legacy_size = None
     max_size = None
