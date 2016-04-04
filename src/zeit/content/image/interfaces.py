@@ -161,13 +161,16 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
 
-    def variant_url(name, width=None, height=None, thumbnail=False):
+    def variant_url(name, width=None, height=None, fill_color=None,
+                    thumbnail=False):
         """Return an URL path to the variant with the given name that matches
         the width/height requirements most closely.
 
         This is only the path so clients can prepend the proper hostname etc.,
         so e.g. vivi can generate URLs that point to its own repository as well
         as to www.zeit.de, for example.
+
+        Optionally a fill_color can be given (for images with an alpha channel)
 
         If thumbnail is True, return a path for an image that was generated
         by a downsampled version instead of the full master image.

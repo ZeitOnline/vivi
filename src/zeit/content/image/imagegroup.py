@@ -186,7 +186,8 @@ class ImageGroupBase(object):
         result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
         return result
 
-    def variant_url(self, name, width=None, height=None, thumbnail=False):
+    def variant_url(self, name, width=None, height=None,
+                    fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
         path = urlparse.urlparse(self.uniqueId).path
         if path.endswith('/'):
@@ -198,6 +199,8 @@ class ImageGroupBase(object):
         else:
             url = '{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
+        if fill_color is not None:
+            url += '__{fill}'.format(fill=fill_color)
         return url
 
 
@@ -218,6 +221,7 @@ class ImageGroup(ImageGroupBase,
         Virtual Image:
         * /imagegroup/zon-large
         * /imagegroup/zon-large__200x200
+        * /imagegroup/zon-large__200x200__0000ff
 
         JSON API:
         * /imagegroup/variants/zon-large
