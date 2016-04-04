@@ -64,7 +64,7 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         variant = self.get_variant_by_key(key)
         size = self.get_variant_size(key)
-        fill = variant.fill_color = self.get_variant_fill(key)
+        fill = self.get_variant_fill(key)
 
         # Make sure no invalid or redundant modifiers were provided
         if sum(map(bool, (variant.name, size, fill))) != len(key.split('__')):
@@ -95,7 +95,8 @@ class ImageGroupBase(object):
         if transform is None:
             return None
 
-        image = transform.create_variant_image(variant, size=size)
+        image = transform.create_variant_image(
+            variant, size=size, fill_color=fill)
         image.__name__ = key
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, key)
