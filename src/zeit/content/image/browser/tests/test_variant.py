@@ -2,6 +2,7 @@ from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.jasmine.jasmine
 import json
 import requests
+import time
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -155,6 +156,21 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.content.image.testing.WEBDRIVER_LAYER
     window_width = 1400  # The "Variants" tab needs to fit in and be clickable.
+
+    def setUp(self):
+        super(VariantIntegrationTest, self).setUp()
+        # XXX major kludge. We should find another way to check that saving
+        # has worked instead of ".saved appears and disappears".
+        self.orig_put = zeit.content.image.browser.variant.VariantDetail.PUT
+
+        def delayed_put(slf):
+            time.sleep(0.2)
+            return self.orig_put(slf)
+        zeit.content.image.browser.variant.VariantDetail.PUT = delayed_put
+
+    def tearDown(self):
+        zeit.content.image.browser.variant.VariantDetail.PUT = self.orig_put
+        super(VariantIntegrationTest, self).tearDown()
 
     def test_integration(self):
         """Open Image group and change settings of master and a variant."""
