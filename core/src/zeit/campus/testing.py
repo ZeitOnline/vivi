@@ -12,6 +12,7 @@ import zope.interface
 
 product_config = """\
 <product-config zeit.campus>
+  article-stoa-source file://{base}/tests/article-stoa.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

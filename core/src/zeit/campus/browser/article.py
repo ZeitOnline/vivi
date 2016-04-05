@@ -21,3 +21,12 @@ class Topic(zeit.edit.browser.form.InlineForm):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(Topic, self).__call__()
+
+
+class StudyCourse(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'studycourse'
+    undo_description = _('edit study course')
+    form_fields = FormFields(
+        zeit.campus.interfaces.IStudyCourse).select('course')

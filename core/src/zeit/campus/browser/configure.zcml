@@ -24,6 +24,25 @@
     permission="zope.View"
     />
 
+  <browser:viewlet
+    for="..interfaces.IZCOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.content.article.edit.browser.form.OptionFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.studycourse"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:page
+    for="..interfaces.IZCOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.studycourse"
+    class=".article.StudyCourse"
+    permission="zope.View"
+    />
+
   <!-- infobox -->
 
   <browser:page

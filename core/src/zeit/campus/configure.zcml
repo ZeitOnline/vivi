@@ -76,6 +76,29 @@
       />
   </class>
 
+  <class class=".article.StudyCourse">
+    <require
+      interface=".interfaces.IStudyCourse"
+      permission="zope.View"
+      />
+    <require
+      attributes="context"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IStudyCourse"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".interfaces.StudyCourse">
+    <!-- Declaring a separate interface feels like overkill -->
+    <require
+      attributes="id title available text href button_text"
+      permission="zope.View"
+      />
+  </class>
+
   <class class=".infobox.Debate">
     <require
       interface=".interfaces.IDebate"
