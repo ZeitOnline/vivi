@@ -193,11 +193,6 @@ class IAccountData(zope.interface.Interface):
     facebook_magazin_text = zope.schema.Text(
         title=_('Facebook Magazin Text'), required=False)
 
-    facebook_campus_enabled = zope.schema.Bool(
-        title=_('Enable Facebook Campus'))
-    facebook_campus_text = zope.schema.Text(
-        title=_('Facebook Campus Text'), required=False)
-
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort_enabled = zope.schema.Bool(
         title=_('Enable Twitter Ressort'))
