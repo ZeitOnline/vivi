@@ -106,6 +106,19 @@ class AccountData(grok.Adapter):
             result = push.long_text
         return result
 
+    @property
+    def facebook_campus_enabled(self):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
+        return service and service['enabled']
+
+    @property
+    def facebook_campus_text(self):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
+        result = service and service.get('override_text')
+        return result
+
     def _get_facebook_service(self, account):
         for service in self.message_config:
             if service['type'] != 'facebook':
@@ -182,6 +195,14 @@ class AccountData(grok.Adapter):
 
     @facebook_magazin_text.setter
     def facebook_magazin_text(self, value):
+        pass
+
+    @facebook_campus_enabled.setter
+    def facebook_campus_enabled(self, value):
+        pass
+
+    @facebook_campus_text.setter
+    def facebook_campus_text(self, value):
         pass
 
     @twitter_main_enabled.setter

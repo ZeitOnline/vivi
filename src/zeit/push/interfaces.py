@@ -151,6 +151,10 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         def MAGAZIN_ACCOUNT(self):
             return self.factory.magazin_account()
 
+        @property
+        def CAMPUS_ACCOUNT(self):
+            return self.factory.campus_account()
+
     @classmethod
     def main_account(cls):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -162,6 +166,12 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         config = zope.app.appsetup.product.getProductConfiguration(
             cls.product_configuration)
         return config['facebook-magazin-account']
+
+    @classmethod
+    def campus_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['facebook-campus-account']
 
     def isAvailable(self, node, context):
         return (super(FacebookAccountSource, self).isAvailable(node, context)
@@ -192,6 +202,11 @@ class IAccountData(zope.interface.Interface):
         title=_('Enable Facebook Magazin'))
     facebook_magazin_text = zope.schema.Text(
         title=_('Facebook Magazin Text'), required=False)
+
+    facebook_campus_enabled = zope.schema.Bool(
+        title=_('Enable Facebook Campus'))
+    facebook_campus_text = zope.schema.Text(
+        title=_('Facebook Campus Text'), required=False)
 
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort_enabled = zope.schema.Bool(
