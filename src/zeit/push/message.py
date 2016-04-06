@@ -76,12 +76,14 @@ class AccountData(grok.Adapter):
 
     @property
     def facebook_main_enabled(self):
-        service = self._get_service('facebook', main=True)
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.MAIN_ACCOUNT)
         return service and service['enabled']
 
     @property
     def facebook_main_text(self):
-        service = self._get_service('facebook', main=True)
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.MAIN_ACCOUNT)
         result = service and service.get('override_text')
         if not result:  # BBB
             push = zeit.push.interfaces.IPushMessages(self.context)
@@ -90,32 +92,53 @@ class AccountData(grok.Adapter):
 
     @property
     def facebook_magazin_enabled(self):
-        service = self._get_service('facebook', main=False)
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
         return service and service['enabled']
 
     @property
     def facebook_magazin_text(self):
-        service = self._get_service('facebook', main=False)
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
         result = service and service.get('override_text')
         if not result:  # BBB
             push = zeit.push.interfaces.IPushMessages(self.context)
             result = push.long_text
         return result
 
+    def _get_facebook_service(self, account):
+        for service in self.message_config:
+            if service['type'] != 'facebook':
+                continue
+            if service.get('account') == account:
+                return service
+        return None
+
     @property
     def twitter_main_enabled(self):
-        service = self._get_service('twitter', main=True)
+        service = self._get_twitter_service(main=True)
         return service and service['enabled']
 
     @property
     def twitter_ressort(self):
-        service = self._get_service('twitter', main=False)
+        service = self._get_twitter_service(main=False)
         return service and service['account']
 
     @property
     def twitter_ressort_enabled(self):
-        service = self._get_service('twitter', main=False)
+        service = self._get_twitter_service(main=False)
         return service and service['enabled']
+
+    def _get_twitter_service(self, main=True):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        for service in self.message_config:
+            if service['type'] != 'twitter':
+                continue
+            account = service.get('account')
+            is_main = (account == source.MAIN_ACCOUNT)
+            if is_main == main:
+                return service
+        return None
 
     @property
     def mobile_enabled(self):
@@ -140,21 +163,6 @@ class AccountData(grok.Adapter):
         else:
             service = None
         return service and service.get('override_text')
-
-    def _get_service(self, type_, main=True):
-        source = {
-            'twitter': zeit.push.interfaces.twitterAccountSource,
-            'facebook': zeit.push.interfaces.facebookAccountSource,
-        }[type_](None)
-
-        for service in self.message_config:
-            if service['type'] != type_:
-                continue
-            account = service.get('account')
-            is_main = (account == source.MAIN_ACCOUNT)
-            if is_main == main:
-                return service
-        return None
 
     # Writing happens all services at once in the form, so we don't need to
     # worry about identifying entries in message_config (which would be quite
