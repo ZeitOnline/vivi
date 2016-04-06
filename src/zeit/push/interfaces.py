@@ -187,10 +187,17 @@ class IAccountData(zope.interface.Interface):
     facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'))
     facebook_main_text = zope.schema.Text(
         title=_('Facebook Main Text'), required=False)
+
     facebook_magazin_enabled = zope.schema.Bool(
         title=_('Enable Facebook Magazin'))
     facebook_magazin_text = zope.schema.Text(
         title=_('Facebook Magazin Text'), required=False)
+
+    facebook_campus_enabled = zope.schema.Bool(
+        title=_('Enable Facebook Campus'))
+    facebook_campus_text = zope.schema.Text(
+        title=_('Facebook Campus Text'), required=False)
+
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort_enabled = zope.schema.Bool(
         title=_('Enable Twitter Ressort'))
@@ -198,5 +205,6 @@ class IAccountData(zope.interface.Interface):
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False)
+
     mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))
