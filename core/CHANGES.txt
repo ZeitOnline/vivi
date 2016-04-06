@@ -2,7 +2,7 @@ zeit.campus changes
 ====================
 
 
-1.4.0 (unreleased)
+1.4.0 (2016-04-06)
 ------------------
 
 - ZON-2494: Add ``IStudyCourse`` setting for articles
