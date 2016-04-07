@@ -1970,7 +1970,7 @@
     content: "Apps/Watch"
 }
 .type-article #form-social .field.fieldname-is_amp:before {
-    content: "Mobile Seiten";
+    content: "Mobile Plattformen";
     display: block;  /* counteract float: left of .widget */
 }
 /* end XXX */
