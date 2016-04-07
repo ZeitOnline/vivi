@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Apr  6 13:59:36 2016\n"
-"PO-Revision-Date: 2016-04-06 14:02+0100\n"
+"PO-Revision-Date: 2016-04-07 10:33+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2573,11 +2573,12 @@ msgstr "Seitenkopf"
 
 #: zeit/content/article/interfaces.py:78
 msgid "Is instant article"
-msgstr "Instant Article"
+msgstr "Bei Facebook als Instant Article darstellen"
 
 #: zeit/content/article/interfaces.py:83
 msgid "Is AMP"
-msgstr "Accelerated Mobile Pages (AMP)"
+msgstr ""
+"In Google Suchergebnissen als Accelerated Mobile Pages (AMP) darstellen"
 
 #: zeit/content/author/browser/form.py:150
 msgid "There were errors"
@@ -4396,7 +4397,7 @@ msgstr "Erzeugen"
 
 #: zeit/push/interfaces.py:197
 msgid "Enable Facebook"
-msgstr "Facebook ZEIT ONLINE"
+msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
 
 #: zeit/push/interfaces.py:199
 msgid "Facebook Main Text"
@@ -4404,7 +4405,7 @@ msgstr "Facebook-Posting ZEIT ONLINE"
 
 #: zeit/push/interfaces.py:202
 msgid "Enable Facebook Magazin"
-msgstr "Facebook ZEITmagazin"
+msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
 
 #: zeit/push/interfaces.py:204
 msgid "Facebook Magazin Text"
@@ -4412,7 +4413,7 @@ msgstr "Facebook-Posting ZEITmagazin"
 
 #: zeit/push/interfaces.py:207
 msgid "Enable Facebook Campus"
-msgstr "Facebook ZEITcampus"
+msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
 
 #: zeit/push/interfaces.py:209
 msgid "Facebook Campus Text"
@@ -4420,7 +4421,7 @@ msgstr "Facebook-Posting ZEITcampus"
 
 #: zeit/push/interfaces.py:211
 msgid "Enable Twitter"
-msgstr "@zeitonline"
+msgstr "Direkt auf Twitter @zeitonline veröffentlichen"
 
 #: zeit/push/interfaces.py:213
 msgid "Enable Twitter Ressort"
