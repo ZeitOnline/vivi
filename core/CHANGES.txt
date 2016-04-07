@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.15.2 (unreleased)
+3.15.2 (2016-04-07)
 -------------------
 
 - Add colorpicker for article teaser images (ZON-2898).
