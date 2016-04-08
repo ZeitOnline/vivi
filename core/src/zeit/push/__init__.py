@@ -10,6 +10,7 @@ product_config = """\
   facebook-accounts file://{fixtures}/facebook-accounts.xml
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
+  facebook-campus-account fb-campus
   parse-channel-breaking Eilmeldung
   parse-channel-news News
   parse-image-pattern 184x84
