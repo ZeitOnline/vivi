@@ -2,7 +2,7 @@ zeit.campus changes
 ====================
 
 
-1.5.0 (unreleased)
+1.5.0 (2016-04-08)
 ------------------
 
 - ZON-2930: Add separate facebook fields for article/gallery/link
