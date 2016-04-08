@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.browser.form import FormFields
+import zeit.campus.browser.social
 import zeit.cms.browser.interfaces
 import zeit.edit.browser.form
 import zope.interface
@@ -30,3 +31,8 @@ class StudyCourse(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit study course')
     form_fields = FormFields(
         zeit.campus.interfaces.IStudyCourse).select('course')
+
+
+class Social(zeit.content.article.edit.browser.social.Social,
+             zeit.campus.browser.social.SocialBase):
+    pass

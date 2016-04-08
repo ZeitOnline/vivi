@@ -13,6 +13,8 @@
   <include package="zeit.content.infobox" file="ftesting.zcml"/>
   <include package="zeit.content.link" file="ftesting.zcml"/>
 
+  <include package="zeit.push"/>
+
   <include package="zeit.campus" />
   <include package="zeit.campus.browser" />
 
