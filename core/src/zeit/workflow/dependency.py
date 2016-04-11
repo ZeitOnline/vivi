@@ -1,10 +1,6 @@
-
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.related.interfaces
 import zeit.workflow.interfaces
 import zope.component
-import zope.dublincore.interfaces
 import zope.interface
 
 

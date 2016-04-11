@@ -79,6 +79,20 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(2, len(self.task.test_log))
 
 
+class RelatedDependency(object):
+
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        relateds = zeit.cms.related.interfaces.IRelatedContent(self.context)
+        return relateds.related
+
+
 class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.LAYER
@@ -91,6 +105,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         self.patches.add_dict(
             zope.app.appsetup.product.getProductConfiguration('zeit.workflow'),
             {'dependency-publish-limit': 2})
+        self.zca.patch_adapter(RelatedDependency, name='related')
 
     def tearDown(self):
         self.patches.reset()
