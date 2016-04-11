@@ -76,6 +76,5 @@
 
   <!-- dependencies -->
   <adapter factory=".dependency.Dependencies" />
-  <adapter factory=".dependency.Relateds" name="relateds" />
 
 </configure>
