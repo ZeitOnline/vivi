@@ -76,7 +76,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(5, len(push.message_config))
+        self.assertEqual(6, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
