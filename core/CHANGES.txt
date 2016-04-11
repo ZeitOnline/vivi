@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Don't automatically publish RelatedContent anymore (ZON-2750).
 
+- Remove related CenterPages from references index (ZON-2750, ZON-2764).
+
 
 2.67.0 (2016-04-07)
 -------------------

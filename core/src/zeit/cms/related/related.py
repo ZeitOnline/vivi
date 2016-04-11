@@ -65,10 +65,12 @@ class RelatedReference(zeit.cms.content.reference.Reference):
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def related_references(context):
+    import zeit.content.cp.interfaces  # XXX circular dependency
     related = zeit.cms.related.interfaces.IRelatedContent(context, None)
     if related is None:
         return None
-    return related.related
+    return [x for x in related.related
+            if not zeit.content.cp.interfaces.ICenterPage.providedBy(x)]
 
 
 @zope.component.adapter(
