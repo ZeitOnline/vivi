@@ -45,15 +45,6 @@ class TestXMLTeaser(XMLTeaserBase):
         self.assertRaises(ValueError,
                           setattr, self.teaser, 'free_teaser', False)
 
-    def test_original_content_should_be_part_of_cp_references(self):
-        from zeit.cms.relation.interfaces import IReferences
-        self.teaser.free_teaser = True
-        references = IReferences(self.cp)
-        self.assertEqual(
-            [self.teaser.uniqueId,
-             'http://xml.zeit.de/testcontent'],
-            sorted(x.uniqueId for x in references))
-
     def test_update_metadata_uses_free_teaser_not_referenced_object(self):
         self.teaser.free_teaser = True
         self.teaser.teaserSupertitle = 'teaserSupertitle'

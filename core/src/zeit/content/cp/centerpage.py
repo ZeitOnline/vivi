@@ -302,10 +302,9 @@ def cms_content_iter(context):
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def cp_references(context):
-    cms_content = list(zeit.content.cp.interfaces.ICMSContentIterable(context))
     if context.header_image:
-        cms_content.append(context.header_image)
-    return cms_content
+        return [context.header_image]
+    return []
 
 
 @zope.component.adapter(
