@@ -105,10 +105,13 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         self.patches.add_dict(
             zope.app.appsetup.product.getProductConfiguration('zeit.workflow'),
             {'dependency-publish-limit': 2})
-        self.zca.patch_adapter(RelatedDependency, name='related')
+        zope.component.getSiteManager().registerAdapter(
+            RelatedDependency, name='related')
 
     def tearDown(self):
         self.patches.reset()
+        zope.component.getSiteManager().unregisterAdapter(
+            RelatedDependency, name='related')
         super(PublicationDependencies, self).tearDown()
 
     def populate_repository_with_dummy_content(self):
