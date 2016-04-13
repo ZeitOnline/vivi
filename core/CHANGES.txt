@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.68.0 (unreleased)
+2.68.0 (2016-04-13)
 -------------------
 
 - Don't automatically publish RelatedContent anymore (ZON-2750).
