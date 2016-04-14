@@ -10,3 +10,7 @@
 label[for="form.action_url"] + .hint {
   display: block;
 }
+
+.type-article #edit-form-article-content .block.type-studycourse .field.fieldname-course .label {
+    display: none;
+}
