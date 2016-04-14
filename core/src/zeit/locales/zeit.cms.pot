@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Apr  6 13:59:36 2016\n"
+"POT-Creation-Date: Thu Apr 14 13:48:53 2016\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -263,7 +263,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:588
 #: zeit/content/article/edit/browser/form.py:622
 #: zeit/content/article/edit/browser/reference.py:42
-#: zeit/content/article/edit/browser/social.py:33
+#: zeit/content/article/edit/browser/social.py:31
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/gallery/browser/form.py:62
@@ -378,7 +378,11 @@ msgstr ""
 msgid "^^ mandatory"
 msgstr ""
 
-#: zeit/campus/browser/article.py:13
+#: zeit/campus/article.py:64
+msgid "Study Course block"
+msgstr ""
+
+#: zeit/campus/browser/article.py:14
 msgid "edit topic page"
 msgstr ""
 
@@ -401,21 +405,21 @@ msgstr ""
 msgid "View infobox"
 msgstr ""
 
-#: zeit/campus/interfaces.py:120
+#: zeit/campus/interfaces.py:121
 msgid "Study course"
 msgstr ""
 
-#: zeit/campus/interfaces.py:126
+#: zeit/campus/interfaces.py:127
 #: zeit/content/advertisement/interfaces.py:30
 msgid "Advertisement teaser"
 msgstr ""
 
-#: zeit/campus/interfaces.py:130
+#: zeit/campus/interfaces.py:131
 #: zeit/content/advertisement/interfaces.py:34
 msgid "Button text"
 msgstr ""
 
-#: zeit/campus/interfaces.py:133
+#: zeit/campus/interfaces.py:134
 #: zeit/content/advertisement/interfaces.py:52
 #: zeit/content/link/interfaces.py:24
 msgid "Link address"
@@ -3039,7 +3043,7 @@ msgstr ""
 msgid "Centerpage 2009"
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:507
+#: zeit/content/cp/centerpage.py:506
 #. Default: ""
 msgid "The centerpage ${uniqueId} is of type ${content_type}, but this vivi handles ${current_type}."
 msgstr ""

@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Apr  6 13:59:36 2016\n"
-"PO-Revision-Date: 2016-04-07 10:33+0100\n"
+"POT-Creation-Date: Thu Apr 14 13:48:53 2016\n"
+"PO-Revision-Date: 2016-04-14 13:50+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -235,7 +235,7 @@ msgstr "Termin bearbeiten"
 #: zeit/content/article/edit/browser/form.py:588
 #: zeit/content/article/edit/browser/form.py:622
 #: zeit/content/article/edit/browser/reference.py:42
-#: zeit/content/article/edit/browser/social.py:33
+#: zeit/content/article/edit/browser/social.py:31
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/gallery/browser/form.py:62
@@ -344,7 +344,11 @@ msgstr "↝ vorschlag"
 msgid "^^ mandatory"
 msgstr "⇈ zwingend"
 
-#: zeit/campus/browser/article.py:13
+#: zeit/campus/article.py:64
+msgid "Study Course block"
+msgstr "Studiengang-Orientierungsangebot"
+
+#: zeit/campus/browser/article.py:14
 msgid "edit topic page"
 msgstr "Link zur Themenseite bearbeiten"
 
@@ -364,19 +368,19 @@ msgstr "Infobox bearbeiten"
 msgid "View infobox"
 msgstr "Infobox anzeigen"
 
-#: zeit/campus/interfaces.py:120
+#: zeit/campus/interfaces.py:121
 msgid "Study course"
 msgstr "Studiengang"
 
-#: zeit/campus/interfaces.py:126 zeit/content/advertisement/interfaces.py:30
+#: zeit/campus/interfaces.py:127 zeit/content/advertisement/interfaces.py:30
 msgid "Advertisement teaser"
 msgstr "Teaser"
 
-#: zeit/campus/interfaces.py:130 zeit/content/advertisement/interfaces.py:34
+#: zeit/campus/interfaces.py:131 zeit/content/advertisement/interfaces.py:34
 msgid "Button text"
 msgstr "Text Button"
 
-#: zeit/campus/interfaces.py:133 zeit/content/advertisement/interfaces.py:52
+#: zeit/campus/interfaces.py:134 zeit/content/advertisement/interfaces.py:52
 #: zeit/content/link/interfaces.py:24
 msgid "Link address"
 msgstr "Link-Adresse (URL)"
@@ -2985,7 +2989,7 @@ msgid "Centerpage 2009"
 msgstr "Center-Page 2009"
 
 #. Default: ""
-#: zeit/content/cp/centerpage.py:507
+#: zeit/content/cp/centerpage.py:506
 msgid ""
 "The centerpage ${uniqueId} is of type ${content_type}, but this vivi handles "
 "${current_type}."
