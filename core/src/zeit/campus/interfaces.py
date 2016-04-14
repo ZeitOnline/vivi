@@ -121,14 +121,3 @@ class IStudyCourse(zeit.edit.interfaces.IBlock):
         title=_('Study course'),
         required=True,
         source=STUDY_COURSE_SOURCE)
-
-    # For display by zeit.web
-    text = zope.schema.Text(
-        title=_("Advertisement teaser"),
-        readonly=True)
-
-    button_text = zope.schema.TextLine(
-        title=_('Button text'),
-        readonly=True)
-
-    url = zope.schema.URI(title=_(u"Link address"), readonly=True)

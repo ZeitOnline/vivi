@@ -45,18 +45,6 @@ class StudyCourse(zeit.edit.block.SimpleElement):
     def course(self, value):
         self._course = value
 
-    @property
-    def text(self):
-        return self.course.text
-
-    @property
-    def href(self):
-        return self.course.href
-
-    @property
-    def button_text(self):
-        return self.course.button_text
-
 
 class StudyCourseBlockFactory(zeit.content.article.edit.block.BlockFactory):
 
