@@ -2,7 +2,7 @@ zeit.campus changes
 ====================
 
 
-1.6.0 (unreleased)
+1.6.0 (2016-04-15)
 ------------------
 
 - ZON-2988: Change ``IStudyCourse`` from DAVPropertiesAdapter to article module
