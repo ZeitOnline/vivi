@@ -82,10 +82,6 @@
       permission="zope.View"
       />
     <require
-      attributes="context"
-      permission="zope.View"
-      />
-    <require
       set_schema=".interfaces.IStudyCourse"
       permission="zeit.EditContent"
       />

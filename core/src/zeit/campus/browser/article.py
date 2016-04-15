@@ -3,6 +3,7 @@ from zeit.content.article.edit.browser.form import FormFields
 import zeit.campus.browser.social
 import zeit.cms.browser.interfaces
 import zeit.edit.browser.form
+import zope.formlib.form
 import zope.interface
 
 
@@ -27,10 +28,13 @@ class Topic(zeit.edit.browser.form.InlineForm):
 class StudyCourse(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    prefix = 'studycourse'
     undo_description = _('edit study course')
-    form_fields = FormFields(
+    form_fields = zope.formlib.form.FormFields(
         zeit.campus.interfaces.IStudyCourse).select('course')
+
+    @property
+    def prefix(self):
+        return 'studycourse.{0}'.format(self.context.__name__)
 
 
 class Social(zeit.content.article.edit.browser.social.Social,

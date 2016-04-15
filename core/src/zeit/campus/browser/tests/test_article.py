@@ -12,16 +12,20 @@ class StudyCourseTest(zeit.cms.testing.BrowserTestCase):
             with zeit.cms.testing.interaction():
                 article = zeit.content.article.testing.create_article()
                 self.repository['campus']['article'] = article
+                co = zeit.cms.checkout.interfaces.ICheckoutManager(
+                    article).checkout()
+                body = zeit.content.article.edit.interfaces.IEditableBody(co)
+                block = body.create_item('studycourse')
+                block.__name__ = 'blockname'
         b = self.browser
         b.open(
-            'http://localhost/++skin++vivi/repository'
-            '/campus/article/@@checkout')
-        b.open('@@edit.form.studycourse?show_form=1')
+            'http://localhost/++skin++vivi/workingcopy/zope.user/article'
+            '/editable-body/blockname/@@edit-studycourse?show_form=1')
         self.assertEqual(
             ['Sonstiges'], b.getControl('Study course').displayValue)
         b.getControl('Study course').displayValue = ['Mathematik']
         b.getControl('Apply').click()
-        b.open('@@edit.form.studycourse?show_form=1')
+        b.open('@@edit-studycourse?show_form=1')
         self.assertEqual(
             ['Mathematik'], b.getControl('Study course').displayValue)
 

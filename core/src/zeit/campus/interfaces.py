@@ -86,7 +86,8 @@ class StudyCourse(zeit.cms.content.sources.AllowedBase):
         self.button_text = button_text
 
     def is_allowed(self, context):
-        return super(StudyCourse, self).is_allowed(context.context)
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super(StudyCourse, self).is_allowed(article)
 
 
 class StudyCourseSource(
@@ -113,21 +114,10 @@ class StudyCourseSource(
 STUDY_COURSE_SOURCE = StudyCourseSource()
 
 
-class IStudyCourse(zope.interface.Interface):
+class IStudyCourse(zeit.edit.interfaces.IBlock):
 
     # For editing
     course = zope.schema.Choice(
         title=_('Study course'),
         required=True,
         source=STUDY_COURSE_SOURCE)
-
-    # For display by zeit.web
-    text = zope.schema.Text(
-        title=_("Advertisement teaser"),
-        readonly=True)
-
-    button_text = zope.schema.TextLine(
-        title=_('Button text'),
-        readonly=True)
-
-    url = zope.schema.URI(title=_(u"Link address"), readonly=True)

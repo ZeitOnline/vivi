@@ -1,8 +1,12 @@
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.campus.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.reference
 import zeit.cms.interfaces
+import zeit.content.article.edit.block
+import zeit.content.article.edit.interfaces
+import zeit.edit.block
 import zope.interface
 
 
@@ -18,14 +22,15 @@ class Topic(zeit.cms.related.related.RelatedBase):
         zeit.campus.interfaces.ITopic['label'])
 
 
-class StudyCourse(zeit.cms.content.dav.DAVPropertiesAdapter):
+class StudyCourse(zeit.edit.block.SimpleElement):
 
+    area = zeit.content.article.edit.interfaces.IEditableBody
     grok.implements(zeit.campus.interfaces.IStudyCourse)
+    type = 'studycourse'
 
-    _course = zeit.cms.content.dav.DAVProperty(
-        zeit.campus.interfaces.IStudyCourse['course'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'study_course')
+    _course = zeit.cms.content.property.DAVConverterWrapper(
+        zeit.cms.content.property.ObjectPathAttributeProperty(
+            '.', 'id'), zeit.campus.interfaces.IStudyCourse['course'])
 
     @property
     def course(self):
@@ -40,14 +45,8 @@ class StudyCourse(zeit.cms.content.dav.DAVPropertiesAdapter):
     def course(self, value):
         self._course = value
 
-    @property
-    def text(self):
-        return self.course.text
 
-    @property
-    def href(self):
-        return self.course.href
+class StudyCourseBlockFactory(zeit.content.article.edit.block.BlockFactory):
 
-    @property
-    def button_text(self):
-        return self.course.button_text
+    produces = StudyCourse
+    title = _('Study Course block')

@@ -25,23 +25,27 @@
     />
 
   <browser:viewlet
-    for="..interfaces.IZCOArticle"
+    for="..interfaces.IStudyCourse"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.content.article.edit.browser.form.OptionFormGroup"
+    view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.studycourse"
+    name="edit-studycourse"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="50"
+    weight="10"
     />
 
   <browser:page
-    for="..interfaces.IZCOArticle"
+    for="..interfaces.IStudyCourse"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.studycourse"
+    name="edit-studycourse"
     class=".article.StudyCourse"
     permission="zope.View"
     />
+
+  <class class="..article.StudyCourse">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
 
   <browser:page
     for="..interfaces.IZCOArticle"
