@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.7.2 (unreleased)
+3.7.2 (2016-04-18)
 ------------------
 
 - Don't load Zope/UI specific ZCML in the model ZCML
