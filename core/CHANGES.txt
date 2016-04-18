@@ -232,7 +232,7 @@ zeit.brightcove changes
 0.8.0 (2010-08-16)
 ------------------
 
-- New layout for video-form 
+- New layout for video-form
 
 - Honour the default values of the interface in mapped properties.
 
@@ -241,8 +241,8 @@ zeit.brightcove changes
 ------------------
 
 - Fix tests after changes in zeit.cms (#7549)
-- changes some default values  
-- Knopf für "Speichern und zur Suche" (#7827)
+- changes some default values
+- Button "Save and back to search" (#7827)
 
 0.6.1 (2010-07-15)
 ------------------
@@ -261,7 +261,7 @@ zeit.brightcove changes
 - Use an empty string instead of null in REST calls for brightcove does not
   recognize null
 - Update brightcove videos if video_still is updated. Even though the
-  modified_date is not updated, this might happen in upstream.  
+  modified_date is not updated, this might happen in upstream.
 - Add image-tag to video XML reference (#7625)
 - Add type="video" attribute to video XML reference (#7625)
 
@@ -327,7 +327,7 @@ zeit.brightcove changes
 ------------------
 
 - videoIds in Playlists are a property
-- added IBCContent between ICMSContent and IBrightcoveContent 
+- added IBCContent between ICMSContent and IBrightcoveContent
 - IReferenceProvider adapted, which returns a list of IBCContent
   (to avoid API-Calls)
 - set timdedelta for modified videos to 2hours. this decreases amount of
@@ -337,7 +337,7 @@ zeit.brightcove changes
 ------------------
 
 - brightcove will delete all videos with state != ACTIVE from internal and
-  public solr 
+  public solr
 
 
 0.1.1 (2010-04-12)
