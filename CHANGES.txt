@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 2.1.12 (2015-10-29)

@@ -3,6 +3,9 @@
   <include package="zeit.cms" file="integration.zcml" />
   <include package="zeit.invalidate" />
 
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
 
@@ -34,5 +37,6 @@
   <include package="zeit.imp.browser" />
 
   <include package="zeit.brightcove" />
+  <include package="zeit.brightcove.browser" />
 
 </configure>
