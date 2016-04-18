@@ -81,8 +81,6 @@
     />
   <subscriber handler=".centerpage.update_feed_items" />
 
-  <include package=".browser" />
-
   <!-- Areas -->
   <adapter
     factory=".area.RegionFactory"
