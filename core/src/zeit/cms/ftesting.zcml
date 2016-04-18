@@ -11,6 +11,7 @@
   <meta:provides feature="zeit.cms.decentral-syndication" />
 
 
+  <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" />
   <include package="zeit.cms.browser" />
   <include package="zeit.cms.sitecontrol" />
