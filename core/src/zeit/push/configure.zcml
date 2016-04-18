@@ -31,13 +31,4 @@
       />
   </class>
 
-  <browser:page
-    for="*"
-    name="breaking-banner-retract"
-    class=".banner.Retract"
-    template="banner-retract.pt"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zeit.workflow.Publish"
-    />
-
 </configure>
