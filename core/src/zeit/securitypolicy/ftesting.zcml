@@ -1,9 +1,8 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="zeit.cms">
 
-  <!-- This file is the equivalent of site.zcml and it is -->
-  <!-- used for functional testing setup -->
-
+  <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" />
   <include package="zeit.connector" file="mock-connector.zcml" />
   <include package="zeit.cms.tagging" file="mock.zcml" />
