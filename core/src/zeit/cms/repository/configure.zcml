@@ -7,7 +7,7 @@
   <class class=".repository.Repository">
     <require
       permission="zope.View"
-      interface="zope.app.container.interfaces.IReadContainer" 
+      interface="zope.app.container.interfaces.IReadContainer"
       />
     <require
       permission="zeit.ChangeRepository"
@@ -67,7 +67,7 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class=".unknown.PersistentUnknownResource" />
   </class>
-  
+
   <adapter
     factory=".copypastemove.CMSObjectMover"
     permission="zeit.RenameContent"
@@ -82,7 +82,7 @@
   <class class=".checkout.AutomaticallyRenameable">
     <require
       permission="zope.View"
-      interface=".interfaces.IAutomaticallyRenameable" 
+      interface=".interfaces.IAutomaticallyRenameable"
       />
     <require
       permission="zeit.EditContent"
