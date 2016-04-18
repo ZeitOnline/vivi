@@ -58,7 +58,7 @@
   </class>
 
   <class class=".unknown.PersistentUnknownResource"
-    zcml:have="zeit.cms.testing">
+    zcml:condition="have zeit.cms.testing">
     <implements interface="zeit.cms.interfaces.IEditorialContent" />
   </class>
 
