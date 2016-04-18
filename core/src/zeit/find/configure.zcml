@@ -4,7 +4,6 @@
 
   <include package="grokcore.component" file="meta.zcml" />
   <grok:grok package="." />
-  <include package=".browser" />
 
 </configure>
 
