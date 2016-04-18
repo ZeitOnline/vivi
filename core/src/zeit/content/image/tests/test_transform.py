@@ -81,6 +81,14 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         image = self.transform.create_variant_image(variant)
         self.assertEqual((8, 8), image.getImageSize())
 
+    def test_does_not_exceed_maximum_size(self):
+        variant = Variant(
+            id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1',
+            size=(10, 10))
+        self.transform.MAXIMUM_IMAGE_SIZE = 5
+        image = self.transform.create_variant_image(variant)
+        self.assertEqual((5, 5), image.getImageSize())
+
     def test_focus_point_after_crop_has_same_relative_position_as_before(self):
         variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
                           zoom=1, aspect_ratio='1:1')

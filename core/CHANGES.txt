@@ -4,7 +4,7 @@ zeit.content.image changes
 2.13.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set a maximum image size to protect against overload
 
 
 2.13.0 (2016-04-07)

@@ -3,7 +3,6 @@ import PIL.ImageColor
 import PIL.ImageEnhance
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
-import zeit.connector.zopeconnector
 import zeit.content.image.interfaces
 import zope.app.appsetup.product
 import zope.component
@@ -15,6 +14,8 @@ class ImageTransform(object):
 
     zope.interface.implements(zeit.content.image.interfaces.ITransform)
     zope.component.adapts(zeit.content.image.interfaces.IImage)
+
+    MAXIMUM_IMAGE_SIZE = 5000
 
     def __init__(self, context):
         self.context = context
@@ -109,6 +110,10 @@ class ImageTransform(object):
             override_ratio = float(w) / float(h)
             target_width, target_height = self._fit_ratio_to_image(
                 target_width, target_height, override_ratio)
+        if target_width > self.MAXIMUM_IMAGE_SIZE:
+            target_width = self.MAXIMUM_IMAGE_SIZE
+        if target_height > self.MAXIMUM_IMAGE_SIZE:
+            target_height = self.MAXIMUM_IMAGE_SIZE
 
         x, y = self._determine_crop_position(
             variant, target_width, target_height)
