@@ -4,7 +4,7 @@ zeit.content.article changes
 3.15.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 3.15.4 (2016-04-15)
