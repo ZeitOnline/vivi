@@ -13,6 +13,8 @@
 
   <include package="zeit.cms" />
   <include package="zeit.cms.browser" />
+  <include package="zeit.cms.sitecontrol" />
+  <include package="zeit.cms.tagging.browser" />
   <include package="zeit.cms.testcontenttype" />
 
   <include package="zeit.connector" file="mock-connector.zcml" />

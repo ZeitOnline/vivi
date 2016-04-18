@@ -1,7 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <include package=".browser" />
-
   <class class=".tag.Tag">
     <require
       interface="zeit.cms.tagging.interfaces.ITag"
