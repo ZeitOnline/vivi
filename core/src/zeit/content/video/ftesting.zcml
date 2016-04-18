@@ -7,6 +7,7 @@
   <includeOverrides package="zeit.workflow" file="ftesting.zcml"/>
 
   <include package="zeit.content.video" />
+  <include package="zeit.content.video.browser" />
 
   <include package="zeit.solr" />
 

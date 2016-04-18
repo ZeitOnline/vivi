@@ -4,7 +4,7 @@ zeit.content.video changes
 2.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 2.5.2 (2015-07-24)
