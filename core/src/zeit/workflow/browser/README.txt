@@ -306,6 +306,7 @@ checked out:
         ...
 >>> run_tasks()
 >>> browser.getLink('Checkout').click()
+>>> checked_out = browser.url
 
 Unpublish now:
 
