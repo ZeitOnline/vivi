@@ -19,5 +19,7 @@
   <include package="zeit.workflow.browser" />
 
   <include package="zeit.cms.testcontenttype" />
+  <include package="zeit.workflow.json" />
+  <include package="zeit.workflow.xmlrpc" />
 
 </configure>

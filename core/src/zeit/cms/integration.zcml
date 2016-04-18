@@ -10,6 +10,8 @@
 
   <include package="zeit.workflow" />
   <include package="zeit.workflow.browser" />
+  <include package="zeit.workflow.json" />
+  <include package="zeit.workflow.xmlrpc" />
 
   <include package="zeit.ghost" />
   <include package="zeit.ghost.browser" />
