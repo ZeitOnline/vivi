@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.2.6 (unreleased)
+2.2.6 (2016-04-18)
 ------------------
 
 - Don't load Zope/UI specific ZCML in the model ZCML
