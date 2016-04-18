@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 2.7.1 (2015-08-24)
