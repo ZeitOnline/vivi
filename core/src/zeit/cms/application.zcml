@@ -1,7 +1,10 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:i18n="http://namespaces.zope.org/i18n">
+
+  <meta:provides feature="zeit.cms.ui" />
 
   <!-- meta -->
   <include package="zope.app.component" file="meta.zcml" />

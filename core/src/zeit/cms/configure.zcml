@@ -4,7 +4,6 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
-  <include file="application.zcml" />
   <include package="grokcore.component" file="meta.zcml" />
   <include package="grokcore.view" file="meta.zcml" />
   <include package="grokcore.view"/>
@@ -32,7 +31,6 @@
   <include package=".workflow" />
   <include package=".relation" />
   <include package=".settings" />
-  <include package=".sitecontrol" />
   <include package=".tagging" />
   <include package=".section" />
   <include package=".redirect" />

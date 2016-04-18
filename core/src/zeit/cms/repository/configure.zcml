@@ -7,7 +7,7 @@
   <class class=".repository.Repository">
     <require
       permission="zope.View"
-      interface="zope.app.container.interfaces.IReadContainer" 
+      interface="zope.app.container.interfaces.IReadContainer"
       />
     <require
       permission="zeit.ChangeRepository"
@@ -41,8 +41,9 @@
 
   <subscriber handler=".repository.initializeRepository" />
   <subscriber
+    zcml:condition="have zeit.cms.ui"
     handler=".repository.deny_edit_permissions_in_repository_on_startup" />
-  
+
   <adapter factory=".preference.preferenceFactory" />
 
   <class class=".unknown.PersistentUnknownResource">
@@ -58,7 +59,7 @@
   </class>
 
   <class class=".unknown.PersistentUnknownResource"
-    zcml:have="zeit.cms.testing">
+    zcml:condition="have zeit.cms.testing">
     <implements interface="zeit.cms.interfaces.IEditorialContent" />
   </class>
 
@@ -67,7 +68,7 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class=".unknown.PersistentUnknownResource" />
   </class>
-  
+
   <adapter
     factory=".copypastemove.CMSObjectMover"
     permission="zeit.RenameContent"
@@ -82,7 +83,7 @@
   <class class=".checkout.AutomaticallyRenameable">
     <require
       permission="zope.View"
-      interface=".interfaces.IAutomaticallyRenameable" 
+      interface=".interfaces.IAutomaticallyRenameable"
       />
     <require
       permission="zeit.EditContent"

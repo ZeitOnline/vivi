@@ -5,9 +5,6 @@
 
   <grok:grok package="."/>
 
-  <include package=".xmlrpc" />
-  <include package=".json" />
-
   <adapter factory=".workflow.ContentWorkflow" 
     provides="zeit.workflow.interfaces.IContentWorkflow"
     trusted="yes"
