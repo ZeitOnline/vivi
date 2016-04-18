@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 2.2.5 (2015-06-30)

@@ -7,6 +7,7 @@
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.vgwort" />
+  <include package="zeit.vgwort.browser" />
 
   <include package="zeit.content.author" />
 

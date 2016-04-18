@@ -1,0 +1,20 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="zeit.vgwort.available_tokens"
+    class=".token.AvailableTokens"
+    permission="zope.Public"
+    />
+
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".token.TokenStorage"
+    methods="claim"
+    permission="zope.Public"
+    />
+
+</configure>
