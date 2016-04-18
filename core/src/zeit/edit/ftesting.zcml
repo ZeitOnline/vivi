@@ -8,6 +8,7 @@
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
   <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
 
   <include package="zeit.find" />
 

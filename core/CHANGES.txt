@@ -4,7 +4,7 @@ Changes
 2.13.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't load Zope/UI specific ZCML in the model ZCML
 
 
 2.13.3 (2016-01-22)
