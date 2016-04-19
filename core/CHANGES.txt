@@ -4,7 +4,7 @@ zeit.cms changes
 2.69.1 (unreleased)
 -------------------
 
-- MAINT: Speed up appserver start by not loading unnecessary zope ZCML
+- nothing changed yet
 
 
 2.69.0 (2016-04-19)
