@@ -65,8 +65,7 @@ class ITopic(zope.interface.Interface):
 
     label = zope.schema.TextLine(
         title=_("Topic label"),
-        required=False,
-        constraint=zeit.cms.interfaces.valid_name)
+        required=False)
 
 
 class IDebate(zope.interface.Interface):
