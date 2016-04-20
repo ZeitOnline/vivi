@@ -404,7 +404,8 @@ class ICitation(zeit.edit.interfaces.IBlock):
         title=_('Citation'))
 
     attribution = zope.schema.TextLine(
-        title=_('Attribution'))
+        title=_('Attribution'),
+        required=False)
 
     url = zope.schema.URI(
         title=_('URL'),
