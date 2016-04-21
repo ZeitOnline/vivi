@@ -1258,7 +1258,7 @@ Infobox
 <article...>
   <head/>
   <body>
-    <infobox href="http://xml.zeit.de/2006/ib".../>
+    <infobox href="http://xml.zeit.de/2006/ib"...
   </body>
 </article>
 
@@ -1289,7 +1289,7 @@ Timeline
 <article...>
   <head/>
   <body>
-    <timeline href="http://xml.zeit.de/2006/ib".../>
+    <timeline href="http://xml.zeit.de/2006/ib"...
   </body>
 </article>
 
