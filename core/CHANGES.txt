@@ -4,7 +4,7 @@ zeit.cms changes
 2.69.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove accidental JS debugger statement
 
 
 2.69.1 (2016-04-21)
