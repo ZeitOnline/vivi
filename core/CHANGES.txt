@@ -4,7 +4,7 @@ zeit.cms changes
 2.69.1 (unreleased)
 -------------------
 
-- nothing changed yet
+- Silence annoying ZCML warning
 
 
 2.69.0 (2016-04-19)
