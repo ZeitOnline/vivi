@@ -2,7 +2,7 @@ zeit.campus changes
 ====================
 
 
-1.6.2 (unreleased)
+1.6.2 (2016-04-21)
 ------------------
 
 - Only show relevant infobox form fields
