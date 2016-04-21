@@ -1,16 +1,14 @@
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import lxml.objectify
 import rwproperty
 import zeit.cms.content.property
-import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.infobox.interfaces
 import zope.interface
 
 
-class Infobox(zeit.cms.content.xmlsupport.XMLContentBase):
+class Infobox(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.infobox.interfaces.IInfobox,
                               zeit.cms.interfaces.IEditorialContent)

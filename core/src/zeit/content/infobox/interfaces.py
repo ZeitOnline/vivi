@@ -6,7 +6,8 @@ import zope.interface
 import zope.schema
 
 
-class IInfobox(zeit.cms.content.interfaces.IXMLContent):
+class IInfobox(zeit.cms.content.interfaces.IXMLContent,
+               zeit.cms.content.interfaces.ICommonMetadata):
 
     supertitle = zope.schema.TextLine(title=_('Supertitle'))
 
@@ -17,6 +18,10 @@ class IInfobox(zeit.cms.content.interfaces.IXMLContent):
                 title=_('Title')),
              zc.form.field.HTMLSnippet(title=_("Text")))
         ))
+
+    ressort = zeit.cms.content.interfaces.ICommonMetadata['ressort'].bind(None)
+    ressort.context = None
+    ressort.required = False
 
 
 class InfoboxSource(zeit.cms.content.contentsource.CMSContentSource):

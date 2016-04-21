@@ -17,7 +17,9 @@ import zope.formlib.form
 class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.infobox.interfaces.IInfobox).omit('xml')
+        zeit.content.infobox.interfaces.IInfobox).select(
+            'supertitle', 'contents', '__name__',
+            'ressort', 'sub_ressort')
 
     field_groups = (
         gocept.form.grouped.Fields(
