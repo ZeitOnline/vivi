@@ -1,7 +1,7 @@
 zeit.content.infobox changes
 ============================
 
-1.23.7 (unreleased)
+1.24.0 (2016-04-21)
 -------------------
 
 - Add optional ``ressort`` setting to infobox, so they can be marked
@@ -53,7 +53,7 @@ zeit.content.infobox changes
 1.22.2 (2009-06-08)
 -------------------
 
-- Tests für neuen WYSIWYG-Konverter angepasst.
+- Tests fĂźr neuen WYSIWYG-Konverter angepasst.
 
 1.22.1 (2009-06-05)
 -------------------
