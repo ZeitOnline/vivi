@@ -2,7 +2,8 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:meta="http://namespaces.zope.org/meta"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:i18n="http://namespaces.zope.org/i18n">
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="zeit.cms">
 
   <meta:provides feature="zeit.cms.ui" />
 
