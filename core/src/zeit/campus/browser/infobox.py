@@ -13,9 +13,9 @@ import zope.formlib.form
 
 class FormBase(zeit.content.infobox.browser.form.FormBase):
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.infobox.interfaces.IInfobox,
-        zeit.campus.interfaces.IDebate).omit('xml')
+    form_fields = (
+        zeit.content.infobox.browser.form.FormBase.form_fields
+        + zope.formlib.form.FormFields(zeit.campus.interfaces.IDebate))
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
