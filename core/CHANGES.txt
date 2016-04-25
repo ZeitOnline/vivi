@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.7.3 (unreleased)
 ------------------
 
+- Declare priority high (and homepage) for centerpages (ZON-2924).
+
 - Make cpextra source support ``available``.
 
 
