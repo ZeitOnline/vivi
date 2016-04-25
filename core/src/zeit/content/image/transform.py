@@ -110,10 +110,6 @@ class ImageTransform(object):
             override_ratio = float(w) / float(h)
             target_width, target_height = self._fit_ratio_to_image(
                 target_width, target_height, override_ratio)
-        if target_width > self.MAXIMUM_IMAGE_SIZE:
-            target_width = self.MAXIMUM_IMAGE_SIZE
-        if target_height > self.MAXIMUM_IMAGE_SIZE:
-            target_height = self.MAXIMUM_IMAGE_SIZE
 
         x, y = self._determine_crop_position(
             variant, target_width, target_height)
@@ -121,7 +117,12 @@ class ImageTransform(object):
             self.image, x, y, x + target_width, y + target_height)
 
         if size:
-            image = image.resize(size, PIL.Image.ANTIALIAS)
+            w, h = size
+            if w > self.MAXIMUM_IMAGE_SIZE:
+                w = self.MAXIMUM_IMAGE_SIZE
+            if h > self.MAXIMUM_IMAGE_SIZE:
+                h = self.MAXIMUM_IMAGE_SIZE
+            image = image.resize((w, h), PIL.Image.ANTIALIAS)
 
         return image
 
