@@ -92,4 +92,10 @@
     Sport Extra
   </cpextra>
 
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           available="zeit.cms.section.interfaces.IZONContent"
+           id="zonextra">
+    ZON Extra
+  </cpextra>
+
 </cpextras>

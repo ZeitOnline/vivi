@@ -121,6 +121,15 @@ The cpextras have titles:
 >>> print term.title
 Wetter
 
+cpextras can be filtered using `available` which targets the containing
+centerpage:
+
+>>> import zeit.cms.section.interfaces
+>>> import zope.interface
+>>> zope.interface.alsoProvides(cp, zeit.cms.section.interfaces.IZONContent)
+>>> 'zonextra' in list(source(cpextra))
+True
+
 
 Automatic mirgation from old data
 +++++++++++++++++++++++++++++++++

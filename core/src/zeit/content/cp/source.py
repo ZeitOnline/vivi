@@ -19,8 +19,11 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
     def isAvailable(self, node, context):
+        # Avoid circular import
+        from zeit.content.cp.interfaces import ICenterPage
+        cp = ICenterPage(context, None)
         for_ = zope.dottedname.resolve.resolve(node.get('for'))
-        return (super(CPExtraSource, self).isAvailable(node, context)
+        return (super(CPExtraSource, self).isAvailable(node, cp)
                 and for_.providedBy(context.__parent__))
 
 
