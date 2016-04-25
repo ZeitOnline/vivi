@@ -3,7 +3,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import datetime
 import feedparser
 import gocept.runner
-import grokcore.component
+import grokcore.component as grok
 import hashlib
 import logging
 import lxml.etree
@@ -183,11 +183,11 @@ class FeedValidator(object):
             self.messages.append(self.context.error)
 
 
-class FaviconDependency(grokcore.component.Adapter):
+class FaviconDependency(grok.Adapter):
 
-    grokcore.component.context(zeit.content.cp.interfaces.IFeed)
-    grokcore.component.name('favicon')
-    grokcore.component.implements(
+    grok.context(zeit.content.cp.interfaces.IFeed)
+    grok.name('favicon')
+    grok.implements(
         zeit.workflow.interfaces.IPublicationDependencies)
 
     def get_dependencies(self):
