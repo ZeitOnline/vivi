@@ -24,6 +24,22 @@ def installGeneralTaskService():
     _install_task_service('tasks.general', 'general', max_threads=5)
 
 
+def installHighPriorityTaskService():
+    _install_task_service('tasks.highprio', 'highprio', max_threads=5)
+
+
+def installLowPriorityTaskService():
+    _install_task_service('tasks.lowprio', 'lowprio', max_threads=1)
+
+
+def installHomepageTaskService():
+    _install_task_service('tasks.homepage', 'homepage', max_threads=1)
+
+
+def installEventTaskService():
+    _install_task_service('tasks.event', 'events', max_threads=1)
+
+
 def _install_task_service(name, utility_name, max_threads):
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
@@ -33,14 +49,6 @@ def _install_task_service(name, utility_name, max_threads):
     # queue differently than the SingleProcessor.
     tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
     tasks.processorArguments = {'maxThreads': max_threads}
-
-
-def installEventTaskService():
-    _install_task_service('tasks.event', 'events', max_threads=1)
-
-
-def installLowPriorityTaskService():
-    _install_task_service('tasks.lowprio', 'lowprio', max_threads=1)
 
 
 def installRelations():
@@ -73,7 +81,9 @@ def install(root):
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
     installGeneralTaskService()
     installEventTaskService()
+    installHighPriorityTaskService()
     installLowPriorityTaskService()
+    installHomepageTaskService()
     installRelations()
 
 

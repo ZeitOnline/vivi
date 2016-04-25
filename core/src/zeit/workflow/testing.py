@@ -26,6 +26,8 @@ product_config = """
     retract-script true
     dependency-publish-limit 100
 
+    task-queue-homepage homepage
+    task-queue-highprio highprio
     task-queue-default general
     task-queue-lowprio lowprio
 </product-config>
