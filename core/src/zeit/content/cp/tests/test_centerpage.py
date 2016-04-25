@@ -52,17 +52,9 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         return factory()
 
     def publish(self, content):
-        # for debugging errors during publishing
-        # import logging, sys
-        # logging.root.handlers = []
-        # logging.root.addHandler(logging.StreamHandler(sys.stderr))
-        # logging.root.setLevel(logging.DEBUG)
-
         zeit.cms.workflow.interfaces.IPublish(content).publish()
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
-        tasks.process()
-        self.assert_(zeit.cms.workflow.interfaces.IPublishInfo(
+        zeit.workflow.testing.run_publish()
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             content).published)
         return self.repository.getContent(content.uniqueId)
 
