@@ -1,5 +1,3 @@
-
-from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import datetime
 import feedparser
 import gocept.runner
@@ -197,6 +195,12 @@ class FaviconDependency(grok.Adapter):
         return []
 
 
+@grok.adapter(zeit.content.cp.interfaces.IFeed)
+@grok.implementer(zeit.cms.workflow.interfaces.IPublishPriority)
+def publish_priority_feed(context):
+    return zeit.cms.workflow.interfaces.PRIORITY_LOW
+
+
 class FeedManager(object):
 
     zope.interface.implements(
@@ -246,8 +250,7 @@ class FeedManager(object):
                 return
             co_feed.fetch_and_convert()
         try:
-            zeit.cms.workflow.interfaces.IPublish(feed).publish(
-                priority=PRIORITY_LOW)
+            zeit.cms.workflow.interfaces.IPublish(feed).publish()
         except zeit.cms.workflow.interfaces.PublishingError:
             # This is raised when there are errors in the feed. It will not
             # be published then.
