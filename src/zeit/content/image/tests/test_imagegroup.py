@@ -1,6 +1,7 @@
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 import mock
+import PIL
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -43,6 +44,27 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         image = self.group['540x304']
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEqual((120, 120), image.getImageSize())
+
+    def test_getitem_can_scale_materialized_files_for_new_syntax(self):
+        master = PIL.Image.open(self.group['540x304__80x80'].open())
+        master_sample = master.getpixel((40, 20))
+        self.group['master-image-540x304.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        materialized = PIL.Image.open(self.group['540x304__80x80'].open())
+        materialized_sample = materialized.getpixel((40, 20))
+        self.assertNotEqual(master_sample, materialized_sample)
+        self.assertEqual((80, 80), materialized.size)
+
+    def test_getitem_can_scale_materialized_files_with_legacy_name(self):
+        master = PIL.Image.open(self.group['540x304__80x80'].open())
+        master_sample = master.getpixel((40, 20))
+        self.group['master-image-540x304.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        materialized = PIL.Image.open(
+            self.group['master-image-540x304__80x80'].open())
+        materialized_sample = materialized.getpixel((40, 20))
+        self.assertNotEqual(master_sample, materialized_sample)
+        self.assertEqual((80, 80), materialized.size)
 
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
         with self.assertRaises(KeyError):
