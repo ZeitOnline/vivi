@@ -5,7 +5,10 @@ zeit.content.image changes
 -------------------
 
 - Allow materialized images with legacy names to serve as source for
-  size and fill color transformation (ZON-2029)
+  size and fill color transformation. (ZON-2029)
+
+- Apply maximum image size only for the requested size, not the size
+  of the source/master image.
 
 
 2.13.2 (2016-04-18)
