@@ -4,7 +4,8 @@ zeit.content.image changes
 2.13.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Allow materialized images with legacy names to serve as source for
+  size and fill color transformation (ZON-2029)
 
 
 2.13.2 (2016-04-18)

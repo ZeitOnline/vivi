@@ -56,11 +56,6 @@ class ImageGroupBase(object):
         See ImageGroup.__getitem__ for allowed URLs.
 
         """
-        if source is None:
-            source = zeit.content.image.interfaces.IMasterImage(self, None)
-        if source is None:
-            raise KeyError(key)
-
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         variant = self.get_variant_by_key(key)
         size = self.get_variant_size(key)
@@ -70,24 +65,34 @@ class ImageGroupBase(object):
         if sum(map(bool, (variant.name, size, fill))) != len(key.split('__')):
             raise KeyError(key)
 
-        if not size and variant.legacy_size:
-            size = variant.legacy_size
-
         # Always prefer materialized images with matching name
-        if variant.name in repository:
-            return repository[variant.name]
+        if source is None and variant.name in repository:
+            source = repository[variant.name]
+            if size is None:
+                size = source.getImageSize()
 
-        # BBB Legacy ImageGroups still should return their materialized
+        # BBB Legacy ImageGroups should still return their materialized
         # variants (for CP editor).
-        if variant.legacy_name:
+        elif source is None and variant.legacy_name is not None:
             for name in repository:
                 if variant.legacy_name in name:
-                    return repository[name]
+                    source = repository[name]
+                    if size is None:
+                        size = source.getImageSize()
 
-        # Set size to max_size if Variant has max_size defined in XML and no
-        # size was given in URL
-        if not size and variant.max_width < sys.maxint > variant.max_height:
-            size = [variant.max_width, variant.max_height]
+        # Our default transformation source should be the master image.
+        if source is None:
+            source = zeit.content.image.interfaces.IMasterImage(self, None)
+        if source is None:
+            raise KeyError(key)
+
+        # Set size to max_size if Variant has max_size defined in XML and size
+        # was neither given in URL nor implied by a legacy variant.
+        if size is None:
+            if variant.legacy_size is not None:
+                size = variant.legacy_size
+            elif variant.max_width < sys.maxint > variant.max_height:
+                size = [variant.max_width, variant.max_height]
 
         # Be defensive about missing meta files, so source could not be
         # recognized as an image (for zeit.web)
@@ -95,8 +100,7 @@ class ImageGroupBase(object):
         if transform is None:
             return None
 
-        image = transform.create_variant_image(
-            variant, size=size, fill_color=fill)
+        image = transform.create_variant_image(variant, size, fill)
         image.__name__ = key
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, key)
@@ -215,6 +219,9 @@ class ImageGroup(ImageGroupBase,
 
         Image is present on disk:
         * /imagegroup/imagegroup-540x304.jpg
+        * /imagegroup/imagegroup-540x304__320x180
+        * /imagegroup/540x304
+        * /imagegroup/540x304__320x180
         * /imagegroup/zon-large
         * /imagegroup/zon-large__200x200
 
