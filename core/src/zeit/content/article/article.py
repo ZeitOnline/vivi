@@ -248,6 +248,12 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
         return result
 
 
+@grok.adapter(zeit.content.article.interfaces.IArticle)
+@grok.implementer(zeit.cms.workflow.interfaces.IPublishPriority)
+def publish_priority_article(context):
+    return zeit.cms.workflow.interfaces.PRIORITY_HIGH
+
+
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)

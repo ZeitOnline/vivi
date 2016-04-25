@@ -44,7 +44,7 @@ After publishing the article, the centerpage is published, too:
 >>> from zeit.workflow.testing import run_publish
 >>> IContentWorkflow(article).urgent = True
 >>> job_id = IPublish(article).publish()
->>> run_publish()
+>>> run_publish(zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 
 Check that there were no errors during publishing:
 
@@ -65,7 +65,7 @@ When publishing again, the centerpage is not published again, since it
 is already published:
 
 >>> job_id = IPublish(article).publish()
->>> run_publish()
+>>> run_publish(zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 >>> IPublishInfo(article).date_last_published == published_article
 False
 >>> IPublishInfo(cp).date_last_published == published_cp

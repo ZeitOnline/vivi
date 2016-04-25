@@ -4,7 +4,7 @@ zeit.content.article changes
 3.15.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Declare priority high for articles (ZON-2924).
 
 
 3.15.6 (2016-04-20)
