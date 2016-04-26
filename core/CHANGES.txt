@@ -4,7 +4,7 @@ zeit.cms changes
 2.70.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Consider publish priority in publish popup.
 
 
 2.70.0 (2016-04-26)

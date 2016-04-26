@@ -113,7 +113,7 @@
     />
 
   <browser:page
-    for="zope.location.interfaces.ISite"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="flash-job-errors"
     class=".publish.FlashPublishErrors"

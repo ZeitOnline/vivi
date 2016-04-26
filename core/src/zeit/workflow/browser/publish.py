@@ -54,7 +54,8 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
         job = int(job)
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
+        priority = zeit.cms.workflow.interfaces.IPublishPriority(self.context)
+        queue = config['task-queue-%s' % priority]
         tasks = zope.component.getUtility(
             lovely.remotetask.interfaces.ITaskService, name=queue)
         if tasks.getStatus(job) != lovely.remotetask.interfaces.COMPLETED:
