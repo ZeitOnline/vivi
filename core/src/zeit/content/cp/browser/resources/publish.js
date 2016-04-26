@@ -25,32 +25,33 @@ zeit.content.cp.publish.Publisher = gocept.Class.extend({
                 $('publish.errors').innerHTML = 'Automatisches Veröffentlichen nicht möglich';
             } else {
                 MochiKit.Async.callLater(
-                    1, bind(self.poll_until_publish_complete, self), job);
+                    1, bind(self.poll_until_publish_complete, self), context, job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
-    poll_until_publish_complete: function(job) {
+    poll_until_publish_complete: function(context, job) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
-            application_url + '/@@publish-status', {'job': job});
+            context + '/@@publish-status', {'job': job});
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                self.check_publish_error(job);
+                self.check_publish_error(context, job);
             } else {
                 MochiKit.Async.callLater(
-                    1, bind(self.poll_until_publish_complete, self), job);
+                    1, bind(self.poll_until_publish_complete, self),
+                    context, job);
             }
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
-    check_publish_error: function(job) {
+    check_publish_error: function(context, job) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            application_url + '/@@flash-publish-errors', {'job': job});
+            context + '/@@flash-publish-errors', {'job': job});
         d.addCallback(function(result) {
             self.done('publish');
             self.checkout(self.checked_in);
