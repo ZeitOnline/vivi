@@ -30,7 +30,8 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
     def publish(self, content):
         IPublishInfo(content).urgent = True
         IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
+        zeit.workflow.testing.run_publish(
+            zeit.cms.workflow.interfaces.IPublishPriority(content))
 
     def test_sets_start_on_lead_article(self):
         self.publish(self.repository['cp'])
@@ -66,8 +67,8 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.publish(self.repository['foo'])
         before = IPublishInfo(self.repository['foo']).date_last_published
         self.publish(self.repository['cp'])
-        after = IPublishInfo(self.repository['foo']).date_last_published
         zeit.workflow.testing.run_publish()
+        after = IPublishInfo(self.repository['foo']).date_last_published
         self.assertGreater(after, before)
 
     def test_article_checked_out_by_somebody_else_steals_lock_first(self):
