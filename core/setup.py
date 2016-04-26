@@ -24,7 +24,7 @@ setup(
         'setuptools',
         'tweepy',
         'zc.sourcefactory',
-        'zeit.cms >= 2.29.0.dev0',
+        'zeit.cms >= 2.70.0.dev0',
         'zeit.content.article',
         'zeit.objectlog',
         'zope.app.appsetup',
