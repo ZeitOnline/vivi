@@ -71,10 +71,9 @@ Now we can proceed to publish the article:
 At this point the article is not yet published. We need to run an
 asynchronous task which takes care of that:
 
->>> import lovely.remotetask.interfaces
->>> tasks = zope.component.getUtility(
-...     lovely.remotetask.interfaces.ITaskService, 'general')
->>> tasks.process()
+>>> import zeit.workflow.testing
+>>> zeit.workflow.testing.run_publish(
+...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 >>> zeit.cms.workflow.interfaces.IPublishInfo(content).published
 True
 
@@ -140,9 +139,8 @@ Now we can proceed to publish the article:
 At this point the article is not yet published. We need to run an asynchronous
 task which takes care of that:
 
->>> tasks = zope.component.getUtility(
-...     lovely.remotetask.interfaces.ITaskService, 'general')
->>> tasks.process()
+>>> zeit.workflow.testing.run_publish(
+...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 
 Now, the publish process is finished and the article is published:
 
@@ -174,7 +172,8 @@ Dependent objects are not exported to the CDS:
 ...     zeit.workflow.interfaces.IPublicationDependencies,
 ...     name='dep')
 >>> tid = publish.publish()
->>> tasks.process()
+>>> zeit.workflow.testing.run_publish(
+...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 >>> len(fs.list('new'))
 1
 >>> gsm.unregisterAdapter(

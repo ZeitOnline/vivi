@@ -75,7 +75,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                zeit.workflow.testing.run_publish()
+                zeit.workflow.testing.run_publish(
+                    zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
             for service in ['homepage', 'ios-legacy', 'wrapper', 'parse',
@@ -109,7 +110,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                zeit.workflow.testing.run_publish()
+                zeit.workflow.testing.run_publish(
+                    zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
