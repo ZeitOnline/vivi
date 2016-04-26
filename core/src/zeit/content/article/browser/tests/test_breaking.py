@@ -174,7 +174,8 @@ class RetractBannerTest(
             # Publish homepage banner so the retract button is shown.
             IPublishInfo(self.repository['homepage']).urgent = True
             IPublish(self.repository['homepage']).publish()
-            zeit.workflow.testing.run_publish()
+            zeit.workflow.testing.run_publish(
+                zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 
             # Make Somalia breaking news, so the retract section is shown.
             article = ICMSContent(
