@@ -333,6 +333,15 @@ def modified_propagator(context, event):
     _test_helper_cp_changed = True
 
 
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.cms.workflow.interfaces.IPublishPriority)
+def publish_priority_cp(context):
+    if context.type == 'homepage':
+        return zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE
+    else:
+        return zeit.cms.workflow.interfaces.PRIORITY_HIGH
+
+
 class Feed(zeit.cms.related.related.RelatedBase):
 
     zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)

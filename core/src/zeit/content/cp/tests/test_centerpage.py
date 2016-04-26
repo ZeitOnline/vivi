@@ -52,17 +52,10 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         return factory()
 
     def publish(self, content):
-        # for debugging errors during publishing
-        # import logging, sys
-        # logging.root.handlers = []
-        # logging.root.addHandler(logging.StreamHandler(sys.stderr))
-        # logging.root.setLevel(logging.DEBUG)
-
         zeit.cms.workflow.interfaces.IPublish(content).publish()
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
-        tasks.process()
-        self.assert_(zeit.cms.workflow.interfaces.IPublishInfo(
+        zeit.workflow.testing.run_publish(
+            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             content).published)
         return self.repository.getContent(content.uniqueId)
 
@@ -279,3 +272,10 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         cp['lead'].create_item('teaser').append(content)
         with self.assertNothingRaised():
             cp.updateMetadata(content)
+
+    def test_homepage_has_different_publish_priority(self):
+        cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        cp.type = u'homepage'
+        self.assertEqual(
+            zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
+            zeit.cms.workflow.interfaces.IPublishPriority(cp))
