@@ -1,7 +1,6 @@
-
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.cms.content.contentsource
-import zeit.workflow.source
 import zope.app.security.vocabulary
 import zope.interface
 import zope.schema
@@ -100,14 +99,10 @@ class IPublicationStatus(zope.interface.Interface):
         values=('published', 'not-published', 'published-with-changes'))
 
 
-PRIORITY_DEFAULT = 'default'
-PRIORITY_LOW = 'lowprio'
-
-
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 
-    def publish(priority=PRIORITY_DEFAULT, async=True):
+    def publish(priority=None, async=True):
         """Publish object.
 
         Before the object is published a BeforePublishEvent is issued.
@@ -120,13 +115,29 @@ class IPublish(zope.interface.Interface):
 
         """
 
-    def retract(priority=PRIORITY_DEFAULT, async=True):
+    def retract(priority=None, async=True):
         """Retract an object.
 
         Before the object is published a BeforeRetractEvent is issued.
         After the object has been published a RetractedEvent is issued.
 
         """
+
+
+PRIORITY_HOMEPAGE = 'homepage'
+PRIORITY_HIGH = 'highprio'
+PRIORITY_DEFAULT = 'default'
+PRIORITY_LOW = 'lowprio'
+
+
+class IPublishPriority(zope.interface.Interface):
+    """Adapts ICMSContent to a PRIORITY_* value."""
+
+
+@grok.adapter(zope.interface.Interface)
+@grok.implementer(IPublishPriority)
+def publish_priority_default(context):
+    return PRIORITY_DEFAULT
 
 
 class IWithMasterObjectEvent(zope.component.interfaces.IObjectEvent):

@@ -88,13 +88,16 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT, async=True):
+    def publish(self, priority=None, async=True):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Publish pre-conditions not satisifed.")
 
+        if priority is None:
+            priority = zeit.cms.workflow.interfaces.IPublishPriority(
+                self.context)
         task = u'zeit.workflow.publish'
         if async:
             self.log(self.context, _('Publication scheduled'))
@@ -105,8 +108,11 @@ class Publish(object):
                 lovely.remotetask.interfaces.ITask, name=task)
             task.run_sync(self.context)
 
-    def retract(self, priority=PRIORITY_DEFAULT, async=True):
+    def retract(self, priority=None, async=True):
         """Retract object."""
+        if priority is None:
+            priority = zeit.cms.workflow.interfaces.IPublishPriority(
+                self.context)
         task = u'zeit.workflow.retract'
         if async:
             self.log(self.context, _('Retracting scheduled'))

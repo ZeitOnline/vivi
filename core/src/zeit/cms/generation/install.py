@@ -9,7 +9,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.workingcopy.workingcopy
 import zope.component
-import zope.component.interfaces
 import zope.error.interfaces
 
 
@@ -22,15 +21,26 @@ def installLocalUtility(root, factory, name, interface, utility_name=u''):
 
 
 def installGeneralTaskService():
-    site_manager = zope.component.getSiteManager()
-    tasks = installLocalUtility(
-        site_manager, lovely.remotetask.TaskService, 'tasks.general',
-        lovely.remotetask.interfaces.ITaskService, utility_name='general')
-    # Use MultiProcessor for parallel processing.
-    tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
+    _install_task_service('tasks.general', 'general', max_threads=5)
 
 
-def _install_serial_task_service(name, utility_name):
+def installHighPriorityTaskService():
+    _install_task_service('tasks.highprio', 'highprio', max_threads=5)
+
+
+def installLowPriorityTaskService():
+    _install_task_service('tasks.lowprio', 'lowprio', max_threads=1)
+
+
+def installHomepageTaskService():
+    _install_task_service('tasks.homepage', 'homepage', max_threads=1)
+
+
+def installEventTaskService():
+    _install_task_service('tasks.event', 'events', max_threads=1)
+
+
+def _install_task_service(name, utility_name, max_threads):
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
         site_manager, lovely.remotetask.TaskService, name,
@@ -38,15 +48,7 @@ def _install_serial_task_service(name, utility_name):
     # Use MultiProcessor with 1 Thread because it handles pulling from the
     # queue differently than the SingleProcessor.
     tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
-    tasks.processorArguments = {'maxThreads': 1}
-
-
-def installEventTaskService():
-    _install_serial_task_service('tasks.event', 'events')
-
-
-def installLowPriorityTaskService():
-    _install_serial_task_service('tasks.lowprio', 'lowprio')
+    tasks.processorArguments = {'maxThreads': max_threads}
 
 
 def installRelations():
@@ -79,7 +81,9 @@ def install(root):
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
     installGeneralTaskService()
     installEventTaskService()
+    installHighPriorityTaskService()
     installLowPriorityTaskService()
+    installHomepageTaskService()
     installRelations()
 
 

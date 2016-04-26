@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.69.3 (unreleased)
+2.70.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Determine publish priority according to content type (ZON-2924).
 
 
 2.69.2 (2016-04-21)

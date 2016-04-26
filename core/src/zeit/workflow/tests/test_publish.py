@@ -5,6 +5,7 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
+import mock
 import pytz
 import threading
 import time
@@ -188,3 +189,24 @@ class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             ['${name}: ${new_value}', 'Published', 'Retracted'],
             [x.message for x in logs])
+
+
+class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    def test_determines_priority_via_adapter(self):
+        content = self.repository['testcontent']
+        info = IPublishInfo(content)
+        info.urgent = True
+        self.assertFalse(info.published)
+        publish = IPublish(content)
+        with mock.patch(
+                'zeit.cms.workflow.interfaces.IPublishPriority') as priority:
+            priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
+            publish.publish()
+        zeit.workflow.testing.run_publish()
+        self.assertFalse(info.published)
+        zeit.workflow.testing.run_publish(
+            zeit.cms.workflow.interfaces.PRIORITY_LOW)
+        self.assertTrue(info.published)
