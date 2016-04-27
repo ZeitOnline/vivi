@@ -4,14 +4,14 @@
         id="leader"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
-        areas="solo duo minor major ranking"
+        areas="solo duo minor major"
         default="solo minor"
         />
     <layout
         id="leader-two-columns"
         title="Großer Teaser mit zwei Spalten"
         image_pattern="450x200"
-        areas="major"
+        areas="major ranking"
         columns="2"
         />
     <layout

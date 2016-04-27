@@ -28,6 +28,7 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
         super(BodyLandingZone, self).initialize_block()
         for config in self.areas:
             area = self.block.create_item('area')
+            area.kind = config.pop('kind')
             for name, value in config.items():
                 field = zeit.content.cp.interfaces.IArea[name].bind(area)
                 # We (ab)use the DAV type conversion for a `fromUnicode` that

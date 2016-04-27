@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.7.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix bug in region-config, set area.kind first so constraint checking works.
 
 
 3.7.4 (2016-04-26)

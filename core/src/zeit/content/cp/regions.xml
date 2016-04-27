@@ -24,7 +24,7 @@
         <area
           kind="ranking"
           apply_teaser_layouts_automatically="true"
-          first_teaser_layout="leader"
+          first_teaser_layout="leader-two-columns"
           />
     </region>
 </regions>
