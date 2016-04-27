@@ -28,3 +28,7 @@ table.objectlog td.principal:before {
     content: " von ";
     color: #999999;
 }
+
+#worklist .error {
+    display: list-item;
+}

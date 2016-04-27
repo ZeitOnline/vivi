@@ -151,9 +151,11 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         $(element).addClass('done');
     },
 
-    error: function(element) {
-        $(element).removeClass('busy');
-        $(element).addClass('error');
+    error: function(element, message) {
+        element = $(element);
+        element.removeClass('busy');
+        element.addClass('error');
+        element.append('<p>' + message + '</p>');
     },
 
     close: function(context) {
