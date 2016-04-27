@@ -25,7 +25,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
                 self.work(result);
             },
             function(error) {
-                self.error(error.message);
+                self.error(action, error.message);
                 throw error;
             });
     },
