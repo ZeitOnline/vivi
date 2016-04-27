@@ -1,11 +1,12 @@
+(function($) {
+
 zeit.cms.declare_namespace('zeit.workflow.publish');
 
 zeit.workflow.publish.Publisher = gocept.Class.extend({
 
     construct: function(worklist) {
         var self = this;
-        self.worklist = MochiKit.DOM.getElementsByTagAndClassName(
-            'li', null, worklist);
+        self.worklist = $('#' + worklist).find('li').toArray();
         self.work(null);
     },
 
@@ -142,17 +143,17 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
     },
 
     busy: function(element) {
-        MochiKit.DOM.addElementClass(element, 'busy');
+        $(element).addClass('busy');
     },
 
     done: function(element) {
-        MochiKit.DOM.removeElementClass(element, 'busy');
-        MochiKit.DOM.addElementClass(element, 'done');
+        $(element).removeClass('busy');
+        $(element).addClass('done');
     },
 
-    error: function(step) {
-        MochiKit.DOM.removeElementClass(element, 'busy');
-        MochiKit.DOM.addElementClass(element, 'error');
+    error: function(element) {
+        $(element).removeClass('busy');
+        $(element).addClass('error');
     },
 
     close: function(context) {
@@ -160,3 +161,4 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
     }
 });
 
+}(jQuery));
