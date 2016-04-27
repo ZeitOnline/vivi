@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.70.2 (unreleased)
+2.70.2 (2016-04-27)
 -------------------
 
 - Fix error handling in publish popup.
