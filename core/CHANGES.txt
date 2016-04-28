@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.7.7 (unreleased)
+3.8.0 (2016-04-28)
 ------------------
 
 - Add rule globs ``centerpage`` and ``all_modules`` (ZON-3036).
