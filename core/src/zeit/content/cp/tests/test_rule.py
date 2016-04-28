@@ -96,6 +96,28 @@ error_if(True)
         s = r.apply(area, IRuleGlobs(area))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
 
+    def test_centerpage_glob(self):
+        r = Rule("""
+applicable(is_block)
+error_if(centerpage.title == 'foo')
+""")
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
+        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.cp.title = u'foo'
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
+        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+
+    def test_all_modules_glob(self):
+        r = Rule("""
+applicable(is_block)
+error_if(len(all_modules) == 2)
+""")
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
+        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.cp['lead'].create_item('teaser')
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
+        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 

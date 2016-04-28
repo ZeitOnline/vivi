@@ -59,3 +59,23 @@ def cp_type(context):
     if cp is None:
         return None
     return cp.type
+
+
+@glob(zope.interface.Interface)
+def centerpage(context):
+    cp = zeit.content.cp.interfaces.ICenterPage(context, None)
+    if cp is None:
+        return None
+    return cp
+
+
+@glob(zeit.content.cp.interfaces.IBlock)
+def all_modules(context):
+    cp = zeit.content.cp.interfaces.ICenterPage(context, None)
+    if cp is None:
+        return []
+    result = []
+    for region in cp.values():
+        for area in region.values():
+            result.extend(area.values())
+    return result
