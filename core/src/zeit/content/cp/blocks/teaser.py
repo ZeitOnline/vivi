@@ -93,7 +93,7 @@ class TeaserBlock(
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':
-            if self.layout is None:
+            if isinstance(self.layout, zeit.content.cp.layout.NoBlockLayout):
                 raise ValueError(_(
                     'No default teaser layout defined for this area.'))
             self.layout = self.layout
@@ -114,7 +114,7 @@ class TeaserBlock(
     @property
     def layout(self):
         id = self.xml.get('module')
-        default = None
+        default = zeit.content.cp.layout.NoBlockLayout(self)
         source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
             self)
         layout = source.find(id)

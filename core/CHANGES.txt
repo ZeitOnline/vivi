@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve error message for teaser layout configuration errors.
 
 
 3.7.5 (2016-04-27)

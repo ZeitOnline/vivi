@@ -69,7 +69,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if self.temporary_layout:
             return self.temporary_layout
         id = self.xml.get('module')
-        default = None
+        default = zeit.content.cp.layout.NoBlockLayout(self)
         source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
             self)
         layout = source.find(id)

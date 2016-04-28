@@ -135,7 +135,7 @@ class Display(zeit.cms.browser.view.Base):
     def get_image(self, content, image_pattern=None):
         if image_pattern is None:
             layout = self.context.layout
-            if layout is None:
+            if isinstance(layout, zeit.content.cp.layout.NoBlockLayout):
                 return
             if not layout.image_pattern:
                 return

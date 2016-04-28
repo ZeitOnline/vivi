@@ -79,6 +79,24 @@ class BlockLayout(AllowedMixin):
         return area.kind in self.default_in_areas
 
 
+class NoBlockLayout(object):
+
+    def __init__(self, block):
+        self.block = block
+
+    def __getattr__(self, name):
+        if name not in ITeaserBlockLayout:
+            raise AttributeError(name)
+        area = zeit.content.cp.interfaces.IArea(self.block, None)
+        raise ValueError(
+            'Teaser layout "%s" is not configured for area "%s".\n'
+            '  (module:%s, area:%s).' % (
+                self.block.xml.get('module'),
+                getattr(area, 'kind', '<unknown>'),
+                self.block.__name__,
+                getattr(area, '__name__', '<unknown>')))
+
+
 class RegionConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, areas, available, types):
