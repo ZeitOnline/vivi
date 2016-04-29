@@ -28,3 +28,23 @@ class TestHeaderImage(zeit.cms.testing.BrowserTestCase):
         b.open('informatives/@@landing-zone-drop-module?block_type=headerimage')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-headerimage'))
+
+
+    def test_headerimage_animate_default_is_set(self):
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl('Apply').click()
+        b.open(self.xml_url)
+        self.assertEllipsis('...animate="False"...', b.contents)
+
+
+    def test_headerimage_animate_true_is_set(self):
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl('Animate').selected = True
+        b.getControl('Apply').click()
+        b.open(self.content_url)
+        b.getLink('Edit block properties', index=0).click()
+        assert b.getControl('Animate').selected
