@@ -890,6 +890,9 @@ class IHeaderImageBlock(IBlock):
         description=_("Drag an image group here"),
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
+    animate = zope.schema.Bool(
+        title=_('Animate'),
+        default=False)
 
 
 class AlignmentSource(SimpleDictSource):
