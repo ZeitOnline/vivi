@@ -112,3 +112,9 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
         # Since we don't retrieve block from other, this actually checks that
         # __parent__ was changed.
         self.assertEqual(other, block.__parent__)
+
+    def test_getitem_with_int_uses_position(self):
+        block = self.container.create_item('block')
+        self.assertEqual(block, self.container[0])
+        with self.assertRaises(KeyError):
+            self.container[1]

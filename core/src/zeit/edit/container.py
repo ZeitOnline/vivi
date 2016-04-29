@@ -52,7 +52,10 @@ class Base(UserDict.DictMixin,
         except ValueError:
             pass
         else:
-            return self.values()[position]
+            try:
+                return self.values()[position]
+            except IndexError:
+                raise KeyError(key)
 
         node = self._find_item(self.xml, name=key)
         if node:
