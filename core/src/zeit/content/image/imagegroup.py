@@ -177,7 +177,7 @@ class ImageGroupBase(object):
         if size is None:
             return None
         if size is INVALID_SIZE:
-            return candidates[-1]
+            return candidates and candidates[-1]
         for variant in candidates:
             if size[0] <= variant.max_width and size[1] <= variant.max_height:
                 return variant
