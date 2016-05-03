@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.13.4 (unreleased)
+2.13.4 (2016-05-03)
 -------------------
 
 - Be defensive about invalid variant requests
