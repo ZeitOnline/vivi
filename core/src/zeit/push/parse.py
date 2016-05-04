@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
-import copy
 import grokcore.component as grok
 import json
 import logging
@@ -53,7 +52,6 @@ class Connection(object):
             channels = channel_name
         else:
             channels = config.get(channel_name, '').split(' ')
-        wrapper_url = self.rewrite_url(link, 'http://wrapper.zeit.de')
         friedbert_url = self.rewrite_url(link, 'http://www.zeit.de')
         image_url = kw.get('image_url')
         title = text
@@ -92,30 +90,6 @@ class Connection(object):
             del android['where']['channels']
         self.push(android)
 
-        android_nofriedbert = copy.deepcopy(android)
-        android_nofriedbert['where']['appVersion'] = {
-            '$gte': self.ANDROID_CHANNEL_VERSION,
-            '$lt': self.ANDROID_FRIEDBERT_VERSION}
-        android_nofriedbert['data']['url'] = self.add_tracking(
-            wrapper_url, channel_name, 'android')
-        self.push(android_nofriedbert)
-
-        if channel_name == PARSE_BREAKING_CHANNEL:
-            android_legacy = {
-                'expiration_time': expiration_time,
-                'where': {
-                    'deviceType': 'android',
-                    'appVersion': {'$lt': self.ANDROID_CHANNEL_VERSION}
-                },
-                'data': {
-                    'alert': title,
-                    'title': headline,
-                    'url': self.add_tracking(
-                        wrapper_url, channel_name, 'android'),
-                }
-            }
-            self.push(android_legacy)
-
         if kw.get('skip_ios'):
             # XXX Skipping iOS is for unittests only, since we cannot push to
             # iOS without an Apple certificate.
@@ -144,52 +118,6 @@ class Connection(object):
         if not all(channels):
             del ios['where']['channels']
         self.push(ios)
-
-        ios_nofriedbert = copy.deepcopy(ios)
-        ios_nofriedbert['where']['appVersion'] = {
-            '$gte': self.IOS_HEADLINE_VERSION,
-            '$lt': self.IOS_FRIEDBERT_VERSION}
-        ios_nofriedbert['data']['aps']['url'] = self.add_tracking(
-            wrapper_url, channel_name, 'ios')
-        self.push(ios_nofriedbert)
-
-        ios_noheadline = {
-            'expiration_time': expiration_time,
-            'where': {
-                'deviceType': 'ios',
-                'appVersion': {'$gt': self.IOS_CHANNEL_VERSION,
-                               '$lt': self.IOS_HEADLINE_VERSION},
-                'channels': {'$in': channels}
-            },
-            'data': {
-                'aps': {
-                    'alert-title': headline,
-                    'alert': override_text or kw.get('teaserTitle', title),
-                    'url': self.add_tracking(wrapper_url, channel_name, 'ios'),
-                }
-            }
-        }
-        if not all(channels):
-            del ios_noheadline['where']['channels']
-        self.push(ios_noheadline)
-
-        if channel_name == PARSE_BREAKING_CHANNEL:
-            ios_legacy = {
-                'expiration_time': expiration_time,
-                'where': {
-                    'deviceType': 'ios',
-                    'appVersion': {'$lte': self.IOS_CHANNEL_VERSION}
-                },
-                'data': {
-                    'aps': {
-                        'alert': title,
-                        'alert-title': headline,
-                        'url': self.add_tracking(
-                            wrapper_url, channel_name, 'ios'),
-                    }
-                }
-            }
-            self.push(ios_legacy)
 
     def push(self, data):
         headers = {
