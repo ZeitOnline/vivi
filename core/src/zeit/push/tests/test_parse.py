@@ -33,29 +33,6 @@ class ParseTest(unittest.TestCase):
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             api.send('Being pushy.', 'http://example.com')
 
-    def test_channel_breaking_is_pushed_to_all_supporting_app_versions(self):
-        api = zeit.push.parse.Connection(None, None, 1)
-        with mock.patch.object(api, 'push') as push:
-            api.send('Foo', 'http://b.ar', channels=PARSE_BREAKING_CHANNEL)
-            self.assertEqual(7, len(push.call_args_list))
-
-    def test_channel_news_is_pushed_to_all_supporting_app_versions(self):
-        api = zeit.push.parse.Connection(None, None, 1)
-        with mock.patch.object(api, 'push') as push:
-            api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
-            self.assertEqual(5, len(push.call_args_list))
-
-    def test_sends_newest_version_first(self):
-        api = zeit.push.parse.Connection(None, None, 1)
-        with mock.patch.object(api, 'push') as push:
-            api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
-            self.assertEqual(
-                zeit.push.parse.Connection.ANDROID_FRIEDBERT_VERSION,
-                push.call_args_list[0][0][0]['where']['appVersion']['$gte'])
-            self.assertEqual(
-                zeit.push.parse.Connection.IOS_FRIEDBERT_VERSION,
-                push.call_args_list[2][0][0]['where']['appVersion']['$gte'])
-
     def test_friedbert_version_links_to_app_content(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
@@ -64,22 +41,9 @@ class ParseTest(unittest.TestCase):
             self.assertEqual(
                 'http://www.zeit.de/bar',
                 android['data']['url'].split('?')[0])
-            ios = push.call_args_list[2][0][0]
+            ios = push.call_args_list[1][0][0]
             self.assertEqual(
                 'http://www.zeit.de/bar',
-                ios['data']['aps']['url'].split('?')[0])
-
-    def test_old_version_links_to_wrapper(self):
-        api = zeit.push.parse.Connection(None, None, 1)
-        with mock.patch.object(api, 'push') as push:
-            api.send('', 'http://www.zeit.de/bar', channels=PARSE_NEWS_CHANNEL)
-            android = push.call_args_list[1][0][0]
-            self.assertEqual(
-                'http://wrapper.zeit.de/bar',
-                android['data']['url'].split('?')[0])
-            ios = push.call_args_list[3][0][0]
-            self.assertEqual(
-                'http://wrapper.zeit.de/bar',
                 ios['data']['aps']['url'].split('?')[0])
 
 
