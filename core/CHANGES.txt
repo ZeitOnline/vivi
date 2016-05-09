@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.13.2 (unreleased)
+1.14.0 (2016-05-09)
 -------------------
 
 - Don't push to old mobile apps: Android<1.4 and iOS<20150914 (ZON-3069).
