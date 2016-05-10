@@ -101,6 +101,11 @@ class CheckinAndRedirect(object):
 
     def _handle_conflict(self):
         transaction.doom()
+        if self.request.form.get('redirect', '').lower() == 'false':
+            raise zeit.cms.repository.interfaces.ConflictError(
+                self.context.uniqueId,
+                _('There was a conflict while adding ${name}',
+                  mapping=dict(name=self.context.uniqueId)))
         view = zope.component.getMultiAdapter(
             (self.context, self.request),
             zope.browser.interfaces.IBrowserView,
