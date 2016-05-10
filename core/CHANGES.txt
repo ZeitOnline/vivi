@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.70.3 (unreleased)
+2.70.3 (2016-05-10)
 -------------------
 
 - Display server error message in publish popup.
