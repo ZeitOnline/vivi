@@ -1,3 +1,5 @@
+import bugsnag
+import urlparse
 import zope.error.error
 import zope.i18n
 
@@ -49,8 +51,21 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         """
 
         super(ErrorReportingUtility, self).raising(info, request)
+        self._notify_bugsnag(info, request)
         exception = info[1]
         if not isinstance(info[2], basestring):
             exception.traceback = zope.error.error.getFormattedException(info)
         else:
             exception.traceback = zope.error.error.getPrintable(info[2])
+
+    def _notify_bugsnag(self, info, request):
+        url = str(getattr(request, 'URL', ''))
+        path = urlparse.urlparse(url).path if url else None
+        username = (self._getUsername(request) or '').split(', ')
+        if username:
+            user = {'id': username[1], 'name': username[2]}
+            if username[3]:
+                user['email'] = user[3]
+        bugsnag.notify(
+            info[1], traceback=info[2], context=path,
+            severity='error', user=user)

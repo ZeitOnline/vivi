@@ -19,6 +19,7 @@ setup(
         'Pillow',
         'SilverCity',
         'ZODB',
+        'bugsnag',
         'decorator',
         'docutils',
         'fanstatic[cssmin,jsmin]',
@@ -111,6 +112,9 @@ setup(
         ],
         'paste.app_factory': [
             'main=zeit.cms.application:APPLICATION',
+        ],
+        'paste.filter_factory': [
+            'bugsnag=zeit.cms.application:bugsnag_filter',
         ],
         'fanstatic.libraries': [
             'zeit_cms=zeit.cms.browser.resources:lib_css',

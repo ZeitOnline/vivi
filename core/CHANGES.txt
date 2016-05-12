@@ -4,7 +4,7 @@ zeit.cms changes
 2.70.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Integrate bugsnag for error reporting
 
 
 2.70.3 (2016-05-10)
