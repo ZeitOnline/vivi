@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.6.2 (unreleased)
+2.6.2 (2016-05-18)
 ------------------
 
 - BUG-418: Fix dropdown handling for FF46.
