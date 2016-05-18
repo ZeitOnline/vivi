@@ -230,6 +230,9 @@ zeit.find.Search = zeit.find.BaseView.extend({
             var value = null;
             var title = null;
             if (element.nodeName == 'SELECT') {
+                if (element.selectedIndex == -1) {
+                    element.selectedIndex = 0;
+                }
                 var option = element.options[element.selectedIndex];
                 title = option.text;
                 value = option.value;

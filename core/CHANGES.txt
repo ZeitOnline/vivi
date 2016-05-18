@@ -4,13 +4,13 @@ zeit.find changes
 2.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-418: Fix dropdown handling for FF46.
 
 
 2.6.1 (2016-04-18)
 ------------------
 
-- Don't load Zope/UI specific ZCML in the model ZCML
+- Don't load Zope/UI specific ZCML in the model ZCML.
 
 
 2.6.0 (2015-06-18)
