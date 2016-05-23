@@ -16,6 +16,9 @@ class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
 
     pinned = zope.interface.Attribute('list of tag codes that are pinned.')
 
+    def to_xml():
+        pass
+
 
 class IWriteTagger(zope.interface.common.mapping.IWriteMapping):
 

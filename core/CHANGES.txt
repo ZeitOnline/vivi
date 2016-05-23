@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.80.1 (unreleased)
+2.81.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Move tags to xml code here from zeit.intrafind (ZON-3114).
 
 
 2.80.0 (2016-05-12)

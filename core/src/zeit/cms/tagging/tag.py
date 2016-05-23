@@ -1,13 +1,17 @@
+import collections
 import copy
 import grokcore.component as grok
-import collections
 import zeit.cms.browser.interfaces
+import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
 import zope.interface
+import zope.lifecycleevent
 import zope.location.interfaces
 import zope.publisher.interfaces
+import zope.security.proxy
 import zope.site.hooks
 import zope.site.interfaces
 import zope.traversing.browser
@@ -47,6 +51,44 @@ class Tags(object):
             if tag.code not in result:
                 result[tag.code] = tag
         return result.values()
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+def veto_tagging_properties(event):
+    if event.namespace == 'http://namespaces.zeit.de/CMS/tagging':
+        event.veto()
+
+
+def add_ranked_tags_to_head(content):
+    tagger = zeit.cms.tagging.interfaces.ITagger(content, None)
+    xml = zope.security.proxy.removeSecurityProxy(content.xml)
+    if tagger:
+        xml.head.rankedTags = zope.security.proxy.removeSecurityProxy(
+            tagger).to_xml()
+    else:
+        try:
+            del xml.head.rankedTags
+        except AttributeError:
+            pass
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.IXMLRepresentation,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_tags_on_checkin(content, event):
+    # ICMSContent.providedBy(content) is True implicitly, since otherwise one
+    # wouldn't be able to check it in.
+    add_ranked_tags_to_head(content)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zope.lifecycleevent.ObjectModifiedEvent)
+def update_tags_on_modify(content, event):
+    if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(content):
+        return
+    add_ranked_tags_to_head(content)
 
 
 class Tag(object):

@@ -79,6 +79,9 @@ class DummyTagger(object):
     def pinned(self):
         pass
 
+    def to_xml(self):
+        return None
+
 
 class FakeTags(collections.OrderedDict):
 
