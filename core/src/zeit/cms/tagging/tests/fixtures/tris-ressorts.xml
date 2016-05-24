@@ -1,0 +1,36 @@
+<ressorts>
+  <!-- ressort names must match /cms/forms/navigation.xml -->
+  <ressort name="Politik">
+    <category>International</category>
+    <category>Deutschland</category>
+  </ressort>
+  <ressort name="Wirtschaft">
+    <category>Wirtschaft</category>
+    <category>International</category>
+    <category>Deutschland</category>
+  </ressort>
+  <ressort name="Gesellschaft">
+    <category>International</category>
+    <category>Deutschland</category>
+  </ressort>
+  <ressort name="Kultur">
+    <category>Unterhaltung</category>
+  </ressort>
+  <ressort name="Wissen">
+    <category>Wissen/Technik</category>
+    <category>Gesundheit</category>
+  </ressort>
+  <ressort name="Digital">
+    <category>Wissen/Technik</category>
+  </ressort>
+  <ressort name="Lebensart">
+    <category>Unterhaltung</category>
+  </ressort>
+  <ressort name="Mobilitaet">
+    <category>Wirtschaft</category>
+    <category>Wissen/Technik</category>
+  </ressort>
+  <ressort name="Sport">
+    <category>Sport</category>
+  </ressort>
+</ressorts>

@@ -134,22 +134,3 @@ class TaggingHelper(object):
     def add_keyword_by_autocomplete(self, text, form_prefix='form'):
         self.add_by_autocomplete(
             text, 'id=%s.keywords.add' % form_prefix)
-
-
-class DummyCurrentTopics(object):
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ICurrentTopics)
-
-    data = {
-        'Deutschland': ['foo', 'bar', 'baz'],
-        'International': ['qux', 'splat', 'boom', 'bang']
-    }
-
-    def __call__(self, ressort=None):
-        if ressort is None:
-            return list(itertools.chain(*self.data.values()))
-        return self.data[ressort]
-
-    @property
-    def headlines(self):
-        return ['bar', 'qux']

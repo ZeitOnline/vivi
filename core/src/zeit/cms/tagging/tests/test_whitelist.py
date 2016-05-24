@@ -55,7 +55,7 @@ class TestWhitelist(zeit.cms.testing.ZeitCmsTestCase):
     def test_load_should_create_tag_for_tag_nodes(self):
         wl = self.whitelist()
         wl._fetch = lambda: pkg_resources.resource_stream(
-            __name__, 'whitelist.xml')
+            __name__, 'fixtures/whitelist.xml')
         with mock.patch('zeit.cms.tagging.tag.Tag') as Tag:
             wl._load()
         self.assertEqual(55, Tag.call_count)
@@ -66,7 +66,7 @@ class TestWhitelist(zeit.cms.testing.ZeitCmsTestCase):
     def test_load_should_set_entity_type_if_present(self):
         wl = self.whitelist()
         wl._fetch = lambda: pkg_resources.resource_stream(
-            __name__, 'whitelist.xml')
+            __name__, 'fixtures/whitelist.xml')
         wl._load()
         self.assertEqual(
             'Person', wl['221da83c-427a-417f-81e2-0d8b1c65b669'].entity_type)
@@ -74,7 +74,7 @@ class TestWhitelist(zeit.cms.testing.ZeitCmsTestCase):
     def test_load_should_add_tags_to_whitelist(self):
         wl = self.whitelist()
         wl._fetch = lambda: pkg_resources.resource_stream(
-            __name__, 'whitelist.xml')
+            __name__, 'fixtures/whitelist.xml')
         wl._load()
         self.assertEqual(55, len(wl))
 
