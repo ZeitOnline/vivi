@@ -65,7 +65,7 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         if username:
             user = {'id': username[1], 'name': username[2]}
             if username[3]:
-                user['email'] = user[3]
+                user['email'] = username[3]
         bugsnag.notify(
             info[1], traceback=info[2], context=path,
             severity='error', user=user)
