@@ -147,18 +147,19 @@ class MasterSlaveSource(XMLSource):
         master_value = self._get_master_value(context)
         if master_value is None:
             nodes = tree.xpath(
-                '//%s[@%s = %s]' % (
-                    self.slave_tag, self.attribute,
-                    xml.sax.saxutils.quoteattr(value)))
+                '//{slave_tag}[@{attribute} = {value}]'.format(
+                    slave_tag=self.slave_tag,
+                    attribute=self.attribute,
+                    value=xml.sax.saxutils.quoteattr(value)))
         else:
             nodes = tree.xpath(
                 '{master_node_xpath}[@{attribute} = {master}]'
-                '/{slave_tag}[@{attribute} = {slave}]'.format(
+                '/{slave_tag}[@{attribute} = {value}]'.format(
                     master_node_xpath=self.master_node_xpath,
                     attribute=self.attribute,
                     slave_tag=self.slave_tag,
                     master=xml.sax.saxutils.quoteattr(master_value),
-                    slave=xml.sax.saxutils.quoteattr(value)))
+                    value=xml.sax.saxutils.quoteattr(value)))
         if nodes:
             return unicode(self._get_title_for(nodes[0]))
         return value
