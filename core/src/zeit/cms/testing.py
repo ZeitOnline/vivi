@@ -177,16 +177,16 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         pass
 
 
-cms_product_config = string.Template("""\
+cms_product_config = """\
 <product-config zeit.cms>
-  source-serie file://${base}/content/serie.xml
-  source-navigation file://${base}/content/navigation.xml
-  source-keyword file://${base}/content/zeit-ontologie-prism.xml
-  source-products file://${base}/content/products.xml
-  source-badges file://${base}/asset/badges.xml
-  source-banners file://${base}/content/banners.xml
-  source-channels file://${base}/content/navigation.xml
-  source-storystreams file://${base}/content/storystreams.xml
+  source-serie file://{base}/content/serie.xml
+  source-navigation file://{base}/content/navigation.xml
+  source-keyword file://{base}/content/zeit-ontologie-prism.xml
+  source-products file://{base}/content/products.xml
+  source-badges file://{base}/asset/badges.xml
+  source-banners file://{base}/content/banners.xml
+  source-channels file://{base}/content/navigation.xml
+  source-storystreams file://{base}/content/storystreams.xml
 
   preview-prefix http://localhost/preview-prefix
   live-prefix http://localhost/live-prefix
@@ -194,16 +194,15 @@ cms_product_config = string.Template("""\
 
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
-  whitelist-url file://${base}/tagging/tests/whitelist.xml
-  keyword-configuration file://${base}/tagging/tests/keywords_config.xml
+  whitelist-url file://{base}/tagging/tests/whitelist.xml
+  keyword-configuration file://{base}/tagging/tests/keywords_config.xml
   breadcrumbs-use-common-metadata true
 
   task-queue-async events
   sitecontrol-prefer-2015 False
   cache-expiration-config 600
 </product-config>
-""").substitute(
-    base=pkg_resources.resource_filename(__name__, ''))
+""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=cms_product_config)
