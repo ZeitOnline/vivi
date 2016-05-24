@@ -101,6 +101,9 @@ class FakeTags(collections.OrderedDict):
     def pinned(self):
         return [x.code for x in self.values() if x.pinned]
 
+    def to_xml(self):
+        return None
+
 
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
