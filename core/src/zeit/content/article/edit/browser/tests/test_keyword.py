@@ -13,7 +13,8 @@ class KeywordSuggestions(
     def test_button_toggles_suggestions(self):
         s = self.selenium
         s.assertText(
-            'css=#article-content-suggest-keywords .ressort_keywords', '*qux*')
+            'css=#article-content-suggest-keywords .ressort_keywords',
+            '*Twitter*')
         s.assertVisible(
             'css=#article-content-suggest-keywords .ressort_keywords')
         s.click('css=#article-content-suggest-keywords .toggle_infos')
@@ -28,4 +29,5 @@ class KeywordSuggestions(
         s.select('metadata-a.ressort', 'label=Deutschland')
         s.type('metadata-a.sub_ressort', '\t')  # Trigger blur for form.
         s.waitForText(
-            'css=#article-content-suggest-keywords .ressort_keywords', '*foo*')
+            'css=#article-content-suggest-keywords .ressort_keywords',
+            '*Polizei*')
