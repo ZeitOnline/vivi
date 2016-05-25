@@ -1,8 +1,8 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
-from zeit.push.testing import parse_settings as settings
+from zeit.push.interfaces import PARSE_NEWS_CHANNEL
 import mock
+import os
 import pytz
 import unittest
 import urlparse
@@ -15,16 +15,20 @@ class ParseTest(unittest.TestCase):
 
     level = 2
 
+    def setUp(self):
+        self.app_id = os.environ['ZEIT_PUSH_PARSE_APP_ID']
+        self.api_key = os.environ['ZEIT_PUSH_PARSE_API_KEY']
+
     def test_push_works(self):
         # Parse offers no REST API to retrieve push messages,
         # so this is just a smoke test.
         api = zeit.push.parse.Connection(
-            settings['application_id'], settings['rest_api_key'], 1)
+            self.app_id, self.api_key, 1)
         api.send('Being pushy.', 'http://example.com', skip_ios=True)
 
     def test_push_works_with_channels(self):
         api = zeit.push.parse.Connection(
-            settings['application_id'], settings['rest_api_key'], 1)
+            self.app_id, self.api_key, 1)
         api.send('Being pushy.', 'http://example.com', channels=['News'],
                  skip_ios=True)
 

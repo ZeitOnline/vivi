@@ -2,6 +2,7 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import fb
 import gocept.testing.assertion
+import os
 import time
 import unittest
 import zeit.push.facebook
@@ -15,21 +16,13 @@ class FacebookTest(zeit.push.testing.TestCase,
 
     level = 2
 
-    # User: tl+facebooktest@gocept.com
-    # Pass: FiN7XHSx
-    # app_id = '492113357602143'
-    # app_secret = '7a1c8fbc7250d7b58103882368db33aa'
-    #
-    # Page access token for
-    # <https://www.facebook.com/pages/Vivi-Test/721128357931123>,
-    # created on 2014-07-16, expires in about 60 days, recreate with
-    # ./work/maintenancejobs/bin/facebook-access-token
-    access_token = (
-        'CAAGZCkxHefV8BAFx0CjyFY8hYn5dd0vKJh0NPOSLQxkR4jYQtwbu3QQvNzglDqyp26E6'
-        'zCgX4LDsmpZChrBWAUa8r4l1cLCCfAExjvTyKRbucS1jo2ng4xpErMxKQOXHpdmZCziU6'
-        'Ar9zZAuswmLZBhGiq0JV8qJBUaTkPjEciQq2BoYUZARQQ')
-
     def setUp(self):
+        # Page access token for
+        # <https://www.facebook.com/pages/Vivi-Test/721128357931123>,
+        # created on 2014-07-16, expires in about 60 days, recreate with
+        # ./work/maintenancejobs/bin/facebook-access-token
+        self.access_token = os.environ['ZEIT_PUSH_FACEBOOK_ACCESS_TOKEN']
+
         self.api = fb.graph.api(self.access_token)
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
