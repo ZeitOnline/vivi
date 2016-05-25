@@ -4,4 +4,13 @@
 
   <grok:grok package="." />
 
+  <class class=".keywords.Tagger">
+    <require
+      interface="zeit.cms.tagging.interfaces.ITagger"
+      permission="zope.View"
+      />
+  </class>
+
+  <utility factory=".connection.from_product_config" />
+
 </configure>
