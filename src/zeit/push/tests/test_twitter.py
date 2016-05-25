@@ -1,5 +1,6 @@
 # coding: utf-8
 import gocept.testing.assertion
+import os
 import time
 import tweepy
 import zeit.push.interfaces
@@ -12,21 +13,12 @@ class TwitterTest(zeit.push.testing.TestCase,
 
     level = 2
 
-    # User: gocepttest
-    # Pass: 9QuecCyewip0
-    # Email: ws+twitter@gocept.com
-    api_key = 'GwK5gIOXUG4JnKWjOOVXFmDr0'
-    api_secret = 'Z2zrg2QYZAY2wEVqcG5smZOxdHCX0eo9SLkutb8aRljxVvG4sB'
-    access_token = '2512010726-zzomC6jSp453N4Hsn7Ji3hYirt0a35sV0uL8Dy3'
-    access_secret = 'DiVzrTRkh5YJCJztiqCCwXBIzGlqa1q7Zi1bDB8aASYOj'
-
-    # User: gocepttest2
-    # Pass: dalvEwjarph2
-    # Email: ws+twitter2@gocept.com
-    # access_token = '2734252303-ly3KyZ6BvlV6lhkvnhCX3bJZ35Rq91LPprSRVcm'
-    # access_secret = 'DwZudWx0ao27sotLrvXSo9qD2YHgG1Et9giROopLSPhDt'
-
     def setUp(self):
+        self.api_key = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
+        self.api_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
+        self.access_token = os.environ['ZEIT_PUSH_TWITTER_ACCESS_TOKEN']
+        self.access_secret = os.environ['ZEIT_PUSH_TWITTER_ACCESS_SECRET']
+
         auth = tweepy.OAuthHandler(self.api_key, self.api_secret)
         auth.set_access_token(self.access_token, self.access_secret)
         self.api = tweepy.API(auth)
