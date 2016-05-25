@@ -1,3 +1,4 @@
+import os
 import pytest
 import unittest
 import zeit.cms.content.interfaces
@@ -12,14 +13,17 @@ import zope.interface
 product_config = """
 <product-config zeit.vgwort>
     vgwort-url https://tom-test.vgwort.de/
-    username zeitonl
-    password zeitabo2010
+    username {username}
+    password {password}
     minimum-token-amount 10
     order-token-amount 1
     days-before-report 7
     claim-token-url http://user:userpw@localhost/
 </product-config>
-"""
+""".format(
+    username=os.environ.get('ZEIT_VGWORT_USERNAME'),
+    password=os.environ.get('ZEIT_VGWORT_PASSWORD'),
+)
 
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
