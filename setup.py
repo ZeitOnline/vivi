@@ -1,4 +1,9 @@
 from setuptools import setup, find_packages
+import os.path
+
+
+def project_path(*names):
+    return os.path.join(os.path.dirname(__file__), *names)
 
 
 setup(
@@ -8,6 +13,10 @@ setup(
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
     description="vivi interface to retresco keyword and topic management",
+    long_description='\n\n'.join(open(project_path(name)).read() for name in (
+        'README.rst',
+        'CHANGES.txt',
+    )),
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
