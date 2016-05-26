@@ -1429,7 +1429,6 @@
   padding-right: 2em;
 }
 
-.type-article #form-article-content-main-image > .fieldname-main_image_layout,
 .type-article #form-article-content-main-image > .fieldname-main_image,
 .type-article #form-article-content-main-image .widget,
 .type-article #form-article-content-main-image .object-widget {
@@ -1437,19 +1436,8 @@
   padding:0;
 }
 
-.type-article #form-article-content-main-image > .fieldname-main_image_layout,
 .type-article .fieldname-main_image_layout .widget{
    width: 50% !important;
-}
-
-.type-article #form-article-content-main-image > .fieldname-main_image_layout{
-  position:relative;
-  top: -2.1em;
-  left: 19em;
-}
-
-.type-article #form-article-content-main-image > .fieldname-main_image_layout div.value:before{
-  content:"Layout: ";
 }
 
 
