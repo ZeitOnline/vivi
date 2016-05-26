@@ -114,16 +114,28 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         image_block.references = value
 
     @property
-    def main_image_layout(self):
+    def main_image_display_mode(self):
         image_block = self.main_image_block
         if image_block is None:
             return None
-        return image_block.layout
+        return image_block.display_mode
 
-    @main_image_layout.setter
-    def main_image_layout(self, value):
+    @main_image_display_mode.setter
+    def main_image_display_mode(self, value):
         image_block = self.main_image_block
-        image_block.layout = value
+        image_block.display_mode = value
+
+    @property
+    def main_image_variant_name(self):
+        image_block = self.main_image_block
+        if image_block is None:
+            return None
+        return image_block.variant_name
+
+    @main_image_variant_name.setter
+    def main_image_variant_name(self, value):
+        image_block = self.main_image_block
+        image_block.variant_name = value
 
     def _create_image_block_in_front(self):
         body = zeit.content.article.edit.interfaces.IEditableBody(self)

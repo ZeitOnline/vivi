@@ -56,9 +56,14 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
-    main_image_layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.article.edit.interfaces.imageLayoutSource,
+    main_image_display_mode = zope.schema.Choice(
+        title=_('Display Mode'),
+        source=zeit.content.article.edit.interfaces.imageDisplayModeSource,
+        required=False)
+
+    main_image_variant_name = zope.schema.Choice(
+        title=_('Variant Name'),
+        source=zeit.content.article.edit.interfaces.imageVariantNameSource,
         required=False)
 
     main_image_block = zope.interface.Attribute(

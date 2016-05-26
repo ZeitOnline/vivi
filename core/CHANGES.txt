@@ -4,7 +4,8 @@ zeit.content.article changes
 3.15.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Split image layout into two separate attributes to avoid combinatorial
+  explosion (ZON-2927).
 
 
 3.15.7 (2016-04-26)

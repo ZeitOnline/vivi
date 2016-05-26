@@ -194,67 +194,27 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
-class IImageLayout(zope.interface.Interface):
-
-    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
-    title = zope.schema.TextLine(title=u'Human readable title.')
-    variant = zope.schema.TextLine(
-        title=u'Which variant to use with this layout.')
-    display_mode = zope.schema.TextLine(
-        title=u'Display mode (fullwidth, floating, etc.).')
-
-
-class ImageLayout(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, available=None, variant=None,
-                 display_mode=None):
-        super(ImageLayout, self).__init__(id, title, available)
-        self.variant = variant
-        self.display_mode = display_mode
-
-    def __eq__(self, other):
-        """Compare equality using the ID of the layouts.
-
-        Allow direct comparison to a string for backward compatibility, thus
-        ImageLayout('foo', 'Foo') == 'foo' will evaluate to true. (Required to
-        keep `zeit.web.magazin` up and running.)
-
-        """
-        if isinstance(other, basestring):
-            return self.id == other
-        return super(ImageLayout, self).__eq__(other)
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def is_allowed(self, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageLayout, self).is_allowed(article)
-
-
-class ImageLayoutSource(
-        zeit.cms.content.sources.ObjectSource,
-        zeit.cms.content.sources.XMLSource):
+class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
-    config_url = 'image-layout-source'
+    config_url = 'image-display-mode-source'
     attribute = 'id'
+    title_xpath = '/display-modes/display-mode'
 
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
-        tree = self._get_tree()
-        result = collections.OrderedDict()
-        for node in tree.iterchildren('*'):
-            id = node.get(self.attribute)
-            result[id] = ImageLayout(
-                id, self._get_title_for(node), node.get('available', None),
-                node.get('variant_name', None), node.get('display_mode', None))
-        return result
-
-imageLayoutSource = ImageLayoutSource()
+imageDisplayModeSource = ImageDisplayModeSource()
 
 
-class IImage(IReference, ILayoutable):
+class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'image-variant-name-source'
+    attribute = 'id'
+    title_xpath = '/variant-names/variant-name'
+
+imageVariantNameSource = ImageVariantNameSource()
+
+
+class IImage(IReference):
 
     references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
@@ -267,10 +227,16 @@ class IImage(IReference, ILayoutable):
         required=False,
         default=False)
 
-    layout = zope.schema.Choice(
-        title=_('Layout'),
-        source=imageLayoutSource,
-        default=ImageLayout('large', _('image-layout-large')),
+    display_mode = zope.schema.Choice(
+        title=_('Display Mode'),
+        source=imageDisplayModeSource,
+        default=u'large',
+        required=False)
+
+    variant_name = zope.schema.Choice(
+        title=_('Variant Name'),
+        source=imageVariantNameSource,
+        default=u'wide',
         required=False)
 
 

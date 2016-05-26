@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<image-layouts>
-  <layout id="small" display_mode="float" available="zeit.cms.section.interfaces.IZONContent">small</layout>
-  <!-- default value must not use available -->
-  <layout id="large" display_mode="fullwidth">large</layout>
-  <layout id="upright" available="zeit.cms.section.interfaces.IZONContent">upright</layout>
-  <layout id="stamp" variant_name="square" display_mode="float">Stamp</layout>
-  <layout id="zmo-only" available="zeit.magazin.interfaces.IZMOContent">zmo</layout>
-</image-layouts>

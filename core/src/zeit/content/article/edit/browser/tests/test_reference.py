@@ -15,11 +15,14 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_empty_block=True)
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
-        b.getControl('Layout').displayValue = ['large']
+        b.getControl('Display Mode').displayValue = ['Float']
+        b.getControl('Variant Name').displayValue = ['Square 1:1']
         b.getControl('Apply').click()
         b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
-            ['large'], b.getControl('Layout').displayValue)
+            ['Float'], b.getControl('Display Mode').displayValue)
+        self.assertEqual(
+            ['Square 1:1'], b.getControl('Variant Name').displayValue)
 
     def get_image_block(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -86,23 +89,38 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    def test_layout_should_be_editable(self):
+    def test_display_mode_and_variant_name_should_be_editable(self):
         s = self.selenium
         self.add_article()
         self.create_block('image')
+
         # Need to skip over first hidden image block (main image)
-        select = 'css=.block.type-image:nth-child(3) form.wired select'
-        s.waitForElementPresent(select)
+        selector_template = 'css=.block.type-image:nth-child(3) {} select'
+        mode_select = selector_template.format('.fieldname-display_mode')
+        variant_select = selector_template.format('.fieldname-variant_name')
+
+        s.waitForElementPresent(mode_select)
         self.assertEqual(
-            ['(nothing selected)', 'small', 'large', 'upright', 'Stamp'],
-            s.getSelectOptions(select))
-        s.select(select, 'label=small')
-        s.type(select, '\t')
+            ['(nothing selected)', 'Large', 'Float'],
+            s.getSelectOptions(mode_select))
+        s.select(mode_select, 'label=Large')
+        s.type(mode_select, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
+
+        s.waitForElementPresent(variant_select)
+        self.assertEqual(
+            ['(nothing selected)', u'Breit', u'Original', u'Square 1:1'],
+            s.getSelectOptions(variant_select))
+        s.select(variant_select, 'label=Original')
+        s.type(variant_select, '\t')
+        s.waitForElementNotPresent('css=.field.dirty')
+
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent(select)
-        s.assertSelectedLabel(select, 'small')
+        s.waitForElementPresent(mode_select)
+        s.assertSelectedLabel(mode_select, 'Large')
+        s.waitForElementPresent(variant_select)
+        s.assertSelectedLabel(variant_select, 'Original')
 
     def test_widget_shows_add_button(self):
         # this ensures that the widget can find the Article (to determine
