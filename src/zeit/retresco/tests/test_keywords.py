@@ -233,6 +233,15 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
         self.assertEqual('uid-karenduve\tuid-berlin', dav[dav_key])
 
+    def test_no_disabled_tags_should_return_empty_tuple(self):
+        content = TestContentType()
+        tagger = Tagger(content)
+        self.assertEqual((), tagger.disabled)
+        dav = zeit.connector.interfaces.IWebDAVProperties(content)
+        dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
+        dav[dav_key] = u''
+        self.assertEqual((), tagger.disabled)
+
     def test_to_xml_should_return_inner_rankedTags(self):
         content = TestContentType()
         self.set_tags(content, """

@@ -116,7 +116,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     def disabled(self):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         disabled = dav.get(DISABLED_PROPERTY)
-        if disabled is None:
+        if not disabled:
             return ()
         return tuple(disabled.split(DISABLED_SEPARATOR))
 
