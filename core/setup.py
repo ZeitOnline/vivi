@@ -31,6 +31,7 @@ setup(
         'requests',
         'setuptools',
         'zeit.cms',
+        'zeit.content.article',
         'zope.component',
         'zope.interface',
         'zope.testbrowser',

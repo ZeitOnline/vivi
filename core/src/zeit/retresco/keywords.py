@@ -1,14 +1,12 @@
 import grokcore.component as grok
 import logging
 import lxml.objectify
-import urllib
-import urllib2
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
-import zope.app.appsetup.product
+import zope.component
 
 
 NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"

@@ -1,3 +1,7 @@
+from zeit.cms.tagging.tag import Tag
+import requests
+import requests.exceptions
+import zeit.cms.interfaces
 import zeit.retresco.interfaces
 import zope.interface
 
@@ -8,11 +12,51 @@ class TMS(object):
 
     def __init__(self, url, username=None, password=None):
         self.url = url
+        if self.url.endswith('/'):
+            self.url = self.url[:-1]
         self.username = username
         self.password = password
 
     def get_keywords(self, content):
-        return []
+        data = zeit.retresco.convert.to_json(content)
+        if data is None:
+            return []
+        response = self._request(
+            'PUT /documents/%s' % data['doc_id'], params={'enrich': 'true'},
+            json=data)
+        result = []
+        for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
+            for keyword in response.get('rtr_{}s'.format(entity_type), ()):
+                # XXX Retresco should return an ID.
+                result.append(Tag(
+                    code=keyword.encode('unicode_escape'),
+                    label=keyword,
+                    url_value=zeit.cms.interfaces.normalize_filename(keyword),
+                    entity_type=entity_type
+                ))
+        return result
+
+    def _request(self, request, **kw):
+        verb, path = request.split(' ', 1)
+        method = getattr(requests, verb.lower())
+        if self.username:
+            kw['auth'] = (self.username, self.password)
+        try:
+            response = method(self.url + path, **kw)
+            response.raise_for_status()
+        except requests.exceptions.RequestException, e:
+            status = getattr(e.response, 'status_code', 500)
+            message = '{verb} {path} returned {error}'.format(
+                verb=verb, path=path, error=str(e))
+            if status < 500:
+                raise zeit.retresco.interfaces.TMSError(message)
+            raise zeit.retresco.interfaces.TechnicalError(message)
+        try:
+            return response.json()
+        except ValueError:
+            message = '{verb} {path} returned invalid json'.format(
+                verb=verb, path=path)
+            raise zeit.retresco.interfaces.TechnicalError(message)
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
