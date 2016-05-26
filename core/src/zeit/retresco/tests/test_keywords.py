@@ -227,10 +227,11 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 """)
         tagger = Tagger(content)
         del tagger['uid-karenduve']
+        del tagger['uid-berlin']
 
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
-        self.assertEqual('uid-karenduve', dav[dav_key])
+        self.assertEqual('uid-karenduve\tuid-berlin', dav[dav_key])
 
     def test_to_xml_should_return_inner_rankedTags(self):
         content = TestContentType()
