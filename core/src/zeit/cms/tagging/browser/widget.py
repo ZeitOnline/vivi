@@ -1,4 +1,5 @@
 from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
+from zeit.cms.tagging.interfaces import ID_NAMESPACE as TAG_NAMESPACE
 import grokcore.component
 import json
 import xml.sax.saxutils
@@ -66,7 +67,7 @@ class Widget(grokcore.component.MultiAdapter,
         # XXX Maybe there's a better place to fix this inconsistency but right
         # now I opt for a quick solution to a fair mess of failing tests.
         return json.dumps([{
-            'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
+            'code': TAG_NAMESPACE + x.code,
             'label': x.label,
             'pinned': x.pinned} for x in value or ()])
 
@@ -78,7 +79,8 @@ class Widget(grokcore.component.MultiAdapter,
                 tag = zeit.cms.interfaces.ICMSContent(item['code'])
             except TypeError:
                 # XXX stopgap until we find out about #12609
-                tag = zeit.cms.tagging.tag.Tag(item['code'], item['label'])
+                tag = zeit.cms.tagging.tag.Tag(
+                    item['code'].replace(TAG_NAMESPACE, ''), item['label'])
             tag.pinned = item['pinned']
             result.append(tag)
         return tuple(result)
