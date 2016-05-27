@@ -201,7 +201,7 @@ class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
     title_xpath = '/display-modes/display-mode'
 
-imageDisplayModeSource = ImageDisplayModeSource()
+IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
 
 
 class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
@@ -211,7 +211,7 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
     title_xpath = '/variant-names/variant-name'
 
-imageVariantNameSource = ImageVariantNameSource()
+IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 
 
 class IImage(IReference):
@@ -229,13 +229,13 @@ class IImage(IReference):
 
     display_mode = zope.schema.Choice(
         title=_('Display Mode'),
-        source=imageDisplayModeSource,
+        source=IMAGE_DISPLAY_MODE_SOURCE,
         default=u'large',
         required=False)
 
     variant_name = zope.schema.Choice(
         title=_('Variant Name'),
-        source=imageVariantNameSource,
+        source=IMAGE_VARIANT_NAME_SOURCE,
         default=u'wide',
         required=False)
 

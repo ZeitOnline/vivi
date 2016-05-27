@@ -280,18 +280,18 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             yield image
 
     def test_variant_name_available_walks_up_to_article(self):
-        from zeit.content.article.edit.interfaces import imageVariantNameSource
+        import zeit.content.article.edit.interfaces
         with self.image() as image:
-            self.assertEqual(
-                ['wide', 'original', 'square'],
-                list(imageVariantNameSource(image)))
+            self.assertEqual(['wide', 'original', 'square'], list(
+                zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE(
+                    image)))
 
     def test_display_mode_available_walks_up_to_article(self):
-        from zeit.content.article.edit.interfaces import imageDisplayModeSource
+        import zeit.content.article.edit.interfaces
         with self.image() as image:
-            self.assertEqual(
-                ['large', 'float'],
-                list(imageDisplayModeSource(image)))
+            self.assertEqual(['large', 'float'], list(
+                zeit.content.article.edit.interfaces.IMAGE_DISPLAY_MODE_SOURCE(
+                    image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
         from zeit.content.article.edit.image import Image
