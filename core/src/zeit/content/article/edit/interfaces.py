@@ -204,6 +204,20 @@ class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
 IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
 
 
+class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
+    """Source to map legacy attr `layout` to a corresponding `display_mode`."""
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'legacy-display-mode-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [(node.get('layout'), node.get('display_mode'))
+                for node in tree.iterchildren('*')]
+
+LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
+
+
 class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
@@ -212,6 +226,20 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
     title_xpath = '/variant-names/variant-name'
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
+
+
+class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
+    """Source to map legacy attr `layout` to a corresponding `variant_name`."""
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'legacy-variant-name-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [(node.get('layout'), node.get('variant_name'))
+                for node in tree.iterchildren('*')]
+
+LEGACY_VARIANT_NAME_SOURCE = LegacyVariantNameSource()
 
 
 class IImage(IReference):

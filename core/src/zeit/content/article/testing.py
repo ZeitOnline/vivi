@@ -23,7 +23,9 @@ product_config = """
     book-recension-categories file://{base}/tests/recension_categories.xml
     genre-url file://{base}/tests/article-genres.xml
     image-display-mode-source file://{base}/edit/tests/image-display-modes.xml
+    legacy-display-mode-source file://{base}/edit/tests/legacy-display-modes.xml
     image-variant-name-source file://{base}/edit/tests/image-variant-names.xml
+    legacy-variant-name-source file://{base}/edit/tests/legacy-variant-names.xml
     video-layout-source file://{base}/edit/tests/video-layouts.xml
     htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
     infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml

@@ -1,0 +1,5 @@
+<legacy-display-modes>
+  <legacy-mapping layout="float-portrait" display_mode="float" />
+  <legacy-mapping layout="float-square" display_mode="float" />
+  <legacy-mapping layout="large" display_mode="large" />
+</legacy-display-modes>

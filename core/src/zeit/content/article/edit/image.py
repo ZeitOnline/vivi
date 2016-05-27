@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.edit.interfaces import LEGACY_DISPLAY_MODE_SOURCE
+from zeit.content.article.edit.interfaces import LEGACY_VARIANT_NAME_SOURCE
 import grokcore.component
 import lxml.objectify
 import zeit.cms.checkout.interfaces
@@ -9,57 +11,6 @@ import zeit.content.article.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.lifecycleevent
-
-
-# Required for backward compatibility, since the `layout` setting did contain a
-# combination of `display_mode` and `variant_name`.
-LAYOUT_DISPLAY_MODE_MAPPING = {
-    'column-width': 'column-width',
-    'column-width-original': 'column-width',
-    'column-width-portrait': 'column-width',
-    'column-width-square': 'column-width',
-    'float-portrait': 'float',
-    'float-square': 'float',
-    'large': 'large',
-    'portrait': 'float',
-    'small': 'float',
-    'zco-portrait': 'large',
-    'zco-wide': 'large',
-}
-
-
-# Required for backward compatibility, since the `layout` setting did contain a
-# combination of `display_mode` and `variant_name`.
-LAYOUT_VARIANT_NAME_MAPPING = {
-    'column-width': 'wide',
-    'column-width-original': 'original',
-    'column-width-portrait': 'portrait',
-    'column-width-square': 'square',
-    'float-portrait': 'portrait',
-    'float-square': 'square',
-    'large': 'wide',
-    'portrait': 'original',
-    'small': 'wide',
-    'zco-portrait': 'portrait',
-    'zco-wide': 'wide',
-    'zmo-large-center': 'wide',
-    'zmo-medium-center': 'wide',
-    'zmo-medium-left': 'wide',
-    'zmo-medium-right': 'wide',
-    'zmo-narrow-header': 'narrow',
-    'zmo-portrait-header': 'portrait',
-    'zmo-small-left': 'portrait',
-    'zmo-small-left-original': 'original',
-    'zmo-small-right': 'portrait',
-    'zmo-small-right-original': 'original',
-    'zmo-square-header': 'square',
-    'zmo-standard-header': 'standard',
-    'zmo-super-header': 'super',
-    'zmo-tile-header': 'tile',
-    'zmo-wide-header': 'wide',
-    'zmo-xl': 'super',
-    'zmo-xl-header': 'original',
-}
 
 
 class ImageReferenceProperty(
@@ -114,8 +65,9 @@ class Image(zeit.content.article.edit.reference.Reference):
 
         # backward compatibility by mapping old layout to display_mode
         layout = self.xml.get('layout', None)
-        if layout in LAYOUT_DISPLAY_MODE_MAPPING:
-            return LAYOUT_DISPLAY_MODE_MAPPING[layout]
+        mapping = dict(list(LEGACY_DISPLAY_MODE_SOURCE(self)))
+        if layout in mapping:
+            return mapping[layout]
 
         return zeit.content.article.edit.interfaces.IImage[
             'display_mode'].default
@@ -131,8 +83,9 @@ class Image(zeit.content.article.edit.reference.Reference):
 
         # backward compatibility by mapping old layout to display_mode
         layout = self.xml.get('layout', None)
-        if layout in LAYOUT_VARIANT_NAME_MAPPING:
-            return LAYOUT_VARIANT_NAME_MAPPING[layout]
+        mapping = dict(list(LEGACY_VARIANT_NAME_SOURCE(self)))
+        if layout in mapping:
+            return mapping[layout]
 
         return zeit.content.article.edit.interfaces.IImage[
             'variant_name'].default
