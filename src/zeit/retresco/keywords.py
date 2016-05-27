@@ -1,9 +1,13 @@
+from zeit.cms.checkout.helper import checked_out
+import gocept.runner
 import grokcore.component as grok
 import logging
+import lxml.builder
 import lxml.objectify
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
 import zope.component
@@ -176,3 +180,35 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         dav[DISABLED_PROPERTY] = u''
+
+
+@gocept.runner.once(principal=gocept.runner.from_config(
+    'zeit.retresco', 'keywordlist-principal'))
+def update_keywordlist():
+    _update_keywordlist()
+
+
+def _update_keywordlist():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
+    keywords = zeit.cms.interfaces.ICMSContent(config['keywordlist'], None)
+    if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
+        raise ValueError(
+            '%s is not a raw xml document' % config['keywordlist'])
+    with checked_out(keywords) as co:
+        log.info('Retrieving all keywords from TMS')
+        co.xml = _build_keyword_xml()
+    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
+
+
+def _build_keyword_xml():
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    E = lxml.builder.ElementMaker()
+    root = E.tags()
+    for row in tms.get_all_keywords():
+        root.append(E.tag(
+            row['name'],
+            url_value=zeit.cms.interfaces.normalize_filename(row['name']),
+            uuid=row['name'].encode('unicode_escape'),  # XXX row['doc_id'],
+            type=row['item_type'],
+            freq=str(row['count'])))
+    return root

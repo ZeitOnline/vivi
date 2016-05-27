@@ -24,6 +24,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
+        'gocept.runner',
         'grokcore.component',
         'lxml',
         'mock',
@@ -32,10 +33,14 @@ setup(
         'setuptools',
         'zeit.cms',
         'zeit.content.article',
+        'zeit.content.rawxml',
         'zope.component',
         'zope.interface',
         'zope.testbrowser',
     ],
     entry_points={
+        'console_scripts': [
+            'update-keywordlist=zeit.retresco.keywords:update_keywordlist',
+        ]
     },
 )
