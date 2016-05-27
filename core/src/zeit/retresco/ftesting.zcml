@@ -10,4 +10,6 @@
   <includeOverrides package="zeit.retresco" />
   <adapter factory="zeit.retresco.keywords.Tagger" />
 
+  <include package="zeit.content.rawxml" />
+
 </configure>

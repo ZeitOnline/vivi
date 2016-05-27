@@ -36,6 +36,20 @@ class TMS(object):
                 ))
         return result
 
+    def get_all_keywords(self):
+        page = 0
+        while True:
+            page += 1
+            # Production has over 600.000 entities, so pages of 1000 balances
+            # number of requests vs. work the TMS has to do per request.
+            response = self._request(
+                'GET /linguistic/entities',
+                params={'rows': 1000, 'page': page})
+            if not response['docs']:
+                break
+            for row in response['docs']:
+                yield row
+
     def _request(self, request, **kw):
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())

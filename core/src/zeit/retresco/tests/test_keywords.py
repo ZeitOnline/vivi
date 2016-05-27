@@ -2,7 +2,9 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.workflow.interfaces import IPublishInfo, CAN_PUBLISH_SUCCESS
 from zeit.retresco.keywords import Tagger
+import lxml.builder
 import mock
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
@@ -412,3 +414,28 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
         self.assertEqual('', dav[dav_key])
+
+
+class WhitelistUpdateTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.retresco.testing.ZCML_LAYER
+
+    def test_updates_configured_content_and_publishes(self):
+        self.repository['keywords'] = zeit.content.rawxml.rawxml.RawXML()
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.retresco')
+        config['keywordlist'] = 'http://xml.zeit.de/keywords'
+        IPublishInfo(self.repository['keywords']).set_can_publish(
+            CAN_PUBLISH_SUCCESS)
+        with mock.patch('zeit.retresco.keywords._build_keyword_xml') as xml:
+            E = lxml.builder.ElementMaker()
+            xml.return_value = E.tags(
+                E.tag('Berlin', url_value='berlin', uuid='Berlin',
+                      type='location')
+            )
+            zeit.retresco.keywords._update_keywordlist()
+        keywords = self.repository['keywords']
+        self.assertEqual(1, len(keywords.xml.xpath('//tag')))
+        self.assertEqual('tags', keywords.xml.tag)
+        self.assertEqual('Berlin', keywords.xml.find('tag')[0])
+        self.assertEqual(True, IPublishInfo(keywords).published)
