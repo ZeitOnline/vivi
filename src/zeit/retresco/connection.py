@@ -27,9 +27,10 @@ class TMS(object):
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                # XXX Retresco should return an ID.
                 result.append(Tag(
-                    code=keyword.encode('unicode_escape'),
+                    # Having an ASCII-only ID makes handling easier.
+                    code='%s-%s' % (
+                        entity_type, keyword.encode('unicode_escape')),
                     label=keyword,
                     url_value=zeit.cms.interfaces.normalize_filename(keyword),
                     entity_type=entity_type

@@ -33,7 +33,7 @@ vivi bietet folgende Funktionen:
 Die API dafür ist ``zeit.cms.tagging.interfaces.ITagger(ICMSContent)``, von der
 Idee her ein OrderedDict von ``ITag``-Objekten, mit den folgenden Eigenschaften:
 
-:code: Interne ID
+:code: Interne ID (um Homonyme unterscheiden zu können, z.B. "Offenbach" Person vs. Ort)
 :label: Schlagwort
 :url_value: URL-safe Normalisierung von `label`
 :entity_type: person, location, etc.
