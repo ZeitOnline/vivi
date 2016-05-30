@@ -23,6 +23,15 @@ log = logging.getLogger(__name__)
 
 
 class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
+    """Serializes keywords to an XML structure and stores it as a DAV property.
+
+    The serialization format (including pinned and disabled keywords) is
+    actually backwards compatible with zeit.intrafind, but since the TMS uses
+    different IDs for keywords, switching to retresco means that
+    pinned+disabled keywords will effectively be reset. (Keywords that are
+    assigned to content already will remain usable, though, since the label is
+    pretty much the only interesting property.)
+    """
 
     # XXX Registered via site.zcml until move to zeit.retresco is complete.
     grok.baseclass()
