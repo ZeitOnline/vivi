@@ -217,7 +217,8 @@ def _build_keyword_xml():
         root.append(E.tag(
             row['name'],
             url_value=zeit.cms.interfaces.normalize_filename(row['name']),
-            uuid=row['name'].encode('unicode_escape'),  # XXX row['doc_id'],
+            uuid='%s-%s' % (
+                row['item_type'], row['name'].encode('unicode_escape')),
             type=row['item_type'],
             freq=str(row['count'])))
     return root
