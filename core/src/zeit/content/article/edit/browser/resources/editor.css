@@ -86,6 +86,11 @@
 
 }
 
+.article-editor-inner .field span.required {
+  display:block;
+  float:right;
+  margin-top:2px;
+}
 
 /* Textareas not inline */
 
@@ -196,6 +201,41 @@
 .type-article #article-form-assets.folded,
 .type-article #article-form-metadata.folded {
   border-bottom: 0;
+}
+
+/* folding */
+
+.article-editor-inner .folded > .block-inner {
+  display: none;
+}
+
+/* .article-editor-inner .type-portraitbox.folded > .block-inner { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded > .block-inner {
+  display: block;
+  border-color: white;
+}
+
+/* .article-editor-inner .type-portraitbox.folded .edit-bar { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded .edit-bar {
+  border: 1px solid #dddddd !important;
+}
+
+.article-editor-inner .type-portraitbox.folded .block-inner > * {
+  display: none;
+}
+
+.article-editor-inner .folded > .block-inner > .edit-bar {
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0;
+}
+
+.type-article .cp-content-inner .fold-link {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
+}
+
+.type-article .cp-content-inner .folded .fold-link {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
 }
 
 /* Article content main image */
