@@ -357,19 +357,15 @@
   margin: 0;
 }
 
-.type-article .article-editor-inner .edit-bar > .delete-link {
-  background-image: url("/fanstatic/zeit.cms/icons/delete.png");
-}
-
 .type-article .article-editor-inner .dragger .center {
   height: 25px;
 }
 
-.type-article #article-editor-text .block {
+.type-article .editable-area .block {
   margin-left: 0em;
 }
 
-.type-article #article-editor-text .landing-zone a {
+.type-article .editable-area .landing-zone a {
   color: #333;
   vertical-align: baseline;
   outline: none;
