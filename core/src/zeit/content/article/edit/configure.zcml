@@ -24,6 +24,17 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
+  <class class=".header.HeaderArea">
+    <require
+      interface="zeit.edit.interfaces.IReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.edit.interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".paragraph.Paragraph">
     <require
       interface=".interfaces.IParagraph"
