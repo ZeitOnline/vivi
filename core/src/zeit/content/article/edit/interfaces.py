@@ -34,6 +34,9 @@ class IEditableBody(IArticleArea):
 class IHeaderArea(IArticleArea):
     """Separate area for header that may contain one module."""
 
+    module = zope.interface.Attribute(
+        'Convenience access for self.values()[0] or None')
+
 
 class IFindReplace(zope.interface.Interface):
     """Find/replace functionality for IEditableBody."""
