@@ -27,6 +27,7 @@ product_config = """
     htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
     infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
     template-source file://{base}/edit/tests/templates.xml
+    header-module-source file://{base}/edit/tests/header-modules.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

@@ -100,6 +100,14 @@
     weight="10"
     />
 
+  <browser:view
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".edit.HeaderAreaFactories"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

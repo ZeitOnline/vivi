@@ -2,6 +2,7 @@ from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.interfaces
+import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
@@ -162,6 +163,27 @@ class ReplaceAll(zeit.edit.browser.view.Action):
             self.context).replace_all(self.find, self.replace)
         self.reload()
         self.signal(None, 'after-replace-all', count)
+
+
+class HeaderAreaFactories(zeit.edit.browser.library.BlockFactories):
+
+    @property
+    def library_name(self):
+        return zeit.content.article.edit.header.HEADER_NAME
+
+    def get_adapters(self):
+        return [{
+            'name': name,
+            'type': name,
+            'title': zeit.content.article.edit.header.MODULES.factory.getTitle(
+                self.context, name),
+            'library_name': self.library_name,
+            'params': {},
+        } for name in zeit.content.article.edit.header.MODULES(self.context)]
+
+    def sort_block_types(self, items):
+        # Use order defined by the source.
+        return items
 
 
 class EditRawXML(zeit.edit.browser.form.InlineForm):

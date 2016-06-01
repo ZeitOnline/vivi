@@ -54,3 +54,16 @@ def get_header_area(article):
         (article,
          zope.security.proxy.removeSecurityProxy(node)),
         zeit.content.article.edit.interfaces.IHeaderArea)
+
+
+class ModuleSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'header-module-source'
+    attribute = 'id'
+
+    # For consistency with the zeit.content.cp config files.
+    def _get_title_for(self, node):
+        return unicode(node.get('title'))
+
+MODULES = ModuleSource()
