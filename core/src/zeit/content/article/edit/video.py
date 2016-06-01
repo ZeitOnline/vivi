@@ -12,7 +12,7 @@ import zope.schema
 
 class Video(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IVideo)
     type = 'video'
@@ -76,7 +76,7 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
     title = _('Video')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.video.interfaces.IVideoContent,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)

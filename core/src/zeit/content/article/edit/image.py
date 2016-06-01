@@ -70,7 +70,7 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
     title = _('Image')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.image.interfaces.IImage,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
@@ -81,7 +81,7 @@ def factor_image_block_from_image(body, image, position):
     return block
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.image.interfaces.IImageGroup,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)

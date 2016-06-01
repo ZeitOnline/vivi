@@ -36,7 +36,7 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
 
 @grok.adapter(
-    zeit.content.article.edit.interfaces.IEditableBody,
+    zeit.content.article.edit.interfaces.IArticleArea,
     zeit.content.author.interfaces.IAuthor,
     int)
 @grok.implementer(zeit.edit.interfaces.IElement)

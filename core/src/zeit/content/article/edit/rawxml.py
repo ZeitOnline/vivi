@@ -8,7 +8,7 @@ import zeit.edit.block
 
 class RawXML(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IRawXML)
     type = 'raw'

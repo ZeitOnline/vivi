@@ -16,7 +16,7 @@ class BlockFactory(zeit.edit.block.ElementFactory):
 
     grokcore.component.baseclass()
     grokcore.component.context(
-        zeit.content.article.edit.interfaces.IEditableBody)
+        zeit.content.article.edit.interfaces.IArticleArea)
     # No title so we are excluded from @@block-factories -- our blocks are
     # created via the toolbar, and should not appear in the module library.
     title = None

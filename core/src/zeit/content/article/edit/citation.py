@@ -7,7 +7,7 @@ import zeit.edit.block
 
 class Citation(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.ICitation)
     type = 'citation'

@@ -9,7 +9,7 @@ import zeit.edit.block
 
 class Quiz(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(IQuiz)
     type = 'quiz'
 
