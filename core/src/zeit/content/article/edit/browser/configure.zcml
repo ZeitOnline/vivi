@@ -69,6 +69,37 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="edit.header.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.header.contents-provider.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone-top"
+    template="edit.header.landing.pt"
+    class=".edit.Body"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

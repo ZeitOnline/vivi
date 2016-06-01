@@ -377,32 +377,33 @@
   -moz-appearance: button;
 }
 
-.type-article #article-editor-text .landing-zone a:before {
+.type-article .editable-area .landing-zone a:before {
   content: "|";
   color: rgba(255, 255, 255, 0);
 }
 
-.type-article #article-editor-text .landing-zone a:after {
+.type-article .editable-area .landing-zone a:after {
   content: "|";
   color: rgba(255, 255, 255, 0);
 }
 
-.type-article #article-editor-text #editable-body .block-inner{
+.type-article .editable-area .block-inner{
   padding-top: 0px !important;
   border-radius: 5px 5px 0px 0px;
   border: 1px solid #DDD;
 }
 
-.type-article #article-editor-text #editable-body .block-inner .object-details{
+.type-article #article-editor-header .block-inner .object-details,
+.type-article #article-editor-text .block-inner .object-details {
   border: 0px solid white;
   margin-top: 2px;
 }
 
-.type-article #article-editor-text #editable-body .block-inner .edit-bar {
+.type-article .editable-area .block-inner .edit-bar {
   height:25px;
 }
 
-.type-article #article-editor-text .block-inner .edit-bar {
+.type-article .editable-area .block-inner .edit-bar {
   background: none repeat scroll 0 0 #F8F9FD;
   border-radius: 5px 5px 0 0px;
   border: 0px solid #DDD;
@@ -900,11 +901,11 @@
   padding:0px;
 }
 
-.type-article #article-editor-text .zeit-content-article-edit-interfaces-IVideo .object-details .object-link a {
+.type-article .editable-area .zeit-content-article-edit-interfaces-IVideo .object-details .object-link a {
   -moz-appearance: none;
 }
 
-.type-article #article-editor-text .object-details.type-video .graphical_preview,
+.type-article .editable-area .object-details.type-video .graphical_preview,
 .type-article #edit-form-leadteaser .object-details.type-video .graphical_preview {
   float: none;
 }
@@ -1132,28 +1133,28 @@
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
 }
 
-.type-article #article-editor-text .module-icon-image {
+.type-article .editable-area .module-icon-image {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
 }
 
-.type-article #article-editor-text .module-icon-video {
+.type-article .editable-area .module-icon-video {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2189px transparent;
 }
 
-.type-article #article-editor-text .module-icon-infobox {
+.type-article .editable-area .module-icon-infobox {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
-.type-article #article-editor-text .module-icon-timeline {
+.type-article .editable-area .module-icon-timeline {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
-.type-article #article-editor-text .module-icon-portraitbox,
-.type-article #article-editor-text .module-icon-author {
+.type-article .editable-area .module-icon-portraitbox,
+.type-article .editable-area .module-icon-author {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
 }
 
-.type-article #article-editor-text .module-icon-gallery {
+.type-article .editable-area .module-icon-gallery {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
 }
 
