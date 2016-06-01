@@ -429,11 +429,11 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
 }
 
-#article-editor-text .fold-link {
+.type-article .cp-content-inner .fold-link {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
 }
 
-#article-editor-text .folded .fold-link {
+.type-article .cp-content-inner .folded .fold-link {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
 }
 

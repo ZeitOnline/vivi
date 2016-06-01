@@ -4,7 +4,7 @@ Changes
 2.13.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Move article-specific styles to z.c.article.
 
 
 2.13.5 (2016-04-29)
