@@ -6,6 +6,7 @@ import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
+import zeit.edit.browser.library
 import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
