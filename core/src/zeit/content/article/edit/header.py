@@ -10,7 +10,7 @@ import zope.component
 HEADER_NAME = 'editable-header'
 
 
-class HeaderArea(zeit.edit.container.TypeOnAttributeContainer,
+class HeaderArea(zeit.edit.container.Base,
                  grok.MultiAdapter):
 
     grok.implements(zeit.content.article.edit.interfaces.IHeaderArea)
@@ -19,6 +19,11 @@ class HeaderArea(zeit.edit.container.TypeOnAttributeContainer,
                 gocept.lxml.interfaces.IObjectified)
 
     __name__ = HEADER_NAME
+
+    _find_item = lxml.etree.XPath(
+        './/*[@cms:__name__ = $name]',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
 
     def _get_element_type(self, xml_node):
         return xml_node.tag
@@ -35,12 +40,39 @@ class HeaderArea(zeit.edit.container.TypeOnAttributeContainer,
         for key in list(self.keys()):
             self._delete(key)
 
+    def _set_default_key(self, xml_node):
+        # XXX copy&paste from .body.Body
+        key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        if not key:
+            key = self._generate_block_id()
+            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
+            self._p_changed = True
+        return key
+
+    def _get_keys(self, xml_node):
+        result = []
+        for child in xml_node.iterchildren():
+            result.append(self._set_default_key(child))
+        return result
+
+    def values(self):
+        # We re-implement values() so it works without keys(), since those are
+        # not present in the repository.
+        result = []
+        for child in self.xml.iterchildren():
+            element = self._get_element_for_node(child)
+            if element is None:
+                element = self._get_element_for_node(
+                    child, zeit.edit.block.UnknownBlock.type)
+            result.append(element)
+        return result
+
     @property
     def module(self):
-        keys = self.keys()
-        if not keys:
+        values = self.values()
+        if not values:
             return None
-        return self[keys[0]]
+        return values[0]
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)

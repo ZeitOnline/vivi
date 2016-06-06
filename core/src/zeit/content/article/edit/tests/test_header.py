@@ -40,3 +40,14 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         header.create_item('cardstack')
         self.assertEqual(['cardstack'], [x.type for x in header.values()])
         self.assertEqual('cardstack', header.module.type)
+
+    def test_module_is_accessible_after_checkin(self):
+        # On checkin, the cp:__name__ attributes are removed, so the header
+        # needs to be able to function without them.
+        article = Article()
+        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
+        header.create_item('quiz')
+        self.repository['article'] = article
+        header = zeit.content.article.edit.interfaces.IHeaderArea(
+            self.repository['article'])
+        self.assertEqual(['quiz'], [x.type for x in header.values()])
