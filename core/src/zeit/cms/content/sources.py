@@ -255,12 +255,6 @@ class SubChannelSource(MasterSlaveSource):
         return unicode(node['title'])
 
 
-class StorystreamSource(XMLSource):
-
-    config_url = 'source-storystreams'
-    attribute = 'name'
-
-
 def unicode_or_none(value):
     if value:
         return unicode(value)
@@ -473,3 +467,28 @@ class AllowedBase(object):
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
             other, self.__class__) and self.id == other.id
+
+
+class StorystreamReference(AllowedBase):
+
+    def __init__(self, id, title, available, centerpage_id):
+        super(StorystreamReference, self).__init__(id, title, available)
+        self.centerpage_id = centerpage_id
+
+    @property
+    def references(self):
+        return zeit.cms.interfaces.ICMSContent(self.centerpage_id)
+
+
+class StorystreamSource(ObjectSource, XMLSource):
+
+    config_url = 'source-storystreams'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
+            id = node.get('name')
+            result[id] = StorystreamReference(
+                id, node.text, node.get('available'), node.get('href'))
+        return result

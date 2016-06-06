@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Move tags-to-xml and trisolute code here from zeit.intrafind (ZON-3114).
 
+- Change ``ICommonMetadata.storystreams`` to objects that provide
+  id, title and the CP as ``references`` (ZON-2769).
+
 
 2.80.0 (2016-05-12)
 -------------------

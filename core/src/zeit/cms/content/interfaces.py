@@ -339,6 +339,13 @@ class ISerie(zope.interface.Interface):
     video = zope.interface.Attribute('')
 
 
+class IStorystreamReference(zope.interface.Interface):
+
+    id = zope.interface.Attribute('')
+    title = zope.interface.Attribute('')
+    references = zope.interface.Attribute('')
+
+
 def hex_literal(value):
     try:
         int(value, base=16)

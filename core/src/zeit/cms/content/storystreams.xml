@@ -1,3 +1,3 @@
 <storystreams>
-  <stream name="test">Nur ein Test</stream>
+  <stream name="test" href="http://xml.zeit.de/storystream">Nur ein Test</stream>
 </storystreams>
