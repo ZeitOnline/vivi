@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.13.6 (unreleased)
+2.13.6 (2016-06-06)
 -------------------
 
 - Move article-specific styles to z.c.article.
