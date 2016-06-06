@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.81.1 (unreleased)
+2.81.1 (2016-06-06)
 -------------------
 
 - Be defensive about missing/invalid storystream references.
