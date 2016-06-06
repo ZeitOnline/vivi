@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.81.0 (unreleased)
+2.81.0 (2016-06-06)
 -------------------
 
 - Move tags-to-xml and trisolute code here from zeit.intrafind (ZON-3114).
