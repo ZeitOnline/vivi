@@ -477,7 +477,7 @@ class StorystreamReference(AllowedBase):
 
     @property
     def references(self):
-        return zeit.cms.interfaces.ICMSContent(self.centerpage_id)
+        return zeit.cms.interfaces.ICMSContent(self.centerpage_id, None)
 
 
 class StorystreamSource(ObjectSource, XMLSource):
