@@ -51,3 +51,12 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         header = zeit.content.article.edit.interfaces.IHeaderArea(
             self.repository['article'])
         self.assertEqual(['quiz'], [x.type for x in header.values()])
+
+    def test_index_is_implemented_via_values(self):
+        article = Article()
+        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
+        module = header.create_item('quiz')
+        self.repository['article'] = article
+        header = zeit.content.article.edit.interfaces.IHeaderArea(
+            self.repository['article'])
+        self.assertEqual(0, header.index(module))

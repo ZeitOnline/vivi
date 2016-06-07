@@ -1,16 +1,16 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
-import zeit.edit.container
 import zope.component
 
 
 HEADER_NAME = 'editable-header'
 
 
-class HeaderArea(zeit.edit.container.Base,
+class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
                  grok.MultiAdapter):
 
     grok.implements(zeit.content.article.edit.interfaces.IHeaderArea)
@@ -19,14 +19,6 @@ class HeaderArea(zeit.edit.container.Base,
                 gocept.lxml.interfaces.IObjectified)
 
     __name__ = HEADER_NAME
-
-    _find_item = lxml.etree.XPath(
-        './/*[@cms:__name__ = $name]',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
-
-    def _get_element_type(self, xml_node):
-        return xml_node.tag
 
     def insert(self, position, item):
         self._clear()
@@ -39,15 +31,6 @@ class HeaderArea(zeit.edit.container.Base,
     def _clear(self):
         for key in list(self.keys()):
             self._delete(key)
-
-    def _set_default_key(self, xml_node):
-        # XXX copy&paste from .body.Body
-        key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        if not key:
-            key = self._generate_block_id()
-            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
-            self._p_changed = True
-        return key
 
     def _get_keys(self, xml_node):
         result = []
