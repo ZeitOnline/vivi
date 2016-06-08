@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.0.0 (unreleased)
+1.0.0 (2016-06-08)
 ------------------
 
 - Initial release.
