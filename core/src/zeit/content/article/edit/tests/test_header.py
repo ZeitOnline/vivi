@@ -1,8 +1,11 @@
+from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.article import Article
 import gocept.testing.mock
 import mock
+import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zope.security.proxy
 
 
 class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
@@ -30,6 +33,14 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         header = zeit.content.article.edit.interfaces.IHeaderArea(article)
         self.assertEqual([], header.keys())
         self.assertEqual(1, len(article.xml.xpath('//head/header')))
+
+    def test_migration_works_with_security(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article, temporary=False) as co:
+            co = zope.security.proxy.ProxyFactory(co)
+            with self.assertNothingRaised():
+                zeit.content.article.edit.interfaces.IHeaderArea(co)
 
     def test_contains_at_most_one_module(self):
         article = Article()

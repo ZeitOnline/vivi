@@ -1,6 +1,7 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -63,7 +64,12 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
 def get_header_area(article):
     node = article.xml.xpath('//head/header')
     if not node:
-        article.xml['head'].append(lxml.objectify.E.header())
+        # XXX locate the XML object into the workingcopy so that edit
+        # permissions can be found (which makes this security declaration
+        # somewhat unhelpful since it doesn't work without additional setup).
+        head = article.xml['head']
+        head = zeit.cms.content.field.located(head, article, 'header')
+        head.append(lxml.objectify.E.header())
     node = article.xml.xpath('//head/header')[0]
     return zope.component.queryMultiAdapter(
         (article,
