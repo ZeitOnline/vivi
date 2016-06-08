@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.16.1 (unreleased)
+3.16.1 (2016-06-08)
 -------------------
 
 - Fix security declaration for IHeaderArea migration code.
