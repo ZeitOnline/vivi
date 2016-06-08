@@ -8,7 +8,7 @@ import zeit.edit.block
 
 class Liveblog(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(zeit.content.article.edit.interfaces.ILiveblog)
     type = 'liveblog'
 

@@ -453,6 +453,17 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.ArticleContentForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.article-header"
+    template="edit.article-header.pt"
+    permission="zope.View"
+    weight="15"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.checkout.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleContentForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.article-content-main-image"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"

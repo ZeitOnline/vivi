@@ -15,6 +15,8 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     // Initialize module library
     zeit.edit.library.create(
         'article-modules', context_url + '/editable-body', 'Artikel');
+    zeit.edit.library.create(
+        'header-modules', context_url + '/editable-header', 'Header');
 
     // Update error messages and checkin button disabled status
     MochiKit.Signal.connect(window, 'changed', function() {
@@ -53,9 +55,19 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     if (! zeit.cms.in_article_editor()) {
         return;
     }
+
     zeit.edit.drop.registerHandler({
         accept: ['editable-body-module'],
         activated_by: 'action-editable-body-module-droppable',
+        url_attribute: 'cms:create-block-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type')};
+        }
+    });
+
+    zeit.edit.drop.registerHandler({
+        accept: ['editable-header-module'],
+        activated_by: 'action-editable-header-module-droppable',
         url_attribute: 'cms:create-block-url',
         query_arguments: function(draggable) {
             return {'block_type': draggable.getAttribute('cms:block_type')};

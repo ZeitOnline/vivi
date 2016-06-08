@@ -115,6 +115,7 @@ The recension is now already part of the article:
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
+    <header/>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
         name="has_recensions">yes</attribute>
   </head>

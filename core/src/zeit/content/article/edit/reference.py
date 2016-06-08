@@ -16,7 +16,7 @@ import zope.schema
 
 class Reference(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grokcore.component.baseclass()
 
     is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -84,7 +84,7 @@ class GalleryFactory(ReferenceFactory):
     title = _('Gallery')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.gallery.interfaces.IGallery,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
@@ -112,7 +112,7 @@ class InfoboxFactory(ReferenceFactory):
     title = _('Infobox')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.infobox.interfaces.IInfobox,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
@@ -135,7 +135,7 @@ class TimelineFactory(ReferenceFactory):
     title = _('Timeline')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.article.edit.interfaces.ITimeline,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
@@ -167,7 +167,7 @@ class PortraitboxFactory(ReferenceFactory):
     title = _('Portraitbox')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
                             zeit.content.portraitbox.interfaces.IPortraitbox,
                             int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
