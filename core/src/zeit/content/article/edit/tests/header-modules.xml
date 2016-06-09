@@ -1,0 +1,7 @@
+<modules>
+  <module id="cardstack" title="Card-Stack"/>
+  <module id="quiz" title="Quiz"/>
+  <module id="video" title="Video"/>
+  <module id="raw" title="Embed-Code"/>
+  <module id="rawtext" title="Embed-Link"/>
+</modules>

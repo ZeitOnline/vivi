@@ -35,7 +35,9 @@ ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 # want it.
 ARTICLE_TEMPLATE = """\
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-    <head/>
+    <head>
+        <header/>
+    </head>
     <body>
         <supertitle/>
         <title/>

@@ -1,13 +1,13 @@
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+from zeit.content.article.edit.header import HEADER_NAME
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
+import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.block
-import zeit.edit.body
-import zeit.edit.container
 import zeit.edit.rule
 import zope.schema.interfaces
 import zope.security.proxy
@@ -16,7 +16,7 @@ import zope.security.proxy
 BODY_NAME = 'editable-body'
 
 
-class EditableBody(zeit.edit.container.Base,
+class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
                    grok.MultiAdapter):
 
     grok.implements(zeit.content.article.edit.interfaces.IEditableBody)
@@ -25,19 +25,6 @@ class EditableBody(zeit.edit.container.Base,
                 gocept.lxml.interfaces.IObjectified)
 
     __name__ = BODY_NAME
-
-    _find_item = lxml.etree.XPath(
-        './/*[@cms:__name__ = $name]',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
-
-    def _set_default_key(self, xml_node):
-        key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        if not key:
-            key = self._generate_block_id()
-            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
-            self._p_changed = True
-        return key
 
     def _get_keys(self, xml_node):
         # XXX this is much too simple and needs work. and tests.
@@ -52,9 +39,6 @@ class EditableBody(zeit.edit.container.Base,
             for child in division.iterchildren():
                 result.append(self._set_default_key(child))
         return result
-
-    def index(self, value):
-        return self.values().index(value)
 
     def values(self):
         # We re-implement values() so it works without keys(), since those are
@@ -74,9 +58,6 @@ class EditableBody(zeit.edit.container.Base,
                         child, zeit.edit.block.UnknownBlock.type)
                 result.append(element)
         return result
-
-    def _get_element_type(self, xml_node):
-        return xml_node.tag
 
     def _add(self, item):
         """Overwrite to add to last division instead of self.xml"""
@@ -136,11 +117,30 @@ def get_editable_body(article):
         zeit.content.article.edit.interfaces.IEditableBody)
 
 
-class BodyTraverser(zeit.edit.body.Traverser):
+class BodyTraverser(grok.Adapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    body_name = BODY_NAME
-    body_interface = zeit.content.article.edit.interfaces.IEditableBody
+    grok.implements(zope.traversing.interfaces.ITraversable)
+
+    candidates = {
+        BODY_NAME: zeit.content.article.edit.interfaces.IEditableBody,
+        HEADER_NAME: zeit.content.article.edit.interfaces.IHeaderArea,
+    }
+
+    # XXX A subscriber-based system for zope.traversing (like z3c.traverser)
+    # would be nicer.
+    def traverse(self, name, furtherPath):
+        result = None
+        for label, iface in self.candidates.items():
+            if name == label:
+                result = iface(self.context, None)
+            if result is not None:
+                return result
+        # XXX zope.component does not offer an API to get the next adapter
+        # that is less specific than the current one. So we hard-code the
+        # default.
+        return zope.traversing.adapters.DefaultTraversable(
+            self.context).traverse(name, furtherPath)
 
 
 # Remove all the __name__ thingies on before adding an article to the

@@ -14,7 +14,11 @@ import zope.schema
 import zope.security.proxy
 
 
-class IEditableBody(zeit.edit.interfaces.IArea):
+class IArticleArea(zeit.edit.interfaces.IArea):
+    pass
+
+
+class IEditableBody(IArticleArea):
     """Editable representation of an article's body."""
 
     def ensure_division():
@@ -25,6 +29,13 @@ class IEditableBody(zeit.edit.interfaces.IArea):
         divisions.
 
         """
+
+
+class IHeaderArea(IArticleArea):
+    """Separate area for header that may contain one module."""
+
+    module = zope.interface.Attribute(
+        'Convenience access for self.values()[0] or None')
 
 
 class IFindReplace(zope.interface.Interface):

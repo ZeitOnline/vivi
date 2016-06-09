@@ -9,7 +9,7 @@ import zeit.edit.block
 
 class Cardstack(zeit.edit.block.SimpleElement):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
+    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(ICardstack)
     type = 'cardstack'
 

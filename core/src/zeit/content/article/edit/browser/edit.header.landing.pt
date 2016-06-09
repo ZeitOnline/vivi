@@ -1,0 +1,8 @@
+<div class="landing-zone visible action-editable-header-module-droppable"
+   i18n:domain="zeit.cms"
+   tal:condition="view/writeable"
+   tal:attributes="
+   cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module;"
+   i18n:translate="">
+  Drop header module here
+</div>
