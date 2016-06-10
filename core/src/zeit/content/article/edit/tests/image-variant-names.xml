@@ -1,0 +1,6 @@
+<variant-names>
+  <variant-name id="wide">Breit</variant-name>
+  <variant-name id="original">Original</variant-name>
+  <variant-name id="square">Square 1:1</variant-name>
+  <variant-name id="zmo-only" available="zeit.magazin.interfaces.IZMOContent">ZMO Only</variant-name>
+</variant-names>

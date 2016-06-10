@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.edit.interfaces import LEGACY_DISPLAY_MODE_SOURCE
+from zeit.content.article.edit.interfaces import LEGACY_VARIANT_NAME_SOURCE
 import grokcore.component
 import lxml.objectify
 import zeit.cms.checkout.interfaces
@@ -17,7 +19,8 @@ class ImageReferenceProperty(
     def __set__(self, instance, value):
         saved_attributes = {name: getattr(instance, name) for name in [
             '__name__',
-            'layout',
+            'display_mode',
+            'variant_name',
             'set_manually',
         ]}
 
@@ -31,14 +34,16 @@ class ImageReferenceProperty(
 
 class Image(zeit.content.article.edit.reference.Reference):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IImage)
+    grokcore.component.implements(zeit.content.article.edit.interfaces.IImage)
     type = 'image'
 
     references = ImageReferenceProperty('.', 'image')
 
-    _layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'layout')
+    _display_mode = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'display_mode')
+
+    _variant_name = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'variant_name')
 
     # XXX this is a stopgap to fix #11730. The proper solution involves
     # a real Reference object, see #10686.
@@ -48,20 +53,41 @@ class Image(zeit.content.article.edit.reference.Reference):
 
     def __init__(self, *args, **kw):
         super(Image, self).__init__(*args, **kw)
-        if self.layout is None:
-            self.layout = zeit.content.article.edit.interfaces.IImage[
-                'layout'].default
+        # Explicitly set `display_mode` and `variant_name` to persist values
+        # calculated from legacy attribute `layout` to XML, so the mapping for
+        # backward compatibility is only performed once.
+        if self._display_mode is None:
+            self.display_mode = self.display_mode
+        if self._variant_name is None:
+            self.variant_name = self.variant_name
 
     @property
-    def layout(self):
-        source = zeit.content.article.edit.interfaces.IImage['layout'].source(
-            self)
-        return source.find(self._layout)
+    def display_mode(self):
+        if self._display_mode is not None:
+            return self._display_mode
+        # backward compatibility by mapping old layout to display_mode
+        layout = self.xml.get('layout', None)
+        mapping = dict(list(LEGACY_DISPLAY_MODE_SOURCE(self)))
+        return mapping.get(layout, zeit.content.article.edit.interfaces.IImage[
+            'display_mode'].default)
 
-    @layout.setter
-    def layout(self, layout):
-        self._p_changed = True
-        self._layout = layout.id
+    @display_mode.setter
+    def display_mode(self, value):
+        self._display_mode = value
+
+    @property
+    def variant_name(self):
+        if self._variant_name is not None:
+            return self._variant_name
+        # backward compatibility by mapping old layout to display_mode
+        layout = self.xml.get('layout', None)
+        mapping = dict(list(LEGACY_VARIANT_NAME_SOURCE(self)))
+        return mapping.get(layout, zeit.content.article.edit.interfaces.IImage[
+            'variant_name'].default)
+
+    @variant_name.setter
+    def variant_name(self, value):
+        self._variant_name = value
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):

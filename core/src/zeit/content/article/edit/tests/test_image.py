@@ -7,21 +7,22 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_image_can_be_set(self):
         from zeit.content.article.edit.image import Image
-        from zeit.content.article.edit.interfaces import imageLayoutSource
         import lxml.objectify
         import zeit.cms.interfaces
         tree = lxml.objectify.E.tree(
             lxml.objectify.E.image())
         image = Image(None, tree.image)
         image.__name__ = u'myname'
-        image.layout = imageLayoutSource(None).find('large')
+        image.display_mode = u'float'
+        image.variant_name = u'square'
         image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         image.references = image.references.create(
             zeit.cms.interfaces.ICMSContent(image_uid))
         self.assertEqual(image_uid, image.references.target.uniqueId)
         self.assertEqual(image_uid, image.xml.get('src'))
         self.assertEqual(u'myname', image.__name__)
-        self.assertEqual(u'large', image.layout.id)
+        self.assertEqual(u'float', image.display_mode)
+        self.assertEqual(u'square', image.variant_name)
         self.assertEllipsis("""\
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
@@ -278,36 +279,41 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG'))
             yield image
 
-    def test_layout_source_returns_objects(self):
-        from zeit.content.article.edit.interfaces import imageLayoutSource
-        layout = imageLayoutSource(None).find('stamp')
-        self.assertEqual('stamp', layout.id)
-        self.assertEqual('Stamp', layout.title)
-        self.assertEqual('square', layout.variant)
-        self.assertEqual('float', layout.display_mode)
-
-    def test_layout_available_walks_up_to_article(self):
-        from zeit.content.article.edit.interfaces import imageLayoutSource
+    def test_variant_name_available_walks_up_to_article(self):
+        import zeit.content.article.edit.interfaces
         with self.image() as image:
-            layouts = [x.id for x in imageLayoutSource(image)]
-        self.assertNotIn('zmo-only', layouts)
+            self.assertEqual(['wide', 'original', 'square'], list(
+                zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE(
+                    image)))
 
-    def test_layouts_are_compared_using_their_id(self):
-        from zeit.content.article.edit.interfaces import ImageLayout
-        layout = ImageLayout('foo', 'Foo')
-        other = ImageLayout('foo', 'Ninja')
-        self.assertEqual(layout, other)
+    def test_display_mode_available_walks_up_to_article(self):
+        import zeit.content.article.edit.interfaces
+        with self.image() as image:
+            self.assertEqual(['large', 'float'], list(
+                zeit.content.article.edit.interfaces.IMAGE_DISPLAY_MODE_SOURCE(
+                    image)))
 
-    def test_layout_can_be_compared_to_string(self):
-        from zeit.content.article.edit.interfaces import ImageLayout
-        layout = ImageLayout('foo', 'Foo')
-        self.assertEqual(layout, 'foo')
-        self.assertNotEqual(layout, 'bar')
+    def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
+        from zeit.content.article.edit.image import Image
+        import lxml.objectify
+        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree.image.set('layout', 'float-square')
+        image = Image(None, tree.image)
+        self.assertEqual('float', image.display_mode)
 
-    def test_alyout_can_be_compared_to_None(self):
-        from zeit.content.article.edit.interfaces import ImageLayout
-        layout = ImageLayout('foo', 'Foo')
-        self.assertNotEqual(layout, None)
+        image.xml.set('display_mode', 'large')
+        self.assertEqual('large', image.display_mode)
+
+    def test_variant_name_defaults_to_layout_if_not_set_for_bw_compat(self):
+        from zeit.content.article.edit.image import Image
+        import lxml.objectify
+        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree.image.set('layout', 'float-square')
+        image = Image(None, tree.image)
+        self.assertEqual('square', image.variant_name)
+
+        image.xml.set('variant_name', 'original')
+        self.assertEqual('original', image.variant_name)
 
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):

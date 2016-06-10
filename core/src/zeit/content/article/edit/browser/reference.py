@@ -32,7 +32,7 @@ class EditBase(zeit.edit.browser.form.InlineForm):
 class EditImage(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IImage
-    fields = ('references', 'layout')
+    fields = ('references', 'display_mode', 'variant_name')
     undo_description = _('edit image block')
 
     def setUpWidgets(self, *args, **kw):

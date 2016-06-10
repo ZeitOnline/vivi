@@ -205,67 +205,55 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
-class IImageLayout(zope.interface.Interface):
-
-    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
-    title = zope.schema.TextLine(title=u'Human readable title.')
-    variant = zope.schema.TextLine(
-        title=u'Which variant to use with this layout.')
-    display_mode = zope.schema.TextLine(
-        title=u'Display mode (fullwidth, floating, etc.).')
-
-
-class ImageLayout(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, available=None, variant=None,
-                 display_mode=None):
-        super(ImageLayout, self).__init__(id, title, available)
-        self.variant = variant
-        self.display_mode = display_mode
-
-    def __eq__(self, other):
-        """Compare equality using the ID of the layouts.
-
-        Allow direct comparison to a string for backward compatibility, thus
-        ImageLayout('foo', 'Foo') == 'foo' will evaluate to true. (Required to
-        keep `zeit.web.magazin` up and running.)
-
-        """
-        if isinstance(other, basestring):
-            return self.id == other
-        return super(ImageLayout, self).__eq__(other)
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def is_allowed(self, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageLayout, self).is_allowed(article)
-
-
-class ImageLayoutSource(
-        zeit.cms.content.sources.ObjectSource,
-        zeit.cms.content.sources.XMLSource):
+class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
-    config_url = 'image-layout-source'
+    config_url = 'image-display-mode-source'
     attribute = 'id'
+    title_xpath = '/display-modes/display-mode'
 
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
+IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
+
+
+class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
+    """Source to map legacy attr `layout` to a corresponding `display_mode`."""
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'legacy-display-mode-source'
+
+    def getValues(self, context):
         tree = self._get_tree()
-        result = collections.OrderedDict()
-        for node in tree.iterchildren('*'):
-            id = node.get(self.attribute)
-            result[id] = ImageLayout(
-                id, self._get_title_for(node), node.get('available', None),
-                node.get('variant_name', None), node.get('display_mode', None))
-        return result
+        return [(node.get('layout'), node.get('display_mode'))
+                for node in tree.iterchildren('*')]
 
-imageLayoutSource = ImageLayoutSource()
+LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
 
 
-class IImage(IReference, ILayoutable):
+class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'image-variant-name-source'
+    attribute = 'id'
+    title_xpath = '/variant-names/variant-name'
+
+IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
+
+
+class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
+    """Source to map legacy attr `layout` to a corresponding `variant_name`."""
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'legacy-variant-name-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [(node.get('layout'), node.get('variant_name'))
+                for node in tree.iterchildren('*')]
+
+LEGACY_VARIANT_NAME_SOURCE = LegacyVariantNameSource()
+
+
+class IImage(IReference):
 
     references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
@@ -278,10 +266,16 @@ class IImage(IReference, ILayoutable):
         required=False,
         default=False)
 
-    layout = zope.schema.Choice(
-        title=_('Layout'),
-        source=imageLayoutSource,
-        default=ImageLayout('large', _('image-layout-large')),
+    display_mode = zope.schema.Choice(
+        title=_('Display Mode'),
+        source=IMAGE_DISPLAY_MODE_SOURCE,
+        default=u'large',
+        required=False)
+
+    variant_name = zope.schema.Choice(
+        title=_('Variant Name'),
+        source=IMAGE_VARIANT_NAME_SOURCE,
+        default=u'wide',
         required=False)
 
 
