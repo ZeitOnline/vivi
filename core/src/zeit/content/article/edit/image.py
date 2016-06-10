@@ -65,15 +65,11 @@ class Image(zeit.content.article.edit.reference.Reference):
     def display_mode(self):
         if self._display_mode is not None:
             return self._display_mode
-
         # backward compatibility by mapping old layout to display_mode
         layout = self.xml.get('layout', None)
         mapping = dict(list(LEGACY_DISPLAY_MODE_SOURCE(self)))
-        if layout in mapping:
-            return mapping[layout]
-
-        return zeit.content.article.edit.interfaces.IImage[
-            'display_mode'].default
+        return mapping.get(layout, zeit.content.article.edit.interfaces.IImage[
+            'display_mode'].default)
 
     @display_mode.setter
     def display_mode(self, value):
@@ -83,15 +79,11 @@ class Image(zeit.content.article.edit.reference.Reference):
     def variant_name(self):
         if self._variant_name is not None:
             return self._variant_name
-
         # backward compatibility by mapping old layout to display_mode
         layout = self.xml.get('layout', None)
         mapping = dict(list(LEGACY_VARIANT_NAME_SOURCE(self)))
-        if layout in mapping:
-            return mapping[layout]
-
-        return zeit.content.article.edit.interfaces.IImage[
-            'variant_name'].default
+        return mapping.get(layout, zeit.content.article.edit.interfaces.IImage[
+            'variant_name'].default)
 
     @variant_name.setter
     def variant_name(self, value):
