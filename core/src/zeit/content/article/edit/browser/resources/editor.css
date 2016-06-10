@@ -245,7 +245,7 @@
 
 /* Teaser: Knopf und Artikel */
 
-.type-article #edit-form-article-content.editable-area > .block-inner > .inline-form .label label,
+.type-article #form-article-content-head .label label,
 .type-article #edit-form-teaser.editable-area .label label {
   display: none;
 }
@@ -922,6 +922,7 @@
   padding: 0;
 }
 
+.type-article #article-content-main-image\.main_image .label,
 .type-article #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
 .type-article #edit-form-article-content .block.type-image .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-gallery .field.fieldname-references .label,
@@ -1473,11 +1474,6 @@
   padding:0;
 }
 
-.type-article .fieldname-main_image_layout .widget{
-   width: 50% !important;
-}
-
-
 /* TEASER AREA */
 
 .type-article #edit-form-teaser .inline-form .object-widget {
@@ -2027,4 +2023,33 @@
 .find-dialog label[for=find-dialog-replacement] {
     display: inline-block;
     width: 10em;
+}
+
+
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-main_image_display_mode,
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-main_image_variant_name,
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-display_mode,
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-variant_name {
+    float: left;
+    width: auto;
+    clear: none;
+}
+
+.type-article #form-article-content-main-image > .fieldname-main_image_display_mode,
+.type-article #form-article-content-main-image > .fieldname-main_image_variant_name {
+  position: relative;
+  top: -2.1em;
+  left: 19em;
+}
+
+.type-article #form-article-content-main-image .label {
+    display: none;
+}
+.type-article #form-article-content-main-image > .fieldname-main_image_display_mode div.value:before {
+    content: "Layout";
+    float: left;
+    padding-right: 0.5em;
+    color: #4c4c4c;
+    font-weight: bold;
+    text-transform: uppercase;
 }
