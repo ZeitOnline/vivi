@@ -64,10 +64,13 @@ def get_folder_markers(content):
 def get_markers_for_section(section_ifaces, content):
     sm = zope.component.getSiteManager()
     result = []
+    # Content-type specific markers come first, so they are treated as more
+    # specific than the generic markers in adapter lookups.
     for iface in section_ifaces:
-        result.append(sm.adapters.lookup((iface,), ISectionMarker))
         result.append(sm.adapters.lookup(
             (iface,), ISectionMarker, name=zeit.cms.type.get_type(content)))
+    for iface in section_ifaces:
+        result.append(sm.adapters.lookup((iface,), ISectionMarker))
     return filter(None, result)
 
 

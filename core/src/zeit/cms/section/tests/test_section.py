@@ -28,6 +28,14 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(
             zeit.cms.section.testing.IExampleTestcontent.providedBy(obj))
 
+    def test_type_markers_are_more_specific_than_general_markers(self):
+        self.repository['example']['test'] = TestContentType()
+        obj = self.repository['example']['test']
+        provides = list(zope.interface.providedBy(obj))
+        self.assertLess(
+            provides.index(zeit.cms.section.testing.IExampleTestcontent),
+            provides.index(zeit.cms.section.testing.IExampleContent))
+
     # XXX not supported yet
     # def test_copymove_into_section_adds_markers(self):
     # def test_copymove_away_from_section_removes_markers(self):
