@@ -35,9 +35,8 @@ def apply_markers(content):
             zope.interface.noLongerProvides(content, iface)
 
     # Ressort markers take precedence over section markers (ZON-2507)
-    for iface in (get_ressort_markers(content) or
-                  get_folder_markers(content)):
-        zope.interface.alsoProvides(content, iface)
+    markers = get_ressort_markers(content) or get_folder_markers(content)
+    zope.interface.alsoProvides(content, *markers)
 
 
 def get_ressort_markers(content):
