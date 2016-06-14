@@ -40,7 +40,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'update-keywordlist=zeit.retresco.keywords:update_keywordlist',
+            'update-topiclist=zeit.retresco.keywords:update_topiclist',
         ]
     },
 )

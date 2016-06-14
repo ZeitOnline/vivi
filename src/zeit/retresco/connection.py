@@ -37,15 +37,15 @@ class TMS(object):
                 ))
         return result
 
-    def get_all_keywords(self):
+    def get_all_topicpages(self):
         page = 0
         while True:
             page += 1
-            # Production has over 600.000 entities, so pages of 1000 balances
-            # number of requests vs. work the TMS has to do per request.
+            # XXX figure out row number that balances number of requests vs.
+            # work the TMS has to do per request.
             response = self._request(
-                'GET /linguistic/entities',
-                params={'rows': 1000, 'page': page})
+                'GET /topic-pages',
+                params={'q': '*', 'rows': 100, 'page': page})
             if not response['docs']:
                 break
             for row in response['docs']:
