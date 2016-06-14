@@ -192,33 +192,31 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
-    'zeit.retresco', 'keywordlist-principal'))
-def update_keywordlist():
-    _update_keywordlist()
+    'zeit.retresco', 'topiclist-principal'))
+def update_topiclist():
+    _update_topiclist()
 
 
-def _update_keywordlist():
+def _update_topiclist():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-    keywords = zeit.cms.interfaces.ICMSContent(config['keywordlist'], None)
+    keywords = zeit.cms.interfaces.ICMSContent(config['topiclist'], None)
     if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
         raise ValueError(
-            '%s is not a raw xml document' % config['keywordlist'])
+            '%s is not a raw xml document' % config['topiclist'])
     with checked_out(keywords) as co:
-        log.info('Retrieving all keywords from TMS')
-        co.xml = _build_keyword_xml()
+        log.info('Retrieving all topic pages from TMS')
+        co.xml = _build_topic_xml()
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
 
 
-def _build_keyword_xml():
+def _build_topic_xml():
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     E = lxml.builder.ElementMaker()
-    root = E.tags()
-    for row in tms.get_all_keywords():
-        root.append(E.tag(
-            row['name'],
-            url_value=zeit.cms.interfaces.normalize_filename(row['name']),
-            uuid='%s-%s' % (
-                row['item_type'], row['name'].encode('unicode_escape')),
-            type=row['item_type'],
-            freq=str(row['count'])))
+    root = E.topics()
+    for row in tms.get_all_topicpages():
+        # XXX What other attributes might be interesting to use in a
+        # dynamicfolder template?
+        root.append(E.topic(
+            row['title'],
+            id=zeit.cms.interfaces.normalize_filename(row['name'])))
     return root

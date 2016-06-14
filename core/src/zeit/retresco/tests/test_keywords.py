@@ -416,26 +416,25 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('', dav[dav_key])
 
 
-class WhitelistUpdateTest(zeit.cms.testing.FunctionalTestCase):
+class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.retresco.testing.ZCML_LAYER
 
     def test_updates_configured_content_and_publishes(self):
-        self.repository['keywords'] = zeit.content.rawxml.rawxml.RawXML()
+        self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.retresco')
-        config['keywordlist'] = 'http://xml.zeit.de/keywords'
-        IPublishInfo(self.repository['keywords']).set_can_publish(
+        config['topiclist'] = 'http://xml.zeit.de/topics'
+        IPublishInfo(self.repository['topics']).set_can_publish(
             CAN_PUBLISH_SUCCESS)
-        with mock.patch('zeit.retresco.keywords._build_keyword_xml') as xml:
+        with mock.patch('zeit.retresco.keywords._build_topic_xml') as xml:
             E = lxml.builder.ElementMaker()
-            xml.return_value = E.tags(
-                E.tag('Berlin', url_value='berlin', uuid='Berlin',
-                      type='location')
+            xml.return_value = E.topics(
+                E.topic('Berlin', url_value='berlin')
             )
-            zeit.retresco.keywords._update_keywordlist()
-        keywords = self.repository['keywords']
-        self.assertEqual(1, len(keywords.xml.xpath('//tag')))
-        self.assertEqual('tags', keywords.xml.tag)
-        self.assertEqual('Berlin', keywords.xml.find('tag')[0])
-        self.assertEqual(True, IPublishInfo(keywords).published)
+            zeit.retresco.keywords._update_topiclist()
+        topics = self.repository['topics']
+        self.assertEqual(1, len(topics.xml.xpath('//topic')))
+        self.assertEqual('topics', topics.xml.tag)
+        self.assertEqual('Berlin', topics.xml.find('topic')[0])
+        self.assertEqual(True, IPublishInfo(topics).published)
