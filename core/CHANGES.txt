@@ -4,7 +4,7 @@ zeit.content.article changes
 3.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON:3088: Remove display mode from main image.
 
 
 3.17.0 (2016-06-10)
