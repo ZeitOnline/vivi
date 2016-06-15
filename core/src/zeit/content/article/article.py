@@ -93,7 +93,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         except IndexError:
             return None
         if not zeit.content.article.edit.interfaces.IImage.providedBy(
-            image_block):
+                image_block):
             return None
         return image_block
 
