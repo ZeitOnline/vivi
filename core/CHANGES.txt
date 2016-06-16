@@ -4,7 +4,7 @@ zeit.content.article changes
 3.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Include first body image or video module as IHeaderArea.module (ZON-3088).
 
 
 3.17.0 (2016-06-10)
