@@ -4,13 +4,13 @@ zeit.content.image changes
 2.13.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be defensive about imagegroups with no master image.
 
 
 2.13.4 (2016-05-03)
 -------------------
 
-- Be defensive about invalid variant requests
+- Be defensive about invalid variant requests.
 
 
 2.13.3 (2016-04-25)
