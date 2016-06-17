@@ -4,7 +4,9 @@ zeit.content.article changes
 3.17.1 (unreleased)
 -------------------
 
-- ZON:3088: Remove display mode from main image.
+- Include first body image or video module as IHeaderArea.module (ZON-3088).
+
+- Remove display mode from main image (ZON-3088).
 
 
 3.17.0 (2016-06-10)
