@@ -6,6 +6,8 @@ zeit.content.image changes
 
 - Be defensive about imagegroups with no master image.
 
+- Be defensive about zero-sized images.
+
 
 2.13.4 (2016-05-03)
 -------------------
