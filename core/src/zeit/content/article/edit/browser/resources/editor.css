@@ -2026,7 +2026,6 @@
 }
 
 
-.type-article #edit-form-article-content .inline-form.wired .field.fieldname-main_image_display_mode,
 .type-article #edit-form-article-content .inline-form.wired .field.fieldname-main_image_variant_name,
 .type-article #edit-form-article-content .inline-form.wired .field.fieldname-display_mode,
 .type-article #edit-form-article-content .inline-form.wired .field.fieldname-variant_name {
@@ -2035,7 +2034,6 @@
     clear: none;
 }
 
-.type-article #form-article-content-main-image > .fieldname-main_image_display_mode,
 .type-article #form-article-content-main-image > .fieldname-main_image_variant_name {
   position: relative;
   top: -2.1em;
@@ -2045,7 +2043,7 @@
 .type-article #form-article-content-main-image .label {
     display: none;
 }
-.type-article #form-article-content-main-image > .fieldname-main_image_display_mode div.value:before {
+.type-article #form-article-content-main-image > .fieldname-main_image_variant_name div.value:before {
     content: "Layout";
     float: left;
     padding-right: 0.5em;

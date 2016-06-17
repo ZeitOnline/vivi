@@ -93,7 +93,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         except IndexError:
             return None
         if not zeit.content.article.edit.interfaces.IImage.providedBy(
-            image_block):
+                image_block):
             return None
         return image_block
 
@@ -114,18 +114,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         if image_block is None:
             image_block = self._create_image_block_in_front()
         image_block.references = value
-
-    @property
-    def main_image_display_mode(self):
-        image_block = self.main_image_block
-        if image_block is None:
-            return None
-        return image_block.display_mode
-
-    @main_image_display_mode.setter
-    def main_image_display_mode(self, value):
-        image_block = self.main_image_block
-        image_block.display_mode = value
 
     @property
     def main_image_variant_name(self):
