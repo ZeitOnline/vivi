@@ -408,6 +408,8 @@ class Thumbnails(grok.Adapter):
 
     @property
     def source_image(self):
+        if self.master_image is None:
+            return None
         if self.source_image_name in self.context:
             return self.context[self.source_image_name]
         if self.master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
