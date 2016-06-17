@@ -100,6 +100,8 @@ class ImageTransform(object):
 
         """
         source_width, source_height = self.image.size
+        if (source_width == 0 or source_height == 0):
+            return self.image
         zoomed_width = int(source_width * variant.zoom)
         zoomed_height = int(source_height * variant.zoom)
 
