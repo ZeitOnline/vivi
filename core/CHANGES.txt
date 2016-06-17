@@ -4,7 +4,7 @@ zeit.cms changes
 2.82.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Heuristically remove vivi view names when resolving ICMSContent.
 
 
 2.82.0 (2016-06-13)

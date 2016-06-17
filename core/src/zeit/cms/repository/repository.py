@@ -359,6 +359,7 @@ def unique_id_to_wc_or_repository(uniqueId):
 
 # XXX kludgy heuristics, these URLs are defined in XSLT somewhere
 IGNORED_LIVE_PAGE_SUFFIXES = re.compile(r'/((seite-\d+)|(komplettansicht))/?$')
+IGNORED_VIVI_SUFFIXES = re.compile(r'/@@.*$')
 
 
 @grokcore.component.adapter(
@@ -378,6 +379,7 @@ def vivi_url_to_content(uniqueId):
     if not uniqueId.startswith(prefix):
         return None
     uniqueId = uniqueId.replace(prefix, zeit.cms.interfaces.ID_NAMESPACE, 1)
+    uniqueId = IGNORED_VIVI_SUFFIXES.sub('', uniqueId)
     return zeit.cms.interfaces.ICMSContent(uniqueId)
 
 

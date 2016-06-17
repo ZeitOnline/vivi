@@ -83,6 +83,12 @@ class ViviURLToContent(unittest.TestCase):
         self.cmscontent.assert_called_with(
             'http://xml.zeit.de/2007/politik')
 
+    def test_vivi_view_names_are_removed(self):
+        vivi_url_to_content(
+            'http://vivi.zeit.de/repository/2007/politik/@@something.html')
+        self.cmscontent.assert_called_with(
+            'http://xml.zeit.de/2007/politik')
+
     def test_url_not_in_repository_returns_none(self):
         self.assertIsNone(
             vivi_url_to_content(
