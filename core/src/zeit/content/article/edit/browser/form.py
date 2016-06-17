@@ -197,6 +197,8 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
         zeit.content.gallery.interfaces.IGalleryReference,
         zeit.content.video.interfaces.IVideoAsset,
     )
+    form_fields['fill_color'].custom_widget = (
+        zeit.cms.browser.widget.ColorpickerWidget)
 
     def __call__(self):
         zope.interface.alsoProvides(
