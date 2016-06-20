@@ -97,7 +97,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             ' a tail', article.xml.body.division.p[1].text)
 
     def test_image_should_be_moved_up_to_division_even_when_deeper_nested(
-        self):
+            self):
         article = self.get_image_article("""
                 <p>A leading para</p>
                 <p><strong> blah <image src="myniceimage" /></strong></p>
@@ -107,7 +107,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             [el.tag for el in article.xml.body.division.iterchildren()])
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(
-        self):
+            self):
         import zeit.connector.interfaces
         import zope.component
         connector = zope.component.getUtility(
@@ -122,7 +122,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             article.xml.body.division.image.get('src'))
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(
-        self):
+            self):
         from zeit.content.article.interfaces import IArticle
         import zeit.cms.browser.form
         import zeit.cms.checkout.interfaces
@@ -159,7 +159,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -194,7 +194,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image_group = zeit.content.image.testing.create_image_group()
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -225,7 +225,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -247,7 +247,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -269,7 +269,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zope.component
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as article:
+                self.repository['article']) as article:
             body = zeit.content.article.edit.body.EditableBody(
                 article, article.xml.body)
             factory = zope.component.getAdapter(
