@@ -8,6 +8,12 @@ class ITMS(zope.interface.Interface):
         """Analyzes the given ICMSContent and returns a list of
         zeit.cms.tagging.interfaces.ITag objects."""
 
+    def index(content):
+        """Stores the given ICMSContent."""
+
+    def delete(content):
+        """Deletes the given ICMSContent."""
+
 
 class TMSError(Exception):
     """Service was unable to process a request because of semantic problems."""

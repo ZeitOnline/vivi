@@ -51,6 +51,19 @@ class TMS(object):
             for row in response['docs']:
                 yield row
 
+    def index(self, content):
+        data = zeit.retresco.convert.to_json(content)
+        if data is None:
+            return
+        self._request('PUT /documents/%s' % data['doc_id'], params={
+            'index': 'true', 'enrich': 'false'}, json=data)
+
+    def delete(self, content):
+        data = zeit.retresco.convert.to_json(content)
+        if data is None:
+            return
+        self._request('DELETE /documents/%s' % data['doc_id'])
+
     def _request(self, request, **kw):
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())

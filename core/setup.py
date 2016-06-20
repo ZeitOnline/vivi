@@ -41,6 +41,7 @@ setup(
     entry_points={
         'console_scripts': [
             'update-topiclist=zeit.retresco.keywords:update_topiclist',
+            'tms-reindex-object=zeit.retresco.update:reindex',
         ]
     },
 )
