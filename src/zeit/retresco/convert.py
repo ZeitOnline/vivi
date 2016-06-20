@@ -19,7 +19,7 @@ def to_json(context):
     # XXX This probably needs to expand to something like zeit.solr.converter.
     doc = {
         'doc_id': zeit.cms.content.interfaces.IUUID(context).id,
-        'url': context.uniqueId,
+        'url': context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/'),
         'doc_type': getattr(ITypeDeclaration(context, None),
                             'type_identifier', 'unknown'),
         'title': context.title,
@@ -36,7 +36,8 @@ def to_json(context):
     image = getattr(
         zeit.content.image.interfaces.IImages(context, None), 'image', None)
     if image is not None:
-        doc['teaser_img_url'] = image.uniqueId
+        doc['teaser_img_url'] = image.uniqueId.replace(
+            zeit.cms.interfaces.ID_NAMESPACE, '/')
         doc['teaser_img_subline'] = IImageMetadata(image).caption
 
     if context.authorships:
