@@ -61,8 +61,8 @@ class TMS(object):
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
-            message = '{verb} {path} returned {error}'.format(
-                verb=verb, path=path, error=str(e))
+            message = '{verb} {path} returned {error}\n{body}'.format(
+                verb=verb, path=path, error=str(e), body=e.response.text)
             if status < 500:
                 raise zeit.retresco.interfaces.TMSError(message)
             raise zeit.retresco.interfaces.TechnicalError(message)
