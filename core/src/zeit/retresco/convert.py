@@ -40,9 +40,8 @@ def to_json(context):
             zeit.cms.interfaces.ID_NAMESPACE, '/')
         doc['teaser_img_subline'] = IImageMetadata(image).caption
 
-    if context.authorships:
-        # XXX Retresco should accept multiple authors.
-        doc['author'] = context.authorships[0].uniqueId
+    doc['author'] = ', '.join([
+        x.target.display_name for x in context.authorships])
 
     return doc
 
