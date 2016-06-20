@@ -364,6 +364,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 
     def test_update_should_keep_pinned_tags(self):
         content = TestContentType()
+        content.uniqueId = 'http://xml.zeit.de/testcontent'
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
@@ -406,6 +407,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 
     def test_update_should_clear_disabled_tags(self):
         content = TestContentType()
+        content.uniqueId = 'http://xml.zeit.de/testcontent'
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
