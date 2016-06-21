@@ -3,7 +3,6 @@ from zeit.content.article.i18n import MessageFactory as _
 import collections
 import zc.sourcefactory.basic
 import zeit.cms.content.field
-import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.text.interfaces
 import zeit.content.image.interfaces
@@ -245,24 +244,44 @@ class MainImageVariantNameSource(ImageVariantNameSource):
     def _filter_values(self, template_context, values):
         tree = self._get_tree()
 
-        if not template_context:
+        names = [node.get('id') for node in tree.iterchildren('*')
+                 if node.get('allowed') and (
+                 template_context in node.get('allowed').split(" ")) and (
+                 node.get('id')) in values]
+
+        # We need to determine the names for empty names or no template context.
+        # We define: No explicit allowed attribute is implicitly resolved to
+        # allowed for all.
+        if not names or not template_context:
             return [node.get('id') for node in tree.iterchildren('*')
                     if not node.get('allowed') and node.get('id') in values]
 
-        return [node.get('id') for node in tree.iterchildren('*')
-                if node.get('allowed') and (
-                    template_context in node.get('allowed').split(" ")) and (
-                    node.get('id')) in values]
+        return names
+
+    def _template_context(self, context):
+        template = context.template if context.template else ''
+        layout = context.header_layout if context.header_layout else ''
+        return '{}.{}'.format(template, layout).strip('.')
 
     def getValues(self, context):
         values = super(MainImageVariantNameSource, self).getValues(context)
         article = zeit.content.article.interfaces.IArticle(context)
+        return self._filter_values(self._template_context(article), values)
 
-        template = article.template if article.template else ''
-        layout = article.header_layout if article.header_layout else ''
-        template_context = '{}.{}'.format(template, layout).strip('.')
+    def get_default(self, context):
+        value = self._get_tree().find(
+            'variant-name[@default_for="*"]').get('id')
 
-        return self._filter_values(template_context, values)
+        for node in self._get_tree().iterchildren('*'):
+            default_for = node.get('default_for', '').split(" ")
+            if self._template_context(context) in default_for:
+                value = node.get('id')
+
+        # Check, if default value is allowed for this context
+        if value in self.getValues(context):
+            return value
+        else:
+            return ''
 
 
 MAIN_IMAGE_VARIANT_NAME_SOURCE = MainImageVariantNameSource()

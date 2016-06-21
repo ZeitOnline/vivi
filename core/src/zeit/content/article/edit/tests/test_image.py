@@ -296,6 +296,11 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(image)))
 
         article = self.get_article()
+        article.template = u'article'
+        self.assertEqual(['wide', 'original', 'square'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+        article = self.get_article()
         article.template = u'column'
         self.assertEqual(['templates_only'], list(
             edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
@@ -305,6 +310,29 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         article.header_layout = u'vonanachb'
         self.assertEqual(['templates_only', 'header_vonanachb'], list(
             edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+    def test_variant_name_source_should_provide_defaults(self):
+        import zeit.content.article.edit.interfaces
+        iface = zeit.content.article.edit.interfaces
+        source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
+
+        article = self.get_article()
+        article.template = u'article'
+        self.assertEqual('wide', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'article'
+        article.header_layout = u'inside'
+        self.assertEqual('square', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'vonanachb'
+        self.assertEqual('header_vonanachb', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'column'
+        self.assertEqual('templates_only', source.get_default(article))
 
     def test_display_mode_available_walks_up_to_article(self):
         import zeit.content.article.edit.interfaces
