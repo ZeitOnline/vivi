@@ -29,8 +29,8 @@ def to_json(context):
             zeit.retresco.interfaces.IBody(context)),
         'section': context.ressort,
         # XXX date is required; what about unpublished content?
-        'date': json_date(IPublishInfo(context).date_first_released
-                          or MIN_DATE)
+        'date': json_date(
+            IPublishInfo(context).date_first_released or MIN_DATE)
     }
 
     image = getattr(
