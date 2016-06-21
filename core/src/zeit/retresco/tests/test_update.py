@@ -99,9 +99,10 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_removed_event_should_unindex(self):
         content = self.repository['testcontent']
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
         process()
-        self.tms.delete.assert_called_with(content)
+        self.tms.delete_id.assert_called_with(uuid)
 
     def test_remove_from_workingcopy_does_nothing(self):
         content = TestContentType()

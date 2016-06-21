@@ -47,7 +47,7 @@ def unindex_on_remove(context, event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
             event.oldParent):
         return
-    unindex_async(context.uniqueId)
+    unindex_async(zeit.cms.content.interfaces.IUUID(context).id)
 
 
 @zeit.cms.async.function(queue='search')
@@ -72,9 +72,9 @@ def index(content):
 
 
 @zeit.cms.async.function(queue='search')
-def unindex_async(uniqueId):
+def unindex_async(uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    conn.delete(zeit.cms.interfaces.ICMSContent(uniqueId))
+    conn.delete_id(uuid)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(

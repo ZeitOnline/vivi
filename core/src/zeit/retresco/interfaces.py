@@ -11,8 +11,8 @@ class ITMS(zope.interface.Interface):
     def index(content):
         """Stores the given ICMSContent."""
 
-    def delete(content):
-        """Deletes the given ICMSContent."""
+    def delete_id(uuid):
+        """Deletes the document with the given IUUID."""
 
 
 class TMSError(Exception):
