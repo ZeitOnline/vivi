@@ -2,5 +2,7 @@
   <variant-name id="wide">Breit</variant-name>
   <variant-name id="original">Original</variant-name>
   <variant-name id="square">Square 1:1</variant-name>
+  <variant-name id="templates_only" allowed='column column.vonanachb'>Templates Only</variant-name>
+  <variant-name id="header_vonanachb" allowed='column.vonanachb'>Header: Von A nach B</variant-name>
   <variant-name id="zmo-only" available="zeit.magazin.interfaces.IZMOContent">ZMO Only</variant-name>
 </variant-names>

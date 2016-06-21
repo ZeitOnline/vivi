@@ -286,11 +286,32 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE(
                     image)))
 
+    def test_variant_name_should_depend_on_article_template(self):
+        import zeit.content.article.edit.interfaces
+        source = zeit.content.article.edit.interfaces.\
+            MAIN_IMAGE_VARIANT_NAME_SOURCE
+        with self.image() as image:
+            edit_interfaces = zeit.content.article.edit.interfaces
+            self.assertEqual(['wide', 'original', 'square'], list(
+                edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(image)))
+
+        article = self.get_article()
+        article.template = u'column'
+        self.assertEqual(['templates_only'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'vonanachb'
+        self.assertEqual(['templates_only', 'header_vonanachb'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
     def test_display_mode_available_walks_up_to_article(self):
         import zeit.content.article.edit.interfaces
         with self.image() as image:
+            edit_interfaces = zeit.content.article.edit.interfaces
             self.assertEqual(['large', 'float'], list(
-                zeit.content.article.edit.interfaces.IMAGE_DISPLAY_MODE_SOURCE(
+                edit_interfaces.IMAGE_DISPLAY_MODE_SOURCE(
                     image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):

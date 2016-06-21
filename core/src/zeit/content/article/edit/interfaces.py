@@ -3,6 +3,7 @@ from zeit.content.article.i18n import MessageFactory as _
 import collections
 import zc.sourcefactory.basic
 import zeit.cms.content.field
+import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.text.interfaces
 import zeit.content.image.interfaces
@@ -237,6 +238,51 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
     title_xpath = '/variant-names/variant-name'
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
+
+
+class MainImageVariantNameSource(ImageVariantNameSource):
+
+    def _filter_values(self, template_context, values):
+        tree = self._get_tree()
+
+        if not template_context:
+            return [node.get('id') for node in tree.iterchildren('*')
+                    if not node.get('allowed') and node.get('id') in values]
+
+        return [node.get('id') for node in tree.iterchildren('*')
+                if node.get('allowed') and (
+                    template_context in node.get('allowed').split(" ")) and (
+                    node.get('id')) in values]
+
+    def getValues(self, context):
+        values = super(MainImageVariantNameSource, self).getValues(context)
+        article = zeit.content.article.interfaces.IArticle(context)
+
+        template = article.template if article.template else ''
+        layout = article.header_layout if article.header_layout else ''
+        template_context = '{}.{}'.format(template, layout).strip('.')
+
+        return self._filter_values(template_context, values)
+
+        if not article.template:
+            return [node.get('id') for node in tree.iterchildren('*')
+                    if not node.get('allowed') and node.get('id') in values]
+        elif not article.header_layout:
+            return [node.get('id') for node in tree.iterchildren('*')
+                    if node.get('allowed') and (
+                        article.template in node.get('allowed')) and (
+                        node.get('id')) in values]
+        else:
+            allowed_id = '{}.{}'.format(
+                article.template, article.header_layout)
+            return [node.get('id') for node in tree.iterchildren('*')
+                    if node.get('allowed') and (
+                        allowed_id in node.get('allowed')) and (
+                        node.get('id')) in values]
+        return []
+
+
+MAIN_IMAGE_VARIANT_NAME_SOURCE = MainImageVariantNameSource()
 
 
 class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
