@@ -264,23 +264,6 @@ class MainImageVariantNameSource(ImageVariantNameSource):
 
         return self._filter_values(template_context, values)
 
-        if not article.template:
-            return [node.get('id') for node in tree.iterchildren('*')
-                    if not node.get('allowed') and node.get('id') in values]
-        elif not article.header_layout:
-            return [node.get('id') for node in tree.iterchildren('*')
-                    if node.get('allowed') and (
-                        article.template in node.get('allowed')) and (
-                        node.get('id')) in values]
-        else:
-            allowed_id = '{}.{}'.format(
-                article.template, article.header_layout)
-            return [node.get('id') for node in tree.iterchildren('*')
-                    if node.get('allowed') and (
-                        allowed_id in node.get('allowed')) and (
-                        node.get('id')) in values]
-        return []
-
 
 MAIN_IMAGE_VARIANT_NAME_SOURCE = MainImageVariantNameSource()
 
