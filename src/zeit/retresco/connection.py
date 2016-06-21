@@ -58,11 +58,8 @@ class TMS(object):
         self._request('PUT /documents/%s' % data['doc_id'], params={
             'index': 'true', 'enrich': 'false'}, json=data)
 
-    def delete(self, content):
-        data = zeit.retresco.convert.to_json(content)
-        if data is None:
-            return
-        self._request('DELETE /documents/%s' % data['doc_id'])
+    def delete_id(self, uuid):
+        self._request('DELETE /documents/%s' % uuid)
 
     def _request(self, request, **kw):
         verb, path = request.split(' ', 1)
