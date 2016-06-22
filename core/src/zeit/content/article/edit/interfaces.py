@@ -243,7 +243,6 @@ class MainImageVariantNameSource(ImageVariantNameSource):
 
     def _filter_values(self, template_context, values):
         tree = self._get_tree()
-
         names = [node.get('id') for node in tree.iterchildren('*')
                  if node.get('allowed') and (
                  template_context in node.get('allowed').split(" ")) and (

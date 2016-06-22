@@ -281,10 +281,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_variant_name_available_walks_up_to_article(self):
         import zeit.content.article.edit.interfaces
+
         with self.image() as image:
-            self.assertEqual(['wide', 'original', 'square'], list(
-                zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE(
-                    image)))
+            self.assertEqual(
+                [u'wide', u'original', u'square',
+                 u'templates_only', u'header_vonanachb'], list(
+                    zeit.content.article.edit.interfaces.
+                    IMAGE_VARIANT_NAME_SOURCE(image)))
 
     def test_variant_name_should_depend_on_article_template(self):
         import zeit.content.article.edit.interfaces
