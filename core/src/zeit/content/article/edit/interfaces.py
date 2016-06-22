@@ -268,8 +268,10 @@ class MainImageVariantNameSource(ImageVariantNameSource):
         return self._filter_values(self._template_context(article), values)
 
     def get_default(self, context):
-        value = self._get_tree().find(
-            'variant-name[@default_for="*"]').get('id')
+        general_default = self._get_tree().find(
+            'variant-name[@default_for="*"]')
+
+        value = general_default.get('id') if general_default else ''
 
         for node in self._get_tree().iterchildren('*'):
             default_for = node.get('default_for', '').split(" ")

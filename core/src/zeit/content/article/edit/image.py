@@ -147,8 +147,8 @@ def change_variant_name_on_template_change(context, event):
     else:
         return
 
-    source = zeit.content.article.edit.interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE
-
+    iface = zeit.content.article.edit.interfaces
+    source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
     context.main_image_variant_name = source.get_default(context)
 
 
