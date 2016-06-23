@@ -1,7 +1,7 @@
 <templates>
   <template name="article">
     <title>Artikel</title>
-    <header name="default">
+    <header name="default" default_for="zeit.cms.section.interfaces.IZONContent">
       <title>Standard (Headline unter Bild)</title>
     </header>
     <header name="inside">
