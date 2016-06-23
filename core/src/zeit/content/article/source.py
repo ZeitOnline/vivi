@@ -24,6 +24,17 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
     def _get_title_for(self, node):
         return unicode(node['title'])
 
+    def allow_embed_header(self, context):
+        tree = self._get_tree()
+        headers = tree.xpath('//header')
+        for header in headers:
+            if context.header_layout == header.get('name') and header.get(
+                    'allow_embed_header'):
+                return True
+        return False
+
+ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
+
 
 class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
 

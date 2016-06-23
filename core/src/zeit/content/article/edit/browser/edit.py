@@ -128,6 +128,9 @@ class Body(object):
     def sortable(self):
         return zope.security.canAccess(self.context, 'updateOrder')
 
+    def values(self):
+        return self.context.values()
+
     @property
     def body_css_class(self):
         css_class = ['editable-area']
@@ -135,9 +138,17 @@ class Body(object):
             css_class.append('action-block-sorter')
         return ' '.join(css_class)
 
+
+class EditableHeaderArea(object):
+
     @property
-    def values(self):
-        return self.context.values()
+    def body_css_class(self):
+        classes = ["editable-area"]
+        source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
+        if source.allow_embed_header(
+                zeit.content.article.interfaces.IArticle(self.context)):
+            classes.append('hide')
+        return ' '.join(classes)
 
 
 class Slice(Body):

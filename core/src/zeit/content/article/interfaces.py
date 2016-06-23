@@ -67,7 +67,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     template = zope.schema.Choice(
         title=_("Template"),
-        source=zeit.content.article.source.ArticleTemplateSource(),
+        source=zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE,
         required=False)
 
     header_layout = zope.schema.Choice(

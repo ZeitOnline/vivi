@@ -25,8 +25,16 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 </script>""" % self.prefix
         return result
 
+    def reload(self, element=None):
+        if element is None:
+            element = self.context
+        self.signal(
+            'reload', element.__name__, self.url(element, '@@contents'))
+
     def _success_handler(self):
         self.signal('reload-inline-form', 'article-content-main-image')
+        self.reload(
+            zeit.content.article.edit.interfaces.IHeaderArea(self.context))
 
 
 class TemplateUpdater(

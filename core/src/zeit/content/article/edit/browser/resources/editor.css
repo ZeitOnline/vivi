@@ -60,6 +60,10 @@
   padding: 0;
 }
 
+.type-article .hide {
+  border: 15px solid red;
+}
+
 .type-article .editable {
   color: #444 !important;
 }

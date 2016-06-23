@@ -74,6 +74,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     template="edit.header.pt"
+    class=".edit.EditableHeaderArea"
     permission="zeit.EditContent"
     />
 
