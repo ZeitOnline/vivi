@@ -18,7 +18,7 @@ class TMS(object):
         self.password = password
 
     def get_keywords(self, content):
-        data = zeit.retresco.convert.to_json(content)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             return []
         response = self._request(
@@ -52,7 +52,7 @@ class TMS(object):
                 yield row
 
     def index(self, content):
-        data = zeit.retresco.convert.to_json(content)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             return
         self._request('PUT /documents/%s' % data['doc_id'], params={

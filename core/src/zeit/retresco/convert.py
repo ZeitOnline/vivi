@@ -1,63 +1,157 @@
 from datetime import datetime
 from zeit.cms.interfaces import ITypeDeclaration
-from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImageMetadata
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
 import pytz
 import zeit.cms.content.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.retresco.interfaces
+import zope.component
+import zope.interface
 
 MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)
 
 
-def to_json(context):
-    if not zeit.cms.content.interfaces.ICommonMetadata.providedBy(context):
-        return None
+class TMSRepresentation(grok.Adapter):
 
-    # XXX This probably needs to expand to something like zeit.solr.converter.
-    doc = {
-        'doc_id': zeit.cms.content.interfaces.IUUID(context).id,
-        'url': context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/'),
-        'doc_type': getattr(ITypeDeclaration(context, None),
-                            'type_identifier', 'unknown'),
-        'title': context.title,
-        'supertitle': context.supertitle,
-        'teaser': context.teaserText,
-        'body': lxml.etree.tostring(
-            zeit.retresco.interfaces.IBody(context)),
-        'section': context.ressort,
-        # XXX date is required; what about unpublished content?
-        'date': json_date(
-            IPublishInfo(context).date_first_released or MIN_DATE)
-    }
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.implements(zeit.retresco.interfaces.ITMSRepresentation)
 
-    image = getattr(
-        zeit.content.image.interfaces.IImages(context, None), 'image', None)
-    if image is not None:
-        doc['teaser_img_url'] = image.uniqueId.replace(
-            zeit.cms.interfaces.ID_NAMESPACE, '/')
-        doc['teaser_img_subline'] = IImageMetadata(image).caption
-
-    doc['author'] = ', '.join([
-        x.target.display_name for x in context.authorships])
-
-    return doc
+    def __call__(self):
+        result = {}
+        for name, converter in sorted(zope.component.getAdapters(
+                (self.context,), zeit.retresco.interfaces.ITMSRepresentation)):
+            if not name:
+                # The unnamed adapter is the one which runs all the named
+                # adapters, i.e. this one.
+                continue
+            merge(converter(), result)
+        return result
 
 
-def json_date(date):
-    return date.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')
+class Converter(grok.Adapter):
+    """This adapter works a bit differently: It adapts its context to a
+    separately _configured_ `interface`, and declines if that is not possible;
+    but all adapters are _registered_ for the same basic ICMSContent interface.
+    This way we can retrieve data stored in various DAVPropertyAdapters.
+    """
+
+    grok.baseclass()
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.implements(zeit.retresco.interfaces.ITMSRepresentation)
+
+    interface = NotImplemented
+    # Subclasses need to register as named adapters to work with
+    # TMSRepresentation, e.g. by specifying `grok.name(interface.__name__)`
+
+    def __new__(cls, context):
+        context = cls.interface(context, None)
+        if context is None:
+            return None
+        instance = super(Converter, cls).__new__(cls, context)
+        instance.context = context
+        return instance
+
+    def __init__(self, context):
+        pass  # self.context has been set by __new__() already.
+
+    def __call__(self):
+        return {}
+
+
+class CMSContent(Converter):
+
+    interface = zeit.cms.interfaces.ICMSContent
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'doc_id': zeit.cms.content.interfaces.IUUID(self.context).id,
+            'url': self.context.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, '/'),
+            'doc_type': getattr(ITypeDeclaration(self.context, None),
+                                'type_identifier', 'unknown'),
+            'body': lxml.etree.tostring(
+                zeit.retresco.interfaces.IBody(self.context)),
+        }
+
+
+class CommonMetadata(Converter):
+
+    interface = zeit.cms.content.interfaces.ICommonMetadata
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.title,
+            'supertitle': self.context.supertitle,
+            'teaser': self.context.teaserText,
+            'section': self.context.ressort,
+            'author': ', '.join([
+                x.target.display_name for x in self.context.authorships])
+        }
+
+
+class PublishInfo(Converter):
+
+    interface = zeit.cms.workflow.interfaces.IPublishInfo
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            # XXX date is required; what about unpublished content?
+            'date': json_date(self.context.date_first_released or MIN_DATE)
+        }
+
+
+class ImageReference(Converter):
+
+    interface = zeit.content.image.interfaces.IImages
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        image = self.context.image
+        if image is None:
+            return {}
+        return {
+            'teaser_img_url': image.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, '/'),
+            'teaser_img_subline': IImageMetadata(image).caption,
+        }
+
+
+@grok.adapter(zope.interface.Interface)
+@grok.implementer(zeit.retresco.interfaces.IBody)
+def body_default(context):
+    return lxml.builder.E.body()
 
 
 @grok.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
 @grok.implementer(zeit.retresco.interfaces.IBody)
-def default_body(context):
+def body_xml(context):
     # This is probably not very helpful.
     return context.xml
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)
 @grok.implementer(zeit.retresco.interfaces.IBody)
-def article_body(context):
+def body_article(context):
     return context.xml.body
+
+
+def json_date(date):
+    return date.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def merge(source, destination):
+    for key, value in source.items():
+        if isinstance(value, dict):
+            node = destination.setdefault(key, {})
+            merge(value, node)
+        else:
+            destination[key] = value
+    return destination
