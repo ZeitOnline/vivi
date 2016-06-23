@@ -26,7 +26,12 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
     def allow_embed_header(self, context):
         tree = self._get_tree()
-        headers = tree.xpath('//header')
+
+        if not context.template and not context.header_layout:
+            return False
+
+        headers = tree.xpath('template[@name="{}"]/header[@name="{}"]'.format(
+            context.template, context.header_layout))
         for header in headers:
             if context.header_layout == header.get('name') and header.get(
                     'allow_embed_header'):
