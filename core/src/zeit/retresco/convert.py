@@ -113,7 +113,7 @@ class PublishInfo(Converter):
     def __call__(self):
         return {
             # XXX date is required; what about unpublished content?
-            'date': json_date(self.context.date_first_released or MIN_DATE)
+            'date': self.context.date_first_released or MIN_DATE
         }
 
 
@@ -150,10 +150,6 @@ def body_xml(context):
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_article(context):
     return context.xml.body
-
-
-def json_date(date):
-    return date.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
 def merge(source, destination):
