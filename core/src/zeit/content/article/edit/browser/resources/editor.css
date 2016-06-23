@@ -61,7 +61,7 @@
 }
 
 .type-article .hide {
-  border: 15px solid red;
+  display: none;
 }
 
 .type-article .editable {
