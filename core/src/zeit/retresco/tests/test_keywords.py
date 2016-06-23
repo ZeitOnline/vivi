@@ -2,7 +2,7 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
-from zeit.cms.workflow.interfaces import IPublishInfo, CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.retresco.keywords import Tagger
 import lxml.builder
 import mock
@@ -440,8 +440,6 @@ class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.retresco')
         config['topiclist'] = 'http://xml.zeit.de/topics'
-        IPublishInfo(self.repository['topics']).set_can_publish(
-            CAN_PUBLISH_SUCCESS)
         with mock.patch('zeit.retresco.keywords._build_topic_xml') as xml:
             E = lxml.builder.ElementMaker()
             xml.return_value = E.topics(
