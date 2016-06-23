@@ -1,6 +1,4 @@
 from zeit.cms.tagging.tag import Tag
-import datetime
-import json
 import pytz
 import requests
 import requests.exceptions

@@ -1,5 +1,8 @@
 import gocept.httpserverlayer.custom
 import zeit.cms.testing
+import zeit.content.article.testing
+import zeit.content.image.testing
+import zeit.workflow.testing
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
@@ -55,5 +58,8 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
 
 ZCML_LAYER = ZCMLLayer(
-    'ftesting.zcml',
-    product_config=cms_product_config + product_config)
+    'ftesting.zcml', product_config=cms_product_config +
+    product_config +
+    zeit.workflow.testing.product_config +
+    zeit.content.article.testing.product_config +
+    zeit.content.image.testing.product_config)
