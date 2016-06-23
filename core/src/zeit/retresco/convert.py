@@ -86,7 +86,7 @@ class CommonMetadata(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        return {
+        result = {
             'title': self.context.title,
             'supertitle': self.context.supertitle,
             'teaser': self.context.teaserText,
@@ -94,6 +94,15 @@ class CommonMetadata(Converter):
             'author': ', '.join([
                 x.target.display_name for x in self.context.authorships])
         }
+        for typ in zeit.retresco.interfaces.ENTITY_TYPES:
+            result['rtr_{}s'.format(typ)] = []
+        for kw in self.context.keywords:
+            key = 'rtr_{}s'.format(kw.entity_type)
+            # We might still encounter keywords from the old zeit.intrafind
+            # with incompatible entity_types, so be extra defensive.
+            if key in result:
+                result[key].append(kw.label)
+        return result
 
 
 class PublishInfo(Converter):

@@ -417,6 +417,19 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
         self.assertEqual('', dav[dav_key])
 
+    def test_update_should_pass_existing_tags_to_tms(self):
+        content = TestContentType()
+        content.uniqueId = 'http://xml.zeit.de/testcontent'
+        self.set_tags(content, """
+<tag uuid="uid-karenduve" type="keyword">Karen Duve</tag>
+<tag uuid="uid-berlin" type="location">Berlin</tag>""")
+        tagger = Tagger(content)
+        with mock.patch('zeit.retresco.connection.TMS._request') as request:
+            tagger.update()
+            data = request.call_args[1]['json']
+            self.assertEqual(['Karen Duve'], data['rtr_keywords'])
+            self.assertEqual(['Berlin'], data['rtr_locations'])
+
 
 class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
 
