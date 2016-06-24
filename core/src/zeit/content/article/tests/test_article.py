@@ -167,13 +167,13 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
 class LayoutHeaderByArticleTemplate(
         zeit.content.article.testing.FunctionalTestCase):
 
-    def test_header_layout_should_determine_embed_header_visibility(self):
+    def test_header_layout_should_determine_header_module_visibility(self):
         article = self.get_article()
         article.template = u'column'
         article.header_layout = u'default'
         source = zeit.content.article.source.ArticleTemplateSource().factory
 
-        self.assertTrue(source.allow_embed_header(article))
+        self.assertTrue(source.allow_header_module(article))
 
 
 class ArticleXMLReferenceUpdate(

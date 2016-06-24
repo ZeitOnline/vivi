@@ -143,7 +143,7 @@ class EditableHeaderArea(object):
 
     def __call__(self):
         source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
-        if source.allow_embed_header(
+        if source.allow_header_module(
                 zeit.content.article.interfaces.IArticle(self.context)):
             return ''
         return super("EditableHeaderArea", super).__call__()
