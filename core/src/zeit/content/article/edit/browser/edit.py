@@ -146,7 +146,7 @@ class EditableHeaderArea(object):
         if not source.allow_header_module(
                 zeit.content.article.interfaces.IArticle(self.context)):
             return ''
-        return super("EditableHeaderArea", self).__call__()
+        return super(EditableHeaderArea, self).__call__()
 
 
 class Slice(Body):
