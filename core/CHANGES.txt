@@ -4,7 +4,7 @@ Changes
 2.13.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add reload() signal helper to forms, not only actions (ZON-3167).
 
 
 2.13.6 (2016-06-06)
