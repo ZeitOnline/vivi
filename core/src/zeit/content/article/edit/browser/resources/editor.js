@@ -78,7 +78,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
         accept: ['type-image', 'type-image-group',
                  'type-gallery', 'type-video',
                  'type-infobox', 'type-portraitbox',
-                 'type-author'],
+                 'type-author', 'type-text'],
         activated_by: 'action-article-body-content-droppable'
     });
 

@@ -4,7 +4,7 @@ zeit.content.article changes
 3.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Allow drag&drop for z.c.text objects (ZON-3018).
 
 
 3.18.0 (2016-06-20)
