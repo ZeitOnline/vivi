@@ -58,7 +58,8 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     main_image_variant_name = zope.schema.Choice(
         title=_('Variant Name'),
-        source=zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE,
+        source=zeit.content.article.edit.interfaces.
+        MAIN_IMAGE_VARIANT_NAME_SOURCE,
         required=False)
 
     main_image_block = zope.interface.Attribute(

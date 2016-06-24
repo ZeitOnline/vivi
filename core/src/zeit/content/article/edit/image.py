@@ -121,7 +121,7 @@ def factor_image_block_from_imagegroup(body, group, position):
 def copy_image_to_body(context, event):
     for description in event.descriptions:
         if (description.interface is zeit.content.image.interfaces.IImages
-            and 'image' in description.attributes):
+                and 'image' in description.attributes):
             break
     else:
         return
@@ -133,6 +133,23 @@ def copy_image_to_body(context, event):
     if image:
         image = block.references.get(image) or block.references.create(image)
     context.main_image = image
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def change_variant_name_on_template_change(context, event):
+    for description in event.descriptions:
+        if (description.interface is zeit.content.article.interfaces.IArticle
+                and ('template' in description.attributes or
+                     'header_layout' in description.attributes)):
+            break
+    else:
+        return
+
+    iface = zeit.content.article.edit.interfaces
+    source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
+    context.main_image_variant_name = source.get_default(context)
 
 
 @grokcore.component.subscribe(

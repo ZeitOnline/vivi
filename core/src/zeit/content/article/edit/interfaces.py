@@ -239,6 +239,50 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 
 
+class MainImageVariantNameSource(ImageVariantNameSource):
+
+    def _filter_values(self, template, values):
+        tree = self._get_tree()
+        names = [node.get('id') for node in tree.iterchildren('*')
+                 if node.get('id') in values and
+                 template in node.get('allowed', '').split(' ')]
+
+        # We define:
+        # 1. No `allowed` attribute means allowed for all.
+        # 2. Article without template means only "allowed for all" are allowed.
+        if not names or not template:
+            return [node.get('id') for node in tree.iterchildren('*')
+                    if node.get('id') in values and not node.get('allowed')]
+
+        return names
+
+    def _template(self, context):
+        return '.'.join(
+            filter(None, [context.template, context.header_layout]))
+
+    def getValues(self, context):
+        values = super(MainImageVariantNameSource, self).getValues(context)
+        article = zeit.content.article.interfaces.IArticle(context)
+        return self._filter_values(self._template(article), values)
+
+    def get_default(self, context):
+        general_default = self._get_tree().find('*[@default_for="*"]')
+        value = general_default.get('id') if general_default else ''
+        for node in self._get_tree().iterchildren('*'):
+            default_for = node.get('default_for', '').split(' ')
+            if self._template(context) in default_for:
+                value = node.get('id')
+
+        # Check if default value is allowed for this context.
+        if value in self.getValues(context):
+            return value
+        else:
+            return ''
+
+
+MAIN_IMAGE_VARIANT_NAME_SOURCE = MainImageVariantNameSource()
+
+
 class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
     """Source to map legacy attr `layout` to a corresponding `variant_name`."""
 

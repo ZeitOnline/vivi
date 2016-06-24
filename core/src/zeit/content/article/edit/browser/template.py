@@ -25,6 +25,9 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 </script>""" % self.prefix
         return result
 
+    def _success_handler(self):
+        self.signal('reload-inline-form', 'article-content-main-image')
+
 
 class TemplateUpdater(
         zeit.cms.content.browser.widget.MasterSlaveDropdownUpdater):

@@ -97,7 +97,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             ' a tail', article.xml.body.division.p[1].text)
 
     def test_image_should_be_moved_up_to_division_even_when_deeper_nested(
-        self):
+            self):
         article = self.get_image_article("""
                 <p>A leading para</p>
                 <p><strong> blah <image src="myniceimage" /></strong></p>
@@ -107,7 +107,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             [el.tag for el in article.xml.body.division.iterchildren()])
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(
-        self):
+            self):
         import zeit.connector.interfaces
         import zope.component
         connector = zope.component.getUtility(
@@ -122,7 +122,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             article.xml.body.division.image.get('src'))
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(
-        self):
+            self):
         from zeit.content.article.interfaces import IArticle
         import zeit.cms.browser.form
         import zeit.cms.checkout.interfaces
@@ -159,7 +159,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -194,7 +194,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image_group = zeit.content.image.testing.create_image_group()
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -225,7 +225,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -247,7 +247,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = IEditableBody(co)
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
@@ -269,7 +269,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zope.component
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as article:
+                self.repository['article']) as article:
             body = zeit.content.article.edit.body.EditableBody(
                 article, article.xml.body)
             factory = zope.component.getAdapter(
@@ -281,16 +281,68 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_variant_name_available_walks_up_to_article(self):
         import zeit.content.article.edit.interfaces
+
         with self.image() as image:
+            self.assertEqual(
+                [u'wide', u'original', u'square',
+                 u'templates_only', u'header_vonanachb'], list(
+                    zeit.content.article.edit.interfaces.
+                    IMAGE_VARIANT_NAME_SOURCE(image)))
+
+    def test_variant_name_should_depend_on_article_template(self):
+        import zeit.content.article.edit.interfaces
+        source = zeit.content.article.edit.interfaces.\
+            MAIN_IMAGE_VARIANT_NAME_SOURCE
+        with self.image() as image:
+            edit_interfaces = zeit.content.article.edit.interfaces
             self.assertEqual(['wide', 'original', 'square'], list(
-                zeit.content.article.edit.interfaces.IMAGE_VARIANT_NAME_SOURCE(
-                    image)))
+                edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(image)))
+
+        article = self.get_article()
+        article.template = u'article'
+        self.assertEqual(['wide', 'original', 'square'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+        article = self.get_article()
+        article.template = u'column'
+        self.assertEqual(['templates_only'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'vonanachb'
+        self.assertEqual(['templates_only', 'header_vonanachb'], list(
+            edit_interfaces.MAIN_IMAGE_VARIANT_NAME_SOURCE(article)))
+
+    def test_variant_name_source_should_provide_defaults(self):
+        import zeit.content.article.edit.interfaces
+        iface = zeit.content.article.edit.interfaces
+        source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
+
+        article = self.get_article()
+        article.template = u'article'
+        self.assertEqual('wide', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'article'
+        article.header_layout = u'inside'
+        self.assertEqual('square', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'vonanachb'
+        self.assertEqual('header_vonanachb', source.get_default(article))
+
+        article = self.get_article()
+        article.template = u'column'
+        self.assertEqual('templates_only', source.get_default(article))
 
     def test_display_mode_available_walks_up_to_article(self):
         import zeit.content.article.edit.interfaces
         with self.image() as image:
+            edit_interfaces = zeit.content.article.edit.interfaces
             self.assertEqual(['large', 'float'], list(
-                zeit.content.article.edit.interfaces.IMAGE_DISPLAY_MODE_SOURCE(
+                edit_interfaces.IMAGE_DISPLAY_MODE_SOURCE(
                     image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):

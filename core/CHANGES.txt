@@ -12,7 +12,8 @@ zeit.content.article changes
 
 - Include first body image or video module as IHeaderArea.module (ZON-3088).
 
-- Remove display mode from main image (ZON-3088).
+- Remove display mode from main image, make variant dependent on
+  template/header (ZON-3088).
 
 
 3.17.0 (2016-06-10)
