@@ -140,13 +140,12 @@ class Body(object):
 
 
 class EditableHeaderArea(object):
-    pass
-   # def __call__(self):
-   #     source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
-   #     if not source.allow_header_module(
-   #             zeit.content.article.interfaces.IArticle(self.context)):
-   #         return ''
-   #     return super(EditableHeaderArea, self).__call__()
+    def show_area(self):
+        source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
+        if not source.allow_header_module(
+                zeit.content.article.interfaces.IArticle(self.context)):
+            return False
+        return True
 
 
 class Slice(Body):

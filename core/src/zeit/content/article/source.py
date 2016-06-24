@@ -26,7 +26,6 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
     def allow_header_module(self, context):
         tree = self._get_tree()
-
         if not context.template and not context.header_layout:
             return False
 
