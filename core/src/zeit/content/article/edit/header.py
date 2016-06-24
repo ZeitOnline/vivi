@@ -5,7 +5,9 @@ import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.article.source
 import zope.component
+import grokcore.component
 
 
 HEADER_NAME = 'editable-header'
@@ -22,14 +24,14 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
     __name__ = HEADER_NAME
 
     def insert(self, position, item):
-        self._clear()
+        self.clear()
         return super(HeaderArea, self).insert(position, item)
 
     def add(self, item):
-        self._clear()
+        self.clear()
         return super(HeaderArea, self).add(item)
 
-    def _clear(self):
+    def clear(self):
         for key in list(self.keys()):
             self._delete(key)
 
@@ -101,3 +103,20 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
         return unicode(node.get('title'))
 
 MODULES = ModuleSource()
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def change_variant_name_on_template_change(context, event):
+    for description in event.descriptions:
+        if (description.interface is zeit.content.article.interfaces.IArticle
+                and ('template' in description.attributes or
+                     'header_layout' in description.attributes)):
+            break
+    else:
+        return
+
+    source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
+    if not source.allow_header_module(context):
+        zeit.content.article.edit.interfaces.IHeaderArea(context).clear()
