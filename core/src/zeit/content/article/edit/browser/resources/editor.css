@@ -60,10 +60,6 @@
   padding: 0;
 }
 
-.type-article .hide {
-  display: none;
-}
-
 .type-article .editable {
   color: #444 !important;
 }

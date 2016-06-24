@@ -141,14 +141,12 @@ class Body(object):
 
 class EditableHeaderArea(object):
 
-    @property
-    def body_css_class(self):
-        classes = ["editable-area"]
+    def __call__(self):
         source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
         if source.allow_embed_header(
                 zeit.content.article.interfaces.IArticle(self.context)):
-            classes.append('hide')
-        return ' '.join(classes)
+            return ''
+        return super("EditableHeaderArea", super).__call__()
 
 
 class Slice(Body):
