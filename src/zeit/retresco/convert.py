@@ -123,8 +123,9 @@ class CommonMetadata(Converter):
             'teaser': self.context.teaserText,
             'section': self.context.ressort,
             # Only for display in TMS UI.
-            'author': ', '.join([
-                x.target.display_name for x in self.context.authorships])
+            'author': u', '.join(
+                [x.target.display_name for x in self.context.authorships] or
+                [x for x in self.context.authors if x])
         }
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
             result['rtr_{}s'.format(typ)] = []
@@ -137,8 +138,10 @@ class CommonMetadata(Converter):
 
         result['payload'] = {
             'authors': [x.target.uniqueId for x in self.context.authorships],
-            'author_names': [x.target.display_name
-                             for x in self.context.authorships],
+            'author_names': [
+                x.target.display_name for x in self.context.authorships] or [
+                    # BBB for content without author object references.
+                    x for x in self.context.authors if x],
             'channels': [' '.join(x) for x in self.context.channels],
             'product_id': self.context.product and self.context.product.id,
             'serie': self.context.serie and self.context.serie.serienname,
