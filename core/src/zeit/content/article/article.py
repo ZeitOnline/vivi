@@ -271,6 +271,19 @@ def set_default_values(context, event):
     zeit.cms.browser.form.apply_default_values(
         context, zeit.content.article.interfaces.IArticle)
 
+    if not context.template and not context.header_layout:
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+        template, header_layout = source.get_default_template(context)
+        import pdb; pdb.set_trace()  # XXX BREAKPOINT
+
+        context.template = template
+        context.header_layout = header_layout
+
+    if context.template or context.header_layout:
+        iface = zeit.content.article.edit.interfaces
+        source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
+        context.main_image_variant_name = source.get_default(context)
+
 
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,

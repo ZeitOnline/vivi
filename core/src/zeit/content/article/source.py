@@ -56,17 +56,19 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
                 continue
             defaults = header.get('default_for').split(' ')
             if self._provides_default(context, defaults):
-                return (template.get('name'), header.get('name'))
+                return (unicode(template.get('name')),
+                        unicode(header.get('name')))
 
     def _get_generic_default(self):
         generic_default = self._get_tree().xpath('//*[@default_for="*"]')
         if len(generic_default) == 1:
             elem = generic_default.pop()
             if elem.tag == 'header':
-                return (elem.getparent().get('name'), elem.get('name'))
+                return (unicode(elem.getparent().get('name')),
+                        unicode(elem.get('name')))
             elif elem.tag == 'template':
-                return (elem.get('name'), '')
-        return ('', '')
+                return (unicode(elem.get('name')), u'')
+        return (u'', u'')
 
     def get_default_template(self, context):
         tree = self._get_tree()
@@ -79,7 +81,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
             if template.get('default_for'):
                 defaults = template.get('default_for').split(' ')
                 if self._provides_default(context, defaults):
-                    return (template.get('name'), '')
+                    return (unicode(template.get('name')), u'')
 
             # header might define default for this template
             # implicitly
