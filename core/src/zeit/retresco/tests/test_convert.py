@@ -61,7 +61,7 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
             u'Im Zuge des äthiopischen Vormarsches auf Mogadischu kriechen '
             u'in Somalia auch die alten Miliz-Chefs wieder hervor.')
         self.assertEqual({
-            'author': '',
+            'author': u'Hans Meiser',
             'date': datetime.datetime(1970, 1, 1, 0, 0, tzinfo=pytz.UTC),
             'doc_type': 'article',
             'rtr_events': [],
@@ -81,7 +81,7 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
             'payload': {
                 'allow_comments': False,
                 'authors': [],
-                'author_names': [],
+                'author_names': [u'Hans Meiser'],
                 'channels': [],
                 'cms_icon': '/@@/zeit-content-article-interfaces-'
                             'IArticle-zmi_icon.png',
