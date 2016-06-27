@@ -25,7 +25,7 @@
 
   <template name="column">
     <title>Kolumne</title>
-    <header name="default">
+    <header allow_header_module="allow_header_module" name="default">
       <title>Standard</title>
     </header>
     <header name="vonanachb">

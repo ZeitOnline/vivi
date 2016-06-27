@@ -1,5 +1,5 @@
 <div id="editable-header" class="editable-area"
-     tal:attributes="
-     cms:url context/@@absolute_url;">
-  <tal:block replace="structure provider:zeit.edit.contents" />
+    tal:attributes="
+    cms:url context/@@absolute_url;">
+  <tal:block tal:condition="view/show_area" replace="structure provider:zeit.edit.contents" />
 </div>

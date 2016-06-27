@@ -158,10 +158,22 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
         p.text = '“up” and „down‟ and «around»'
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
+                self.repository['article']) as co:
             body = zeit.content.article.edit.interfaces.IEditableBody(co)
             block = body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
+
+
+class LayoutHeaderByArticleTemplate(
+        zeit.content.article.testing.FunctionalTestCase):
+
+    def test_header_layout_should_determine_header_module_visibility(self):
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'default'
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+
+        self.assertTrue(source.allow_header_module(article))
 
 
 class ArticleXMLReferenceUpdate(
