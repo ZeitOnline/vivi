@@ -34,6 +34,9 @@ class IEditableBody(IArticleArea):
 class IHeaderArea(IArticleArea):
     """Separate area for header that may contain one module."""
 
+    def clear():
+        """Delete all contained modules."""
+
     module = zope.interface.Attribute(
         'Convenience access for self.values()[0] or None')
 
