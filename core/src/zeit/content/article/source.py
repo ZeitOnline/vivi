@@ -1,4 +1,5 @@
 import zeit.cms.content.sources
+import importlib
 
 
 class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
@@ -36,6 +37,58 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
                     'allow_header_module'):
                 return True
         return False
+
+    def _provides_default(self, context, defaults):
+        for default in defaults:
+            if default == '*':
+                continue
+            module_name = '.'.join(default.split('.')[:-1])
+            iface_name = default.split('.')[-1]
+            module = importlib.import_module(module_name)
+            iface = getattr(module, iface_name)
+            if iface and iface.providedBy(context):
+                return True
+        return False
+
+    def _get_default_header(self, context, template):
+        for header in template.iterchildren('*'):
+            if not header.get("default_for"):
+                continue
+            defaults = header.get('default_for').split(' ')
+            if self._provides_default(context, defaults):
+                return (template.get('name'), header.get('name'))
+
+    def _get_generic_default(self):
+        generic_default = self._get_tree().xpath('//*[@default_for="*"]')
+        if len(generic_default) == 1:
+            elem = generic_default.pop()
+            if elem.tag == 'header':
+                return (elem.getparent().get('name'), elem.get('name'))
+            elif elem.tag == 'template':
+                return (elem.get('name'), '')
+        return ('', '')
+
+    def get_default_template(self, context):
+        tree = self._get_tree()
+        if context.template:
+            if context.header_layout:
+                return (context.template, context.header_layout)
+            return context.template
+
+        for template in tree.xpath('template'):
+            if template.get('default_for'):
+                defaults = template.get('default_for').split(' ')
+                if self._provides_default(context, defaults):
+                    return (template.get('name'), '')
+
+            # header might define default for this template
+            # implicitly
+            default_header = self._get_default_header(context, template)
+            if default_header:
+                return default_header
+
+        return self._get_generic_default()
+
 
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
 

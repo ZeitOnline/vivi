@@ -7,10 +7,13 @@ import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.cms.section.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.magazin.interfaces
 import zeit.edit.rule
 import zope.component
+import zope.interface
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -172,8 +175,74 @@ class LayoutHeaderByArticleTemplate(
         article.template = u'column'
         article.header_layout = u'default'
         source = zeit.content.article.source.ArticleTemplateSource().factory
-
         self.assertTrue(source.allow_header_module(article))
+
+
+class DefaultTemplateByContentType(
+        zeit.content.article.testing.FunctionalTestCase):
+
+    def test_config_should_define_default_template_for_context(self):
+        article = self.get_article()
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+
+        has_default = source._provides_default(
+            article,
+            ["zeit.cms.section.interfaces.IZONContent"])
+        self.assertFalse(has_default)
+
+        zope.interface.alsoProvides(article,
+                                    zeit.cms.section.interfaces.IZONContent)
+        has_default = source._provides_default(
+            article,
+            ["zeit.cms.section.interfaces.IZONContent"])
+        self.assertTrue(has_default)
+
+        article = self.get_article()
+        zope.interface.alsoProvides(article,
+                                    zeit.magazin.interfaces.IZMOContent)
+        has_default = source._provides_default(
+            article,
+            ["zeit.cms.section.interfaces.IZONContent",
+             "zeit.magazin.interfaces.IZMOContent"])
+        self.assertTrue(has_default)
+
+    def test_config_should_define_generic_default_for_context(self):
+        article = self.get_article()
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+        self.assertEquals(
+            ('article', 'inside'),
+            source._get_generic_default())
+
+    def test_config_should_provide_defaults(self):
+        article = self.get_article()
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+        zope.interface.alsoProvides(article,
+                                    zeit.cms.section.interfaces.IZONContent)
+        self.assertEquals(
+            ('article', 'default'),
+            source.get_default_template(article))
+
+        article = self.get_article()
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+        zope.interface.alsoProvides(article,
+                                    zeit.magazin.interfaces.IZMOContent)
+        self.assertEquals(
+            ('short', ''),
+            source.get_default_template(article))
+
+        article = self.get_article()
+        self.assertEquals(
+            ('article', 'inside'),
+            source.get_default_template(article))
+
+    def test_config_should_return_given_values_if_already_set(self):
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'default'
+        source = zeit.content.article.source.ArticleTemplateSource().factory
+        self.assertEquals(
+            ('column', 'default'),
+            source.get_default_template(article))
 
 
 class ArticleXMLReferenceUpdate(
