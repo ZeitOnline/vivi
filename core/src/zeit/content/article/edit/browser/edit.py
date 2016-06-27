@@ -140,6 +140,7 @@ class Body(object):
 
 
 class EditableHeaderArea(object):
+
     def show_area(self):
         source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
         if not source.allow_header_module(
