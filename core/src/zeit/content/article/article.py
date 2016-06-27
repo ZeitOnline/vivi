@@ -274,7 +274,6 @@ def set_default_values(context, event):
     if not context.template and not context.header_layout:
         source = zeit.content.article.source.ArticleTemplateSource().factory
         template, header_layout = source.get_default_template(context)
-        import pdb; pdb.set_trace()  # XXX BREAKPOINT
 
         context.template = template
         context.header_layout = header_layout
