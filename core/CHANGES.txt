@@ -1,12 +1,19 @@
 zeit.content.article changes
 ============================
 
-3.18.0 (unreleased)
+3.18.1 (unreleased)
+-------------------
+
+- Allow drag&drop for z.c.text objects (ZON-3018).
+
+
+3.18.0 (2016-06-20)
 -------------------
 
 - Include first body image or video module as IHeaderArea.module (ZON-3088).
 
-- Remove display mode from main image (ZON-3088).
+- Remove display mode from main image, make variant dependent on
+  template/header (ZON-3088).
 
 
 3.17.0 (2016-06-10)

@@ -33,3 +33,13 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = RawText
     title = _('Raw text block')
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+                            zeit.content.text.interfaces.IText,
+                            int)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_block_from_text(body, context, position):
+    block = Factory(body)(position)
+    block.text_reference = context
+    return block
