@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.13.5 (unreleased)
+2.13.5 (2016-06-27)
 -------------------
 
 - Be defensive about imagegroups with no master image.
