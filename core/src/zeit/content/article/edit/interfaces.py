@@ -247,10 +247,8 @@ class MainImageVariantNameSource(ImageVariantNameSource):
                  if node.get('id') in values and
                  template in node.get('allowed', '').split(' ')]
 
-        # We define:
-        # 1. No `allowed` attribute means allowed for all.
-        # 2. Article without template means only "allowed for all" are allowed.
-        if not names or not template:
+        # No `allowed` attribute means allowed for all.
+        if not names:
             return [node.get('id') for node in tree.iterchildren('*')
                     if node.get('id') in values and not node.get('allowed')]
 

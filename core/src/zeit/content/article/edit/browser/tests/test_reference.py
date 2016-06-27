@@ -109,7 +109,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s.waitForElementPresent(variant_select)
         self.assertEqual(
-            ['(nothing selected)', u'Breit', u'Original', u'Square 1:1'],
+            ['(nothing selected)', u'Breit', u'Original', u'Square 1:1',
+             'Templates Only', 'Header: Von A nach B'],
             s.getSelectOptions(variant_select))
         s.select(variant_select, 'label=Original')
         s.type(variant_select, '\t')
