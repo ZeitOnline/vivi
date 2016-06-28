@@ -1,10 +1,10 @@
 <templates>
   <template name="article">
     <title>Artikel</title>
-    <header name="default">
+    <header name="default" default_for="zeit.cms.section.interfaces.IZONContent">
       <title>Standard (Headline unter Bild)</title>
     </header>
-    <header name="inside">
+    <header name="inside" default_for="*">
       <title>Headline im Bild</title>
     </header>
     <header name="sticker">
@@ -19,7 +19,7 @@
     <title>Longform</title>
   </template>
 
-  <template name="short">
+  <template name="short" default_for="zeit.magazin.interfaces.IZMOContent">
     <title>Kurzformat</title>
   </template>
 
