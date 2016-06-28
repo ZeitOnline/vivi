@@ -6,6 +6,14 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_can_create_module_by_drag_and_drop(self):
         s = self.selenium
         self.add_article()
+        # Select header that allows header module
+        s.click('css=#edit-form-misc .edit-bar .fold-link')
+        s.select('id=options-template.template', 'Kolumne')
+        s.waitForVisible('css=.fieldname-header_layout')
+        s.select('id=options-template.header_layout', 'Standard')
+        s.type('id=options-template.header_layout', '\t')
+        s.pause(500)
+
         block = 'quiz'
         # copy&paste from self.create_block()
         s.click('link=Struktur')
