@@ -6,8 +6,10 @@ import logging
 import mock
 import zeit.cms.checkout.helper
 import zeit.cms.repository
+import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.update
+import zeit.workflow.testing
 import zope.component
 import zope.event
 import zope.lifecycleevent
@@ -114,3 +116,17 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
         except IndexError:
             pass
         self.assertFalse(self.tms.delete.called)
+
+    def test_publish_should_index_with_published_true(self):
+        # Right now this works without us having to anything special, since at
+        # BeforePublishEvent time, zeit.workflow first sets published=True
+        # and related properties, and then triggers a checkout/checkin cycle
+        # -- which on checkin triggers the indexing.
+        def index(tms, content):
+            self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
+                content).published)
+        self.tms.index = index
+        content = self.repository['testcontent']
+        zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
+        zeit.cms.workflow.interfaces.IPublish(content).publish()
+        zeit.workflow.testing.run_publish()
