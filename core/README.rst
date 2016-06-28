@@ -111,9 +111,8 @@ eingeschränkt werden. ``allowed`` bezieht sich hier wiederum auf gültige
 Templates oder Template/Header-Kombinationen. ``available`` bezieht sich auf 
 interfaces.
 
-Falls 
+Falls ein default für einen ungültigen Wertebereich definiert wurde, wird
+dieser nicht ausgeweretet.
 
-
-
-
-
+Sind ``article.template`` und ``article.header_layout`` nicht gesetzt, sind
+alle Layoutwerte erlaubt.
