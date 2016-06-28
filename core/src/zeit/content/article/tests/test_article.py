@@ -244,6 +244,23 @@ class DefaultTemplateByContentType(
             ('column', 'default'),
             source.get_default_template(article))
 
+    def test_article_should_have_default_template_on_checkout(self):
+        article = self.get_article()
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+            pass
+        self.assertEquals('article', self.repository['article'].template)
+        self.assertEquals('default', self.repository['article'].header_layout)
+
+    def test_article_should_have_default_variant_name_on_checkout(self):
+        article = self.get_article()
+        article._create_image_block_in_front()
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+            pass
+        self.assertEquals(
+            'wide', self.repository['article'].main_image_variant_name)
+
 
 class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):

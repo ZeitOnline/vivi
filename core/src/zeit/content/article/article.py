@@ -271,6 +271,12 @@ def set_default_values(context, event):
     zeit.cms.browser.form.apply_default_values(
         context, zeit.content.article.interfaces.IArticle)
 
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def set_template_and_header_defaults(context, event):
+
     if not context.template and not context.header_layout:
         source = zeit.content.article.source.ArticleTemplateSource().factory
         template, header_layout = source.get_default_template(context)
@@ -278,7 +284,8 @@ def set_default_values(context, event):
         context.template = template
         context.header_layout = header_layout
 
-    if context.template or context.header_layout:
+    if context.main_image_variant_name and (
+            context.template or context.header_layout):
         iface = zeit.content.article.edit.interfaces
         source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
         context.main_image_variant_name = source.get_default(context)
