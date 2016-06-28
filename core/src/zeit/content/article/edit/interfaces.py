@@ -320,7 +320,6 @@ class IImage(IReference):
     variant_name = zope.schema.Choice(
         title=_('Variant Name'),
         source=IMAGE_VARIANT_NAME_SOURCE,
-        default=u'wide',
         required=False)
 
 
