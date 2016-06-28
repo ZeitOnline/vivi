@@ -102,8 +102,11 @@ class ImageTransform(object):
         source_width, source_height = self.image.size
         if (source_width == 0 or source_height == 0):
             return self.image
-        zoomed_width = int(source_width * variant.zoom)
-        zoomed_height = int(source_height * variant.zoom)
+        zoomed_width = source_width
+        zoomed_height = source_height
+        if variant.zoom > 0:
+            zoomed_width = int(source_width * variant.zoom)
+            zoomed_height = int(source_height * variant.zoom)
 
         target_width, target_height = self._fit_ratio_to_image(
             zoomed_width, zoomed_height, variant.ratio)
