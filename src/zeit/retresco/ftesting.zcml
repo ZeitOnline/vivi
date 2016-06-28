@@ -10,9 +10,21 @@
        by zeit.cms.tagging. -->
   <includeOverrides package="zeit.retresco" />
   <adapter factory="zeit.retresco.keywords.Tagger" />
+  <include package="zeit.retresco.xmlrpc" />
 
   <include package="zeit.content.article" file="ftesting.zcml" />
   <include package="zeit.content.image" file="ftesting.zcml" />
   <include package="zeit.content.rawxml" file="ftesting.zcml" />
+
+  <principal
+    id="zope.index"
+    title="Updater"
+    login="index"
+    password="indexpw" />
+
+  <grant
+    principal="zope.index"
+    permission="zeit.retresco.UpdateIndex"
+    />
 
 </configure>
