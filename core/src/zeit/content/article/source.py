@@ -52,7 +52,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
     def _get_default_header(self, context, template):
         for header in template.iterchildren('*'):
-            if not header.get("default_for"):
+            if not header.get('default_for'):
                 continue
             defaults = header.get('default_for').split(' ')
             if self._provides_default(context, defaults):

@@ -187,14 +187,14 @@ class DefaultTemplateByContentType(
 
         has_default = source._provides_default(
             article,
-            ["zeit.cms.section.interfaces.IZONContent"])
+            ['zeit.cms.section.interfaces.IZONContent'])
         self.assertFalse(has_default)
 
         zope.interface.alsoProvides(article,
                                     zeit.cms.section.interfaces.IZONContent)
         has_default = source._provides_default(
             article,
-            ["zeit.cms.section.interfaces.IZONContent"])
+            ['zeit.cms.section.interfaces.IZONContent'])
         self.assertTrue(has_default)
 
         article = self.get_article()
@@ -202,12 +202,11 @@ class DefaultTemplateByContentType(
                                     zeit.magazin.interfaces.IZMOContent)
         has_default = source._provides_default(
             article,
-            ["zeit.cms.section.interfaces.IZONContent",
-             "zeit.magazin.interfaces.IZMOContent"])
+            ['zeit.cms.section.interfaces.IZONContent',
+             'zeit.magazin.interfaces.IZMOContent'])
         self.assertTrue(has_default)
 
     def test_config_should_define_generic_default_for_context(self):
-        article = self.get_article()
         source = zeit.content.article.source.ArticleTemplateSource().factory
         self.assertEquals(
             ('article', 'inside'),
