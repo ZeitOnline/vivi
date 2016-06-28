@@ -6,6 +6,9 @@ zeit.content.article changes
 
 - Allow drag&drop for z.c.text objects (ZON-3018).
 
+- Select default template/header_layout according to article
+  interfaces (ZON-3088).
+
 
 3.18.0 (2016-06-20)
 -------------------
