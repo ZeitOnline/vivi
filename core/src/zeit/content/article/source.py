@@ -43,8 +43,12 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
         for default in defaults:
             if default == '*':
                 continue
-            iface = zope.dottedname.resolve.resolve(default)
-            if iface and iface.providedBy(context):
+            try:
+                iface = zope.dottedname.resolve.resolve(default)
+            except ImportError:
+                return False
+
+            if iface.providedBy(context):
                 return True
         return False
 
