@@ -259,7 +259,7 @@ class DefaultTemplateByContentType(
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
         self.assertEquals(
-            'wide', self.repository['article'].main_image_variant_name)
+            'original', self.repository['article'].main_image_variant_name)
 
 
 class ArticleXMLReferenceUpdate(
