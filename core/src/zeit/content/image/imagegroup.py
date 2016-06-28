@@ -1,10 +1,11 @@
 from zeit.cms.i18n import MessageFactory as _
+import PIL.ImageColor
 import StringIO
 import collections
 import grokcore.component as grok
 import lxml.objectify
 import persistent
-import PIL.ImageColor
+import re
 import sys
 import urlparse
 import z3c.traverser.interfaces
@@ -50,6 +51,10 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
+    @property
+    def breakpoints(self):
+        return ['desktop', 'mobile']  # FIXME: retrieve from XML Source
+
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
 
@@ -60,9 +65,11 @@ class ImageGroupBase(object):
         variant = self.get_variant_by_key(key)
         size = self.get_variant_size(key)
         fill = self.get_variant_fill(key)
+        breakpoint = self.get_variant_breakpoint(key)
 
         # Make sure no invalid or redundant modifiers were provided
-        if sum(map(bool, (variant.name, size, fill))) != len(key.split('__')):
+        values = [variant.name, size, fill, breakpoint]
+        if len([x for x in values if x]) != len(key.split('__')):
             raise KeyError(key)
 
         # Always prefer materialized images with matching name
@@ -128,6 +135,13 @@ class ImageGroupBase(object):
                     return ''.join(format(i, '02x') for i in fill)
                 except ValueError:
                     continue
+        return None
+
+    def get_variant_breakpoint(self, key):
+        """If key contains `__mobile`, retrieve `mobile` else None."""
+        for segment in key.split('__')[1:]:
+            if segment in self.breakpoints:
+                return segment
         return None
 
     def get_variant_by_key(self, key):
