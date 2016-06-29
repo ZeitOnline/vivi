@@ -66,7 +66,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertNotEqual(master_sample, materialized_sample)
         self.assertEqual((80, 80), materialized.size)
 
-    def test_getitem_handles_breakpoint_modifier(self):
+    def test_getitem_handles_viewport_modifier(self):
         with self.assertNothingRaised():
             self.group['square__mobile']
 

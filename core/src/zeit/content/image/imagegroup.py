@@ -51,7 +51,7 @@ class ImageGroupBase(object):
         self._variants = value
 
     @property
-    def breakpoints(self):
+    def viewports(self):
         return ['desktop', 'mobile']  # FIXME: retrieve from XML Source
 
     def create_variant_image(self, key, source=None):
@@ -64,10 +64,10 @@ class ImageGroupBase(object):
         variant = self.get_variant_by_key(key)
         size = self.get_variant_size(key)
         fill = self.get_variant_fill(key)
-        breakpoint = self.get_variant_breakpoint(key)
+        viewport = self.get_variant_viewport(key)
 
         # Make sure no invalid or redundant modifiers were provided
-        values = [variant.name, size, fill, breakpoint]
+        values = [variant.name, size, fill, viewport]
         if len([x for x in values if x]) != len(key.split('__')):
             raise KeyError(key)
 
@@ -136,10 +136,10 @@ class ImageGroupBase(object):
                     continue
         return None
 
-    def get_variant_breakpoint(self, key):
+    def get_variant_viewport(self, key):
         """If key contains `__mobile`, retrieve `mobile` else None."""
         for segment in key.split('__')[1:]:
-            if segment in self.breakpoints:
+            if segment in self.viewports:
                 return segment
         return None
 
