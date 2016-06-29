@@ -153,10 +153,12 @@ class CommonMetadata(Converter):
                 x.target.display_name for x in self.context.authorships] or [
                     # BBB for content without author object references.
                     x for x in self.context.authors if x],
-            'channels': [' '.join(x) for x in self.context.channels],
+            'channels': [' '.join([x for x in channel if x])
+                         for channel in self.context.channels],
             'product_id': self.context.product and self.context.product.id,
             'serie': self.context.serie and self.context.serie.serienname,
-            'storystreams': [x.uniqueId for x in self.context.storystreams],
+            'storystreams': [x.centerpage_id
+                             for x in self.context.storystreams],
         }
         self._copy_properties(result)
         return result
