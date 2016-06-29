@@ -19,6 +19,7 @@ class TMS(object):
         self.password = password
 
     def get_keywords(self, content):
+        __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             return []
@@ -53,6 +54,7 @@ class TMS(object):
                 yield row
 
     def index(self, content):
+        __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             return
