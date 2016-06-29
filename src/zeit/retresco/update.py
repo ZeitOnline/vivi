@@ -68,7 +68,11 @@ def index(content):
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
         log.info('Updating: %s', content.uniqueId)
-        conn.index(content)
+        try:
+            conn.index(content)
+        except zeit.retresco.interfaces.TMSError:
+            log.warning('Error indexing %s', content.uniqueId, exc_info=True)
+            continue
 
 
 @zeit.cms.async.function(queue='search')
