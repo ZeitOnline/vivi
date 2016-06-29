@@ -50,10 +50,6 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    @property
-    def viewports(self):
-        return ['desktop', 'mobile']  # FIXME: retrieve from XML Source
-
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
 
@@ -137,9 +133,9 @@ class ImageGroupBase(object):
         return None
 
     def get_variant_viewport(self, key):
-        """If key contains `__mobile`, retrieve `mobile` else None."""
+        """If key contains `__mobile`, retrieve viewport `mobile` else None."""
         for segment in key.split('__')[1:]:
-            if segment in self.viewports:
+            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(self):
                 return segment
         return None
 

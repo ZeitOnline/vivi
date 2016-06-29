@@ -14,6 +14,7 @@ import zope.component
 
 product_config = """
 <product-config zeit.content.image>
+    viewport-source file://{here}/tests/fixtures/viewports.xml
     variant-source file://{here}/tests/fixtures/variants.xml
     legacy-variant-source file://{here}/tests/fixtures/legacy-variants.xml
 </product-config>
