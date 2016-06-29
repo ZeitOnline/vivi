@@ -5,7 +5,6 @@ import collections
 import grokcore.component as grok
 import lxml.objectify
 import persistent
-import re
 import sys
 import urlparse
 import z3c.traverser.interfaces
