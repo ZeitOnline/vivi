@@ -15,8 +15,7 @@ class ArticleTemplateTest(
         s.click('css=#edit-form-misc .edit-bar .fold-link')
 
         s.assertSelectedLabel(
-            'id=options-template.template', '(nothing selected)')
-        s.assertNotVisible('css=.fieldname-header_layout')
+            'id=options-template.template', 'Artikel')
         s.select('id=options-template.template', 'Kolumne')
         s.pause(100)
 
