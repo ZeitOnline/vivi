@@ -21,7 +21,7 @@ import zope.security.proxy
 
 class Image(zope.app.file.image.Image,
             zope.app.container.contained.Contained):
-    """Image contanis exactly one image."""
+    """Image contains exactly one image."""
 
     zope.interface.implements(zeit.content.image.interfaces.IImage)
     uniqueId = None
@@ -85,7 +85,7 @@ class TemporaryImage(LocalImage):
 @zope.component.adapter(RepositoryImage)
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 def localimage_factory(context):
-    local= LocalImage(context.uniqueId, context.mimeType)
+    local = LocalImage(context.uniqueId, context.mimeType)
     local.__name__ = context.__name__
     zeit.cms.interfaces.IWebDAVProperties(local).update(
         zeit.cms.interfaces.IWebDAVProperties(context))
