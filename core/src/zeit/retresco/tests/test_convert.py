@@ -1,5 +1,6 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
+from zeit.retresco.testing import create_testcontent
 import datetime
 import gocept.testing.assertion
 import mock
@@ -118,3 +119,18 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
                 'year': 2007,
             },
         }, data)
+
+    def test_converts_channels_correctly(self):
+        content = create_testcontent()
+        content.channels = (('Mainchannel', None),)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(['Mainchannel'], data['payload']['channels'])
+
+    def test_converts_storystreams_correctly(self):
+        content = create_testcontent()
+        source = zeit.cms.content.interfaces.ICommonMetadata[
+            'storystreams'].value_type.source(None)
+        content.storystreams = (source.find('test'),)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(['http://xml.zeit.de/storystream'],
+                         data['payload']['storystreams'])
