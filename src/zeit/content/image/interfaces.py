@@ -149,6 +149,15 @@ class MasterImageSource(
             yield name
 
 
+class ViewportSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'viewport-source'
+    attribute = 'id'
+
+VIEWPORT_SOURCE = ViewportSource()
+
+
 class IImageGroup(zeit.cms.repository.interfaces.ICollection,
                   zeit.cms.interfaces.IAsset,
                   zeit.cms.repository.interfaces.IDAVContent):
