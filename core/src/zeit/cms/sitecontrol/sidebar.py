@@ -1,4 +1,8 @@
+from zeit.cms.application import CONFIG_CACHE
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
+import logging
+import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -6,6 +10,11 @@ import zeit.cms.repository.interfaces
 import zeit.cms.sitecontrol.interfaces
 import zope.browser.interfaces
 import zope.component
+import zope.interface
+import zope.publisher.browser
+
+
+log = logging.getLogger(__name__)
 
 
 class Sidebar(zeit.cms.browser.view.Base):
@@ -25,6 +34,33 @@ class SiteControl(zeit.cms.browser.view.Base):
 
     @property
     def sites(self):
+        return zope.component.getMultiAdapter(
+            (self.context, self.request), ISites).sites
+
+
+class ISites(zope.interface.Interface):
+
+    sites = zope.interface.Attribute('')
+
+
+class Sites(grok.MultiAdapter,
+            zeit.cms.browser.view.Base):
+
+    grok.adapts(zeit.cms.repository.interfaces.IRepository,
+                zope.publisher.interfaces.browser.IBrowserRequest)
+    grok.implements(ISites)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    @property
+    def sites(self):
+        return self._sites()
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _sites(self):
+        log.info('Updating site control')
         ressort = zeit.cms.content.interfaces.ICommonMetadata['ressort'].source
         ressort = ressort(self.context)
         ressort_terms = zope.component.getMultiAdapter(

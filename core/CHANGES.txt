@@ -4,7 +4,7 @@ zeit.cms changes
 2.82.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Cache sitecontrol contents to relieve load from the servers.
 
 
 2.82.1 (2016-06-27)

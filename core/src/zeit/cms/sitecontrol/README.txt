@@ -71,6 +71,8 @@ Now those objects which are created are listed. Note that there is an url to
 deutschland/index and to deutschland/integration. So when there is an index it
 will be directly addressed:
 
+>>> import pyramid_dogpile_cache2
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
@@ -98,6 +100,7 @@ If a config flag is set, we prefer `.cp2015` centerpages, if they exist:
 ...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
 >>> config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
 >>> config['sitecontrol-prefer-2015'] = 'True'
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
@@ -139,8 +142,10 @@ objects to site control.
 Currently the utility doesn't return any result, thus nothing is added to the
 site control:
 
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> old_content = browser.contents
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> browser.contents == old_content
 True
@@ -150,6 +155,7 @@ to the utility name:
 
 >>> import zeit.cms.interfaces
 >>> sites.append('testcontent')
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
@@ -178,6 +184,7 @@ indicates both ressort and testsites:
 ...     with zeit.cms.checkout.helper.checked_out(
 ...     repository['testcontent']) as co:
 ...         co.ressort = u'Deutschland'
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
@@ -204,6 +211,7 @@ When also a subressort is assigned testcontent is sorted below the sub ressort:
 ...     with zeit.cms.checkout.helper.checked_out(
 ...     repository['testcontent']) as co:
 ...         co.sub_ressort = u'Datenschutz'
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
@@ -233,6 +241,7 @@ added last:
 ...         repository['testcontent']) as co:
 ...         co.ressort = u'Leben'
 ...         co.sub_ressort = None
+>>> pyramid_dogpile_cache2.clear()
 >>> browser.reload()
 >>> print browser.contents
   <form action="#">
