@@ -4,6 +4,7 @@ from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.retresco.keywords import Tagger
+from zeit.retresco.testing import create_testcontent
 import lxml.builder
 import mock
 import zeit.cms.content.interfaces
@@ -46,7 +47,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual([], list(tagger))
 
     def test_tagger_should_get_tags_from_content(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -55,7 +56,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual(set(['uid-berlin', 'uid-karenduve']), set(tagger))
 
     def test_len_should_return_amount_of_tags(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -70,7 +71,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual(3, len(tagger))
 
     def test_tags_should_be_accessible_by_id(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -82,7 +83,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('Karen Duve', tag.label)
 
     def test_tag_should_have_entity_type(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin" type="Location">Berlin</tag>
@@ -91,7 +92,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('Location', tagger['uid-berlin'].entity_type)
 
     def test_tag_should_have_url_value(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin" url_value="dickesb">Berlin</tag>
@@ -104,7 +105,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertRaises(KeyError, lambda: tagger['foo'])
 
     def test_iter_ignores_tags_without_uuids(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag>Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -125,7 +126,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('Location', tagger['uid-berlin'].entity_type)
 
     def test_iter_should_be_sorted_by_document_order(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-berlin">Berlin</tag>
 <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -136,7 +137,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             ['uid-berlin', 'uid-karenduve', 'uid-fleisch'], list(tagger))
 
     def test_updateOrder_should_sort_tags(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-berlin">Berlin</tag>
 <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -148,7 +149,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             ['uid-fleisch', 'uid-berlin', 'uid-karenduve'], list(tagger))
 
     def test_updateOrder_should_sort_tags_even_when_keys_are_generator(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-berlin">Berlin</tag>
 <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -161,7 +162,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             ['uid-fleisch', 'uid-berlin', 'uid-karenduve'], list(tagger))
 
     def test_given_keys_differ_from_existing_keys_should_raise(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-berlin">Berlin</tag>
 <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -173,7 +174,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             lambda: tagger.updateOrder(['uid-berlin', 'uid-karenduve']))
 
     def test_contains_should_return_true_for_existing_tag(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
@@ -181,12 +182,12 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertIn('uid-karenduve', tagger)
 
     def test_contains_should_return_false_for_noneexisting_tag(self):
-        content = TestContentType()
+        content = create_testcontent()
         tagger = Tagger(content)
         self.assertNotIn('uid-karenduve', tagger)
 
     def test_get_should_return_existing_tag(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
@@ -194,13 +195,13 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('Karen Duve', tagger.get('uid-karenduve').label)
 
     def test_get_should_return_default_if_tag_does_not_exist(self):
-        content = TestContentType()
+        content = create_testcontent()
         tagger = Tagger(content)
         self.assertEqual(mock.sentinel.default,
                          tagger.get('uid-karenduve', mock.sentinel.default))
 
     def test_delitem_should_remove_tag(self):
-        content = TestContentType()
+        content = create_testcontent()
         # use an umlaut to exercise serialization
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Düve</tag>
@@ -210,7 +211,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertNotIn('uid-karenduve', tagger)
 
     def test_delitem_should_add_tag_to_disabled_list_in_dav(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
@@ -222,7 +223,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('uid-karenduve', dav[dav_key])
 
     def test_disabled_tags_should_be_separated_by_tab(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -236,7 +237,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('uid-karenduve\tuid-berlin', dav[dav_key])
 
     def test_no_disabled_tags_should_return_empty_tuple(self):
-        content = TestContentType()
+        content = create_testcontent()
         tagger = Tagger(content)
         self.assertEqual((), tagger.disabled)
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
@@ -245,7 +246,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual((), tagger.disabled)
 
     def test_to_xml_should_return_inner_rankedTags(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -255,7 +256,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('rankedTags', node.tag)
 
     def test_rankedTags_dav_property_should_not_be_added_to_xml_directly(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -271,7 +272,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
     def test_existing_tags_should_cause_rankedTags_to_be_added_to_xml(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = TestContentType()
+        repository['content'] = create_testcontent()
         with checked_out(repository['content']) as content:
             self.set_tags(content, """
     <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -282,7 +283,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             repository['content'].xml.head.rankedTags.getchildren())
 
     def test_no_tags_cause_rankedTags_element_to_be_removed_from_xml(self):
-        content = TestContentType()
+        content = create_testcontent()
         content.xml.head.rankedTags = 'bla bla bla'
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
@@ -293,10 +294,10 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertNotIn('rankedTags', repository['content'].xml.head.keys())
 
     def test_checkin_should_not_fail_with_no_tags_and_no_rankedTags_element(
-        self):
+            self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = TestContentType()
+        repository['content'] = create_testcontent()
         with checked_out(repository['content']):
             # cycle
             pass
@@ -304,7 +305,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
     def test_disabled_tags_should_be_removed_from_xml(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = TestContentType()
+        repository['content'] = create_testcontent()
         with zeit.cms.checkout.helper.checked_out(repository['content']) as \
                 content:
             self.set_tags(content, """
@@ -320,7 +321,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
     def test_rankedTags_in_xml_should_be_updated_on_modified_event(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['content'] = TestContentType()
+        repository['content'] = create_testcontent()
         with checked_out(repository['content']) as content:
             self.set_tags(content, """
     <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -342,7 +343,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             self.assertFalse(handler.called)
 
     def test_set_pinned_should_update_tab_separated_property(self):
-        content = TestContentType()
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
@@ -363,8 +364,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
     layer = zeit.retresco.testing.ZCML_LAYER
 
     def test_update_should_keep_pinned_tags(self):
-        content = TestContentType()
-        content.uniqueId = 'http://xml.zeit.de/testcontent'
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
@@ -381,7 +381,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
                 'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
             get_keywords.return_value = [
                 Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
-            content = TestContentType()
+            content = create_testcontent()
             tagger = Tagger(content)
             tagger.update()
             self.assertEqual(2, len(tagger))
@@ -397,7 +397,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
                 'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
             get_keywords.return_value = [
                 Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
-            content = TestContentType()
+            content = create_testcontent()
             tagger = Tagger(content)
             tagger.update()
             self.assertEqual(2, len(tagger))
@@ -406,8 +406,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             self.assertEqual(['uid-bar'], list(tagger))
 
     def test_update_should_clear_disabled_tags(self):
-        content = TestContentType()
-        content.uniqueId = 'http://xml.zeit.de/testcontent'
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
@@ -418,8 +417,7 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual('', dav[dav_key])
 
     def test_update_should_pass_existing_tags_to_tms(self):
-        content = TestContentType()
-        content.uniqueId = 'http://xml.zeit.de/testcontent'
+        content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve" type="keyword">Karen Duve</tag>
 <tag uuid="uid-berlin" type="location">Berlin</tag>""")

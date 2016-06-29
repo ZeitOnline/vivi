@@ -1,5 +1,6 @@
 from zeit.retresco.testing import RequestHandler as TEST_SERVER
 import json
+import mock
 import zeit.cms.testing
 import zeit.retresco.interfaces
 import zeit.retresco.testing
@@ -9,6 +10,17 @@ import zope.component
 class TMSTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.retresco.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(TMSTest, self).setUp()
+        self.patcher = mock.patch(
+            'zeit.retresco.convert.TMSRepresentation._validate')
+        validate = self.patcher.start()
+        validate.return_value = True
+
+    def tearDown(self):
+        self.patcher.stop()
+        super(TMSTest, self).tearDown()
 
     def test_get_keywords_converts_response_to_tag_objects(self):
         TEST_SERVER.response_body = json.dumps({
