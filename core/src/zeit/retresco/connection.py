@@ -1,10 +1,14 @@
 from zeit.cms.tagging.tag import Tag
+import logging
 import pytz
 import requests
 import requests.exceptions
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class TMS(object):
@@ -57,6 +61,9 @@ class TMS(object):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
+            log.info(
+                'Skip indexing %s, it is missing required fields',
+                content.uniqueId)
             return
         self._request('PUT /documents/%s' % data['doc_id'], params={
             'index': 'true', 'enrich': 'false'}, json=data)

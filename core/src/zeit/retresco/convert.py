@@ -33,7 +33,18 @@ class TMSRepresentation(grok.Adapter):
                 # adapters, i.e. this one.
                 continue
             merge(converter(), result)
+        if not self._validate(result):
+            return None
         return result
+
+    REQUIRED_FIELDS = (
+        'doc_id', 'title', 'teaser',
+        # For completeness, but these cannot be empty with our implementation.
+        'doc_type', 'url', 'date',
+    )
+
+    def _validate(self, data):
+        return all([data.get(x) for x in self.REQUIRED_FIELDS])
 
 
 class Converter(grok.Adapter):

@@ -1,4 +1,6 @@
 import gocept.httpserverlayer.custom
+import zeit.cms.content.interfaces
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.image.testing
@@ -63,3 +65,12 @@ ZCML_LAYER = ZCMLLayer(
     zeit.workflow.testing.product_config +
     zeit.content.article.testing.product_config +
     zeit.content.image.testing.product_config)
+
+
+def create_testcontent():
+    content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    content.uniqueId = 'http://xml.zeit.de/testcontent'
+    content.teaserText = 'teaser'
+    content.title = 'title'
+    zeit.cms.content.interfaces.IUUID(content).id = 'myid'
+    return content
