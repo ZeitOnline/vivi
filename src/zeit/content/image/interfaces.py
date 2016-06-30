@@ -1,6 +1,7 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import collections
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
@@ -165,6 +166,34 @@ class ViewportSource(zeit.cms.content.sources.XMLSource):
 VIEWPORT_SOURCE = ViewportSource()
 
 
+class DuplicateViewport(zope.schema.ValidationError):
+    __doc__ = _('Viewport was used multiple times')
+
+
+class DuplicateImage(zope.schema.ValidationError):
+    __doc__ = _('Image was used multiple times')
+
+
+def unique_viewport_and_master_image(value):
+    """Ensure that any `viewport` and any `master_image` appears only once.
+
+    The setting `unique = True` only ensures that each *combination* is unique.
+    But we actually want to avoid that any viewport or any master_image is
+    chosen multiple times, no matter in which combination.
+
+    """
+    viewports = set()
+    master_images = set()
+    for viewport, master_image in value:
+        if viewport in viewports:
+            raise DuplicateViewport(viewport)
+        if master_image in master_images:
+            raise DuplicateImage(master_image)
+        viewports.add(viewport)
+        master_images.add(master_image)
+    return True
+
+
 class IImageGroup(zeit.cms.repository.interfaces.ICollection,
                   zeit.cms.interfaces.IAsset,
                   zeit.cms.repository.interfaces.IDAVContent):
@@ -177,6 +206,7 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
         unique=True,
         min_length=1,
         missing_value=(),
+        constraint=unique_viewport_and_master_image,
         value_type=zc.form.field.Combination(
             (zope.schema.Choice(
                 title=_('Viewport'),
