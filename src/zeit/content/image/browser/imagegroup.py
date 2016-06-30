@@ -33,7 +33,7 @@ class AddForm(FormBase,
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references', 'master_image') +
+        FormBase.form_fields.omit('references', 'master_images') +
         zope.formlib.form.FormFields(
             zeit.content.image.browser.interfaces.IMasterImageUploadSchema))
 
@@ -43,8 +43,9 @@ class AddForm(FormBase,
     def create(self, data):
         self.image = self.create_image(data)
         group = super(AddForm, self).create(data)
+        viewports = list(zeit.content.image.interfaces.VIEWPORT_SOURCE(group))
         if self.image:
-            group.master_image = self.image.__name__
+            group.master_images = ((viewports[0], self.image.__name__),)
         return group
 
     def add(self, group):

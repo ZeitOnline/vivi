@@ -32,7 +32,7 @@ class ImageGroupBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('master_image',))
+        ('master_images',))
 
     _variants = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['variants'],
@@ -49,6 +49,11 @@ class ImageGroupBase(object):
     @variants.setter
     def variants(self, value):
         self._variants = value
+
+    @property
+    def master_image(self):
+        """Return first image of `master_images` as default master image."""
+        return self.master_images[0][1] if self.master_images else None
 
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
