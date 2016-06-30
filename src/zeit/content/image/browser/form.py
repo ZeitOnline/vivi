@@ -14,7 +14,8 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Image data"), (
-                '__name__', 'blob', 'master_images', 'references'),
+                '__name__', 'blob', 'master_images', 'references',
+                'primary_master_image_blob', 'secondary_master_image_blob'),
             css_class='column-left image-form'),
         gocept.form.grouped.RemainingFields(
             _("Texts"),

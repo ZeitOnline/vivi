@@ -8,28 +8,58 @@ import zeit.edit.rule
 import zope.component
 
 
-class ImageGroupGhostTest(zeit.cms.testing.BrowserTestCase):
+class ImageGroupHelperMixin(object):
 
-    layer = zeit.content.image.testing.ZCML_LAYER
-
-    def test_adding_imagegroup_adds_a_ghost(self):
+    def add_imagegroup(self):
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/2006/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image group']
         b.open(menu.value[0])
-        b.getControl('File name').value = 'new-hampshire'
-        b.getControl('Image title').value = 'New Hampshire'
+
+    def set_imagegroup_filename(self, filename):
+        self.browser.getControl('File name').value = filename
+
+    def set_imagegroup_title(self, title):
+        self.browser.getControl('Image title').value = title
+
+    def fill_copyright_information(self):
+        b = self.browser
         b.getControl(name='form.copyrights.0..combination_00').value = (
             'ZEIT ONLINE')
         b.getControl(name='form.copyrights.0..combination_01').value = (
             'http://www.zeit.de/')
-        b.getControl(name='form.blob').add_file(
+
+    def _upload_image(self, field, filename):
+        self.browser.getControl(name='form.{}'.format(field)).add_file(
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
-                'testdata/new-hampshire-artikel.jpg'),
-            'image/jpeg', 'new-hampshire-artikel.jpg')
-        b.getControl(name='form.actions.add').click()
+                'testdata/{}'.format(filename)),
+            'image/jpeg', filename)
+
+    def upload_primary_image(self, filename):
+        self._upload_image('primary_master_image_blob', filename)
+
+    def upload_secondary_image(self, filename):
+        self._upload_image('secondary_master_image_blob', filename)
+
+    def save_imagegroup(self):
+        self.browser.getControl(name='form.actions.add').click()
+
+
+class ImageGroupGhostTest(
+        zeit.cms.testing.BrowserTestCase,
+        ImageGroupHelperMixin):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_adding_imagegroup_adds_a_ghost(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('new-hampshire')
+        self.set_imagegroup_title('New Hampshire')
+        self.upload_primary_image('new-hampshire-artikel.jpg')
+        self.fill_copyright_information()
+        self.save_imagegroup()
 
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
@@ -56,7 +86,9 @@ class ImageGroupPublishTest(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
-class ImageGroupBrowserTest(zeit.cms.testing.BrowserTestCase):
+class ImageGroupBrowserTest(
+        zeit.cms.testing.BrowserTestCase,
+        ImageGroupHelperMixin):
 
     layer = zeit.content.image.testing.ZCML_LAYER
 
@@ -68,3 +100,31 @@ class ImageGroupBrowserTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository'
                '/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
+
+    def test_primary_master_image_is_marked_for_desktop_viewport(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('image-group')
+        self.upload_primary_image('opernball.jpg')
+        self.fill_copyright_information()
+        self.save_imagegroup()
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['2006']['image-group']
+        self.assertEqual(1, len(group.master_images))
+        self.assertEqual('desktop', group.master_images[0][0])
+        self.assertEqual('opernball.jpg', group.master_images[0][1])
+
+    def test_secondary_master_image_is_marked_for_mobile_viewport(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('image-group')
+        self.upload_primary_image('opernball.jpg')
+        self.upload_secondary_image('new-hampshire-artikel.jpg')
+        self.fill_copyright_information()
+        self.save_imagegroup()
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['2006']['image-group']
+        self.assertEqual(2, len(group.master_images))
+        self.assertEqual('mobile', group.master_images[1][0])
+        self.assertEqual(
+            'new-hampshire-artikel.jpg', group.master_images[1][1])

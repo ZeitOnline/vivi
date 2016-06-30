@@ -18,7 +18,7 @@ Add an image group because one object is boring:
 ...     test_file = os.path.join(
 ...         os.path.dirname(__file__), 'testdata', name)
 ...     test_data = file(test_file, 'rb')
-...     file_control = browser.getControl(name='form.blob')
+...     file_control = browser.getControl(name='form.primary_master_image_blob')
 ...     file_control.add_file(test_data, 'image/jpeg', name)
 >>> set_file_data('new-hampshire-artikel.jpg')
 
