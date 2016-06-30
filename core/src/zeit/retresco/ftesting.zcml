@@ -5,11 +5,14 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
   <!-- We provide the actual implementation to the mocks registered
        by zeit.cms.tagging. -->
   <includeOverrides package="zeit.retresco" />
   <adapter factory="zeit.retresco.keywords.Tagger" />
 
-  <include package="zeit.content.rawxml" />
+  <include package="zeit.content.article" file="ftesting.zcml" />
+  <include package="zeit.content.image" file="ftesting.zcml" />
+  <include package="zeit.content.rawxml" file="ftesting.zcml" />
 
 </configure>

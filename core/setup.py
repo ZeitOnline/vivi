@@ -32,15 +32,19 @@ setup(
         'requests',
         'setuptools',
         'zeit.cms',
+        'zeit.content.author',
         'zeit.content.article',
+        'zeit.content.image',
         'zeit.content.rawxml',
         'zope.component',
         'zope.interface',
+        'zope.publisher',
         'zope.testbrowser',
     ],
     entry_points={
         'console_scripts': [
             'update-topiclist=zeit.retresco.keywords:update_topiclist',
+            'tms-reindex-object=zeit.retresco.update:reindex',
         ]
     },
 )

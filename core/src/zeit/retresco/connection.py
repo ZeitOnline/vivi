@@ -1,9 +1,14 @@
 from zeit.cms.tagging.tag import Tag
+import logging
+import pytz
 import requests
 import requests.exceptions
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class TMS(object):
@@ -18,7 +23,8 @@ class TMS(object):
         self.password = password
 
     def get_keywords(self, content):
-        data = zeit.retresco.convert.to_json(content)
+        __traceback_info__ = (content.uniqueId,)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             return []
         response = self._request(
@@ -51,11 +57,27 @@ class TMS(object):
             for row in response['docs']:
                 yield row
 
+    def index(self, content):
+        __traceback_info__ = (content.uniqueId,)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        if data is None:
+            log.info(
+                'Skip indexing %s, it is missing required fields',
+                content.uniqueId)
+            return
+        self._request('PUT /documents/%s' % data['doc_id'], params={
+            'index': 'true', 'enrich': 'false'}, json=data)
+
+    def delete_id(self, uuid):
+        self._request('DELETE /documents/%s' % uuid)
+
     def _request(self, request, **kw):
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())
         if self.username:
             kw['auth'] = (self.username, self.password)
+        if 'json' in kw:
+            kw['json'] = encode_json(kw['json'])
         try:
             response = method(self.url + path, **kw)
             response.raise_for_status()
@@ -79,3 +101,29 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     return TMS(
         config['base-url'], config.get('username'), config.get('password'))
+
+
+class JSONTypeConverter(object):
+    """Since `requests` does not allow plugging in a different JSON encoder,
+    we perform custom type conversion on the python structure _before_ we pass
+    it to `requests`.
+    """
+
+    def __call__(self, o):
+        encoder = getattr(self, type(o).__name__, None)
+        if encoder is None:  # Optimize common case: no extra function call.
+            return o
+        return encoder(o)
+
+    def datetime(self, o):
+        return o.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    date = datetime
+
+    def dict(self, o):
+        return {key: self(value) for key, value in o.items()}
+
+    def list(self, o):
+        return [self(x) for x in o]
+
+encode_json = JSONTypeConverter()

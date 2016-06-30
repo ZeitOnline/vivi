@@ -1,5 +1,10 @@
 import gocept.httpserverlayer.custom
+import zeit.cms.content.interfaces
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
+import zeit.content.article.testing
+import zeit.content.image.testing
+import zeit.workflow.testing
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
@@ -30,6 +35,13 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 HTTP_LAYER = HTTPLayer(RequestHandler, name='HTTPLayer', module=__name__)
 
 
+# XXX appending to product config is not very well supported right now
+cms_product_config = zeit.cms.testing.cms_product_config.replace(
+    '</product-config>', """\
+  task-queue-search events
+</product-config>""")
+
+
 product_config = """
 <product-config zeit.retresco>
     base-url http://localhost:[PORT]
@@ -48,6 +60,17 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
 
 ZCML_LAYER = ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config
-    + product_config)
+    'ftesting.zcml', product_config=cms_product_config +
+    product_config +
+    zeit.workflow.testing.product_config +
+    zeit.content.article.testing.product_config +
+    zeit.content.image.testing.product_config)
+
+
+def create_testcontent():
+    content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    content.uniqueId = 'http://xml.zeit.de/testcontent'
+    content.teaserText = 'teaser'
+    content.title = 'title'
+    zeit.cms.content.interfaces.IUUID(content).id = 'myid'
+    return content
