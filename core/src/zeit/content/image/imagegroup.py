@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
 import StringIO
 import collections
@@ -13,6 +14,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
+import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.variant
 import zope.app.container.contained
@@ -29,14 +31,14 @@ class ImageGroupBase(object):
 
     zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.image.interfaces.IImageGroup,
-        zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('master_images',))
+    _master_images = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImageGroup['master_images'],
+        IMAGE_NAMESPACE,
+        'master_images')
 
     _variants = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['variants'],
-        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        IMAGE_NAMESPACE,
         'variants',
         writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
 
@@ -49,6 +51,29 @@ class ImageGroupBase(object):
     @variants.setter
     def variants(self, value):
         self._variants = value
+
+    @property
+    def master_images(self):
+        """Return tuple of master images and which viewport they are used for.
+
+        If empty, we probably have an old image group. Read old master_image
+        from DAV property for backward compatibility. Assume the first viewport
+        in VIEWPORT_SOURCE should be used for the first master image.
+
+        """
+        if self._master_images:
+            return self._master_images
+
+        # read first viewport from source to use as default viewport
+        viewport = next(iter(VIEWPORT_SOURCE(self)))
+        # try to read master_image from DAV properties for bw compat
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(self)
+        master_image = properties.get(('master_image', IMAGE_NAMESPACE), None)
+        return ((viewport, master_image),) if master_image else ()
+
+    @master_images.setter
+    def master_images(self, value):
+        self._master_images = value
 
     @property
     def master_image(self):

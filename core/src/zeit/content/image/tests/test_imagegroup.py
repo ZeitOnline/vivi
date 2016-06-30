@@ -133,3 +133,19 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 Variant(name='foo', id='small', max_size='100x100')]):
             self.assertEqual(
                 None, self.group.get_variant_by_size('foo__9999x9999'))
+
+    def test_master_image_is_None_if_no_master_images_defined(self):
+        group = zeit.content.image.imagegroup.ImageGroup()
+        self.assertEqual(None, group.master_image)
+
+    def test_master_image_retrieves_first_image_from_master_images(self):
+        group = zeit.content.image.imagegroup.ImageGroup()
+        group.master_images = (('viewport', 'master.png'),)
+        self.assertEqual('master.png', group.master_image)
+
+    def test_master_image_is_retrieved_from_DAV_properties_for_bw_compat(self):
+        from zeit.content.image.interfaces import IMAGE_NAMESPACE
+        group = zeit.content.image.imagegroup.ImageGroup()
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(group)
+        properties[('master_image', IMAGE_NAMESPACE)] = 'master.png'
+        self.assertEqual('master.png', group.master_image)
