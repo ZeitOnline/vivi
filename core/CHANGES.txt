@@ -2,10 +2,17 @@ zeit.retresco changes
 =====================
 
 
-1.0.1 (unreleased)
+1.1.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+1.1.0 (2016-06-27)
 ------------------
 
 - ZON-3117: Retrieve list of topicpages, store as rawxml content
+- ZON-3153: Index content in Retresco TMS on create, checkin, delete, publish
 
 
 1.0.0 (2016-06-08)
