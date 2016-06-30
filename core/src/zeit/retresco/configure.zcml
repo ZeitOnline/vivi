@@ -14,4 +14,9 @@
 
   <utility factory=".connection.from_product_config" />
 
+  <permission
+    id="zeit.retresco.UpdateIndex"
+    title="Update TMS index"
+    />
+
 </configure>
