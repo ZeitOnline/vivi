@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 import gocept.form.grouped
 import re
 import zc.table.column
@@ -34,32 +35,48 @@ class AddForm(FormBase,
     checkout = False
     form_fields = (
         FormBase.form_fields.omit('references', 'master_images') +
-        zope.formlib.form.FormFields(
-            zeit.content.image.browser.interfaces.IMasterImageUploadSchema))
+        zope.formlib.form.FormFields(IMasterImageUploadSchema))
 
-    form_fields['blob'].custom_widget = (
+    form_fields['primary_master_image_blob'].custom_widget = (
+        zeit.cms.repository.browser.file.BlobWidget)
+    form_fields['secondary_master_image_blob'].custom_widget = (
         zeit.cms.repository.browser.file.BlobWidget)
 
     def create(self, data):
-        self.image = self.create_image(data)
+        # Must remove all blob's from data before creating the images, since
+        # `zeit.cms.browser.form.apply_changes_with_setattr` breaks on fields
+        # that are not actually part of the interface.
+        blobs = [data.pop(name) for name in IMasterImageUploadSchema.names()]
+
+        # Create ImageGroup with remaining data.
         group = super(AddForm, self).create(data)
-        viewports = list(zeit.content.image.interfaces.VIEWPORT_SOURCE(group))
-        if self.image:
-            group.master_images = ((viewports[0], self.image.__name__),)
+
+        # Create images from blobs. Skip missing blobs, i.e. None.
+        self.images = [self.create_image(blob, data) for blob in blobs if blob]
+
+        # Prefill `master_images` with uploaded images and configure viewport.
+        # Viewports should be prefilled sequentially, i.e. primary master image
+        # is configured with first viewport of source, secondary master image
+        # with second viewport etc.
+        viewports = iter(zeit.content.image.interfaces.VIEWPORT_SOURCE(group))
+        for image in self.images:
+            group.master_images += ((next(viewports), image.__name__),)
+
         return group
 
     def add(self, group):
         super(AddForm, self).add(group)
-        if self.image is not None:
-            super(AddForm, self).add(self.image, group)
+
+        # Add images to ImageGroup container.
+        for image in self.images:
+            if image is not None:
+                super(AddForm, self).add(image, group)
+
         self._created_object = group
         zeit.ghost.ghost.create_ghost(group)
 
-    def create_image(self, data):
+    def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
-        blob = data.pop('blob')
-        if blob is None:
-            return
         self.update_file(image, blob)
         name = getattr(blob, 'filename', '')
         zeit.cms.browser.form.apply_changes_with_setattr(
