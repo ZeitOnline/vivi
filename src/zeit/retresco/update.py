@@ -4,6 +4,7 @@ import gocept.runner
 import grokcore.component as grok
 import logging
 import zeit.cms.async
+import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -81,13 +82,34 @@ def unindex_async(uuid):
     conn.delete_id(uuid)
 
 
+@zeit.cms.celery.task()
+def index_parallel(unique_id):
+    content = zeit.cms.interfaces.ICMSContent(unique_id)
+    if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+        children = content.values()
+    else:
+        children = [content]
+
+    for item in children:
+        if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+            index_parallel.delay(item.uniqueId)
+        else:
+            index(content)
+
+
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.retresco', 'index-principal'))
 def reindex():
     parser = argparse.ArgumentParser(description='Reindex folder in TMS')
     parser.add_argument(
         'ids', type=unicode, nargs='+', help='uniqueIds to reindex')
+    parser.add_argument(
+        '--parallel', action='store_true',
+        help='process via job queue instead of directly')
 
     args = parser.parse_args()
     for id in args.ids:
-        index(zeit.cms.interfaces.ICMSContent(id))
+        if args.parallel:
+            index_parallel.delay(id)
+        else:
+            index(zeit.cms.interfaces.ICMSContent(id))
