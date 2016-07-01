@@ -33,7 +33,7 @@ class ILogEntry(zope.interface.Interface):
         readonly=True)
 
     mapping = zope.schema.Dict(
-        title=u'Arbitrary data to stroge along the log.',
+        title=u'Arbitrary data to store along the log.',
         readonly=True,
         required=False)
 
