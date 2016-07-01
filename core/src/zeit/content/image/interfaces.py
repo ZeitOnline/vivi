@@ -212,7 +212,7 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
                 title=_('Viewport'),
                 source=VIEWPORT_SOURCE),
              zope.schema.Choice(
-                 title=_('Master image'),
+                 title=_('Image'),
                  source=MasterImageSource()))))
 
     variants = zope.schema.Dict(
