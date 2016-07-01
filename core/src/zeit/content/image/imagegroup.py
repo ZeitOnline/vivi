@@ -275,6 +275,7 @@ class ImageGroup(ImageGroupBase,
         * /imagegroup/zon-large
         * /imagegroup/zon-large__200x200
         * /imagegroup/zon-large__200x200__0000ff
+        * /imagegroup/zon-large__200x200__0000ff__mobile
 
         JSON API:
         * /imagegroup/variants/zon-large
