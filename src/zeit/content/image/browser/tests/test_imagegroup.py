@@ -128,3 +128,26 @@ class ImageGroupBrowserTest(
         self.assertEqual('mobile', group.master_images[1][0])
         self.assertEqual(
             'new-hampshire-artikel.jpg', group.master_images[1][1])
+
+
+class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        from zeit.content.image.browser.imagegroup import Thumbnail
+        super(ThumbnailTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+        self.thumbnail = Thumbnail()
+        self.thumbnail.context = self.group
+
+    def test_defaults_to_master_image(self):
+        self.assertEqual(
+            self.group['master-image.jpg'], self.thumbnail._find_image())
+
+    def test_uses_materialized_image_if_present(self):
+        from zeit.content.image.testing import create_local_image
+        self.group['image-540x304.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        self.assertEqual(
+            self.group['image-540x304.jpg'], self.thumbnail._find_image())

@@ -199,12 +199,12 @@ class Thumbnail(object):
         if not self.context.keys():
             raise zope.publisher.interfaces.NotFound(
                 self.context, self.__name__, self.request)
+
         for name in self.context.keys():
             if self.first_choice.match(name):
-                break
-        else:
-            name = self.context.keys()[0]
-        return self.context[name]
+                return self.context[name]
+
+        return zeit.content.image.interfaces.IMasterImage(self.context)
 
 
 class ThumbnailLarge(Thumbnail):
