@@ -78,21 +78,21 @@ It is possible to select the master image of an image group:
 
 >>> browser.open('http://localhost/++skin++cms/repository/image-group')
 >>> browser.getLink('Checkout').click()
->>> browser.getControl('Master image').displayValue
+>>> browser.getControl('Image', index=0).displayValue
 ['(nothing selected)']
->>> browser.getControl('Master image').displayOptions
+>>> browser.getControl('Image', index=0).displayOptions
 ['(nothing selected)',
  'new-hampshire-450x200.jpg',
  'new-hampshire-artikel.jpg',
  'obama-clinton-120x120.jpg']
->>> browser.getControl('Master image').displayValue = ['obama']
+>>> browser.getControl('Image', index=0).displayValue = ['obama']
 >>> browser.getControl('Viewport').displayValue = ['Desktop']
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
 >>> browser.getControl('Apply').click()
->>> browser.getControl('Master image').displayValue
+>>> browser.getControl('Image', index=0).displayValue
 ['obama-clinton-120x120.jpg']
 >>> print browser.contents
 <?xml ...
