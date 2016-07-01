@@ -112,6 +112,12 @@ class ImageGroupBase(object):
                     if size is None:
                         size = source.getImageSize()
 
+        # Prefer a master image that was configured for given viewport.
+        elif source is None and viewport is not None:
+            for view, name in self.master_images:
+                if viewport == view:
+                    source = repository[name]
+
         # Our default transformation source should be the master image.
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
@@ -136,6 +142,7 @@ class ImageGroupBase(object):
         image.__name__ = key
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, key)
+        image.variant_source = source.uniqueId
         return image
 
     def get_variant_size(self, key):
