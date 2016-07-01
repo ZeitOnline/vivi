@@ -27,6 +27,14 @@ import zope.security.proxy
 INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 
+def get_viewport_from_key(key):
+    """If key contains `__mobile`, retrieve viewport `mobile` else None."""
+    for segment in key.split('__')[1:]:
+        if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(None):
+            return segment
+    return None
+
+
 class ImageGroupBase(object):
 
     zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
@@ -170,11 +178,7 @@ class ImageGroupBase(object):
         return None
 
     def get_variant_viewport(self, key):
-        """If key contains `__mobile`, retrieve viewport `mobile` else None."""
-        for segment in key.split('__')[1:]:
-            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(self):
-                return segment
-        return None
+        return get_viewport_from_key(key)
 
     def get_variant_by_key(self, key):
         """Retrieve Variant by using as much information as given in key."""
@@ -444,23 +448,22 @@ class Thumbnails(grok.Adapter):
     THUMBNAIL_WIDTH = 1000
 
     def __getitem__(self, key):
-        if self.master_image is None:
+        master_image = self.master_image(key)
+        if master_image is None:
             raise KeyError(key)
         return self.context.create_variant_image(
-            key, source=self.source_image)
+            key, source=self.source_image(master_image))
 
-    @property
-    def source_image_name(self):
-        return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, self.master_image.__name__)
+    def source_image_name(self, master_image):
+        return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, master_image.__name__)
 
-    @property
-    def source_image(self):
-        if self.master_image is None:
+    def source_image(self, master_image):
+        if master_image is None:
             return None
-        if self.source_image_name in self.context:
-            return self.context[self.source_image_name]
-        if self.master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
-            return self.master_image
+        if self.source_image_name(master_image) in self.context:
+            return self.context[self.source_image_name(master_image)]
+        if master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
+            return master_image
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         # XXX 1. mod_dav does not allow LOCK of a member in a locked collection
         # even though the WebDAV spec reads as if that should be possible.
@@ -468,18 +471,22 @@ class Thumbnails(grok.Adapter):
         # cache of the collection upon that error, so it thinks the collection
         # is empty from then on out (only refresh-cache helps).
         if lockable is not None and not lockable.locked():
-            return self._create_source_image()
+            return self._create_source_image(master_image)
         else:
-            return self.master_image
+            return master_image
 
-    def _create_source_image(self):
+    def _create_source_image(self, master_image):
         image = zeit.content.image.interfaces.ITransform(
-            self.master_image).resize(width=self.THUMBNAIL_WIDTH)
-        self.context[self.source_image_name] = image
-        return self.context[self.source_image_name]
+            master_image).resize(width=self.THUMBNAIL_WIDTH)
+        self.context[self.source_image_name(master_image)] = image
+        return self.context[self.source_image_name(master_image)]
 
-    @property
-    def master_image(self):
+    def master_image(self, key):
+        viewport = get_viewport_from_key(key)
+        if viewport:
+            for view, name in self.context.master_images:
+                if viewport == view:
+                    return self.context[name]
         return zeit.content.image.interfaces.IMasterImage(self.context, None)
 
 
@@ -494,5 +501,4 @@ def create_thumbnail_source_on_add(context, event):
     if group.master_image != context.__name__:
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(group)
-    if thumbnails.master_image:
-        thumbnails.source_image
+    thumbnails.source_image(thumbnails.master_image(''))

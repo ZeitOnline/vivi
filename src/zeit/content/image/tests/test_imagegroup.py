@@ -190,3 +190,37 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         properties = zeit.connector.interfaces.IWebDAVReadProperties(group)
         properties[('master_image', IMAGE_NAMESPACE)] = 'master.png'
         self.assertEqual('master.png', group.master_image)
+
+
+class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        from ..imagegroup import Thumbnails
+        super(ThumbnailsTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+        self.thumbnails = Thumbnails(self.group)
+
+    def test_uses_master_image_for_thumbnails(self):
+        self.assertEqual(
+            self.group['master-image.jpg'],
+            self.thumbnails.master_image('square'))
+
+    def test_uses_image_defined_for_viewport_desktop_when_given(self):
+        self.assertEqual(
+            self.group['master-image.jpg'],
+            self.thumbnails.master_image('square__desktop'))
+
+    def test_uses_image_defined_for_viewport_mobile_when_given(self):
+        self.group['master-image-mobile.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        with mock.patch(
+                'zeit.content.image.imagegroup.ImageGroupBase.master_images',
+                new_callable=mock.PropertyMock) as master_images:
+            master_images.return_value = (
+                ('desktop', 'master-image.jpg'),
+                ('mobile', 'master-image-mobile.jpg'))
+            self.assertEqual(
+                self.group['master-image-mobile.jpg'],
+                self.thumbnails.master_image('square__mobile'))
