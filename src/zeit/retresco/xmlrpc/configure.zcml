@@ -1,0 +1,13 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+   i18n_domain="zeit.cms">
+
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".update.Update"
+    permission="zeit.retresco.UpdateIndex"
+    methods="update_tms"
+    />
+
+</configure>
