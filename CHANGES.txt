@@ -5,7 +5,10 @@ zeit.retresco changes
 1.1.1 (unreleased)
 ------------------
 
+- ZON-3188: First stab at parallel reindexing using Celery
+
 - ZON-3153: Add xmlrpc method for indexing content in TMS (for invalidator)
+
 - ZON-3153: Index content in Retresco TMS on create, checkin, delete, publish
 
 
