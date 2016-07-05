@@ -7,6 +7,7 @@ import celery.loaders.app
 import celery.signals
 import grokcore.component as grok
 import imp
+import logging
 import logging.config
 import os
 import transaction
@@ -17,6 +18,9 @@ import zope.app.wsgi
 import zope.component.hooks
 import zope.publisher.browser
 import zope.security.management
+
+
+log = logging.getLogger(__name__)
 
 
 class TransactionAwareTask(celery.Task):
@@ -55,6 +59,7 @@ class TransactionAwareTask(celery.Task):
         try:
             self.transaction_commit()
         except ZODB.POSException.ConflictError, e:
+            log.info('Retrying due to %s', str(e))
             self.transaction_abort()
             raise self.retry(countdown=1)
 
