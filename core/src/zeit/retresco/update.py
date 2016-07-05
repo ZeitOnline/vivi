@@ -92,7 +92,7 @@ def index_parallel(unique_id):
 
     for item in children:
         if zeit.content.image.interfaces.IImageGroup.providedBy(content):
-            log.info(
+            log.debug(
                 'Skip indexing %s, it is an image group', content.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
