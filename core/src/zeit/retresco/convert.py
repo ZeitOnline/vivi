@@ -110,6 +110,7 @@ class CommonMetadata(Converter):
 
     properties = {
         'commentsAllowed': 'allow_comments',
+        'commentSectionEnable': 'show_comments',
         'lead_candidate': '',
         'page': '',
         'printRessort': 'print_ressort',
@@ -222,8 +223,23 @@ class Article(Converter):
     grok.name(interface.__name__)
 
     properties = {
-        'is_instant_article': '',
+        'genre': 'article_genre',
+        'header_layout': 'article_header',
         'is_amp': '',
+        'is_instant_article': '',
+        'template': 'article_template',
+    }
+
+
+class Author(Converter):
+
+    interface = zeit.content.author.interfaces.IAuthor
+    grok.name(interface.__name__)
+
+    properties = {
+        'firstname': '',
+        'display_name': '',
+        'lastname': '',
     }
 
 
@@ -237,15 +253,23 @@ class BreakingNews(Converter):
     }
 
 
-class Author(Converter):
+class CenterPage(Converter):
 
-    interface = zeit.content.author.interfaces.IAuthor
+    interface = zeit.content.cp.interfaces.ICenterPage
     grok.name(interface.__name__)
 
     properties = {
-        'firstname': '',
-        'display_name': '',
-        'lastname': '',
+        'type': 'cp_type',
+    }
+
+
+class Gallery(Converter):
+
+    interface = zeit.content.gallery.interfaces.IGallery
+    grok.name(interface.__name__)
+
+    properties = {
+        'type': 'gallery_type',
     }
 
 
