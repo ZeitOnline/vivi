@@ -1,10 +1,16 @@
 zeit.cms changes
 ================
 
-2.82.3 (unreleased)
+2.83.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+2.83.0 (2016-07-04)
+-------------------
+
+- Set up celery/zope integration (ZON-3188).
 
 
 2.82.2 (2016-06-29)

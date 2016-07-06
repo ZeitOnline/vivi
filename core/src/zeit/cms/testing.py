@@ -203,6 +203,7 @@ cms_product_config = """\
   task-queue-async events
   sitecontrol-prefer-2015 False
   cache-expiration-config 600
+  celery-config /dev/null
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
