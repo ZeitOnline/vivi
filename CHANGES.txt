@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.2.1 (unreleased)
+1.2.1 (2016-07-06)
 ------------------
 
 - ZON-3153: Handle print published properly; synthesize teaser from title;
