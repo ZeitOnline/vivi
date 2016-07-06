@@ -174,6 +174,7 @@ class PublishInfo(Converter):
         'date_last_published': '',
         'date_last_published_semantic': '',
         'published': '',
+        'date_print_published': '',
     }
 
     def __call__(self):
@@ -182,7 +183,6 @@ class PublishInfo(Converter):
         tms_date = self.context.date_first_released
         if not tms_date:
             tms_date = lsc
-        davprops = zeit.cms.interfaces.IWebDAVReadProperties(self.content)
         result = {
             # Required field, but we only use it for display in the TMS UI.
             'date': tms_date or MIN_DATE,
@@ -190,10 +190,6 @@ class PublishInfo(Converter):
                 'date_last_modified': IModified(
                     self.content).date_last_modified,
                 'date_last_semantic_change': lsc,
-                # Not mapped in Python code anywhere.
-                'date_published_print': davprops.get(
-                    ('erscheint', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)) or
-                None,
             }
         }
         self._copy_properties(result)
