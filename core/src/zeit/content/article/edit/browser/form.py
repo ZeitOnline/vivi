@@ -306,7 +306,6 @@ class Keywords(zeit.edit.browser.form.InlineForm):
         return super(Keywords, self).__call__()
 
 
-# This will be renamed properly as soon as the fields are finally decided.
 class MetadataA(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
@@ -330,7 +329,6 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'channel-selector')
 
 
-# This will be renamed properly as soon as the fields are finally decided.
 class MetadataB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
@@ -339,7 +337,6 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('product', 'copyrights')
 
 
-# This will be renamed properly as soon as the fields are finally decided.
 class MetadataC(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
