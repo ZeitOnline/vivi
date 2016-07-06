@@ -295,6 +295,7 @@ class DAVBase(object):
                     "\n  ".join(debug_header_items),
                     body))
         # that's HTTPxxxAuthCon.request, called via DAVConnection
+        logger.debug('%s %s', method, url)
         self.request(method, url, body, extra_hdrs)
         try:
             resp = self.getresponse()
