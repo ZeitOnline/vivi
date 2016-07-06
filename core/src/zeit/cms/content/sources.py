@@ -493,3 +493,9 @@ class StorystreamSource(ObjectSource, XMLSource):
             result[id] = StorystreamReference(
                 id, node.text, node.get('available'), node.get('href'))
         return result
+
+
+class AcquisitionSource(XMLSource):
+
+    config_url = 'source-acquisition'
+    attribute = 'id'

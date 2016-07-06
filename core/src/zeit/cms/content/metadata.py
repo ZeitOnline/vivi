@@ -31,6 +31,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'deeplink_url',
             'breadcrumb_title',
 
+            'acquisition',
             'banner',
             'breaking_news',
             'countings',
