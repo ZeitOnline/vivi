@@ -131,7 +131,7 @@ class CommonMetadata(Converter):
         result = {
             'title': self.context.title,
             'supertitle': self.context.supertitle,
-            'teaser': self.context.teaserText,
+            'teaser': self.context.teaserText or self.context.title,
             'section': self.context.ressort,
             # Only for display in TMS UI.
             'author': u', '.join(

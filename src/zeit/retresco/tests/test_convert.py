@@ -134,3 +134,9 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual(['http://xml.zeit.de/storystream'],
                          data['payload']['storystreams'])
+
+    def test_synthesizes_tms_teaser_if_none_present(self):
+        content = create_testcontent()
+        content.teaserText = None
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual('title', data['teaser'])
