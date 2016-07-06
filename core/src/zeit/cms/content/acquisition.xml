@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<acquisition>
+  <type id="free">frei verfügbar</type>
+  <type id="registration">registrierungspflichtig</type>
+  <type id="abo">abopflichtig</type>
+</acquisition>
