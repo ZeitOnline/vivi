@@ -43,3 +43,8 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TMSError):
             tms.get_keywords(self.repository['testcontent'])
+
+    def test_ignores_404_on_delete(self):
+        TEST_SERVER.response_code = 404
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.delete_id('any')

@@ -69,7 +69,14 @@ class TMS(object):
             'index': 'true', 'enrich': 'false'}, json=data)
 
     def delete_id(self, uuid):
-        self._request('DELETE /documents/%s' % uuid)
+        try:
+            self._request('DELETE /documents/%s' % uuid)
+        except zeit.retresco.interfaces.TMSError, e:
+            if e.status == 404:
+                log.debug(
+                    'Warning: Tried to delete non-existent %s, ignored.', uuid)
+            else:
+                raise
 
     def _request(self, request, **kw):
         verb, path = request.split(' ', 1)
@@ -86,7 +93,7 @@ class TMS(object):
             message = '{verb} {path} returned {error}\n{body}'.format(
                 verb=verb, path=path, error=str(e), body=e.response.text)
             if status < 500:
-                raise zeit.retresco.interfaces.TMSError(message)
+                raise zeit.retresco.interfaces.TMSError(message, status)
             raise zeit.retresco.interfaces.TechnicalError(message)
         try:
             return response.json()
