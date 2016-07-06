@@ -22,6 +22,7 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     do_POST = do_GET
     do_PUT = do_GET
+    do_DELETE = do_GET
 
 
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
