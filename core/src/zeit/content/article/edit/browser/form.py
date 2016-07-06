@@ -353,6 +353,14 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
 
 
+class MetadataAcquisition(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-acquisition'
+    undo_description = _('edit acquisition')
+    form_fields = FormFields(ICommonMetadata).select('acquisition')
+
+
 class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
