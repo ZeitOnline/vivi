@@ -5,7 +5,8 @@ zeit.retresco changes
 1.2.1 (unreleased)
 ------------------
 
-- ZON-3153: Handle print published properly. Synthesize teaser from title.
+- ZON-3153: Handle print published properly; synthesize teaser from title;
+  index some more fields.
 
 
 1.2.0 (2016-07-04)
