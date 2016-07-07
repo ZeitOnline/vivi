@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.2.2 (unreleased)
+1.2.2 (2016-07-07)
 ------------------
 
 - ZON-3153: Ignore content that's missing in TMS when deleting
