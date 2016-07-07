@@ -2044,7 +2044,7 @@
     display: none;
 }
 .type-article #form-article-content-main-image > .fieldname-main_image_variant_name div.value:before {
-    content: "Layout";
+    content: "Seitenverhältnis";
     float: left;
     padding-right: 0.5em;
     color: #4c4c4c;
