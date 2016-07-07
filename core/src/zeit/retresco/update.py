@@ -91,14 +91,14 @@ def index_parallel(unique_id):
         children = [content]
 
     for item in children:
-        if zeit.content.image.interfaces.IImageGroup.providedBy(content):
+        if zeit.content.image.interfaces.IImageGroup.providedBy(item):
             log.debug(
-                'Skip indexing %s, it is an image group', content.uniqueId)
+                'Skip indexing %s, it is an image group', item.uniqueId)
             continue
-        if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+        if zeit.cms.repository.interfaces.ICollection.providedBy(item):
             index_parallel.delay(item.uniqueId)
         else:
-            index(content)
+            index(item)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
