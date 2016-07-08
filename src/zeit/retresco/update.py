@@ -97,6 +97,7 @@ def index_parallel(unique_id):
         children = [content]
 
     for item in children:
+        log.debug('Looking at %s', item.uniqueId)
         if (zeit.content.image.interfaces.IImageGroup.providedBy(item) or
                 zeit.content.image.interfaces.IImage.providedBy(item)):
             log.debug(
