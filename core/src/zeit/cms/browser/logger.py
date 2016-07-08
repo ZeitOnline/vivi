@@ -17,6 +17,14 @@ class JSONLog(zeit.cms.browser.view.JSON):
     def json(self):
         decoded = json.loads(self.request.bodyStream.read(
             int(self.request['CONTENT_LENGTH'])))
+        message = u'\n'.join(str(x) for x in decoded['message'])
+
+        # XXX Ignore errors triggered by Firefox bug where a
+        # mousemove(target=#newtab-vertical-margin) event, which actually
+        # belongs to the FF-UI, ends up on the page.
+        if 'Permission denied to access property "type"' in message:
+            return {}
+
         log_func = getattr(log, decoded['level'].lower())
 
         error_reporting_util = zope.component.getUtility(
@@ -26,8 +34,7 @@ class JSONLog(zeit.cms.browser.view.JSON):
         if user:
             user = {'id': user[1], 'name': user[2], 'email': user[3]}
         url = decoded['url']
-        message = '%s (%s) %s' % (
-            url, user['id'], '\n'.join(str(x) for x in decoded['message']))
+        message = '%s (%s) %s' % (url, user['id'], message)
         # XXX should we populate Python's logmessage timestamp from json?
         log_func(message)
 
