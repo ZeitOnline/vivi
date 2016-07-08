@@ -84,7 +84,13 @@ def unindex_async(uuid):
 
 @zeit.cms.celery.task()
 def index_parallel(unique_id):
-    content = zeit.cms.interfaces.ICMSContent(unique_id)
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    # Performance optimization: Resolve content directly via Connector instead
+    # of traversing every folder.
+    content = repository.getUncontainedContent(
+        zeit.connector.connector.CannonicalId(unique_id))
+
     if zeit.cms.repository.interfaces.ICollection.providedBy(content):
         children = content.values()
     else:
