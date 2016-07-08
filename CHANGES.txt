@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.2.3 (unreleased)
+1.2.3 (2016-07-08)
 ------------------
 
 - ZON-3188: Preemptively skip images when indexing
