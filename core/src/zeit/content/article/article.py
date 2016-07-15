@@ -281,8 +281,8 @@ def set_template_and_header_defaults(context, event):
         source = zeit.content.article.source.ArticleTemplateSource().factory
         template, header_layout = source.get_default_template(context)
 
-        context.template = template
-        context.header_layout = header_layout
+        context.template = template if template else None
+        context.header_layout = header_layout if header_layout else None
 
     if context.main_image_block and (
             context.template or context.header_layout):
