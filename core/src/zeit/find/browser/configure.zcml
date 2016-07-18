@@ -93,7 +93,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="simple_find"
     class=".autocomplete.SimpleFind"
-    permission="zope.View"
+    permission="zope.Public"
   />
 
 

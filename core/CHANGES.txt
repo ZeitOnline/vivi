@@ -4,7 +4,7 @@ zeit.find changes
 2.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Change permission for simple_find to public
 
 
 2.6.2 (2016-05-18)
