@@ -15,7 +15,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to'))
+        ('alt', 'caption', 'links_to', 'origin'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
