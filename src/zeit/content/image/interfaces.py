@@ -49,6 +49,11 @@ class IImageMetadata(zope.interface.Interface):
         max=53,
         required=False)
 
+    origin = zope.schema.TextLine(
+        title=_("Origin"),
+        default=u'',
+        required=False)
+
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
         default=((u'©', None, False),),
@@ -217,6 +222,9 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
 
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
+
+    infographic = zope.schema.Bool(
+        title=_(u'True if image group should be rendered as infographic'))
 
     def variant_url(name, width=None, height=None, fill_color=None,
                     thumbnail=False):

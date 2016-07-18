@@ -39,6 +39,11 @@ class ImageGroupBase(object):
 
     zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageGroup,
+        IMAGE_NAMESPACE,
+        ('infographic',))
+
     _master_images = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['master_images'],
         IMAGE_NAMESPACE,
