@@ -4,7 +4,7 @@ zeit.imp changes
 0.17.3 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Disable zeit.imp for image groups if new variant editor is enabled (ZON-3171)
 
 
 0.17.2 (2016-01-22)
