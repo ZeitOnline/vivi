@@ -16,7 +16,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             _("Image data"), (
                 '__name__', 'blob', 'references',
                 'primary_master_image_blob', 'secondary_master_image_blob',
-                'master_images', 'infographic'),
+                'master_images', 'display_type'),
             css_class='column-left image-form'),
         gocept.form.grouped.RemainingFields(
             _("Texts"),
