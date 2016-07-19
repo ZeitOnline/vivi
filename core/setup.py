@@ -41,7 +41,6 @@ setup(
         'zeit.cms>=2.46.0.dev0',
         'zeit.connector>=2.4.0.dev0',
         'zeit.edit>=2.11.3.dev0',
-        'zeit.imp>=0.15.0.dev0',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.container',

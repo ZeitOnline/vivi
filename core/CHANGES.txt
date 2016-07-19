@@ -11,6 +11,8 @@ zeit.content.image changes
 
 - Render variants using the master image for given viewport. (ZON-3171)
 
+- Remove dependency to `zeit.imp`. (ZON-3171)
+
 
 2.13.5 (2016-06-27)
 -------------------
