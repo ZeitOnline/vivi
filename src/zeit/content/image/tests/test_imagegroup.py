@@ -84,15 +84,13 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_getitem_uses_primary_master_image_if_no_viewport_was_given(self):
         image = self.group['square']
-        self.assertEqual(
-            'http://xml.zeit.de/group/master-image.jpg', image.variant_source)
+        self.assertEqual('master-image.jpg', image.variant_source)
 
     def test_getitem_uses_primary_master_image_if_viewport_not_configured(
             self):
         """Default configuration only includes `desktop`, but not `mobile`."""
         image = self.group['square__mobile']
-        self.assertEqual(
-            'http://xml.zeit.de/group/master-image.jpg', image.variant_source)
+        self.assertEqual('master-image.jpg', image.variant_source)
 
     def test_getitem_chooses_master_image_using_given_viewport(self):
         """Uses master-image for desktop and master-image-mobile for mobile."""
@@ -105,10 +103,10 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 ('desktop', 'master-image.jpg'),
                 ('mobile', 'master-image-mobile.jpg'))
             self.assertEqual(
-                'http://xml.zeit.de/group/master-image.jpg',
+                'master-image.jpg',
                 self.group['square__desktop'].variant_source)
             self.assertEqual(
-                'http://xml.zeit.de/group/master-image-mobile.jpg',
+                'master-image-mobile.jpg',
                 self.group['square__mobile'].variant_source)
 
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
