@@ -91,7 +91,7 @@ class AddForm(FormBase,
                 'zeit.content.image.variants'):
             return 'variant.html'
         else:
-            return 'imp.html'
+            return 'view.html'
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
