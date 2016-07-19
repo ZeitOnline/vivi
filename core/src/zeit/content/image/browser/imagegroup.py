@@ -81,7 +81,7 @@ class AddForm(FormBase,
         name = getattr(blob, 'filename', '')
         zeit.cms.browser.form.apply_changes_with_setattr(
             image,
-            self.form_fields.omit('__name__', 'infographic'), data)
+            self.form_fields.omit('__name__', 'display_type'), data)
         image.__name__ = name
         return image
 

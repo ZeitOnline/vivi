@@ -162,6 +162,13 @@ class MasterImageSource(
             yield name
 
 
+class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'display-type-source'
+    attribute = 'id'
+
+
 class ViewportSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
@@ -223,8 +230,11 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
 
-    infographic = zope.schema.Bool(
-        title=_(u'True if image group should be rendered as infographic'))
+    display_type = zope.schema.Choice(
+        title=_("Display Type"),
+        source=DisplayTypeSource(),
+        default='imagegroup',
+        required=True)
 
     def variant_url(name, width=None, height=None, fill_color=None,
                     thumbnail=False):
