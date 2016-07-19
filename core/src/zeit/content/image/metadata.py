@@ -95,6 +95,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             else:
                 entry.attrib.pop(name, None)
 
+        set_attribute('origin', context.origin)
         set_attribute('title', context.title)
         set_attribute('alt', context.alt)
 
