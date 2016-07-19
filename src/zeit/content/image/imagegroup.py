@@ -42,7 +42,8 @@ class ImageGroupBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
         IMAGE_NAMESPACE,
-        ('display_type',))
+        ('display_type',),
+        use_default=True)
 
     _master_images = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['master_images'],
