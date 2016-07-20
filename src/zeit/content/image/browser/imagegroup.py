@@ -1,6 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
+import itertools
 import re
 import zc.table.column
 import zeit.cms.browser.form
@@ -37,16 +39,16 @@ class AddForm(FormBase,
         FormBase.form_fields.omit('references', 'master_images') +
         zope.formlib.form.FormFields(IMasterImageUploadSchema))
 
-    form_fields['primary_master_image_blob'].custom_widget = (
-        zeit.cms.repository.browser.file.BlobWidget)
-    form_fields['secondary_master_image_blob'].custom_widget = (
-        zeit.cms.repository.browser.file.BlobWidget)
+    form_fields['master_image_blobs'].custom_widget = (
+        CustomWidgetFactory(
+            zope.formlib.sequencewidget.SequenceWidget,
+            zeit.cms.repository.browser.file.BlobWidget))
 
     def create(self, data):
-        # Must remove all blob's from data before creating the images, since
-        # `zeit.cms.browser.form.apply_changes_with_setattr` breaks on fields
-        # that are not actually part of the interface.
-        blobs = [data.pop(name) for name in IMasterImageUploadSchema.names()]
+        # Must remove master_image_blobs from data before creating the images,
+        # since `zeit.cms.browser.form.apply_changes_with_setattr` breaks on
+        # fields that are not actually part of the interface.
+        blobs = data.pop('master_image_blobs')
 
         # Create ImageGroup with remaining data.
         group = super(AddForm, self).create(data)
@@ -58,9 +60,9 @@ class AddForm(FormBase,
         # Viewports should be prefilled sequentially, i.e. primary master image
         # is configured with first viewport of source, secondary master image
         # with second viewport etc.
-        viewports = iter(zeit.content.image.interfaces.VIEWPORT_SOURCE(group))
-        for image in self.images:
-            group.master_images += ((next(viewports), image.__name__),)
+        viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE(group)
+        for image, viewport in itertools.izip(self.images, viewports):
+            group.master_images += ((viewport, image.__name__),)
 
         return group
 

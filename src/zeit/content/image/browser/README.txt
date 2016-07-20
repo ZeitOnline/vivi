@@ -346,7 +346,7 @@ Lets create an image group:
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
->>> set_file_data('opernball.jpg', 'primary_master_image_blob')
+>>> set_file_data('opernball.jpg', 'master_image_blobs.0.')
 >>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
