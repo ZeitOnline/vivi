@@ -45,16 +45,13 @@ class IFileEditSchema(IFileAddSchema):
 
 class IMasterImageUploadSchema(zope.interface.Interface):
 
-    primary_master_image_blob = zope.schema.Object(
-        zope.interface.Interface,
-        title=_('Upload master image'),
-        description=_('upload-master-image-description'),
+    master_image_blobs = zope.schema.Tuple(
+        title=_('Upload image'),
+        unique=True,
+        min_length=1,
         required=True,
-        constraint=is_image)
-
-    secondary_master_image_blob = zope.schema.Object(
-        zope.interface.Interface,
-        title=_('Upload secondary master image'),
-        description=_('upload-secondary-master-image-description'),
-        required=False,
-        constraint=is_image)
+        missing_value=(),
+        value_type=zope.schema.Object(
+            zope.interface.Interface,
+            required=False,
+            constraint=is_image))

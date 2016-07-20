@@ -38,10 +38,13 @@ class ImageGroupHelperMixin(object):
             'image/jpeg', filename)
 
     def upload_primary_image(self, filename):
-        self._upload_image('primary_master_image_blob', filename)
+        self._upload_image('master_image_blobs.0.', filename)
 
     def upload_secondary_image(self, filename):
-        self._upload_image('secondary_master_image_blob', filename)
+        self._upload_image('master_image_blobs.1.', filename)
+
+    def upload_tertiary_image(self, filename):
+        self._upload_image('master_image_blobs.2.', filename)
 
     def save_imagegroup(self):
         self.browser.getControl(name='form.actions.add').click()
@@ -117,6 +120,7 @@ class ImageGroupBrowserTest(
     def test_secondary_master_image_is_marked_for_mobile_viewport(self):
         self.add_imagegroup()
         self.set_imagegroup_filename('image-group')
+        self.browser.getControl('Upload image').click()
         self.upload_primary_image('opernball.jpg')
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.fill_copyright_information()
@@ -128,6 +132,23 @@ class ImageGroupBrowserTest(
         self.assertEqual('mobile', group.master_images[1][0])
         self.assertEqual(
             'new-hampshire-artikel.jpg', group.master_images[1][1])
+
+    def test_tertiary_master_image_has_no_viewport(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('image-group')
+        self.browser.getControl('Upload image').click()
+        self.browser.getControl('Upload image').click()
+        self.upload_primary_image('opernball.jpg')
+        self.upload_secondary_image('new-hampshire-artikel.jpg')
+        self.upload_tertiary_image('obama-clinton-120x120.jpg')
+        self.fill_copyright_information()
+        self.save_imagegroup()
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['2006']['image-group']
+        self.assertEqual(2, len(group.master_images))
+        self.assertEqual(3, len(group.keys()))
+        self.assertIn('obama-clinton-120x120.jpg', group.keys())
 
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
