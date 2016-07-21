@@ -9,6 +9,8 @@ zeit.content.article changes
 - Select default template/header_layout according to article
   interfaces (ZON-3088).
 
+- Add acquisition attribute to CMS content
+
 
 3.18.0 (2016-06-20)
 -------------------
