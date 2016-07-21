@@ -4,6 +4,8 @@ zeit.content.image changes
 2.13.6 (unreleased)
 -------------------
 
+- Be defensive about zoom=0 settings.
+
 - Allow viewport modifier inside URL of image variants. (ZON-3171)
 
 - Store multiple master images and which viewport they should be used for,
