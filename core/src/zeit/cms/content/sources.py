@@ -45,8 +45,9 @@ class SimpleXMLSourceBase(object):
 
 
 class XMLSource(
-    SimpleXMLSourceBase,
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+        SimpleXMLSourceBase,
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    """This source should be used in most cases."""
     # NOTE: this source is contextual to be able to set a default for a field
     # using the source even while there is no product config.
 
@@ -87,15 +88,15 @@ class XMLSource(
 
 
 class SimpleXMLSource(
-    SimpleXMLSourceBase,
-    zc.sourcefactory.basic.BasicSourceFactory):
+        SimpleXMLSourceBase,
+        zc.sourcefactory.basic.BasicSourceFactory):
     """A simple xml source."""
 
 
 class SimpleContextualXMLSource(
-    SimpleXMLSourceBase,
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    """a simple contextual xml source."""
+        SimpleXMLSourceBase,
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    """A simple contextual xml source."""
 
     def getValues(self, context):
         return super(SimpleContextualXMLSource, self).getValues()
@@ -440,7 +441,7 @@ class ObjectSource(object):
     def find(self, context, id):
         value = self._values().get(id)
         if (not value or not self.isAvailable(value, context)
-            or not self.filterValue(context, value)):
+                or not self.filterValue(context, value)):
             return None
         return value
 
@@ -492,3 +493,9 @@ class StorystreamSource(ObjectSource, XMLSource):
             result[id] = StorystreamReference(
                 id, node.text, node.get('available'), node.get('href'))
         return result
+
+
+class AcquisitionSource(XMLSource):
+
+    config_url = 'source-acquisition'
+    attribute = 'id'

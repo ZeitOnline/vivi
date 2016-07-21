@@ -31,6 +31,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'deeplink_url',
             'breadcrumb_title',
 
+            'acquisition',
             'banner',
             'breaking_news',
             'countings',
@@ -183,7 +184,7 @@ def set_default_channel_to_ressort(context, event):
                 zeit.cms.content.interfaces.ICommonMetadata)):
             continue
         if ('ressort' in description.attributes or
-            'sub_ressort' in description.attributes):
+                'sub_ressort' in description.attributes):
             relevant_change = True
             break
     if not relevant_change:

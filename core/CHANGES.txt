@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Ignore strange JS errors caused by Firefox bug.
 
+- Add acquisition attribute to CMS content
+
 
 2.83.0 (2016-07-04)
 -------------------

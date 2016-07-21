@@ -124,6 +124,11 @@ class ICommonMetadata(zope.interface.Interface):
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
 
+    acquisition = zope.schema.Choice(
+        title=_('Acquisition'),
+        default=u'free',
+        source=zeit.cms.content.sources.AcquisitionSource())
+
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
         default=())
