@@ -317,9 +317,11 @@ class IImage(IReference):
         default=u'large',
         required=False)
 
+    # Currently need default for bw compat.
     variant_name = zope.schema.Choice(
         title=_('Variant Name'),
         source=IMAGE_VARIANT_NAME_SOURCE,
+        default=u'wide',
         required=False)
 
 
