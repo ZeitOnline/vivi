@@ -155,7 +155,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.content.image.testing.WEBDRIVER_LAYER
-    window_width = 1400  # The "Variants" tab needs to fit in and be clickable.
+    window_width = 1300  # The "Variants" tab needs to fit in and be clickable.
 
     def setUp(self):
         super(VariantIntegrationTest, self).setUp()
