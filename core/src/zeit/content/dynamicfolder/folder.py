@@ -78,6 +78,8 @@ class RepositoryDynamicFolder(
     @property
     def content_template(self):
         if not hasattr(self, '_v_content_template'):
+            if self.content_template_file is None:
+                return jinja2.Template('')
             self._v_content_template = jinja2.Template(
                 zeit.connector.interfaces.IResource(
                     self.content_template_file).data.read(),
@@ -86,7 +88,7 @@ class RepositoryDynamicFolder(
 
     @property
     def content_template_file(self):
-        template_file = self.config.head.cp_template.text
+        template_file = self.config.head.findtext('cp_template')
         return zeit.cms.interfaces.ICMSContent(template_file, None)
 
     def _create_virtual_content(self, key):
@@ -164,8 +166,10 @@ class RepositoryDynamicFolder(
             contents = {}
             key_getter = self.config.body.get('key', 'text()')
             for entry in self.config.body.getchildren():
-                key = urllib.unquote(
-                    entry.xpath(key_getter)[0]).decode('utf-8')
+                key_match = entry.xpath(key_getter)
+                if not key_match:
+                    continue  # entry provides no key
+                key = urllib.unquote(key_match[0]).decode('utf-8')
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key].update({'text': entry.text})
             self._v_virtual_content = contents

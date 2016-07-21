@@ -4,6 +4,7 @@ from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.rawxml.rawxml import RawXML
 import mock
 import pkg_resources
+import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.testing
@@ -185,3 +186,12 @@ class TestDynamicFolder(
         self.assert_published(self.folder)
         self.assert_published(self.folder.config_file)
         self.assert_published(self.folder.content_template_file)
+
+    def test_does_not_break_on_erroneous_config(self):
+        from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
+        dynamic = RepositoryDynamicFolder()
+        dynamic.config_file = self.repository['data']['template.xml']
+        self.repository['brokenfolder'] = dynamic
+        transaction.commit()
+        with self.assertNothingRaised():
+            self.repository['brokenfolder'].values()
