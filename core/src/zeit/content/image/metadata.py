@@ -15,7 +15,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to'))
+        ('alt', 'caption', 'links_to', 'origin'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -95,6 +95,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             else:
                 entry.attrib.pop(name, None)
 
+        set_attribute('origin', context.origin)
         set_attribute('title', context.title)
         set_attribute('alt', context.alt)
 

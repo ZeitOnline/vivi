@@ -1,5 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
+import itertools
 import re
 import zc.table.column
 import zeit.cms.browser.form
@@ -24,6 +27,8 @@ class FormBase(object):
         zeit.content.image.interfaces.IReferences).omit(
             'acquire_metadata', 'variants')
 
+    form_fields['__name__'].field.title = _('File name of image group')
+
 
 class AddForm(FormBase,
               zeit.cms.repository.browser.file.FormBase,
@@ -33,37 +38,54 @@ class AddForm(FormBase,
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references', 'master_image') +
-        zope.formlib.form.FormFields(
-            zeit.content.image.browser.interfaces.IMasterImageUploadSchema))
+        FormBase.form_fields.omit('references', 'master_images') +
+        zope.formlib.form.FormFields(IMasterImageUploadSchema))
 
-    form_fields['blob'].custom_widget = (
-        zeit.cms.repository.browser.file.BlobWidget)
+    form_fields['master_image_blobs'].custom_widget = (
+        CustomWidgetFactory(
+            zope.formlib.sequencewidget.SequenceWidget,
+            zeit.cms.repository.browser.file.BlobWidget))
 
     def create(self, data):
-        self.image = self.create_image(data)
+        # Must remove master_image_blobs from data before creating the images,
+        # since `zeit.cms.browser.form.apply_changes_with_setattr` breaks on
+        # fields that are not actually part of the interface.
+        blobs = data.pop('master_image_blobs')
+
+        # Create ImageGroup with remaining data.
         group = super(AddForm, self).create(data)
-        if self.image:
-            group.master_image = self.image.__name__
+
+        # Create images from blobs. Skip missing blobs, i.e. None.
+        self.images = [self.create_image(blob, data) for blob in blobs if blob]
+
+        # Prefill `master_images` with uploaded images and configure viewport.
+        # Viewports should be prefilled sequentially, i.e. primary master image
+        # is configured with first viewport of source, secondary master image
+        # with second viewport etc.
+        viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE(group)
+        for image, viewport in itertools.izip(self.images, viewports):
+            group.master_images += ((viewport, image.__name__),)
+
         return group
 
     def add(self, group):
         super(AddForm, self).add(group)
-        if self.image is not None:
-            super(AddForm, self).add(self.image, group)
+
+        # Add images to ImageGroup container.
+        for image in self.images:
+            if image is not None:
+                super(AddForm, self).add(image, group)
+
         self._created_object = group
         zeit.ghost.ghost.create_ghost(group)
 
-    def create_image(self, data):
+    def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
-        blob = data.pop('blob')
-        if blob is None:
-            return
         self.update_file(image, blob)
         name = getattr(blob, 'filename', '')
         zeit.cms.browser.form.apply_changes_with_setattr(
             image,
-            self.form_fields.omit('__name__'), data)
+            self.form_fields.omit('__name__', 'display_type'), data)
         image.__name__ = name
         return image
 
@@ -73,13 +95,22 @@ class AddForm(FormBase,
                 'zeit.content.image.variants'):
             return 'variant.html'
         else:
-            return 'imp.html'
+            return 'view.html'
+
+    def setUpWidgets(self, *args, **kw):
+        super(AddForm, self).setUpWidgets(*args, **kw)
+        self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit image group')
     form_fields = FormBase.form_fields.omit('__name__')
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditForm, self).setUpWidgets(*args, **kw)
+        self.widgets['master_images'].addButtonLabel = _(
+            'Add viewport to master image mapping')
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
@@ -181,12 +212,12 @@ class Thumbnail(object):
         if not self.context.keys():
             raise zope.publisher.interfaces.NotFound(
                 self.context, self.__name__, self.request)
+
         for name in self.context.keys():
             if self.first_choice.match(name):
-                break
-        else:
-            name = self.context.keys()[0]
-        return self.context[name]
+                return self.context[name]
+
+        return zeit.content.image.interfaces.IMasterImage(self.context)
 
 
 class ThumbnailLarge(Thumbnail):

@@ -314,7 +314,7 @@
     name="variant.html"
     class=".variant.Editor"
     template="image-variants.pt"
-    menu="zeit-context-views" title="Variants"
+    menu="zeit-context-views" title="Edit"
     permission="zope.View"
     />
 

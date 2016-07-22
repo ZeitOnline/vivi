@@ -175,8 +175,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
     def test_integration(self):
         """Open Image group and change settings of master and a variant."""
         s = self.selenium
-        self.open('/repository/2007/03/group')
-        s.click('link=Variants')
+        self.open('/repository/2007/03/group/variant.html')
         s.waitForCssCount('css=#variant-content', 1)  # wait for tab to load
 
         # test that descriptive name is displayed near image

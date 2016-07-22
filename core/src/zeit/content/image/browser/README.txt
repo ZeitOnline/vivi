@@ -196,7 +196,7 @@ Make sure the image is not changed by looking at the image view:
         <a href="http://www.zeit.de">http://www.zeit.de</a>
       </div>
       ...
-  
+
 
 
 Dragging
@@ -333,11 +333,11 @@ Lets create an image group:
 
 [#no-references]_
 
->>> def set_file_data(name):
+>>> def set_file_data(name, field):
 ...     test_file = os.path.join(
 ...         os.path.dirname(__file__), 'testdata', name)
 ...     test_data = file(test_file, 'rb')
-...     file_control = browser.getControl(name='form.blob')
+...     file_control = browser.getControl(name='form.' + field)
 ...     file_control.add_file(test_data, 'image/jpeg', name)
 
 >>> browser.getControl("File name").value = 'new-hampshire'
@@ -346,7 +346,7 @@ Lets create an image group:
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
->>> set_file_data('opernball.jpg')
+>>> set_file_data('opernball.jpg', 'master_image_blobs.0.')
 >>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
@@ -379,7 +379,7 @@ LookupError: label 'Volume'...
 
 Set the file data:
 
->>> set_file_data('new-hampshire-artikel.jpg')
+>>> set_file_data('new-hampshire-artikel.jpg', 'blob')
 >>> browser.getControl('Add').click()
 
 After adding the image we're back at the image group:
@@ -393,7 +393,7 @@ So we can directly add the next image:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image']
 >>> browser.open(menu.value[0])
->>> set_file_data('new-hampshire-450x200.jpg')
+>>> set_file_data('new-hampshire-450x200.jpg', 'blob')
 >>> browser.getControl('Add').click()
 
 And another one:
@@ -402,7 +402,7 @@ And another one:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image']
 >>> browser.open(menu.value[0])
->>> set_file_data('obama-clinton-120x120.jpg')
+>>> set_file_data('obama-clinton-120x120.jpg', 'blob')
 >>> browser.getControl('Add').click()
 
 Let's have a look at the file list:
