@@ -97,11 +97,20 @@ class AddForm(FormBase,
         else:
             return 'view.html'
 
+    def setUpWidgets(self, *args, **kw):
+        super(AddForm, self).setUpWidgets(*args, **kw)
+        self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
+
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit image group')
     form_fields = FormBase.form_fields.omit('__name__')
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditForm, self).setUpWidgets(*args, **kw)
+        self.widgets['master_images'].addButtonLabel = _(
+            'Add viewport to master image mapping')
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
