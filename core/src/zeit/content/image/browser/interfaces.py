@@ -46,10 +46,10 @@ class IFileEditSchema(IFileAddSchema):
 class IMasterImageUploadSchema(zope.interface.Interface):
 
     master_image_blobs = zope.schema.Tuple(
-        title=_('Upload image'),
+        title=_('Upload master images'),
         unique=True,
-        min_length=1,
         required=True,
+        min_length=1,
         missing_value=(),
         value_type=zope.schema.Object(
             zope.interface.Interface,
