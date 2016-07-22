@@ -14,7 +14,9 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Image data"), (
-                '__name__', 'blob', 'master_image', 'references'),
+                '__name__', 'blob', 'references',
+                'master_image_blobs',
+                'master_images', 'display_type'),
             css_class='column-left image-form'),
         gocept.form.grouped.RemainingFields(
             _("Texts"),
@@ -23,7 +25,8 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences).omit('acquire_metadata')
+        zeit.content.image.interfaces.IReferences).omit(
+        'acquire_metadata', 'origin')
 
     def __init__(self, *args, **kw):
         self.form_fields['blob'].custom_widget = (

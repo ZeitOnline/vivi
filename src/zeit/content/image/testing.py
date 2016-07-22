@@ -14,6 +14,8 @@ import zope.component
 
 product_config = """
 <product-config zeit.content.image>
+    viewport-source file://{here}/tests/fixtures/viewports.xml
+    display-type-source file://{here}/tests/fixtures/display-types.xml
     variant-source file://{here}/tests/fixtures/variants.xml
     legacy-variant-source file://{here}/tests/fixtures/legacy-variants.xml
 </product-config>
@@ -76,7 +78,7 @@ def create_image_group_with_master_image(file_name=None):
     extension = os.path.splitext(file_name)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
-    group.master_image = u'master-image' + extension
+    group.master_images = (('desktop', u'master-image' + extension),)
     repository['group'] = group
     image = zeit.content.image.image.LocalImage()
     image.mimeType = mimetypes.types_map[extension]

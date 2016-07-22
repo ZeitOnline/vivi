@@ -66,6 +66,49 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertNotEqual(master_sample, materialized_sample)
         self.assertEqual((80, 80), materialized.size)
 
+    def test_getitem_handles_viewport_modifier(self):
+        with self.assertNothingRaised():
+            self.group['square__mobile']
+
+    def test_getitem_defines_no_variant_source_for_materialized_files(self):
+        """It raises AttributeError when asked for `variant_source`.
+
+        Since `variant_source` is used for testing only, we do not want to add
+        it to `BaseImage`. Thus only variants created using
+        `ImageGroupBase.create_variant_image` should have this attribute.
+
+        """
+        image = self.group['master-image.jpg']
+        with self.assertRaises(AttributeError):
+            image.variant_source
+
+    def test_getitem_uses_primary_master_image_if_no_viewport_was_given(self):
+        image = self.group['square']
+        self.assertEqual('master-image.jpg', image.variant_source)
+
+    def test_getitem_uses_primary_master_image_if_viewport_not_configured(
+            self):
+        """Default configuration only includes `desktop`, but not `mobile`."""
+        image = self.group['square__mobile']
+        self.assertEqual('master-image.jpg', image.variant_source)
+
+    def test_getitem_chooses_master_image_using_given_viewport(self):
+        """Uses master-image for desktop and master-image-mobile for mobile."""
+        self.group['master-image-mobile.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        with mock.patch(
+                'zeit.content.image.imagegroup.ImageGroupBase.master_images',
+                new_callable=mock.PropertyMock) as master_images:
+            master_images.return_value = (
+                ('desktop', 'master-image.jpg'),
+                ('mobile', 'master-image-mobile.jpg'))
+            self.assertEqual(
+                'master-image.jpg',
+                self.group['square__desktop'].variant_source)
+            self.assertEqual(
+                'master-image-mobile.jpg',
+                self.group['square__mobile'].variant_source)
+
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
         with self.assertRaises(KeyError):
             self.group['nonexistent']
@@ -129,3 +172,53 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 Variant(name='foo', id='small', max_size='100x100')]):
             self.assertEqual(
                 None, self.group.get_variant_by_size('foo__9999x9999'))
+
+    def test_master_image_is_None_if_no_master_images_defined(self):
+        group = zeit.content.image.imagegroup.ImageGroup()
+        self.assertEqual(None, group.master_image)
+
+    def test_master_image_retrieves_first_image_from_master_images(self):
+        group = zeit.content.image.imagegroup.ImageGroup()
+        group.master_images = (('viewport', 'master.png'),)
+        self.assertEqual('master.png', group.master_image)
+
+    def test_master_image_is_retrieved_from_DAV_properties_for_bw_compat(self):
+        from zeit.content.image.interfaces import IMAGE_NAMESPACE
+        group = zeit.content.image.imagegroup.ImageGroup()
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(group)
+        properties[('master_image', IMAGE_NAMESPACE)] = 'master.png'
+        self.assertEqual('master.png', group.master_image)
+
+
+class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        from ..imagegroup import Thumbnails
+        super(ThumbnailsTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+        self.thumbnails = Thumbnails(self.group)
+
+    def test_uses_master_image_for_thumbnails(self):
+        self.assertEqual(
+            self.group['master-image.jpg'],
+            self.thumbnails.master_image('square'))
+
+    def test_uses_image_defined_for_viewport_desktop_when_given(self):
+        self.assertEqual(
+            self.group['master-image.jpg'],
+            self.thumbnails.master_image('square__desktop'))
+
+    def test_uses_image_defined_for_viewport_mobile_when_given(self):
+        self.group['master-image-mobile.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        with mock.patch(
+                'zeit.content.image.imagegroup.ImageGroupBase.master_images',
+                new_callable=mock.PropertyMock) as master_images:
+            master_images.return_value = (
+                ('desktop', 'master-image.jpg'),
+                ('mobile', 'master-image-mobile.jpg'))
+            self.assertEqual(
+                self.group['master-image-mobile.jpg'],
+                self.thumbnails.master_image('square__mobile'))

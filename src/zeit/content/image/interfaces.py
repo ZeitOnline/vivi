@@ -1,7 +1,9 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import collections
 import zc.form.field
+import zc.form.interfaces
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
@@ -9,6 +11,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.file.interfaces
+import zope.interface
 import zope.schema
 
 
@@ -44,6 +47,11 @@ class IImageMetadata(zope.interface.Interface):
         title=_("Volume"),
         min=1,
         max=53,
+        required=False)
+
+    origin = zope.schema.TextLine(
+        title=_("Origin"),
+        default=u'',
         required=False)
 
     copyrights = zope.schema.Tuple(
@@ -143,10 +151,59 @@ class MasterImageSource(
         zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getValues(self, context):
+        """List names of images inside ImageGroup."""
+        # Sadly zc.form.field.Combination does not bind it's field to the right
+        # context, thus fix the context if necessary.
+        if zc.form.interfaces.ICombinationField.providedBy(context):
+            context = context.context
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         for name in repository.getContent(context.uniqueId):
             yield name
+
+
+class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'display-type-source'
+    attribute = 'id'
+
+
+class ViewportSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'viewport-source'
+    attribute = 'id'
+
+VIEWPORT_SOURCE = ViewportSource()
+
+
+class DuplicateViewport(zope.schema.ValidationError):
+    __doc__ = _('Viewport was used multiple times')
+
+
+class DuplicateImage(zope.schema.ValidationError):
+    __doc__ = _('Image was used multiple times')
+
+
+def unique_viewport_and_master_image(value):
+    """Ensure that any `viewport` and any `master_image` appears only once.
+
+    The setting `unique = True` only ensures that each *combination* is unique.
+    But we actually want to avoid that any viewport or any master_image is
+    chosen multiple times, no matter in which combination.
+
+    """
+    viewports = set()
+    master_images = set()
+    for viewport, master_image in value:
+        if viewport in viewports:
+            raise DuplicateViewport(viewport)
+        if master_image in master_images:
+            raise DuplicateImage(master_image)
+        viewports.add(viewport)
+        master_images.add(master_image)
+    return True
 
 
 class IImageGroup(zeit.cms.repository.interfaces.ICollection,
@@ -154,12 +211,30 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
                   zeit.cms.repository.interfaces.IDAVContent):
     """An image group groups images with the same motif together."""
 
-    master_image = zope.schema.Choice(
-        title=_('Master image'),
-        source=MasterImageSource())
+    master_image = zope.interface.Attribute('Name of the master image')
+
+    master_images = zope.schema.Tuple(
+        title=_('Mapping of viewport to master image'),
+        unique=True,
+        min_length=1,
+        missing_value=(),
+        constraint=unique_viewport_and_master_image,
+        value_type=zc.form.field.Combination(
+            (zope.schema.Choice(
+                title=_('Viewport'),
+                source=VIEWPORT_SOURCE),
+             zope.schema.Choice(
+                 title=_('Image'),
+                 source=MasterImageSource()))))
 
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
+
+    display_type = zope.schema.Choice(
+        title=_("Display Type"),
+        source=DisplayTypeSource(),
+        default='imagegroup',
+        required=True)
 
     def variant_url(name, width=None, height=None, fill_color=None,
                     thumbnail=False):

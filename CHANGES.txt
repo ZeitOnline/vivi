@@ -6,6 +6,15 @@ zeit.content.image changes
 
 - Be defensive about zoom=0 settings.
 
+- Allow viewport modifier inside URL of image variants. (ZON-3171)
+
+- Store multiple master images and which viewport they should be used for,
+  rather allowing a single master image for everything. (ZON-3171)
+
+- Render variants using the master image for given viewport. (ZON-3171)
+
+- Remove dependency to `zeit.imp`. (ZON-3171)
+
 
 2.13.5 (2016-06-27)
 -------------------
