@@ -1,3 +1,4 @@
+import time
 import transaction
 import zeit.cms.clipboard.interfaces
 import zeit.cms.testing
@@ -75,6 +76,7 @@ class EditorHelper(object):
 
     def create_block(self, block, wait_for_inline=False):
         s = self.selenium
+        time.sleep(2)
         s.click('link=Struktur')
         s.waitForElementPresent('css=#article-modules .module')
         block_sel = '.block.type-{0}'.format(block)
