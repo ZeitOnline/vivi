@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
@@ -90,6 +91,13 @@ class ReferenceDetailsBody(ImageView):
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(
             self.context.target)
+
+    @cachedproperty
+    def is_infographic(self):
+        if zeit.content.image.interfaces.IImageGroup.providedBy(
+                self.context.target):
+            return self.context.target.display_type == INFOGRAPHIC_DISPLAY_TYPE
+        return False
 
     def tag(self):
         return get_img_tag(self.context.target, self.request, view='@@raw')
