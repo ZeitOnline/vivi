@@ -3,13 +3,16 @@ import pytz
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.wysiwyg.html
 import zope.component
 import zope.interface
 
 
 WYSIWYGLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
+    'ftesting.zcml', product_config=(
+        zeit.content.image.testing.product_config +
+        zeit.cms.testing.cms_product_config))
 
 
 class WYSIWYGTestCase(zeit.cms.testing.FunctionalTestCase):
