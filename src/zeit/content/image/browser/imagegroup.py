@@ -27,8 +27,6 @@ class FormBase(object):
         zeit.content.image.interfaces.IReferences).omit(
             'acquire_metadata', 'variants')
 
-    form_fields['__name__'].field.title = _('File name of image group')
-
 
 class AddForm(FormBase,
               zeit.cms.repository.browser.file.FormBase,
