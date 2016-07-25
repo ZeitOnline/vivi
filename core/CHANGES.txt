@@ -4,7 +4,7 @@ zeit.content.article changes
 3.20.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Extend product config to fix source configuration for testing. (ZON-3171)
 
 
 3.20.1 (2016-07-21)
