@@ -161,6 +161,9 @@ class MasterImageSource(
             yield name
 
 
+INFOGRAPHIC_DISPLAY_TYPE = 'infographic'
+
+
 class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
