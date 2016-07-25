@@ -1,7 +1,6 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-import collections
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
