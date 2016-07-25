@@ -15,6 +15,8 @@ zeit.content.image changes
 
 - Remove dependency to `zeit.imp`. (ZON-3171)
 
+- Adjust image templates to preview them more similar to Friedbert. (ZON-3216)
+
 
 2.13.5 (2016-06-27)
 -------------------
