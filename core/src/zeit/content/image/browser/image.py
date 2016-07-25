@@ -3,8 +3,6 @@ from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
 import pkg_resources
-import random
-import transaction
 import z3c.conditionalviews
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
