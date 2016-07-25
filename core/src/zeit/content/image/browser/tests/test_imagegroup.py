@@ -120,7 +120,7 @@ class ImageGroupBrowserTest(
     def test_secondary_master_image_is_marked_for_mobile_viewport(self):
         self.add_imagegroup()
         self.set_imagegroup_filename('image-group')
-        self.browser.getControl('Upload image').click()
+        self.browser.getControl('Add motif').click()
         self.upload_primary_image('opernball.jpg')
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.fill_copyright_information()
@@ -136,8 +136,8 @@ class ImageGroupBrowserTest(
     def test_tertiary_master_image_has_no_viewport(self):
         self.add_imagegroup()
         self.set_imagegroup_filename('image-group')
-        self.browser.getControl('Upload image').click()
-        self.browser.getControl('Upload image').click()
+        self.browser.getControl('Add motif').click()
+        self.browser.getControl('Add motif').click()
         self.upload_primary_image('opernball.jpg')
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.upload_tertiary_image('obama-clinton-120x120.jpg')
