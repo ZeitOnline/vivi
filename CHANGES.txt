@@ -4,7 +4,7 @@ zeit.addcentral changes
 1.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Extend product config to fix source configuration for testing. (ZON-3171)
 
 
 1.1.4 (2014-06-24)

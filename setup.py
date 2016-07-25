@@ -29,6 +29,9 @@ setup(
         'zope.session',
         'zope.viewlet',
     ],
+    extras_require=dict(test=[
+        'zeit.content.image>=2.13.6.dev0',
+    ]),
     entry_points={
         'fanstatic.libraries': [
             'zeit_addcentral=zeit.addcentral.resources:lib',
