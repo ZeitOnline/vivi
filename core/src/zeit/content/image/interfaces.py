@@ -210,6 +210,11 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
                   zeit.cms.repository.interfaces.IDAVContent):
     """An image group groups images with the same motif together."""
 
+    __name__ = zope.schema.TextLine(
+        title=_('File name of image group'),
+        readonly=True,
+        constraint=zeit.cms.interfaces.valid_name)
+
     master_image = zope.interface.Attribute('Name of the master image')
 
     master_images = zope.schema.Tuple(
