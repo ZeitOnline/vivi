@@ -215,6 +215,10 @@ class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
     title_xpath = '/display-modes/display-mode'
 
+    def isAvailable(self, node, context):
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super(ImageDisplayModeSource, self).isAvailable(node, article)
+
 IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
 
 
@@ -238,6 +242,10 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
     config_url = 'image-variant-name-source'
     attribute = 'id'
     title_xpath = '/variant-names/variant-name'
+
+    def isAvailable(self, node, context):
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super(ImageDisplayModeSource, self).isAvailable(node, article)
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 

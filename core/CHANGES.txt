@@ -4,7 +4,8 @@ zeit.content.article changes
 3.20.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix ``available`` check for ``ImageDisplayModeSource`` and
+  ``ImageVariantNameSource`` by adapting to ``IArticle``. (ZON-2927)
 
 
 3.20.2 (2016-07-26)
