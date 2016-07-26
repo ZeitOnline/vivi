@@ -245,7 +245,7 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
 
     def isAvailable(self, node, context):
         article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageDisplayModeSource, self).isAvailable(node, article)
+        return super(ImageVariantNameSource, self).isAvailable(node, article)
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 
