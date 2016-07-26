@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.1.4 (unreleased)
+1.1.4 (2016-07-26)
 ------------------
 
 - Make dynamic folders robust against erroneous configs.
