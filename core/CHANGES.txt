@@ -1,10 +1,24 @@
 zeit.content.article changes
 ============================
 
-3.20.2 (unreleased)
+3.20.3 (unreleased)
 -------------------
 
+- Fix ``available`` check for ``ImageDisplayModeSource`` and
+  ``ImageVariantNameSource`` by adapting to ``IArticle``. (ZON-2927)
+
 - Always edit keywords of an article in a separate fold. (ZON-2882)
+
+
+3.20.2 (2016-07-26)
+-------------------
+
+- Extend product config to fix source configuration for testing. (ZON-3171)
+
+- Adjust CSS for images to preview them more like Friedbert. (ZON-3216)
+
+- Hide dropdown to choose variant name for Infographics, since Friedbert
+  overwrites the variant name with `original`. (ZON-3216)
 
 
 3.20.1 (2016-07-21)

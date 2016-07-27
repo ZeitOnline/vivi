@@ -776,18 +776,34 @@
   top: -9px;
 }
 
-/* Image block layouts */
-
 .type-article .object-details .gallery_details_copyright {
   font-size: 11px;
   margin-bottom: 6px;
 }
 
-.type-article .object-details .image_details span.copyright{
-   display:block;
-   font-size:11px;
-   margin-bottom:2px;
-   text-align:right;
+/* Image block layouts */
+
+.type-article .object-details .image_details h3.title {
+  padding-left: 0;
+}
+
+.type-article .object-details .image_details h4.subtitle {
+  margin: 0;
+}
+
+.type-article .object-details .image_details p.footer {
+  padding-left: 0;
+  margin-bottom: 10px;
+}
+
+.type-article .object-details .image_details span.caption {
+  font-size: 11px;
+}
+
+.type-article .object-details .image_details span.copyright {
+  font-size: 11px;
+  margin-bottom: 2px;
+  float: right;
 }
 
 .type-article .image_details .overlay-anchor {

@@ -1,7 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
-from zeit.content.image.interfaces import IImageGroup
+from zeit.content.image.interfaces import IImageGroup, INFOGRAPHIC_DISPLAY_TYPE
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
@@ -34,6 +34,17 @@ class EditImage(EditBase):
     interface = zeit.content.article.edit.interfaces.IImage
     fields = ('references', 'display_mode', 'variant_name')
     undo_description = _('edit image block')
+
+    @property
+    def form_fields(self):
+        """Omit Variant for Infographics, since Friedbert will use Original"""
+        form_fields = super(EditImage, self).form_fields
+        if (self.context.references and self.context.references.target and
+                IImageGroup.providedBy(self.context.references.target) and
+                self.context.references.target.display_type ==
+                INFOGRAPHIC_DISPLAY_TYPE):
+            return form_fields.omit('variant_name')
+        return form_fields
 
     def setUpWidgets(self, *args, **kw):
         super(EditImage, self).setUpWidgets(*args, **kw)
