@@ -279,7 +279,6 @@ class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Metadata')
 
 
-# This will be renamed properly as soon as the fields are finally decided.
 class MetadataA(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
