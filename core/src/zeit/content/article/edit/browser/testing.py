@@ -76,7 +76,7 @@ class EditorHelper(object):
 
     def create_block(self, block, wait_for_inline=False):
         s = self.selenium
-        time.sleep(2)
+        s.waitForElementPresent('link=Struktur')
         s.click('link=Struktur')
         s.waitForElementPresent('css=#article-modules .module')
         block_sel = '.block.type-{0}'.format(block)
