@@ -140,25 +140,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.keywords"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="5"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.keywords"
-    class=".form.Keywords"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MetadataForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.metadata-a"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
@@ -805,14 +786,14 @@
     permission="zope.View"
     />
 
-  <!-- keywords (new article only) -->
+  <!-- keywords -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="keywords-new"
+    name="keywords"
     class=".form.KeywordsFormGroup"
     permission="zope.View"
     weight="52"
@@ -823,7 +804,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.KeywordsFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.keywords-new"
+    name="edit.form.keywords"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
@@ -832,8 +813,8 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.keywords-new"
-    class=".form.KeywordsNew"
+    name="edit.form.keywords"
+    class=".form.Keywords"
     permission="zope.View"
     />
 

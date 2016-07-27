@@ -129,9 +129,9 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
         self.add_article()
         s = self.selenium
         s.waitForElementPresent('id=keywords.keywords')
-        s.click('css=#edit-form-keywords-new .fold-link')
+        s.click('css=#edit-form-keywords .fold-link')
         s.assertText(
-            'id=edit-form-keywords-new',
+            'id=edit-form-keywords',
             '*Only the first 6 keywords are shown*')
 
     def test_helptext_should_not_be_shown_for_existing_article(self):

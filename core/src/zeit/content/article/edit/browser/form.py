@@ -113,13 +113,8 @@ class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Keywords')
 
-    def render(self):
-        if not IAutomaticallyRenameable(self.context).renameable:
-            return ''
-        return super(KeywordsFormGroup, self).render()
 
-
-class KeywordsNew(zeit.edit.browser.form.InlineForm):
+class Keywords(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'keywords'
@@ -127,13 +122,8 @@ class KeywordsNew(zeit.edit.browser.form.InlineForm):
     css_class = 'keywords'
     form_fields = FormFields(IArticle).select('keywords')
 
-    def render(self):
-        if not IAutomaticallyRenameable(self.context).renameable:
-            return ''
-        return super(KeywordsNew, self).render()
-
     def setUpWidgets(self, *args, **kw):
-        super(KeywordsNew, self).setUpWidgets(*args, **kw)
+        super(Keywords, self).setUpWidgets(*args, **kw)
         self.widgets['keywords'].show_helptext = True
 
 
@@ -287,23 +277,6 @@ class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     """Metadata forms view."""
 
     title = _('Metadata')
-
-
-class Keywords(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'keywords'
-    undo_description = _('edit keywords')
-    css_class = 'keywords'
-    # XXX this should say ICommonMetadata, but InlineForm does not inherit from
-    # cms.browser.form.EditForm, so form_fields are not post-processed to get
-    # overriden fields
-    form_fields = FormFields(IArticle).select('keywords')
-
-    def __call__(self):
-        if IAutomaticallyRenameable(self.context).renameable:
-            return ''
-        return super(Keywords, self).__call__()
 
 
 class MetadataA(zeit.edit.browser.form.InlineForm):

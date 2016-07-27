@@ -98,8 +98,8 @@ class CheckinSelenium(
 
         s.click('css=#edit-form-filename .fold-link')
         s.type('new-filename.rename_to', 'asdf\t')
-        s.click('css=#edit-form-keywords-new .edit-bar .fold-link')
-        s.waitForElementNotPresent('css=#edit-form-keywords-new.folded')
+        s.click('css=#edit-form-keywords .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#edit-form-keywords.folded')
         self.add_keyword_by_autocomplete('testtag', form_prefix='keywords')
         self.add_keyword_by_autocomplete('testtag2', form_prefix='keywords')
         self.add_keyword_by_autocomplete('testtag3', form_prefix='keywords')
