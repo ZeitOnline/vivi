@@ -209,7 +209,6 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
         self.assertFalse(content.push_news)
         with checked_out(content) as co:
             push = zeit.push.interfaces.IPushMessages(co)
-            push.enabled = True
             push.message_config = ({
                 'type': 'parse', 'enabled': True,
                 'channels': PARSE_NEWS_CHANNEL,
