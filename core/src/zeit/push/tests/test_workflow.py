@@ -49,7 +49,6 @@ class SendingNotifications(zeit.push.testing.TestCase):
     def test_enabled_service_is_called(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
-        push.enabled = True
         push.message_config = [{'type': 'parse', 'enabled': True}]
         self.publish(content)
         self.assertTrue(self.parse.send.called)
@@ -57,7 +56,6 @@ class SendingNotifications(zeit.push.testing.TestCase):
     def test_disabled_service_is_not_called(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
-        push.enabled = True
         push.message_config = [{'type': 'parse', 'enabled': False}]
         self.publish(content)
         self.assertFalse(self.parse.send.called)
@@ -65,7 +63,6 @@ class SendingNotifications(zeit.push.testing.TestCase):
     def test_updates_last_push_date(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
-        push.enabled = True
         self.assertEqual(None, push.date_last_pushed)
         self.publish(content)
         self.assertNotEqual(None, push.date_last_pushed)
@@ -74,7 +71,6 @@ class SendingNotifications(zeit.push.testing.TestCase):
         self.parse.send.side_effect = RuntimeError('provoked')
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
-        push.enabled = True
         push.message_config = [{'type': 'parse', 'enabled': True}]
         self.publish(content)
         # This is sort of assertNothingRaised, except that publishing
