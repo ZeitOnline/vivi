@@ -5,8 +5,16 @@ zeit.push
 This packages provides Python bindings to various Social Media services.
 
 
-Parse.com
-=========
+Urban Airship (Push Notifications)
+==================================
+
+Configure the following settings in the batou environment:
+* ``urbanairship_application_key``
+* ``urbanairship_master_secret``
+
+
+Parse.com (Push Notifications)
+==============================
 
 Configure the following settings in the batou environment:
 * ``parse_application_id``
