@@ -1,6 +1,10 @@
 from __future__ import absolute_import
+import grokcore.component as grok
 import urbanairship
+import zeit.cms.content.interfaces
 import zeit.push.interfaces
+import zeit.push.message
+import zope.app.appsetup.product
 import zope.interface
 
 
@@ -21,3 +25,22 @@ class Connection(object):
         push.notification = urbanairship.notification(alert='Hello')
         push.device_types = urbanairship.device_types('all')
         return push.send()
+
+
+class Message(zeit.push.message.Message):
+
+    grok.name('urbanairship')
+    grok.context(zeit.cms.content.interfaces.ICommonMetadata)
+
+    @property
+    def text(self):
+        return self.context.title
+
+
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
+def from_product_config():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    return Connection(
+        config['urbanairship-application-key'],
+        config['urbanairship-master-secret'],
+        int(config['urbanairship-expire-interval']))

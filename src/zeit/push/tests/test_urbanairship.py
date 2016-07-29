@@ -1,8 +1,13 @@
 import json
 import mock
+import os
 import unittest
 import urbanairship.push.core
+import zeit.push.interfaces
+import zeit.push.testing
 import zeit.push.urbanairship
+import zeit.workflow.testing
+import zope.component
 
 
 def send(self):
@@ -23,7 +28,7 @@ def send(self):
     return urbanairship.push.core.PushResponse(response)
 
 
-class UrbanAirshipTest(unittest.TestCase):
+class ConnectionTest(unittest.TestCase):
 
     level = 2
 
@@ -39,3 +44,44 @@ class UrbanAirshipTest(unittest.TestCase):
                 self.application_key, self.master_secret, 1)
             response = api.send('Being pushy.', 'http://example.com')
             self.assertEqual(True, response.ok)
+
+
+class PushNotifierTest(zeit.push.testing.TestCase):
+
+    def setUp(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        super(PushNotifierTest, self).setUp()
+        content = TestContentType()
+        content.title = 'content_title'
+        self.repository['content'] = content
+        self.content = self.repository['content']
+
+    def publish(self, content):
+        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+        IPublishInfo(content).urgent = True
+        IPublish(content).publish()
+        zeit.workflow.testing.run_publish()
+
+    def test_send_on_message_delegates_to_IPushNotifier_utility(self):
+        message = zope.component.getAdapter(
+            self.content, zeit.push.interfaces.IMessage, name='urbanairship')
+        message.send()
+
+        urbanairship = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='urbanairship')
+        self.assertEqual(
+            [('content_title', u'http://www.zeit.de/content', {})],
+            urbanairship.calls)
+
+    def test_publish_triggers_send_on_IPushNotifier_utility(self):
+        from zeit.push.interfaces import IPushMessages
+        push = IPushMessages(self.content)
+        push.message_config = [{'type': 'urbanairship', 'enabled': True}]
+        self.publish(self.content)
+
+        urbanairship = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='urbanairship')
+        self.assertEqual([(
+            'content_title', u'http://www.zeit.de/content',
+            {'enabled': True, 'type': 'urbanairship'})],
+            urbanairship.calls)
