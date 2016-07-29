@@ -79,9 +79,11 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
              'enabled': data.pop('twitter_ressort_enabled', False),
              'account': data.pop('twitter_ressort', None)},
             {'type': 'parse',
-             'enabled': data.pop('mobile_enabled', False),
+             'enabled': data.get('mobile_enabled', False),
              'override_text': data.pop('mobile_text', None),
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+            {'type': 'urbanairship',
+             'enabled': data.pop('mobile_enabled', False)},
         ]
 
 

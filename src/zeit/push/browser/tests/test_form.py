@@ -62,6 +62,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
+        self.assertIn(
+            {'type': 'urbanairship', 'enabled': True},
+            push.message_config)
 
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter', index=0).selected)
@@ -76,7 +79,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(6, len(push.message_config))
+        self.assertEqual(7, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
