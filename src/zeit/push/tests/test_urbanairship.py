@@ -28,8 +28,10 @@ class UrbanAirshipTest(unittest.TestCase):
     level = 2
 
     def setUp(self):
-        self.application_key = 'xVAAZB-OT5iVLecfoQd6pQ'
-        self.master_secret = 'LP5KrP8vTaiDGofyJ96-5A'
+        super(ConnectionTest, self).setUp()
+        self.application_key = os.environ[
+            'ZEIT_PUSH_URBANAIRSHIP_APPLICATION_KEY']
+        self.master_secret = os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET']
 
     def test_push_works(self):
         with mock.patch('urbanairship.push.core.Push.send', send):
