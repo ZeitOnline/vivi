@@ -32,6 +32,8 @@ class ConnectionTest(unittest.TestCase):
 
     level = 2
 
+    layer = zeit.push.testing.ZCML_LAYER
+
     def setUp(self):
         super(ConnectionTest, self).setUp()
         self.application_key = os.environ[
@@ -42,8 +44,10 @@ class ConnectionTest(unittest.TestCase):
         with mock.patch('urbanairship.push.core.Push.send', send):
             api = zeit.push.urbanairship.Connection(
                 self.application_key, self.master_secret, 1)
-            response = api.send('Being pushy.', 'http://example.com')
-            self.assertEqual(True, response.ok)
+            api.send('Being pushy.', 'http://example.com',
+                     image_url='http://images.zeit.de/example/image.jpg',
+                     override_text='Notification Text',
+                     channels=zeit.push.interfaces.PARSE_NEWS_CHANNEL)
 
 
 class PushNotifierTest(zeit.push.testing.TestCase):
