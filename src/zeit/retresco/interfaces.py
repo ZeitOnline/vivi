@@ -1,4 +1,5 @@
 import zope.interface
+import zope.interface.common.sequence
 
 
 class ITMS(zope.interface.Interface):
@@ -13,6 +14,29 @@ class ITMS(zope.interface.Interface):
 
     def delete_id(uuid):
         """Deletes the document with the given IUUID."""
+
+    def get_topicpage_documents(id, start=0, rows=25):
+        """Returns an IResult, which is the content contained in the given
+        TMS topic page.
+
+        Parameters for pagination are:
+        `start`: offset the result by this many entries
+        `rows`: return this many entries (i.e. items per page)
+        """
+
+
+class IResult(zope.interface.common.sequence.IReadSequence):
+    """A list of dicts with the following keys:
+
+    uniqueId: zeit.cms.interfaces.ICMSContent.uniqueId
+    type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
+    doc_id: zeit.cms.content.interfaces.IUUID.id
+    rtr_keywords, rtr_locations etc.
+    plus all keys that ITMSRepresentation puts into `payload`
+    """
+
+    hits = zope.interface.Attribute(
+        'Number of total available entries (for pagination)')
 
 
 class TMSError(Exception):
