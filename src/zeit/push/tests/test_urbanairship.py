@@ -68,7 +68,7 @@ class PushNotifierTest(zeit.push.testing.TestCase):
 
     def test_send_on_message_delegates_to_IPushNotifier_utility(self):
         message = zope.component.getAdapter(
-            self.content, zeit.push.interfaces.IMessage, name='urbanairship')
+            self.content, zeit.push.interfaces.IMessage, name='mobile')
         message.send()
 
         urbanairship = zope.component.getUtility(
@@ -80,12 +80,12 @@ class PushNotifierTest(zeit.push.testing.TestCase):
     def test_publish_triggers_send_on_IPushNotifier_utility(self):
         from zeit.push.interfaces import IPushMessages
         push = IPushMessages(self.content)
-        push.message_config = [{'type': 'urbanairship', 'enabled': True}]
+        push.message_config = [{'type': 'mobile', 'enabled': True}]
         self.publish(self.content)
 
         urbanairship = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='urbanairship')
         self.assertEqual([(
             'content_title', u'http://www.zeit.de/content',
-            {'enabled': True, 'type': 'urbanairship'})],
+            {'enabled': True, 'type': 'mobile'})],
             urbanairship.calls)

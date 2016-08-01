@@ -36,11 +36,6 @@ class Connection(zeit.push.parse.Connection):
         push.send()  # might raise unauthorized
 
 
-class Message(zeit.push.parse.Message):
-
-    grok.name('urbanairship')
-
-
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')

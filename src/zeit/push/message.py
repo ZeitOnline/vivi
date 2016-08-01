@@ -17,15 +17,18 @@ class Message(grok.Adapter):
         self.config = {}
 
     def send(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=self.type)
         if not self.text:
             raise ValueError('No text configured')
         kw = {}
         kw.update(self.config)
         kw.update(self.additional_parameters)
-        notifier.send(self.text, self.url, **kw)
+        self.send_push_notification(**kw)
         self._disable_message_config()
+
+    def send_push_notification(self, kw):
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name=self.type)
+        notifier.send(self.text, self.url, **kw)
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
@@ -156,7 +159,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_enabled(self):
         for service in self.message_config:
-            if service['type'] != 'parse':
+            if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
@@ -168,7 +171,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_text(self):
         for service in self.message_config:
-            if service['type'] != 'parse':
+            if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
