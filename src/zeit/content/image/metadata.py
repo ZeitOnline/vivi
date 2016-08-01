@@ -1,8 +1,8 @@
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
-import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
+import zeit.content.image.image
 import zope.component
 import zope.interface
 import zope.schema
@@ -55,8 +55,8 @@ def metadata_webdav_properties(context):
         context.context)
 
 
-@grokcore.component.implementer(zeit.content.image.interfaces.IImageMetadata)
-@grokcore.component.adapter(zeit.content.image.interfaces.IImage)
+@grok.implementer(zeit.content.image.interfaces.IImageMetadata)
+@grok.adapter(zeit.content.image.interfaces.IImage)
 def metadata_for_image(image):
     metadata = ImageMetadata(image)
     # Be sure to get the image in the repository
@@ -73,7 +73,7 @@ def metadata_for_image(image):
                 parent)
             if zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(image):
                 for name, field in zope.schema.getFieldsInOrder(
-                    zeit.content.image.interfaces.IImageMetadata):
+                        zeit.content.image.interfaces.IImageMetadata):
                     value = getattr(group_metadata, name, None)
                     setattr(metadata, name, value)
                 metadata.acquire_metadata = False
@@ -82,6 +82,12 @@ def metadata_for_image(image):
                 metadata = group_metadata
 
     return metadata
+
+
+@grok.adapter(zeit.content.image.image.TemporaryImage)
+@grok.implementer(zeit.content.image.interfaces.IImageMetadata)
+def metadata_for_synthetic(context):
+    return zeit.content.image.interfaces.IImageMetadata(context.__parent__)
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
