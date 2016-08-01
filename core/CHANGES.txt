@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.14.1 (unreleased)
+2.14.1 (2016-08-01)
 -------------------
 
 - Pass IImageMetadata of synthesized images through to the image group.
