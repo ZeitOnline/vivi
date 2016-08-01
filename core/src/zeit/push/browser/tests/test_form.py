@@ -59,12 +59,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
+            {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
-            push.message_config)
-        self.assertIn({
-            'type': 'urbanairship', 'enabled': True, 'override_text': 'mobile',
-            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
         self.open_form()
@@ -80,7 +76,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(7, len(push.message_config))
+        self.assertEqual(6, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
@@ -93,13 +89,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': False, 'override_text': 'mobile',
-             'channels': 'parse-channel-news'},
-            push.message_config)
-        self.assertIn({
-            'type': 'urbanairship', 'enabled': False,
-            'override_text': 'mobile',
-            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+            {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
+             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
         self.open_form()
@@ -168,12 +159,12 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         for service in push.message_config:
-            if service['type'] != 'parse':
+            if service['type'] != 'mobile':
                 continue
             self.assertEqual('mobile', service['override_text'])
             break
         else:
-            self.fail('parse message_config is missing')
+            self.fail('mobile message_config is missing')
         self.open_form()
         self.assertEqual('mobile', b.getControl('Mobile title').value)
 
