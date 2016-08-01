@@ -57,6 +57,25 @@ class TMS(object):
             for row in response['docs']:
                 yield row
 
+    def get_topicpage_documents(self, id, start=0, rows=25):
+        response = self._request(
+            'GET /topic-pages/{}/documents'.format(id),
+            params={'page': int(start / rows) + 1, 'rows': rows})
+        result = Result()
+        result.hits = response['num_found']
+        for row in response['docs']:
+            page = row['payload']
+            page[u'uniqueId'] = (
+                zeit.cms.interfaces.ID_NAMESPACE + row['url'][1:])
+            page[u'type'] = row['doc_type']
+            page[u'doc_id'] = row['doc_id']
+            for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
+                key = u'rtr_{}s'.format(entity_type)
+                if key in row:
+                    page[key] = row[key]
+            result.append(page)
+        return result
+
     def index(self, content):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
@@ -108,6 +127,11 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     return TMS(
         config['base-url'], config.get('username'), config.get('password'))
+
+
+class Result(list):
+
+    hits = 0
 
 
 class JSONTypeConverter(object):
