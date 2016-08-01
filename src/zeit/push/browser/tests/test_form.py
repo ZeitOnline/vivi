@@ -62,8 +62,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
-        self.assertIn(
-            {'type': 'urbanairship', 'enabled': True},
+        self.assertIn({
+            'type': 'urbanairship', 'enabled': True, 'override_text': 'mobile',
+            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
         self.open_form()
@@ -95,8 +96,10 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'parse', 'enabled': False, 'override_text': 'mobile',
              'channels': 'parse-channel-news'},
             push.message_config)
-        self.assertIn(
-            {'type': 'urbanairship', 'enabled': False},
+        self.assertIn({
+            'type': 'urbanairship', 'enabled': False,
+            'override_text': 'mobile',
+            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
         self.open_form()
