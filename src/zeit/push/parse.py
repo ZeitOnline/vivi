@@ -1,16 +1,10 @@
-from datetime import datetime, timedelta
-from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
-import grokcore.component as grok
 import json
 import logging
-import pytz
 import requests
-import urllib
-import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.message
+import zeit.push.mobile
 import zope.app.appsetup.product
 import zope.interface
 
@@ -18,9 +12,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class Connection(object):
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
+class Connection(zeit.push.mobile.ConnectionBase):
 
     base_url = 'https://api.parse.com/1'
 
@@ -28,59 +20,18 @@ class Connection(object):
     ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
     IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
 
-    PUSH_ACTION_ID = 'de.zeit.online.PUSH'
-
-    LANGUAGE = 'de'
-
-    def __init__(self, application_id, rest_api_key, expire_interval):
-        self.application_id = application_id
-        self.rest_api_key = rest_api_key
-        self.expire_interval = expire_interval
-
     def send(self, text, link, **kw):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push') or {}
-
-        # Determine common payload attributes.
-        channel_name = kw.get('channels')
-        if isinstance(channel_name, list):
-            channels = channel_name
-        else:
-            channels = config.get(channel_name, '').split(' ')
-        friedbert_url = self.rewrite_url(link, 'http://www.zeit.de')
-        image_url = kw.get('image_url')
-        title = text
-        override_text = kw.get('override_text')
-        expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
-                           timedelta(seconds=self.expire_interval)).isoformat()
-
-        if config.get(PARSE_NEWS_CHANNEL) in channels:
-            headline = _('parse-news-title')
-        else:
-            headline = _('parse-breaking-title')
-        # There's no i18n in the mobile app, so we translate to a hard-coded
-        # language here.
-        headline = zope.i18n.translate(
-            headline, target_language=self.LANGUAGE)
-
+        data = self.data(text, link, **kw)
+        channels = self.get_channel_list(kw.get('channels'))
         android = {
-            'expiration_time': expiration_time,
+            'expiration_time': self.expiration_datetime.isoformat(),
             'where': {
                 'deviceType': 'android',
                 'appVersion': {'$gte': self.ANDROID_FRIEDBERT_VERSION},
                 'channels': {'$in': channels}
             },
-            'data': {
-                'action': self.PUSH_ACTION_ID,
-                'headline': headline,
-                'text': override_text or kw.get('teaserTitle', title),
-                'teaser': kw.get('teaserText', ''),
-                'url': self.add_tracking(
-                    friedbert_url, channel_name, 'android'),
-            }
+            'data': data['android']
         }
-        if image_url:
-            android['data']['imageUrl'] = image_url
         if not all(channels):
             del android['where']['channels']
         self.push(android)
@@ -91,25 +42,16 @@ class Connection(object):
             return
 
         ios = {
-            'expiration_time': expiration_time,
+            'expiration_time': self.expiration_datetime.isoformat(),
             'where': {
                 'deviceType': 'ios',
                 'appVersion': {'$gte': self.IOS_FRIEDBERT_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
-                'aps': {
-                    'headline': kw.get('teaserSupertitle', ''),
-                    'alert-title': headline,
-                    'alert': override_text or kw.get('teaserTitle', title),
-                    'teaser': kw.get('teaserText', ''),
-                    'url': self.add_tracking(
-                        friedbert_url, channel_name, 'ios'),
-                }
+                'aps': data['ios']
             }
         }
-        if image_url:
-            ios['data']['aps']['imageUrl'] = image_url
         if not all(channels):
             del ios['where']['channels']
         self.push(ios)
@@ -133,43 +75,6 @@ class Connection(object):
                 message += ' (code=%s)' % error['code']
             raise zeit.push.interfaces.WebServiceError(message)
         raise zeit.push.interfaces.TechnicalError(response.text)
-
-    @staticmethod
-    def rewrite_url(url, target_host):
-        is_blog = (
-            url.startswith('http://blog.zeit.de')
-            or url.startswith('http://www.zeit.de/blog/'))
-        url = url.replace('http://www.zeit.de', target_host, 1)
-        url = url.replace('http://blog.zeit.de', target_host + '/blog', 1)
-        if is_blog:
-            url += '?feed=articlexml'
-        return url
-
-    @staticmethod
-    def add_tracking(url, channel, device):
-        if channel == PARSE_BREAKING_CHANNEL:
-            channel = 'eilmeldung'
-        else:
-            channel = 'wichtige_news'
-        if device == 'android':
-            device = 'andpush'
-        else:
-            device = 'iospush'
-
-        tracking = {
-            'wt_zmc':
-            'fix.int.zonaudev.push.{channel}.zeitde.{device}.link.x'.format(
-                channel=channel, device=device),
-            'utm_medium': 'fix',
-            'utm_source': 'push_zonaudev_int',
-            'utm_campaign': channel,
-            'utm_content': 'zeitde_{device}_link_x'.format(device=device),
-        }
-        tracking = urllib.urlencode(tracking)
-        if '?' in url:
-            return url + '&' + tracking
-        else:
-            return url + '?' + tracking
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
