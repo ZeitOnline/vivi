@@ -1,38 +1,28 @@
 from __future__ import absolute_import
-import grokcore.component as grok
 import urbanairship
-import zeit.cms.content.interfaces
 import zeit.push.interfaces
-import zeit.push.message
-import zeit.push.parse
+import zeit.push.mobile
 import zope.app.appsetup.product
-import zope.interface
 
 
-class Connection(zeit.push.parse.Connection):
+class Connection(zeit.push.mobile.ConnectionBase):
 
-    def push(self, data):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push') or {}
-        channel = config.get(zeit.push.interfaces.PARSE_NEWS_CHANNEL)
+    def send(self, text, link, **kw):
+        data = self.data(text, link, **kw)
+        channels = self.get_channel_list(kw.get('channels'))
+        self.push(data['android'], channels)
+
+    def push(self, data, channels):
+        channel = self.config.get(zeit.push.interfaces.PARSE_NEWS_CHANNEL)
         airship = urbanairship.Airship(self.application_id, self.rest_api_key)
         push = airship.create_push()
         push.audience = {
-            'tag': 'News' if channel in data['where']['channels']['$in'] else 'Eilmeldung',
+            'tag': 'News' if channel in channels else 'Eilmeldung',
             'group': 'device'
         }
-        if data['where']['deviceType'] == 'android':
-            push.notification = urbanairship.notification(android=urbanairship.android(extra={
-                    'headline': data['data']['headline'],
-                    'text': data['data']['text'],
-                    'url': data['data']['url'],
-                    'imageUrl': data['data']['imageUrl'],
-                    'teaser': data['data']['teaser'],
-                    'tag': 'News' if channel in data['where']['channels']['$in'] else 'Eilmeldung',
-            }))
-        else:
-            return
-        push.device_types = urbanairship.device_types(data['where']['deviceType'])
+        push.notification = urbanairship.notification(
+            android=urbanairship.android(extra=data))
+        push.device_types = urbanairship.device_types('android')
         push.send()  # might raise unauthorized
 
 

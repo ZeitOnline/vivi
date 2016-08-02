@@ -113,7 +113,7 @@ class ParametersTest(zeit.push.testing.TestCase):
     def test_sets_expiration_time(self):
         api = zeit.push.parse.Connection(
             'any', 'any', 3600)
-        with mock.patch('zeit.push.parse.datetime') as mock_datetime:
+        with mock.patch('zeit.push.mobile.datetime') as mock_datetime:
             mock_datetime.now.return_value = datetime(
                 2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC)
             with mock.patch.object(api, 'push') as push:
