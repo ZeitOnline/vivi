@@ -60,6 +60,7 @@ man allenfalls über die XML document order beeinflussen, dass das spezielle
 zuerst berücksichtigt wird.
 
 ::
+
     <templates>
       <template name="article">
         <title>Artikel</title>
@@ -86,6 +87,7 @@ nach ``article.template`` oder ``article.header_layout`` ggfs. unterschiedliche
 Wertebereiche
 
 ::
+
     <variant-names>
       <variant-name id="wide" default_for="*">Breit</variant-name>
       <variant-name id="original" default_for="article.default">
