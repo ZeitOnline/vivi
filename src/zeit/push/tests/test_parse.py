@@ -14,6 +14,7 @@ import zope.app.appsetup.product
 class ParseTest(unittest.TestCase):
 
     level = 2
+    layer = zeit.push.testing.ZCML_LAYER
 
     def setUp(self):
         self.app_id = os.environ['ZEIT_PUSH_PARSE_APP_ID']
