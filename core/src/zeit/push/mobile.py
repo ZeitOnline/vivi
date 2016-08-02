@@ -94,7 +94,7 @@ class ConnectionBase(object):
         channels = self.get_channel_list(kw.get('channels'))
         arguments = {
             'title': kw.get('override_text') or kw.get('teaserTitle', title),
-            'link': self.rewrite_url(link, 'http://www.zeit.de'),
+            'link': self.rewrite_url(link, self.config['mobile-target-host']),
             'channels': channels,
             'headline': self.get_headline(channels),
             'text': kw.get('teaserText', ''),
@@ -178,7 +178,8 @@ class Message(zeit.push.message.Message):
                 result[name] = value
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, 'http://images.zeit.de/')
+                zeit.cms.interfaces.ID_NAMESPACE,
+                self.product_config['mobile-image-url'])
         return result
 
     @property
@@ -196,8 +197,11 @@ class Message(zeit.push.message.Message):
 
     @property
     def _image_pattern(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        return config['parse-image-pattern']
+        return self.product_config['parse-image-pattern']
+
+    @zope.cachedescriptors.property.Lazy
+    def product_config(self):
+        return zope.app.appsetup.product.getProductConfiguration('zeit.push')
 
 
 class ParseMessage(Message):
