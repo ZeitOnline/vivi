@@ -159,6 +159,7 @@ class Message(zeit.push.message.Message):
     grok.name('mobile')
 
     def send_push_notification(self, **kw):
+        """Overwrite to send push notifications to Parse and Urban Airship."""
         for mobile_service in ['parse', 'urbanairship']:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=mobile_service)
@@ -200,7 +201,14 @@ class Message(zeit.push.message.Message):
 
 
 class ParseMessage(Message):
-    """BW compat"""
+    """Also register the mobile message under the name `parse` for bw compat.
+
+    Since the message config is stored on the article, there are many articles
+    that contain a message config for `parse`. To make sure those messages are
+    send to Parse (bw-compat) & Urban Airship (fw-compat), we need to register
+    the new `mobile` message also under the old name `parse`.
+
+    """
 
     grok.name('parse')
 
