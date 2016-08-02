@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.14.3 (unreleased)
+2.14.3 (2016-08-02)
 -------------------
 
 - Be defensive about invalid master image properties.
