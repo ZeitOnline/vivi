@@ -109,6 +109,15 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 'master-image-mobile.jpg',
                 self.group['square__mobile'].variant_source)
 
+    def test_getitem_ignores_master_image_for_viewport_if_nonexistent(self):
+        with mock.patch(
+                'zeit.content.image.imagegroup.ImageGroupBase.master_images',
+                new_callable=mock.PropertyMock) as master_images:
+            master_images.return_value = (('desktop', 'nonexistent.jpg'),)
+            self.assertEqual(
+                'master-image.jpg',
+                self.group['square__desktop'].variant_source)
+
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
         with self.assertRaises(KeyError):
             self.group['nonexistent']

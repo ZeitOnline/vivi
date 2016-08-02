@@ -130,7 +130,7 @@ class ImageGroupBase(object):
         elif source is None and viewport is not None:
             for view, name in self.master_images:
                 if viewport == view:
-                    source = repository[name]
+                    source = repository.get(name)
 
         # Our default transformation source should be the master image.
         if source is None:
