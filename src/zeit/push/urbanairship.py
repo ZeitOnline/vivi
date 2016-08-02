@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
 import urbanairship
 import zeit.push.interfaces
 import zeit.push.mobile
@@ -10,19 +11,30 @@ class Connection(zeit.push.mobile.ConnectionBase):
     def send(self, text, link, **kw):
         data = self.data(text, link, **kw)
         channels = self.get_channel_list(kw.get('channels'))
-        self.push(data['android'], channels)
+        if PARSE_BREAKING_CHANNEL in channels:
+            tag = self.config.get(PARSE_BREAKING_CHANNEL)
+        else:
+            tag = self.config.get(PARSE_NEWS_CHANNEL)
+        data['android']['tag'] = tag
+        data['ios']['tag'] = tag
 
-    def push(self, data, channels):
-        channel = self.config.get(zeit.push.interfaces.PARSE_NEWS_CHANNEL)
         airship = urbanairship.Airship(self.application_id, self.rest_api_key)
-        push = airship.create_push()
-        push.audience = {
-            'tag': 'News' if channel in channels else 'Eilmeldung',
+        android_push = airship.create_push()
+        android_push.audience = {
+            'or': [{'tag': channel} for channel in channels],
             'group': 'device'
         }
-        push.notification = urbanairship.notification(
-            android=urbanairship.android(extra=data))
-        push.device_types = urbanairship.device_types('android')
+        android_push.device_types = ['android']
+        android_push.options = {
+            'expiry': self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')}
+        android_push.notification = {
+            'android': {
+                'extra': data['android']
+            }
+        }
+        self.push(android_push)
+
+    def push(self, push):
         push.send()  # might raise unauthorized
 
 
