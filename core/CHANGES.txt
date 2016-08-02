@@ -4,7 +4,7 @@ zeit.content.image changes
 2.14.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Improve wording.
 
 
 2.14.1 (2016-08-01)
