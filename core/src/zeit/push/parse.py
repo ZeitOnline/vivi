@@ -24,11 +24,6 @@ class Connection(object):
 
     base_url = 'https://api.parse.com/1'
 
-    # Channels, introduced in VIV-466.
-    ANDROID_CHANNEL_VERSION = '1.1'  # Channels work on versions >= x.
-    IOS_CHANNEL_VERSION = '20140514.1'  # Channels work on versions > x.
-    # ``headline``, introduced in DEV-698.
-    IOS_HEADLINE_VERSION = '20150401'  # Headline works on iOS version >= x.
     # New link address, introduced in DEV-938.
     ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
     IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
