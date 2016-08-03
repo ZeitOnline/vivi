@@ -1,13 +1,15 @@
+from datetime import datetime
+from zeit.push.interfaces import PARSE_NEWS_CHANNEL
 import json
 import mock
 import os
+import pytz
 import unittest
 import urbanairship.push.core
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-import zeit.workflow.testing
-import zope.component
+import zope.app.appsetup.product
 
 
 def send(self):
@@ -31,7 +33,6 @@ def send(self):
 class ConnectionTest(unittest.TestCase):
 
     level = 2
-
     layer = zeit.push.testing.ZCML_LAYER
 
     def setUp(self):
@@ -41,51 +42,87 @@ class ConnectionTest(unittest.TestCase):
         self.master_secret = os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET']
 
     def test_push_works(self):
+        api = zeit.push.urbanairship.Connection(
+            self.application_key, self.master_secret, 1)
         with mock.patch('urbanairship.push.core.Push.send', send):
-            api = zeit.push.urbanairship.Connection(
-                self.application_key, self.master_secret, 1)
-            api.send('Being pushy.', 'http://example.com',
-                     image_url='http://images.zeit.de/example/image.jpg',
-                     override_text='Notification Text',
-                     channels=zeit.push.interfaces.PARSE_NEWS_CHANNEL)
+            with mock.patch('urbanairship.push.core.PushResponse') as push:
+                api.send('Push', 'http://example.com')
+                self.assertEqual(200, push.call_args[0][0].status_code)
 
+    def test_invalid_credentials_should_raise(self):
+        api = zeit.push.urbanairship.Connection('invalid', 'invalid', 1)
+        with self.assertRaises(zeit.push.interfaces.WebServiceError):
+            api.send('Being pushy.', 'http://example.com')
 
-class PushNotifierTest(zeit.push.testing.TestCase):
+    def test_server_error_should_raise(self):
+        response = mock.Mock()
+        response.status_code = 500
+        response.headers = {}
+        response.content = ''
+        response.json.return_value = {}
+        api = zeit.push.urbanairship.Connection(
+            self.application_key, self.master_secret, 1)
+        with mock.patch('requests.sessions.Session.request') as request:
+            request.return_value = response
+            with self.assertRaises(zeit.push.interfaces.TechnicalError):
+                api.send('Being pushy.', 'http://example.com')
 
-    def setUp(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        super(PushNotifierTest, self).setUp()
-        content = TestContentType()
-        content.title = 'content_title'
-        self.repository['content'] = content
-        self.content = self.repository['content']
+    def test_pushes_to_android_and_ios(self):
+        api = zeit.push.urbanairship.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any')
+            self.assertEqual(
+                ['android'], push.call_args_list[0][0][0].device_types)
+            self.assertEqual(
+                ['ios'], push.call_args_list[1][0][0].device_types)
 
-    def publish(self, content):
-        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-        IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
+    def test_audience_tag_depends_on_channel(self):
+        api = zeit.push.urbanairship.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            self.assertEqual(
+                {'or': [{'tag': 'News'}], 'group': 'device'},
+                push.call_args_list[0][0][0].audience)
+            self.assertEqual(
+                {'or': [{'tag': 'News'}], 'group': 'device'},
+                push.call_args_list[1][0][0].audience)
 
-    def test_send_on_message_delegates_to_IPushNotifier_utility(self):
-        message = zope.component.getAdapter(
-            self.content, zeit.push.interfaces.IMessage, name='mobile')
-        message.send()
+    def test_sends_to_all_devices_if_no_channels_parameter(self):
+        api = zeit.push.urbanairship.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any')
+            self.assertEqual('all', push.call_args_list[0][0][0].audience)
+            self.assertEqual('all', push.call_args_list[1][0][0].audience)
 
-        urbanairship = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship')
-        self.assertEqual(
-            [('content_title', u'http://www.zeit.de/content', {})],
-            urbanairship.calls)
+    def test_sends_to_all_devices_if_empty_product_config(self):
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
+        product_config['foo'] = ''
+        api = zeit.push.urbanairship.Connection('any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels='foo')
+            self.assertEqual('all', push.call_args_list[0][0][0].audience)
+            self.assertEqual('all', push.call_args_list[1][0][0].audience)
 
-    def test_publish_triggers_send_on_IPushNotifier_utility(self):
-        from zeit.push.interfaces import IPushMessages
-        push = IPushMessages(self.content)
-        push.message_config = [{'type': 'mobile', 'enabled': True}]
-        self.publish(self.content)
+    def test_sets_expiration_time_in_payload(self):
+        api = zeit.push.urbanairship.Connection('any', 'any', 3600)
+        with mock.patch('zeit.push.mobile.datetime') as mock_datetime:
+            mock_datetime.now.return_value = (
+                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
+            with mock.patch.object(api, 'push') as push:
+                api.send('foo', 'any')
+                self.assertEqual(
+                    '2014-07-01T11:15:07',
+                    push.call_args_list[0][0][0].options['expiry'])
+                self.assertEqual(
+                    '2014-07-01T11:15:07',
+                    push.call_args_list[1][0][0].options['expiry'])
 
-        urbanairship = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship')
-        self.assertEqual([(
-            'content_title', u'http://www.zeit.de/content',
-            {'enabled': True, 'type': 'mobile'})],
-            urbanairship.calls)
+    def test_enriches_payload_with_tag_to_categorize_notification(self):
+        api = zeit.push.urbanairship.Connection('any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            android = push.call_args_list[0][0][0].notification['android']
+            self.assertEqual('News', android['extra']['tag'])
+            ios = push.call_args_list[1][0][0].notification['ios']
+            self.assertEqual('News', ios['extra']['tag'])

@@ -202,3 +202,36 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
             },)
         content = self.repository['testcontent']
         self.assertTrue(content.push_news)
+
+
+class IntegrationTest(zeit.push.testing.TestCase):
+
+    def setUp(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        super(IntegrationTest, self).setUp()
+        content = TestContentType()
+        content.title = 'content_title'
+        self.repository['content'] = content
+        self.content = self.repository['content']
+
+    def publish(self, content):
+        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+        IPublishInfo(content).urgent = True
+        IPublish(content).publish()
+        zeit.workflow.testing.run_publish()
+
+    def test_publish_triggers_push_notification_via_message_config(self):
+        from zeit.push.interfaces import IPushMessages
+        push = IPushMessages(self.content)
+        push.message_config = [{'type': 'mobile', 'enabled': True}]
+        self.publish(self.content)
+        self.assertEqual([(
+            'content_title', u'http://www.zeit.de/content',
+            {'enabled': True, 'type': 'mobile'})],
+            zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='parse').calls)
+        self.assertEqual([(
+            'content_title', u'http://www.zeit.de/content',
+            {'enabled': True, 'type': 'mobile'})],
+            zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='urbanairship').calls)
