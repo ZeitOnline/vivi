@@ -179,7 +179,7 @@ class Message(zeit.push.message.Message):
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
-                self.product_config['mobile-image-url'])
+                self.product_config['mobile-image-url'] + '/')
         return result
 
     @property
