@@ -6,10 +6,12 @@ import pytz
 import unittest
 import urlparse
 import zeit.cms.testing
+import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.mobile
 import zeit.push.testing
 import zope.app.appsetup.product
+import zope.component
 import zope.i18n.translationdomain
 
 
@@ -122,6 +124,69 @@ class AddTrackingTest(unittest.TestCase):
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('articlexml', qs['feed'][0])
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
+
+
+class MessageTest(zeit.push.testing.TestCase):
+
+    name = 'mobile'
+
+    def create_content(self, image=None, **kw):
+        """Create content with values given in arguments."""
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        content = TestContentType()
+        for key, value in kw.items():
+            setattr(content, key, value)
+        if image is not None:
+            zeit.content.image.interfaces.IImages(content).image = image
+        self.repository['content'] = content
+        return self.repository['content']
+
+    def get_calls(self, service_name):
+        push_notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name=service_name)
+        return push_notifier.calls
+
+    def test_sends_push_via_parse_and_urbanairship(self):
+        message = zope.component.getAdapter(
+            self.create_content(title='content_title'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.send()
+        self.assertEqual(1, len(self.get_calls('parse')))
+        self.assertEqual(1, len(self.get_calls('urbanairship')))
+
+    def test_provides_image_url_if_image_is_referenced(self):
+        from zeit.cms.interfaces import ICMSContent
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        message = zope.component.getAdapter(
+            self.create_content(image=image),
+            zeit.push.interfaces.IMessage, name=self.name)
+        self.assertEqual(image, message.image)
+        self.assertEqual(
+            'http://img.zeit.de/2006/DSC00109_2.JPG',
+            message.additional_parameters['image_url'])
+
+    def test_reads_metadata_from_content(self):
+        message = zope.component.getAdapter(
+            self.create_content(title='content_title', teaserTitle='title',
+                                teaserSupertitle='super', teaserText='teaser'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.send()
+        self.assertEqual(
+            [('content_title', u'http://www.zeit.de/content', {
+                'teaserSupertitle': 'super', 'teaserText': 'teaser',
+                'teaserTitle': 'title'})],
+            self.get_calls('parse'))
+        self.assertEqual(
+            [('content_title', u'http://www.zeit.de/content', {
+                'teaserSupertitle': 'super', 'teaserText': 'teaser',
+                'teaserTitle': 'title'})],
+            self.get_calls('urbanairship'))
+
+
+class ParseMessageTest(zeit.push.testing.TestCase):
+    """Ensure bw-compat for messages retrieved for `parse` message configs."""
+
+    name = 'parse'
 
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
