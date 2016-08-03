@@ -37,16 +37,12 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return self.context.values()
 
         try:
-            query = zope.component.getAdapter(
-                self,
-                zeit.content.cp.interfaces.IContentQuery,
-                name=self.automatic_type)
+            content = self._content_query()
         except LookupError:
             log.warning('%s found no IContentQuery type %s',
                         self.context, self.automatic_type)
             return self.context.values()
 
-        content = query()
         result = []
         for block in self.context.values():
             if not IAutomaticTeaserBlock.providedBy(block):
@@ -69,6 +65,12 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             result.append(block)
 
         return result
+
+    @cachedproperty
+    def _content_query(self):
+        return zope.component.getAdapter(
+            self, zeit.content.cp.interfaces.IContentQuery,
+            name=self.automatic_type)
 
     def select_modules(self, *interfaces):
         for module in self.values():
