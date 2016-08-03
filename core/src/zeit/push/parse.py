@@ -32,7 +32,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
             },
             'data': data['android']
         }
-        if not all(channels):
+        if not channels:
             del android['where']['channels']
         self.push(android)
 
@@ -52,7 +52,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
                 'aps': data['ios']
             }
         }
-        if not all(channels):
+        if not channels:
             del ios['where']['channels']
         self.push(ios)
 

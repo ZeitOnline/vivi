@@ -47,7 +47,7 @@ class ConnectionBase(object):
         """
         if isinstance(channels, list):
             return channels
-        return self.config.get(channels, '').split(' ')
+        return [x for x in self.config.get(channels, '').split(' ') if x]
 
     def get_headline(self, channels):
         """Return translation for the headline, which depends on the channel.
