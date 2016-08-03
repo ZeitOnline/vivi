@@ -9,12 +9,13 @@ import zeit.push.testing
 import zope.app.appsetup.product
 
 
-class ParseTest(unittest.TestCase):
+class PushTest(unittest.TestCase):
 
     level = 2
     layer = zeit.push.testing.ZCML_LAYER
 
     def setUp(self):
+        super(PushTest, self).setUp()
         self.app_id = os.environ['ZEIT_PUSH_PARSE_APP_ID']
         self.api_key = os.environ['ZEIT_PUSH_PARSE_API_KEY']
 
@@ -43,6 +44,9 @@ class ParseTest(unittest.TestCase):
             post.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 api.send('Being pushy.', 'http://example.com')
+
+
+class ConnectionTest(zeit.push.testing.TestCase):
 
     def test_pushes_to_android_and_ios(self):
         api = zeit.push.parse.Connection(None, None, 1)
