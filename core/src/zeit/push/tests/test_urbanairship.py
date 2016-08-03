@@ -30,13 +30,13 @@ def send(self):
     return urbanairship.push.core.PushResponse(response)
 
 
-class ConnectionTest(unittest.TestCase):
+class PushTest(unittest.TestCase):
 
     level = 2
     layer = zeit.push.testing.ZCML_LAYER
 
     def setUp(self):
-        super(ConnectionTest, self).setUp()
+        super(PushTest, self).setUp()
         self.application_key = os.environ[
             'ZEIT_PUSH_URBANAIRSHIP_APPLICATION_KEY']
         self.master_secret = os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET']
@@ -66,6 +66,9 @@ class ConnectionTest(unittest.TestCase):
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 api.send('Being pushy.', 'http://example.com')
+
+
+class ConnectionTest(zeit.push.testing.TestCase):
 
     def test_pushes_to_android_and_ios(self):
         api = zeit.push.urbanairship.Connection(None, None, 1)
