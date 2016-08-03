@@ -27,7 +27,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
 
         # If no channel was given, send notification to all users as fallback.
         audience = 'all'
-        if all(channels):
+        if channels:
             audience = {
                 'or': [{'tag': channel} for channel in channels],
                 'group': 'device'
