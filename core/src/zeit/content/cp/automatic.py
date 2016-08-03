@@ -152,14 +152,16 @@ class SolrContentQuery(ContentQuery):
                     rows=self.rows,
                     fl=self.FIELDS,
                     fq=self.filter_query):
-                content = zeit.cms.interfaces.ICMSContent(
-                    item['uniqueId'], None)
+                content = self._resolve(item)
                 if content is not None:
                     result.append(content)
         except:
             log.warning('Error during solr query %r for %s',
                         query, self.context.uniqueId, exc_info=True)
         return result
+
+    def _resolve(self, solr_result):
+        return zeit.cms.interfaces.ICMSContent(solr_result['uniqueId'], None)
 
     @property
     def filter_query(self):
