@@ -5,7 +5,31 @@ import zeit.solr.interfaces
 import zope.component
 
 
-def search(q, sort_order=None, additional_result_fields=None, rows=50,
+DEFAULT_RESULT_FIELDS = (
+    'authors',
+    'graphical-preview-url',
+    'icon',
+    'keywords',
+    'raw-tags',
+    'last-semantic-change',
+    'published',
+    'range',
+    'range_details',
+    'ressort',
+    'serie',
+    'subtitle',
+    'supertitle',
+    'teaser_text',
+    'teaser_title',
+    'title',
+    'type',
+    'uniqueId',
+    'volume',
+    'year',
+)
+
+
+def search(q, sort_order=None, additional_result_fields=(), rows=50,
            **kw):
     """Search solr according to query.
 
@@ -28,31 +52,7 @@ def search(q, sort_order=None, additional_result_fields=None, rows=50,
     elif sort_order == 'title':
         sort_order = 'title asc'
 
-    result_fields = [
-        'authors',
-        'graphical-preview-url',
-        'icon',
-        'keywords',
-        'raw-tags',
-        'last-semantic-change',
-        'published',
-        'range',
-        'range_details',
-        'ressort',
-        'serie',
-        'subtitle',
-        'supertitle',
-        'teaser_text',
-        'teaser_title',
-        'title',
-        'type',
-        'uniqueId',
-        'volume',
-        'year',
-    ]
-    if additional_result_fields:
-        result_fields.extend(additional_result_fields)
-
+    result_fields = DEFAULT_RESULT_FIELDS + tuple(additional_result_fields)
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
                        rows=rows, **kw)

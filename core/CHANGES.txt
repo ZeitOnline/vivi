@@ -1,10 +1,10 @@
 zeit.find changes
 =================
 
-2.6.4 (unreleased)
+2.7.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3163: Expose zeit.find.search.DEFAULT_RESULT_FIELDS
 
 
 2.6.3 (2016-07-18)
