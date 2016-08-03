@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import grokcore.component
 import lxml.etree
 import lxml.objectify
