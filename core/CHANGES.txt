@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.9.1 (unreleased)
+3.9.1 (2016-08-03)
 ------------------
 
 - Register a specific UnknownBlock for CPs that has all expected
