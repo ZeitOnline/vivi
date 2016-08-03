@@ -13,7 +13,7 @@ import zope.app.appsetup.product
 import zope.i18n.translationdomain
 
 
-class ParametersTest(zeit.push.testing.TestCase):
+class DataTest(zeit.push.testing.TestCase):
 
     def create_catalog(self):
         domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
@@ -38,17 +38,18 @@ class ParametersTest(zeit.push.testing.TestCase):
         api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
         self.assertEqual(['bar', 'qux'], api.get_channel_list('foo'))
 
-    def test_translates_title(self):
+    def test_translates_title_based_on_channel(self):
         catalog = self.create_catalog()
+        catalog.messages['parse-news-title'] = 'bar'
         catalog.messages['parse-breaking-title'] = 'foo'
         api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
         api.LANGUAGE = 'tt'
-        self.assertEqual('foo', api.get_headline([]))
+        self.assertEqual('bar', api.get_headline(['News']))
+        self.assertEqual('foo', api.get_headline(['Eilmeldung']))
 
     def test_transmits_metadata(self):
         catalog = self.create_catalog()
         catalog.messages['parse-news-title'] = 'ZEIT ONLINE'
-
         api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
         api.LANGUAGE = 'tt'
         data = api.data('foo', 'any', channels=PARSE_NEWS_CHANNEL,
@@ -99,11 +100,12 @@ class RewriteURLTest(unittest.TestCase):
             self.target_host + '/blog/foo/bar?feed=articlexml',
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
 
+
+class AddTrackingTest(unittest.TestCase):
+
     def test_adds_tracking_information_as_query_string(self):
-        url = zeit.push.mobile.ConnectionBase.rewrite_url(
-            'http://www.zeit.de/foo/bar', self.target_host)
         url = zeit.push.mobile.ConnectionBase.add_tracking(
-            url, 'nonbreaking', 'android')
+            'http://www.zeit.de/foo/bar', 'nonbreaking', 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual(
             'fix.int.zonaudev.push.wichtige_news.zeitde.andpush.link.x',
@@ -114,10 +116,9 @@ class RewriteURLTest(unittest.TestCase):
         self.assertEqual('fix', qs['utm_medium'][0])
 
     def test_adds_tracking_information_blog(self):
-        url = zeit.push.mobile.ConnectionBase.rewrite_url(
-            'http://www.zeit.de/blog/foo/bar', self.target_host)
         url = zeit.push.mobile.ConnectionBase.add_tracking(
-            url, 'nonbreaking', 'android')
+            'http://www.zeit.de/blog/foo/bar?feed=articlexml',
+            'nonbreaking', 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('articlexml', qs['feed'][0])
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
