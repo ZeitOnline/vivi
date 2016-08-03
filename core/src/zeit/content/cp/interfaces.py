@@ -498,6 +498,11 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         required=False,
         max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
 
+
+class IUnknownBlock(zeit.edit.interfaces.IUnknownBlock, IBlock):
+    pass
+
+
 #
 # Teaser block (aka teaser list)
 #

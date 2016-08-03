@@ -82,3 +82,9 @@ class Block(VisibleMixin, zeit.edit.block.Element):
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
     return copy.copy(context.xml)
+
+
+class UnknownBlock(Block, zeit.edit.block.UnknownBlock):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IUnknownBlock)
+    area = zeit.content.cp.interfaces.IArea
