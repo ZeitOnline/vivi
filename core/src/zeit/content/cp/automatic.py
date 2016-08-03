@@ -17,6 +17,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     zope.component.adapts(zeit.content.cp.interfaces.IArea)
     zope.interface.implements(zeit.content.cp.interfaces.IRenderedArea)
 
+    start = 0  # Extension point for zeit.web to do pagination
+
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml
@@ -103,11 +105,17 @@ class ContentQuery(grok.Adapter):
 
     def __init__(self, context):
         self.context = context
-        self.start = 0
-        self.rows = context.count
 
     def __call__(self):
         return []
+
+    @property
+    def start(self):
+        return self.context.start
+
+    @property
+    def rows(self):
+        return self.context.count
 
     @cachedproperty
     def existing_teasers(self):
