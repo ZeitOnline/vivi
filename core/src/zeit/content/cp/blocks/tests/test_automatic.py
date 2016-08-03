@@ -18,6 +18,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         lead.count = 3
         lead.automatic = True
+        lead.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.side_effect = [[dict(uniqueId='http://xml.zeit.de/t1'),

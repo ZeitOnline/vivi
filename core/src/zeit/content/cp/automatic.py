@@ -1,4 +1,5 @@
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+import grokcore.component as grok
 import logging
 import zeit.content.cp.interfaces
 import zeit.find.search
@@ -29,34 +30,22 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    SOLR_FIELD = {
-        'Channel': 'channels',
-        'Keyword': 'keywords',
-    }
-
-    def _build_query(self):
-        query = zeit.find.search.query(filter_terms=[
-            zeit.solr.query.field_raw('published', 'published*')])
-        conditions = []
-        for type_, channel, subchannel in self.query:
-            if subchannel:
-                value = '%s*%s' % (channel, subchannel)
-            else:
-                # XXX Unclear whether this will work as desired for keywords.
-                value = '%s*' % channel
-            conditions.append(zeit.solr.query.field_raw(
-                self.SOLR_FIELD[type_], value))
-        if conditions:
-            query = zeit.solr.query.and_(
-                query, zeit.solr.query.or_(*conditions))
-        return query
-
     def values(self):
         if not self.automatic:
             return self.context.values()
 
+        try:
+            self._v_query = zope.component.getAdapter(
+                self,
+                zeit.content.cp.interfaces.IContentQuery,
+                name=self.automatic_type)
+        except LookupError:
+            log.warning('%s found no IContentQuery type %s',
+                        self.context, self.automatic_type)
+            return self.context.values()
+
         self._v_try_to_retrieve_content = True
-        self._v_retrieved_content = 0
+        self._v_query.start = 0
         content = self._retrieve_content()
         result = []
         for block in self.context.values():
@@ -85,62 +74,15 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     def _retrieve_content(self):
         if not self._v_try_to_retrieve_content:
             return []
-        if self.automatic_type == 'channel':
-            content = self._query_solr(
-                self._build_query(), self.query_order)
-        elif self.automatic_type == 'query':
-            content = self._query_solr(
-                self.raw_query, self.raw_order)
-        elif self.automatic_type == 'centerpage':
-            content = self._query_centerpage()
-        else:
-            # BBB
-            if self.raw_query:
-                content = self._query_solr(
-                    self.raw_query,
-                    zeit.content.cp.interfaces.IArea['raw_order'].default)
-            else:
-                content = self._query_solr(
-                    self._build_query(),
-                    zeit.content.cp.interfaces.IArea['raw_order'].default)
-        seen = self._v_retrieved_content
-        self._v_retrieved_content += len(content)
-        if self._v_retrieved_content > seen:
+
+        content = self._v_query()
+        seen = self._v_query.start
+        self._v_query.start += len(content)
+        if self._v_query.start > seen:
             self._v_try_to_retrieve_content = True
         else:
             self._v_try_to_retrieve_content = False
         return content
-
-    def _query_solr(self, query, sort_order):
-        result = []
-        try:
-            for item in zeit.find.search.search(
-                    query, sort_order=sort_order,
-                    start=self._v_retrieved_content,
-                    rows=self.count_to_replace_duplicates):
-                content = zeit.cms.interfaces.ICMSContent(
-                    item['uniqueId'], None)
-                if content is not None:
-                    result.append(content)
-        except:
-            log.warning('Error during solr query %r for %s',
-                        query, self.uniqueId, exc_info=True)
-        return result
-
-    def _query_centerpage(self):
-        teasered = zeit.content.cp.interfaces.ITeaseredContent(
-            self.referenced_cp, iter([]))
-        result = []
-        for i in range(
-                self._v_retrieved_content + self.count_to_replace_duplicates):
-            try:
-                content = teasered.next()
-            except StopIteration:
-                # We've exhausted the available content.
-                break
-            if i >= self._v_retrieved_content:
-                result.append(content)
-        return result
 
     def _extract_newest(self, content, predicate=None):
         """Remove the first object from the content list for which predicate
@@ -173,6 +115,103 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         for module in self.values():
             if any([x.providedBy(module) for x in interfaces]):
                 yield module
+
+
+class ContentQuery(grok.Adapter):
+
+    grok.context(zeit.content.cp.interfaces.IRenderedArea)
+    grok.implements(zeit.content.cp.interfaces.IContentQuery)
+    grok.baseclass()
+
+    def __init__(self, context):
+        self.context = context
+        self.start = 0
+        self.rows = context.count_to_replace_duplicates
+
+    def __call__(self):
+        return []
+
+
+class SolrContentQuery(ContentQuery):
+
+    grok.context(zeit.content.cp.interfaces.IRenderedArea)
+    grok.implements(zeit.content.cp.interfaces.IContentQuery)
+    grok.name('query')
+
+    def __init__(self, context):
+        super(SolrContentQuery, self).__init__(context)
+        self.query_string = self.context.raw_query
+        self.order = self.context.raw_order
+
+    def __call__(self):
+        return self._query_solr(self.query_string, self.order)
+
+    def _query_solr(self, query, sort_order):
+        result = []
+        try:
+            for item in zeit.find.search.search(
+                    query, sort_order=sort_order,
+                    start=self.start,
+                    rows=self.rows):
+                content = zeit.cms.interfaces.ICMSContent(
+                    item['uniqueId'], None)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning('Error during solr query %r for %s',
+                        query, self.context.uniqueId, exc_info=True)
+        return result
+
+
+class ChannelContentQuery(SolrContentQuery):
+
+    grok.name('channel')
+
+    SOLR_FIELD = {
+        'Channel': 'channels',
+        'Keyword': 'keywords',
+    }
+
+    def __init__(self, context):
+        super(SolrContentQuery, self).__init__(context)
+        self.query_string = self._build_query()
+        self.order = self.context.query_order
+
+    def _build_query(self):
+        query = zeit.find.search.query(filter_terms=[
+            zeit.solr.query.field_raw('published', 'published*')])
+        conditions = []
+        for type_, channel, subchannel in self.context.query:
+            if subchannel:
+                value = '%s*%s' % (channel, subchannel)
+            else:
+                # XXX Unclear whether this will work as desired for keywords.
+                value = '%s*' % channel
+            conditions.append(zeit.solr.query.field_raw(
+                self.SOLR_FIELD[type_], value))
+        if conditions:
+            query = zeit.solr.query.and_(
+                query, zeit.solr.query.or_(*conditions))
+        return query
+
+
+class CenterpageContentQuery(ContentQuery):
+
+    grok.name('centerpage')
+
+    def __call__(self):
+        teasered = zeit.content.cp.interfaces.ITeaseredContent(
+            self.context.referenced_cp, iter([]))
+        result = []
+        for i in range(self.start + self.rows):
+            try:
+                content = teasered.next()
+            except StopIteration:
+                # We've exhausted the available content.
+                break
+            if i >= self.start:
+                result.append(content)
+        return result
 
 
 def is_lead_candidate(content):
