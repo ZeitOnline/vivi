@@ -1,5 +1,7 @@
 import unittest
+import zeit.cms.testing
 import zeit.content.gallery.gallery
+import zope.component
 
 
 class TestHTMLContent(unittest.TestCase):
@@ -19,3 +21,36 @@ class TestHTMLContent(unittest.TestCase):
         self.assertEqual('text', tree.tag)
         self.assertEqual('honk', tree.text)
         self.assertEqual(1, len(gallery.xml.body.findall('text')))
+
+
+class TestEntryMetadata(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.gallery.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(TestEntryMetadata, self).setUp()
+        gallery = zeit.content.gallery.gallery.Gallery()
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        gallery.image_folder = repository['2007']
+        zeit.content.gallery.testing.add_image('2007', '01.jpg')
+        gallery.reload_image_folder()
+        self.gallery = gallery
+
+    def test_gallery_entry_should_adapt_to_IImageMetadata(self):
+        entry = next(iter(self.gallery.values()))
+        metadata = zeit.content.image.interfaces.IImageMetadata(entry)
+        assert metadata.context is entry
+
+    def test_gallery_entry_metadata_should_proxy_attributes(self):
+        entry = next(self.gallery.values())
+        entry.title = u'Nice title'
+        metadata = zeit.content.image.interfaces.IImageMetadata(entry)
+        assert metadata.title == u'Nice title'
+
+    def test_gallery_entry_metadata_should_overrule_attributes(self):
+        entry = next(self.gallery.values())
+        entry.title = u'Nice title'
+        metadata = zeit.content.image.interfaces.IImageMetadata(entry)
+        metadata.title = u'Beautiful title'
+        assert metadata.title == u'Beautiful title'
