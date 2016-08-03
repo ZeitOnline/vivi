@@ -200,10 +200,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     _area_teasered_content = gocept.cache.property.TransactionBoundCache(
         '_v_area_teasered_content', dict)
 
-    def is_teaser_present_above(self, current_area, content):
-        return content in self._teasered_content_above(current_area)
-
-    def _teasered_content_above(self, current_area):
+    def teasered_content_above(self, current_area):
         self._fill_area_cache()
         seen = set()
         for area in self._cached_areas.values():
@@ -218,10 +215,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     _area_manual_content = gocept.cache.property.TransactionBoundCache(
         '_v_area_manual_content', dict)
 
-    def is_teaser_manual_below(self, current_area, content):
-        return content in self._manual_content_below(current_area)
-
-    def _manual_content_below(self, current_area):
+    def manual_content_below(self, current_area):
         self._fill_area_cache()
         seen = set()
         below = False
