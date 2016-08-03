@@ -27,6 +27,7 @@ setup(
         'zc.sourcefactory',
         'zeit.cms >= 2.70.0.dev0',
         'zeit.content.article',
+        'zeit.content.image',
         'zeit.objectlog',
         'zope.app.appsetup',
         'zope.component',
