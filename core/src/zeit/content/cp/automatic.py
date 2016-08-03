@@ -56,14 +56,13 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # since otherwise the first result that may_be_leader might be
             # given to a non-leader block.
             if block.layout.id in ['leader', 'zon-large']:
-                teaser = self._extract_newest(
-                    content, predicate=is_lead_candidate)
+                teaser = pop_filter(content, is_lead_candidate)
                 if teaser is None:
-                    teaser = self._extract_newest(content)
+                    teaser = pop_filter(content)
                     block.change_layout(
                         zeit.content.cp.layout.get_layout('buttons'))
             else:
-                teaser = self._extract_newest(content)
+                teaser = pop_filter(content)
             if teaser is None:
                 continue
             block.insert(0, teaser)
@@ -75,6 +74,23 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         for module in self.values():
             if any([x.providedBy(module) for x in interfaces]):
                 yield module
+
+
+def pop_filter(items, predicate=None):
+    """Remove the first object from the list for which predicate returns True;
+    no predicate means no filtering.
+    """
+    for i, item in enumerate(items):
+        if predicate is None or predicate(item):
+            items.pop(i)
+            return item
+
+
+def is_lead_candidate(content):
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+    if metadata is None:
+        return False
+    return metadata.lead_candidate
 
 
 class ContentQuery(grok.Adapter):
@@ -190,10 +206,3 @@ class CenterpageContentQuery(ContentQuery):
             if len(result) >= self.rows:
                 break
         return result
-
-
-def is_lead_candidate(content):
-    metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
-    if metadata is None:
-        return False
-    return metadata.lead_candidate
