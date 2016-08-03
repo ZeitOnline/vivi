@@ -54,3 +54,15 @@ class TestEntryMetadata(zeit.cms.testing.FunctionalTestCase):
         metadata = zeit.content.image.interfaces.IImageMetadata(entry)
         metadata.title = u'Beautiful title'
         assert metadata.title == u'Beautiful title'
+
+
+class TestEntryImages(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.gallery.testing.ZCML_LAYER
+
+    def test_gallery_entry_should_adapt_to_IImages(self):
+        entry = zeit.content.gallery.gallery.GalleryEntry()
+        entry.image = object()
+        images = zeit.content.image.interfaces.IImages(entry)
+        assert hasattr(images, 'fill_color')
+        assert images.image is entry.image

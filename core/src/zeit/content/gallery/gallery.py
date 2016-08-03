@@ -384,6 +384,13 @@ class EntryMetadata(object):
         return value
 
 
+@grokcore.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@grokcore.component.implementer(zeit.content.image.interfaces.IImages)
+def images_for_entry(context):
+    context.fill_color = None
+    return context
+
+
 class SearchableText(grokcore.component.Adapter):
     """SearchableText for a gallery."""
 
