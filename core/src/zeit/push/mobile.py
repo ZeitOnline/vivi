@@ -164,12 +164,10 @@ class Message(zeit.push.message.Message):
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('mobile')
 
-    def send_push_notification(self, **kw):
+    def send_push_notification(self, service_name, **kw):
         """Overwrite to send push notifications to Parse and Urban Airship."""
-        for mobile_service in ['parse', 'urbanairship']:
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=mobile_service)
-            notifier.send(self.text, self.url, **kw)
+        super(Message, self).send_push_notification('parse', **kw)
+        super(Message, self).send_push_notification('urbanairship', **kw)
 
     @property
     def text(self):
