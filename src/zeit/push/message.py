@@ -22,12 +22,12 @@ class Message(grok.Adapter):
         kw = {}
         kw.update(self.config)
         kw.update(self.additional_parameters)
-        self.send_push_notification(**kw)
+        self.send_push_notification(self.type, **kw)
         self._disable_message_config()
 
-    def send_push_notification(self, **kw):
+    def send_push_notification(self, service_name, **kw):
         notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=self.type)
+            zeit.push.interfaces.IPushNotifier, name=service_name)
         notifier.send(self.text, self.url, **kw)
 
     def _disable_message_config(self):
