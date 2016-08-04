@@ -4,7 +4,7 @@ zeit.content.image changes
 2.14.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Bugfix: actually create thumbnail source when an imagegroup is added.
 
 
 2.14.3 (2016-08-02)
