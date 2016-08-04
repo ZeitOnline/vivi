@@ -154,6 +154,32 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual(1, len(self.get_calls('parse')))
         self.assertEqual(1, len(self.get_calls('urbanairship')))
 
+    def test_sends_push_to_parse_if_urbanairship_fails(self):
+        from zeit.push.interfaces import WebServiceError
+        message = zope.component.getAdapter(
+            self.create_content(title='content_title'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        urbanairship_notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='urbanairship')
+        with mock.patch.object(urbanairship_notifier, 'send',
+                               side_effect=WebServiceError('Unauthorized')):
+            message.send()
+            self.assertEqual(1, len(self.get_calls('parse')))
+            self.assertEqual(0, len(self.get_calls('urbanairship')))
+
+    def test_sends_push_to_urbanairship_if_parse_fails(self):
+        from zeit.push.interfaces import WebServiceError
+        message = zope.component.getAdapter(
+            self.create_content(title='content_title'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        parse_notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='parse')
+        with mock.patch.object(parse_notifier, 'send',
+                               side_effect=WebServiceError('Unauthorized')):
+            message.send()
+            self.assertEqual(0, len(self.get_calls('parse')))
+            self.assertEqual(1, len(self.get_calls('urbanairship')))
+
     def test_provides_image_url_if_image_is_referenced(self):
         from zeit.cms.interfaces import ICMSContent
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
