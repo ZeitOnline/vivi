@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.6.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add metadata and images adapters for gallery entries (ZON-1586)
 
 
 2.6.15 (2015-04-15)

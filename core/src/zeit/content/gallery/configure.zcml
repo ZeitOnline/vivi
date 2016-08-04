@@ -76,7 +76,7 @@
   <adapter factory=".workflow.PublicationDependencies" />
 
   <!-- Metadata -->
-  <adapter factory=".gallery.metadata_for_entry" />
+  <adapter factory=".gallery.EntryMetadata" />
   <view
     for=".interfaces.IGalleryEntry"
     type="*"

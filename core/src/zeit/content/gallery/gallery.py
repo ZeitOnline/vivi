@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import grokcore.component
 import lxml.etree
 import lxml.objectify
@@ -365,10 +364,31 @@ def update_gallery_on_entry_change(entry, event):
     entry.__parent__[entry.__name__] = entry
 
 
-@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
-def metadata_for_entry(context):
-    return zeit.content.image.interfaces.IImageMetadata(context.image)
+class EntryMetadata(object):
+    """ImageMetadata composition from gallery entry and its image."""
+
+    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
+    zope.interface.implements(zeit.content.image.interfaces.IImageMetadata)
+
+    def __init__(self, context):
+        self.context = context
+        self._image_metadata = zeit.content.image.interfaces.IImageMetadata(
+            context.image, None)
+
+    def __getattr__(self, name):
+        __traceback_info__ = (self.context.__name__, name)
+        # Delegate attributes to ImageMetadata of entry image
+        value = getattr(self.context, name, self)
+        if value is self:  # Using self as a marker
+            value = getattr(self._image_metadata, name)
+        return value
+
+
+@grokcore.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@grokcore.component.implementer(zeit.content.image.interfaces.IImages)
+def images_for_entry(context):
+    context.fill_color = None
+    return context
 
 
 class SearchableText(grokcore.component.Adapter):
