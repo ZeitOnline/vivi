@@ -1,7 +1,13 @@
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import logging
 import zeit.cms.interfaces
+import zeit.objectlog.interfaces
 import zeit.push.interfaces
 import zope.component
+
+
+log = logging.getLogger(__name__)
 
 
 class Message(grok.Adapter):
@@ -26,9 +32,26 @@ class Message(grok.Adapter):
         self._disable_message_config()
 
     def send_push_notification(self, service_name, **kw):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=service_name)
-        notifier.send(self.text, self.url, **kw)
+        """Forward sending of the acutal push notification to `IPushNotifier`.
+
+        Log success and error in the object log, so the user knows about a
+        failure and can act on it.
+
+        """
+        object_log = zeit.objectlog.interfaces.ILog(self.context)
+        try:
+            notifier = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name=service_name)
+            notifier.send(self.text, self.url, **kw)
+            object_log.log(_(
+                'Push notification for "${name}" sent.',
+                mapping={'name': service_name.capitalize()}))
+        except Exception, e:
+            object_log.log(_(
+                'Error during push to ${name}: ${reason}',
+                mapping={'name': service_name.capitalize(), 'reason': str(e)}))
+            log.error(u'Error during push to %s with config %s',
+                      service_name, self.config, exc_info=True)
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
