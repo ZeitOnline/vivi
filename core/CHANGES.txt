@@ -4,7 +4,7 @@ zeit.content.article changes
 3.20.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Change default display mode for image blocks to "column-width".
 
 
 3.20.3 (2016-08-01)

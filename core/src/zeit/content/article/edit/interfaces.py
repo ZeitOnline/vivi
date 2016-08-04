@@ -322,7 +322,7 @@ class IImage(IReference):
     display_mode = zope.schema.Choice(
         title=_('Display Mode'),
         source=IMAGE_DISPLAY_MODE_SOURCE,
-        default=u'large',
+        default=u'column-width',
         required=False)
 
     # Currently need default for bw compat.
