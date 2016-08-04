@@ -57,12 +57,12 @@ class Connection(zeit.push.mobile.ConnectionBase):
         self.push(ios)
 
     def push(self, data):
+        log.debug('Sending Push to Parse: %s', data)
         headers = {
             'X-Parse-Application-Id': self.application_id,
             'X-Parse-REST-API-Key': self.rest_api_key,
             'Content-Type': 'application/json',
         }
-        log.debug('Sending %s', data)
         response = requests.post(
             '%s/push' % self.base_url, data=json.dumps(data), headers=headers)
 

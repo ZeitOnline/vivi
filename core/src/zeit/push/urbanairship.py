@@ -1,9 +1,13 @@
 from __future__ import absolute_import
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+import logging
 import urbanairship
 import zeit.push.interfaces
 import zeit.push.mobile
 import zope.app.appsetup.product
+
+
+log = logging.getLogger(__name__)
 
 
 class Connection(zeit.push.mobile.ConnectionBase):
@@ -54,6 +58,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
         self.push(ios)
 
     def push(self, push):
+        log.debug('Sending Push to Urban Airship: %s', push.payload)
         try:
             push.send()
         except urbanairship.common.Unauthorized:

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
 import grokcore.component as grok
+import logging
 import pytz
 import urllib
 import zeit.cms.checkout.interfaces
@@ -14,6 +15,9 @@ import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.i18n
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class ConnectionBase(object):
@@ -92,6 +96,8 @@ class ConnectionBase(object):
         """Return data for push notifications to Android and iOS."""
         image_url = kw.get('image_url')
         channels = self.get_channel_list(kw.get('channels'))
+        if not channels:
+            log.warn('No channel given for push notification for %s', link)
         arguments = {
             'title': kw.get('override_text') or kw.get('teaserTitle', title),
             'link': self.rewrite_url(link, self.config['mobile-target-host']),
