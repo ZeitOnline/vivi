@@ -68,13 +68,14 @@ class AddForm(FormBase,
 
     def add(self, group):
         super(AddForm, self).add(group)
+        group = self._created_object  # We need IRepositoryContent.
 
         # Add images to ImageGroup container.
         for image in self.images:
             if image is not None:
                 super(AddForm, self).add(image, group)
 
-        self._created_object = group
+        self._created_object = group  # Additional add() calls overwrote this.
         zeit.ghost.ghost.create_ghost(group)
 
     def create_image(self, blob, data):

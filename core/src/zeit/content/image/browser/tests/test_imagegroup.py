@@ -150,6 +150,21 @@ class ImageGroupBrowserTest(
         self.assertEqual(3, len(group.keys()))
         self.assertIn('obama-clinton-120x120.jpg', group.keys())
 
+    def test_thumbnail_source_is_created_on_add(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('image-group')
+        with zeit.cms.testing.site(self.getRootFolder()):
+            img = zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.browser.getControl(name='form.master_image_blobs.0.').add_file(
+            img.open(), 'image/jpeg', 'master-image.jpg')
+        self.fill_copyright_information()
+        self.save_imagegroup()
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['2006']['image-group']
+        self.assertIn('thumbnail-source-master-image.jpg', group)
+
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 

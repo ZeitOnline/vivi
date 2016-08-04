@@ -156,9 +156,6 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         thumbnails = zeit.content.image.interfaces.IThumbnails(self.group)
         self.assertEqual((750, 750), thumbnails['square'].getImageSize())
 
-    def test_thumbnail_source_is_created_on_add(self):
-        self.assertIn('thumbnail-source-master-image.jpg', self.group)
-
     def test_can_access_small_variant_via_name_and_size(self):
         variant = self.group.get_variant_by_size('cinema__200x100')
         self.assertEqual('cinema-small', variant.id)
