@@ -25,7 +25,7 @@ class Message(grok.Adapter):
         self.send_push_notification(**kw)
         self._disable_message_config()
 
-    def send_push_notification(self, kw):
+    def send_push_notification(self, **kw):
         notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=self.type)
         notifier.send(self.text, self.url, **kw)
