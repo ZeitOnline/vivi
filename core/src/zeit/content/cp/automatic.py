@@ -128,8 +128,6 @@ class ContentQuery(grok.Adapter):
 
 class SolrContentQuery(ContentQuery):
 
-    grok.context(zeit.content.cp.interfaces.IRenderedArea)
-    grok.implements(zeit.content.cp.interfaces.IContentQuery)
     grok.name('query')
 
     FIELDS = ' '.join(zeit.find.search.DEFAULT_RESULT_FIELDS)
