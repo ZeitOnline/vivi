@@ -62,8 +62,14 @@ class Connection(zeit.push.mobile.ConnectionBase):
         try:
             push.send()
         except urbanairship.common.Unauthorized:
+            log.error(
+                'Semantic error during push to Urban Airship with payload %s',
+                push.payload, exc_info=True)
             raise zeit.push.interfaces.WebServiceError('Unauthorized')
         except urbanairship.common.AirshipFailure, e:
+            log.error(
+                'Technical error during push to Urban Airship with payload %s',
+                push.payload, exc_info=True)
             raise zeit.push.interfaces.TechnicalError(str(e))
 
 
