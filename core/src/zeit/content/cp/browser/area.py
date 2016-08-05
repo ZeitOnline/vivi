@@ -73,7 +73,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IArea).select(
             'count', 'query', 'query_order', 'raw_query', 'raw_order',
-            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes')
+            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
+            'referenced_topicpage')
     form_fields['raw_query'].custom_widget = SolrQueryWidget
 
     field_groups = (
@@ -86,6 +87,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             _('automatic-area-type-centerpage'), ('referenced_cp',)),
         gocept.form.grouped.Fields(
             _('automatic-area-type-channel'), ('query', 'query_order')),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-topicpage'), ('referenced_topicpage',)),
         gocept.form.grouped.Fields(
             _('automatic-area-type-query'), ('raw_query', 'raw_order')),
     )

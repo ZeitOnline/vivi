@@ -241,7 +241,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         # JS needs to use these values, don't MD5 them.
         return value
 
-    values = (u'centerpage', u'channel', u'query')
+    values = (u'centerpage', u'channel', u'topicpage', u'query')
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
@@ -277,6 +277,9 @@ def automatic_area_can_read_teasers_automatically(data):
         return True
 
     if data.automatic_type == 'channel' and data.query:
+        return True
+
+    if data.automatic_type == 'topicpage' and data.referenced_topicpage:
         return True
 
     if data.automatic_type == 'query' and data.raw_query:
@@ -395,6 +398,10 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=u'date-last-published-semantic desc',
         required=True)
 
+    referenced_topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage'),
+        required=False)
+
     raw_query = zope.schema.Text(title=_('Raw query'), required=False)
     raw_order = zope.schema.TextLine(
         title=_('Sort order'),
@@ -407,8 +414,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
-        if (data.automatic
-                and not automatic_area_can_read_teasers_automatically(data)):
+        if (data.automatic and
+                not automatic_area_can_read_teasers_automatically(data)):
             if data.automatic_type == 'centerpage':
                 error_message = _(
                     'Automatic area with teaser from centerpage '
@@ -417,6 +424,10 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from solr channel '
                     'requires a channel query.')
+            if data.automatic_type == 'topicpage':
+                error_message = _(
+                    'Automatic area with teaser from TMS topicpage '
+                    'requires a topicpage ID.')
             if data.automatic_type == 'query':
                 error_message = _(
                     'Automatic area with teaser from solr query '

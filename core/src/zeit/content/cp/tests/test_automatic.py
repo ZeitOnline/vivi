@@ -7,6 +7,7 @@ import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
+import zeit.retresco.connection
 import zeit.solr.interfaces
 import zope.component
 
@@ -281,6 +282,27 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             lead.automatic_type = 'query'
         self.assertEqual(
             'True', self.repository['cp.lead'].xml.get('automatic'))
+
+
+class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutomaticAreaTopicpageTest, self).setUp()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.tms = mock.Mock()
+        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+
+    def test_passes_id_to_tms(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.referenced_topicpage = 'tms-id'
+        lead.automatic_type = 'topicpage'
+        self.tms.get_topicpage_documents.return_value = (
+            zeit.retresco.connection.Result())
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
 
 
 class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
