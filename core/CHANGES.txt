@@ -4,6 +4,9 @@ zeit.push changes
 1.14.1 (unreleased)
 -------------------
 
+- Always disable push services on send to avoid the risk of re-sending a
+  notification on publish, since information might not be relevant anymore.
+
 - Add push notifications to mobile using Urban Airship (ZON-3213).
 
 

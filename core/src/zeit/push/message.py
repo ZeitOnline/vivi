@@ -23,13 +23,21 @@ class Message(grok.Adapter):
         self.config = {}
 
     def send(self):
+        """Send push notification to external service.
+
+        We *never* want to re-send a push notification on publish, even if the
+        initial notification failed, since the information could be outdated.
+        Therefore we must disable the notification before anything else.
+        Re-sending can be done manually by re-enabling the service.
+
+        """
+        self._disable_message_config()
         if not self.text:
             raise ValueError('No text configured')
         kw = {}
         kw.update(self.config)
         kw.update(self.additional_parameters)
         self.send_push_notification(self.type, **kw)
-        self._disable_message_config()
 
     def send_push_notification(self, service_name, **kw):
         """Forward sending of the acutal push notification to `IPushNotifier`.
