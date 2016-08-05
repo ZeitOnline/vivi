@@ -2,10 +2,11 @@ zeit.content.cp changes
 =======================
 
 
-3.9.2 (unreleased)
+3.10.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Extract query logic from AutomaticArea into separate IContentQuery
+  classes (ZON-3227).
 
 
 3.9.1 (2016-08-03)
