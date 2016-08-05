@@ -144,12 +144,14 @@ class SolrContentQuery(ContentQuery):
         result = []
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-            for item in solr.search(
-                    query, sort=sort_order,
-                    start=self.start,
-                    rows=self.rows,
-                    fl=self.FIELDS,
-                    fq=self.filter_query):
+            response = solr.search(
+                query, sort=sort_order,
+                start=self.start,
+                rows=self.rows,
+                fl=self.FIELDS,
+                fq=self.filter_query)
+            self.total_hits = response.hits
+            for item in response:
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
@@ -204,6 +206,9 @@ class ChannelContentQuery(SolrContentQuery):
 class CenterpageContentQuery(ContentQuery):
 
     grok.name('centerpage')
+    # XXX If zeit.web wanted to implement pagination for CP queries, we'd have
+    # to walk over the *whole* referenced CP, which can be rather expensive.
+    total_hits = NotImplemented
 
     def __call__(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(

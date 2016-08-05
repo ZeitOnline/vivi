@@ -2,6 +2,7 @@ from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import lxml.etree
 import mock
+import pysolr
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
@@ -22,7 +23,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.count = 5
         lead.automatic = True
         lead.automatic_type = 'query'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         self.assertEqual(0, len(IRenderedArea(lead).values()))
 
     def tests_ignores_items_with_errors(self):
@@ -31,10 +32,10 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        return_values = [
-            [dict(uniqueId='http://xml.zeit.de/notfound'),
-             dict(uniqueId='http://xml.zeit.de/testcontent')],
-            []
+        return_values = [pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/notfound'),
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 2),
+            pysolr.Results([], 0)
         ]
         self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
         self.assertEqual(1, len(IRenderedArea(lead).values()))
@@ -50,9 +51,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
+        self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/normal'),
-            dict(uniqueId='http://xml.zeit.de/leader')]
+            dict(uniqueId='http://xml.zeit.de/leader')], 2)
         result = IRenderedArea(lead).values()
         self.assertEqual(
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
@@ -66,8 +67,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
-            dict(uniqueId='http://xml.zeit.de/testcontent')]
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
         result = IRenderedArea(lead).values()
         leader = result[0]
         self.assertEqual(
@@ -79,8 +80,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
-            dict(uniqueId='http://xml.zeit.de/testcontent')]
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
         result = IRenderedArea(lead).values()
         leader = result[0]
         self.assertEqual('buttons', leader.layout.id)
@@ -95,9 +96,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
+        self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)]
+                 lead_candidate=True)], 1)
         xml = zeit.content.cp.interfaces.IRenderedXML(lead)
         self.assertEllipsis(
             """\
@@ -112,9 +113,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
+        self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)]
+                 lead_candidate=True)], 1)
         xml = zeit.content.cp.interfaces.IRenderedXML(
             self.repository['cp'])
         self.assertEllipsis(
@@ -129,9 +130,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
+        self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)]
+                 lead_candidate=True)], 1)
         content = zeit.content.cp.interfaces.ICMSContentIterable(lead)
         self.assertEqual(
             ['http://xml.zeit.de/testcontent'],
@@ -156,7 +157,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         self.assertEqual('raw', self.solr.search.call_args[0][0])
 
@@ -169,7 +170,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             ('Keyword', 'Berlin', None))
         lead.automatic = True
         lead.automatic_type = 'channel'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         query = self.solr.search.call_args[0][0]
         self.assertIn('published:(published*)', query)
@@ -185,7 +186,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.query = (('Channel', 'International', 'Nahost'),)
         lead.automatic = True
         lead.automatic_type = 'channel'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         self.assertEqual(
             'date-last-published-semantic desc',
@@ -198,7 +199,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.query_order = 'order'
         lead.automatic = True
         lead.automatic_type = 'channel'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         self.assertEqual('order', self.solr.search.call_args[1]['sort'])
 
@@ -208,7 +209,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         self.assertEqual(
             'date-first-released desc', self.solr.search.call_args[1]['sort'])
@@ -220,7 +221,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.raw_query = 'raw'
         lead.raw_order = 'order'
         lead.automatic_type = 'query'
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         IRenderedArea(lead).values()
         self.assertEqual('order', self.solr.search.call_args[1]['sort'])
 
@@ -246,10 +247,11 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         zope.component.getAdapter(
             lead, zeit.edit.interfaces.IElementFactory, name='rss')()
 
-        return_values = [
-            [dict(uniqueId='http://xml.zeit.de/normal'),
-             dict(uniqueId='http://xml.zeit.de/leader')],
-            [], [], []
+        empty = pysolr.Results([], 0)
+        return_values = [pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/normal'),
+            dict(uniqueId='http://xml.zeit.de/leader')], 2),
+            empty, empty, empty
         ]
         self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
         lead.automatic = False
@@ -263,7 +265,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
             lead = cp['lead']
             lead.count = 1
@@ -271,7 +273,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             lead.automatic_type = 'query'
 
     def test_channel_has_automatic_attribute(self):
-        self.solr.search.return_value = []
+        self.solr.search.return_value = pysolr.Results([], 0)
         with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
             lead = cp['lead']
             lead.count = 1
@@ -323,7 +325,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.referenced_cp = None
         with self.assertRaises(zeit.cms.interfaces.ValidationError):
             interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = []
+            self.solr.search.return_value = pysolr.Results([], 0)
             interface.validateInvariants(self.area)
 
     def test_automatic_using_solr_requires_no_referenced_centerpage(self):
@@ -332,7 +334,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.raw_query = 'foo'
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = []
+            self.solr.search.return_value = pysolr.Results([], 0)
             interface.validateInvariants(self.area)
 
 

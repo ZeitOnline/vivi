@@ -1,5 +1,6 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.content.cp.interfaces import IRenderedArea
+import pysolr
 import zeit.content.cp.testing
 import zeit.solr.interfaces
 import zope.component
@@ -21,9 +22,9 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = [
+        self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/t1'),
-            dict(uniqueId='http://xml.zeit.de/t2')]
+            dict(uniqueId='http://xml.zeit.de/t2')], 2)
         lead.values()[0].materialize()
 
         result = IRenderedArea(lead).values()

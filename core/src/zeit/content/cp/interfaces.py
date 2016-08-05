@@ -454,6 +454,9 @@ class IContentQuery(zope.interface.Interface):
     Used to register named adapters for the different IArea.automatic_types.
     """
 
+    total_hits = zope.interface.Attribute(
+        'Total number of available results (only available after calling)')
+
     def __call__(self):
         """Returns list of content objects."""
 
