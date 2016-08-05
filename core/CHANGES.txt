@@ -4,7 +4,8 @@ zeit.content.article changes
 3.20.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Implement fw-compat for mobile push notifications, since `parse` will be
+  removed in 2017. (ZON-3213)
 
 
 3.20.4 (2016-08-04)

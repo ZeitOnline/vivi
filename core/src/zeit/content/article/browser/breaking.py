@@ -73,7 +73,7 @@ class Add(zeit.cms.browser.form.AddForm,
         message_config = []
         if data.pop('mobile', False):
             message_config.append({
-                'type': 'parse', 'enabled': True,
+                'type': 'mobile', 'enabled': True,
                 'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL,
             })
             message_config.append(

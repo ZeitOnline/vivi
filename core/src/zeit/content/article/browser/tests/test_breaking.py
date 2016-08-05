@@ -79,24 +79,24 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
-            for service in ['homepage', 'ios-legacy', 'wrapper', 'parse',
-                            'twitter', 'facebook']:
+            for service in ['homepage', 'ios-legacy', 'wrapper',
+                            'urbanairship', 'twitter', 'facebook']:
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=service)
                 self.assertEqual(1, len(notifier.calls))
                 self.assertEqual(article.title, notifier.calls[0][0])
 
-            parse = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name='parse')
+            urbanairship = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='urbanairship')
             self.assertEqual(zeit.push.interfaces.PARSE_BREAKING_CHANNEL,
-                             parse.calls[0][2]['channels'])
+                             urbanairship.calls[0][2]['channels'])
             facebook = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='facebook')
             self.assertEqual(
                 zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
                 facebook.calls[0][2]['account'])
 
-    def test_banners_and_parse_are_disabled_after_publish(self):
+    def test_banners_and_mobile_are_disabled_after_publish(self):
         # The breaking news is a normal article, so it has the normal social
         # media functionality, thus it may be "armed" again later on
         # (IPushMessages.enabled). But that should of course only apply to
@@ -115,7 +115,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
-                {'type': 'parse', 'enabled': False,
+                {'type': 'mobile', 'enabled': False,
                  'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL},
                 push.message_config)
             self.assertIn(
