@@ -17,6 +17,15 @@ class Message(grok.Adapter):
         self.config = {}
 
     def send(self):
+        """Send push notification to external service.
+
+        We *never* want to re-send a push notification on publish, even if the
+        initial notification failed, since the information could be outdated.
+        Therefore we must disable the notification before anything else.
+        Re-sending can be done manually by re-enabling the service.
+
+        """
+        self._disable_message_config()
         notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=self.type)
         if not self.text:
@@ -25,7 +34,6 @@ class Message(grok.Adapter):
         kw.update(self.config)
         kw.update(self.additional_parameters)
         notifier.send(self.text, self.url, **kw)
-        self._disable_message_config()
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
