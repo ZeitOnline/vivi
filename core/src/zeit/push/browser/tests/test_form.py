@@ -1,6 +1,7 @@
 import zeit.cms.testing
 import zeit.push.interfaces
 import zeit.push.testing
+import zeit.push.workflow
 
 
 class SocialFormTest(zeit.cms.testing.BrowserTestCase):
@@ -59,7 +60,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
+            {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
@@ -89,8 +90,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'override_text': 'fb-main'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': False, 'override_text': 'mobile',
-             'channels': 'parse-channel-news'},
+            {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
+             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
         self.open_form()
@@ -159,14 +160,43 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         for service in push.message_config:
-            if service['type'] != 'parse':
+            if service['type'] != 'mobile':
                 continue
             self.assertEqual('mobile', service['override_text'])
             break
         else:
-            self.fail('parse message_config is missing')
+            self.fail('mobile message_config is missing')
         self.open_form()
         self.assertEqual('mobile', b.getControl('Mobile title').value)
+
+    def test_overwrites_existing_parse_config_with_mobile_config(self):
+        push = zeit.push.workflow.PushMessages(self.get_article())
+        push.message_config = [{
+            'type': 'parse',
+            'enabled': True,
+            'override_text': 'overridden_text',
+            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+        }]
+
+        b = self.browser
+        self.open_form()
+        self.assertEqual('overridden_text', b.getControl('Mobile title').value)
+        self.assertTrue(b.getControl('Enable mobile push').selected)
+        b.getControl('Apply').click()
+
+        push = zeit.push.workflow.PushMessages(self.get_article())
+        self.assertIn({
+            'type': 'mobile',
+            'enabled': True,
+            'override_text': 'overridden_text',
+            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+        }, push.message_config)
+        self.assertNotIn({
+            'type': 'parse',
+            'enabled': True,
+            'override_text': 'overridden_text',
+            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+        }, push.message_config)
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):

@@ -1,7 +1,13 @@
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import logging
 import zeit.cms.interfaces
+import zeit.objectlog.interfaces
 import zeit.push.interfaces
 import zope.component
+
+
+log = logging.getLogger(__name__)
 
 
 class Message(grok.Adapter):
@@ -26,14 +32,34 @@ class Message(grok.Adapter):
 
         """
         self._disable_message_config()
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=self.type)
         if not self.text:
             raise ValueError('No text configured')
         kw = {}
         kw.update(self.config)
         kw.update(self.additional_parameters)
-        notifier.send(self.text, self.url, **kw)
+        self.send_push_notification(self.type, **kw)
+
+    def send_push_notification(self, service_name, **kw):
+        """Forward sending of the acutal push notification to `IPushNotifier`.
+
+        Log success and error in the object log, so the user knows about a
+        failure and can act on it.
+
+        """
+        object_log = zeit.objectlog.interfaces.ILog(self.context)
+        try:
+            notifier = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name=service_name)
+            notifier.send(self.text, self.url, **kw)
+            object_log.log(_(
+                'Push notification for "${name}" sent.',
+                mapping={'name': service_name.capitalize()}))
+        except Exception, e:
+            object_log.log(_(
+                'Error during push to ${name}: ${reason}',
+                mapping={'name': service_name.capitalize(), 'reason': str(e)}))
+            log.error(u'Error during push to %s with config %s',
+                      service_name, self.config, exc_info=True)
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
@@ -164,7 +190,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_enabled(self):
         for service in self.message_config:
-            if service['type'] != 'parse':
+            if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
@@ -176,7 +202,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_text(self):
         for service in self.message_config:
-            if service['type'] != 'parse':
+            if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
