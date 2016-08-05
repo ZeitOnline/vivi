@@ -13,5 +13,5 @@ class PushURLTest(zeit.cms.testing.FunctionalTestCase):
         link = zeit.content.link.link.Link()
         link.url = 'http://example.com/'
         message = zope.component.getAdapter(
-            link, zeit.push.interfaces.IMessage, name='parse')
+            link, zeit.push.interfaces.IMessage, name='mobile')
         self.assertEqual('http://example.com/', message.url)
