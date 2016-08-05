@@ -73,7 +73,11 @@ class Connection(zeit.push.mobile.ConnectionBase):
             message = error['error']
             if 'code' in error:
                 message += ' (code=%s)' % error['code']
+            log.error('Semantic error during push to Parse with payload %s. '
+                      'Response: %s', data, error)
             raise zeit.push.interfaces.WebServiceError(message)
+        log.error('Technical error during push to Parse with payload %s. '
+                  'Response: %s', data, response.text)
         raise zeit.push.interfaces.TechnicalError(response.text)
 
 
