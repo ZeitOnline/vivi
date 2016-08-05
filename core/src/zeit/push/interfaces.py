@@ -8,46 +8,85 @@ import zope.schema
 
 class IMessage(zope.interface.Interface):
 
+    get_text_from = zope.interface.Attribute(
+        'Fieldname from `IPushMessages` to read the text for the notification')
+
+    text = zope.interface.Attribute(
+        'Property that can be overriden if `get_text_from` is not sufficient '
+        'to retrieve the text for the notification')
+
+    additional_parameters = zope.interface.Attribute(
+        'Additional parameters that should be send to `IPushNotifier` as **kw')
+
     def send():
-        """XXX docme"""
+        """Send push notification to external service via `IPushNotifier`.
+
+        Will fetch the `IPushNotifier` utility using the name that was used to
+        register this `IMessage` adapter. Calls the utility providing the
+        message config, `additional_parameters`, `text` and a link to context
+        as parameters.
+
+        Currently `additional_parameters` is only used for mobile push
+        notifications to enrich the parameteres with `teaserTitle`,
+        `teaserText`, `teaserSupertitle` and `image_url`. These information are
+        read from the context.
+
+        """
 
 
 class IPushNotifier(zope.interface.Interface):
 
     def send(text, link, **kw):
-        """Sends the given ``text`` as a push message through an external
-        service.
+        """Sends given ``text`` as a push message through an external service.
 
         The ``link`` (an URL) will be integrated into the message (how this
         happens depends on the medium, possibilities include appending to the
         text, attaching as metadata, etc.).
 
         Additional kw parameters:
-        ``title`` is only supported by Parse.com at the moment.
-        It can be thought of as the title of the dialog window that displays
-        the push message.
+
+        * ``type``: Name of the external service.
+
+        * ``enabled``: If the service is enabled.
+
+        * ``channels``: Restrict push notification to users listening to this
+          kind of pushes (`News` or `Eilmeldung`). [only `parse`]
+
+        * ``override_text``: Text that should be used instead of the given
+          `text` parameter. [only `parse` & `facebook`]
+
+        * ``account``: Send push notification using given account.
+          [only `facebook` & `twitter`]
 
         """
 
 
 class WebServiceError(Exception):
-    """A web service was unable to process a request because of semantic
-    problems.
+    """Web service was unable to process a request due to semantic problems.
+
+    For example, a response with HTTP status code "401 Unauthorized" should
+    raise this error.
+
     """
 
 
 class TechnicalError(Exception):
-    """A web service had a technical error.
-    The request could be retried later on.
+    """Web service was unable to process a request due to technical errors.
+
+    For example, a response with HTTP status code "500 Server Error" should
+    raise this error.
+
     """
 
 
 class IPushMessages(zope.interface.Interface):
-    """Configures which push services should be notified when this
-    ICMSContent is published.
+    """Configures push services that are notified if context is published.
 
-    This works as follows: For all properties that are True, look up a named
-    IPushNotifier utility of the same name.
+    Available services are stored in `message_config` on checkin of context.
+    When the context is published, send a push notification for each stored
+    service whose configuration defines it as `enabled` by looking up a named
+    `IMessage` adapter that forwards the actual push to an `IPushNotifier`
+    utility.
 
     """
 
@@ -90,12 +129,12 @@ PARSE_BREAKING_CHANNEL = 'parse-channel-breaking'
 
 
 class IPushURL(zope.interface.Interface):
-    """Adapts ICMSContent to the uniqueId that is used to calculate the URL
-    to be transmitted in the push message.
+    """Interface to adapt `ICMSContent` to the base URL for push notifications.
 
-    Usually, that's the uniqueId of the ICMSContent itself, but this interface
-    provides an extension point for special treatments of certain content
-    types, e.g. zeit.content.link objects.
+    Usually the result is the `uniqueId` of the `ICMSContent`, but this
+    interface serves as an extension point for special treatments of certain
+    content types, e.g. `zeit.content.link` objects.
+
     """
 
 
