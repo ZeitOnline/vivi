@@ -40,6 +40,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name='parse')
         # getAdapter instantiates factory, which causes one call
         self.parse = self.parse()
+        self.parse.type = 'parse'
 
     def publish(self, content):
         IPublishInfo(content).urgent = True

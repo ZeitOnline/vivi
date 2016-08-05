@@ -1,5 +1,6 @@
 from datetime import datetime
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import logging
 import pytz
@@ -62,18 +63,25 @@ def ignore_push_properties(event):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def send_push_on_publish(context, event):
+    """Send push notifications for each enabled service.
+
+    Catch errors to process the remaining services, rather stopping entirely.
+    However we don't expect errors here, since `IMessage` takes care of errors
+    issued by the external service.
+
+    """
     push = zeit.push.interfaces.IPushMessages(context)
     for message in push.messages:
         config = {key: value for key, value in message.config.items()
                   if key not in ('type', 'enabled')}
         config['text'] = message.text
-        log_msg = 'Push "%s": %s' % (message.type, config)
         try:
             message.send()
         except Exception, e:
-            log.error('Error during push to %s(%s)', message.type, config,
-                      exc_info=True)
-            log_msg += ' error: %s' % str(e)
-        zeit.objectlog.interfaces.ILog(context).log(log_msg)
+            zeit.objectlog.interfaces.ILog(context).log(_(
+                'Error while sending ${type}: ${reason}',
+                mapping={'type': message.type.capitalize(), 'reason': str(e)}))
+            log.error('Error during push to %s with config %s',
+                      message.type, config, exc_info=True)
 
     push.date_last_pushed = datetime.now(pytz.UTC)

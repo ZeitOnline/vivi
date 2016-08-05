@@ -39,9 +39,11 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestCase, self).setUp()
-        parse = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='parse')
-        parse.reset()
+        for service in ['parse', 'urbanairship', 'twitter', 'facebook',
+                        'homepage', 'ios-legacy', 'wrapper']:
+            notifier = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name=service)
+            notifier.reset()
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
