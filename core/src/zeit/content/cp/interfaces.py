@@ -448,6 +448,10 @@ class IRenderedArea(IArea):
     """Overrides values() to evaluate any automatic settings.
     """
 
+    start = zope.interface.Attribute(
+        'Offset the IContentQuery result by this many content objects. '
+        'This is an extension point for zeit.web to do pagination.')
+
 
 class IContentQuery(zope.interface.Interface):
     """Mechanism to retrieve content objects.

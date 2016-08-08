@@ -103,22 +103,30 @@ class ContentQuery(grok.Adapter):
     grok.implements(zeit.content.cp.interfaces.IContentQuery)
     grok.baseclass()
 
+    total_hits = NotImplemented
+
     def __init__(self, context):
         self.context = context
 
     def __call__(self):
-        return []
+        raise NotImplementedError()
 
     @property
     def start(self):
+        """Offset the result by this many content objects"""
         return self.context.start
 
     @property
     def rows(self):
+        """Number of content objects per page"""
         return self.context.count
 
     @cachedproperty
     def existing_teasers(self):
+        """Returns a set of ICMSContent objects that are already present on
+        the CP in other areas. If IArea.hide_dupes is True, these should be
+        not be repeated, and thus excluded from our query result.
+        """
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         result = set()
         result.update(cp.teasered_content_above(self.context))
@@ -138,14 +146,11 @@ class SolrContentQuery(ContentQuery):
         self.order = self.context.raw_order
 
     def __call__(self):
-        return self._query_solr(self.query_string, self.order)
-
-    def _query_solr(self, query, sort_order):
         result = []
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
             response = solr.search(
-                query, sort=sort_order,
+                self.query_string, sort=self.order,
                 start=self.start,
                 rows=self.rows,
                 fl=self.FIELDS,
@@ -156,8 +161,9 @@ class SolrContentQuery(ContentQuery):
                 if content is not None:
                     result.append(content)
         except:
-            log.warning('Error during solr query %r for %s',
-                        query, self.context.uniqueId, exc_info=True)
+            log.warning(
+                'Error during solr query %r for %s',
+                self.query_string, self.context.uniqueId, exc_info=True)
         return result
 
     def _resolve(self, solr_result):
@@ -165,6 +171,10 @@ class SolrContentQuery(ContentQuery):
 
     @property
     def filter_query(self):
+        """Performs deduplication of results. We basically add more conditions
+        to the query to say "not this one or that one or those..." for all
+        those teasers that already exist on the CP.
+        """
         if not self.context.hide_dupes or not self.existing_teasers:
             return lq.any_value()
         return lq.not_(lq.or_(*[lq._field('uniqueId', '"%s"' % x.uniqueId)
@@ -207,8 +217,8 @@ class CenterpageContentQuery(ContentQuery):
 
     grok.name('centerpage')
     # XXX If zeit.web wanted to implement pagination for CP queries, we'd have
-    # to walk over the *whole* referenced CP, which can be rather expensive.
-    total_hits = NotImplemented
+    # to walk over the *whole* referenced CP to compute total_hits, which could
+    # be rather expensive.
 
     def __call__(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(
