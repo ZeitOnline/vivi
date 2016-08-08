@@ -2,6 +2,7 @@ import lxml.etree
 import transaction
 import zeit.cms.testing
 import zeit.content.cp.testing
+import zeit.solr.interfaces
 import zope.testbrowser.testing
 
 

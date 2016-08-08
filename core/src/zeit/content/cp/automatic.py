@@ -1,10 +1,11 @@
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
-from zeit.solr import query as lq
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging
 import zeit.content.cp.interfaces
 import zeit.find.search
+import zeit.solr.interfaces
+import zeit.solr.query
 import zope.component
 import zope.interface
 
@@ -175,9 +176,10 @@ class SolrContentQuery(ContentQuery):
         to the query to say "not this one or that one or those..." for all
         those teasers that already exist on the CP.
         """
+        Q = zeit.solr.query
         if not self.context.hide_dupes or not self.existing_teasers:
-            return lq.any_value()
-        return lq.not_(lq.or_(*[lq._field('uniqueId', '"%s"' % x.uniqueId)
+            return Q.any_value()
+        return Q.not_(Q.or_(*[Q._field('uniqueId', '"%s"' % x.uniqueId)
                                 for x in self.existing_teasers]))
 
 
@@ -196,8 +198,9 @@ class ChannelContentQuery(SolrContentQuery):
         self.order = self.context.query_order
 
     def _build_query(self):
+        Q = zeit.solr.query
         query = zeit.find.search.query(filter_terms=[
-            zeit.solr.query.field_raw('published', 'published*')])
+            Q.field_raw('published', 'published*')])
         conditions = []
         for type_, channel, subchannel in self.context.query:
             if subchannel:
@@ -205,11 +208,9 @@ class ChannelContentQuery(SolrContentQuery):
             else:
                 # XXX Unclear whether this will work as desired for keywords.
                 value = '%s*' % channel
-            conditions.append(zeit.solr.query.field_raw(
-                self.SOLR_FIELD[type_], value))
+            conditions.append(Q.field_raw(self.SOLR_FIELD[type_], value))
         if conditions:
-            query = zeit.solr.query.and_(
-                query, zeit.solr.query.or_(*conditions))
+            query = Q.and_(query, Q.or_(*conditions))
         return query
 
 
