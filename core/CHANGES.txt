@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.20.5 (unreleased)
+3.20.5 (2016-08-09)
 -------------------
 
 - Implement fw-compat for mobile push notifications, since `parse` will be
