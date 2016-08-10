@@ -147,6 +147,7 @@ class SolrContentQuery(ContentQuery):
         self.order = self.context.raw_order
 
     def __call__(self):
+        self.total_hits = 0
         result = []
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
@@ -219,6 +220,7 @@ class TMSContentQuery(ContentQuery):
     grok.name('topicpage')
 
     def __call__(self):
+        self.total_hits = 0
         result = []
         topicpage = self.context.referenced_topicpage
         try:

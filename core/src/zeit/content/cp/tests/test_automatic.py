@@ -233,7 +233,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
         self.solr.search.side_effect = RuntimeError('provoked')
-        self.assertEqual(0, len(IRenderedArea(lead).values()))
+        auto = IRenderedArea(lead)
+        self.assertEqual(0, len(auto.values()))
+        self.assertEqual(0, auto._content_query.total_hits)
 
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
         self.repository['normal'] = TestContentType()
@@ -303,6 +305,17 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         IRenderedArea(lead).values()
         self.assertEqual(
             'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
+
+    def test_returns_no_content_on_tms_error(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.referenced_topicpage = 'tms-id'
+        lead.automatic_type = 'topicpage'
+        self.tms.get_topicpage_documents.side_effect = RuntimeError('provoked')
+        auto = IRenderedArea(lead)
+        self.assertEqual(0, len(auto.values()))
+        self.assertEqual(0, auto._content_query.total_hits)
 
 
 class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
