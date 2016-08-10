@@ -70,7 +70,10 @@ class Connector(object):
 
         result = []
         for name in sorted(names):
-            name = unicode(name)
+            try:
+                name = name.decode('utf-8')
+            except UnicodeDecodeError:
+                continue
             child_id = unicode(
                 self._get_cannonical_id(self._make_id(path + (name, ))))
             result.append((name, child_id))
