@@ -123,6 +123,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
             'hide_dupes'])
 
+    referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
+        '.referenced_topicpage',
+        zeit.content.cp.interfaces.IArea['referenced_topicpage'])
+
     query_order = zeit.cms.content.property.ObjectPathProperty(
         '.query_order', zeit.content.cp.interfaces.IArea['query_order'],
         use_default=True)

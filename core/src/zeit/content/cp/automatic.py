@@ -147,6 +147,7 @@ class SolrContentQuery(ContentQuery):
         self.order = self.context.raw_order
 
     def __call__(self):
+        self.total_hits = 0
         result = []
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
@@ -212,6 +213,32 @@ class ChannelContentQuery(SolrContentQuery):
         if conditions:
             query = Q.and_(query, Q.or_(*conditions))
         return query
+
+
+class TMSContentQuery(ContentQuery):
+
+    grok.name('topicpage')
+
+    def __call__(self):
+        self.total_hits = 0
+        result = []
+        topicpage = self.context.referenced_topicpage
+        try:
+            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+            response = tms.get_topicpage_documents(
+                topicpage, self.start, self.rows)
+            self.total_hits = response.hits
+            for item in response:
+                content = self._resolve(item)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning('Error during TMS query %r for %s',
+                        topicpage, self.context.uniqueId, exc_info=True)
+        return result
+
+    def _resolve(self, doc):
+        return zeit.cms.interfaces.ICMSContent(doc['uniqueId'], None)
 
 
 class CenterpageContentQuery(ContentQuery):

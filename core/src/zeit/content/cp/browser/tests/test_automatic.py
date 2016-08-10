@@ -73,6 +73,30 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
                     lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
+    def test_stores_topicpage_properties_in_xml(self):
+        b = self.browser
+        zeit.content.cp.browser.testing.create_cp(b)
+        b.open('contents')
+        b.getLink('Edit block automatic').click()
+        b.getControl('Amount of teasers').value = '3'
+        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
+        b.getControl(name='form.automatic').displayValue = ['automatic']
+        b.getControl('automatic-area-type', index=0).displayValue = [
+            'topicpage']
+        b.getControl(name='form.referenced_topicpage').value = 'tms-id'
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction('zope.mgr'):
+                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+                cp = list(wc.values())[0]
+                self.assertEllipsis(
+                    """\
+<region...count="3" automatic="True" automatic_type="topicpage"...>...
+<referenced_topicpage>tms-id</referenced_topicpage>...""",
+                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+
 
 class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
 
