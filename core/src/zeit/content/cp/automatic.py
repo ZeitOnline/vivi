@@ -181,7 +181,7 @@ class SolrContentQuery(ContentQuery):
         if not self.context.hide_dupes or not self.existing_teasers:
             return Q.any_value()
         return Q.not_(Q.or_(*[Q._field('uniqueId', '"%s"' % x.uniqueId)
-                                for x in self.existing_teasers]))
+                              for x in self.existing_teasers]))
 
 
 class ChannelContentQuery(SolrContentQuery):
