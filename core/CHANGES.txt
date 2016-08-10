@@ -6,6 +6,11 @@ zeit.content.image changes
 
 - Add ``IImageGroup.master_image_for_viewport()``.
 
+- Determine ratio for "original" Variant from the actual source image
+  during transform, so it is viewport-sensitive. This also means
+  ``Variant.ratio`` for "original" is now None instead of a float,
+  since at that point we do not have the viewport information.
+
 
 2.14.4 (2016-08-04)
 -------------------

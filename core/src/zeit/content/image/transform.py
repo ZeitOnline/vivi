@@ -108,8 +108,11 @@ class ImageTransform(object):
             zoomed_width = int(source_width * variant.zoom)
             zoomed_height = int(source_height * variant.zoom)
 
+        target_ratio = variant.ratio
+        if target_ratio is None:
+            target_ratio = float(source_width) / float(source_height)
         target_width, target_height = self._fit_ratio_to_image(
-            zoomed_width, zoomed_height, variant.ratio)
+            zoomed_width, zoomed_height, target_ratio)
         if size:
             w, h = size
             override_ratio = float(w) / float(h)

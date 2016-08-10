@@ -110,18 +110,11 @@ class Variant(object):
 
         Normally the aspect_ratio is given as '3:4', resulting in a ratio of
         0.75. However, when aspect_ratio is set to 'original', the ratio will
-        be calculated from the dimensions of the master image.
+        be calculated from the dimensions of the source image by ITransform.
 
         """
-        if self.is_default or self.aspect_ratio == 'original':
-            image = zeit.content.image.interfaces.IMasterImage(
-                zeit.content.image.interfaces.IImageGroup(self))
-            xratio, yratio = image.getImageSize()
-            return float(xratio) / float(yratio)
-
-        if self.aspect_ratio is None:
+        if self.is_default or self.aspect_ratio in [None, 'original']:
             return None
-
         xratio, yratio = self.aspect_ratio.split(':')
         return float(xratio) / float(yratio)
 
