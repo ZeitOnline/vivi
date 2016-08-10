@@ -86,15 +86,15 @@ class VariantProperties(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('16:9', self.variants['cinema-small'].aspect_ratio)
         self.assertEqual(16.0 / 9.0, self.variants['cinema-small'].ratio)
 
-    def test_default_uses_ratio_from_original_image(self):
+    def test_default_has_no_ratio(self):
         self.assertEqual(None, self.variants['default'].aspect_ratio)
-        self.assertEqual(4.0 / 3.0, self.variants['default'].ratio)
+        self.assertEqual(None, self.variants['default'].ratio)
 
     def test_setting_aspect_ratio_to_original_will_use_ratio_from_master_image(
             self):
         self.group.variants = {'square': {'aspect_ratio': 'original'}}
         self.assertEqual('original', self.variants['square'].aspect_ratio)
-        self.assertEqual(4.0 / 3.0, self.variants['square'].ratio)
+        self.assertEqual(None, self.variants['square'].ratio)
 
     def test_max_width_retrieves_value_from_max_size(self):
         self.assertEqual(sys.maxint, self.variants['square'].max_width)

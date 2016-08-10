@@ -120,6 +120,16 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             '        ',
         ], self.transform.create_variant_image(variant, (8, 2)))
 
+    def test_ratio_original_uses_ratio_of_source_image(self):
+        variant = Variant(id='original', focus_x=5.0 / 16, focus_y=3.0 / 8,
+                          zoom=0.5, aspect_ratio='original')
+        self.assertImage([
+            '        ',
+            '  x     ',
+            '        ',
+            '        '
+        ], self.transform.create_variant_image(variant))
+
     def test_image_enhancements_are_applied_and_change_image(self):
         # Brightness of 0.0 makes image black
         variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
