@@ -4,7 +4,7 @@ zeit.content.image changes
 2.14.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``IImageGroup.master_image_for_viewport()``.
 
 
 2.14.4 (2016-08-04)

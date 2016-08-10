@@ -263,6 +263,11 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
         image, according to the settings of the variant determined by key.
         """
 
+    def master_image_for_viewport(viewport):
+        """Returns the master image for the given viewport. If none is found,
+        returns IMasterImage(self) instead.
+        """
+
 
 class IRepositoryImageGroup(IImageGroup):
     """An image group in the repository.  It contains images.

@@ -94,6 +94,13 @@ class ImageGroupBase(object):
         """Return first image of `master_images` as default master image."""
         return self.master_images[0][1] if self.master_images else None
 
+    def master_image_for_viewport(self, viewport):
+        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
+        for view, name in self.master_images:
+            if viewport == view:
+                return repository.get(name)
+        return zeit.content.image.interfaces.IMasterImage(self, None)
+
     def create_variant_image(self, key, source=None):
         """Retrieve Variant and create an image according to options in URL.
 
@@ -128,9 +135,7 @@ class ImageGroupBase(object):
 
         # Prefer a master image that was configured for given viewport.
         elif source is None and viewport is not None:
-            for view, name in self.master_images:
-                if viewport == view:
-                    source = repository.get(name)
+            source = self.master_image_for_viewport(viewport)
 
         # Our default transformation source should be the master image.
         if source is None:
