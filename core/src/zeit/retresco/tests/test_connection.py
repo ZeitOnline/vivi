@@ -48,3 +48,46 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         TEST_SERVER.response_code = 404
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.delete_id('any')
+
+    def test_get_topicpage_documents_pagination(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        with mock.patch.object(tms, '_request') as request:
+            request.return_value = {'num_found': 0, 'docs': []}
+            # Default values
+            tms.get_topicpage_documents('tms-id')
+            self.assertEqual(1, request.call_args[1]['params']['page'])
+            self.assertEqual(25, request.call_args[1]['params']['rows'])
+            # Passes through rows
+            tms.get_topicpage_documents('tms-id', 0, 7)
+            self.assertEqual(1, request.call_args[1]['params']['page'])
+            self.assertEqual(7, request.call_args[1]['params']['rows'])
+            # Calculates page from start
+            tms.get_topicpage_documents('tms-id', 5, 5)
+            self.assertEqual(2, request.call_args[1]['params']['page'])
+            tms.get_topicpage_documents('tms-id', 10, 5)
+            self.assertEqual(3, request.call_args[1]['params']['page'])
+
+    def test_get_topicpage_pulls_up_payload_keys(self):
+        TEST_SERVER.response_body = json.dumps({
+            'num_found': 1,
+            'docs': [{
+                'url': '/testcontent',
+                'doc_type': 'testcontenttype',
+                'doc_id': 'uuid',
+                'rtr_keywords': ['Berlin', 'Washington'],
+                'payload': {
+                    'supertitle': 'supertitle',
+                    'title': 'title',
+                }
+            }],
+        })
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = tms.get_topicpage_documents('tms-id')
+        self.assertEqual({
+            'uniqueId': 'http://xml.zeit.de/testcontent',
+            'type': 'testcontenttype',
+            'doc_id': 'uuid',
+            'rtr_keywords': ['Berlin', 'Washington'],
+            'supertitle': 'supertitle',
+            'title': 'title',
+        }, result[0])
