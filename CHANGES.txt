@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.3.0 (unreleased)
+1.3.0 (2016-08-10)
 ------------------
 
 - ZON-3120: Implement method to retrieve content that belongs to a TMS topic page
