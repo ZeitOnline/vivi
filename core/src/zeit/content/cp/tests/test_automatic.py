@@ -1,11 +1,13 @@
-from zeit.content.cp.interfaces import IRenderedArea
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.content.cp.interfaces import IRenderedArea
 import lxml.etree
 import mock
+import pysolr
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
+import zeit.solr.interfaces
 import zope.component
 
 
@@ -14,15 +16,15 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super(AutomaticAreaSolrTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
 
     def tests_values_contain_only_blocks_with_content(self):
         lead = self.repository['cp']['lead']
         lead.count = 5
         lead.automatic = True
         lead.automatic_type = 'query'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            self.assertEqual(0, len(IRenderedArea(lead).values()))
+        self.solr.search.return_value = pysolr.Results([], 0)
+        self.assertEqual(0, len(IRenderedArea(lead).values()))
 
     def tests_ignores_items_with_errors(self):
         lead = self.repository['cp']['lead']
@@ -30,14 +32,13 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            return_values = [
-                [dict(uniqueId='http://xml.zeit.de/notfound'),
-                 dict(uniqueId='http://xml.zeit.de/testcontent')],
-                []
-            ]
-            search.side_effect = lambda *args, **kw: return_values.pop(0)
-            self.assertEqual(1, len(IRenderedArea(lead).values()))
+        return_values = [pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/notfound'),
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 2),
+            pysolr.Results([], 0)
+        ]
+        self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
+        self.assertEqual(1, len(IRenderedArea(lead).values()))
 
     def test_only_marked_articles_are_put_into_leader_block(self):
         self.repository['normal'] = TestContentType()
@@ -50,10 +51,10 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
-                                   dict(uniqueId='http://xml.zeit.de/leader')]
-            result = IRenderedArea(lead).values()
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/normal'),
+            dict(uniqueId='http://xml.zeit.de/leader')], 2)
+        result = IRenderedArea(lead).values()
         self.assertEqual(
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
         self.assertEqual(
@@ -66,10 +67,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent')]
-            result = IRenderedArea(lead).values()
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
+        result = IRenderedArea(lead).values()
         leader = result[0]
         self.assertEqual(
             'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
@@ -80,10 +80,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent')]
-            result = IRenderedArea(lead).values()
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
+        result = IRenderedArea(lead).values()
         leader = result[0]
         self.assertEqual('buttons', leader.layout.id)
         self.assertEqual('leader', lead.values()[0].layout.id)
@@ -97,11 +96,10 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent',
-                     lead_candidate=True)]
-            xml = zeit.content.cp.interfaces.IRenderedXML(lead)
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent',
+                 lead_candidate=True)], 1)
+        xml = zeit.content.cp.interfaces.IRenderedXML(lead)
         self.assertEllipsis(
             """\
 <region...>
@@ -115,12 +113,11 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent',
-                     lead_candidate=True)]
-            xml = zeit.content.cp.interfaces.IRenderedXML(
-                self.repository['cp'])
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent',
+                 lead_candidate=True)], 1)
+        xml = zeit.content.cp.interfaces.IRenderedXML(
+            self.repository['cp'])
         self.assertEllipsis(
             """...
 <feed>
@@ -133,14 +130,13 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent',
-                     lead_candidate=True)]
-            content = zeit.content.cp.interfaces.ICMSContentIterable(lead)
-            self.assertEqual(
-                ['http://xml.zeit.de/testcontent'],
-                [x.uniqueId for x in content])
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/testcontent',
+                 lead_candidate=True)], 1)
+        content = zeit.content.cp.interfaces.ICMSContentIterable(lead)
+        self.assertEqual(
+            ['http://xml.zeit.de/testcontent'],
+            [x.uniqueId for x in content])
 
     def test_stores_query_in_xml(self):
         lead = self.repository['cp']['lead']
@@ -161,10 +157,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            self.assertEqual('raw', search.call_args[0][0])
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        self.assertEqual('raw', self.solr.search.call_args[0][0])
 
     def test_builds_query_from_conditions(self):
         lead = self.repository['cp']['lead']
@@ -175,16 +170,15 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             ('Keyword', 'Berlin', None))
         lead.automatic = True
         lead.automatic_type = 'channel'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            query = search.call_args[0][0]
-            self.assertIn('published:(published*)', query)
-            self.assertIn(
-                '(channels:(International*Nahost)'
-                ' OR channels:(Wissen*)'
-                ' OR keywords:(Berlin*))',
-                query)
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        query = self.solr.search.call_args[0][0]
+        self.assertIn('published:(published*)', query)
+        self.assertIn(
+            '(channels:(International*Nahost)'
+            ' OR channels:(Wissen*)'
+            ' OR keywords:(Berlin*))',
+            query)
 
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
@@ -192,12 +186,11 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.query = (('Channel', 'International', 'Nahost'),)
         lead.automatic = True
         lead.automatic_type = 'channel'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            self.assertEqual(
-                'date-last-published-semantic desc',
-                search.call_args[1]['sort_order'])
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            'date-last-published-semantic desc',
+            self.solr.search.call_args[1]['sort'])
 
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
@@ -206,10 +199,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.query_order = 'order'
         lead.automatic = True
         lead.automatic_type = 'channel'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            self.assertEqual('order', search.call_args[1]['sort_order'])
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        self.assertEqual('order', self.solr.search.call_args[1]['sort'])
 
     def test_raw_query_order_defaults_to_first_released(self):
         lead = self.repository['cp']['lead']
@@ -217,11 +209,10 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            self.assertEqual(
-                'date-first-released desc', search.call_args[1]['sort_order'])
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            'date-first-released desc', self.solr.search.call_args[1]['sort'])
 
     def test_raw_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
@@ -230,10 +221,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.raw_query = 'raw'
         lead.raw_order = 'order'
         lead.automatic_type = 'query'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            IRenderedArea(lead).values()
-            self.assertEqual('order', search.call_args[1]['sort_order'])
+        self.solr.search.return_value = pysolr.Results([], 0)
+        IRenderedArea(lead).values()
+        self.assertEqual('order', self.solr.search.call_args[1]['sort'])
 
     def test_returns_no_content_on_solr_error(self):
         lead = self.repository['cp']['lead']
@@ -241,9 +231,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.raw_query = 'raw'
         lead.automatic_type = 'query'
-        with mock.patch('zeit.find.search.search') as search:
-            search.side_effect = RuntimeError('provoked')
-            self.assertEqual(0, len(IRenderedArea(lead).values()))
+        self.solr.search.side_effect = RuntimeError('provoked')
+        self.assertEqual(0, len(IRenderedArea(lead).values()))
 
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
         self.repository['normal'] = TestContentType()
@@ -258,14 +247,14 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         zope.component.getAdapter(
             lead, zeit.edit.interfaces.IElementFactory, name='rss')()
 
-        with mock.patch('zeit.find.search.search') as search:
-            return_values = [
-                [dict(uniqueId='http://xml.zeit.de/normal'),
-                 dict(uniqueId='http://xml.zeit.de/leader')],
-                [], [], []
-            ]
-            search.side_effect = lambda *args, **kw: return_values.pop(0)
-            lead.automatic = False
+        empty = pysolr.Results([], 0)
+        return_values = [pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/normal'),
+            dict(uniqueId='http://xml.zeit.de/leader')], 2),
+            empty, empty, empty
+        ]
+        self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
+        lead.automatic = False
 
         result = lead.values()
         self.assertEqual(
@@ -276,24 +265,20 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            with zeit.cms.checkout.helper.checked_out(
-                    self.repository['cp']) as cp:
-                lead = cp['lead']
-                lead.count = 1
-                lead.automatic = True
-                lead.automatic_type = 'query'
+        self.solr.search.return_value = pysolr.Results([], 0)
+        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
+            lead = cp['lead']
+            lead.count = 1
+            lead.automatic = True
+            lead.automatic_type = 'query'
 
     def test_channel_has_automatic_attribute(self):
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            with zeit.cms.checkout.helper.checked_out(
-                    self.repository['cp']) as cp:
-                lead = cp['lead']
-                lead.count = 1
-                lead.automatic = True
-                lead.automatic_type = 'query'
+        self.solr.search.return_value = pysolr.Results([], 0)
+        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
+            lead = cp['lead']
+            lead.count = 1
+            lead.automatic = True
+            lead.automatic_type = 'query'
         self.assertEqual(
             'True', self.repository['cp.lead'].xml.get('automatic'))
 
@@ -318,6 +303,8 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic = True
         self.area.automatic_type = 'centerpage'
 
+        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+
     def test_returns_teasers_from_referenced_center_page(self):
         self.assertEqual([
             'http://xml.zeit.de/t1',
@@ -338,9 +325,8 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.referenced_cp = None
         with self.assertRaises(zeit.cms.interfaces.ValidationError):
             interface = zeit.content.cp.interfaces.IArea
-            with mock.patch('zeit.find.search.search') as search:
-                search.return_value = []
-                interface.validateInvariants(self.area)
+            self.solr.search.return_value = pysolr.Results([], 0)
+            interface.validateInvariants(self.area)
 
     def test_automatic_using_solr_requires_no_referenced_centerpage(self):
         self.area.referenced_cp = None
@@ -348,9 +334,8 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.raw_query = 'foo'
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IArea
-            with mock.patch('zeit.find.search.search') as search:
-                search.return_value = []
-                interface.validateInvariants(self.area)
+            self.solr.search.return_value = pysolr.Results([], 0)
+            interface.validateInvariants(self.area)
 
 
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
@@ -368,6 +353,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = self.create_and_checkout_centerpage()
         self.area = self.create_automatic_area(self.cp)
         self.area.referenced_cp = self.repository['cp_with_teaser']
+
+        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
 
     def create_automatic_area(self, cp, count=3, type='centerpage'):
         area = cp['feature'].create_item('area')
@@ -428,56 +415,23 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(a3).values()
         self.assertEqual(1, self.call_count[self.area])
 
-    def test_queries_additional_teasers_if_too_many_duplicates(self):
+    def test_cp_content_query_filters_duplicates(self):
         lead = self.cp['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
         lead.append(self.repository['t2'])
-        # Restrict default query amount to 2 -- which are already duplicated.
-        self.area.MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 0
-        self.area.count = 1
         self.assertEqual(
             'http://xml.zeit.de/t3',
             list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
-    def test_no_infloop_when_teasers_are_exhausted(self):
-        lead = self.cp['feature']['lead'].create_item('teaser')
-        lead.append(self.repository['t1'])
-        lead.append(self.repository['t2'])
-        lead.append(self.repository['t3'])
-        self.area.count = 1
-        self.assertEqual([], IRenderedArea(self.area).values())
-
-    def test_queries_additional_teasers_passes_offset_to_solr(self):
+    def test_solr_content_query_filters_duplicates(self):
         self.area.automatic_type = 'query'
 
         lead = self.cp['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
         lead.append(self.repository['t2'])
 
-        # Restrict default query amount to 2 -- which are already duplicated.
-        self.area.MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 0
-        self.area.count = 1
-        with mock.patch('zeit.find.search.search') as search:
-            return_values = [
-                [dict(uniqueId='http://xml.zeit.de/t1'),
-                 dict(uniqueId='http://xml.zeit.de/t2')],
-                [dict(uniqueId='http://xml.zeit.de/t3')]
-            ]
-            search.side_effect = lambda *args, **kw: return_values.pop(0)
-            self.assertEqual(
-                'http://xml.zeit.de/t3',
-                list(IRenderedArea(self.area).values()[0])[0].uniqueId)
-            self.assertEqual(2, search.call_args[1]['start'])
-
-    def test_tries_retrieving_additional_teasers_once_when_exhausted(self):
-        self.area.automatic_type = 'query'
-        self.area.count = 5
-        with mock.patch('zeit.find.search.search') as search:
-            return_values = [
-                [dict(uniqueId='http://xml.zeit.de/t1'),
-                 dict(uniqueId='http://xml.zeit.de/t2')],
-                []
-            ]
-            search.side_effect = lambda *args, **kw: return_values.pop(0)
-            IRenderedArea(self.area).values()
-            self.assertEqual(2, search.call_count)
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            'NOT (uniqueId:"http://xml.zeit.de/t2"'
+            ' OR uniqueId:"http://xml.zeit.de/t1")',
+            self.solr.search.call_args[1]['fq'])

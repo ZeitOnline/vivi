@@ -1,9 +1,8 @@
 import lxml.etree
-import mock
 import transaction
-import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.cp.testing
+import zeit.solr.interfaces
 import zope.testbrowser.testing
 
 
@@ -29,9 +28,9 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('automatic-area-type', index=0).displayValue = ['query']
         b.getControl('Raw query').value = 'foo'
         b.getControl('Sort order', index=1).value = 'bar'
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = []
-            b.getControl('Apply').click()
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        solr.search.return_value = []
+        b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
         with zeit.cms.testing.site(self.getRootFolder()):

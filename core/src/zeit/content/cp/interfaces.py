@@ -106,13 +106,13 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     def updateMetadata(content):
         """Update the metadata of the given content object."""
 
-    def is_teaser_present_above(current_area, content):
-        """Returns true if the given content object is contained in a
+    def teasered_content_above(area):
+        """Returns set of content objects contained in any
         ITeaserBlock module above the given area (IRenderedArea or manual)."""
 
-    def is_teaser_manual_below(current_area, content):
-        """Returns true if the given content object is contained in a
-        ITeaserBlock module above the given area (IRenderedArea is *not*
+    def manual_content_below(area):
+        """Returns set of content objects contained in any
+        ITeaserBlock module below the given area (IRenderedArea is *not*
         executed).
         """
 
@@ -363,7 +363,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
-    count_to_replace_duplicates = zope.interface.Attribute('')
 
     referenced_cp = zope.schema.Choice(
         title=_('Get teasers from CenterPage'),
@@ -448,6 +447,22 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
 class IRenderedArea(IArea):
     """Overrides values() to evaluate any automatic settings.
     """
+
+    start = zope.interface.Attribute(
+        'Offset the IContentQuery result by this many content objects. '
+        'This is an extension point for zeit.web to do pagination.')
+
+
+class IContentQuery(zope.interface.Interface):
+    """Mechanism to retrieve content objects.
+    Used to register named adapters for the different IArea.automatic_types.
+    """
+
+    total_hits = zope.interface.Attribute(
+        'Total number of available results (only available after calling)')
+
+    def __call__(self):
+        """Returns list of content objects."""
 
 
 class ICMSContentIterable(zope.interface.Interface):

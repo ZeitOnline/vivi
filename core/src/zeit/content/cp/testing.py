@@ -3,8 +3,10 @@ import __future__
 import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
+import mock
 import os
 import pkg_resources
+import plone.testing
 import re
 import time
 import transaction
@@ -38,12 +40,34 @@ product_config = """
 """.format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
+CP_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', name='CPLayer',
     product_config=zeit.cms.testing.cms_product_config
     + zeit.workflow.testing.product_config
     + zeit.content.image.testing.product_config
     + product_config)
+
+
+# XXX copy&paste from zeit.solr.testing, because importing that would create an
+# import cycle with zeit.content.article.testing, sigh.
+class SolrMockLayer(plone.testing.Layer):
+
+    def testSetUp(self):
+        self['solr'] = mock.Mock()
+        self['solr'].search.return_value = []
+        zope.interface.alsoProvides(self['solr'], zeit.solr.interfaces.ISolr)
+        zope.component.getSiteManager().registerUtility(self['solr'])
+
+    def testTearDown(self):
+        zope.component.getSiteManager().unregisterUtility(self['solr'])
+
+    def tearDown(self):
+        del self['solr']
+
+SOLR_MOCK_LAYER = SolrMockLayer()
+
+ZCML_LAYER = plone.testing.Layer(
+    bases=(CP_LAYER, SOLR_MOCK_LAYER), name='ZCMLLayer', module=__name__)
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,

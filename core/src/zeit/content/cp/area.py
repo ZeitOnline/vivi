@@ -133,8 +133,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
         use_default=True)
 
-    MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 5
-
     def __init__(self, context, xml):
         super(Area, self).__init__(context, xml)
         if 'hide-dupes' not in self.xml.attrib:
@@ -376,10 +374,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         for block in list(self.values()):
             if IAutomaticTeaserBlock.providedBy(block):
                 del self[block.__name__]
-
-    @property
-    def count_to_replace_duplicates(self):
-        return max(self.MINIMUM_COUNT_TO_REPLACE_DUPLICATES, 2 * self.count)
 
     @property
     def query(self):

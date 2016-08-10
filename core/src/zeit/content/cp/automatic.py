@@ -1,7 +1,11 @@
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
 import logging
 import zeit.content.cp.interfaces
 import zeit.find.search
+import zeit.solr.interfaces
+import zeit.solr.query
 import zope.component
 import zope.interface
 
@@ -13,6 +17,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     zope.component.adapts(zeit.content.cp.interfaces.IArea)
     zope.interface.implements(zeit.content.cp.interfaces.IRenderedArea)
+
+    start = 0  # Extension point for zeit.web to do pagination
 
     def __init__(self, context):
         self.context = context
@@ -29,35 +35,17 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    SOLR_FIELD = {
-        'Channel': 'channels',
-        'Keyword': 'keywords',
-    }
-
-    def _build_query(self):
-        query = zeit.find.search.query(filter_terms=[
-            zeit.solr.query.field_raw('published', 'published*')])
-        conditions = []
-        for type_, channel, subchannel in self.query:
-            if subchannel:
-                value = '%s*%s' % (channel, subchannel)
-            else:
-                # XXX Unclear whether this will work as desired for keywords.
-                value = '%s*' % channel
-            conditions.append(zeit.solr.query.field_raw(
-                self.SOLR_FIELD[type_], value))
-        if conditions:
-            query = zeit.solr.query.and_(
-                query, zeit.solr.query.or_(*conditions))
-        return query
-
     def values(self):
         if not self.automatic:
             return self.context.values()
 
-        self._v_try_to_retrieve_content = True
-        self._v_retrieved_content = 0
-        content = self._retrieve_content()
+        try:
+            content = self._content_query()
+        except LookupError:
+            log.warning('%s found no IContentQuery type %s',
+                        self.context, self.automatic_type)
+            return self.context.values()
+
         result = []
         for block in self.context.values():
             if not IAutomaticTeaserBlock.providedBy(block):
@@ -67,14 +55,13 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # since otherwise the first result that may_be_leader might be
             # given to a non-leader block.
             if block.layout.id in ['leader', 'zon-large']:
-                teaser = self._extract_newest(
-                    content, predicate=is_lead_candidate)
+                teaser = pop_filter(content, is_lead_candidate)
                 if teaser is None:
-                    teaser = self._extract_newest(content)
+                    teaser = pop_filter(content)
                     block.change_layout(
                         zeit.content.cp.layout.get_layout('buttons'))
             else:
-                teaser = self._extract_newest(content)
+                teaser = pop_filter(content)
             if teaser is None:
                 continue
             block.insert(0, teaser)
@@ -82,92 +69,11 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
         return result
 
-    def _retrieve_content(self):
-        if not self._v_try_to_retrieve_content:
-            return []
-        if self.automatic_type == 'channel':
-            content = self._query_solr(
-                self._build_query(), self.query_order)
-        elif self.automatic_type == 'query':
-            content = self._query_solr(
-                self.raw_query, self.raw_order)
-        elif self.automatic_type == 'centerpage':
-            content = self._query_centerpage()
-        else:
-            # BBB
-            if self.raw_query:
-                content = self._query_solr(
-                    self.raw_query,
-                    zeit.content.cp.interfaces.IArea['raw_order'].default)
-            else:
-                content = self._query_solr(
-                    self._build_query(),
-                    zeit.content.cp.interfaces.IArea['raw_order'].default)
-        seen = self._v_retrieved_content
-        self._v_retrieved_content += len(content)
-        if self._v_retrieved_content > seen:
-            self._v_try_to_retrieve_content = True
-        else:
-            self._v_try_to_retrieve_content = False
-        return content
-
-    def _query_solr(self, query, sort_order):
-        result = []
-        try:
-            for item in zeit.find.search.search(
-                    query, sort_order=sort_order,
-                    start=self._v_retrieved_content,
-                    rows=self.count_to_replace_duplicates):
-                content = zeit.cms.interfaces.ICMSContent(
-                    item['uniqueId'], None)
-                if content is not None:
-                    result.append(content)
-        except:
-            log.warning('Error during solr query %r for %s',
-                        query, self.uniqueId, exc_info=True)
-        return result
-
-    def _query_centerpage(self):
-        teasered = zeit.content.cp.interfaces.ITeaseredContent(
-            self.referenced_cp, iter([]))
-        result = []
-        for i in range(
-                self._v_retrieved_content + self.count_to_replace_duplicates):
-            try:
-                content = teasered.next()
-            except StopIteration:
-                # We've exhausted the available content.
-                break
-            if i >= self._v_retrieved_content:
-                result.append(content)
-        return result
-
-    def _extract_newest(self, content, predicate=None):
-        """Remove the first object from the content list for which predicate
-        returns True; thus, the default predicate means: no filtering.
-        """
-        result = None
-        pop = []
-        cp = zeit.content.cp.interfaces.ICenterPage(self)
-        for i, item in enumerate(content):
-            if predicate is None or predicate(item):
-                pop.append(item)
-                if self.hide_dupes and (
-                        cp.is_teaser_present_above(self.context, item)
-                        or cp.is_teaser_manual_below(self.context, item)):
-                    continue
-                result = item
-                break
-        for item in pop:
-            content.remove(item)
-        if result is None and not content:
-            # We've exhausted all available content due to duplicates, so we
-            # need to retrieve some more.
-            more_content = self._retrieve_content()
-            if more_content:
-                content[:] = more_content
-                return self._extract_newest(content, predicate)
-        return result
+    @cachedproperty
+    def _content_query(self):
+        return zope.component.getAdapter(
+            self, zeit.content.cp.interfaces.IContentQuery,
+            name=self.automatic_type)
 
     def select_modules(self, *interfaces):
         for module in self.values():
@@ -175,8 +81,154 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 yield module
 
 
+def pop_filter(items, predicate=None):
+    """Remove the first object from the list for which predicate returns True;
+    no predicate means no filtering.
+    """
+    for i, item in enumerate(items):
+        if predicate is None or predicate(item):
+            items.pop(i)
+            return item
+
+
 def is_lead_candidate(content):
     metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
     if metadata is None:
         return False
     return metadata.lead_candidate
+
+
+class ContentQuery(grok.Adapter):
+
+    grok.context(zeit.content.cp.interfaces.IRenderedArea)
+    grok.implements(zeit.content.cp.interfaces.IContentQuery)
+    grok.baseclass()
+
+    total_hits = NotImplemented
+
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self):
+        raise NotImplementedError()
+
+    @property
+    def start(self):
+        """Offset the result by this many content objects"""
+        return self.context.start
+
+    @property
+    def rows(self):
+        """Number of content objects per page"""
+        return self.context.count
+
+    @cachedproperty
+    def existing_teasers(self):
+        """Returns a set of ICMSContent objects that are already present on
+        the CP in other areas. If IArea.hide_dupes is True, these should be
+        not be repeated, and thus excluded from our query result.
+        """
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        result = set()
+        result.update(cp.teasered_content_above(self.context))
+        result.update(cp.manual_content_below(self.context))
+        return result
+
+
+class SolrContentQuery(ContentQuery):
+
+    grok.name('query')
+
+    FIELDS = ' '.join(zeit.find.search.DEFAULT_RESULT_FIELDS)
+
+    def __init__(self, context):
+        super(SolrContentQuery, self).__init__(context)
+        self.query_string = self.context.raw_query
+        self.order = self.context.raw_order
+
+    def __call__(self):
+        result = []
+        try:
+            solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+            response = solr.search(
+                self.query_string, sort=self.order,
+                start=self.start,
+                rows=self.rows,
+                fl=self.FIELDS,
+                fq=self.filter_query)
+            self.total_hits = response.hits
+            for item in response:
+                content = self._resolve(item)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning(
+                'Error during solr query %r for %s',
+                self.query_string, self.context.uniqueId, exc_info=True)
+        return result
+
+    def _resolve(self, solr_result):
+        return zeit.cms.interfaces.ICMSContent(solr_result['uniqueId'], None)
+
+    @property
+    def filter_query(self):
+        """Performs deduplication of results. We basically add more conditions
+        to the query to say "not this one or that one or those..." for all
+        those teasers that already exist on the CP.
+        """
+        Q = zeit.solr.query
+        if not self.context.hide_dupes or not self.existing_teasers:
+            return Q.any_value()
+        return Q.not_(Q.or_(*[Q._field('uniqueId', '"%s"' % x.uniqueId)
+                                for x in self.existing_teasers]))
+
+
+class ChannelContentQuery(SolrContentQuery):
+
+    grok.name('channel')
+
+    SOLR_FIELD = {
+        'Channel': 'channels',
+        'Keyword': 'keywords',
+    }
+
+    def __init__(self, context):
+        super(SolrContentQuery, self).__init__(context)
+        self.query_string = self._build_query()
+        self.order = self.context.query_order
+
+    def _build_query(self):
+        Q = zeit.solr.query
+        query = zeit.find.search.query(filter_terms=[
+            Q.field_raw('published', 'published*')])
+        conditions = []
+        for type_, channel, subchannel in self.context.query:
+            if subchannel:
+                value = '%s*%s' % (channel, subchannel)
+            else:
+                # XXX Unclear whether this will work as desired for keywords.
+                value = '%s*' % channel
+            conditions.append(Q.field_raw(self.SOLR_FIELD[type_], value))
+        if conditions:
+            query = Q.and_(query, Q.or_(*conditions))
+        return query
+
+
+class CenterpageContentQuery(ContentQuery):
+
+    grok.name('centerpage')
+    # XXX If zeit.web wanted to implement pagination for CP queries, we'd have
+    # to walk over the *whole* referenced CP to compute total_hits, which could
+    # be rather expensive.
+
+    def __call__(self):
+        teasered = zeit.content.cp.interfaces.ITeaseredContent(
+            self.context.referenced_cp, iter([]))
+        result = []
+        for content in teasered:
+            if self.context.hide_dupes and content in self.existing_teasers:
+                continue
+            result.append(content)
+            if len(result) >= self.rows:
+                break
+        return result

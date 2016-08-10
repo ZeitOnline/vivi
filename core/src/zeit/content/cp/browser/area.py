@@ -6,7 +6,8 @@ import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zeit.find.search
+import zeit.solr.interfaces
+import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.widgets
@@ -58,8 +59,9 @@ class SolrQueryWidget(zope.formlib.widgets.TextAreaWidget):
 
     def _toFieldValue(self, value):
         value = super(SolrQueryWidget, self)._toFieldValue(value)
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
         try:
-            zeit.find.search.search(value, rows=1)
+            solr.search(value, rows=1)
         except pysolr.SolrError:
             raise zope.formlib.interfaces.ConversionError(
                 _('Invalid solr query'), value)
