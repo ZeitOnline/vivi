@@ -10,11 +10,11 @@ import zeit.workflow.testing
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     def do_GET(self):
-        length = int(self.headers['content-length'])
+        length = int(self.headers.get('content-length', 0))
         self.requests.append(dict(
             verb=self.command,
             path=self.path,
-            body=self.rfile.read(length),
+            body=self.rfile.read(length) if length else None,
         ))
         self.send_response(self.response_code)
         self.end_headers()
