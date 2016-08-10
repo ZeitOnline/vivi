@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.7.7 (unreleased)
+2.7.7 (2016-08-10)
 ------------------
 
 - Handle non-ascii filenames by assuming utf-8 encoding.
