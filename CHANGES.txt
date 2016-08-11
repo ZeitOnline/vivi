@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.15.1 (unreleased)
+2.15.1 (2016-08-11)
 -------------------
 
 - Have master_image_for_viewport() fall back on "the largest image" it
