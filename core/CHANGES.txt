@@ -4,7 +4,7 @@ CHANGES
 2.7.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Handle errors in utf-8 decoding properly.
 
 
 2.7.7 (2016-08-10)
