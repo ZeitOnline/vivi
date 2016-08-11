@@ -4,7 +4,9 @@ zeit.content.image changes
 2.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Proxy image reference attribute access to its target and ignore
+  copied metadata (unless, of cause the attribute is overriden locally).
+  We still copy the XML on creation and update for compatibility. (Re ZON-1586)
 
 
 2.15.0 (2016-08-10)

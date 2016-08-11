@@ -42,12 +42,26 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
         content.images = (ref,)
         ref.title = u'localtitle'
         ref.caption = u'localcaption'
-        self.assertEqual('localtitle', ref.xml.get('title'))
-        self.assertEqual('localcaption', ref.xml.bu)
-
+        self.assertEqual('localtitle', ref.title)
+        self.assertEqual('localcaption', ref.caption)
         ref.update_metadata()
-        self.assertEqual('localtitle', ref.xml.get('title'))
-        self.assertEqual('localcaption', ref.xml.bu)
+        self.assertEqual('localtitle', ref.title)
+        self.assertEqual('localcaption', ref.caption)
+
+    def test_not_overridable_values_are_always_proxied_to_target(self):
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        with checked_out(image) as co:
+            IImageMetadata(co).origin = 'originalorigin'
+        content = self.repository['testcontent']
+        ref = content.images.create(image)
+        content.images = (ref,)
+        self.assertEqual('originalorigin', ref.origin)
+        ref.update_metadata()
+        self.assertEqual('originalorigin', ref.origin)
+        with checked_out(ref.target) as co:
+            IImageMetadata(co).origin = 'updatedorigin'
+        ref.update_metadata()
+        self.assertEqual('updatedorigin', ref.origin)
 
     def test_empty_local_values_leave_original_ones_alone(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
@@ -57,11 +71,11 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        self.assertEqual('originaltitle', ref.xml.get('title'))
-        self.assertEqual('originalcaption', ref.xml.bu)
+        self.assertEqual('originaltitle', ref.title)
+        self.assertEqual('originalcaption', ref.caption)
         ref.update_metadata()
-        self.assertEqual('originaltitle', ref.xml.get('title'))
-        self.assertEqual('originalcaption', ref.xml.bu)
+        self.assertEqual('originaltitle', ref.title)
+        self.assertEqual('originalcaption', ref.caption)
 
     def test_setting_local_value_none_yields_none(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
