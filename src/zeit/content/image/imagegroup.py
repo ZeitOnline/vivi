@@ -98,7 +98,8 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         for view, name in self.master_images:
             if viewport == view:
-                return repository.get(name)
+                if name in repository:
+                    return repository[name]
         return zeit.content.image.interfaces.IMasterImage(self, None)
 
     def create_variant_image(self, key, source=None):
