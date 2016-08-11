@@ -195,6 +195,15 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         properties[('master_image', IMAGE_NAMESPACE)] = 'master.png'
         self.assertEqual('master.png', group.master_image)
 
+    def test_master_image_for_viewport_ignores_if_nonexistent(self):
+        with mock.patch(
+                'zeit.content.image.imagegroup.ImageGroupBase.master_images',
+                new_callable=mock.PropertyMock) as master_images:
+            master_images.return_value = (('desktop', 'nonexistent.jpg'),)
+            self.assertEqual(
+                'master-image.jpg',
+                self.group.master_image_for_viewport('desktop').__name__)
+
 
 class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
 

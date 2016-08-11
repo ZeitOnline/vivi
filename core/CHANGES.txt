@@ -4,7 +4,8 @@ zeit.content.image changes
 2.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Have master_image_for_viewport() fall back on "the largest image" it
+  can find if a nonexistent name is configured.
 
 
 2.15.0 (2016-08-10)
