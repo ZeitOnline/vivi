@@ -24,25 +24,6 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
         zeit.content.image.interfaces.IImages['fill_color'])
 
 
-class LocalOverride(object):
-
-    def __init__(self, name):
-        self.name = name
-
-    def __get__(self, instance, class_):
-        if instance is None:
-            return self
-        return getattr(instance, '_%s_local' % self.name)
-
-    def __set__(self, instance, value):
-        __traceback_info__ = (self.name, value)
-        setattr(instance, '_%s_local' % self.name, value)
-        # XXX Maybe fall back to original value (from instance.target) when
-        # value is None? Or is it enough that we wait until checkin,
-        # when update_metadata will do that anyway?
-        setattr(instance, '_%s_original' % self.name, value)
-
-
 class ImageReference(zeit.cms.content.reference.Reference):
 
     grok.name('image')
@@ -52,25 +33,42 @@ class ImageReference(zeit.cms.content.reference.Reference):
     # XXX The *_original XML paths must be kept in sync with
     # z.c.image.metadata.XMLReferenceUpdater
 
-    _title_original = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'title',
-        zeit.content.image.interfaces.IImageMetadata['title'])
     _title_local = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title_local',
         zeit.content.image.interfaces.IImageReference['title'])
 
-    _alt_original = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'alt',
-        zeit.content.image.interfaces.IImageMetadata['alt'])
     _alt_local = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'alt_local',
         zeit.content.image.interfaces.IImageReference['alt'])
 
-    _caption_original = zeit.cms.content.property.ObjectPathProperty(
-        '.bu', zeit.content.image.interfaces.IImageMetadata['caption'])
     _caption_local = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'caption_local',
         zeit.content.image.interfaces.IImageReference['caption'])
+
+    def __getattribute__(self, key):
+        if key in zope.schema.getFieldNames(
+                zeit.content.image.interfaces.IImageMetadata):
+            field = zeit.content.image.interfaces.IImageMetadata[key]
+            try:
+                value = object.__getattribute__(self, '_%s_local' % key)
+            except AttributeError:
+                value = field.missing_value
+            if value == field.missing_value:
+                target_metadata = zeit.content.image.interfaces.IImageMetadata(
+                    self.target)
+                value = getattr(target_metadata, key, value)
+            return value
+        else:
+            return object.__getattribute__(self, key)
+
+    def __setattr__(self, key, value):
+        __traceback_info__ = (key, value)
+        if key in zope.schema.getFieldNames(
+                zeit.content.image.interfaces.IImageMetadata) and hasattr(
+                self, '_%s_local' % key):
+            key = '_%s_local' % key
+
+        super(ImageReference, self).__setattr__(key, value)
 
     @property
     def target_unique_id(self):
@@ -84,10 +82,6 @@ class ImageReference(zeit.cms.content.reference.Reference):
             self.xml.set('base-id', self.target.uniqueId)
         elif self.xml.get('src'):
             self.xml.set('src', self.target.uniqueId)
-
-    title = LocalOverride('title')
-    alt = LocalOverride('alt')
-    caption = LocalOverride('caption')
 
     def update_metadata(self, suppress_errors=False):
         super(ImageReference, self).update_metadata(suppress_errors)
