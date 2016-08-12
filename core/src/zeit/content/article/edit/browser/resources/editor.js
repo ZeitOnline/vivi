@@ -578,7 +578,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
         var movement_keys = ['KEY_ARROW_DOWN', 'KEY_ARROW_UP',
              'KEY_ARROW_LEFT', 'KEY_ARROW_RIGHT', 'KEY_CTRL', 'KEY_ALT',
-             'KEY_UNKNOWN', 'KEY_SHIFT', 'KEY_PRINT_SCREEN', 'KEY_END',
+             'KEY_SHIFT', 'KEY_PRINT_SCREEN', 'KEY_END',
              'KEY_HOME', 'KEY_PAGE_UP', 'KEY_PAGE_DOWN', 'KEY_WINDOWS_LEFT',
              'KEY_WINDOWS_RIGHT'];
         return !zeit.cms.in_array(key, movement_keys);
