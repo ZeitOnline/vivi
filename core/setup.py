@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.article',
-    version='3.20.6',
+    version='3.20.7.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
