@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.20.6 (unreleased)
+3.20.6 (2016-08-12)
 -------------------
 
 - Count `KEY_UNKNOWN` as dirty, since e.g. `-` or umlauts are mapped to this,
