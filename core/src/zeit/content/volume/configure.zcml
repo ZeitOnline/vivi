@@ -5,4 +5,17 @@
 
   <grok:grok package="." />
 
+  <class class=".volume.Volume">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
+    <require
+      interface=".interfaces.IVolume"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVolume"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>
