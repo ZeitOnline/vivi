@@ -1,6 +1,44 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  i18n_domain="zope">
+  i18n_domain="zeit.cms">
+
+  <browser:page
+     for="zeit.cms.repository.interfaces.IFolder"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     class=".form.Add"
+     name="zeit.content.volume.Add"
+     permission="zeit.AddContent"
+     menu="zeit-add-menu" title="Volume"
+     />
+
+   <browser:page
+     name="edit.html"
+     for="..interfaces.IVolume"
+     class=".form.Edit"
+     permission="zeit.EditContent"
+     menu="zeit-context-views" title="Edit metadata"
+     />
+
+   <browser:page
+     name="view.html"
+     for="..interfaces.IVolume"
+     class=".form.Display"
+     permission="zope.View"
+     />
+
+   <browser:defaultView
+     for="..interfaces.IVolume"
+     name="view.html"
+     />
+
+   <browser:menuItem
+     for="..interfaces.IVolume"
+     action="@@view.html"
+     menu="zeit-context-views"
+     title="View metadata"
+     permission="zope.View"
+     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+     />
 
 </configure>
