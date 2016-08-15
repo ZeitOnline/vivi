@@ -437,7 +437,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         s.waitForElementPresent(autocomplete_item)
         s.waitForVisible(autocomplete_item)
         s.click(autocomplete_item)
-        s.waitForNotVisible(autocomplete_item)
+        s.waitForNotVisible('css=.ui-menu')
 
 
 def click_wo_redirect(browser, *args, **kwargs):
