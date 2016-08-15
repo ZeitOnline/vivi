@@ -104,7 +104,10 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             ['(nothing selected)', 'Large', 'Float'],
             s.getSelectOptions(mode_select))
         s.select(mode_select, 'label=Large')
-        s.type(mode_select, '\t')
+        # It seems that when tabbing results in a jump that ends in a dropdown
+        # menu no save is triggered and the dirty flag is not removed. We,
+        # therefore, us the next one here.
+        s.type(variant_select, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
 
         s.waitForElementPresent(variant_select)
