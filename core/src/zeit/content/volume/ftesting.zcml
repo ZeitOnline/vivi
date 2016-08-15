@@ -1,9 +1,0 @@
-<configure
-   xmlns="http://namespaces.zope.org/zope"
-   xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope">
-
-  <include package="zeit.content.volume" />
-  <include package="zeit.content.volume.browser" />
-
-</configure>
