@@ -10,12 +10,12 @@ class Base(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.volume.interfaces.IVolume).select(
-            'year', 'volume', 'teaserText')
+            'product', 'year', 'volume', 'teaserText')
 
     field_groups = (
         gocept.form.grouped.Fields(
             _('Volume'),
-            ('year', 'volume', 'teaserText'),
+            ('product', 'year', 'volume', 'teaserText'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _('Texts'),

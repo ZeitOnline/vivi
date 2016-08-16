@@ -4,7 +4,23 @@ import zeit.cms.content.interfaces
 import zope.schema
 
 
+class ProductSource(zeit.cms.content.sources.ProductSource):
+    """Filtered XML source that only includes products with `volume="true"`."""
+
+    def getValues(self, context):
+        values = super(ProductSource, self).getValues(context)
+        return [x for x in values if x.volume]
+
+
 class IVolume(zeit.cms.content.interfaces.IXMLContent):
+
+    product = zope.schema.Choice(
+        title=_("Product id"),
+        # XXX kludgy, we expect a product with this ID to be present in the XML
+        # file. We only need to set an ID here, since to read the product we'll
+        # ask the source anyway.
+        default=zeit.cms.content.sources.Product(u'ZEI'),
+        source=ProductSource())
 
     year = zope.schema.Int(
         title=_("Year"),
