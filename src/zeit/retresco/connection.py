@@ -67,7 +67,7 @@ class TMS(object):
             page = row['payload']
             page[u'uniqueId'] = (
                 zeit.cms.interfaces.ID_NAMESPACE + row['url'][1:])
-            page[u'type'] = row['doc_type']
+            page[u'doc_type'] = row['doc_type']
             page[u'doc_id'] = row['doc_id']
             for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
                 key = u'rtr_{}s'.format(entity_type)

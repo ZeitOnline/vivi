@@ -85,7 +85,7 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         result = tms.get_topicpage_documents('tms-id')
         self.assertEqual({
             'uniqueId': 'http://xml.zeit.de/testcontent',
-            'type': 'testcontenttype',
+            'doc_type': 'testcontenttype',
             'doc_id': 'uuid',
             'rtr_keywords': ['Berlin', 'Washington'],
             'supertitle': 'supertitle',

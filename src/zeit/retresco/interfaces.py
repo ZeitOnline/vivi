@@ -29,7 +29,7 @@ class IResult(zope.interface.common.sequence.IReadSequence):
     """A list of dicts with the following keys:
 
     uniqueId: zeit.cms.interfaces.ICMSContent.uniqueId
-    type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
+    doc_type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
     doc_id: zeit.cms.content.interfaces.IUUID.id
     rtr_keywords, rtr_locations etc.
     plus all keys that ITMSRepresentation puts into `payload`
