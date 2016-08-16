@@ -234,15 +234,6 @@ class DefaultTemplateByContentType(
             ('article', 'inside'),
             source.get_default_template(article))
 
-    def test_config_should_return_given_values_if_already_set(self):
-        article = self.get_article()
-        article.template = u'column'
-        article.header_layout = u'default'
-        source = zeit.content.article.source.ArticleTemplateSource().factory
-        self.assertEquals(
-            ('column', 'default'),
-            source.get_default_template(article))
-
     def test_article_should_have_default_template_on_checkout(self):
         article = self.get_article()
         self.repository['article'] = article
@@ -250,6 +241,24 @@ class DefaultTemplateByContentType(
             pass
         self.assertEquals('article', self.repository['article'].template)
         self.assertEquals('default', self.repository['article'].header_layout)
+
+    def test_checkout_should_not_change_template_if_already_set(self):
+        article = self.get_article()
+        article.template = u'column'
+        article.header_layout = u'heiter'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+            pass
+        self.assertEquals('column', self.repository['article'].template)
+        self.assertEquals('heiter', self.repository['article'].header_layout)
+
+    def test_checkout_should_assign_default_if_current_value_invalid(self):
+        article = self.get_article()
+        article.template = u'nonexistent'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+            pass
+        self.assertEquals('article', self.repository['article'].template)
 
     def test_article_should_have_default_variant_name_on_checkout(self):
         article = self.get_article()

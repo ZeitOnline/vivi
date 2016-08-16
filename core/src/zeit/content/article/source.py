@@ -74,9 +74,6 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
     def get_default_template(self, context):
         tree = self._get_tree()
-        if context.template:
-            return (context.template, context.header_layout or u'')
-
         for template in tree.xpath('template'):
             if template.get('default_for'):
                 defaults = template.get('default_for').split(' ')

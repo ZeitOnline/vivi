@@ -276,10 +276,11 @@ def set_default_values(context, event):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def set_template_and_header_defaults(context, event):
+    source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE(context)
 
-    if not context.template and not context.header_layout:
-        source = zeit.content.article.source.ArticleTemplateSource().factory
-        template, header_layout = source.get_default_template(context)
+    if ((not context.template and not context.header_layout) or
+            context.template not in source):
+        template, header_layout = source.factory.get_default_template(context)
 
         context.template = template if template else None
         context.header_layout = header_layout if header_layout else None

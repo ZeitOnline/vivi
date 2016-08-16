@@ -4,7 +4,7 @@ zeit.content.article changes
 3.20.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-480: Assign default template on checkout when the current value is invalid
 
 
 3.20.6 (2016-08-12)
