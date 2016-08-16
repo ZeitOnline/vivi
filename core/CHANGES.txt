@@ -4,7 +4,8 @@ zeit.cms changes
 2.84.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Extend ``zeit.cms.content.sources.ProductSource`` to store the XML attribute
+  ``volume`` on it's values to filter the source in ``z.c.volume``. (ZON-3252)
 
 
 2.84.0 (2016-07-21)
