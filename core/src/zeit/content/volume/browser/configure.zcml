@@ -41,4 +41,13 @@
      filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
      />
 
+   <browser:icon
+     for="..interfaces.IVolume"
+     name="zmi_icon"
+     width="20"
+     height="20"
+     file="resources/volume.png"
+     layer="zeit.cms.browser.interfaces.ICMSStyles"
+     />
+
 </configure>
