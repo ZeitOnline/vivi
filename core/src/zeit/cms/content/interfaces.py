@@ -220,6 +220,8 @@ class ICommonMetadata(zope.interface.Interface):
         default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.ProductSource())
 
+    # probably obsolete, only used to filter out News in zeit.find, but could
+    # use product_id as well (besides, there is no product with title "News")
     product_text = zope.interface.Attribute(
         "Title of product_id (r/o).")
 
