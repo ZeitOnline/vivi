@@ -15,6 +15,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
+        'gocept.form',
         'grokcore.component',
         'lxml',
         'setuptools',
@@ -22,6 +23,7 @@ setup(
         'zeit.cms >= 2.84.1.dev0',
         'zeit.content.image',
         'zope.component',
+        'zope.formlib',
         'zope.interface',
         'zope.schema',
         'zope.security',
