@@ -185,8 +185,8 @@ def validate_article(context, event):
             for name, error in errors]
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.
-    if (IAutomaticallyRenameable(context).renameable
-        and not IAutomaticallyRenameable(context).rename_to):
+    if (IAutomaticallyRenameable(context).renameable and
+            not IAutomaticallyRenameable(context).rename_to):
         errors.append(
             (IAutomaticallyRenameable['rename_to'],
              zope.schema.interfaces.RequiredMissing('rename_to')))
