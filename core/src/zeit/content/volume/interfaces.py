@@ -36,3 +36,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+    date_print_published = zope.schema.Datetime(
+        title=_('Date of print publication'),
+        required=False)
