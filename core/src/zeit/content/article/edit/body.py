@@ -1,5 +1,6 @@
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.edit.header import HEADER_NAME
+from zope.schema.interfaces import SchemaNotFullyImplemented
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
@@ -174,15 +175,18 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IValidateCheckinEvent)
 def validate_article(context, event):
+    if zeit.content.article.interfaces.IBreakingNews(context).is_breaking:
+        interface = zeit.content.article.interfaces.IBreakingNews
+    else:
+        interface = zeit.content.article.interfaces.IArticle
     # field validation (e.g. zope.schema.Tuple) does type comparisons, which
     # doesn't work with security proxies
     context = zope.security.proxy.removeSecurityProxy(context)
-    errors = zope.schema.getValidationErrors(
-        zeit.content.article.interfaces.IArticle, context) or []
+    errors = zope.schema.getValidationErrors(interface, context) or []
     if errors:
-        errors = [
-            (zeit.content.article.interfaces.IArticle[name], error)
-            for name, error in errors]
+        errors = [(interface[name], error) for name, error in errors
+                  # Ignore IBreakingNews.is_breaking.
+                  if not isinstance(error, SchemaNotFullyImplemented)]
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.
     if (IAutomaticallyRenameable(context).renameable and

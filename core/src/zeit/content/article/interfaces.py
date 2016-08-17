@@ -16,7 +16,8 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=False,
+        required=True,
+        missing_value=(),
         default=())
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
@@ -226,6 +227,10 @@ class IBreakingNews(IArticle):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
     """
+
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        required=False,
+        default=())
 
     title = zope.schema.Text(
         title=_("Title"), missing_value=u'')

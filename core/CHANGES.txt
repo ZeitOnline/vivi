@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - BUG-480: Assign default template on checkout when the current value is invalid
 
+- ZON-2881: Make keywords required for Article (but not breaking news).
+
 
 3.20.6 (2016-08-12)
 -------------------
