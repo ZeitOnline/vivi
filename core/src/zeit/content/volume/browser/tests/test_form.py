@@ -18,3 +18,12 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         self.assertEqual('2008', b.getControl('Year').value)
         self.assertEqual('26', b.getControl('Volume').value)
+
+    def test_automatically_sets_filename_using_year_and_volume(self):
+        self.open_add_form()
+        b = self.browser
+        b.getControl('Year').value = '2010'
+        b.getControl('Volume').value = '2'
+        b.getControl('Add').click()
+        self.assertEqual('http://localhost/++skin++vivi/repository/'
+                         'ausgabe-2010-02/@@view.html', b.url)

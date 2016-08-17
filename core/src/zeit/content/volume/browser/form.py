@@ -30,12 +30,10 @@ class Add(Base, zeit.cms.browser.form.AddForm):
     factory = zeit.content.volume.volume.Volume
     checkout = False
 
-    def create(self, data):
+    def suggestName(self, object):
         """Define __name__ automatically using year / volume."""
-        volume = super(Add, self).create(data)
-        volume.__name__ = 'ausgabe-{year}-{volume}'.format(
-            year=data['year'], volume=str(data['volume']).rjust(2, '0'))
-        return volume
+        return 'ausgabe-{year}-{volume}'.format(
+            year=object.year, volume=str(object.volume).rjust(2, '0'))
 
     def setUpWidgets(self, *args, **kw):
         super(Add, self).setUpWidgets(*args, **kw)
