@@ -4,8 +4,9 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.volume.interfaces
-import zeit.workflow
+import zeit.workflow.interfaces
 import zope.interface
+import zope.schema
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
