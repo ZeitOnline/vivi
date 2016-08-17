@@ -27,3 +27,21 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Add').click()
         self.assertEqual('http://localhost/++skin++vivi/repository/'
                          'ausgabe-2010-02/@@view.html', b.url)
+
+    def test_displays_dynamic_form_fields_for_imagegroup_references(self):
+        self.open_add_form()
+        b = self.browser
+        self.assertEllipsis(
+            """...Portrait...Landscape...iPad...""", b.contents)
+
+    def test_saves_imagegroup_reference_via_dynamic_form_field(self):
+        from zeit.content.image.testing import create_image_group
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['imagegroup'] = create_image_group()
+        self.open_add_form()
+        b = self.browser
+        b.getControl('Landscape').value = 'http://xml.zeit.de/imagegroup'
+        b.getControl('Add').click()
+        self.assertIn(
+            '<span class="uniqueId">http://xml.zeit.de/imagegroup/</span>',
+            b.contents)

@@ -1,6 +1,9 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
+import zc.sourcefactory.source
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
+import zope.interface.common.mapping
 import zope.schema
 
 
@@ -40,3 +43,28 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     date_print_published = zope.schema.Datetime(
         title=_('Date of print publication'),
         required=False)
+
+
+class IVolumeCovers(zope.interface.common.mapping.IMapping):
+    """Mapping from uniqueId to IImageGroup to save several covers on a volume.
+
+    This interface is used to define the available covers via an XML source and
+    to store the chosen cover images as references on the IVolume.
+
+    """
+
+
+class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def title(self, id):
+            """Expose the `getTitle` function directly on the source class."""
+            return self.factory.getTitle(self.context, id)
+
+    product_configuration = 'zeit.content.volume'
+    config_url = 'volume-cover-source'
+    attribute = 'id'
+
+
+VOLUME_COVER_SOURCE = VolumeCoverSource()

@@ -16,8 +16,11 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'grokcore.component',
+        'lxml',
         'setuptools',
+        'zc.sourcefactory',
         'zeit.cms >= 2.84.1.dev0',
+        'zeit.content.image',
         'zope.component',
         'zope.interface',
         'zope.schema',

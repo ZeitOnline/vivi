@@ -1,4 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
+import UserDict
+import grokcore.component as grok
+import lxml.objectify
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -7,6 +10,7 @@ import zeit.content.volume.interfaces
 import zeit.workflow.interfaces
 import zope.interface
 import zope.schema
+import zope.security.proxy
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -47,3 +51,57 @@ class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.volume.interfaces.IVolume
     title = _('Volume')
     type = 'volume'
+
+
+# XXX copied & adjusted from `zeit.content.author.author.BiographyQuestions`
+class VolumeCovers(
+        grok.Adapter,
+        UserDict.DictMixin,
+        zeit.cms.content.xmlsupport.Persistent):
+    """Adapter to store `IImageGroup` references inside XML of `Volume`.
+
+    The adapter interferes with the zope.formlib by overwriting setattr/getattr
+    and storing/retrieving the values on the XML of `Volume` (context).
+
+    """
+
+    grok.context(zeit.content.volume.interfaces.IVolume)
+    grok.implements(zeit.content.volume.interfaces.IVolumeCovers)
+
+    def __init__(self, context):
+        """Set attributes using `object.__setattr__`, since we overwrite it."""
+        object.__setattr__(self, 'context', context)
+        object.__setattr__(self, 'xml', zope.security.proxy.getObject(
+            context.xml))
+        object.__setattr__(self, '__parent__', context)
+
+    def __getitem__(self, key):
+        node = self.xml.xpath('//cover[@id="%s"]' % key)
+        return unicode(node[0]) if node else None
+
+    def __setitem__(self, key, uniqueId):
+        node = self.xml.xpath('//cover[@id="%s"]' % key)
+        if node:
+            self.xml.remove(node[0])
+        if uniqueId:
+            node = lxml.objectify.E.cover(uniqueId, id=key)
+            lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
+            self.xml.append(node)
+        super(VolumeCovers, self).__setattr__('_p_changed', True)
+
+    def keys(self):
+        return list(zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(self))
+
+    def title(self, key):
+        return zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
+            self).title(key)
+
+    # XXX Why does this work without an explicit security declaration?
+
+    def __getattr__(self, key):
+        """Interfere with zope.formlib and retrieve content via getitem."""
+        return zeit.cms.interfaces.ICMSContent(self.get(key), None)
+
+    def __setattr__(self, key, value):
+        """Interfere with zope.formlib and store content via setitem."""
+        self[key] = value.uniqueId
