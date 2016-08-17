@@ -28,6 +28,7 @@ class Add(Base, zeit.cms.browser.form.AddForm):
 
     title = _('Add volume')
     factory = zeit.content.volume.volume.Volume
+    checkout = False
 
     def create(self, data):
         """Define __name__ automatically using year / volume."""
