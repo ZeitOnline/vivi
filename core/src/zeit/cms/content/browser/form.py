@@ -63,15 +63,13 @@ class CommonMetadataAddForm(CommonMetadataFormBase,
                             zeit.cms.browser.form.AddForm):
     """Add form which contains the common metadata."""
 
-    def setUpWidgets(self, ignore_request=False):
-        if not ignore_request:
-            if 'form.actions.add' not in self.request:
-                settings = zeit.cms.settings.interfaces.IGlobalSettings(
-                    self.context)
-                form = self.request.form
-                form['form.year'] = str(settings.default_year)
-                form['form.volume'] = str(settings.default_volume)
-        super(CommonMetadataAddForm, self).setUpWidgets(ignore_request)
+    def setUpWidgets(self, *args, **kw):
+        super(CommonMetadataAddForm, self).setUpWidgets(*args, **kw)
+        settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
+        if not self.widgets['year'].hasInput():
+            self.widgets['year'].setRenderedValue(settings.default_year)
+        if not self.widgets['volume'].hasInput():
+            self.widgets['volume'].setRenderedValue(settings.default_volume)
 
 
 class CommonMetadataEditForm(CommonMetadataFormBase,
