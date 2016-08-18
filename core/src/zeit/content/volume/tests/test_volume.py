@@ -18,7 +18,8 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         covers.ipad = self.repository['imagegroup']
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-            '<cover id="ipad">http://xml.zeit.de/imagegroup/</cover></covers>',
+            '<cover href="http://xml.zeit.de/imagegroup/" id="ipad">'
+            'http://xml.zeit.de/imagegroup/</cover></covers>',
             lxml.etree.tostring(self.volume.xml.covers))
 
     def test_setattr_deletes_existing_node_if_value_is_None(self):

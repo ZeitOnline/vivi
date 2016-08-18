@@ -99,7 +99,8 @@ class VolumeCovers(
         if node:
             self.xml.covers.remove(node[0])
         if value:
-            node = lxml.objectify.E.cover(value.uniqueId, id=key)
+            node = lxml.objectify.E.cover(value.uniqueId, id=key,
+                                          href=value.uniqueId)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.covers.append(node)
         super(VolumeCovers, self).__setattr__('_p_changed', True)
