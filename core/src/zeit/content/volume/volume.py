@@ -94,12 +94,12 @@ class VolumeCovers(
         node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
         return unicode(node[0]) if node else None
 
-    def __setitem__(self, key, uniqueId):
+    def __setitem__(self, key, value):
         node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
         if node:
             self.xml.covers.remove(node[0])
-        if uniqueId:
-            node = lxml.objectify.E.cover(uniqueId, id=key)
+        if value:
+            node = lxml.objectify.E.cover(value.uniqueId, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.covers.append(node)
         super(VolumeCovers, self).__setattr__('_p_changed', True)
@@ -119,4 +119,4 @@ class VolumeCovers(
 
     def __setattr__(self, key, value):
         """Interfere with zope.formlib and store content via setitem."""
-        self[key] = value.uniqueId
+        self[key] = value

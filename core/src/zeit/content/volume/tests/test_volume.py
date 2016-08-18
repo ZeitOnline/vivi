@@ -21,6 +21,14 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             '<cover id="ipad">http://xml.zeit.de/imagegroup/</cover></covers>',
             lxml.etree.tostring(self.volume.xml.covers))
 
+    def test_setattr_deletes_existing_node_if_value_is_None(self):
+        covers = zeit.content.volume.interfaces.IVolumeCovers(self.volume)
+        covers.ipad = self.repository['imagegroup']
+        covers.ipad = None
+        self.assertEqual(
+            '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
+            lxml.etree.tostring(self.volume.xml.covers))
+
     def test_getattr_retrieves_ICMSContent_via_uniqueId_in_XML_of_Volume(self):
         node = lxml.objectify.E.cover(
             'http://xml.zeit.de/imagegroup/', id='ipad')
