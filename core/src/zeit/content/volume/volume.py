@@ -24,7 +24,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('product', 'year', 'volume', 'date_print_published', 'teaserText',))
+        ('year', 'volume', 'date_print_published', 'teaserText',))
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
