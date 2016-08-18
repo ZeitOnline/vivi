@@ -25,8 +25,8 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Year').value = '2010'
         b.getControl('Volume').value = '2'
         b.getControl('Add').click()
-        self.assertEqual('http://localhost/++skin++vivi/repository/'
-                         'ausgabe-2010-02/@@view.html', b.url)
+        self.assertEqual(
+            'http://localhost/++skin++vivi/repository/02/@@view.html', b.url)
 
     def test_displays_dynamic_form_fields_for_imagegroup_references(self):
         self.open_add_form()

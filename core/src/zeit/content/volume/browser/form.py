@@ -60,9 +60,8 @@ class Add(Base, zeit.cms.browser.form.AddForm):
     checkout = False
 
     def suggestName(self, object):
-        """Define __name__ automatically using year / volume."""
-        return 'ausgabe-{year}-{volume}'.format(
-            year=object.year, volume=str(object.volume).rjust(2, '0'))
+        """Define __name__ automatically."""
+        return str(object.volume).rjust(2, '0')
 
     def setUpWidgets(self, *args, **kw):
         super(Add, self).setUpWidgets(*args, **kw)
