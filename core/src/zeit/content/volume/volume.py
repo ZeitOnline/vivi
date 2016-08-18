@@ -24,6 +24,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">
             <head/>
             <body/>
+            <covers/>
         </volume>
     """
 
@@ -90,17 +91,17 @@ class VolumeCovers(
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
-        node = self.xml.xpath('//cover[@id="%s"]' % key)
+        node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
         return unicode(node[0]) if node else None
 
     def __setitem__(self, key, uniqueId):
-        node = self.xml.xpath('//cover[@id="%s"]' % key)
+        node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
         if node:
-            self.xml.remove(node[0])
+            self.xml.covers.remove(node[0])
         if uniqueId:
             node = lxml.objectify.E.cover(uniqueId, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
-            self.xml.append(node)
+            self.xml.covers.append(node)
         super(VolumeCovers, self).__setattr__('_p_changed', True)
 
     def keys(self):
