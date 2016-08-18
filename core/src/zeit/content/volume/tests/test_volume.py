@@ -14,8 +14,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume = zeit.content.volume.volume.Volume()
 
     def test_setattr_stores_uniqueId_in_XML_of_Volume(self):
-        covers = zeit.content.volume.interfaces.IVolumeCovers(self.volume)
-        covers.ipad = self.repository['imagegroup']
+        self.volume.covers.ipad = self.repository['imagegroup']
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
             '<cover href="http://xml.zeit.de/imagegroup/" id="ipad">'
@@ -23,9 +22,8 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             lxml.etree.tostring(self.volume.xml.covers))
 
     def test_setattr_deletes_existing_node_if_value_is_None(self):
-        covers = zeit.content.volume.interfaces.IVolumeCovers(self.volume)
-        covers.ipad = self.repository['imagegroup']
-        covers.ipad = None
+        self.volume.covers.ipad = self.repository['imagegroup']
+        self.volume.covers.ipad = None
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
             lxml.etree.tostring(self.volume.xml.covers))
@@ -36,5 +34,5 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
         self.volume.xml.covers.append(node)
 
-        covers = zeit.content.volume.interfaces.IVolumeCovers(self.volume)
-        self.assertEqual(self.repository['imagegroup'], covers.ipad)
+        self.assertEqual(
+            self.repository['imagegroup'], self.volume.covers.ipad)

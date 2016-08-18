@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.source
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zope.interface
 import zope.interface.common.mapping
 import zope.schema
 
@@ -43,6 +44,8 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     date_digital_published = zope.schema.Datetime(
         title=_('Date of digital publication'),
         required=False)
+
+    covers = zope.interface.Attribute('Print volume covers')
 
 
 class IVolumeCovers(zope.interface.common.mapping.IMapping):
