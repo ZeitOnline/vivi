@@ -40,8 +40,8 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         required=False,
         max_length=170)
 
-    date_print_published = zope.schema.Datetime(
-        title=_('Date of print publication'),
+    date_digital_published = zope.schema.Datetime(
+        title=_('Date of digital publication'),
         required=False)
 
 
