@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.15.2 (unreleased)
+2.16.0 (2016-08-18)
 -------------------
 
 - Proxy image reference attribute access to its target and ignore
