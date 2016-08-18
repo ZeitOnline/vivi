@@ -120,3 +120,14 @@ class VolumeCovers(
     def __setattr__(self, key, value):
         """Interfere with zope.formlib and store content via setitem."""
         self[key] = value
+
+
+@grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@grok.implementer(zeit.content.volume.interfaces.IVolume)
+def retrieve_volume_using_info_from_metadata(context):
+    if context.year is None or context.volume is None:
+        return None
+    uniqueId = 'http://xml.zeit.de/ausgabe/{year}/{name}'.format(
+        year=context.year,
+        name=str(context.volume).rjust(2, '0'))
+    return zeit.cms.interfaces.ICMSContent(uniqueId)

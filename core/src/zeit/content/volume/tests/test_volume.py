@@ -37,3 +37,32 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
         covers = zeit.content.volume.interfaces.IVolumeCovers(self.volume)
         self.assertEqual(self.repository['imagegroup'], covers.ipad)
+
+
+class TestReference(zeit.content.volume.testing.FunctionalTestCase):
+
+    def setUp(self):
+        from zeit.cms.repository.folder import Folder
+        from zeit.content.volume.volume import Volume
+        super(TestReference, self).setUp()
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        self.repository['ausgabe'] = Folder()
+        self.repository['ausgabe']['2015'] = Folder()
+        self.repository['ausgabe']['2015']['01'] = volume
+
+    def test_content_without_year_or_volume_does_not_adapt_to_IVolume(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        with self.assertRaises(TypeError):
+            zeit.content.volume.interfaces.IVolume(TestContentType())
+
+    def test_content_with_year_and_volume_adapts_to_IVolume(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        content = TestContentType()
+        content.year = 2015
+        content.volume = 1
+        volume = zeit.content.volume.interfaces.IVolume(content)
+        self.assertEqual(
+            volume,
+            self.repository['ausgabe']['2015']['01'])
