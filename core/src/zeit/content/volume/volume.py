@@ -17,7 +17,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(
         zeit.content.volume.interfaces.IVolume,
-        zeit.cms.interfaces.IEditorialContent)
+        zeit.cms.interfaces.IAsset)
 
     default_template = '<volume><head/><body/></volume>'
 
