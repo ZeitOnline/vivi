@@ -3,6 +3,7 @@ import UserDict
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
+import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -19,12 +20,25 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.IAsset)
 
-    default_template = '<volume><head/><body/></volume>'
+    default_template = u"""\
+        <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+            <head/>
+            <body/>
+        </volume>
+    """
+
+    year = zeit.cms.content.property.ObjectPathProperty(
+        '.body.year', zeit.content.volume.interfaces.IVolume['year'])
+    volume = zeit.cms.content.property.ObjectPathProperty(
+        '.body.volume', zeit.content.volume.interfaces.IVolume['volume'])
+    teaserText = zeit.cms.content.property.ObjectPathProperty(
+        '.body.teaserText',
+        zeit.content.volume.interfaces.IVolume['teaserText'])
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('year', 'volume', 'date_print_published', 'teaserText',))
+        ('date_print_published',))
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
