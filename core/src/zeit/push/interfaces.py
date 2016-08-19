@@ -50,10 +50,10 @@ class IPushNotifier(zope.interface.Interface):
         * ``enabled``: If the service is enabled.
 
         * ``channels``: Restrict push notification to users listening to this
-          kind of pushes (`News` or `Eilmeldung`). [only `parse`]
+          kind of pushes (`News` or `Eilmeldung`). [only `mobile`]
 
         * ``override_text``: Text that should be used instead of the given
-          `text` parameter. [only `parse` & `facebook`]
+          `text` parameter. [only `mobile` & `facebook`]
 
         * ``account``: Send push notification using given account.
           [only `facebook` & `twitter`]
