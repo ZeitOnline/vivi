@@ -67,3 +67,17 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(
             volume,
             self.repository['ausgabe']['2015']['01'])
+
+    def test_content_online_product_has_no_IVolume(self):
+        # *All* content that is added in vivi gets year and volume from
+        # zeit.cms.settings.interfaces.IGlobalSettings, so we need to ensure
+        # that "online content" has no IVolume, only print content.
+        # In addition we want only handle products with a location template
+        # configured.
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        content = TestContentType()
+        content.year = 2015
+        content.volume = 1
+        content.product = zeit.cms.content.sources.Product(u'ZEDE')
+        with self.assertRaises(TypeError):
+            zeit.content.volume.interfaces.IVolume(content)
