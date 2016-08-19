@@ -96,7 +96,7 @@ class VolumeCovers(
 
     def __getitem__(self, key):
         node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
-        uniqueId = unicode(node[0]) if node else None
+        uniqueId = node[0].get('href') if node else None
         return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
     def __setitem__(self, key, value):
@@ -104,8 +104,7 @@ class VolumeCovers(
         if node:
             self.xml.covers.remove(node[0])
         if value:
-            node = lxml.objectify.E.cover(value.uniqueId, id=key,
-                                          href=value.uniqueId)
+            node = lxml.objectify.E.cover(id=key, href=value.uniqueId)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.covers.append(node)
         super(VolumeCovers, self).__setattr__('_p_changed', True)
