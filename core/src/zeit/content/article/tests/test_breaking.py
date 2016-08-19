@@ -4,6 +4,17 @@ from zeit.content.article.interfaces import IBreakingNews
 import zeit.content.article.testing
 
 
+class BreakingNewsTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_keywords_are_not_required_for_breaking_news(self):
+        article = zeit.content.article.testing.create_article()
+        IBreakingNews(article).is_breaking = True
+        self.repository['breaking'] = article
+        with self.assertNothingRaised():
+            with checked_out(self.repository['breaking'], temporary=False):
+                pass
+
+
 class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
