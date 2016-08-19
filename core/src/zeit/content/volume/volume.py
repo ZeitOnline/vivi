@@ -59,6 +59,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             return
         self._product_id = value.id if value is not None else None
 
+    @property
+    def covers(self):
+        return zeit.content.volume.interfaces.IVolumeCovers(self)
+
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
 
@@ -92,14 +96,16 @@ class VolumeCovers(
 
     def __getitem__(self, key):
         node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
-        return unicode(node[0]) if node else None
+        uniqueId = unicode(node[0]) if node else None
+        return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//covers/cover[@id="%s"]' % key)
         if node:
             self.xml.covers.remove(node[0])
         if value:
-            node = lxml.objectify.E.cover(value.uniqueId, id=key)
+            node = lxml.objectify.E.cover(value.uniqueId, id=key,
+                                          href=value.uniqueId)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.covers.append(node)
         super(VolumeCovers, self).__setattr__('_p_changed', True)
@@ -115,7 +121,7 @@ class VolumeCovers(
 
     def __getattr__(self, key):
         """Interfere with zope.formlib and retrieve content via getitem."""
-        return zeit.cms.interfaces.ICMSContent(self.get(key), None)
+        return self.get(key)
 
     def __setattr__(self, key, value):
         """Interfere with zope.formlib and store content via setitem."""
