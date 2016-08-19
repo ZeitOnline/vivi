@@ -65,7 +65,11 @@ class Connection(zeit.push.mobile.ConnectionBase):
         ios.audience = audience
         ios.options = {'expiry': expiry}
         ios.device_types = ['ios']
-        ios.notification = {'ios': {'extra': data['ios']}}
+        ios.notification = {'ios': {
+            'title': data['ios'].pop('alert-title'),
+            'alert': data['ios'].pop('alert'),
+            'extra': data['ios']
+        }}
         self.push(ios)
 
     def push(self, push):
