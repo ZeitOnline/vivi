@@ -1,5 +1,6 @@
 import lxml.etree
 import lxml.objectify
+import zeit.cms.content.sources
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
 import zeit.content.volume.volume
@@ -51,16 +52,17 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['ausgabe']['2015'] = Folder()
         self.repository['ausgabe']['2015']['01'] = volume
 
-    def test_content_without_year_or_volume_does_not_adapt_to_IVolume(self):
+    def test_content_with_missing_values_does_not_adapt_to_IVolume(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(TestContentType())
 
-    def test_content_with_year_and_volume_adapts_to_IVolume(self):
+    def test_content_with_year_and_volume_and_product_adapts_to_IVolume(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType
         content = TestContentType()
         content.year = 2015
         content.volume = 1
+        content.product = zeit.cms.content.sources.Product(u'ZEI')
         volume = zeit.content.volume.interfaces.IVolume(content)
         self.assertEqual(
             volume,
