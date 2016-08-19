@@ -13,8 +13,8 @@ log = logging.getLogger(__name__)
 class Connection(zeit.push.mobile.ConnectionBase):
 
     def __init__(self, android_application_key, android_master_secret,
-                 ios_application_key, ios_master_secret, **kw):
-        super(Connection, self).__init__(**kw)
+                 ios_application_key, ios_master_secret, expire_interval):
+        super(Connection, self).__init__(expire_interval)
         self.android_application_key = android_application_key
         self.android_master_secret = android_master_secret
         self.ios_application_key = ios_application_key

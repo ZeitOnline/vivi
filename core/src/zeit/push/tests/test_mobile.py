@@ -25,7 +25,7 @@ class DataTest(zeit.push.testing.TestCase):
         return catalog
 
     def test_calculates_expiration_datetime_based_on_expire_interval(self):
-        api = zeit.push.mobile.ConnectionBase('any', 'any', 3600)
+        api = zeit.push.mobile.ConnectionBase(3600)
         with mock.patch('zeit.push.mobile.datetime') as mock_datetime:
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
@@ -37,14 +37,14 @@ class DataTest(zeit.push.testing.TestCase):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.push')
         product_config['foo'] = 'bar qux'
-        api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
+        api = zeit.push.mobile.ConnectionBase(1)
         self.assertEqual(['bar', 'qux'], api.get_channel_list('foo'))
 
     def test_translates_title_based_on_channel(self):
         catalog = self.create_catalog()
         catalog.messages['parse-news-title'] = 'bar'
         catalog.messages['parse-breaking-title'] = 'foo'
-        api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
+        api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
         self.assertEqual('bar', api.get_headline(['News']))
         self.assertEqual('foo', api.get_headline(['Eilmeldung']))
@@ -52,7 +52,7 @@ class DataTest(zeit.push.testing.TestCase):
     def test_transmits_metadata(self):
         catalog = self.create_catalog()
         catalog.messages['parse-news-title'] = 'ZEIT ONLINE'
-        api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
+        api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
         data = api.data('foo', 'any', channels=PARSE_NEWS_CHANNEL,
                         teaserSupertitle='super', teaserTitle='title',
@@ -73,7 +73,7 @@ class DataTest(zeit.push.testing.TestCase):
         self.assertEqual('http://images.zeit.de/example', ios['imageUrl'])
 
     def test_message_config_may_override_text(self):
-        api = zeit.push.mobile.ConnectionBase('any', 'any', 1)
+        api = zeit.push.mobile.ConnectionBase(1)
         data = api.data('foo', 'any', override_text='mytext')
         self.assertEqual('mytext', data['android']['text'])
         self.assertEqual('mytext', data['ios']['alert'])
