@@ -218,7 +218,7 @@ class ICommonMetadata(zope.interface.Interface):
         # file. We only need to set an ID here, since to read the product we'll
         # ask the source anyway.
         default=zeit.cms.content.sources.Product(u'ZEDE'),
-        source=zeit.cms.content.sources.ProductSource())
+        source=zeit.cms.content.sources.PRODUCT_SOURCE)
 
     # probably obsolete, only used to filter out News in zeit.find, but could
     # use product_id as well (besides, there is no product with title "News")

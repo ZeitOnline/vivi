@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <products>
-    <product id="ZEI">Die Zeit</product>
+    <product id="ZEI"
+             volume="True"
+             location="http://xml.zeit.de/ausgabe/{year}/{name}">
+             Die Zeit</product>
     <product id="ZMLB">Zeit Magazin</product>
     <product id="TEST">Test/Development</product>
     <product id="ZTCS">Zeit Campus</product>
