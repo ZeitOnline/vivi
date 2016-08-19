@@ -28,9 +28,7 @@ class ConnectionBase(object):
     LANGUAGE = 'de'
     PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
-    def __init__(self, application_id, rest_api_key, expire_interval):
-        self.application_id = application_id
-        self.rest_api_key = rest_api_key
+    def __init__(self, expire_interval):
         self.expire_interval = expire_interval
 
     @zope.cachedescriptors.property.Lazy
