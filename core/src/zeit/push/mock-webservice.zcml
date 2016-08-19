@@ -2,8 +2,8 @@
 
   <include package="zope.component" file="meta.zcml" />
 
-  <utility factory=".testing.PushNotifier" name="parse" />
-  <utility factory=".testing.PushNotifier" name="urbanairship" />
+  <utility factory=".testing.MobilePushNotifier" name="parse" />
+  <utility factory=".testing.MobilePushNotifier" name="urbanairship" />
   <utility factory=".testing.PushNotifier" name="twitter" />
   <utility factory=".testing.PushNotifier" name="facebook" />
 

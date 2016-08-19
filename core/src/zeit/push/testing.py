@@ -26,6 +26,13 @@ class PushNotifier(object):
             text=text, link=link, kw=kw))
 
 
+class MobilePushNotifier(PushNotifier):
+
+    def get_channel_list(self, channels):
+        """Required for zeit.push.mobile.Message.log_success"""
+        return 'News'
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
     zeit.push.product_config
     + zeit.cms.testing.cms_product_config

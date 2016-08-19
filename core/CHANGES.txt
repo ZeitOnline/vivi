@@ -6,6 +6,8 @@ zeit.push changes
 
 - Adjust payload for push notifications to iOS via Urban Airship. (ZON-3213)
 
+- Improve log messages to include the message. (ZON-3213)
+
 
 1.15.0 (2016-08-09)
 -------------------
