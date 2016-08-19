@@ -4,6 +4,7 @@ import logging
 import zeit.cms.interfaces
 import zeit.objectlog.interfaces
 import zeit.push.interfaces
+import zope.cachedescriptors.property
 import zope.component
 
 
@@ -46,18 +47,13 @@ class Message(grok.Adapter):
         failure and can act on it.
 
         """
-        object_log = zeit.objectlog.interfaces.ILog(self.context)
         try:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=service_name)
             notifier.send(self.text, self.url, **kw)
-            object_log.log(_(
-                'Push notification for "${name}" sent.',
-                mapping={'name': service_name.capitalize()}))
+            self.log_success(name=service_name)
         except Exception, e:
-            object_log.log(_(
-                'Error during push to ${name}: ${reason}',
-                mapping={'name': service_name.capitalize(), 'reason': str(e)}))
+            self.log_error(name=service_name, reason=str(e))
             log.error(u'Error during push to %s with config %s',
                       service_name, self.config, exc_info=True)
 
@@ -86,6 +82,20 @@ class Message(grok.Adapter):
     @property
     def additional_parameters(self):
         return {}
+
+    @zope.cachedescriptors.property.Lazy
+    def object_log(self):
+        return zeit.objectlog.interfaces.ILog(self.context)
+
+    def log_success(self, name):
+        self.object_log.log(_(
+            'Push notification for "${name}" sent. (Message: "${message}")',
+            mapping={'name': name.capitalize(), 'message': self.text}))
+
+    def log_error(self, name, reason):
+        self.object_log.log(_(
+            'Error during push to ${name}: ${reason}',
+            mapping={'name': name.capitalize(), 'reason': reason}))
 
 
 @grok.adapter(zeit.cms.interfaces.ICMSContent)

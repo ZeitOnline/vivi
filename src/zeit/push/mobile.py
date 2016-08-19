@@ -13,6 +13,7 @@ import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
 import zope.cachedescriptors.property
+import zope.component
 import zope.i18n
 import zope.interface
 
@@ -167,11 +168,29 @@ class Message(zeit.push.message.Message):
         super(Message, self).send_push_notification('parse', **kw)
         super(Message, self).send_push_notification('urbanairship', **kw)
 
-    @property
+    def log_success(self, name):
+        message = (
+            self.config.get('override_text') or
+            self.additional_parameters.get('teaserTitle') or
+            self.text)
+
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name=name)
+        channels = notifier.get_channel_list(self.config.get('channels'))
+
+        self.object_log.log(_(
+            'Push notification for "${name}" sent. '
+            '(Message: "${message}", Channels: ${channels})',
+            mapping={
+                'name': name.capitalize(),
+                'message': message,
+                'channels': ' '.join(channels)}))
+
+    @zope.cachedescriptors.property.Lazy
     def text(self):
         return self.context.title
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def additional_parameters(self):
         result = {}
         for name in ['teaserTitle', 'teaserText', 'teaserSupertitle']:
