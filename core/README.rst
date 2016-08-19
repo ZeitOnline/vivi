@@ -9,11 +9,11 @@ Nummer, Coverbild). Über eine Konfigurationsdatei und Eintragungen in der
 eingestellt werden.
 
 
-Konfigurationsdatei
-===================
+Cover-Bilder
+============
 
-Die Konfigurationsdatei besteht aus einer Liste von möglichen Coverbildern.
-Beispiel::
+Die Konfigurationsdatei für Coverbilder besteht aus einer Liste von möglichen
+Coverbildern. Beispiel::
 
     <covers>
       <cover id="portrait">Hochformat</cover>
@@ -28,9 +28,11 @@ beides möglich.
 Diese werden dynamisch beim ``Volume`` angezeigt und dann direkt im XML
 desselben gespeichert.
 
+In der Produktion wird `diese Konfigurationsdatei` verwendet.
 
-products.xml
-============
+
+Product-Source
+==============
 
 Um ein Produkt für die Benutzung von Ausgaben freizuschalten, muss in der
 ``products.xml`` für das entsprechende Produkt ein Attribut ``volume="True"``
@@ -51,3 +53,8 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
                  Die Zeit</product>
         <product id="ZMLB">Zeit Magazin</product>
     </products>
+
+In Produktion ist diese `products.xml` in Benutzung.
+
+.. _`products.xml`: http://cms-backend.zeit.de:9000/cms/forms/products.xml
+.. _`diese Konfigurationsdatei`: http://cms-backend.zeit.de:9000/cms/work/data/volume-covers.xml
