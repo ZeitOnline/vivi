@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2016-08-19 11:30+0200\n"
-"PO-Revision-Date: 2016-08-19 11:38+0200\n"
+"PO-Revision-Date: 2016-08-19 15:16+0200\n"
 "Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -4561,7 +4561,7 @@ msgstr "ZEIT ONLINE"
 
 #: zeit/push/mobile.py:65
 msgid "parse-breaking-title"
-msgstr "Eilmeldung"
+msgstr "ZEIT ONLINE Eilmeldung"
 
 #. Default: ""
 #: zeit/push/workflow.py:81
