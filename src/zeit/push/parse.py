@@ -20,8 +20,8 @@ class Connection(zeit.push.mobile.ConnectionBase):
     ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
     IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
 
-    def __init__(self, application_id, rest_api_key, **kw):
-        super(Connection, self).__init__(**kw)
+    def __init__(self, application_id, rest_api_key, expire_interval):
+        super(Connection, self).__init__(expire_interval)
         self.application_id = application_id
         self.rest_api_key = rest_api_key
 
