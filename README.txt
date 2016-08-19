@@ -9,8 +9,15 @@ Urban Airship (Push Notifications)
 ==================================
 
 Configure the following settings in the batou environment:
-* ``urbanairship_application_key``
-* ``urbanairship_master_secret``
+* ``urbanairship_android_application_key``
+* ``urbanairship_android_master_secret``
+* ``urbanairship_ios_application_key``
+* ``urbanairship_ios_master_secret``
+
+The keys / secrets for Android and iOS are the same for production, since those
+are Enterprise builds. However, for all other environments the credentials are
+different, since iOS requires a certificate and thus must be a special testing
+build.
 
 
 Parse.com (Push Notifications)

@@ -20,6 +20,11 @@ class Connection(zeit.push.mobile.ConnectionBase):
     ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
     IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
 
+    def __init__(self, application_id, rest_api_key, **kw):
+        super(Connection, self).__init__(**kw)
+        self.application_id = application_id
+        self.rest_api_key = rest_api_key
+
     def send(self, text, link, **kw):
         data = self.data(text, link, **kw)
         channels = self.get_channel_list(kw.get('channels'))
@@ -83,11 +88,11 @@ class Connection(zeit.push.mobile.ConnectionBase):
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.push')
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
     return Connection(
-        config['parse-application-id'], config['parse-rest-api-key'],
-        int(config['parse-expire-interval']))
+        application_id=config['parse-application-id'],
+        rest_api_key=config['parse-rest-api-key'],
+        expire_interval=int(config['parse-expire-interval']))
 
 
 class PayloadDocumentation(Connection):

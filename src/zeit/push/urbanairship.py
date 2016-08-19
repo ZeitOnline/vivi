@@ -12,6 +12,14 @@ log = logging.getLogger(__name__)
 
 class Connection(zeit.push.mobile.ConnectionBase):
 
+    def __init__(self, android_application_key, android_master_secret,
+                 ios_application_key, ios_master_secret, **kw):
+        super(Connection, self).__init__(**kw)
+        self.android_application_key = android_application_key
+        self.android_master_secret = android_master_secret
+        self.ios_application_key = ios_application_key
+        self.ios_master_secret = ios_master_secret
+
     def send(self, text, link, **kw):
         data = self.data(text, link, **kw)
 
@@ -26,9 +34,6 @@ class Connection(zeit.push.mobile.ConnectionBase):
         data['android']['tag'] = tag
         data['ios']['tag'] = tag
 
-        # The `urbanairship` library takes care of headers, errors etc.
-        airship = urbanairship.Airship(self.application_id, self.rest_api_key)
-
         # If no channel was given, send notification to all users as fallback.
         audience = 'all'
         if channels:
@@ -42,7 +47,10 @@ class Connection(zeit.push.mobile.ConnectionBase):
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
 
         # Send android notification.
-        android = airship.create_push()
+        android = urbanairship.Airship(
+            self.android_application_key,
+            self.android_master_secret
+        ).create_push()
         android.audience = audience
         android.options = {'expiry': expiry}
         android.device_types = ['android']
@@ -50,7 +58,10 @@ class Connection(zeit.push.mobile.ConnectionBase):
         self.push(android)
 
         # Send ios notification.
-        ios = airship.create_push()
+        ios = urbanairship.Airship(
+            self.ios_application_key,
+            self.ios_master_secret
+        ).create_push()
         ios.audience = audience
         ios.options = {'expiry': expiry}
         ios.device_types = ['ios']
@@ -77,6 +88,8 @@ class Connection(zeit.push.mobile.ConnectionBase):
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
     return Connection(
-        config['urbanairship-application-key'],
-        config['urbanairship-master-secret'],
-        int(config['urbanairship-expire-interval']))
+        android_application_key=config['urbanairship-android-application-key'],
+        android_master_secret=config['urbanairship-android-master-secret'],
+        ios_application_key=config['urbanairship-ios-application-key'],
+        ios_master_secret=config['urbanairship-ios-master-secret'],
+        expire_interval=int(config['urbanairship-expire-interval']))
