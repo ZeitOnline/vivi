@@ -35,7 +35,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assert_(len(result.qualityControlValues) > 0)
 
     def test_validation_error_should_raise_error_message(self):
-        products = list(zeit.cms.content.sources.ProductSource()(None))
+        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
         product = [x for x in products if x.id == 'KINZ'][0]
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
@@ -186,7 +186,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             zeit.cms.repository.interfaces.IRepository)
 
     def get_content(self, authors, freetext=None):
-        products = list(zeit.cms.content.sources.ProductSource()(None))
+        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
         product = [x for x in products if x.id == 'KINZ'][0]
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
