@@ -34,9 +34,9 @@ Template alle Attribute des Kindknotens, sowie die spezielle Variable ``text``
 für den Textinhalt des Kindknotens zur Verfügung.
 
 Da es keine Einschränkungen der XML-Struktur gibt, muss festgelegt werden,
-welches Attribut des Kindknotens den Namen des Kindobjekts enthält, dies wird
-im Attribut ``key`` vom ``<body>``-Tag angegeben. (Im Beispiel heißt das, der
-Ordner hat die Kinder ``one`` und ``two``).
+welches Attribut des Kindknotens den Dateinamen des Kindobjekts enthält, dies
+wird im Attribut ``key`` vom ``<body>``-Tag angegeben. (Im Beispiel heißt das,
+der Ordner hat die Kinder ``one`` und ``two``).
 
 Um bereits existierende Konfigurationsdateien weiterverwenden zu können,
 unterstützt der ``<body>``-Tag einen Include-Mechanismus::
