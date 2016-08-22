@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.84.1 (unreleased)
+2.84.1 (2016-08-22)
 -------------------
 
 - Extend ``zeit.cms.content.sources.ProductSource`` to store the XML attributes
