@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.15.1 (unreleased)
+1.15.1 (2016-08-22)
 -------------------
 
 - Adjust payload for push notifications to iOS via Urban Airship. (ZON-3213)
