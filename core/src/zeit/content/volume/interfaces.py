@@ -45,7 +45,8 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         title=_('Date of digital publication'),
         required=False)
 
-    covers = zope.interface.Attribute('Print volume covers')
+    covers = zope.interface.Attribute(
+        'Convenience method to adapt to IVolumeCovers')
 
 
 class IVolumeCovers(zope.interface.common.mapping.IMapping):
