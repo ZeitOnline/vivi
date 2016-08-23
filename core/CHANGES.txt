@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.24.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use asset instead of content workflow for infoboxes. (ZON-3247)
 
 
 1.24.0 (2016-04-21)

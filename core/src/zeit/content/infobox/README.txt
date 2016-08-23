@@ -13,8 +13,7 @@ tuple of tuples *yikes*:
 >>> import zeit.content.infobox.infobox
 >>> ib = zeit.content.infobox.infobox.Infobox()
 
-Verify interfaces. The infobox is editorial content, even though it is used as
-an asset:
+Verify interfaces. The infobox is used as an asset:
 
 >>> import zope.interface.verify
 >>> import zeit.cms.interfaces
@@ -23,7 +22,7 @@ an asset:
 ...     zeit.content.infobox.interfaces.IInfobox, ib)
 True
 >>> zope.interface.verify.verifyObject(
-...     zeit.cms.interfaces.IEditorialContent, ib)
+...     zeit.cms.interfaces.IAsset, ib)
 True
 
 Initially there are no entries:
