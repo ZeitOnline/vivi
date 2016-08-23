@@ -5,7 +5,7 @@ zeit.content.dynamicfolder changes
 1.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove unnecessary interfaces from ``IVirtualContent``
 
 
 1.1.4 (2016-07-26)
