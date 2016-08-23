@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Hide automatic area source TMS behind feature toggle ``zeit.retresco.tms``.
 
 
 3.10.0 (2016-08-10)

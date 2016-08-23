@@ -1,4 +1,5 @@
 from zeit.content.cp.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
 import urlparse
@@ -16,10 +17,10 @@ import zeit.content.cp.blocks.avsource
 import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
-import zeit.content.quiz.source
 import zeit.content.text.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
+import zope.app.appsetup.appsetup
 import zope.i18n
 import zope.interface
 
@@ -235,13 +236,23 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     prefix = 'automatic-area-type-{}'
 
     def __init__(self):
-        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
+        pass  # Don't init self.titles too early
+
+    @cachedproperty
+    def values(self):
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.retresco.tms'):
+            return (u'centerpage', u'channel', u'topicpage', u'query')
+        else:
+            return (u'centerpage', u'channel', u'query')
+
+    @cachedproperty
+    def titles(self):
+        return dict((x, _(self.prefix.format(x))) for x in self.values)
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
         return value
-
-    values = (u'centerpage', u'channel', u'topicpage', u'query')
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
