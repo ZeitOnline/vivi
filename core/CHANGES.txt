@@ -4,7 +4,7 @@ zeit.cms changes
 2.84.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove sitecontrol sidebar, it's a resource hog and not reallly used anymore.
 
 
 2.84.1 (2016-08-22)
