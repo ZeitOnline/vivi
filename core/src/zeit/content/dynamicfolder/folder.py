@@ -172,6 +172,7 @@ class RepositoryDynamicFolder(
                 key = urllib.unquote(key_match[0]).decode('utf-8')
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key]['text'] = entry.text
+                contents[key]['__parent__'] = self
             self._v_virtual_content = contents
 
         return self._v_virtual_content

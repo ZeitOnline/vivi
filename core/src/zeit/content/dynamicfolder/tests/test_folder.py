@@ -2,6 +2,8 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.rawxml.rawxml import RawXML
+import jinja2
+import lxml.etree
 import mock
 import pkg_resources
 import transaction
@@ -141,6 +143,20 @@ class TestDynamicFolder(
             self.assertEqual(1, render.call_count)
             self.assertIn(
                 ('text', 'Text Xinjiang'), render.call_args[1].items())
+
+    def test_parent_can_be_accessed_in_template(self):
+        with mock.patch(
+                'zeit.content.dynamicfolder.folder.'
+                'RepositoryDynamicFolder.content_template',
+                new_callable=mock.PropertyMock) as template:
+            template.return_value = jinja2.Template("""
+<test>
+    <head />
+    <body>{{url_value}} {{__parent__.__name__}}</body>
+</test>""")
+            self.assertIn(
+                '<body>xanten dynamicfolder</body>',
+                lxml.etree.tostring(self.folder['xanten'].xml))
 
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not

@@ -31,7 +31,9 @@ Jeder Kindknoten von ``<body>`` definiert ein Kind des Ordners. Der Tagname ist
 unerheblich. Ein Kind wird erzeugt, indem das ``cp_template`` aus dem Connector
 geladen wird und als Jinja2-Template ausgewertet wird. Als Variablen stehen dem
 Template alle Attribute des Kindknotens, sowie die spezielle Variable ``text``
-für den Textinhalt des Kindknotens zur Verfügung.
+für den Textinhalt des Kindknotens zur Verfügung. Ebenso kann auf
+``__parent__`` zugegriffen werden, um Informationen über den dynamischen Ordner
+zu erhalten, zum Beispiel ``__name__``.
 
 Da es keine Einschränkungen der XML-Struktur gibt, muss festgelegt werden,
 welches Attribut des Kindknotens den Dateinamen des Kindobjekts enthält, dies
