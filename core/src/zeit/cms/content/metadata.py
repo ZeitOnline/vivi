@@ -191,6 +191,8 @@ def set_default_channel_to_ressort(context, event):
         return
     if not context.ressort:
         return
+    if context.product and not context.product.autochannel:
+        return
     channel = (context.ressort, context.sub_ressort)
     if channel in context.channels:
         return

@@ -333,6 +333,8 @@ class IProduct(zope.interface.Interface):
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
     vgwortcode = zope.interface.Attribute('VGWort code, optional')
+    autochannel = zope.interface.Attribute(
+        'Set false to suppress setting channel on ressort changes')
 
 
 class ISerie(zope.interface.Interface):

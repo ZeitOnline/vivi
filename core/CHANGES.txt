@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Remove sitecontrol sidebar, it's a resource hog and not reallly used anymore.
 
+- Do not automatically set channel when products.xml forbids it. (ZON-3248)
+
 
 2.84.1 (2016-08-22)
 -------------------

@@ -318,7 +318,7 @@ class Product(object):
 
     def __init__(self, id=None, title=None, vgwortcode=None,
                  href=None, target=None, label=None, show=None,
-                 volume=None, location=None):
+                 volume=None, location=None, autochannel=True):
         self.id = id
         self.title = title
         self.vgwortcode = vgwortcode
@@ -328,6 +328,7 @@ class Product(object):
         self.show = show
         self.volume = volume
         self.location = location
+        self.autochannel = autochannel
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -350,6 +351,7 @@ class ProductSource(SimpleContextualXMLSource):
                         unicode_or_none(node.get('show')),
                         unicode_or_none(node.get('volume')),
                         unicode_or_none(node.get('location')),
+                        node.get('autochannel', '').lower() != 'false',
                         )
                 for node in tree.iterchildren('*')]
 
@@ -360,6 +362,7 @@ class ProductSource(SimpleContextualXMLSource):
         return super(ProductSource, self).getToken(context, value.id)
 
 PRODUCT_SOURCE = ProductSource()
+
 
 class BannerSource(SimpleXMLSource):
 
