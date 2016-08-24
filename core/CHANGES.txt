@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.10.2 (unreleased)
+3.10.2 (2016-08-24)
 -------------------
 
 - Remove topic pages from sitecontrol, since sitecontrol is no more.
