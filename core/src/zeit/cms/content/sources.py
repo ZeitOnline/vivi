@@ -349,7 +349,7 @@ class ProductSource(SimpleContextualXMLSource):
                         unicode_or_none(node.get('target')),
                         unicode_or_none(node.get('label')),
                         unicode_or_none(node.get('show')),
-                        unicode_or_none(node.get('volume')),
+                        node.get('volume', '').lower() == 'true',
                         unicode_or_none(node.get('location')),
                         node.get('autochannel', '').lower() != 'false',
                         )
