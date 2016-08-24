@@ -295,18 +295,6 @@ Referenced images
   <header_image... title="updated"...>
 ...
 
-Topic page
-==========
-
-
->>> topic_provider = zope.component.getUtility(
-...     zeit.cms.sitecontrol.interfaces.ISitesProvider, name='topicpage')
->>> import pprint
->>> pprint.pprint(list(topic_provider))
-[<zeit.cms.repository.unknown.PersistentUnknownResource...>,
- <zeit.cms.repository.unknown.PersistentUnknownResource...>,
- <zeit.cms.repository.unknown.PersistentUnknownResource...>]
-
 
 .. [#needsinteraction]
 
