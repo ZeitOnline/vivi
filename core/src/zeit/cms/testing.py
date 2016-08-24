@@ -202,7 +202,6 @@ cms_product_config = """\
   breadcrumbs-use-common-metadata true
 
   task-queue-async events
-  sitecontrol-prefer-2015 False
   cache-expiration-config 600
   celery-config /dev/null
 </product-config>
