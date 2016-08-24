@@ -18,10 +18,8 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.related.related
-import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
-import zeit.connector.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.body
@@ -407,23 +405,6 @@ def has_changed(context):
         # If there no jar, no change will have been marked.
         return True
     return context._p_changed
-
-
-class SiteControlTopicPages(grok.GlobalUtility):
-
-    grok.implements(zeit.cms.sitecontrol.interfaces.ISitesProvider)
-    grok.name('topicpage')
-
-    def __iter__(self):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        type_index = SearchVar(
-            'type', zeit.content.cp.interfaces.DAV_NAMESPACE)
-        result = connector.search([type_index],
-                                  type_index == 'topicpage')
-        result = [zeit.cms.interfaces.ICMSContent(uid, None)
-                  for uid, dummy in result]
-        return (obj for obj in result if obj is not None)
 
 
 NSMAP = collections.OrderedDict((
