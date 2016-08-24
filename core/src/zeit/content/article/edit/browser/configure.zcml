@@ -326,6 +326,23 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-volume"
+    class=".reference.EditVolume"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-volume"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
   <!-- rawxml -->
 
   <browser:viewlet
@@ -536,6 +553,10 @@
   </class>
 
   <class class="..author.Author">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..volume.Volume">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

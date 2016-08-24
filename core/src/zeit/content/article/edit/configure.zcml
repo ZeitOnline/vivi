@@ -129,6 +129,17 @@
       />
   </class>
 
+  <class class=".volume.Volume">
+    <require
+      interface=".interfaces.IVolume"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVolume"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".reference.Gallery">
     <require
       interface=".interfaces.IGallery"
