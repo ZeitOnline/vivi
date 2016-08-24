@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <products>
     <product id="ZEI"
+             autochannel="false"
              volume="True"
              location="http://xml.zeit.de/ausgabe/{year}/{name}">
              Die Zeit</product>

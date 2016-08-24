@@ -333,6 +333,16 @@ class IProduct(zope.interface.Interface):
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
     vgwortcode = zope.interface.Attribute('VGWort code, optional')
+    href = zope.interface.Attribute('URL for the "homepage" of this product')
+    target = zope.interface.Attribute('Optional link target (e.g. _blank)')
+    show = zope.interface.Attribute(
+        'Flag what to display in frontend byline. {issue,link,source}')
+    volume = zope.interface.Attribute('Boolean: has print volumes')
+    location = zope.interface.Attribute(
+        'uniqueId template of the IVolumes of this product, '
+        'e.g. http://xml.zeit.de/ausgabe/{year}/{name}')
+    autochannel = zope.interface.Attribute(
+        'Set false to suppress setting channel on ressort changes')
 
 
 class ISerie(zope.interface.Interface):
