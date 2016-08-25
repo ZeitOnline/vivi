@@ -31,14 +31,14 @@ def index_after_add(event):
         return
     log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
         context.uniqueId, gocept.async.is_async()))
-    index_async(context.uniqueId)
+    index_async(context.uniqueId, enrich=True)
 
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    index_async(context.uniqueId)
+    index_async(context.uniqueId, enrich=True)
 
 
 @grok.subscribe(
@@ -52,16 +52,16 @@ def unindex_on_remove(context, event):
 
 
 @zeit.cms.async.function(queue='search')
-def index_async(uniqueId):
+def index_async(uniqueId, enrich=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
-        index(context)
+        index(context, enrich)
 
 
-def index(content):
+def index(content, enrich=False):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     stack = [content]
     while stack:
@@ -70,6 +70,8 @@ def index(content):
             stack.extend(content.values())
         log.info('Updating: %s', content.uniqueId)
         try:
+            if enrich:
+                conn.enrich(content)
             conn.index(content)
         except zeit.retresco.interfaces.TMSError:
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)
@@ -83,7 +85,7 @@ def unindex_async(uuid):
 
 
 @zeit.cms.celery.task()
-def index_parallel(unique_id):
+def index_parallel(unique_id, enrich=False):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     # Performance optimization: Resolve content directly via Connector instead
@@ -104,9 +106,9 @@ def index_parallel(unique_id):
                 'Skip indexing %s, it is an image/group', item.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(item):
-            index_parallel.delay(item.uniqueId)
+            index_parallel.delay(item.uniqueId, enrich)
         else:
-            index(item)
+            index(item, enrich)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
@@ -118,10 +120,13 @@ def reindex():
     parser.add_argument(
         '--parallel', action='store_true',
         help='process via job queue instead of directly')
+    parser.add_argument(
+        '--enrich', action='store_true',
+        help='Perform TMS analyze/enrich prior to indexing')
 
     args = parser.parse_args()
     for id in args.ids:
         if args.parallel:
-            index_parallel.delay(id)
+            index_parallel.delay(id, args.enrich)
         else:
             index(zeit.cms.interfaces.ICMSContent(id))
