@@ -51,6 +51,7 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         repository['t1'] = TestContentType()
         process()
+        self.tms.enrich.assert_called_with(repository['t1'])
         self.tms.index.assert_called_with(repository['t1'])
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
@@ -76,6 +77,7 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
             pass
         process()
+        self.tms.enrich.assert_called_with(repository['testcontent'])
         self.tms.index.assert_called_with(repository['testcontent'])
 
     def test_index_should_be_called_from_async(self):

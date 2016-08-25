@@ -24,12 +24,7 @@ class TMS(object):
 
     def get_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
-        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
-        if data is None:
-            return []
-        response = self._request(
-            'PUT /documents/%s' % data['doc_id'], params={'enrich': 'true'},
-            json=data)
+        response = self._put(content, enrich=True)
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
@@ -77,15 +72,24 @@ class TMS(object):
         return result
 
     def index(self, content):
+        return self._put(content, index=True)
+
+    def enrich(self, content):
+        return self._put(content, enrich=True, intextlinks=True)
+
+    def _put(self, content, index=False, enrich=False, intextlinks=False):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             log.info(
-                'Skip indexing %s, it is missing required fields',
+                'Skip PUT for %s, it is missing required fields',
                 content.uniqueId)
-            return
-        self._request('PUT /documents/%s' % data['doc_id'], params={
-            'index': 'true', 'enrich': 'false'}, json=data)
+            return {}
+        return self._request('PUT /documents/%s' % data['doc_id'], params={
+            'index': str(index).lower(),
+            'enrich': str(enrich).lower(),
+            'in_text_links': str(intextlinks).lower(),
+        }, json=data)
 
     def delete_id(self, uuid):
         try:

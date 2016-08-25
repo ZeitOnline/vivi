@@ -12,6 +12,9 @@ class ITMS(zope.interface.Interface):
     def index(content):
         """Stores the given ICMSContent."""
 
+    def enrich(content):
+        """Performs TMS analysis ("enrich" and "in_text_links")."""
+
     def delete_id(uuid):
         """Deletes the document with the given IUUID."""
 
