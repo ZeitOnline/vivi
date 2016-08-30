@@ -70,9 +70,14 @@ def index(content, enrich=False):
             stack.extend(content.values())
         log.info('Updating: %s', content.uniqueId)
         try:
+            body = None
             if enrich:
-                conn.enrich(content)
-            conn.index(content)
+                response = conn.enrich(content)
+                body = response.get('body')
+            if body:
+                conn.index(content, body)
+            else:
+                conn.index(content)
         except zeit.retresco.interfaces.TMSError:
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)
             continue
