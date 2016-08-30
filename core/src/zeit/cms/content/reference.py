@@ -17,12 +17,29 @@ import zope.traversing.browser.absoluteurl
 
 
 class ReferenceProperty(object):
+    """Provides setter and getter methods for tuples of ``ReferenceField``.
+
+    For example, to implement a schema field of authorships::
+
+    authorships = zeit.cms.content.reference.ReferenceProperty(
+        '.head.author', xml_reference_name='author')
+
+    The object MUST provide an ``IXMLRepresentation``, as the values will be
+    saved in xml.
+
+    """
 
     def __init__(self, path, xml_reference_name):
         self.path = lxml.objectify.ObjectPath(path)
         self.xml_reference_name = xml_reference_name
 
     def __get__(self, instance, class_):
+        """Extracts existing references from XML.
+
+        The references are adapted to ``IReference`` which provides ``target``
+        and custom fields, and are returned as ``References``.
+
+        """
         if instance is None:
             return self
         if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(
@@ -45,6 +62,20 @@ class ReferenceProperty(object):
             xml_reference_name=self.xml_reference_name)
 
     def __set__(self, instance, value):
+        """Writes a prepared ``value`` into XML of ``instance``.
+
+        To prepare a ``value`` its XML should be enhanced by adapting to
+        ``IXMLReference`` and wrapping the result into an ``IReference``.
+
+        The recommended way to prepare a value is using ``create_reference``
+        directly or indirectly via ``References.create``.
+
+        WARNING: If ``value`` is not prepared correctly, the ``__set__`` will
+        write to the XML but cannot retrieve the object via ``__get__``. This
+        is because ``self.path.setattr(xml, value)`` will just replace part of
+        the XML-DOM without further checks.
+
+        """
         value = self._filter_duplicates(value)
         xml = zope.security.proxy.getObject(instance.xml)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
@@ -79,6 +110,7 @@ class ReferenceProperty(object):
         return result.keys()
 
     def __name__(self, instance):
+        """Returns name of the schema field."""
         class_ = type(instance)
         for name in dir(class_):
             if getattr(class_, name, None) is self:
@@ -98,6 +130,14 @@ class ReferenceProperty(object):
     def create_reference(
             source, attribute, target, xml_reference_name,
             suppress_errors=False):
+        """Returns a ``Reference`` based on ``target``.
+
+        To create the ``Reference``, ``target`` will be adapted to
+        ``IXMLReference`` and the result adapted to ``IReference``.
+
+        WARNING: ``source`` must provide ``IXMLRepresentation``.
+
+        """
         element = None
         if suppress_errors:
             try:
@@ -125,6 +165,13 @@ class ReferenceProperty(object):
 
     @staticmethod
     def find_reference(source, attribute, target, default=None):
+        """Retrieve a ``Reference`` for a ``uniqueId`` or ``ICMSContent``.
+
+        For the lookup it will retrieve the ``ReferenceProperty`` from
+        ``source`` via ``attribute`` and iterates over the contained values.
+        The value whose ``uniqueId`` matches ``target`` will be returned.
+
+        """
         if zeit.cms.interfaces.ICMSContent.providedBy(target):
             target = target.uniqueId
         result = None
@@ -291,6 +338,16 @@ ID_PREFIX = 'reference://'
 
 
 class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
+    """Wraps the XML of an ``ICMSContent`` to provide additional fields.
+
+    Since it has no direct reference to the original object, the XML MUST
+    provide the ``uniqueId`` as ``href`` attribute. This way the object can be
+    retrieved by adapting ``href`` to ``ICMSContent``.
+
+    To prepare the XML as described above, adapt the object to
+    ``IXMLReference``.
+
+    """
 
     grok.adapts(
         zeit.cms.content.interfaces.IXMLRepresentation,
