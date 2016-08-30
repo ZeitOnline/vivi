@@ -71,13 +71,14 @@ class TMS(object):
             result.append(page)
         return result
 
-    def index(self, content):
-        return self._put(content, index=True)
+    def index(self, content, override_body=None):
+        return self._put(content, index=True, override_body=override_body)
 
     def enrich(self, content):
         return self._put(content, enrich=True, intextlinks=True)
 
-    def _put(self, content, index=False, enrich=False, intextlinks=False):
+    def _put(self, content, index=False, enrich=False, intextlinks=False,
+             override_body=None):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
@@ -85,6 +86,8 @@ class TMS(object):
                 'Skip PUT for %s, it is missing required fields',
                 content.uniqueId)
             return {}
+        if override_body is not None:
+            data['body'] = override_body
         return self._request('PUT /documents/%s' % data['doc_id'], params={
             'index': str(index).lower(),
             'enrich': str(enrich).lower(),

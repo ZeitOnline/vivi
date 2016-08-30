@@ -44,6 +44,7 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(UpdateTest, self).setUp()
         self.tms = mock.Mock()
+        self.tms.enrich.return_value = {}
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_creating_content_should_index(self):
@@ -100,6 +101,12 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
                     'http://xml.zeit.de/testcontent')
                 process()
                 self.assertFalse(index.called)
+
+    def test_should_pass_body_from_enrich_to_index(self):
+        content = self.repository['testcontent']
+        self.tms.enrich.return_value = {'body': 'mybody'}
+        zeit.retresco.update.index(content, enrich=True)
+        self.tms.index.assert_called_with(content, 'mybody')
 
     def test_removed_event_should_unindex(self):
         content = self.repository['testcontent']

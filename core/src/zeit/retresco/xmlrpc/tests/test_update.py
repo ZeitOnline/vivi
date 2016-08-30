@@ -23,6 +23,7 @@ class XMLRPCTest(zeit.cms.testing.FunctionalTestCase):
         zope.security.management.endInteraction()
 
         self.tms = mock.Mock()
+        self.tms.enrich.return_value = {}
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
         self.log = StringIO.StringIO()
