@@ -368,7 +368,7 @@ IGNORED_VIVI_SUFFIXES = re.compile(r'/@@.*$')
 def live_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('www', 'xml', 1)
     uniqueId = IGNORED_LIVE_PAGE_SUFFIXES.sub('', uniqueId)
-    return zeit.cms.interfaces.ICMSContent(uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
 @grokcore.component.adapter(
@@ -380,7 +380,7 @@ def vivi_url_to_content(uniqueId):
         return None
     uniqueId = uniqueId.replace(prefix, zeit.cms.interfaces.ID_NAMESPACE, 1)
     uniqueId = IGNORED_VIVI_SUFFIXES.sub('', uniqueId)
-    return zeit.cms.interfaces.ICMSContent(uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
 @grokcore.component.adapter(basestring, name='<no-scheme>://<no-netloc>/')

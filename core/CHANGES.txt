@@ -4,7 +4,8 @@ zeit.cms changes
 2.85.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ``live_url_to_content`` and ``vivi_url_to_content`` do no longer break if
+  content does not exist.
 
 
 2.85.0 (2016-08-24)

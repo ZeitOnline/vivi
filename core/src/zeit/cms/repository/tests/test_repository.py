@@ -50,23 +50,23 @@ class LiveURLToContent(unittest.TestCase):
 
     def test_www_host_is_replaced_by_xml_host(self):
         live_url_to_content('http://www.foo.bar/test')
-        self.cmscontent.assert_called_with('http://xml.foo.bar/test')
+        self.cmscontent.assert_called_with('http://xml.foo.bar/test', None)
 
     def test_www_in_path_is_left_alone(self):
         live_url_to_content('http://www.foo.bar/www/test')
-        self.cmscontent.assert_called_with('http://xml.foo.bar/www/test')
+        self.cmscontent.assert_called_with('http://xml.foo.bar/www/test', None)
 
     def test_page_marker_is_chopped_off(self):
         live_url_to_content(
             'http://www.zeit.de/online/2007/01/Somalia/seite-5')
         self.cmscontent.assert_called_with(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+            'http://xml.zeit.de/online/2007/01/Somalia', None)
 
     def test_komplettansicht_is_chopped_off(self):
         live_url_to_content(
             'http://www.zeit.de/online/2007/01/Somalia/komplettansicht')
         self.cmscontent.assert_called_with(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+            'http://xml.zeit.de/online/2007/01/Somalia', None)
 
 
 class ViviURLToContent(unittest.TestCase):
@@ -81,13 +81,13 @@ class ViviURLToContent(unittest.TestCase):
     def test_vivi_url_is_replaced_by_xml_url(self):
         vivi_url_to_content('http://vivi.zeit.de/repository/2007/politik')
         self.cmscontent.assert_called_with(
-            'http://xml.zeit.de/2007/politik')
+            'http://xml.zeit.de/2007/politik', None)
 
     def test_vivi_view_names_are_removed(self):
         vivi_url_to_content(
             'http://vivi.zeit.de/repository/2007/politik/@@something.html')
         self.cmscontent.assert_called_with(
-            'http://xml.zeit.de/2007/politik')
+            'http://xml.zeit.de/2007/politik', None)
 
     def test_url_not_in_repository_returns_none(self):
         self.assertIsNone(
@@ -108,10 +108,16 @@ class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
             ICMSContent('http://xml.zeit.de/testcontent'),
             ICMSContent('http://www.zeit.de/testcontent'))
 
+    def test_www_zeit_de_does_not_raise_if_content_not_exists(self):
+        live_url_to_content('http://www.zeit.de/foo/bar/foobaz')
+
     def test_vivi_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
         self.assertEqual(
             ICMSContent('http://xml.zeit.de/testcontent'),
             ICMSContent('http://vivi.zeit.de/repository/testcontent'))
+
+    def test_vivi_zeit_de_does_not_raise_if_content_not_exists(self):
+        vivi_url_to_content('http://vivi.zeit.de/repository/foo/bar/foobaz')
 
     def test_no_interaction_ignores_workingcopy(self):
         zope.security.management.endInteraction()
