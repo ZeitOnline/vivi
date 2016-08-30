@@ -140,7 +140,7 @@ class ZopeCelery(celery.Celery):
 
         paste_ini = self.conf.get('LOGGING_INI')
         if paste_ini:
-            @celery.signals.setup_logging.connect
+            @celery.signals.setup_logging.connect(weak=False)
             def setup_logging(*args, **kw):
                 """Makes the loglevel finely configurable via a config file."""
                 # Code inspired by pyramid.paster.setup_logging().
