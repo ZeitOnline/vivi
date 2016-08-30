@@ -124,12 +124,13 @@ class TaggingHelper(object):
         whitelist = zope.component.queryUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         if whitelist is not None:  # only when ZCML is loaded
-            for tag in tags.values():
+            tag_values = tags.values()
+            for tag in tag_values:
                 whitelist[tag.code] = tag
 
             def remove_tags_from_whitelist():
-                for code in tags:
-                    del whitelist[code]
+                for tag in tag_values:
+                    del whitelist[tag.code]
             self.addCleanup(remove_tags_from_whitelist)
 
         return tags

@@ -39,7 +39,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
 
     def tearDown(self):
         self.patches.reset()
-        super(InputWidget, self).tearDown
+        super(InputWidget, self).tearDown()
 
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
@@ -78,6 +78,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
+        s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
         s.clickAndWait('name=form.actions.apply')
         self.assertNotIn('t1', self.tagger())
@@ -100,6 +101,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
+        s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
         s.click('update_tags')
         s.pause(100)
@@ -131,6 +133,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
+        s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .toggle-pin')
         s.clickAndWait('name=form.actions.apply')
         s.waitForElementPresent('jquery=li:contains(t1) .pinned')
