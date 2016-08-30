@@ -72,16 +72,16 @@ class UpdateTest(zeit.cms.testing.FunctionalTestCase):
         self.assertFalse(self.tms.index.called)
 
     def test_checkin_should_index(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content):
             pass
         process()
-        self.tms.enrich.assert_called_with(repository['testcontent'])
-        self.tms.index.assert_called_with(repository['testcontent'])
+        self.tms.enrich.assert_called_with(content)
+        self.tms.index.assert_called_with(content)
 
     def test_index_should_be_called_from_async(self):
         checkout_and_checkin()
+        self.assertFalse(self.tms.index.called)
         process()
         self.assertTrue(self.tms.index.called)
 
