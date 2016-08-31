@@ -5,7 +5,8 @@ zeit.content.volume changes
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make sure that the ``ICMSContent`` belongs to a print product before adapting
+  it to the associated ``Volume``.
 
 
 1.0.0 (2016-08-22)

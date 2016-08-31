@@ -131,7 +131,8 @@ class VolumeCovers(
 @grok.implementer(zeit.content.volume.interfaces.IVolume)
 def retrieve_volume_using_info_from_metadata(context):
     if (context.year is None or context.volume is None or
-            context.product is None or context.product.location is None):
+            context.product is None or not context.product.volume or
+            context.product.location is None):
         return None
     uniqueId = context.product.location.format(
         year=context.year,
