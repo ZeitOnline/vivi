@@ -54,13 +54,7 @@ class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
 class IVideo(IBrightcoveContent,
              zeit.cms.related.interfaces.IRelatedContent):
-    """A video.
-
-    The schema must contain all fields that use
-    ``zeit.brightcove.converter.mapped``, since the mapping will try to read
-    default values from the schema.
-
-    """
+    """A video."""
 
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),

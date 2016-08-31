@@ -147,12 +147,6 @@ class VideoUpdater(BaseUpdater):
             return True
 
     def update(self):
-        """Overwrite fields in CMS if Brightcove content is newer.
-
-        When an update takes place, all fields present in CMS and Brightcove
-        will be set to the Brightcove values. Fields only present in CMS will
-        remain unchanged.
-        """
         # Update video in CMS iff the BC version is newer.
         new = self.bcobj.to_cms()
         changed = True
