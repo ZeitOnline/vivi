@@ -420,11 +420,6 @@ class IVolume(IReference):
         source=zeit.content.volume.interfaces.VOLUME_SOURCE,
         required=False)
 
-    teaserText = zope.schema.Text(
-        title=_("Teaser text"),
-        required=False,
-        max_length=170)
-
 
 def validate_rawxml(xml):
     if xml.tag != 'raw':
