@@ -383,11 +383,14 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def add_volume_to_clipboard(self):
+        from zeit.content.image.testing import create_image_group
         with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['imagegroup'] = create_image_group()
             volume = zeit.content.volume.volume.Volume()
             volume.year = 2006
             volume.volume = 23
             volume.product = zeit.cms.content.sources.Product(u'ZEI')
+            volume.covers['portrait'] = self.repository['imagegroup']
             self.repository['2006']['23'] = volume
             add_to_clipboard(
                 self.repository['2006']['23'], 'my_volume')
@@ -406,3 +409,6 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-volume form.inline-form.wired', 1)
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-volume textarea ')
+        s.assertTextPresent('Die Zeit, Jahrgang: 2006, Ausgabe 23')
+        s.assertAttribute('css=.block.type-volume img@src',
+                          '*/imagegroup/thumbnails/original/@@raw')
