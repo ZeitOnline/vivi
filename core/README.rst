@@ -8,6 +8,20 @@ Nummer, Coverbild). Über eine Konfigurationsdatei und Eintragungen in der
 ``products.xml`` können mögliche Coverbilder und die generischen Speicherorte
 eingestellt werden.
 
+Um von einem ``ICommonMetadata`` (z.B. einen Artikel) zur zugehörigen Ausgabe
+zu kommen, genügt es auf ``zeit.content.volume.interfaces.IVolume`` zu
+adaptieren. Um beispielsweise das Cover-Bild ``printcover`` für die Ausgabe
+eines Artikels zu lesen, genügt folgender Aufruf::
+
+    volume = zeit.content.volume.interfaces.IVolume(article)
+    image = volume.covers['printcover']
+
+Dabei wird vorausgesetzt, dass der Artikel einem Produkt zugeordnet ist, das
+Ausgaben unterstützt (siehe Produkt-Source weiter unten, aktuell nur ``ZEI``)
+und eine Ausgabe mit selben Jahr & Ausgabennummer existiert. Diese Ausgabe muss
+außerdem an der "richtigen" Stelle im Vivi hinterlegt sein. Der genaue Ort wird
+durch die Produkt-Source bestimmt (siehe unten).
+
 
 Cover-Bilder
 ============
@@ -37,6 +51,9 @@ Product-Source
 Um ein Produkt für die Benutzung von Ausgaben freizuschalten, muss in der
 ``products.xml`` für das entsprechende Produkt ein Attribut ``volume="True"``
  gesetzt werden.
+
+Ausgaben zu dem Produkt müssen im Vivi in einer Ordner-Struktur hinterlegt
+werden, welche dem ``location`` Attribut in der Source entspricht.
 
 Um ein beliebiges Objekt mit dem ``ICommonMetadata``-Interface einer Ausgabe
 zu zuordnen, existiert ein Adapter, der aus den bereits vorhanden Attributen
