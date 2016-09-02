@@ -36,8 +36,8 @@ Coverbildern. Beispiel::
     </covers>
 
 Über das Attribut ``Volume.covers`` kann auf die entsprechende ``id``
-zugegriffen werden. ``volume.covers['ipad']`` und ``volume.covers.ipad`` ist
-beides möglich.
+zugegriffen werden. Der Zugriff erfolg über Dict-Notation, d.h.
+``volume.covers['ipad']``.
 
 Diese werden dynamisch beim ``Volume`` angezeigt und dann direkt im XML
 desselben gespeichert.

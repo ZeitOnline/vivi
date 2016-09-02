@@ -50,4 +50,31 @@
      layer="zeit.cms.browser.interfaces.ICMSStyles"
      />
 
+  <browser:page
+    for="..interfaces.IVolumeReference"
+    name="object-details-body"
+    template="reference-details.pt"
+    class=".reference.Display"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IVolumeReference"
+    name="edit.html"
+    class=".reference.EditReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <configure package="zeit.cms.browser">
+    <browser:page
+      for="zeit.content.volume.interfaces.IVolumeReference"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      name="object-details-heading"
+      template="object-details-heading.pt"
+      class="zeit.content.volume.browser.reference.ReferenceDetailsHeading"
+      permission="zope.View"
+      />
+  </configure>
 </configure>

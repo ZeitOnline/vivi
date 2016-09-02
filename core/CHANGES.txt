@@ -2,10 +2,12 @@ zeit.content.volume changes
 ===========================
 
 
-1.0.1 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- Make sure that the ``ICMSContent`` belongs to a print product before adapting
+- ZON-3253: Implement IReference with overridable teaserText.
+
+- FIX: Make sure that the ``ICMSContent`` belongs to a print product before adapting
   it to the associated ``Volume``.
 
 

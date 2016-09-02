@@ -116,15 +116,31 @@ class VolumeCovers(
         return zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
             self).title(key)
 
-    # XXX Why does this work without an explicit security declaration?
+    # XXX Why does the formlib work without an explicit security declaration?
 
     def __getattr__(self, key):
-        """Interfere with zope.formlib and retrieve content via getitem."""
-        return self.get(key)
+        """Interfere with zope.formlib and retrieve content via getitem.
+
+        Since the formlib only accesses fields from VOLUME_COVER_SOURCE, i.e.
+        ``self.keys()``, we forward other calls to the "normal" implementation
+        of ``__getattr__``.
+
+        """
+        if key in self.keys():
+            return self.get(key)
+        return super(VolumeCovers, self).__getattr__(key)
 
     def __setattr__(self, key, value):
-        """Interfere with zope.formlib and store content via setitem."""
-        self[key] = value
+        """Interfere with zope.formlib and store content via setitem.
+
+        Since the formlib only accesses fields from VOLUME_COVER_SOURCE, i.e.
+        ``self.keys()``, we forward other calls to the "normal" implementation
+        of ``__setattr__``.
+
+        """
+        if key in self.keys():
+            self[key] = value
+        return super(VolumeCovers, self).__setattr__(key, value)
 
 
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
