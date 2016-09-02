@@ -26,7 +26,7 @@ class Volume(zeit.content.article.edit.reference.Reference):
         zeit.content.article.edit.interfaces.IVolume)
     type = 'volume'
 
-    references = ReferenceProperty('.', 'teaser_text')
+    references = ReferenceProperty('.', 'related')
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):

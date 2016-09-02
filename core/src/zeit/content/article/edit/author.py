@@ -26,7 +26,7 @@ class Author(zeit.content.article.edit.reference.Reference):
         zeit.content.article.edit.interfaces.IAuthor)
     type = 'author'
 
-    references = ReferenceProperty('.', 'authorbio')
+    references = ReferenceProperty('.', 'related')
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):
