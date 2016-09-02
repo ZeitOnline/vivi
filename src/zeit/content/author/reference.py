@@ -1,4 +1,5 @@
 import copy
+import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.interfaces
@@ -69,8 +70,11 @@ def XMLRelatedReference(context):
 
 class RelatedReference(zeit.cms.content.reference.Reference):
 
+    grok.adapts(
+        zeit.content.author.interfaces.IAuthor,
+        gocept.lxml.interfaces.IObjectified)
+    grok.provides(zeit.cms.content.interfaces.IReference)
     grok.implements(zeit.content.author.interfaces.IAuthorBioReference)
-    grok.provides(zeit.content.author.interfaces.IAuthorBioReference)
-    grok.name('authorbio')
+    grok.name('related')
 
     biography = zeit.cms.content.property.ObjectPathProperty('.biography')

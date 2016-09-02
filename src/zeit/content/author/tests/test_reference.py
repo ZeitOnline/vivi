@@ -105,3 +105,33 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
                 updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
                     content)
                 updater.update(content.xml, suppress_errors=True)
+
+
+class RelatedReferenceTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(RelatedReferenceTest, self).setUp()
+        self.repository['testauthor'] = zeit.content.author.author.Author()
+        self.author = self.repository['testauthor']
+
+    def test_author_can_be_adapted_to_IXMLReference(self):
+        result = zope.component.getAdapter(
+            self.author,
+            zeit.cms.content.interfaces.IXMLReference,
+            name='related')
+        self.assertEqual('author', result.tag)
+        self.assertEqual(self.author.uniqueId, result.get('href'))
+
+    def test_author_can_be_adapted_to_IReference(self):
+        from zeit.content.author.interfaces import IAuthorBioReference
+
+        result = zope.component.getMultiAdapter(
+            (self.author, self.author.xml),
+            zeit.cms.content.interfaces.IReference, name='related')
+
+        result.biography = 'bio'
+
+        self.assertEqual(True, IAuthorBioReference.providedBy(result))
+        self.assertEqual('bio', result.xml.biography.text)
