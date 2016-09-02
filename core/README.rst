@@ -50,7 +50,7 @@ Product-Source
 
 Um ein Produkt für die Benutzung von Ausgaben freizuschalten, muss in der
 ``products.xml`` für das entsprechende Produkt ein Attribut ``volume="True"``
- gesetzt werden.
+gesetzt werden.
 
 Ausgaben zu dem Produkt müssen im Vivi in einer Ordner-Struktur hinterlegt
 werden, welche dem ``location`` Attribut in der Source entspricht.
