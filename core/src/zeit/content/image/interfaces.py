@@ -373,6 +373,9 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
             return True
         return super(ImageGroupSource, self).__contains__(value)
 
+
+# XXX this source still allows bare Image *and* ImageGroup, we should change
+# the source to ImageGroup-only and add a bw-compat-source
 imageGroupSource = ImageGroupSource()
 
 
