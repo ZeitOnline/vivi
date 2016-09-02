@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.85.1 (unreleased)
+2.85.1 (2016-09-02)
 -------------------
 
 - ``live_url_to_content`` and ``vivi_url_to_content`` do no longer break if
