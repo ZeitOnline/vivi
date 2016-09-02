@@ -4,7 +4,7 @@ zeit.content.video changes
 2.5.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``video_still_copyright`` and ``authorships`` to ``IVideo``. (ZON-2409)
 
 
 2.5.3 (2016-04-18)

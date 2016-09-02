@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'pytz',
         'setuptools',
-        'zeit.cms>=2.43.1.dev0',
+        'zeit.cms>=2.85.1.dev0',
         'zeit.connector',
         'zeit.solr>=2.2.0.dev0',
         'zope.annotation',
@@ -34,4 +34,7 @@ setup(
         'zope.schema',
         'zope.traversing',
     ],
+    extras_require=dict(test=[
+        'zeit.content.author',
+    ]),
 )

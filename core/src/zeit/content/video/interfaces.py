@@ -79,6 +79,10 @@ class IVideo(IVideoContent):
         source=SerieSource(),
         required=False)
 
+    video_still_copyright = zope.schema.TextLine(
+        title=_('Video still copyright'),
+        required=False)
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 

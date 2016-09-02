@@ -1,4 +1,5 @@
 import lxml.objectify
+import mock
 import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -139,3 +140,32 @@ class TestRenditionsProperty(unittest.TestCase):
         self.assertEqual('foo', video.renditions[0].url)
         self.assertEqual(100, video.renditions[0].frame_width)
         self.assertEqual(910, video.renditions[0].video_duration)
+
+
+class TestAuthorshipsProperty(zeit.content.video.testing.TestCase):
+
+    def test_authorships_property_converts_IAuthor_to_IReference(
+            self):
+        from zeit.cms.content.interfaces import IReference
+        from zeit.content.author.author import Author
+        from zeit.content.video.video import Video
+        self.repository['author'] = Author()
+        video = Video()
+        video.authorships = (self.repository['author'],)
+        self.assertEqual(
+            [True], [IReference.providedBy(x) for x in video.authorships])
+        self.assertEqual(
+            [self.repository['author']], [x.target for x in video.authorships])
+
+    def test_authorships_property_passes_IReference_without_conversion(self):
+        from zeit.cms.content.interfaces import IReference
+        from zeit.content.author.author import Author
+        from zeit.content.video.video import Video
+        self.repository['author'] = Author()
+        video = Video()
+        video.authorships = (
+            video.authorships.create(self.repository['author']),)
+        self.assertEqual(
+            [True], [IReference.providedBy(x) for x in video.authorships])
+        self.assertEqual(
+            [self.repository['author']], [x.target for x in video.authorships])

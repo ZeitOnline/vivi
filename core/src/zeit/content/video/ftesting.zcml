@@ -10,5 +10,6 @@
   <include package="zeit.content.video.browser" />
 
   <include package="zeit.solr" />
+  <include package="zeit.content.author" file="ftesting.zcml" />
 
 </configure>

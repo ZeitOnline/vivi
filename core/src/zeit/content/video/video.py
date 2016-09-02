@@ -7,6 +7,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.video.interfaces
@@ -35,6 +36,30 @@ class RenditionsProperty(zeit.cms.content.property.MultiPropertyBase):
         return node
 
 
+class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
+    """Drop-in ReferenceProperty that also accepts plain ICMSContent on set.
+
+    Since one cannot enter location information in Brightcove, authors of
+    videos can never have that, so we don't need to care about it (and can make
+    life simpler for zeit.brightcove).
+    """
+
+    # Similar to zeit.cms.content.reference.MultiResource, but only the setter.
+
+    def references(self, instance):
+        return super(AuthorshipsProperty, self).__get__(instance, None)
+
+    def __set__(self, instance, value):
+        items = []
+        references = self.references(instance)
+        for item in value:
+            if zeit.cms.content.interfaces.IReference.providedBy(item):
+                items.append(item)
+            else:
+                items.append(references.create(item))
+        super(AuthorshipsProperty, self).__set__(instance, items)
+
+
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.video.interfaces.IVideo,
@@ -46,7 +71,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'expires', 'video_still', 'flv_url', 'thumbnail'))
+        ('has_recensions', 'expires', 'video_still', 'flv_url', 'thumbnail',
+         'video_still_copyright'))
 
     id_prefix = 'vid'
 
@@ -59,6 +85,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return self.title
 
     renditions = RenditionsProperty('.head.renditions.rendition')
+    authorships = AuthorshipsProperty(
+        str(zeit.cms.content.metadata.CommonMetadata.authorships.path),
+        zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name
+    )
 
     # XXX ``serie`` is copy&paste from CommonMetadata since we need to change
     # the source (thus the interface), and once we override the property
