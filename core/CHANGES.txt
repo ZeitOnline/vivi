@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.6.1 (unreleased)
+2.6.1 (2016-09-02)
 ------------------
 
 - Fix brown-bag 2.6.0 that needlessly depended on an unreleased zeit.cms
