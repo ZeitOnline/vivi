@@ -47,6 +47,7 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
     # Similar to zeit.cms.content.reference.MultiResource, but only the setter.
 
     def references(self, instance):
+        """Returns a ``References`` object to easen creation of references."""
         return super(AuthorshipsProperty, self).__get__(instance, None)
 
     def __set__(self, instance, value):
