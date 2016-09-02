@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.7.3 (unreleased)
+2.8.0 (2016-09-02)
 ------------------
 
 - Read ``credit`` and ``authors`` from brightcove. (ZON-2409)
