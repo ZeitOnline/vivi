@@ -102,6 +102,10 @@ class IVideo(IBrightcoveContent,
         title=_('Breaking news'),
         default=False)
 
+    video_still_copyright = zope.schema.TextLine(
+        title=_('Video still copyright'),
+        required=False)
+
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""

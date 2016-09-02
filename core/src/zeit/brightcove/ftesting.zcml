@@ -15,6 +15,9 @@
   <include package="zeit.content.video" />
   <include package="zeit.content.video.browser" />
 
+  <include package="zeit.content.author" />
+  <include package="zeit.content.author.browser" />
+
   <grant
     principal="zope.user"
     permission="zeit.brightcove.video.Edit"

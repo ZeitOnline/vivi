@@ -21,14 +21,17 @@ setup(
         'pytz',
         'setuptools',
         'zeit.addcentral',
-        'zeit.cms>=2.59.1.dev0',
-        'zeit.content.video>=2.4.0.dev0',
+        'zeit.cms>=2.85.1.dev0',
+        'zeit.content.video>=2.6.0.dev0',
         'zeit.solr>=2.2.0.dev0',
         'zope.cachedescriptors',
         'zope.component',
         'zope.interface',
         'zope.schema',
     ],
+    extras_require=dict(test=[
+        'zeit.content.author',
+    ]),
     entry_points="""
     [console_scripts]
     update-brightcove-repository=zeit.brightcove.update:_update_from_brightcove

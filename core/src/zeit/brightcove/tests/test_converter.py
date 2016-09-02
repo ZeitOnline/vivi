@@ -1,3 +1,4 @@
+# coding: utf-8
 from zeit.brightcove.converter import Video, Playlist
 import datetime
 import logging
@@ -96,6 +97,29 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         source = zeit.content.video.interfaces.IVideo['serie'].source(None)
         video.serie = source.factory.values.get('erde/umwelt')
         self.assertEquals('erde/umwelt', video.data['customFields']['serie'])
+
+    def test_video_still_copyright(self):
+        video = Video.find_by_id('1234')
+        self.assertEquals(u'© Sommerfilme 2000', video.video_still_copyright)
+
+    def test_authorships(self):
+        from zeit.content.author.author import Author
+        self.repository['Claudia_Bracholdt'] = Author()
+        self.repository['Adrian_Pohr'] = Author()
+
+        video = Video.find_by_id('1234')
+        self.assertEquals((
+            self.repository['Claudia_Bracholdt'],
+            self.repository['Adrian_Pohr']),
+            video.authorships)
+
+    def test_no_authorships(self):
+        video = Video.find_by_id('6789')
+        self.assertEquals((), video.authorships)
+
+    def test_author_not_present(self):
+        video = Video.find_by_id('1234')
+        self.assertEquals((), video.authorships)
 
 
 class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -196,6 +220,18 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(400, cmsobj.renditions[0].frame_width)
 
         self.assertEqual(93000, cmsobj.renditions[0].video_duration)
+
+    def test_authors_should_be_converted_to_cms(self):
+        from zeit.content.author.author import Author
+        self.repository['Claudia_Bracholdt'] = Author()
+        self.repository['Adrian_Pohr'] = Author()
+
+        video = Video.find_by_id('1234')
+        cmsobj = video.to_cms()
+        self.assertEquals([
+            self.repository['Claudia_Bracholdt'],
+            self.repository['Adrian_Pohr']],
+            [x.target for x in cmsobj.authorships])
 
     def test_comments_should_default_to_true(self):
         video = Video.find_by_id('1234')

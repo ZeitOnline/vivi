@@ -231,6 +231,7 @@ class Video(Converter):
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
+    video_still_copyright = mapped('customFields', 'credit')
     dailyNewsletter = mapped_bool('customFields', 'newsletter')
     has_recensions = mapped_bool('customFields', 'recensions')
     item_state = mapped('itemState')
@@ -306,6 +307,13 @@ class Video(Converter):
             vr.video_duration = rendition['videoDuration']
             rs.append(vr)
         return tuple(rs)
+
+    @property
+    def authorships(self):
+        data_authors = self.data.get('customFields', {}).get('authors', '')
+        authors = [zeit.cms.interfaces.ICMSContent(author, None)
+                   for author in data_authors.split(' ')]
+        return tuple([author for author in authors if author])
 
     @property
     def related(self):

@@ -1,3 +1,4 @@
+# coding: utf-8
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import gocept.httpserverlayer.custom
 import json
@@ -27,6 +28,9 @@ VIDEO_1234 = {
         'banner-id': '99887',
         'ignore_for_update': '0',
         'serie': 'erde/energie',
+        'credit': '© Sommerfilme 2000',
+        'authors': ('http://www.zeit.de/Claudia_Bracholdt '
+                    'http://www.zeit.de/Adrian_Pohr'),
     },
     'economics': 'AD_SUPPORTED',
     'id': 1234,
