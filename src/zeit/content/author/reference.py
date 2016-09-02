@@ -58,16 +58,16 @@ class Reference(zeit.cms.content.reference.Reference):
     location = zeit.cms.content.property.ObjectPathProperty('.location')
 
 
-@grok.adapter(zeit.content.author.interfaces.IAuthor, name='authorbio')
+@grok.adapter(zeit.content.author.interfaces.IAuthor, name='related')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
-def XMLBioReference(context):
+def XMLRelatedReference(context):
     node = lxml.objectify.E.author(href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
 
 
-class BioReference(zeit.cms.content.reference.Reference):
+class RelatedReference(zeit.cms.content.reference.Reference):
 
     grok.implements(zeit.content.author.interfaces.IAuthorBioReference)
     grok.provides(zeit.content.author.interfaces.IAuthorBioReference)

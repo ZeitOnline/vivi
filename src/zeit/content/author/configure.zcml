@@ -57,7 +57,7 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".reference.BioReference">
+  <class class=".reference.RelatedReference">
     <require
       interface=".interfaces.IAuthorBioReference"
       permission="zope.View" />
