@@ -240,8 +240,8 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     @cachedproperty
     def values(self):
-        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.retresco.tms'):
+        config = zope.app.appsetup.appsetup.getConfigContext()
+        if not config or config.hasFeature('zeit.retresco.tms'):
             return (u'centerpage', u'channel', u'topicpage', u'query')
         else:
             return (u'centerpage', u'channel', u'query')

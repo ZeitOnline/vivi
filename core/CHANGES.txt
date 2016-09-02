@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.10.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Ignore retresco feature toggle for zeit.web.
 
 
 3.10.2 (2016-08-24)
