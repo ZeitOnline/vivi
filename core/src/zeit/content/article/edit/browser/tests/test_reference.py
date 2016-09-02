@@ -2,9 +2,20 @@ from zeit.content.article.edit.interfaces import IEditableBody
 import transaction
 import unittest
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.sources
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 import zope.security.management
+
+
+def add_to_clipboard(obj, name):
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
+        clipboard.addContent(clip, obj, name, insert=True)
+        transaction.commit()
 
 
 class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
@@ -136,18 +147,9 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.assertElementPresent('css=.block.type-image .add_view.button')
 
-    def add_to_clipboard(self, obj, name):
-        principal = (zope.security.management.getInteraction()
-                     .participations[0].principal)
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-        clipboard.addClip('Clip')
-        clip = clipboard['Clip']
-        clipboard.addContent(clip, obj, name, insert=True)
-        transaction.commit()
-
     def add_image_to_clipboard(self):
         with zeit.cms.testing.site(self.getRootFolder()):
-            self.add_to_clipboard(
+            add_to_clipboard(
                 self.repository['2006']['DSC00109_2.JPG'], 'my_image')
         self.add_article()
         s = self.selenium
@@ -157,7 +159,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def add_group_to_clipboard(self):
         with zeit.cms.testing.site(self.getRootFolder()):
             group = zeit.content.image.testing.create_image_group()
-        self.add_to_clipboard(group, 'my_group')
+        add_to_clipboard(group, 'my_group')
         self.add_article()
         s = self.selenium
         s.clickAt('//li[@uniqueid="Clip"]', '10,10')
@@ -376,3 +378,37 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(select)
         s.assertSelectedLabel(select, 'large')
+
+
+class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def add_volume_to_clipboard(self):
+        from zeit.content.image.testing import create_image_group
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['imagegroup'] = create_image_group()
+            volume = zeit.content.volume.volume.Volume()
+            volume.year = 2006
+            volume.volume = 23
+            volume.product = zeit.cms.content.sources.Product(u'ZEI')
+            volume.covers['portrait'] = self.repository['imagegroup']
+            self.repository['2006']['23'] = volume
+            add_to_clipboard(
+                self.repository['2006']['23'], 'my_volume')
+        self.add_article()
+        s = self.selenium
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+    def test_volume_is_droppable_in_article_text(self):
+        self.add_volume_to_clipboard()
+        s = self.selenium
+
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_volume"]',
+            'css=.action-article-body-content-droppable', '10,10')
+        s.waitForCssCount('css=.block.type-volume form.inline-form.wired', 1)
+        # ensure object-details are displayed
+        s.waitForElementPresent('css=.block.type-volume textarea ')
+        s.assertTextPresent('Die Zeit, Jahrgang: 2006, Ausgabe 23')
+        s.assertAttribute('css=.block.type-volume img@src',
+                          '*/imagegroup/thumbnails/original/@@raw')

@@ -9,6 +9,7 @@ import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.content.video.interfaces
+import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
 import zope.security.proxy
@@ -408,6 +409,15 @@ class IAuthor(IReference):
         title=_("Author"),
         description=_("Drag an author here"),
         source=zeit.cms.content.interfaces.authorSource,
+        required=False)
+
+
+class IVolume(IReference):
+
+    references = zeit.cms.content.interfaces.ReferenceField(
+        title=_("Volume"),
+        description=_("Drag a volume here"),
+        source=zeit.content.volume.interfaces.VOLUME_SOURCE,
         required=False)
 
 

@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup, INFOGRAPHIC_DISPLAY_TYPE
+from zeit.content.volume.interfaces import IVolume
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
@@ -106,3 +107,9 @@ class EditAuthor(EditBase):
     def setUpWidgets(self, *args, **kw):
         super(EditAuthor, self).setUpWidgets(*args, **kw)
         self.widgets['references'].add_type = IAuthor
+
+
+class EditVolume(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IVolume
+    undo_description = _('edit volume block')

@@ -3,7 +3,7 @@ import grokcore.component as grok
 import zeit.cms.content.reference
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.reference
-import zeit.content.author.interfaces
+import zeit.content.volume.interfaces
 
 
 class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
@@ -20,28 +20,28 @@ class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
         instance._p_changed = True
 
 
-class Author(zeit.content.article.edit.reference.Reference):
+class Volume(zeit.content.article.edit.reference.Reference):
 
     grok.implements(
-        zeit.content.article.edit.interfaces.IAuthor)
-    type = 'author'
+        zeit.content.article.edit.interfaces.IVolume)
+    type = 'volume'
 
     references = ReferenceProperty('.', 'related')
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
-    produces = Author
-    title = _('Author block')
+    produces = Volume
+    title = _('Volume block')
 
 
 @grok.adapter(
     zeit.content.article.edit.interfaces.IArticleArea,
-    zeit.content.author.interfaces.IAuthor,
+    zeit.content.volume.interfaces.IVolume,
     int)
 @grok.implementer(zeit.edit.interfaces.IElement)
-def factor_author_block_from_author(body, content, position):
+def factor_volume_block_from_volume(body, content, position):
     block = Factory(body)(position)
-    block.references = (block.references.get(content)
-                        or block.references.create(content))
+    block.references = (block.references.get(content) or
+                        block.references.create(content))
     return block

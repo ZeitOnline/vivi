@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -17,7 +17,7 @@ import zope.schema
 class Reference(zeit.edit.block.SimpleElement):
 
     area = zeit.content.article.edit.interfaces.IArticleArea
-    grokcore.component.baseclass()
+    grok.baseclass()
 
     is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'is_empty',
@@ -53,8 +53,8 @@ class Reference(zeit.edit.block.SimpleElement):
         field.validate(value)
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IReference)
-@grokcore.component.implementer(zeit.cms.content.interfaces.ICommonMetadata)
+@grok.adapter(zeit.content.article.edit.interfaces.IReference)
+@grok.implementer(zeit.cms.content.interfaces.ICommonMetadata)
 def find_commonmetadata(context):
     body = context.__parent__
     article = body.__parent__
@@ -63,7 +63,7 @@ def find_commonmetadata(context):
 
 class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
 
-    grokcore.component.baseclass()
+    grok.baseclass()
 
     def __call__(self, position=None):
         block = super(ReferenceFactory, self).__call__(position)
@@ -73,7 +73,7 @@ class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
 
 class Gallery(Reference):
 
-    grokcore.component.implements(
+    grok.implements(
         zeit.content.article.edit.interfaces.IGallery)
     type = 'gallery'
 
@@ -84,10 +84,10 @@ class GalleryFactory(ReferenceFactory):
     title = _('Gallery')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.gallery.interfaces.IGallery,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.gallery.interfaces.IGallery,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_gallery(body, context, position):
     block = GalleryFactory(body)(position)
     block.references = context
@@ -96,7 +96,7 @@ def factor_block_from_gallery(body, context, position):
 
 class Infobox(Reference):
 
-    grokcore.component.implements(
+    grok.implements(
         zeit.content.article.edit.interfaces.IInfobox)
     type = 'infobox'
 
@@ -112,10 +112,10 @@ class InfoboxFactory(ReferenceFactory):
     title = _('Infobox')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.infobox.interfaces.IInfobox,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.infobox.interfaces.IInfobox,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_infobox(body, context, position):
     block = InfoboxFactory(body)(position)
     block.references = context
@@ -124,7 +124,7 @@ def factor_block_from_infobox(body, context, position):
 
 class Timeline(Reference):
 
-    grokcore.component.implements(
+    grok.implements(
         zeit.content.article.edit.interfaces.ITimeline)
     type = 'timeline'
 
@@ -135,10 +135,10 @@ class TimelineFactory(ReferenceFactory):
     title = _('Timeline')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.article.edit.interfaces.ITimeline,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.article.edit.interfaces.ITimeline,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_timeline(body, context, position):
     block = TimelineFactory(body)(position)
     block.references = context
@@ -147,7 +147,7 @@ def factor_block_from_timeline(body, context, position):
 
 class Portraitbox(Reference):
 
-    grokcore.component.implements(
+    grok.implements(
         zeit.content.article.edit.interfaces.IPortraitbox)
     type = 'portraitbox'
 
@@ -167,26 +167,26 @@ class PortraitboxFactory(ReferenceFactory):
     title = _('Portraitbox')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.portraitbox.interfaces.IPortraitbox,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.portraitbox.interfaces.IPortraitbox,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_portraitbox(body, context, position):
     block = PortraitboxFactory(body)(position)
     block.references = context
     return block
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_reference_metadata(article, event):
     body = zeit.content.article.edit.interfaces.IEditableBody(article)
     for block in body.values():
-        if (zeit.content.article.edit.interfaces.IImage.providedBy(block)
-            and block.references is not None):
+        if (zeit.content.article.edit.interfaces.IImage.providedBy(block) and
+                block.references is not None):
             type(block).references.update_metadata(block)
-        elif (zeit.content.article.edit.interfaces.IReference.providedBy(block)
-              and block.references is not None):
+        elif (zeit.content.article.edit.interfaces.IReference.providedBy(
+                block) and block.references is not None):
             # Re-assigning the old value updates xml metadata
             block.references = block.references
