@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.7.2 (unreleased)
+2.7.2 (2016-09-02)
 ------------------
 
 - Fix brown-bag 2.7.1 and implement IXMLReference 'related' properly.
