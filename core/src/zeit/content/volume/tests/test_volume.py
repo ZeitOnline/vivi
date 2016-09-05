@@ -48,9 +48,9 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        self.repository['ausgabe'] = Folder()
-        self.repository['ausgabe']['2015'] = Folder()
-        self.repository['ausgabe']['2015']['01'] = volume
+        self.repository['2015'] = Folder()
+        self.repository['2015']['01'] = Folder()
+        self.repository['2015']['01']['ausgabe'] = volume
 
     def test_content_with_missing_values_does_not_adapt_to_IVolume(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType
@@ -66,7 +66,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         volume = zeit.content.volume.interfaces.IVolume(content)
         self.assertEqual(
             volume,
-            self.repository['ausgabe']['2015']['01'])
+            self.repository['2015']['01']['ausgabe'])
 
     def test_content_online_product_has_no_IVolume(self):
         # *All* content that is added in vivi gets year and volume from

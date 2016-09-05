@@ -9,7 +9,6 @@
      class=".form.Add"
      name="zeit.content.volume.Add"
      permission="zeit.AddContent"
-     menu="zeit-add-menu" title="Volume"
      />
 
    <browser:page

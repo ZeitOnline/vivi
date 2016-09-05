@@ -55,18 +55,19 @@ gesetzt werden.
 Ausgaben zu dem Produkt müssen im Vivi in einer Ordner-Struktur hinterlegt
 werden, welche dem ``location`` Attribut in der Source entspricht.
 
-Um ein beliebiges Objekt mit dem ``ICommonMetadata``-Interface einer Ausgabe
-zu zuordnen, existiert ein Adapter, der aus den bereits vorhanden Attributen
+Um ein beliebiges Objekt mit dem ``ICommonMetadata``-Interface einer Ausgabe zu
+zuordnen, existiert ein Adapter, der aus den bereits vorhanden Attributen
 ``year`` und ``volume`` die entsprechende Ausgabe errechnet. Für die
 Einstellung mit dem ``location``-Attribut können ``{year}`` und ``{name}``
-verwendet werden.
+verwendet werden. Das letzte Element im Pfad wird als Dateiname des
+Ausgabenobjektes interpretiert.
 
 Im folgenden Beispiel werden beide Optionen ausgesteuert::
 
     <products>
         <product id="ZEI"
                  volume="True"
-                 location="http://xml.zeit.de/ausgabe/{year}/{name}">
+                 location="http://xml.zeit.de/{year}/{name}/ausgabe">
                  Die Zeit</product>
         <product id="ZMLB">Zeit Magazin</product>
     </products>
