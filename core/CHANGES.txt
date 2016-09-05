@@ -5,6 +5,8 @@ zeit.content.volume changes
 1.1.1 (unreleased)
 ------------------
 
+- ZON-3304: Add ``Volume`` to location configured in ``products.xml``.
+
 - ZON-3304: Show meaningful title for ``Volume`` in search results.
 
 - FIX: Adjust interface for ``Volume`` references to expect the container for
