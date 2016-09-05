@@ -7,6 +7,9 @@ zeit.content.volume changes
 
 - ZON-3304: Show meaningful title for ``Volume`` in search results.
 
+- FIX: Adjust interface for ``Volume`` references to expect the container for
+  the ``Volume`` reference rather the ``Volume`` itself.
+
 
 1.1.0 (2016-09-02)
 ------------------

@@ -1,4 +1,5 @@
 import zeit.cms.content.interfaces
+import zeit.content.article.edit.volume
 import zeit.content.volume.testing
 import zope.component
 
@@ -11,6 +12,8 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
 
         self.repository['testvolume'] = Volume()
         self.volume = self.repository['testvolume']
+        self.reference_container = zeit.content.article.edit.volume.Volume(
+            self.volume, self.volume.xml)
 
     def test_volume_can_be_adapted_to_IXMLReference(self):
         result = zope.component.getAdapter(
@@ -24,7 +27,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         from zeit.content.volume.interfaces import IVolumeReference
 
         result = zope.component.getMultiAdapter(
-            (self.volume, self.volume.xml),
+            (self.reference_container, self.volume.xml),
             zeit.cms.content.interfaces.IReference, name='related')
 
         result.teaserText = 'Test teaser'

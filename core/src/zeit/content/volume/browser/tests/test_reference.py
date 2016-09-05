@@ -9,7 +9,8 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def get_display_view(self, cover_image=True):
         from zeit.content.image.testing import create_image_group
-        from zeit.content.volume.reference import XMLReference, VolumeReference
+        from zeit.content.volume.reference import RelatedReference
+        from zeit.content.volume.reference import XMLRelatedReference
         self.repository['imagegroup'] = create_image_group()
 
         volume = zeit.content.volume.volume.Volume()
@@ -20,8 +21,8 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
             volume.covers['portrait'] = self.repository['imagegroup']
         self.repository['volume'] = volume
 
-        xml = XMLReference(self.repository['volume'])
-        reference = VolumeReference(volume, xml)
+        xml = XMLRelatedReference(self.repository['volume'])
+        reference = RelatedReference(volume, xml)
         view = zeit.content.volume.browser.reference.Display()
         view.context = reference
         view.request = zope.publisher.browser.TestRequest()
