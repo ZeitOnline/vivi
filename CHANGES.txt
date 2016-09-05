@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.16.1 (unreleased)
+2.16.1 (2016-09-05)
 -------------------
 
 - Be defensive about falling back to image metadata.
