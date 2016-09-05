@@ -4,7 +4,7 @@ zeit.content.image changes
 2.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be defensive about falling back to image metadata.
 
 
 2.16.0 (2016-08-18)
