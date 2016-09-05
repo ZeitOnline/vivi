@@ -55,7 +55,7 @@ class ImageReference(zeit.cms.content.reference.Reference):
                 value = field.missing_value
             if value == field.missing_value:
                 target_metadata = zeit.content.image.interfaces.IImageMetadata(
-                    self.target)
+                    self.target, None)
                 value = getattr(target_metadata, key, value)
             return value
         else:
