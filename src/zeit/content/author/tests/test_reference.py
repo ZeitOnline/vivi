@@ -4,6 +4,7 @@ import lxml.etree
 import mock
 import zeit.cms.content.interfaces
 import zeit.cms.testing
+import zeit.content.article.edit.author
 import zeit.content.author.author
 import zeit.content.author.testing
 import zope.component
@@ -115,6 +116,8 @@ class RelatedReferenceTest(zeit.cms.testing.FunctionalTestCase):
         super(RelatedReferenceTest, self).setUp()
         self.repository['testauthor'] = zeit.content.author.author.Author()
         self.author = self.repository['testauthor']
+        self.reference_container = zeit.content.article.edit.author.Author(
+            self.author, self.author.xml)
 
     def test_author_can_be_adapted_to_IXMLReference(self):
         result = zope.component.getAdapter(
@@ -128,7 +131,7 @@ class RelatedReferenceTest(zeit.cms.testing.FunctionalTestCase):
         from zeit.content.author.interfaces import IAuthorBioReference
 
         result = zope.component.getMultiAdapter(
-            (self.author, self.author.xml),
+            (self.reference_container, self.author.xml),
             zeit.cms.content.interfaces.IReference, name='related')
 
         result.biography = 'bio'

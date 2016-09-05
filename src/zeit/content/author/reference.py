@@ -3,6 +3,7 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.interfaces
+import zeit.content.article.edit.interfaces
 import zeit.content.author.interfaces
 import zope.security.proxy
 
@@ -71,7 +72,7 @@ def XMLRelatedReference(context):
 class RelatedReference(zeit.cms.content.reference.Reference):
 
     grok.adapts(
-        zeit.content.author.interfaces.IAuthor,
+        zeit.content.article.edit.interfaces.IAuthor,
         gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
     grok.implements(zeit.content.author.interfaces.IAuthorBioReference)
