@@ -10,14 +10,14 @@ import zeit.content.volume.interfaces
 
 @grok.adapter(zeit.content.volume.interfaces.IVolume, name='related')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
-def XMLReference(context):
+def XMLRelatedReference(context):
     node = lxml.objectify.E.volume(href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
 
 
-class VolumeReference(zeit.cms.content.reference.Reference):
+class RelatedReference(zeit.cms.content.reference.Reference):
 
     grok.adapts(
         zeit.content.article.edit.interfaces.IVolume,

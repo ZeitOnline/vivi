@@ -29,7 +29,7 @@
       />
   </class>
 
-  <class class=".reference.VolumeReference">
+  <class class=".reference.RelatedReference">
     <require
       interface=".interfaces.IVolumeReference"
       permission="zope.View" />
