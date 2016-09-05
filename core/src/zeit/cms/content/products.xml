@@ -3,7 +3,7 @@
     <product id="ZEI"
              autochannel="false"
              volume="True"
-             location="http://xml.zeit.de/ausgabe/{year}/{name}">
+             location="http://xml.zeit.de/{year}/{name}/ausgabe">
              Die Zeit</product>
     <product id="ZMLB">Zeit Magazin</product>
     <product id="TEST">Test/Development</product>
