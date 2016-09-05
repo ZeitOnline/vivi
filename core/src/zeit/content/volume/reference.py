@@ -4,6 +4,7 @@ import lxml.objectify
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
+import zeit.content.article.edit.interfaces
 import zeit.content.volume.interfaces
 
 
@@ -19,7 +20,7 @@ def XMLReference(context):
 class VolumeReference(zeit.cms.content.reference.Reference):
 
     grok.adapts(
-        zeit.content.volume.interfaces.IVolume,
+        zeit.content.article.edit.interfaces.IVolume,
         gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
     grok.implements(zeit.content.volume.interfaces.IVolumeReference)
