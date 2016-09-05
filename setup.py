@@ -20,6 +20,7 @@ setup(
         'pysolr',
         'setuptools',
         'zeit.cms>=2.38.0.dev0',
+        'zeit.content.article >= 3.21.1.dev0',
         'zeit.content.image>=2.13.0.dev0',
         'zeit.edit',
         'zeit.find',
