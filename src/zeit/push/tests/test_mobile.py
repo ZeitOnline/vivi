@@ -105,9 +105,11 @@ class RewriteURLTest(unittest.TestCase):
 
 class AddTrackingTest(unittest.TestCase):
 
+    layer = zeit.push.testing.ZCML_LAYER
+
     def test_adds_tracking_information_as_query_string(self):
         url = zeit.push.mobile.ConnectionBase.add_tracking(
-            'http://www.zeit.de/foo/bar', 'nonbreaking', 'android')
+            'http://www.zeit.de/foo/bar', ['News'], 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual(
             'fix.int.zonaudev.push.wichtige_news.zeitde.andpush.link.x',
@@ -120,10 +122,34 @@ class AddTrackingTest(unittest.TestCase):
     def test_adds_tracking_information_blog(self):
         url = zeit.push.mobile.ConnectionBase.add_tracking(
             'http://www.zeit.de/blog/foo/bar?feed=articlexml',
-            'nonbreaking', 'android')
+            ['News'], 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('articlexml', qs['feed'][0])
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
+
+    def test_creates_android_push_link_for_android(self):
+        url = zeit.push.mobile.ConnectionBase.add_tracking(
+            'http://URL', [], 'android')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('zeitde_andpush_link_x', qs['utm_content'][0])
+
+    def test_creates_ios_push_link_for_ios(self):
+        url = zeit.push.mobile.ConnectionBase.add_tracking(
+            'http://URL', [], 'ios')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('zeitde_iospush_link_x', qs['utm_content'][0])
+
+    def test_creates_breaking_news_link_for_breaking_news_channel(self):
+        url = zeit.push.mobile.ConnectionBase.add_tracking(
+            'http://URL', ['Eilmeldung'], 'device')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('eilmeldung', qs['utm_campaign'][0])
+
+    def test_creates_news_link_for_news_channel(self):
+        url = zeit.push.mobile.ConnectionBase.add_tracking(
+            'http://URL', ['News'], 'device')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('wichtige_news', qs['utm_campaign'][0])
 
 
 class MessageTest(zeit.push.testing.TestCase):
