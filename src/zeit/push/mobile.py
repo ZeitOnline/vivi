@@ -133,7 +133,9 @@ class ConnectionBase(object):
 
     @staticmethod
     def add_tracking(url, channels, device):
-        if PARSE_BREAKING_CHANNEL in channels:
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push') or {}
+        if config.get(PARSE_BREAKING_CHANNEL) in channels:
             channel = 'eilmeldung'
         else:
             channel = 'wichtige_news'
