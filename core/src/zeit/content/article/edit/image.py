@@ -51,16 +51,6 @@ class Image(zeit.content.article.edit.reference.Reference):
         '.', 'set-manually',
         zeit.content.article.edit.interfaces.IImage['set_manually'])
 
-    def __init__(self, *args, **kw):
-        super(Image, self).__init__(*args, **kw)
-        # Explicitly set `display_mode` and `variant_name` to persist values
-        # calculated from legacy attribute `layout` to XML, so the mapping for
-        # backward compatibility is only performed once.
-        if self._display_mode is None:
-            self.display_mode = self.display_mode
-        if self._variant_name is None:
-            self.variant_name = self.variant_name
-
     @property
     def display_mode(self):
         if self._display_mode is not None:

@@ -269,6 +269,16 @@ class DefaultTemplateByContentType(
         self.assertEquals(
             'original', self.repository['article'].main_image_variant_name)
 
+    def test_checkout_should_not_change_variant_name_if_already_set(self):
+        article = self.get_article()
+        article._create_image_block_in_front()
+        article.main_image_variant_name = 'wide'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+            pass
+        self.assertEquals(
+            'wide', self.repository['article'].main_image_variant_name)
+
 
 class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):

@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Only set main_image_variant_name on checkout when it's unset.
 
 
 3.21.0 (2016-09-02)

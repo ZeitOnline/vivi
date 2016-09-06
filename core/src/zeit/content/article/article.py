@@ -285,8 +285,9 @@ def set_template_and_header_defaults(context, event):
         context.template = template if template else None
         context.header_layout = header_layout if header_layout else None
 
-    if context.main_image_block and (
-            context.template or context.header_layout):
+    if (context.main_image_block and
+            not context.main_image_block._variant_name and
+            (context.template or context.header_layout)):
         iface = zeit.content.article.edit.interfaces
         source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
         context.main_image_variant_name = source.get_default(context)
