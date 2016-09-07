@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.85.2 (unreleased)
+2.86.0 (2016-09-07)
 -------------------
 
 - Include celery task id in log messages.
