@@ -91,6 +91,7 @@ setup(
         'zope.configuration',
         'zope.copypastemove',
         'zope.error',
+        'zope.exceptions',
         'zope.file',
         'zope.i18n>3.4.0',
         'zope.location>=3.4.0b2',

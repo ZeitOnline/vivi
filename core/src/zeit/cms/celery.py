@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from celery._state import get_current_task
 import ConfigParser
 import ZODB.POSException
 import celery
@@ -16,6 +17,7 @@ import zope.app.appsetup.product
 import zope.app.server.main
 import zope.app.wsgi
 import zope.component.hooks
+import zope.exceptions.log
 import zope.publisher.browser
 import zope.security.management
 
@@ -233,3 +235,22 @@ def configure_celery_client(event):
 CELERY = ZopeCelery()
 # Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
 task = CELERY.task
+
+
+class TaskFormatter(zope.exceptions.log.Formatter):
+    """Provides `task_id` and `task_name` variables for the log format.
+
+    Copy&paste from celery.app.log.TaskFormatter to remove ugly '???'
+    placeholders for non-task contexts. Also we inherit from zope.exceptions
+    to support `__traceback_info__`.
+    """
+
+    def format(self, record):
+        task = get_current_task()
+        if task and task.request:
+            record.__dict__.update(task_id=task.request.id,
+                                   task_name=task.name)
+        else:
+            record.__dict__.setdefault('task_name', '')
+            record.__dict__.setdefault('task_id', '')
+        return super(TaskFormatter, self).format(record)
