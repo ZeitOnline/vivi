@@ -33,9 +33,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     pretty much the only interesting property.)
     """
 
-    # XXX Registered via site.zcml until move to zeit.retresco is complete.
-    grok.baseclass()
-    zope.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
     grok.implements(zeit.cms.tagging.interfaces.ITagger)
 
     def __iter__(self):

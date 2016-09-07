@@ -5,6 +5,8 @@ zeit.retresco changes
 1.3.3 (unreleased)
 ------------------
 
+- Place ZCML under feature toggle `zeit.retresco.tms`.
+
 - Enrich content on checkin.
 
 - Index `startdate` year 9999 for unpublished content.
