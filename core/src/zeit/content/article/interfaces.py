@@ -99,6 +99,14 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         """
 
 
+class IArticleWithOptionalKeywords(IArticle):
+    """Temporary interface to toggle the requiredness of keywords."""
+
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        required=False,
+        default=())
+
+
 class IZONArticle(IArticle, zeit.cms.section.interfaces.ISectionMarker):
     pass
 

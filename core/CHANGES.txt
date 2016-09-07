@@ -4,6 +4,9 @@ zeit.content.article changes
 3.21.1 (unreleased)
 -------------------
 
+- Add feature toggle `zeit.content.article.optional-keywords` to make keywords
+  in articles optional. (ZON-3305)
+
 - Only set main_image_variant_name on checkout when it's unset.
 
 

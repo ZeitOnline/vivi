@@ -10,6 +10,7 @@ import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.block
 import zeit.edit.rule
+import zope.app.appsetup.appsetup
 import zope.schema.interfaces
 import zope.security.proxy
 
@@ -177,6 +178,10 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
 def validate_article(context, event):
     if zeit.content.article.interfaces.IBreakingNews(context).is_breaking:
         interface = zeit.content.article.interfaces.IBreakingNews
+    elif not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+            'zeit.retresco.tms'):
+        interface = (
+            zeit.content.article.interfaces.IArticleWithOptionalKeywords)
     else:
         interface = zeit.content.article.interfaces.IArticle
     # field validation (e.g. zope.schema.Tuple) does type comparisons, which
