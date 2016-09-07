@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.1.1 (unreleased)
+1.1.1 (2016-09-07)
 ------------------
 
 - ZON-3304: Add ``Volume`` to location configured in ``products.xml``.
