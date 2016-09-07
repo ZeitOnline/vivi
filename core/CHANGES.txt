@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.3.3 (unreleased)
+1.4.0 (2016-09-07)
 ------------------
 
 - Place ZCML under feature toggle `zeit.retresco.tms`.
