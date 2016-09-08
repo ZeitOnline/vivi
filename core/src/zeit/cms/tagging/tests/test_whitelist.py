@@ -69,19 +69,19 @@ class TestWhitelist(zeit.cms.testing.ZeitCmsTestCase):
             __name__, 'fixtures/whitelist.xml')
         wl._load()
         self.assertEqual(
-            'Person', wl['221da83c-427a-417f-81e2-0d8b1c65b669'].entity_type)
+            'Person', wl.get('Arno Schmidt').entity_type)
 
     def test_load_should_add_tags_to_whitelist(self):
         wl = self.whitelist()
         wl._fetch = lambda: pkg_resources.resource_stream(
             __name__, 'fixtures/whitelist.xml')
         wl._load()
-        self.assertEqual(55, len(wl))
+        self.assertEqual(55, len(wl.search('')))
 
     def test_accessing_data_attribute_should_trigger_load(self):
         wl = self.whitelist()
         wl._load = mock.Mock(return_value={})
-        wl.get(mock.sentinel.code)
+        wl.data
         self.assertTrue(wl._load.called)
 
     def test_load_result_should_be_cached(self):

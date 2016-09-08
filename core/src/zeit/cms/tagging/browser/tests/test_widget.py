@@ -123,6 +123,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
 
     def test_can_add_tags_via_autocomplete_field(self):
         self.setup_tags()
+        self.whitelist_tags = [self.get_tag('Kohle')]
         self.open_content()
         s = self.selenium
         self.add_keyword_by_autocomplete('Kohle')
@@ -144,7 +145,12 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
             gocept.testing.mock.Property()) as keywords_shown:
             keywords_shown.return_value = 1
-
+            self.setup_tags()
+            # The order in which the keywords are added to the whitelist is
+            # also the order in which they are shown in the rendered list in
+            # the form. We, therefore, change the order in the second step.
+            self.whitelist_tags = [self.get_tag(x)
+                                   for x in ('Kohle', 'Polarkreis')]
             self.open_content()
             s = self.selenium
             self.add_keyword_by_autocomplete('Polarkreis')

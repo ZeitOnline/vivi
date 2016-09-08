@@ -1,5 +1,4 @@
 from zeit.cms.application import CONFIG_CACHE
-import UserDict
 import gocept.lxml.objectify
 import logging
 import urllib2
@@ -11,7 +10,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class Whitelist(UserDict.UserDict):
+class Whitelist(object):
 
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
@@ -26,7 +25,11 @@ class Whitelist(UserDict.UserDict):
 
     def search(self, term):
         term = term.lower()
-        return [tag for tag in self.values() if term in tag.label.lower()]
+        return [tag for tag in self.data.values() if term in tag.label.lower()]
+
+    def get(self, id):
+        result = self.search(id)
+        return result[0] if result else None
 
     def _get_url(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(

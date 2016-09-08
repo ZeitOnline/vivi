@@ -4,7 +4,8 @@ zeit.cms changes
 2.86.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3199: Do not provide dict-like access on ``Whitelist`` anymore. ``get``
+  is provided   to query for a specific ``id`` instead.
 
 
 2.86.0 (2016-09-07)

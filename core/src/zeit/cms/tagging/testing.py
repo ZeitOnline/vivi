@@ -48,7 +48,7 @@ class DummyTagger(object):
     def __getitem__(self, key):
         if key not in self.keys():
             raise KeyError(key)
-        return self.whitelist[key]
+        return self.whitelist.get(key)
 
     def __setitem__(self, key, value):
         keys = list(self.keys())
@@ -121,17 +121,18 @@ class TaggingHelper(object):
         self.tagger = patcher.start()
         self.tagger.return_value = tags
 
-        whitelist = zope.component.queryUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        if whitelist is not None:  # only when ZCML is loaded
-            tag_values = tags.values()
-            for tag in tag_values:
-                whitelist[tag.code] = tag
+        self.whitelist_tags = tags.values()
 
-            def remove_tags_from_whitelist():
-                for tag in tag_values:
-                    del whitelist[tag.code]
-            self.addCleanup(remove_tags_from_whitelist)
+        def search(term):
+            term = term.lower()
+            return [tag for tag in self.whitelist_tags
+                    if term in tag.label.lower()]
+
+        whitelist_mocker = mock.patch(
+            'zeit.cms.tagging.whitelist.Whitelist.search',
+            side_effect=search)
+        self.addCleanup(whitelist_mocker.stop)
+        whitelist_mocker.start()
 
         return tags
 

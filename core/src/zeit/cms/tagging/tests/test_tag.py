@@ -66,19 +66,15 @@ class TestTags(unittest.TestCase,
         self.assertEqual(['t1'], [x.code for x in result])
 
 
-class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase):
+class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
+                           zeit.cms.tagging.testing.TaggingHelper):
 
     # This test checks that the Tag object and its views etc are wired up
     # properly so that they can be addressed as ICMSContent and traversed to.
     # We need these things so we can use the ObjectSequenceWidget to edit tags.
 
     def test_object_details(self):
-        from zeit.cms.tagging.tag import Tag
-
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        whitelist['foo'] = Tag('foo', 'foo')
-
+        self.setup_tags('foo')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
         b.open(
@@ -87,10 +83,7 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_adapting_tag_url_to_cmscontent_yields_a_copy(self):
         from zeit.cms.interfaces import ICMSContent
-        from zeit.cms.tagging.tag import Tag
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        whitelist['foo'] = Tag('foo', 'foo')
+        self.setup_tags('foo')
         t1 = ICMSContent('tag://foo')
         t2 = ICMSContent('tag://foo')
         t1.pinned = True
