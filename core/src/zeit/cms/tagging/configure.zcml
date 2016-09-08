@@ -22,6 +22,8 @@
       />
   </class>
 
+  <utility factory=".whitelist.Whitelist" />
+
   <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
        the other -->
   <adapter

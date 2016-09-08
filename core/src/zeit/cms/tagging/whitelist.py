@@ -1,7 +1,6 @@
 from zeit.cms.application import CONFIG_CACHE
 import UserDict
 import gocept.lxml.objectify
-import grokcore.component as grok
 import logging
 import urllib2
 import zeit.cms.tagging.interfaces
@@ -12,8 +11,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class Whitelist(UserDict.UserDict,
-                grok.GlobalUtility):
+class Whitelist(UserDict.UserDict):
 
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
