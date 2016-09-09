@@ -6,11 +6,13 @@ import lxml.builder
 import lxml.objectify
 import xml.sax.saxutils
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
 import zope.component
+import zope.interface
 
 
 NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
@@ -217,3 +219,50 @@ def _build_topic_xml():
             row['title'],
             id=zeit.cms.interfaces.normalize_filename(row['name'])))
     return root
+
+
+class Tag(object):
+    """Representation of a keyword."""
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
+                              zeit.cms.interfaces.ICMSContent)
+
+    SEPARATOR = u':=)'
+
+    def __init__(self, label, entity_type, pinned=False):
+        self.label = label
+        self.entity_type = entity_type
+        self.pinned = pinned
+        self.code = u''.join((entity_type, self.SEPARATOR, label))
+
+    @classmethod
+    def from_code(cls, code):
+        entity_type, sep, label = code.partition(cls.SEPARATOR)
+        return cls(label, entity_type)
+
+    def __eq__(self, other):
+        # XXX this is not a generic equality check. From a domain perspective,
+        # two tags are the same when their codes are the same. However, since
+        # we want to edit ``pinned``, and formlib compares the *list* of
+        # keywords, which uses == on the items, we need to include pinned here.
+        if other is None:
+            return False
+        return self.code == other.code and self.pinned == other.pinned
+
+    @property
+    def uniqueId(self):
+        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
+                self.code.encode('unicode_escape'))
+
+
+class Whitelist(object):
+    """Search for known keywords using the Retresco API."""
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
+
+    def search(self, term):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        return tms.get_keywords(term)
+
+    def get(self, id):
+        return Tag.from_code(id)

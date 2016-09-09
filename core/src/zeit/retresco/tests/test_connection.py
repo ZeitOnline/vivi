@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from zeit.retresco.testing import RequestHandler as TEST_SERVER
 import json
 import mock
+import zeit.cms.tagging.interfaces
 import zeit.cms.testing
 import zeit.retresco.interfaces
 import zeit.retresco.testing
@@ -28,6 +30,24 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         result = tms.extract_keywords(self.repository['testcontent'])
         self.assertEqual(['Berlin', 'Merkel', 'Obama', 'Washington'],
                          sorted([x.label for x in result]))
+
+    def test_search_keywords_returns_a_list_of_tag_objects(self):
+        TEST_SERVER.response_body = json.dumps({
+            "entities": [{"entity_id": "e8ed9435b876196564bb86599009456cbb2aa",
+                          "doc_count": 3,
+                          "entity_name": "Schmerz",
+                          "entity_type": "keyword"},
+                         {"entity_id": "bf87d9ce8457a96fe2de1eac6d9614aa462ba",
+                          "doc_count": 1,
+                          "entity_name": "Walter Schmögner",
+                          "entity_type": "person"}],
+            "num_found": 2})
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = list(tms.get_keywords('Sch'))
+        self.assertEqual(2, len(result))
+        self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
+        self.assertEqual([u'Schmerz', u'Walter Schmögner'],
+                         [x.label for x in result])
 
     def test_raises_technical_error_for_5xx(self):
         TEST_SERVER.response_code = 500
