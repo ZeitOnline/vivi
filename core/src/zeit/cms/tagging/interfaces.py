@@ -62,21 +62,18 @@ class ITag(zope.interface.Interface):
         title=u'Label encoded/normalized for use in an URL.')
 
 
-class IReadWhitelist(zope.interface.Interface):
+class IWhitelist(zope.interface.Interface):
+    """Tag whitelist
+
+    The whitelist contains all selectable tags.
+
+    """
 
     def search(term):
         """Returns a list of tags whose labels contain the given term."""
 
     def get(id):
         """Return the tag for the given id."""
-
-
-class IWhitelist(IReadWhitelist):
-    """Tag whitelist
-
-    The whitelist contains all selectable tags.
-
-    """
 
 
 ID_NAMESPACE = 'tag://'

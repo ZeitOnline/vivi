@@ -13,12 +13,8 @@
 
   <class class=".whitelist.Whitelist">
     <require
-      interface="zeit.cms.tagging.interfaces.IReadWhitelist"
+      interface="zeit.cms.tagging.interfaces.IWhitelist"
       permission="zope.View"
-      />
-    <require
-      interface="zope.interface.common.mapping.IWriteMapping"
-      permission="zeit.EditContent"
       />
   </class>
 
