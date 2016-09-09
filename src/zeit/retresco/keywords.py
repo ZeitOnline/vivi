@@ -41,7 +41,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tags = self.to_xml()
         if tags is None:
             return iter(())
-        return (x.get('uuid') for x in tags.iterchildren() if x.get('uuid'))
+        return (Tag(x.text, x.get('type', '')).code for x in tags.iterchildren())
+
 
     def __len__(self):
         return len(list(self.__iter__()))
@@ -49,7 +50,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     def __getitem__(self, key):
         node = self._find_tag_node(key)
 
-        tag = Tag(unicode(node), node.get('type'))
+        tag = Tag(unicode(node), node.get('type', ''))
         if tag.code in self.pinned:
             tag.pinned = True
         tag.__parent__ = self
@@ -150,8 +151,9 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             tags = self.to_xml()
         if tags is None:
             raise KeyError(key)
-        node = tags.xpath('//tag[@uuid = {0}]'.format(
-            xml.sax.saxutils.quoteattr(key)))
+
+        node = [x for x in tags.iterchildren()
+                if Tag(x.text, x.get('type', '')).code == key]
         if not node:
             raise KeyError(key)
         return node[0]
@@ -173,9 +175,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             if tag.code in self.disabled:
                 continue
             new_codes.add(tag.code)
-            new_tags.append(E.tag(
-                tag.label, uuid=tag.code, type=tag.entity_type or '',
-                url_value=tag.url_value or ''))
+            new_tags.append(E.tag(tag.label, type=tag.entity_type or ''))
 
         old_tags = self.to_xml()
         for code in self.pinned:
