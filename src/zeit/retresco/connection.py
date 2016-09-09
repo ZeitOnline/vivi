@@ -22,7 +22,7 @@ class TMS(object):
         self.username = username
         self.password = password
 
-    def get_keywords(self, content):
+    def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
         response = self._put(content, enrich=True)
         result = []

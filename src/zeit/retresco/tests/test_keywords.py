@@ -377,9 +377,9 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         # when we pin a manual tag first, and then also pin a tag that
         # comes in via update() again, we used to screw it up,
         # since we compared against a generator multiple times
-        with mock.patch(
-                'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
-            get_keywords.return_value = [
+        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
+        with mock.patch(extract_keywords) as extract_keywords:
+            extract_keywords.return_value = [
                 Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
             content = create_testcontent()
             tagger = Tagger(content)
@@ -393,9 +393,9 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
                 [tagger[x].label.strip() for x in tagger])
 
     def test_update_should_discard_disabled_tags(self):
-        with mock.patch(
-                'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
-            get_keywords.return_value = [
+        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
+        with mock.patch(extract_keywords) as extract_keywords:
+            extract_keywords.return_value = [
                 Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
             content = create_testcontent()
             tagger = Tagger(content)
