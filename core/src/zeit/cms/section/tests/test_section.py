@@ -89,12 +89,12 @@ class FindSectionTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.cms.section.testing.SECTION_LAYER
 
-    def test_content_not_in_section_yields_repository(self):
+    def test_content_not_in_section_returns_zon(self):
         # since the repository provides IZONSection
-        self.assertEqual(
-            self.repository, ISection(self.repository['testcontent'], None))
+        self.assertEqual(zeit.cms.section.interfaces.IZONSection,
+                         ISection(self.repository['testcontent']))
 
-    def test_content_inside_section_finds_that_folder(self):
+    def test_content_inside_section_returns_that_interface(self):
         self.repository['example']['content'] = TestContentType()
         section = ISection(self.repository['example']['content'])
-        self.assertEqual(self.repository['example'], section)
+        self.assertEqual(zeit.cms.section.testing.IExampleSection, section)
