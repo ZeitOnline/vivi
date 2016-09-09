@@ -22,13 +22,13 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         self.patcher.stop()
         super(TMSTest, self).tearDown()
 
-    def test_get_keywords_converts_response_to_tag_objects(self):
+    def test_extract_keywords_converts_response_to_tag_objects(self):
         TEST_SERVER.response_body = json.dumps({
             'rtr_persons': ['Merkel', 'Obama'],
             'rtr_locations': ['Berlin', 'Washington'],
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_keywords(self.repository['testcontent'])
+        result = tms.extract_keywords(self.repository['testcontent'])
         self.assertEqual(['Berlin', 'Merkel', 'Obama', 'Washington'],
                          sorted([x.label for x in result]))
 
@@ -36,13 +36,13 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         TEST_SERVER.response_code = 500
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TechnicalError):
-            tms.get_keywords(self.repository['testcontent'])
+            tms.extract_keywords(self.repository['testcontent'])
 
     def test_raises_domain_error_for_4xx(self):
         TEST_SERVER.response_code = 400
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TMSError):
-            tms.get_keywords(self.repository['testcontent'])
+            tms.extract_keywords(self.repository['testcontent'])
 
     def test_ignores_404_on_delete(self):
         TEST_SERVER.response_code = 404

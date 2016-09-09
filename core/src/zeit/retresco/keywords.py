@@ -159,7 +159,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     def update(self):
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        keywords = tms.get_keywords(self.context)
+        keywords = tms.extract_keywords(self.context)
 
         E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
         root = E.rankedTags()
