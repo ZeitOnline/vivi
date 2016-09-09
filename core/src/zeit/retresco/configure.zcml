@@ -14,6 +14,26 @@
       />
   </class>
 
+  <class class=".keywords.Tag">
+    <require
+      interface="zeit.cms.tagging.interfaces.ITag"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".keywords.Whitelist">
+    <require
+      interface="zeit.cms.tagging.interfaces.IWhitelist"
+      permission="zope.View"
+      />
+  </class>
+
+  <utility factory=".keywords.Whitelist" />
+
   <utility factory=".connection.from_product_config" />
   </configure>
 
