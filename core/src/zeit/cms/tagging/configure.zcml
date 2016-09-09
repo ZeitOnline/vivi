@@ -1,4 +1,5 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <class class=".tag.Tag">
     <require
@@ -11,14 +12,15 @@
       />
   </class>
 
-  <class class=".whitelist.Whitelist">
-    <require
-      interface="zeit.cms.tagging.interfaces.IWhitelist"
-      permission="zope.View"
-      />
-  </class>
-
-  <utility factory=".whitelist.Whitelist" />
+  <configure zcml:condition="not-have zeit.retresco.tms">
+    <class class=".whitelist.Whitelist">
+      <require
+        interface="zeit.cms.tagging.interfaces.IWhitelist"
+        permission="zope.View"
+        />
+    </class>
+    <utility factory=".whitelist.Whitelist" />
+  </configure>
 
   <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
        the other -->
