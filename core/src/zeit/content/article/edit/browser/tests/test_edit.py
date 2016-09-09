@@ -709,6 +709,8 @@ class TestDivision(
     def create_division(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-division')
+        s.waitForElementPresent('link=Struktur')
+        s.waitForNotVisible('css=.message')
         s.click('link=Struktur')
         s.waitForElementPresent(
             'css=#article-modules .module[cms\\:block_type=division]')
