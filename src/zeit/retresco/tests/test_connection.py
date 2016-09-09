@@ -13,14 +13,11 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TMSTest, self).setUp()
-        self.patcher = mock.patch(
+        patcher = mock.patch(
             'zeit.retresco.convert.TMSRepresentation._validate')
-        validate = self.patcher.start()
+        validate = patcher.start()
         validate.return_value = True
-
-    def tearDown(self):
-        self.patcher.stop()
-        super(TMSTest, self).tearDown()
+        self.addCleanup(patcher.stop)
 
     def test_extract_keywords_converts_response_to_tag_objects(self):
         TEST_SERVER.response_body = json.dumps({
