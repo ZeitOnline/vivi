@@ -38,6 +38,13 @@ class TMS(object):
                 ))
         return result
 
+    def get_keywords(self, search_string):
+        __traceback_info__ = (search_string,)
+        response = self._request('GET /entities', params={'q': search_string})
+        for entity in response['entities']:
+            yield zeit.retresco.keywords.Tag(
+                entity['entity_name'], entity['entity_type'])
+
     def get_all_topicpages(self):
         page = 0
         while True:

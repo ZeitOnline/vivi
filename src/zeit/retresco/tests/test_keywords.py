@@ -7,6 +7,7 @@ from zeit.retresco.keywords import Tagger
 from zeit.retresco.testing import create_testcontent
 import lxml.builder
 import mock
+import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
@@ -449,3 +450,12 @@ class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('topics', topics.xml.tag)
         self.assertEqual('Berlin', topics.xml.find('topic')[0])
         self.assertEqual(True, IPublishInfo(topics).published)
+
+
+class TagTest(unittest.TestCase):
+    """Testing ..keywords.Tag."""
+
+    def test_from_code_generates_a_tag_object_equal_to_its_source(self):
+        from ..keywords import Tag
+        tag = Tag(u'Vipraschül', 'Person')
+        self.assertEqual(tag, Tag.from_code(tag.code))
