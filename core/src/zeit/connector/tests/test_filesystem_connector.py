@@ -53,6 +53,12 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
             ('banner', 'http://namespaces.zeit.de/CMS/document')]
         self.assertEqual(u'yes', banner)
 
+    def test_metadata_for_metadata_file_itself_is_unknown(self):
+        meta = self.connector['http://xml.zeit.de/2007/03/group.meta']
+        type_ = meta.properties[
+            ('type', 'http://namespaces.zeit.de/CMS/meta')]
+        self.assertEqual('unknown', type_)
+
     def test_imagegroup_is_a_directory_but_recognized_as_its_own_type(self):
         group = self.connector['http://xml.zeit.de/2007/03/group']
         type_ = group.properties[

@@ -4,7 +4,7 @@ CHANGES
 2.7.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't parse the meta files as metadata for itself.
 
 
 2.7.8 (2016-08-11)

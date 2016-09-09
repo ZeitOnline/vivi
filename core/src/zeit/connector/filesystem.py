@@ -243,7 +243,9 @@ class Connector(object):
         try:
             return file(filename, 'rb')
         except IOError:
-            return self._get_file(id)
+            if not id.endswith('.meta'):
+                return self._get_file(id)
+            return StringIO('')
 
     def _make_id(self, path):
         return urlparse.urljoin(ID_NAMESPACE, '/'.join(
