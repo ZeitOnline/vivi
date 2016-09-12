@@ -69,7 +69,7 @@ def get_folder_markers(content):
 
 
 def find_folder_section(context):
-    candidate = parent_folder(context)
+    candidate = context
     while candidate is not None:
         if ISection.providedBy(candidate):
             break
