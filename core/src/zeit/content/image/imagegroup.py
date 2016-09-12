@@ -256,17 +256,17 @@ class ImageGroupBase(object):
                     fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
         path = urlparse.urlparse(self.uniqueId).path
-        if path.endswith('/'):
+        if path.endswith(u'/'):
             path = path[:-1]
         if thumbnail:
-            name = '%s/%s' % (Thumbnails.NAME, name)
+            name = u'%s/%s' % (Thumbnails.NAME, name)
         if width is None or height is None:
-            url = '{path}/{name}'.format(path=path, name=name)
+            url = u'{path}/{name}'.format(path=path, name=name)
         else:
-            url = '{path}/{name}__{width}x{height}'.format(
+            url = u'{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
         if fill_color is not None:
-            url += '__{fill}'.format(fill=fill_color)
+            url += u'__{fill}'.format(fill=fill_color)
         return url
 
 
