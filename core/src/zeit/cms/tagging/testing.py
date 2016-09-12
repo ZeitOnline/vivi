@@ -1,5 +1,4 @@
 import collections
-import itertools
 import mock
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
