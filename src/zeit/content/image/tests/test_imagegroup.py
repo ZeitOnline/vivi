@@ -1,3 +1,4 @@
+# coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 import mock
@@ -128,6 +129,10 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_variant_url_returns_path_without_size_if_none_given(self):
         self.assertEqual('/group/square', self.group.variant_url('square'))
+
+    def test_variant_url_handles_non_ascii(self):
+        group = self.repository[u'groüp'] = self.group
+        self.assertEqual(u'/groüp/square', group.variant_url('square'))
 
     def test_returns_image_for_variant_with_size(self):
         self.assertEqual(

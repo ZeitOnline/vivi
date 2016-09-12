@@ -4,7 +4,7 @@ zeit.content.image changes
 2.16.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Handle non-ASCII uniqueIds in ``variant_url``.
 
 
 2.16.1 (2016-09-05)
