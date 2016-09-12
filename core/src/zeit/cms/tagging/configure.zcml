@@ -12,16 +12,6 @@
       />
   </class>
 
-  <configure zcml:condition="not-have zeit.retresco.tms">
-    <class class=".whitelist.Whitelist">
-      <require
-        interface="zeit.cms.tagging.interfaces.IWhitelist"
-        permission="zope.View"
-        />
-    </class>
-    <utility factory=".whitelist.Whitelist" />
-  </configure>
-
   <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
        the other -->
   <adapter
