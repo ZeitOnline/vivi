@@ -83,6 +83,27 @@ class DummyTagger(object):
         return None
 
 
+class DummyWhitelist(object):
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
+
+    tags = {
+        'testtag': 'Testtag',
+        'testtag2': 'Testtag2',
+        'testtag3': 'Testtag3',
+    }
+
+    def search(self, term):
+        term = term.lower()
+        return [zeit.cms.tagging.tag.Tag(k, v)
+                for k, v in self.tags.items() if term in v.lower()]
+
+    def get(self, id):
+        if id in self.tags:
+            return zeit.cms.tagging.tag.Tag(id, self.tags[id])
+        return None
+
+
 class FakeTags(collections.OrderedDict):
 
     def __init__(self):
@@ -128,11 +149,20 @@ class TaggingHelper(object):
             return [tag for tag in self.whitelist_tags
                     if term in tag.label.lower()]
 
+        def get(id):
+            result = search(id)
+            return result[0] if result else None
+
         whitelist_mocker = mock.patch(
-            'zeit.cms.tagging.whitelist.Whitelist.search',
+            'zeit.cms.tagging.testing.DummyWhitelist.search',
             side_effect=search)
         self.addCleanup(whitelist_mocker.stop)
         whitelist_mocker.start()
+        whitelist_mocker_get = mock.patch(
+            'zeit.cms.tagging.testing.DummyWhitelist.get',
+            side_effect=get)
+        self.addCleanup(whitelist_mocker_get.stop)
+        whitelist_mocker_get.start()
 
         return tags
 

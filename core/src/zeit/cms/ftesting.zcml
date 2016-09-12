@@ -6,6 +6,7 @@
    i18n_domain="zope">
 
   <meta:provides feature="zeit.cms.testing" />
+  <meta:provides feature="zeit.retresco.tms" />
 
   <!-- Enable all feature toggles in tests. -->
   <meta:provides feature="zeit.cms.decentral-syndication" />

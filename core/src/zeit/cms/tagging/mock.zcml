@@ -3,5 +3,6 @@
    i18n_domain="zope">
 
   <adapter factory=".testing.DummyTagger"  trusted="true" />
+  <utility factory=".testing.DummyWhitelist" />
 
 </configure>
