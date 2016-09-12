@@ -326,6 +326,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Advertisement text"),
         required=False)
 
+    bigshare_buttons = zope.schema.Bool(
+        title=_('Bigshare Buttons'),
+        default=False)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""
