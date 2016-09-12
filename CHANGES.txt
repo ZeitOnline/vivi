@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.15.3 (unreleased)
+1.15.3 (2016-09-12)
 -------------------
 
 - MAINT: Put pushing to urbanairship behind feature toggle ``zeit.push.urbanairship``
