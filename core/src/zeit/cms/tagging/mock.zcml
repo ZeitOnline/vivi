@@ -3,6 +3,8 @@
    i18n_domain="zope">
 
   <adapter factory=".testing.DummyTagger"  trusted="true" />
+  <adapter factory=".browser.widget.Widget"
+    provides="zope.formlib.interfaces.IInputWidget"/>
   <utility factory=".testing.DummyWhitelist" />
 
 </configure>
