@@ -16,7 +16,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         ('facebook_main_text', 'facebook_main_enabled',
          'short_text', 'twitter_main_enabled',
          'twitter_ressort_enabled', 'twitter_ressort',
-         'mobile_text', 'mobile_enabled'),
+         'bigshare_buttons', 'mobile_text', 'mobile_enabled'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -35,6 +35,9 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
                 zeit.push.interfaces.IAccountData).select(
                     'twitter_main_enabled',
                     'twitter_ressort_enabled', 'twitter_ressort')
+            + self.FormFieldsFactory(
+                zeit.cms.content.interfaces.ICommonMetadata).select(
+                    'bigshare_buttons')
             + self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
                     'mobile_text', 'mobile_enabled'))
