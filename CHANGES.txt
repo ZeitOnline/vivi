@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.16.2 (unreleased)
+2.16.2 (2016-09-12)
 -------------------
 
 - Handle non-ASCII uniqueIds in ``variant_url``.
