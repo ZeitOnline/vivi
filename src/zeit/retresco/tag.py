@@ -1,3 +1,4 @@
+import unicodedata
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.cachedescriptors.property
@@ -20,6 +21,11 @@ class Tag(object):
     @zope.cachedescriptors.property.Lazy
     def code(self):
         return u''.join((self.entity_type, self.SEPARATOR, self.label))
+
+    @zope.cachedescriptors.property.Lazy
+    def url_value(self):
+        return unicodedata.normalize(
+            'NFKD', self.label).encode('ascii', 'ignore').lower()
 
     @classmethod
     def from_code(cls, code):
