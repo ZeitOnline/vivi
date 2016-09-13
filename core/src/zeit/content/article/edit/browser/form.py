@@ -338,9 +338,9 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
 class MetadataAcquisition(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
-    prefix = 'metadata-acquisition'
-    undo_description = _('edit acquisition')
-    form_fields = FormFields(ICommonMetadata).select('acquisition')
+    prefix = 'metadata-access'
+    undo_description = _('edit access')
+    form_fields = FormFields(ICommonMetadata).select('access')
 
 
 class MetadataGenre(zeit.edit.browser.form.InlineForm):

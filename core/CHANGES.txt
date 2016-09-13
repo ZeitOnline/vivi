@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Rename ``acquisition`` to ``access``.
 
 
 3.21.2 (2016-09-12)
