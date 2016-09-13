@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.87.0 (unreleased)
+2.87.0 (2016-09-13)
 -------------------
 
 - Rename ``acquisition`` to ``access``.
