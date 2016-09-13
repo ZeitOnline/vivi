@@ -179,7 +179,7 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 cms_product_config = """\
 <product-config zeit.cms>
-  source-acquisition file://{base}/content/acquisition.xml
+  source-access file://{base}/content/access.xml
   source-serie file://{base}/content/serie.xml
   source-navigation file://{base}/content/navigation.xml
   source-keyword file://{base}/content/zeit-ontologie-prism.xml

@@ -505,7 +505,7 @@ class StorystreamSource(ObjectSource, XMLSource):
         return result
 
 
-class AcquisitionSource(XMLSource):
+class AccessSource(XMLSource):
 
-    config_url = 'source-acquisition'
+    config_url = 'source-access'
     attribute = 'id'
