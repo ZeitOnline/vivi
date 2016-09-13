@@ -38,10 +38,11 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
             co.breaking_news = True
             co.title = "Strip <em>the</em> &amp; please"
             co.product = zeit.cms.content.sources.Product(u'KINZ')
-        self.tags['Code1'] = zeit.cms.tagging.tag.Tag(
-            'Code1', 'Code1', entity_type='keyword')
-        self.tags['Code2'] = zeit.cms.tagging.tag.Tag(
-            'Code2', 'Code2', entity_type='keyword')
+
+        tag_1 = zeit.retresco.keywords.Tag('Code1', entity_type='keyword')
+        self.tags[tag_1.code] = tag_1
+        tag_2 = zeit.retresco.keywords.Tag('Code2', entity_type='keyword')
+        self.tags[tag_2.code] = tag_2
 
         images = zeit.content.image.interfaces.IImages(article)
         image = zeit.cms.interfaces.ICMSContent(

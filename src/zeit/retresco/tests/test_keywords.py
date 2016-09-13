@@ -1,6 +1,5 @@
 # coding: utf8
 from zeit.cms.checkout.helper import checked_out
-# from zeit.cms.tagging.tag import Tag
 from zeit.retresco.keywords import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
