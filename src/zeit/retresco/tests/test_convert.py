@@ -8,17 +8,15 @@ import pytz
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.testing
-import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
 
 
-class ConvertTest(zeit.cms.testing.FunctionalTestCase,
+class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                   gocept.testing.assertion.String):
 
-    layer = zeit.retresco.testing.ZCML_LAYER
     maxDiff = None
 
     def setUp(self):

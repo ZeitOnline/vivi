@@ -68,6 +68,11 @@ ZCML_LAYER = ZCMLLayer(
     zeit.content.image.testing.product_config)
 
 
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZCML_LAYER
+
+
 def create_testcontent():
     content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
     content.uniqueId = 'http://xml.zeit.de/testcontent'
