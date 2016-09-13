@@ -1,17 +1,13 @@
-from zeit.cms.checkout.helper import checked_out
-import gocept.runner
+from zeit.retresco.tag import Tag
 import grokcore.component as grok
 import logging
-import lxml.builder
+import lxml.etree
 import lxml.objectify
 import zeit.cms.content.dav
-import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
 import zope.component
-import zope.interface
 
 
 NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
@@ -21,40 +17,6 @@ DISABLED_SEPARATOR = '\x09'
 PINNED_PROPERTY = ('pinned', NAMESPACE)
 
 log = logging.getLogger(__name__)
-
-
-class Tag(object):
-    """Representation of a keyword."""
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
-                              zeit.cms.interfaces.ICMSContent)
-
-    SEPARATOR = u':=)'
-
-    def __init__(self, label, entity_type, pinned=False):
-        self.label = label
-        self.entity_type = entity_type
-        self.pinned = pinned
-        self.code = u''.join((entity_type, self.SEPARATOR, label))
-
-    @classmethod
-    def from_code(cls, code):
-        entity_type, sep, label = code.partition(cls.SEPARATOR)
-        return cls(label, entity_type)
-
-    def __eq__(self, other):
-        # XXX this is not a generic equality check. From a domain perspective,
-        # two tags are the same when their codes are the same. However, since
-        # we want to edit ``pinned``, and formlib compares the *list* of
-        # keywords, which uses == on the items, we need to include pinned here.
-        if other is None:
-            return False
-        return self.code == other.code and self.pinned == other.pinned
-
-    @property
-    def uniqueId(self):
-        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape'))
 
 
 class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
@@ -226,47 +188,3 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         dav[DISABLED_PROPERTY] = u''
-
-
-@gocept.runner.once(principal=gocept.runner.from_config(
-    'zeit.retresco', 'topiclist-principal'))
-def update_topiclist():
-    _update_topiclist()
-
-
-def _update_topiclist():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-    keywords = zeit.cms.interfaces.ICMSContent(config['topiclist'], None)
-    if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
-        raise ValueError(
-            '%s is not a raw xml document' % config['topiclist'])
-    with checked_out(keywords) as co:
-        log.info('Retrieving all topic pages from TMS')
-        co.xml = _build_topic_xml()
-    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
-
-
-def _build_topic_xml():
-    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    E = lxml.builder.ElementMaker()
-    root = E.topics()
-    for row in tms.get_all_topicpages():
-        # XXX What other attributes might be interesting to use in a
-        # dynamicfolder template?
-        root.append(E.topic(
-            row['title'],
-            id=zeit.cms.interfaces.normalize_filename(row['name'])))
-    return root
-
-
-class Whitelist(object):
-    """Search for known keywords using the Retresco API."""
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
-
-    def search(self, term):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        return tms.get_keywords(term)
-
-    def get(self, id):
-        return Tag.from_code(id)
