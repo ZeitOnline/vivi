@@ -28,7 +28,7 @@ class Widget(grokcore.component.MultiAdapter,
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
@@ -99,7 +99,7 @@ class DisplayWidget(grokcore.component.MultiAdapter,
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IDisplayWidget)

@@ -1,8 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.tagging.source import IWhitelistSource
-import zc.sourcefactory.basic
-import zc.sourcefactory.contextual
-import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zeit.cms.tagging.source
 import zope.interface
