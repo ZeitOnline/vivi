@@ -80,7 +80,7 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
             'url': u'/online/2007/01/Somalia',
 
             'payload': {
-                'acquisition': u'free',
+                'access': u'free',
                 'allow_comments': False,
                 'article_genre': None,
                 'article_header': u'default',

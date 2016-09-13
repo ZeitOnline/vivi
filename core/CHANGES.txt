@@ -11,6 +11,8 @@ zeit.retresco changes
   Retresco now offers an explicit API for publish, which we'll trigger
   from the publisher.
 
+- Rename ``acquisition`` to ``access``.
+
 
 1.4.0 (2016-09-07)
 ------------------
