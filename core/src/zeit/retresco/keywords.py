@@ -48,12 +48,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-
-        tag = Tag(unicode(node), node.get('type', ''))
-        if tag.code in self.pinned:
-            tag.pinned = True
-        tag.__parent__ = self
-        tag.__name__ = tag.code
+        tag = self._create_tag(unicode(node), node.get('type', ''))
         return tag
 
     def __setitem__(self, key, value):
@@ -70,7 +65,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
 
     def values(self):
-        return (self[code] for code in self)
+        tags = self.to_xml()
+        if tags is None:
+            return iter(())
+        return (self._create_tag(unicode(node), node.get('type', ''))
+                for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -156,6 +155,14 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         if not node:
             raise KeyError(key)
         return node[0]
+
+    def _create_tag(self, label, entity_type):
+        tag = Tag(label, entity_type)
+        if tag.code in self.pinned:
+            tag.pinned = True
+        tag.__parent__ = self
+        tag.__name__ = tag.code
+        return tag
 
     def update(self):
         log.info('Updating tags for %s', self.context.uniqueId)
