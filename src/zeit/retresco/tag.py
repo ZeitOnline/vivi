@@ -29,6 +29,8 @@ class Tag(object):
 
     @classmethod
     def from_code(cls, code):
+        if cls.SEPARATOR not in code:
+            return None
         entity_type, sep, label = code.partition(cls.SEPARATOR)
         return cls(label, entity_type)
 
