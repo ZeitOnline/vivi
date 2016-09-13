@@ -5,7 +5,6 @@ import json
 import lxml.builder
 import mock
 import zeit.cms.tagging.interfaces
-import zeit.cms.testing
 import zeit.content.rawxml.rawxml
 import zeit.retresco.connection
 import zeit.retresco.interfaces
@@ -13,9 +12,7 @@ import zeit.retresco.testing
 import zope.component
 
 
-class TMSTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TMSTest, self).setUp()
@@ -114,9 +111,7 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
         }, result[0])
 
 
-class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_updates_configured_content_and_publishes(self):
         self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()

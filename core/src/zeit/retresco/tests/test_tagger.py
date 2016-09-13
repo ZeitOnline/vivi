@@ -9,7 +9,6 @@ import mock
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.retresco.testing
 import zope.component
@@ -28,9 +27,7 @@ class TagTestHelpers(object):
             xml, ns=ns, tag=name)
 
 
-class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
 
     def test_tagger_should_provide_interface(self):
         self.assertTrue(
@@ -389,9 +386,9 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual(True, next(tagger.values()).pinned)
 
 
-class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TaggerUpdateTest(
+        zeit.retresco.testing.FunctionalTestCase,
+        TagTestHelpers):
 
     def test_update_should_keep_pinned_tags(self):
         content = create_testcontent()

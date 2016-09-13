@@ -10,7 +10,7 @@ import zope.app.testing.xmlrpc
 import zope.security.management
 
 
-class XMLRPCTest(zeit.cms.testing.FunctionalTestCase):
+class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
 
     layer = zeit.retresco.testing.ZCML_LAYER
 
