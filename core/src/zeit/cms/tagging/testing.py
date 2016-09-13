@@ -95,12 +95,12 @@ class DummyWhitelist(object):
 
     def search(self, term):
         term = term.lower()
-        return [zeit.cms.tagging.tag.Tag(k, v)
+        return [FakeTag(code=k, label=v)
                 for k, v in self.tags.items() if term in v.lower()]
 
     def get(self, id):
         if id in self.tags:
-            return zeit.cms.tagging.tag.Tag(id, self.tags[id])
+            return FakeTag(code=id, label=self.tags[id])
         return None
 
 
@@ -126,11 +126,26 @@ class FakeTags(collections.OrderedDict):
         return None
 
 
+class FakeTag(object):
+    """Fake implementation of ITag for tests."""
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
+
+    def __init__(self, code, label):
+        self.label = label
+        self.code = code
+        self.pinned = False
+
+    @property
+    def uniqueId(self):
+        return zeit.cms.tagging.interfaces.ID_NAMESPACE + self.code
+
+
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
 
     def get_tag(self, code):
-        tag = zeit.cms.tagging.tag.Tag(code, code)
+        tag = FakeTag(code=code, label=code)
         return tag
 
     def setup_tags(self, *codes):

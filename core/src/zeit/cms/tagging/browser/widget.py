@@ -7,7 +7,6 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.tag
 import zope.app.pagetemplate
 import zope.component.hooks
 import zope.formlib.itemswidgets

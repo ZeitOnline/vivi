@@ -7,7 +7,8 @@ zeit.cms changes
 - ZON-3199: Do not provide dict-like access on ``Whitelist`` anymore. ``get``
   is provided   to query for a specific ``id`` instead.
 
-- ZON-3199: Move intrafind specific ``Whitelist`` to ``zeit.intrafind``.
+- ZON-3199: Move intrafind specific ``Whitelist`` and ``Tag`` to
+  ``zeit.intrafind``.
 
 
 2.86.0 (2016-09-07)
