@@ -5,7 +5,7 @@ zeit.retresco changes
 1.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to changed enrich/index TMS-API.
 
 
 1.4.0 (2016-09-07)
