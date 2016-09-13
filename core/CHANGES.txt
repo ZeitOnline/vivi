@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.75 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- ZON-3318: Translate bigshare buttons.
 
 
 2.0.74 (2016-09-07)
