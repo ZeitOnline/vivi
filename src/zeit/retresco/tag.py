@@ -1,5 +1,6 @@
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
+import zope.cachedescriptors.property
 import zope.interface
 
 
@@ -11,11 +12,14 @@ class Tag(object):
 
     SEPARATOR = u':=)'
 
-    def __init__(self, label, entity_type, pinned=False):
+    def __init__(self, label, entity_type):
         self.label = label
         self.entity_type = entity_type
-        self.pinned = pinned
-        self.code = u''.join((entity_type, self.SEPARATOR, label))
+        self.pinned = False  # pinned state is set from outside after init
+
+    @zope.cachedescriptors.property.Lazy
+    def code(self):
+        return u''.join((self.entity_type, self.SEPARATOR, self.label))
 
     @classmethod
     def from_code(cls, code):
