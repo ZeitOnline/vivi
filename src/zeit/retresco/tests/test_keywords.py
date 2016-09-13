@@ -6,6 +6,7 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.retresco.keywords import Tagger
 from zeit.retresco.testing import create_testcontent
 import lxml.builder
+import lxml.objectify
 import mock
 import unittest
 import zeit.cms.content.interfaces
@@ -358,6 +359,32 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         self.assertEqual(u':=)Berlin\t:=)Karen Duve', dav[dav_key])
 
         self.assertTrue(tagger[u':=)Berlin'].pinned)
+
+    def test_iterating_values_calls_to_xml_only_once(self):
+        # We do not want to reuse `__iter__` and `__getitem__` in values, since
+        # that would call `_find_tag_node` & `to_xml` for *each* keyword.
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with mock.patch('zeit.retresco.keywords.Tagger.to_xml') as to_xml:
+            to_xml.return_value = lxml.objectify.fromstring("""
+<rankedTags>
+    <tag uuid="uid-karenduve">Karen Duve</tag>
+    <tag uuid="uid-berlin">Berlin</tag>
+</rankedTags>""")
+            self.assertEqual(2, len(list(tagger.values())))
+            self.assertEqual(1, to_xml.call_count)
+
+    def test_values_returns_empty_iterator_if_no_values(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        self.assertEqual([], list(tagger.values()))
+
+    def test_tags_retrieved_via_values_remain_pinned(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag uuid="uid-berlin">Berlin</tag>""")
+        tagger = Tagger(content)
+        tagger.set_pinned([u':=)Berlin'])
+        self.assertEqual(True, next(tagger.values()).pinned)
 
 
 class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
