@@ -109,7 +109,7 @@ class CommonMetadata(Converter):
     grok.name(interface.__name__)
 
     properties = {
-        'acquisition': '',
+        'access': '',
         'commentsAllowed': 'allow_comments',
         'commentSectionEnable': 'show_comments',
         'lead_candidate': '',
