@@ -7,14 +7,14 @@
   <configure zcml:condition="have zeit.retresco.tms">
   <grok:grok package="." />
 
-  <class class=".keywords.Tagger">
+  <class class=".tagger.Tagger">
     <require
       interface="zeit.cms.tagging.interfaces.ITagger"
       permission="zope.View"
       />
   </class>
 
-  <class class=".keywords.Tag">
+  <class class=".tag.Tag">
     <require
       interface="zeit.cms.tagging.interfaces.ITag"
       permission="zope.View"
@@ -25,14 +25,14 @@
       />
   </class>
 
-  <class class=".keywords.Whitelist">
+  <class class=".whitelist.Whitelist">
     <require
       interface="zeit.cms.tagging.interfaces.IWhitelist"
       permission="zope.View"
       />
   </class>
 
-  <utility factory=".keywords.Whitelist" />
+  <utility factory=".whitelist.Whitelist" />
 
   <utility factory=".connection.from_product_config" />
   </configure>

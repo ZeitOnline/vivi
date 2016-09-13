@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.retresco.testing import RequestHandler as TEST_SERVER
 import json
+import lxml.builder
 import mock
 import zeit.cms.tagging.interfaces
 import zeit.cms.testing
+import zeit.content.rawxml.rawxml
+import zeit.retresco.connection
 import zeit.retresco.interfaces
 import zeit.retresco.testing
 import zope.component
@@ -108,3 +112,25 @@ class TMSTest(zeit.cms.testing.FunctionalTestCase):
             'supertitle': 'supertitle',
             'title': 'title',
         }, result[0])
+
+
+class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.retresco.testing.ZCML_LAYER
+
+    def test_updates_configured_content_and_publishes(self):
+        self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.retresco')
+        config['topiclist'] = 'http://xml.zeit.de/topics'
+        with mock.patch('zeit.retresco.connection._build_topic_xml') as xml:
+            E = lxml.builder.ElementMaker()
+            xml.return_value = E.topics(
+                E.topic('Berlin', url_value='berlin')
+            )
+            zeit.retresco.connection._update_topiclist()
+        topics = self.repository['topics']
+        self.assertEqual(1, len(topics.xml.xpath('//topic')))
+        self.assertEqual('topics', topics.xml.tag)
+        self.assertEqual('Berlin', topics.xml.find('topic')[0])
+        self.assertEqual(True, IPublishInfo(topics).published)

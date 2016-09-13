@@ -11,6 +11,7 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.retresco.interfaces
+import zeit.retresco.tag
 import zeit.retresco.testing
 
 
@@ -39,9 +40,9 @@ class ConvertTest(zeit.cms.testing.FunctionalTestCase,
             co.title = "Strip <em>the</em> &amp; please"
             co.product = zeit.cms.content.sources.Product(u'KINZ')
 
-        tag_1 = zeit.retresco.keywords.Tag('Code1', entity_type='keyword')
+        tag_1 = zeit.retresco.tag.Tag('Code1', entity_type='keyword')
         self.tags[tag_1.code] = tag_1
-        tag_2 = zeit.retresco.keywords.Tag('Code2', entity_type='keyword')
+        tag_2 = zeit.retresco.tag.Tag('Code2', entity_type='keyword')
         self.tags[tag_2.code] = tag_2
 
         images = zeit.content.image.interfaces.IImages(article)

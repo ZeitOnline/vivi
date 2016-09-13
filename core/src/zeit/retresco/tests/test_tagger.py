@@ -1,25 +1,19 @@
 # coding: utf8
 from zeit.cms.checkout.helper import checked_out
-from zeit.retresco.keywords import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
-from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.retresco.keywords import Tagger
+from zeit.retresco.tag import Tag
+from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
-import lxml.builder
 import lxml.objectify
 import mock
-import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.connector.interfaces
-import zeit.retresco.keywords
 import zeit.retresco.testing
 import zope.component
 import zope.interface
-import zope.interface.verify
 import zope.lifecycleevent
 
 
@@ -136,7 +130,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 """)
         tagger = Tagger(content)
         self.assertEqual(
-            [ u':=)Berlin', u':=)Karen Duve', u':=)Fleisch'], list(tagger))
+            [u':=)Berlin', u':=)Karen Duve', u':=)Fleisch'], list(tagger))
 
     def test_updateOrder_should_sort_tags(self):
         content = create_testcontent()
@@ -308,7 +302,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository['content'] = create_testcontent()
-        with zeit.cms.checkout.helper.checked_out(repository['content']) as \
+        with checked_out(repository['content']) as \
                 content:
             self.set_tags(content, """
     <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -365,7 +359,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         # that would call `_find_tag_node` & `to_xml` for *each* keyword.
         content = create_testcontent()
         tagger = Tagger(content)
-        with mock.patch('zeit.retresco.keywords.Tagger.to_xml') as to_xml:
+        with mock.patch('zeit.retresco.tagger.Tagger.to_xml') as to_xml:
             to_xml.return_value = lxml.objectify.fromstring("""
 <rankedTags>
     <tag uuid="uid-karenduve">Karen Duve</tag>
@@ -455,34 +449,3 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             data = request.call_args[1]['json']
             self.assertEqual(['Karen Duve'], data['rtr_keywords'])
             self.assertEqual(['Berlin'], data['rtr_locations'])
-
-
-class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
-
-    def test_updates_configured_content_and_publishes(self):
-        self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.retresco')
-        config['topiclist'] = 'http://xml.zeit.de/topics'
-        with mock.patch('zeit.retresco.keywords._build_topic_xml') as xml:
-            E = lxml.builder.ElementMaker()
-            xml.return_value = E.topics(
-                E.topic('Berlin', url_value='berlin')
-            )
-            zeit.retresco.keywords._update_topiclist()
-        topics = self.repository['topics']
-        self.assertEqual(1, len(topics.xml.xpath('//topic')))
-        self.assertEqual('topics', topics.xml.tag)
-        self.assertEqual('Berlin', topics.xml.find('topic')[0])
-        self.assertEqual(True, IPublishInfo(topics).published)
-
-
-class TagTest(unittest.TestCase):
-    """Testing ..keywords.Tag."""
-
-    def test_from_code_generates_a_tag_object_equal_to_its_source(self):
-        from ..keywords import Tag
-        tag = Tag(u'Vipraschül', 'Person')
-        self.assertEqual(tag, Tag.from_code(tag.code))
