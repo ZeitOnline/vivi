@@ -171,9 +171,6 @@ class PublishInfo(Converter):
     interface = zeit.cms.workflow.interfaces.IPublishInfo
     grok.name(interface.__name__)
 
-    # Unfortunately, TMS treats "no startdate given" as "is published".
-    NOT_PUBLISHED = datetime(9999, 1, 1, tzinfo=pytz.UTC)
-
     properties = {
         'date_first_released': '',
         'date_last_published': '',
@@ -191,8 +188,6 @@ class PublishInfo(Converter):
         result = {
             # Required field, but we only use it for display in the TMS UI.
             'date': tms_date or MIN_DATE,
-            'startdate': (self.context.date_first_released
-                          if self.context.published else self.NOT_PUBLISHED),
             'payload': {
                 'date_last_modified': IModified(
                     self.content).date_last_modified,

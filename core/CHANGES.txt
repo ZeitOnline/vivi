@@ -7,6 +7,10 @@ zeit.retresco changes
 
 - Update to changed enrich/index TMS-API.
 
+- Revert: Index `startdate` year 9999 for unpublished content
+  Retresco now offers an explicit API for publish, which we'll trigger
+  from the publisher.
+
 
 1.4.0 (2016-09-07)
 ------------------
