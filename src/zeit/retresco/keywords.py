@@ -4,7 +4,6 @@ import grokcore.component as grok
 import logging
 import lxml.builder
 import lxml.objectify
-import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
@@ -41,8 +40,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tags = self.to_xml()
         if tags is None:
             return iter(())
-        return (Tag(x.text, x.get('type', '')).code for x in tags.iterchildren())
-
+        return (Tag(x.text, x.get('type', '')).code
+                for x in tags.iterchildren())
 
     def __len__(self):
         return len(list(self.__iter__()))
