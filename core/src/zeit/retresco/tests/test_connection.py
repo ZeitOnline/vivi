@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.retresco.testing import RequestHandler as TEST_SERVER
 import json
 import lxml.builder
 import mock
@@ -23,7 +22,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.addCleanup(patcher.stop)
 
     def test_extract_keywords_converts_response_to_tag_objects(self):
-        TEST_SERVER.response_body = json.dumps({
+        self.layer['request_handler'].response_body = json.dumps({
             'rtr_persons': ['Merkel', 'Obama'],
             'rtr_locations': ['Berlin', 'Washington'],
         })
@@ -33,7 +32,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                          sorted([x.label for x in result]))
 
     def test_search_keywords_returns_a_list_of_tag_objects(self):
-        TEST_SERVER.response_body = json.dumps({
+        self.layer['request_handler'].response_body = json.dumps({
             "entities": [{"entity_id": "e8ed9435b876196564bb86599009456cbb2aa",
                           "doc_count": 3,
                           "entity_name": "Schmerz",
@@ -51,19 +50,19 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                          [x.label for x in result])
 
     def test_raises_technical_error_for_5xx(self):
-        TEST_SERVER.response_code = 500
+        self.layer['request_handler'].response_code = 500
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TechnicalError):
             tms.extract_keywords(self.repository['testcontent'])
 
     def test_raises_domain_error_for_4xx(self):
-        TEST_SERVER.response_code = 400
+        self.layer['request_handler'].response_code = 400
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with self.assertRaises(zeit.retresco.interfaces.TMSError):
             tms.extract_keywords(self.repository['testcontent'])
 
     def test_ignores_404_on_delete(self):
-        TEST_SERVER.response_code = 404
+        self.layer['request_handler'].response_code = 404
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.delete_id('any')
 
@@ -86,7 +85,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual(3, request.call_args[1]['params']['page'])
 
     def test_get_topicpage_pulls_up_payload_keys(self):
-        TEST_SERVER.response_body = json.dumps({
+        self.layer['request_handler'].response_body = json.dumps({
             'num_found': 1,
             'docs': [{
                 'url': '/testcontent',
