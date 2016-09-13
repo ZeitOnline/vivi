@@ -1,4 +1,4 @@
-from zeit.cms.tagging.tag import Tag
+from zeit.retresco.keywords import Tag
 import logging
 import pytz
 import requests
@@ -28,14 +28,7 @@ class TMS(object):
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(Tag(
-                    # Having an ASCII-only ID makes handling easier.
-                    code='%s-%s' % (
-                        entity_type, keyword.encode('unicode_escape')),
-                    label=keyword,
-                    url_value=zeit.cms.interfaces.normalize_filename(keyword),
-                    entity_type=entity_type
-                ))
+                result.append(Tag(label=keyword, entity_type=entity_type))
         return result
 
     def get_keywords(self, search_string):
