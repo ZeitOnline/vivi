@@ -1,3 +1,4 @@
+# coding: utf-8
 import mock
 import zeit.retresco.testing
 
@@ -11,7 +12,7 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
         return Whitelist()
 
     def test_get_creates_tag_from_code(self):
-        tag = self.whitelist.get('person:=)Wolfgang')
+        tag = self.whitelist.get(u'person☃Wolfgang')
         self.assertEqual('Wolfgang', tag.label)
         self.assertEqual('person', tag.entity_type)
 
