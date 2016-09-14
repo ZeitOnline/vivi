@@ -73,7 +73,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'rtr_products': [],
             'section': u'International',
             'supertitle': u'Somalia',
-            'startdate': datetime.datetime(9999, 1, 1, 0, 0, tzinfo=pytz.UTC),
             'teaser': teaser,
             'teaser_img_subline': None,
             'teaser_img_url': u'/2006/DSC00109_2.JPG',
@@ -81,7 +80,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'url': u'/online/2007/01/Somalia',
 
             'payload': {
-                'acquisition': u'free',
+                'access': u'free',
                 'allow_comments': False,
                 'article_genre': None,
                 'article_header': u'default',
@@ -146,8 +145,3 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         content.teaserText = None
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual('title', data['teaser'])
-
-    def test_not_published_transmits_future_startdate(self):
-        content = create_testcontent()
-        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
-        self.assertEqual(9999, data['startdate'].year)
