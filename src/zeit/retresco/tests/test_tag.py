@@ -1,5 +1,6 @@
 # coding: utf8
 import zeit.cms.interfaces
+import zeit.cms.testing
 import zeit.retresco.testing
 
 
@@ -30,3 +31,17 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
     def test_from_code_returns_None_if_invalid_code_given(self):
         from ..tag import Tag
         self.assertEqual(None, Tag.from_code(u'invalid-code'))
+
+
+class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
+
+    layer = zeit.retresco.testing.ZCML_LAYER
+
+    def test_absolute_url_works_with_traverser(self):
+        from ..tag import Tag
+        tag = Tag(u'Snowman Tag', u'Snowman')
+        base = 'http://localhost/++skin++vivi/'
+        b = self.browser
+        b.open(base + u'@@redirect_to?unique_id=tag://{}&view=@@object-details'
+                      .format(tag.code.encode('unicode_escape')))
+        self.assertEqual(u'<h3>Snowman Tag</h3>', b.contents)

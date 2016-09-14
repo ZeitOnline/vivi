@@ -420,6 +420,17 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
         with self.assertRaises(NotImplementedError):
             tagger.items()
 
+    def test_ignores_xml_attributes_besides_entity_type(self):
+        content = create_testcontent()
+        self.set_tags(content, """
+<tag type="Snowpeople" url_value="url" uuid="uuid-tag">Snowman Tag</tag>
+""")
+        tagger = Tagger(content)
+        snowman = tagger[u'Snowpeople☃Snowman Tag']
+        self.assertEqual(
+            [u'Snowman Tag', u'Snowpeople', u'snowman tag'],
+            [snowman.label, snowman.entity_type, snowman.url_value])
+
 
 class TaggerUpdateTest(
         zeit.retresco.testing.FunctionalTestCase,
