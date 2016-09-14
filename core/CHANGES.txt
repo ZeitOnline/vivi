@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.87.1 (unreleased)
+2.88.0 (2016-09-14)
 -------------------
 
 - ZON-3318: Add field bigshare_buttons to metadata.
