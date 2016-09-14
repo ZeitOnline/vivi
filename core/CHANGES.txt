@@ -4,7 +4,7 @@ zeit.push changes
 1.15.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3318: Add bigshare buttons checkbox to social form.
 
 
 1.15.3 (2016-09-12)
