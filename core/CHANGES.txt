@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.11.0 (unreleased)
+3.11.0 (2016-09-14)
 -------------------
 
 - ZON-3236: Add ISitemap interface (will be manually applied).
