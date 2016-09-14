@@ -12,9 +12,11 @@ base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 class Base(zeit.push.browser.form.SocialBase):
 
+    # XXX We should switch to explicit select.
     form_fields = zope.formlib.form.FormFields(
         zeit.content.link.interfaces.ILink).omit(
-            'xml', 'authors', 'push_news', 'deeplink_url', 'blog')
+            'xml', 'authors', 'push_news', 'deeplink_url', 'blog',
+            'bigshare_buttons')
 
     field_groups = (
         base.field_groups[:4]
