@@ -5,7 +5,7 @@ zeit.campus changes
 1.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3318: Remove bigshare buttons in Campus.
 
 
 1.6.2 (2016-04-21)

@@ -9,6 +9,9 @@ class SocialBase(zeit.push.browser.form.SocialBase):
     campus_fields = ('facebook_campus_text', 'facebook_campus_enabled')
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
+    social_fields_list = list(social_fields.fields)
+    social_fields_list.remove('bigshare_buttons')
+    social_fields.fields = tuple(social_fields_list)
     social_fields.fields = (
         social_fields.fields[:2]
         + campus_fields
@@ -24,8 +27,10 @@ class SocialBase(zeit.push.browser.form.SocialBase):
 
     @property
     def social_form_fields(self):
+        form_fields = super(SocialBase, self).social_form_fields
+        form_fields = form_fields.omit('bigshare_buttons')
         return (
-            super(SocialBase, self).social_form_fields
+            form_fields
             + self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
                 *self.campus_fields))
 
