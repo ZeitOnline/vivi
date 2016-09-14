@@ -39,9 +39,12 @@ class Tag(object):
         # two tags are the same when their codes are the same. However, since
         # we want to edit ``pinned``, and formlib compares the *list* of
         # keywords, which uses == on the items, we need to include pinned here.
-        if other is None:
+        if not zeit.cms.tagging.interfaces.ITag.providedBy(other):
             return False
         return self.code == other.code and self.pinned == other.pinned
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     @property
     def uniqueId(self):
