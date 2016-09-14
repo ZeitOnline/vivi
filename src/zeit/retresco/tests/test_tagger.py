@@ -385,6 +385,41 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
         tagger.set_pinned([u':=)Berlin'])
         self.assertEqual(True, next(tagger.values()).pinned)
 
+    def test_to_xml_returns_None_when_no_rankedTags_tag_was_found(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        self.assertEqual(None, tagger.to_xml())
+
+    def test_to_xml_returns_None_when_keyword_DAV_property_is_malformed(self):
+        content = create_testcontent()
+        dav = zeit.connector.interfaces.IWebDAVProperties(content)
+        dav[('rankedTags',
+             'http://namespaces.zeit.de/CMS/tagging')] = "<foobar/>"
+        tagger = Tagger(content)
+        self.assertEqual(None, tagger.to_xml())
+
+    def test_getitem_raises_key_error_when_no_keywords_are_present(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with self.assertRaises(KeyError):
+            tagger['i-do-not-exist']
+
+    def test_getitem_raises_key_error_if_no_tag_matches(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag uuid="uid-berlin">Berlin</tag>""")
+        tagger = Tagger(content)
+        with self.assertRaises(KeyError):
+            tagger['i-do-not-exist']
+
+    def test_tagger_raises_error_on_keys_and_items(self):
+        # We do not use keys and items yet but the interface requires them.
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with self.assertRaises(NotImplementedError):
+            tagger.keys()
+        with self.assertRaises(NotImplementedError):
+            tagger.items()
+
 
 class TaggerUpdateTest(
         zeit.retresco.testing.FunctionalTestCase,
