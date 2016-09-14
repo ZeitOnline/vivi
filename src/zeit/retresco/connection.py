@@ -31,7 +31,7 @@ class TMS(object):
 
     def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
-        response = self._put(content, enrich=True)
+        response = self.enrich(content, intextlinks=False)
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
@@ -80,31 +80,33 @@ class TMS(object):
         return result
 
     def index(self, content, override_body=None):
-        return self._put(content, index=True, override_body=override_body)
+        __traceback_info__ = (content.uniqueId,)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        if data is None:
+            log.info('Skip index for %s, it is missing required fields',
+                     content.uniqueId)
+            return {}
+        if override_body is not None:
+            data['body'] = override_body
+        return self._request('PUT /content/%s' % data['doc_id'], json=data)
 
-    def enrich(self, content):
-        return self._put(content, enrich=True, intextlinks=True)
-
-    def _put(self, content, index=False, enrich=False, intextlinks=False,
-             override_body=None):
+    def enrich(self, content, intextlinks=True):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
             log.info(
-                'Skip PUT for %s, it is missing required fields',
+                'Skip enrich for %s, it is missing required fields',
                 content.uniqueId)
             return {}
-        if override_body is not None:
-            data['body'] = override_body
-        return self._request('PUT /documents/%s' % data['doc_id'], params={
-            'index': str(index).lower(),
-            'enrich': str(enrich).lower(),
-            'in_text_links': str(intextlinks).lower(),
-        }, json=data)
+        params = {}
+        if intextlinks:
+            params['in-text-linked'] = ''
+        return self._request(
+            'POST /enrich/%s' % data['doc_id'], params=params, json=data)
 
     def delete_id(self, uuid):
         try:
-            self._request('DELETE /documents/%s' % uuid)
+            self._request('DELETE /content/%s' % uuid)
         except zeit.retresco.interfaces.TMSError, e:
             if e.status == 404:
                 log.debug(

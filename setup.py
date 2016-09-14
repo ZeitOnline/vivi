@@ -8,7 +8,7 @@ def project_path(*names):
 
 setup(
     name='zeit.retresco',
-    version='1.4.1.dev0',
+    version='1.4.2.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -31,7 +31,7 @@ setup(
         'plone.testing',
         'requests',
         'setuptools',
-        'zeit.cms>=2.83.0.dev0',
+        'zeit.cms>=2.87.0.dev0',
         'zeit.content.author',
         'zeit.content.article',
         'zeit.content.image',

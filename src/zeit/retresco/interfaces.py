@@ -22,8 +22,8 @@ class ITMS(zope.interface.Interface):
         Pass override_body to store the result of an enrich-intextlink call.
         """
 
-    def enrich(content):
-        """Performs TMS analysis ("enrich" and "in_text_links")."""
+    def enrich(content, intextlinks=True):
+        """Performs TMS analysis ("enrich" and "in_text_links" if given)."""
 
     def delete_id(uuid):
         """Deletes the document with the given IUUID."""
