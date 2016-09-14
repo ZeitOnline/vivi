@@ -105,14 +105,14 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
         tagger = Tagger(TestContentType())
         self.assertRaises(KeyError, lambda: tagger['foo'])
 
-#     def test_iter_ignores_tags_without_uuids(self):
-#         content = create_testcontent()
-#         self.set_tags(content, """
-# <tag>Karen Duve</tag>
-# <tag uuid="uid-berlin">Berlin</tag>
-# """)
-#         tagger = Tagger(content)
-#         self.assertEqual(['uid-berlin'], list(tagger))
+    def test_iter_includes_tags_with_and_without_uuids(self):
+        content = create_testcontent()
+        self.set_tags(content, """
+<tag>Karen Duve</tag>
+<tag uuid="uid-berlin">Berlin</tag>
+""")
+        tagger = Tagger(content)
+        self.assertEqual([u'☃Karen Duve', u'☃Berlin'], list(tagger))
 
     def test_setitem_should_add_tag(self):
         tagger = Tagger(TestContentType())
