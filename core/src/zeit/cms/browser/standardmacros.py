@@ -50,11 +50,9 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
     @property
     def section(self):
         section = zeit.cms.section.interfaces.ISection(self.context, None)
-        for iface in zope.interface.providedBy(section):
-            if issubclass(zope.security.proxy.getObject(iface),
-                          zeit.cms.section.interfaces.ISection):
-                return iface.__name__
-        return 'unknown'
+        if section is None:
+            return 'unknown'
+        return section.__name__
 
     def require_resources(self):
         zeit.cms.browser.resources.backend.need()

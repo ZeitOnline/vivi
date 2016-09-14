@@ -39,49 +39,48 @@ def apply_markers(content):
     zope.interface.alsoProvides(content, *markers)
 
 
-def get_ressort_markers(content):
-    meta = ICommonMetadata(content, None)
-    if meta is None:
-        return []
-    sm = zope.component.getSiteManager()
-    section = sm.adapters.lookup(
-        (zope.interface.providedBy(content),), IRessortSection,
-        name=meta.ressort)
-    if section is None:
-        return []
-    return get_markers_for_section([section], content)
-
-
-def get_folder_markers(content):
-    section = ISection(content, None)
-    # XXX unclear whether we really want to support the case that a folder
-    # signifies more than one section.
-    section_ifaces = [x for x in zope.interface.providedBy(section)
-                      if issubclass(x, ISection)]
-    return get_markers_for_section(section_ifaces, content)
-
-
-def get_markers_for_section(section_ifaces, content):
-    sm = zope.component.getSiteManager()
-    result = []
-    # Content-type specific markers come first, so they are treated as more
-    # specific than the generic markers in adapter lookups.
-    for iface in section_ifaces:
-        result.append(sm.adapters.lookup(
-            (iface,), ISectionMarker, name=zeit.cms.type.get_type(content)))
-    for iface in section_ifaces:
-        result.append(sm.adapters.lookup((iface,), ISectionMarker))
-    return filter(None, result)
-
-
 @grok.adapter(ICMSContent)
 @grok.implementer(ISection)
 def find_section(context):
-    candidate = parent_folder(context)
+    # Ressort markers take precedence over section markers (ZON-2507)
+    return find_ressort_section(context) or find_folder_section(context)
+
+
+def get_ressort_markers(content):
+    section = find_ressort_section(content)
+    if section is None:
+        return []
+    return get_markers_for_section(section, content)
+
+
+def find_ressort_section(context):
+    meta = ICommonMetadata(context, None)
+    if meta is None:
+        return None
+    sm = zope.component.getSiteManager()
+    return sm.adapters.lookup(
+        (zope.interface.providedBy(context),), IRessortSection,
+        name=meta.ressort)
+
+
+def get_folder_markers(content):
+    section = find_folder_section(content)
+    return get_markers_for_section(section, content)
+
+
+def find_folder_section(context):
+    candidate = context
     while candidate is not None:
         if ISection.providedBy(candidate):
-            return candidate
+            break
         candidate = parent_folder(candidate)
+    if candidate is None:
+        return None
+    # We don't support the case that a folder signifies more than one section,
+    # but we probably don't want to.
+    for iface in zope.interface.providedBy(candidate):
+        if issubclass(iface, ISection):
+            return iface
 
 
 def parent_folder(content):
@@ -93,3 +92,16 @@ def parent_folder(content):
     if id.endswith('/'):
         id = id[:-1]
     return ICMSContent(zeit.cms.interfaces.ID_NAMESPACE + os.path.dirname(id))
+
+
+def get_markers_for_section(section, content):
+    if section is None:
+        return []
+    sm = zope.component.getSiteManager()
+    result = []
+    # Content-type specific markers come first, so they are treated as more
+    # specific than the generic markers in adapter lookups.
+    result.append(sm.adapters.lookup(
+        (section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
+    result.append(sm.adapters.lookup((section,), ISectionMarker))
+    return filter(None, result)

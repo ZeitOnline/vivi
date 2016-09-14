@@ -128,7 +128,7 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         tag = self.itemTag
         for index, item in enumerate(value):
             if index >= KEYWORD_CONFIGURATION.keywords_shown:
-                continue
+                break
             term = self.vocabulary.getTerm(item)
             items.append(zope.formlib.widget.renderElement(
                 tag,

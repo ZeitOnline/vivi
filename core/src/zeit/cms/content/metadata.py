@@ -31,7 +31,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'deeplink_url',
             'breadcrumb_title',
 
-            'acquisition',
+            'access',
             'banner',
             'breaking_news',
             'countings',
@@ -50,6 +50,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
             'advertisement_title',
             'advertisement_text',
+            'bigshare_buttons',
         ))
 
     authors = zeit.cms.content.dav.DAVProperty(

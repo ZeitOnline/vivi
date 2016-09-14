@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.86.1 (unreleased)
+2.88.1 (unreleased)
 -------------------
 
 - ZON-3199: Do not provide dict-like access on ``Whitelist`` anymore. ``get``
@@ -9,6 +9,28 @@ zeit.cms changes
 
 - ZON-3199: Move intrafind specific ``Whitelist`` and ``Tag`` to
   ``zeit.intrafind``.
+
+
+2.88.0 (2016-09-14)
+-------------------
+
+- ZON-3318: Add field bigshare_buttons to metadata.
+
+
+2.87.0 (2016-09-13)
+-------------------
+
+- Rename ``acquisition`` to ``access``.
+
+
+2.86.1 (2016-09-12)
+-------------------
+
+- Make finding the section of a content object work with ressort-based
+  sections as well as folder-based sections.
+  ISection(content) now directly returns the section interface,
+  instead of the folder implementing a section interface.
+  As a side-effect, vivi now wears a doctoral hat on campus content.
 
 
 2.86.0 (2016-09-07)
