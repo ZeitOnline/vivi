@@ -73,6 +73,17 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZCML_LAYER
 
 
+class TagTestHelpers(object):
+
+    def set_tags(self, content, xml):
+        dav = zeit.connector.interfaces.IWebDAVProperties(content)
+        name, ns = dav_key = (
+            'rankedTags', 'http://namespaces.zeit.de/CMS/tagging')
+        dav[dav_key] = """<ns:{tag} xmlns:ns="{ns}">
+        <rankedTags>{0}</rankedTags></ns:{tag}>""".format(
+            xml, ns=ns, tag=name)
+
+
 def create_testcontent():
     content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
     content.uniqueId = 'http://xml.zeit.de/testcontent'
