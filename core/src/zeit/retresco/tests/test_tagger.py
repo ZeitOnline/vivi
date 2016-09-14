@@ -16,18 +16,8 @@ import zope.interface
 import zope.lifecycleevent
 
 
-class TagTestHelpers(object):
-
-    def set_tags(self, content, xml):
-        dav = zeit.connector.interfaces.IWebDAVProperties(content)
-        name, ns = dav_key = (
-            'rankedTags', 'http://namespaces.zeit.de/CMS/tagging')
-        dav[dav_key] = """<ns:{tag} xmlns:ns="{ns}">
-        <rankedTags>{0}</rankedTags></ns:{tag}>""".format(
-            xml, ns=ns, tag=name)
-
-
-class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
+class TestTagger(zeit.retresco.testing.FunctionalTestCase,
+                 zeit.retresco.testing.TagTestHelpers):
 
     def test_tagger_should_provide_interface(self):
         self.assertTrue(
@@ -434,7 +424,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, TagTestHelpers):
 
 class TaggerUpdateTest(
         zeit.retresco.testing.FunctionalTestCase,
-        TagTestHelpers):
+        zeit.retresco.testing.TagTestHelpers):
 
     def test_update_should_keep_pinned_tags(self):
         content = create_testcontent()
