@@ -127,12 +127,23 @@ class ICP2015(ICenterPage):
 
 
 class IStoryStream(ICP2015):
-    """CP with a specific ``type``."""
+    """CP with ``type``=='storystream'.
 
+    We're pretending this is a separate content type by providing its own
+    AddForm. (XXX Maybe convert to an actual content type that inherits from
+    Centerpage?)
+    """
 IStoryStream.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.cp.AddStoryStream')
 IStoryStream.setTaggedValue(
     'zeit.cms.title', _('Add storystream'))
+
+
+class ISitemap(ICP2015):
+    """CP with ``type``=='sitemap'.
+
+    This interface is applied manually.
+    """
 
 
 class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
