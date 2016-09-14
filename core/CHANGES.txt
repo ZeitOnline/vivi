@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.1.4 (unreleased)
+2.1.4 (2016-09-14)
 ------------------
 
 - ZON-3318: Support bigshare buttons.
