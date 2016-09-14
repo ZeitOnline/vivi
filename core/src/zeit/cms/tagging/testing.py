@@ -138,7 +138,8 @@ class FakeTag(object):
 
     @property
     def uniqueId(self):
-        return zeit.cms.tagging.interfaces.ID_NAMESPACE + self.code
+        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
+                self.code.encode('unicode_escape'))
 
 
 class TaggingHelper(object):

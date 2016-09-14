@@ -1,9 +1,8 @@
+# encoding: utf-8
 import mock
 import unittest
+import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zope.component
-import zope.security.management
-import zope.testbrowser.testing
 
 
 class TestTags(unittest.TestCase,
@@ -88,3 +87,15 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
         t2 = ICMSContent('tag://foo')
         t1.pinned = True
         self.assertFalse(t2.pinned)
+
+    def test_adapting_tag_url_with_escaped_unicode_yields_tag(self):
+        from zeit.cms.interfaces import ICMSContent
+        self.setup_tags(u'Bärlin')
+        tag = ICMSContent(u'tag://%s' % u'Bärlin'.encode('unicode_escape'))
+        self.assertEqual(u'Bärlin', tag.label)
+
+    def test_adapting_unicode_escaped_uniqueId_of_tag_yields_tag(self):
+        from zeit.cms.interfaces import ICMSContent
+        self.setup_tags(u'Bärlin')
+        tag = ICMSContent(self.whitelist_tags[0].uniqueId)
+        self.assertEqual(u'Bärlin', tag.label)
