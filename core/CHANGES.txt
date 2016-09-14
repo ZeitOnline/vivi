@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't attempt writing if no write token is configured.
 
 
 2.8.1 (2016-09-02)
