@@ -116,7 +116,7 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(
             zope.site.hooks.getSite(), self.request)
-        return base + '/++tag++' + self.context.code
+        return base + '/++tag++' + self.context.code.encode('unicode_escape')
 
 
 class TagTraverser(grok.MultiAdapter):
@@ -134,6 +134,7 @@ class TagTraverser(grok.MultiAdapter):
     def traverse(self, name, ignored):
         whitelist = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
+        name = name.decode('unicode_escape')
         tag = whitelist.get(name)
         if tag is None:
             raise zope.location.interfaces.LocationError(self.context, name)

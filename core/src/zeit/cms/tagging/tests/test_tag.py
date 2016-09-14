@@ -80,6 +80,16 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
             base + '@@redirect_to?unique_id=tag://foo&view=@@object-details')
         self.assertEqual('<h3>foo</h3>', b.contents)
 
+    def test_redirecting_to_tag_with_unicode_escaped_url_yields_tag(self):
+        # Redirect tests IAbsoluteURL and Traverser, so we know it's symmetric.
+        self.setup_tags(u'Bärlin')
+        code = u'Bärlin'.encode('unicode_escape')
+        base = 'http://localhost/++skin++vivi/'
+        b = self.browser
+        b.open(base + u'@@redirect_to?unique_id=tag://{}&view=@@object-details'
+                      .format(code))
+        self.assertEqual('<h3>Bärlin</h3>', b.contents)
+
     def test_adapting_tag_url_to_cmscontent_yields_a_copy(self):
         from zeit.cms.interfaces import ICMSContent
         self.setup_tags('foo')
