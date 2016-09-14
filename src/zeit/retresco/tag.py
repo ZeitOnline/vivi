@@ -1,3 +1,4 @@
+# coding: utf-8
 import unicodedata
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
@@ -11,7 +12,7 @@ class Tag(object):
     zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
                               zeit.cms.interfaces.ICMSContent)
 
-    SEPARATOR = u':=)'
+    SEPARATOR = u'☃'
 
     def __init__(self, label, entity_type):
         self.label = label
