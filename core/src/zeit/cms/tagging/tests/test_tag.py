@@ -1,8 +1,10 @@
 # encoding: utf-8
 import mock
 import unittest
+import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zope.component
 
 
 class TestTags(unittest.TestCase,
@@ -107,5 +109,7 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
     def test_adapting_unicode_escaped_uniqueId_of_tag_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
         self.setup_tags(u'Bärlin')
-        tag = ICMSContent(self.whitelist_tags[0].uniqueId)
+        whitelist = zope.component.queryUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        tag = ICMSContent(whitelist.get(u'Bärlin').uniqueId)
         self.assertEqual(u'Bärlin', tag.label)

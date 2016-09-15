@@ -157,28 +157,17 @@ class TaggingHelper(object):
         self.addCleanup(patcher.stop)
         self.tagger = patcher.start()
         self.tagger.return_value = tags
+        self.whitelist_tags = {tag.code: tag.label for tag in tags.values()}
 
-        self.whitelist_tags = tags.values()
+        whitelist = zope.component.queryUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        if whitelist is not None:  # only when ZCML is loaded
+            original_tags = whitelist.tags
+            whitelist.tags = self.whitelist_tags
 
-        def search(term):
-            term = term.lower()
-            return [tag for tag in self.whitelist_tags
-                    if term in tag.label.lower()]
-
-        def get(id):
-            result = search(id)
-            return result[0] if result else None
-
-        whitelist_mocker = mock.patch(
-            'zeit.cms.tagging.testing.DummyWhitelist.search',
-            side_effect=search)
-        self.addCleanup(whitelist_mocker.stop)
-        whitelist_mocker.start()
-        whitelist_mocker_get = mock.patch(
-            'zeit.cms.tagging.testing.DummyWhitelist.get',
-            side_effect=get)
-        self.addCleanup(whitelist_mocker_get.stop)
-        whitelist_mocker_get.start()
+            def restore_original_tags_on_whitelist():
+                whitelist.tags = original_tags
+            self.addCleanup(restore_original_tags_on_whitelist)
 
         return tags
 
