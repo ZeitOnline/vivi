@@ -93,7 +93,7 @@ class SocialAddForm(
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.testcontenttype.interfaces.ITestContentType).omit(
-            'authors', 'xml')
+            'authors', 'xml', 'bigshare_buttons')
     factory = zeit.cms.testcontenttype.testcontenttype.TestContentType
 
     field_groups = (
