@@ -94,7 +94,8 @@ applied:
 ...     zeit.cms.tagging.interfaces.IWhitelist)
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
 ...     zeit.cms.browser.form.apply_default_values(co, IArticle)
-...     co.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...     co.keywords = (
+...         wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 >>> article = container['art1']
 >>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
 True
@@ -160,7 +161,7 @@ Import an article with a UUID[#patch-connector]_:
 ...     py:pytype="str"
 ...     ns="http://namespaces.zeit.de/CMS/document"
 ...     name="uuid">{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}</attribute>
-... """)    
+... """)
 >>> with fs.create('art-uuid') as f:
 ...     f.write(data)
 >>> fs.move('art-uuid', 'tmp', 'new')
@@ -187,7 +188,8 @@ When we change the imported article, it is not overwritten:
 >>> with zeit.cms.checkout.helper.checked_out(container['art-uuid']) as co:
 ...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 ...     co.title = u'Tag der Ueberraschungen'
-...     co.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...     co.keywords = (
+...         wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 >>> with fs.create('art-uuid-3') as f:
 ...     f.write(data.replace('Jahr', 'Stunde'))
 >>> fs.move('art-uuid-3', 'tmp', 'new')
@@ -310,7 +312,7 @@ Runner integration
 ++++++++++++++++++
 
 For the integration with gocept.runner there is a helper returning different
-sleep times, depending on whether there was something imported or not. 
+sleep times, depending on whether there was something imported or not.
 
 Add a file to the filestore again:
 

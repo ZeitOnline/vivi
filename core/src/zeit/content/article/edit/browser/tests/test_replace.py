@@ -315,7 +315,7 @@ class FindReplaceTest(
             co.ressort = u'International'
             co.title = 'foo'
             co.keywords = (
-                wl['testtag'], wl['testtag2'], wl['testtag3'],)
+                wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
             body = IEditableBody(co)
             p_factory = zope.component.getAdapter(
                 body, IElementFactory, 'p')

@@ -44,7 +44,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.cms>=2.87.0.dev0',
+        'zeit.cms>=2.89.0.dev0',
         'zeit.connector>=2.3.1.dev0',
         'zeit.content.author>=2.7.1.dev0',
         'zeit.content.cp>=0.33.0',

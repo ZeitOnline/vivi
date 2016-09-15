@@ -115,7 +115,8 @@ Checking in requires the article to be valid:
 ...         article = list(wc.values())[0]
 ...         article.title = u'Title'
 ...         article.ressort = u'Deutschland'
-...         article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...         article.keywords = (
+...             wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 ...         IAutomaticallyRenameable(article).rename_to = 'asdf'
 
 We check in the document. We look at the document in the repository then:

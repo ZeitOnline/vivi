@@ -35,7 +35,7 @@ article is published.
 ...     co.title = u'Mary had a little lamb'
 ...     co.ressort = u'Deutschland'
 ...     co.layout = cp
-...     co.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...     co.keywords = (wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 
 After publishing the article, the centerpage is published, too:
 

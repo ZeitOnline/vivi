@@ -97,7 +97,8 @@ to the CDS:
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
 ...     co.product = zeit.cms.content.sources.Product(u'ZEI')
 ...     co.ressort = u'International'
-...     co.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...     co.keywords = (
+...         wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> print cdswf.export_cds
 None
@@ -116,7 +117,8 @@ We will now set the ``export_cds`` flag to ``True``:
 
 >>> content = repository['online']['2007']['01']['elterngeld-schlieben']
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     co.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+...     co.keywords = (
+...         wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> cdswf.export_cds = True
 

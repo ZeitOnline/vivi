@@ -6,6 +6,7 @@ import re
 import shutil
 import tempfile
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
@@ -111,15 +112,22 @@ class CDSLayer(plone.testing.Layer):
 CDS_LAYER = CDSLayer()
 
 
-class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
+                         zeit.cms.tagging.testing.TaggingHelper):
 
     layer = LAYER
 
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        self.setup_tags('testtag', 'testtag2', 'testtag3')
+
     def get_article(self):
+
         wl = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         article = create_article()
-        article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
+        article.keywords = [
+            wl.get(tag) for tag in ('testtag', 'testtag2', 'testtag3')]
         return article
 
     def get_factory(self, article, factory_name):
