@@ -47,6 +47,7 @@ class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
                 link.year = 2010
                 link.url = 'http://example.com'
                 self.repository['magazin']['mylink'] = link
+        self.browser.handleErrors = False
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'magazin/mylink/@@checkout')
