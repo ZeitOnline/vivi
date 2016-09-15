@@ -4,7 +4,7 @@ zeit.content.link changes
 2.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3318: Remove bigshare buttons from link form.
 
 
 2.1.4 (2016-09-14)
