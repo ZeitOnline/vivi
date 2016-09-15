@@ -134,6 +134,7 @@ class FakeTag(object):
         self.label = label
         self.code = code
         self.pinned = False
+        self.__name__ = self.code  # needed to fulfill `ICMSContent`
 
     @property
     def uniqueId(self):
