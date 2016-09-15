@@ -1,40 +1,23 @@
 # coding: utf8
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
-from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.retresco.keywords import Tagger
+from zeit.retresco.tag import Tag
+from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
-import lxml.builder
+import lxml.objectify
 import mock
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.testcontenttype.testcontenttype
-import zeit.cms.testing
 import zeit.connector.interfaces
-import zeit.retresco.keywords
 import zeit.retresco.testing
 import zope.component
 import zope.interface
-import zope.interface.verify
 import zope.lifecycleevent
 
 
-class TagTestHelpers(object):
-
-    def set_tags(self, content, xml):
-        dav = zeit.connector.interfaces.IWebDAVProperties(content)
-        name, ns = dav_key = (
-            'rankedTags', 'http://namespaces.zeit.de/CMS/tagging')
-        dav[dav_key] = """<ns:{tag} xmlns:ns="{ns}">
-        <rankedTags>{0}</rankedTags></ns:{tag}>""".format(
-            xml, ns=ns, tag=name)
-
-
-class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TestTagger(zeit.retresco.testing.FunctionalTestCase,
+                 zeit.retresco.testing.TagTestHelpers):
 
     def test_tagger_should_provide_interface(self):
         self.assertTrue(
@@ -53,7 +36,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual(set(['uid-berlin', 'uid-karenduve']), set(tagger))
+        self.assertEqual(set([u'☃Berlin', u'☃Karen Duve']), set(tagger))
 
     def test_len_should_return_amount_of_tags(self):
         content = create_testcontent()
@@ -77,9 +60,9 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        tag = tagger['uid-karenduve']
+        tag = tagger[u'☃Karen Duve']
         self.assertEqual(tagger, tag.__parent__)
-        self.assertEqual('uid-karenduve', tag.__name__)
+        self.assertEqual(u'☃Karen Duve', tag.__name__)
         self.assertEqual('Karen Duve', tag.label)
 
     def test_tag_should_have_entity_type(self):
@@ -89,7 +72,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin" type="Location">Berlin</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual('Location', tagger['uid-berlin'].entity_type)
+        self.assertEqual('Location', tagger[u'Location☃Berlin'].entity_type)
 
     def test_tag_should_have_url_value(self):
         content = create_testcontent()
@@ -98,32 +81,38 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin" url_value="dickesb">Berlin</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual('dickesb', tagger['uid-berlin'].url_value)
+        self.assertEqual('berlin', tagger[u'☃Berlin'].url_value)
+
+    def test_tag_should_convert_unicode_symbols_to_nice_ascii_urls(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag>Bärlön</tag>""")
+        tagger = Tagger(content)
+        self.assertEqual('baerloen', tagger[u'☃Bärlön'].url_value)
 
     def test_getitem_should_raise_keyerror_if_tag_does_not_exist(self):
         tagger = Tagger(TestContentType())
         self.assertRaises(KeyError, lambda: tagger['foo'])
 
-    def test_iter_ignores_tags_without_uuids(self):
+    def test_iter_includes_tags_with_and_without_uuids(self):
         content = create_testcontent()
         self.set_tags(content, """
 <tag>Karen Duve</tag>
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual(['uid-berlin'], list(tagger))
+        self.assertEqual([u'☃Karen Duve', u'☃Berlin'], list(tagger))
 
     def test_setitem_should_add_tag(self):
         tagger = Tagger(TestContentType())
-        tagger['uid-berlin'] = Tag('uid-berlin', 'Berlin')
-        self.assertEqual(['uid-berlin'], list(tagger))
-        self.assertEqual('Berlin', tagger['uid-berlin'].label)
+        tagger[u'☃Berlin'] = Tag('Berlin', '')
+        self.assertEqual([u'☃Berlin'], list(tagger))
+        self.assertEqual('Berlin', tagger[u'☃Berlin'].label)
 
     def test_setitem_should_set_entity_type(self):
         tagger = Tagger(TestContentType())
-        tagger['uid-berlin'] = Tag(
-            'uid-berlin', 'Berlin', entity_type='Location')
-        self.assertEqual('Location', tagger['uid-berlin'].entity_type)
+        tagger[u'☃Berlin'] = Tag(
+            'Berlin', entity_type='Location')
+        self.assertEqual('Location', tagger[u'Location☃Berlin'].entity_type)
 
     def test_iter_should_be_sorted_by_document_order(self):
         content = create_testcontent()
@@ -134,7 +123,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 """)
         tagger = Tagger(content)
         self.assertEqual(
-            ['uid-berlin', 'uid-karenduve', 'uid-fleisch'], list(tagger))
+            [u'☃Berlin', u'☃Karen Duve', u'☃Fleisch'], list(tagger))
 
     def test_updateOrder_should_sort_tags(self):
         content = create_testcontent()
@@ -144,9 +133,9 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-fleisch">Fleisch</tag>
 """)
         tagger = Tagger(content)
-        tagger.updateOrder(['uid-fleisch', 'uid-berlin', 'uid-karenduve'])
+        tagger.updateOrder([u'☃Fleisch', u'☃Berlin', u'☃Karen Duve'])
         self.assertEqual(
-            ['uid-fleisch', 'uid-berlin', 'uid-karenduve'], list(tagger))
+            [u'☃Fleisch', u'☃Berlin', u'☃Karen Duve'], list(tagger))
 
     def test_updateOrder_should_sort_tags_even_when_keys_are_generator(self):
         content = create_testcontent()
@@ -157,9 +146,9 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 """)
         tagger = Tagger(content)
         tagger.updateOrder(
-            iter(['uid-fleisch', 'uid-berlin', 'uid-karenduve']))
+            iter([u'☃Fleisch', u'☃Berlin', u'☃Karen Duve']))
         self.assertEqual(
-            ['uid-fleisch', 'uid-berlin', 'uid-karenduve'], list(tagger))
+            [u'☃Fleisch', u'☃Berlin', u'☃Karen Duve'], list(tagger))
 
     def test_given_keys_differ_from_existing_keys_should_raise(self):
         content = create_testcontent()
@@ -179,12 +168,12 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
         tagger = Tagger(content)
-        self.assertIn('uid-karenduve', tagger)
+        self.assertIn(u'☃Karen Duve', tagger)
 
     def test_contains_should_return_false_for_noneexisting_tag(self):
         content = create_testcontent()
         tagger = Tagger(content)
-        self.assertNotIn('uid-karenduve', tagger)
+        self.assertNotIn(u'☃Karen Duve', tagger)
 
     def test_get_should_return_existing_tag(self):
         content = create_testcontent()
@@ -192,7 +181,7 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual('Karen Duve', tagger.get('uid-karenduve').label)
+        self.assertEqual('Karen Duve', tagger.get(u'☃Karen Duve').label)
 
     def test_get_should_return_default_if_tag_does_not_exist(self):
         content = create_testcontent()
@@ -207,8 +196,8 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-karenduve">Karen Düve</tag>
 """)
         tagger = Tagger(content)
-        del tagger['uid-karenduve']
-        self.assertNotIn('uid-karenduve', tagger)
+        del tagger[u'☃Karen Düve']
+        self.assertNotIn(u'☃Karen Düve', tagger)
 
     def test_delitem_should_add_tag_to_disabled_list_in_dav(self):
         content = create_testcontent()
@@ -216,11 +205,11 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-karenduve">Karen Duve</tag>
 """)
         tagger = Tagger(content)
-        del tagger['uid-karenduve']
+        del tagger[u'☃Karen Duve']
 
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
-        self.assertEqual('uid-karenduve', dav[dav_key])
+        self.assertEqual(u'☃Karen Duve', dav[dav_key])
 
     def test_disabled_tags_should_be_separated_by_tab(self):
         content = create_testcontent()
@@ -229,12 +218,12 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        del tagger['uid-karenduve']
-        del tagger['uid-berlin']
+        del tagger[u'☃Karen Duve']
+        del tagger[u'☃Berlin']
 
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
-        self.assertEqual('uid-karenduve\tuid-berlin', dav[dav_key])
+        self.assertEqual(u'☃Karen Duve\t☃Berlin', dav[dav_key])
 
     def test_no_disabled_tags_should_return_empty_tuple(self):
         content = create_testcontent()
@@ -306,14 +295,14 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository['content'] = create_testcontent()
-        with zeit.cms.checkout.helper.checked_out(repository['content']) as \
+        with checked_out(repository['content']) as \
                 content:
             self.set_tags(content, """
     <tag uuid="uid-karenduve">Karen Duve</tag>
     <tag uuid="uid-berlin">Berlin</tag>
     """)
             tagger = Tagger(content)
-            del tagger['uid-berlin']
+            del tagger[u'☃Berlin']
         self.assertEqual(
             ['Karen Duve'],
             repository['content'].xml.head.rankedTags.getchildren())
@@ -349,68 +338,140 @@ class TestTagger(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        tagger.set_pinned(['uid-berlin', 'uid-karenduve'])
-        self.assertEqual(('uid-berlin', 'uid-karenduve'), tagger.pinned)
+        tagger.set_pinned([u'☃Berlin', u'☃Karen Duve'])
+        self.assertEqual((u'☃Berlin', u'☃Karen Duve'), tagger.pinned)
 
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('pinned', 'http://namespaces.zeit.de/CMS/tagging')
-        self.assertEqual('uid-berlin\tuid-karenduve', dav[dav_key])
+        self.assertEqual(u'☃Berlin\t☃Karen Duve', dav[dav_key])
 
-        self.assertTrue(tagger['uid-berlin'].pinned)
+        self.assertTrue(tagger[u'☃Berlin'].pinned)
+
+    def test_iterating_values_calls_to_xml_only_once(self):
+        # We do not want to reuse `__iter__` and `__getitem__` in values, since
+        # that would call `_find_tag_node` & `to_xml` for *each* keyword.
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with mock.patch('zeit.retresco.tagger.Tagger.to_xml') as to_xml:
+            to_xml.return_value = lxml.objectify.fromstring("""
+<rankedTags>
+    <tag uuid="uid-karenduve">Karen Duve</tag>
+    <tag uuid="uid-berlin">Berlin</tag>
+</rankedTags>""")
+            self.assertEqual(2, len(list(tagger.values())))
+            self.assertEqual(1, to_xml.call_count)
+
+    def test_values_returns_empty_iterator_if_no_values(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        self.assertEqual([], list(tagger.values()))
+
+    def test_tags_retrieved_via_values_remain_pinned(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag uuid="uid-berlin">Berlin</tag>""")
+        tagger = Tagger(content)
+        tagger.set_pinned([u'☃Berlin'])
+        self.assertEqual(True, next(tagger.values()).pinned)
+
+    def test_to_xml_returns_None_when_no_rankedTags_tag_was_found(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        self.assertEqual(None, tagger.to_xml())
+
+    def test_to_xml_returns_None_when_keyword_DAV_property_is_malformed(self):
+        content = create_testcontent()
+        dav = zeit.connector.interfaces.IWebDAVProperties(content)
+        dav[('rankedTags',
+             'http://namespaces.zeit.de/CMS/tagging')] = "<foobar/>"
+        tagger = Tagger(content)
+        self.assertEqual(None, tagger.to_xml())
+
+    def test_getitem_raises_key_error_when_no_keywords_are_present(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with self.assertRaises(KeyError):
+            tagger['i-do-not-exist']
+
+    def test_getitem_raises_key_error_if_no_tag_matches(self):
+        content = create_testcontent()
+        self.set_tags(content, """<tag uuid="uid-berlin">Berlin</tag>""")
+        tagger = Tagger(content)
+        with self.assertRaises(KeyError):
+            tagger['i-do-not-exist']
+
+    def test_tagger_raises_error_on_keys_and_items(self):
+        # We do not use keys and items yet but the interface requires them.
+        content = create_testcontent()
+        tagger = Tagger(content)
+        with self.assertRaises(NotImplementedError):
+            tagger.keys()
+        with self.assertRaises(NotImplementedError):
+            tagger.items()
+
+    def test_ignores_xml_attributes_besides_entity_type(self):
+        content = create_testcontent()
+        self.set_tags(content, """
+<tag type="Snowpeople" url_value="url" uuid="uuid-tag">Snowman Tag</tag>
+""")
+        tagger = Tagger(content)
+        snowman = tagger[u'Snowpeople☃Snowman Tag']
+        self.assertEqual(
+            [u'Snowman Tag', u'Snowpeople', u'snowman-tag'],
+            [snowman.label, snowman.entity_type, snowman.url_value])
 
 
-class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TaggerUpdateTest(
+        zeit.retresco.testing.FunctionalTestCase,
+        zeit.retresco.testing.TagTestHelpers):
 
     def test_update_should_keep_pinned_tags(self):
         content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
-        tagger.set_pinned(['uid-karenduve'])
+        tagger.set_pinned([u'☃Karen Duve'])
         tagger.update()
-        self.assertEqual(['uid-karenduve'], list(tagger))
+        self.assertEqual([u'☃Karen Duve'], list(tagger))
 
     def test_update_should_not_duplicate_pinned_tags(self):
         # this is a rather tricky edge case:
         # when we pin a manual tag first, and then also pin a tag that
         # comes in via update() again, we used to screw it up,
         # since we compared against a generator multiple times
-        with mock.patch(
-                'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
-            get_keywords.return_value = [
-                Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
+        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
+        with mock.patch(extract_keywords) as extract_keywords:
+            extract_keywords.return_value = [
+                Tag('Foo', ''), Tag('Bar', '')]
             content = create_testcontent()
             tagger = Tagger(content)
             tagger.update()
             self.assertEqual(2, len(tagger))
-            tagger['uid-qux'] = Tag('uid-qux', 'Qux')
-            tagger.set_pinned(['uid-qux', 'uid-foo'])
+            tagger[u'☃Qux'] = Tag('Qux', '')
+            tagger.set_pinned([u'☃Qux', u'☃Foo'])
             tagger.update()
             self.assertEqual(
                 [u'Foo', u'Bar', u'Qux'],
                 [tagger[x].label.strip() for x in tagger])
 
     def test_update_should_discard_disabled_tags(self):
-        with mock.patch(
-                'zeit.retresco.connection.TMS.get_keywords') as get_keywords:
-            get_keywords.return_value = [
-                Tag('uid-foo', 'Foo'), Tag('uid-bar', 'Bar')]
+        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
+        with mock.patch(extract_keywords) as extract_keywords:
+            extract_keywords.return_value = [
+                Tag('Foo', ''), Tag('Bar', '')]
             content = create_testcontent()
             tagger = Tagger(content)
             tagger.update()
             self.assertEqual(2, len(tagger))
-            del tagger['uid-foo']
+            del tagger[u'☃Foo']
             tagger.update()
-            self.assertEqual(['uid-bar'], list(tagger))
+            self.assertEqual([u'☃Bar'], list(tagger))
 
     def test_update_should_clear_disabled_tags(self):
         content = create_testcontent()
         self.set_tags(content, """
 <tag uuid="uid-karenduve">Karen Duve</tag>""")
         tagger = Tagger(content)
-        del tagger['uid-karenduve']
+        del tagger[u'☃Karen Duve']
         tagger.update()
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
@@ -427,25 +488,3 @@ class TaggerUpdateTest(zeit.cms.testing.FunctionalTestCase, TagTestHelpers):
             data = request.call_args[1]['json']
             self.assertEqual(['Karen Duve'], data['rtr_keywords'])
             self.assertEqual(['Berlin'], data['rtr_locations'])
-
-
-class TopiclistUpdateTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
-
-    def test_updates_configured_content_and_publishes(self):
-        self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.retresco')
-        config['topiclist'] = 'http://xml.zeit.de/topics'
-        with mock.patch('zeit.retresco.keywords._build_topic_xml') as xml:
-            E = lxml.builder.ElementMaker()
-            xml.return_value = E.topics(
-                E.topic('Berlin', url_value='berlin')
-            )
-            zeit.retresco.keywords._update_topiclist()
-        topics = self.repository['topics']
-        self.assertEqual(1, len(topics.xml.xpath('//topic')))
-        self.assertEqual('topics', topics.xml.tag)
-        self.assertEqual('Berlin', topics.xml.find('topic')[0])
-        self.assertEqual(True, IPublishInfo(topics).published)

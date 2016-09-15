@@ -31,7 +31,7 @@ setup(
         'plone.testing',
         'requests',
         'setuptools',
-        'zeit.cms>=2.87.0.dev0',
+        'zeit.cms>=2.89.0.dev0',
         'zeit.content.author',
         'zeit.content.article',
         'zeit.content.image',
@@ -43,7 +43,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'update-topiclist=zeit.retresco.keywords:update_topiclist',
+            'update-topiclist=zeit.retresco.connection:update_topiclist',
             'tms-reindex-object=zeit.retresco.update:reindex',
         ]
     },

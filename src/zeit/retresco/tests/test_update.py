@@ -8,6 +8,7 @@ import zeit.cms.checkout.helper
 import zeit.cms.repository
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
+import zeit.retresco.testing
 import zeit.retresco.update
 import zeit.workflow.testing
 import zope.component
@@ -37,9 +38,7 @@ def process():
     assert not log_output.getvalue(), log_output.getvalue()
 
 
-class UpdateTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
         super(UpdateTest, self).setUp()

@@ -1,10 +1,17 @@
-from zeit.cms.tagging.tag import Tag
+from zeit.cms.checkout.helper import checked_out
+import gocept.runner
 import logging
+import lxml.builder
 import pytz
 import requests
 import requests.exceptions
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
+import zeit.retresco.tag
+import zope.app.appsetup.product
+import zope.component
 import zope.interface
 
 
@@ -22,21 +29,22 @@ class TMS(object):
         self.username = username
         self.password = password
 
-    def get_keywords(self, content):
+    def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
         response = self.enrich(content, intextlinks=False)
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(Tag(
-                    # Having an ASCII-only ID makes handling easier.
-                    code='%s-%s' % (
-                        entity_type, keyword.encode('unicode_escape')),
-                    label=keyword,
-                    url_value=zeit.cms.interfaces.normalize_filename(keyword),
-                    entity_type=entity_type
-                ))
+                result.append(zeit.retresco.tag.Tag(
+                    label=keyword, entity_type=entity_type))
         return result
+
+    def get_keywords(self, search_string):
+        __traceback_info__ = (search_string,)
+        response = self._request('GET /entities', params={'q': search_string})
+        for entity in response['entities']:
+            yield zeit.retresco.tag.Tag(
+                entity['entity_name'], entity['entity_type'])
 
     def get_all_topicpages(self):
         page = 0
@@ -136,6 +144,37 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     return TMS(
         config['base-url'], config.get('username'), config.get('password'))
+
+
+@gocept.runner.once(principal=gocept.runner.from_config(
+    'zeit.retresco', 'topiclist-principal'))
+def update_topiclist():
+    _update_topiclist()
+
+
+def _update_topiclist():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
+    keywords = zeit.cms.interfaces.ICMSContent(config['topiclist'], None)
+    if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
+        raise ValueError(
+            '%s is not a raw xml document' % config['topiclist'])
+    with checked_out(keywords) as co:
+        log.info('Retrieving all topic pages from TMS')
+        co.xml = _build_topic_xml()
+    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
+
+
+def _build_topic_xml():
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    E = lxml.builder.ElementMaker()
+    root = E.topics()
+    for row in tms.get_all_topicpages():
+        # XXX What other attributes might be interesting to use in a
+        # dynamicfolder template?
+        root.append(E.topic(
+            row['title'],
+            id=zeit.cms.interfaces.normalize_filename(row['name'])))
+    return root
 
 
 class Result(list):
