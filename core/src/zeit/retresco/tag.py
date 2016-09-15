@@ -9,8 +9,7 @@ import zope.interface
 class Tag(object):
     """Representation of a keyword."""
 
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
-                              zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
 
     SEPARATOR = u'☃'
 
@@ -18,6 +17,8 @@ class Tag(object):
         self.label = label
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
+        # We need this to fulfil `ICMSContent`.
+        self.__name__ = self.code
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
