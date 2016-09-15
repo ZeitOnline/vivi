@@ -7,7 +7,6 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.tag
 import zope.app.pagetemplate
 import zope.component.hooks
 import zope.formlib.itemswidgets
@@ -29,10 +28,11 @@ class Widget(grokcore.component.MultiAdapter,
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
+    grokcore.component.baseclass()
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
@@ -75,12 +75,7 @@ class Widget(grokcore.component.MultiAdapter,
         tags = json.loads(value)
         result = []
         for item in tags:
-            try:
-                tag = zeit.cms.interfaces.ICMSContent(item['code'])
-            except TypeError:
-                # XXX stopgap until we find out about #12609
-                tag = zeit.cms.tagging.tag.Tag(
-                    item['code'].replace(TAG_NAMESPACE, ''), item['label'])
+            tag = zeit.cms.interfaces.ICMSContent(item['code'])
             tag.pinned = item['pinned']
             result.append(tag)
         return tuple(result)
@@ -104,7 +99,7 @@ class DisplayWidget(grokcore.component.MultiAdapter,
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IDisplayWidget)

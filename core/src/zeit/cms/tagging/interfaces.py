@@ -1,9 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.tagging.source import IWhitelistSource
-import zc.sourcefactory.basic
-import zc.sourcefactory.contextual
-import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
@@ -43,7 +40,7 @@ class ITagger(IReadTagger, IWriteTagger):
     """
 
 
-class ITag(zope.interface.Interface):
+class ITag(zeit.cms.interfaces.ICMSContent):
     """A tag."""
 
     code = zope.schema.TextLine(
@@ -62,18 +59,18 @@ class ITag(zope.interface.Interface):
         title=u'Label encoded/normalized for use in an URL.')
 
 
-class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
-
-    def search(term):
-        """Returns a list of tags whose labels contain the given term."""
-
-
-class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
+class IWhitelist(zope.interface.Interface):
     """Tag whitelist
 
     The whitelist contains all selectable tags.
 
     """
+
+    def search(term):
+        """Returns a list of tags whose labels contain the given term."""
+
+    def get(id):
+        """Return the tag for the given id."""
 
 
 ID_NAMESPACE = 'tag://'

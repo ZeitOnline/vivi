@@ -47,7 +47,7 @@ class DummyTagger(object):
     def __getitem__(self, key):
         if key not in self.keys():
             raise KeyError(key)
-        return self.whitelist[key]
+        return self.whitelist.get(key)
 
     def __setitem__(self, key, value):
         keys = list(self.keys())
@@ -82,6 +82,27 @@ class DummyTagger(object):
         return None
 
 
+class DummyWhitelist(object):
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
+
+    tags = {
+        'testtag': 'Testtag',
+        'testtag2': 'Testtag2',
+        'testtag3': 'Testtag3',
+    }
+
+    def search(self, term):
+        term = term.lower()
+        return [FakeTag(code=k, label=v)
+                for k, v in self.tags.items() if term in v.lower()]
+
+    def get(self, id):
+        if id in self.tags:
+            return FakeTag(code=id, label=self.tags[id])
+        return None
+
+
 class FakeTags(collections.OrderedDict):
 
     def __init__(self):
@@ -104,11 +125,28 @@ class FakeTags(collections.OrderedDict):
         return None
 
 
+class FakeTag(object):
+    """Fake implementation of ITag for tests."""
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
+
+    def __init__(self, code, label):
+        self.label = label
+        self.code = code
+        self.pinned = False
+        self.__name__ = self.code  # needed to fulfill `ICMSContent`
+
+    @property
+    def uniqueId(self):
+        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
+                self.code.encode('unicode_escape'))
+
+
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
 
     def get_tag(self, code):
-        tag = zeit.cms.tagging.tag.Tag(code, code)
+        tag = FakeTag(code=code, label=code)
         return tag
 
     def setup_tags(self, *codes):
@@ -119,18 +157,17 @@ class TaggingHelper(object):
         self.addCleanup(patcher.stop)
         self.tagger = patcher.start()
         self.tagger.return_value = tags
+        self.whitelist_tags = {tag.code: tag.label for tag in tags.values()}
 
         whitelist = zope.component.queryUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         if whitelist is not None:  # only when ZCML is loaded
-            tag_values = tags.values()
-            for tag in tag_values:
-                whitelist[tag.code] = tag
+            original_tags = whitelist.tags
+            whitelist.tags = self.whitelist_tags
 
-            def remove_tags_from_whitelist():
-                for tag in tag_values:
-                    del whitelist[tag.code]
-            self.addCleanup(remove_tags_from_whitelist)
+            def restore_original_tags_on_whitelist():
+                whitelist.tags = original_tags
+            self.addCleanup(restore_original_tags_on_whitelist)
 
         return tags
 
