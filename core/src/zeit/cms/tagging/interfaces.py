@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
@@ -39,7 +40,7 @@ class ITagger(IReadTagger, IWriteTagger):
     """
 
 
-class ITag(zope.interface.Interface):
+class ITag(zeit.cms.interfaces.ICMSContent):
     """A tag."""
 
     code = zope.schema.TextLine(
