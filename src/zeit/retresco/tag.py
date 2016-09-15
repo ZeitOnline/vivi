@@ -16,8 +16,7 @@ class Tag(object):
         self.label = label
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
-        # We need this to fulfil `ICMSContent`.
-        self.__name__ = self.code
+        self.__name__ = self.code  # needed to fulfill `ICMSContent`
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
