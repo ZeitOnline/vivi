@@ -15,7 +15,6 @@ class ITMS(zope.interface.Interface):
         The tag objects provide zeit.cms.tagging.interfaces.ITag.
         """
 
-
     def index(content, override_body=None):
         """Stores the given ICMSContent.
 
@@ -27,6 +26,12 @@ class ITMS(zope.interface.Interface):
 
     def delete_id(uuid):
         """Deletes the document with the given IUUID."""
+
+    def get_topicpages(start=0, rows=25):
+        """Return an IResult containing dicts with topicpage metadata"""
+
+    def get_all_topicpages():
+        """Returns an iterable of all available topicpage dicts"""
 
     def get_topicpage_documents(id, start=0, rows=25):
         """Returns an IResult, which is the content contained in the given
