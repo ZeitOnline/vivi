@@ -5,9 +5,16 @@ import zope.interface.common.sequence
 class ITMS(zope.interface.Interface):
     """The retresco topic management system."""
 
-    def get_keywords(content):
+    def extract_keywords(content):
         """Analyzes the given ICMSContent and returns a list of
         zeit.cms.tagging.interfaces.ITag objects."""
+
+    def get_keywords(search_string):
+        """Get an iterable of tag objects which match the search string.
+
+        The tag objects provide zeit.cms.tagging.interfaces.ITag.
+        """
+
 
     def index(content, override_body=None):
         """Stores the given ICMSContent.

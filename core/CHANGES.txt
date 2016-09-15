@@ -5,7 +5,8 @@ zeit.retresco changes
 1.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3199: Add specific ``Whitelist`` and ``Tag`` to allow type-ahead with
+  Retresco.
 
 
 1.4.1 (2016-09-13)

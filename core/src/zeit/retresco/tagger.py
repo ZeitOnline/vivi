@@ -1,13 +1,10 @@
-from zeit.cms.checkout.helper import checked_out
-import gocept.runner
+from zeit.retresco.tag import Tag
 import grokcore.component as grok
 import logging
-import lxml.builder
+import lxml.etree
 import lxml.objectify
-import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
 import zope.component
@@ -39,19 +36,15 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tags = self.to_xml()
         if tags is None:
             return iter(())
-        return (x.get('uuid') for x in tags.iterchildren() if x.get('uuid'))
+        return (Tag(x.text, x.get('type', '')).code
+                for x in tags.iterchildren())
 
     def __len__(self):
         return len(list(self.__iter__()))
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-        code = node.get('uuid')
-        tag = zeit.cms.tagging.tag.Tag(
-            code, unicode(node), code in self.pinned, node.get('type'),
-            node.get('url_value'))
-        tag.__parent__ = self
-        tag.__name__ = tag.code
+        tag = self._create_tag(unicode(node), node.get('type', ''))
         return tag
 
     def __setitem__(self, key, value):
@@ -63,14 +56,16 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             root.append(tags)
         # XXX the handling of namespaces here seems chaotic
         E = lxml.objectify.ElementMaker()
-        tags.append(E.tag(
-            value.label, uuid=key, type=value.entity_type or '',
-            url_value=value.url_value or ''))
+        tags.append(E.tag(value.label, type=value.entity_type or ''))
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
 
     def values(self):
-        return (self[code] for code in self)
+        tags = self.to_xml()
+        if tags is None:
+            return iter(())
+        return (self._create_tag(unicode(node), node.get('type', ''))
+                for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -150,16 +145,24 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             tags = self.to_xml()
         if tags is None:
             raise KeyError(key)
-        node = tags.xpath('//tag[@uuid = {0}]'.format(
-            xml.sax.saxutils.quoteattr(key)))
+
+        node = [x for x in tags.iterchildren()
+                if Tag(x.text, x.get('type', '')).code == key]
         if not node:
             raise KeyError(key)
         return node[0]
 
+    def _create_tag(self, label, entity_type):
+        tag = Tag(label, entity_type)
+        if tag.code in self.pinned:
+            tag.pinned = True
+        tag.__parent__ = self
+        return tag
+
     def update(self):
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        keywords = tms.get_keywords(self.context)
+        keywords = tms.extract_keywords(self.context)
 
         E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
         root = E.rankedTags()
@@ -173,9 +176,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             if tag.code in self.disabled:
                 continue
             new_codes.add(tag.code)
-            new_tags.append(E.tag(
-                tag.label, uuid=tag.code, type=tag.entity_type or '',
-                url_value=tag.url_value or ''))
+            new_tags.append(E.tag(tag.label, type=tag.entity_type or ''))
 
         old_tags = self.to_xml()
         for code in self.pinned:
@@ -186,34 +187,3 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         dav[DISABLED_PROPERTY] = u''
-
-
-@gocept.runner.once(principal=gocept.runner.from_config(
-    'zeit.retresco', 'topiclist-principal'))
-def update_topiclist():
-    _update_topiclist()
-
-
-def _update_topiclist():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-    keywords = zeit.cms.interfaces.ICMSContent(config['topiclist'], None)
-    if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
-        raise ValueError(
-            '%s is not a raw xml document' % config['topiclist'])
-    with checked_out(keywords) as co:
-        log.info('Retrieving all topic pages from TMS')
-        co.xml = _build_topic_xml()
-    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
-
-
-def _build_topic_xml():
-    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    E = lxml.builder.ElementMaker()
-    root = E.topics()
-    for row in tms.get_all_topicpages():
-        # XXX What other attributes might be interesting to use in a
-        # dynamicfolder template?
-        root.append(E.topic(
-            row['title'],
-            id=zeit.cms.interfaces.normalize_filename(row['name'])))
-    return root
