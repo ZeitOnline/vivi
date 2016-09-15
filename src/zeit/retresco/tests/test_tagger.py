@@ -85,11 +85,9 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
 
     def test_tag_should_convert_unicode_symbols_to_nice_ascii_urls(self):
         content = create_testcontent()
-        self.set_tags(content, """
-<tag>Bërlïn</tag>
-""")
+        self.set_tags(content, """<tag>Bärlön</tag>""")
         tagger = Tagger(content)
-        self.assertEqual('berlin', tagger[u'☃Bërlïn'].url_value)
+        self.assertEqual('baerloen', tagger[u'☃Bärlön'].url_value)
 
     def test_getitem_should_raise_keyerror_if_tag_does_not_exist(self):
         tagger = Tagger(TestContentType())
@@ -418,7 +416,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         tagger = Tagger(content)
         snowman = tagger[u'Snowpeople☃Snowman Tag']
         self.assertEqual(
-            [u'Snowman Tag', u'Snowpeople', u'snowman tag'],
+            [u'Snowman Tag', u'Snowpeople', u'snowman-tag'],
             [snowman.label, snowman.entity_type, snowman.url_value])
 
 

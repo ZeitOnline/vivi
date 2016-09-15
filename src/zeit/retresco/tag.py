@@ -1,5 +1,4 @@
 # coding: utf-8
-import unicodedata
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.cachedescriptors.property
@@ -26,8 +25,7 @@ class Tag(object):
 
     @zope.cachedescriptors.property.Lazy
     def url_value(self):
-        return unicodedata.normalize(
-            'NFKD', self.label).encode('ascii', 'ignore').lower()
+        return zeit.cms.interfaces.normalize_filename(self.label)
 
     @classmethod
     def from_code(cls, code):
