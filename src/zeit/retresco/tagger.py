@@ -157,7 +157,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         if tag.code in self.pinned:
             tag.pinned = True
         tag.__parent__ = self
-        tag.__name__ = tag.code
         return tag
 
     def update(self):
