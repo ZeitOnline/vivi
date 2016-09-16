@@ -32,7 +32,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(['Berlin', 'Merkel', 'Obama', 'Washington'],
                          sorted([x.label for x in result]))
 
-    def test_search_keywords_returns_a_list_of_tag_objects(self):
+    def test_get_keywords_returns_a_list_of_tag_objects(self):
         self.layer['request_handler'].response_body = json.dumps({
             "entities": [{"entity_id": "e8ed9435b876196564bb86599009456cbb2aa",
                           "doc_count": 3,
