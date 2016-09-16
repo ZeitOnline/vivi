@@ -2,7 +2,7 @@ zeit.magazin changes
 ====================
 
 
-1.4.1 (unreleased)
+1.4.1 (2016-09-16)
 ------------------
 
 - ZON-3318: Remove bigshare buttons from link form.
