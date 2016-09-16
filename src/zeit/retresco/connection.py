@@ -54,11 +54,11 @@ class TMS(object):
         # work the TMS has to do per request.
         rows = 100
         while True:
-            response = self.get_topicpages(start, rows)
+            result = self.get_topicpages(start, rows)
             start += rows
-            if not response:
+            if not result:
                 break
-            for row in response:
+            for row in result:
                 yield row
 
     def get_topicpages(self, start=0, rows=25):
