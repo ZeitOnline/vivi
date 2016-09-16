@@ -34,27 +34,21 @@ class ITMS(zope.interface.Interface):
         """Returns an iterable of all available topicpage dicts"""
 
     def get_topicpage_documents(id, start=0, rows=25):
-        """Returns an IResult, which is the content contained in the given
-        TMS topic page.
+        """Returns an zeit.cms.tagging.interfaces.IResult that contains dicts
+        with metadata of the content contained in the given TMS topic page.
+        The dicts have the following keys:
+
+        uniqueId: zeit.cms.interfaces.ICMSContent.uniqueId
+        doc_type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
+        doc_id: zeit.cms.content.interfaces.IUUID.id
+        rtr_keywords, rtr_locations etc.
+        plus all keys that ITMSRepresentation puts into `payload`
 
         Parameters for pagination are:
         `start`: offset the result by this many entries
         `rows`: return this many entries (i.e. items per page)
+
         """
-
-
-class IResult(zope.interface.common.sequence.IReadSequence):
-    """A list of dicts with the following keys:
-
-    uniqueId: zeit.cms.interfaces.ICMSContent.uniqueId
-    doc_type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
-    doc_id: zeit.cms.content.interfaces.IUUID.id
-    rtr_keywords, rtr_locations etc.
-    plus all keys that ITMSRepresentation puts into `payload`
-    """
-
-    hits = zope.interface.Attribute(
-        'Number of total available entries (for pagination)')
 
 
 class TMSError(Exception):
