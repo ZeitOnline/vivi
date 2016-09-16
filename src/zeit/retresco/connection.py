@@ -1,11 +1,13 @@
 from zeit.cms.checkout.helper import checked_out
 import gocept.runner
+import grokcore.component as grok
 import logging
 import lxml.builder
 import pytz
 import requests
 import requests.exceptions
 import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
@@ -47,24 +49,34 @@ class TMS(object):
                 entity['entity_name'], entity['entity_type'])
 
     def get_all_topicpages(self):
-        page = 0
+        start = 0
+        # XXX figure out row number that balances number of requests vs.
+        # work the TMS has to do per request.
+        rows = 100
         while True:
-            page += 1
-            # XXX figure out row number that balances number of requests vs.
-            # work the TMS has to do per request.
-            response = self._request(
-                'GET /topic-pages',
-                params={'q': '*', 'rows': 100, 'page': page})
-            if not response['docs']:
+            result = self.get_topicpages(start, rows)
+            start += rows
+            if not result:
                 break
-            for row in response['docs']:
+            for row in result:
                 yield row
+
+    def get_topicpages(self, start=0, rows=25):
+        response = self._request(
+            'GET /topic-pages',
+            params={'q': '*', 'page': int(start / rows) + 1, 'rows': rows})
+        result = zeit.cms.tagging.interfaces.Result()
+        result.hits = response['num_found']
+        for row in response['docs']:
+            row['id'] = zeit.cms.interfaces.normalize_filename(row['doc_id'])
+            result.append(row)
+        return result
 
     def get_topicpage_documents(self, id, start=0, rows=25):
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params={'page': int(start / rows) + 1, 'rows': rows})
-        result = Result()
+        result = zeit.cms.tagging.interfaces.Result()
         result.hits = response['num_found']
         for row in response['docs']:
             page = row['payload']
@@ -171,15 +183,17 @@ def _build_topic_xml():
     for row in tms.get_all_topicpages():
         # XXX What other attributes might be interesting to use in a
         # dynamicfolder template?
-        root.append(E.topic(
-            row['title'],
-            id=zeit.cms.interfaces.normalize_filename(row['name'])))
+        root.append(E.topic(row['title'], id=row['id']))
     return root
 
 
-class Result(list):
+class Topicpages(grok.GlobalUtility):
 
-    hits = 0
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITopicpages)
+
+    def get_topics(self, start=0, rows=25):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        return tms.get_topicpages(start, rows)
 
 
 class JSONTypeConverter(object):

@@ -8,6 +8,8 @@ zeit.retresco changes
 - ZON-3199: Add specific ``Whitelist`` and ``Tag`` to allow type-ahead with
   Retresco.
 
+- ZON-3236: Implement ``ITopicpages`` via the TMS-API.
+
 
 1.4.1 (2016-09-13)
 ------------------
