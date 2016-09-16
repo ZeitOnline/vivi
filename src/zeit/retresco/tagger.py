@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 
 
 class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
-    """Serializes keywords to an XML structure and stores it as a DAV property.
+    """Serializes keywords to an XML structure and stores it in a DAV-Property.
 
     The serialization format (including pinned and disabled keywords) is
     actually backwards compatible with zeit.intrafind, but since the TMS uses
@@ -28,6 +28,16 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     pinned+disabled keywords will effectively be reset. (Keywords that are
     assigned to content already will remain usable, though, since the label is
     pretty much the only interesting property.)
+
+    We need to read/write all tags from/to xml for every operation, since
+    adapting to ``ITagger`` returns a *different* Tagger each time, so we
+    cannot (easily) cache anything on the Tagger instance.
+
+    There are also '<rankedTags>' in the XML of ``context`` but these are
+    written by ``zeit.cms.tagging.tag.add_ranked_tags_to_head``. At this point,
+    the information about pinned and disabled tags is omitted, as it is only
+    needed in vivi.
+
     """
 
     grok.implements(zeit.cms.tagging.interfaces.ITagger)
@@ -156,10 +166,19 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tag = Tag(label, entity_type)
         if tag.code in self.pinned:
             tag.pinned = True
+        # XXX it is not understood by the writer, whether we really need this.
+        # It was kept from the former implementation in `zeit.cms.tagging`.
         tag.__parent__ = self
         return tag
 
     def update(self):
+        """Update the keywords with generated keywords from retresco.
+
+        A number of reasonable keywords are retrieved from retresco. This set
+        is reduced by the disabled keywords and enriched by the pinned
+        keywords. The resulting set is finally written to the DAV property.
+
+        """
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         keywords = tms.extract_keywords(self.context)
