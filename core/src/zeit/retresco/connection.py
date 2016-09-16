@@ -64,7 +64,7 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages',
             params={'q': '*', 'page': int(start / rows) + 1, 'rows': rows})
-        result = Result(response['docs'])
+        result = zeit.cms.tagging.interfaces.Result(response['docs'])
         result.hits = response['num_found']
         for row in result:
             row['id'] = zeit.cms.interfaces.normalize_filename(row['name'])
@@ -75,7 +75,7 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params={'page': int(start / rows) + 1, 'rows': rows})
-        result = Result()
+        result = zeit.cms.tagging.interfaces.Result()
         result.hits = response['num_found']
         for row in response['docs']:
             page = row['payload']
@@ -193,11 +193,6 @@ class Topicpages(object):
     def get_topics(self, start=0, rows=25):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         return tms.get_topicpages(start, rows)
-
-
-class Result(list):
-
-    hits = 0
 
 
 class JSONTypeConverter(object):
