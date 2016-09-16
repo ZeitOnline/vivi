@@ -4,6 +4,7 @@ import zeit.cms.interfaces
 import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
+import zope.interface.common.sequence
 import zope.schema
 import zope.schema.interfaces
 
@@ -124,3 +125,27 @@ class ICurrentTopics(zope.interface.Interface):
         if no ressort is given)"""
 
     headlines = zope.interface.Attribute('List of headline keywords')
+
+
+class ITopicpages(zope.interface.Interface):
+    """Utility to retrieve (paginated) information about topic pages."""
+
+    def get_topics(start=0, rows=25):
+        """Returns an IResult containing dicts with keys ``id`` and ``title``.
+
+        Our topic pages typically have URLs like www.zeit.de/thema/<id>.
+        """
+
+
+class IResult(zope.interface.common.sequence.IReadSequence):
+    """A list of dicts, with info about the total number of entries."""
+
+    hits = zope.interface.Attribute(
+        'Number of total available entries (for pagination)')
+
+
+class Result(list):
+
+    zope.interface.implements(IResult)
+
+    hits = 0

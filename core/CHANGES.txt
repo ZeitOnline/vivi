@@ -10,6 +10,9 @@ zeit.cms changes
 - ZON-3199: Move intrafind specific ``Whitelist`` and ``Tag`` to
   ``zeit.intrafind``.
 
+- ZON-3236: Introduce ``ITopicpages`` utility to abstract the total of
+  all topic pages / whitelist entries.
+
 
 2.88.0 (2016-09-14)
 -------------------

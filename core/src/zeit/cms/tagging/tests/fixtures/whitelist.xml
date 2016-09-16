@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <tags>
   <letter id="test">
-  <tag uuid="testtag">
+  <tag uuid="testtag" url_value="testtag">
     Testtag
   </tag>
   <tag uuid="testtag2">
