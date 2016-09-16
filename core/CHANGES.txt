@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.89.0 (unreleased)
+2.89.0 (2016-09-16)
 -------------------
 
 - ZON-3199: Do not provide dict-like access on ``Whitelist`` anymore. ``get``
