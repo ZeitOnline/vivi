@@ -1,3 +1,4 @@
+import grokcore.component as grok
 import zeit.cms.tagging.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.tag
@@ -5,7 +6,7 @@ import zope.component
 import zope.interface
 
 
-class Whitelist(object):
+class Whitelist(grok.GlobalUtility):
     """Search for known keywords using the Retresco API."""
 
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
