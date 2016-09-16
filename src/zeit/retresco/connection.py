@@ -1,5 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 import gocept.runner
+import grokcore.component as grok
 import logging
 import lxml.builder
 import pytz
@@ -186,7 +187,7 @@ def _build_topic_xml():
     return root
 
 
-class Topicpages(object):
+class Topicpages(grok.GlobalUtility):
 
     zope.interface.implements(zeit.cms.tagging.interfaces.ITopicpages)
 
