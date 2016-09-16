@@ -20,10 +20,17 @@ class Tag(object):
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
+        # `code` is only used for internal purposes. It is used as key in
+        # `Tagger` and `Tags`, in DAV-Properties to mark a `Tag` pinned and as
+        # `part of the `AbsoluteURL` and `Traverser` functionality.
         return u''.join((self.entity_type, self.SEPARATOR, self.label))
 
     @zope.cachedescriptors.property.Lazy
     def url_value(self):
+        # We need `url_value` only to fulfill the interface. With
+        # `zeit.intrafind`, url_value was used to serve the urls to
+        # 'Themenseiten'. With the new TMS retresco, 'Themenseiten' are served
+        # by the TMS itself, so we can remove it after the switch.
         return zeit.cms.interfaces.normalize_filename(self.label)
 
     @classmethod

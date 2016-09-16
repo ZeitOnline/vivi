@@ -38,6 +38,21 @@ Idee her ein OrderedDict von ``ITag``-Objekten, mit den folgenden Eigenschaften:
 :url_value: URL-safe Normalisierung von `label`
 :entity_type: person, location, etc.
 
+Aus Gründen der Effizienz und Abwärtskompatibilität wird für den ``code`` eines
+Schlagworts nicht die ``entity_id`` aus dem TMS verwendet, sondern der ``code``
+wird aus ``label`` und ``entity_type`` generiert. Dadurch kann ein Schlagwort
+direkt aus dem ``code`` erzeugt werden, anstatt die ID über einen HTTP Request
+im TMS nachzuschlagen.
+
+Der ``url_value`` ist hier nur aus historischen Gründen implementiert, da die
+Eigenschaft von ``ITag`` erwartet wird. ``url_value`` wird zurzeit im Friedbert
+verwendet, um Links auf Themenseiten zu erstellen. In Zukunft werden dafür
+jedoch TMS-Themenseiten verwendet (siehe `Themenseiten`_).
+
+
+Schlagworte generieren lassen
+-----------------------------
+
 Mit ``ITagger.update()`` wird der Content ans TMS geschickt, um ihn nach
 Schlagworten analysieren zu lassen (``PUT /documents?enrich=true``); das
 Ergebnis wird als XML serialisiert und in einer DAV-Property gespeichert.
@@ -45,6 +60,34 @@ Ergebnis wird als XML serialisiert und in einer DAV-Property gespeichert.
 Für gepinnte sowie entfernte Schlagworte werden die IDs in weiteren
 DAV-Properties gespeichert, und das Ergebnis von ``ITagger.update()`` wird von
 vivi entsprechend nachverarbeitet.
+
+
+Schlagworte hinzufügen
+----------------------
+
+Um ein Schlagwort manuell hinzuzufügen, bietet das TMS eine Type-Ahead API.
+Diese kann über ``zeit.retresco.connection.TMS.get_keywords(term)``
+angesprochen werden. Zur Abstraktion wird der Zugriff jedoch über
+``zeit.cms.tagging.interfaces.IWhitelist.search(term)`` gekapselt.
+
+
+Abwärtskompatibilität
+---------------------
+
+Schlagworte, die mit ``zeit.intrafind`` angelegt wurden, können nach wie vor
+gelesen und gepinnt werden. Es ist jedoch nicht möglich sie erneut
+hinzuzufügen, da Retresco eine unabhängige Menge von Schlagworten verwaltet.
+Gegebenenfalls kann also nicht dasselbe, aber ein gleichnamiges Schlagwort
+hinzugefügt werden. Im Gegensatz zu ``zeit.intrafind`` werden außerdem
+Schlagworte, die nicht auf der Whitelist stehen, beim Type-Ahead nicht
+unterstützt.
+
+Die Abwärtskompatibilität funktioniert, weil ``zeit.retresco`` die gleiche DAV-
+Property mit gleicher Syntax weiterhin benutzt, und die Eigenschaft ``code``
+aus ``label`` und ``entity_type`` generiert wird, da diese Informationen sowohl
+in ``zeit.intrafind`` als auch in ``zeit.retresco`` hinterlegt werden. Die
+inkompatible UUID, die von ``zeit.intrafind`` als ``code`` verwendet wird, wird
+dabei schlicht ignoriert.
 
 
 Themenseiten
