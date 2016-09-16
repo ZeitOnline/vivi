@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from zeit.cms.tagging.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
 import json
 import lxml.builder
@@ -108,6 +109,53 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             'supertitle': 'supertitle',
             'title': 'title',
         }, result[0])
+
+    def test_get_topicpages_pagination(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        with mock.patch.object(tms, '_request') as request:
+            request.return_value = {'num_found': 0, 'docs': []}
+            # Default values
+            tms.get_topicpages()
+            self.assertEqual(1, request.call_args[1]['params']['page'])
+            self.assertEqual(25, request.call_args[1]['params']['rows'])
+            # Passes through rows
+            tms.get_topicpages(0, 7)
+            self.assertEqual(1, request.call_args[1]['params']['page'])
+            self.assertEqual(7, request.call_args[1]['params']['rows'])
+            # Calculates page from start
+            tms.get_topicpages(5, 5)
+            self.assertEqual(2, request.call_args[1]['params']['page'])
+            tms.get_topicpages(10, 5)
+            self.assertEqual(3, request.call_args[1]['params']['page'])
+
+    def test_get_topicpages_dicts_have_id_and_title(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.layer['request_handler'].response_body = json.dumps({
+            'num_found': 1,
+            'docs': [{
+                'url': '/thema/mytopic',
+                'doc_id': 'mytopic',
+                'query_terms': ['Berlin', 'Washington'],
+                'title': 'Mytopic',
+                # lots of fields of the actual response omitted.
+            }],
+        })
+        result = tms.get_topicpages()
+        self.assertEqual(1, result.hits)
+        self.assertEqual('mytopic', result[0]['id'])
+        self.assertEqual('Mytopic', result[0]['title'])
+
+    def test_get_all_topicpages_delegates_to_get_topicpages(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        with mock.patch.object(tms, 'get_topicpages') as get:
+            get.side_effect = [
+                Result([{'id': 'mytopic', 'title': 'Mytopic'}]),
+                Result(),
+            ]
+            result = list(tms.get_all_topicpages())
+            self.assertEqual(1, len(result))
+            self.assertEqual('mytopic', result[0]['id'])
+            self.assertEqual('Mytopic', result[0]['title'])
 
 
 class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
