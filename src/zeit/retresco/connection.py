@@ -57,17 +57,17 @@ class TMS(object):
             start += rows
             if not response:
                 break
-            for row in response['docs']:
+            for row in response:
                 yield row
 
     def get_topicpages(self, start=0, rows=25):
         response = self._request(
             'GET /topic-pages',
             params={'q': '*', 'page': int(start / rows) + 1, 'rows': rows})
-        result = zeit.cms.tagging.interfaces.Result(response['docs'])
+        result = zeit.cms.tagging.interfaces.Result()
         result.hits = response['num_found']
-        for row in result:
-            row['id'] = zeit.cms.interfaces.normalize_filename(row['name'])
+        for row in response['docs']:
+            row['id'] = zeit.cms.interfaces.normalize_filename(row['doc_id'])
             result.append(row)
         return result
 
