@@ -32,6 +32,12 @@ class Widget(grokcore.component.MultiAdapter,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
+
+    # We declare a baseclass here, as we have different functionality for
+    # `zeit.intrafind` and `zeit.retresco`, see subclasses there. Additionally
+    # for testing with `zeit.cms`, a manual registration is done in
+    # `mock.zcml`. When `zeit.retresco` is the only keyword engine, we can
+    # make this the only implementation again and save us the complexity.
     grokcore.component.baseclass()
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')

@@ -99,6 +99,7 @@ def unique_id_to_tag(unique_id):
         zeit.cms.tagging.interfaces.ID_NAMESPACE)
     token = unique_id.replace(
         zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
+    # `zeit.retresco` generates unicode escapes uniqueIds, so we decode them.
     token = token.decode('unicode_escape')
     whitelist = zope.component.getUtility(
         zeit.cms.tagging.interfaces.IWhitelist)
@@ -116,6 +117,8 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(
             zope.site.hooks.getSite(), self.request)
+        # `zeit.retresco` possibly generates `.code` with unicode characters so
+        # we have to escape them to get a valid url.
         return base + '/++tag++' + self.context.code.encode('unicode_escape')
 
 
@@ -134,6 +137,7 @@ class TagTraverser(grok.MultiAdapter):
     def traverse(self, name, ignored):
         whitelist = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
+        # As we encoded the code in `AbsoluteURL` we have to undo the escaping.
         name = name.decode('unicode_escape')
         tag = whitelist.get(name)
         if tag is None:
