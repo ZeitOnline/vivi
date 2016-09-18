@@ -4,10 +4,11 @@ import lxml.etree
 import mock
 import pysolr
 import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
-import zeit.retresco.connection
+import zeit.retresco.interfaces
 import zeit.solr.interfaces
 import zope.component
 
@@ -301,7 +302,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
         self.tms.get_topicpage_documents.return_value = (
-            zeit.retresco.connection.Result())
+            zeit.cms.tagging.interfaces.Result())
         IRenderedArea(lead).values()
         self.assertEqual(
             'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
