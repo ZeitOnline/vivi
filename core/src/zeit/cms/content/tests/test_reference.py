@@ -143,6 +143,50 @@ class ReferencePropertyTest(
             u'bar',
             self.repository['content'].xml.body.references.reference.title)
 
+    def test_set_accepts_references(self):
+        content = self.repository['content']
+        target = self.repository['target']
+        content.references = [content.references.create(target)]
+        self.assertEqual([target], [x.target for x in content.references])
+
+    def test_set_raises_given_ICMSContent(self):
+        content = self.repository['content']
+        target = self.repository['target']
+        with self.assertRaises(TypeError) as e:
+            content.references = [target]
+        self.assertIn('data loss', str(e.exception))
+
+    def test_create_reference_accepts_ICMSContent(self):
+        from zeit.cms.content.interfaces import IReference
+        content = self.repository['content']
+        target = self.repository['target']
+        result = ReferenceProperty.create_reference(
+            source=content, attribute='references', target=target,
+            xml_reference_name='test')
+        self.assertTrue(IReference.providedBy(result))
+        self.assertEqual(target.uniqueId, result.target.uniqueId)
+
+    def test_create_reference_raises_given_a_reference(self):
+        content = self.repository['content']
+        with self.assertRaises(TypeError) as e:
+            ReferenceProperty.create_reference(
+                source=content, attribute='references',
+                target=content.references.create(self.repository['target']),
+                xml_reference_name='test')
+        self.assertIn('data loss', str(e.exception))
+
+    def test_create_reference_raises_given_a_reference_even_if_suppress_error(
+            self):
+        # Suppressing errors is only forwarded to the XMLReferenceUpdater.
+        # It does not mean that the method itself does not raise errors.
+        content = self.repository['content']
+        with self.assertRaises(TypeError) as e:
+            ReferenceProperty.create_reference(
+                source=content, attribute='references',
+                target=content.references.create(self.repository['target']),
+                xml_reference_name='test', suppress_errors=True)
+        self.assertIn('data loss', str(e.exception))
+
 
 class SingleReferenceFixture(ReferenceFixture):
 

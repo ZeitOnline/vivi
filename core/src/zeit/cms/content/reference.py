@@ -1,3 +1,16 @@
+"""This module implements references between ICMSContent objects, where the
+reference itself can have its own properties. These references are stored as
+XML nodes::
+
+    A ----------> B
+       foo=bar
+
+    C ----------> B
+       foo=qux
+
+Terminology note: the "source" (A or C) references the "target" (B).
+
+"""
 import collections
 import copy
 import gocept.lxml.interfaces
@@ -17,12 +30,41 @@ import zope.traversing.browser.absoluteurl
 
 
 class ReferenceProperty(object):
+    """Property descriptor for tuples of IReference.
+
+    The source object must provide ``IXMLRepresentation``, as the references
+    are stored as XML nodes.
+    """
 
     def __init__(self, path, xml_reference_name):
+        """
+        :param str path: an lxml ObjectPath where to store the XML nodes
+        :param unicode xml_reference_name: type of IXMLReference to use
+
+        For example, to store references of type "image" in <image> nodes
+        contained within <head>::
+
+          images = ReferenceProperty('.head.image', xml_reference_name='image')
+
+        The metadata copied into the XML nodes is updated via
+        IXMLReferenceUpdater on checkin.
+        """
         self.path = lxml.objectify.ObjectPath(path)
         self.xml_reference_name = xml_reference_name
 
     def __get__(self, instance, class_):
+        """Returns a specialized tuple of IReference objects.
+
+        The tuple supports additional methods, most importantly
+        ``create(target)`` to create an IReference object to the given
+        ICMSContent (see class ``Reference`` for more details), which is needed
+        for writing to a ReferenceProperty::
+
+            source.myref = (source.myref.create(target)),)
+
+        Even if the ReferenceProperty is empty, it returns a specialized empty
+        tuple that supports ``create()``.
+        """
         if instance is None:
             return self
         if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(
@@ -45,6 +87,17 @@ class ReferenceProperty(object):
             xml_reference_name=self.xml_reference_name)
 
     def __set__(self, instance, value):
+        """Writes ``value`` into XML of ``instance``.
+
+        :param value: an iterable of IReference objects (otherwise a
+            ``TypeError`` is raised)
+
+        This replaces all XML nodes, so if clients want to _change_ something,
+        they need to take care to get the value, do the change, and write the
+        whole value back -- otherwise, properties of the IReference objects
+        will be lost.
+        """
+        self._check_for_references(value)
         value = self._filter_duplicates(value)
         xml = zope.security.proxy.getObject(instance.xml)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
@@ -70,6 +123,13 @@ class ReferenceProperty(object):
             self.path.setattr(xml, value)
         instance._p_changed = True
 
+    def _check_for_references(self, values):
+        """Raise ``TypeError`` if any value does not provide ``IReference``."""
+        for value in values:
+            if not zeit.cms.content.interfaces.IReference.providedBy(value):
+                raise TypeError('Only accept IReference to avoid programming '
+                                'errors that could lead to data loss.')
+
     def _filter_duplicates(self, value):
         # We actually want an OrderedSet, so we use only the keys.
         result = collections.OrderedDict()
@@ -79,6 +139,7 @@ class ReferenceProperty(object):
         return result.keys()
 
     def __name__(self, instance):
+        """Returns name of the schema field."""
         class_ = type(instance)
         for name in dir(class_):
             if getattr(class_, name, None) is self:
@@ -98,6 +159,21 @@ class ReferenceProperty(object):
     def create_reference(
             source, attribute, target, xml_reference_name,
             suppress_errors=False):
+        """Creates an IReference object.
+
+        Not meant to be called directly, clients should use
+        ``References.create()`` or ``IReference.create()`` (see ``__get__``).
+
+        To create the IReference, ``target`` is adapted to
+        ``IXMLReference`` and the result adapted to ``IReference``.
+
+        ``suppress_errors`` is passed to ``IXMLReferenceUpdater``, it's not a
+        generic "catch all exceptions" switch.
+        """
+        if zeit.cms.content.interfaces.IReference.providedBy(target):
+            raise TypeError('Cannot create reference for reference because it '
+                            'could lead to data loss.')
+
         element = None
         if suppress_errors:
             try:
@@ -146,6 +222,14 @@ class ReferenceProperty(object):
 
 
 class SingleReferenceProperty(ReferenceProperty):
+    """Property descriptor for a single IReference.
+
+    IReference (like the specialized tuple of ReferenceProperty) supports
+    ``create(target)`` so clients can create references in the single-valued
+    case as well::
+
+        source.singleref = source.singleref.create(target)
+    """
 
     def __get__(self, instance, class_):
         if instance is None:
@@ -177,6 +261,9 @@ class SingleReferenceProperty(ReferenceProperty):
 
 
 class SingleResource(SingleReferenceProperty):
+    """Property descriptor for a single ICMSContent object. Uses IReference
+    internally, but hides this from clients.
+    """
 
     def __get__(self, instance, class_):
         if instance is None:
@@ -198,6 +285,9 @@ class SingleResource(SingleReferenceProperty):
 
 
 class MultiResource(ReferenceProperty):
+    """Property descriptor for a tuple of ICMSContent objects. Uses IReference
+    internally, but hides this from clients.
+    """
 
     def references(self, instance):
         return super(MultiResource, self).__get__(instance, None)
@@ -246,16 +336,21 @@ class References(tuple):
         return self
 
     def create(self, target, suppress_errors=False):
+        """See ReferenceProperty.__get__"""
         return ReferenceProperty.create_reference(
             self.source, self.attribute, target, self.xml_reference_name,
             suppress_errors)
 
     def get(self, target, default=None):
+        """Supports ICMSContent resolving for IReference."""
         return ReferenceProperty.find_reference(
             self.source, self.attribute, target, default)
 
 
 class EmptyReference(object):
+    """Helper so an empty SingleReferenceProperty still supports
+    ``create()``.
+    """
 
     zope.interface.implements(zeit.cms.content.interfaces.IReference)
 

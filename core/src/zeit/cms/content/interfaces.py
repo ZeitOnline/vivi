@@ -459,12 +459,16 @@ class IXMLReference(zope.interface.Interface):
 
     How the object references is serialized is dependent on both the target
     object and the type of reference. For instance, a feed might usually
-    use an <xi:include> tag, while an image uses <img>, but then there
+    use an <xi:include> tag, while an image uses <img>. And then there
     might be references inside the <head> that always use a <reference> tag.
     (NOTE: These are just examples, not actual zeit.cms policy!)
 
-    Adapting to IXMLReference yields an lxml.objectify tree
+    Adapting to IXMLReference yields an lxml.objectify tree::
 
+        node = zope.component.getAdapter(
+           content, zeit.cms.content.interfaces.IXMLReference, name='image')
+
+    The target uniqueId is always stored in the ``href`` attribute of the node.
     """
 
 
@@ -475,7 +479,6 @@ class IXMLReferenceUpdater(zope.interface.Interface):
         """Update xml_node with data from the content object.
 
         xml_node: lxml.objectify'ed element
-
         """
 
 
@@ -483,12 +486,20 @@ class IReference(IXMLRepresentation,
                  zeit.cms.interfaces.ICMSContent,
                  zope.location.interfaces.ILocation):
     """Reference to an ICMSContent object (optionally with properties of its
-    own)
+    own).
 
-    This also serves the purpose of deserializng IXMLReferences, i.e. you can
-    adapt an XML node to IReference (using the same adapter name that was used
-    to create the IXMLReference).
+    To deserialize an IXMLReference, adapt the source ICMSContent and the XML
+    node to IReference (using the same adapter name that was used to create the
+    IXMLReference)::
 
+        reference = zope.component.getMultiAdapter(
+            (source, node), zeit.cms.content.interfaces.IReference,
+            name='image')
+
+
+    For widget support (DropObjectWidget/ObjectSequenceWidget), IReference
+    can be resolved as ICMSContent, using a uniqueId built from
+    "source uniqueId, source attribute name, target uniqueId".
     """
 
     target = zope.interface.Attribute('The referenced ICMSContent object')
