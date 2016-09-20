@@ -312,6 +312,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
         s.waitForElementPresent('css=a[rel=remove]')
+        s.mouseMove('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
@@ -320,6 +321,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent("//input[@name='testwidget.0']")
         s.waitForElementPresent('css=a[rel=remove]')
+        s.mouseMove('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent("//input[@name='testwidget.0']")
 
@@ -328,6 +330,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForValue("//input[@name='testwidget.count']", '1')
         s.waitForElementPresent('css=a[rel=remove]')
+        s.mouseMove('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForValue("//input[@name='testwidget.count']", '0')
 
