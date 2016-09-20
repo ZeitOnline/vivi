@@ -41,12 +41,18 @@ class TMS(object):
                     label=keyword, entity_type=entity_type))
         return result
 
-    def get_keywords(self, search_string):
+    def get_keywords(self, search_string, entity_type=None):
         __traceback_info__ = (search_string,)
-        response = self._request('GET /entities', params={'q': search_string})
+        params = {'q': search_string}
+        if entity_type is not None:
+            params['item_type'] = entity_type
+        response = self._request('GET /entities', params=params)
         for entity in response['entities']:
             yield zeit.retresco.tag.Tag(
                 entity['entity_name'], entity['entity_type'])
+
+    def get_locations(self, search_string):
+        return self.get_keywords(search_string, entity_type='location')
 
     def get_all_topicpages(self):
         start = 0
