@@ -14,6 +14,7 @@ import logging
 import os
 import pkg_resources
 import plone.testing
+import pytest
 import random
 import re
 import socket
@@ -347,6 +348,7 @@ gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
     selenium_teardown_authcache)
 
 
+@pytest.mark.slow
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCase):
 
