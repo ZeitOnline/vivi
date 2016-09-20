@@ -39,7 +39,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         t2 = self.create_teaser(cp)
 
         self.repository['test2'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         t1.insert(0, self.repository['testcontent'])
         t2.insert(0, self.repository['test2'])
         self.repository['cp'] = cp
@@ -94,7 +94,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
             teaser = self.create_teaser(working)
             name = 'test%s' % i
             self.repository[name] = (
-                zeit.cms.testcontenttype.testcontenttype.TestContentType())
+                zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
             content = self.repository[name]
             teaser.insert(0, content)
 
@@ -142,7 +142,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
             [x.get('href') for x in cp.xml.feed.getchildren()])
         # Create a teaser and insert it.
         self.repository['content'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         with checked_out(cp) as working:
             teaser = self.create_teaser(working)
             teaser.insert(0, self.repository['content'])
@@ -267,7 +267,7 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_handles_unicode_uniqueIds(self):
         content = self.repository[u'ümläut'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         cp = zeit.content.cp.centerpage.CenterPage()
         cp['lead'].create_item('teaser').append(content)
         with self.assertNothingRaised():

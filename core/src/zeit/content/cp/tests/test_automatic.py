@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import lxml.etree
 import mock
@@ -43,8 +43,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(1, len(IRenderedArea(lead).values()))
 
     def test_only_marked_articles_are_put_into_leader_block(self):
-        self.repository['normal'] = TestContentType()
-        leader = TestContentType()
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
         leader.lead_candidate = True
         self.repository['leader'] = leader
 
@@ -239,8 +239,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(0, auto._content_query.total_hits)
 
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
-        self.repository['normal'] = TestContentType()
-        leader = TestContentType()
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
         leader.lead_candidate = True
         self.repository['leader'] = leader
 

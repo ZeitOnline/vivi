@@ -16,9 +16,9 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         c1 = repository['c1'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         c2 = repository['c2'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
         with zeit.cms.checkout.helper.checked_out(

@@ -78,7 +78,7 @@ class TestXMLTeaser(XMLTeaserBase):
         import zeit.content.cp.interfaces
         import zope.component
         import zope.publisher.browser
-        from zeit.cms.testcontenttype.interfaces import ITestContentType
+        from zeit.cms.testcontenttype.interfaces import IExampleContentType
         self.teaser.free_teaser = True
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -90,7 +90,7 @@ class TestXMLTeaser(XMLTeaserBase):
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerAdapter(
             preview_factory,
-            (ITestContentType, zope.interface.Interface),
+            (IExampleContentType, zope.interface.Interface),
             zope.interface.Interface,
             name='preview')
         try:

@@ -11,6 +11,6 @@ def create_content(root):
 
         for i in range(3):
             name = 'c%s' % (i + 1)
-            c = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+            c = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
             c.teaserTitle = c.shortTeaserTitle = u'%s teaser' % name
             repository[name] = c

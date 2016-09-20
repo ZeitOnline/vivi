@@ -324,9 +324,9 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             lead.automatic = True
 
     def test_disabling_automatic_keeps_order_of_teasers(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        self.repository['t1'] = TestContentType()
-        self.repository['t2'] = TestContentType()
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        self.repository['t1'] = ExampleContentType()
+        self.repository['t2'] = ExampleContentType()
 
         lead = self.repository['cp']['lead']
         lead.count = 2
