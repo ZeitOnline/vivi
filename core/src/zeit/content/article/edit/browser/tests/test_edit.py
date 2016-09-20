@@ -156,6 +156,7 @@ class TestTextEditing(
     def test_paragraph_etc_should_not_appear_as_modules(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
+        s.waitForNotVisible('css=.message')
         s.click('link=Struktur')
         s.waitForElementPresent(
             'jquery=#article-modules .module:contains(Video)')

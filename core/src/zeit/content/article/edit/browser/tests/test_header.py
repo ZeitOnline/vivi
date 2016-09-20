@@ -16,6 +16,7 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         block = 'quiz'
         # copy&paste from self.create_block()
+        s.waitForNotVisible('css=.message')
         s.click('link=Struktur')
         s.click('link=Header')
         s.waitForElementPresent('css=#header-modules .module')
