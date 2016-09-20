@@ -49,21 +49,10 @@ class WhitelistSource(
 
 
 class ILocationSource(zope.schema.interfaces.IIterableSource):
-    pass
+    """Available locations."""
 
 
-class LocationSource(
-        zeit.cms.content.sources.SimpleXMLSourceBase,
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
-    # At the moment Locations are those tags in the whitelist that are
-    # locations. The whitelist is cached on a timeout-basis, but we want the
-    # locations to be cached, too, since filtering all tags to find locations
-    # on each access is too expensive. This makes it complicated to base
-    # LocationSource on Whitelist, so we don't and read the same XML here
-    # instead.
-
-    config_url = 'whitelist-url'
+class LocationSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
 
@@ -75,17 +64,14 @@ class LocationSource(
             """IAutocompleteSource, but not applicable for us"""
             return []
 
-    def getValues(self, context):
-        xml = self._get_tree()
-        return [
-            unicode(node).strip() for node in xml.xpath('//tag')
-            if node.get('type') == 'Location']
-
-    def getTitle(self, context, value):
-        return value
+        def __contains__(self, value):
+            # We do not want to ask the whitelist again.
+            return True
 
     def search(self, term):
-        term = term.lower()
-        return [x for x in self.getValues(None) if term in x.lower()]
+        from zeit.cms.tagging.interfaces import IWhitelist  # circular import
+        whitelist = zope.component.getUtility(IWhitelist)
+        return whitelist.locations(term)
+
 
 locationSource = LocationSource()

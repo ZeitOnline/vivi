@@ -61,14 +61,13 @@ class ITag(zeit.cms.interfaces.ICMSContent):
 
 
 class IWhitelist(zope.interface.Interface):
-    """Tag whitelist
-
-    The whitelist contains all selectable tags.
-
-    """
+    """The whitelist contains all selectable tags providing `ITag`."""
 
     def search(term):
-        """Returns a list of tags whose labels contain the given term."""
+        """Return a list of tags whose labels contain the given term."""
+
+    def locations(term):
+        """Return a list of location tags whose labels contain given term."""
 
     def get(id):
         """Return the tag for the given id."""

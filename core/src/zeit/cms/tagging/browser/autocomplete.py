@@ -61,11 +61,11 @@ class LocationSearch(zeit.cms.browser.view.JSON):
     def json(self):
         term = self.request.form.get('term')
         if term:
-            results = zeit.cms.tagging.source.locationSource.factory.search(
-                term)
+            tags = zeit.cms.tagging.source.locationSource.factory.search(term)
         else:
-            results = []
-        return [dict(label=x, value=x) for x in results]
+            tags = []
+        return [dict(label=x.label, value=x.uniqueId)
+                for x in tags]
 
 
 @grok.adapter(

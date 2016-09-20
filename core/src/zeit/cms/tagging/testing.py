@@ -91,11 +91,21 @@ class DummyWhitelist(object):
         'testtag2': 'Testtag2',
         'testtag3': 'Testtag3',
     }
+    location_tags = {
+        'hannover': u'Hannover',
+        'paris': u'Paris'
+    }
 
     def search(self, term):
         term = term.lower()
         return [FakeTag(code=k, label=v)
                 for k, v in self.tags.items() if term in v.lower()]
+
+    def locations(self, term):
+        term = term.lower()
+        return [FakeTag(code=key, label=label)
+                for key, label in self.location_tags.items()
+                if term in label.lower()]
 
     def get(self, id):
         if id in self.tags:
