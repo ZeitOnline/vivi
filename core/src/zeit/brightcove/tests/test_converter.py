@@ -440,9 +440,9 @@ class BackwardCompatibleUniqueIdsTest(
         rvi.assert_called_with('1234')
 
     def test_playlists_should_be_resolvable(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         from zeit.cms.interfaces import ICMSContent
-        self.repository['video']['playlist']['1234'] = TestContentType()
+        self.repository['video']['playlist']['1234'] = ExampleContentType()
         expected_unique_id = 'http://xml.zeit.de/video/playlist/1234'
         result = ICMSContent('http://video.zeit.de/playlist/1234')
         self.assertEqual(expected_unique_id, result.uniqueId)
