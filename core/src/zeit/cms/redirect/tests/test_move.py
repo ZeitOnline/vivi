@@ -1,7 +1,7 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.cms.related.interfaces import IRelatedContent
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.async.tests
 import lxml.etree
 import mock
@@ -12,9 +12,9 @@ import zope.copypastemove.interfaces
 class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_renaming_referenced_obj_updates_uniqueId_in_referencing_obj(self):
-        self.repository['2007']['article'] = TestContentType()
+        self.repository['2007']['article'] = ExampleContentType()
         article = self.repository['2007']['article']
-        self.repository['referencing'] = TestContentType()
+        self.repository['referencing'] = ExampleContentType()
         with checked_out(self.repository['referencing']) as co:
             IRelatedContent(co).related = (article,)
 
@@ -32,7 +32,7 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
             lxml.etree.tostring(referencing.xml, pretty_print=True))
 
     def test_rename_stores_old_name_on_dav_property(self):
-        self.repository['article'] = TestContentType()
+        self.repository['article'] = ExampleContentType()
         zope.copypastemove.interfaces.IObjectMover(
             self.repository['article']).moveTo(self.repository, 'changed')
         gocept.async.tests.process()
@@ -45,6 +45,6 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
         # Since the IObjectMover for IRepository is a trusted adapter,
         # we don't usually notice that we need a security declaration for
         # IRenameInfo.
-        self.repository['article'] = TestContentType()
+        self.repository['article'] = ExampleContentType()
         wrapped = zope.security.proxy.ProxyFactory(self.repository['article'])
         self.assertEqual((), IRenameInfo(wrapped).previous_uniqueIds)

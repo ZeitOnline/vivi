@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.clipboard.browser.clipboard
 import zeit.cms.clipboard.interfaces
 import zeit.cms.testing
@@ -16,7 +16,7 @@ class ClipboardTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_get_type_of_content_object(self):
         folder = self.clipboard.addClip('Favoriten')
-        self.repository['test'] = TestContentType()
+        self.repository['test'] = ExampleContentType()
         content = self.repository['test']
         self.clipboard.addContent(folder, content, 'testname', insert=True)
         clip = list(folder.values())[0]

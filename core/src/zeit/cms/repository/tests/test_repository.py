@@ -99,9 +99,9 @@ class ViviURLToContent(unittest.TestCase):
 class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_xml_zeit_de_is_translated_to_content_object(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         self.assertIsInstance(
-            ICMSContent('http://xml.zeit.de/testcontent'), TestContentType)
+            ICMSContent('http://xml.zeit.de/testcontent'), ExampleContentType)
 
     def test_www_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
         self.assertEqual(

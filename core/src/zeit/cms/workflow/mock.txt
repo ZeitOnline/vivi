@@ -35,7 +35,7 @@ Register event handlers to make sure the proper events are sent out:
 Let's try this on a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> content.uniqueId = 'http://xml.zeit.de/testcontent'
 >>> workflow = zeit.cms.workflow.interfaces.IPublish(content)
 >>> info = zeit.cms.workflow.interfaces.IPublishInfo(content)

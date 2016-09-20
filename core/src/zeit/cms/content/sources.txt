@@ -2,7 +2,7 @@ Sources
 =======
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 
 Serie
 +++++
@@ -142,7 +142,7 @@ that we get *all* sub navigation elements
  u'Nahost',
  u'US-Wahl']
 
-Select 'Deutschland'. Since ITestContentType is an ICMSContent we still get
+Select 'Deutschland'. Since IExampleContentType is an ICMSContent we still get
 everything. This is actually not desired but is the only way we can avoid
 saving the ressort first and then the subressort:
 

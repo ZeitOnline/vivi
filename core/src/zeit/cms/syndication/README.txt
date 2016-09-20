@@ -113,7 +113,7 @@ Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent...>
      Content: http://xml.zeit.de/testcontent
 >>> target = repository['politik.feed']
 >>> list(target)
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>]
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
@@ -188,7 +188,7 @@ Checkout content, change a teaser and check back in:
 ...     content).checkout()
 >>> checked_out.teaserTitle = u'nice Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 >>> import gocept.async.tests
 >>> gocept.async.tests.process('events')
 
@@ -222,7 +222,7 @@ updated:
 ...     content).checkout()
 >>> checked_out.teaserTitle = u'nice other Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 
 The feed was not updated:
 
@@ -256,7 +256,7 @@ automatically. Forbid the automatic update:
 >>> checked_out.automaticMetadataUpdateDisabled = frozenset([
 ...     repository['politik.feed']])
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 
 The feed has not changed this time:
 

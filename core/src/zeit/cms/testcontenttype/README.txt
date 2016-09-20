@@ -14,7 +14,7 @@ Setup ftest:
 Instantiate and verify the inital xml:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
@@ -28,13 +28,13 @@ Instantiate and verify the inital xml:
   <body/>
 </testtype>
 
-The type provides the ITestContentType and IEditorialContent interfaces:
+The type provides the IExampleContentType and IEditorialContent interfaces:
 
 >>> import zope.interface.verify
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testcontenttype.interfaces
 >>> zope.interface.verify.verifyObject(
-...     zeit.cms.testcontenttype.interfaces.ITestContentType, content)
+...     zeit.cms.testcontenttype.interfaces.IExampleContentType, content)
 True
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.interfaces.IEditorialContent, content)

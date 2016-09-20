@@ -8,18 +8,18 @@ import zope.publisher.browser
 import zope.schema
 
 
-class Test(object):
+class DummyContext(object):
     """Don't use a mock for this because getting a non-existing attribute from
     a mock yields a non-None value.
     """
 
 
-class TestApplyDefaultValues(unittest.TestCase):
+class ApplyDefaultValuesTests(unittest.TestCase):
 
     def apply(self, interface, context=None):
         from ..form import apply_default_values
         if context is None:
-            context = Test()
+            context = DummyContext()
         apply_default_values(context, interface)
         return context
 
@@ -44,7 +44,7 @@ class TestApplyDefaultValues(unittest.TestCase):
     def test_existing_values_should_not_be_overwritten(self):
         class ITest(zope.interface.Interface):
             number = zope.schema.Int(default=42)
-        context = Test()
+        context = DummyContext()
         context.number = 24
         context = self.apply(ITest, context)
         self.assertEqual(24, context.number)
@@ -62,7 +62,7 @@ class ITestSchema(zope.interface.Interface):
     special.setTaggedValue('placeholder', 'customised')
 
 
-class TestAddForm(zeit.cms.browser.form.AddForm):
+class ExampleAddForm(zeit.cms.browser.form.AddForm):
 
     form_fields = zope.formlib.form.Fields(ITestSchema)
 
@@ -71,7 +71,7 @@ class Placeholder(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(Placeholder, self).setUp()
-        self.form = TestAddForm(
+        self.form = ExampleAddForm(
             object(), zope.publisher.browser.TestRequest())
         self.form.factory = object
 

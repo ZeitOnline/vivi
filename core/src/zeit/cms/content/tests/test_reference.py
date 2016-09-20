@@ -3,7 +3,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.content.reference import SingleReferenceProperty
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import urllib
 import urllib2
 import zeit.cms.content.property
@@ -24,12 +24,12 @@ class ReferenceFixture(object):
 
     def setUp(self):
         super(ReferenceFixture, self).setUp()
-        TestContentType.references = ReferenceProperty(
+        ExampleContentType.references = ReferenceProperty(
             '.body.references.reference', 'test')
         zope.security.protectclass.protectName(
-            TestContentType, 'references', 'zope.Public')
+            ExampleContentType, 'references', 'zope.Public')
         zope.security.protectclass.protectSetAttribute(
-            TestContentType, 'references', 'zope.Public')
+            ExampleContentType, 'references', 'zope.Public')
 
         zope.security.protectclass.protectLikeUnto(
             ExampleReference, zeit.cms.content.reference.Reference)
@@ -42,11 +42,11 @@ class ReferenceFixture(object):
             zeit.cms.related.related.BasicReference, name='test')
         self.zca.patch_adapter(ExampleReference, name='test')
 
-        self.repository['content'] = TestContentType()
-        self.repository['target'] = TestContentType()
+        self.repository['content'] = ExampleContentType()
+        self.repository['target'] = ExampleContentType()
 
     def tearDown(self):
-        del TestContentType.references
+        del ExampleContentType.references
         super(ReferenceFixture, self).tearDown()
 
 
@@ -70,7 +70,7 @@ class ReferencePropertyTest(
         self.assertEqual((), content.references)
 
     def test_setting_different_references_is_stored_correctly(self):
-        self.repository['other'] = TestContentType()
+        self.repository['other'] = ExampleContentType()
         content = self.repository['content']
         content.references = (
             content.references.create(self.repository['target']),
@@ -192,7 +192,7 @@ class SingleReferenceFixture(ReferenceFixture):
 
     def setUp(self):
         super(SingleReferenceFixture, self).setUp()
-        TestContentType.references = SingleReferenceProperty(
+        ExampleContentType.references = SingleReferenceProperty(
             '.body.references.reference', 'test')
 
 
@@ -240,7 +240,7 @@ class MultiResourceTest(
 
     def setUp(self):
         super(MultiResourceTest, self).setUp()
-        TestContentType.related = zeit.cms.content.reference.MultiResource(
+        ExampleContentType.related = zeit.cms.content.reference.MultiResource(
             '.body.references.reference', 'test')
 
     def test_set_and_retrieve_referenced_objects_as_tuple(self):
@@ -265,7 +265,7 @@ class MultiResourceTest(
             pass
 
         body = self.repository['content'].xml['body']
-        # Since TestContentType (our reference target) implements
+        # Since ExampleContentType (our reference target) implements
         # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
         # others) into the XML.
         self.assertEqual(
@@ -277,7 +277,7 @@ class SingleResourceTest(
 
     def setUp(self):
         super(SingleResourceTest, self).setUp()
-        TestContentType.related = zeit.cms.content.reference.SingleResource(
+        ExampleContentType.related = zeit.cms.content.reference.SingleResource(
             '.body.references.reference', 'test')
 
     def test_set_and_retrieve_referenced_objects_directly(self):
@@ -285,7 +285,7 @@ class SingleResourceTest(
         content._p_jar = Mock()  # make _p_changed work
         content.related = self.repository['target']
         self.assertTrue(content._p_changed)
-        self.assertIsInstance(content.related, TestContentType)
+        self.assertIsInstance(content.related, ExampleContentType)
         self.assertEqual(
             'http://xml.zeit.de/target', content.related.uniqueId)
 
@@ -302,7 +302,7 @@ class SingleResourceTest(
             pass
 
         body = self.repository['content'].xml['body']
-        # Since TestContentType (our reference target) implements
+        # Since ExampleContentType (our reference target) implements
         # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
         # others) into the XML.
         self.assertEqual(

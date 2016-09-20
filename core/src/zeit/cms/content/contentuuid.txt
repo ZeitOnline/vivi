@@ -132,7 +132,7 @@ Objects also get an UUID when they're added to the repository:
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> repository['content'] = (
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 >>> zeit.cms.content.interfaces.IUUID(repository['content']).id
 '{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
 

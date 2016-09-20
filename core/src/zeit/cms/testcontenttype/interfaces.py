@@ -3,7 +3,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces
 
 
-class ITestContentType(
+class IExampleContentType(
     zeit.cms.content.interfaces.ICommonMetadata,
     zeit.cms.content.interfaces.IXMLContent):
     """A type for testing."""
@@ -13,6 +13,6 @@ class ITestContentType(
         default=())
 
 
-ITestContentType.setTaggedValue('zeit.cms.type', 'testcontenttype')
-ITestContentType.setTaggedValue(
+IExampleContentType.setTaggedValue('zeit.cms.type', 'testcontenttype')
+IExampleContentType.setTaggedValue(
     'zeit.cms.addform', 'zeit.cms.testcontenttype.Add')

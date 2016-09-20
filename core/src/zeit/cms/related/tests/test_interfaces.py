@@ -20,10 +20,10 @@ class Source(zeit.cms.testing.ZeitCmsTestCase):
     def test_valid_interfaces_are_returned_in_order(self):
         self.product_config['relatable-content-types'] = (
             'zeit.cms.repository.interfaces.IFolder '
-            'zeit.cms.testcontenttype.interfaces.ITestContentType')
+            'zeit.cms.testcontenttype.interfaces.IExampleContentType')
         self.assertEqual(
             [zeit.cms.repository.interfaces.IFolder,
-             zeit.cms.testcontenttype.interfaces.ITestContentType],
+             zeit.cms.testcontenttype.interfaces.IExampleContentType],
             relatableContentSource.get_check_interfaces())
 
     def test_invalid_interface_raises_typeerror(self):

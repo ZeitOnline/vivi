@@ -2,7 +2,7 @@
 from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceWidget
 from zeit.cms.browser.widget import ReferenceSequenceWidget
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import contextlib
 import mock
 import os
@@ -207,13 +207,13 @@ class TestObjectSequenceWidgetIntegration(
         self.assertEllipsis('...name="field..url"...', result)
 
     def test_widget_should_render_add_view(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         field = self.get_field()
-        content = TestContentType()
+        content = ExampleContentType()
         content.ressort = u'Politik'
         field = field.bind(content)
         widget = self.get_widget(field)
-        widget.add_type = zeit.cms.testcontenttype.interfaces.ITestContentType
+        widget.add_type = zeit.cms.testcontenttype.interfaces.IExampleContentType
         self.assert_ellipsis(
             '...<a target="_blank"'
             '...href="http://127.0.0.1/repository/politik/'
@@ -653,15 +653,15 @@ class TestDropObjectWidgetIntegration(
         self.assertEllipsis('...name="field..url"...', widget())
 
     def test_widget_should_render_add_view(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
-        content = TestContentType()
+        content = ExampleContentType()
         content.ressort = u'Politik'
         choice = choice.bind(content)
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
-        widget.add_type = zeit.cms.testcontenttype.interfaces.ITestContentType
+        widget.add_type = zeit.cms.testcontenttype.interfaces.IExampleContentType
         self.assertEllipsis(
             '...<a target="_blank"'
             '...href="http://127.0.0.1/repository/politik/'
@@ -864,11 +864,11 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(TestReferenceSequenceWidget, self).setUp()
-        TestContentType.references = \
+        ExampleContentType.references = \
             zeit.cms.content.reference.ReferenceProperty(
                 '.body.references.reference', 'related')
-        self.repository['content'] = TestContentType()
-        self.repository['target'] = TestContentType()
+        self.repository['content'] = ExampleContentType()
+        self.repository['target'] = ExampleContentType()
 
         class FakeSource(object):
 
@@ -883,7 +883,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
         self.field = self.field.bind(self.repository['content'])
 
     def tearDown(self):
-        del TestContentType.references
+        del ExampleContentType.references
         super(TestReferenceSequenceWidget, self).tearDown()
 
     def test_invalid_unique_id_fails_validation(self):

@@ -184,7 +184,7 @@ Create a dav property and set an invalid value:
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> dav_prop = zeit.cms.content.dav.DAVProperty(
 ...     field, 'my-ns', 'myname')
->>> testcontent = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> testcontent = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> testcontent.uniqueId = u'http://xml.zeit.de/foo'
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(testcontent)
 >>> properties[('myname', 'my-ns')] = u'f\xfcblas'
@@ -194,7 +194,7 @@ When we try to get the data we'll get the default value (None):
 >>> dav_prop.__get__(testcontent, object) is None
 True
 >>> print log.getvalue()
-Could not parse DAV property value u'f\xfcblas' for TestContentType.myname at
+Could not parse DAV property value u'f\xfcblas' for ExampleContentType.myname at
 http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
 Using default None instead.
 

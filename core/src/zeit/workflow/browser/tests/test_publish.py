@@ -80,10 +80,10 @@ class TestPublish(
 
     def test_opening_dialog_from_folder_view_points_to_content(self):
         # Regression VIV-452
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
         zope.component.hooks.setSite(self.getRootFolder())
-        self.repository['other'] = TestContentType()
+        self.repository['other'] = ExampleContentType()
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
         IPublish(self.repository['other']).publish()

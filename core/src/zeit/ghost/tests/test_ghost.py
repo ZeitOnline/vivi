@@ -1,6 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import mock
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
@@ -13,7 +13,7 @@ class GhostbusterTest(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.ghost.testing.ZCML_LAYER
 
     def test_removes_excessive_ghosts_on_checkout(self):
-        self.repository['ghost-origin'] = TestContentType()
+        self.repository['ghost-origin'] = ExampleContentType()
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
         for i in range(zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE * 2):
             with mock.patch('zeit.ghost.ghost._remove_excessive_ghosts'):
@@ -35,7 +35,7 @@ class GhostbusterTest(zeit.cms.testing.FunctionalTestCase):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
         for i in range(zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE):
             name = 'test-%s' % i
-            self.repository[name] = TestContentType()
+            self.repository[name] = ExampleContentType()
             ICheckoutManager(self.repository[name]).checkout()
 
         zeit.ghost.ghost.create_ghost(self.repository['testcontent'])

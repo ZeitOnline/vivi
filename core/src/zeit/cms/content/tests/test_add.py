@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
@@ -18,7 +18,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_parameters_should_be_passed_in_url(self):
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
-            type_=zeit.cms.testcontenttype.interfaces.ITestContentType,
+            type_=zeit.cms.testcontenttype.interfaces.IExampleContentType,
             ressort='wirtschaft', sub_ressort='geldanlage',
             year='2009', month='02')
         self.assertEqual(
@@ -31,7 +31,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_sub_ressort_is_optional(self):
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
-            type_=zeit.cms.testcontenttype.interfaces.ITestContentType,
+            type_=zeit.cms.testcontenttype.interfaces.IExampleContentType,
             ressort='wirtschaft', year='2009', month='02')
         self.assertEqual(
             'http://127.0.0.1/repository/wirtschaft/2009-02/'
@@ -42,7 +42,7 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_ressort_and_sub_ressort_are_optional(self):
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
-            type_=zeit.cms.testcontenttype.interfaces.ITestContentType,
+            type_=zeit.cms.testcontenttype.interfaces.IExampleContentType,
             year='2009', month='02')
         self.assertEqual(
             'http://127.0.0.1/repository/2009-02/'
@@ -54,12 +54,12 @@ class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
 
         zope.component.getSiteManager().registerAdapter(
             lambda *args: self.repository['foo'],
-            (zeit.cms.testcontenttype.interfaces.ITestContentType,
+            (zeit.cms.testcontenttype.interfaces.IExampleContentType,
              zeit.cms.content.interfaces.IContentAdder),
             zeit.cms.content.interfaces.IAddLocation)
         adder = zeit.cms.content.add.ContentAdder(
             self.request,
-            type_=zeit.cms.testcontenttype.interfaces.ITestContentType)
+            type_=zeit.cms.testcontenttype.interfaces.IExampleContentType)
         self.assertEqual(
             'http://127.0.0.1/repository/foo/'
             '@@zeit.cms.testcontenttype.Add?', adder())
@@ -75,7 +75,7 @@ class RessortYearFolderTest(zeit.cms.testing.ZeitCmsTestCase):
         adder = zeit.cms.content.add.ContentAdder(
             ANY, ressort='wirtschaft', year='2009', month='2')
         folder = zope.component.getMultiAdapter(
-            (TestContentType(), adder),
+            (ExampleContentType(), adder),
             zeit.cms.content.interfaces.IAddLocation)
         self.assertEqual(self.repository['wirtschaft']['2009-02'], folder)
 
@@ -84,6 +84,6 @@ class RessortYearFolderTest(zeit.cms.testing.ZeitCmsTestCase):
         adder = zeit.cms.content.add.ContentAdder(
             ANY, ressort='wirtschaft', year='2009', month='02')
         folder = zope.component.getMultiAdapter(
-            (TestContentType(), adder),
+            (ExampleContentType(), adder),
             zeit.cms.content.interfaces.IAddLocation)
         self.assertEqual(self.repository['wirtschaft']['2009-02'], folder)

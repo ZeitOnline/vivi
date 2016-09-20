@@ -347,7 +347,7 @@ xml.
 >>> import zeit.workflow.interfaces
 >>> article = repository['testcontent']
 >>> article
-<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
+<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(article)
 >>> workflow.date_first_released is None
 True
