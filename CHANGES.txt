@@ -5,7 +5,7 @@ zeit.retresco changes
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3364: Implement ``IWhitelist.locations()`` via TMS-API.
 
 
 1.5.0 (2016-09-16)

@@ -5,38 +5,37 @@
   i18n_domain="zeit.cms">
 
   <configure zcml:condition="have zeit.retresco.tms">
-  <grok:grok package="." />
+    <grok:grok package="." />
 
-  <utility factory=".connection.from_product_config" />
+    <utility factory=".connection.from_product_config" />
 
-  <class class=".tagger.Tagger">
-    <require
-      interface="zeit.cms.tagging.interfaces.ITagger"
-      permission="zope.View"
-      />
-  </class>
+    <class class=".tagger.Tagger">
+      <require
+        interface="zeit.cms.tagging.interfaces.ITagger"
+        permission="zope.View"
+        />
+    </class>
 
-  <class class=".tag.Tag">
-    <require
-      interface="zeit.cms.tagging.interfaces.ITag"
-      permission="zope.View"
-      />
-  </class>
+    <class class=".tag.Tag">
+      <require
+        interface="zeit.cms.tagging.interfaces.ITag"
+        permission="zope.View"
+        />
+    </class>
 
-  <class class=".whitelist.Whitelist">
-    <require
-      interface="zeit.cms.tagging.interfaces.IWhitelist"
-      permission="zope.View"
-      />
-  </class>
+    <class class=".whitelist.Whitelist">
+      <require
+        interface="zeit.cms.tagging.interfaces.IWhitelist"
+        permission="zope.View"
+        />
+    </class>
 
-  <class class=".connection.Topicpages">
-    <require
-      interface="zeit.cms.tagging.interfaces.ITopicpages"
-      permission="zope.View"
-      />
-  </class>
-
+    <class class=".connection.Topicpages">
+      <require
+        interface="zeit.cms.tagging.interfaces.ITopicpages"
+        permission="zope.View"
+        />
+    </class>
   </configure>
 
   <permission

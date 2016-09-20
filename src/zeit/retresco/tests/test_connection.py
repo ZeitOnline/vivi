@@ -50,6 +50,27 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual([u'Schmerz', u'Walter Schmögner'],
                          [x.label for x in result])
 
+    def test_get_locations_returns_a_list_of_tag_objects(self):
+        self.layer['request_handler'].response_body = json.dumps({
+            "entities": [{
+                "entity_id": "f1ec6233309adee0384d1b82962c2a074babe7a2",
+                "doc_count": 1,
+                "entity_name": "Kroatien",
+                "entity_type": "location"}],
+            "num_found": 1})
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = list(tms.get_locations('Kro'))
+        self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
+        self.assertEqual([u'Kroatien'], [x.label for x in result])
+
+    def test_get_locations_filters_by_entity_type_location(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        with mock.patch.object(tms, '_request') as request:
+            request.return_value = {"entities": [], "num_found": 0}
+            list(tms.get_locations(''))
+            self.assertEqual({'q': '', 'item_type': 'location'},
+                             request.call_args[1]['params'])
+
     def test_raises_technical_error_for_5xx(self):
         self.layer['request_handler'].response_code = 500
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
