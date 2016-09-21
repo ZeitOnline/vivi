@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.push',
-    version='1.15.5.dev0',
+    version='1.16.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -25,7 +25,7 @@ setup(
         'tweepy',
         'urbanairship',
         'zc.sourcefactory',
-        'zeit.cms >= 2.88.0.dev0',
+        'zeit.cms >= 2.90.0.dev0',
         'zeit.content.article',
         'zeit.content.image',
         'zeit.objectlog',
