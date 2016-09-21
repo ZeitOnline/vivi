@@ -1,10 +1,10 @@
 zeit.addcentral changes
 =======================
 
-1.1.6 (unreleased)
+1.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to `zeit.cms >= 2.90`.
 
 
 1.1.5 (2016-07-26)
