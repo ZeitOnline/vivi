@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.wysiwyg',
-    version='2.0.7.dev0',
+    version='2.1.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -22,7 +22,7 @@ setup(
         'setuptools',
         'zc.iso8601',
         'zc.resourcelibrary',
-        'zeit.cms>=2.38.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.content.image>=2.13.6.dev0',
         'zope.app.pagetemplate',
         'zope.app.testing',
