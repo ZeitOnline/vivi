@@ -5,10 +5,12 @@ import datetime
 import gocept.testing.assertion
 import mock
 import pytz
+import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.testing
 import zeit.content.image.interfaces
+import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
@@ -145,3 +147,34 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         content.teaserText = None
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual('title', data['teaser'])
+
+    def test_converts_volumes(self):
+        volume = zeit.content.volume.volume.Volume()
+        volume.uniqueId = 'http://xml.zeit.de/volume'
+        zeit.cms.content.interfaces.IUUID(volume).id = 'myid'
+        volume.year = 2015
+        volume.volume = 1
+        volume.date_digital_published = datetime.datetime(
+            2015, 1, 1, 0, 0, tzinfo=pytz.UTC)
+        data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
+        self.assertEqual('Ausgabe', data['title'])
+        self.assertEqual('Ausgabe', data['teaser'])
+        self.assertEqual(volume.date_digital_published,
+                         data['payload']['date_digital_published'])
+
+    def test_does_not_index_volume_properties_for_articles(self):
+        content = create_testcontent()
+        content.year = 2006
+        content.volume = 49
+        content.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.repository['content'] = content
+        volume = zeit.content.volume.volume.Volume()
+        volume.year = content.year
+        volume.volume = content.volume
+        self.repository['2006']['49']['ausgabe'] = volume
+
+        found = zeit.content.volume.interfaces.IVolume(content)
+        self.assertEqual(found, volume)
+
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(data['teaser'], content.teaserText)

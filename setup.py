@@ -36,6 +36,7 @@ setup(
         'zeit.content.article',
         'zeit.content.image',
         'zeit.content.rawxml',
+        'zeit.content.volume',
         'zope.component',
         'zope.interface',
         'zope.publisher',
