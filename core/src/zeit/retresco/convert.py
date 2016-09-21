@@ -274,6 +274,41 @@ class Gallery(Converter):
     }
 
 
+class Volume(Converter):
+    """This adapter is for indexing actual IVolume objects. Since ICMSContent
+    objects can be adapted to IVolume (finding the associated volume object),
+    we explicitly restrict this here (which is different from the baseclass).
+    """
+
+    interface = zeit.content.volume.interfaces.IVolume
+    grok.name(interface.__name__)
+
+    properties = {
+        'date_digital_published': '',
+        'volume': '',
+        'year': '',
+    }
+
+    def __new__(cls, context):
+        if not cls.interface.providedBy(context):
+            return None
+        instance = super(Converter, cls).__new__(cls, None)
+        instance.context = context
+        instance.content = context
+        return instance
+
+    def __call__(self):
+        result = {
+            'title': self.context.teaserText or 'Ausgabe',
+            'teaser': self.context.teaserText or 'Ausgabe',
+            'payload': {
+                'product_id': self.context.product and self.context.product.id,
+            }
+        }
+        self._copy_properties(result)
+        return result
+
+
 class CMSSearch(Converter):
     # For zeit.find
 
