@@ -48,8 +48,8 @@ CP_LAYER = zeit.cms.testing.ZCMLLayer(
     + product_config)
 
 
-# XXX copy&paste from zeit.solr.testing, because importing that would create an
-# import cycle with zeit.content.article.testing, sigh.
+# We cannot use a layer from zeit.solr.testing because importing that would
+# create an import cycle with zeit.content.article.testing, sigh.
 class SolrMockLayer(plone.testing.Layer):
 
     def testSetUp(self):
@@ -60,8 +60,6 @@ class SolrMockLayer(plone.testing.Layer):
 
     def testTearDown(self):
         zope.component.getSiteManager().unregisterUtility(self['solr'])
-
-    def tearDown(self):
         del self['solr']
 
 SOLR_MOCK_LAYER = SolrMockLayer()
