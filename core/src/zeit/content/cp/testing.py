@@ -127,7 +127,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZCML_LAYER
 
     def create_content(self, name, title):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         content.teaserTitle = title
         self.repository[name] = content
         return content
@@ -224,7 +224,7 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
         clip = clipboard['Clip']
         for i in range(1, 4):
             content = (zeit.cms.testcontenttype.testcontenttype.
-                       TestContentType())
+                       ExampleContentType())
             content.teaserTitle = content.shortTeaserTitle = (
                 u'c%s teaser' % i)
             name = 'c%s' % i

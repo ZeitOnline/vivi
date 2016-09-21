@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import pysolr
 import zeit.content.cp.testing
@@ -14,8 +14,8 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
 
     def test_materialize_creates_normal_teaser_block(self):
-        self.repository['t1'] = TestContentType()
-        self.repository['t2'] = TestContentType()
+        self.repository['t1'] = ExampleContentType()
+        self.repository['t2'] = ExampleContentType()
 
         lead = self.repository['cp']['lead']
         lead.count = 2

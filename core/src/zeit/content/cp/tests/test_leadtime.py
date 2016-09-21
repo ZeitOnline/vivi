@@ -1,6 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import lxml.etree
 import zeit.cms.workflow.interfaces
@@ -15,7 +15,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super(LeadTimeTest, self).setUp()
-        self.repository['foo'] = TestContentType()
+        self.repository['foo'] = ExampleContentType()
         cp = zeit.content.cp.centerpage.CenterPage()
         zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ILeadTimeCP)
         factory = zope.component.getAdapter(

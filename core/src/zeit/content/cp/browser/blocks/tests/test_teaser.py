@@ -1,5 +1,5 @@
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.cssselect
 import mock
 import transaction
@@ -152,7 +152,7 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         block.layout = zeit.content.cp.layout.get_layout(layout)
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         for i in range(3):
-            article = self.repository['t%s' % i] = TestContentType()
+            article = self.repository['t%s' % i] = ExampleContentType()
             with zeit.cms.checkout.helper.checked_out(article) as co:
                 zeit.content.image.interfaces.IImages(co).image = image
         for i in range(3):
