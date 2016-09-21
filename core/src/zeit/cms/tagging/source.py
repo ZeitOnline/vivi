@@ -32,21 +32,6 @@ class WhitelistSource(
             # XXX stopgap until we find out about #12609
             return True
 
-    @property
-    def whitelist(self):
-        import zeit.cms.tagging.interfaces
-        return zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-
-    def getValues(self, context):
-        return self.whitelist.values()
-
-    def getTitle(self, context, value):
-        return value.label
-
-    def getToken(self, context, value):
-        return value.code
-
 
 class ILocationSource(zope.schema.interfaces.IIterableSource):
     """Available locations."""
