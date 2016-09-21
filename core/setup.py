@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.magazin',
-    version='1.4.2.dev0',
+    version='1.5.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'setuptools',
         'zc.form',
-        'zeit.cms>=2.20.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.content.article>=3.7.0.dev0',
         'zeit.content.gallery',
         'zeit.content.link',
