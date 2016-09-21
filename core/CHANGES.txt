@@ -1,10 +1,10 @@
 zeit.brightcove changes
 =======================
 
-2.8.3 (unreleased)
+2.9.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to `zeit.cms >= 2.90`.
 
 
 2.8.2 (2016-09-14)
