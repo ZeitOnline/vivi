@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import StringIO
 import gocept.async
 import gocept.async.tests
@@ -49,7 +49,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def test_creating_content_should_index(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['t1'] = TestContentType()
+        repository['t1'] = ExampleContentType()
         process()
         self.tms.enrich.assert_called_with(repository['t1'])
         self.tms.index.assert_called_with(repository['t1'])
@@ -58,9 +58,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         # XXX: I'm not quite sure which use cases actually create this kind of
         # ObjectAddedEvent, but we've inherited this guard from zeit.solr and
         # they probably had a good reason. %-)
-        content = TestContentType()
+        content = ExampleContentType()
         content.uniqueId = 'xzy://bla/fasel'
-        content_sub = TestContentType()
+        content_sub = ExampleContentType()
         content_sub.uniqueId = 'xzy://bla/fasel/sub'
         event = zope.lifecycleevent.ObjectAddedEvent(content)
         for ignored in zope.component.subscribers((content_sub, event), None):
@@ -115,7 +115,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.delete_id.assert_called_with(uuid)
 
     def test_remove_from_workingcopy_does_nothing(self):
-        content = TestContentType()
+        content = ExampleContentType()
         event = zope.lifecycleevent.ObjectRemovedEvent(content)
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
         zope.event.notify(event)

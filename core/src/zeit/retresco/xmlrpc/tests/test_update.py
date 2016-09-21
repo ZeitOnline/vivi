@@ -1,5 +1,5 @@
 # coding: utf-8
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import StringIO
 import logging
 import mock
@@ -53,7 +53,7 @@ class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
             self.log.getvalue())
 
     def test_non_ascii_id_should_work(self):
-        self.repository[u'föö'] = TestContentType()
+        self.repository[u'föö'] = ExampleContentType()
         id = u'http://xml.zeit.de/föö'
         self.update(id)
         self.tms.index.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
