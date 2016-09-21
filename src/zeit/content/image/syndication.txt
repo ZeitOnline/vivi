@@ -172,14 +172,14 @@ out via the relations utility:
 >>> relations = zope.component.getUtility(
 ...     zeit.cms.relation.interfaces.IRelations)
 >>> list(relations.get_relations(group))
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>]
 
 
 There is also an adatper from IImage and IImageGroup to find the relating
 objects:
 
 >>> zeit.content.image.interfaces.IReferences(group).references
-(<zeit.cms.testcontenttype.testcontenttype.TestContentType...>,)
+(<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,)
 >>> zeit.content.image.interfaces.IReferences(
 ...     repository['2006']['DSC00109_2.JPG']).references
 ()

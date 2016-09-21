@@ -1,10 +1,10 @@
 zeit.content.image changes
 ==========================
 
-2.16.3 (unreleased)
+2.17.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update to `zeit.cms >= 2.90`.
 
 
 2.16.2 (2016-09-12)
