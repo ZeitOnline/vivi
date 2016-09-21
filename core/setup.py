@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.find',
-    version='2.7.1.dev0',
+    version='2.8.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -21,7 +21,7 @@ setup(
         'plone.testing',
         'setuptools',
         'zc.iso8601',
-        'zeit.cms>=2.38.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.content.image',
         'zeit.solr>=2.8.0.dev0',
     ],

@@ -253,7 +253,7 @@ Add content to testcontent
 ...     'http://xml.zeit.de/testcontent')
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> related = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> related = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> related.teaserTitle = u'Related title'
 >>> repository['related'] = related
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
