@@ -61,13 +61,13 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn('volume with the given name already exists', b.contents)
 
     def test_ICommonMetadata_can_be_adapted_to_added_volume(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         b = self.browser
         self.open_add_form()
         b.getControl('Year').value = '2010'
         b.getControl('Volume').value = '2'
         b.getControl('Add').click()
-        content = TestContentType()
+        content = ExampleContentType()
         content.year = 2010
         content.volume = 2
         content.product = zeit.cms.content.sources.Product(u'ZEI')

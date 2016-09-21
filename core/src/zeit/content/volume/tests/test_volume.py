@@ -53,13 +53,13 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_content_with_missing_values_does_not_adapt_to_IVolume(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         with self.assertRaises(TypeError):
-            zeit.content.volume.interfaces.IVolume(TestContentType())
+            zeit.content.volume.interfaces.IVolume(ExampleContentType())
 
     def test_content_with_year_and_volume_and_product_adapts_to_IVolume(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        content = TestContentType()
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        content = ExampleContentType()
         content.year = 2015
         content.volume = 1
         content.product = zeit.cms.content.sources.Product(u'ZEI')
@@ -74,8 +74,8 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         # that "online content" has no IVolume, only print content.
         # In addition we want only handle products with a location template
         # configured.
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        content = TestContentType()
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        content = ExampleContentType()
         content.year = 2015
         content.volume = 1
         content.product = zeit.cms.content.sources.Product(u'ZEDE')
