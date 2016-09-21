@@ -26,7 +26,7 @@ Create an XML structure containing a body:
 Instanciate a test content:
 >>> import StringIO
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 
 Manually adapt to HTML:
@@ -71,7 +71,7 @@ Now for something more complex, the intertitle:
 ...     <teaser/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 
@@ -167,7 +167,7 @@ Make sure the adapter also works with very short texts:
 ...     <p>foo</p>bar
 ...   </body>
 ... </article>'''
->>> small = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> small = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> small_c = zeit.wysiwyg.html.HTMLConverter(small)
 >>> print small_c.to_html(small.xml['body']),
@@ -202,7 +202,7 @@ The converter tries to be smart in regard to fixing nested paragraphs:
 ...   </body>
 ... </article>'''
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> converter.from_html(article.xml['body'], """\
@@ -337,7 +337,7 @@ We map all <a href=..."> according to the schema above:
 ...     <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -404,7 +404,7 @@ An article looks as follow:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 
 Converting it to HTML places an <img> element inside a <p>. Here's why: 1.
@@ -467,7 +467,7 @@ extracted and put before the <p>.
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -522,7 +522,7 @@ support it.)
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -567,7 +567,7 @@ We are greedy against old paths in the XML:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -593,7 +593,7 @@ If the image does not longer exists, img-tag with the unique id is rendred:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -619,7 +619,7 @@ When the url doesn't belong to the CMS it is put out directly, as well:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -740,7 +740,7 @@ Videos are represented with the ``<video>`` tag in XML:
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 
@@ -769,7 +769,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -856,7 +856,7 @@ Double video
 ...            href2="http://video.zeit.de/video/2009second"/>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -901,7 +901,7 @@ Audio is represented with the ``<audio>`` tag in XML:
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 
@@ -929,7 +929,7 @@ When there is no expires or empty ones, empty divs are rendered:
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -978,7 +978,7 @@ the ``<raw>`` tag:
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 
 The HTML-Representation used for editing really displays the HTML (i.e. the
@@ -1099,7 +1099,7 @@ Tables
 ...     </table>
 ...     </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1168,7 +1168,7 @@ Portraitbox
 ...     <portraitbox href="http://xml.zeit.de/2006/pb" layout="short"/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1217,7 +1217,7 @@ Empty xml should convert to html:
 ...     <portraitbox/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> html = converter.to_html(article.xml['body'])
@@ -1241,7 +1241,7 @@ Infobox
 ...     <infobox href="http://xml.zeit.de/2006/ib"/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1272,7 +1272,7 @@ Timeline
 ...     <timeline href="http://xml.zeit.de/2006/ib"/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1306,7 +1306,7 @@ Gallery
 ...     <gallery href="http://xml.zeit.de/2006/gal"/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1338,7 +1338,7 @@ Empty xml should convert to html:
 ...     <gallery/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> html = converter.to_html(article.xml['body'])
@@ -1361,7 +1361,7 @@ Citation
 ...     />
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
@@ -1409,7 +1409,7 @@ Empty citation should not break:
 ...     <citation/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> html = converter.to_html(article.xml['body'])
@@ -1449,7 +1449,7 @@ about should be visible in the HTML output.
 ...     <p><a href="asdf">foo</a></p>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])

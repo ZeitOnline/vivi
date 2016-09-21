@@ -5,7 +5,7 @@
 Setup
 =====
 
->>> from zeit.cms.testcontenttype.testcontenttype import TestContentType
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 >>> import StringIO
 >>> import lxml
 >>> import zeit.cms.testing
@@ -42,7 +42,7 @@ Create an article that contains an image:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = TestContentType(
+>>> article = ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 
 After checking in the article, its references are added to the index.
@@ -96,7 +96,7 @@ Images
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = TestContentType(
+>>> article = ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
 [<zeit.content.image.image.RepositoryImage...>]
@@ -118,7 +118,7 @@ An invalid ID is ignored:
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
->>> article = TestContentType(
+>>> article = ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
 []
@@ -138,7 +138,7 @@ Galleries
 ...     <gallery href="http://xml.zeit.de/2006/gal"/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
 [<zeit.content.gallery.gallery.Gallery...>]
@@ -153,7 +153,7 @@ Empty galleries should not break references:
 ...     <gallery/>
 ...   </body>
 ... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+>>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
 []
