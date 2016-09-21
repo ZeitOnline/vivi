@@ -297,6 +297,9 @@ class AutomaticAreaElasticsearchTest(
         self.area.count = 3
         self.area.automatic = True
         self.area.automatic_type = 'elasticsearch-query'
+        self.repository['cp'] = self.cp
+        self.elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
 
     def test_automatic_from_elasticsearch_requires_raw_query(self):
         self.area.elasticsearch_raw_query = None
@@ -306,6 +309,34 @@ class AutomaticAreaElasticsearchTest(
         self.assertIn(
             'Automatic area with teaser from elasticsearch query',
             str(err.exception))
+
+    def test_it_returns_no_content_on_elasticsearch_error(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = 'raw'
+        lead.automatic_type = 'elasticsearch-query'
+        self.elasticsearch.search.side_effect = RuntimeError('provoked')
+        auto = IRenderedArea(lead)
+        self.assertEqual(0, len(auto.values()))
+        self.assertEqual(0, auto._content_query.total_hits)
+
+    def test_it_returns_content_objects_provided_by_elasticsearch(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = 'raw'
+        lead.automatic_type = 'elasticsearch-query'
+        result = zeit.cms.tagging.interfaces.Result(
+            [{'uniqueId': self.repository['cp'].uniqueId}])
+        result.hits = 4711
+        self.elasticsearch.search.return_value = result
+        auto = IRenderedArea(lead)
+        self.assertEqual(1, len(auto.values()))
+        self.assertEqual(4711, auto._content_query.total_hits)
+        self.assertEqual(
+            ((u'raw', u'date-first-released desc'), dict(start=0, rows=1)),
+            self.elasticsearch.search.call_args)
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):

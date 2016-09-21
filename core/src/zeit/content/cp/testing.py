@@ -13,6 +13,7 @@ import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.testing
+import zeit.retresco.interfaces
 import zeit.workflow.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
@@ -66,8 +67,28 @@ class SolrMockLayer(plone.testing.Layer):
 
 SOLR_MOCK_LAYER = SolrMockLayer()
 
+
+# We cannot use a layer from zeit.retresco.testing because importing that
+# would create an import cycle with zeit.content.article.testing, sigh.
+class ElasticsearchMockLayer(plone.testing.Layer):
+
+    def testSetUp(self):
+        self['elasticsearch'] = mock.Mock()
+        self['elasticsearch'].search.return_value = []
+        zope.interface.alsoProvides(self['elasticsearch'],
+                                    zeit.retresco.interfaces.IElasticsearch)
+        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
+
+    def testTearDown(self):
+        zope.component.getSiteManager().unregisterUtility(
+            self['elasticsearch'])
+        del self['elasticsearch']
+
+ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
+
 ZCML_LAYER = plone.testing.Layer(
-    bases=(CP_LAYER, SOLR_MOCK_LAYER), name='ZCMLLayer', module=__name__)
+    bases=(CP_LAYER, SOLR_MOCK_LAYER, ELASTICSEARCH_MOCK_LAYER),
+    name='ZCMLLayer', module=__name__)
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,

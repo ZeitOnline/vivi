@@ -184,6 +184,40 @@ class SolrContentQuery(ContentQuery):
                               for x in self.existing_teasers]))
 
 
+class ElasticsearchContentQuery(ContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('elasticsearch-query')
+
+    def __init__(self, context):
+        super(ElasticsearchContentQuery, self).__init__(context)
+        self.query_string = self.context.elasticsearch_raw_query
+        self.order = self.context.elasticsearch_raw_order
+
+    def __call__(self):
+        self.total_hits = 0
+        result = []
+        try:
+            elasticsearch = zope.component.getUtility(
+                zeit.retresco.interfaces.IElasticsearch)
+            response = elasticsearch.search(
+                self.query_string, self.order, start=self.start,
+                rows=self.rows)
+            self.total_hits = response.hits
+            for item in response:
+                content = self._resolve(item)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning(
+                'Error during elasticsearch query %r for %s',
+                self.query_string, self.context.uniqueId, exc_info=True)
+        return result
+
+    def _resolve(self, item):
+        return zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+
+
 class ChannelContentQuery(SolrContentQuery):
 
     grok.name('channel')
