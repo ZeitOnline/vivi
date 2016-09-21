@@ -1,5 +1,5 @@
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.newsletter.category import NewsletterCategory
 from zeit.newsletter.interfaces import INewsletterCategory
 from zeit.newsletter.newsletter import Newsletter
@@ -162,7 +162,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
             self.category, self.newsletter)
 
     def create_content(self, name, ressort):
-        content = TestContentType()
+        content = ExampleContentType()
         content.ressort = ressort
         self.repository[name] = content
         return self.repository[name]

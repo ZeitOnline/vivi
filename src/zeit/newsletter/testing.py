@@ -77,7 +77,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         clip = clipboard['Clip']
         for i in range(1, 4):
             content = (zeit.cms.testcontenttype.testcontenttype.
-                       TestContentType())
+                       ExampleContentType())
             content.teaserTitle = content.shortTeaserTitle = (
                 u'c%s teaser' % i)
             name = 'c%s' % i
