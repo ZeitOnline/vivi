@@ -8,7 +8,7 @@ NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
 setup(
     name='zeit.edit',
-    version='2.14.1.dev0',
+    version='2.15.0.dev0',
     description="Vivi Editor",
     long_description=README + '\n\n' + NEWS,
     keywords='',
@@ -36,7 +36,7 @@ setup(
         'setuptools',
         'transaction',
         'xml_compare',
-        'zeit.cms>=2.64.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.connector',
         'zeit.find>=2.2.dev.0',
         'zope.app.appsetup',

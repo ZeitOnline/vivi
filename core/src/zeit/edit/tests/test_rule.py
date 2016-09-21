@@ -275,13 +275,13 @@ class RecursiveValidatorTest(unittest.TestCase):
         self.assertEqual(ERROR, validator.status)
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def validating_workflow_for_testcontent(context):
     return zeit.edit.rule.ValidatingWorkflow(context)
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.edit.interfaces.IValidator)
 def validator_for_testcontent(context):
     validator = mock.Mock(
@@ -305,16 +305,16 @@ class ValidatingWorkflowTest(unittest.TestCase):
 
     def test_validating_workflow_cannot_publish_when_validation_failed(self):
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
 
     def test_validating_workflow_provides_error_messages_for_publish_info(
             self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         import zeit.workflow.browser.publish
 
         view = zeit.workflow.browser.publish.Publish()
-        view.context = TestContentType()
+        view.context = ExampleContentType()
         view.can_publish()
         self.assertEqual(
             'Mock Validator Error Message', view.error_messages[1])

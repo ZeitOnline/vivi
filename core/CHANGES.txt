@@ -1,10 +1,10 @@
 Changes
 =======
 
-2.14.1 (unreleased)
+2.15.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update to `zeit.cms >= 2.90`.
 
 
 2.14.0 (2016-06-27)

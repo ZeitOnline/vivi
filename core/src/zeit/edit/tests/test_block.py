@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.objectify
 import mock
 import persistent.interfaces
@@ -23,10 +23,10 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         self.block = zeit.edit.tests.fixture.Block(
             self.container, xml.block)
         # Fake traversal ability.
-        TestContentType.__getitem__ = lambda s, key: self.container
+        ExampleContentType.__getitem__ = lambda s, key: self.container
 
     def tearDown(self):
-        del TestContentType.__getitem__
+        del ExampleContentType.__getitem__
         super(ElementUniqueIdTest, self).tearDown()
 
     def test_block_ids_are_composed_of_parent_ids(self):
