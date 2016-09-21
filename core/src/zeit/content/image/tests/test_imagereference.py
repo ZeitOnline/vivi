@@ -2,7 +2,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
 import gocept.async.tests
 import lxml.etree
@@ -29,10 +29,10 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ImageReferenceTest, self).setUp()
-        TestContentType.images = ReferenceProperty('.body.image', 'image')
+        ExampleContentType.images = ReferenceProperty('.body.image', 'image')
 
     def tearDown(self):
-        del TestContentType.images
+        del ExampleContentType.images
         super(ImageReferenceTest, self).tearDown()
 
     def test_local_values_override_original_ones(self):
