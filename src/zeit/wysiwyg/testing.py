@@ -23,7 +23,7 @@ class WYSIWYGTestCase(zeit.cms.testing.FunctionalTestCase):
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
     zope.component.adapts(
-        zeit.cms.testcontenttype.interfaces.ITestContentType)
+        zeit.cms.testcontenttype.interfaces.IExampleContentType)
 
     def get_tree(self):
         return self.context.xml['body']

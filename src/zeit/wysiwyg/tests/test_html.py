@@ -60,7 +60,7 @@ class VideoStepTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
   </body>
 </article>
 """
-        article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+        article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
             xml_source=StringIO.StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(
@@ -86,7 +86,7 @@ class TopLevelTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
 
     def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
         source = '<article><body></body></article>'
-        article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+        article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
             xml_source=StringIO.StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
