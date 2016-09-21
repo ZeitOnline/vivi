@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.gallery',
-    version='2.7.2.dev0',
+    version='2.8.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -19,7 +19,7 @@ setup(
         'Pillow',
         'gocept.form',
         'setuptools',
-        'zeit.cms>=2.88.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.connector>=2.4.0.dev0',
         'zeit.imp>=0.15.0.dev0',
         'zeit.content.image',

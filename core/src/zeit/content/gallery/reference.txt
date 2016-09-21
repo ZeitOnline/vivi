@@ -16,7 +16,7 @@ gallery[#functional]_:
 Create a testcontent:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 
 Adapting `content` to IGalleryReference enables us to reference gallery:
 
