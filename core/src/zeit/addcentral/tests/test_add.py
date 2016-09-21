@@ -53,7 +53,7 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         # types.
         b.post('http://localhost/++skin++vivi/@@addcentral', urllib.urlencode({
             'sidebar.form.type_':
-            'zeit.cms.testcontenttype.interfaces.ITestContentType',
+            'zeit.cms.testcontenttype.interfaces.IExampleContentType',
             'sidebar.form.ressort-empty-marker': '1',
             'sidebar.form.actions.add': 'Add'}))
         self.assertEllipsis('...@@zeit.cms.testcontenttype.Add...', b.contents)
