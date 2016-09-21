@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.portraitbox',
-    version='1.22.13.dev0',
+    version='1.23.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -18,7 +18,7 @@ setup(
         'gocept.form',
         'mock',
         'setuptools',
-        'zeit.cms>=2.32.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.content.image',
         'zeit.wysiwyg',
         'zope.app.appsetup',
