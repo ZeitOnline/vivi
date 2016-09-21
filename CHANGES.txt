@@ -9,6 +9,8 @@ zeit.retresco changes
 
 - Update to `zeit.cms >= 2.90`.
 
+- ZON-3163: Implement the ``IElasticsearch`` utility.
+
 
 1.5.0 (2016-09-16)
 ------------------
