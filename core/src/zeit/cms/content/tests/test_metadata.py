@@ -1,6 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.testcontenttype.interfaces
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
 import zeit.content.article.testing
 import zope.lifecycleevent
@@ -13,7 +13,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
                     'ressort'))
             self.assertEqual((('Deutschland', None),), co.channels)
 
@@ -23,7 +23,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
                     'ressort'))
             self.assertEqual((('International', None),
                               ('Deutschland', None)), co.channels)
@@ -34,18 +34,18 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
                     'ressort'))
             self.assertEqual((('Deutschland', None),), co.channels)
 
     def test_channels_are_not_set_if_product_forbids_it(self):
-        article = TestContentType()
+        article = ExampleContentType()
         article.product = zeit.cms.content.sources.Product(u'ZEI')
         self.repository['testcontent'] = article
         with checked_out(self.repository['testcontent']) as co:
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
                     'ressort'))
             self.assertEqual((), co.channels)

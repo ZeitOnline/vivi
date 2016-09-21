@@ -4,8 +4,8 @@ import zeit.cms.testing
 class TestSemanticChange(zeit.cms.testing.ZeitCmsTestCase):
 
     def get_content(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        return TestContentType()
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        return ExampleContentType()
 
     def test_lsc_should_be_set_on_creation(self):
         from zeit.cms.content.interfaces import ISemanticChange

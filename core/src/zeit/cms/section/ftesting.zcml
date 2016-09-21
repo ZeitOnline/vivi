@@ -20,7 +20,7 @@
 
   <adapter
     factory=".testing.IExampleSection"
-    for="..testcontenttype.interfaces.ITestContentType"
+    for="..testcontenttype.interfaces.IExampleContentType"
     provides=".interfaces.IRessortSection"
     name="Sport"
     />

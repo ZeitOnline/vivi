@@ -27,7 +27,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         kultur['musik'] = zeit.cms.repository.folder.Folder()
 
     def test_icommonmetadata_lists_ressort_and_sub_ressort(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         content.ressort = u'Kultur'
         content.sub_ressort = u'Musik'
@@ -44,7 +44,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_icommonmetadata_without_ressort_omits_item(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         self.assertEqual([
             dict(title='foo',
@@ -53,7 +53,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_icommonmetadata_without_sub_ressort_omits_item(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         content.ressort = u'Kultur'
         self.assertEqual([
@@ -66,7 +66,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_icommonmetadata_with_invalid_ressort_omits_item(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         content.ressort = u'Kültür'
         self.assertEqual([
@@ -128,7 +128,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         ], BreadcrumbsView(co).get_breadcrumbs)
 
     def test_temporary_document_name_is_abbreviated_as_new(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             content).renameable = True
@@ -142,7 +142,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         import zope.app.appsetup.product
         zope.app.appsetup.product._configs['zeit.cms'][
             'breadcrumbs-use-common-metadata'] = 'false'
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()
@@ -153,7 +153,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         import zope.app.appsetup.product
         del zope.app.appsetup.product._configs['zeit.cms'][
             'breadcrumbs-use-common-metadata']
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()
@@ -164,7 +164,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         # This makes testing easier
         import zope.app.appsetup.product
         del zope.app.appsetup.product._configs['zeit.cms']
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
         view.get_breadcrumbs_from_path = mock.Mock()

@@ -8,21 +8,21 @@
 
   <include package=".browser" />
 
-  <class class=".testcontenttype.TestContentType">
+  <class class=".testcontenttype.ExampleContentType">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
     <require
-      interface=".interfaces.ITestContentType"
+      interface=".interfaces.IExampleContentType"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.ITestContentType"
+      set_schema=".interfaces.IExampleContentType"
       permission="zeit.EditContent"
       />
   </class>
 
   <interface
-    interface=".interfaces.ITestContentType"
+    interface=".interfaces.IExampleContentType"
     type="zeit.cms.interfaces.ICMSContentType"
     />
 

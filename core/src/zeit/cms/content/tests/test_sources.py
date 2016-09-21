@@ -1,6 +1,6 @@
 from mock import Mock
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.lxml.objectify
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -69,7 +69,7 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
 class StorystreamReferenceTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_resolves_reference_from_source_config(self):
-        self.repository['storystream'] = TestContentType()
+        self.repository['storystream'] = ExampleContentType()
         with checked_out(self.repository['testcontent']) as co:
             co.storystreams = (zeit.cms.content.sources.StorystreamSource()(
                 None).find('test'),)

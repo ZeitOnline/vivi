@@ -16,7 +16,7 @@ Displaying references
 >>> zeit.cms.testing.set_site()
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> content.title = 'Some Article'
 >>> repository['test2'] = content
 
@@ -38,7 +38,7 @@ Displaying references
 Clean up:
 
 >>> zope.interface.classImplementsOnly(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     *old_implements)
 
 
@@ -48,7 +48,7 @@ Clean up:
     >>> import zeit.cms.content.browser.interfaces
     >>> import zeit.cms.testcontenttype.testcontenttype
     >>> old_implements = list(zope.interface.implementedBy(
-    ...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
+    ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType))
     >>> zope.interface.classImplements(
-    ...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+    ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
     ...     zeit.cms.content.browser.interfaces.IAssetViews)

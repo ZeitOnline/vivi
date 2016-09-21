@@ -45,7 +45,7 @@ We could ask for b's relations:
 >>> len(res)
 1
 >>> res
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>]
 >>> res[0].uniqueId
 u'http://xml.zeit.de/a'
 
@@ -83,7 +83,7 @@ longer reference a anyway (because we cannot find a anymore)
 .. [#none-unique-id-yields-nothing] When an object with a unique id of "None"
     is queried, nothing will be returned:
 
-    >>> no_uid = TestContentType()
+    >>> no_uid = ExampleContentType()
     >>> sorted(relations.get_relations(no_uid))
     []
 
@@ -324,12 +324,12 @@ Clean up:
 
 .. [#createtestcontent] Create some testcontent:
 
-    >>> from zeit.cms.testcontenttype.testcontenttype import TestContentType
+    >>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
-    >>> repository['a'] = TestContentType()
-    >>> repository['b'] = TestContentType()
-    >>> repository['c'] = TestContentType()
-    >>> repository['d'] = TestContentType()
+    >>> repository['a'] = ExampleContentType()
+    >>> repository['b'] = ExampleContentType()
+    >>> repository['c'] = ExampleContentType()
+    >>> repository['d'] = ExampleContentType()
 
 
 .. [#cleancatalog] Clean the catalog:

@@ -14,9 +14,9 @@ Let's mark testcontent as IDAVPropertiesInXML:
 >>> import zeit.cms.content.interfaces
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> old_implements = list(zope.interface.implementedBy(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType))
 >>> zope.interface.classImplements(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     zeit.cms.content.interfaces.IDAVPropertiesInXML)
 
 
@@ -133,7 +133,7 @@ We can now still change the values here w/o getting an error:
 Clean up:
 
 >>> zope.interface.classImplementsOnly(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     *old_implements)
 
 .. [#functional]

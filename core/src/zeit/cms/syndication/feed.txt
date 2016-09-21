@@ -97,7 +97,7 @@ Let's also add an object from the repository:
 >>> list(feed.keys())
 ['http://xml.zeit.de/testcontent', 'art3', 'art1']
 >>> list(feed)
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>,
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,
  <zeit.cms.syndication.feed.FakeEntry...>,
  <zeit.cms.syndication.feed.FakeEntry...>]
 

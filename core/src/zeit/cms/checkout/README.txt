@@ -333,7 +333,7 @@ Provoke a conflict:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content.__parent__[content.__name__] = (
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 
 Checking in is not possible just like that:
 

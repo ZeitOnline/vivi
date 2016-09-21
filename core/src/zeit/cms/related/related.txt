@@ -7,7 +7,7 @@ Content can be related. The default way is relating xml
 content[#functionaltest]_:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 
 Add content to repository:
 
@@ -40,7 +40,7 @@ The source has not changed:
 Add a related content:
 
 >>> related_content = (
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 >>> repository['related'] = related_content
 >>> related.related = (related_content, )
 
@@ -66,7 +66,7 @@ Let's have a look at the source:
 </testtype>
 
 >>> related.related
-(<zeit.cms.testcontenttype.testcontenttype.TestContentType...>,)
+(<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,)
 >>> related.related[0].uniqueId
 u'http://xml.zeit.de/related'
 
@@ -96,7 +96,7 @@ Assigning the same content object again doesn't change the xml:
 Let's add another related content:
 
 >>> related_content2 = (
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 >>> repository['related2'] = related_content2
 >>> related.related = (related_content, related_content2)
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)

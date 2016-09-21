@@ -2,7 +2,7 @@ from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import mock
@@ -118,7 +118,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
     def populate_repository_with_dummy_content(self):
         self.related = []
         for i in range(3):
-            item = TestContentType()
+            item = ExampleContentType()
             self.repository['t%s' % i] = item
             self.related.append(self.repository['t%s' % i])
 

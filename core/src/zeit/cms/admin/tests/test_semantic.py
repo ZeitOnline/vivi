@@ -1,5 +1,5 @@
 from zeit.cms.admin.interfaces import IAdjustSemanticPublish
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import datetime
 import pytz
 import zeit.cms.content.interfaces
@@ -11,7 +11,7 @@ class TestSemantic(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(TestSemantic, self).setUp()
-        self.content = TestContentType()
+        self.content = ExampleContentType()
 
     def test_adjust_semantic_publish_displays_date_last_published_semantic(
             self):
