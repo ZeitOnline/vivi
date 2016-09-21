@@ -1,6 +1,6 @@
 # coding: utf8
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.tag import Tag
 from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
@@ -23,10 +23,10 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         self.assertTrue(
             zope.interface.verify.verifyObject(
                 zeit.cms.tagging.interfaces.ITagger,
-                Tagger(TestContentType())))
+                Tagger(ExampleContentType())))
 
     def test_tagger_should_be_empty_if_not_tagged(self):
-        tagger = Tagger(TestContentType())
+        tagger = Tagger(ExampleContentType())
         self.assertEqual([], list(tagger))
 
     def test_tagger_should_get_tags_from_content(self):
@@ -90,7 +90,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('baerloen', tagger[u'☃Bärlön'].url_value)
 
     def test_getitem_should_raise_keyerror_if_tag_does_not_exist(self):
-        tagger = Tagger(TestContentType())
+        tagger = Tagger(ExampleContentType())
         self.assertRaises(KeyError, lambda: tagger['foo'])
 
     def test_iter_includes_tags_with_and_without_uuids(self):
@@ -103,13 +103,13 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual([u'☃Karen Duve', u'☃Berlin'], list(tagger))
 
     def test_setitem_should_add_tag(self):
-        tagger = Tagger(TestContentType())
+        tagger = Tagger(ExampleContentType())
         tagger[u'☃Berlin'] = Tag('Berlin', '')
         self.assertEqual([u'☃Berlin'], list(tagger))
         self.assertEqual('Berlin', tagger[u'☃Berlin'].label)
 
     def test_setitem_should_set_entity_type(self):
-        tagger = Tagger(TestContentType())
+        tagger = Tagger(ExampleContentType())
         tagger[u'☃Berlin'] = Tag(
             'Berlin', entity_type='Location')
         self.assertEqual('Location', tagger[u'Location☃Berlin'].entity_type)
