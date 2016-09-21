@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.vgwort',
-    version='2.2.7.dev0',
+    version='2.8.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -19,7 +19,7 @@ setup(
         'pytest',
         'setuptools',
         'suds',
-        'zeit.cms>=2.50.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.connector',
         'zeit.content.author',
         'zope.app.generations',
