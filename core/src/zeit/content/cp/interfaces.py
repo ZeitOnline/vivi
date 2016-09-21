@@ -253,7 +253,8 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     def values(self):
         config = zope.app.appsetup.appsetup.getConfigContext()
         if not config or config.hasFeature('zeit.retresco.tms'):
-            return (u'centerpage', u'channel', u'topicpage', u'query')
+            return (u'centerpage', u'channel', u'topicpage', u'query',
+                    u'elasticsearch-query')
         else:
             return (u'centerpage', u'channel', u'query')
 
@@ -305,6 +306,10 @@ def automatic_area_can_read_teasers_automatically(data):
         return True
 
     if data.automatic_type == 'query' and data.raw_query:
+        return True
+
+    if (data.automatic_type == 'elasticsearch-query' and
+            data.elasticsearch_raw_query):
         return True
 
     return False
@@ -430,6 +435,13 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=u'date-first-released desc',
         required=False)
 
+    elasticsearch_raw_query = zope.schema.Text(
+        title=_('Elasticsearch raw query'), required=False)
+    elasticsearch_raw_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default=u'date-first-released desc',
+        required=False)
+
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
     raw_query.setTaggedValue('placeholder', ' ')
@@ -453,6 +465,10 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
             if data.automatic_type == 'query':
                 error_message = _(
                     'Automatic area with teaser from solr query '
+                    'requires a raw query.')
+            if data.automatic_type == 'elasticsearch-query':
+                error_message = _(
+                    'Automatic area with teaser from elasticsearch query '
                     'requires a raw query.')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True

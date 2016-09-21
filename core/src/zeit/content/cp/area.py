@@ -137,6 +137,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
         use_default=True)
 
+    elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_query',
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
+    elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_order',
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
+        use_default=True)
+
     def __init__(self, context, xml):
         super(Area, self).__init__(context, xml)
         if 'hide-dupes' not in self.xml.attrib:

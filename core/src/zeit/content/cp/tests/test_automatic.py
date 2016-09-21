@@ -287,6 +287,27 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             'True', self.repository['cp.lead'].xml.get('automatic'))
 
 
+class AutomaticAreaElasticsearchTest(
+        zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutomaticAreaElasticsearchTest, self).setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'elasticsearch-query'
+
+    def test_automatic_from_elasticsearch_requires_raw_query(self):
+        self.area.elasticsearch_raw_query = None
+        with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
+            interface = zeit.content.cp.interfaces.IArea
+            interface.validateInvariants(self.area)
+        self.assertIn(
+            'Automatic area with teaser from elasticsearch query',
+            str(err.exception))
+
+
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):

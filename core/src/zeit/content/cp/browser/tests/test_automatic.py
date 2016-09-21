@@ -25,7 +25,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('Amount of teasers').value = '5'
         # XXX Why does zope.testbrowser not recognize this as a Checkbox?
         b.getControl(name='form.automatic').displayValue = ['automatic']
-        b.getControl('automatic-area-type', index=0).displayValue = ['query']
+        b.getControl('automatic-area-type', index=0).displayValue = [
+            'automatic-area-type-query']
         b.getControl('Raw query').value = 'foo'
         b.getControl('Sort order', index=1).value = 'bar'
         solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
@@ -42,6 +43,32 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 <region...count="5" automatic="True" automatic_type="query"...>...
 <raw_query>foo</raw_query>...
 <raw_order>bar</raw_order>...""",
+                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+
+    def test_stores_elasticsearch_query_properties_in_xml(self):
+        b = self.browser
+        zeit.content.cp.browser.testing.create_cp(b)
+        b.open('contents')
+        b.getLink('Edit block automatic').click()
+        b.getControl('Amount of teasers').value = '5'
+        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
+        b.getControl(name='form.automatic').displayValue = ['automatic']
+        b.getControl('automatic-area-type', index=0).displayValue = [
+            'elasticsearch-query']
+        b.getControl('Elasticsearch raw query').value = 'foo'
+        b.getControl('Sort order', index=2).value = 'bar'
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction('zope.mgr'):
+                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+                cp = list(wc.values())[0]
+                self.assertEllipsis(
+                    """\
+<region...count="5" automatic="True" automatic_type="elasticsearch-query"...>...
+<elasticsearch_raw_query>foo</elasticsearch_raw_query>...
+<elasticsearch_raw_order>bar</elasticsearch_raw_order>...""",  # noqa
                     lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_centerpage_properties_in_xml(self):
