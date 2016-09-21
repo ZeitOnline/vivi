@@ -8,10 +8,10 @@ class TestTags(zeit.retresco.testing.FunctionalTestCase,
 
     def setUp(self):
         from zeit.cms.tagging.tag import Tags
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         super(TestTags, self).setUp()
 
-        class Content(TestContentType):
+        class Content(ExampleContentType):
             tags = Tags()
         self.content = Content()
 
