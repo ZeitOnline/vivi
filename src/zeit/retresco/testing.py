@@ -97,7 +97,7 @@ class TagTestHelpers(object):
 
 
 def create_testcontent():
-    content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+    content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
     content.uniqueId = 'http://xml.zeit.de/testcontent'
     content.teaserText = 'teaser'
     content.title = 'title'
