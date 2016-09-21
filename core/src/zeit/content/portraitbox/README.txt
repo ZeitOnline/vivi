@@ -83,7 +83,7 @@ The IPortraitboxReference adapter allows referencing of portrait boxes in XML
 content:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> pb_ref = zeit.content.portraitbox.interfaces.IPortraitboxReference(
 ...     content)
 >>> repository['pb'] = pb
