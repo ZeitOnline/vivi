@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.push.interfaces
 import zeit.push.testing
@@ -9,7 +9,7 @@ import zope.component
 class MessageTest(zeit.push.testing.TestCase):
 
     def create_content(self, short_text=None):
-        content = TestContentType()
+        content = ExampleContentType()
         if short_text is not None:
             push = zeit.push.interfaces.IPushMessages(content)
             push.short_text = 'mytext'

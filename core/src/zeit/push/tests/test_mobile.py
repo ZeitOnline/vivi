@@ -158,8 +158,8 @@ class MessageTest(zeit.push.testing.TestCase):
 
     def create_content(self, image=None, **kw):
         """Create content with values given in arguments."""
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
-        content = TestContentType()
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        content = ExampleContentType()
         for key, value in kw.items():
             setattr(content, key, value)
         if image is not None:
@@ -259,9 +259,9 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
 class IntegrationTest(zeit.push.testing.TestCase):
 
     def setUp(self):
-        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         super(IntegrationTest, self).setUp()
-        content = TestContentType()
+        content = ExampleContentType()
         content.title = 'content_title'
         self.repository['content'] = content
         self.content = self.repository['content']
