@@ -7,23 +7,25 @@ import zope.component
 import zope.interface
 
 
-class ITestElement(zeit.edit.interfaces.IElement):
+class IExampleElement(zeit.edit.interfaces.IElement):
     pass
 
 
-class TestElement(zeit.edit.block.SimpleElement):
+class ExampleElement(zeit.edit.block.SimpleElement):
 
     area = zope.interface.Interface
     type = 'testelement'
-    grokcore.component.implements(ITestElement)
+    grokcore.component.implements(IExampleElement)
 
 
 class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):
 
     def test_grokking_test_element_should_register_multiadapter(self):
         import lxml.objectify
-        grokcore.component.testing.grok_component('TestElement', TestElement)
+        grokcore.component.testing.grok_component(
+            'ExampleElement', ExampleElement)
         tree = lxml.objectify.E.tree()
-        element = zope.component.getMultiAdapter(
-            (object(), tree), zeit.edit.interfaces.IElement,
-            name='testelement')
+        with self.assertNothingRaised():
+            zope.component.getMultiAdapter(
+                (object(), tree), zeit.edit.interfaces.IElement,
+                name='testelement')
