@@ -1,4 +1,4 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import mock
 import zeit.push.interfaces
 import zeit.push.testing
@@ -13,7 +13,7 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
         super(RetractBannerTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
             for name in ['homepage', 'ios-legacy', 'wrapper']:
-                content = TestContentType()
+                content = ExampleContentType()
                 self.repository[name] = content
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=name)

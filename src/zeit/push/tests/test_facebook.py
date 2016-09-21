@@ -1,5 +1,5 @@
 # coding: utf-8
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
 import gocept.testing.assertion
 import os
@@ -67,7 +67,7 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
 class FacebookMessageTest(zeit.push.testing.TestCase):
 
     def test_uses_facebook_override_text(self):
-        content = TestContentType()
+        content = ExampleContentType()
         self.repository['foo'] = content
         push = zeit.push.interfaces.IPushMessages(content)
         push.message_config = [{
@@ -81,7 +81,7 @@ class FacebookMessageTest(zeit.push.testing.TestCase):
         self.assertEqual('facebook', message.text)
 
     def test_uses_long_text_as_bbb_for_facebook_override_text(self):
-        content = TestContentType()
+        content = ExampleContentType()
         self.repository['foo'] = content
         push = zeit.push.interfaces.IPushMessages(content)
         push.long_text = 'facebook'
