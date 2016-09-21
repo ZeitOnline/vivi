@@ -4,13 +4,15 @@ var FIELDS = {
     'centerpage': 'referenced_cp',
     'channel': 'query',
     'topicpage': 'referenced_topicpage',
-    'query': 'raw_query'
+    'query': 'raw_query',
+    'elasticsearch-query': 'elasticsearch_raw_query',
 };
 
 
 var show_matching_field = function(container, current_type) {
-    $(['referenced_cp', 'query', 'referenced_topicpage', 'raw_query']).each(
-        function(i, field) {
+    $(Object.keys(FIELDS)).each(
+        function(i, key) {
+            var field = FIELDS[key];
             var method = field == FIELDS[current_type] ? 'show' : 'hide';
             var target = $('.fieldname-' + field, container).closest('fieldset');
             target[method]();
