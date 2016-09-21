@@ -67,13 +67,13 @@ class TestContainerMethodsRespectVirtualChildren(
         self.assertIn('xanten', self.folder)
 
     def test_setting_content_at_key_of_virtual_child_overwrites_it(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         content.title = 'FOO'
         self.folder['xanten'] = content
         self.assertEqual('FOO', self.folder['xanten'].title)
 
     def test_delete_materialized_content_goes_back_to_virtual(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.folder['xanten'] = content
         del self.folder['xanten']
         self.assertIn('xanten', self.folder)
@@ -109,12 +109,12 @@ class TestDynamicFolder(
 
     def test_folder_can_also_contain_normal_content(self):
         self.folder['foo'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         self.assertIn('foo', self.folder)
         self.assertIn('xanten', self.folder)
 
     def test_deleting_manual_content_reveals_virtual_content_again(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         content.title = 'FOO'
 
         self.folder['xanten'] = content
