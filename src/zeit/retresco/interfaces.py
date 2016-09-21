@@ -2,6 +2,16 @@ import zope.interface
 import zope.interface.common.sequence
 
 
+ENTITY_TYPES = (
+    'person',
+    'location',
+    'organisation',
+    'product',
+    'event',
+    'keyword',
+)
+
+
 class ITMS(zope.interface.Interface):
     """The retresco topic management system."""
 
@@ -82,11 +92,3 @@ class IBody(zope.interface.Interface):
     """
 
 
-ENTITY_TYPES = (
-    'person',
-    'location',
-    'organisation',
-    'product',
-    'event',
-    'keyword',
-)
