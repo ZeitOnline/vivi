@@ -63,9 +63,9 @@ Mark the test content type:
 >>> import zope.interface
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> old_implements = list(zope.interface.implementedBy(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType))
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType))
 >>> zope.interface.classImplements(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     zeit.vgwort.interfaces.IGenerallyReportableContent)
 
 
@@ -121,7 +121,7 @@ u'foo'
 
 Tokens are only assigned for the master object of the event:
 
->>> content2 = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content2 = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 >>> zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(
 ...     content2, content))
 >>> len(tokens)
@@ -147,7 +147,7 @@ Clean up
 Reset marker:
 
 >>> zope.interface.classImplementsOnly(
-...     zeit.cms.testcontenttype.testcontenttype.TestContentType,
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     *old_implements)
 
 
