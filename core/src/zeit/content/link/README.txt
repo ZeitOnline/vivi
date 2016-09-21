@@ -115,7 +115,7 @@ If a link is referenced as related content by another content object, the XML
 representation of that object's related content includes the target URL:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 
 >>> import zeit.cms.related.interfaces
 >>> related = zeit.cms.related.interfaces.IRelatedContent(content)

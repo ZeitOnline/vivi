@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.link',
-    version='2.1.6.dev0',
+    version='2.2.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de',
@@ -19,7 +19,7 @@ setup(
         'lxml',
         'setuptools',
         'zc.sourcefactory',
-        'zeit.cms>=2.88.0.dev0',
+        'zeit.cms>=2.90.0.dev0',
         'zeit.content.image',
         'zeit.connector',
         'zeit.push>=1.7.0.dev0',
