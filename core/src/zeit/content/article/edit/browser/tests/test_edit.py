@@ -171,6 +171,8 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
+    @unittest.skip(
+        'Selenium is not fast enough to click twice before the editor reloads')
     def test_clicking_empty_paragraph_twice_is_not_possible(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
