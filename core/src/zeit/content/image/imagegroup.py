@@ -307,6 +307,7 @@ class ImageGroup(ImageGroupBase,
           (CP editor does this): returns on-disk image.
 
         """
+        __traceback_info__ = (self.uniqueId, key)
         try:
             item = super(ImageGroup, self).__getitem__(key)
         except KeyError:
