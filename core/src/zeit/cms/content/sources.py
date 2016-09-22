@@ -509,3 +509,10 @@ class AccessSource(XMLSource):
 
     config_url = 'source-access'
     attribute = 'id'
+
+    def translate_to_c1(self, value):
+        try:
+            return self._get_tree().xpath(
+                '//type[@id = "{}"]/@c1_id'.format(value))[0]
+        except IndexError:
+            return None
