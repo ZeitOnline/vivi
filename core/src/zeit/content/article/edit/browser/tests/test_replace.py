@@ -154,7 +154,7 @@ class FindReplaceTest(
         s.refresh()
         para = 'css=.block.type-p .editable p'
         s.waitForElementPresent(para)
-        s.click(para)
+        s.clickAt(para, '0,0')
         s.waitForElementPresent('xpath=//a[@href="show_find_dialog"]')
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
