@@ -1,4 +1,8 @@
 import gocept.httpserverlayer.custom
+import json
+import mock
+import pkg_resources
+import plone.testing
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -46,8 +50,29 @@ cms_product_config = zeit.cms.testing.cms_product_config.replace(
 product_config = """
 <product-config zeit.retresco>
     base-url http://localhost:[PORT]
+    elasticsearch-url http://tms-backend.zeit.de:80/elasticsearch
 </product-config>
 """
+
+
+class ElasticsearchMockLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['elasticsearch_mocker'] = mock.patch(
+            'elasticsearch.client.Elasticsearch.search')
+        self['elasticsearch'] = self['elasticsearch_mocker'].start()
+        filename = pkg_resources.resource_filename(
+            'zeit.retresco.tests', 'elasticsearch_result.json')
+        with open(filename) as response:
+            self['elasticsearch'].return_value = json.load(response)
+
+    def tearDown(self):
+        del self['elasticsearch']
+        self['elasticsearch_mocker'].stop()
+        del self['elasticsearch_mocker']
+
+
+ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
@@ -66,6 +91,11 @@ ZCML_LAYER = ZCMLLayer(
     zeit.workflow.testing.product_config +
     zeit.content.article.testing.product_config +
     zeit.content.image.testing.product_config)
+
+
+MOCK_ZCML_LAYER = plone.testing.Layer(
+    bases=(ZCML_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockZCMLLayer',
+    module=__name__)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
