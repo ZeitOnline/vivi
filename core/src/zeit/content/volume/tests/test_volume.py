@@ -1,5 +1,9 @@
+from zeit.cms.repository.folder import Folder
+from zeit.content.volume.volume import Volume
 import lxml.etree
 import lxml.objectify
+import mock
+import pysolr
 import zeit.cms.content.sources
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
@@ -12,7 +16,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         from zeit.content.image.testing import create_image_group
         super(TestVolumeCovers, self).setUp()
         self.repository['imagegroup'] = create_image_group()
-        self.volume = zeit.content.volume.volume.Volume()
+        self.volume = Volume()
 
     def test_setattr_stores_uniqueId_in_XML_of_Volume(self):
         self.volume.covers['ipad'] = self.repository['imagegroup']
@@ -42,8 +46,6 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        from zeit.cms.repository.folder import Folder
-        from zeit.content.volume.volume import Volume
         super(TestReference, self).setUp()
         volume = Volume()
         volume.year = 2015
@@ -81,3 +83,34 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         content.product = zeit.cms.content.sources.Product(u'ZEDE')
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(content)
+
+
+class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(TestOrder, self).setUp()
+        self.create_volume(2015, 1)
+        self.create_volume(2015, 2)
+
+        self.solr = mock.Mock()
+        self.zca.patch_utility(self.solr, zeit.solr.interfaces.ISolr)
+
+    def create_volume(self, year, name):
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = name
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        year = str(year)
+        name = '%02d' % name
+        self.repository[year] = Folder()
+        self.repository[year][name] = Folder()
+        self.repository[year][name]['ausgabe'] = volume
+
+    def test_resolves_solr_result(self):
+        self.solr.search.return_value = pysolr.Results(
+            [{'uniqueId': 'http://xml.zeit.de/2015/02/ausgabe'}], 1)
+        vol1 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        vol2 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/02/ausgabe')
+        self.assertEqual(vol2, vol1.next)

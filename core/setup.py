@@ -23,6 +23,7 @@ setup(
         'zeit.cms >= 2.90.0.dev0',
         'zeit.content.article >= 3.21.1.dev0',
         'zeit.content.image',
+        'zeit.solr',
         'zope.component',
         'zope.formlib',
         'zope.interface',

@@ -63,6 +63,31 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def covers(self):
         return zeit.content.volume.interfaces.IVolumeCovers(self)
 
+    @property
+    def previous(self):
+        return self._find_in_order(None, self.date_digital_published, 'desc')
+
+    @property
+    def next(self):
+        return self._find_in_order(self.date_digital_published, None, 'asc')
+
+    def _find_in_order(self, start, end, sort):
+        # Inspired by zeit.web.core.view.Content.lineage.
+        Q = zeit.solr.query
+        query = Q.and_(
+            Q.field_raw('type', VolumeType.type),
+            Q.field('product_id', self.product.id),
+            Q.datetime_range('date_digital_published', start, end),
+            Q.not_(Q.field('uniqueId', self.uniqueId))
+        )
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        result = solr.search(query, sort='date_digital_published ' + sort,
+                             fl='uniqueId', rows=1)
+        if not result:
+            return None
+        return zeit.cms.interfaces.ICMSContent(
+            iter(result).next()['uniqueId'], None)
+
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
 
