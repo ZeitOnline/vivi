@@ -7,6 +7,7 @@ import pytz
 import requests
 import requests.exceptions
 import zeit.cms.interfaces
+import zeit.cms.result
 import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
@@ -71,7 +72,7 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages',
             params={'q': '*', 'page': int(start / rows) + 1, 'rows': rows})
-        result = zeit.cms.tagging.interfaces.Result()
+        result = zeit.cms.result.Result()
         result.hits = response['num_found']
         for row in response['docs']:
             row['id'] = zeit.cms.interfaces.normalize_filename(row['doc_id'])
@@ -82,7 +83,7 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params={'page': int(start / rows) + 1, 'rows': rows})
-        result = zeit.cms.tagging.interfaces.Result()
+        result = zeit.cms.result.Result()
         result.hits = response['num_found']
         for row in response['docs']:
             page = row['payload']
