@@ -32,5 +32,6 @@ class TestElasticsearch(unittest.TestCase):
         self.assertEqual(
             [{'uniqueId': 'http://xml.zeit.de/video/2016-07/5020444524001'},
              {'uniqueId': 'http://xml.zeit.de/zeit-magazin/2015/09/'
-                          'dinslaken-ruhrgebiet-islamischer-staat'}],
+                          'dinslaken-ruhrgebiet-islamischer-staat-'
+                          'salafismus'}],
             list(result))
