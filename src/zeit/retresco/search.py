@@ -17,6 +17,7 @@ class Elasticsearch(object):
         """Search using `query` and sort by `sort_order`."""
         query = query.copy()
         query['fields'] = ['url']
+        __traceback_info__ = query
         response = self.client.search(
             # FIXME index must be configured via product config
             # FIXME doctype = documents
