@@ -10,17 +10,25 @@ class TestElasticsearch(unittest.TestCase):
 
     layer = zeit.retresco.testing.MOCK_ZCML_LAYER
 
+    query = {
+        "query": {
+            "query_string": {
+                "query": "Salafisten"
+            }
+        }
+    }
+
     def setUp(self):
         super(TestElasticsearch, self).setUp()
         self.elasticsearch = zope.component.getUtility(IElasticsearch)
 
     def test_search_returns_a_result_object(self):
-        result = self.elasticsearch.search('asdf', 'asc', rows=2)
+        result = self.elasticsearch.search(self.query, 'title:asc', rows=2)
         self.assertTrue(IResult.providedBy(result))
         self.assertEqual(5, result.hits)
 
     def test_search_result_contains_uniqueIds(self):
-        result = self.elasticsearch.search('asdf', 'asc', rows=2)
+        result = self.elasticsearch.search(self.query, 'title:asc', rows=2)
         self.assertEqual(
             [{'uniqueId': 'http://xml.zeit.de/video/2016-07/5020444524001'},
              {'uniqueId': 'http://xml.zeit.de/zeit-magazin/2015/09/'
