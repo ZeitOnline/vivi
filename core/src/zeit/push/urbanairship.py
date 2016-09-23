@@ -39,7 +39,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
         if channels:
             audience = {
                 'or': [{'tag': channel} for channel in channels],
-                'group': 'device'
+                'group': self.config['urbanairship-audience-group']
             }
 
         # The expiration datetime must not contain microseconds, therefore we

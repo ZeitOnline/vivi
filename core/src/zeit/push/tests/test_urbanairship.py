@@ -96,10 +96,10 @@ class ConnectionTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
             self.assertEqual(
-                {'or': [{'tag': 'News'}], 'group': 'device'},
+                {'or': [{'tag': 'News'}], 'group': 'subscriptions'},
                 push.call_args_list[0][0][0].audience)
             self.assertEqual(
-                {'or': [{'tag': 'News'}], 'group': 'device'},
+                {'or': [{'tag': 'News'}], 'group': 'subscriptions'},
                 push.call_args_list[1][0][0].audience)
 
     def test_sends_to_all_devices_if_no_channels_parameter(self):
