@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -200,9 +201,20 @@ class ElasticsearchContentQuery(ContentQuery):
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
+            query = {
+                "query": {
+                    "bool": {
+                        "must": {
+                            "query_string": {
+                                "query": self.query_string
+                            }
+                        },
+                        "must_not": self.filter_query
+                    }
+                }
+            }
             response = elasticsearch.search(
-                self.query_string, self.order, start=self.start,
-                rows=self.rows)
+                query, self.order, start=self.start, rows=self.rows)
             self.total_hits = response.hits
             for item in response:
                 content = self._resolve(item)
@@ -216,6 +228,17 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def _resolve(self, item):
         return zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+
+    @property
+    def filter_query(self):
+        """Perform de-duplication of results.
+
+        Create a list of match query for teasers that already exist on the CP.
+        """
+        if not self.context.hide_dupes:
+            return []
+        return [{'match': {'url': x.uniqueId.replace(ID_NAMESPACE, '/')}}
+                for x in self.existing_teasers]
 
 
 class ChannelContentQuery(SolrContentQuery):

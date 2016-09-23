@@ -328,14 +328,18 @@ class AutomaticAreaElasticsearchTest(
         lead.elasticsearch_raw_query = 'raw'
         lead.automatic_type = 'elasticsearch-query'
         result = zeit.cms.tagging.interfaces.Result(
-            [{'uniqueId': self.repository['cp'].uniqueId}])
+            [{'uniqueId': self.repository['cp'].uniqueId},
+             {'uniqueId': 'http://xml.zeit.de/i-do-not-exist'}])
         result.hits = 4711
         self.elasticsearch.search.return_value = result
         auto = IRenderedArea(lead)
         self.assertEqual(1, len(auto.values()))
         self.assertEqual(4711, auto._content_query.total_hits)
         self.assertEqual(
-            ((u'raw', u'date-first-released desc'), dict(start=0, rows=1)),
+            (({'query': {'bool': {'must_not': [],
+                                  'must': {'query_string': {'query': u'raw'}}
+                                  }}},
+              u'date_first_released:desc'), dict(start=0, rows=1)),
             self.elasticsearch.search.call_args)
 
 
@@ -523,3 +527,28 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             'NOT (uniqueId:"http://xml.zeit.de/t2"'
             ' OR uniqueId:"http://xml.zeit.de/t1")',
             self.solr.search.call_args[1]['fq'])
+
+    def test_elasticsearch_content_query_filters_duplicates(self):
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.elasticsearch_raw_query = 'raw'
+        elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            {'query': {'bool': {'must_not': [{'match': {'url': u'/t2'}},
+                                             {'match': {'url': u'/t1'}}],
+                                'must': {'query_string': {'query': u'raw'}}}}},
+            elasticsearch.search.call_args[0][0])
+
+        # Do not filter, if switched off.
+        self.area.hide_dupes = False
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            {'query': {'bool': {'must_not': [],
+                                'must': {'query_string': {'query': u'raw'}}}}},
+            elasticsearch.search.call_args[0][0])
