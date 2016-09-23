@@ -1,6 +1,7 @@
 from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.jasmine.jasmine
 import json
+import pytest
 import requests
 import time
 import transaction
@@ -241,6 +242,7 @@ class VariantApp(gocept.jasmine.jasmine.TestApp):
         zeit.content.image.browser.resources.test_variant_js.need()
 
 
+@pytest.mark.slow
 class VariantJasmineTestCase(gocept.jasmine.jasmine.TestCase):
 
     layer = gocept.jasmine.jasmine.get_layer(VariantApp())
