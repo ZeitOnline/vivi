@@ -101,4 +101,7 @@ class IElasticsearch(zope.interface.Interface):
         query ... dictionary according to Elasticsearch Query DSL
         start ... offset in the search result.
         rows ... limit number of results.
+
+        Returns a `zeit.cms.tagging.interfaces.IResult` object, containing
+        dictionaries with the key `uniqueId`.
         """
