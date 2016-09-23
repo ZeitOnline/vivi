@@ -20,9 +20,8 @@ class Elasticsearch(object):
         __traceback_info__ = query
         response = self.client.search(
             # FIXME index must be configured via product config
-            # FIXME doctype = documents
             index='zeit_pool', body=json.dumps(query), sort=sort_order,
-            from_=start, size=rows)
+            from_=start, size=rows, doc_type='documents')
         result = zeit.cms.tagging.interfaces.Result(
             {'uniqueId': self._path_to_url(x['_source']['url'])}
             for x in response['hits']['hits'])
