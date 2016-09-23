@@ -95,9 +95,10 @@ class IBody(zope.interface.Interface):
 class IElasticsearch(zope.interface.Interface):
     """Search using the Elasticsearch service."""
 
-    def search(query_string, sort_order, start=0, rows=25):
-        """Search using `query_string` and sort by `sort_order`.
+    def search(query, sort_order, start=0, rows=25):
+        """Search using `query` and sort by `sort_order`.
 
+        query ... dictionary according to Elasticsearch Query DSL
         start ... offset in the search result.
         rows ... limit number of results.
         """

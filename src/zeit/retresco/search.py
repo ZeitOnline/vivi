@@ -1,5 +1,6 @@
-import zeit.cms.interfaces
 import elasticsearch
+import json
+import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.retresco.interfaces
 import zope.interface
@@ -12,11 +13,11 @@ class Elasticsearch(object):
     def __init__(self, url):
         self.client = elasticsearch.Elasticsearch([url])
 
-    def search(self, query_string, sort_order, start=0, rows=25):
-        """Search using `query_string` and sort by `sort_order`."""
+    def search(self, query, sort_order, start=0, rows=25):
+        """Search using `query` and sort by `sort_order`."""
         response = self.client.search(
-            index='zeit', q=query_string, sort=sort_order, from_=start,
-            size=rows)
+            index='zeit_pool', body=json.dumps(query), sort=sort_order,
+            from_=start, size=rows)
         result = zeit.cms.tagging.interfaces.Result(
             {'uniqueId': self._path_to_url(x['_source']['url'])}
             for x in response['hits']['hits'])
