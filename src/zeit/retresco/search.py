@@ -1,7 +1,7 @@
 import elasticsearch
 import json
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
+import zeit.cms.result
 import zeit.retresco.interfaces
 import zope.interface
 
@@ -23,7 +23,7 @@ class Elasticsearch(object):
         response = self.client.search(
             index=config['elasticsearch-index'], body=json.dumps(query),
             sort=sort_order, from_=start, size=rows, doc_type='documents')
-        result = zeit.cms.tagging.interfaces.Result(
+        result = zeit.cms.result.Result(
             {'uniqueId': self._path_to_url(x['_source']['url'])}
             for x in response['hits']['hits'])
         result.hits = response['hits']['total']

@@ -102,6 +102,6 @@ class IElasticsearch(zope.interface.Interface):
         start ... offset in the search result.
         rows ... limit number of results.
 
-        Returns a `zeit.cms.tagging.interfaces.IResult` object, containing
-        dictionaries with the key `uniqueId`.
+        Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
+        with the key `uniqueId`.
         """
