@@ -18,10 +18,11 @@ class Elasticsearch(object):
         query = query.copy()
         query['_source'] = 'url'
         __traceback_info__ = query
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.retresco')
         response = self.client.search(
-            # FIXME index must be configured via product config
-            index='zeit_pool', body=json.dumps(query), sort=sort_order,
-            from_=start, size=rows, doc_type='documents')
+            index=config['elasticsearch-index'], body=json.dumps(query),
+            sort=sort_order, from_=start, size=rows, doc_type='documents')
         result = zeit.cms.tagging.interfaces.Result(
             {'uniqueId': self._path_to_url(x['_source']['url'])}
             for x in response['hits']['hits'])
