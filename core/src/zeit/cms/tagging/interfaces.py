@@ -4,7 +4,6 @@ import zeit.cms.interfaces
 import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
-import zope.interface.common.sequence
 import zope.schema
 import zope.schema.interfaces
 
@@ -134,17 +133,3 @@ class ITopicpages(zope.interface.Interface):
 
         Our topic pages typically have URLs like www.zeit.de/thema/<id>.
         """
-
-
-class IResult(zope.interface.common.sequence.IReadSequence):
-    """A list of dicts, with info about the total number of entries."""
-
-    hits = zope.interface.Attribute(
-        'Number of total available entries (for pagination)')
-
-
-class Result(list):
-
-    zope.interface.implements(IResult)
-
-    hits = 0

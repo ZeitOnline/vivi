@@ -8,6 +8,7 @@ zeit.cms changes
 
 - Rename `TestContentType` to `ExampleContentType` to avoid py.test warnings.
 
+- ZON-3228: Move ``Result`` from ``zeit.cms.tagging`` to ``zeit.cms``.
 
 
 2.89.0 (2016-09-16)

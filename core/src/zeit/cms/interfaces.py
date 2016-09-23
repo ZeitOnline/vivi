@@ -6,6 +6,7 @@ import re
 import zope.app.container.interfaces
 import zope.i18nmessageid
 import zope.interface
+import zope.interface.common.sequence
 import zope.schema
 import zope.security
 
@@ -94,6 +95,13 @@ class ITypeDeclaration(zope.interface.Interface):
         title=u'Unique identifier for this type')
 
     # XXX add other attributes
+
+
+class IResult(zope.interface.common.sequence.IReadSequence):
+    """A list of dicts, with info about the total number of entries."""
+
+    hits = zope.interface.Attribute(
+        'Number of total available entries (for pagination)')
 
 
 def normalize_filename(filename):
