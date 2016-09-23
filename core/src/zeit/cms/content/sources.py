@@ -516,3 +516,5 @@ class AccessSource(XMLSource):
                 '//type[@id = "{}"]/@c1_id'.format(value))[0]
         except IndexError:
             return None
+
+ACCESS_SOURCE = AccessSource()
