@@ -50,7 +50,7 @@ cms_product_config = zeit.cms.testing.cms_product_config.replace(
 product_config = """
 <product-config zeit.retresco>
     base-url http://localhost:[PORT]
-    elasticsearch-url http://tms-backend.zeit.de:80/elasticsearch
+    elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
 </product-config>
 """
 
