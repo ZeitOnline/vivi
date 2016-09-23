@@ -16,7 +16,7 @@ class Elasticsearch(object):
     def search(self, query, sort_order, start=0, rows=25):
         """Search using `query` and sort by `sort_order`."""
         query = query.copy()
-        query['fields'] = ['url']
+        query['_source'] = 'url'
         __traceback_info__ = query
         response = self.client.search(
             # FIXME index must be configured via product config
@@ -24,7 +24,7 @@ class Elasticsearch(object):
             index='zeit_pool', body=json.dumps(query), sort=sort_order,
             from_=start, size=rows)
         result = zeit.cms.tagging.interfaces.Result(
-            {'uniqueId': self._path_to_url(x['fields']['url'][0])}
+            {'uniqueId': self._path_to_url(x['_source']['url'])}
             for x in response['hits']['hits'])
         result.hits = response['hits']['total']
         return result

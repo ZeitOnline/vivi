@@ -6,13 +6,11 @@
                     "behord"
                 ],
                 "_type": "documents",
-                "_index": "zeit_pool_20160922_103054",
-                "_score": null,
-                "fields": {
-                    "url": [
-                        "/video/2016-07/5020444524001"
-                    ]
+                "_source": {
+                    "url": "/video/2016-07/5020444524001"
                 },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
                 "_id": "AVdSEjEHwjPkPgfuSQI5"
             },
             {
@@ -20,13 +18,11 @@
                     "deutschland"
                 ],
                 "_type": "documents",
-                "_index": "zeit_pool_20160922_103054",
-                "_score": null,
-                "fields": {
-                    "url": [
-                        "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus"
-                    ]
+                "_source": {
+                    "url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus"
                 },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
                 "_id": "AVdSEuf3wjPkPgfuSQI6"
             }
         ],
@@ -38,6 +34,6 @@
         "failed": 0,
         "total": 1
     },
-    "took": 3,
+    "took": 4,
     "timed_out": false
 }
