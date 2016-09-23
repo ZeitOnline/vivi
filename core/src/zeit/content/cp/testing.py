@@ -10,7 +10,7 @@ import plone.testing
 import re
 import time
 import transaction
-import zeit.cms.tagging.interfaces
+import zeit.cms.result
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.testing
@@ -74,7 +74,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
     def testSetUp(self):
         self['elasticsearch'] = mock.Mock()
         self['elasticsearch'].search.return_value = (
-            zeit.cms.tagging.interfaces.Result())
+            zeit.cms.result.Result())
         zope.interface.alsoProvides(self['elasticsearch'],
                                     zeit.retresco.interfaces.IElasticsearch)
         zope.component.getSiteManager().registerUtility(self['elasticsearch'])
