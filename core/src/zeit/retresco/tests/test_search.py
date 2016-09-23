@@ -1,5 +1,5 @@
 from ..interfaces import IElasticsearch
-from zeit.cms.tagging.interfaces import IResult
+from zeit.cms.interfaces import IResult
 import unittest
 import zeit.retresco.testing
 import zope.component
