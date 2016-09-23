@@ -1,4 +1,5 @@
 import doctest
+import pytest
 import unittest
 import zeit.connector.connector
 import zeit.connector.testing
@@ -15,6 +16,7 @@ def test_suite():
         'uuid.txt',
     )
     real.level = 2
+    mark_doctest_suite(real, pytest.mark.slow)
     suite.addTest(real)
 
     mock = zeit.connector.testing.FunctionalDocFileSuite(
@@ -29,6 +31,7 @@ def test_suite():
         'stressing.txt',
     )
     long_running.level = 3
+    mark_doctest_suite(long_running, pytest.mark.slow)
     suite.addTest(long_running)
 
     functional = zeit.connector.testing.FunctionalDocFileSuite(
@@ -47,3 +50,11 @@ def test_suite():
         package='zeit.connector'))
 
     return suite
+
+
+def mark_doctest_suite(suite, mark):
+    # Imitate pytest magic, see _pytest.python.transfer_markers
+    for test in suite:
+        func = test.runTest.im_func
+        mark(func)
+        test.runTest = func.__get__(test)
