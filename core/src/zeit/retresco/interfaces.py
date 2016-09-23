@@ -44,7 +44,7 @@ class ITMS(zope.interface.Interface):
         """Returns an iterable of all available topicpage dicts"""
 
     def get_topicpage_documents(id, start=0, rows=25):
-        """Returns an zeit.cms.tagging.interfaces.IResult that contains dicts
+        """Returns an zeit.cms.interfaces.IResult that contains dicts
         with metadata of the content contained in the given TMS topic page.
         The dicts have the following keys:
 
