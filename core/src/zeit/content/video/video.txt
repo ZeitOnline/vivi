@@ -38,7 +38,7 @@ Videos can be edited:
 
 >>> browser.getControl('Title').value = 'Video title'
 >>> browser.getControl('Product').displayValue = ['Die Zeit']
->>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl('Ressort', index=0).displayValue = ['Deutschland']
 >>> browser.getControl(name='form.keywords').value = (
 ...     '[{"code": "tag://testtag", "pinned": false}]')
 >>> browser.getControl('Apply').click()

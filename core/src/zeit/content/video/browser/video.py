@@ -4,11 +4,13 @@ import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
+import zeit.push.browser.form
 import zope.dublincore.interfaces
 import zope.formlib.form
 
 
-class Edit(zeit.cms.browser.form.EditForm):
+class Edit(zeit.push.browser.form.SocialBase,
+           zeit.cms.browser.form.EditForm):
 
     title = _('Video')
 
@@ -43,11 +45,14 @@ class Edit(zeit.cms.browser.form.EditForm):
             ('dailyNewsletter', 'banner', 'banner_id',
              'breaking_news', 'has_recensions', 'commentsAllowed'),
             css_class='column-right checkboxes'),
+        zeit.push.browser.form.SocialBase.social_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
             ('related',),
-            'wide-widgets'),
+            css_class='wide-widgets column-left'),
+        gocept.form.grouped.RemainingFields(
+            '', css_class='column-left'),
     )
 
 
