@@ -1,9 +1,11 @@
+from datetime import datetime
 from zeit.cms.repository.folder import Folder
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import lxml.objectify
 import mock
 import pysolr
+import pytz
 import zeit.cms.content.sources
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
@@ -97,9 +99,11 @@ class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
 
     def create_volume(self, year, name):
         volume = Volume()
-        volume.year = 2015
+        volume.year = year
         volume.volume = name
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.date_digital_published = datetime(
+            year, name, 1, tzinfo=pytz.UTC)
         year = str(year)
         name = '%02d' % name
         self.repository[year] = Folder()
@@ -114,3 +118,22 @@ class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
         vol2 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/02/ausgabe')
         self.assertEqual(vol2, vol1.next)
+
+    def test_no_solr_result_returns_None(self):
+        self.solr.search.return_value = pysolr.Results([], 0)
+        vol1 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        self.assertEqual(None, vol1.next)
+        self.assertEqual(None, vol1.previous)
+
+    def test_no_publish_date_returns_None(self):
+        volume = Volume()
+        year = 2015
+        name = 1
+        volume.year = year
+        volume.volume = name
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.solr.search.return_value = pysolr.Results(
+            [{'uniqueId': 'http://xml.zeit.de/2015/02/ausgabe'}], 1)
+        self.assertEqual(None, volume.next)
+        self.assertEqual(None, volume.previous)

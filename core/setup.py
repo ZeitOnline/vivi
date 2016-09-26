@@ -18,6 +18,7 @@ setup(
         'gocept.form',
         'grokcore.component',
         'lxml',
+        'pytz',
         'setuptools',
         'zc.sourcefactory',
         'zeit.cms >= 2.90.0.dev0',
