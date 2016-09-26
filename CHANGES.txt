@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.8.0 (unreleased)
+2.2.7 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
