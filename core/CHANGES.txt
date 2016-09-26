@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.90.0 (unreleased)
+2.90.0 (2016-09-26)
 -------------------
 
 - ZON-3364: Add ``IWhitelist.locations()`` to abstract location search.
