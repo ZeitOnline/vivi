@@ -1,7 +1,7 @@
 zeit.newsletter changes
 =======================
 
-1.4.0 (unreleased)
+1.3.5 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
