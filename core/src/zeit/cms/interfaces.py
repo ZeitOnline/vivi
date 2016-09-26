@@ -104,6 +104,14 @@ class IResult(zope.interface.common.sequence.IReadSequence):
         'Number of total available entries (for pagination)')
 
 
+class Result(list):
+    """A list with additional property ``hits``."""
+
+    zope.interface.implements(IResult)
+
+    hits = 0
+
+
 def normalize_filename(filename):
     # NOTE: The master version of the algorithm is implemented in JS in
     # zeit.cms.browser.js:filename.js, keep in sync!

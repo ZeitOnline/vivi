@@ -6,9 +6,9 @@ zeit.cms changes
 
 - ZON-3364: Add ``IWhitelist.locations()`` to abstract location search.
 
-- Rename `TestContentType` to `ExampleContentType` to avoid py.test warnings.
-
 - ZON-3228: Move ``Result`` from ``zeit.cms.tagging`` to ``zeit.cms``.
+
+- Rename `TestContentType` to `ExampleContentType` to avoid py.test warnings.
 
 
 2.89.0 (2016-09-16)
