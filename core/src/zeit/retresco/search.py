@@ -17,13 +17,15 @@ class Elasticsearch(object):
     def search(self, query, sort_order, start=0, rows=25):
         """Search using `query` and sort by `sort_order`."""
         query = query.copy()
-        query['_source'] = 'url'
+        query['_source'] = ['url', 'doc_type', 'doc_id']
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
             sort=sort_order, from_=start, size=rows, doc_type='documents')
         result = zeit.cms.interfaces.Result(
-            {'uniqueId': self._path_to_url(x['_source']['url'])}
+            {'uniqueId': self._path_to_url(x['_source']['url']),
+             'doc_id': x['_source']['doc_id'],
+             'doc_type': x['_source']['doc_type']}
             for x in response['hits']['hits'])
         result.hits = response['hits']['total']
         return result

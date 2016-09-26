@@ -7,7 +7,9 @@
                 ],
                 "_type": "documents",
                 "_source": {
-                    "url": "/video/2016-07/5020444524001"
+                    "url": "/video/2016-07/5020444524001",
+                    "doc_type": "video",
+                    "doc_id": "{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"
                 },
                 "_score": null,
                 "_index": "zeit_pool_20160922_103054",
@@ -19,7 +21,9 @@
                 ],
                 "_type": "documents",
                 "_source": {
-                    "url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus"
+                    "url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus",
+                    "doc_type": "article",
+                    "doc_id": "{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"
                 },
                 "_score": null,
                 "_index": "zeit_pool_20160922_103054",

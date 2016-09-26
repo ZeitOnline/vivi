@@ -30,8 +30,12 @@ class TestElasticsearch(unittest.TestCase):
     def test_search_result_contains_uniqueIds(self):
         result = self.elasticsearch.search(self.query, 'title:asc', rows=2)
         self.assertEqual(
-            [{'uniqueId': 'http://xml.zeit.de/video/2016-07/5020444524001'},
-             {'uniqueId': 'http://xml.zeit.de/zeit-magazin/2015/09/'
+            [{'doc_id': u'{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}',
+              'doc_type': u'video',
+              'uniqueId': 'http://xml.zeit.de/video/2016-07/5020444524001'},
+             {'doc_id': u'{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}',
+              'doc_type': u'article',
+              'uniqueId': 'http://xml.zeit.de/zeit-magazin/2015/09/'
                           'dinslaken-ruhrgebiet-islamischer-staat-'
                           'salafismus'}],
             list(result))

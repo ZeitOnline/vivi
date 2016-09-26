@@ -103,5 +103,5 @@ class IElasticsearch(zope.interface.Interface):
         rows ... limit number of results.
 
         Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
-        with the key `uniqueId`.
+        with the keys `uniqueId`, `doc_id` and `doc_type`.
         """
