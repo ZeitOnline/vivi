@@ -5,9 +5,10 @@ import zeit.retresco.interfaces
 import zope.interface
 
 
-@zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
 class Elasticsearch(object):
     """Search via Elasticsearch."""
+
+    zope.interface.implements(zeit.retresco.interfaces.IElasticsearch)
 
     def __init__(self, url):
         self.client = elasticsearch.Elasticsearch([url])
