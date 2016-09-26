@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.2.0 (unreleased)
+2.1.6 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
