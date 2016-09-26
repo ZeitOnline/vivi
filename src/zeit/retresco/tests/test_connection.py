@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from zeit.cms.result import Result
+from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
 import json
 import lxml.builder
