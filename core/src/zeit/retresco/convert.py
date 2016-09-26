@@ -162,8 +162,7 @@ class CommonMetadata(Converter):
             'storystreams': [x.centerpage_id
                              for x in self.context.storystreams],
         }
-        self._copy_properties(result)
-        return result
+        return self._copy_properties(result)
 
 
 class PublishInfo(Converter):
@@ -194,8 +193,7 @@ class PublishInfo(Converter):
                 'date_last_semantic_change': lsc,
             }
         }
-        self._copy_properties(result)
-        return result
+        return self._copy_properties(result)
 
 
 class ImageReference(Converter):
@@ -305,8 +303,7 @@ class Volume(Converter):
                 'product_id': self.context.product and self.context.product.id,
             }
         }
-        self._copy_properties(result)
-        return result
+        return self._copy_properties(result)
 
 
 class CMSSearch(Converter):
