@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-2.1.0 (unreleased)
+2.0.7 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
