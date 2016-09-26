@@ -7,8 +7,6 @@ zeit.retresco changes
 
 - ZON-3364: Implement ``IWhitelist.locations()`` via TMS-API.
 
-- Update to `zeit.cms >= 2.90`.
-
 - ZON-3163: Implement the ``IElasticsearch`` utility.
 
 
