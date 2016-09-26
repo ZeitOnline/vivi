@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.15.6 (unreleased)
+1.16.0 (2016-09-26)
 -------------------
 
 - MAINT: Change audience group for Urban Airship to ``subscriptions`` by making

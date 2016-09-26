@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.push',
-    version='1.15.6.dev0',
+    version='1.16.0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
