@@ -10,18 +10,17 @@ class Elasticsearch(object):
 
     zope.interface.implements(zeit.retresco.interfaces.IElasticsearch)
 
-    def __init__(self, url):
+    def __init__(self, url, index):
         self.client = elasticsearch.Elasticsearch([url])
+        self.index = index
 
     def search(self, query, sort_order, start=0, rows=25):
         """Search using `query` and sort by `sort_order`."""
         query = query.copy()
         query['_source'] = 'url'
-        __traceback_info__ = query
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.retresco')
+        __traceback_info__ = (self.index, query)
         response = self.client.search(
-            index=config['elasticsearch-index'], body=json.dumps(query),
+            index=self.index, body=json.dumps(query),
             sort=sort_order, from_=start, size=rows, doc_type='documents')
         result = zeit.cms.interfaces.Result(
             {'uniqueId': self._path_to_url(x['_source']['url'])}
@@ -37,4 +36,5 @@ class Elasticsearch(object):
 def from_product_config():
     """Get the utility configured with data from the product config."""
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-    return Elasticsearch(config['elasticsearch-url'])
+    return Elasticsearch(config['elasticsearch-url'],
+                         config['elasticsearch-index'])
