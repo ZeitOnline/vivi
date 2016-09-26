@@ -7,8 +7,6 @@ zeit.retresco changes
 
 - ZON-3364: Implement ``IWhitelist.locations()`` via TMS-API.
 
-- Update to `zeit.cms >= 2.90`.
-
 
 1.5.0 (2016-09-16)
 ------------------
