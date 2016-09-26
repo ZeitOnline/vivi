@@ -4,7 +4,6 @@ import lxml.etree
 import mock
 import pysolr
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -327,7 +326,7 @@ class AutomaticAreaElasticsearchTest(
         lead.automatic = True
         lead.elasticsearch_raw_query = 'raw'
         lead.automatic_type = 'elasticsearch-query'
-        result = zeit.cms.tagging.interfaces.Result(
+        result = zeit.cms.interfaces.Result(
             [{'uniqueId': self.repository['cp'].uniqueId},
              {'uniqueId': 'http://xml.zeit.de/i-do-not-exist'}])
         result.hits = 4711
@@ -358,7 +357,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
         self.tms.get_topicpage_documents.return_value = (
-            zeit.cms.tagging.interfaces.Result())
+            zeit.cms.interfaces.Result())
         IRenderedArea(lead).values()
         self.assertEqual(
             'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
