@@ -127,7 +127,7 @@ class ICommonMetadata(zope.interface.Interface):
     access = zope.schema.Choice(
         title=_('Access'),
         default=u'free',
-        source=zeit.cms.content.sources.AccessSource())
+        source=zeit.cms.content.sources.ACCESS_SOURCE)
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
