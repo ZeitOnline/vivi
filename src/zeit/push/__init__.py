@@ -16,6 +16,7 @@ product_config = """\
   parse-channel-breaking Eilmeldung
   parse-channel-news News
   parse-image-pattern 184x84
+  urbanairship-audience-group subscriptions
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
