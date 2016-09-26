@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.2.0 (unreleased)
+1.2.0 (2016-09-26)
 ------------------
 
 - ZON-3362: Implement ``previous`` and ``next`` using solr.
