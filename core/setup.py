@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.addcentral',
-    version='1.2.0.dev0',
+    version='1.1.6',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='https://www.zeit.de/',
