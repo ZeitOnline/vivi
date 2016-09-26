@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.23.0 (unreleased)
+1.22.13 (2016-09-26)
 --------------------
 
 - Update to `zeit.cms >= 2.90`.
