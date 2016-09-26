@@ -178,6 +178,11 @@ class TestDynamicFolder(
     def test_converts_xml_attribute_nodes_into_dav_properties(self):
         self.assertEqual('Deutschland', self.folder['xanten'].ressort)
 
+    def test_does_not_copy_uuid_of_template_into_content(self):
+        self.assertNotEqual(
+            '{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}',
+            zeit.cms.content.interfaces.IUUID(self.folder['xanten']).id)
+
     def test_checkout_preserves_dav_properties_from_xml(self):
         # We need a DAV property that is handled by a separate adapter to see
         # the effect, since direct DAV properties are directly copied to XML,

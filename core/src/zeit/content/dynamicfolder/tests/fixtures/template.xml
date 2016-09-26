@@ -2,6 +2,7 @@
   <head>
      <attribute name="ressort" ns="http://namespaces.zeit.de/CMS/document">Deutschland</attribute>
      <attribute name="html-meta-title" ns="http://namespaces.zeit.de/CMS/document">seo-title</attribute>
+     <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}</attribute>
      <attribute name="provides" ns="http://namespaces.zeit.de/CMS/meta">&lt;pickle&gt;
  &lt;initialized_object&gt;
  &lt;klass&gt;

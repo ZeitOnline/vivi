@@ -286,6 +286,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         attributes = body.xpath('//head/attribute')
         for attr in attributes:
             properties[attr.get('name'), attr.get('ns')] = attr.text or ''
+        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         return properties
 
 
