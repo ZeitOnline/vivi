@@ -2,6 +2,12 @@ zeit.retresco changes
 =====================
 
 
+1.6.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.6.0 (2016-09-26)
 ------------------
 
