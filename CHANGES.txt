@@ -2,7 +2,7 @@ zeit.magazin changes
 ====================
 
 
-1.5.0 (unreleased)
+1.4.2 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
