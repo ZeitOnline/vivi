@@ -39,3 +39,8 @@ class TestElasticsearch(unittest.TestCase):
                           'dinslaken-ruhrgebiet-islamischer-staat-'
                           'salafismus'}],
             list(result))
+
+    def test_search_result_may_contain_payload_fields(self):
+        result = self.elasticsearch.search(
+            self.query, 'title:asc', rows=2, include_payload=True)
+        self.assertIn(('supertitle', 'Islamismus'), result[0].items())
