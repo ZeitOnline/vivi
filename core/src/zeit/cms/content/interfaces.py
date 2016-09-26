@@ -344,7 +344,10 @@ class IProduct(zope.interface.Interface):
     volume = zope.interface.Attribute('Boolean: has print volumes')
     location = zope.interface.Attribute(
         'uniqueId template of the IVolumes of this product, '
-        'e.g. http://xml.zeit.de/ausgabe/{year}/{name}')
+        'e.g. http://xml.zeit.de/{year}/{name}/ausgabe')
+    centerpage = zope.interface.Attribute(
+        'uniqueId template for the public-facing CP of this product, '
+        'e.g. http://xml.zeit.de/{year}/{name}/index')
     autochannel = zope.interface.Attribute(
         'Set false to suppress setting channel on ressort changes')
 

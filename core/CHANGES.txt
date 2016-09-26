@@ -8,6 +8,8 @@ zeit.cms changes
 
 - ZON-3228: Move ``Result`` from ``zeit.cms.tagging`` to ``zeit.cms``.
 
+- ZON-3362: Add ``IProduct.centerpage`` uniqueId template.
+
 - Rename `TestContentType` to `ExampleContentType` to avoid py.test warnings.
 
 

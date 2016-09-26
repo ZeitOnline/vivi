@@ -318,7 +318,8 @@ class Product(object):
 
     def __init__(self, id=None, title=None, vgwortcode=None,
                  href=None, target=None, label=None, show=None,
-                 volume=None, location=None, autochannel=True):
+                 volume=None, location=None, centerpage=None,
+                 autochannel=True):
         self.id = id
         self.title = title
         self.vgwortcode = vgwortcode
@@ -328,6 +329,7 @@ class Product(object):
         self.show = show
         self.volume = volume
         self.location = location
+        self.centerpage = centerpage
         self.autochannel = autochannel
 
     def __eq__(self, other):
@@ -351,6 +353,7 @@ class ProductSource(SimpleContextualXMLSource):
                         unicode_or_none(node.get('show')),
                         node.get('volume', '').lower() == 'true',
                         unicode_or_none(node.get('location')),
+                        unicode_or_none(node.get('centerpage')),
                         node.get('autochannel', '').lower() != 'false',
                         )
                 for node in tree.iterchildren('*')]
