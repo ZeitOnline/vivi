@@ -67,8 +67,8 @@ class SolrMockLayer(plone.testing.Layer):
 SOLR_MOCK_LAYER = SolrMockLayer()
 
 
-# We cannot use a layer from zeit.retresco.testing because importing that
-# would create an import cycle with zeit.content.article.testing, sigh.
+# We do not want to use a layer from zeit.retresco.testing because we want to
+# mock the whole utility and not only the connection to Elasticsearch.
 class ElasticsearchMockLayer(plone.testing.Layer):
 
     def testSetUp(self):
