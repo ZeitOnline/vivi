@@ -300,15 +300,6 @@ class AutomaticAreaElasticsearchTest(
         self.elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
-    def test_automatic_from_elasticsearch_requires_raw_query(self):
-        self.area.elasticsearch_raw_query = None
-        with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
-            interface = zeit.content.cp.interfaces.IArea
-            interface.validateInvariants(self.area)
-        self.assertIn(
-            'Automatic area with teaser from elasticsearch query',
-            str(err.exception))
-
     def test_it_returns_no_content_on_elasticsearch_error(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
@@ -411,22 +402,6 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             u'http://xml.zeit.de/t2',
             u'http://xml.zeit.de/t3'],
             [x.uniqueId for x in content])
-
-    def test_automatic_from_centerpage_requires_referenced_centerpage(self):
-        self.area.referenced_cp = None
-        with self.assertRaises(zeit.cms.interfaces.ValidationError):
-            interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = pysolr.Results([], 0)
-            interface.validateInvariants(self.area)
-
-    def test_automatic_using_solr_requires_no_referenced_centerpage(self):
-        self.area.referenced_cp = None
-        self.area.automatic_type = 'query'
-        self.area.raw_query = 'foo'
-        with self.assertNothingRaised():
-            interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = pysolr.Results([], 0)
-            interface.validateInvariants(self.area)
 
 
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
