@@ -4,16 +4,14 @@ zeit.push changes
 1.15.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Change audience group for Urban Airship to ``subscriptions`` by making
+  it configurable via product config.
 
 
 1.15.5 (2016-09-26)
 -------------------
 
 - Update to `zeit.cms >= 2.90`.
-
-- MAINT: Change audience group for Urban Airship to ``subscriptions`` by making
-  it configurable via product config.
 
 
 1.15.4 (2016-09-14)
