@@ -302,7 +302,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.referenced_topicpage = 'tms-id'
         lead.automatic_type = 'topicpage'
         self.tms.get_topicpage_documents.return_value = (
-            zeit.cms.tagging.interfaces.Result())
+            zeit.cms.interfaces.Result())
         IRenderedArea(lead).values()
         self.assertEqual(
             'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
