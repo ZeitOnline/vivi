@@ -1,6 +1,8 @@
 import lxml.etree
 import lxml.objectify
 import zeit.cms.content.sources
+import zeit.cms.interfaces
+import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
 import zeit.content.volume.volume
@@ -81,3 +83,26 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         content.product = zeit.cms.content.sources.Product(u'ZEDE')
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(content)
+
+
+class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
+
+    def setUp(self):
+        from zeit.cms.repository.folder import Folder
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+        from zeit.content.volume.volume import Volume
+        super(TestVolume, self).setUp()
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.repository['2015'] = Folder()
+        self.repository['2015']['01'] = Folder()
+        self.repository['2015']['01']['ausgabe'] = volume
+        self.repository['2015']['01']['index'] = ExampleContentType()
+
+    def test_looks_up_centerpage_from_product_setting(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        cp = zeit.content.cp.interfaces.ICenterPage(volume)
+        self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)

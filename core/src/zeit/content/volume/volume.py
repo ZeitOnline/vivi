@@ -7,6 +7,7 @@ import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
 import zeit.workflow.interfaces
 import zope.interface
@@ -151,6 +152,17 @@ def retrieve_volume_using_info_from_metadata(context):
             context.product.location is None):
         return None
     uniqueId = context.product.location.format(
+        year=context.year,
+        name=str(context.volume).rjust(2, '0'))
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
+@grok.adapter(zeit.content.volume.interfaces.IVolume)
+@grok.implementer(zeit.content.cp.interfaces.ICenterPage)
+def retrieve_corresponding_centerpage(context):
+    if context.product is None or context.product.centerpage is None:
+        return None
+    uniqueId = context.product.centerpage.format(
         year=context.year,
         name=str(context.volume).rjust(2, '0'))
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
