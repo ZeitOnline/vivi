@@ -7,6 +7,9 @@ zeit.content.volume changes
 
 - ZON-3362: Implement ``previous`` and ``next`` using solr.
 
+- ZON-3362: Allow adapting ``IVolume`` to ``ICenterPage`` to find the
+  corresponding index page.
+
 
 1.1.1 (2016-09-07)
 ------------------
