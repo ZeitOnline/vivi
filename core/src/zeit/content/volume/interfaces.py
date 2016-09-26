@@ -48,6 +48,12 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     covers = zope.interface.Attribute(
         'Convenience method to adapt to IVolumeCovers')
 
+    previous = zope.interface.Attribute(
+        'The previous IVolume object (by date_digital_published) or None')
+
+    next = zope.interface.Attribute(
+        'The next IVolume object (by date_digital_published) or None')
+
 
 class VolumeSource(zeit.cms.content.contentsource.CMSContentSource):
 
