@@ -95,12 +95,13 @@ class IBody(zope.interface.Interface):
 class IElasticsearch(zope.interface.Interface):
     """Search using the Elasticsearch service."""
 
-    def search(query, sort_order, start=0, rows=25):
+    def search(query, sort_order, start=0, rows=25, include_payload=False):
         """Search using `query` and sort by `sort_order`.
 
         query ... dictionary according to Elasticsearch Query DSL
         start ... offset in the search result.
         rows ... limit number of results.
+        include_payload ... mix the `payload` dict into the results
 
         Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
         with the keys `uniqueId`, `doc_id` and `doc_type`.

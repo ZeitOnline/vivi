@@ -14,21 +14,29 @@ class Elasticsearch(object):
         self.client = elasticsearch.Elasticsearch([url])
         self.index = index
 
-    def search(self, query, sort_order, start=0, rows=25):
+    def search(
+            self, query, sort_order, start=0, rows=25, include_payload=False):
         """Search using `query` and sort by `sort_order`."""
         query = query.copy()
         query['_source'] = ['url', 'doc_type', 'doc_id']
+        if include_payload:
+            query['_source'].append('payload')
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
             sort=sort_order, from_=start, size=rows, doc_type='documents')
-        result = zeit.cms.interfaces.Result(
-            {'uniqueId': self._path_to_url(x['_source']['url']),
-             'doc_id': x['_source']['doc_id'],
-             'doc_type': x['_source']['doc_type']}
-            for x in response['hits']['hits'])
-        result.hits = response['hits']['total']
-        return result
+        results = []
+        for hit in response['hits']['hits']:
+            source = hit['_source']
+            result = {'uniqueId': self._path_to_url(source['url']),
+                      'doc_id': source['doc_id'],
+                      'doc_type': source['doc_type']}
+            if include_payload:
+                result.update(source['payload'])
+            results.append(result)
+        search_result = zeit.cms.interfaces.Result(results)
+        search_result.hits = response['hits']['total']
+        return search_result
 
     def _path_to_url(self, path):
         return path.replace('/', zeit.cms.interfaces.ID_NAMESPACE, 1)
