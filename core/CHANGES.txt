@@ -2,18 +2,16 @@ zeit.content.cp changes
 =======================
 
 
-3.11.2 (unreleased)
+3.12.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3163: Add ability to use Elasticsearch for Autopilot.
 
 
 3.11.1 (2016-09-26)
 -------------------
 
 - Update to `zeit.cms >= 2.90`.
-
-- ZON-3163: Add ability to use Elasticsearch for Autopilot.
 
 
 3.11.0 (2016-09-14)
