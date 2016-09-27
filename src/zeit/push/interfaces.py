@@ -231,7 +231,7 @@ facebookAccountSource = FacebookAccountSource()
 
 
 class IAccountData(zope.interface.Interface):
-    """Convenicence acess to IPushMessages.message_config entries"""
+    """Convenience access to IPushMessages.message_config entries"""
 
     facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'))
     facebook_main_text = zope.schema.Text(
