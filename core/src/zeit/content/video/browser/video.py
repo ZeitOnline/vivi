@@ -1,3 +1,4 @@
+import zope.formlib.form
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
@@ -54,6 +55,12 @@ class Edit(zeit.push.browser.form.SocialBase,
         gocept.form.grouped.RemainingFields(
             '', css_class='column-left'),
     )
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        self.applyAccountData(self.context, data)
+        super(Edit, self).handle_edit_action.success(data)
 
 
 class Thumbnail(zeit.cms.browser.view.Base):
