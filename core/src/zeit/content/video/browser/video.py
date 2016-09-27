@@ -1,12 +1,13 @@
-import zope.formlib.form
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
+import copy
 import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
 import zeit.push.browser.form
 import zope.dublincore.interfaces
+import zope.formlib.form
 import zope.formlib.form
 
 
@@ -29,6 +30,11 @@ class VideoBase(zeit.push.browser.form.SocialBase):
         'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'flv_url', 'authorships')
 
+    social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
+    social_fields_list = list(social_fields.fields)
+    social_fields_list.remove('bigshare_buttons')
+    social_fields.fields = tuple(social_fields_list)
+
     field_groups = (
         gocept.form.grouped.Fields(
             _("Texts"),
@@ -43,7 +49,7 @@ class VideoBase(zeit.push.browser.form.SocialBase):
             ('dailyNewsletter', 'banner', 'banner_id',
              'breaking_news', 'has_recensions', 'commentsAllowed'),
             css_class='column-right checkboxes'),
-        zeit.push.browser.form.SocialBase.social_fields,
+        social_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
