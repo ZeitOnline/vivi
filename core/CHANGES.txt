@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.7.0 (unreleased)
+2.7.0 (2016-09-27)
 ------------------
 
 - ZON-3278: Allow to share video via social media.
