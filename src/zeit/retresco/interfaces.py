@@ -2,6 +2,16 @@ import zope.interface
 import zope.interface.common.sequence
 
 
+ENTITY_TYPES = (
+    'person',
+    'location',
+    'organisation',
+    'product',
+    'event',
+    'keyword',
+)
+
+
 class ITMS(zope.interface.Interface):
     """The retresco topic management system."""
 
@@ -34,7 +44,7 @@ class ITMS(zope.interface.Interface):
         """Returns an iterable of all available topicpage dicts"""
 
     def get_topicpage_documents(id, start=0, rows=25):
-        """Returns an zeit.cms.tagging.interfaces.IResult that contains dicts
+        """Returns an zeit.cms.interfaces.IResult that contains dicts
         with metadata of the content contained in the given TMS topic page.
         The dicts have the following keys:
 
@@ -82,11 +92,17 @@ class IBody(zope.interface.Interface):
     """
 
 
-ENTITY_TYPES = (
-    'person',
-    'location',
-    'organisation',
-    'product',
-    'event',
-    'keyword',
-)
+class IElasticsearch(zope.interface.Interface):
+    """Search using the Elasticsearch service."""
+
+    def search(query, sort_order, start=0, rows=25, include_payload=False):
+        """Search using `query` and sort by `sort_order`.
+
+        query ... dictionary according to Elasticsearch Query DSL
+        start ... offset in the search result.
+        rows ... limit number of results.
+        include_payload ... mix the `payload` dict into the results
+
+        Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
+        with the keys `uniqueId`, `doc_id` and `doc_type`.
+        """
