@@ -1,3 +1,4 @@
+import plone.testing
 import gocept.selenium
 import logging
 import zeit.cms.testing
@@ -33,24 +34,34 @@ class MobilePushNotifier(PushNotifier):
         return 'News'
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
+BASE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
     zeit.push.product_config
     + zeit.cms.testing.cms_product_config
     + zeit.workflow.testing.product_config
     + zeit.content.article.testing.product_config))
 
 
-class TestCase(zeit.cms.testing.FunctionalTestCase):
+class PushMockLayer(plone.testing.Layer):
+    """Helper layer to reset mock notifiers."""
 
-    layer = ZCML_LAYER
-
-    def setUp(self):
-        super(TestCase, self).setUp()
+    def testSetUp(self):
         for service in ['parse', 'urbanairship', 'twitter', 'facebook',
                         'homepage', 'ios-legacy', 'wrapper']:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
+
+PUSH_MOCK_LAYER = PushMockLayer()
+
+ZCML_LAYER = plone.testing.Layer(
+    bases=(BASE_ZCML_LAYER, PUSH_MOCK_LAYER),
+    name='ZCMLPushMockLayer',
+    module=__name__)
+
+
+class TestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZCML_LAYER
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
