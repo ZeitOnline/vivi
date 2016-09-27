@@ -39,8 +39,9 @@ class APIConnection(object):
         return json.loads(text.translate(RESTRICTED_CHARACTERS_MAP))
 
     def post(self, command, **kwargs):
-        if self.write_token == 'invalid':
+        if self.write_token == 'disabled':
             log.info('POST %s disabled, no write token configured', command)
+            return
         params = dict(
             (key, value) for key, value in kwargs.items() if key and value)
         params['token'] = self.write_token

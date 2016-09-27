@@ -6,6 +6,8 @@ zeit.brightcove changes
 
 - Update to `zeit.cms >= 2.90`.
 
+- Fix `APIConnection.post()` for ``disabled`` write tokens.
+
 
 2.8.2 (2016-09-14)
 ------------------
