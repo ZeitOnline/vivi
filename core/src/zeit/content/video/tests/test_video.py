@@ -1,5 +1,4 @@
 import lxml.objectify
-import mock
 import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
