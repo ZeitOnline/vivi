@@ -1,0 +1,112 @@
+{
+    "hits": {
+        "hits": [
+            {
+                "sort": [
+                    "behord"
+                ],
+                "_type": "documents",
+                "_source": {
+                    "url": "/video/2016-07/5020444524001",
+                    "doc_type": "video",
+                    "doc_id": "{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}",
+                    "payload": {
+                        "subtitle": "Etwa 60 radikalislamische Gemeinschaften mit insgesamt mehreren Tausemd Mitgliedern befinden sich laut Beh\u00f6rdenangaben in Bosnien. Davon ziehen j\u00e4hrlich mehrere Mitglieder in den Irak und nach Syrien in den Krieg.",
+                        "date_last_modified": "2016-07-04T16:12:20Z",
+                        "cms_preview_url": "http://brightcove.vo.llnwd.net/v1/unsecured/media/18140073001/201607/2321/18140073001_5020462889001_5020444524001-th.jpg?pubId=18140073001",
+                        "channels": [],
+                        "year": 2016,
+                        "date_last_semantic_change": "2016-07-04T15:51:36Z",
+                        "title": "Bosnische Beh\u00f6rden besorgt \u00fcber Salafisten",
+                        "cms_icon": "/@@/zeit-content-video-interfaces-IVideo-zmi_icon.gif",
+                        "date_last_published": "2016-07-04T16:12:20Z",
+                        "author_names": [],
+                        "teaser_text": "Etwa 60 radikalislamische Gemeinschaften mit insgesamt mehreren Tausemd Mitgliedern befinden sich laut Beh\u00f6rdenangaben in Bosnien. Davon ziehen j\u00e4hrlich mehrere Mitglieder in den Irak und nach Syrien in den Krieg.",
+                        "date_last_published_semantic": "2016-07-04T16:12:20Z",
+                        "ressort": "Gesellschaft",
+                        "authors": [],
+                        "date_first_released": "2016-07-04T13:56:12Z",
+                        "allow_comments": true,
+                        "storystreams": [],
+                        "publish_status": "published",
+                        "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fvideo%2F2016-07%2F5020444524001",
+                        "supertitle": "Islamismus",
+                        "published": true,
+                        "teaser_title": "Bosnische Beh\u00f6rden besorgt \u00fcber Salafisten"
+                    }
+                },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
+                "_id": "AVdSEjEHwjPkPgfuSQI5"
+            },
+            {
+                "sort": [
+                    "deutschland"
+                ],
+                "_type": "documents",
+                "_source": {
+                    "url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus",
+                    "doc_type": "article",
+                    "doc_id": "{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}",
+                    "payload": {
+                        "subtitle": "Unser Reporter Moritz von Uslar berichtet in dieser Kolumne aus dem deutschen Alltag. Folge 7: Die Gemeinde Dinslaken-Lohberg im Ruhrgebiet gilt als ein Zentrum des deutschen Salafismus. Wie konnte diese Parallelgesellschaft mitten in Deutschland entstehen?",
+                        "date_last_modified": "2015-03-18T23:53:36Z",
+                        "cms_preview_url": "",
+                        "push_news": false,
+                        "sub_ressort": "leben",
+                        "channels": [
+                            "zeit-magazin leben"
+                        ],
+                        "storystreams": [],
+                        "teaser_image": "http://xml.zeit.de/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islsmischer-staat/",
+                        "year": 2015,
+                        "date_last_published": "2015-03-18T23:54:35Z",
+                        "article_header": "briefmarke",
+                        "teaser_supertitle": "Morgens halb zehn in Deutschland",
+                        "date_last_semantic_change": "2015-03-17T08:46:06Z",
+                        "title": "Morgens halb zehn in Deutschland",
+                        "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
+                        "article_template": "article",
+                        "author_names": [
+                            "Moritz von Uslar"
+                        ],
+                        "date_print_published": "2015-02-26T06:00:00Z",
+                        "teaser_text": "Die Gemeinde Dinslaken-Lohberg gilt als ein Zentrum des deutschen Salafismus. Wie konnte diese Parallelgesellschaft entstehen? Moritz von Uslar sucht nach Antworten.",
+                        "date_last_published_semantic": "2015-03-17T08:46:23Z",
+                        "show_comments": true,
+                        "ressort": "zeit-magazin",
+                        "volume": 9,
+                        "serie": "Morgens halb zehn in Deutschland",
+                        "authors": [
+                            "http://xml.zeit.de/autoren/U/Moritz_Uslarvon/index"
+                        ],
+                        "print_ressort": "zeitmagazin",
+                        "date_first_released": "2015-03-17T08:45:58Z",
+                        "allow_comments": true,
+                        "product_id": "ZMLB",
+                        "lead_candidate": false,
+                        "publish_status": "published",
+                        "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fzeit-magazin%2F2015%2F09%2Fdinslaken-ruhrgebiet-islamischer-staat-salafismus",
+                        "range": 52,
+                        "supertitle": "Dinslaken",
+                        "published": true,
+                        "teaser_title": "Ein Ort in Schrittgeschwindigkeit",
+                        "page": 30
+                    }
+                },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
+                "_id": "AVdSEuf3wjPkPgfuSQI6"
+            }
+        ],
+        "total": 5,
+        "max_score": null
+    },
+    "_shards": {
+        "successful": 1,
+        "failed": 0,
+        "total": 1
+    },
+    "took": 4,
+    "timed_out": false
+}

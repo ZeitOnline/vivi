@@ -8,6 +8,7 @@
     <grok:grok package="." />
 
     <utility factory=".connection.from_product_config" />
+    <utility factory=".search.from_product_config" />
 
     <class class=".tagger.Tagger">
       <require
