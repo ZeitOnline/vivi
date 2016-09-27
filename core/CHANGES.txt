@@ -4,15 +4,13 @@ zeit.brightcove changes
 2.8.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Really disable writing for ``disabled`` write tokens.
 
 
 2.8.3 (2016-09-26)
 ------------------
 
 - Update to `zeit.cms >= 2.90`.
-
-- Fix `APIConnection.post()` for ``disabled`` write tokens.
 
 
 2.8.2 (2016-09-14)
