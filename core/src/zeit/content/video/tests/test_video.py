@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import lxml.objectify
-import mock
 import pytest
 import unittest
 import zeit.cms.content.interfaces
