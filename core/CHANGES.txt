@@ -1,10 +1,10 @@
 zeit.push changes
 =================
 
-1.16.1 (unreleased)
+1.17.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3278: Refactor test infrastructure to make mock notifiers reusable.
 
 
 1.16.0 (2016-09-26)
