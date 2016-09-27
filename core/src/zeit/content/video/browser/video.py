@@ -10,10 +10,7 @@ import zope.dublincore.interfaces
 import zope.formlib.form
 
 
-class Edit(zeit.push.browser.form.SocialBase,
-           zeit.cms.browser.form.EditForm):
-
-    title = _('Video')
+class VideoBase(zeit.push.browser.form.SocialBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
@@ -56,11 +53,23 @@ class Edit(zeit.push.browser.form.SocialBase,
             '', css_class='column-left'),
     )
 
+
+class Edit(VideoBase,
+           zeit.cms.browser.form.EditForm):
+
+    title = _('Video')
+
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         self.applyAccountData(self.context, data)
         super(Edit, self).handle_edit_action.success(data)
+
+
+class Display(VideoBase,
+              zeit.cms.browser.form.DisplayForm):
+
+    title = _('Video')
 
 
 class Thumbnail(zeit.cms.browser.view.Base):
