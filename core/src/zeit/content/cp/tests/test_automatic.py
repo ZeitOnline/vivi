@@ -329,7 +329,8 @@ class AutomaticAreaElasticsearchTest(
             (({'query': {'bool': {'must_not': [],
                                   'must': {'query_string': {'query': u'raw'}}
                                   }}},
-              u'date_first_released:desc'), dict(start=0, rows=1)),
+              u'date_first_released:desc'),
+             dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
 

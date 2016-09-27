@@ -190,6 +190,8 @@ class ElasticsearchContentQuery(ContentQuery):
 
     grok.name('elasticsearch-query')
 
+    include_payload = False  # Extension point for zeit.web and its LazyProxy.
+
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query_string = self.context.elasticsearch_raw_query
@@ -214,7 +216,8 @@ class ElasticsearchContentQuery(ContentQuery):
                 }
             }
             response = elasticsearch.search(
-                query, self.order, start=self.start, rows=self.rows)
+                query, self.order, start=self.start, rows=self.rows,
+                include_payload=self.include_payload)
             self.total_hits = response.hits
             for item in response:
                 content = self._resolve(item)
