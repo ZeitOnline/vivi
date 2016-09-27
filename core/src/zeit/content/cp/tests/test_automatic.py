@@ -4,7 +4,6 @@ import lxml.etree
 import mock
 import pysolr
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -287,6 +286,54 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             'True', self.repository['cp.lead'].xml.get('automatic'))
 
 
+class AutomaticAreaElasticsearchTest(
+        zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutomaticAreaElasticsearchTest, self).setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.cp['feature'].create_item('area')
+        self.area.count = 3
+        self.area.automatic = True
+        self.area.automatic_type = 'elasticsearch-query'
+        self.repository['cp'] = self.cp
+        self.elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+
+    def test_it_returns_no_content_on_elasticsearch_error(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = 'raw'
+        lead.automatic_type = 'elasticsearch-query'
+        self.elasticsearch.search.side_effect = RuntimeError('provoked')
+        auto = IRenderedArea(lead)
+        self.assertEqual(0, len(auto.values()))
+        self.assertEqual(0, auto._content_query.total_hits)
+
+    def test_it_returns_content_objects_provided_by_elasticsearch(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = 'raw'
+        lead.automatic_type = 'elasticsearch-query'
+        result = zeit.cms.interfaces.Result(
+            [{'uniqueId': self.repository['cp'].uniqueId},
+             {'uniqueId': 'http://xml.zeit.de/i-do-not-exist'}])
+        result.hits = 4711
+        self.elasticsearch.search.return_value = result
+        auto = IRenderedArea(lead)
+        self.assertEqual(1, len(auto.values()))
+        self.assertEqual(4711, auto._content_query.total_hits)
+        self.assertEqual(
+            (({'query': {'bool': {'must_not': [],
+                                  'must': {'query_string': {'query': u'raw'}}
+                                  }}},
+              u'date_first_released:desc'),
+             dict(start=0, rows=1, include_payload=False)),
+            self.elasticsearch.search.call_args)
+
+
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -356,22 +403,6 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             u'http://xml.zeit.de/t2',
             u'http://xml.zeit.de/t3'],
             [x.uniqueId for x in content])
-
-    def test_automatic_from_centerpage_requires_referenced_centerpage(self):
-        self.area.referenced_cp = None
-        with self.assertRaises(zeit.cms.interfaces.ValidationError):
-            interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = pysolr.Results([], 0)
-            interface.validateInvariants(self.area)
-
-    def test_automatic_using_solr_requires_no_referenced_centerpage(self):
-        self.area.referenced_cp = None
-        self.area.automatic_type = 'query'
-        self.area.raw_query = 'foo'
-        with self.assertNothingRaised():
-            interface = zeit.content.cp.interfaces.IArea
-            self.solr.search.return_value = pysolr.Results([], 0)
-            interface.validateInvariants(self.area)
 
 
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
@@ -471,3 +502,28 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             'NOT (uniqueId:"http://xml.zeit.de/t2"'
             ' OR uniqueId:"http://xml.zeit.de/t1")',
             self.solr.search.call_args[1]['fq'])
+
+    def test_elasticsearch_content_query_filters_duplicates(self):
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.elasticsearch_raw_query = 'raw'
+        elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            {'query': {'bool': {'must_not': [{'match': {'url': u'/t2'}},
+                                             {'match': {'url': u'/t1'}}],
+                                'must': {'query_string': {'query': u'raw'}}}}},
+            elasticsearch.search.call_args[0][0])
+
+        # Do not filter, if switched off.
+        self.area.hide_dupes = False
+        IRenderedArea(self.area).values()
+        self.assertEqual(
+            {'query': {'bool': {'must_not': [],
+                                'must': {'query_string': {'query': u'raw'}}}}},
+            elasticsearch.search.call_args[0][0])

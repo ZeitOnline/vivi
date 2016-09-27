@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -182,6 +183,65 @@ class SolrContentQuery(ContentQuery):
             return Q.any_value()
         return Q.not_(Q.or_(*[Q._field('uniqueId', '"%s"' % x.uniqueId)
                               for x in self.existing_teasers]))
+
+
+class ElasticsearchContentQuery(ContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('elasticsearch-query')
+
+    include_payload = False  # Extension point for zeit.web and its LazyProxy.
+
+    def __init__(self, context):
+        super(ElasticsearchContentQuery, self).__init__(context)
+        self.query_string = self.context.elasticsearch_raw_query
+        self.order = self.context.elasticsearch_raw_order
+
+    def __call__(self):
+        self.total_hits = 0
+        result = []
+        try:
+            elasticsearch = zope.component.getUtility(
+                zeit.retresco.interfaces.IElasticsearch)
+            query = {
+                "query": {
+                    "bool": {
+                        "must": {
+                            "query_string": {
+                                "query": self.query_string
+                            }
+                        },
+                        "must_not": self.filter_query
+                    }
+                }
+            }
+            response = elasticsearch.search(
+                query, self.order, start=self.start, rows=self.rows,
+                include_payload=self.include_payload)
+            self.total_hits = response.hits
+            for item in response:
+                content = self._resolve(item)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning(
+                'Error during elasticsearch query %r for %s',
+                self.query_string, self.context.uniqueId, exc_info=True)
+        return result
+
+    def _resolve(self, item):
+        return zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+
+    @property
+    def filter_query(self):
+        """Perform de-duplication of results.
+
+        Create a list of match query for teasers that already exist on the CP.
+        """
+        if not self.context.hide_dupes:
+            return []
+        return [{'match': {'url': x.uniqueId.replace(ID_NAMESPACE, '/')}}
+                for x in self.existing_teasers]
 
 
 class ChannelContentQuery(SolrContentQuery):
