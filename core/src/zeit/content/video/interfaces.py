@@ -83,6 +83,8 @@ class IVideo(IVideoContent):
         title=_('Video still copyright'),
         required=False)
 
+    seo_slug = zope.interface.Attribute('URL tail for SEO.')
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 

@@ -1,5 +1,11 @@
+import plone.testing
+import zeit.push.interfaces
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
+import zeit.push.testing
+import zope.component
+import zope.security.management
 
 
 class TestThumbnail(zeit.cms.testing.BrowserTestCase):
@@ -129,3 +135,42 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
          </label>...
         <div class="widget">453</div>...
                              """)
+
+
+VIDEO_PUSHMOCK_LAYER = plone.testing.Layer(
+    bases=(zeit.content.video.testing.LAYER,
+           zeit.push.testing.PUSH_MOCK_LAYER),
+    name='VideoPushMockLayer')
+
+
+class TestVideoEdit(zeit.cms.testing.BrowserTestCase):
+    """Testing ..browser.video.Edit."""
+
+    layer = VIDEO_PUSHMOCK_LAYER
+
+    def test_push_to_social_media_is_done_on_publish(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video.title = u'My video'
+        video.ressort = u'Deutschland'
+        video = factory.next()
+        browser = self.browser
+        browser.open('http://localhost/++skin++vivi/repository/video')
+        browser.getLink('Checkout').click()
+        browser.getControl('Short push text').value = 'See this video!'
+        browser.getControl('Enable Twitter', index=0).click()
+        browser.getControl('Apply').click()
+        self.assertIn('Updated on', browser.contents)
+        browser.getLink('Checkin').click()
+        self.assertIn('"video" has been checked in.', browser.contents)
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                zeit.cms.workflow.interfaces.IPublish(video).publish(
+                    async=False)
+        twitter = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='twitter')
+        self.assertEqual([
+            (u'See this video!',
+             u'http://www.zeit.de/video/my-video',
+             {'enabled': True, 'account': 'twitter-test', 'type': 'twitter'})],
+            twitter.calls)

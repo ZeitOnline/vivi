@@ -3,6 +3,7 @@ import pkg_resources
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
+import zeit.push
 import zeit.solr.testing
 import zeit.workflow.testing
 
@@ -18,6 +19,7 @@ product_config = """\
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
+        zeit.push.product_config +
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
         zeit.workflow.testing.product_config +

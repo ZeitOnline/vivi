@@ -1,16 +1,17 @@
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
+import copy
 import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
+import zeit.push.browser.form
 import zope.dublincore.interfaces
+import zope.formlib.form
 import zope.formlib.form
 
 
-class Edit(zeit.cms.browser.form.EditForm):
-
-    title = _('Video')
+class VideoBase(zeit.push.browser.form.SocialBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
@@ -29,6 +30,11 @@ class Edit(zeit.cms.browser.form.EditForm):
         'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'flv_url', 'authorships')
 
+    social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
+    social_fields_list = list(social_fields.fields)
+    social_fields_list.remove('bigshare_buttons')
+    social_fields.fields = tuple(social_fields_list)
+
     field_groups = (
         gocept.form.grouped.Fields(
             _("Texts"),
@@ -43,12 +49,33 @@ class Edit(zeit.cms.browser.form.EditForm):
             ('dailyNewsletter', 'banner', 'banner_id',
              'breaking_news', 'has_recensions', 'commentsAllowed'),
             css_class='column-right checkboxes'),
+        social_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
             ('related',),
-            'wide-widgets'),
+            css_class='wide-widgets column-left'),
+        gocept.form.grouped.RemainingFields(
+            '', css_class='column-left'),
     )
+
+
+class Edit(VideoBase,
+           zeit.cms.browser.form.EditForm):
+
+    title = _('Video')
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        self.applyAccountData(self.context, data)
+        super(Edit, self).handle_edit_action.success(data)
+
+
+class Display(VideoBase,
+              zeit.cms.browser.form.DisplayForm):
+
+    title = _('Video')
 
 
 class Thumbnail(zeit.cms.browser.view.Base):

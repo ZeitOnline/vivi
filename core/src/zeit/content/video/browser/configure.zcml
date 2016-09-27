@@ -18,7 +18,7 @@
      for="..interfaces.IVideo"
      layer="zeit.cms.browser.interfaces.ICMSLayer"
      name="view.html"
-     class=".video.Edit"
+     class=".video.Display"
      permission="zope.View"
      />
 

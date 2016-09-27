@@ -10,6 +10,7 @@ import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.video.interfaces
+import zeit.push.interfaces
 import zeit.workflow.interfaces
 import zope.interface
 
@@ -108,6 +109,11 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         else:
             self._serie = None
 
+    @property
+    def seo_slug(self):
+        titles = (t for t in (self.supertitle, self.title) if t)
+        return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
+
 
 class VideoRendition():
     zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
@@ -166,3 +172,9 @@ class Dependencies(grokcore.component.Adapter):
             zeit.cms.relation.interfaces.IRelations)
         return [x for x in relations.get_relations(self.context)
                 if zeit.content.video.interfaces.IPlaylist.providedBy(x)]
+
+
+@grokcore.component.adapter(zeit.content.video.interfaces.IVideo)
+@grokcore.component.implementer(zeit.push.interfaces.IPushURL)
+def video_push_url(context):
+    return context.uniqueId + '/' + context.seo_slug

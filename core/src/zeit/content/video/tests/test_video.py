@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import lxml.objectify
+import pytest
 import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.video.testing
+import zeit.content.video.video
 
 
 class TestVideo(zeit.content.video.testing.TestCase):
@@ -34,6 +37,20 @@ class TestVideo(zeit.content.video.testing.TestCase):
         video.serie = zeit.cms.content.sources.Serie('VIDEO')
         video = factory.next()  # in repository
         self.assertEqual('VIDEO', video.serie.serienname)
+
+
+@pytest.mark.parametrize(
+    'title,supertitle,result', [
+        (u'Äch bön oin Börlünär.', u'Kennedy said:',
+         u'kennedy-said-aech-boen-oin-boerluenaer'),
+        (None, u'Kennedy said:', u'kennedy-said'),
+        (u'Äch bön oin Börlünär.', None, u'aech-boen-oin-boerluenaer')])
+def test_seo_slug_returns_url_normalized_version_of_title_and_supertitle(
+        title, supertitle, result):
+    video = zeit.content.video.video.Video()
+    video.title = title
+    video.supertitle = supertitle
+    assert result == video.seo_slug
 
 
 class TestReference(zeit.content.video.testing.TestCase):

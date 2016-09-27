@@ -1,10 +1,12 @@
 zeit.content.video changes
 ==========================
 
-2.6.2 (unreleased)
+2.7.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3278: Allow to share video via social media.
+
+- ZON-3278: Extract computation of SEO slug from zeit.web.
 
 
 2.6.1 (2016-09-02)

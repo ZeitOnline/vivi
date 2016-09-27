@@ -9,6 +9,7 @@
   <include package="zeit.content.video" />
   <include package="zeit.content.video.browser" />
 
+  <include package="zeit.push" file="testing.zcml" />
   <include package="zeit.solr" />
   <include package="zeit.content.author" file="ftesting.zcml" />
 
