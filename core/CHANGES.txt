@@ -19,6 +19,9 @@ zeit.push changes
 - MAINT: Change audience group for Urban Airship to ``subscriptions`` by making
   it configurable via product config.
 
+- MAINT: Abort push to Urban Airship and display message in Log if no channel
+  was given to avoid accidental push to *all* devices.
+
 
 1.15.5 (2016-09-26)
 -------------------

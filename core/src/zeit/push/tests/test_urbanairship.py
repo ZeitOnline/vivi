@@ -52,14 +52,16 @@ class PushTest(unittest.TestCase):
             self.ios_application_key, self.ios_master_secret, 1)
         with mock.patch('urbanairship.push.core.Push.send', send):
             with mock.patch('urbanairship.push.core.PushResponse') as push:
-                api.send('Push', 'http://example.com')
+                api.send('Push', 'http://example.com',
+                         channels=PARSE_NEWS_CHANNEL)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.urbanairship.Connection(
             'invalid', 'invalid', 'invalid', 'invalid', 1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
-            api.send('Being pushy.', 'http://example.com')
+            api.send('Being pushy.', 'http://example.com',
+                     channels=PARSE_NEWS_CHANNEL)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
@@ -73,7 +75,8 @@ class PushTest(unittest.TestCase):
         with mock.patch('requests.sessions.Session.request') as request:
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
-                api.send('Being pushy.', 'http://example.com')
+                api.send('Being pushy.', 'http://example.com',
+                         channels=PARSE_NEWS_CHANNEL)
 
 
 class ConnectionTest(zeit.push.testing.TestCase):
@@ -85,7 +88,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_pushes_to_android_and_ios(self):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any')
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
             self.assertEqual(
                 ['android'], push.call_args_list[0][0][0].device_types)
             self.assertEqual(
@@ -102,22 +105,15 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 {'or': [{'tag': 'News'}], 'group': 'subscriptions'},
                 push.call_args_list[1][0][0].audience)
 
-    def test_sends_to_all_devices_if_no_channels_parameter(self):
+    def test_raises_if_no_channel_given(self):
         api = self.connection()
-        with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any')
-            self.assertEqual('all', push.call_args_list[0][0][0].audience)
-            self.assertEqual('all', push.call_args_list[1][0][0].audience)
+        with self.assertRaises(ValueError):
+            api.send('Being pushy.', 'http://example.com')
 
-    def test_sends_to_all_devices_if_empty_product_config(self):
-        product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push')
-        product_config['foo'] = ''
+    def test_raises_if_channel_not_in_product_config(self):
         api = self.connection()
-        with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels='foo')
-            self.assertEqual('all', push.call_args_list[0][0][0].audience)
-            self.assertEqual('all', push.call_args_list[1][0][0].audience)
+        with self.assertRaises(ValueError):
+            api.send('foo', 'any', channels='i-am-not-in-product-config')
 
     def test_sets_expiration_time_in_payload(self):
         api = self.connection(expire_interval=3600)
@@ -125,7 +121,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(api, 'push') as push:
-                api.send('foo', 'any')
+                api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[0][0][0].options['expiry'])

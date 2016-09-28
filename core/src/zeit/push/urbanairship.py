@@ -34,13 +34,15 @@ class Connection(zeit.push.mobile.ConnectionBase):
         data['android']['tag'] = tag
         data['ios']['tag'] = tag
 
-        # If no channel was given, send notification to all users as fallback.
-        audience = 'all'
-        if channels:
-            audience = {
-                'or': [{'tag': channel} for channel in channels],
-                'group': self.config['urbanairship-audience-group']
-            }
+        # We need channels to define the target audience in order to avoid
+        # accidental pushes to *all* devices.
+        if not channels:
+            raise ValueError('No channel given to define target audience.')
+
+        audience = {
+            'or': [{'tag': channel} for channel in channels],
+            'group': self.config['urbanairship-audience-group']
+        }
 
         # The expiration datetime must not contain microseconds, therefore we
         # cannot use `isoformat`.
