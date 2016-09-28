@@ -385,12 +385,4 @@
     permission="zope.View"
     />
 
-  <adapter
-    for="..interfaces.ILinkField
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.formlib.interfaces.ISimpleInputWidget"
-    factory=".form.LinkWidget"
-    permission="zope.Public"
-    />
-
 </configure>
