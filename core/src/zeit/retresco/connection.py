@@ -120,7 +120,7 @@ class TMS(object):
         if intextlinks:
             params['in-text-linked'] = ''
         return self._request(
-            'POST /enrich/%s' % data['doc_id'], params=params, json=data)
+            'POST /enrich', params=params, json=data)
 
     def delete_id(self, uuid):
         try:

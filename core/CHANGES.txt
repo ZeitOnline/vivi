@@ -9,6 +9,8 @@ zeit.retresco changes
 
 - Recognize ``--enrich`` CLI argument in the non-parallel case.
 
+- Update to changed enrich TMS-API.
+
 
 1.6.0 (2016-09-26)
 ------------------
