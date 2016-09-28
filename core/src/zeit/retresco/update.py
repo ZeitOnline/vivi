@@ -134,4 +134,4 @@ def reindex():
         if args.parallel:
             index_parallel.delay(id, args.enrich)
         else:
-            index(zeit.cms.interfaces.ICMSContent(id))
+            index(zeit.cms.interfaces.ICMSContent(id), args.enrich)
