@@ -102,11 +102,3 @@ class EditReference(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'reference-details-%s' % self.context.target.uniqueId
-
-
-class LinkWidget(zope.formlib.textwidgets.BytesWidget):
-
-    def _toFieldValue(self, input):
-        value = input.replace(
-            'http://www.zeit.de/', zeit.cms.interfaces.ID_NAMESPACE)
-        return super(LinkWidget, self)._toFieldValue(value)
