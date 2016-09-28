@@ -4,7 +4,9 @@ zeit.content.image changes
 2.16.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Deprecate automatic image link rewriting (VIV-263)
+
+- Add nofollow flag to image links (ZON-3375)
 
 
 2.16.3 (2016-09-26)

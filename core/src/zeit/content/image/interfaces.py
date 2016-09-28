@@ -25,10 +25,6 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 
 
-class ILinkField(zope.interface.Interface):
-    """Marker interface so we can register a custom widget for this field."""
-
-
 class IImageMetadata(zope.interface.Interface):
 
     title = zope.schema.TextLine(
@@ -86,9 +82,11 @@ class IImageMetadata(zope.interface.Interface):
         title=_('Links to'),
         description=_('Enter a URL this image should link to.'),
         required=False)
-    # XXX Disabled because the frontend does not interpret rewritten links
-    # correctly yet.
-    # zope.interface.alsoProvides(links_to, ILinkField)
+
+    nofollow = zope.schema.Bool(
+        title=_('set nofollow'),
+        required=False,
+        default=False)
 
     acquire_metadata = zope.schema.Bool(
         title=u'True if metadata should be acquired from the parent.')
