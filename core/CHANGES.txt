@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.17.1 (unreleased)
+1.17.1 (2016-09-28)
 -------------------
 
 - MAINT: Abort push to Urban Airship and display message in Log if no channel
