@@ -83,6 +83,11 @@ class IImageMetadata(zope.interface.Interface):
         description=_('Enter a URL this image should link to.'),
         required=False)
 
+    nofollow = zope.schema.Bool(
+        title=_('set nofollow'),
+        required=False,
+        default=False)
+
     acquire_metadata = zope.schema.Bool(
         title=u'True if metadata should be acquired from the parent.')
 

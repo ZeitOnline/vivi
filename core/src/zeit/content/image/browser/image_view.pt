@@ -51,6 +51,6 @@
       tal:content="view/metadata/links_to"
       i18n:name="link">
       http://...
-    </a>
+    </a><span tal:omit-tag="python:True" tal:condition="view/metadata/nofollow"> rel="nofollow"</span>
   </div>
 </div>
