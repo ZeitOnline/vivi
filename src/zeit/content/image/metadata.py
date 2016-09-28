@@ -15,7 +15,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to', 'origin'))
+        ('alt', 'caption', 'links_to', 'nofollow', 'origin'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
@@ -111,6 +111,9 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         # is called for all types of reference, we need to handle both ways.
         if entry.get('src') or entry.get('base-id'):
             set_attribute('href', context.links_to)
+
+        if context.nofollow:
+            set_attribute('rel', 'nofollow')
 
         entry['bu'] = context.caption or None
 

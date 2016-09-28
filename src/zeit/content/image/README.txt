@@ -162,20 +162,20 @@ Make sure we don't die when there is an invalid XML snippet stored:
 Set the link:
 
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
->>> zeit.content.image.interfaces.IImageMetadata(group).links_to = (
-...     'http://www.asdf.com')
+>>> meta = zeit.content.image.interfaces.IImageMetadata(group)
+>>> meta.links_to = 'http://www.asdf.com'
+>>> meta.nofollow = True
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    href="http://www.asdf.com"...>
+    href="http://www.asdf.com" rel="nofollow"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
-
 
 The type attribute is rather complex.
 
