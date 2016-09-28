@@ -4,7 +4,8 @@ zeit.push changes
 1.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Abort push to Urban Airship and display message in Log if no channel
+  was given to avoid accidental push to *all* devices.
 
 
 1.17.0 (2016-09-27)
@@ -18,9 +19,6 @@ zeit.push changes
 
 - MAINT: Change audience group for Urban Airship to ``subscriptions`` by making
   it configurable via product config.
-
-- MAINT: Abort push to Urban Airship and display message in Log if no channel
-  was given to avoid accidental push to *all* devices.
 
 
 1.15.5 (2016-09-26)
