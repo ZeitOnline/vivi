@@ -108,6 +108,15 @@ class TMS(object):
             data['body'] = override_body
         return self._request('PUT /content/%s' % data['doc_id'], json=data)
 
+    def publish(self, content):
+        __traceback_info__ = (content.uniqueId,)
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        if data is None:
+            log.info('Skip for for %s, it is missing required fields',
+                     content.uniqueId)
+            return {}
+        return self._request('POST /content/%s/publish' % data['doc_id'])
+
     def enrich(self, content, intextlinks=True):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
