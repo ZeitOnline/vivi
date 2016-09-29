@@ -54,7 +54,7 @@ Schlagworte generieren lassen
 -----------------------------
 
 Mit ``ITagger.update()`` wird der Content ans TMS geschickt, um ihn nach
-Schlagworten analysieren zu lassen (``PUT /documents?enrich=true``); das
+Schlagworten analysieren zu lassen (``POST /content/enrich``); das
 Ergebnis wird als XML serialisiert und in einer DAV-Property gespeichert.
 
 Für gepinnte sowie entfernte Schlagworte werden die IDs in weiteren
@@ -117,7 +117,7 @@ dass sie nicht mit einer solr-query, sondern einer Anfrage ans TMS arbeiten
 
 Um im TMS Themenseiten anlegen zu können, muss der Content dort verfügbar sein.
 Dazu übergibt vivi ihn beim Einchecken zum Indizieren ans TMS (``PUT
-/documents?index=true``).
+/content/<id>``).
 
 
 In-Text-Links
