@@ -4,7 +4,7 @@ zeit.cms changes
 2.90.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix keyword display widget
 
 
 2.90.0 (2016-09-26)

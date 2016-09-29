@@ -14,7 +14,6 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
             'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
             gocept.testing.mock.Property()) as keywords_shown:
             keywords_shown.return_value = 2
-            self.browser.handleErrors = False
             self.browser.open(
                 'http://localhost/++skin++vivi/repository/testcontent')
             self.assertEllipsis(
@@ -22,6 +21,15 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                 '<li class=" shown">...',
                 self.browser.contents)
             self.assertNotIn('t3', self.browser.contents)
+
+    def test_renders_keyword_labels(self):
+        self.setup_tags('t1', 't2', 't3')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/testcontent')
+        self.assertEllipsis(
+            '...<li class=" shown">t1...'
+            '<li class=" shown">t2...',
+            self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.SeleniumTestCase,
