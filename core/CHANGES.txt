@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.2.1 (unreleased)
+1.2.1 (2016-09-29)
 ------------------
 
 - Be defensive about finding CP for volume.
