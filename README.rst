@@ -65,7 +65,8 @@ vivi entsprechend nachverarbeitet.
 Schlagworte hinzufügen
 ----------------------
 
-Um ein Schlagwort manuell hinzuzufügen, bietet das TMS eine Type-Ahead API.
+Um ein Schlagwort manuell hinzuzufügen, bietet das TMS eine Type-Ahead API
+(``GET /entities?q=&entity_type=``).
 Diese kann über ``zeit.retresco.connection.TMS.get_keywords(term)``
 angesprochen werden. Zur Abstraktion wird der Zugriff jedoch über
 ``zeit.cms.tagging.interfaces.IWhitelist.search(term)`` gekapselt.
@@ -93,51 +94,47 @@ dabei schlicht ignoriert.
 Themenseiten
 ============
 
-Schlagwort-Themenseiten
------------------------
-
 Für Themenseiten wird ein `zeit.content.dynamicfolder`_ angelegt, dessen
-Template eine CP mit Autofläche mit einer solr-query für das jeweilige
-Schlagwort erzeugt. Der virtuelle Inhalt befüllt sich aus einer XML-Datei mit
-allen Schlagworten; diese werden per Cronjob (XXX Code-Stelle nennen)
-periodisch aus dem TMS ausgelesen (``GET /linguistic/entities``).
+Template eine CP mit Autofläche mit einer TMS-Abfrage für die jeweilige
+Themenseite erzeugt. Der virtuelle Inhalt befüllt sich aus einer XML-Datei mit
+allen Themenseiten; diese werden per Cronjob
+(``zeit.retresco.connection.update_topiclist``) periodisch aus dem TMS
+ausgelesen (``GET /topic-pages?q=*:*``).
 
 .. _`zeit.content.dynamicfolder`: https://github.com/zeitonline/zeit.content.dynamicfolder
 
-NOTE: Schlagwort-Themenseiten werden von "richtigen" TMS-Themenseiten abgelöst,
-sobald das Projekt so weit ist.
-
-TMS-Themenseiten
-----------------
-
-Technisch funktionieren im TMS angelegte Themenseiten überwiegend gleich, nur
-dass sie nicht mit einer solr-query, sondern einer Anfrage ans TMS arbeiten
-(``GET /topic-page-documents/<id>``). Themenseiten werden per Cronjob mit
-``GET /topic-pages`` ausgelesen.
-
 Um im TMS Themenseiten anlegen zu können, muss der Content dort verfügbar sein.
 Dazu übergibt vivi ihn beim Einchecken zum Indizieren ans TMS (``PUT
-/content/<id>``).
+/content/<id>``). Das TMS speichert diese Dokumente zunächst in einem
+"nicht-veröffentlicht" Index (``zeit_pool``). Beim Veröffentlichen gibt der
+`Publisher`_ dem TMS Bescheid (``POST /content/<id>/publish``), wodurch das
+Dokument in den "veröffentlichten" Index (``zeit_publish``) kopiert wird --
+erst dann ist es auf Themenseiten verfügbar.
+
+.. _`Publisher`: https://github.com/zeitonline/zeit.publisher
 
 
 In-Text-Links
 =============
 
-Der Plan ist, In-Text-Links beim Rendern von www.zeit.de durch ``zeit.web``
-einzufügen. Das hat zwei Teile, zum einen schickt man das HTML ans TMS, wo
-Link-Platzhalter eingefügt werden (``PUT /documents?in_text_links=true``), die
-in etwa so aussehen::
+Das TMS kann im Artikelbody einzelne Worte mit Links versehen, die auf
+entsprechend erkannte Themenseiten verlinken. Dazu lässt vivi beim Einchecken
+eine Analyse durchführen (``POST /content/enrich?in-text-linked``), wo in den
+Body Link-Platzhalter eingefügt werden, die in etwa so aussehen::
 
     <a class="rtr-entity" data-rtr-entity="FC Schalke 04" data-rtr-etype="organisation" data-rtr-id="8313c3173b1e8e0e23eeaff21eaaed17239ee97f" data-rtr-score="55.982832618" href="#">Schalke 04</a>
 
-Zum anderen fragt man periodisch ein Mapping von rtr-id auf Themenseiten-URLs
-ab (``GET /entities/in-text-link-whitelist``), mit dessen Hilfe man dann die
-``href``-Attribute ausfüllt.
+Diesen angereicherten Body übergibt vivi dann ans TMS zum Speichern (beim
+``PUT /content/<id>``). Beim Rendern für www.zeit.de lässt Friedbert sich dann
+diesen Body vom TMS geben anstatt dem aus dem veröffentlichten Content
+(``GET /in-text-linked/documents/<id>/body.html``). Dieser Endpunkt gibt als
+Metadaten auch noch Links zu Themenseiten zurück, die unterhalb des
+Artikelbodys ausgespielt werden können.
 
 
 Suche
 =====
 
 Wir nutzen den TMS-Index (Elasticsearch) gleich mit als Such-Index, sowohl für
-vivi als auch www.zeit.de. XXX genauer beschreiben, vor allem die
-published/nicht-published Trennung.
+vivi als auch www.zeit.de (jeweils gegen den passenden Index, unveröffentlicht
+``zeit_pool``, veröffentlicht ``zeit_publish``).
