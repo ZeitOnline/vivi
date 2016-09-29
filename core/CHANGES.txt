@@ -5,7 +5,7 @@ zeit.content.volume changes
 1.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Be defensive about finding CP for volume.
 
 
 1.2.0 (2016-09-26)

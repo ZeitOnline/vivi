@@ -1,6 +1,8 @@
 from datetime import datetime
 from zeit.cms.repository.folder import Folder
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.volume.volume import Volume
+import zeit.content.cp.centerpage
 import lxml.etree
 import lxml.objectify
 import mock
@@ -59,12 +61,10 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_content_with_missing_values_does_not_adapt_to_IVolume(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(ExampleContentType())
 
     def test_content_with_year_and_volume_and_product_adapts_to_IVolume(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         content = ExampleContentType()
         content.year = 2015
         content.volume = 1
@@ -80,7 +80,6 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         # that "online content" has no IVolume, only print content.
         # In addition we want only handle products with a location template
         # configured.
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         content = ExampleContentType()
         content.year = 2015
         content.volume = 1
@@ -92,9 +91,6 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        from zeit.cms.repository.folder import Folder
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-        from zeit.content.volume.volume import Volume
         super(TestVolume, self).setUp()
         volume = Volume()
         volume.year = 2015
@@ -103,13 +99,20 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
         self.repository['2015']['01']['ausgabe'] = volume
-        self.repository['2015']['01']['index'] = ExampleContentType()
 
     def test_looks_up_centerpage_from_product_setting(self):
+        self.repository['2015']['01']['index'] = zeit.content.cp.centerpage.CenterPage()
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         cp = zeit.content.cp.interfaces.ICenterPage(volume)
         self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)
+
+    def test_non_cp_not_looked_up_for_centerpage(self):
+        self.repository['2015']['01']['index'] = ExampleContentType()
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        cp = zeit.content.cp.interfaces.ICenterPage(volume, None)
+        self.assertEqual(None, cp)
 
 
 class TestOrder(zeit.content.volume.testing.FunctionalTestCase):

@@ -194,4 +194,7 @@ def retrieve_corresponding_centerpage(context):
     uniqueId = context.product.centerpage.format(
         year=context.year,
         name=str(context.volume).rjust(2, '0'))
-    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+    cp = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+    if not zeit.content.cp.interfaces.ICenterPage.providedBy(cp):
+        return None
+    return cp
