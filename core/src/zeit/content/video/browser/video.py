@@ -11,7 +11,7 @@ import zope.formlib.form
 import zope.formlib.form
 
 
-class VideoBase(zeit.push.browser.form.SocialBase):
+class Base(zeit.push.browser.form.SocialBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
@@ -34,6 +34,10 @@ class VideoBase(zeit.push.browser.form.SocialBase):
     social_fields_list = list(social_fields.fields)
     social_fields_list.remove('bigshare_buttons')
     social_fields.fields = tuple(social_fields_list)
+
+    @property
+    def social_form_fields(self):
+        return super(Base, self).social_form_fields.omit('bigshare_buttons')
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -60,8 +64,7 @@ class VideoBase(zeit.push.browser.form.SocialBase):
     )
 
 
-class Edit(VideoBase,
-           zeit.cms.browser.form.EditForm):
+class Edit(Base, zeit.cms.browser.form.EditForm):
 
     title = _('Video')
 
@@ -72,8 +75,7 @@ class Edit(VideoBase,
         super(Edit, self).handle_edit_action.success(data)
 
 
-class Display(VideoBase,
-              zeit.cms.browser.form.DisplayForm):
+class Display(Base, zeit.cms.browser.form.DisplayForm):
 
     title = _('Video')
 
