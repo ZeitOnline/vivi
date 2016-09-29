@@ -6,13 +6,21 @@
   i18n_domain="zeit.cms">
 
   <gocept:pagelet
-    zcml:condition="not-have zeit.content.image.variants"
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
     class=".imp.Imp"
     permission="zeit.imp.Use"
-    menu="zeit-context-views" title="Transform"
+    />
+
+  <browser:menuItem
+    zcml:condition="not-have zeit.content.image.variants"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Transform"
+    action="imp.html"
+    permission="zeit.imp.Use"
     />
 
   <browser:page

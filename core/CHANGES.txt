@@ -4,7 +4,7 @@ zeit.imp changes
 0.18.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Only disable zeit.imp menu item, leave the view accessible for emergencies.
 
 
 0.18.0 (2016-07-26)
