@@ -52,16 +52,16 @@ def unindex_on_remove(context, event):
 
 
 @zeit.cms.async.function(queue='search')
-def index_async(uniqueId, enrich=False):
+def index_async(uniqueId, enrich=False, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
-        index(context, enrich)
+        index(context, enrich, publish)
 
 
-def index(content, enrich=False):
+def index(content, enrich=False, publish=False):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     stack = [content]
     while stack:
@@ -78,6 +78,10 @@ def index(content, enrich=False):
                 conn.index(content, body)
             else:
                 conn.index(content)
+            if publish:
+                pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+                if pub_info.published:
+                    conn.publish(content)
         except zeit.retresco.interfaces.TMSError:
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)
             continue
@@ -90,7 +94,7 @@ def unindex_async(uuid):
 
 
 @zeit.cms.celery.task()
-def index_parallel(unique_id, enrich=False):
+def index_parallel(unique_id, enrich=False, publish=False):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     # Performance optimization: Resolve content directly via Connector instead
@@ -111,9 +115,9 @@ def index_parallel(unique_id, enrich=False):
                 'Skip indexing %s, it is an image/group', item.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(item):
-            index_parallel.delay(item.uniqueId, enrich)
+            index_parallel.delay(item.uniqueId, enrich, publish)
         else:
-            index(item, enrich)
+            index(item, enrich, publish)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
@@ -128,10 +132,14 @@ def reindex():
     parser.add_argument(
         '--enrich', action='store_true',
         help='Perform TMS analyze/enrich prior to indexing')
+    parser.add_argument(
+        '--publish', action='store_true',
+        help='Perform TMS publish after indexing')
 
     args = parser.parse_args()
     for id in args.ids:
         if args.parallel:
-            index_parallel.delay(id, args.enrich)
+            index_parallel.delay(id, args.enrich, args.publish)
         else:
-            index(zeit.cms.interfaces.ICMSContent(id), args.enrich)
+            index(
+                zeit.cms.interfaces.ICMSContent(id), args.enrich, args.publish)
