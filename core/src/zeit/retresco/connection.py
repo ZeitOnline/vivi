@@ -111,7 +111,7 @@ class TMS(object):
 
     def publish(self, content):
         __traceback_info__ = (content.uniqueId,)
-        uuid = zeit.cms.content.interfaces.IUUID(self.context).id
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
         return self._request('POST /content/%s/publish' % uuid)
 
     def enrich(self, content, intextlinks=True):
