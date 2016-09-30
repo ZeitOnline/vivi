@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.90.2 (unreleased)
+2.91.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``suppress_errors`` parameter to ``ContentList.insert``.
 
 
 2.90.1 (2016-09-29)

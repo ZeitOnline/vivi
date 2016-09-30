@@ -45,7 +45,7 @@ class ContentList(object):
             # BBB Before uniqueId was introduced, href was authoritative.
             yield entry.get('uniqueId') or entry.get('href')
 
-    def insert(self, position, content):
+    def insert(self, position, content, suppress_errors=False):
         content = zeit.cms.interfaces.ICMSContent(content)
         unique_id = content.uniqueId
         if unique_id is None:
@@ -56,7 +56,8 @@ class ContentList(object):
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
             self._remove_by_id(last)
-        self.updateMetadata(content, skip_missing=True)
+        self.updateMetadata(
+            content, skip_missing=True, suppress_errors=suppress_errors)
         self.restorePinning(pin_map)
         self._p_changed = True
 
@@ -102,7 +103,8 @@ class ContentList(object):
             if key == content_id:
                 return id + 1
 
-    def updateMetadata(self, content, skip_missing=False):
+    def updateMetadata(
+            self, content, skip_missing=False, suppress_errors=False):
         possible_ids = set((
             content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
         for id in possible_ids:
@@ -116,7 +118,7 @@ class ContentList(object):
         entry.set('href', content.uniqueId)
         entry.set('uniqueId', content.uniqueId)
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-        updater.update(entry)
+        updater.update(entry, suppress_errors)
 
     def getMetadata(self, content):
         return zope.location.location.located(
