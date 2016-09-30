@@ -101,6 +101,34 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 process()
                 self.assertFalse(index.called)
 
+    def test_publish_should_not_be_called_on_index_if_res_not_published(self):
+        with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
+            content = self.repository['testcontent']
+            pub_info = mock.Mock()
+            pub_info.published = False
+            pub.return_value = pub_info
+            zeit.retresco.update.index(content, False, True)
+            self.assertFalse(self.tms.publish.called)
+
+    def test_publish_should_be_called_on_index_if_res_published(self):
+        with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
+            content = self.repository['testcontent']
+            pub_info = mock.Mock()
+            pub_info.published = True
+            pub.return_value = pub_info
+            zeit.retresco.update.index(content, False, True)
+            self.assertTrue(self.tms.publish.called)
+
+    def test_publish_should_not_be_called_on_index_without_option(self):
+        with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
+            content = self.repository['testcontent']
+            pub_info = mock.Mock()
+            pub_info.published = True
+            pub.return_value = pub_info
+            zeit.retresco.update.index(content)
+            self.assertFalse(self.tms.publish.called)
+
+
     def test_should_pass_body_from_enrich_to_index(self):
         content = self.repository['testcontent']
         self.tms.enrich.return_value = {'body': 'mybody'}
