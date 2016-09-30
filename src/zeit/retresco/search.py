@@ -33,6 +33,12 @@ class Elasticsearch(object):
                       'doc_type': source['doc_type']}
             if include_payload:
                 result.update(source['payload'])
+                result['keywords'] = []
+                for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
+                    for tag in source.get('rtr_{}s'.format(entity_type), ()):
+                        result['keywords'].append(zeit.retresco.tag.Tag(
+                            label=tag, entity_type=entity_type))
+
             results.append(result)
         search_result = zeit.cms.interfaces.Result(results)
         search_result.hits = response['hits']['total']
