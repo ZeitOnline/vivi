@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from zeit.retresco.tag import Tag
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
 import json
@@ -126,7 +127,8 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             'uniqueId': 'http://xml.zeit.de/testcontent',
             'doc_type': 'testcontenttype',
             'doc_id': 'uuid',
-            'rtr_keywords': ['Berlin', 'Washington'],
+            'keywords': [
+                Tag('Berlin', 'keyword'), Tag('Washington', 'keyword')],
             'supertitle': 'supertitle',
             'title': 'title',
         }, result[0])
