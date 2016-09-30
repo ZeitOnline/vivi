@@ -1,4 +1,5 @@
 from ..interfaces import IElasticsearch
+from ..tag import Tag
 from zeit.cms.interfaces import IResult
 import unittest
 import zeit.retresco.testing
@@ -44,3 +45,10 @@ class TestElasticsearch(unittest.TestCase):
         result = self.elasticsearch.search(
             self.query, 'title:asc', rows=2, include_payload=True)
         self.assertIn(('supertitle', 'Islamismus'), result[0].items())
+
+    def test_include_payload_converts_keywords_to_tag_objects(self):
+        result = self.elasticsearch.search(
+            self.query, 'title:asc', rows=2, include_payload=True)
+        self.assertEqual(
+            [Tag('Berlin', 'keyword'), Tag('Washington', 'keyword')],
+            result[0]['keywords'])
