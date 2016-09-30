@@ -109,6 +109,11 @@ class TMS(object):
             data['body'] = override_body
         return self._request('PUT /content/%s' % data['doc_id'], json=data)
 
+    def publish(self, content):
+        __traceback_info__ = (content.uniqueId,)
+        uuid = zeit.cms.content.interfaces.IUUID(self.context).id
+        return self._request('POST /content/%s/publish' % uuid)
+
     def enrich(self, content, intextlinks=True):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()

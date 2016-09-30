@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - Convert keywords to Tag objects for TMS and ES results.
 
+- Implement an option to publish after index.
+
 
 1.7.0 (2016-09-28)
 ------------------
