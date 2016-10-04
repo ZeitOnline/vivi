@@ -234,7 +234,7 @@ class ChoicePropertyWithObjectSource(object):
             return self.terms.getValue(value)
         except KeyError:
             # XXX Should we raise instead?
-            return value
+            return None
 
     def toProperty(self, value):
         return self.terms.getTerm(value).token
