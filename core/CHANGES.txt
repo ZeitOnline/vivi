@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.8.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make authors writeable.
 
 
 2.8.4 (2016-09-28)

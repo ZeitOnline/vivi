@@ -135,6 +135,21 @@ class mapped_product(mapped):
         return value
 
 
+class mapped_authors(mapped):
+
+    SEPARATOR = ' '
+
+    def __get__(self, instance, class_):
+        value = super(mapped_authors, self).__get__(instance, class_) or ''
+        authors = [zeit.cms.interfaces.ICMSContent(x, None)
+                   for x in value.split(self.SEPARATOR)]
+        return tuple([author for author in authors if author])
+
+    def __set__(self, instance, value):
+        value = self.SEPARATOR.join(x.target.uniqueId for x in value)
+        super(mapped_authors, self).__set__(instance, value)
+
+
 class mapped_serie(mapped):
 
     def __get__(self, instance, class_):
@@ -227,6 +242,7 @@ class Video(Converter):
 
     type = 'video'
     id_prefix = 'vid'  # for old-style asset IDs
+    authorships = mapped_authors('customFields', 'authors')
     commentsAllowed = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
@@ -307,13 +323,6 @@ class Video(Converter):
             vr.video_duration = rendition['videoDuration']
             rs.append(vr)
         return tuple(rs)
-
-    @property
-    def authorships(self):
-        data_authors = self.data.get('customFields', {}).get('authors', '')
-        authors = [zeit.cms.interfaces.ICMSContent(author, None)
-                   for author in data_authors.split(' ')]
-        return tuple([author for author in authors if author])
 
     @property
     def related(self):
