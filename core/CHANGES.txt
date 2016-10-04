@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.91.1 (unreleased)
+2.91.1 (2016-10-04)
 -------------------
 
 - Return None from ObjectSource properties if the ID was not found.
