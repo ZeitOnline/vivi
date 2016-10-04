@@ -41,8 +41,11 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for gallery_node in node.findall('gallery'):
             node.remove(gallery_node)
         if reference.gallery is not None:
+            related = 'related'
+            if self.suppress_errors:
+                related += '_suppress_errors'
             gref = zope.component.getAdapter(
                 reference.gallery, zeit.cms.content.interfaces.IXMLReference,
-                name='related')
+                name=related)
             gref.tag = 'gallery'
             node.append(gref)
