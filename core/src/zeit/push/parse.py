@@ -3,7 +3,6 @@ import json
 import logging
 import requests
 import zeit.push.interfaces
-import zeit.push.message
 import zeit.push.mobile
 import zope.app.appsetup.product
 import zope.interface
@@ -16,9 +15,14 @@ class Connection(zeit.push.mobile.ConnectionBase):
 
     base_url = 'https://api.parse.com/1'
 
-    # New link address, introduced in DEV-938.
-    ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
-    IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
+    # New link address, introduced in DEV-938, required on versions >= x.
+    ANDROID_FRIEDBERT_VERSION = '1.4'
+    IOS_FRIEDBERT_VERSION = '20150914'
+
+    # Only versions < x should be pushed to (from then on, urbanairship is
+    # used instead).
+    ANDROID_URBANAIRSHIP_VERSION = '1.5'
+    IOS_URBANAIRSHIP_VERSION = '20160301'
 
     def __init__(self, application_id, rest_api_key, expire_interval):
         super(Connection, self).__init__(expire_interval)
@@ -32,7 +36,8 @@ class Connection(zeit.push.mobile.ConnectionBase):
             'expiration_time': self.expiration_datetime.isoformat(),
             'where': {
                 'deviceType': 'android',
-                'appVersion': {'$gte': self.ANDROID_FRIEDBERT_VERSION},
+                'appVersion': {'$gte': self.ANDROID_FRIEDBERT_VERSION,
+                               '$lt': self.ANDROID_URBANAIRSHIP_VERSION},
                 'channels': {'$in': channels}
             },
             'data': data['android']
@@ -50,7 +55,8 @@ class Connection(zeit.push.mobile.ConnectionBase):
             'expiration_time': self.expiration_datetime.isoformat(),
             'where': {
                 'deviceType': 'ios',
-                'appVersion': {'$gte': self.IOS_FRIEDBERT_VERSION},
+                'appVersion': {'$gte': self.IOS_FRIEDBERT_VERSION,
+                               '$lt': self.IOS_URBANAIRSHIP_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
