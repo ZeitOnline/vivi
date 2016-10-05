@@ -4,7 +4,7 @@ zeit.push changes
 1.17.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix the urbanairship tag+group syntax.
 
 
 1.17.1 (2016-09-28)

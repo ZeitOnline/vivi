@@ -41,8 +41,8 @@ class Connection(zeit.push.mobile.ConnectionBase):
             raise ValueError('No channel given to define target audience.')
 
         audience = {
-            'or': [{'tag': channel} for channel in channels],
-            'group': self.config['urbanairship-audience-group']
+            'OR': [{'group': self.config['urbanairship-audience-group'],
+                    'tag': channel} for channel in channels],
         }
 
         # The expiration datetime must not contain microseconds, therefore we
