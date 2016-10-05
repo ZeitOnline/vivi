@@ -4,6 +4,9 @@ zeit.push changes
 1.17.2 (unreleased)
 -------------------
 
+- ZON-3411: Restrict pushing to parse and urbanairship to
+  non-overlapping app versions. Retire feature toggle ``zeit.push.urbanairship``.
+
 - Fix the urbanairship tag+group syntax.
 
 

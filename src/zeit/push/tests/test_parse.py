@@ -54,11 +54,11 @@ class ConnectionTest(zeit.push.testing.TestCase):
             api.send('foo', 'any')
             self.assertEqual({
                 'deviceType': 'android',
-                'appVersion': {'$gte': '1.4'},
+                'appVersion': {'$gte': '1.4', '$lt': '1.5'},
             }, push.call_args_list[0][0][0]['where'])
             self.assertEqual({
                 'deviceType': 'ios',
-                'appVersion': {'$gte': '20150914'},
+                'appVersion': {'$gte': '20150914', '$lt': '20160301'},
             }, push.call_args_list[1][0][0]['where'])
 
     def test_channels_can_be_set_via_parameter(self):

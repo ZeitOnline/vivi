@@ -168,9 +168,7 @@ class Message(zeit.push.message.Message):
     def send_push_notification(self, service_name, **kw):
         """Overwrite to send push notifications to Parse and Urban Airship."""
         super(Message, self).send_push_notification('parse', **kw)
-        config = zope.app.appsetup.appsetup.getConfigContext()
-        if config.hasFeature('zeit.push.urbanairship'):
-            super(Message, self).send_push_notification('urbanairship', **kw)
+        super(Message, self).send_push_notification('urbanairship', **kw)
 
     def log_success(self, name):
         message = (
