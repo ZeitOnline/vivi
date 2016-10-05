@@ -1,6 +1,8 @@
 import bugsnag
+import traceback
 import urlparse
 import zope.error.error
+import zope.exceptions.exceptionformatter
 import zope.i18n
 
 
@@ -54,7 +56,7 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         self._notify_bugsnag(info, request)
         exception = info[1]
         if not isinstance(info[2], basestring):
-            exception.traceback = zope.error.error.getFormattedException(info)
+            exception.traceback = getFormattedException(info)
         else:
             exception.traceback = zope.error.error.getPrintable(info[2])
 
@@ -69,3 +71,48 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         bugsnag.notify(
             info[1], traceback=info[2], context=path,
             severity='error', user=user)
+
+
+# copy&paste from zope.error.error to customize the formatter
+def getFormattedException(info):
+    lines = []
+    fmt = ExceptionFormatter()
+    for line in fmt.formatException(*info):
+        line = zope.error.error.getPrintable(line)
+        if not line.endswith('\n'):
+            line += '\n'
+        lines.append(line)
+    return u''.join(lines)
+
+
+class ExceptionFormatter(
+        zope.exceptions.exceptionformatter.TextExceptionFormatter):
+
+    # copy&paste to throw away non-application parts of the traceback.
+    def formatException(self, etype, value, tb):
+        __exception_formatter__ = 1
+        result = [self.getPrefix() + '\n']
+        limit = self.getLimit()
+        n = 0
+        inside_app = False
+        while tb is not None and (limit is None or n < limit):
+            if tb.tb_frame.f_locals.get('__exception_formatter__'):
+                # Stop recursion.
+                result.append('(Recursive formatException() stopped,'
+                              ' trying traceback.format_tb)\n')
+                result.extend(traceback.format_tb(tb))
+                break
+            # patched
+            if not inside_app:
+                module = tb.tb_frame.f_globals.get('__name__', '')
+                if module.startswith('zeit'):
+                    inside_app = True
+            if inside_app:
+                line = self.formatLine(tb)
+                result.append(line + '\n')
+            # /patched
+            tb = tb.tb_next
+            n = n + 1
+        exc_line = self.formatExceptionOnly(etype, value)
+        result.append(self.formatLastLine(exc_line))
+        return result
