@@ -4,7 +4,7 @@ zeit.content.image changes
 2.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be defensive about zero-sized images.
 
 
 2.17.0 (2016-09-28)
