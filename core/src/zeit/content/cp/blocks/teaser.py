@@ -317,8 +317,10 @@ def rendered_xml_teaserblock(context):
 
     # Render content.
     for entry in context:
-        container.append(zope.component.getAdapter(
-            entry, zeit.content.cp.interfaces.IRenderedXML, name="content"))
+        node = zope.component.queryAdapter(
+            entry, zeit.content.cp.interfaces.IRenderedXML, name="content")
+        if node is not None:
+            container.append(node)
 
     return container
 
@@ -326,6 +328,8 @@ def rendered_xml_teaserblock(context):
 @grok.adapter(zeit.cms.interfaces.ICMSContent, name="content")
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_cmscontent(context):
+    if not context.uniqueId:
+        return None
     block = lxml.objectify.E.block(
         uniqueId=context.uniqueId, href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
