@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.12.1 (unreleased)
+3.12.1 (2016-10-05)
 -------------------
 
 - Be defensive about broken content in IRenderedXML.
