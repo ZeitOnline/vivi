@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+import json
 import logging
 import urbanairship
 import zeit.push.interfaces
@@ -99,3 +100,35 @@ def from_product_config():
         ios_application_key=config['urbanairship-ios-application-key'],
         ios_master_secret=config['urbanairship-ios-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
+
+
+class PayloadDocumentation(Connection):
+
+    def push(self, data):
+        print json.dumps(data.payload, indent=2, sort_keys=True) + ','
+
+
+def print_payload_documentation():
+    zope.app.appsetup.product.setProductConfiguration('zeit.push', {
+        PARSE_BREAKING_CHANNEL: 'Eilmeldung',
+        PARSE_NEWS_CHANNEL: 'News',
+        'mobile-target-host': 'http://www.zeit.de',
+        'urbanairship-audience-group': 'subscriptions',
+    })
+    conn = PayloadDocumentation(
+        'android_application_key', 'android_master_secret',
+        'ios_application_key', 'ios_master_secret', expire_interval=9000)
+    params = {
+        'teaserTitle': 'TeaserTitle',
+        'teaserText': 'TeaserText',
+        'teaserSupertitle': 'TeaserSupertitle',
+        'image_url': 'http://images.zeit.de/test/image',
+    }
+    print '[{"//": "*** Eilmeldung ***"},'
+    conn.send('Title', 'http://www.zeit.de/test/artikel',
+              channels=PARSE_BREAKING_CHANNEL, **params)
+    print '\n'
+    print '{"//": "*** Wichtige Nachrichten ***"},'
+    conn.send('Title', 'http://www.zeit.de/test/artikel',
+              channels=PARSE_NEWS_CHANNEL, **params)
+    print ']'
