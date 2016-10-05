@@ -62,7 +62,10 @@ class Connection(zeit.push.mobile.ConnectionBase):
         ]}
         android.options = {'expiry': expiry}
         android.device_types = ['android']
-        android.notification = {'android': {'extra': data['android']}}
+        android.notification = {'android': {
+            'extra': data['android'],
+            'alert': data['android']['text'],  # for the UI
+        }}
         self.push(android)
 
         # Send ios notification.
