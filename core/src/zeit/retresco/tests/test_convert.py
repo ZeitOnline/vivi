@@ -148,6 +148,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual('title', data['teaser'])
 
+    def test_recognizes_intrafind_keywords(self):
+        content = create_testcontent()
+        tag = zeit.retresco.tag.Tag('Berlin', entity_type='Free')
+        self.tags[tag.code] = tag
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(['Berlin'], data['rtr_keywords'])
+
     def test_converts_volumes(self):
         volume = zeit.content.volume.volume.Volume()
         volume.uniqueId = 'http://xml.zeit.de/volume'
