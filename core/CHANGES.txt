@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.7.2 (unreleased)
+1.7.2 (2016-10-06)
 ------------------
 
 - Transmit existing intrafind keywords to TMS for indexing by mapping their
