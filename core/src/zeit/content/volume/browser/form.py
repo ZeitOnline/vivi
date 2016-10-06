@@ -90,24 +90,12 @@ class Add(Base, zeit.cms.browser.form.AddForm):
         path = self.volume_location(object)
         # The last part of the path is the filename for the volume object.
         volume_filename = path[-1]
-        container = self.create_location(path[:-1], object)
+        container = zeit.cms.content.add.find_or_create_folder(*path[:-1])
         if self._check_duplicate_volume(container, volume_filename):
             return
         container[volume_filename] = object
         self._created_object = container[volume_filename]
         self._finished_add = True
-
-    def create_location(self, path, object):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
-        folder = repository
-        for elem in path:
-            if folder.get(elem) is None:
-                folder[elem] = zeit.cms.repository.folder.Folder()
-            folder = folder[elem]
-
-        return folder
 
     def volume_location(self, object):
         location = object.product.location.format(
