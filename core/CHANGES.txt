@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.91.2 (unreleased)
+2.91.2 (2016-10-06)
 -------------------
 
 - Shorten the displayed traceback on the error page
