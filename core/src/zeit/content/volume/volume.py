@@ -64,6 +64,15 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def covers(self):
         return zeit.content.volume.interfaces.IVolumeCovers(self)
 
+    def fill_template(self, text):
+        return self._fill_template(self, text)
+
+    @staticmethod
+    def _fill_template(context, text):
+        return text.format(
+            year=context.year,
+            name=str(context.volume).rjust(2, '0'))
+
     @property
     def previous(self):
         return self._find_in_order(None, self.date_digital_published, 'desc')
@@ -180,9 +189,7 @@ def retrieve_volume_using_info_from_metadata(context):
             context.product is None or not context.product.volume or
             context.product.location is None):
         return None
-    uniqueId = context.product.location.format(
-        year=context.year,
-        name=str(context.volume).rjust(2, '0'))
+    uniqueId = Volume._fill_template(context, context.product.location)
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
@@ -191,9 +198,7 @@ def retrieve_volume_using_info_from_metadata(context):
 def retrieve_corresponding_centerpage(context):
     if context.product is None or context.product.centerpage is None:
         return None
-    uniqueId = context.product.centerpage.format(
-        year=context.year,
-        name=str(context.volume).rjust(2, '0'))
+    uniqueId = context.fill_template(context.product.centerpage)
     cp = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if not zeit.content.cp.interfaces.ICenterPage.providedBy(cp):
         return None

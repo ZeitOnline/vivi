@@ -98,8 +98,7 @@ class Add(Base, zeit.cms.browser.form.AddForm):
         self._finished_add = True
 
     def volume_location(self, object):
-        location = object.product.location.format(
-            year=object.year, name=str(object.volume).rjust(2, '0'))
+        location = object.fill_template(object.product.location)
         location = location.replace(zeit.cms.interfaces.ID_NAMESPACE, '')
         return [x for x in location.split('/') if x]
 
