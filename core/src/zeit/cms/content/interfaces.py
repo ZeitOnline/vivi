@@ -348,6 +348,9 @@ class IProduct(zope.interface.Interface):
     centerpage = zope.interface.Attribute(
         'uniqueId template for the public-facing CP of this product, '
         'e.g. http://xml.zeit.de/{year}/{name}/index')
+    cp_template = zope.interface.Attribute(
+        'uniqueId of a zeit.content.text.interfaces.IPythonScript, which is '
+        'used to create the public-facing CP of this product')
     autochannel = zope.interface.Attribute(
         'Set false to suppress setting channel on ressort changes')
 

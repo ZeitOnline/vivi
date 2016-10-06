@@ -4,7 +4,8 @@
              autochannel="false"
              volume="True"
              location="http://xml.zeit.de/{year}/{name}/ausgabe"
-             centerpage="http://xml.zeit.de/{year}/{name}/index">
+             centerpage="http://xml.zeit.de/{year}/{name}/index"
+             cp_template="http://xml.zeit.de/ausgabe-cp-template">
              Die Zeit</product>
     <product id="ZMLB">Zeit Magazin</product>
     <product id="TEST">Test/Development</product>
