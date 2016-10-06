@@ -161,16 +161,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     def create_folder(self, object):
         path = self.author_folder + [object.lastname[0].upper()]
-        repos = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
-        folder = repos
-        for elem in path:
-            if elem is None:
-                continue
-            if elem not in folder:
-                folder[elem] = zeit.cms.repository.folder.Folder()
-            folder = folder[elem]
+        folder = zeit.cms.content.add.find_or_create_folder(*path)
 
         author_folder = zeit.cms.repository.folder.Folder()
         folder_name = u'%s_%s' % (object.firstname, object.lastname)
