@@ -52,3 +52,16 @@ class TextSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 textSource = TextSource()
+
+
+class IPythonScript(IText):
+
+    def __call__(**kw):
+        """Evaluates the python code and returns the result.
+
+        Due to Python mechanics, code needs to use ``__return(value)`` instead
+        of the normal ``return value`` to return a result.
+
+        The keyword arguments are provided to the code in a dict named
+        ``context``.
+        """
