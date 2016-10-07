@@ -171,7 +171,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tag.__parent__ = self
         return tag
 
-    def update(self):
+    def update(self, update_with=None):
         """Update the keywords with generated keywords from retresco.
 
         A number of reasonable keywords are retrieved from retresco. This set
@@ -181,7 +181,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         """
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        keywords = tms.extract_keywords(self.context)
+
+        if update_with is not None:
+            keywords = tms.generate_keyword_list(update_with)
+        else:
+            keywords = tms.extract_keywords(self.context)
 
         E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
         root = E.rankedTags()
@@ -200,8 +204,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         old_tags = self.to_xml()
         for code in self.pinned:
             if code not in new_codes:
-                pinned_tag = self._find_tag_node(code, old_tags)
-                new_tags.append(pinned_tag)
+                try:
+                    pinned_tag = self._find_tag_node(code, old_tags)
+                    new_tags.append(pinned_tag)
+                except KeyError:
+                    pass
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
