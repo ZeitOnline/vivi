@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import argparse
 import gocept.async
 import gocept.runner
@@ -5,6 +6,7 @@ import grokcore.component as grok
 import logging
 import zeit.cms.async
 import zeit.cms.celery
+import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -74,6 +76,8 @@ def index(content, enrich=False, publish=False):
             if enrich:
                 response = conn.enrich(content)
                 body = response.get('body')
+                tagger = zeit.retresco.tagger.Tagger(content)
+                tagger.update(update_with=response)
             if body:
                 conn.index(content, body)
             else:
@@ -135,6 +139,19 @@ def reindex():
     parser.add_argument(
         '--publish', action='store_true',
         help='Perform TMS publish after indexing')
+
+    # To speed up indexing we do not checkout resources to update properties.
+    # This is why we make the keyword property writeable.
+    property_manager = zope.component.getUtility(
+        zeit.cms.content.interfaces.ILivePropertyManager)
+
+    kw_name, kw_namespace = zeit.retresco.tagger.KEYWORD_PROPERTY
+    dis_name, dis_namespace = zeit.retresco.tagger.DISABLED_PROPERTY
+
+    property_manager.register_live_property(
+        kw_name, kw_namespace, WRITEABLE_LIVE)
+    property_manager.register_live_property(
+        dis_name, dis_namespace, WRITEABLE_LIVE)
 
     args = parser.parse_args()
     for id in args.ids:

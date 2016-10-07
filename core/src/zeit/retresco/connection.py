@@ -33,7 +33,11 @@ class TMS(object):
 
     def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
+
         response = self.enrich(content, intextlinks=False)
+        return self.generate_keyword_list(response)
+
+    def generate_keyword_list(self, response):
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
@@ -101,12 +105,14 @@ class TMS(object):
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+
         if data is None:
             log.info('Skip index for %s, it is missing required fields',
                      content.uniqueId)
             return {}
         if override_body is not None:
             data['body'] = override_body
+
         return self._request('PUT /content/%s' % data['doc_id'], json=data)
 
     def publish(self, content):
@@ -125,6 +131,7 @@ class TMS(object):
         params = {}
         if intextlinks:
             params['in-text-linked'] = ''
+
         return self._request(
             'POST /enrich', params=params, json=data)
 
