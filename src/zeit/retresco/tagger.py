@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.retresco.tag import Tag
 import grokcore.component as grok
 import logging
@@ -15,6 +16,14 @@ KEYWORD_PROPERTY = ('rankedTags', NAMESPACE)
 DISABLED_PROPERTY = ('disabled', NAMESPACE)
 DISABLED_SEPARATOR = '\x09'
 PINNED_PROPERTY = ('pinned', NAMESPACE)
+
+# To speed up indexing we do not checkout resources to update properties.
+# This is why we make the keyword property writeable.
+property_manager = zeit.cms.content.liveproperty.LiveProperties
+property_manager.register_live_property(
+    KEYWORD_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
+property_manager.register_live_property(
+    DISABLED_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
 
 log = logging.getLogger(__name__)
 
