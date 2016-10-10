@@ -523,3 +523,10 @@ class AccessSource(XMLSource):
             return None
 
 ACCESS_SOURCE = AccessSource()
+
+
+class PrintRessortSource(SimpleXMLSource):
+
+    config_url = 'source-printressorts'
+
+PRINT_RESSORT_SOURCE = PrintRessortSource()

@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-3377: Add ``IProduct.cp_template``.
 
+- ZON-3356: Add ``PRINT_RESSOURT_SOURCE``.
+
 
 2.91.2 (2016-10-06)
 -------------------

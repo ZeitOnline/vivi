@@ -188,6 +188,7 @@ cms_product_config = """\
   source-banners file://{base}/content/banners.xml
   source-channels file://{base}/content/navigation.xml
   source-storystreams file://{base}/content/storystreams.xml
+  source-printressorts file://{base}/content/print-ressorts.xml
 
   preview-prefix http://localhost/preview-prefix
   live-prefix http://localhost/live-prefix
