@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.17.3 (unreleased)
+1.17.3 (2016-10-11)
 -------------------
 
 - ZON-3411: Remove app version restriction from urbanairship
