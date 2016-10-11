@@ -129,6 +129,15 @@ class CommonMetadata(Converter):
         'year': '',
     }
 
+    entity_types = {
+        # BBB map zeit.intrafind entity_type to retresco.
+        'Person': 'person',
+        'Location': 'location',
+        'Organization': 'organisation',
+        'Free': 'keyword',
+    }
+    entity_types.update({x: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
+
     def __call__(self):
         result = {
             'title': self.context.title,
@@ -143,11 +152,9 @@ class CommonMetadata(Converter):
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
             result['rtr_{}s'.format(typ)] = []
         for kw in self.context.keywords:
-            key = 'rtr_{}s'.format(kw.entity_type)
-            # We might still encounter keywords from the old zeit.intrafind
-            # with incompatible entity_types, so be extra defensive.
-            if key in result:
-                result[key].append(kw.label)
+            key = 'rtr_{}s'.format(self.entity_types.get(
+                kw.entity_type, 'keyword'))
+            result[key].append(kw.label)
 
         result['payload'] = {
             'authors': [x.target.uniqueId for x in self.context.authorships],
