@@ -4,6 +4,10 @@ zeit.push changes
 1.17.3 (unreleased)
 -------------------
 
+- ZON-3411: Remove app version restriction from urbanairship
+  (Duplicates are prevented since only new apps have the tag group
+  ``subscriptions``)
+
 - MAINT: Log sucessful pushes to taskprocessor log.
 
 

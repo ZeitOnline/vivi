@@ -13,9 +13,6 @@ log = logging.getLogger(__name__)
 
 class Connection(zeit.push.mobile.ConnectionBase):
 
-    ANDROID_APP_VERSIONS = ['1.5']
-    IOS_APP_VERSIONS = ['1.4']
-
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret, expire_interval):
         super(Connection, self).__init__(expire_interval)
@@ -55,11 +52,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
             self.android_application_key,
             self.android_master_secret
         ).create_push()
-        android.audience = {'AND': [
-            {'OR': [{'group': 'ua_android_app_version', 'tag': version}
-                    for version in self.ANDROID_APP_VERSIONS]},
-            audience_channels,
-        ]}
+        android.audience = audience_channels
         android.options = {'expiry': expiry}
         android.device_types = ['android']
         android.notification = {'android': {
@@ -73,11 +66,7 @@ class Connection(zeit.push.mobile.ConnectionBase):
             self.ios_application_key,
             self.ios_master_secret
         ).create_push()
-        ios.audience = {'AND': [
-            {'OR': [{'group': 'ua_ios_app_version', 'tag': version}
-                    for version in self.IOS_APP_VERSIONS]},
-            audience_channels,
-        ]}
+        ios.audience = audience_channels
         ios.options = {'expiry': expiry}
         ios.device_types = ['ios']
         ios.notification = {'ios': {
