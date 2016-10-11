@@ -52,6 +52,7 @@ class Message(grok.Adapter):
                 zeit.push.interfaces.IPushNotifier, name=service_name)
             notifier.send(self.text, self.url, **kw)
             self.log_success(name=service_name)
+            log.info('Push notification for %s sent', service_name)
         except Exception, e:
             self.log_error(name=service_name, reason=str(e))
             log.error(u'Error during push to %s with config %s',

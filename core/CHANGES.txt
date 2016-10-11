@@ -4,7 +4,7 @@ zeit.push changes
 1.17.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Log sucessful pushes to taskprocessor log.
 
 
 1.17.2 (2016-10-05)
