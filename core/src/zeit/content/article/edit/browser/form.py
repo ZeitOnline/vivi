@@ -335,7 +335,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
 
 
-class MetadataAcquisition(zeit.edit.browser.form.InlineForm):
+class MetadataAccess(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-access'

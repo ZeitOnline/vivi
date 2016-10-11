@@ -228,7 +228,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.metadata-access"
-    class=".form.MetadataAcquisition"
+    class=".form.MetadataAccess"
     permission="zope.View"
     />
 
