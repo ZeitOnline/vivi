@@ -193,6 +193,15 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
         object.commentsAllowed = False
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def disable_is_amp_if_access_is_restricted(article, event):
+    """Restricted content should not be promoted by Google."""
+    if article.access != u'free':
+        article.is_amp = False
+
+
 class LayoutDependency(object):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)

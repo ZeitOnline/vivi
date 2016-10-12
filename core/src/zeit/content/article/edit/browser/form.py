@@ -342,6 +342,9 @@ class MetadataAccess(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit access')
     form_fields = FormFields(ICommonMetadata).select('access')
 
+    def _success_handler(self):
+        self.signal('reload-inline-form', 'social')
+
 
 class MetadataGenre(zeit.edit.browser.form.InlineForm):
 

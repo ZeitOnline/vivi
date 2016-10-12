@@ -27,6 +27,11 @@ class Social(zeit.push.browser.form.SocialBase,
             zeit.content.article.interfaces.IArticle).select(
                 'is_amp', 'is_instant_article')
 
+    def setUpWidgets(self, *args, **kw):
+        super(Social, self).setUpWidgets(*args, **kw)
+        if self.context.access != u'free':
+            self.widgets['is_amp'].extra = 'disabled="disabled"'
+
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):

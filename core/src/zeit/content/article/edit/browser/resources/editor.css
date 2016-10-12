@@ -1835,6 +1835,13 @@
   padding-bottom: 12px;
 }
 
+/* Disabled checkboxes are displayed with a red cross, but for the workingcopy
+   we have to fix the margins to align with enabled checkboxes. */
+.location-workingcopy.type-article .widget.checkboxdisabled {
+  margin-bottom: 3px;
+  margin-left: 4px;
+  margin-right: 7px;
+}
 
 /* label */
 

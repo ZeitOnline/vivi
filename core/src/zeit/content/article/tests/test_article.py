@@ -280,6 +280,32 @@ class DefaultTemplateByContentType(
             'wide', self.repository['article'].main_image_variant_name)
 
 
+class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_setting_access_to_abo_or_registration_disables_is_amp(self):
+        from zeit.cms.checkout.helper import checked_out
+        self.repository['article'] = self.get_article()
+        with checked_out(self.repository['article']) as article:
+            article.is_amp = True
+            article.access = u'abo'
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.assertEqual(False, article.is_amp)
+
+            article.is_amp = True
+            article.access = u'registration'
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.assertEqual(False, article.is_amp)
+
+    def test_setting_access_to_free_does_not_change_is_amp(self):
+        from zeit.cms.checkout.helper import checked_out
+        self.repository['article'] = self.get_article()
+        with checked_out(self.repository['article']) as article:
+            article.is_amp = True
+            article.access = u'free'
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.assertEqual(True, article.is_amp)
+
+
 class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):
 
