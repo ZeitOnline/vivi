@@ -12,9 +12,6 @@ class Tag(object):
 
     SEPARATOR = u'☃'
 
-    def __eq__(self, tag):
-        return self.code == tag.code
-
     def __init__(self, label, entity_type):
         self.label = label
         self.entity_type = entity_type
