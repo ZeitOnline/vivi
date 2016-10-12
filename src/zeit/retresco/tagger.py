@@ -172,6 +172,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         node = [x for x in tags.iterchildren()
                 if Tag(x.text, x.get('type', '')).code == key]
         if not node:
+            node = [x for x in tags.iterchildren() if x.get('uuid') == key]
+        if not node:
             raise KeyError(key)
         return node[0]
 
@@ -184,6 +186,20 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tag.__parent__ = self
         return tag
 
+    def _map_pinned_codes(self):
+        mapping = zeit.retresco.convert.CommonMetadata.entity_types
+        xml = self.to_xml()
+        pinned_map = {}
+
+        for pin in self.pinned:
+            tag = xml.find("tag[@uuid='{}']".format(pin))
+            if tag:
+                pinned_map[tag.get('uuid')] = (
+                    Tag(tag.text, mapping.get(tag.get('type', ''), '')).code)
+            else:
+                pinned_map[pin] = pin
+        return pinned_map
+
     def update(self, update_with=None):
         """Update the keywords with generated keywords from retresco.
 
@@ -192,6 +208,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         keywords. The resulting set is finally written to the DAV property.
 
         """
+
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
@@ -208,6 +225,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         # XXX the handling of namespaces here seems chaotic
         E = lxml.objectify.ElementMaker()
         new_codes = set()
+
         for tag in keywords:
             if tag.code in self.disabled:
                 continue
@@ -215,14 +233,20 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             new_tags.append(E.tag(tag.label, type=tag.entity_type or ''))
 
         old_tags = self.to_xml()
-        for code in self.pinned:
+        mapped_pinned_codes = self._map_pinned_codes()
+        new_pinned_codes = []
+        for old_code, code in mapped_pinned_codes.iteritems():
             if code not in new_codes:
                 try:
-                    pinned_tag = self._find_tag_node(code, old_tags)
-                    new_tags.append(pinned_tag)
+                    tag = self._find_tag_node(old_code, old_tags)
+                    mapping = zeit.retresco.convert.CommonMetadata.entity_types
+                    tag_type = mapping.get(tag.get('type', ''), '')
+                    new_tags.append(E.tag(tag.text, type=tag_type))
                 except KeyError:
                     pass
+            new_pinned_codes.append(code)
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
+        dav[PINNED_PROPERTY] = "\t".join(new_pinned_codes)
         dav[DISABLED_PROPERTY] = u''
