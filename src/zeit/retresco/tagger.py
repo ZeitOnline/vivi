@@ -192,7 +192,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         pinned_map = {}
 
         for pin in self.pinned:
-            tag = xml.find("tag[@uuid='{}']".format(pin))
+            tag = xml.find(u"tag[@uuid='{}']".format(pin))
             if tag:
                 pinned_map[tag.get('uuid')] = (
                     Tag(tag.text, mapping.get(tag.get('type', ''), '')).code)
