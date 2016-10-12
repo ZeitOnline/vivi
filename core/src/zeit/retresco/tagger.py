@@ -24,6 +24,10 @@ property_manager.register_live_property(
     KEYWORD_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
 property_manager.register_live_property(
     DISABLED_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
+property_manager.register_live_property(
+    KEYWORD_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
+property_manager.register_live_property(
+    PINNED_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
 
 log = logging.getLogger(__name__)
 
