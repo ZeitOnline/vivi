@@ -153,7 +153,12 @@ class TMS(object):
         if 'json' in kw:
             kw['json'] = encode_json(kw['json'])
         try:
-            response = method(self.url + path, **kw)
+            url = self.url + path
+            if 'in-text-linked' in kw.get('params', {}).keys():
+                url = url + '?in-text-linked'
+                kw.pop('params')
+
+            response = method(url, **kw)
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
