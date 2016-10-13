@@ -46,13 +46,13 @@ class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_AMP_is_disabled_after_choosing_non_free_access(self):
         s = self.selenium
-        s.click('css=#edit-form-socialmedia')
-        s.waitForElementPresent('css=#social\.is_amp')
+        s.click('css=#edit-form-socialmedia .fold-link')
+        s.waitForVisible('css=#social\.is_amp')
         self.assertEqual(True, s.isEditable('css=#social\.is_amp'))
 
         s.check('css=#social\.is_amp')
-        s.click('css=#edit-form-metadata')
-        s.waitForElementPresent('css=#metadata-access\.access')
+        s.click('css=#edit-form-metadata .fold-link')
+        s.waitForVisible('css=#metadata-access\.access')
         s.select('css=#metadata-access\.access', 'label=abopflichtig')
         s.type('css=#metadata-access\.access', '\t')
         s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
