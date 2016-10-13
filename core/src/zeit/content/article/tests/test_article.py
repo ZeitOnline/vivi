@@ -13,7 +13,9 @@ import zeit.content.article.testing
 import zeit.magazin.interfaces
 import zeit.edit.rule
 import zope.component
+import zope.event
 import zope.interface
+import zope.lifecycleevent
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -282,27 +284,49 @@ class DefaultTemplateByContentType(
 
 class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
 
-    def test_setting_access_to_abo_or_registration_disables_is_amp(self):
-        from zeit.cms.checkout.helper import checked_out
+    def setUp(self):
+        super(AccessRestrictsAMP, self).setUp()
         self.repository['article'] = self.get_article()
-        with checked_out(self.repository['article']) as article:
+        self.article = self.repository['article']
+
+    def notify_modified(self, article, field='access'):
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+                article, zope.lifecycleevent.Attributes(
+                    zeit.cms.content.interfaces.ICommonMetadata, field)))
+
+    def test_setting_access_to_abo_or_registration_disables_is_amp(self):
+        with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.is_amp = True
             article.access = u'abo'
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.notify_modified(article)
             self.assertEqual(False, article.is_amp)
 
             article.is_amp = True
             article.access = u'registration'
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.notify_modified(article)
             self.assertEqual(False, article.is_amp)
 
     def test_setting_access_to_free_does_not_change_is_amp(self):
-        from zeit.cms.checkout.helper import checked_out
-        self.repository['article'] = self.get_article()
-        with checked_out(self.repository['article']) as article:
+        with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.is_amp = True
             article.access = u'free'
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(article))
+            self.notify_modified(article)
+            self.assertEqual(True, article.is_amp)
+
+    def test_do_not_change_is_amp_if_access_is_missing(self):
+        """For bw-compat old articles without access are treated as free."""
+        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+            article.is_amp = True
+            article.access = None
+            self.notify_modified(article)
+            self.assertEqual(True, article.is_amp)
+
+    def test_only_change_is_amp_if_access_was_changed(self):
+        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+            article.access = u'abo'
+            article.is_amp = True
+            article.year = 2016
+            self.notify_modified(article, 'year')
             self.assertEqual(True, article.is_amp)
 
 

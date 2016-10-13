@@ -198,7 +198,14 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
     zope.lifecycleevent.IObjectModifiedEvent)
 def disable_is_amp_if_access_is_restricted(article, event):
     """Restricted content should not be promoted by Google."""
-    if article.access != u'free':
+    for desc in event.descriptions:
+        if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
+                'access' in desc.attributes):
+            break
+    else:
+        return  # skip event handler if `access` was not changed
+
+    if article.access and article.access != u'free':
         article.is_amp = False
 
 
