@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
 import itertools
@@ -90,6 +91,8 @@ class AddForm(FormBase,
 
     @property
     def next_view(self):
+        if self._created_object.display_type == INFOGRAPHIC_DISPLAY_TYPE:
+            return 'view.html'
         if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
                 'zeit.content.image.variants'):
             return 'variant.html'
