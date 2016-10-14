@@ -52,8 +52,14 @@ class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s.check('css=#social\.is_amp')
         s.click('css=#edit-form-metadata .fold-link')
-        s.waitForVisible('css=#metadata-access\.access')
-        s.select('css=#metadata-access\.access', 'label=abopflichtig')
-        s.type('css=#metadata-access\.access', '\t')
+        s.waitForVisible('css=#form-metadata-access select')
+        s.select('css=#form-metadata-access select', 'label=abopflichtig')
+        s.type('css=#form-metadata-access select', '\t')
+        # Autosave sometimes not triggered on Jenkins unless \t is typed twice
+        try:
+            s.waitForElementNotPresent('css=#form-metadata-access .dirty')
+        except AssertionError:
+            s.type('css=#form-metadata-access select', '\t')
+        s.waitForElementNotPresent('css=#form-metadata-access .dirty')
         s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
         self.assertEqual(False, s.isEditable('css=#social\.is_amp'))
