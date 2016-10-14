@@ -186,6 +186,24 @@ class ImageGroupBrowserTest(
         self.save_imagegroup()
         self.assertEndsWith('@@view.html', self.browser.url)
 
+    def test_display_type_imagegroup_shows_edit_tab(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('infographic')
+        self.fill_copyright_information()
+        self.set_display_type('Bildergruppe')
+        self.save_imagegroup()
+        self.assertIn('repository/2006/infographic/@@variant.html',
+                      self.browser.contents)
+
+    def test_display_type_infographic_hides_edit_tab(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('infographic')
+        self.fill_copyright_information()
+        self.set_display_type('Infografik')
+        self.save_imagegroup()
+        self.assertNotIn('repository/2006/infographic/@@variant.html',
+                         self.browser.contents)
+
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 
