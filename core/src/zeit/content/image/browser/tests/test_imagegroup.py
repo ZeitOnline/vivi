@@ -1,4 +1,5 @@
 from zeit.content.image.testing import create_image_group_with_master_image
+import gocept.testing.assertion
 import mock
 import pkg_resources
 import zeit.cms.testing
@@ -22,6 +23,9 @@ class ImageGroupHelperMixin(object):
 
     def set_imagegroup_title(self, title):
         self.browser.getControl('Image title').value = title
+
+    def set_display_type(self, display_type):
+        self.browser.getControl('Display Type').displayValue = [display_type]
 
     def fill_copyright_information(self):
         b = self.browser
@@ -91,7 +95,8 @@ class ImageGroupPublishTest(zeit.cms.testing.BrowserTestCase):
 
 class ImageGroupBrowserTest(
         zeit.cms.testing.BrowserTestCase,
-        ImageGroupHelperMixin):
+        ImageGroupHelperMixin,
+        gocept.testing.assertion.String):
 
     layer = zeit.content.image.testing.ZCML_LAYER
 
@@ -164,6 +169,22 @@ class ImageGroupBrowserTest(
         with zeit.cms.testing.site(self.getRootFolder()):
             group = self.repository['2006']['image-group']
         self.assertIn('thumbnail-source-master-image.jpg', group)
+
+    def test_display_type_imagegroup_opens_variant_html_on_save(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('imagegroup')
+        self.fill_copyright_information()
+        self.set_display_type('Bildergruppe')
+        self.save_imagegroup()
+        self.assertEndsWith('@@variant.html', self.browser.url)
+
+    def test_display_type_infographic_opens_view_html_on_save(self):
+        self.add_imagegroup()
+        self.set_imagegroup_filename('infographic')
+        self.fill_copyright_information()
+        self.set_display_type('Infografik')
+        self.save_imagegroup()
+        self.assertEndsWith('@@view.html', self.browser.url)
 
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
