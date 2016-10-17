@@ -40,8 +40,8 @@ setup(
         'zope.location>=3.4b2',
         'zope.testing',
     ],
-    entry_points="""
-        [console_scripts]
-        refresh-cache=zeit.connector.invalidator:invalidate_whole_cache
-        """
+    entry_points={'console_scripts': [
+        'refresh-cache = zeit.connector.invalidator:invalidate_whole_cache',
+        'set-properties = zeit.connector.restore:set_props_from_file',
+    ]}
 )
