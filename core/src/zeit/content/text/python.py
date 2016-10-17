@@ -15,7 +15,7 @@ class PythonScript(zeit.content.text.text.Text):
 
     def __call__(self, **kw):
         self._v_result = None
-        code = compile(self.text, self.uniqueId, 'exec')
+        code = compile(self.text, filename=self.uniqueId, mode='exec')
         globs = globals()
         globs['__return'] = self._store_result
         globs['context'] = kw
@@ -26,6 +26,13 @@ class PythonScript(zeit.content.text.text.Text):
         return self._v_result
 
     def _store_result(self, value):
+        """We want to support multiple statements with a return value.
+        Since `eval` only offers a choice between "simple expression" or
+        "statements, but without any return value", we use the latter and
+        provide our own "`return` function" that stores the result and then
+        raises an exception (which we catch and ignore) so the execution flow
+        stops there (just like normal `return` behaves).
+        """
         self._v_result = value
         raise Break()
 
