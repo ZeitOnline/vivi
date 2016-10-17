@@ -2,6 +2,7 @@ from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.testing.assertion
 import mock
 import pkg_resources
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.edit.interfaces
@@ -43,11 +44,20 @@ class ImageGroupHelperMixin(object):
             'http://www.zeit.de/')
 
     def _upload_image(self, field, filename):
+        if filename.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+            self._upload_cms_content(field, uniqueId=filename)
+            return
         self.browser.getControl(name='form.{}'.format(field)).add_file(
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
                 'testdata/{}'.format(filename)),
             'image/jpeg', filename)
+
+    def _upload_cms_content(self, field, uniqueId):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            file = zeit.cms.interfaces.ICMSContent(uniqueId)
+        self.browser.getControl(name='form.{}'.format(field)).add_file(
+            file.open(), 'image/jpeg', uniqueId.split('/')[-1])
 
     def upload_primary_image(self, filename):
         self._upload_image('master_image_blobs.0.', filename)
@@ -155,19 +165,6 @@ class ImageGroupBrowserTest(
         self.assertEqual(3, len(group.keys()))
         self.assertIn('obama-clinton-120x120.jpg', group.keys())
 
-    def test_thumbnail_source_is_created_on_add(self):
-        self.add_imagegroup()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            img = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        self.browser.getControl(name='form.master_image_blobs.0.').add_file(
-            img.open(), 'image/jpeg', 'master-image.jpg')
-        self.save_imagegroup()
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
-        self.assertIn('thumbnail-source-master-image.jpg', group)
-
     def test_display_type_imagegroup_opens_variant_html_on_save(self):
         self.add_imagegroup()
         self.set_display_type('Bildergruppe')
@@ -216,3 +213,33 @@ class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
             'obama-clinton-120x120.jpg')
         self.assertEqual(
             self.group['image-540x304.jpg'], self.thumbnail._find_image())
+
+
+class ThumbnailBrowserTest(
+        zeit.cms.testing.BrowserTestCase,
+        ImageGroupHelperMixin):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_thumbnail_source_is_created_on_add(self):
+        self.add_imagegroup()
+        self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.save_imagegroup()
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['imagegroup']
+        self.assertIn('thumbnail-source-DSC00109_2.JPG', group)
+
+    def test_thumbnail_images_are_hidden_in_content_listing(self):
+        self.add_imagegroup()
+        self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.save_imagegroup()
+
+        b = self.browser
+        b.open('http://localhost/++skin++cms/repository/imagegroup/view.html')
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.assertEqual(
+                ['DSC00109_2.JPG', 'thumbnail-source-DSC00109_2.JPG'],
+                [x.__name__ for x in self.repository['imagegroup'].values()])
+            self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)

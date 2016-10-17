@@ -157,6 +157,13 @@ class View(zeit.cms.browser.listing.Listing):
         zeit.cms.browser.listing.MetadataColumn(u'Metadaten', name='metadata'),
     )
 
+    def filter_content(self, obj):
+        """Do not display thumbnail images."""
+        prefix = zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX
+        if obj.__name__.startswith(prefix):
+            return False
+        return super(View, self).filter_content(obj)
+
 
 class AddImage(zeit.content.image.browser.form.AddForm):
 
