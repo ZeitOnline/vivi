@@ -9,6 +9,8 @@ zeit.content.image changes
 
 - ZON-3363: Hide edit menu for Infographics.
 
+- ZON-3363: Hide thumbnails in content listing of ``ImageGroup``.
+
 
 2.17.1 (2016-10-05)
 -------------------
