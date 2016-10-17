@@ -192,6 +192,32 @@ class ImageGroupBrowserTest(
             'repository/imagegroup/@@variant.html', self.browser.contents)
 
 
+class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.content.image.testing.WEBDRIVER_LAYER
+
+    def setUp(self):
+        super(ImageGroupWebdriverTest, self).setUp()
+        create_image_group_with_master_image()
+
+    def test_visibility_of_origin_field_depends_on_display_type(self):
+        sel = self.selenium
+        origin = 'css=.fieldname-origin'
+        display_type = 'css=#form\.display_type'
+        sel.open('/repository/group/@@checkout')
+
+        sel.select(display_type, 'label=Infografik')
+        sel.assertVisible(origin)
+
+        sel.select(display_type, 'label=Bildergruppe')
+        sel.assertNotVisible(origin)
+
+    def test_origin_field_is_hidden_in_read_only_mode_if_not_infographic(self):
+        sel = self.selenium
+        sel.open('/repository/group/@@metadata.html')
+        sel.assertNotVisible('css=.fieldname-origin')
+
+
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.image.testing.ZCML_LAYER
