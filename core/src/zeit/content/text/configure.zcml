@@ -16,4 +16,16 @@
       />
   </class>
 
+  <class class=".python.PythonScript">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IPythonScript"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPythonScript"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

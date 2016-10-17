@@ -28,10 +28,11 @@ class TextType(zeit.cms.type.TypeDeclaration):
     interface = zeit.content.text.interfaces.IText
     type = 'text'
     title = _('Plain text')
+    factory = Text
 
     def content(self, resource):
         data = resource.data.read()
-        text = Text()
+        text = self.factory()
         text.uniqueId = resource.id
         encoding = text.encoding  # Read from the DAV properties
         unicode_data = None
