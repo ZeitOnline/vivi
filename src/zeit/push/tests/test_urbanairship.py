@@ -103,7 +103,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 push.call_args_list[0][0][0].audience)
             self.assertEqual(
                 {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-                push.call_args_list[1][0][0].audience)
+                push.call_args_list[1][0][0].audience['AND'][1])
 
     def test_raises_if_no_channel_given(self):
         api = self.connection()
@@ -137,3 +137,11 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual('News', android['extra']['tag'])
             ios = push.call_args_list[1][0][0].notification['ios']
             self.assertEqual('News', ios['extra']['tag'])
+
+    def test_ios_audience_contains_segment(self):
+        api = self.connection()
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            self.assertEqual(
+                'ios',
+                push.call_args_list[1][0][0].audience['AND'][0]['segment'])

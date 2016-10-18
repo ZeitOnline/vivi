@@ -66,7 +66,10 @@ class Connection(zeit.push.mobile.ConnectionBase):
             self.ios_application_key,
             self.ios_master_secret
         ).create_push()
-        ios.audience = audience_channels
+        ios.audience = {'AND': [
+            {'segment': self.config['urbanairship-ios-segment']},
+            audience_channels,
+        ]}
         ios.options = {'expiry': expiry}
         ios.device_types = ['ios']
         ios.notification = {'ios': {
