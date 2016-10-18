@@ -5,7 +5,8 @@ zeit.content.volume changes
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Create CP along with the Volume object, using a Python template
+  script configured in products.xml.
 
 
 1.2.1 (2016-09-29)
