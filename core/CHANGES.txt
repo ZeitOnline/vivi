@@ -4,7 +4,7 @@ zeit.push changes
 1.17.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3437: Restrict urbanairship to iOS segment.
 
 
 1.17.3 (2016-10-11)
