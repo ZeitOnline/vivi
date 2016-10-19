@@ -185,19 +185,23 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         E = lxml.objectify.ElementMaker()
         return E.tag(tag.label, type=tag.entity_type or '')
 
-    def _map_pinned_codes(self):
-        mapping = zeit.retresco.convert.CommonMetadata.entity_types
+    def _find_pinned_tags(self):
         xml = self.to_xml()
-        pinned_map = {}
+        type_map = zeit.retresco.convert.CommonMetadata.entity_types
+        result = []
 
-        for pin in self.pinned:
-            tag = xml.find(u"tag[@uuid='{}']".format(pin))
-            if tag:
-                pinned_map[tag.get('uuid')] = (
-                    Tag(tag.text, mapping.get(tag.get('type', ''), '')).code)
-            else:
-                pinned_map[pin] = pin
-        return pinned_map
+        for code in self.pinned:
+            try:
+                node = self._find_tag_node(code, xml)
+                result.append(
+                    self._create_tag(unicode(node), node.get('type', '')))
+            except KeyError:
+                # BBB for zeit.intrafind
+                node = xml.find(u"tag[@uuid='{}']".format(code))
+                if node:
+                    result.append(self._create_tag(
+                        node.text, type_map.get(node.get('type', ''), '')))
+        return result
 
     def update(self, keywords=None):
         """Update the keywords with generated keywords from retresco.
@@ -226,21 +230,14 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             new_codes.add(tag.code)
             new_tags.append(self._serialize_tag(tag))
 
-        old_tags = self.to_xml()
-        mapped_pinned_codes = self._map_pinned_codes()
-        new_pinned_codes = []
-        for old_code, code in mapped_pinned_codes.iteritems():
-            if code not in new_codes:
-                try:
-                    tag = self._find_tag_node(old_code, old_tags)
-                    mapping = zeit.retresco.convert.CommonMetadata.entity_types
-                    tag_type = mapping.get(tag.get('type', ''), '')
-                    new_tags.append(E.tag(tag.text, type=tag_type))
-                except KeyError:
-                    pass
-            new_pinned_codes.append(code)
+        pinned_codes = set()
+        for tag in self._find_pinned_tags():
+            if tag.code not in new_codes:
+                pinned_codes.add(tag.code)
+                new_tags.append(self._serialize_tag(tag))
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
-        dav[PINNED_PROPERTY] = "\t".join(new_pinned_codes)
         dav[DISABLED_PROPERTY] = u''
+        # BBB to maybe convert intrafind pins to retresco pins.
+        self.set_pinned(pinned_codes)
