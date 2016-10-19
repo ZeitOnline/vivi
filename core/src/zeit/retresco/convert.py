@@ -134,7 +134,7 @@ class CommonMetadata(Converter):
         'Person': 'person',
         'Location': 'location',
         'Organization': 'organisation',
-        'Free': 'keyword',
+        'free': 'keyword',
     }
     entity_types.update({x: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
 

@@ -44,6 +44,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         super(UpdateTest, self).setUp()
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
+        self.tms.generate_keyword_list.return_value = []
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_creating_content_should_index(self):
@@ -127,7 +128,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pub.return_value = pub_info
             zeit.retresco.update.index(content)
             self.assertFalse(self.tms.publish.called)
-
 
     def test_should_pass_body_from_enrich_to_index(self):
         content = self.repository['testcontent']

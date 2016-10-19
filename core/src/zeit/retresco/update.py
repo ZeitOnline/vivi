@@ -5,6 +5,7 @@ import grokcore.component as grok
 import logging
 import zeit.cms.async
 import zeit.cms.celery
+import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -68,21 +69,29 @@ def index(content, enrich=False, publish=False):
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        log.info('Updating: %s', content.uniqueId)
+        log.info('Updating: %s, enrich: %s, publish: %s',
+                 content.uniqueId, enrich, publish)
         try:
             body = None
             if enrich:
+                log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
                 body = response.get('body')
+                tagger = zeit.retresco.tagger.Tagger(content)
+                tagger.update(conn.generate_keyword_list(response))
             if body:
+                log.debug('Enrich with body: %s', content.uniqueId)
                 conn.index(content, body)
             else:
+                log.debug('Enrich w/o body: %s', content.uniqueId)
                 conn.index(content)
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
                 if pub_info.published:
+                    log.info('Publishing: %s', content.uniqueId)
                     conn.publish(content)
-        except zeit.retresco.interfaces.TMSError:
+        except (zeit.retresco.interfaces.TMSError,
+                zeit.retresco.interfaces.TechnicalError):
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)
             continue
 
