@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.21.4 (unreleased)
+3.21.4 (2016-10-19)
 -------------------
 
 - ZON-3323: Disable ``Article.is_amp`` if ``Article.access`` is not ``free``.
