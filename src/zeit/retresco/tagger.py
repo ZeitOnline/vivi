@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.retresco.tag import Tag
 import grokcore.component as grok
 import logging
@@ -15,6 +16,13 @@ KEYWORD_PROPERTY = ('rankedTags', NAMESPACE)
 DISABLED_PROPERTY = ('disabled', NAMESPACE)
 DISABLED_SEPARATOR = '\x09'
 PINNED_PROPERTY = ('pinned', NAMESPACE)
+
+# To speed up indexing we do not checkout resources to update properties.
+# This is why we make the keyword property writeable.
+property_manager = zeit.cms.content.liveproperty.LiveProperties
+for prop in [KEYWORD_PROPERTY, DISABLED_PROPERTY, PINNED_PROPERTY]:
+    property_manager.register_live_property(
+        prop[0], prop[1], WRITEABLE_ALWAYS)
 
 log = logging.getLogger(__name__)
 
@@ -60,13 +68,12 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     def __setitem__(self, key, value):
         tags = self.to_xml()
         if tags is None:
+            # XXX the handling of namespaces here seems chaotic
             E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
             root = E.rankedTags()
             tags = E.rankedTags()
             root.append(tags)
-        # XXX the handling of namespaces here seems chaotic
-        E = lxml.objectify.ElementMaker()
-        tags.append(E.tag(value.label, type=value.entity_type or ''))
+        tags.append(self._serialize_tag(value))
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
 
@@ -159,6 +166,9 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         node = [x for x in tags.iterchildren()
                 if Tag(x.text, x.get('type', '')).code == key]
         if not node:
+            # BBB for zeit.intrafind
+            node = [x for x in tags.iterchildren() if x.get('uuid') == key]
+        if not node:
             raise KeyError(key)
         return node[0]
 
@@ -171,7 +181,29 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tag.__parent__ = self
         return tag
 
-    def update(self):
+    def _serialize_tag(self, tag):
+        E = lxml.objectify.ElementMaker()
+        return E.tag(tag.label, type=tag.entity_type or '')
+
+    def _find_pinned_tags(self):
+        xml = self.to_xml()
+        type_map = zeit.retresco.convert.CommonMetadata.entity_types
+        result = []
+
+        for code in self.pinned:
+            try:
+                node = self._find_tag_node(code, xml)
+                result.append(
+                    self._create_tag(unicode(node), node.get('type', '')))
+            except KeyError:
+                # BBB for zeit.intrafind
+                node = xml.find(u"tag[@uuid='{}']".format(code))
+                if node:
+                    result.append(self._create_tag(
+                        node.text, type_map.get(node.get('type', ''), '')))
+        return result
+
+    def update(self, keywords=None):
         """Update the keywords with generated keywords from retresco.
 
         A number of reasonable keywords are retrieved from retresco. This set
@@ -179,30 +211,33 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         keywords. The resulting set is finally written to the DAV property.
 
         """
+
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        keywords = tms.extract_keywords(self.context)
+
+        if keywords is None:
+            keywords = tms.extract_keywords(self.context)
 
         E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
         root = E.rankedTags()
         new_tags = E.rankedTags()
         root.append(new_tags)
 
-        # XXX the handling of namespaces here seems chaotic
-        E = lxml.objectify.ElementMaker()
         new_codes = set()
         for tag in keywords:
             if tag.code in self.disabled:
                 continue
             new_codes.add(tag.code)
-            new_tags.append(E.tag(tag.label, type=tag.entity_type or ''))
+            new_tags.append(self._serialize_tag(tag))
 
-        old_tags = self.to_xml()
-        for code in self.pinned:
-            if code not in new_codes:
-                pinned_tag = self._find_tag_node(code, old_tags)
-                new_tags.append(pinned_tag)
+        pinned_codes = set()
+        for tag in self._find_pinned_tags():
+            if tag.code not in new_codes:
+                pinned_codes.add(tag.code)
+                new_tags.append(self._serialize_tag(tag))
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         dav[DISABLED_PROPERTY] = u''
+        # BBB to maybe convert intrafind pins to retresco pins.
+        self.set_pinned(pinned_codes)
