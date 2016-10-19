@@ -68,13 +68,12 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     def __setitem__(self, key, value):
         tags = self.to_xml()
         if tags is None:
+            # XXX the handling of namespaces here seems chaotic
             E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
             root = E.rankedTags()
             tags = E.rankedTags()
             root.append(tags)
-        # XXX the handling of namespaces here seems chaotic
-        E = lxml.objectify.ElementMaker()
-        tags.append(E.tag(value.label, type=value.entity_type or ''))
+        tags.append(self._serialize_tag(value))
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
 
@@ -182,6 +181,10 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tag.__parent__ = self
         return tag
 
+    def _serialize_tag(self, tag):
+        E = lxml.objectify.ElementMaker()
+        return E.tag(tag.label, type=tag.entity_type or '')
+
     def _map_pinned_codes(self):
         mapping = zeit.retresco.convert.CommonMetadata.entity_types
         xml = self.to_xml()
@@ -216,15 +219,12 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         new_tags = E.rankedTags()
         root.append(new_tags)
 
-        # XXX the handling of namespaces here seems chaotic
-        E = lxml.objectify.ElementMaker()
         new_codes = set()
-
         for tag in keywords:
             if tag.code in self.disabled:
                 continue
             new_codes.add(tag.code)
-            new_tags.append(E.tag(tag.label, type=tag.entity_type or ''))
+            new_tags.append(self._serialize_tag(tag))
 
         old_tags = self.to_xml()
         mapped_pinned_codes = self._map_pinned_codes()
