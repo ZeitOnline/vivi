@@ -78,7 +78,7 @@ def index(content, enrich=False, publish=False):
                 response = conn.enrich(content)
                 body = response.get('body')
                 tagger = zeit.retresco.tagger.Tagger(content)
-                tagger.update(update_with=response)
+                tagger.update(conn.generate_keyword_list(response))
             if body:
                 log.debug('Enrich with body: %s', content.uniqueId)
                 conn.index(content, body)

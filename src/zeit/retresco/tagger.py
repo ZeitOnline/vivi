@@ -167,6 +167,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         node = [x for x in tags.iterchildren()
                 if Tag(x.text, x.get('type', '')).code == key]
         if not node:
+            # BBB for zeit.intrafind
             node = [x for x in tags.iterchildren() if x.get('uuid') == key]
         if not node:
             raise KeyError(key)
@@ -195,7 +196,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
                 pinned_map[pin] = pin
         return pinned_map
 
-    def update(self, update_with=None):
+    def update(self, keywords=None):
         """Update the keywords with generated keywords from retresco.
 
         A number of reasonable keywords are retrieved from retresco. This set
@@ -207,9 +208,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
-        if update_with is not None:
-            keywords = tms.generate_keyword_list(update_with)
-        else:
+        if keywords is None:
             keywords = tms.extract_keywords(self.context)
 
         E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
