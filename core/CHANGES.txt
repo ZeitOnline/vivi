@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.8.1 (unreleased)
+2.8.1 (2016-10-19)
 ------------------
 
 - Add CLI script to set DAV properties from filesystem data.
