@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.1.0 (unreleased)
+2.1.0 (2016-10-19)
 ------------------
 
 - ZON-3377: Add python script content type (without any UI so far).
