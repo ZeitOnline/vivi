@@ -1,3 +1,4 @@
+from math import ceil
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
@@ -113,9 +114,15 @@ class ImageGroupBase(object):
         size = self.get_variant_size(key)
         fill = self.get_variant_fill(key)
         viewport = self.get_variant_viewport(key)
+        scale = self.get_scale(key)
+        # The scale should not influence the variant selection, so we apply it
+        # only _after_ the variant has been selected (otherwise we simply could
+        # pass in a larger size and be done with it ;).
+        if scale and size and (0.5 <= scale <= 3.0):
+            size = [int(ceil(x * scale)) for x in size]
 
         # Make sure no invalid or redundant modifiers were provided
-        values = [variant.name, size, fill, viewport]
+        values = [variant.name, size, fill, viewport, scale]
         if len([x for x in values if x]) != len(key.split('__')):
             raise KeyError(key)
 
@@ -191,6 +198,19 @@ class ImageGroupBase(object):
 
     def get_variant_viewport(self, key):
         return get_viewport_from_key(key)
+
+    def get_scale(self, key):
+        """If key contains `scale_2.0` the function returns a scale of 2.0.
+        If it is not possible to evaluate a scale because the key does not
+        contain a scale, or the format is not valid, `None` is returned.
+        """
+        for segment in key.split('__')[1:]:
+            seg = segment.split('scale_')
+            try:
+                return float(seg[1])
+            except (IndexError, ValueError):
+                continue
+        return None
 
     def get_variant_by_key(self, key):
         """Retrieve Variant by using as much information as given in key."""
