@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.7.3 (unreleased)
+1.7.3 (2016-10-19)
 ------------------
 
 - Optionally update content keywords from TMS result on bulk index,
