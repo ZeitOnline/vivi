@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 import StringIO
-
+import zeit.connector.dav.davresource
 import zeit.cms.browser.view
 import csv
 import tinydav
 import logging
+import re
 log = logging.getLogger(__name__)
 
 # Does the DAV Content need to be locked while reading? I guess not
-
-"""
-a = davclient.propfind("cms/archiv-wf/archiv/ZECH/2009/51/politik/")
-a._etree"""
+# TODO Exclude Inhaltsverzeichnis maybe even ressort Verschiedenes
+# TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml ?
 
 class Toc(zeit.cms.browser.view.Base):
     """
@@ -90,19 +89,19 @@ class Toc(zeit.cms.browser.view.Base):
         # TODO Get uri from some config
         return tinydav.WebDAVClient(self.DAV_SERVER_ROOT, self.PORT)
 
-    def _get_metadata_from_xml_content(self, etree):
-        # TODO is the subtitle the teaser?
+    def _get_metadata_from_xml_content(self, tree):
         # TODO Xpath text() might return a list!
         xpaths = {
-            'title': "article/body/title/text()",
+            'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
-            'teaser': "article/body/subtitle/text()",
-            'ressort': "//attribute[@name='ressort and @ns='http://namespaces.zeit.de/CMS/document']/text()"
+            'teaser': "body/subtitle/text()",
+            'ressort': "//attribute[@name='ressort' and @ns='http://namespaces.zeit.de/CMS/document']/text()"
         }
         res = {}
-        for key, xpath in xpaths:
-            res[key] = etree.xpath(xpath)
+        for key, xpath in xpaths.iteritems():
+            res[key] = tree.xpath(xpath)
         return res
+
 
     def _create_csv(self, toc_data):
         """
@@ -131,5 +130,36 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _format_toc_element(self, toc_entry):
         # TODO Other fields need to be normalized too, e.g. page
-        tit_and_tease = toc_entry.get("title") + " " + toc_entry.get("title")
+        self._normalize_toc_element(toc_entry)
+        tit_and_tease = toc_entry.get("title") + u" " + toc_entry.get("teaser")
         return [toc_entry.get("ressort"), toc_entry.get("page"), tit_and_tease]
+
+
+    def list_dir(self, client, path):
+        """ Returns all paths to directories for a given path """
+        response = client.propfind(path, depth=1)
+        # How to deal with this error
+        assert response.is_multistatus
+        return [element.href for element in response if self._is_path_to_directory(path, element)]
+
+    def _is_path_to_directory(self, root_path_of_element, element):
+        # Dont include the root_path_of_elemnt itself
+        root_paths = {root_path_of_element, '/' + root_path_of_element}
+        return 'directory' in element.get('getcontenttype').text and element.href not in root_paths
+
+    def _normalize_toc_element(self, toc_entry):
+        for key, value in toc_entry.iteritems():
+            toc_entry[key] = value[0] if len(value) > 0 else "Nicht ermittelt"
+        self._normalize_teaser(toc_entry)
+        self._normalize_page(toc_entry)
+
+    def _normalize_page(self, toc_dict):
+        page_string =toc_dict.get('page', '')
+        res = re.findall('\d+', page_string)
+        toc_dict['page']= res[0].strip("0") if res else "Nicht ermittelt"
+
+    def _normalize_teaser(self, toc_entry):
+        teaser = toc_entry.get('teaser','')
+        # Delete Linebreaks and a whitespace
+        toc_entry['teaser'] = teaser.replace('\n','')
+        toc_entry['teaser'] = re.sub(r'\s\s+', "", teaser)
