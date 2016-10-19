@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.2.2 (unreleased)
+1.2.2 (2016-10-19)
 ------------------
 
 - Create CP along with the Volume object, using a Python template
