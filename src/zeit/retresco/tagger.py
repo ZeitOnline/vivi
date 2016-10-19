@@ -20,14 +20,9 @@ PINNED_PROPERTY = ('pinned', NAMESPACE)
 # To speed up indexing we do not checkout resources to update properties.
 # This is why we make the keyword property writeable.
 property_manager = zeit.cms.content.liveproperty.LiveProperties
-property_manager.register_live_property(
-    KEYWORD_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
-property_manager.register_live_property(
-    DISABLED_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
-property_manager.register_live_property(
-    KEYWORD_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
-property_manager.register_live_property(
-    PINNED_PROPERTY[0], NAMESPACE, WRITEABLE_ALWAYS)
+for prop in [KEYWORD_PROPERTY, DISABLED_PROPERTY, PINNED_PROPERTY]:
+    property_manager.register_live_property(
+        prop[0], prop[1], WRITEABLE_ALWAYS)
 
 log = logging.getLogger(__name__)
 
