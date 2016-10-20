@@ -118,6 +118,7 @@ def print_payload_documentation():
         PARSE_NEWS_CHANNEL: 'News',
         'mobile-target-host': 'http://www.zeit.de',
         'urbanairship-audience-group': 'subscriptions',
+        'urbanairship-ios-segment': '80436826-1e09-4a8a-9c26-5016f3df8e9f',
     })
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
