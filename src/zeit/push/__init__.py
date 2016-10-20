@@ -17,7 +17,7 @@ product_config = """\
   parse-channel-news News
   parse-image-pattern 184x84
   urbanairship-audience-group subscriptions
-  urbanairship-ios-segment ios
+  urbanairship-ios-segment 77c49d90-f6ca-465c-b33f-110f1cdcdacd
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

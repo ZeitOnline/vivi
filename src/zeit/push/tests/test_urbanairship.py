@@ -142,6 +142,8 @@ class ConnectionTest(zeit.push.testing.TestCase):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            # This segment ID is from the UA test application, otherwise our
+            # integration test would fail.
             self.assertEqual(
-                'ios',
+                '77c49d90-f6ca-465c-b33f-110f1cdcdacd',
                 push.call_args_list[1][0][0].audience['AND'][0]['segment'])
