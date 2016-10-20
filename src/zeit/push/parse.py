@@ -119,7 +119,7 @@ def print_payload_documentation():
         'teaserTitle': 'TeaserTitle',
         'teaserText': 'TeaserText',
         'teaserSupertitle': 'TeaserSupertitle',
-        'image_url': 'http://images.zeit.de/test/image',
+        'image_url': 'http://img.zeit.de/test/image',
     }
     print '[{"//": "*** Eilmeldung ***"},'
     conn.send('Title', 'http://www.zeit.de/test/artikel',
