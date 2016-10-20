@@ -95,33 +95,19 @@ class Publish(object):
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Publish pre-conditions not satisifed.")
 
-        if priority is None:
-            priority = zeit.cms.workflow.interfaces.IPublishPriority(
-                self.context)
-        task = u'zeit.workflow.publish'
         if async:
             self.log(self.context, _('Publication scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            PublishTask.publish.delay(TaskDescription(self.context))
         else:
-            task = zope.component.getUtility(
-                lovely.remotetask.interfaces.ITask, name=task)
-            task.run_sync(self.context)
+            PublishTask.publish(TaskDescription(self.context))
 
     def retract(self, priority=None, async=True):
         """Retract object."""
-        if priority is None:
-            priority = zeit.cms.workflow.interfaces.IPublishPriority(
-                self.context)
-        task = u'zeit.workflow.retract'
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            RetractTask.retract.delay(TaskDescription(self.context))
         else:
-            task = zope.component.getUtility(
-                lovely.remotetask.interfaces.ITask, name=task)
-            task.run_sync(self.context)
+            RetractTask.retract(TaskDescription(self.context))
 
     def tasks(self, priority):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -145,7 +131,7 @@ class PublishRetractTask(object):
     # inputSchema = zope.schema.Object()  # XXX
     # outputSchema = None or an error message
 
-    def __call__(self, service, jobid, input):
+    def __call__(self, input, jobid):
         info = (type(self).__name__, input.uniqueId, jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
@@ -390,6 +376,11 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
+    @staticmethod
+    @zeit.cms.celery.task()
+    def publish(task_description):
+        PublishTask()(task_description, PublishTask.publish.request.id)
+
     def run(self, obj, info):
         logger.info('Publishing %s' % obj.uniqueId)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -441,6 +432,11 @@ class PublishTask(PublishRetractTask):
 
 class RetractTask(PublishRetractTask):
     """Retract an object."""
+
+    @staticmethod
+    @zeit.cms.celery.task()
+    def retract(task_description):
+        RetractTask()(task_description, RetractTask.retract.request.id)
 
     def run(self, obj, info):
         logger.info('Retracting %s' % obj.uniqueId)
