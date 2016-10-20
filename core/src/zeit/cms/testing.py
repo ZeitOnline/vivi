@@ -25,6 +25,7 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
+import zeit.cms.celery
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -55,9 +56,14 @@ class ZCMLLayer(plone.testing.Layer):
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
             self.config_file, product_config=self.product_config)
         self['functional_setup'] = self.setup
+        zeit.cms.celery.CELERY.conf['ZOPE_APP'] = self.setup.getRootFolder()
+        zeit.cms.celery.CELERY.conf['ZOPE_PRINCIPAL'] = None
+        zeit.cms.celery.CELERY.conf['CELERY_ALWAYS_EAGER'] = True
+        zeit.cms.celery.CELERY.conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
 
     def tearDown(self):
         self.setup.tearDownCompletely()
+        zeit.cms.celery.CELERY.conf.clear()
         del self['functional_setup']
 
     def testSetUp(self):
