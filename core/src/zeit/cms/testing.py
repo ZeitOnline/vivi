@@ -56,14 +56,9 @@ class ZCMLLayer(plone.testing.Layer):
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
             self.config_file, product_config=self.product_config)
         self['functional_setup'] = self.setup
-        zeit.cms.celery.CELERY.conf['ZOPE_APP'] = self.setup.getRootFolder()
-        zeit.cms.celery.CELERY.conf['ZOPE_PRINCIPAL'] = None
-        zeit.cms.celery.CELERY.conf['CELERY_ALWAYS_EAGER'] = True
-        zeit.cms.celery.CELERY.conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
 
     def tearDown(self):
         self.setup.tearDownCompletely()
-        zeit.cms.celery.CELERY.conf.clear()
         del self['functional_setup']
 
     def testSetUp(self):
@@ -74,6 +69,11 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
+        zeit.cms.celery.CELERY.conf['ZOPE_APP'] = self.setup.getRootFolder()
+        zeit.cms.celery.CELERY.conf['ZOPE_PRINCIPAL'] = 'zope.user'
+        zeit.cms.celery.CELERY.conf['CELERY_ALWAYS_EAGER'] = True
+        zeit.cms.celery.CELERY.conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
+
     def testTearDown(self):
         try:
             connector = zope.component.getUtility(
@@ -82,6 +82,7 @@ class ZCMLLayer(plone.testing.Layer):
             pass
         else:
             connector._reset()
+        zeit.cms.celery.CELERY.conf.clear()
         self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
