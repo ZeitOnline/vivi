@@ -150,19 +150,17 @@ class Toc(zeit.cms.browser.view.Base):
     def list_relevant_dirs_with_dav(self, path):
         """ Returns all paths to directories for a given path """
         response = self.client.propfind(path, depth=1)
-        # TODO How to deal with this error
         assert response.is_multistatus
         return [element.href for element in response if self._is_path_to_directory(path, element)]
 
     def _is_path_to_directory(self, root_path_of_element, element):
-        # Dont include images folder and verschiedenes
         try:
+            # TODO Refactor, Problem is DAV stuff is hard to test...
             folders_to_exclude = {'images', 'leserbriefe'}
             if any(folder in element.href for folder in folders_to_exclude):
                 return False
-                # Dont include the root_path_of_elemnt itself
             root_paths = {root_path_of_element, '/' + root_path_of_element}
-            return 'directory' in element.get('getcontenttype').text and element.href not in root_paths
+            return self._is_dav_dir(element) and element.href not in root_paths
         except:
             raise
 
