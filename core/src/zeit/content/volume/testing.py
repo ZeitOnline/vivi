@@ -2,7 +2,7 @@
 import pkg_resources
 import zeit.cms.testing
 import zeit.content.image.testing
-
+# import zeit.content.article.testing
 
 product_config = """
 <product-config zeit.content.volume>
@@ -15,6 +15,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', product_config=(
         product_config +
         zeit.cms.testing.cms_product_config +
+        # zeit.content.article.testing.product_config +
         zeit.content.image.testing.product_config))
 
 

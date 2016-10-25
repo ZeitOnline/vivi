@@ -31,6 +31,7 @@ setup(
         'zope.interface',
         'zope.schema',
         'zope.security',
+        'tinydav'
     ],
     entry_points={
     },

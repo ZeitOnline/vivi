@@ -51,8 +51,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             self.assertEqual(result, [elements[2].href])
 
 
-
-
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
 
@@ -85,4 +83,3 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                'ZEI/2015/01/ausgabe/@@toc.csv')
         self.assertEllipsis("some csv", b.contents)
 
-# TocFunctionalTest().test_list_relevant_dirs_with_dav_returns_no_images_or_leserbriefe_directories()
