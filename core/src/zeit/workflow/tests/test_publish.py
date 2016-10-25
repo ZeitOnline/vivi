@@ -22,9 +22,13 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
     def __init__(self):
         self.test_log = []
 
-    def run(self, obj, info):
+    def _run(self, obj, info):
         time.sleep(0.1)
         self.test_log.append((obj, info))
+
+    @property
+    def jobid(self):
+        return None
 
 
 class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
@@ -38,22 +42,20 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         self.desc = zeit.workflow.publish.TaskDescription(self.obj)
         self.task = FakePublishTask()
 
-    def run_task_in_thread(self, i, desc):
+    def run_task_in_thread(self, uniqueId='http://xml.zeit.de/testcontent'):
         zeit.cms.testing.set_site(self.getRootFolder())
         zeit.cms.testing.create_interaction()
-        self.task(None, i, desc)
+        self.task(uniqueId)
         transaction.abort()
 
     def test_simple(self):
-        self.task(None, 1, self.desc)
+        self.task('http://xml.zeit.de/testcontent')
         self.assertEquals(1, len(self.task.test_log))
 
     def test_parallel_with_same_obj(self):
         import zope.component
-        t1 = threading.Thread(
-            target=self.run_task_in_thread, args=(1, self.desc))
-        t2 = threading.Thread(
-            target=self.run_task_in_thread, args=(2, self.desc))
+        t1 = threading.Thread(target=self.run_task_in_thread)
+        t2 = threading.Thread(target=self.run_task_in_thread)
         t1.start()
         t2.start()
         t1.join()
@@ -67,12 +69,9 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
             log[0].message)
 
     def test_parallel_with_differnt_obj(self):
-        t1 = threading.Thread(
-            target=self.run_task_in_thread, args=(1, self.desc))
-        desc = zeit.workflow.publish.TaskDescription(
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed'))
-        t2 = threading.Thread(
-            target=self.run_task_in_thread, args=(2, desc))
+        t1 = threading.Thread(target=self.run_task_in_thread)
+        t2 = threading.Thread(target=self.run_task_in_thread,
+                              args=('http://xml.zeit.de/politik.feed',))
         t1.start()
         t2.start()
         t1.join()
