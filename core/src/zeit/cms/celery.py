@@ -121,7 +121,8 @@ class TransactionAwareTask(celery.Task):
         transaction.get().addAfterCommitHook(hook)
         return self.AsyncResult(task_id)
 
-    def apply_async(self, args=None, kw=None, task_id=None, *arguments, **options):
+    def apply_async(
+            self, args=None, kw=None, task_id=None, *arguments, **options):
         if task_id is None:
             task_id = celery.utils.gen_unique_id()
 
