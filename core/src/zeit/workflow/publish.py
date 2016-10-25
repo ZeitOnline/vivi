@@ -2,10 +2,8 @@ from __future__ import with_statement
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import ZODB.POSException
 import logging
-import lovely.remotetask.interfaces
 import os.path
 import pytz
 import random
@@ -97,24 +95,17 @@ class Publish(object):
 
         if async:
             self.log(self.context, _('Publication scheduled'))
-            PublishTask.publish.delay(TaskDescription(self.context))
+            return PUBLISH_TASK.delay(self.context.uniqueId).id
         else:
-            PublishTask.publish(TaskDescription(self.context))
+            PUBLISH_TASK(self.context.uniqueId)
 
     def retract(self, priority=None, async=True):
         """Retract object."""
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            RetractTask.retract.delay(TaskDescription(self.context))
+            return RETRACT_TASK.delay(self.context.uniqueId).id
         else:
-            RetractTask.retract(TaskDescription(self.context))
-
-    def tasks(self, priority):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % priority]
-        return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
+            RETRACT_TASK(self.context.uniqueId)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -125,17 +116,26 @@ active_objects = set()
 active_objects_lock = threading.Lock()
 
 
-class PublishRetractTask(object):
+class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
 
-    zope.interface.implements(lovely.remotetask.interfaces.ITask)
-    # inputSchema = zope.schema.Object()  # XXX
-    # outputSchema = None or an error message
+    abstract = True  # Base class for Publish and Retract.
 
-    def __call__(self, input, jobid):
-        info = (type(self).__name__, input.uniqueId, jobid)
+    @property
+    def jobid(self):
+        """Retrieve the ID of the async job.
+
+        Since the job ID is retrieved via task instances like PUBLISH_TASK and
+        RETRACT_TASK, the actual job ID must be retrieved by subclasses.
+
+        """
+        raise NotImplementedError()
+
+    def run(self, uniqueId):
+        input = TaskDescription(zeit.cms.interfaces.ICMSContent(uniqueId))
+        info = (type(self).__name__, input.uniqueId, self.jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
-        logger.info("Running job %s" % jobid)
+        logger.info("Running job %s" % self.jobid)
         uniqueId = input.uniqueId
         principal = input.principal
 
@@ -152,7 +152,7 @@ class PublishRetractTask(object):
                 try:
                     acquired = self.acquire_active_lock(uniqueId)
                     if acquired:
-                        self.run(obj, info)
+                        self._run(obj, info)
                     else:
                         self.log(
                             obj, _('A publish/retract job is already active.'
@@ -198,7 +198,7 @@ class PublishRetractTask(object):
         timer.start(u'Synchronous %s started: %s' % (
             type(self).__name__, obj.uniqueId))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-        self.run(obj, info)
+        self._run(obj, info)
         timer.mark('Done %s' % obj.uniqueId)
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
@@ -376,12 +376,11 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
-    @staticmethod
-    @zeit.cms.celery.task()
-    def publish(task_description):
-        PublishTask()(task_description, PublishTask.publish.request.id)
+    @property
+    def jobid(self):
+        PUBLISH_TASK.request.id
 
-    def run(self, obj, info):
+    def _run(self, obj, info):
         logger.info('Publishing %s' % obj.uniqueId)
         if info.can_publish() == CAN_PUBLISH_ERROR:
             logger.error("Could not publish %s" % obj.uniqueId)
@@ -430,15 +429,17 @@ class PublishTask(PublishRetractTask):
         return obj
 
 
+PUBLISH_TASK = PublishTask()
+
+
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
-    @staticmethod
-    @zeit.cms.celery.task()
-    def retract(task_description):
-        RetractTask()(task_description, RetractTask.retract.request.id)
+    @property
+    def jobid(self):
+        RETRACT_TASK.request.id
 
-    def run(self, obj, info):
+    def _run(self, obj, info):
         logger.info('Retracting %s' % obj.uniqueId)
         if not info.published:
             logger.warning(
@@ -478,3 +479,6 @@ class RetractTask(PublishRetractTask):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+RETRACT_TASK = RetractTask()
