@@ -9,6 +9,7 @@ import os
 import plone.testing
 import sys
 import threading
+import transaction
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -129,6 +130,7 @@ def run_publish(priorities=(PRIORITY_DEFAULT,)):
         tasks.process()
     logging.root.removeHandler(handler)
     logging.root.setLevel(oldlevel)
+    transaction.commit()  # trigger publish via celery
 
 
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
