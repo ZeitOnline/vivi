@@ -32,21 +32,20 @@ class Toc(zeit.cms.browser.view.Base):
     # TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml same
     # as http://vivi.zeit.de/repository/data/products.xml -> NO!
     # 'CW' in Ticket Description, changed it to 'ZWCW'
-    PRODUCT_IDS = ['ZEI','ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
+    PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
     CSV_DELIMITER = '\t'
 
-    def __init__(self):
-        self.client = self._create_dav_client()
+    # def __init__(self):
+    #     self.client = self._create_dav_client()
 
     def __call__(self):
         self.volume = self.context
-        volume = self.context
-        filename = self._generate_file_name(volume)
+        filename = self._generate_file_name()
         # self.request.response.setHeader('Content-Type', 'text/csv')
         # self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
-        return self._create_toc_content(volume)
+        return self._create_toc_content()
 
-    def _create_toc_content(self, volume):
+    def _create_toc_content(self):
         """
         Create Table of Contents for the given Volume as a csv.
         :param volume: ..volume.Volume Content Instance
@@ -57,9 +56,9 @@ class Toc(zeit.cms.browser.view.Base):
         # return self._create_csv(sorted_toc_data)
         return 'some csv'
 
-    def _generate_file_name(self, volume):
+    def _generate_file_name(self):
         # TODO Internationalization?
-        return "inhalsverzeichnis_{}_{}.csv".format(volume.year, volume.volume)
+        return "inhalsverzeichnis_{}_{}.csv".format(self.volume.year, self.volume.volume)
 
     def _get_via_dav(self):
         """
@@ -155,7 +154,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _is_path_to_directory(self, root_path_of_element, element):
         try:
-            # TODO Refactor, Problem is DAV stuff is hard to test...
+            # TODO Refactor, the roblem is, that DAV stuff is hard to test...
             folders_to_exclude = {'images', 'leserbriefe'}
             if any(folder in element.href for folder in folders_to_exclude):
                 return False
