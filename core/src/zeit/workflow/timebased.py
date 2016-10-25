@@ -32,10 +32,10 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         WORKFLOW_NS, 'released_to', writeable=WRITEABLE_ALWAYS)
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
+        zope.schema.Text(), WORKFLOW_NS, 'publish_job_id',
         writeable=WRITEABLE_LIVE)
     retract_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'retract_job_id',
+        zope.schema.Text(), WORKFLOW_NS, 'retract_job_id',
         writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):
@@ -62,7 +62,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                       mapping=dict(job=self.publish_job_id)))
             if released_from is not None:
                 self.publish_job_id = self.add_job(
-                    u'zeit.workflow.publish',
+                    zeit.workflow.publish.PUBLISH_TASK,
                     released_from)
                 self.log(_('scheduled-for-publishing-on',
                            default=u"To be published on ${date} (job #${job})",
@@ -80,7 +80,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                       mapping=dict(job=self.publish_job_id)))
             if released_to is not None:
                 self.retract_job_id = self.add_job(
-                    u'zeit.workflow.retract',
+                    zeit.workflow.publish.RETRACT_TASK,
                     released_to)
                 self.log(_('scheduled-for-retracting-on',
                            default=u"To be retracted on ${date} (job #${job})",
@@ -90,15 +90,14 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
         self.released_from, self.released_to = value
 
-    def add_job(self, task_name, when):
+    def add_job(self, task, when):
         delay = when - datetime.datetime.now(pytz.UTC)
-        delay = 60 *60 * 24 * delay.days + delay.seconds  # Ignore microseconds
-        task_description = zeit.workflow.publish.TaskDescription(self.context)
+        delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
         if delay > 0:
-            job_id = self.tasks.addCronJob(
-                task_name, task_description, delay=delay)
+            job_id = task.apply_async(
+                (self.context.uniqueId,), countdown=delay).id
         else:
-            job_id = self.tasks.add(task_name, task_description)
+            job_id = task.delay(self.context.uniqueId).id
         return job_id
 
     def cancel_job(self, job_id):

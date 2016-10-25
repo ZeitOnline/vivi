@@ -2,6 +2,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import json
 import lovely.remotetask.interfaces
 import transaction
+import uuid
 import zeit.cms.testing
 import zeit.workflow.interfaces
 import zeit.workflow.testing
@@ -63,18 +64,18 @@ class PublishJSONTest(JSONTestCase):
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
         self.assertNotEqual(False, result)
         try:
-            int(result)
+            uuid.UUID(result)
         except ValueError:
-            self.fail('a job id should be returned')
+            self.fail('a UUID should be returned as job id')
 
     def test_retract_should_return_job_id(self):
         result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@retract')
         self.assertNotEqual(False, result)
         try:
-            int(result)
+            uuid.UUID(result)
         except ValueError:
-            self.fail('a job id should be returned')
+            self.fail('a UUID should be returned as job id')
 
 
 class RemoteTaskTest(JSONTestCase):
