@@ -6,6 +6,7 @@ import celery
 import celery.bootsteps
 import celery.loaders.app
 import celery.signals
+import celery.utils
 import grokcore.component as grok
 import imp
 import logging
@@ -109,6 +110,37 @@ class TransactionAwareTask(celery.Task):
         if interaction is not None:
             return True
         return False
+
+    def delay(self, *args, **kw):
+        task_id = celery.utils.gen_unique_id()
+
+        def hook(success):
+            if success:
+                super(TransactionAwareTask, self).apply_async(
+                    args, kw, task_id=task_id)
+        transaction.get().addAfterCommitHook(hook)
+
+        # XXX temporary, return actual AsyncResult object
+        import mock
+        m = mock.Mock()
+        m.id = task_id
+        return m
+
+    def apply_async(self, args=None, kw=None, task_id=None, *arguments, **options):
+        if task_id is None:
+            task_id = celery.utils.gen_unique_id()
+
+        def hook(success):
+            if success:
+                super(TransactionAwareTask, self).apply_async(
+                    args, kw, task_id, *arguments, **options)
+        transaction.get().addAfterCommitHook(hook)
+
+        # XXX temporary, return actual AsyncResult object
+        import mock
+        m = mock.Mock()
+        m.id = task_id
+        return m
 
 
 class ZopeCelery(celery.Celery):
