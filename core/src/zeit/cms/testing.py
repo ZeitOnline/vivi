@@ -69,10 +69,11 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
-        zeit.cms.celery.CELERY.conf['ZOPE_APP'] = self.setup.getRootFolder()
-        zeit.cms.celery.CELERY.conf['ZOPE_PRINCIPAL'] = 'zope.user'
-        zeit.cms.celery.CELERY.conf['CELERY_ALWAYS_EAGER'] = True
-        zeit.cms.celery.CELERY.conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
+        conf = zeit.cms.celery.CELERY.conf
+        conf['ZOPE_APP'] = self.setup.getRootFolder()
+        conf['ZOPE_PRINCIPAL'] = 'zope.user'
+        conf['CELERY_ALWAYS_EAGER'] = True
+        conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
 
     def testTearDown(self):
         try:
@@ -290,10 +291,10 @@ class RepositoryHelper(object):
 
 
 class FunctionalTestCaseCommon(
-    unittest.TestCase,
-    gocept.testing.assertion.Ellipsis,
-    gocept.testing.assertion.Exceptions,
-    RepositoryHelper):
+        unittest.TestCase,
+        gocept.testing.assertion.Ellipsis,
+        gocept.testing.assertion.Exceptions,
+        RepositoryHelper):
 
     product_config = {}
 
