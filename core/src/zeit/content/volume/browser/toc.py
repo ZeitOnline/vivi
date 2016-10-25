@@ -35,14 +35,15 @@ class Toc(zeit.cms.browser.view.Base):
     PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
     CSV_DELIMITER = '\t'
 
-    # def __init__(self):
-    #     self.client = self._create_dav_client()
+    def __init__(self, *args, **kwargs):
+        super(Toc, self).__init__(*args, **kwargs)
+        self.client = self._create_dav_client()
 
     def __call__(self):
         self.volume = self.context
         filename = self._generate_file_name()
-        # self.request.response.setHeader('Content-Type', 'text/csv')
-        # self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
     def _create_toc_content(self):
