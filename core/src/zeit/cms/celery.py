@@ -119,12 +119,7 @@ class TransactionAwareTask(celery.Task):
                 super(TransactionAwareTask, self).apply_async(
                     args, kw, task_id=task_id)
         transaction.get().addAfterCommitHook(hook)
-
-        # XXX temporary, return actual AsyncResult object
-        import mock
-        m = mock.Mock()
-        m.id = task_id
-        return m
+        return self.AsyncResult(task_id)
 
     def apply_async(self, args=None, kw=None, task_id=None, *arguments, **options):
         if task_id is None:
@@ -135,12 +130,7 @@ class TransactionAwareTask(celery.Task):
                 super(TransactionAwareTask, self).apply_async(
                     args, kw, task_id, *arguments, **options)
         transaction.get().addAfterCommitHook(hook)
-
-        # XXX temporary, return actual AsyncResult object
-        import mock
-        m = mock.Mock()
-        m.id = task_id
-        return m
+        return self.AsyncResult(task_id)
 
 
 class ZopeCelery(celery.Celery):
