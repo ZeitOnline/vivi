@@ -124,7 +124,8 @@ Let's publish the object:
 
 >>> workflow.urgent = True
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> import transaction
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 True
 >>> workflow.date_last_published
@@ -134,7 +135,7 @@ datetime.datetime(...)
 One can publish more than once to put up a new version:
 
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 True
 
@@ -147,7 +148,7 @@ retract is unconditinally possible:
 
 >>> workflow.urgent = False
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 False
 
@@ -223,7 +224,7 @@ False
 
 Processing now doesn't publish because the publish time is not reached, yet:
 
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> not not workflow.published
 False
 
@@ -231,7 +232,7 @@ Let's wait a second and process; still not published:
 
 >>> import time
 >>> time.sleep(1)
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> not not workflow.published
 False
 
@@ -249,12 +250,12 @@ then:
 >>> job_id = workflow.publish_job_id
 >>> tasks.getStatus(job_id)
 'delayed'
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 
 Waiting another two seconds will publish the object:
 
 >>> time.sleep(2)
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 True
 >>> tasks.getStatus(job_id)
@@ -267,7 +268,7 @@ imediately:
 >>> orig_publish_date = workflow.date_last_published
 >>> publish_on = datetime.datetime(2000, 2, 3, tzinfo=pytz.UTC)
 >>> workflow.release_period = (publish_on, None)
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> orig_publish_date < workflow.date_last_published
 True
 
@@ -278,7 +279,7 @@ Retracting works in the same way:
 >>> retract_on = (datetime.datetime.now(pytz.UTC) +
 ...               datetime.timedelta(seconds=2))
 >>> workflow.release_period = (publish_on, retract_on)
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> job_id = workflow.retract_job_id
 >>> tasks.getStatus(job_id)
 'delayed'
@@ -286,7 +287,7 @@ Retracting works in the same way:
 Wait:
 
 >>> time.sleep(2)
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 
 The object is retracted now:
 
@@ -355,7 +356,7 @@ True
 >>> import zeit.cms.workflow.interfaces
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.date_first_released
 datetime.datetime(...)
 
@@ -382,7 +383,7 @@ We expect the value to be in the xml now as well (amongst others):
 When we de-publish the object, the status-flag is removed again:
 
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
@@ -427,14 +428,14 @@ Publish somalia:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 True
 
 Retract of course also works:
 
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 False
 
@@ -485,7 +486,7 @@ Now publish the folder:
 
 >>> workflow.urgent = True
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 True
 
@@ -506,7 +507,7 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 Retracting is also possible recursivly:
 
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> workflow.published
 False
 
@@ -538,7 +539,7 @@ The actual publishing happens by external the publish script[#loghandler]_.
 Publish the folder again and verify the log:
 
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> print logfile.getvalue()
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/
@@ -612,7 +613,7 @@ of publish:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> print logfile.getvalue()
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/
@@ -642,9 +643,8 @@ fails when there is 'JPG' in the input data:
 >>> workflow.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
 >>> job_id = publish.publish()
->>> import transaction
 >>> transaction.commit()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 
 >>> print_log(log.get_log(jpg))
 http://xml.zeit.de/2006/DSC00109_2.JPG
@@ -694,7 +694,7 @@ Reset the folder implements:
 ...     *old_implements)
 
 
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 
 Dependencies
 ============
@@ -754,7 +754,7 @@ automatically[#master-event-handler]_:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -818,7 +818,7 @@ Add the reverse dependency:
 Publish somalia again:
 
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -845,7 +845,7 @@ Retract does *not* honours dependencies:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -911,7 +911,7 @@ When somalia is published, the folder and its content is also published:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia

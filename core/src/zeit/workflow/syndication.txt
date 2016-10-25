@@ -11,7 +11,7 @@ Create a dummy content object:
 >>> import zope.interface
 >>> import zeit.cms.interfaces
 >>> import zeit.workflow.interfaces
->>> 
+>>>
 >>> class Content(object):
 ...     zope.interface.implements(
 ...         zeit.workflow.interfaces.IContentWorkflow,
@@ -107,9 +107,10 @@ Publish/retract the content. This removes it from the feed:
 >>> info.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> import transaction
+>>> transaction.commit()  # trigger async celery tasks
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> len(repository['politik.feed'])
 0
 
@@ -133,7 +134,7 @@ Publish:
 >>> info.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(repository['testcontent'])
 >>> job_id = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 
 
 Modify politik feed but avoid the checkout/checkin cycle:
@@ -147,7 +148,7 @@ Modify politik feed but avoid the checkout/checkin cycle:
 Now retract:
 
 >>> job_id = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> len(repository['politik.feed'])
 0
 
@@ -171,7 +172,7 @@ Teardown
     ...     lovely.remotetask.interfaces.ITaskService, 'general')
 
 
-.. [#needs-interaction] 
+.. [#needs-interaction]
 
     >>> import zeit.cms.testing
     >>> principal = zeit.cms.testing.create_interaction()
