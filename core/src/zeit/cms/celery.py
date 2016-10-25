@@ -68,6 +68,9 @@ class TransactionAwareTask(celery.Task):
         return result
 
     def transaction_begin(self):
+        if self.has_interaction:
+            return
+
         transaction.begin()
         if self.principal:
             request = zope.publisher.browser.TestRequest()
@@ -76,10 +79,13 @@ class TransactionAwareTask(celery.Task):
 
     def transaction_abort(self):
         transaction.abort()
-        if self.principal:
+        if self.principal and not self.has_interaction:
             zope.security.management.endInteraction()
 
     def transaction_commit(self):
+        if self.has_interaction:
+            return
+
         transaction.commit()
         if self.principal:
             zope.security.management.endInteraction()
@@ -92,6 +98,17 @@ class TransactionAwareTask(celery.Task):
         auth = zope.component.getUtility(
             zope.app.security.interfaces.IAuthentication)
         return auth.getPrincipal(principal_id)
+
+    @property
+    def has_interaction(self):
+        try:
+            interaction = zope.security.management.getInteraction()
+        except AttributeError:
+            interaction = None
+
+        if interaction is not None:
+            return True
+        return False
 
 
 class ZopeCelery(celery.Celery):
