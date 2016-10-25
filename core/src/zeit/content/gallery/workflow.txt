@@ -46,7 +46,8 @@ When we publish the gallery now, the image is also published[#loghandler]_:
 'can-publish-success'
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
 >>> tid = publish.publish()
->>> tasks.process()
+>>> import transaction
+>>> transaction.commit()  # trigger async celery tasks
 >>> gallery_info.published
 True
 >>> image_info.published
@@ -76,7 +77,7 @@ core, initially the folder was retracted automatically):
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> tid = publish.retract()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> image_info.published
 True
 >>> gallery_info.published
@@ -103,14 +104,13 @@ published w/o images:
 
 Delete the folder and try to publish:
 
->>> import transaction
 >>> del repository['image-folder']
 >>> transaction.commit()
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
 >>> tid = publish.publish()
->>> tasks.process()
+>>> transaction.commit()  # trigger async celery tasks
 >>> gallery_info.published
 True
 >>> print logfile.getvalue(),
@@ -146,10 +146,6 @@ Clean up:
     >>> import zeit.cms.workflow.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
-
-    >>> import lovely.remotetask.interfaces
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
 
 
 .. [#needsinteraction] For publising we need an interacion, i.e. a request
