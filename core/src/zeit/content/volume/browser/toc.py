@@ -236,8 +236,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _normalize_teaser(self, toc_entry):
         teaser = toc_entry.get('teaser', u'')
         # Delete Linebreaks and a whitespace
-        toc_entry['teaser'] = teaser.replace('\n', u'')
-        toc_entry['teaser'] = re.sub(r'\s\s+', u'', teaser)
+        toc_entry['teaser'] = teaser.replace('\n', u' ')
+        toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
 
     def _create_toc_element(self, doc_path):
         article_element = self._parse_article(doc_path)

@@ -8,7 +8,6 @@ from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
-import lxml.etree
 import posixpath
 
 
@@ -17,18 +16,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         super(TocFunctionalTest, self).setUp()
 
-    def test_parse_article_returns_an_lxml_object(self):
-        xml = """<xml/>"""
-        doc_path = '/cms/archiv-wf/archiv/ZEI/2009/23/test_article'
-        toc = Toc()
-        with mock.patch("tinydav.WebDAVClient.get") as get:
-            response = mock.Mock()
-            response.content = xml
-            get.return_value = response
-            result = toc._parse_article(doc_path)
-        self.assertEqual(xml, lxml.etree.tostring(result))
 
-    def test_list_relevant_dirs_with_dav_returns_no_images_or_leserbriefe_directories(self):
+    def test_list_relevant_dirs_with_dav_returns_correct_directories(self):
         dir_path = '/cms/archiv-wf/archiv/ZEI/2009/23/'
         toc = Toc()
         with mock.patch('tinydav.WebDAVClient.propfind') as propfind:
@@ -56,6 +45,29 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             propfind.return_value = response
             result = toc.list_relevant_dirs_with_dav(dir_path)
             self.assertEqual(result, [elements[2].href])
+
+    def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
+        xml = u"""
+        <article>
+            <head>
+                <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
+            </head>
+            <body>
+                 <title>Titel</title>
+                 <subtitle>Das soll der Teaser
+                 sein</subtitle>
+            </body>
+        </article>
+        """
+        doc_path = '/cms/archiv-wf/archiv/ZEI/2009/23/test_article'
+        toc = Toc()
+        with mock.patch("tinydav.WebDAVClient.get") as get:
+            response = mock.Mock()
+            response.content = xml
+            get.return_value = response
+            result = toc._create_toc_element(doc_path)
+        expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein'}
+        self.assertEqual(expected, result)
 
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
