@@ -11,6 +11,8 @@ import zeit.cms.content.sources
 import zeit.content.volume.testing
 import posixpath
 
+# TODO Get via DAV Test
+# TODO sort Toc Test
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
@@ -52,6 +54,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         <article>
             <head>
                 <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
+                <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
             </head>
             <body>
                  <title>Titel</title>
@@ -60,6 +63,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             </body>
         </article>
         """
+        expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein', 'author': 'Autor'}
         doc_path = '/cms/archiv-wf/archiv/ZEI/2009/23/test_article'
         toc = Toc()
         with mock.patch("tinydav.WebDAVClient.get") as get:
@@ -67,26 +71,25 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             response.content = xml
             get.return_value = response
             result = toc._create_toc_element(doc_path)
-        expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein'}
         self.assertEqual(expected, result)
 
-    def test_create_csv_with(self):
+    def test_create_csv_with_all_values_in_toc(self):
         # TODO Refactor
         toc_data = OrderedDict()
         toc_data['Die Zeit'] = OrderedDict(
-                    {'Politik': [{'page': '1', 'title':'title', 'teaser':'tease'}]})
+                    {'Politik': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author':'Autor'}]})
         toc_data['Anderer'] = OrderedDict(
-                    {'Dossier': [{'page': '1', 'title':'title', 'teaser':'tease'},
-                                 {'page': '3', 'title':'title2', 'teaser':'tease'}
+                    {'Dossier': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author':'Autor'},
+                                 {'page': '3', 'title': 'title2', 'teaser':'tease', 'author':'Autor'}
                                  ]}
                 )
         expected = """Die Zeit\r
 Politik\r
-1\ttitle tease\r
+1\tAutor\ttitle tease\r
 Anderer\r
 Dossier\r
-1\ttitle tease\r
-3\ttitle2 tease\r
+1\tAutor\ttitle tease\r
+3\tAutor\ttitle2 tease\r
 """
         toc= Toc()
         res = toc._create_csv(toc_data)
@@ -118,6 +121,8 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                 article.page = 1
                 self.repository['ZEI']['2015']['01']['politik']['test_artikel'] = article
 
+
+    # TODO Dav-client umbiegen?
     def test_toc_menu_generate_csv(self):
         b = self.browser
         b.handleErrors = False

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import StringIO
-import zeit.connector.dav.davresource
 import zeit.cms.browser.view
 import csv
 import tinydav
@@ -40,11 +39,12 @@ class Toc(zeit.cms.browser.view.Base):
         self.client = self._create_dav_client()
 
     def __call__(self):
-        self.volume = self.context
-        filename = self._generate_file_name()
-        self.request.response.setHeader('Content-Type', 'text/csv')
-        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
-        return self._create_toc_content()
+        # self.volume = self.context
+        # filename = self._generate_file_name()
+        # self.request.response.setHeader('Content-Type', 'text/csv')
+        # self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
+        # return self._create_toc_content()
+        return 'some csv'
 
     def _create_toc_content(self):
         """
@@ -52,10 +52,10 @@ class Toc(zeit.cms.browser.view.Base):
         :param volume: ..volume.Volume Content Instance
         :return: Specify
         """
-        # toc_data = self._get_via_dav()
-        # sorted_toc_data = self._sort_toc_data(toc_data)
-        # return self._create_csv(sorted_toc_data)
-        return 'some csv'
+        toc_data = self._get_via_dav()
+        sorted_toc_data = self._sort_toc_data(toc_data)
+        return self._create_csv(sorted_toc_data)
+        # return 'some csv'
 
     def _generate_file_name(self):
         # TODO Internationalization?
@@ -120,7 +120,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
-        return [posixpath.join(*[self.DAV_ARCHIVE_ROOT, product_id, self.volume.year, self.volume.volume, ''])
+        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, product_id, self.volume.year, self.volume.volume, '']])
                 for product_id in product_ids]
 
     def _is_relevant_article(self, tree):
@@ -141,6 +141,7 @@ class Toc(zeit.cms.browser.view.Base):
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
+            'author': "//attribute[@name='author']/text()"
         }
         res = {}
         for key, xpath in xpaths.iteritems():
@@ -189,7 +190,7 @@ class Toc(zeit.cms.browser.view.Base):
         out = StringIO.StringIO()
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
-            for toc_element in self._generate_rows_elements(toc_data):
+            for toc_element in self._generate_csv_rows(toc_data):
                 try:
                     writer.writerow(
                         [val.encode('utf-8') for val in toc_element]
@@ -201,7 +202,7 @@ class Toc(zeit.cms.browser.view.Base):
             out.close()
             return file_content
 
-    def _generate_rows_elements(self, toc_entries):
+    def _generate_csv_rows(self, toc_entries):
         """
         Generator to create the csv-rows.
         :param toc_entries: TODO
@@ -210,7 +211,6 @@ class Toc(zeit.cms.browser.view.Base):
         for product_name, ressort_dict in toc_entries.iteritems():
             yield [product_name]
             for ressort_name, toc_entries in ressort_dict.iteritems():
-                print ressort_name
                 yield [ressort_name]
                 for toc_entry in toc_entries:
                     yield self._format_toc_element(toc_entry)
@@ -218,7 +218,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _format_toc_element(self, toc_entry):
         title_and_tease = toc_entry.get("title") + u" " + toc_entry.get("teaser")
-        return [toc_entry.get("page"), title_and_tease]
+        return [toc_entry.get("page"), toc_entry.get("author"), title_and_tease]
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
