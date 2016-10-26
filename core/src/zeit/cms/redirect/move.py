@@ -44,4 +44,4 @@ def store_redirect(context, event):
     # has the new name, so we need to substitute a dummy with the old name.
     dummy = Dummy()
     dummy.uniqueId = old_id
-    zeit.cms.relation.corehandlers.update_referencing_objects(dummy)
+    zeit.cms.relation.corehandlers.update_referencing_objects.delay(dummy)

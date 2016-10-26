@@ -1,6 +1,6 @@
-import gocept.async
 import inspect
 import logging
+import zeit.cms.celery
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -34,8 +34,10 @@ def update_referencing_objects_handler(context, event):
         if entry[3] == 'update_referencing_objects':
             return
 
+    update_referencing_objects.delay(context)
 
-@zeit.cms.async.function()
+
+@zeit.cms.celery.CELERY.task()
 def update_referencing_objects(context):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
