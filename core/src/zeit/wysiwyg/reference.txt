@@ -69,8 +69,8 @@ Change the image metadata and check in:
 
 Now the changes are propagated to the article:
 
->>> import gocept.async.tests
->>> gocept.async.tests.process('events')
+>>> import transaction
+>>> transaction.commit()
 >>> article = repository['test']
 >>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
 <...<image...<bu...>Cap cap cap</bu>...
