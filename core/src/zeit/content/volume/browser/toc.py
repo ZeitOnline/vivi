@@ -222,7 +222,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
-            toc_entry[key] = value[0] if len(value) > 0 else u"Nicht ermittelt"
+            toc_entry[key] = value[0] if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
         return toc_entry

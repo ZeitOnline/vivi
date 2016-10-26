@@ -10,15 +10,21 @@ from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
 import posixpath
-
 # TODO Get via DAV Test
-# TODO sort Toc Test
+
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TocFunctionalTest, self).setUp()
-
+        self.toc_data = OrderedDict()
+        self.toc_data['Die Zeit'] = OrderedDict(
+                    {'Politik': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author': 'Autor'}]})
+        self.toc_data['Anderer'] = OrderedDict(
+                    {'Dossier': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author': 'Autor'},
+                                 {'page': '3', 'title': 'title2', 'teaser':'tease', 'author': 'Autor'}
+                                 ]}
+                )
 
     def test_list_relevant_dirs_with_dav_returns_correct_directories(self):
         dir_path = '/cms/archiv-wf/archiv/ZEI/2009/23/'
@@ -73,16 +79,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             result = toc._create_toc_element(doc_path)
         self.assertEqual(expected, result)
 
-    def test_create_csv_with_all_values_in_toc(self):
-        # TODO Refactor
-        toc_data = OrderedDict()
-        toc_data['Die Zeit'] = OrderedDict(
-                    {'Politik': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author':'Autor'}]})
-        toc_data['Anderer'] = OrderedDict(
-                    {'Dossier': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author':'Autor'},
-                                 {'page': '3', 'title': 'title2', 'teaser':'tease', 'author':'Autor'}
-                                 ]}
-                )
+    def test_create_csv_with_all_values_in_toc_data(self):
         expected = """Die Zeit\r
 Politik\r
 1\tAutor\ttitle tease\r
@@ -91,9 +88,18 @@ Dossier\r
 1\tAutor\ttitle tease\r
 3\tAutor\ttitle2 tease\r
 """
-        toc= Toc()
-        res = toc._create_csv(toc_data)
+        toc = Toc()
+        res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
+
+    def test_create_csv_with_not_all_values_in_toc_data(self):
+        # Delete an author in input toc data
+        product, ressort_dict = self.toc_data.iteritems().next()
+        ressort, article_list = ressort_dict.iteritems().next()
+        article_list[0]['author'] = ''
+        input_data = {product: {ressort: article_list}}
+        toc = Toc()
+        assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
@@ -129,4 +135,3 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/'
                'ZEI/2015/01/ausgabe/@@toc.csv')
         self.assertEllipsis("some csv", b.contents)
-
