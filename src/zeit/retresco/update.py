@@ -1,9 +1,7 @@
 import argparse
-import gocept.async
 import gocept.runner
 import grokcore.component as grok
 import logging
-import zeit.cms.async
 import zeit.cms.celery
 import zeit.cms.content.interfaces
 import zeit.cms.checkout.interfaces
@@ -30,16 +28,15 @@ def index_after_add(event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
             event.newParent):
         return
-    log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
-        context.uniqueId, gocept.async.is_async()))
-    index_async(context.uniqueId, enrich=True)
+    log.info('AfterAdd: Creating async index job for %s' % context.uniqueId)
+    index_async.delay(context.uniqueId, enrich=True)
 
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    index_async(context.uniqueId, enrich=True)
+    index_async.delay(context.uniqueId, enrich=True)
 
 
 @grok.subscribe(
@@ -49,10 +46,10 @@ def unindex_on_remove(context, event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
             event.oldParent):
         return
-    unindex_async(zeit.cms.content.interfaces.IUUID(context).id)
+    unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
-@zeit.cms.async.function(queue='search')
+@zeit.cms.celery.task()
 def index_async(uniqueId, enrich=False, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
@@ -96,7 +93,7 @@ def index(content, enrich=False, publish=False):
             continue
 
 
-@zeit.cms.async.function(queue='search')
+@zeit.cms.celery.task()
 def unindex_async(uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     conn.delete_id(uuid)
