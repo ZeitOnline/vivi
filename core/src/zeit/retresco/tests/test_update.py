@@ -1,9 +1,6 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import StringIO
-import gocept.async
-import gocept.async.tests
-import logging
 import mock
+import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.repository
 import zeit.cms.workflow.interfaces
@@ -16,26 +13,11 @@ import zope.event
 import zope.lifecycleevent
 
 
-@gocept.async.function(service='events')
 def checkout_and_checkin():
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
         pass
-
-
-def process():
-    log_output = StringIO.StringIO()
-    log_handler = logging.StreamHandler(log_output)
-    logging.root.addHandler(log_handler)
-    old_log_level = logging.root.level
-    logging.root.setLevel(logging.ERROR)
-    try:
-        gocept.async.tests.process()
-    finally:
-        logging.root.removeHandler(log_handler)
-        logging.root.setLevel(old_log_level)
-    assert not log_output.getvalue(), log_output.getvalue()
 
 
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
@@ -51,7 +33,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository['t1'] = ExampleContentType()
-        process()
+        transaction.commit()
         self.tms.enrich.assert_called_with(repository['t1'])
         self.tms.index.assert_called_with(repository['t1'])
 
@@ -66,24 +48,21 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         event = zope.lifecycleevent.ObjectAddedEvent(content)
         for ignored in zope.component.subscribers((content_sub, event), None):
             pass
-        try:
-            process()
-        except IndexError:
-            pass
+        transaction.commit()
         self.assertFalse(self.tms.index.called)
 
     def test_checkin_should_index(self):
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content):
             pass
-        process()
+        transaction.commit()
         self.tms.enrich.assert_called_with(content)
         self.tms.index.assert_called_with(content)
 
     def test_index_should_be_called_from_async(self):
         checkout_and_checkin()
         self.assertFalse(self.tms.index.called)
-        process()
+        transaction.commit()
         self.assertTrue(self.tms.index.called)
 
     def test_folders_should_be_indexed_recursively(self):
@@ -99,7 +78,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 cmscontent.return_value = None
                 zeit.retresco.update.index_async(
                     'http://xml.zeit.de/testcontent')
-                process()
+                transaction.commit()
                 self.assertFalse(index.called)
 
     def test_publish_should_not_be_called_on_index_if_res_not_published(self):
@@ -139,7 +118,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
-        process()
+        transaction.commit()
         self.tms.delete_id.assert_called_with(uuid)
 
     def test_remove_from_workingcopy_does_nothing(self):
@@ -147,10 +126,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         event = zope.lifecycleevent.ObjectRemovedEvent(content)
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
         zope.event.notify(event)
-        try:
-            process()
-        except IndexError:
-            pass
+        transaction.commit()
         self.assertFalse(self.tms.delete.called)
 
     def test_publish_should_index_with_published_true(self):
