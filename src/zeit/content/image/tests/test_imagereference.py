@@ -4,9 +4,9 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
-import gocept.async.tests
 import lxml.etree
 import mock
+import transaction
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
@@ -131,7 +131,7 @@ class MoveReferencesTest(zeit.cms.testing.FunctionalTestCase):
 
         zope.copypastemove.interfaces.IObjectMover(image).moveTo(
             self.repository, 'changed')
-        gocept.async.tests.process()
+        transaction.commit()
 
         content = self.repository['testcontent']
         with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:

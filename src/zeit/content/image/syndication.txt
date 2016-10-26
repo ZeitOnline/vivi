@@ -110,7 +110,7 @@ Before:
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
-    <image ...base-id="http://xml.zeit.de/image-group/" 
+    <image ...base-id="http://xml.zeit.de/image-group/"
         type="jpg"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
@@ -127,8 +127,8 @@ Now check out, change title and check in:
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
 >>> metadata.title = u"Image title"
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
->>> import gocept.async.tests
->>> gocept.async.tests.process('events')
+>>> import transaction
+>>> transaction.commit()
 
 The content has changed automatically:
 
