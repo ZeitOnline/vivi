@@ -81,7 +81,7 @@ class Toc(zeit.cms.browser.view.Base):
         product_id_paths = self._get_all_paths_for_prodct_ids(product_ids)
         for product_path in product_id_paths:
             result_for_product = {}
-            for ressort_path in self.list_dir_with_dav(product_path):
+            for ressort_path in self.list_relevant_dirs_with_dav(product_path):
                 result_for_ressort = []
                 for article_path in self._get_all_articles_in_path(ressort_path):
                     toc_entry = self._create_toc_element(article_path)
@@ -136,7 +136,7 @@ class Toc(zeit.cms.browser.view.Base):
         # TODO Get uri from some config (zope.conf?)
         return tinydav.WebDAVClient(self.DAV_SERVER_ROOT, self.DAV_PORT)
 
-    def _get_metadata_from_xml_content(self, tree):
+    def _get_metadata_from_article_xml(self, tree):
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
@@ -151,16 +151,15 @@ class Toc(zeit.cms.browser.view.Base):
         """ Returns all paths to directories for a given path """
         response = self.client.propfind(path, depth=1)
         assert response.is_multistatus
-        return [element.href for element in response if self._is_path_to_directory(path, element)]
+        return [element.href for element in response if self._is_relevant_path_to_directory(path, element)]
 
-    def _is_path_to_directory(self, root_path_of_element, element):
+    def _is_relevant_path_to_directory(self, root_path_of_element, element):
         try:
-            # TODO Refactor, the roblem is, that DAV stuff is hard to test...
             folders_to_exclude = {'images', 'leserbriefe'}
-            if any(folder in element.href for folder in folders_to_exclude):
-                return False
             root_paths = {root_path_of_element, '/' + root_path_of_element}
-            return self._is_dav_dir(element) and element.href not in root_paths
+            return self._is_dav_dir(element) \
+                   and not any(folder in element.href for folder in folders_to_exclude)\
+                   and element.href not in root_paths
         except:
             raise
 
@@ -241,9 +240,9 @@ class Toc(zeit.cms.browser.view.Base):
         toc_entry['teaser'] = re.sub(r'\s\s+', u'', teaser)
 
     def _create_toc_element(self, doc_path):
-        atricle_element = self._parse_article(doc_path)
-        return self._get_metadata_from_xml_content(atricle_element) \
-            if self._is_relevant_article(atricle_element) else None
+        article_element = self._parse_article(doc_path)
+        return self._get_metadata_from_article_xml(article_element) \
+            if self._is_relevant_article(article_element) else None
 
     def _dir_name(self, path):
         return path.split('/')[-2].title()
