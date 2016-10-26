@@ -1,8 +1,8 @@
 from zeit.cms.checkout.helper import checked_out
-import gocept.async.tests
 import lxml.etree
 import lxml.objectify
 import mock
+import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.testing
@@ -19,7 +19,7 @@ class MoveReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
 
         zope.copypastemove.interfaces.IObjectMover(
             self.repository['testcontent']).moveTo(self.repository, 'changed')
-        gocept.async.tests.process()
+        transaction.commit()
         feed = self.repository['feed']
         with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
             self.assertEqual(
