@@ -38,14 +38,21 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             image_element = mock.Mock()
             leserbriefe_element = mock.Mock()
             politik_element = mock.Mock()
-            # Make the response iterable like tinydav Response
+            # Mock the dir_path status for tinydav
+            dir_path_element = mock.Mock()
+            dir_path_element.href = dir_path
+            dir_get_mock = mock.Mock()
+            dir_get_mock.text = 'unix-directory'
+            dir_path_element.get.return_value = dir_get_mock
             elements = [image_element, leserbriefe_element, politik_element]
             for ele, href in zip(elements, hrefs):
                 ele.href = posixpath.join(dir_path, href)
                 get_mock = mock.Mock()
                 get_mock.text = 'unix-directory'
                 ele.get.return_value = get_mock
-            response.__iter__ = mock.Mock(return_value=iter([image_element, leserbriefe_element, politik_element]))
+            # Make the response iterable like tinydav Response
+            response.__iter__ = mock.Mock(return_value=iter([image_element, leserbriefe_element, politik_element,
+                                                             dir_path_element]))
             propfind.return_value = response
             result = toc.list_relevant_dirs_with_dav(dir_path)
             self.assertEqual(result, [elements[2].href])
