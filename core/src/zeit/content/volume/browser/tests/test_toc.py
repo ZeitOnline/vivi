@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import mock
 import zeit.cms.testing
+from ordereddict import OrderedDict
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc
@@ -68,6 +69,28 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             result = toc._create_toc_element(doc_path)
         expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein'}
         self.assertEqual(expected, result)
+
+    def test_create_csv_with(self):
+        # TODO Refactor
+        toc_data = OrderedDict()
+        toc_data['Die Zeit'] = OrderedDict(
+                    {'Politik': [{'page': '1', 'title':'title', 'teaser':'tease'}]})
+        toc_data['Anderer'] = OrderedDict(
+                    {'Dossier': [{'page': '1', 'title':'title', 'teaser':'tease'},
+                                 {'page': '3', 'title':'title2', 'teaser':'tease'}
+                                 ]}
+                )
+        expected = """Die Zeit\r
+Politik\r
+1\ttitle tease\r
+Anderer\r
+Dossier\r
+1\ttitle tease\r
+3\ttitle2 tease\r
+"""
+        toc= Toc()
+        res = toc._create_csv(toc_data)
+        self.assertEqual(expected, res)
 
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
