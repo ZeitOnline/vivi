@@ -3,7 +3,7 @@ Zeit CMS Syndication
 ====================
 
 When the user publishes a document, he needs to choose where the document
-should be published. He can choose one or more *syndication targets*. 
+should be published. He can choose one or more *syndication targets*.
 
 
 Syndication Targets
@@ -37,7 +37,7 @@ The workingcopy can be adapted to `IMySyndicationTargets` [#create-feeds]_:
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     IMySyndicationTargets, bobs_syndication_targets)
-True    
+True
 
 The syndication target object has an attribute `targets`, which initially is
 filled with a default:
