@@ -109,6 +109,7 @@ class TransactionAwareTask(celery.Task):
             if success:
                 super(TransactionAwareTask, self).apply_async(
                     args, kw, task_id=task_id)
+                transaction.commit()
         transaction.get().addAfterCommitHook(hook)
         return self.AsyncResult(task_id)
 
@@ -121,6 +122,7 @@ class TransactionAwareTask(celery.Task):
             if success:
                 super(TransactionAwareTask, self).apply_async(
                     args, kw, task_id, *arguments, **options)
+                transaction.commit()
         transaction.get().addAfterCommitHook(hook)
         return self.AsyncResult(task_id)
 
