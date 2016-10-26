@@ -1,4 +1,5 @@
 import gocept.async
+import inspect
 import logging
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
@@ -29,8 +30,9 @@ def update_referencing_objects_handler(context, event):
     if event.publishing:
         return
     # prevent recursion
-    if not gocept.async.is_async():
-        update_referencing_objects(context)
+    for entry in inspect.stack():
+        if entry[3] == 'update_referencing_objects':
+            return
 
 
 @zeit.cms.async.function()
