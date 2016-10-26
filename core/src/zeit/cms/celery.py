@@ -50,6 +50,8 @@ class TransactionAwareTask(celery.Task):
         old_site = zope.component.hooks.getSite()
         zope.component.hooks.setSite(self.app.conf['ZOPE_APP'])
 
+        self.has_interaction = (
+            zope.security.management.queryInteraction() is not None)
         self.transaction_begin()
         try:
             result = super(TransactionAwareTask, self).__call__(*args, **kw)
@@ -99,17 +101,6 @@ class TransactionAwareTask(celery.Task):
         auth = zope.component.getUtility(
             zope.app.security.interfaces.IAuthentication)
         return auth.getPrincipal(principal_id)
-
-    @property
-    def has_interaction(self):
-        try:
-            interaction = zope.security.management.getInteraction()
-        except AttributeError:
-            interaction = None
-
-        if interaction is not None:
-            return True
-        return False
 
     def delay(self, *args, **kw):
         task_id = celery.utils.gen_unique_id()
