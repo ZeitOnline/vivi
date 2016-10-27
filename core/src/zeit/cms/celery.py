@@ -55,7 +55,7 @@ class TransactionAwareTask(celery.Task):
         self.transaction_begin()
         try:
             result = super(TransactionAwareTask, self).__call__(*args, **kw)
-        except Exception, e:
+        except Exception as e:
             self.transaction_abort()
             raise e
         finally:
@@ -63,7 +63,7 @@ class TransactionAwareTask(celery.Task):
 
         try:
             self.transaction_commit()
-        except ZODB.POSException.ConflictError, e:
+        except ZODB.POSException.ConflictError as e:
             log.info('Retrying due to %s', str(e))
             self.transaction_abort()
             raise self.retry(countdown=1)
