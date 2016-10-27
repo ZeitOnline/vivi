@@ -42,7 +42,7 @@ zugegriffen werden. Der Zugriff erfolg über Dict-Notation, d.h.
 Diese werden dynamisch beim ``Volume`` angezeigt und dann direkt im XML
 desselben gespeichert.
 
-In der Produktion wird `diese Konfigurationsdatei` verwendet.
+In der Produktion wird `diese Konfigurationsdatei`_ verwendet.
 
 
 Product-Source
@@ -72,7 +72,7 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
         <product id="ZMLB">Zeit Magazin</product>
     </products>
 
-In Produktion ist diese `products.xml` in Benutzung.
+In Produktion ist diese `products.xml`_ in Benutzung.
 
 .. _`products.xml`: http://http://cms-backend.zeit.de:9000/cms/work/data/products.xml
 .. _`diese Konfigurationsdatei`: http://cms-backend.zeit.de:9000/cms/work/data/volume-covers.xml
