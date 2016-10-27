@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import mock
-import zeit.cms.testing
 from ordereddict import OrderedDict
+import posixpath
+import tinydav.exception
+import zeit.cms.testing
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
-import posixpath
 # TODO Get via DAV Test
 
 
@@ -127,11 +128,16 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                 article.page = 1
                 self.repository['ZEI']['2015']['01']['politik']['test_artikel'] = article
 
-
-    # TODO Dav-client umbiegen?
-    def test_toc_menu_generate_csv(self):
+    def test_toc_generates_right_headers(self):
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository/'
-               'ZEI/2015/01/ausgabe/@@toc.csv')
-        self.assertEllipsis("some csv", b.contents)
+        # TODO language header for vivi?
+        # b.addHeader('Accept-Language', 'de')
+        # b.addHeader('Content-Language', 'de')
+        with mock.patch('zeit.content.volume.browser.toc.Toc._create_toc_content') as create_content:
+            create_content.return_value = 'some csv'
+            b.open('http://localhost/++skin++vivi/repository/'
+                   'ZEI/2015/01/ausgabe/@@toc.csv')
+            self.assertEqual('text/csv', b.headers['content-type'])
+            self.assertEqual('attachment; filename="table_of_content_2015_1.csv"', b.headers['content-disposition'])
+            self.assertEllipsis("some csv", b.contents)

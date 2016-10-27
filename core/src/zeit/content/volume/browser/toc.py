@@ -8,13 +8,12 @@ import re
 import sys
 import lxml.etree
 import posixpath
-
+from zeit.cms.i18n import MessageFactory as _
 from ordereddict import OrderedDict
 
 log = logging.getLogger(__name__)
 
 # Does the DAV Content need to be locked while reading? I guess not
-# TODO Exclude Inhaltsverzeichnis maybe even ressort Verschiedenes
 # TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml ?
 
 class Toc(zeit.cms.browser.view.Base):
@@ -39,12 +38,11 @@ class Toc(zeit.cms.browser.view.Base):
         self.client = self._create_dav_client()
 
     def __call__(self):
-        # self.volume = self.context
-        # filename = self._generate_file_name()
-        # self.request.response.setHeader('Content-Type', 'text/csv')
-        # self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
-        # return self._create_toc_content()
-        return 'some csv'
+        self.volume = self.context
+        filename = self._generate_file_name()
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
+        return self._create_toc_content()
 
     def _create_toc_content(self):
         """
@@ -58,8 +56,8 @@ class Toc(zeit.cms.browser.view.Base):
         # return 'some csv'
 
     def _generate_file_name(self):
-        # TODO Internationalization?
-        return "inhalsverzeichnis_{}_{}.csv".format(self.volume.year, self.volume.volume)
+        toc_file_string = _("Table of Content").lower().replace(" ", "_")
+        return "{}_{}_{}.csv".format(toc_file_string, self.volume.year, self.volume.volume)
 
     def _get_via_dav(self):
         """
@@ -88,7 +86,7 @@ class Toc(zeit.cms.browser.view.Base):
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
                 result_for_product[self._dir_name(ressort_path)] = result_for_ressort
-            results[self._alter_nice_name(product_path)] = result_for_product
+            results[self._full_name_for_product_id(product_path)] = result_for_product
         return results
 
     def _get_all_articles_in_path(self, path):
@@ -247,7 +245,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _dir_name(self, path):
         return path.split('/')[-2].title()
 
-    def _alter_nice_name(self, path):
+    def _full_name_for_product_id(self, path):
         id_name_mapping = {
             'ZEI': u'Die Zeit',
             'ZESA': u'Zeit im Osten',
@@ -257,10 +255,10 @@ class Toc(zeit.cms.browser.view.Base):
             'ZECW': u'Christ und Welt'
         }
 
-        for k,v in id_name_mapping.iteritems():
-            absa = '/' + k + '/'
-            if absa in path:
-                return v
+        for key, val in id_name_mapping.iteritems():
+            folder_string = '/' + key + '/'
+            if folder_string in path:
+                return val
 
     def _sort_toc_data(self, toc_data):
         # TODO Think about a better way to sort the toc!
