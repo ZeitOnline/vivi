@@ -141,3 +141,15 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('text/csv', b.headers['content-type'])
             self.assertEqual('attachment; filename="table_of_content_2015_1.csv"', b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
+
+    @mock.patch('tinydav.WebDAVClient.get')
+    @mock.patch('tinydav.WebDAVClient.propfind')
+    def test_toc_generates_correct_csv(self, mock_get, mock_propfind):
+        mock_get.side_effects = Exception("My Exceot")
+        mock_propfind.side_effects = Exception("My Excpt1")
+        b = self.browser
+        b.handleErrors = False
+        b.open('http://localhost/++skin++vivi/repository/'
+                   'ZEI/2015/01/ausgabe/@@toc.csv')
+
+

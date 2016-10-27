@@ -13,22 +13,21 @@ from ordereddict import OrderedDict
 
 log = logging.getLogger(__name__)
 
-# Does the DAV Content need to be locked while reading? I guess not
 # TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml ?
+# TODO Check Unicode stuff
+# TODO Naming stuff
 
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
     """
-  # Get this form a config File
+    # Get this form a config File
     DAV_SERVER_ROOT = "cms-backend.zeit.de"
     DAV_PORT = 9000
     DAV_ARCHIVE_ROOT = "/cms/archiv-wf/archiv"
-    # /cms/re
     # The Volume Content Object will get extended so
     # this hardcoded stuff shouldn't be necassary
     # TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml same
-    # as http://vivi.zeit.de/repository/data/products.xml -> NO!
     # 'CW' in Ticket Description, changed it to 'ZWCW'
     PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
     CSV_DELIMITER = '\t'
@@ -53,7 +52,6 @@ class Toc(zeit.cms.browser.view.Base):
         toc_data = self._get_via_dav()
         sorted_toc_data = self._sort_toc_data(toc_data)
         return self._create_csv(sorted_toc_data)
-        # return 'some csv'
 
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
@@ -90,7 +88,7 @@ class Toc(zeit.cms.browser.view.Base):
         return results
 
     def _get_all_articles_in_path(self, path):
-        """ Expects smthn like cms/archiv-wf/archiv/ZESA/2015/02/ """
+        """ Expects like cms/archiv-wf/archiv/ZESA/2015/02/ """
         all_articles = []
         for article_path in self._get_all_files_in_folder(path):
             all_articles.append(article_path)
@@ -157,7 +155,7 @@ class Toc(zeit.cms.browser.view.Base):
             folders_to_exclude = {'images', 'leserbriefe'}
             root_paths = {root_path_of_element, '/' + root_path_of_element}
             return self._is_dav_dir(element) \
-                   and not any(folder in element.href for folder in folders_to_exclude)\
+                   and not any(folder in element.href for folder in folders_to_exclude) \
                    and element.href not in root_paths
         except:
             raise
@@ -261,6 +259,10 @@ class Toc(zeit.cms.browser.view.Base):
                 return val
 
     def _sort_toc_data(self, toc_data):
+        """
+        :param toc_data:
+        :return:
+        """
         # TODO Think about a better way to sort the toc!
         for product_name, ressort_dict in toc_data.iteritems():
             for ressort_name, articles in ressort_dict.iteritems():
@@ -269,20 +271,24 @@ class Toc(zeit.cms.browser.view.Base):
             toc_data[product_name] = self._sorted_ressorts(ressort_dict)
         return toc_data
 
-    def get_page_from_article(self, article):
-            try:
-                return int(article.get('page'))
-            except ValueError:
-                # The empty string will cause an Exception!
-                return sys.maxint
+    def _get_page_from_article(self, article):
+        """
+        :param article: {'page':str}
+        :return: int
+        """
+        try:
+            return int(article.get('page'))
+        except ValueError:
+            # The empty string will cause an Exception!
+            return sys.maxint
 
     def _sorted_articles(self, articles):
-        return sorted(articles, key=self.get_page_from_article)
+        return sorted(articles, key=self._get_page_from_article)
 
     def _sorted_ressorts(self, ressorts):
         # Expects articles to be sorted by page
-        ressort_min_page_number = [(k, self.get_page_from_article(v[0])) for k, v in ressorts.iteritems()]
+        ressort_min_page_number = [(resort_name, self._get_page_from_article(articles[0])) for resort_name, articles in ressorts.iteritems()]
         d = OrderedDict()
-        for ressort in sorted(ressort_min_page_number, key=lambda k: k[1]):
+        for ressort in sorted(ressort_min_page_number, key=lambda resort_page_tup: resort_page_tup[1]):
             d[ressort[0]] = ressorts.get(ressort[0])
         return d
