@@ -74,5 +74,5 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
 
 In Produktion ist diese `products.xml`_ in Benutzung.
 
-.. _`products.xml`: http://http://cms-backend.zeit.de:9000/cms/work/data/products.xml
+.. _`products.xml`: http://cms-backend.zeit.de:9000/cms/work/data/products.xml
 .. _`diese Konfigurationsdatei`: http://cms-backend.zeit.de:9000/cms/work/data/volume-covers.xml
