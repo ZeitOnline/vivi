@@ -173,7 +173,6 @@
 
   <include package="lovely.remotetask" />
 
-  <include package="gocept.async" />
   <include package="gocept.form" />
   <include package="gocept.lxml" />
 
