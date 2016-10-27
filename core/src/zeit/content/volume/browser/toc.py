@@ -13,22 +13,22 @@ from ordereddict import OrderedDict
 
 log = logging.getLogger(__name__)
 
-# TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml ?
-# TODO Check Unicode stuff
-# TODO Naming stuff
+# TODO Product-ID's via ProductSource
+# TODO Check Unicode
+# TODO Naming
 
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
     """
-    # Get this form a config File
+    # Get this form a config File?
     DAV_SERVER_ROOT = "cms-backend.zeit.de"
     DAV_PORT = 9000
     DAV_ARCHIVE_ROOT = "/cms/archiv-wf/archiv"
-    # The Volume Content Object will get extended so
+    # The Volume Content Object will get extended soon
     # this hardcoded stuff shouldn't be necassary
-    # TODO Product-ID's via ./work/source/zeit.cms/src/zeit/cms/content/products.xml same
     # 'CW' in Ticket Description, changed it to 'ZWCW'
+    # The Order of the Product ID's matters, First in this list -> first in TOC
     PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
     CSV_DELIMITER = '\t'
 
@@ -74,8 +74,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         results = OrderedDict()
         product_ids = self._get_all_product_ids_for_volume()
-        product_id_paths = self._get_all_paths_for_prodct_ids(product_ids)
-        for product_path in product_id_paths:
+        for product_path in self._get_all_paths_for_prodct_ids(product_ids):
             result_for_product = {}
             for ressort_path in self.list_relevant_dirs_with_dav(product_path):
                 result_for_ressort = []
@@ -112,24 +111,28 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _get_all_paths_for_prodct_ids(self, product_ids):
         """
-        Creates a list of unix-paths to  all given products
+        Creates a list of unix-paths to all given products
         :param product_ids: [str]
         :return: [str]
         """
-        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, product_id, self.volume.year, self.volume.volume, '']])
+        volume_string = str(self.volume.volume)
+        # Volumes 1-10 would lead to wrong paths like YEAR/1 instead of YEAR/01
+        if self.volume.volume < 10:
+            volume_string = '0' + volume_string
+        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, product_id, self.volume.year, volume_string, '']])
                 for product_id in product_ids]
 
     def _is_relevant_article(self, tree):
         """
         Predicate to decide if a doc is relevant for the toc.
-        :param tree: lxml.etree  of the artice
+        :param tree: lxml.etree  of the article
         :return: bool
         """
         # Right now every article is relevant
         return True
 
     def _create_dav_client(self):
-        # TODO Get uri from some config (zope.conf?)
+        # TODO Get uri from some config (zope.conf)
         return tinydav.WebDAVClient(self.DAV_SERVER_ROOT, self.DAV_PORT)
 
     def _get_metadata_from_article_xml(self, tree):
@@ -161,12 +164,9 @@ class Toc(zeit.cms.browser.view.Base):
             raise
 
     def _get_all_files_in_folder(self, ressort_path):
-        try:
-            response = self.client.propfind(ressort_path, depth=1)
-            assert response.is_multistatus
-            return [status_element.href for status_element in response if not self._is_dav_dir(status_element)]
-        except:
-            raise
+        response = self.client.propfind(ressort_path, depth=1)
+        assert response.is_multistatus
+        return [status_element.href for status_element in response if not self._is_dav_dir(status_element)]
 
     def _is_dav_dir(self, status_element):
         try:
@@ -224,14 +224,13 @@ class Toc(zeit.cms.browser.view.Base):
         return toc_entry
 
     def _normalize_page(self, toc_dict):
-        # CH1-1, 78, 021-
         page_string = toc_dict.get('page', u'')
         res = re.findall('\d+', page_string)
         toc_dict['page'] = res[0].lstrip("0") if res else u"-1"
 
     def _normalize_teaser(self, toc_entry):
+        """Delete linebreaks and a too much whitespace"""
         teaser = toc_entry.get('teaser', u'')
-        # Delete Linebreaks and a whitespace
         toc_entry['teaser'] = teaser.replace('\n', u' ')
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
 
@@ -286,7 +285,7 @@ class Toc(zeit.cms.browser.view.Base):
         return sorted(articles, key=self._get_page_from_article)
 
     def _sorted_ressorts(self, ressorts):
-        # Expects articles to be sorted by page
+        # Expects articles in ressorts dict to be sorted by page
         ressort_min_page_number = [(resort_name, self._get_page_from_article(articles[0])) for resort_name, articles in ressorts.iteritems()]
         d = OrderedDict()
         for ressort in sorted(ressort_min_page_number, key=lambda resort_page_tup: resort_page_tup[1]):
