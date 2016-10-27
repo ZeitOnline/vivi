@@ -3,7 +3,6 @@
 import mock
 from ordereddict import OrderedDict
 import posixpath
-import tinydav.exception
 import zeit.cms.testing
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
@@ -11,7 +10,53 @@ from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
-# TODO Get via DAV Test
+
+article_xml = u"""
+        <article>
+            <head>
+                <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
+                <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
+            </head>
+            <body>
+                 <title>Titel</title>
+                 <subtitle>Das soll der Teaser
+                 sein</subtitle>
+            </body>
+        </article>
+        """
+
+def create_tinydav_propfind_mock_response(directory_or_file_names, path, dir=False):
+    """
+    Helper to create a tinydav response mock object, for a propfind
+    call.
+    :param directory_or_file_names: [str] - hrefs of status objects to be created
+    :param path: str - path of the propfind tinydav call
+    :param dir: bool - specifies if propfind is expected to find directories
+    :return: mock.Mock - tinydav response Mock object
+    """
+    response = mock.Mock()
+    response.is_multistatus = True
+    dir_path_element = mock.Mock()
+    dir_path_element.href = path
+    dir_get_mock = mock.Mock()
+    dir_get_mock.text = 'unix-directory'
+    dir_path_element.get.return_value = dir_get_mock
+    status_elements = [dir_path_element]
+    for href in directory_or_file_names:
+        ele = mock.Mock()
+        ele.href = posixpath.join(path, href, '')
+        get_mock = mock.Mock()
+        if dir:
+            get_mock.text = 'unix-directory'
+        else:
+            # This is dirty. It only prevents:
+            # return 'directory' in status_element.get('getcontenttype').text
+            # TypeError: argument of type 'Mock' is not iterable
+            get_mock.text = ''
+        ele.get.return_value = get_mock
+        status_elements.append(ele)
+    response.__iter__ = mock.Mock(return_value=iter(status_elements))
+    return response
 
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
@@ -31,51 +76,19 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         dir_path = '/cms/archiv-wf/archiv/ZEI/2009/23/'
         toc = Toc()
         with mock.patch('tinydav.WebDAVClient.propfind') as propfind:
-            response = mock.MagicMock()
-            response.is_multistatus = True
             hrefs = ['images', 'leserbriefe', 'politik']
-            image_element = mock.Mock()
-            leserbriefe_element = mock.Mock()
-            politik_element = mock.Mock()
-            # Mock the dir_path status for tinydav
-            dir_path_element = mock.Mock()
-            dir_path_element.href = dir_path
-            dir_get_mock = mock.Mock()
-            dir_get_mock.text = 'unix-directory'
-            dir_path_element.get.return_value = dir_get_mock
-            elements = [image_element, leserbriefe_element, politik_element]
-            for ele, href in zip(elements, hrefs):
-                ele.href = posixpath.join(dir_path, href)
-                get_mock = mock.Mock()
-                get_mock.text = 'unix-directory'
-                ele.get.return_value = get_mock
-            # Make the response iterable like tinydav Response
-            response.__iter__ = mock.Mock(return_value=iter([image_element, leserbriefe_element, politik_element,
-                                                             dir_path_element]))
-            propfind.return_value = response
+            propfind.return_value = create_tinydav_propfind_mock_response(hrefs, dir_path, True)
             result = toc.list_relevant_dirs_with_dav(dir_path)
-            self.assertEqual(result, [elements[2].href])
+            self.assertEqual(1, len(result))
+            assert 'politik' in result[0]
 
     def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
-        xml = u"""
-        <article>
-            <head>
-                <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
-                <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
-            </head>
-            <body>
-                 <title>Titel</title>
-                 <subtitle>Das soll der Teaser
-                 sein</subtitle>
-            </body>
-        </article>
-        """
         expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein', 'author': 'Autor'}
         doc_path = '/cms/archiv-wf/archiv/ZEI/2009/23/test_article'
         toc = Toc()
         with mock.patch("tinydav.WebDAVClient.get") as get:
             response = mock.Mock()
-            response.content = xml
+            response.content = article_xml
             get.return_value = response
             result = toc._create_toc_element(doc_path)
         self.assertEqual(expected, result)
@@ -142,14 +155,31 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('attachment; filename="table_of_content_2015_1.csv"', b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
+
+
     @mock.patch('tinydav.WebDAVClient.get')
     @mock.patch('tinydav.WebDAVClient.propfind')
-    def test_toc_generates_correct_csv(self, mock_get, mock_propfind):
-        mock_get.side_effects = Exception("My Exceot")
-        mock_propfind.side_effects = Exception("My Excpt1")
+    @mock.patch('zeit.content.volume.browser.toc.Toc._get_all_product_ids_for_volume', return_value=['ZEI'])
+    def test_toc_generates_correct_csv(self, mock_products, mock_propfind, mock_get):
+        ressort_name = 'poltik'
+
+        def propfind_helper(path, **kwargs):
+            if path.endswith('/01/'):
+                return create_tinydav_propfind_mock_response([ressort_name], path, dir=True)
+            elif path.endswith('/01/{}/'.format(ressort_name)):
+                return create_tinydav_propfind_mock_response(['article'], path, dir=False)
+            else:
+                pass
+
+        mock_propfind.side_effect = propfind_helper
+        get_response = mock.Mock()
+        get_response.content = article_xml
+        mock_get.return_value = get_response
         b = self.browser
+        csv = "20{delim}Autor{delim}Titel Das soll der Teaser sein".format(delim=Toc.CSV_DELIMITER)
         b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
-                   'ZEI/2015/01/ausgabe/@@toc.csv')
-
-
+               'ZEI/2015/01/ausgabe/@@toc.csv')
+        self.assertEqual(2, mock_propfind.call_count)
+        self.assertIn(csv, b.contents)
+        self.assertIn(ressort_name.title(), b.contents)
