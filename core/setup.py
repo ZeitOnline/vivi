@@ -24,7 +24,6 @@ setup(
         'decorator',
         'docutils',
         'fanstatic[cssmin,jsmin]',
-        'gocept.async>=0.1.1',
         'gocept.cache>=0.2',
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.5',
