@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
 import StringIO
-import zeit.cms.browser.view
 import csv
 import tinydav
-import logging
 import re
 import sys
 import lxml.etree
 import posixpath
-from zeit.cms.i18n import MessageFactory as _
 from ordereddict import OrderedDict
+import zeit.cms.browser.view
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.sources
 
-log = logging.getLogger(__name__)
-
-# TODO Product-ID's via ProductSource
-# TODO Check Unicode
-# TODO Naming
+# TODO Not Crashing if a Product is not found in archive
 
 class Toc(zeit.cms.browser.view.Base):
     """
@@ -25,11 +21,12 @@ class Toc(zeit.cms.browser.view.Base):
     DAV_SERVER_ROOT = "cms-backend.zeit.de"
     DAV_PORT = 9000
     DAV_ARCHIVE_ROOT = "/cms/archiv-wf/archiv"
-    # The Volume Content Object will get extended soon
+    # Not all directories in the archives are named the product ID.
+    PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
     # this hardcoded stuff shouldn't be necassary
-    # 'CW' in Ticket Description, changed it to 'ZWCW'
+    # The Volume Content Object will get extended soon
     # The Order of the Product ID's matters, First in this list -> first in TOC
-    PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'ZECW']
+    PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'CW']
     CSV_DELIMITER = '\t'
 
     def __init__(self, *args, **kwargs):
@@ -38,6 +35,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def __call__(self):
         self.volume = self.context
+        self.product_id_mapping = self._create_product_id_full_name_mapping()
         filename = self._generate_file_name()
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
@@ -83,7 +81,7 @@ class Toc(zeit.cms.browser.view.Base):
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
                 result_for_product[self._dir_name(ressort_path)] = result_for_ressort
-            results[self._full_name_for_product_id(product_path)] = result_for_product
+            results[self._full_product_name(product_path)] = result_for_product
         return results
 
     def _get_all_articles_in_path(self, path):
@@ -115,12 +113,28 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
+        product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
         volume_string = str(self.volume.volume)
-        # Volumes 1-10 would lead to wrong paths like YEAR/1 instead of YEAR/01
+        # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         if self.volume.volume < 10:
             volume_string = '0' + volume_string
-        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, product_id, self.volume.year, volume_string, '']])
-                for product_id in product_ids]
+        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, dir_name, self.volume.year, volume_string, '']])
+                for dir_name in product_dir_names]
+
+    def _replace_product_id_by_its_dirname(self, product_id, reverse=False):
+        """
+        :param product_id: str
+        :param reverse: Bool - replace directorynames with product ID's instead.
+        :return: str
+        """
+        if reverse:
+            new_dict = {}
+            for k, v in self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.iteritems():
+                new_dict[v] = k
+            result = new_dict.get(product_id, product_id)
+        else:
+            result = self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
+        return result
 
     def _is_relevant_article(self, tree):
         """
@@ -128,7 +142,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param tree: lxml.etree  of the article
         :return: bool
         """
-        # Right now every article is relevant
+        # Right now every article is relevant, Production will provide a list of articles.
         return True
 
     def _create_dav_client(self):
@@ -242,20 +256,17 @@ class Toc(zeit.cms.browser.view.Base):
     def _dir_name(self, path):
         return path.split('/')[-2].title()
 
-    def _full_name_for_product_id(self, path):
-        id_name_mapping = {
-            'ZEI': u'Die Zeit',
-            'ZESA': u'Zeit im Osten',
-            'ZEIH': u'Zeit Hamburg',
-            'ZEOE': u'Zeit Österreich',
-            'ZECH': u'Zeit Schweiz',
-            'ZECW': u'Christ und Welt'
-        }
+    def _create_product_id_full_name_mapping(self):
+        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self.context))
+        return dict([(product.id, product.title) for product in products])
 
-        for key, val in id_name_mapping.iteritems():
-            folder_string = '/' + key + '/'
-            if folder_string in path:
-                return val
+    def _full_product_name(self, product_path):
+        """
+        :param product_path: str - ../PRODUCT_ID/YEAR/VOL/
+        """
+        splitted_path = product_path.split(posixpath.sep)
+        product_id = splitted_path[-4]
+        return self.product_id_mapping.get(product_id, product_id)
 
     def _sort_toc_data(self, toc_data):
         """
@@ -278,7 +289,7 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             return int(article.get('page'))
         except ValueError:
-            # The empty string will cause an Exception!
+            # The empty string will cause a Value Error
             return sys.maxint
 
     def _sorted_articles(self, articles):

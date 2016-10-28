@@ -115,6 +115,16 @@ Dossier\r
         toc = Toc()
         assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
+    def test_product_source(self):
+        t = Toc()
+        volume = mock.Mock()
+        volume.year = 2015
+        volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        t.context = volume
+        mapping = t._create_product_id_full_name_mapping()
+        self.assertEqual(mapping.get('ZEI', '').lower(), 'Die Zeit'.lower())
+
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
@@ -155,8 +165,6 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('attachment; filename="table_of_content_2015_1.csv"', b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
-
-
     @mock.patch('tinydav.WebDAVClient.get')
     @mock.patch('tinydav.WebDAVClient.propfind')
     @mock.patch('zeit.content.volume.browser.toc.Toc._get_all_product_ids_for_volume', return_value=['ZEI'])
@@ -183,3 +191,5 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(2, mock_propfind.call_count)
         self.assertIn(csv, b.contents)
         self.assertIn(ressort_name.title(), b.contents)
+        self.assertIn('DIE ZEIT'.lower(), b.contents.lower())
+
