@@ -9,6 +9,7 @@ import celery.signals
 import celery.utils
 import grokcore.component as grok
 import imp
+import json
 import logging
 import logging.config
 import os
@@ -103,6 +104,7 @@ class TransactionAwareTask(celery.Task):
         return auth.getPrincipal(principal_id)
 
     def delay(self, *args, **kw):
+        self._assert_json_serializable(*args, **kw)
         task_id = celery.utils.gen_unique_id()
 
         def hook(success):
@@ -115,6 +117,8 @@ class TransactionAwareTask(celery.Task):
 
     def apply_async(
             self, args=None, kw=None, task_id=None, *arguments, **options):
+        self._assert_json_serializable(
+            args, kw, task_id, *arguments, **options)
         if task_id is None:
             task_id = celery.utils.gen_unique_id()
 
@@ -125,6 +129,10 @@ class TransactionAwareTask(celery.Task):
                 transaction.commit()
         transaction.get().addAfterCommitHook(hook)
         return self.AsyncResult(task_id)
+
+    def _assert_json_serializable(self, *args, **kw):
+        json.dumps(args)
+        json.dumps(kw)
 
 
 class ZopeCelery(celery.Celery):
