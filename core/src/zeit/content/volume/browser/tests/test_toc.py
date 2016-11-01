@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 import mock
 from ordereddict import OrderedDict
+from collections import defaultdict
 import posixpath
+import lxml.etree
 import zeit.cms.testing
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc
+from zeit.content.volume.browser.toc_config import ArticleExcluder
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
@@ -95,7 +98,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             result = toc._create_toc_element(doc_path)
         self.assertEqual(expected, result)
 
-    def test_create_csv_with_all_values_in_toc_data(self):
+    def test_create_csv_with_all_values_is_exact(self):
         expected = """Die Zeit\r
 Politik\r
 1\tAutor\ttitle tease\r
@@ -117,7 +120,7 @@ Dossier\r
         toc = Toc()
         assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
-    def test_product_source(self):
+    def test_product_source_has_zeit_product_id(self):
         t = Toc()
         volume = mock.Mock()
         volume.year = 2015
@@ -127,6 +130,22 @@ Dossier\r
         mapping = t._create_product_id_full_name_mapping()
         self.assertEqual(mapping.get('ZEI', '').lower(), 'Die Zeit'.lower())
 
+    def test_article_excluder_excludes_irrelevant_aritcles(self):
+        excluder = ArticleExcluder()
+        xml_template = u"""
+        <article>
+            <head>
+                <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">{d[jobname]}</attribute>
+            </head>
+            <body>
+                 <title>{d[title]}</title>
+                 <supertitle>{d[supertitle]}</supertitle>
+            </body>
+        </article>
+        """
+        for values in [{'title': u'Heute 20.02.2016'}, {'supertitle': u'WIR RATEN AB'}, {'jobname': u'AS-Zahl'}]:
+            xml = xml_template.format(d=defaultdict(str, **values))
+            assert not excluder.is_relevant(lxml.etree.fromstring(xml))
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER

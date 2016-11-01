@@ -139,10 +139,10 @@ class Toc(zeit.cms.browser.view.Base):
             result = self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
         return result
 
-    def _is_relevant_article(self, tree):
+    def _is_relevant_article(self, article_tree):
         """
         Predicate to decide if a doc is relevant for the toc.
-        :param tree: lxml.etree  of the article
+        :param article_tree: lxml.etree  of the article
         :return: bool
         """
         return True
