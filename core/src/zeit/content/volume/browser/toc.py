@@ -8,10 +8,13 @@ import lxml.etree
 import posixpath
 from ordereddict import OrderedDict
 import zeit.cms.browser.view
+from tinydav.exception import HTTPUserError
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 
-# TODO Not Crashing if a Product is not found in archive
+# TODO Right now every article is relevant, Production will provide a list of articles/list in toc_config.py
+# TODO Author/Text contains Tabs Bug Fix neccessary 2016/23
+
 
 class Toc(zeit.cms.browser.view.Base):
     """
@@ -74,7 +77,7 @@ class Toc(zeit.cms.browser.view.Base):
         product_ids = self._get_all_product_ids_for_volume()
         for product_path in self._get_all_paths_for_prodct_ids(product_ids):
             result_for_product = {}
-            for ressort_path in self.list_relevant_dirs_with_dav(product_path):
+            for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
                 result_for_ressort = []
                 for article_path in self._get_all_articles_in_path(ressort_path):
                     toc_entry = self._create_toc_element(article_path)
@@ -142,11 +145,10 @@ class Toc(zeit.cms.browser.view.Base):
         :param tree: lxml.etree  of the article
         :return: bool
         """
-        # Right now every article is relevant, Production will provide a list of articles.
         return True
 
     def _create_dav_client(self):
-        # TODO Get uri from some config (zope.conf)
+        # TODO Get uri from some config (zope.conf)?
         return tinydav.WebDAVClient(self.DAV_SERVER_ROOT, self.DAV_PORT)
 
     def _get_metadata_from_article_xml(self, tree):
@@ -161,15 +163,19 @@ class Toc(zeit.cms.browser.view.Base):
             res[key] = tree.xpath(xpath)
         return self._normalize_toc_element(res)
 
-    def list_relevant_dirs_with_dav(self, path):
-        """ Returns all paths to directories for a given path """
-        response = self.client.propfind(path, depth=1)
-        assert response.is_multistatus
-        return [element.href for element in response if self._is_relevant_path_to_directory(path, element)]
+    def list_relevant_ressort_dirs_with_dav(self, path):
+        """ Returns all relevant ressort paths to directories for a given path """
+        try:
+            response = self.client.propfind(path, depth=1)
+            assert response.is_multistatus
+            return [element.href for element in response if self._is_relevant_path_to_directory(path, element)]
+        except HTTPUserError:
+            return []
 
     def _is_relevant_path_to_directory(self, root_path_of_element, element):
         try:
             folders_to_exclude = {'images', 'leserbriefe'}
+            folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
             root_paths = {root_path_of_element, '/' + root_path_of_element}
             return self._is_dav_dir(element) \
                    and not any(folder in element.href for folder in folders_to_exclude) \
@@ -201,12 +207,11 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
             for toc_element in self._generate_csv_rows(toc_data):
-                try:
-                    writer.writerow(
-                        [val.encode('utf-8') for val in toc_element]
-                    )
-                except:
-                    pass
+
+                writer.writerow(
+                    [val.encode('utf-8') for val in toc_element]
+                )
+
             file_content = out.getvalue()
         finally:
             out.close()
@@ -232,7 +237,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
-            toc_entry[key] = value[0] if len(value) > 0 else u""
+            toc_entry[key] = value[0].replace(self.CSV_DELIMITER, '') if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
         return toc_entry

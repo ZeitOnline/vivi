@@ -11,6 +11,8 @@ from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
 
+# TODO Write Test/s for relevant Articles
+
 article_xml = u"""
         <article>
             <head>
@@ -78,7 +80,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         with mock.patch('tinydav.WebDAVClient.propfind') as propfind:
             hrefs = ['images', 'leserbriefe', 'politik']
             propfind.return_value = create_tinydav_propfind_mock_response(hrefs, dir_path, True)
-            result = toc.list_relevant_dirs_with_dav(dir_path)
+            result = toc.list_relevant_ressort_dirs_with_dav(dir_path)
             self.assertEqual(1, len(result))
             assert 'politik' in result[0]
 
