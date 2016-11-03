@@ -11,26 +11,17 @@ import zeit.cms.browser.view
 from tinydav.exception import HTTPUserError
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
+import toc_config
 
-# TODO Right now every article is relevant, Production will provide a list of articles/list in toc_config.py
-# TODO Author/Text contains Tabs Bug Fix neccessary 2016/23
-from zeit.content.volume.browser.toc_config import ArticleExcluder
-
+# TODO Author/Title Teaser contains is ugly
+# TODO More Abstraction of Toc Entries, not sure if an ordered dict is a great idea
 
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
     """
-    # Get this form a config File?
-    DAV_SERVER_ROOT = "cms-backend.zeit.de"
-    DAV_PORT = 9000
-    DAV_ARCHIVE_ROOT = "/cms/archiv-wf/archiv"
     # Not all directories in the archives are named the product ID.
     PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
-    # this hardcoded stuff shouldn't be necassary
-    # The Volume Content Object will get extended soon
-    # The Order of the Product ID's matters, First in this list -> first in TOC
-    PRODUCT_IDS = ['ZEI', 'ZESA', 'ZEIH', 'ZEOE', 'ZECH', 'CW']
     CSV_DELIMITER = '\t'
 
     def __init__(self, *args, **kwargs):
@@ -50,7 +41,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Create Table of Contents for the given Volume as a csv.
         :param volume: ..volume.Volume Content Instance
-        :return: Specify
+        :return: str - Table of content csv string
         """
         toc_data = self._get_via_dav()
         sorted_toc_data = self._sort_toc_data(toc_data)
@@ -64,16 +55,13 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get and parse xml form webdav und create toc entries.
         :param volume: ..volume.Volume Content Instance
-        :return: Sorted List of Toc entries
-                 [{'ressort': str, 'page': str, 'title': str, "teaser": str}]
-        """
-        """
-            {
-                "Die Zeit: {
-                        {"Politk: [sorted_toc_entrires]"}
-                    }
-            }
-            sorted_toc_entries: [{'page': str, 'title': str, "teaser": str}, ...]
+        :return: Sorted Dict of Toc entries. Sorted like the toc_config.PRODUCT_IDS list.
+                 {
+                        'Product Name':
+                                 {
+                                    'Ressort' : [{'page': str, 'title': str, 'teaser': str, 'author': str},...]
+                                 }
+                 }
         """
         results = OrderedDict()
         product_ids = self._get_all_product_ids_for_volume()
@@ -90,11 +78,15 @@ class Toc(zeit.cms.browser.view.Base):
         return results
 
     def _get_all_articles_in_path(self, path):
-        """ Expects like cms/archiv-wf/archiv/ZESA/2015/02/ """
-        all_articles = []
+        """
+        Get all DAV Server paths to article files in path.
+        :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
+        :return: [str]
+        """
+        all_article_paths = []
         for article_path in self._get_all_files_in_folder(path):
-            all_articles.append(article_path)
-        return all_articles
+            all_article_paths.append(article_path)
+        return all_article_paths
 
     def _parse_article(self, doc_path):
         """
@@ -108,9 +100,9 @@ class Toc(zeit.cms.browser.view.Base):
             raise
 
     def _get_all_product_ids_for_volume(self):
-        """ Returns sorted List [First Product in TOC, Second ...] """
+        """ Returns List [First Product ID, Second ...] """
         # Change this if the volume content object "knows" which Products it has...
-        return self.PRODUCT_IDS
+        return toc_config.PRODUCT_IDS
 
     def _get_all_paths_for_prodct_ids(self, product_ids):
         """
@@ -123,7 +115,7 @@ class Toc(zeit.cms.browser.view.Base):
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         if self.volume.volume < 10:
             volume_string = '0' + volume_string
-        return [posixpath.join(*[str(e) for e in [self.DAV_ARCHIVE_ROOT, dir_name, self.volume.year, volume_string, '']])
+        return [posixpath.join(*[str(e) for e in [toc_config.DAV_ARCHIVE_ROOT, dir_name, self.volume.year, volume_string, '']])
                 for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id, reverse=False):
@@ -151,9 +143,14 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _create_dav_client(self):
         # TODO Get uri from some config (zope.conf)?
-        return tinydav.WebDAVClient(self.DAV_SERVER_ROOT, self.DAV_PORT)
+        return tinydav.WebDAVClient(toc_config.DAV_SERVER_ROOT, toc_config.DAV_PORT)
 
-    def _get_metadata_from_article_xml(self, tree):
+    def _get_metadata_from_article_xml(self, atricle_tree):
+        """
+        Get all relevant normalized metadata from article xml tree.
+        :param atricle_tree: lxml.etre Element -
+        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
+        """
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
@@ -162,7 +159,7 @@ class Toc(zeit.cms.browser.view.Base):
         }
         res = {}
         for key, xpath in xpaths.iteritems():
-            res[key] = tree.xpath(xpath)
+            res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
 
     def list_relevant_ressort_dirs_with_dav(self, path):
@@ -175,8 +172,14 @@ class Toc(zeit.cms.browser.view.Base):
             return []
 
     def _is_relevant_path_to_directory(self, root_path_of_element, element):
+        """
+
+        :param root_path_of_element: root path of DAV archive
+        :param element: tinydav status element
+        :return: bool
+        """
         try:
-            # TODO Put this in the excluder
+            # TODO Put this in the excluder ?
             folders_to_exclude = {'images', 'leserbriefe'}
             folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
             root_paths = {root_path_of_element, '/' + root_path_of_element}
@@ -200,9 +203,9 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_csv(self, toc_data):
         """
         Creates CSV File from TOC Data.
-        SEITENZAHL [tab] TITEL + TEASER
-        :param toc_data:
-        :return: The CSV-File.
+        SEITENZAHL [tab] AUTOREN [tab] TITEL + TEASER
+        :param toc_data: The Toc data as ordered dict.
+        :return: unicode - csv content
         """
 
         file_content = u''
@@ -223,7 +226,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _generate_csv_rows(self, toc_entries):
         """
         Generator to create the csv-rows.
-        :param toc_entries: TODO
+        :param toc_entries - The Toc data as ordered dict.
         :return: [CSV Row]
         """
         for product_name, ressort_dict in toc_entries.iteritems():
@@ -278,8 +281,9 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _sort_toc_data(self, toc_data):
         """
+        Sort the toc data dict.
         :param toc_data:
-        :return:
+        :return: OrderedDict
         """
         # TODO Think about a better way to sort the toc!
         for product_name, ressort_dict in toc_data.iteritems():
@@ -304,7 +308,12 @@ class Toc(zeit.cms.browser.view.Base):
         return sorted(articles, key=self._get_page_from_article)
 
     def _sorted_ressorts(self, ressorts):
-        # Expects articles in ressorts dict to be sorted by page
+        """
+        Ressort dicts will be sorted by min page of its articles.
+        Expects articles in ressorts dict to be sorted by page
+        :param ressorts: {RESSORTNAME: [ARTICLES AS DICT]}
+        :return: OrderedDict
+        """
         ressort_min_page_number_tuples = []
         for resort_name, articles in ressorts.iteritems():
             # Empty ressorts should be listed as last entries in toc
@@ -316,3 +325,68 @@ class Toc(zeit.cms.browser.view.Base):
         for ressort_min_page_tuple in sorted(ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]):
             d[ressort_min_page_tuple[0]] = ressorts.get(ressort_min_page_tuple[0])
         return d
+
+
+class ArticleExcluder(object):
+    """
+    Checks if an article should be excluded from the table of contents.
+    """
+    # Rules should be as strict as possible, otherwise the wrong article might get  excluded
+    TITLE_XPATH = "body/title/text()"
+    SUPERTITLE_XPATH = "body/supertitle/text()"
+    JOBNAME_XPATH = "//attribute[@name='jobname']/text()"
+    _title_exclude = [
+        u"Heute \d+.\d+",
+        u"Damals \d+.\d+",
+        u"PROMINENT IGNORIERT",
+        u"Du siehst aus, wie ich mich fühle",
+        u"WAS MEIN LEBEN REICHER MACHT",
+        u"UND WER BIST DU?"
+
+    ]
+    _supertitle_exclude = [
+        u"NEIN. QUARTERLY",
+        u"MAIL AUS:",
+        u"MACHER UND MÄRKTE",
+        u"AUTO WOFÜR IST DAS DA",
+        u"HALBWISSEN",
+        u"ZAHL DER WOCHE",
+        u"WIR RATEN (AB|ZU)",
+        u"DER UNNÜTZE VERGLEICH",
+        u"MALEN NACH ZAHLEN",
+        u"LEXIKON DER NEUROSEN",
+        u"ZEITSPRUNG",
+        u"(LESE|BASTEL)-TIPP"
+    ]
+
+    _jobname_exclude = [
+        u'(Traumstück|AS-Zahl)'
+    ]
+
+    def __init__(self):
+        # TODO Create combined regex? Should be faster.
+        # compile regexes for article
+        self._compiled_title_regexs = [re.compile(regex) for regex in self._title_exclude]
+        self._compiled_supertitle_regexs = [re.compile(regex) for regex in self._supertitle_exclude]
+        self._compiled_jobname_regexs = [re.compile(regex) for regex in self._jobname_exclude]
+
+    def is_relevant(self, article_lxml_tree):
+        # TODO A lot of Code repetition
+        title_values = article_lxml_tree.xpath(self.TITLE_XPATH)
+        supertitle_values = article_lxml_tree.xpath(self.SUPERTITLE_XPATH)
+        jobname_values = article_lxml_tree.xpath(self.JOBNAME_XPATH)
+
+        title_value = title_values[0] if len(title_values) > 0 else ''
+        supertitle_value = supertitle_values[0] if len(supertitle_values) > 0 else ''
+        jobname_value = jobname_values[0] if len(jobname_values) > 0 else ''
+
+        title_exclude = any(
+            [re.match(title_pattern, title_value) for title_pattern in self._compiled_title_regexs]
+        )
+        supertitle_exclude = any(
+            [re.match(supertitle_pattern, supertitle_value) for supertitle_pattern in self._compiled_supertitle_regexs]
+        )
+        jobname_exclude = any(
+            [re.match(jobname_pattern, jobname_value) for jobname_pattern in self._compiled_jobname_regexs]
+        )
+        return not(title_exclude or supertitle_exclude or jobname_exclude)

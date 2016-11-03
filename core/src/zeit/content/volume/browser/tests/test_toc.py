@@ -8,8 +8,7 @@ import lxml.etree
 import zeit.cms.testing
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
-from zeit.content.volume.browser.toc import Toc
-from zeit.content.volume.browser.toc_config import ArticleExcluder
+from zeit.content.volume.browser.toc import Toc, ArticleExcluder
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
@@ -144,7 +143,6 @@ Dossier\r
         """
         for values in [{'title': u'Heute 20.02.2016'}, {'supertitle': u'WIR RATEN AB'}, {'jobname': u'AS-Zahl'}]:
             xml = xml_template.format(d=defaultdict(str, **values))
-            print values
             self.assertEqual(False, excluder.is_relevant(lxml.etree.fromstring(xml)))
 
 
