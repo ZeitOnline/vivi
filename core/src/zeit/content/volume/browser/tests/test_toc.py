@@ -14,7 +14,6 @@ from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
 
-# TODO Write Test/s for relevant Articles
 
 article_xml = u"""
         <article>
@@ -145,7 +144,9 @@ Dossier\r
         """
         for values in [{'title': u'Heute 20.02.2016'}, {'supertitle': u'WIR RATEN AB'}, {'jobname': u'AS-Zahl'}]:
             xml = xml_template.format(d=defaultdict(str, **values))
-            assert not excluder.is_relevant(lxml.etree.fromstring(xml))
+            print values
+            self.assertEqual(False, excluder.is_relevant(lxml.etree.fromstring(xml)))
+
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
@@ -213,4 +214,3 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(csv, b.contents)
         self.assertIn(ressort_name.title(), b.contents)
         self.assertIn('DIE ZEIT'.lower(), b.contents.lower())
-

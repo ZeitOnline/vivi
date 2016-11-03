@@ -21,8 +21,8 @@ class ArticleExcluder(object):
     Checks if an article should be excluded from the table of contents.
     """
     # Rules should be as strict as possible, otherwise the wrong article might get  excluded
-    TITLE_XPATH = "body/supertitle/text()"
-    SUPERTITLE_XPATH = "body/title/text()"
+    TITLE_XPATH = "body/title/text()"
+    SUPERTITLE_XPATH = "body/supertitle/text()"
     JOBNAME_XPATH = "//attribute[@name='jobname']/text()"
     _title_exclude = [
         u"Heute \d+.\d+",
@@ -60,13 +60,15 @@ class ArticleExcluder(object):
         self._compiled_jobname_regexs = [re.compile(regex) for regex in self._jobname_exclude]
 
     def is_relevant(self, article_lxml_tree):
-        # TODO A lot of Code repetition. Write test first
+        # TODO A lot of Code repetition
         title_values = article_lxml_tree.xpath(self.TITLE_XPATH)
         supertitle_values = article_lxml_tree.xpath(self.SUPERTITLE_XPATH)
         jobname_values = article_lxml_tree.xpath(self.JOBNAME_XPATH)
-        title_value = title_values[0] if len(title_values) > 1 else ''
-        supertitle_value = supertitle_values[0] if len(supertitle_values) > 1 else ''
-        jobname_value = jobname_values[0] if len(jobname_values) > 1 else ''
+
+        title_value = title_values[0] if len(title_values) > 0 else ''
+        supertitle_value = supertitle_values[0] if len(supertitle_values) > 0 else ''
+        jobname_value = jobname_values[0] if len(jobname_values) > 0 else ''
+
         title_exclude = any(
             [re.match(title_pattern, title_value) for title_pattern in self._compiled_title_regexs]
         )
@@ -76,4 +78,6 @@ class ArticleExcluder(object):
         jobname_exclude = any(
             [re.match(jobname_pattern, jobname_value) for jobname_pattern in self._compiled_jobname_regexs]
         )
-        return title_exclude or supertitle_exclude or jobname_exclude
+
+        return not(title_exclude or supertitle_exclude or jobname_exclude)
+

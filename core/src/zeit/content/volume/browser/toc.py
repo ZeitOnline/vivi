@@ -14,6 +14,7 @@ import zeit.cms.content.sources
 
 # TODO Right now every article is relevant, Production will provide a list of articles/list in toc_config.py
 # TODO Author/Text contains Tabs Bug Fix neccessary 2016/23
+from zeit.content.volume.browser.toc_config import ArticleExcluder
 
 
 class Toc(zeit.cms.browser.view.Base):
@@ -35,6 +36,7 @@ class Toc(zeit.cms.browser.view.Base):
     def __init__(self, *args, **kwargs):
         super(Toc, self).__init__(*args, **kwargs)
         self.client = self._create_dav_client()
+        self.article_excluder = ArticleExcluder()
 
     def __call__(self):
         self.volume = self.context
@@ -145,7 +147,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param article_tree: lxml.etree  of the article
         :return: bool
         """
-        return True
+        return self.article_excluder.is_relevant(article_tree)
 
     def _create_dav_client(self):
         # TODO Get uri from some config (zope.conf)?
@@ -174,6 +176,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _is_relevant_path_to_directory(self, root_path_of_element, element):
         try:
+            # TODO Put this in the excluder
             folders_to_exclude = {'images', 'leserbriefe'}
             folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
             root_paths = {root_path_of_element, '/' + root_path_of_element}
@@ -267,7 +270,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _full_product_name(self, product_path):
         """
-        :param product_path: str - ../PRODUCT_ID/YEAR/VOL/
+        :param product_path: str -  /PRODUCT_ID/YEAR/VOL/
         """
         splitted_path = product_path.split(posixpath.sep)
         product_id = splitted_path[-4]
@@ -302,8 +305,14 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _sorted_ressorts(self, ressorts):
         # Expects articles in ressorts dict to be sorted by page
-        ressort_min_page_number = [(resort_name, self._get_page_from_article(articles[0])) for resort_name, articles in ressorts.iteritems()]
+        ressort_min_page_number_tuples = []
+        for resort_name, articles in ressorts.iteritems():
+            # Empty ressorts should be listed as last entries in toc
+            min_page = sys.maxint
+            if articles:
+                min_page = self._get_page_from_article(articles[0])
+            ressort_min_page_number_tuples.append((resort_name, min_page))
         d = OrderedDict()
-        for ressort in sorted(ressort_min_page_number, key=lambda resort_page_tup: resort_page_tup[1]):
-            d[ressort[0]] = ressorts.get(ressort[0])
+        for ressort_min_page_tuple in sorted(ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]):
+            d[ressort_min_page_tuple[0]] = ressorts.get(ressort_min_page_tuple[0])
         return d
