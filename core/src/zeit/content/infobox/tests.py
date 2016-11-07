@@ -11,8 +11,8 @@ InfoboxLayer = zeit.cms.testing.ZCMLLayer(
 
 
 class InfoboxSourceTest(
-    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-    zeit.cms.testing.FunctionalTestCase):
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+        zeit.cms.testing.FunctionalTestCase):
 
     layer = InfoboxLayer
 
