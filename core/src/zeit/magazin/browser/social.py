@@ -9,9 +9,9 @@ class SocialBase(zeit.push.browser.form.SocialBase):
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
     social_fields.fields = (
-        social_fields.fields[:2]
-        + magazin_fields
-        + social_fields.fields[2:]
+        social_fields.fields[:2] +
+        magazin_fields +
+        social_fields.fields[2:]
     )
 
     def __init__(self, *args, **kw):
@@ -24,8 +24,8 @@ class SocialBase(zeit.push.browser.form.SocialBase):
     @property
     def social_form_fields(self):
         return (
-            super(SocialBase, self).social_form_fields
-            + self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
+            super(SocialBase, self).social_form_fields +
+            self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
                 *self.magazin_fields))
 
     def setUpWidgets(self, *args, **kw):

@@ -9,9 +9,9 @@ social_fields_list = list(social_fields.fields)
 social_fields_list.remove('bigshare_buttons')
 social_fields.fields = tuple(social_fields_list)
 field_groups = (
-    base.field_groups[:4]
-    + (social_fields,)
-    + base.field_groups[5:]
+    base.field_groups[:4] +
+    (social_fields,) +
+    base.field_groups[5:]
 )
 
 
