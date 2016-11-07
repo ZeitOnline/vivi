@@ -29,8 +29,9 @@ class Add(Base, zeit.cms.browser.form.AddForm):
 
     field_groups = (
         (gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__',), css_class='column-right'),)
-        + Base.field_groups)
+            _('Navigation'), ('__name__',), css_class='column-right'),) +
+        Base.field_groups
+    )
 
 
 class Edit(Base, zeit.cms.browser.form.EditForm):
