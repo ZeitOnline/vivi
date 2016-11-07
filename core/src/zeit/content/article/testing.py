@@ -21,19 +21,19 @@ import zope.testing.renormalizing
 
 product_config = """
 <product-config zeit.content.article>
-    cds-import-valid-path $$ressort/$$year/$$volume
-    cds-import-invalid-path cds/invalid/$$year/$$volume
-    book-recension-categories file://{base}/tests/recension_categories.xml
-    genre-url file://{base}/tests/article-genres.xml
-    image-display-mode-source file://{base}/edit/tests/image-display-modes.xml
-    legacy-display-mode-source file://{base}/edit/tests/legacy-display-modes.xml
-    image-variant-name-source file://{base}/edit/tests/image-variant-names.xml
-    legacy-variant-name-source file://{base}/edit/tests/legacy-variant-names.xml
-    video-layout-source file://{base}/edit/tests/video-layouts.xml
-    htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
-    infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
-    template-source file://{base}/edit/tests/templates.xml
-    header-module-source file://{base}/edit/tests/header-modules.xml
+  cds-import-valid-path $$ressort/$$year/$$volume
+  cds-import-invalid-path cds/invalid/$$year/$$volume
+  book-recension-categories file://{base}/tests/recension_categories.xml
+  genre-url file://{base}/tests/article-genres.xml
+  image-display-mode-source file://{base}/edit/tests/image-display-modes.xml
+  legacy-display-mode-source file://{base}/edit/tests/legacy-display-modes.xml
+  image-variant-name-source file://{base}/edit/tests/image-variant-names.xml
+  legacy-variant-name-source file://{base}/edit/tests/legacy-variant-names.xml
+  video-layout-source file://{base}/edit/tests/video-layouts.xml
+  htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
+  infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
+  template-source file://{base}/edit/tests/templates.xml
+  header-module-source file://{base}/edit/tests/header-modules.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

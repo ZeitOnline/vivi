@@ -1,6 +1,7 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.content.article.edit.interfaces import IEditableBody, IBreakingNewsBody
+from zeit.content.article.edit.interfaces import IBreakingNewsBody
+from zeit.content.article.edit.interfaces import IEditableBody
 import lxml.etree
 import zeit.cms.checkout.helper
 import zeit.cms.testing
@@ -165,7 +166,8 @@ class RetractBannerTest(
         # Set up dummy banner articles.
         for name in ['homepage', 'ios-legacy', 'wrapper']:
             content = zeit.content.article.testing.create_article()
-            IBreakingNewsBody(content).text = '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>'
+            IBreakingNewsBody(content).text = (
+                '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>')
             self.repository[name] = content
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=name)

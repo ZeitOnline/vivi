@@ -92,8 +92,8 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_image(body, image, position):
     block = Factory(body)(position)
-    block.references = (block.references.get(image)
-                        or block.references.create(image))
+    block.references = (block.references.get(image) or
+                        block.references.create(image))
     return block
 
 
@@ -110,8 +110,8 @@ def factor_image_block_from_imagegroup(body, group, position):
     zope.lifecycleevent.IObjectModifiedEvent)
 def copy_image_to_body(context, event):
     for description in event.descriptions:
-        if (description.interface is zeit.content.image.interfaces.IImages
-                and 'image' in description.attributes):
+        if (description.interface is zeit.content.image.interfaces.IImages and
+                'image' in description.attributes):
             break
     else:
         return
@@ -129,10 +129,11 @@ def copy_image_to_body(context, event):
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def change_variant_name_on_template_change(context, event):
+    IArticle = zeit.content.article.interfaces.IArticle
     for description in event.descriptions:
-        if (description.interface is zeit.content.article.interfaces.IArticle
-                and ('template' in description.attributes or
-                     'header_layout' in description.attributes)):
+        if (description.interface is IArticle and
+                ('template' in description.attributes or
+                 'header_layout' in description.attributes)):
             break
     else:
         return
@@ -161,8 +162,8 @@ def migrate_image_nodes_inside_p(article, event):
                 p.addnext(getattr(lxml.objectify.E, p.tag)(image.tail))
                 lxml.objectify.deannotate(p.getnext())
                 image.getparent().replace(image, stripped)
-            if (not p.countchildren()
-                and not (p.text and p.text.strip())
-                and (not p.attrib or p.attrib.keys() == [
+            if (not p.countchildren() and
+                not (p.text and p.text.strip()) and
+                (not p.attrib or p.attrib.keys() == [
                     '{http://namespaces.zeit.de/CMS/cp}__name__'])):
                 p.getparent().remove(p)

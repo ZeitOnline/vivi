@@ -42,6 +42,6 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 @grok.implementer(zeit.edit.interfaces.IElement)
 def factor_author_block_from_author(body, content, position):
     block = Factory(body)(position)
-    block.references = (block.references.get(content)
-                        or block.references.create(content))
+    block.references = (block.references.get(content) or
+                        block.references.create(content))
     return block

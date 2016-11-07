@@ -91,9 +91,9 @@ class CheckinErrors(object):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         manager.canCheckin  # cause last_validation_error to be populated
         errors = manager.last_validation_error
-        if (not errors
-            # XXX stopgap so it doesn't break, see #10851
-            or not isinstance(errors, list)):
+        if (not errors or
+                # XXX stopgap so it doesn't break, see #10851
+                not isinstance(errors, list)):
             return []
 
         result = []

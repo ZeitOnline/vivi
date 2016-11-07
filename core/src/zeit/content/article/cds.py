@@ -128,7 +128,7 @@ def import_file(path):
         existing_article = zeit.cms.interfaces.ICMSContent(uuid, None)
         if existing_article is not None:
             if zeit.cms.workflow.interfaces.IModified(
-                existing_article).last_modified_by == PRINCIPAL:
+                    existing_article).last_modified_by == PRINCIPAL:
                 log.info('Overwriting unchanged %s with new version.' %
                          existing_article.uniqueId)
                 container = existing_article.__parent__

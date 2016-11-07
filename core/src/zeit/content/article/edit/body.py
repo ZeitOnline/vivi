@@ -33,7 +33,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
         result = []
         self.ensure_division()
         for didx, division in enumerate(
-            xml_node.xpath('division[@type="page"]'), start=1):
+                xml_node.xpath('division[@type="page"]'), start=1):
             key = self._set_default_key(division)
             if didx > 1:
                 # Skip the first division as it isn't editable
@@ -50,7 +50,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
 
         result = []
         for didx, division in enumerate(
-            self.xml.xpath('division[@type="page"]'), start=1):
+                self.xml.xpath('division[@type="page"]'), start=1):
             if didx > 1:
                 result.append(self._get_element_for_node(division))
             for child in division.iterchildren():

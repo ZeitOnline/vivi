@@ -5,8 +5,7 @@ import zope.formlib.source
 
 class BadgeInputWidget(zope.formlib.source.SourceMultiCheckBoxWidget):
 
-    def _renderItem(
-        self, index, text, value, name, cssClass, checked=False):
+    def _renderItem(self, index, text, value, name, cssClass, checked=False):
         result = super(BadgeInputWidget, self)._renderItem(
             index, text, value, name, cssClass, checked)
         result = result.replace(

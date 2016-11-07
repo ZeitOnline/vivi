@@ -109,10 +109,11 @@ MODULES = ModuleSource()
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def clear_header_module_if_not_allowed_by_template(context, event):
+    IArticle = zeit.content.article.interfaces.IArticle
     for description in event.descriptions:
-        if (description.interface is zeit.content.article.interfaces.IArticle
-                and ('template' in description.attributes or
-                     'header_layout' in description.attributes)):
+        if (description.interface is IArticle and
+                ('template' in description.attributes or
+                 'header_layout' in description.attributes)):
             break
     else:
         return

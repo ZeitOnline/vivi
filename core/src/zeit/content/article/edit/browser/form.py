@@ -526,8 +526,8 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
     prefix = 'options-layout'
     undo_description = _('edit options')
     form_fields = (
-        FormFields(ICommonMetadata).select('color_scheme')
-        + FormFields(IArticle).select('layout'))
+        FormFields(ICommonMetadata).select('color_scheme') +
+        FormFields(IArticle).select('layout'))
 
     def __call__(self):
         zope.interface.alsoProvides(

@@ -16,7 +16,7 @@ class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):
 
     def render(self):
         if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
-            self.context):
+                self.context):
             return ''
         return super(RecensionForms, self).render()
 

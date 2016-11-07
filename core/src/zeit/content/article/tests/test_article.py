@@ -291,8 +291,8 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
 
     def notify_modified(self, article, field='access'):
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-                article, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, field)))
+            article, zope.lifecycleevent.Attributes(
+                zeit.cms.content.interfaces.ICommonMetadata, field)))
 
     def test_setting_access_to_abo_or_registration_disables_is_amp(self):
         with zeit.cms.checkout.helper.checked_out(self.article) as article:
