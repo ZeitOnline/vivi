@@ -1,5 +1,6 @@
 import zeit.cms.content.sources
 
+
 class Blog(object):
 
     def __init__(self, name=None, url=None):

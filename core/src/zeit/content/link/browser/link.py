@@ -7,7 +7,7 @@ import zope.publisher.interfaces
 
 
 class LinkListRepresentation(
-    zeit.cms.browser.listing.CommonListRepresentation):
+        zeit.cms.browser.listing.CommonListRepresentation):
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
     zope.component.adapts(zeit.content.link.interfaces.ILink,

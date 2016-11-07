@@ -12,6 +12,6 @@ product_config = """
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=(zeit.cms.testing.cms_product_config
-                    + zeit.push.product_config
-                    + product_config))
+    product_config=(zeit.cms.testing.cms_product_config +
+                    zeit.push.product_config +
+                    product_config))

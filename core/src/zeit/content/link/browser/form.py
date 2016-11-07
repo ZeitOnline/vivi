@@ -24,10 +24,10 @@ class Base(zeit.push.browser.form.SocialBase):
     social_fields.fields = tuple(social_fields_list)
 
     field_groups = (
-        base.field_groups[:4]
-        + (social_fields,
-           base.option_fields,
-           base.author_fields)
+        base.field_groups[:4] +
+        (social_fields,
+         base.option_fields,
+         base.author_fields)
     )
 
     @property
