@@ -157,8 +157,9 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
         return config['twitter-main-account']
 
     def isAvailable(self, node, context):
-        return (super(TwitterAccountSource, self).isAvailable(node, context)
-                and node.get('name') != self.main_account())
+        return (
+            super(TwitterAccountSource, self).isAvailable(node, context) and
+            node.get('name') != self.main_account())
 
     def access_token(self, value):
         tree = self._get_tree()
@@ -213,8 +214,9 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         return config['facebook-campus-account']
 
     def isAvailable(self, node, context):
-        return (super(FacebookAccountSource, self).isAvailable(node, context)
-                and node.get('name') != self.main_account())
+        return (
+            super(FacebookAccountSource, self).isAvailable(node, context) and
+            node.get('name') != self.main_account())
 
     def access_token(self, value):
         tree = self._get_tree()

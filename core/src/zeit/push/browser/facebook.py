@@ -54,8 +54,8 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # Step 1b: Convert code to token <https://developers.facebook.com
         # /docs/facebook-login/manually-build-a-login-flow#confirm>
         r = requests.get(
-            'https://graph.facebook.com/oauth/access_token?'
-            + urllib.urlencode({
+            'https://graph.facebook.com/oauth/access_token?' +
+            urllib.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'redirect_uri': self.settings['redirect_uri'],
@@ -70,8 +70,8 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # <https://developers.facebook.com
         # /docs/facebook-login/access-tokens/#extending>
         r = requests.get(
-            'https://graph.facebook.com/oauth/access_token?'
-            + urllib.urlencode({
+            'https://graph.facebook.com/oauth/access_token?' +
+            urllib.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'grant_type': 'fb_exchange_token',
