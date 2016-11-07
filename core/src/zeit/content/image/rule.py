@@ -2,7 +2,6 @@ from zeit.edit.rule import glob
 import grokcore.component as grok
 import zeit.content.image.interfaces
 import zeit.edit.rule
-import zope.component
 import zope.interface
 
 
@@ -14,6 +13,7 @@ class ImageValidator(zeit.edit.rule.Validator):
 @glob(zope.interface.Interface)
 def imagegroup(context):
     return False
+
 
 @glob(zeit.content.image.interfaces.IImageGroup)
 def imagegroup(context):

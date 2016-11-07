@@ -145,7 +145,7 @@ class Thumbnail(Scaled):
 
 
 class ImageListRepresentation(
-    zeit.cms.browser.listing.BaseListRepresentation):
+        zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
