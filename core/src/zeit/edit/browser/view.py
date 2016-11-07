@@ -1,9 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
-import ZODB.POSException
 import cgi
 import json
 import logging
-import transaction
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -36,8 +34,8 @@ class Form(object):
         if instance is None:
             return self
 
-        if (instance.request.method == 'POST'
-            and not instance.request.form.get('_body_decoded')):
+        if (instance.request.method == 'POST' and
+                not instance.request.form.get('_body_decoded')):
             decoded = json.loads(instance.request.bodyStream.read(
                 int(instance.request['CONTENT_LENGTH'])))
             instance.request.form.update(decoded)

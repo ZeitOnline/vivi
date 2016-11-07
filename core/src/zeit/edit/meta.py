@@ -21,7 +21,7 @@ class NoneGuard(object):
     def __call__(self, *args, **kw):
         result = self.func(*args, **kw)
         if result is None:
-            result= '__NONE__'
+            result = '__NONE__'
         return result
 
 

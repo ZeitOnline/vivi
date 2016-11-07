@@ -88,7 +88,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
         form_prefix = zope.formlib.form.expandPrefix(self.prefix)
         for input, widget in self.widgets.__iter_input_and_widget__():
             if input and zope.formlib.interfaces.IInputWidget.providedBy(
-                widget):
+                    widget):
                 name = zope.formlib.form._widgetKey(widget, form_prefix)
                 try:
                     try:

@@ -153,8 +153,8 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
 
     @property
     def move_to_same_position(self):
-        return (self.order_from_form == 'insert-after'
-                and self.insert_after == self.block_id)
+        return (self.order_from_form == 'insert-after' and
+                self.insert_after == self.block_id)
 
     def move_block(self):
         """Move block to new location.

@@ -160,8 +160,8 @@ class TypeOnAttributeElementFactory(ElementFactory):
 
 def register_element_factory(
     adapts, element_type, title=None, module=None, frame=None,
-    class_=TypeOnAttributeElementFactory,
-    tag_name=TypeOnAttributeElementFactory.tag_name):
+        class_=TypeOnAttributeElementFactory,
+        tag_name=TypeOnAttributeElementFactory.tag_name):
     if isinstance(adapts, zope.interface.interface.InterfaceClass):
         adapts = [adapts]
     if module is None:

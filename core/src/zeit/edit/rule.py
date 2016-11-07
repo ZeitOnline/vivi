@@ -99,7 +99,7 @@ class Rule(object):
 def globs(context):
     globs = {}
     for name, adapter in zope.component.getAdapters(
-        (context,), zeit.edit.interfaces.IRuleGlob):
+            (context,), zeit.edit.interfaces.IRuleGlob):
         if not name:
             continue
         globs[name] = adapter
