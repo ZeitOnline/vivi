@@ -314,8 +314,18 @@
     name="variant.html"
     class=".variant.Editor"
     template="image-variants.pt"
-    menu="zeit-context-views" title="Edit"
     permission="zope.View"
+    />
+
+  <browser:menuItem
+    zcml:condition="have zeit.content.image.variants"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@variant.html"
+    menu="zeit-context-views"
+    title="Edit"
+    permission="zope.View"
+    filter="python:context.display_type != modules['zeit.content.image.interfaces'].INFOGRAPHIC_DISPLAY_TYPE"
     />
 
 
