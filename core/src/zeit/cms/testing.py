@@ -283,10 +283,10 @@ class RepositoryHelper(object):
 
 
 class FunctionalTestCaseCommon(
-    unittest.TestCase,
-    gocept.testing.assertion.Ellipsis,
-    gocept.testing.assertion.Exceptions,
-    RepositoryHelper):
+        unittest.TestCase,
+        gocept.testing.assertion.Ellipsis,
+        gocept.testing.assertion.Exceptions,
+        RepositoryHelper):
 
     product_config = {}
 

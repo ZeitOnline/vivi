@@ -1,16 +1,13 @@
 import zope.component
 import zope.publisher.interfaces
-import zope.traversing.browser
-import zope.cachedescriptors.property
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 
 
 class CMSContentListRepresentation(
-    zeit.cms.browser.listing.BaseListRepresentation):
+        zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing unknown content resources"""
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)

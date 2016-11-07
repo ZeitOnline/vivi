@@ -8,8 +8,7 @@ import zope.schema
 
 # XXX kludge to be able to identify the source later on (to register widgets
 # for it), we should create a better mechanism for this purpose.
-class FactoredBadgeSource(
-    zc.sourcefactory.source.FactoredContextualSource):
+class FactoredBadgeSource(zc.sourcefactory.source.FactoredContextualSource):
     pass
 
 

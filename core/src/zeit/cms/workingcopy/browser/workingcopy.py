@@ -1,9 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import logging
-import zeit.cms.browser.column
 import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -13,7 +11,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
 import zope.component
-import zope.traversing
 import zope.viewlet.viewlet
 
 
@@ -42,8 +39,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase):
             css_class = []
             if list_repr.type:
                 css_class.append('type-' + list_repr.type)
-            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-                obj):
+            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):
                 css_class.append('reference')
             result.append(dict(
                 css_class=' '.join(css_class),

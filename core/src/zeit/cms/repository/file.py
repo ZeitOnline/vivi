@@ -58,9 +58,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
         if mode not in ('r', 'w'):
             raise ValueError(mode)
 
-        if (not self.uniqueId
-            and self.local_data is None
-            and mode == 'r'):
+        if not self.uniqueId and self.local_data is None and mode == 'r':
             raise ValueError("Cannot open for reading, no data available.")
 
         if self.local_data is None:

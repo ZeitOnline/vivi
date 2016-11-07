@@ -41,7 +41,7 @@ def remove_ghost_after_checkout(context, event):
         # workingcopy
         content = workingcopy[name]
         if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-            content):
+                content):
             continue
         referenced = content.references
         if referenced is None or unique_id == content.references.uniqueId:

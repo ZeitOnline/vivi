@@ -404,8 +404,8 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     def __setattr__(self, key, value):
         # XXX the kludge around our attributes continues
-        if (key not in ['attribute', 'xml_reference_name']
-            and not key.startswith('_p_')):
+        if (key not in ['attribute', 'xml_reference_name'] and
+                not key.startswith('_p_')):
             self._p_changed = True
         # skip immediate superclass since it has the bevaiour we want to change
         super(zeit.cms.content.xmlsupport.Persistent, self).__setattr__(
@@ -454,10 +454,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             target=self.target_unique_id)))
 
     def __eq__(self, other):
-        return (type(self) == type(other)
-                and self.__parent__.uniqueId == other.__parent__.uniqueId
-                and self.attribute == other.attribute
-                and self.target.uniqueId == other.target_unique_id)
+        return (type(self) == type(other) and
+                self.__parent__.uniqueId == other.__parent__.uniqueId and
+                self.attribute == other.attribute and
+                self.target.uniqueId == other.target_unique_id)
 
     def __repr__(self):
         return '<%s.%s %s>' % (

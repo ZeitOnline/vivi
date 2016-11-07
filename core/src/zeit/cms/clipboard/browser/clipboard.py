@@ -104,7 +104,7 @@ class Tree(zeit.cms.browser.tree.Tree):
 
 
 class ClipboardListRepresentation(
-    zeit.cms.browser.listing.BaseListRepresentation):
+        zeit.cms.browser.listing.BaseListRepresentation):
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
     zope.component.adapts(zeit.cms.clipboard.interfaces.IClipboard,

@@ -75,7 +75,7 @@ class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
 
 class CombinationWidget(
-    zc.form.browser.combinationwidget.CombinationWidget):
+        zc.form.browser.combinationwidget.CombinationWidget):
     """Subclassed combination widget to change the template.
 
     NamedTemplate doesn't take the request into account so we cannot register a

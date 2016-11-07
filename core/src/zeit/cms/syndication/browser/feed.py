@@ -296,7 +296,7 @@ class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
 
 class RemoveFromMySyndicationTargetsMenuItem(
-    zeit.cms.browser.menu.ActionMenuItem):
+        zeit.cms.browser.menu.ActionMenuItem):
     """Remove from my syndication targets menu item"""
 
     title = _('Remove from my syndication targets')

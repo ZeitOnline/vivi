@@ -26,8 +26,8 @@ class Checkout(zeit.cms.browser.view.Base):
             # if the failure is because the object is already checked out,
             # we'll just use that one instead of complaining
             for obj in self.manager.workingcopy.values():
-                if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
-                    and obj.uniqueId == self.context.uniqueId):
+                if (zeit.cms.interfaces.ICMSContent.providedBy(obj) and
+                        obj.uniqueId == self.context.uniqueId):
                     checked_out = obj
                     break
             # checkout failed for a different reason
@@ -158,8 +158,8 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         return view()
 
     def render(self):
-        if ('checkin' in self.request.form
-            or 'checkin-correction' in self.request.form):
+        if ('checkin' in self.request.form or
+                'checkin-correction' in self.request.form):
             self.checkin()
         elif 'delete' in self.request.form:
             self.delete()

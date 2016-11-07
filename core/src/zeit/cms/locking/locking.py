@@ -52,7 +52,7 @@ class LockStorage(object):
         # Now make sure the object *really* exists. In case we've create a null
         # resource lock, we unlock and raise an error
         if not self.connector[object.uniqueId].properties.get(
-            ('getlastmodified', 'DAV:')):
+                ('getlastmodified', 'DAV:')):
             self.delLock(object)
             raise zope.app.locking.interfaces.LockingError(
                 object.uniqueId, 'Object does not exist.')
@@ -85,9 +85,9 @@ class LockInfo(persistent.mapping.PersistentMapping):
         self.locked_until = locked_until
         if isinstance(locked_until, datetime.datetime):
             delta = locked_until - datetime.datetime.now(pytz.UTC)
-            self.timeout = (delta.days * 86400
-                            + delta.seconds
-                            + delta.microseconds * 1e-6)
+            self.timeout = (delta.days * 86400 +
+                            delta.seconds +
+                            delta.microseconds * 1e-6)
 
     def __repr__(self):
         return "<%s.%s object at 0x%x>" % (

@@ -54,7 +54,7 @@ class DAVProperty(object):
                                    zeit.connector.interfaces.DeleteProperty)
 
         if (zope.proxy.removeAllProxies(dav_value) is
-            zeit.connector.interfaces.DeleteProperty):
+                zeit.connector.interfaces.DeleteProperty):
             value = self.missing_value
         else:
             field = self.field.bind(instance)

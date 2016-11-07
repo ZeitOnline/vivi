@@ -36,7 +36,7 @@ class TypeChange(zeit.cms.browser.view.Base):
         resource = zeit.connector.interfaces.IResource(self.context)
         self.adapters = []
         for name, adapter in zope.component.getAdapters(
-            (resource, ), zeit.cms.interfaces.ICMSContent):
+                (resource, ), zeit.cms.interfaces.ICMSContent):
             resource.data.seek(0)
             if not name:
                 # This is the generic factory which calls the other factories.

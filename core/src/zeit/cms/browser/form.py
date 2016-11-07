@@ -316,8 +316,8 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
     redirect_to_view = None
 
     def nextURL(self):
-        if (not self.redirect_to_parent_after_edit
-                and not self.redirect_to_view):
+        if (not self.redirect_to_parent_after_edit and
+                not self.redirect_to_view):
             return None
 
         new_context = self.context

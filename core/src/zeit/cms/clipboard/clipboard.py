@@ -27,7 +27,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
                    name=None, insert=False):
         """Add unique_id to obj."""
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(
-            reference_object):
+                reference_object):
             raise ValueError(
                 "`reference_object` does not provide IClipboardEntry (%r)" %
                 reference_object)
@@ -40,7 +40,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
                 reference_object.__name__) + 1
 
         if not zope.app.container.interfaces.IOrderedContainer.providedBy(
-            container):
+                container):
             raise ValueError('`reference_object` must be a Clip to insert.')
 
         entry = zeit.cms.clipboard.interfaces.IClipboardEntry(add_object)

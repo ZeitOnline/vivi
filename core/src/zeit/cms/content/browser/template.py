@@ -23,7 +23,7 @@ class Manager(object):
     def template_managers(self):
         result = []
         for name, utility in sorted(zope.component.getUtilitiesFor(
-            zeit.cms.content.interfaces.ITemplateManager)):
+                zeit.cms.content.interfaces.ITemplateManager)):
             result.append(dict(
                 name=name,
                 manager=utility))
