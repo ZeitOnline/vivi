@@ -50,7 +50,7 @@ class TicketIssuer(object):
     def __call__(self):
         principal = self.request.principal
         if zope.authentication.interfaces.IUnauthenticatedPrincipal.providedBy(
-            principal):
+                principal):
             raise zope.security.interfaces.Unauthorized
         principal = str(principal.id)
         rnd = random.randint(-sys.maxint, sys.maxint)

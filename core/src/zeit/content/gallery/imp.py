@@ -50,7 +50,7 @@ class GalleryStorer(object):
     def copy_entry(self, image):
         entry = zeit.content.gallery.gallery.GalleryEntry()
         for field in zope.schema.getFields(
-            zeit.content.gallery.interfaces.IGalleryEntry).values():
+                zeit.content.gallery.interfaces.IGalleryEntry).values():
             if not field.readonly:
                 field.set(entry, field.get(self.context))
         entry.image = image

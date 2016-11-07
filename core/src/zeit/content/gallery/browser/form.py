@@ -19,8 +19,8 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase):
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.content.gallery.interfaces.IGalleryMetadata).omit(
-                'push_news', 'bigshare_buttons')
-        + zope.formlib.form.FormFields(
+                'push_news', 'bigshare_buttons') +
+        zope.formlib.form.FormFields(
             zeit.content.gallery.interfaces.IMaxLengthHTMLContent))
 
     text_fields = gocept.form.grouped.Fields(

@@ -3,12 +3,10 @@ import lxml.html.soupparser
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zeit.content.gallery.source
 import zeit.content.image.interfaces
 import zeit.imp.source
 import zeit.wysiwyg.interfaces
-import zope.interface.exceptions
 import zope.schema
 
 
@@ -43,9 +41,9 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
 
 class IReadGallery(
-    IGalleryMetadata,
-    zeit.cms.content.interfaces.IXMLContent,
-    zope.app.container.interfaces.IReadContainer):
+        IGalleryMetadata,
+        zeit.cms.content.interfaces.IXMLContent,
+        zope.app.container.interfaces.IReadContainer):
     """Read methods for gallery."""
 
 
