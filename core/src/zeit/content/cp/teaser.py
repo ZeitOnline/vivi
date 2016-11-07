@@ -188,10 +188,9 @@ def warn_about_free_teasers(context, event):
                 # Close enough
                 source = zope.component.getUtility(
                     z3c.flashmessage.interfaces.IMessageSource, name='session')
-                source.send(
-                    _('"${name}" is referenced by a free teaser in "${teaser}"',
-                      mapping=dict(name=context.uniqueId,
-                                   teaser=obj.uniqueId)),
+                source.send(_(
+                    '"${name}" is referenced by a free teaser in "${teaser}"',
+                    mapping=dict(name=context.uniqueId, teaser=obj.uniqueId)),
                     'error')
                 break
 

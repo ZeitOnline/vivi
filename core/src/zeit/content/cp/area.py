@@ -455,7 +455,9 @@ def region_to_area(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
-    if context.automatic and context.automatic_type == 'centerpage' and context.referenced_cp is not None:
+    if (context.automatic and
+            context.automatic_type == 'centerpage' and
+            context.referenced_cp is not None):
         yield context.referenced_cp
     for content in zeit.content.cp.centerpage.cms_content_iter(
             zeit.content.cp.interfaces.IRenderedArea(context)):
@@ -486,10 +488,10 @@ def rendered_xml(context):
     zope.container.interfaces.IObjectAddedEvent)
 def overflow_blocks(context, event):
     area = context.__parent__
-    if (area.automatic
-            or area.block_max is None
-            or len(area) <= area.block_max
-            or area.overflow_into is None):
+    if (area.automatic or
+            area.block_max is None or
+            len(area) <= area.block_max or
+            area.overflow_into is None):
         return
 
     last_block = area.values()[-1]

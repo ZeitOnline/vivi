@@ -131,8 +131,9 @@ class TeaserBlock(
         self.xml.set('module', layout.id)
 
     TEASERBLOCK_FIELDS = (
-        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
+        set(zope.schema.getFieldNames(
+            zeit.content.cp.interfaces.ITeaserBlock)) -
+        set(zeit.cms.content.interfaces.IXMLRepresentation)
     )
 
     def update(self, other):
@@ -272,8 +273,9 @@ def set_layout_to_default_when_moved_down_from_first_position(area, event):
         return
 
     previously_first = area[event.old_order[0]]
-    if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(previously_first)
-            and area.values().index(previously_first)) > 0:
+    if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(
+            previously_first) and
+            area.values().index(previously_first)) > 0:
         previously_first.layout = area.default_teaser_layout
 
 

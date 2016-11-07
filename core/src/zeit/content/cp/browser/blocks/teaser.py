@@ -6,7 +6,6 @@ import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
-import zeit.content.cp.browser.editor
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.view
@@ -57,8 +56,8 @@ class EditCommon(
         gocept.form.grouped.EditForm):
 
     form_fields = (
-        zeit.content.cp.browser.blocks.block.EditCommon.form_fields
-        + zope.formlib.form.FormFields(
+        zeit.content.cp.browser.blocks.block.EditCommon.form_fields +
+        zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaserBlock).select(
                 'force_mobile_image', 'text_color', 'overlay_level')
     )

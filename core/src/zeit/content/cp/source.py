@@ -23,8 +23,8 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
         from zeit.content.cp.interfaces import ICenterPage
         cp = ICenterPage(context, None)
         for_ = zope.dottedname.resolve.resolve(node.get('for'))
-        return (super(CPExtraSource, self).isAvailable(node, cp)
-                and for_.providedBy(context.__parent__))
+        return (super(CPExtraSource, self).isAvailable(node, cp) and
+                for_.providedBy(context.__parent__))
 
 
 class RSSTimeFormatSource(zc.sourcefactory.basic.BasicSourceFactory):

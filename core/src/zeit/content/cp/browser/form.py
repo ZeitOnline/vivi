@@ -16,8 +16,8 @@ class FormBase(object):
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.content.interfaces.ICommonMetadata).omit(
-                'keywords', 'push_news')
-        + zope.formlib.form.FormFields(
+                'keywords', 'push_news') +
+        zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage).select(
             'type', 'header_image', 'topiclink_title',
             'topiclink_label_1', 'topiclink_url_1',

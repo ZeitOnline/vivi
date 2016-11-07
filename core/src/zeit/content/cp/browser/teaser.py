@@ -1,15 +1,9 @@
 from zeit.content.cp.i18n import MessageFactory as _
-import zeit.cms.checkout.interfaces
 import zeit.cms.content.browser.commonmetadata
 import zeit.cms.content.browser.form
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zeit.content.cp.interfaces
-import zope.app.pagetemplate
 import zope.component
-import zope.event
 import zope.formlib.form
-import zope.lifecycleevent
 
 
 class ItemTraverser(object):
@@ -34,7 +28,8 @@ class ItemTraverser(object):
 
 
 class ListRepresentation(
-    zeit.cms.content.browser.commonmetadata.CommonMetadataListRepresentation):
+        zeit.cms.content.browser.commonmetadata.
+        CommonMetadataListRepresentation):
 
     zope.component.adapts(zeit.content.cp.interfaces.ITeaser,
                           zope.publisher.interfaces.IPublicationRequest)
@@ -48,8 +43,8 @@ class FormBase(object):
 
     form_fields = (
         zeit.cms.content.browser.form.CommonMetadataFormBase.form_fields.omit(
-            'automaticMetadataUpdateDisabled')
-        + zope.formlib.form.FormFields(
+            'automaticMetadataUpdateDisabled') +
+        zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaser).select('original_content'))
 
 

@@ -13,8 +13,8 @@ import zope.formlib.form
 
 
 def is_published_and_has_permission(form, action):
-    return (zeit.workflow.browser.form.is_published(form, action)
-            and form.request.interaction.checkPermission(
+    return (zeit.workflow.browser.form.is_published(form, action) and
+            form.request.interaction.checkPermission(
                 'zeit.content.cp.Retract', form.context))
 
 

@@ -56,7 +56,7 @@ def add_blocks_to_newly_created_cp(context, event):
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def update_old_cpextras(context, event):
     for cp_extra in context.xml.xpath(
-        '//container[@cp:type != "cpextra"]/cp_extra',
-        namespaces={'cp': 'http://namespaces.zeit.de/CMS/cp'}):
-        cp_extra.getparent().set('{http://namespaces.zeit.de/CMS/cp}type',
-                                 'cpextra')
+            '//container[@cp:type != "cpextra"]/cp_extra',
+            namespaces={'cp': 'http://namespaces.zeit.de/CMS/cp'}):
+        cp_extra.getparent().set(
+            '{http://namespaces.zeit.de/CMS/cp}type', 'cpextra')

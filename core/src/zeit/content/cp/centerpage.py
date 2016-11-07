@@ -51,10 +51,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     # We want to delegate only IContainer itself, not any inherited interfaces;
     # due to the read/write interface split, we need to express this manually.
     DELEGATE_METHODS = (
-        set(zeit.edit.interfaces.IContainer)
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
-        - set(zope.container.interfaces.IContained)
-        - set(zeit.edit.interfaces.IElement)
+        set(zeit.edit.interfaces.IContainer) -
+        set(zeit.cms.content.interfaces.IXMLRepresentation) -
+        set(zope.container.interfaces.IContained) -
+        set(zeit.edit.interfaces.IElement)
     )
 
     @property
@@ -473,8 +473,8 @@ def rendered_xml(context):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def mark_cp_on_checkout(context, event):
-    if (zeit.content.cp.interfaces.ICP2009.providedBy(context)
-        or zeit.content.cp.interfaces.ICP2015.providedBy(context)):
+    if (zeit.content.cp.interfaces.ICP2009.providedBy(context) or
+            zeit.content.cp.interfaces.ICP2015.providedBy(context)):
         return
     zope.interface.alsoProvides(context, zeit.content.cp.interfaces.ICP2015)
 

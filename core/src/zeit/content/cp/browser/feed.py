@@ -1,11 +1,11 @@
-import zeit.cms.browser.interfaces
-import zeit.cms.interfaces
+import zeit.cms.browser.menu
 import zeit.cms.repository.browser.adapter
+import zeit.content.cp.interfaces
 import zope.publisher.interfaces
 
 
 class ListRepresentation(
-    zeit.cms.repository.browser.adapter.CMSContentListRepresentation):
+        zeit.cms.repository.browser.adapter.CMSContentListRepresentation):
 
     zope.component.adapts(zeit.content.cp.interfaces.IFeed,
                           zope.publisher.interfaces.IPublicationRequest)
