@@ -136,7 +136,7 @@ def reindex():
     parser.add_argument(
         'ids', type=unicode, nargs='+', help='uniqueIds to reindex')
     parser.add_argument(
-        '--file', action='store_true', 
+        '--file', action='store_true',
         help='Load uniqueIds from a file to reindex')
     parser.add_argument(
         '--parallel', action='store_true',
