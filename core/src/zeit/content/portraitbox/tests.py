@@ -11,8 +11,8 @@ PortraitboxLayer = zeit.cms.testing.ZCMLLayer(
 
 
 class PortraitboxSourceTest(
-    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-    zeit.cms.testing.FunctionalTestCase):
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+        zeit.cms.testing.FunctionalTestCase):
 
     layer = PortraitboxLayer
 
