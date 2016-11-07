@@ -20,7 +20,7 @@ class Mask(object):
         draw = PIL.ImageDraw.ImageDraw(image)
         outline = None
         if border is not None:
-            outline=tuple(border) + (255, )
+            outline = tuple(border) + (255,)
         visible = self._get_rect_box()
         draw.rectangle(visible, fill=(255, 0, 0, 0), outline=outline)
 

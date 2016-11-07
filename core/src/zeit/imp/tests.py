@@ -21,9 +21,9 @@ product_config = """
 
 
 imp_layer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config
-    + zeit.content.image.testing.product_config
-    + product_config)
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config +
+    zeit.content.image.testing.product_config +
+    product_config)
 
 
 class TestLayerMask(unittest.TestCase):

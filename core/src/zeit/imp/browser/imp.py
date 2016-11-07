@@ -1,3 +1,4 @@
+from zeit.content.image.imagegroup import Thumbnails
 import json
 import transaction
 import zeit.cms.browser.view
@@ -66,7 +67,6 @@ class ImageBar(zeit.cms.browser.view.Base):
                 continue
             if zeit.content.image.interfaces.IMasterImage.providedBy(obj):
                 continue
-            if obj.__name__.startswith(
-                zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX):
+            if obj.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX):
                 continue
             yield obj
