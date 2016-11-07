@@ -13,9 +13,9 @@ import zope.component
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
-    zeit.cms.testing.cms_product_config
-    + zeit.workflow.testing.product_config
-    + zeit.content.cp.testing.product_config))
+    zeit.cms.testing.cms_product_config +
+    zeit.workflow.testing.product_config +
+    zeit.content.cp.testing.product_config))
 
 
 class DynamicLayer(plone.testing.Layer):
