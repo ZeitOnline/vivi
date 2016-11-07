@@ -128,7 +128,7 @@ class mapped_product(mapped):
 
     def _get_from_dict(self, value):
         if (value['customFields']['produkt-id'] is None and
-            value['referenceId'] is not None):
+                value['referenceId'] is not None):
             return 'Reuters'
         for key in self.path:
             value = value[key]
@@ -173,9 +173,8 @@ def copy_field(from_, to, interface, key):
     value = getattr(from_, key, from_)
     if value is from_:
         return
-    if (
-        isinstance(value, unicode) and
-        zope.schema.interfaces.IFromUnicode.providedBy(field)):
+    if (isinstance(value, unicode) and
+            zope.schema.interfaces.IFromUnicode.providedBy(field)):
         field = field.bind(to)
         try:
             value = field.fromUnicode(value)

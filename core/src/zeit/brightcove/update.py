@@ -87,7 +87,7 @@ class BaseUpdater(grok.Adapter):
     def _update_cmsobj(self):
         log.info('Updating %s', self.bcobj)
         with zeit.cms.checkout.helper.checked_out(
-            self.cmsobj, semantic_change=True, events=False) as co:
+                self.cmsobj, semantic_change=True, events=False) as co:
             # We don't need to send events here as a full checkout/checkin
             # cycle is done during publication anyway, below.
             if co is None:
@@ -112,8 +112,9 @@ class VideoUpdater(BaseUpdater):
     @classmethod
     def get_objects(cls):
         now = datetime.datetime.now(pytz.UTC)
-        from_date = (datetime.datetime(now.year, now.month, now.day, now.hour)
-                     - datetime.timedelta(hours=10))
+        from_date = (
+            datetime.datetime(now.year, now.month, now.day, now.hour) -
+            datetime.timedelta(hours=10))
         return zeit.brightcove.converter.Video.find_modified(
             from_date=from_date)
 
@@ -169,7 +170,7 @@ class VideoUpdater(BaseUpdater):
         new_mtime = zeit.cms.content.interfaces.ISemanticChange(
             new).last_semantic_change
         if (current_mtime and new_mtime and current_mtime >= new_mtime and
-            self.cmsobj.video_still == new.video_still):
+                self.cmsobj.video_still == new.video_still):
             changed = False
 
         if changed:

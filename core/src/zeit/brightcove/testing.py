@@ -1,5 +1,4 @@
 # coding: utf-8
-from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import gocept.httpserverlayer.custom
 import json
 import mock
@@ -8,13 +7,13 @@ import time
 import transaction
 import urlparse
 import zeit.brightcove.converter
-import zeit.cms.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.video.testing
 import zeit.solr.testing
 import zeit.workflow.testing
-import zope.component
+import zope.app.appsetup.product
+import zope.testing.doctest
 
 
 VIDEO_1234 = {
@@ -152,18 +151,18 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
             return
         query = urlparse.parse_qs(self.path[2:])
         if (query.get('command') == ['find_videos_by_ids'] and
-            query.get('video_ids') == ['1234'] and
-            query.get('video_fields')):
+                query.get('video_ids') == ['1234'] and
+                query.get('video_fields')):
             result = SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_videos_by_ids'] and
-              query.get('video_ids') == ['6789'] and
-              query.get('video_fields')):
+                query.get('video_ids') == ['6789'] and
+                query.get('video_fields')):
             result = ANOTHER_SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_playlists_by_ids'] and
-              query.get('playlist_ids') == ['2345']):
+                query.get('playlist_ids') == ['2345']):
             result = SINGLE_PLAYLIST_RESPONSE
         elif (query.get('command') == ['find_modified_videos'] and
-              query.get('video_fields')):
+                query.get('video_fields')):
             result = VIDEO_LIST_RESPONSE
         elif (query.get('command') == ['find_all_playlists']):
             result = PLAYLIST_LIST_RESPONSE
