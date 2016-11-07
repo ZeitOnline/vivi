@@ -5,9 +5,9 @@ import zeit.campus.browser.social
 
 base = zeit.content.link.browser.form.Base
 field_groups = (
-    base.field_groups[:4]
-    + (zeit.campus.browser.social.SocialBase.social_fields,)
-    + base.field_groups[5:]
+    base.field_groups[:4] +
+    (zeit.campus.browser.social.SocialBase.social_fields,) +
+    base.field_groups[5:]
 )
 
 

@@ -1,7 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import zeit.cms.browser.form
-import zeit.content.infobox.interfaces
 import zeit.content.infobox.infobox
 import zeit.campus.interfaces
 import zope.formlib.form
@@ -14,8 +12,8 @@ import zope.formlib.form
 class FormBase(zeit.content.infobox.browser.form.FormBase):
 
     form_fields = (
-        zeit.content.infobox.browser.form.FormBase.form_fields
-        + zope.formlib.form.FormFields(zeit.campus.interfaces.IDebate))
+        zeit.content.infobox.browser.form.FormBase.form_fields +
+        zope.formlib.form.FormFields(zeit.campus.interfaces.IDebate))
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):

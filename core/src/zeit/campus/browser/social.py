@@ -13,9 +13,9 @@ class SocialBase(zeit.push.browser.form.SocialBase):
     social_fields_list.remove('bigshare_buttons')
     social_fields.fields = tuple(social_fields_list)
     social_fields.fields = (
-        social_fields.fields[:2]
-        + campus_fields
-        + social_fields.fields[2:]
+        social_fields.fields[:2] +
+        campus_fields +
+        social_fields.fields[2:]
     )
 
     def __init__(self, *args, **kw):
@@ -30,8 +30,8 @@ class SocialBase(zeit.push.browser.form.SocialBase):
         form_fields = super(SocialBase, self).social_form_fields
         form_fields = form_fields.omit('bigshare_buttons')
         return (
-            form_fields
-            + self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
+            form_fields +
+            self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
                 *self.campus_fields))
 
     def setUpWidgets(self, *args, **kw):
