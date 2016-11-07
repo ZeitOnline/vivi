@@ -37,8 +37,8 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
         result = connector.search(
             [sv.FIRST_RELEASED, sv.PRIVATE_TOKEN,
              sv.REPORTED_ON, sv.REPORTED_ERROR],
-            (sv.FIRST_RELEASED < age) & (sv.PRIVATE_TOKEN > '')
-            & (sv.REPORTED_ON == '') & (sv.REPORTED_ERROR == ''))
+            (sv.FIRST_RELEASED < age) & (sv.PRIVATE_TOKEN > '') &
+            (sv.REPORTED_ON == '') & (sv.REPORTED_ERROR == ''))
         return result
 
     def mark_done(self, content):

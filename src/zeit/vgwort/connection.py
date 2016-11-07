@@ -146,8 +146,8 @@ class MessageService(VGWortWebService):
                         involved.code = author.vgwortcode
                         parties.authors.author.append(involved)
                     elif (author.firstname and author.lastname and
-                          author.firstname.strip()
-                          and author.lastname.strip()):
+                            author.firstname.strip() and
+                            author.lastname.strip()):
                         involved.firstName = author.firstname
                         involved.surName = author.lastname
                         if author.vgwortid:
