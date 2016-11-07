@@ -140,7 +140,7 @@ def add_token(context, event):
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
-        event.name != 'public_token'):
+            event.name != 'public_token'):
         event.veto()
 
 
