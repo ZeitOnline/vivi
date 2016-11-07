@@ -75,7 +75,7 @@ class SearchForm(JSONView):
     def types(self):
         result = []
         for name, interface in zope.component.getUtilitiesFor(
-            zeit.cms.interfaces.ICMSContentType):
+                zeit.cms.interfaces.ICMSContentType):
             type_ = interface.queryTaggedValue('zeit.cms.type') or name
             title = zope.i18n.translate(
                 interface.queryTaggedValue('zeit.cms.title') or type_,
@@ -318,7 +318,7 @@ class SearchResult(SearchResultBase):
         favorite_uniqueIds = set()
         for favorite in get_favorites(self.request).values():
             if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-                favorite):
+                    favorite):
                 continue
             uniqueId = favorite.referenced_unique_id
             if not uniqueId:
@@ -373,7 +373,7 @@ class ResultFilters(JSONView):
     def type_entries(self, counts):
         types = {}
         for name, interface in zope.component.getUtilitiesFor(
-            zeit.cms.interfaces.ICMSContentType):
+                zeit.cms.interfaces.ICMSContentType):
             type_ = interface.queryTaggedValue('zeit.cms.type')
             if type_:
                 types[type_] = interface
@@ -650,7 +650,9 @@ def search_parameters(request):
 def search_form(request):
     """extract the search parameters from the request in a format consumable by
     solr"""
-    g = lambda name, default=None: _get(request, name, default)
+
+    def g(name, default=None):
+        return _get(request, name, default)
     fulltext = g('fulltext')
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))

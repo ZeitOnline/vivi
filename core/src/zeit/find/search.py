@@ -88,7 +88,8 @@ def counts(q):
 
     facet_fields = facet_data['facet_fields']
 
-    _counts = lambda counts: sorted(grouper(2, counts))
+    def _counts(counts):
+        return sorted(grouper(2, counts))
 
     topic_counts = _counts(facet_fields['ressort'])
     author_counts = _counts(facet_fields['authors'])
