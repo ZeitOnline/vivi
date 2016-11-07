@@ -121,4 +121,4 @@ class SearchSymbol(object):
         self.name = name
 
     def _render(self):
-        return self.name # plain, no quoting
+        return self.name  # plain, no quoting

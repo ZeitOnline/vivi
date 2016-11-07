@@ -1,10 +1,9 @@
-
-generation = 1
-
-
 import zope.app.component
 import zope.app.component.hooks
 import zope.app.zopeappgenerations
+
+
+generation = 1
 
 
 def update(root):

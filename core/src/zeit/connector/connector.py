@@ -109,7 +109,7 @@ class Connector(object):
         logger.debug('New connection')
         url = self._roots[root]
         (scheme, netloc) = urlparse.urlsplit(url)[0:2]
-        try: # grmblmmblpython
+        try:  # grmblmmblpython
             host, port = netloc.split(':', 1)
             port = int(port)
         except ValueError:
@@ -537,8 +537,8 @@ class Connector(object):
         self._invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
         autolock = (locktoken is None)
-        iscoll = (resource.type == 'collection'
-                  or resource.contentType == 'httpd/unix-directory')
+        iscoll = (resource.type == 'collection' or
+                  resource.contentType == 'httpd/unix-directory')
         if iscoll and not id.endswith('/'):
             id = id + '/'
 

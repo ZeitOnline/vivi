@@ -1,13 +1,12 @@
-
-generation = 1
-
-
 import zeit.connector.generation.install
 import zeit.connector.interfaces
 import zeit.connector.lockinfo
 import zope.app.component
 import zope.app.component.hooks
 import zope.app.zopeappgenerations
+
+
+generation = 1
 
 
 def update(root):

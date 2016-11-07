@@ -3,6 +3,7 @@ import httplib
 import logging
 import mimetypes
 import re
+import socket
 import sys
 import urllib
 import urlparse
@@ -322,7 +323,6 @@ class DAVConnection (HTTPBasicAuthCon, DAVBase):
         return
 
 
-import socket
 if getattr(socket, 'ssl', None):
     # only include DAVS if SSL support is compiled in
     class HTTPSBasicAuthCon(HTTPBasicAuthCon):

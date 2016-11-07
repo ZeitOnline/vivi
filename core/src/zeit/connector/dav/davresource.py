@@ -478,8 +478,8 @@ class DAVResource(object):
         set_properties = []
         delete_properties = []
 
-        make_element = lambda namespace, name: (
-            lxml.etree.Element('{%s}%s' % (namespace, name)))
+        def make_element(namespace, name):
+            return lxml.etree.Element('{%s}%s' % (namespace, name))
 
         for (name, namespace), value in pdict.items():
             if namespace == 'DAV:':
@@ -505,8 +505,8 @@ class DAVResource(object):
                     # Temporary fix to avoid webdav server confusion. When the
                     # value starts with a '<' the server does some magic. Avoid
                     # this by adding a magic marker before the actual value.
-                    if (value.startswith('<')
-                            or value.startswith(XML_PREFIX_MARKER)):
+                    if (value.startswith('<') or
+                            value.startswith(XML_PREFIX_MARKER)):
                         value = XML_PREFIX_MARKER + value
                     node = make_element(namespace, name)
                     node.text = value

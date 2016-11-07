@@ -87,8 +87,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(id)
-        iscoll = (resource.type == 'collection'
-                  or resource.contentType == 'httpd/unix-directory')
+        iscoll = (resource.type == 'collection' or
+                  resource.contentType == 'httpd/unix-directory')
         if iscoll and not id.endswith('/'):
             id = CannonicalId(id + '/')
         resource.id = unicode(id)  # override
@@ -99,8 +99,8 @@ class Connector(zeit.connector.filesystem.Connector):
             old_etag = None
         new_etag = resource.properties.get(('getetag', 'DAV:'))
         if new_etag and new_etag != old_etag:
-            if (id not in self
-                    or resource.data.read() != self[id].data.read()):
+            if (id not in self or
+                    resource.data.read() != self[id].data.read()):
                 raise zeit.connector.dav.interfaces.PreconditionFailedError()
 
         if id in self._deleted:
@@ -283,8 +283,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
-            if (name.startswith('get')
-                    and name not in ('getlastmodified', 'getetag')):
+            if (name.startswith('get') and
+                    name not in ('getlastmodified', 'getetag')):
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:
@@ -298,5 +298,5 @@ def connector_factory():
     repository_path = (config or {}).get('repository-path')
     if not repository_path:
         repository_path = pkg_resources.resource_filename(
-        __name__, 'testcontent')
+            __name__, 'testcontent')
     return Connector(repository_path)

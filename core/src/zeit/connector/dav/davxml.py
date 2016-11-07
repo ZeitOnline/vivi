@@ -1,11 +1,10 @@
 # TODO:
 # - maybe change parsing to use an explicit parser object with
 # etree.XMLParser(ns_clean=True)?
-
-__all__ = ('xml_from_string', 'xml_from_file')
-
 import lxml.etree
 import zeit.connector.dav.interfaces
+
+__all__ = ('xml_from_string', 'xml_from_file')
 
 
 class DavXmlDoc:

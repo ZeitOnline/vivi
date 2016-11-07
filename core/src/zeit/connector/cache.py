@@ -381,10 +381,10 @@ class Properties(persistent.mapping.PersistentMapping):
     cached_time = None
 
     def _p_resolveConflict(self, old, commited, newstate):
-        if not (old.keys()
-                == commited.keys()
-                == newstate.keys()
-                == ['data']):
+        if not (old.keys() ==
+                commited.keys() ==
+                newstate.keys() ==
+                ['data']):
             # We can only resolve data.
             raise ZODB.POSException.ConflictError
         commited_data = commited['data']
@@ -400,8 +400,8 @@ class Properties(persistent.mapping.PersistentMapping):
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
-        if (key is not zeit.connector.interfaces.DeleteProperty
-                and not isinstance(key, WebDAVPropertyKey)):
+        if (key is not zeit.connector.interfaces.DeleteProperty and
+                not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
         super(Properties, self).__setitem__(key, value)
 

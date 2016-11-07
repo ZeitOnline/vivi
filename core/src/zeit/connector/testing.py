@@ -95,8 +95,11 @@ repository-path %s
 mock_connector_layer = ZCMLLayer('ftesting-mock.zcml')
 
 
-optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-             doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
+optionflags = (
+    doctest.REPORT_NDIFF +
+    doctest.NORMALIZE_WHITESPACE +
+    doctest.ELLIPSIS +
+    doctest.INTERPRET_FOOTNOTES)
 
 
 class TestCase(zope.app.testing.functional.FunctionalTestCase):

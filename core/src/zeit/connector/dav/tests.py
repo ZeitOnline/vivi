@@ -77,7 +77,14 @@ class TestDAVResponse(unittest.TestCase):
 
     RESPONSE_TEMPLATE = """\
 <D:multistatus xmlns:D="DAV:" xmlns:ns0="DAV:">
-<D:response xmlns:CMS="http://namespaces.zeit.de/CMS" xmlns:g0="http://namespaces.zeit.de/CMS/document" xmlns:g1="http://namespaces.zeit.de/CMS/lifetimecounter" xmlns:g2="http://namespaces.zeit.de/CMS/meta" xmlns:g3="http://namespaces.zeit.de/CMS/workflow" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:response
+    xmlns:CMS="http://namespaces.zeit.de/CMS"
+    xmlns:g0="http://namespaces.zeit.de/CMS/document"
+    xmlns:g1="http://namespaces.zeit.de/CMS/lifetimecounter"
+    xmlns:g2="http://namespaces.zeit.de/CMS/meta"
+    xmlns:g3="http://namespaces.zeit.de/CMS/workflow"
+    xmlns:lp1="DAV:"
+    xmlns:lp2="http://apache.org/dav/props/">
 <D:href>%s</D:href>
 <D:propstat>
 <D:status>HTTP/1.1 200 OK</D:status>
