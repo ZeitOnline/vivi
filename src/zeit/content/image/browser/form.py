@@ -37,8 +37,8 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
     form_fields = (zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileAddSchema)
-        + ImageFormBase.form_fields.omit('references'))
+        zeit.content.image.browser.interfaces.IFileAddSchema) +
+        ImageFormBase.form_fields.omit('references'))
 
     title = _("Add image")
     factory = zeit.content.image.image.LocalImage
@@ -59,9 +59,12 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 
     title = _("Edit image")
-    form_fields = (zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileEditSchema).omit('__name__')
-        + ImageFormBase.form_fields)
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.image.browser.interfaces.IFileEditSchema).omit(
+            '__name__') +
+        ImageFormBase.form_fields
+    )
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)

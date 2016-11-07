@@ -193,7 +193,7 @@ class Metadata(object):
     @property
     def images(self):
         if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            self.context):
+                self.context):
             return
         for obj in self.context.values():
             if zeit.content.image.interfaces.IImage.providedBy(obj):
