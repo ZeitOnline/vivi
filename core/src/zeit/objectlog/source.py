@@ -7,7 +7,7 @@ import zope.interface.common.idatetime
 
 
 class LogEntrySource(
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getValues(self, context):
         log = zeit.objectlog.interfaces.ILog(context)

@@ -1,4 +1,3 @@
-from zeit.objectlog.i18n import MessageFactory as _
 import BTrees
 import datetime
 import logging
@@ -53,10 +52,8 @@ class ObjectLog(persistent.Persistent):
         transaction.savepoint(optimistic=True)
 
     def clean(self, timedelta):
-        reference_time = int((time.time()
-                              - timedelta.days * 3600 * 24
-                              - timedelta.seconds)
-                             * 10e6)
+        reference_time = int(10e6 * (
+            time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
         remove = []
         for key in self._object_log:
             log = self._object_log[key]
