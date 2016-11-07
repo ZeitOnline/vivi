@@ -4,14 +4,9 @@ zeit.content.image changes
 2.17.2 (unreleased)
 -------------------
 
-- ZON-3363: Display ``view.html`` instead of ``variant.html`` when creating an
-  ``ImageGroup`` whose ``display_type`` is ``infographic``.
-
-- ZON-3363: Hide edit menu for Infographics.
+- ZON-3363: Some UI/form field tweaks for infographics.
 
 - ZON-3363: Hide thumbnails in content listing of ``ImageGroup``.
-
-- ZON-3363: Only display ``origin`` field for Infographics.
 
 
 2.17.1 (2016-10-05)
