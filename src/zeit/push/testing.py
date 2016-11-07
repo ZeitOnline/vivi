@@ -35,10 +35,10 @@ class MobilePushNotifier(PushNotifier):
 
 
 BASE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
-    zeit.push.product_config
-    + zeit.cms.testing.cms_product_config
-    + zeit.workflow.testing.product_config
-    + zeit.content.article.testing.product_config))
+    zeit.push.product_config +
+    zeit.cms.testing.cms_product_config +
+    zeit.workflow.testing.product_config +
+    zeit.content.article.testing.product_config))
 
 
 class PushMockLayer(plone.testing.Layer):

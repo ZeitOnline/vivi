@@ -28,17 +28,17 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         return (
             self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
-                    'facebook_main_text', 'facebook_main_enabled')
-            + self.FormFieldsFactory(
-                zeit.push.interfaces.IPushMessages).select('short_text')
-            + self.FormFieldsFactory(
+                    'facebook_main_text', 'facebook_main_enabled') +
+            self.FormFieldsFactory(
+                zeit.push.interfaces.IPushMessages).select('short_text') +
+            self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
                     'twitter_main_enabled',
-                    'twitter_ressort_enabled', 'twitter_ressort')
-            + self.FormFieldsFactory(
+                    'twitter_ressort_enabled', 'twitter_ressort') +
+            self.FormFieldsFactory(
                 zeit.cms.content.interfaces.ICommonMetadata).select(
-                    'bigshare_buttons')
-            + self.FormFieldsFactory(
+                    'bigshare_buttons') +
+            self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
                     'mobile_text', 'mobile_enabled'))
 
@@ -97,8 +97,8 @@ class SocialAddForm(
     factory = zeit.cms.testcontenttype.testcontenttype.ExampleContentType
 
     field_groups = (
-        zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups
-        + (SocialBase.social_fields,))
+        zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups +
+        (SocialBase.social_fields,))
 
     def applyChanges(self, object, data):
         self.applyAccountData(object, data)
