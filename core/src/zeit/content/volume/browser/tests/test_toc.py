@@ -182,7 +182,7 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
             b.open('http://localhost/++skin++vivi/repository/'
                    'ZEI/2015/01/ausgabe/@@toc.csv')
             self.assertEqual('text/csv', b.headers['content-type'])
-            self.assertEqual('attachment; filename="table_of_content_2015_1.csv"', b.headers['content-disposition'])
+            self.assertEqual('attachment; filename="table_of_content_2015_01.csv"', b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
     @mock.patch('tinydav.WebDAVClient.get')

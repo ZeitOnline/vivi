@@ -26,7 +26,6 @@ der dann gesplitet wird?
 
 Jep, unbedingt. :) Die Doku zum Konfigurationsmechanismus ist auch ungelogen ;) der nächste Punkt auf meiner "sollte man dokumentieren" Liste.
 Die Kurzfassung ist:
-
 https://github.com/ZeitOnline/zeit.retresco/blob/master/src/zeit/retresco/connection.py#L180
 https://github.com/zeitonline/vivi-deployment/blob/master/components/zope/zope.conf#L254
 https://github.com/zeitonline/vivi-deployment/blob/master/components/settings/component.py#L148
@@ -34,11 +33,11 @@ https://github.com/zeitonline/vivi-deployment/blob/master/environments/productio
 # TODO hier checke ich nicht, warum ich die nicht finde, und wie das von den enviorenments da rein kommt.
 # Muss ich das dann nach einer Änderung noch einmal neu deployen?
 
-volume.volume sollte man zweistellig formatieren; am einfachsten self.context.fill_template verwenden.
+Das kann man mit nem Format-String schöner schreiben (volume_string = '%02d' % self.context.volume)
+
 
 So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
 
-Das kann man mit nem Format-String schöner schreiben (volume_string = '%02d' % self.context.volume)
 
 Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden, insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
 
@@ -97,7 +96,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
-        return "{}_{}_{}.csv".format(toc_file_string, self.context.year, self.context.volume)
+        volume_formatted = self.context.fill_template("{year}_{name}")
+        return "{}_{}.csv".format(toc_file_string, volume_formatted)
 
     def _get_via_dav(self):
         """
@@ -159,10 +159,8 @@ class Toc(zeit.cms.browser.view.Base):
         :return: [str]
         """
         product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
-        volume_string = str(self.context.volume)
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
-        if self.context.volume < 10:
-            volume_string = '0' + volume_string
+        volume_string = '%02d' % self.context.volume
         return [posixpath.join(*[str(e) for e in [self.dav_archive_url_parsed.path, dir_name, self.context.year, volume_string, '']])
                 for dir_name in product_dir_names]
 
