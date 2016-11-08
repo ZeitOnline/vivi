@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import StringIO
 import csv
+import urlparse
 import tinydav
 import re
 import sys
@@ -12,6 +13,7 @@ from tinydav.exception import HTTPUserError
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 import toc_config
+import zope.app.appsetup.product
 
 # TODO Author/Title Teaser contains is ugly
 # TODO More Abstraction of Toc Entries, not sure if an ordered dict is a great idea
@@ -19,6 +21,8 @@ import toc_config
 
 """
 TODO: Nachfragen "Die Product-Config ist leider untypisiert (also nur Strings); an anderen Stellen benutzten wir deshalb Leerzeichen als Trenner."
+Heißt dass, das soll auch in einer Config stehen, oder lass das mal drin aber satt ner Liste nimm einen String,
+der dann gesplitet wird?
 
 Jep, unbedingt. :) Die Doku zum Konfigurationsmechanismus ist auch ungelogen ;) der nächste Punkt auf meiner "sollte man dokumentieren" Liste.
 Die Kurzfassung ist:
@@ -26,11 +30,9 @@ Die Kurzfassung ist:
 https://github.com/ZeitOnline/zeit.retresco/blob/master/src/zeit/retresco/connection.py#L180
 https://github.com/zeitonline/vivi-deployment/blob/master/components/zope/zope.conf#L254
 https://github.com/zeitonline/vivi-deployment/blob/master/components/settings/component.py#L148
-
 https://github.com/zeitonline/vivi-deployment/blob/master/environments/production.cfg#L75, https://github.com/zeitonline/vivi-deployment/blob/master/environments/staging.cfg#L78 etc.
-
-
-Ich würde das dann glaub ich als ein Setting formulieren (archive_dav_url o.ä.) und dann mit urlparse auseinandernehmen.
+# TODO hier checke ich nicht, warum ich die nicht finde, und wie das von den enviorenments da rein kommt.
+# Muss ich das dann nach einer Änderung noch einmal neu deployen?
 
 volume.volume sollte man zweistellig formatieren; am einfachsten self.context.fill_template verwenden.
 
@@ -61,6 +63,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def __init__(self, *args, **kwargs):
         super(Toc, self).__init__(*args, **kwargs)
+        # Dependency injection?
+        self.dav_archive_url_parsed = self._parse_config()
         self.client = self._create_dav_client()
         self.article_excluder = ArticleExcluder()
 
@@ -71,6 +75,15 @@ class Toc(zeit.cms.browser.view.Base):
         self.request.response.setHeader(
             'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
+
+    def _parse_config(self):
+        """
+        Get ARCHIVE_DAV_URL from zope.conf and parse it with.
+        :return: urlparse.ParseResult
+        """
+        # config = zope.app.appsetup.product.getProductConfiguration('zeit.volume')
+        # return urlparse.urlparse(config.get('archive-dav-url'))
+        return urlparse.urlparse(toc_config.ARCHIVE_DAV_URL)
 
     def _create_toc_content(self):
         """
@@ -150,7 +163,7 @@ class Toc(zeit.cms.browser.view.Base):
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         if self.context.volume < 10:
             volume_string = '0' + volume_string
-        return [posixpath.join(*[str(e) for e in [toc_config.DAV_ARCHIVE_ROOT, dir_name, self.context.year, volume_string, '']])
+        return [posixpath.join(*[str(e) for e in [self.dav_archive_url_parsed.path, dir_name, self.context.year, volume_string, '']])
                 for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id):
@@ -171,8 +184,7 @@ class Toc(zeit.cms.browser.view.Base):
         return self.article_excluder.is_relevant(article_tree)
 
     def _create_dav_client(self):
-        # TODO Get uri from some config (zope.conf)?
-        return tinydav.WebDAVClient(toc_config.DAV_SERVER_ROOT, toc_config.DAV_PORT)
+        return tinydav.WebDAVClient(self.dav_archive_url_parsed.hostname, self.dav_archive_url_parsed.port)
 
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
@@ -310,7 +322,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _sort_toc_data(self, toc_data):
         """
-        Sort the toc data dict.
+        Sort the toc data dict
         :param toc_data:
         :return: OrderedDict
         """
@@ -391,6 +403,8 @@ class ArticleExcluder(object):
     _jobname_exclude = [
         u'(Traumstück|AS-Zahl)'
     ]
+
+
 
     def __init__(self):
         # TODO Create combined regex? Should be faster.
