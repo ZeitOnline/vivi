@@ -44,7 +44,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         if unicode_data is None:
             # Guess encoding
             for encoding_term in (
-                zeit.content.text.interfaces.IText['encoding'].vocabulary):
+                    zeit.content.text.interfaces.IText['encoding'].vocabulary):
                 encoding = encoding_term.value
                 try:
                     unicode_data = unicode(data, encoding)
