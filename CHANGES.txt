@@ -4,13 +4,13 @@ zeit.push changes
 1.17.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove iOS from Parse notifications.
 
 
 1.17.4 (2016-10-19)
 -------------------
 
-- ZON-3437: Restrict urbanairship to iOS segment.
+- ZON-3437: Restrict urbanairship iOS to specific segment.
 
 
 1.17.3 (2016-10-11)

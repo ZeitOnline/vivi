@@ -23,13 +23,12 @@ class PushTest(unittest.TestCase):
         # Parse offers no REST API to retrieve push messages,
         # so this is just a smoke test.
         api = zeit.push.parse.Connection(self.app_id, self.api_key, 1)
-        api.send('Being pushy.', 'http://example.com', skip_ios=True)
+        api.send('Being pushy.', 'http://example.com')
 
     def test_push_works_with_channels(self):
         api = zeit.push.parse.Connection(
             self.app_id, self.api_key, 1)
-        api.send('Being pushy.', 'http://example.com', channels=['News'],
-                 skip_ios=True)
+        api.send('Being pushy.', 'http://example.com', channels=['News'])
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.parse.Connection('invalid', 'invalid', 1)
@@ -48,7 +47,7 @@ class PushTest(unittest.TestCase):
 
 class ConnectionTest(zeit.push.testing.TestCase):
 
-    def test_pushes_to_android_and_ios(self):
+    def test_pushes_to_android(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any')
@@ -56,10 +55,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'deviceType': 'android',
                 'appVersion': {'$gte': '1.4', '$lt': '1.5'},
             }, push.call_args_list[0][0][0]['where'])
-            self.assertEqual({
-                'deviceType': 'ios',
-                'appVersion': {'$gte': '20150914', '$lt': '20160301'},
-            }, push.call_args_list[1][0][0]['where'])
 
     def test_channels_can_be_set_via_parameter(self):
         api = zeit.push.parse.Connection(None, None, 1)
@@ -68,16 +63,12 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual(
                 ['News'],
                 push.call_args_list[0][0][0]['where']['channels']['$in'])
-            self.assertEqual(
-                ['News'],
-                push.call_args_list[1][0][0]['where']['channels']['$in'])
 
     def test_no_channels_given_omits_channels_parameter(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any')
             self.assertNotIn('channels', push.call_args_list[0][0][0]['where'])
-            self.assertNotIn('channels', push.call_args_list[1][0][0]['where'])
 
     def test_empty_product_config_omits_channels_parameter(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
@@ -87,7 +78,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels='foo')
             self.assertNotIn('channels', push.call_args_list[0][0][0]['where'])
-            self.assertNotIn('channels', push.call_args_list[1][0][0]['where'])
 
     def test_sets_expiration_time_in_payload(self):
         api = zeit.push.parse.Connection('any', 'any', 3600)
@@ -99,6 +89,3 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.assertEqual(
                     '2014-07-01T11:15:07+00:00',
                     push.call_args_list[0][0][0]['expiration_time'])
-                self.assertEqual(
-                    '2014-07-01T11:15:07+00:00',
-                    push.call_args_list[1][0][0]['expiration_time'])
