@@ -46,27 +46,6 @@ class Connection(zeit.push.mobile.ConnectionBase):
             del android['where']['channels']
         self.push(android)
 
-        if kw.get('skip_ios'):
-            # XXX Skipping iOS is for unittests only, since we cannot push to
-            # iOS without an Apple certificate.
-            return
-
-        ios = {
-            'expiration_time': self.expiration_datetime.isoformat(),
-            'where': {
-                'deviceType': 'ios',
-                'appVersion': {'$gte': self.IOS_FRIEDBERT_VERSION,
-                               '$lt': self.IOS_URBANAIRSHIP_VERSION},
-                'channels': {'$in': channels}
-            },
-            'data': {
-                'aps': data['ios']
-            }
-        }
-        if not channels:
-            del ios['where']['channels']
-        self.push(ios)
-
     def push(self, data):
         log.debug('Sending Push to Parse: %s', data)
         headers = {
