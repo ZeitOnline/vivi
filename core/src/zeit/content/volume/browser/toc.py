@@ -16,8 +16,6 @@ import toc_config
 import zope.app.appsetup.product
 
 # TODO Author/Title Teaser contains is ugly
-# TODO More Abstraction of Toc Entries, not sure if an ordered dict is a great idea
-#
 
 """
 TODO: Nachfragen "Die Product-Config ist leider untypisiert (also nur Strings); an anderen Stellen benutzten wir deshalb Leerzeichen als Trenner."
@@ -33,15 +31,13 @@ https://github.com/zeitonline/vivi-deployment/blob/master/environments/productio
 # TODO hier checke ich nicht, warum ich die nicht finde, und wie das von den enviorenments da rein kommt.
 # Muss ich das dann nach einer Änderung noch einmal neu deployen?
 
-Das kann man mit nem Format-String schöner schreiben (volume_string = '%02d' % self.context.volume)
-
-
-So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
-
 
 Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden, insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
 
 Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
+
+
+So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
 
 Ich find es schon richtig, wenn man ganze Verzeichnisse ignorieren kann, das dann auch zu tun, und nicht erst die Artikel darin noch zu parsen, nur um sie anschließend wegzuwerfen.
 Die Einstellung, welche Verzeichnisse wir überspringen, könnte man allerdings tatsächlich vielleicht auf der ArticleExcluder Klasse unterbringen (bzw. längerfristig dann aus der Product-Config holen).
@@ -65,7 +61,7 @@ class Toc(zeit.cms.browser.view.Base):
         # Dependency injection?
         self.dav_archive_url_parsed = self._parse_config()
         self.client = self._create_dav_client()
-        self.article_excluder = ArticleExcluder()
+        self.excluder = Excluder()
 
     def __call__(self):
         self.product_id_mapping = self._create_product_id_full_name_mapping()
@@ -179,7 +175,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param article_tree: lxml.etree  of the article
         :return: bool
         """
-        return self.article_excluder.is_relevant(article_tree)
+        return self.excluder.is_relevant(article_tree)
 
     def _create_dav_client(self):
         return tinydav.WebDAVClient(self.dav_archive_url_parsed.hostname, self.dav_archive_url_parsed.port)
@@ -218,12 +214,9 @@ class Toc(zeit.cms.browser.view.Base):
         :return: bool
         """
         try:
-            # TODO Put this in the excluder ?
-            folders_to_exclude = {'images', 'leserbriefe'}
-            folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
             root_paths = {root_path_of_element, '/' + root_path_of_element}
             return self._is_dav_dir(element) \
-                   and not any(folder in element.href for folder in folders_to_exclude) \
+                   and not self.excluder.is_relevant_folder(element.href) \
                    and element.href not in root_paths
         except:
             raise
@@ -366,7 +359,7 @@ class Toc(zeit.cms.browser.view.Base):
         return d
 
 
-class ArticleExcluder(object):
+class Excluder(object):
     """
     Checks if an article should be excluded from the table of contents.
     """
@@ -431,3 +424,9 @@ class ArticleExcluder(object):
             [re.match(jobname_pattern, jobname_value) for jobname_pattern in self._compiled_jobname_regexs]
         )
         return not(title_exclude or supertitle_exclude or jobname_exclude)
+
+    def is_relevant_folder(self, folder_path):
+        # TODO Put this in the excluder ?
+        folders_to_exclude = {'images', 'leserbriefe'}
+        folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
+        return any(folder in folder_path for folder in folders_to_exclude)

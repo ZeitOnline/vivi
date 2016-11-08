@@ -8,7 +8,7 @@ import lxml.etree
 import zeit.cms.testing
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
-from zeit.content.volume.browser.toc import Toc, ArticleExcluder
+from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import zeit.cms.content.sources
 import zeit.content.volume.testing
@@ -129,7 +129,7 @@ Dossier\r
         self.assertEqual(mapping.get('ZEI', '').lower(), 'Die Zeit'.lower())
 
     def test_article_excluder_excludes_irrelevant_aritcles(self):
-        excluder = ArticleExcluder()
+        excluder = Excluder()
         xml_template = u"""
         <article>
             <head>
