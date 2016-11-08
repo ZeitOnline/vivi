@@ -15,10 +15,45 @@ import toc_config
 
 # TODO Author/Title Teaser contains is ugly
 # TODO More Abstraction of Toc Entries, not sure if an ordered dict is a great idea
+#
+
+"""
+TODO: Nachfragen "Die Product-Config ist leider untypisiert (also nur Strings); an anderen Stellen benutzten wir deshalb Leerzeichen als Trenner."
+
+Jep, unbedingt. :) Die Doku zum Konfigurationsmechanismus ist auch ungelogen ;) der nächste Punkt auf meiner "sollte man dokumentieren" Liste.
+Die Kurzfassung ist:
+
+https://github.com/ZeitOnline/zeit.retresco/blob/master/src/zeit/retresco/connection.py#L180
+https://github.com/zeitonline/vivi-deployment/blob/master/components/zope/zope.conf#L254
+https://github.com/zeitonline/vivi-deployment/blob/master/components/settings/component.py#L148
+
+https://github.com/zeitonline/vivi-deployment/blob/master/environments/production.cfg#L75, https://github.com/zeitonline/vivi-deployment/blob/master/environments/staging.cfg#L78 etc.
+
+
+Ich würde das dann glaub ich als ein Setting formulieren (archive_dav_url o.ä.) und dann mit urlparse auseinandernehmen.
+
+volume.volume sollte man zweistellig formatieren; am einfachsten self.context.fill_template verwenden.
+
+So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
+
+Das kann man mit nem Format-String schöner schreiben (volume_string = '%02d' % self.context.volume)
+
+Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden, insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
+
+Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
+
+Ich find es schon richtig, wenn man ganze Verzeichnisse ignorieren kann, das dann auch zu tun, und nicht erst die Artikel darin noch zu parsen, nur um sie anschließend wegzuwerfen.
+Die Einstellung, welche Verzeichnisse wir überspringen, könnte man allerdings tatsächlich vielleicht auf der ArticleExcluder Klasse unterbringen (bzw. längerfristig dann aus der Product-Config holen).
+
+Vermutlich sind die Datenmengen nicht so riesig, aber Zope kann das View-Ergebnis anstatt als String auch direkt aus nem file-like-object zurückgeben, siehe zope.file.download.DownloadResult.
+
+"""
+
 
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
+    The dav url to the articles generally looks like ARCHIVE_ROOT/PRODUCT_ID/RESSORT_NAME/ARTICLE.xml
     """
     # Not all directories in the archives are named the product ID.
     PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
@@ -30,11 +65,11 @@ class Toc(zeit.cms.browser.view.Base):
         self.article_excluder = ArticleExcluder()
 
     def __call__(self):
-        self.volume = self.context
         self.product_id_mapping = self._create_product_id_full_name_mapping()
         filename = self._generate_file_name()
         self.request.response.setHeader('Content-Type', 'text/csv')
-        self.request.response.setHeader('Content-Disposition', 'attachment; filename="%s"' % filename)
+        self.request.response.setHeader(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
     def _create_toc_content(self):
@@ -49,7 +84,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
-        return "{}_{}_{}.csv".format(toc_file_string, self.volume.year, self.volume.volume)
+        return "{}_{}_{}.csv".format(toc_file_string, self.context.year, self.context.volume)
 
     def _get_via_dav(self):
         """
@@ -65,7 +100,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         results = OrderedDict()
         product_ids = self._get_all_product_ids_for_volume()
-        for product_path in self._get_all_paths_for_prodct_ids(product_ids):
+        for product_path in self._get_all_paths_for_product_ids(product_ids):
             result_for_product = {}
             for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
                 result_for_ressort = []
@@ -104,34 +139,28 @@ class Toc(zeit.cms.browser.view.Base):
         # Change this if the volume content object "knows" which Products it has...
         return toc_config.PRODUCT_IDS
 
-    def _get_all_paths_for_prodct_ids(self, product_ids):
+    def _get_all_paths_for_product_ids(self, product_ids):
         """
         Creates a list of unix-paths to all given products
         :param product_ids: [str]
         :return: [str]
         """
         product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
-        volume_string = str(self.volume.volume)
+        volume_string = str(self.context.volume)
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
-        if self.volume.volume < 10:
+        if self.context.volume < 10:
             volume_string = '0' + volume_string
-        return [posixpath.join(*[str(e) for e in [toc_config.DAV_ARCHIVE_ROOT, dir_name, self.volume.year, volume_string, '']])
+        return [posixpath.join(*[str(e) for e in [toc_config.DAV_ARCHIVE_ROOT, dir_name, self.context.year, volume_string, '']])
                 for dir_name in product_dir_names]
 
-    def _replace_product_id_by_its_dirname(self, product_id, reverse=False):
+    def _replace_product_id_by_its_dirname(self, product_id):
         """
         :param product_id: str
         :param reverse: Bool - replace directorynames with product ID's instead.
         :return: str
         """
-        if reverse:
-            new_dict = {}
-            for k, v in self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.iteritems():
-                new_dict[v] = k
-            result = new_dict.get(product_id, product_id)
-        else:
-            result = self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
-        return result
+        return self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
+
 
     def _is_relevant_article(self, article_tree):
         """
