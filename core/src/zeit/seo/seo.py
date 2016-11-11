@@ -31,6 +31,10 @@ class SEO(object):
         zeit.seo.interfaces.ISEO['hide_timestamp'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-hide-timestamp')
 
+    disable_intext_links = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['disable_intext_links'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'seo-disable-intext-links')
+
     keyword_entity_type = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['keyword_entity_type'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'seo-keyword-entity-type')

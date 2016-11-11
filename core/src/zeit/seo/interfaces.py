@@ -40,6 +40,10 @@ class ISEO(zope.interface.Interface):
         title=_('Hide timestamp'),
         required=False)
 
+    disable_intext_links = zope.schema.Bool(
+        title=_('Disable intext links'),
+        required=False)
+
     keyword_entity_type = zope.schema.Choice(
         title=_('Keyword entity type'),
         source=EntityTypeSource(),
