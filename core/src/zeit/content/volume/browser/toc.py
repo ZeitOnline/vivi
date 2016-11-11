@@ -14,35 +14,89 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 import toc_config
 import zope.app.appsetup.product
+import zope.file.download
+import zeit.connector.connector
+import logging
 
+log = logging.getLogger(__name__)
 # TODO Author/Title Teaser contains is ugly
 
 """
+#TODO Nachfragen, ob man die dav archive url immer auf die echten Daten zeigen sollte.
+Ich denke schon - Tests kann man ja in testing.py austricksen, oder?
+
 TODO: Nachfragen "Die Product-Config ist leider untypisiert (also nur Strings); an anderen Stellen benutzten wir deshalb Leerzeichen als Trenner."
-Heißt dass, das soll auch in einer Config stehen, oder lass das mal drin aber satt ner Liste nimm einen String,
-der dann gesplitet wird?
+Ich interpretier das mal so, dass ich das auch in die config packen sollte.
 
-Jep, unbedingt. :) Die Doku zum Konfigurationsmechanismus ist auch ungelogen ;) der nächste Punkt auf meiner "sollte man dokumentieren" Liste.
-Die Kurzfassung ist:
-https://github.com/ZeitOnline/zeit.retresco/blob/master/src/zeit/retresco/connection.py#L180
-https://github.com/zeitonline/vivi-deployment/blob/master/components/zope/zope.conf#L254
-https://github.com/zeitonline/vivi-deployment/blob/master/components/settings/component.py#L148
-https://github.com/zeitonline/vivi-deployment/blob/master/environments/production.cfg#L75, https://github.com/zeitonline/vivi-deployment/blob/master/environments/staging.cfg#L78 etc.
-# TODO hier checke ich nicht, warum ich die nicht finde, und wie das von den enviorenments da rein kommt.
-# Muss ich das dann nach einer Änderung noch einmal neu deployen?
-
-
-Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden, insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
-
-Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
-
-
+# TODO als letztes
 So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
 
-Ich find es schon richtig, wenn man ganze Verzeichnisse ignorieren kann, das dann auch zu tun, und nicht erst die Artikel darin noch zu parsen, nur um sie anschließend wegzuwerfen.
-Die Einstellung, welche Verzeichnisse wir überspringen, könnte man allerdings tatsächlich vielleicht auf der ArticleExcluder Klasse unterbringen (bzw. längerfristig dann aus der Product-Config holen).
-
 Vermutlich sind die Datenmengen nicht so riesig, aber Zope kann das View-Ergebnis anstatt als String auch direkt aus nem file-like-object zurückgeben, siehe zope.file.download.DownloadResult.
+# TODO
+zope.file.download.DownloadResult -> will er nicht weil, StringIO nicht zope-like
+
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/unittest/case.py", line 329, in run
+    testMethod()
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/tests/test_toc.py", line 119, in test_create_csv_with_not_all_values_in_toc_data
+    assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/toc.py", line 257, in _create_csv
+    file_content = zope.file.download.DownloadResult(out)
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.file-0.6.2-py2.7.egg/zope/file/download.py", line 76, in __init__
+    zope.security.proxy.removeSecurityProxy(context.openDetached()))
+AttributeError: StringIO instance has no attribute 'openDetached'
+
+Aber wenn ich so was mache wie
+ out = zope.file.file.File()
+
+Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden,
+insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
+Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
+
+Dav Connection:
+dav_connection = connector.get_connection()
+In:
+request(method, path, body, headers)
+dav_connection.get_result('get', None, 'http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/23/')
+/vivi-deployment/work/source/zeit.connector/src/zeit/connector/dav/davbase.py
+GET /cms/archiv-wf/archiv/ZEI/2016/23/ None {'Host': 'cms-backend.zeit.de:9000', 'Connection': 'keep-alive', 'User-Agent': 'zeit.connector'}
+gaierror: [Errno -3] Temporary failure in name resolution
+Das ist ein httplib DNS Problem, was anscheinend nur im internen Netz entsteht.
+Wenn man dann im VPN drin ist verschwindet das Problem.
+
+>>> connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
+>>> cached_resource = connector['http://xml.zeit.de/ZEI/']
+>>> cached_resource
+<zeit.connector.resource.CachedResource object at 0x7fe304ddb5d0>
+>>> folder = ICMSContent(cached_resource)
+>>> folder
+<zeit.cms.repository.folder.Folder http://xml.zeit.de/ZEI/>
+>>> dir(folder)
+['__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__doc__', '__format__', '__getattribute__', '__getitem__', '__hash__', '__implemented__', '__init__', '__iter__', '__len__', '__module__', '__name__', '__new__', '__parent__', '__providedBy__', '__provides__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_get_id_for_name', '_local_unique_map', '_local_unique_map_data', 'connector', 'get', 'has_key', 'items', 'keys', 'repository', 'uniqueId', 'values']
+>>> for v in folder.values():
+...     v
+...
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 68, in values
+    for key in self.keys():
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 43, in keys
+    return sorted(self._local_unique_map.keys())
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 157, in _local_unique_map
+    self.connector.listCollection(self.uniqueId))
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/connector.py", line 131, in listCollection
+    id = self._get_cannonical_id(id)
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/connector.py", line 749, in _get_cannonical_id
+    if self.property_cache.get(id + '/') is not None:
+  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/zopeconnector.py", line 78, in property_cache
+    zeit.connector.interfaces.IPropertyCache)
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/_api.py", line 169, in getUtility
+    raise ComponentLookupError(interface, name)
+ComponentLookupError: (<InterfaceClass zeit.connector.interfaces.IPropertyCache>, '')
+
+Ich weiß da leider gerade nicht mehr weiter.
+Für mich sieht es erstmal ganz gut aus. Der Connector holt, die richtigen Daten von http://cms-backend:9000/cms/archiv-wf/archiv/ZEI/
+Dann wird das ganze (durch Adaptermagie) zu einem Folder-Objekt und dann findet er die Komponente nicht.
 
 """
 
@@ -58,10 +112,12 @@ class Toc(zeit.cms.browser.view.Base):
 
     def __init__(self, *args, **kwargs):
         super(Toc, self).__init__(*args, **kwargs)
-        # Dependency injection?
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+        self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
         self.client = self._create_dav_client()
         self.excluder = Excluder()
+        self.connector = self._create_dav_archive_connector()
 
     def __call__(self):
         self.product_id_mapping = self._create_product_id_full_name_mapping()
@@ -73,12 +129,14 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _parse_config(self):
         """
-        Get ARCHIVE_DAV_URL from zope.conf and parse it with.
+        Parse DAV-Archive URL.
         :return: urlparse.ParseResult
         """
-        # config = zope.app.appsetup.product.getProductConfiguration('zeit.volume')
-        # return urlparse.urlparse(config.get('archive-dav-url'))
-        return urlparse.urlparse(toc_config.ARCHIVE_DAV_URL)
+        return urlparse.urlparse(self.dav_archive_url)
+
+    def _create_dav_archive_connector(self):
+        return zeit.connector.connector.TransactionBoundCachingConnector({'default': self.dav_archive_url})
+
 
     def _create_toc_content(self):
         """
@@ -239,6 +297,22 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data: The Toc data as ordered dict.
         :return: unicode - csv content
         """
+        # import transaction
+        # from zope.file.download import DownloadResult
+        # from zope.file.file import File
+        # out = File()
+        # w = out.open('w')
+        # writer = csv.writer(w, delimiter=self.CSV_DELIMITER)
+        # for toc_element in self._generate_csv_rows(toc_data):
+        #     writer.writerow(
+        #         [val.encode('utf-8') for val in toc_element]
+        #     )
+        #     transaction.commit()
+        #
+        # w.flush()
+        # w.close()
+        # transaction.commit()
+        # return DownloadResult(out)
 
         file_content = u''
         out = StringIO.StringIO()
@@ -426,7 +500,8 @@ class Excluder(object):
         return not(title_exclude or supertitle_exclude or jobname_exclude)
 
     def is_relevant_folder(self, folder_path):
-        # TODO Put this in the excluder ?
         folders_to_exclude = {'images', 'leserbriefe'}
         folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
         return any(folder in folder_path for folder in folders_to_exclude)
+
+

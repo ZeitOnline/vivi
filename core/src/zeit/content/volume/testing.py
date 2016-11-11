@@ -6,6 +6,7 @@ import zeit.content.image.testing
 product_config = """
 <product-config zeit.content.volume>
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
+    dav-archive-url http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))
 

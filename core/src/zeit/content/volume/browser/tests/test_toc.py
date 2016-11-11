@@ -28,6 +28,7 @@ article_xml = u"""
         </article>
         """
 
+
 def create_tinydav_propfind_mock_response(directory_or_file_names, path, dir=False):
     """
     Helper to create a tinydav response mock object, for a propfind
@@ -74,6 +75,15 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                                  {'page': '3', 'title': 'title2', 'teaser':'tease', 'author': 'Autor'}
                                  ]}
                 )
+
+    def test_create_dav_connection(self):
+        toc = Toc()
+        import zeit.cms.interfaces
+        self.assertEqual(True, bool(toc.connector))
+        # resource = toc.connector['http://xml.zeit.de/ZEI/']
+        # folder = zeit.cms.interfaces.ICMSContent(resource)
+        # for s in folder:
+        #     print s
 
     def test_list_relevant_dirs_with_dav_returns_correct_directories(self):
         dir_path = '/cms/archiv-wf/archiv/ZEI/2009/23/'
