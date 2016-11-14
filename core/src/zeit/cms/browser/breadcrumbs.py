@@ -61,8 +61,8 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     def get_breadcrumbs_from_path(self, context):
         has_parents = True
-        if (self._use_common_metadata and
-            zeit.cms.checkout.interfaces.ILocalContent.providedBy(context)):
+        if (zeit.cms.checkout.interfaces.ILocalContent.providedBy(context) and
+                self._use_common_metadata):
             try:
                 context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
             except TypeError:
@@ -94,7 +94,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
     def content_name(self, content):
         try:
             if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-                content).renameable:
+                    content).renameable:
                 return _('(new)')
         except TypeError:
             pass

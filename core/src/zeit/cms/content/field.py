@@ -64,8 +64,8 @@ class _XMLBase(zope.schema.Field):
                                object.__class__.__module__,
                                object.__class__.__name__))
         current_value = self.query(object, DEFAULT_MARKER)
-        if not (current_value is DEFAULT_MARKER
-                or current_value.getparent() is None):
+        if not (current_value is DEFAULT_MARKER or
+                current_value.getparent() is None):
             # Locate the XML object into the workingcopy so that edit
             # permissions can be found
             parent = located(current_value.getparent(), object, self.__name__)
@@ -121,4 +121,3 @@ class XMLSnippet(zope.schema.Text):
 
 class Color(zope.schema.TextLine):
     pass
-

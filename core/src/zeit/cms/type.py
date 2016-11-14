@@ -116,7 +116,7 @@ def restore_provided_interfaces_from_dav(obj, event):
     new_provides = _provides_dav_property.__get__(obj, obj.__class__,
                                                   properties)
     if (new_provides is not None and
-        new_provides != getattr(obj, '__provides__', None)):
+            new_provides != getattr(obj, '__provides__', None)):
         obj.__provides__ = new_provides
         # directly provide Interface to restore the _cls on __provides__
         zope.interface.alsoProvides(obj, zope.interface.Interface)

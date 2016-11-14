@@ -4,7 +4,6 @@ import grokcore.component
 import logging
 import persistent
 import re
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.repository.interfaces
@@ -13,11 +12,8 @@ import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
-import zope.cachedescriptors.method
 import zope.component
-import zope.component.interfaces
 import zope.container.contained
-import zope.container.interfaces
 import zope.interface
 import zope.lifecycleevent
 import zope.securitypolicy.interfaces
@@ -276,7 +272,7 @@ def deny_edit_permissions_in_repository(repository):
     perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
         repository)
     for perm_id, perm in zope.component.getUtilitiesFor(
-        zeit.cms.interfaces.IEditPermission):
+            zeit.cms.interfaces.IEditPermission):
         perms.denyPermissionToPrincipal(perm_id, 'zope.Everybody')
 
 

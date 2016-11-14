@@ -21,7 +21,7 @@ PRINT_NAMESPACE = u"http://namespaces.zeit.de/CMS/print"
 MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
 
 # Backward compatibility imports
-from zeit.connector.interfaces import (
+from zeit.connector.interfaces import (  # noqa
     DeleteProperty, LockingError, IConnector, IResource,
     IWebDAVReadProperties, IWebDAVWriteProperties, IWebDAVProperties)
 

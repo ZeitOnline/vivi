@@ -264,8 +264,8 @@ class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
     def update(self, xml_node, suppress_errors=False):
         """Update xml_node with data from the content object."""
         for name, updater in sorted(zope.component.getAdapters(
-            (self.context,),
-            zeit.cms.content.interfaces.IXMLReferenceUpdater)):
+                (self.context,),
+                zeit.cms.content.interfaces.IXMLReferenceUpdater)):
             if not name:
                 # The unnamed adapter is the one which runs all the named
                 # adapters, i.e. this one.

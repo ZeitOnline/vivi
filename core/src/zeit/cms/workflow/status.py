@@ -24,9 +24,9 @@ class PublicationStatus(object):
             return 'not-published'
         times = zope.dublincore.interfaces.IDCTimes(self.context)
         grace = zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE
-        if (not times.modified or not info.date_last_published
-            or info.date_last_published + timedelta(
-                seconds=grace) > times.modified):
+        if (not times.modified or not info.date_last_published or
+                info.date_last_published + timedelta(
+                    seconds=grace) > times.modified):
             return 'published'
         return 'published-with-changes'
 

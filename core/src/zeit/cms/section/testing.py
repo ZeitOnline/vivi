@@ -35,6 +35,7 @@ class IExampleContent(zeit.cms.interfaces.ICMSContent,
     pass
 
 
-class IExampleTestcontent(zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                          zeit.cms.section.interfaces.ISectionMarker):
+class IExampleTestcontent(
+        zeit.cms.testcontenttype.interfaces.IExampleContentType,
+        zeit.cms.section.interfaces.ISectionMarker):
     pass

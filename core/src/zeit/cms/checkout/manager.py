@@ -39,19 +39,19 @@ class CheckoutManager(object):
     def _guard_checkout(self):
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         if (lockable is not None and
-            lockable.locked() and not lockable.ownLock()):
+                lockable.locked() and not lockable.ownLock()):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId,
                 _('The content object is locked by ${name}.', mapping=dict(
                     name=lockable.locker())))
         if zeit.cms.workingcopy.interfaces.ILocalContent(
-            self.context, None) is None:
+                self.context, None) is None:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId,
                 'Could not adapt content to ILocalContent')
         for obj in self.workingcopy.values():
-            if (zeit.cms.interfaces.ICMSContent.providedBy(obj)
-                and obj.uniqueId == self.context.uniqueId):
+            if (zeit.cms.interfaces.ICMSContent.providedBy(obj) and
+                    obj.uniqueId == self.context.uniqueId):
                 raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                     self.context.uniqueId,
                     _('The content you tried to check out is already in your '
@@ -97,12 +97,12 @@ class CheckoutManager(object):
     @property
     def canCheckin(self):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
-            self.context):
+                self.context):
             self.last_validation_error = _('Object is not local content')
             return False
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        if (lockable is not None
-            and not lockable.ownLock() and lockable.locked()):
+        if (lockable is not None and
+                not lockable.ownLock() and lockable.locked()):
             self.last_validation_error = _('Cannot acquire lock')
             return False
         workingcopy = self.context.__parent__

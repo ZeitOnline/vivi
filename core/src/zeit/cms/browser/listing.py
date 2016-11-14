@@ -294,8 +294,8 @@ class Listing(object):
     def content(self):
         result = []
         for obj in sorted(
-            self.contentContext.values(),
-            key=zeit.cms.content.interfaces.IContentSortKey):
+                self.contentContext.values(),
+                key=zeit.cms.content.interfaces.IContentSortKey):
             if not self.filter_content(obj):
                 continue
             list_repr = zope.component.queryMultiAdapter(

@@ -45,7 +45,7 @@ class CMSContentSource(object):
             assert issubclass(self.check_interfaces,
                               zope.interface.interfaces.IInterface)
             for name, interface in zope.component.getUtilitiesFor(
-                self.check_interfaces):
+                    self.check_interfaces):
                 check.append(interface)
         return check
 

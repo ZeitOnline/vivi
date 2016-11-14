@@ -4,8 +4,8 @@ import zeit.cms.tagging.interfaces
 
 
 class IExampleContentType(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.content.interfaces.IXMLContent):
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.content.interfaces.IXMLContent):
     """A type for testing."""
 
     keywords = zeit.cms.tagging.interfaces.Keywords(

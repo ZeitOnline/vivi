@@ -213,7 +213,8 @@ class TestObjectSequenceWidgetIntegration(
         content.ressort = u'Politik'
         field = field.bind(content)
         widget = self.get_widget(field)
-        widget.add_type = zeit.cms.testcontenttype.interfaces.IExampleContentType
+        widget.add_type = (
+            zeit.cms.testcontenttype.interfaces.IExampleContentType)
         self.assert_ellipsis(
             '...<a target="_blank"'
             '...href="http://127.0.0.1/repository/politik/'
@@ -664,7 +665,8 @@ class TestDropObjectWidgetIntegration(
         choice = choice.bind(content)
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
-        widget.add_type = zeit.cms.testcontenttype.interfaces.IExampleContentType
+        widget.add_type = (
+            zeit.cms.testcontenttype.interfaces.IExampleContentType)
         self.assertEllipsis(
             '...<a target="_blank"'
             '...href="http://127.0.0.1/repository/politik/'

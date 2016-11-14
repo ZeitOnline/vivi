@@ -17,8 +17,8 @@ class Dependencies(object):
     def get_dependencies(self):
         dependencies = set()
         for name, this_deps in zope.component.getAdapters(
-            (self.context,),
-            zeit.workflow.interfaces.IPublicationDependencies):
+                (self.context,),
+                zeit.workflow.interfaces.IPublicationDependencies):
             if not name:
                 # This is actually this adapter
                 continue

@@ -49,6 +49,6 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     def render(self):
         if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-            self.context):
+                self.context):
             return super(MenuItem, self).render()
         return ''

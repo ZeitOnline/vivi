@@ -170,7 +170,7 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
                     logger.warning('Conflict while publishing', exc_info=True)
                     transaction.abort()
                     # Stagger retry:
-                    time.sleep(random.uniform(0, 2** retries))
+                    time.sleep(random.uniform(0, 2 ** retries))
                     continue
             except Exception, e:
                 transaction.abort()
@@ -326,9 +326,9 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(obj.uniqueId))
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
-        if (lockable is not None
-            and not lockable.locked()
-            and not lockable.ownLock()):
+        if (lockable is not None and
+                not lockable.locked() and
+                not lockable.ownLock()):
             lockable.lock(timeout=240)
         timer.mark('Locked %s' % obj.uniqueId)
         return obj
@@ -336,9 +336,9 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
     @staticmethod
     def unlock(obj, master=None):
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
-        if (lockable is not None
-            and lockable.locked()
-            and lockable.ownLock()):
+        if (lockable is not None and
+                lockable.locked() and
+                lockable.ownLock()):
             lockable.unlock()
         timer.mark('Unlocked %s' % obj.uniqueId)
         return obj

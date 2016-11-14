@@ -114,7 +114,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
 
 class ObjectReferenceSequenceWidget(
-    zope.app.form.browser.sequencewidget.SequenceWidget):
+        zope.app.form.browser.sequencewidget.SequenceWidget):
     """DEPRECATED, superceeded by ObjectSequenceWidget"""
 
     def __call__(self):
@@ -130,7 +130,7 @@ class ObjectReferenceSequenceWidget(
 
 
 class ObjectReferenceDisplayWidget(
-    zope.app.form.browser.widget.DisplayWidget):
+        zope.app.form.browser.widget.DisplayWidget):
     """DEPRECATED, superceeded by DropObjectDisplayWidget"""
 
     def __init__(self, context, source, request):
@@ -216,8 +216,8 @@ def find_commonmetadata(context):
 
 
 class ObjectSequenceWidget(
-    zope.app.form.browser.widget.SimpleInputWidget,
-    AddViewMixin):
+        zope.app.form.browser.widget.SimpleInputWidget,
+        AddViewMixin):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
@@ -313,7 +313,7 @@ class ObjectSequenceWidget(
 
 
 class ObjectSequenceDisplayWidget(
-    zope.app.form.browser.widget.DisplayWidget):
+        zope.app.form.browser.widget.DisplayWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
@@ -377,8 +377,8 @@ class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
 
 
 class DropObjectWidget(
-    zope.app.form.browser.widget.SimpleInputWidget,
-    AddViewMixin):
+        zope.app.form.browser.widget.SimpleInputWidget,
+        AddViewMixin):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'dropobject-widget.pt')
@@ -519,9 +519,9 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
             increase="date.setMonth(date.getMonth() + 1)")
         infty = DATETIME_WIDGET_INFTY % dict(
             field=self.name)
-        return (u'<div class="dateTimeWidget">'
-                + html + week + month + infty
-                + '</div>')
+        return (u'<div class="dateTimeWidget">' +
+                html + week + month + infty +
+                '</div>')
 
     def _configuration(self):
         conf = super(DatetimeWidget, self)._configuration()

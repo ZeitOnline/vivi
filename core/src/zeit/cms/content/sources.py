@@ -376,8 +376,8 @@ class BannerSource(SimpleXMLSource):
     def getValues(self):
         tree = self._get_tree()
         return [int(node.get('paragraph')) for node
-                in tree.xpath('//homepage/page_all')
-                + tree.xpath('//homepage/content_ad')]
+                in tree.xpath('//homepage/page_all') +
+                tree.xpath('//homepage/content_ad')]
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
@@ -405,10 +405,10 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
 
     def getValues(self):
         import zeit.cms.content.interfaces  # break circular import
-        types = (list(super(AddableCMSContentTypeSource, self).getValues())
-                 + list(interface for name, interface in
-                        zope.component.getUtilitiesFor(
-                            zeit.cms.content.interfaces.IAddableContent)))
+        types = (list(super(AddableCMSContentTypeSource, self).getValues()) +
+                 list(interface for name, interface in
+                      zope.component.getUtilitiesFor(
+                          zeit.cms.content.interfaces.IAddableContent)))
         by_title = {
             # XXX Hard-code language, since we don't have a request here.
             zope.i18n.translate(self.getTitle(x), target_language='de'): x
@@ -455,8 +455,8 @@ class ObjectSource(object):
 
     def find(self, context, id):
         value = self._values().get(id)
-        if (not value or not self.isAvailable(value, context)
-                or not self.filterValue(context, value)):
+        if (not value or not self.isAvailable(value, context) or
+                not self.filterValue(context, value)):
             return None
         return value
 

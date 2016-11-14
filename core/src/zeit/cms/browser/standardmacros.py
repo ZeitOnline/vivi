@@ -24,9 +24,9 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
             title = list_repr.title
         if not title:
             title = self.context.__name__
-        if (not title
-            and zope.location.interfaces.ISite.providedBy(self.context)):
-                title = '/'
+        if not title and zope.location.interfaces.ISite.providedBy(
+                self.context):
+            title = '/'
         if not title:
             title = str(self.context)
         return title
@@ -42,7 +42,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
         if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self.context):
             return 'workingcopy'
         elif zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-            self.context):
+                self.context):
             return 'repository'
         else:
             return 'unknown'

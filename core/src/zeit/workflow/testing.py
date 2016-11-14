@@ -156,14 +156,16 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
         return self._can_publish
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_error_for_testcontent(context):
     return FakeValidatingWorkflow(
         context, 'Fake Validation Error Message', CAN_PUBLISH_ERROR)
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_warning_for_testcontent(context):
     return FakeValidatingWorkflow(

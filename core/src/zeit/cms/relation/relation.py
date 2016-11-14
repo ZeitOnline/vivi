@@ -55,7 +55,7 @@ def referenced_by(content, catalog):
 def references(context):
     result = []
     for name, adapter in zope.component.getAdapters(
-        (context,), zeit.cms.relation.interfaces.IReferenceProvider):
+            (context,), zeit.cms.relation.interfaces.IReferenceProvider):
         if not name:
             raise ValueError(
                 'IReferenceProvider %r is registered without a name,'

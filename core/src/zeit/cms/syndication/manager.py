@@ -1,17 +1,13 @@
+import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.syndication.interfaces
+import zeit.cms.workingcopy.interfaces
+import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.event
 import zope.interface
-
-import zope.app.locking.interfaces
-
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.checkout.interfaces
-import zeit.cms.workingcopy.interfaces
-
-import zeit.cms.syndication.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
 
 class SyndicationManager(object):
@@ -34,7 +30,7 @@ class SyndicationManager(object):
     @property
     def canSyndicate(self):
         if not zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-            self.context):
+                self.context):
             # Only syndicated checked in content.
             return False
         if self.lockable is not None and self.lockable.locked():
