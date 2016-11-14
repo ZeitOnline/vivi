@@ -4,7 +4,9 @@ zeit.content.image changes
 2.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3363: Some UI/form field tweaks for infographics.
+
+- ZON-3363: Hide thumbnails in content listing of ``ImageGroup``.
 
 
 2.18.0 (2016-10-19)

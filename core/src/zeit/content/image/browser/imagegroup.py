@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
 import itertools
@@ -90,6 +91,8 @@ class AddForm(FormBase,
 
     @property
     def next_view(self):
+        if self._created_object.display_type == INFOGRAPHIC_DISPLAY_TYPE:
+            return 'view.html'
         if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
                 'zeit.content.image.variants'):
             return 'variant.html'
@@ -154,6 +157,13 @@ class View(zeit.cms.browser.listing.Listing):
         zeit.cms.browser.listing.MetadataColumn(u'Metadaten', name='metadata'),
     )
 
+    def filter_content(self, obj):
+        """Do not display thumbnail images."""
+        prefix = zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX
+        if obj.__name__.startswith(prefix):
+            return False
+        return super(View, self).filter_content(obj)
+
 
 class AddImage(zeit.content.image.browser.form.AddForm):
 
@@ -183,7 +193,7 @@ class Metadata(object):
     @property
     def images(self):
         if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            self.context):
+                self.context):
             return
         for obj in self.context.values():
             if zeit.content.image.interfaces.IImage.providedBy(obj):
