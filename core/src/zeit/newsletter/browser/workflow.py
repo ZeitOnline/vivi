@@ -35,11 +35,11 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
                 'has_semantic_change', 'date_print_published',
-                'error_messages')
-        + zope.formlib.form.FormFields(
+                'error_messages') +
+        zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
-                'created')
-        + zope.formlib.form.FormFields(
+                'created') +
+        zope.formlib.form.FormFields(
             zeit.newsletter.interfaces.ITestRecipient)
     )
 
