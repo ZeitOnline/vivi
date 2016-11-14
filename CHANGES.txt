@@ -2,10 +2,16 @@ zeit.retresco changes
 =====================
 
 
-1.7.4 (unreleased)
+1.7.5 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+1.7.4 (2016-11-04)
+------------------
+
+- Add option to load uniqueIds from file.
 
 
 1.7.3 (2016-10-19)

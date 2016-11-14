@@ -133,6 +133,9 @@ def reindex():
     parser.add_argument(
         'ids', type=unicode, nargs='+', help='uniqueIds to reindex')
     parser.add_argument(
+        '--file', action='store_true',
+        help='Load uniqueIds from a file to reindex')
+    parser.add_argument(
         '--parallel', action='store_true',
         help='process via job queue instead of directly')
     parser.add_argument(
@@ -143,7 +146,14 @@ def reindex():
         help='Perform TMS publish after indexing')
 
     args = parser.parse_args()
-    for id in args.ids:
+    ids = args.ids
+    if args.file:
+        if len(args.ids) > 1:
+            raise Exception("Only one file can be passed!")
+        with open(args.ids[0], 'r') as f:
+            ids = f.read().splitlines()
+
+    for id in ids:
         if args.parallel:
             index_parallel.delay(id, args.enrich, args.publish)
         else:
