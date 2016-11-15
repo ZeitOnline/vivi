@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.repository.interfaces import IRepositoryContent
+from zeit.cms.repository.interfaces import IRepositoryContent, IFolder
 from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.browser.menu
 import zope.browsermenu.menu
@@ -29,8 +29,15 @@ class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     @property
     def visible(self):
-        return IRepositoryContent.providedBy(self.context) and \
-            not IPublishInfo(self.context).published
+        if not IRepositoryContent.providedBy(self.context):
+            return False
+        elif IPublishInfo(self.context).published:
+            return False
+        elif IFolder.providedBy(self.context):
+            for item in self.context.values():
+                if IPublishInfo(item).published:
+                    return False
+        return True
 
     def render(self):
         if self.visible:

@@ -1,10 +1,12 @@
 from mechanize import LinkNotFoundError
-from zeit.cms.testing import ZeitCmsBrowserTestCase
+from z3c.etestbrowser.testing import ExtendedTestBrowser
+from zeit.cms import testing
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 
 
-class TestDeleteMenuItem(ZeitCmsBrowserTestCase):
+class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
 
     def test_delete_menu_item_is_displayed_for_unpublished_objects(self):
         content = self.repository['testcontent']
@@ -23,10 +25,29 @@ class TestDeleteMenuItem(ZeitCmsBrowserTestCase):
             self.browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_displayed_for_folder_without_published_objects(self):
-        NotImplemented
+        folder = self.repository['testing']
+        self.assertFalse(IPublishInfo(folder).published)
+        with testing.site(self.getRootFolder()):
+            folder['foo'] = ExampleContentType()
+        browser = ExtendedTestBrowser()
+        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/repository/testing')
+        browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_not_displayed_for_folder_with_published_objects(self):
-        NotImplemented
+        folder = self.repository['testing']
+        self.assertFalse(IPublishInfo(folder).published)
+        with testing.site(self.getRootFolder()):
+            folder['foo'] = content = ExampleContentType()
+        IPublishInfo(content).set_can_publish(CAN_PUBLISH_SUCCESS)
+        IPublish(content).publish()
+        browser = ExtendedTestBrowser()
+        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/repository/testing')
+        with self.assertRaises(LinkNotFoundError):
+            browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_not_displayed_for_folder_with_subfolder(self):
         NotImplemented
