@@ -50,4 +50,14 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
             browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_not_displayed_for_folder_with_subfolder(self):
-        NotImplemented
+        folder = self.repository['online']
+        self.assertFalse(IPublishInfo(folder).published)
+        with testing.site(self.getRootFolder()):
+            subfolder = folder['2005']
+        self.assertFalse(IPublishInfo(subfolder).published)
+        browser = ExtendedTestBrowser()
+        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/repository/online')
+        with self.assertRaises(LinkNotFoundError):
+            browser.getLink(url='@@delete.html')

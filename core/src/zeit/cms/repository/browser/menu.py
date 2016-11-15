@@ -35,7 +35,7 @@ class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
             return False
         elif IFolder.providedBy(self.context):
             for item in self.context.values():
-                if IPublishInfo(item).published:
+                if IFolder.providedBy(item) or IPublishInfo(item).published:
                     return False
         return True
 
