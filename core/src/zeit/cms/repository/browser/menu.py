@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IRepositoryContent
+from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.browser.menu
 import zope.browsermenu.menu
 import zope.i18n
@@ -24,3 +26,14 @@ class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
     """Delete menu item."""
 
     title = _('Delete')
+
+    @property
+    def visible(self):
+        return IRepositoryContent.providedBy(self.context) and \
+            not IPublishInfo(self.context).published
+
+    def render(self):
+        if self.visible:
+            return super(Delete, self).render()
+        else:
+            return ''
