@@ -21,3 +21,12 @@ class TestDeleteMenuItem(ZeitCmsBrowserTestCase):
             'http://localhost:8080/++skin++vivi/repository/testcontent')
         with self.assertRaises(LinkNotFoundError):
             self.browser.getLink(url='@@delete.html')
+
+    def test_delete_menu_item_is_displayed_for_folder_without_published_objects(self):
+        NotImplemented
+
+    def test_delete_menu_item_is_not_displayed_for_folder_with_published_objects(self):
+        NotImplemented
+
+    def test_delete_menu_item_is_not_displayed_for_folder_with_subfolder(self):
+        NotImplemented
