@@ -25,10 +25,10 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
             self.browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_displayed_for_folder_without_published_objects(self):
-        folder = self.repository['testing']
-        self.assertFalse(IPublishInfo(folder).published)
         with testing.site(self.getRootFolder()):
+            folder = self.repository['testing']
             folder['foo'] = ExampleContentType()
+        self.assertFalse(IPublishInfo(folder).published)
         browser = ExtendedTestBrowser()
         browser.addHeader('Authorization', 'Basic producer:producerpw')
         browser.open(
@@ -36,10 +36,10 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_not_displayed_for_folder_with_published_objects(self):
-        folder = self.repository['testing']
-        self.assertFalse(IPublishInfo(folder).published)
         with testing.site(self.getRootFolder()):
+            folder = self.repository['testing']
             folder['foo'] = content = ExampleContentType()
+        self.assertFalse(IPublishInfo(folder).published)
         IPublishInfo(content).set_can_publish(CAN_PUBLISH_SUCCESS)
         IPublish(content).publish()
         browser = ExtendedTestBrowser()
@@ -50,10 +50,10 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
             browser.getLink(url='@@delete.html')
 
     def test_delete_menu_item_is_not_displayed_for_folder_with_subfolder(self):
-        folder = self.repository['online']
-        self.assertFalse(IPublishInfo(folder).published)
         with testing.site(self.getRootFolder()):
+            folder = self.repository['online']
             subfolder = folder['2005']
+        self.assertFalse(IPublishInfo(folder).published)
         self.assertFalse(IPublishInfo(subfolder).published)
         browser = ExtendedTestBrowser()
         browser.addHeader('Authorization', 'Basic producer:producerpw')
