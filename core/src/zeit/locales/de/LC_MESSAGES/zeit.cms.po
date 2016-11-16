@@ -1380,7 +1380,6 @@ msgstr "Inhalt löschen"
 
 #. Default: "This folder cannot be deleted, because it contains published items or subfolders!"
 #: zeit/cms/repository/browser/delete.pt:34
-#, fuzzy
 msgid "folder_cannot_be_deleted_warning"
 msgstr ""
 "Der Ordner kann nicht gelöscht werden, da er entweder publizierte Inhalte "
