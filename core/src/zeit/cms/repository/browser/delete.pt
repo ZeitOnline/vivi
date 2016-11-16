@@ -31,7 +31,7 @@
     </form>
   </div>
 
-  <p tal:condition="not: view/can_be_deleted" class="warning">
+  <p tal:condition="not: view/can_be_deleted" class="warning"
     i18n:translate="folder_cannot_be_deleted_warning">
       This folder cannot be deleted, because it contains published items
       or subfolders!
