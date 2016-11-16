@@ -24,7 +24,7 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         with self.assertRaises(LinkNotFoundError):
             self.browser.getLink(url='@@delete.html')
 
-    def test_delete_menu_item_is_displayed_for_folder_without_published_objects(self):
+    def test_delete_button_is_displayed_for_folder_without_published_objects(self):
         with testing.site(self.getRootFolder()):
             folder = self.repository['testing']
             folder['foo'] = ExampleContentType()
@@ -33,9 +33,12 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.addHeader('Authorization', 'Basic producer:producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testing')
-        browser.getLink(url='@@delete.html')
+        link = browser.getLink(url='@@delete.html')
+        url = link.url.split("'")[1]        # embedded in lightbox javascript
+        browser.open(url)
+        browser.getControl('Delete')        # 'Delete' button exists
 
-    def test_delete_menu_item_is_not_displayed_for_folder_with_published_objects(self):
+    def test_delete_button_is_not_displayed_for_folder_with_published_objects(self):
         with testing.site(self.getRootFolder()):
             folder = self.repository['testing']
             folder['foo'] = content = ExampleContentType()
@@ -46,10 +49,13 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.addHeader('Authorization', 'Basic producer:producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testing')
-        with self.assertRaises(LinkNotFoundError):
-            browser.getLink(url='@@delete.html')
+        link = browser.getLink(url='@@delete.html')
+        url = link.url.split("'")[1]        # embedded in lightbox javascript
+        browser.open(url)
+        with self.assertRaises(LookupError):
+            browser.getControl('Delete')    # 'Delete' button is missing
 
-    def test_delete_menu_item_is_not_displayed_for_folder_with_subfolder(self):
+    def test_delete_button_is_not_displayed_for_folder_with_subfolder(self):
         with testing.site(self.getRootFolder()):
             folder = self.repository['online']
             subfolder = folder['2005']
@@ -59,5 +65,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.addHeader('Authorization', 'Basic producer:producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/online')
-        with self.assertRaises(LinkNotFoundError):
-            browser.getLink(url='@@delete.html')
+        link = browser.getLink(url='@@delete.html')
+        url = link.url.split("'")[1]        # embedded in lightbox javascript
+        browser.open(url)
+        with self.assertRaises(LookupError):
+            browser.getControl('Delete')    # 'Delete' button is missing
