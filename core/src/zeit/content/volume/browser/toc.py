@@ -22,6 +22,7 @@ import zope.site.site
 import zope.component
 import zope.component.registry
 from zeit.cms.repository.interfaces import IFolder
+from zeit.content.article.interfaces import IArticle
 
 log = logging.getLogger(__name__)
 # TODO Author/Title Teaser contains is ugly
@@ -237,29 +238,32 @@ class Toc(zeit.cms.browser.view.Base):
         for product_path in self._get_all_paths_for_product_ids(product_ids):
             result_for_product = {}
             #for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
-            for ressort_path in self.list_relevant_ressort_folders_with_archive_connector(product_path):
+            for ressort_folder_name, ressort_folder in self.list_relevant_ressort_folders_with_archive_connector(product_path):
+                import pdb; pdb.set_trace()
                 result_for_ressort = []
                 # for article_path in self._get_all_articles_in_path(ressort_path):
                 # import pdb; pdb.set_trace()
-                # Here
-                for article_path in self._get_all_articles_in_path(ressort_path):
+                # Her
+                for article_path in self._get_all_articles_in_folder(ressort_folder):
+                    import pdb; pdb.set_trace()
                     toc_entry = self._create_toc_element(article_path)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
-                result_for_product[self._dir_name(ressort_path)] = result_for_ressort
+                result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(product_path)] = result_for_product
         return results
 
-    def _get_all_articles_in_path(self, path):
+    def _get_all_articles_in_folder(self, path):
         """
         Get all DAV Server paths to article files in path.
         :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
         :return: [str]
         """
-        all_article_paths = []
-        for article_path in self._get_all_files_in_folder(path):
-            all_article_paths.append(article_path)
-        return all_article_paths
+        return [resource.xml for _, resource in path.items() if IArticle.providedBy(resource)]
+        # all_article_paths = []
+        # for article_path in self._get_all_files_in_folder(path):
+        #     all_article_paths.append(article_path)
+        # return all_article_paths
 
     def _parse_article(self, doc_path):
         """
@@ -343,7 +347,7 @@ class Toc(zeit.cms.browser.view.Base):
     def list_relevant_ressort_folders_with_archive_connector(self, path):
         try:
             product_folder = zeit.cms.interfaces.ICMSContent(self.connector[path])
-            return [item[1] for item in product_folder.items() if self._is_relevant_folder_item(item)]
+            return [item for item in product_folder.items() if self._is_relevant_folder_item(item)]
         except KeyError:
             return []
 
@@ -453,9 +457,8 @@ class Toc(zeit.cms.browser.view.Base):
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
 
     def _create_toc_element(self, doc_path):
-        article_element = self._parse_article(doc_path)
-        return self._get_metadata_from_article_xml(article_element) \
-            if self._is_relevant_article(article_element) else None
+        return self._get_metadata_from_article_xml(doc_path) \
+            if self._is_relevant_article(doc_path) else None
 
     def _dir_name(self, path):
         return path.split('/')[-2].title()
