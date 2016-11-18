@@ -5,23 +5,33 @@ import urlparse
 import tinydav
 import re
 import sys
+import logging
 import lxml.etree
 import posixpath
 from ordereddict import OrderedDict
-import zeit.cms.browser.view
 from tinydav.exception import HTTPUserError
+import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
-import toc_config
-import zope.app.appsetup.product
-import zope.file.download
+import zeit.cms.interfaces
 import zeit.connector.connector
-import logging
+import toc_config
+import zope.file.download
+import zope.app.appsetup.product
+import zope.site.site
+import zope.component
+import zope.component.registry
+from zeit.cms.repository.interfaces import IFolder
 
 log = logging.getLogger(__name__)
 # TODO Author/Title Teaser contains is ugly
 
 """
+# This Error occurs if u visit localhost:8080/++skin++vivi/repository/2016/25/
+2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
+-> Parse Page, differently?
+
+
 #TODO Nachfragen, ob man die dav archive url immer auf die echten Daten zeigen sollte.
 Ich denke schon - Tests kann man ja in testing.py austricksen, oder?
 
@@ -53,22 +63,10 @@ Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im vo
 insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
 Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
 
-Dav Connection:
-dav_connection = connector.get_connection()
-In:
-request(method, path, body, headers)
-dav_connection.get_result('get', None, 'http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/23/')
-/vivi-deployment/work/source/zeit.connector/src/zeit/connector/dav/davbase.py
-GET /cms/archiv-wf/archiv/ZEI/2016/23/ None {'Host': 'cms-backend.zeit.de:9000', 'Connection': 'keep-alive', 'User-Agent': 'zeit.connector'}
-gaierror: [Errno -3] Temporary failure in name resolution
-Das ist ein httplib DNS Problem, was anscheinend nur im internen Netz entsteht.
-Wenn man dann im VPN drin ist verschwindet das Problem.
-
->>> connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
->>> cached_resource = connector['http://xml.zeit.de/ZEI/']
->>> cached_resource
-<zeit.connector.resource.CachedResource object at 0x7fe304ddb5d0>
->>> folder = ICMSContent(cached_resource)
+connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
+cached_resource = connector['http://xml.zeit.de/ZEI/']
+cached_resource
+folder = ICMSContent(cached_resource)
 >>> folder
 <zeit.cms.repository.folder.Folder http://xml.zeit.de/ZEI/>
 >>> dir(folder)
@@ -76,28 +74,71 @@ Wenn man dann im VPN drin ist verschwindet das Problem.
 >>> for v in folder.values():
 ...     v
 ...
-Traceback (most recent call last):
-  File "<console>", line 1, in <module>
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 68, in values
-    for key in self.keys():
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 43, in keys
-    return sorted(self._local_unique_map.keys())
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.cms/src/zeit/cms/repository/repository.py", line 157, in _local_unique_map
-    self.connector.listCollection(self.uniqueId))
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/connector.py", line 131, in listCollection
-    id = self._get_cannonical_id(id)
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/connector.py", line 749, in _get_cannonical_id
-    if self.property_cache.get(id + '/') is not None:
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.connector/src/zeit/connector/zopeconnector.py", line 78, in property_cache
-    zeit.connector.interfaces.IPropertyCache)
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/_api.py", line 169, in getUtility
-    raise ComponentLookupError(interface, name)
-ComponentLookupError: (<InterfaceClass zeit.connector.interfaces.IPropertyCache>, '')
 
-Ich weiß da leider gerade nicht mehr weiter.
-Für mich sieht es erstmal ganz gut aus. Der Connector holt, die richtigen Daten von http://cms-backend:9000/cms/archiv-wf/archiv/ZEI/
-Dann wird das ganze (durch Adaptermagie) zu einem Folder-Objekt und dann findet er die Komponente nicht.
+Um das ganze schnell in der Shell zu testen, muss dann noch der alte Connector unregistered werden.
+import zeit.connector.connector
+connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
+import zope.component
+zope.component.provideUtility(connector)
+import zeit.cms.interfaces
+sm = zope.component.getSiteManager()
+from zeit.connector.interfaces import IConnector
+sm.unregisterUtility(provided=IConnector)
+ls -l   zope.component.hooks.setSite(root)
 
+Lösung
+Zope Component
+Mechanismus zu dependency Injection.
+Der Seite Manager:
+- schlaues Dict
+Kann man verschiedene machen.
+Der Default ist, der BaseComponentManager oder so, an bindet man einen neuen anderen.
+connector = TransactionBoundConnector(...)
+
+Hole dir zu einem Context den Site-Manager. Das ist eine Registry wo man Utilities und Adapter registrieren kann.
+Es gibt einen Globalen Site Manger und den lokalen. Am Anfang hat man per defautl den Global, beim traversieren
+kann aber dieser durch einen lokalen ersetzt werden, der dann den globalen ersetzt. Der hat dann vielleicht andere Utilities
+und Adapter zur Verfügunge, z.B. wie hier einen anderen Connector.
+
+default_registry = zope.component.getSiteManager()
+registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
+registry.registerUtility(connector)
+site = zope.site.site.SiteManagerContainer()
+site.setSiteManager(registry)
+zope.component.hooks.setSite(site)
+
+Das führt zu folgendem Traceback im Test
+File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/toc.py", line 171, in _create_dav_archive_connector
+    registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 49, in __init__
+    self.__bases__ = tuple(bases)
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 78, in <lambda>
+    lambda self, bases: self._setBases(bases),
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 71, in _setBases
+    base.adapters for base in bases])
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.interface-4.0.5-py2.7-linux-x86_64.egg/zope/interface/adapter.py", line 90, in <lambda>
+    lambda self, bases: self._setBases(bases),
+  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.interface-4.0.5-py2.7-linux-x86_64.egg/zope/interface/adapter.py", line 638, in _setBases
+    r._addSubregistry(self)
+AttributeError: '_LocalAdapterRegistry' object has no attribute '_addSubregistry'
+
+
+Man muss sich hier nicht mehr kümmern, was dann passiert.
+
+
+Das habe ich noch nicht so gut verstanden!
+Idee von Site Object. An der Site hängt die registry.
+Beim traversieren über eine Site object wird dann wird zope.component.hooks.setSite(site) gemacht.
+    ------
+2016-11-14T15:01:41 WARNING zeit.cms.content.dav Could not parse DAV property value '65-65' for Article.page at http://xml.zeit.de/ZEI/2016/23/chancen/C-Frauen-Karriere [ValueError: ("invalid literal for int() with base 10: '65-65'",)]. Using default None instead.
+
+Da die XML's doch hier noch nicht so schön ist, also doch parsen.
+Es sollte durch einen Kommentar klar werden, dass
+
+Tests
+Umstellung auf neue Implementation
+Config-Kram für die Product IDs
+Kommentieren
 """
 
 
@@ -117,15 +158,7 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url_parsed = self._parse_config()
         self.client = self._create_dav_client()
         self.excluder = Excluder()
-        self.connector = self._create_dav_archive_connector()
-
-    def __call__(self):
-        self.product_id_mapping = self._create_product_id_full_name_mapping()
-        filename = self._generate_file_name()
-        self.request.response.setHeader('Content-Type', 'text/csv')
-        self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="%s"' % filename)
-        return self._create_toc_content()
+        self.connector = None
 
     def _parse_config(self):
         """
@@ -134,8 +167,42 @@ class Toc(zeit.cms.browser.view.Base):
         """
         return urlparse.urlparse(self.dav_archive_url)
 
+    def __call__(self):
+        self.connector = self._create_dav_archive_connector()
+        self.product_id_mapping = self._create_product_id_full_name_mapping()
+        filename = self._generate_file_name()
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
+        return self._create_toc_content()
+
     def _create_dav_archive_connector(self):
-        return zeit.connector.connector.TransactionBoundCachingConnector({'default': self.dav_archive_url})
+        # A new registry has to be provided to register the
+        # toc specific connector
+        # default_registry = zope.component.getSiteManager()
+        # registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
+        # registry.registerUtility(connector)
+        # site = zope.site.site.SiteManagerContainer()
+        # site.setSiteManager(registry)
+        # zope.component.hooks.setSite(site)
+        # default_registry = zope.component.getSiteManager()
+        # site = zope.site.site.SiteManagerContainer()
+        # site.__parent__ = default_registry.__parent__
+        # registry = zope.site.site.LocalSiteManager(site, default_folder=False)
+        # site.setSiteManager(registry)
+        # registry.registerUtility(connector)
+        # zope.component.hooks.setSite(site)
+        # This should be non-persistent
+        default_registry = zope.component.getSiteManager()
+        site = zope.site.site.SiteManagerContainer()
+        registry = zope.site.site.LocalSiteManager(site, default_folder=False)
+        registry.__bases__ =  (default_registry,)
+        site.setSiteManager(registry)
+        connector = zeit.connector.connector.TransactionBoundCachingConnector(
+             {'default': self.dav_archive_url})
+        registry.registerUtility(connector)
+        zope.component.hooks.setSite(site)
+        return connector
 
 
     def _create_toc_content(self):
@@ -169,8 +236,12 @@ class Toc(zeit.cms.browser.view.Base):
         product_ids = self._get_all_product_ids_for_volume()
         for product_path in self._get_all_paths_for_product_ids(product_ids):
             result_for_product = {}
-            for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
+            #for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
+            for ressort_path in self.list_relevant_ressort_folders_with_archive_connector(product_path):
                 result_for_ressort = []
+                # for article_path in self._get_all_articles_in_path(ressort_path):
+                # import pdb; pdb.set_trace()
+                # Here
                 for article_path in self._get_all_articles_in_path(ressort_path):
                     toc_entry = self._create_toc_element(article_path)
                     if toc_entry:
@@ -215,8 +286,13 @@ class Toc(zeit.cms.browser.view.Base):
         product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         volume_string = '%02d' % self.context.volume
-        return [posixpath.join(*[str(e) for e in [self.dav_archive_url_parsed.path, dir_name, self.context.year, volume_string, '']])
-                for dir_name in product_dir_names]
+        # This should work for Connector
+        # You need the XML prefix here
+        prefix = 'http://xml.zeit.de'
+        return [posixpath.join(*[str(e) for e in [prefix, dir_name, self.context.year, volume_string, '']])
+            for dir_name in product_dir_names]
+        # return [posixpath.join(*[str(e) for e in [self.dav_archive_url_parsed.path, dir_name, self.context.year, volume_string, '']])
+        #         for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id):
         """
@@ -264,10 +340,21 @@ class Toc(zeit.cms.browser.view.Base):
         except HTTPUserError:
             return []
 
+    def list_relevant_ressort_folders_with_archive_connector(self, path):
+        try:
+            product_folder = zeit.cms.interfaces.ICMSContent(self.connector[path])
+            return [item[1] for item in product_folder.items() if self._is_relevant_folder_item(item)]
+        except KeyError:
+            return []
+
+    def _is_relevant_folder_item(self, item):
+        # item ('name', adapted DAV-Resource?)
+        return self.excluder.is_relevant_folder(item[0]) and IFolder.providedBy(item[1])
+
     def _is_relevant_path_to_directory(self, root_path_of_element, element):
         """
 
-        :param root_path_of_element: root path of DAV archive
+        :param root_path_of_element: root path oyf DAV archive
         :param element: tinydav status element
         :return: bool
         """
@@ -502,6 +589,6 @@ class Excluder(object):
     def is_relevant_folder(self, folder_path):
         folders_to_exclude = {'images', 'leserbriefe'}
         folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
-        return any(folder in folder_path for folder in folders_to_exclude)
+        return not any(folder in folder_path for folder in folders_to_exclude)
 
 
