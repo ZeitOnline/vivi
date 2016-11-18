@@ -24,6 +24,7 @@ class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
 
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
+        self.tms.generate_keyword_list.return_value = []
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
         self.log = StringIO.StringIO()

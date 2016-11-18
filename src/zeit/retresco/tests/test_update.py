@@ -134,7 +134,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         # BeforePublishEvent time, zeit.workflow first sets published=True
         # and related properties, and then triggers a checkout/checkin cycle
         # -- which on checkin triggers the indexing.
-        def index(tms, content):
+        def index(content):
             self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
                 content).published)
         self.tms.index = index
