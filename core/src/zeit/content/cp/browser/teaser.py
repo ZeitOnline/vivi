@@ -42,8 +42,7 @@ class ListRepresentation(
 class FormBase(object):
 
     form_fields = (
-        zeit.cms.content.browser.form.CommonMetadataFormBase.form_fields.omit(
-            'automaticMetadataUpdateDisabled') +
+        zeit.cms.content.browser.form.CommonMetadataFormBase.form_fields +
         zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaser).select('original_content'))
 

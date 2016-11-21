@@ -59,8 +59,6 @@ class AddForm(FormBase,
     title = _("Add centerpage")
     factory = zeit.content.cp.centerpage.CenterPage
     next_view = 'view.html'
-    form_fields = FormBase.form_fields.omit(
-        'automaticMetadataUpdateDisabled')
 
 
 class EditForm(FormBase,
