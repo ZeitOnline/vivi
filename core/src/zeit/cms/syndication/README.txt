@@ -3,7 +3,7 @@ Zeit CMS Syndication
 ====================
 
 When the user publishes a document, he needs to choose where the document
-should be published. He can choose one or more *syndication targets*. 
+should be published. He can choose one or more *syndication targets*.
 
 
 Syndication Targets
@@ -37,7 +37,7 @@ The workingcopy can be adapted to `IMySyndicationTargets` [#create-feeds]_:
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     IMySyndicationTargets, bobs_syndication_targets)
-True    
+True
 
 The syndication target object has an attribute `targets`, which initially is
 filled with a default:
@@ -247,35 +247,6 @@ Check the feed back in:
 <zeit.cms.syndication.feed.Feed...>
 
 
-When the automatic update is forbidden by the user, the feed is not update
-automatically. Forbid the automatic update:
-
->>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
-...     content).checkout()
->>> checked_out.teaserTitle = u'Bite my shiny metal ass.'
->>> checked_out.automaticMetadataUpdateDisabled = frozenset([
-...     repository['politik.feed']])
->>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
-
-The feed has not changed this time:
-
->>> print lxml.etree.tostring(repository['politik.feed'].xml,
-...     pretty_print=True)
-<channel>
-  <title>Politik</title>
-  <container>
-    <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
-      ...
-      <title py:pytype="str">nice other Teaser Title</title>
-      ...
-    </block>
-  </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
-</channel>
-
-
-
 The metadata update doesn't fail when the content is removed from the feed
 under the hood.
 
@@ -284,13 +255,6 @@ under the hood.
 >>> repository.addContent(politik)
 >>> len(repository['politik.feed'])
 0
-
-We need to re-enable the automatic update during checkout:
-
->>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
-...     content).checkout()
->>> checked_out.automaticMetadataUpdateDisabled = frozenset([])
->>> content = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 
 Even after checkout/checkin there is nothing in the feed:
 
