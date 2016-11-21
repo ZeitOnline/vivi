@@ -166,13 +166,13 @@ class TMS(object):
             if 'in-text-linked' in kw.get('params', {}).keys():
                 url = url + '?in-text-linked'
                 kw.pop('params')
-
             response = method(url, **kw)
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
-            message = '{verb} {path} returned {error}\n{body}'.format(
-                verb=verb, path=path, error=str(e), body=e.response.text)
+            body = getattr(e.response, 'text', '<body/>')
+            message = '{verb} {path} {error!r}\n{body}'.format(
+                verb=verb, path=path, error=e, body=body)
             if status < 500:
                 raise zeit.retresco.interfaces.TMSError(message, status)
             raise zeit.retresco.interfaces.TechnicalError(message)
