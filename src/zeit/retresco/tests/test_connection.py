@@ -89,6 +89,13 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.delete_id('any')
 
+    def test_tms_returns_enriched_article_body(self):
+        self.layer['request_handler'].response_body = json.dumps({
+            'body': '<body>lorem ipsum</body>'})
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = tms.get_article_body('{urn:uuid:88a99fcc-0c52-4665}')
+        self.assertEqual('<body>lorem ipsum</body>', result)
+
     def test_get_topicpage_documents_pagination(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, '_request') as request:
