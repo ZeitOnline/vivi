@@ -154,7 +154,6 @@ class Toc(zeit.cms.browser.view.Base):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
-        self.client = self._create_dav_client()
         self.excluder = Excluder()
         self.connector = None
 
