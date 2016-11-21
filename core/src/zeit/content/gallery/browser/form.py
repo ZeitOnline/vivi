@@ -47,8 +47,6 @@ class AddGallery(GalleryFormBase,
     title = _("Add gallery")
     factory = zeit.content.gallery.gallery.Gallery
     next_view = 'overview.html'
-    form_fields = GalleryFormBase.form_fields.omit(
-        'automaticMetadataUpdateDisabled')
 
     def applyChanges(self, object, data):
         self.applyAccountData(object, data)
