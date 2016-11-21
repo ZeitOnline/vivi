@@ -16,6 +16,7 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import gocept.cache.property
 import urllib
 import urlparse
 import z3c.traverser.interfaces
@@ -142,8 +143,16 @@ class ReferenceProperty(object):
         """Returns name of the schema field."""
         class_ = type(instance)
         for name in dir(class_):
-            if getattr(class_, name, None) is self:
-                return name
+            try:
+                attribute = getattr(class_, name, None)
+            except gocept.cache.property.TransactionJoinError:
+                # We are during a commit where we cannot create a transaction
+                # bound cache - but are searching for a ReferenceProperty
+                # either:
+                pass
+            else:
+                if attribute is self:
+                    return name
 
     def _reference_nodes(self, instance):
         try:
@@ -316,12 +325,19 @@ class MultiResource(ReferenceProperty):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_metadata_on_checkin(context, event):
-    for name in dir(type(context)):
+    cls = type(context)
+    for name in dir(cls):
         # other descriptors might not support reading them from the class,
         # but the one that we want does.
-        attr = getattr(type(context), name, None)
-        if isinstance(attr, ReferenceProperty):
-            attr.update_metadata(context)
+        try:
+            attr = getattr(cls, name, None)
+        except gocept.cache.property.TransactionJoinError:
+            # We are during a commit where we cannot create a transaction bound
+            # cache - which is not interesting here either:
+            pass
+        else:
+            if isinstance(attr, ReferenceProperty):
+                attr.update_metadata(context)
 
 
 class References(tuple):

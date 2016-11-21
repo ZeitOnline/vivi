@@ -9,7 +9,6 @@ import mock
 import pytz
 import threading
 import time
-import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.workflow.publish
@@ -29,54 +28,6 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
     @property
     def jobid(self):
         return None
-
-
-class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
-
-    def setUp(self):
-        super(PublishRetractLockingTest, self).setUp()
-        self.obj = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
-        self.desc = zeit.workflow.publish.TaskDescription(self.obj)
-        self.task = FakePublishTask()
-
-    def run_task_in_thread(self, uniqueId='http://xml.zeit.de/testcontent'):
-        zeit.cms.testing.set_site(self.getRootFolder())
-        zeit.cms.testing.create_interaction()
-        self.task(uniqueId)
-        transaction.abort()
-
-    def test_simple(self):
-        self.task('http://xml.zeit.de/testcontent')
-        self.assertEquals(1, len(self.task.test_log))
-
-    def test_parallel_with_same_obj(self):
-        import zope.component
-        t1 = threading.Thread(target=self.run_task_in_thread)
-        t2 = threading.Thread(target=self.run_task_in_thread)
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
-        self.assertEquals(1, len(self.task.test_log))
-        log = list(zope.component.getUtility(
-            zeit.objectlog.interfaces.IObjectLog).get_log(self.obj))
-        self.assertEquals(1, len(log))
-        self.assertEquals(
-            u'A publish/retract job is already active. Aborting',
-            log[0].message)
-
-    def test_parallel_with_differnt_obj(self):
-        t1 = threading.Thread(target=self.run_task_in_thread)
-        t2 = threading.Thread(target=self.run_task_in_thread,
-                              args=('http://xml.zeit.de/politik.feed',))
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
-        self.assertEquals(2, len(self.task.test_log))
 
 
 class RelatedDependency(object):

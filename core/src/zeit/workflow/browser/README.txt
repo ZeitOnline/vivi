@@ -119,7 +119,7 @@ Use the urgent flag to override:
         <li class="message">http://xml.zeit.de/testcontent has been scheduled for publishing.</li>
         <li class="message">Updated on 2008 4 3  12:02:00 </li>
         ...
-        <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
+        <div class="widget"><FORMATTED DATE>  [User]: Published<br />
         ...
 
 

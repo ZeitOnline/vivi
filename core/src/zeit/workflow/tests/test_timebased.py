@@ -14,13 +14,15 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
             self):
         workflow = zeit.workflow.timebased.TimeBasedWorkflow(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'))
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with mock.patch(
-                    'celery.Task.apply_async') as apply_async:
-                workflow.add_job(
-                    zeit.workflow.publish.PUBLISH_TASK,
-                    datetime.datetime.now(pytz.UTC) + datetime.timedelta(1))
+        run_instantly = 'zeit.cms.celery.TransactionAwareTask.run_instantly'
+        with zeit.cms.testing.site(self.getRootFolder()), \
+                mock.patch('celery.Task.apply_async') as apply_async, \
+                mock.patch(run_instantly, return_value=False):
+            workflow.add_job(
+                zeit.workflow.publish.PUBLISH_TASK,
+                datetime.datetime.now(pytz.UTC) + datetime.timedelta(1))
 
-                transaction.commit()
+            transaction.commit()  # needed as we are async here
 
-                self.assertIn('countdown', apply_async.call_args[1])
+            assert apply_async.called
+            self.assertIn('countdown', apply_async.call_args[1])

@@ -2,16 +2,13 @@ from __future__ import with_statement
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import ZODB.POSException
 import logging
 import os.path
 import pytz
-import random
 import subprocess
 import tempfile
 import threading
 import time
-import transaction
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -60,22 +57,7 @@ class Timer(threading.local):
             result.append(u'%2.4f %2.4f %s' % (diff, total, message))
         return u'\n'.join(result)
 
-
 timer = Timer()
-
-
-class TaskDescription(object):
-    """Data to be passed to publish/retract tasks."""
-
-    def __init__(self, obj):
-        self.uniqueId = obj.uniqueId
-        self.principal = self.get_principal().id
-
-    @staticmethod
-    def get_principal():
-        interaction = zope.security.management.getInteraction()
-        for p in interaction.participations:
-            return p.principal
 
 
 class Publish(object):
@@ -112,10 +94,6 @@ class Publish(object):
         log.log(obj, msg)
 
 
-active_objects = set()
-active_objects_lock = threading.Lock()
-
-
 class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
 
     abstract = True  # Base class for Publish and Retract.
@@ -131,88 +109,32 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
         raise NotImplementedError()
 
     def run(self, uniqueId):
-        input = TaskDescription(zeit.cms.interfaces.ICMSContent(uniqueId))
-        info = (type(self).__name__, input.uniqueId, self.jobid)
+        info = (type(self).__name__, uniqueId, self.jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
         logger.info("Running job %s" % self.jobid)
-        uniqueId = input.uniqueId
-        principal = input.principal
 
-        self.login(principal)
-        timer.mark('Logged in')
-
-        obj = self.repository.getContent(input.uniqueId)
+        obj = self.repository.getContent(uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         timer.mark('Looked up object')
 
-        retries = 0
-        while True:
-            try:
-                try:
-                    acquired = self.acquire_active_lock(uniqueId)
-                    if acquired:
-                        self._run(obj, info)
-                    else:
-                        self.log(
-                            obj, _('A publish/retract job is already active.'
-                                   ' Aborting'))
-                        logger.info("Aborting parallel publish/retract of %r"
-                                    % uniqueId)
-                    transaction.commit()
-                    timer.mark('Commited')
-                except ZODB.POSException.ConflictError, e:
-                    timer.mark('Conflict')
-                    retries += 1
-                    if retries >= 3:
-                        raise
-                    # Spiels noch einmal, Sam.
-                    logger.warning('Conflict while publishing', exc_info=True)
-                    transaction.abort()
-                    # Stagger retry:
-                    time.sleep(random.uniform(0, 2 ** retries))
-                    continue
-            except Exception, e:
-                transaction.abort()
-                logger.error("Error during publish/retract", exc_info=True)
-                message = _("Error during publish/retract: ${exc}: ${message}",
-                            mapping=dict(
-                                exc=e.__class__.__name__,
-                                message=str(e)))
-                self.log(obj, message)
-                break
-            else:
-                # Everything okay.
-                message = None
-                break
-            finally:
-                if acquired:
-                    self.release_active_lock(uniqueId)
-        timer.mark('Done %s' % input.uniqueId)
+        try:
+            self._run(obj, info)
+        except Exception as e:
+            logger.error("Error during publish/retract", exc_info=True)
+            error_message = _(
+                "Error during publish/retract: ${exc}: ${message}",
+                mapping=dict(exc=e.__class__.__name__, message=str(e)))
+            self.log(obj, error_message)
+            self._log_timer(uniqueId)
+            raise
+        self._log_timer(uniqueId)
+
+    def _log_timer(self, uniqueId):
+        timer.mark('Done %s' % uniqueId)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
-        return message
-
-    def run_sync(self, obj):
-        timer.start(u'Synchronous %s started: %s' % (
-            type(self).__name__, obj.uniqueId))
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-        self._run(obj, info)
-        timer.mark('Done %s' % obj.uniqueId)
-        dummy, total, timer_message = timer.get_timings()[-1]
-        logger.info('%s (%2.4fs)' % (timer_message, total))
-
-    def acquire_active_lock(self, uniqueId):
-        with active_objects_lock:
-            if uniqueId in active_objects:
-                return False
-            active_objects.add(uniqueId)
-            return True
-
-    def release_active_lock(self, uniqueId):
-        with active_objects_lock:
-            active_objects.remove(uniqueId)
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -300,16 +222,6 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
         return os.path.join(
             path_prefix,
             uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
-
-    @staticmethod
-    def login(principal):
-        interaction = zope.security.management.getInteraction()
-        participation = interaction.participations[0]
-        assert(zope.publisher.interfaces.IPublicationRequest.providedBy(
-            participation))
-        auth = zope.component.getUtility(
-            zope.app.security.interfaces.IAuthentication)
-        participation.setPrincipal(auth.getPrincipal(principal))
 
     @property
     def log(self):

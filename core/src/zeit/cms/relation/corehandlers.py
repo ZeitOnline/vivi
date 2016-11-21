@@ -42,7 +42,7 @@ class Dummy(object):
     uniqueId = None
 
 
-@zeit.cms.celery.CELERY.task()
+@zeit.cms.celery.task()
 def update_referencing_objects(uniqueId):
     # As we want to use this function as celery task, we need a serializable
     # argument, i.e. no ICMSContent object. In fact we do not need a complete

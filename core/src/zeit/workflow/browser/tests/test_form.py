@@ -22,9 +22,9 @@ class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
                 with checked_out(self.repository['testcontent'],
                                  semantic_change=True):
                     pass
-            lsc = zeit.cms.content.interfaces.ISemanticChange(
-                self.repository['testcontent'])
-            last_change = lsc.last_semantic_change
+                lsc = zeit.cms.content.interfaces.ISemanticChange(
+                    self.repository['testcontent'])
+                last_change = lsc.last_semantic_change
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent'
                '/@@workflow.html')
