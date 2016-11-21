@@ -2,14 +2,11 @@
 import StringIO
 import csv
 import urlparse
-import tinydav
 import re
 import sys
 import logging
-import lxml.etree
 import posixpath
 from ordereddict import OrderedDict
-from tinydav.exception import HTTPUserError
 import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
@@ -197,7 +194,7 @@ class Toc(zeit.cms.browser.view.Base):
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
-        registry.__bases__ =  (default_registry,)
+        registry.__bases__ = (default_registry,)
         site.setSiteManager(registry)
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
              {'default': self.dav_archive_url})
@@ -237,15 +234,9 @@ class Toc(zeit.cms.browser.view.Base):
         product_ids = self._get_all_product_ids_for_volume()
         for product_path in self._get_all_paths_for_product_ids(product_ids):
             result_for_product = {}
-            #for ressort_path in self.list_relevant_ressort_dirs_with_dav(product_path):
             for ressort_folder_name, ressort_folder in self.list_relevant_ressort_folders_with_archive_connector(product_path):
-                import pdb; pdb.set_trace()
                 result_for_ressort = []
-                # for article_path in self._get_all_articles_in_path(ressort_path):
-                # import pdb; pdb.set_trace()
-                # Her
                 for article_path in self._get_all_articles_in_folder(ressort_folder):
-                    import pdb; pdb.set_trace()
                     toc_entry = self._create_toc_element(article_path)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
@@ -259,22 +250,9 @@ class Toc(zeit.cms.browser.view.Base):
         :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
         :return: [str]
         """
+        # This might be to narrow, we dont really need an IArticle
+        # TODO Check how the right Adapter is found
         return [resource.xml for _, resource in path.items() if IArticle.providedBy(resource)]
-        # all_article_paths = []
-        # for article_path in self._get_all_files_in_folder(path):
-        #     all_article_paths.append(article_path)
-        # return all_article_paths
-
-    def _parse_article(self, doc_path):
-        """
-        Parse the artice XML.
-        :param doc_path: path to artice xml on DAV-Server.
-        """
-        try:
-            response = self.client.get(doc_path)
-            return lxml.etree.fromstring(response.content)
-        except:
-            raise
 
     def _get_all_product_ids_for_volume(self):
         """ Returns List [First Product ID, Second ...] """
@@ -290,13 +268,10 @@ class Toc(zeit.cms.browser.view.Base):
         product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         volume_string = '%02d' % self.context.volume
-        # This should work for Connector
         # You need the XML prefix here
         prefix = 'http://xml.zeit.de'
         return [posixpath.join(*[str(e) for e in [prefix, dir_name, self.context.year, volume_string, '']])
             for dir_name in product_dir_names]
-        # return [posixpath.join(*[str(e) for e in [self.dav_archive_url_parsed.path, dir_name, self.context.year, volume_string, '']])
-        #         for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id):
         """
@@ -315,9 +290,6 @@ class Toc(zeit.cms.browser.view.Base):
         """
         return self.excluder.is_relevant(article_tree)
 
-    def _create_dav_client(self):
-        return tinydav.WebDAVClient(self.dav_archive_url_parsed.hostname, self.dav_archive_url_parsed.port)
-
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
         Get all relevant normalized metadata from article xml tree.
@@ -335,15 +307,6 @@ class Toc(zeit.cms.browser.view.Base):
             res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
 
-    def list_relevant_ressort_dirs_with_dav(self, path):
-        """ Returns all relevant ressort paths to directories for a given path """
-        try:
-            response = self.client.propfind(path, depth=1)
-            assert response.is_multistatus
-            return [element.href for element in response if self._is_relevant_path_to_directory(path, element)]
-        except HTTPUserError:
-            return []
-
     def list_relevant_ressort_folders_with_archive_connector(self, path):
         try:
             product_folder = zeit.cms.interfaces.ICMSContent(self.connector[path])
@@ -352,34 +315,7 @@ class Toc(zeit.cms.browser.view.Base):
             return []
 
     def _is_relevant_folder_item(self, item):
-        # item ('name', adapted DAV-Resource?)
         return self.excluder.is_relevant_folder(item[0]) and IFolder.providedBy(item[1])
-
-    def _is_relevant_path_to_directory(self, root_path_of_element, element):
-        """
-
-        :param root_path_of_element: root path oyf DAV archive
-        :param element: tinydav status element
-        :return: bool
-        """
-        try:
-            root_paths = {root_path_of_element, '/' + root_path_of_element}
-            return self._is_dav_dir(element) \
-                   and not self.excluder.is_relevant_folder(element.href) \
-                   and element.href not in root_paths
-        except:
-            raise
-
-    def _get_all_files_in_folder(self, ressort_path):
-        response = self.client.propfind(ressort_path, depth=1)
-        assert response.is_multistatus
-        return [status_element.href for status_element in response if not self._is_dav_dir(status_element)]
-
-    def _is_dav_dir(self, status_element):
-        try:
-            return 'directory' in status_element.get('getcontenttype').text
-        except AttributeError:
-            return False
 
     def _create_csv(self, toc_data):
         """
@@ -481,7 +417,6 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data:
         :return: OrderedDict
         """
-        # TODO Think about a better way to sort the toc!
         for product_name, ressort_dict in toc_data.iteritems():
             for ressort_name, articles in ressort_dict.iteritems():
                 toc_data[product_name][ressort_name] = self._sorted_articles(articles)
