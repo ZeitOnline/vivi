@@ -102,6 +102,15 @@ class TMS(object):
             result.append(page)
         return result
 
+    def get_article_body(self, uuid, timeout=None):
+        __traceback_info__ = (uuid,)
+        try:
+            response = self._request(
+                'GET /content/{}'.format(urllib.quote(uuid)), timeout=timeout)
+            return response['body']
+        except (KeyError, requests.Timeout):
+            return None
+
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
