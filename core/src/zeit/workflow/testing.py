@@ -14,6 +14,7 @@ import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.publishinfo
+import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
@@ -44,23 +45,22 @@ class WorkflowScriptsLayer(plone.testing.Layer):
     executable."""
 
     def setUp(self):
-        import zope.app.appsetup.product
         self._tempfiles = []
-        product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        product_config['publish-script'] = self._make_copy('publish.sh')
-        product_config['retract-script'] = self._make_copy('retract.sh')
+        self['publish-script'] = self._make_copy('publish.sh')
+        self['retract-script'] = self._make_copy('retract.sh')
 
     def tearDown(self):
         for f in self._tempfiles:
             os.remove(f.name)
         del self._tempfiles
+        del self['publish-script']
+        del self['retract-script']
 
     def testSetUp(self):
-        pass
-
-    def testTearDown(self):
-        pass
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        product_config['publish-script'] = self['publish-script']
+        product_config['retract-script'] = self['retract-script']
 
     def _make_copy(self, script):
         import os

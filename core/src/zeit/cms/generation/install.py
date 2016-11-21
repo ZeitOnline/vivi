@@ -40,6 +40,10 @@ def installEventTaskService():
     _install_task_service('tasks.event', 'events', max_threads=1)
 
 
+def installSolrTaskService():
+    _install_task_service('tasks.event', 'solr', max_threads=1)
+
+
 def _install_task_service(name, utility_name, max_threads):
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
@@ -81,6 +85,7 @@ def install(root):
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
     installGeneralTaskService()
     installEventTaskService()
+    installSolrTaskService()
     installHighPriorityTaskService()
     installLowPriorityTaskService()
     installHomepageTaskService()
