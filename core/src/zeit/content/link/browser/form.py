@@ -39,8 +39,6 @@ class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     title = _('Add link')
     factory = zeit.content.link.link.Link
-    form_fields = Base.form_fields.omit(
-        'automaticMetadataUpdateDisabled')
 
     def applyChanges(self, object, data):
         self.applyAccountData(object, data)
