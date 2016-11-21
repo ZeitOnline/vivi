@@ -41,7 +41,7 @@ def installEventTaskService():
 
 
 def installSolrTaskService():
-    _install_task_service('tasks.event', 'solr', max_threads=1)
+    _install_task_service('tasks.solr', 'solr', max_threads=1)
 
 
 def _install_task_service(name, utility_name, max_threads):
