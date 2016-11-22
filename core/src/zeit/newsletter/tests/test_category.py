@@ -150,16 +150,15 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
         super(BuilderTest, self).setUp()
-        self.category = NewsletterCategory()
-        self.category.ressorts = (u'Politik', u'Wirtschaft')
-        self.category.subject = 'nosubject'
-        self.category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
-        self.category.ad_thisweeks_groups_above = \
-            self.THISWEEKS_AD_GROUPS_ABOVE
-        self.repository['mynl'] = self.category
+        category = NewsletterCategory()
+        category.ressorts = (u'Politik', u'Wirtschaft')
+        category.subject = 'nosubject'
+        category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
+        category.ad_thisweeks_groups_above = self.THISWEEKS_AD_GROUPS_ABOVE
+        self.repository['mynl'] = category
         self.newsletter = self.repository['mynl']['newsletter'] = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
-            self.category, self.newsletter)
+            self.repository['mynl'], self.newsletter)
 
     def create_content(self, name, ressort):
         content = ExampleContentType()
@@ -220,7 +219,8 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(0, len(video_group))
 
     def test_should_not_break_if_playlist_id_resolves_to_something_else(self):
-        self.category.video_playlist = self.category.uniqueId
+        with checked_out(self.repository['mynl']) as co:
+            co.video_playlist = self.repository['mynl'].uniqueId
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertNotEqual(0, len(body))
@@ -248,8 +248,9 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         playlist.videos = (video1, video2)
         self.repository['playlist'] = playlist
 
-        self.category.video_playlist = playlist.uniqueId
-        self.category.last_created = created - datetime.timedelta(1)
+        with checked_out(self.repository['mynl']) as co:
+            co.video_playlist = self.repository['playlist'].uniqueId
+        self.repository['mynl'].last_created = created - datetime.timedelta(1)
 
         self.builder(())
         body = self.newsletter['newsletter_body']
@@ -288,8 +289,9 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         playlist.videos = (video1, video2, video3)
         self.repository['playlist'] = playlist
 
-        self.category.video_playlist = playlist.uniqueId
-        self.category.last_created = datetime.datetime(
+        with checked_out(self.repository['mynl']) as co:
+            co.video_playlist = playlist.uniqueId
+        self.repository['mynl'].last_created = datetime.datetime(
             2014, 9, 22, 18, 0, tzinfo=pytz.UTC)
         self.builder(())
 
@@ -299,7 +301,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual('Video 3', video_group.values()[0].reference.title)
 
     def test_middle_advertisement_should_be_inserted(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_middle_title = u'Some ad'
         c1 = self.create_content('c1', u'Politik')
         c2 = self.create_content('c2', u'Wirtschaft')
@@ -310,7 +312,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(u'Some ad', advertisement.title)
 
     def test_thisweeks_advertisement_should_be_inserted(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_thisweeks_title = u'Some ad'
         c1 = self.create_content('c1', u'Politik')
         c2 = self.create_content('c2', u'Wirtschaft')
@@ -323,7 +325,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def test_thisweeks_advert_should_be_omitted_on_unchecked_weekday(self):
         weekday = datetime.date.today().weekday()
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_thisweeks_title = u'Some ad'
             setattr(co, 'ad_thisweeks_on_%d' % weekday, False)
         self.builder(())
@@ -332,7 +334,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
             any(ad.type == 'advertisement-thisweeks' for ad in body.values()))
 
     def test_bottom_advertisement_should_be_appended(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_bottom_title = u'Some ad'
         self.builder(())
         body = self.newsletter['newsletter_body']
