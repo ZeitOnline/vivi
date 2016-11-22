@@ -202,11 +202,14 @@ class TransactionAwareTask(celery.Task):
                 args, kw, task_id=task_id)
         return self.AsyncResult(task_id)
 
-    def apply_async(self, args=(), kw={}, task_id=None, *arguments, **options):
+    def apply_async(
+            self, args=(), kw=None, task_id=None, *arguments, **options):
         self._assert_json_serializable(
             args, kw, task_id, *arguments, **options)
         if task_id is None:
             task_id = celery.utils.gen_unique_id()
+        if kw is None:
+            kw = {}
 
         if self.run_instantly():
             self.__call__(*args, **kw)
