@@ -4,7 +4,7 @@
 
   <span class="nextURL" tal:content="view/nextURL" />
 
-  <div tal:condition="view/can_be_deleted">
+  <tal:deletable condition="view/can_be_deleted">
     <p>
       <span i18n:translate="delete_content_text">
         Do you really want to delete the object from the folder
@@ -29,7 +29,7 @@
           i18n:attributes="value" />
       </p>
     </form>
-  </div>
+  </tal:deletable>
 
   <p tal:condition="not: view/can_be_deleted" class="warning"
     i18n:translate="folder_cannot_be_deleted_warning">
