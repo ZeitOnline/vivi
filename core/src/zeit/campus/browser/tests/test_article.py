@@ -10,10 +10,10 @@ class StudyCourseTest(zeit.cms.testing.BrowserTestCase):
     def test_study_course_can_be_edited(self):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                self.repository['campus']['article'] = article
+                self.repository['campus']['article'] = (
+                    zeit.content.article.testing.create_article())
                 co = zeit.cms.checkout.interfaces.ICheckoutManager(
-                    article).checkout()
+                    self.repository['campus']['article']).checkout()
                 body = zeit.content.article.edit.interfaces.IEditableBody(co)
                 block = body.create_item('studycourse')
                 block.__name__ = 'blockname'
