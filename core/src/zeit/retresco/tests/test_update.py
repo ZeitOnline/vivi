@@ -11,6 +11,7 @@ import zeit.workflow.testing
 import zope.component
 import zope.event
 import zope.lifecycleevent
+import zope.security.management
 
 
 def checkout_and_checkin():
@@ -55,15 +56,21 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content):
             pass
-        transaction.commit()
         self.tms.enrich.assert_called_with(content)
         self.tms.index.assert_called_with(content)
 
     def test_index_should_be_called_from_async(self):
-        checkout_and_checkin()
-        self.assertFalse(self.tms.index.called)
-        transaction.commit()
-        self.assertTrue(self.tms.index.called)
+        run_instantly = 'zeit.cms.celery.TransactionAwareTask.run_instantly'
+        run_asynchronously = (
+            'zeit.cms.celery.TransactionAwareTask.run_asynchronously')
+        with mock.patch(run_instantly, return_value=False), \
+                mock.patch(run_asynchronously, return_value=False):
+            checkout_and_checkin()
+            self.assertFalse(self.tms.index.called)
+
+            zope.security.management.endInteraction()
+            transaction.commit()
+            self.assertTrue(self.tms.index.called)
 
     def test_folders_should_be_indexed_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
