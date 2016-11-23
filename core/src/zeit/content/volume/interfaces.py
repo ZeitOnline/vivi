@@ -103,5 +103,5 @@ class IVolumeReference(zeit.cms.content.interfaces.IReference):
         max_length=170)
 
 
-class ITocConnector(zope.interface.Interface):
+class ITocConnector(IConnector):
     """Marker Interface for a the Connector to get the Tocdata from /cms/wf-archiv/archiv"""

@@ -21,6 +21,7 @@ from zeit.cms.repository.interfaces import IFolder
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
 import zope.interface
+from zope.component.interfaces import ComponentLookupError
 
 # TODO Author/Title Teaser contains is ugly
 
@@ -191,6 +192,14 @@ class Toc(zeit.cms.browser.view.Base):
         # registry.registerUtility(connector)
         # zope.component.hooks.setSite(site)
         # This should be non-persistent, but isn't, why?
+
+        try:
+            zope.component.getUtility(ITocConnector)
+            already_registered = True
+        except ComponentLookupError:
+            already_registered = False
+        if already_registered:
+            return
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
