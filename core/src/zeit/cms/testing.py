@@ -25,6 +25,7 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
+import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -52,11 +53,13 @@ class ZCMLLayer(plone.testing.Layer):
         super(ZCMLLayer, self).__init__(name=name, module=module)
 
     def setUp(self):
+        # This calls zope.testing.cleanup.cleanUp()
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
             self.config_file, product_config=self.product_config)
         self['functional_setup'] = self.setup
 
     def tearDown(self):
+        # This calls zope.testing.cleanup.cleanUp()
         self.setup.tearDownCompletely()
         del self['functional_setup']
 
@@ -69,6 +72,11 @@ class ZCMLLayer(plone.testing.Layer):
         self.setup.zca = gocept.zcapatch.Patches()
 
     def testTearDown(self):
+        # We must *not* call zope.testing.cleanup.cleanUp() here, since that
+        # (among many other things) empties the zope.component registry.
+
+        # XXX We seem to collect unrelated tearDown things here, those should
+        # probably go into their own separate layers.
         try:
             connector = zope.component.getUtility(
                 zeit.connector.interfaces.IConnector)
@@ -76,6 +84,9 @@ class ZCMLLayer(plone.testing.Layer):
             pass
         else:
             connector._reset()
+
+        zeit.cms.workflow.mock.reset()
+
         self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
