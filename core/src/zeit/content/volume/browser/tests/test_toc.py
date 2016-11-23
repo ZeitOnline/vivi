@@ -15,20 +15,7 @@ import zeit.connector.mock
 
 
 
-article_xml = u"""
-            <article>
-                <head>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
-                </head>
-                <body>
-                     <title>Titel</title>
-                     <subtitle>Das soll der Teaser
-                     sein</subtitle>
-                </body>
-            </article>
-        """
-@mock.patch('zeit.content.volume.browser.toc.Toc._create_dav_archive_connector', return_value=zeit.connector.mock.Connector(''))
+#   @mock.patch('zeit.content.volume.browser.toc.Toc._create_dav_archive_connector', return_value=zeit.connector.mock.Connector(''))
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -43,12 +30,12 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                                  ]}
                 )
 
-    def test_create_dav_connection(self,m):
+    def test_create_dav_connection(self):
         toc = Toc()
         import zeit.cms.interfaces
         # self.assertEqual(True, bool(toc.connector))
 
-    def test_list_relevant_dirs_with_dav_returns_correct_directories(self,m):
+    def test_list_relevant_dirs_with_dav_returns_correct_directories(self):
         dir_path = '/cms/archiv-wf/archiv/ZEI/2009/23/'
         toc = Toc()
         with mock.patch('tinydav.WebDAVClient.propfind') as propfind:
@@ -58,18 +45,28 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             # self.assertEqual(1, len(result))
             # assert 'politik' in result[0]
 
-    def test_create_toc_element_from_xml_with_linebreak_in_teaser(self,m):
+    def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
+        article_xml = u"""
+            <article>
+                <head>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
+                </head>
+                <body>
+                     <title>Titel</title>
+                     <subtitle>Das soll der Teaser
+                     sein</subtitle>
+                </body>
+            </article>
+        """
+
         expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein', 'author': 'Autor'}
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc()
-        # with mock.patch("tinydav.WebDAVClient.get") as get:
-        #     response = mock.Mock()
-        #     response.content = article_xml
-        #     get.return_value = response
         result = toc._create_toc_element(article_element)
         self.assertEqual(expected, result)
 
-    def test_create_csv_with_all_values_is_exact(self,m):
+    def test_create_csv_with_all_values_is_exact(self):
         expected = """Die Zeit\r
 Politik\r
 1\tAutor\ttitle tease\r
@@ -82,7 +79,7 @@ Dossier\r
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
-    def test_create_csv_with_not_all_values_in_toc_data(self,m):
+    def test_create_csv_with_not_all_values_in_toc_data(self):
         # Delete an author in input toc data
         product, ressort_dict = self.toc_data.iteritems().next()
         ressort, article_list = ressort_dict.iteritems().next()
@@ -91,17 +88,16 @@ Dossier\r
         toc = Toc()
         assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
-    def test_product_source_has_zeit_product_id(self, m):
+    def test_product_source_has_zeit_product_id(self):
         t = Toc()
         volume = mock.Mock()
         volume.year = 2015
         volume.volume = 1
-        # volume.product = zeit.cms.content.sources.Product(u'ZEI')
         t.context = volume
         mapping = t._create_product_id_full_name_mapping()
         self.assertEqual(mapping.get('ZEI', '').lower(), 'Die Zeit'.lower())
 
-    def test_article_excluder_excludes_irrelevant_aritcles(self,m):
+    def test_article_excluder_excludes_irrelevant_aritcles(self):
         excluder = Excluder()
         xml_template = u"""
         <article>
