@@ -155,7 +155,7 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
         self.excluder = Excluder()
-        self.connector = None
+        self.connector = self._create_dav_archive_connector()
 
     def _parse_config(self):
         """
@@ -165,7 +165,6 @@ class Toc(zeit.cms.browser.view.Base):
         return urlparse.urlparse(self.dav_archive_url)
 
     def __call__(self):
-        self.connector = self._create_dav_archive_connector()
         self.product_id_mapping = self._create_product_id_full_name_mapping()
         filename = self._generate_file_name()
         self.request.response.setHeader('Content-Type', 'text/csv')
@@ -182,6 +181,7 @@ class Toc(zeit.cms.browser.view.Base):
         # site = zope.site.site.SiteManagerContainer()
         # site.setSiteManager(registry)
         # zope.component.hooks.setSite(site)
+
         # default_registry = zope.component.getSiteManager()
         # site = zope.site.site.SiteManagerContainer()
         # site.__parent__ = default_registry.__parent__
@@ -189,16 +189,21 @@ class Toc(zeit.cms.browser.view.Base):
         # site.setSiteManager(registry)
         # registry.registerUtility(connector)
         # zope.component.hooks.setSite(site)
-        # This should be non-persistent
+        # This should be non-persistent, but isn't, why?
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
         registry.__bases__ = (default_registry,)
         site.setSiteManager(registry)
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
-             {'default': self.dav_archive_url})
+            {'default': self.dav_archive_url})
         registry.registerUtility(connector)
         zope.component.hooks.setSite(site)
+        # This is a dirty hack. It prevents trying to write something to
+        # the ZODB in the afterCall
+        # A non persistent SiteManager would be a clean solution
+        import transaction
+        transaction.doom()
         return connector
 
 
@@ -235,15 +240,15 @@ class Toc(zeit.cms.browser.view.Base):
             result_for_product = {}
             for ressort_folder_name, ressort_folder in self.list_relevant_ressort_folders_with_archive_connector(product_path):
                 result_for_ressort = []
-                for article_path in self._get_all_articles_in_folder(ressort_folder):
-                    toc_entry = self._create_toc_element(article_path)
+                for article_element in self._get_all_article_elements_in_folder(ressort_folder):
+                    toc_entry = self._create_toc_element(article_element)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
                 result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(product_path)] = result_for_product
         return results
 
-    def _get_all_articles_in_folder(self, path):
+    def _get_all_article_elements_in_folder(self, path):
         """
         Get all DAV Server paths to article files in path.
         :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
