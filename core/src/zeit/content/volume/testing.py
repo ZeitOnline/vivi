@@ -8,6 +8,9 @@ product_config = """
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
     dav-archive-url http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/
 </product-config>
+<product-config zeit.connector>
+    repository-path {here}/browser/tests/testcontent
+</product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))
 
 
