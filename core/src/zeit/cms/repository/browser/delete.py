@@ -6,6 +6,9 @@ import zeit.cms.browser.view
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.interfaces
 
+from zeit.cms.repository.interfaces import IFolder
+from zeit.cms.workflow.interfaces import IPublishInfo
+
 
 class DeleteContent(zeit.cms.browser.view.Base):
 
@@ -57,3 +60,11 @@ class DeleteContent(zeit.cms.browser.view.Base):
         if zeit.cms.repository.interfaces.ICollection.providedBy(self.context):
             return len(self.context) > 1
         return False
+
+    @zope.cachedescriptors.property.Lazy
+    def can_be_deleted(self):
+        if IFolder.providedBy(self.context):
+            for item in self.context.values():
+                if IFolder.providedBy(item) or IPublishInfo(item).published:
+                    return False
+        return True

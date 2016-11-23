@@ -4,7 +4,7 @@ zeit.cms changes
 2.92.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-2996: Prevent deleting published content
 
 
 2.92.0 (2016-10-19)
