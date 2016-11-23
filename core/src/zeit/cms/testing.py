@@ -72,8 +72,7 @@ class ZCMLLayer(plone.testing.Layer):
         conf = zeit.cms.celery.CELERY.conf
         conf['ZOPE_APP'] = self.setup.getRootFolder()
         conf['ZOPE_PRINCIPAL'] = 'zope.user'
-        conf['CELERY_ALWAYS_EAGER'] = True
-        conf['CELERY_EAGER_PROPAGATES_EXCEPTIONS'] = True
+        conf.task_always_eager = True
 
     def testTearDown(self):
         try:

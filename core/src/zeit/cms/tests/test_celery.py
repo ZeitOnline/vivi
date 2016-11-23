@@ -48,8 +48,8 @@ class CeleryTaskTest(zeit.cms.testing.ZeitCmsTestCase):
             dummy_task(_run_asynchronously_=True, _principal_id_='zope.user')
 
     def test_delay_extracts_principal_from_interaction_if_async(self):
-        with mock.patch.dict(dummy_task.app.conf,
-                             {'CELERY_ALWAYS_EAGER': False}):
+        run_instantly = 'zeit.cms.celery.TransactionAwareTask.run_instantly'
+        with mock.patch(run_instantly, return_value=False):
             dummy_task.delay('1st param', datetime='now()')
         task_call = 'zeit.cms.celery.TransactionAwareTask.__call__'
         with mock.patch(task_call) as task_call:
@@ -60,8 +60,8 @@ class CeleryTaskTest(zeit.cms.testing.ZeitCmsTestCase):
             _run_asynchronously_=True, _principal_id_=u'zope.user')
 
     def test_apply_async_extracts_principal_from_interaction_if_async(self):
-        with mock.patch.dict(dummy_task.app.conf,
-                             {'CELERY_ALWAYS_EAGER': False}):
+        run_instantly = 'zeit.cms.celery.TransactionAwareTask.run_instantly'
+        with mock.patch(run_instantly, return_value=False):
             dummy_task.apply_async(('1st param',), dict(datetime='now()'))
         task_call = 'zeit.cms.celery.TransactionAwareTask.__call__'
         with mock.patch(task_call) as task_call:

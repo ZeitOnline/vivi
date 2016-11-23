@@ -20,7 +20,7 @@ setup(
         'SilverCity',
         'ZODB',
         'bugsnag',
-        'celery',
+        'celery >= 4.0',
         'decorator',
         'docutils',
         'fanstatic[cssmin,jsmin]',

@@ -282,7 +282,8 @@ class ZopeCelery(celery.Celery):
 
     def __init__(self):
         super(ZopeCelery, self).__init__(
-            __name__, task_cls=TransactionAwareTask, loader=ZopeLoader)
+            __name__, task_cls=TransactionAwareTask, loader=ZopeLoader,
+            strict_typing=False)
         self.is_worker = False
         self.configure_done = False
         self.maybe_configure_as_worker()
