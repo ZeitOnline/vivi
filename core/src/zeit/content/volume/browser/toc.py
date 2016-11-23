@@ -4,7 +4,6 @@ import csv
 import urlparse
 import re
 import sys
-import logging
 import posixpath
 from ordereddict import OrderedDict
 import zeit.cms.browser.view
@@ -20,8 +19,9 @@ import zope.component
 import zope.component.registry
 from zeit.cms.repository.interfaces import IFolder
 from zeit.content.article.interfaces import IArticle
+from zeit.content.volume.interfaces import ITocConnector
+import zope.interface
 
-log = logging.getLogger(__name__)
 # TODO Author/Title Teaser contains is ugly
 
 """
@@ -155,7 +155,8 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
         self.excluder = Excluder()
-        self.connector = self._create_dav_archive_connector()
+        self._create_dav_archive_connector()
+        self.connector = zope.component.getUtility(ITocConnector)
 
     def _parse_config(self):
         """
@@ -197,11 +198,13 @@ class Toc(zeit.cms.browser.view.Base):
         site.setSiteManager(registry)
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
             {'default': self.dav_archive_url})
-        registry.registerUtility(connector)
+        zope.interface.alsoProvides(connector, ITocConnector)
+        registry.registerUtility(connector, ITocConnector)
         zope.component.hooks.setSite(site)
         # This is a dirty hack. It prevents trying to write something to
         # the ZODB in the afterCall
         # A non persistent SiteManager would be a clean solution
+        # import pdb; pdb.set_trace()
         import transaction
         transaction.doom()
         return connector

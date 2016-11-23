@@ -6,6 +6,7 @@ import zeit.cms.content.sources
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
+from zeit.connector.interfaces import IConnector
 
 
 class ProductSource(zeit.cms.content.sources.ProductSource):
@@ -100,3 +101,7 @@ class IVolumeReference(zeit.cms.content.interfaces.IReference):
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+
+class ITocConnector(zope.interface.Interface):
+    """Marker Interface for a the Connector to get the Tocdata from /cms/wf-archiv/archiv"""

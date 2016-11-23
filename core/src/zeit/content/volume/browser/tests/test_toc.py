@@ -187,10 +187,13 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         # Dann muss analog zu dem mock connector tests auch mit mehreren zcmls gearbeitet werden
         # Dritte
         # Erst in der Factory wird anhand der product config entschieden, welcher Connector benutzt wird
-        with mock.patch('zeit.content.volume.browser.toc.Toc._create_dav_archive_connector') as create_connector:
-            create_connector.return_value = self.connector
-            b.open('http://localhost/++skin++vivi/repository/'
-               'ZEI/2015/01/ausgabe/@@toc.csv')
+        # with mock.patch('zeit.content.volume.browser.toc.Toc._create_dav_archive_connector') as create_connector:
+        #     create_connector.return_value = self.connector
+        #     b.open('http://localhost/++skin++vivi/repository/'
+        #        'ZEI/2015/01/ausgabe/@@toc.csv')
+        b.open('http://localhost/++skin++vivi/repository/'
+            'ZEI/2015/01/ausgabe/@@toc.csv')
+
         self.assertIn(csv, b.contents)
         self.assertIn(ressort_name, b.contents)
         self.assertIn('DIE ZEIT'.lower(), b.contents.lower())
