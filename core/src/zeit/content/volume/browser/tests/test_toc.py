@@ -31,20 +31,20 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def test_list_relevant_ressort_folders_returns_correct_directories(self):
         toc = Toc()
         folders = ['images', 'leserbriefe', 'politik']
-        volume = Volume()
-        volume.year = 2015
-        volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
         with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['ZEI'] = Folder()
             self.repository['ZEI']['2015'] = Folder()
             self.repository['ZEI']['2015']['01'] = Folder()
-            self.repository['ZEI']['2015']['01']['ausgabe'] = volume
             for foldername in folders:
                 self.repository['ZEI']['2015']['01'][foldername] = Folder()
         relevant_ressorts = toc.list_relevant_ressort_folders_with_archive_connector('http://xml.zeit.de/ZEI/2015/01')
         foldernames = [tup[0] for tup in relevant_ressorts]
         self.assertIn('politik', foldernames)
+
+    def test__get_all_product_ids_for_volume_zeit_product_id_found(self):
+        t = Toc()
+        ids = t._get_all_product_ids_for_volume()
+        self.assertIn('ZEI', ids)
 
     def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
         article_xml = u"""
@@ -96,7 +96,7 @@ Dossier\r
         volume.volume = 1
         t.context = volume
         mapping = t._create_product_id_full_name_mapping()
-        self.assertEqual(mapping.get('ZEI', '').lower(), 'Die Zeit'.lower())
+        self.assertEqual('Die Zeit'.lower(), mapping.get('ZEI', '').lower())
 
     def test_article_excluder_excludes_irrelevant_aritcles(self):
         excluder = Excluder()

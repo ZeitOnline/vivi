@@ -6,7 +6,8 @@ import zeit.content.image.testing
 product_config = """
 <product-config zeit.content.volume>
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
-    dav-archive-url http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/
+    dav-archive-url test
+    toc-product-ids ZEI
 </product-config>
 <product-config zeit.connector>
     repository-path {here}/browser/tests/testcontent
