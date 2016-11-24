@@ -26,17 +26,7 @@ from zope.component.interfaces import ComponentLookupError
 # TODO Author/Title Teaser contains is ugly
 
 """
-# This Error occurs if u visit localhost:8080/++skin++vivi/repository/2016/25/
-2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
--> Parse Page, differently?
-
-
-#TODO Nachfragen, ob man die dav archive url immer auf die echten Daten zeigen sollte.
-Ich denke schon - Tests kann man ja in testing.py austricksen, oder?
-
-TODO: Nachfragen "Die Product-Config ist leider untypisiert (also nur Strings); an anderen Stellen benutzten wir deshalb Leerzeichen als Trenner."
-Ich interpretier das mal so, dass ich das auch in die config packen sollte.
-
+TODO: Add dav_archive_url und ids to production and staging
 # TODO als letztes
 So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
 
@@ -58,85 +48,12 @@ AttributeError: StringIO instance has no attribute 'openDetached'
 Aber wenn ich so was mache wie
  out = zope.file.file.File()
 
-Also just diese Eigenschaften sind zu dieser Stufe des Print-Imports schon im von vivi erwarteten Format vorhanden,
-insofern könnte man überlegen, statt von Hand parsen einen z.c.article.article.Article(xml_file_pointer) zu verwenden.
-Also von der Bedienung her wär es schon deutlich bequemer, wenn man zeit.cms.repository.folder.Folder und Co verwenden würde...
-
-connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
-cached_resource = connector['http://xml.zeit.de/ZEI/']
-cached_resource
-folder = ICMSContent(cached_resource)
->>> folder
-<zeit.cms.repository.folder.Folder http://xml.zeit.de/ZEI/>
->>> dir(folder)
-['__class__', '__contains__', '__delattr__', '__delitem__', '__dict__', '__doc__', '__format__', '__getattribute__', '__getitem__', '__hash__', '__implemented__', '__init__', '__iter__', '__len__', '__module__', '__name__', '__new__', '__parent__', '__providedBy__', '__provides__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_get_id_for_name', '_local_unique_map', '_local_unique_map_data', 'connector', 'get', 'has_key', 'items', 'keys', 'repository', 'uniqueId', 'values']
->>> for v in folder.values():
-...     v
-...
-
-Um das ganze schnell in der Shell zu testen, muss dann noch der alte Connector unregistered werden.
-import zeit.connector.connector
-connector = zeit.connector.connector.TransactionBoundCachingConnector({'default': 'http://cms-backend:9000/cms/archiv-wf/archiv/'})
-import zope.component
-zope.component.provideUtility(connector)
-import zeit.cms.interfaces
-sm = zope.component.getSiteManager()
-from zeit.connector.interfaces import IConnector
-sm.unregisterUtility(provided=IConnector)
-ls -l   zope.component.hooks.setSite(root)
-
-Lösung
-Zope Component
-Mechanismus zu dependency Injection.
-Der Seite Manager:
-- schlaues Dict
-Kann man verschiedene machen.
-Der Default ist, der BaseComponentManager oder so, an bindet man einen neuen anderen.
-connector = TransactionBoundConnector(...)
-
-Hole dir zu einem Context den Site-Manager. Das ist eine Registry wo man Utilities und Adapter registrieren kann.
-Es gibt einen Globalen Site Manger und den lokalen. Am Anfang hat man per defautl den Global, beim traversieren
-kann aber dieser durch einen lokalen ersetzt werden, der dann den globalen ersetzt. Der hat dann vielleicht andere Utilities
-und Adapter zur Verfügunge, z.B. wie hier einen anderen Connector.
-
-default_registry = zope.component.getSiteManager()
-registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
-registry.registerUtility(connector)
-site = zope.site.site.SiteManagerContainer()
-site.setSiteManager(registry)
-zope.component.hooks.setSite(site)
-
-Das führt zu folgendem Traceback im Test
-File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/toc.py", line 171, in _create_dav_archive_connector
-    registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 49, in __init__
-    self.__bases__ = tuple(bases)
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 78, in <lambda>
-    lambda self, bases: self._setBases(bases),
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.component-3.10.0-py2.7.egg/zope/component/registry.py", line 71, in _setBases
-    base.adapters for base in bases])
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.interface-4.0.5-py2.7-linux-x86_64.egg/zope/interface/adapter.py", line 90, in <lambda>
-    lambda self, bases: self._setBases(bases),
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.interface-4.0.5-py2.7-linux-x86_64.egg/zope/interface/adapter.py", line 638, in _setBases
-    r._addSubregistry(self)
-AttributeError: '_LocalAdapterRegistry' object has no attribute '_addSubregistry'
-
-
-Man muss sich hier nicht mehr kümmern, was dann passiert.
-
-
-Das habe ich noch nicht so gut verstanden!
-Idee von Site Object. An der Site hängt die registry.
-Beim traversieren über eine Site object wird dann wird zope.component.hooks.setSite(site) gemacht.
-    ------
 2016-11-14T15:01:41 WARNING zeit.cms.content.dav Could not parse DAV property value '65-65' for Article.page at http://xml.zeit.de/ZEI/2016/23/chancen/C-Frauen-Karriere [ValueError: ("invalid literal for int() with base 10: '65-65'",)]. Using default None instead.
+# This Error occurs if u visit localhost:8080/++skin++vivi/repository/2016/25/
+2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
+-> Parse Page, differently?
 
-Da die XML's doch hier noch nicht so schön ist, also doch parsen.
-Es sollte durch einen Kommentar klar werden, dass
 
-Tests
-Umstellung auf neue Implementation
-Config-Kram für die Product IDs
 Kommentieren
 """
 
@@ -156,7 +73,7 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
         self.excluder = Excluder()
-        self._create_dav_archive_connector()
+        self._register_archive_connector()
         self.connector = zope.component.getUtility(ITocConnector)
 
     def _parse_config(self):
@@ -174,49 +91,25 @@ class Toc(zeit.cms.browser.view.Base):
             'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
-    def _create_dav_archive_connector(self):
-        # A new registry has to be provided to register the
-        # toc specific connector
-        # default_registry = zope.component.getSiteManager()
-        # registry = zope.component.registry.Components(name='toc', bases=(default_registry,))
-        # registry.registerUtility(connector)
-        # site = zope.site.site.SiteManagerContainer()
-        # site.setSiteManager(registry)
-        # zope.component.hooks.setSite(site)
-
-        # default_registry = zope.component.getSiteManager()
-        # site = zope.site.site.SiteManagerContainer()
-        # site.__parent__ = default_registry.__parent__
-        # registry = zope.site.site.LocalSiteManager(site, default_folder=False)
-        # site.setSiteManager(registry)
-        # registry.registerUtility(connector)
-        # zope.component.hooks.setSite(site)
-        # This should be non-persistent, but isn't, why?
-
-        try:
-            zope.component.getUtility(ITocConnector)
-            already_registered = True
-        except ComponentLookupError:
-            already_registered = False
-        if already_registered:
+    def _register_archive_connector(self):
+        if self.dav_archive_url == 'test':
+            # In the test a mock connector is used.
             return
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
         registry.__bases__ = (default_registry,)
+        # New registry has to removed as a sub from the base registry,
+        # because otherwise the base registry has a reference on the new one.
+        # This would make the new registry persistent.
+        default_registry.removeSub(registry)
         site.setSiteManager(registry)
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
             {'default': self.dav_archive_url})
         zope.interface.alsoProvides(connector, ITocConnector)
         registry.registerUtility(connector, ITocConnector)
         zope.component.hooks.setSite(site)
-        # This is a dirty hack. It prevents trying to write something to
-        # the ZODB in the afterCall
-        # A non persistent SiteManager would be a clean solution
-        # import pdb; pdb.set_trace()
-        import transaction
-        transaction.doom()
-        return connector
+        return
 
 
     def _create_toc_content(self):
@@ -266,14 +159,16 @@ class Toc(zeit.cms.browser.view.Base):
         :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
         :return: [str]
         """
-        # This might be to narrow, we dont really need an IArticle
-        # TODO Check how the right Adapter is found
         return [resource.xml for _, resource in path.items() if IArticle.providedBy(resource)]
 
     def _get_all_product_ids_for_volume(self):
         """ Returns List [First Product ID, Second ...] """
         # Change this if the volume content object "knows" which Products it has...
-        return toc_config.PRODUCT_IDS
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+        ids_as_string = config.get('toc-product-ids')
+        if not ids_as_string:
+            ids_as_string = toc_config.PRODUCT_IDS
+        return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
     def _get_all_paths_for_product_ids(self, product_ids):
         """
