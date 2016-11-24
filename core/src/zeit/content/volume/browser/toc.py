@@ -63,7 +63,8 @@ class Toc(zeit.cms.browser.view.Base):
     View for creating a Table of Content as a csv file.
     The dav url to the articles generally looks like ARCHIVE_ROOT/PRODUCT_ID/RESSORT_NAME/ARTICLE.xml
     """
-    # Not all directories in the archives are named the product ID.
+    # Christ und Welt Product ID changes are a special case
+    # in products.xml the old product id 'CW' has to be used.
     PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
     CSV_DELIMITER = '\t'
 
