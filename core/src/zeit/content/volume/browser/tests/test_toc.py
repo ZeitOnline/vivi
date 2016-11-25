@@ -80,7 +80,7 @@ Dossier\r
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
-    def test_create_csv_with_not_all_values_in_toc_data(self):
+    def test_create_csv_with_missing_values_in_toc_data(self):
         # Delete an author in input toc data
         product, ressort_dict = self.toc_data.iteritems().next()
         ressort, article_list = ressort_dict.iteritems().next()
@@ -125,32 +125,27 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         volume.year = 2015
         volume.volume = 1
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
-        # Browser needs this model stuff
+        self.article_title = 'Ein Test Titel'
+        self.ressort_names = ['dossier', 'politik']
+        self.article_page = 1
         with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['ZEI'] = Folder()
             self.repository['ZEI']['2015'] = Folder()
             self.repository['ZEI']['2015']['01'] = Folder()
             self.repository['ZEI']['2015']['01']['ausgabe'] = volume
-            self.repository['ZEI']['2015']['01']['dossier'] = Folder()
-            self.repository['ZEI']['2015']['01']['politik'] = Folder()
+            for ressort_name in self.ressort_names:
+                self.repository['ZEI']['2015']['01'][ressort_name] = Folder()
             with zeit.cms.testing.interaction():
                 article = create_article()
                 article.year = 2015
                 article.volume = 1
-                article.title = "Ein Test Titel"
-                article.page = 1
+                article.title = self.article_title
+                article.page = self.article_page
                 self.repository['ZEI']['2015']['01']['politik']['test_artikel'] = article
 
     def test_toc_generates_right_headers(self):
         b = self.browser
         b.handleErrors = False
-        # TODO language header for vivi?
-        #Use the ExtendedTestbrowser form z3c.etestbrowser.testing
-        # from z3c.etestbrowser.testing import ExtendedTestBrowser
-        # b = ExtendedTestBrowser()
-        # b.handleErrors = False
-        # # b.addHeader('Accept-Langu age', 'de')
-        # b.addHeader('Content-Language', 'de')#
         with mock.patch('zeit.content.volume.browser.toc.Toc._create_toc_content') as create_content:
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/repository/'
@@ -159,37 +154,13 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('attachment; filename="table_of_content_2015_01.csv"', b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
-    @mock.patch('zeit.content.volume.browser.toc.Toc._get_all_product_ids_for_volume', return_value=['ZEI'])
-    def test_toc_generates_correct_csv(self, mock_products):
-        ressort_name = 'politik'
+    def test_toc_generates_correct_csv(self):
         b = self.browser
-        # csv = "20{delim}Autor{delim}Titel Das soll der Teaser seibn".format(delim=Toc.CSV_DELIMITER)
-        csv = 'Ein Test Titel'
         b.handleErrors = False
-        # Now it runs on the Connector defined in Toc._create_dav_archive_connector
-        # but it traversals over the defined test folder (Only works with ZEI/2015/01/)
-        # and zope.component.getUtility(IConnector) liefert auch den Mock Connector
-        # What i dont get: Why does ist use the Repository and only expects an
-        # the empty Folders here '
-        # testcontent
-        #   └── ZEI
-        #        └── 2015
-        #             └── 01
-        # Erste Möglichkeit
-        # Immer hart wegmocken!
-        # Zweite Möglichkeit
-        # ITocConnector definieren, mein Connector implementiert dann das Interface
-        # und wird registriert. Im toc.py wird dann immer die utility gesucht.
-        # Dann muss analog zu dem mock connector tests auch mit mehreren zcmls gearbeitet werden
-        # Dritte
-        # Erst in der Factory wird anhand der product config entschieden, welcher Connector benutzt wird
-        # with mock.patch('zeit.content.volume.browser.toc.Toc._create_dav_archive_connector') as create_connector:
-        #     create_connector.return_value = self.connector
-        #     b.open('http://localhost/++skin++vivi/repository/'
-        #        'ZEI/2015/01/ausgabe/@@toc.csv')
         b.open('http://localhost/++skin++vivi/repository/'
-            'ZEI/2015/01/ausgabe/@@toc.csv')
-
-        self.assertIn(csv, b.contents)
-        self.assertIn(ressort_name, b.contents)
+               'ZEI/2015/01/ausgabe/@@toc.csv')
+        self.assertIn(self.article_title, b.contents)
+        self.assertIn(str(self.article_page), b.contents)
+        for ressort_name in self.ressort_names:
+            self.assertIn(ressort_name, b.contents)
         self.assertIn('DIE ZEIT'.lower(), b.contents.lower())
