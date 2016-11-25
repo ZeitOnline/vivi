@@ -21,40 +21,24 @@ from zeit.cms.repository.interfaces import IFolder
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
 import zope.interface
-from zope.component.interfaces import ComponentLookupError
 
 # TODO Author/Title Teaser contains is ugly
 
 """
 TODO: Add dav_archive_url und ids to production and staging
-# TODO als letztes
-So generell zu dieser Klasse: ich find beim Lesen irgendwie nie die Methode, die ich suche. ;) Als typische Ordnung find ich hilfreich, die "wichtigen" oder "Einstiegspunkte" zuoberst, und dann unterhalb jeder Funktion halt die Hilfsfunktionen, die dort aufgerufen werden -- insbesondere wenn die Hilfsfunktionen vor allem der Gliederung und Benamsung dienen (und nicht unbedingt an verschiedenen Stellen aufgerufen werden).
 
 Vermutlich sind die Datenmengen nicht so riesig, aber Zope kann das View-Ergebnis anstatt als String auch direkt aus nem file-like-object zurückgeben, siehe zope.file.download.DownloadResult.
 # TODO
-zope.file.download.DownloadResult -> will er nicht weil, StringIO nicht zope-like
-
-Traceback (most recent call last):
-  File "/usr/lib/python2.7/unittest/case.py", line 329, in run
-    testMethod()
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/tests/test_toc.py", line 119, in test_create_csv_with_not_all_values_in_toc_data
-    assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
-  File "/home/knut/Code/Zeit/vivi-deployment/work/source/zeit.content.volume/src/zeit/content/volume/browser/toc.py", line 257, in _create_csv
-    file_content = zope.file.download.DownloadResult(out)
-  File "/home/knut/Code/Zeit/vivi-deployment/work/_/home/knut/.batou-shared-eggs/zope.file-0.6.2-py2.7.egg/zope/file/download.py", line 76, in __init__
-    zope.security.proxy.removeSecurityProxy(context.openDetached()))
-AttributeError: StringIO instance has no attribute 'openDetached'
-
-Aber wenn ich so was mache wie
- out = zope.file.file.File()
+Hier hatte ich leider auch Probleme mit den Zope Files. So wie ich das verstanden habe muss, ich in der ZODB das File
+zwischenlagern (transaction.commit()) bin mir aber nicht sicher wo dass dann hingelegt werden kann. Benutzte ich das Repository und lege das dort hin
+brauche ich eine unique-ID. Ich würde vorschlagen, dass einfach so zu belassen, da das hacky wird (unique-ID ans zope-Fileobject) wenn ich das mache,
+außer du hast eine Idee oder Stelle wo ich mir das gut abgucken kann.
 
 2016-11-14T15:01:41 WARNING zeit.cms.content.dav Could not parse DAV property value '65-65' for Article.page at http://xml.zeit.de/ZEI/2016/23/chancen/C-Frauen-Karriere [ValueError: ("invalid literal for int() with base 10: '65-65'",)]. Using default None instead.
-# This Error occurs if u visit localhost:8080/++skin++vivi/repository/2016/25/
+# This Error occurs if u visit folders like /repository/2016/25/
 2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
 -> Parse Page, differently?
 
-
-Kommentieren
 """
 
 
@@ -62,9 +46,10 @@ class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
     The dav url to the articles generally looks like ARCHIVE_ROOT/PRODUCT_ID/RESSORT_NAME/ARTICLE.xml
+    E.g. http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/23/entdecken/03-Normalo
     """
-    # Christ und Welt Product ID changes are a special case
-    # in products.xml the old product id 'CW' has to be used.
+    # Christ und Welt product ID is a special case,
+    # because in the products.xml the deprecated product ID 'CW' is present.
     PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
     CSV_DELIMITER = '\t'
 
@@ -93,7 +78,9 @@ class Toc(zeit.cms.browser.view.Base):
         return self._create_toc_content()
 
     def _register_archive_connector(self):
+        """Register the ITocConnecor utility if necessary"""
         if self.dav_archive_url == 'test':
+            assert zope.component.getUtility(ITocConnector)
             # In the test a mock connector is used.
             return
         default_registry = zope.component.getSiteManager()
@@ -111,7 +98,6 @@ class Toc(zeit.cms.browser.view.Base):
         registry.registerUtility(connector, ITocConnector)
         zope.component.hooks.setSite(site)
         return
-
 
     def _create_toc_content(self):
         """
@@ -131,7 +117,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _get_via_dav(self):
         """
         Get and parse xml form webdav und create toc entries.
-        :param volume: ..volume.Volume Content Instance
+        :param volume: ..volume.Volume Instance
         :return: Sorted Dict of Toc entries. Sorted like the toc_config.PRODUCT_IDS list.
                  {
                         'Product Name':
@@ -220,6 +206,10 @@ class Toc(zeit.cms.browser.view.Base):
         return self._normalize_toc_element(res)
 
     def list_relevant_ressort_folders_with_archive_connector(self, path):
+        """
+        :param path: path to product for the volume
+        :return: [('foldername', zeit.cms.repository.folder.Folder), ...]
+        """
         try:
             product_folder = zeit.cms.interfaces.ICMSContent(self.connector[path])
             return [item for item in product_folder.items() if self._is_relevant_folder_item(item)]
@@ -236,23 +226,6 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data: The Toc data as ordered dict.
         :return: unicode - csv content
         """
-        # import transaction
-        # from zope.file.download import DownloadResult
-        # from zope.file.file import File
-        # out = File()
-        # w = out.open('w')
-        # writer = csv.writer(w, delimiter=self.CSV_DELIMITER)
-        # for toc_element in self._generate_csv_rows(toc_data):
-        #     writer.writerow(
-        #         [val.encode('utf-8') for val in toc_element]
-        #     )
-        #     transaction.commit()
-        #
-        # w.flush()
-        # w.close()
-        # transaction.commit()
-        # return DownloadResult(out)
-
         file_content = u''
         out = StringIO.StringIO()
         try:
@@ -331,7 +304,8 @@ class Toc(zeit.cms.browser.view.Base):
         """
         for product_name, ressort_dict in toc_data.iteritems():
             for ressort_name, articles in ressort_dict.iteritems():
-                toc_data[product_name][ressort_name] = self._sorted_articles(articles)
+                toc_data[product_name][ressort_name] = \
+                    sorted(articles, key=self._get_page_from_article)
         for product_name, ressort_dict in toc_data.iteritems():
             toc_data[product_name] = self._sorted_ressorts(ressort_dict)
         return toc_data
@@ -344,11 +318,8 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             return int(article.get('page'))
         except ValueError:
-            # The empty string will cause a Value Error
+            # The empty string will raise a Value Error
             return sys.maxint
-
-    def _sorted_articles(self, articles):
-        return sorted(articles, key=self._get_page_from_article)
 
     def _sorted_ressorts(self, ressorts):
         """
@@ -409,8 +380,6 @@ class Excluder(object):
 
 
     def __init__(self):
-        # TODO Create combined regex? Should be faster.
-        # compile regexes for article
         self._compiled_title_regexs = [re.compile(regex) for regex in self._title_exclude]
         self._compiled_supertitle_regexs = [re.compile(regex) for regex in self._supertitle_exclude]
         self._compiled_jobname_regexs = [re.compile(regex) for regex in self._jobname_exclude]
