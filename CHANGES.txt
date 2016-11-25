@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - ZON-3118: Add method to retrieve enriched article body with intext links.
 
+- Patch requests library to rigorously enforce response timeouts.
+
 
 1.7.4 (2016-11-04)
 ------------------
