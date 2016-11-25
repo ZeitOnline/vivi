@@ -38,7 +38,6 @@ außer du hast eine Idee oder Stelle wo ich mir das gut abgucken kann.
 # This Error occurs if u visit folders like /repository/2016/25/
 2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
 -> Parse Page, differently?
-
 """
 
 
@@ -69,14 +68,6 @@ class Toc(zeit.cms.browser.view.Base):
         """
         return urlparse.urlparse(self.dav_archive_url)
 
-    def __call__(self):
-        self.product_id_mapping = self._create_product_id_full_name_mapping()
-        filename = self._generate_file_name()
-        self.request.response.setHeader('Content-Type', 'text/csv')
-        self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="%s"' % filename)
-        return self._create_toc_content()
-
     def _register_archive_connector(self):
         """Register the ITocConnecor utility if necessary"""
         if self.dav_archive_url == 'test':
@@ -99,6 +90,23 @@ class Toc(zeit.cms.browser.view.Base):
         zope.component.hooks.setSite(site)
         return
 
+    def __call__(self):
+        self.product_id_mapping = self._create_product_id_full_name_mapping()
+        filename = self._generate_file_name()
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
+        return self._create_toc_content()
+
+    def _create_product_id_full_name_mapping(self):
+        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self.context))
+        return dict([(product.id, product.title) for product in products])
+
+    def _generate_file_name(self):
+        toc_file_string = _("Table of Content").lower().replace(" ", "_")
+        volume_formatted = self.context.fill_template("{year}_{name}")
+        return "{}_{}.csv".format(toc_file_string, volume_formatted)
+
     def _create_toc_content(self):
         """
         Create Table of Contents for the given Volume as a csv.
@@ -108,11 +116,6 @@ class Toc(zeit.cms.browser.view.Base):
         toc_data = self._get_via_dav()
         sorted_toc_data = self._sort_toc_data(toc_data)
         return self._create_csv(sorted_toc_data)
-
-    def _generate_file_name(self):
-        toc_file_string = _("Table of Content").lower().replace(" ", "_")
-        volume_formatted = self.context.fill_template("{year}_{name}")
-        return "{}_{}.csv".format(toc_file_string, volume_formatted)
 
     def _get_via_dav(self):
         """
@@ -140,14 +143,6 @@ class Toc(zeit.cms.browser.view.Base):
             results[self._full_product_name(product_path)] = result_for_product
         return results
 
-    def _get_all_article_elements_in_folder(self, path):
-        """
-        Get all DAV Server paths to article files in path.
-        :param path: str - archive path to ressort, e.g. 'cms/archiv/ws-archiv/ZEI/2016/23/'
-        :return: [str]
-        """
-        return [resource.xml for _, resource in path.items() if IArticle.providedBy(resource)]
-
     def _get_all_product_ids_for_volume(self):
         """ Returns List [First Product ID, Second ...] """
         # Change this if the volume content object "knows" which Products it has...
@@ -169,41 +164,14 @@ class Toc(zeit.cms.browser.view.Base):
         # You need the XML prefix here
         prefix = 'http://xml.zeit.de'
         return [posixpath.join(*[str(e) for e in [prefix, dir_name, self.context.year, volume_string, '']])
-            for dir_name in product_dir_names]
+                for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id):
         """
         :param product_id: str
-        :param reverse: Bool - replace directorynames with product ID's instead.
         :return: str
         """
         return self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
-
-
-    def _is_relevant_article(self, article_tree):
-        """
-        Predicate to decide if a doc is relevant for the toc.
-        :param article_tree: lxml.etree  of the article
-        :return: bool
-        """
-        return self.excluder.is_relevant(article_tree)
-
-    def _get_metadata_from_article_xml(self, atricle_tree):
-        """
-        Get all relevant normalized metadata from article xml tree.
-        :param atricle_tree: lxml.etre Element -
-        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
-        """
-        xpaths = {
-            'title': "body/title/text()",
-            'page': "//attribute[@name='page']/text()",
-            'teaser': "body/subtitle/text()",
-            'author': "//attribute[@name='author']/text()"
-        }
-        res = {}
-        for key, xpath in xpaths.iteritems():
-            res[key] = atricle_tree.xpath(xpath)
-        return self._normalize_toc_element(res)
 
     def list_relevant_ressort_folders_with_archive_connector(self, path):
         """
@@ -219,45 +187,38 @@ class Toc(zeit.cms.browser.view.Base):
     def _is_relevant_folder_item(self, item):
         return self.excluder.is_relevant_folder(item[0]) and IFolder.providedBy(item[1])
 
-    def _create_csv(self, toc_data):
+    def _get_all_article_elements_in_folder(self, ressort_folder):
         """
-        Creates CSV File from TOC Data.
-        SEITENZAHL [tab] AUTOREN [tab] TITEL + TEASER
-        :param toc_data: The Toc data as ordered dict.
-        :return: unicode - csv content
+        Get all DAV Server paths to article files in path.
+        :param ressort_folder:
+        :return: [lxml.etree Article element, ...]
         """
-        file_content = u''
-        out = StringIO.StringIO()
-        try:
-            writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
-            for toc_element in self._generate_csv_rows(toc_data):
+        return [resource.xml for _, resource in ressort_folder.items() if IArticle.providedBy(resource)]
 
-                writer.writerow(
-                    [val.encode('utf-8') for val in toc_element]
-                )
-
-            file_content = out.getvalue()
-        finally:
-            out.close()
-            return file_content
-
-    def _generate_csv_rows(self, toc_entries):
+    def _create_toc_element(self, article_element):
         """
-        Generator to create the csv-rows.
-        :param toc_entries - The Toc data as ordered dict.
-        :return: [CSV Row]
+        :param article_element: lxml.etree Article element
+        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
         """
-        for product_name, ressort_dict in toc_entries.iteritems():
-            yield [product_name]
-            for ressort_name, toc_entries in ressort_dict.iteritems():
-                yield [ressort_name]
-                for toc_entry in toc_entries:
-                    yield self._format_toc_element(toc_entry)
-        return
+        return self._get_metadata_from_article_xml(article_element) \
+            if self.excluder.is_relevant(article_element) else None
 
-    def _format_toc_element(self, toc_entry):
-        title_and_tease = toc_entry.get("title") + u" " + toc_entry.get("teaser")
-        return [toc_entry.get("page"), toc_entry.get("author"), title_and_tease]
+    def _get_metadata_from_article_xml(self, atricle_tree):
+        """
+        Get all relevant normalized metadata from article xml tree.
+        :param atricle_tree: lxml.etree Element
+        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
+        """
+        xpaths = {
+            'title': "body/title/text()",
+            'page': "//attribute[@name='page']/text()",
+            'teaser': "body/subtitle/text()",
+            'author': "//attribute[@name='author']/text()"
+        }
+        res = {}
+        for key, xpath in xpaths.iteritems():
+            res[key] = atricle_tree.xpath(xpath)
+        return self._normalize_toc_element(res)
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
@@ -276,17 +237,6 @@ class Toc(zeit.cms.browser.view.Base):
         teaser = toc_entry.get('teaser', u'')
         toc_entry['teaser'] = teaser.replace('\n', u' ')
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
-
-    def _create_toc_element(self, doc_path):
-        return self._get_metadata_from_article_xml(doc_path) \
-            if self._is_relevant_article(doc_path) else None
-
-    def _dir_name(self, path):
-        return path.split('/')[-2].title()
-
-    def _create_product_id_full_name_mapping(self):
-        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self.context))
-        return dict([(product.id, product.title) for product in products])
 
     def _full_product_name(self, product_path):
         """
@@ -339,6 +289,46 @@ class Toc(zeit.cms.browser.view.Base):
         for ressort_min_page_tuple in sorted(ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]):
             d[ressort_min_page_tuple[0]] = ressorts.get(ressort_min_page_tuple[0])
         return d
+
+    def _create_csv(self, toc_data):
+        """
+        Creates CSV File from TOC Data.
+        SEITENZAHL [tab] AUTOREN [tab] TITEL + TEASER
+        :param toc_data: The Toc data as ordered dict.
+        :return: unicode - csv content
+        """
+        file_content = u''
+        out = StringIO.StringIO()
+        try:
+            writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
+            for toc_element in self._generate_csv_rows(toc_data):
+
+                writer.writerow(
+                    [val.encode('utf-8') for val in toc_element]
+                )
+
+            file_content = out.getvalue()
+        finally:
+            out.close()
+            return file_content
+
+    def _generate_csv_rows(self, toc_entries):
+        """
+        Generator to create the csv-rows.
+        :param toc_entries - The Toc data as ordered dict.
+        :return: [CSV Row]
+        """
+        for product_name, ressort_dict in toc_entries.iteritems():
+            yield [product_name]
+            for ressort_name, toc_entries in ressort_dict.iteritems():
+                yield [ressort_name]
+                for toc_entry in toc_entries:
+                    yield self._format_toc_element(toc_entry)
+        return
+
+    def _format_toc_element(self, toc_entry):
+        title_and_tease = toc_entry.get("title") + u" " + toc_entry.get("teaser")
+        return [toc_entry.get("page"), toc_entry.get("author"), title_and_tease]
 
 
 class Excluder(object):
