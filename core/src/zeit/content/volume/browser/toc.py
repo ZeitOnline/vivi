@@ -22,18 +22,9 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
 import zope.interface
 
-# TODO Author/Title Teaser contains is ugly
-
 """
 TODO: Add dav_archive_url und ids to production and staging
-
-Vermutlich sind die Datenmengen nicht so riesig, aber Zope kann das View-Ergebnis anstatt als String auch direkt aus nem file-like-object zurückgeben, siehe zope.file.download.DownloadResult.
-# TODO
-Hier hatte ich leider auch Probleme mit den Zope Files. So wie ich das verstanden habe muss, ich in der ZODB das File
-zwischenlagern (transaction.commit()) bin mir aber nicht sicher wo dass dann hingelegt werden kann. Benutzte ich das Repository und lege das dort hin
-brauche ich eine unique-ID. Ich würde vorschlagen, dass einfach so zu belassen, da das hacky wird (unique-ID ans zope-Fileobject) wenn ich das mache,
-außer du hast eine Idee oder Stelle wo ich mir das gut abgucken kann.
-
+Delete TinyDav dependency
 2016-11-14T15:01:41 WARNING zeit.cms.content.dav Could not parse DAV property value '65-65' for Article.page at http://xml.zeit.de/ZEI/2016/23/chancen/C-Frauen-Karriere [ValueError: ("invalid literal for int() with base 10: '65-65'",)]. Using default None instead.
 # This Error occurs if u visit folders like /repository/2016/25/
 2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
@@ -139,6 +130,7 @@ class Toc(zeit.cms.browser.view.Base):
                     toc_entry = self._create_toc_element(article_element)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
+                ressort_folder_name = ressort_folder_name.replace('-',' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(product_path)] = result_for_product
         return results
@@ -172,6 +164,7 @@ class Toc(zeit.cms.browser.view.Base):
         :return: str
         """
         return self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
+
 
     def list_relevant_ressort_folders_with_archive_connector(self, path):
         """

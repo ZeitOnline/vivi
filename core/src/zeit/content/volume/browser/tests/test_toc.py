@@ -162,5 +162,5 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(self.article_title, b.contents)
         self.assertIn(str(self.article_page), b.contents)
         for ressort_name in self.ressort_names:
-            self.assertIn(ressort_name, b.contents)
+            self.assertIn(ressort_name.title(), b.contents)
         self.assertIn('DIE ZEIT'.lower(), b.contents.lower())
