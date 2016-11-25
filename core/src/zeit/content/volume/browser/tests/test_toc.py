@@ -1,15 +1,16 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import mock
 from ordereddict import OrderedDict
 from collections import defaultdict
+
 import lxml.etree
-import zeit.cms.testing
+
+import zeit.cms.content.sources
 from zeit.cms.repository.folder import Folder
+import zeit.cms.testing
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
-import zeit.cms.content.sources
 import zeit.content.volume.testing
 import zeit.connector.mock
 
@@ -21,12 +22,24 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.connector = zeit.connector.mock.connector_factory()
         self.toc_data = OrderedDict()
         self.toc_data['Die Zeit'] = OrderedDict(
-                    {'Politik': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author': 'Autor'}]})
+                    {'Politik': [{'page': '1',
+                                  'title': 'title',
+                                  'teaser': 'tease',
+                                  'author': 'Autor'}]
+                     }
+        )
         self.toc_data['Anderer'] = OrderedDict(
-                    {'Dossier': [{'page': '1', 'title': 'title', 'teaser':'tease', 'author': 'Autor'},
-                                 {'page': '3', 'title': 'title2', 'teaser':'tease', 'author': 'Autor'}
+                    {'Dossier': [
+                        {'page': '1',
+                         'title': 'title',
+                         'teaser': 'tease',
+                         'author': 'Autor'},
+                        {'page': '3',
+                         'title': 'title2',
+                         'teaser': 'tease',
+                         'author': 'Autor'}
                                  ]}
-                )
+        )
 
     def test_list_relevant_ressort_folders_returns_correct_directories(self):
         toc = Toc()
@@ -37,7 +50,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             self.repository['ZEI']['2015']['01'] = Folder()
             for foldername in folders:
                 self.repository['ZEI']['2015']['01'][foldername] = Folder()
-        relevant_ressorts = toc.list_relevant_ressort_folders_with_archive_connector('http://xml.zeit.de/ZEI/2015/01')
+        relevant_ressorts = toc.list_relevant_ressort_folders(
+            'http://xml.zeit.de'
+            '/ZEI/2015/01')
         foldernames = [tup[0] for tup in relevant_ressorts]
         self.assertIn('politik', foldernames)
 
@@ -50,8 +65,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         article_xml = u"""
             <article>
                 <head>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">20-20</attribute>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Autor</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document"
+                    name="page">20-20</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document"
+                    name="author">Autor</attribute>
                 </head>
                 <body>
                      <title>Titel</title>
@@ -61,7 +78,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             </article>
         """
 
-        expected = {'page': '20', 'title': 'Titel', 'teaser': 'Das soll der Teaser sein', 'author': 'Autor'}
+        expected = {'page': '20',
+                    'title': 'Titel',
+                    'teaser': 'Das soll der Teaser sein',
+                    'author': 'Autor'}
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc()
         result = toc._create_toc_element(article_element)
@@ -103,7 +123,8 @@ Dossier\r
         xml_template = u"""
         <article>
             <head>
-                <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">{d[jobname]}</attribute>
+                <attribute ns="http://namespaces.zeit.de/CMS/document"
+                name="jobname">{d[jobname]}</attribute>
             </head>
             <body>
                  <title>{d[title]}</title>
@@ -111,9 +132,12 @@ Dossier\r
             </body>
         </article>
         """
-        for values in [{'title': u'Heute 20.02.2016'}, {'supertitle': u'WIR RATEN AB'}, {'jobname': u'AS-Zahl'}]:
+        for values in [{'title': u'Heute 20.02.2016'},
+                       {'supertitle': u'WIR RATEN AB'},
+                       {'jobname': u'AS-Zahl'}]:
             xml = xml_template.format(d=defaultdict(str, **values))
-            self.assertEqual(False, excluder.is_relevant(lxml.etree.fromstring(xml)))
+            self.assertEqual(False,
+                             excluder.is_relevant(lxml.etree.fromstring(xml)))
 
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
@@ -141,17 +165,21 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                 article.volume = 1
                 article.title = self.article_title
                 article.page = self.article_page
-                self.repository['ZEI']['2015']['01']['politik']['test_artikel'] = article
+                self.repository['ZEI']['2015']['01']['politik'][
+                    'test_artikel'] = article
 
     def test_toc_generates_right_headers(self):
         b = self.browser
         b.handleErrors = False
-        with mock.patch('zeit.content.volume.browser.toc.Toc._create_toc_content') as create_content:
+        with mock.patch('zeit.content.volume.browser'
+                        '.toc.Toc._create_toc_content') as create_content:
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/repository/'
                    'ZEI/2015/01/ausgabe/@@toc.csv')
             self.assertEqual('text/csv', b.headers['content-type'])
-            self.assertEqual('attachment; filename="table_of_content_2015_01.csv"', b.headers['content-disposition'])
+            self.assertEqual('attachment; '
+                             'filename="table_of_content_2015_01.csv"',
+                             b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
     def test_toc_generates_correct_csv(self):

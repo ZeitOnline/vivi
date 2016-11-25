@@ -6,37 +6,31 @@ import re
 import sys
 import posixpath
 from ordereddict import OrderedDict
+
 import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zeit.connector.connector
-import toc_config
-import zope.file.download
-import zope.app.appsetup.product
-import zope.site.site
-import zope.component
-import zope.component.registry
 from zeit.cms.repository.interfaces import IFolder
+import zeit.connector.connector
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
+
+import zope.app.appsetup.product
+import zope.component
+import zope.component.registry
 import zope.interface
+import zope.site.site
 
-"""
-TODO: Add dav_archive_url und ids to production and staging
-Delete TinyDav dependency
-2016-11-14T15:01:41 WARNING zeit.cms.content.dav Could not parse DAV property value '65-65' for Article.page at http://xml.zeit.de/ZEI/2016/23/chancen/C-Frauen-Karriere [ValueError: ("invalid literal for int() with base 10: '65-65'",)]. Using default None instead.
-# This Error occurs if u visit folders like /repository/2016/25/
-2016-11-18 12:08:00,083 WARNI zeit.cms.content.dav Could not parse DAV property value 'CW1' for Article.page at http://xml.zeit.de/2016/25/Neudeck-box-1 [ValueError: ("invalid literal for int() with base 10: 'CW1'",)]. Using default None instead.
--> Parse Page, differently?
-"""
-
+import toc_config
 
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
-    The dav url to the articles generally looks like ARCHIVE_ROOT/PRODUCT_ID/RESSORT_NAME/ARTICLE.xml
-    E.g. http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/23/entdecken/03-Normalo
+    The dav url to the articles generally looks like
+    ARCHIVE_ROOT/PRODUCT_ID/RESSORT_NAME/ARTICLE.xml
+    E.g.
+    cms-backend.zeit.de/cms/archiv-wf/archiv/ZEI/2016/23/entdecken/03-Normalo
     """
     # Christ und Welt product ID is a special case,
     # because in the products.xml the deprecated product ID 'CW' is present.
@@ -45,7 +39,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def __init__(self, *args, **kwargs):
         super(Toc, self).__init__(*args, **kwargs)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+        config = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = self._parse_config()
         self.excluder = Excluder()
@@ -112,33 +107,39 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get and parse xml form webdav und create toc entries.
         :param volume: ..volume.Volume Instance
-        :return: Sorted Dict of Toc entries. Sorted like the toc_config.PRODUCT_IDS list.
-                 {
-                        'Product Name':
-                                 {
-                                    'Ressort' : [{'page': str, 'title': str, 'teaser': str, 'author': str},...]
-                                 }
-                 }
+        :return: Sorted Dict of Toc entries.
+        Sorted like the toc_config.PRODUCT_IDS list.
+        {
+        'Product Name':
+            {
+            'Ressort' :
+                [{'page': str, 'title': str, 'teaser': str, 'author': str},...]
+            }
+        }
         """
         results = OrderedDict()
         product_ids = self._get_all_product_ids_for_volume()
         for product_path in self._get_all_paths_for_product_ids(product_ids):
             result_for_product = {}
-            for ressort_folder_name, ressort_folder in self.list_relevant_ressort_folders_with_archive_connector(product_path):
+            for ressort_folder_name, ressort_folder in \
+                    self.list_relevant_ressort_folders(product_path):
                 result_for_ressort = []
-                for article_element in self._get_all_article_elements_in_folder(ressort_folder):
+                for article_element in \
+                        self._get_all_article_elements(ressort_folder):
                     toc_entry = self._create_toc_element(article_element)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
-                ressort_folder_name = ressort_folder_name.replace('-',' ').title()
+                ressort_folder_name = ressort_folder_name.replace('-', ' ')\
+                    .title()
                 result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(product_path)] = result_for_product
         return results
 
     def _get_all_product_ids_for_volume(self):
         """ Returns List [First Product ID, Second ...] """
-        # Change this if the volume content object "knows" which Products it has...
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
+        # Change it if the volume content object "knows" which Products it has
+        config = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         if not ids_as_string:
             ids_as_string = toc_config.PRODUCT_IDS
@@ -150,12 +151,14 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
-        product_dir_names = [self._replace_product_id_by_its_dirname(product_id) for product_id in product_ids]
+        product_dir_names = [self._replace_product_id_by_its_dirname(prod_id)
+                             for prod_id in product_ids]
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         volume_string = '%02d' % self.context.volume
         # You need the XML prefix here
         prefix = 'http://xml.zeit.de'
-        return [posixpath.join(*[str(e) for e in [prefix, dir_name, self.context.year, volume_string, '']])
+        return [posixpath.join(*[str(e) for e in
+                [prefix, dir_name, self.context.year, volume_string, '']])
                 for dir_name in product_dir_names]
 
     def _replace_product_id_by_its_dirname(self, product_id):
@@ -165,28 +168,31 @@ class Toc(zeit.cms.browser.view.Base):
         """
         return self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
 
-
-    def list_relevant_ressort_folders_with_archive_connector(self, path):
+    def list_relevant_ressort_folders(self, path):
         """
         :param path: path to product for the volume
         :return: [('foldername', zeit.cms.repository.folder.Folder), ...]
         """
         try:
-            product_folder = zeit.cms.interfaces.ICMSContent(self.connector[path])
-            return [item for item in product_folder.items() if self._is_relevant_folder_item(item)]
+            product_folder = \
+                zeit.cms.interfaces.ICMSContent(self.connector[path])
+            return [item for item in product_folder.items()
+                    if self._is_relevant_folder_item(item)]
         except KeyError:
             return []
 
     def _is_relevant_folder_item(self, item):
-        return self.excluder.is_relevant_folder(item[0]) and IFolder.providedBy(item[1])
+        return self.excluder.is_relevant_folder(item[0]) \
+               and IFolder.providedBy(item[1])
 
-    def _get_all_article_elements_in_folder(self, ressort_folder):
+    def _get_all_article_elements(self, ressort_folder):
         """
         Get all DAV Server paths to article files in path.
         :param ressort_folder:
         :return: [lxml.etree Article element, ...]
         """
-        return [resource.xml for _, resource in ressort_folder.items() if IArticle.providedBy(resource)]
+        return [resource.xml for _, resource in ressort_folder.items()
+                if IArticle.providedBy(resource)]
 
     def _create_toc_element(self, article_element):
         """
@@ -215,7 +221,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
-            toc_entry[key] = value[0].replace(self.CSV_DELIMITER, '') if len(value) > 0 else u""
+            toc_entry[key] = value[0].replace(self.CSV_DELIMITER, '') \
+                if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
         return toc_entry
@@ -279,8 +286,10 @@ class Toc(zeit.cms.browser.view.Base):
                 min_page = self._get_page_from_article(articles[0])
             ressort_min_page_number_tuples.append((resort_name, min_page))
         d = OrderedDict()
-        for ressort_min_page_tuple in sorted(ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]):
-            d[ressort_min_page_tuple[0]] = ressorts.get(ressort_min_page_tuple[0])
+        for ressort_page_tuple in sorted(
+                ressort_min_page_number_tuples, key=lambda
+                resort_page_tup: resort_page_tup[1]):
+            d[ressort_page_tuple[0]] = ressorts.get(ressort_page_tuple[0])
         return d
 
     def _create_csv(self, toc_data):
@@ -320,15 +329,17 @@ class Toc(zeit.cms.browser.view.Base):
         return
 
     def _format_toc_element(self, toc_entry):
-        title_and_tease = toc_entry.get("title") + u" " + toc_entry.get("teaser")
-        return [toc_entry.get("page"), toc_entry.get("author"), title_and_tease]
+        title_teaser = \
+            toc_entry.get("title") + u" " + toc_entry.get("teaser")
+        return [toc_entry.get("page"), toc_entry.get("author"), title_teaser]
 
 
 class Excluder(object):
     """
     Checks if an article should be excluded from the table of contents.
     """
-    # Rules should be as strict as possible, otherwise the wrong article might get  excluded
+    # Rules should be as strict as possible,
+    # otherwise the wrong article might get  excluded
     TITLE_XPATH = "body/title/text()"
     SUPERTITLE_XPATH = "body/supertitle/text()"
     JOBNAME_XPATH = "//attribute[@name='jobname']/text()"
@@ -360,12 +371,13 @@ class Excluder(object):
         u'(Traumstück|AS-Zahl)'
     ]
 
-
-
     def __init__(self):
-        self._compiled_title_regexs = [re.compile(regex) for regex in self._title_exclude]
-        self._compiled_supertitle_regexs = [re.compile(regex) for regex in self._supertitle_exclude]
-        self._compiled_jobname_regexs = [re.compile(regex) for regex in self._jobname_exclude]
+        self._compiled_title_regexs = [re.compile(r)
+                                       for r in self._title_exclude]
+        self._compiled_supertitle_regexs = [re.compile(r)
+                                            for r in self._supertitle_exclude]
+        self._compiled_jobname_regexs = [re.compile(r)
+                                         for r in self._jobname_exclude]
 
     def is_relevant(self, article_lxml_tree):
         # TODO A lot of Code repetition
@@ -373,24 +385,29 @@ class Excluder(object):
         supertitle_values = article_lxml_tree.xpath(self.SUPERTITLE_XPATH)
         jobname_values = article_lxml_tree.xpath(self.JOBNAME_XPATH)
 
-        title_value = title_values[0] if len(title_values) > 0 else ''
-        supertitle_value = supertitle_values[0] if len(supertitle_values) > 0 else ''
+        title_value = title_values[0] \
+            if len(title_values) > 0 else ''
+        supertitle_value = supertitle_values[0] \
+            if len(supertitle_values) > 0 else ''
         jobname_value = jobname_values[0] if len(jobname_values) > 0 else ''
 
         title_exclude = any(
-            [re.match(title_pattern, title_value) for title_pattern in self._compiled_title_regexs]
+            [re.match(title_pattern, title_value)
+             for title_pattern in self._compiled_title_regexs]
         )
         supertitle_exclude = any(
-            [re.match(supertitle_pattern, supertitle_value) for supertitle_pattern in self._compiled_supertitle_regexs]
+            [re.match(supertitle_pattern, supertitle_value)
+             for supertitle_pattern in self._compiled_supertitle_regexs]
         )
         jobname_exclude = any(
-            [re.match(jobname_pattern, jobname_value) for jobname_pattern in self._compiled_jobname_regexs]
+            [re.match(jobname_pattern, jobname_value)
+             for jobname_pattern in self._compiled_jobname_regexs]
         )
         return not(title_exclude or supertitle_exclude or jobname_exclude)
 
     def is_relevant_folder(self, folder_path):
         folders_to_exclude = {'images', 'leserbriefe'}
-        folders_to_exclude = set.union(folders_to_exclude, {ele.title() for ele in folders_to_exclude})
+        folders_to_exclude = set.union(
+            folders_to_exclude,
+            {ele.title() for ele in folders_to_exclude})
         return not any(folder in folder_path for folder in folders_to_exclude)
-
-
