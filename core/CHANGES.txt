@@ -4,7 +4,7 @@ zeit.cms changes
 2.92.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3172: Assume default "free" for ``access`` when content has no value.
 
 
 2.92.1 (2016-11-23)
