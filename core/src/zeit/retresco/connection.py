@@ -6,6 +6,9 @@ import lxml.builder
 import pytz
 import requests
 import requests.exceptions
+import requests.sessions
+import signal
+import urllib
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
@@ -253,3 +256,41 @@ class JSONTypeConverter(object):
         return [self(x) for x in o]
 
 encode_json = JSONTypeConverter()
+
+
+def signal_timeout_request(self, method, url, **kw):
+    """The requests library does not allow to specify a duration within which
+    a request has to return a response. You can only limit the time to
+    wait for the connection to be established or the first byte to be sent.
+
+    We now utilize the SIGALRM signal to enforce a hard timeout and abort the
+    request even if the server is still sending its response.
+    """
+
+    class SignalTimeout(Exception):
+        pass
+
+    def handler(signum, frame):
+        raise SignalTimeout()
+
+    try:
+        # Handler registration fails if it's attempted in a worker thread
+        signal.signal(signal.SIGALRM, handler)
+        # Timeout tuples (connect, read) shall not invoke signal timeouts
+        sig_timeout = float(kw['timeout'])
+    except (KeyError, TypeError, ValueError):
+        sig_timeout = None
+    else:
+        signal.setitimer(signal.ITIMER_REAL, sig_timeout)
+
+    try:
+        return original_session_request(self, method, url, **kw)
+    except SignalTimeout:
+        raise requests.exceptions.Timeout(
+            'Request attempt timed out after %s seconds' % sig_timeout)
+    finally:
+        if sig_timeout:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+
+original_session_request = requests.sessions.Session.request
+requests.sessions.Session.request = signal_timeout_request
