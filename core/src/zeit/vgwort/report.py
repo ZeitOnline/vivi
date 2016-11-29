@@ -10,7 +10,6 @@ import pytz
 import sys
 import tempfile
 import zc.lockfile
-import zeit.cms.async
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -82,11 +81,6 @@ def report_new_documents():
             report(content)
     finally:
         lock.close()
-
-
-@zeit.cms.async.function()
-def async_report(context):
-    report(context)
 
 
 def report(context):
