@@ -2,10 +2,10 @@ zeit.retresco changes
 =====================
 
 
-1.7.5 (unreleased)
-------------------
+1.8 (unreleased)
+----------------
 
-- Nothing changed yet.
+- ZON-3513: Use z3c.celery for the async tasks.
 
 
 1.7.4 (2016-11-04)
