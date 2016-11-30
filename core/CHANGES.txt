@@ -4,7 +4,7 @@ zeit.cms changes
 2.92.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-558: Display ``date_last_published_semantic`` on workflow form.
 
 
 2.92.2 (2016-11-25)
