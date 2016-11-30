@@ -5,7 +5,7 @@ zeit.content.dynamicfolder changes
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support un-urlencoded non-ascii keys.
 
 
 1.2.1 (2016-09-26)

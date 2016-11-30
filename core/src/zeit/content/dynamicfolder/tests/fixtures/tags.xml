@@ -6,5 +6,6 @@
     <tag type="Location" url_value="xaernten" lexical_value="Xärnten &amp; mehr" />
     <tag type="Person" url_value="claudio-abbado" lexical_value="Abbado,Claudio" />
     <tag type="Location" url_value="art-d%C3%A9co" lexical_value="Art" />
+    <tag type="Location" url_value="überlingen" lexical_value="Überlingen" />
   </letter>
 </weighted-tags>

@@ -5,6 +5,7 @@ from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
 import grokcore.component as grok
 import jinja2
+import lxml.etree
 import lxml.objectify
 import persistent
 import urllib
@@ -169,7 +170,12 @@ class RepositoryDynamicFolder(
                 key_match = entry.xpath(key_getter)
                 if not key_match:
                     continue  # entry provides no key
-                key = urllib.unquote(key_match[0]).decode('utf-8')
+                key = urllib.unquote(key_match[0])
+                if isinstance(key, lxml.etree._ElementUnicodeResult):
+                    # Dear lxml, why?
+                    key = unicode(key)
+                else:
+                    key = key.decode('utf-8')
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key]['text'] = entry.text
                 contents[key]['__parent__'] = self
