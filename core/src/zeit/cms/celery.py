@@ -1,22 +1,15 @@
 from __future__ import absolute_import
 from celery._state import get_current_task
 import ConfigParser
-import ZODB.POSException
 import celery
 import celery.bootsteps
 import celery.loaders.app
 import celery.signals
 import celery.utils
-import grokcore.component as grok
 import imp
-import json
 import logging
 import logging.config
 import os
-import random
-import threading
-import transaction
-import transaction.interfaces
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.server.main
@@ -28,77 +21,6 @@ import zope.security.management
 
 
 log = logging.getLogger(__name__)
-
-
-class ActiveInteractionError(RuntimeError):
-    """A Zope interaction is already active."""
-
-
-class CelerySession(threading.local):
-    """Thread local session of data to be sent to Celery."""
-
-    def __init__(self):
-        self.calls = []
-        self._needs_to_join = True
-
-    def add_call(self, method, *args, **kw):
-        self._join_transaction()
-        self.calls.append((method, args, kw))
-
-    def reset(self):
-        self.calls = []
-        self._needs_to_join = True
-
-    def _join_transaction(self):
-        if not self._needs_to_join:
-            return
-        dm = CeleryDataManager(self)
-        transaction.get().join(dm)
-        self._needs_to_join = False
-
-    def _flush(self):
-        for method, args, kw in self.calls:
-            method(*args, **kw)
-        self.reset()
-
-celery_session = CelerySession()
-
-
-class CeleryDataManager(object):
-    """DataManager embedding the access to celery into the transaction."""
-
-    zope.interface.implements(transaction.interfaces.IDataManager)
-
-    transaction_manager = None
-
-    def __init__(self, session):
-        self.session = session
-
-    def abort(self, transaction):
-        self.session.reset()
-
-    def tpc_begin(self, transaction):
-        pass
-
-    def commit(self, transaction):
-        pass
-
-    tpc_abort = abort
-
-    def tpc_vote(self, transaction):
-        self.session._flush()
-
-    def tpc_finish(self, transaction):
-        pass
-
-    def sortKey(self):
-        # Sort last, so that sending to celery is done after all other
-        # DataManagers signalled an okay.
-        return "~zeit.cms.celery"
-
-    def __repr__(self):
-        return '<{0.__module__}.{0.__name__} for {1}, {2}>'.format(
-            self.__class__, transaction.get(), self.session)
 
 
 class TransactionAwareTask(celery.Task):
@@ -120,134 +42,6 @@ class TransactionAwareTask(celery.Task):
         if not app.configure_done:
             return app
         return super(TransactionAwareTask, cls).bind(app)
-
-    def __call__(self, *args, **kw):
-        """Run the task.
-
-        Parameters:
-            _run_asynchronously_ ... if `True` run the task its own transaction
-                                     context, otherwise run it in inline
-                                     (optional, default: `False` to be able to
-                                      run tasks easily inline)
-            _principal_id_ ... run asynchronous task as this user, ignored if
-                               running synchronously (optional)
-
-        Returns whatever the task returns itself.
-
-        """
-        running_asynchronously = kw.pop('_run_asynchronously_', False)
-        principal_id = kw.pop('_principal_id_', None)
-
-        if running_asynchronously:
-            result = self.run_in_worker(principal_id, args, kw)
-        else:
-            result = super(TransactionAwareTask, self).__call__(*args, **kw)
-        return result
-
-    def run_in_worker(self, principal_id, args, kw):
-        if zope.security.management.queryInteraction() is not None:
-            raise ActiveInteractionError()
-
-        old_site = zope.component.hooks.getSite()
-        zope.component.hooks.setSite(self.app.conf['ZOPE_APP'])
-        self.transaction_begin(principal_id)
-        try:
-            result = super(TransactionAwareTask, self).__call__(
-                *args, **kw)
-        except Exception as e:
-            self.transaction_abort()
-            raise e
-        finally:
-            zope.component.hooks.setSite(old_site)
-
-        try:
-            self.transaction_commit()
-        except ZODB.POSException.ConflictError as e:
-            log.warning('Conflict while publishing', exc_info=True)
-            self.transaction_abort()
-            self.retry(max_retries=3,
-                       countdown=random.uniform(0, 2 ** self.request.retries))
-        return result
-
-    def transaction_begin(self, principal_id):
-        transaction.begin()
-        request = zope.publisher.browser.TestRequest()
-        request.setPrincipal(self.get_principal(principal_id))
-        zope.security.management.newInteraction(request)
-
-    def transaction_abort(self):
-        transaction.abort()
-        zope.security.management.endInteraction()
-
-    def transaction_commit(self):
-        transaction.commit()
-        zope.security.management.endInteraction()
-
-    def get_principal(self, principal_id):
-        auth = zope.component.getUtility(
-            zope.app.security.interfaces.IAuthentication)
-        return auth.getPrincipal(principal_id)
-
-    def delay(self, *args, **kw):
-        self._assert_json_serializable(*args, **kw)
-        task_id = celery.utils.gen_unique_id()
-
-        if self.run_instantly():
-            self.__call__(*args, **kw)
-        else:
-            kw['_principal_id_'] = self._get_current_principal_id()
-            kw['_run_asynchronously_'] = self.run_asynchronously()
-            celery_session.add_call(
-                super(TransactionAwareTask, self).apply_async,
-                args, kw, task_id=task_id)
-        return self.AsyncResult(task_id)
-
-    def apply_async(
-            self, args=(), kw=None, task_id=None, *arguments, **options):
-        self._assert_json_serializable(
-            args, kw, task_id, *arguments, **options)
-        if task_id is None:
-            task_id = celery.utils.gen_unique_id()
-        if kw is None:
-            kw = {}
-
-        if self.run_instantly():
-            self.__call__(*args, **kw)
-        else:
-            kw['_principal_id_'] = self._get_current_principal_id()
-            kw['_run_asynchronously_'] = self.run_asynchronously()
-            celery_session.add_call(
-                super(TransactionAwareTask, self).apply_async,
-                args, kw, task_id, *arguments, **options)
-        return self.AsyncResult(task_id)
-
-    def run_instantly(self):
-        """If `True` run the task instantly.
-
-        Otherwise starting the task is delayed to the end of the transaction.
-        By default in tests tasks run instantly.
-
-        This method is a hook to be able to change this behaviour in tests.
-        """
-        return self.app.conf['CELERY_ALWAYS_EAGER']
-
-    def run_asynchronously(self):
-        """If `True` the task is run in its own transaction context.
-
-        Default: `True`
-
-        This method is a hook to be able to change the behaviour in tests.
-        """
-        return True
-
-    def _assert_json_serializable(self, *args, **kw):
-        json.dumps(args)
-        json.dumps(kw)
-
-    def _get_current_principal_id(self):
-        interaction = zope.security.management.getInteraction()
-        principal_id = interaction.participations[0].principal.id
-        return principal_id
 
 
 class ZopeCelery(celery.Celery):
@@ -379,9 +173,9 @@ class ZopeBootstep(celery.bootsteps.StartStopStep):
 # def configure_celery_client(event):
 #     """Sets up celery configuration in Client processes."""
 #     if CELERY.is_worker:
-#         # ZopeCelery.maybe_configure_as_worker() has already configured celery,
-#         # so we don't need to do it _again_ when this event is later triggered
-#         # by ZopeLoader.on_worker_process_init().
+#         # ZopeCelery.maybe_configure_as_worker() has already configured
+#         # celery, so we don't need to do it _again_ when this event is later
+#         # triggered by ZopeLoader.on_worker_process_init().
 #         return
 #     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
 #     CELERY.config_from_pyfile(config['celery-config'])
@@ -390,7 +184,6 @@ class ZopeBootstep(celery.bootsteps.StartStopStep):
 
 
 # CELERY = ZopeCelery()
-# # Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
 # task = CELERY.task
 
 
