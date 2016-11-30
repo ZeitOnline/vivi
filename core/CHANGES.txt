@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-3409: Use Celery for async tasks.
 
+- ZON-3409: Depend on `z3c.celery`.
+
 
 2.92.0 (2016-10-19)
 -------------------

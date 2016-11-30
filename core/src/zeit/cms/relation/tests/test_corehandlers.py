@@ -23,7 +23,8 @@ class CorehandlerTest(zeit.cms.testing.FunctionalTestCase):
         self.repository['reference'] = reference
 
     def test_update_referencing_objects_is_not_updating_recursively(self):
-        with mock.patch('zeit.cms.celery.TransactionAwareTask.delay') as delay:
+        delay = 'z3c.celery.celery.TransactionAwareTask.delay'
+        with mock.patch(delay) as delay:
             zeit.cms.relation.corehandlers.update_referencing_objects(
                 self.repository['parent'])
             transaction.commit()

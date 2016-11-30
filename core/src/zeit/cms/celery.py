@@ -375,23 +375,23 @@ class ZopeBootstep(celery.bootsteps.StartStopStep):
         parent.app.loader.on_worker_shutdown()
 
 
-@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
-def configure_celery_client(event):
-    """Sets up celery configuration in Client processes."""
-    if CELERY.is_worker:
-        # ZopeCelery.maybe_configure_as_worker() has already configured celery,
-        # so we don't need to do it _again_ when this event is later triggered
-        # by ZopeLoader.on_worker_process_init().
-        return
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    CELERY.config_from_pyfile(config['celery-config'])
-    for task in CELERY.tasks.values():
-        task.bind(CELERY)
+# @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+# def configure_celery_client(event):
+#     """Sets up celery configuration in Client processes."""
+#     if CELERY.is_worker:
+#         # ZopeCelery.maybe_configure_as_worker() has already configured celery,
+#         # so we don't need to do it _again_ when this event is later triggered
+#         # by ZopeLoader.on_worker_process_init().
+#         return
+#     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+#     CELERY.config_from_pyfile(config['celery-config'])
+#     for task in CELERY.tasks.values():
+#         task.bind(CELERY)
 
 
-CELERY = ZopeCelery()
-# Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
-task = CELERY.task
+# CELERY = ZopeCelery()
+# # Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
+# task = CELERY.task
 
 
 class TaskFormatter(zope.exceptions.log.Formatter):

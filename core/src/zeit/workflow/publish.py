@@ -1,4 +1,5 @@
 from __future__ import with_statement
+from celery import shared_task
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -94,25 +95,16 @@ class Publish(object):
         log.log(obj, msg)
 
 
-class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
+class PublishRetractTask(object):
 
-    abstract = True  # Base class for Publish and Retract.
-
-    @property
-    def jobid(self):
-        """Retrieve the ID of the async job.
-
-        Since the job ID is retrieved via task instances like PUBLISH_TASK and
-        RETRACT_TASK, the actual job ID must be retrieved by subclasses.
-
-        """
-        raise NotImplementedError()
+    def __init__(self, jobid):
+        self.jobid = jobid
 
     def run(self, uniqueId):
         info = (type(self).__name__, uniqueId, self.jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
-        logger.info("Running job %s" % self.jobid)
+        logger.info("Running job %s", self.jobid)
 
         obj = self.repository.getContent(uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -288,10 +280,6 @@ class PublishRetractTask(zeit.cms.celery.TransactionAwareTask):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
-    @property
-    def jobid(self):
-        PUBLISH_TASK.request.id
-
     def _run(self, obj, info):
         logger.info('Publishing %s' % obj.uniqueId)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -341,15 +329,13 @@ class PublishTask(PublishRetractTask):
         return obj
 
 
-PUBLISH_TASK = PublishTask()
+@shared_task(bind=True)
+def PUBLISH_TASK(self, uniqueId):
+    return PublishTask(self.task_id).run(uniqueId)
 
 
 class RetractTask(PublishRetractTask):
     """Retract an object."""
-
-    @property
-    def jobid(self):
-        RETRACT_TASK.request.id
 
     def _run(self, obj, info):
         logger.info('Retracting %s' % obj.uniqueId)
@@ -393,4 +379,6 @@ class RetractTask(PublishRetractTask):
             zeit.cms.repository.interfaces.IRepository)
 
 
-RETRACT_TASK = RetractTask()
+@shared_task(bind=True)
+def RETRACT_TASK(self, uniqueId):
+    return RetractTask(self.task_id).run(uniqueId)

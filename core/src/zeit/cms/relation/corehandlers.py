@@ -1,6 +1,6 @@
+from celery import shared_task
 import inspect
 import logging
-import zeit.cms.celery
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -42,7 +42,7 @@ class Dummy(object):
     uniqueId = None
 
 
-@zeit.cms.celery.task()
+@shared_task
 def update_referencing_objects(uniqueId):
     # As we want to use this function as celery task, we need a serializable
     # argument, i.e. no ICMSContent object. In fact we do not need a complete

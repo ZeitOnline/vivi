@@ -25,7 +25,7 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
-import zeit.cms.celery
+import z3c.celery.celery
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -69,7 +69,7 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
-        conf = zeit.cms.celery.CELERY.conf
+        conf = z3c.celery.celery.CELERY.conf
         conf['ZOPE_APP'] = self.setup.getRootFolder()
         conf['ZOPE_PRINCIPAL'] = 'zope.user'
         conf.task_always_eager = True
@@ -82,7 +82,7 @@ class ZCMLLayer(plone.testing.Layer):
             pass
         else:
             connector._reset()
-        zeit.cms.celery.CELERY.conf.clear()
+        z3c.celery.celery.CELERY.conf.clear()
         self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
