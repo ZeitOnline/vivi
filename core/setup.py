@@ -66,7 +66,6 @@ setup(
         'z3c.flashmessage',
         'z3c.menu.simple>=0.5.1',
         'z3c.noop',
-        'z3c.noop',
         'z3c.traverser',
         'zc.datetimewidget',
         'zc.form',
