@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Nov 16 11:56:26 2016\n"
-"PO-Revision-Date: 2016-11-16 12:06+0100\n"
+"PO-Revision-Date: 2016-11-30 15:13+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -2732,7 +2732,6 @@ msgid "Community-Profile URL"
 msgstr "Community-Profile URL"
 
 #: zeit/content/author/interfaces.py:67
-#, fuzzy
 msgid "Redaktionszugehörigkeit"
 msgstr "Redaktionszugehörigkeit"
 
@@ -2838,9 +2837,8 @@ msgid "automatic-area-type-query"
 msgstr "Query"
 
 #: zeit/content/cp/browser/area.py:96
-#, fuzzy
 msgid "automatic-area-type-elasticsearch-query"
-msgstr "Query"
+msgstr "ES-Query"
 
 #: zeit/content/cp/browser/blocks/av.py:34
 msgid "Only videos and playlists can be dropped on a video block."
@@ -3276,7 +3274,7 @@ msgstr "Bestückung via solr query"
 
 #: zeit/content/cp/interfaces.py:439
 msgid "Elasticsearch raw query"
-msgstr ""
+msgstr "ES-Query"
 
 #: zeit/content/cp/interfaces.py:454
 msgid ""
@@ -3300,7 +3298,6 @@ msgid "Automatic area with teaser from solr query requires a raw query."
 msgstr "Es ist keine valide Query angegeben."
 
 #: zeit/content/cp/interfaces.py:470
-#, fuzzy
 msgid ""
 "Automatic area with teaser from elasticsearch query requires a raw query."
 msgstr "Es ist keine valide Query angegeben."
@@ -3755,9 +3752,8 @@ msgid "Image sub text: ${caption}"
 msgstr "Bildunterschrift: ${caption}"
 
 #: zeit/content/image/browser/image_view.pt:54
-#, fuzzy
 msgid "Links to: ${link} rel=\"nofollow\""
-msgstr "Verlinkt nach: ${link}"
+msgstr "Verlinkt nach: ${link} (nofollow)"
 
 #: zeit/content/image/browser/imagegroup.py:104
 msgid "Add motif"
@@ -4112,7 +4108,7 @@ msgstr "Kodierung"
 
 #: zeit/content/text/python.py:44
 msgid "Python script"
-msgstr ""
+msgstr "Pythonskript"
 
 #: zeit/content/text/text.py:30 zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
@@ -4716,9 +4712,8 @@ msgid "Hide timestamp"
 msgstr "Zeitstempel verstecken"
 
 #: zeit/seo/interfaces.py:44
-#, fuzzy
 msgid "Disable intext links"
-msgstr "Relateds bearbeiten"
+msgstr "Intextlinks deaktivieren"
 
 #: zeit/seo/interfaces.py:48
 msgid "Keyword entity type"
