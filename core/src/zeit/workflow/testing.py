@@ -6,10 +6,15 @@ import gocept.selenium
 import logging
 import lovely.remotetask.interfaces
 import os
+import pkg_resources
 import plone.testing
 import sys
+import tempfile
 import threading
 import transaction
+import z3c.celery.conftest
+import z3c.celery.layer
+import z3c.celery.testing
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -35,9 +40,70 @@ product_config = """
 </product-config>
 """
 
+
+class CelerySettingsLayer(plone.testing.Layer):
+    """Settings for the Celery end to end tests."""
+
+    def __init__(self, product_config):
+        super(CelerySettingsLayer, self).__init__()
+        self.product_config = product_config
+
+    def setUp(self):
+        # Maybe we also want to truncate this file in future for test isolation
+        self['storage_file_fixture'] = z3c.celery.conftest.storage_file()
+        self['zope_conf_name'] = self.create_zope_conf(
+            next(self['storage_file_fixture']))
+
+        self['celery_config'] = z3c.celery.conftest.celery_config(
+            self['zope_conf_name'])
+        self['celery_parameters'] = z3c.celery.conftest.celery_parameters()
+        self['celery_includes'] = ['zeit.workflow.publish']
+
+        self['logfile_name'] = self.create_log_file()
+        self['log_hander'] = logging.FileHandler(self['logfile_name'])
+        logging.root.addHandler(self['log_hander'])
+
+    def create_log_file(self):
+        with tempfile.NamedTemporaryFile(delete=False) as logfile:
+            return logfile.name
+
+    def create_zope_conf(self, storage_file_name):
+        with tempfile.NamedTemporaryFile(delete=False) as conf:
+            conf.write(z3c.celery.testing.ZOPE_CONF_TEMPLATE.format(
+                zodb_path=storage_file_name,
+                product_config=self.product_config,
+                ftesting_path=pkg_resources.resource_filename(
+                    'zeit.workflow', 'ftesting.zcml')))
+            conf.flush()
+            return conf.name
+
+    def testSetUp(self):
+        with open(self['logfile_name'], 'w') as logfile:
+            logfile.truncate(0)
+
+    def tearDown(self):
+        os.unlink(self['zope_conf_name'])
+        del self['zope_conf_name']
+        next(self['storage_file_fixture'], None)
+        del self['storage_file_fixture']
+        del self['celery_config']
+        del self['celery_includes']
+        del self['celery_parameters']
+        logging.root.removeHandler(self['log_hander'])
+        del self['log_hander']
+        os.unlink(self['logfile_name'])
+        del self['logfile_name']
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
+CELERY_SETTINGS_LAYER = CelerySettingsLayer(ZCML_LAYER.product_config)
+CONFIGURED_END_TO_END_LAYER = z3c.celery.layer.EndToEndLayer(
+    bases=[CELERY_SETTINGS_LAYER], name="ConfiguredEndToEndLayer")
+ZEIT_CELERY_END_TO_END_LAYER = plone.testing.Layer(
+    bases=(CONFIGURED_END_TO_END_LAYER, ZCML_LAYER),
+    name="ZeitCeleryEndToEndLayer")
 
 
 class WorkflowScriptsLayer(plone.testing.Layer):

@@ -1,4 +1,3 @@
-from __future__ import with_statement
 from celery import shared_task
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
@@ -78,7 +77,7 @@ class Publish(object):
 
         if async:
             self.log(self.context, _('Publication scheduled'))
-            return PUBLISH_TASK.delay(self.context.uniqueId).id
+            return PUBLISH_TASK.delay(self.context.uniqueId)
         else:
             PUBLISH_TASK(self.context.uniqueId)
 
@@ -86,7 +85,7 @@ class Publish(object):
         """Retract object."""
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            return RETRACT_TASK.delay(self.context.uniqueId).id
+            return RETRACT_TASK.delay(self.context.uniqueId)
         else:
             RETRACT_TASK(self.context.uniqueId)
 
@@ -121,6 +120,7 @@ class PublishRetractTask(object):
             self._log_timer(uniqueId)
             raise
         self._log_timer(uniqueId)
+        return "Published."
 
     def _log_timer(self, uniqueId):
         timer.mark('Done %s' % uniqueId)

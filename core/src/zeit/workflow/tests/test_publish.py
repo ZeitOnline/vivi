@@ -7,8 +7,8 @@ from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import mock
 import pytz
-import threading
 import time
+import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.workflow.publish
@@ -160,3 +160,25 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
         zeit.workflow.testing.run_publish(
             zeit.cms.workflow.interfaces.PRIORITY_LOW)
         self.assertTrue(info.published)
+
+
+class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
+
+    def test_publish_via_celery_end_to_end(self):
+        somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
+        content = ICMSContent(somalia)
+        info = IPublishInfo(content)
+        self.assertFalse(info.published)
+
+        publish = IPublish(content).publish()
+        transaction.commit()
+        assert 'Published.' == publish.get()
+
+        with open(self.layer['logfile_name']) as logfile:
+            self.assertEllipsis('''...
+Running job ...-...-...-...
+Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)''',
+                                logfile.read())

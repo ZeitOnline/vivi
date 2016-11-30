@@ -478,7 +478,7 @@ Publish the folder again and verify the log:
 
 >>> job_id = publish.publish()
 >>> print logfile.getvalue()
-Running job ...
+Running job None
 Publishing http://xml.zeit.de/online/2007/01/
 Could not checkout http://xml.zeit.de/online/2007/01/
 ...publish.sh:
@@ -507,6 +507,7 @@ work/online/2007/01/Schrempp
 work/online/2007/01/Somalia
 work/online/2007/01/Somalia-Grill
 work/online/2007/01/Somalia-Treffen
+work/online/2007/01/Somalia-urgent
 work/online/2007/01/Spitzenkandidat-Stoiber
 work/online/2007/01/Stern-Umfrage-Bayern
 work/online/2007/01/bildergalerie-mehrwertsteuer
