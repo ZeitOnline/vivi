@@ -123,6 +123,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
             'hide_dupes'])
 
+    require_lead_candidates = (
+        zeit.cms.content.property.ObjectPathAttributeProperty(
+            '.', 'require_lead_candidates',
+            zeit.content.cp.interfaces.IArea['require_lead_candidates'],
+            use_default=True))
+
     referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.referenced_topicpage',
         zeit.content.cp.interfaces.IArea['referenced_topicpage'])
