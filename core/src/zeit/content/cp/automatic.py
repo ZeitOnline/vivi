@@ -59,8 +59,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 teaser = pop_filter(content, is_lead_candidate)
                 if teaser is None:
                     teaser = pop_filter(content)
-                    block.change_layout(
-                        zeit.content.cp.layout.get_layout('buttons'))
+                    block.change_layout(self.context.default_teaser_layout)
             else:
                 teaser = pop_filter(content)
             if teaser is None:
