@@ -25,10 +25,4 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
-  <!-- Allow test user to access the Admin Menu -->
-  <grant
-    principal="zope.Authenticated"
-    permission="zeit.cms.admin.View"
-    />
-
 </configure>
