@@ -60,9 +60,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.index.assert_called_with(content)
 
     def test_index_should_be_called_from_async(self):
-        run_instantly = 'zeit.cms.celery.TransactionAwareTask.run_instantly'
+        run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
         run_asynchronously = (
-            'zeit.cms.celery.TransactionAwareTask.run_asynchronously')
+            'z3c.celery.celery.TransactionAwareTask.run_asynchronously')
         with mock.patch(run_instantly, return_value=False), \
                 mock.patch(run_asynchronously, return_value=False):
             checkout_and_checkin()
