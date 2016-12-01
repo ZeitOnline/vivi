@@ -11,8 +11,8 @@ zeit.content.volume changes
 1.2.2 (2016-10-19)
 ------------------
 
-- Create CP along with the Volume object, using a Python template
-  script configured in products.xml.
+- ZON-3377: Create CP along with the Volume object, using a Python
+  template script configured in products.xml.
 
 
 1.2.1 (2016-09-29)
