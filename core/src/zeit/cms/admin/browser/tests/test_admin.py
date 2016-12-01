@@ -1,13 +1,9 @@
 import zeit.cms.testing
-import zope.testbrowser.testing
 
 
 class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
-    def setUp(self):
-        super(TestAdminMenu, self).setUp()
-        self.browser = zope.testbrowser.testing.Browser()
-        self.browser.addHeader('Authorization', 'Basic zmgr:mgrpw')
+    login_as = 'zmgr:mgrpw'
 
     def test_admin_menu_is_displayed_for_repository_objects(self):
         self.browser.open(

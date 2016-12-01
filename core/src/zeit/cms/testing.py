@@ -566,10 +566,12 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
 
 class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
 
+    login_as = 'user:userpw'
+
     def setUp(self):
         super(BrowserTestCase, self).setUp()
         self.browser = zope.testbrowser.testing.Browser()
-        self.browser.addHeader('Authorization', 'Basic user:userpw')
+        self.browser.addHeader('Authorization', 'Basic %s' % self.login_as)
 
 
 # These ugly names are due to two reasons:
