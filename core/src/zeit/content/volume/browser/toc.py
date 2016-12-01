@@ -24,6 +24,7 @@ import zope.site.site
 
 import toc_config
 
+# TODO Documentation of TOC in readme of zeit.content.volume
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
@@ -108,7 +109,7 @@ class Toc(zeit.cms.browser.view.Base):
         Get and parse xml form webdav und create toc entries.
         :param volume: ..volume.Volume Instance
         :return: Sorted Dict of Toc entries.
-        Sorted like the toc_config.PRODUCT_IDS list.
+        Sorted like toc-product-ids given list in the product config.
         {
         'Product Name':
             {
@@ -205,6 +206,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
         Get all relevant normalized metadata from article xml tree.
+        Using the adapted IArticle doesn't work due to some difference in
+        the page xml element, which can't be parsed.
         :param atricle_tree: lxml.etree Element
         :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
         """
