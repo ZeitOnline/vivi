@@ -23,27 +23,6 @@ import zope.security.management
 log = logging.getLogger(__name__)
 
 
-class TransactionAwareTask(celery.Task):
-    """Wraps every Task execution in a transaction begin/commit/abort.
-    If 'ZOPE_PRINCIPAL' is set in the celery configuration, also sets up a
-    zope.security interaction.
-
-    (Code inspired by gocept.runner.runner.MainLoop)
-    """
-
-    abstract = True  # Base class. Don't register as an excecutable task.
-
-    @classmethod
-    def bind(cls, app):
-        # Unfortunately, Celery insists on setting up everything at import
-        # time, which doesn't work for our clients, since the Zope
-        # product-configuration is not available then. Thus we perform an
-        # additional bind() in the configure_celery_client event handler.
-        if not app.configure_done:
-            return app
-        return super(TransactionAwareTask, cls).bind(app)
-
-
 class ZopeCelery(celery.Celery):
     """Handles configuration for the two main parts of the Celery machinery:
 
@@ -104,87 +83,6 @@ class ZopeCelery(celery.Celery):
                     logging.config.fileConfig(config_file, dict(
                         __file__=config_file,
                         here=os.path.dirname(config_file)))
-
-    def config_from_pyfile(self, filename):
-        """Applies Celery configuration by reading the given python file
-        (absolute filename), which unfortunately Celery does not support.
-
-        (Code inspired by flask.config.Config.from_pyfile)
-        """
-        module = imp.new_module('config')
-        module.__file__ = filename
-        try:
-            with open(filename) as config_file:
-                exec(compile(
-                    config_file.read(), filename, 'exec'), module.__dict__)
-        except IOError as e:
-            e.strerror = 'Unable to load configuration file (%s)' % e.strerror
-            raise e
-        self.config_from_object(module)
-        self.configure_done = True
-
-
-class ZopeLoader(celery.loaders.app.AppLoader):
-    """Sets up the Zope environment in the Worker processes.
-
-    (Code inspired by gocept.runner.runner.init)
-    """
-
-    def on_worker_process_init(self):
-        conf = self.app.conf
-        configfile = conf.get('ZOPE_CONF')
-        if not configfile:
-            raise ValueError(
-                'Celery setting ZOPE_CONF not set, check in '
-                'CELERY_CONFIG=%s' % os.environ.get('CELERY_CONFIG'))
-
-        options = zope.app.server.main.load_options(['-C', configfile])
-        zope.app.appsetup.product.setProductConfigurations(
-            options.product_config)
-        db = zope.app.wsgi.config(
-            configfile, schemafile=os.path.join(
-                os.path.dirname(zope.app.server.main.__file__), 'schema.xml'))
-        conf['ZOPE_APP'] = db.open().root()['Application']
-        conf['ZODB'] = db
-
-    def on_worker_shutdown(self):
-        if 'ZODB' in self.app.conf:
-            self.app.conf['ZODB'].close()
-
-
-class ZopeBootstep(celery.bootsteps.StartStopStep):
-    """Sets up the Zope environment in the Worker main process.
-
-    We do this mainly so grok scans and imports our packages, which guarantees
-    that all celery-tasks decorated functions in our code will be registered.
-
-    Note: even though Celery documentation calls this a "worker bootstep",
-    it actually runs in the main process.
-    """
-
-    def start(self, parent):
-        parent.app.loader.on_worker_process_init()
-
-    def stop(self, parent):
-        parent.app.loader.on_worker_shutdown()
-
-
-# @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
-# def configure_celery_client(event):
-#     """Sets up celery configuration in Client processes."""
-#     if CELERY.is_worker:
-#         # ZopeCelery.maybe_configure_as_worker() has already configured
-#         # celery, so we don't need to do it _again_ when this event is later
-#         # triggered by ZopeLoader.on_worker_process_init().
-#         return
-#     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-#     CELERY.config_from_pyfile(config['celery-config'])
-#     for task in CELERY.tasks.values():
-#         task.bind(CELERY)
-
-
-# CELERY = ZopeCelery()
-# task = CELERY.task
 
 
 class TaskFormatter(zope.exceptions.log.Formatter):
