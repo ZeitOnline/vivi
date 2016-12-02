@@ -69,10 +69,8 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
-        conf = z3c.celery.celery.CELERY.conf
-        conf['ZOPE_APP'] = self.setup.getRootFolder()
-        conf['ZOPE_PRINCIPAL'] = 'zope.user'
-        conf.task_always_eager = True
+        conf = z3c.celery.CELERY.conf
+        z3c.celery.CELERY.conf.task_always_eager = True
 
     def testTearDown(self):
         try:
@@ -82,7 +80,7 @@ class ZCMLLayer(plone.testing.Layer):
             pass
         else:
             connector._reset()
-        z3c.celery.celery.CELERY.conf.clear()
+        z3c.celery.CELERY.conf.task_always_eager = False
         self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
