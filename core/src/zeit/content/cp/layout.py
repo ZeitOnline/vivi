@@ -56,7 +56,7 @@ class ITeaserBlockLayout(zope.interface.Interface):
         title=u'Kinds of areas where this layout is the default')
     types = zope.schema.Set(
         title=u'Types of CP where this layout is allowed')
-    leader = zope.schema.Bool(
+    is_leader = zope.schema.Bool(
         title=u'When auto-filling with teasers, require lead_candiate?')
 
     def is_default(block):
@@ -69,13 +69,13 @@ class BlockLayout(AllowedMixin):
 
     def __init__(self, id, title, image_pattern=None,
                  areas=None, columns=1, default=False, available=None,
-                 types=None, leader=False):
+                 types=None, is_leader=False):
         super(BlockLayout, self).__init__(id, title, available, types)
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
         self.columns = columns
         self.default_in_areas = default
-        self.leader = leader
+        self.is_leader = is_leader
 
     def is_default(self, block):
         area = zeit.content.cp.interfaces.IArea(block)
@@ -149,7 +149,7 @@ class TeaserBlockLayoutSource(
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
                 g('image_pattern'), areas, columns, g('default', ''),
-                g('available', None), g('types', None), g('leader', False))
+                g('available', None), g('types', None), g('is_leader', False))
         return result
 
     def filterValue(self, context, value):
