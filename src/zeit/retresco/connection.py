@@ -109,7 +109,8 @@ class TMS(object):
         __traceback_info__ = (uuid,)
         try:
             response = self._request(
-                'GET /content/{}'.format(urllib.quote(uuid)), timeout=timeout)
+                'GET /in-text-linked-documents/{}'.format(
+                    urllib.quote(uuid)), timeout=timeout)
             return response['body']
         except (KeyError, requests.Timeout):
             return None
