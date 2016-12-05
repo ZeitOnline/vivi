@@ -5,6 +5,12 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 import json
 import lxml.builder
 import mock
+import pytest
+import requests.adapters
+import requests.exceptions
+import requests.models
+import requests.sessions
+import time
 import zeit.cms.tagging.interfaces
 import zeit.content.rawxml.rawxml
 import zeit.retresco.connection
@@ -88,6 +94,13 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.layer['request_handler'].response_code = 404
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.delete_id('any')
+
+    def test_tms_returns_enriched_article_body(self):
+        self.layer['request_handler'].response_body = json.dumps({
+            'body': '<body>lorem ipsum</body>'})
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = tms.get_article_body('{urn:uuid:88a99fcc-0c52-4665}')
+        self.assertEqual('<body>lorem ipsum</body>', result)
 
     def test_get_topicpage_documents_pagination(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -212,3 +225,53 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('topics', topics.xml.tag)
         self.assertEqual('Berlin', topics.xml.find('topic')[0])
         self.assertEqual(True, IPublishInfo(topics).published)
+
+
+class SlowAdapter(requests.adapters.BaseAdapter):
+
+    def send(self, request, **kwargs):
+        time.sleep(request.headers.get('X-Sleep', 0))
+        return requests.Response()
+
+    def close(self):
+        pass
+
+
+class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(SignalTimeoutTest, self).setUp()
+        self.session = requests.Session()
+        self.session.mount('slow://', SlowAdapter())
+
+    @pytest.mark.slow
+    def test_signal_timeout_is_not_invoked_on_timeout_tuple(self):
+        # If someone specifically set a connect and read timeout tuple,
+        # we want to preserve requests' intended behaviour.
+        # SlowAdapter ignores touple timeouts, so lets see if our signal
+        # timeout patch leaves the slow request be slow.
+        resp = self.session.get(
+            'slow://xml.zeit.de/index',
+            headers={'X-Sleep': 0.2}, timeout=(0.01, 0.01))
+        self.assertTrue(isinstance(resp, requests.Response))
+
+    @pytest.mark.slow
+    def test_signal_timeout_is_not_invoked_in_worker_thread(self):
+        # Registering signal handlers can only be done within a main thread.
+        # If it fails, we revert to requests original timeout mechanics.
+        # This test also utilizes SlowAdapter ignoring the timeout kwarg.
+        with mock.patch('signal.signal') as sig_func:
+            sig_func.side_effect = ValueError()
+            resp = self.session.get(
+                'slow://xml.zeit.de/index',
+                headers={'X-Sleep': 0.1}, timeout=0.01)
+            self.assertTrue(isinstance(resp, requests.Response))
+
+    @pytest.mark.slow
+    def test_signal_timeout_should_abort_slow_responses(self):
+        # Finally, we want to see a timeout exception risen by our patched
+        # signal request function.
+        with self.assertRaises(requests.exceptions.Timeout):
+            self.session.get(
+                'slow://xml.zeit.de/index',
+                headers={'X-Sleep': 0.1}, timeout=0.01)
