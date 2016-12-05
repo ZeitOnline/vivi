@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-2.93 (unreleased)
------------------
+3.0 (unreleased)
+----------------
 
 - ZON-3409: Use Celery for async tasks.
 
