@@ -4,7 +4,7 @@ zeit.seo changes
 1.8.0 (unreleased)
 ------------------
 
-- Add checkbox for disabling tms intext link feature (Re ZON-3118).
+- Add checkbox for disabling tms intext link feature (ZON-3118).
 
 
 1.7.0 (2016-02-25)
