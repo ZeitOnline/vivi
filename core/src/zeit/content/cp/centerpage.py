@@ -334,6 +334,18 @@ def publish_priority_cp(context):
         return zeit.cms.workflow.interfaces.PRIORITY_HIGH
 
 
+@grok.subscribe(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def remove_xslt_rss_feed_support(context, event):
+    # BBB The <feed> node used to be needed to render newsfeed.zeit.de with
+    # XSLT, but is obsolete since zeit.web took over. Thus we perform an
+    # on-the-fly migration here and remove it from existing content.
+    feed = context.xml.find('feed')
+    if feed is not None:
+        feed.getparent().remove(feed)
+
+
 NSMAP = collections.OrderedDict((
     ('cp', 'http://namespaces.zeit.de/CMS/cp'),
     ('py', 'http://codespeak.net/lxml/objectify/pytype'),

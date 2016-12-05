@@ -118,3 +118,24 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
             zeit.cms.workflow.interfaces.IPublishPriority(cp))
+
+    def test_removes_feed_node_on_checkout(self):
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage(
+            StringIO("""\
+<centerpage>
+  <head/>
+  <body>
+    <cluster area="feature">
+      <region area="lead"/>
+      <region area="informatives"/>
+    </cluster>
+    <cluster area="teaser-mosaic"/>
+  </body>
+  <feed>
+    <reference/>
+  </feed>
+</centerpage>
+"""))
+        with checked_out(self.repository['cp']):
+            pass
+        self.assertFalse(self.repository['cp'].xml.xpath('feed'))
