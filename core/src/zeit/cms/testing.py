@@ -69,7 +69,8 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
-        conf = z3c.celery.CELERY.conf
+        # This can be done here as the end to end tests use a separate celery
+        # app:
         z3c.celery.CELERY.conf.task_always_eager = True
 
     def testTearDown(self):
