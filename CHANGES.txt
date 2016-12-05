@@ -4,7 +4,8 @@ zeit.content.author changes
 2.7.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Use a proper schema field for ``display_name``, so
+  ObjectPathProperty can return a missing value if nothing was set.
 
 
 2.7.3 (2016-09-07)

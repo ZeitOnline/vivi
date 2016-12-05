@@ -20,7 +20,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
         zeit.content.author.interfaces.IAuthor,
         zeit.content.image.interfaces.IImages,
         zeit.cms.interfaces.ICMSContent)
-    omit_fields = []
+    omit_fields = ('display_name',)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -75,14 +75,14 @@ class EditForm(FormBase,
                zeit.cms.browser.form.EditForm):
 
     title = _('Edit author')
-    omit_fields = ['__name__']
+    omit_fields = FormBase.omit_fields + ('__name__',)
 
 
 class DisplayForm(FormBase,
                   zeit.cms.browser.form.DisplayForm):
 
     title = _('View')
-    omit_fields = ['__name__']
+    omit_fields = EditForm.omit_fields
 
 
 class IDuplicateConfirmation(zope.interface.Interface):
