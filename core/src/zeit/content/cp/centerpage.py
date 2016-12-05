@@ -399,14 +399,6 @@ def extract_feed_items(context):
     return items
 
 
-def has_changed(context):
-    context = zope.proxy.removeAllProxies(context)
-    if context._p_jar is None:
-        # If there no jar, no change will have been marked.
-        return True
-    return context._p_changed
-
-
 NSMAP = collections.OrderedDict((
     ('cp', 'http://namespaces.zeit.de/CMS/cp'),
     ('py', 'http://codespeak.net/lxml/objectify/pytype'),
