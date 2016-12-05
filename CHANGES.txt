@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.8.0 (unreleased)
+1.8.0 (2016-12-05)
 ------------------
 
 - ZON-3118: Add method to retrieve enriched article body with intext links.
