@@ -14,9 +14,6 @@
 
   <include package="zeit.content.volume" />
   <include package="zeit.content.volume.browser" />
-
-  <utility provides="zeit.content.volume.interfaces.ITocConnector"
-           factory="zeit.connector.mock.connector_factory"
-           />
+  <include package="zeit.content.volume" file="mock-toc-connector.zcml" />
 
 </configure>

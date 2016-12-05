@@ -13,6 +13,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 from zeit.cms.repository.interfaces import IFolder
 import zeit.connector.connector
+from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
 
@@ -57,10 +58,6 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _register_archive_connector(self):
         """Register the ITocConnecor utility if necessary"""
-        if self.dav_archive_url == 'test':
-            assert zope.component.getUtility(ITocConnector)
-            # In the test a mock connector is used.
-            return
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
@@ -70,10 +67,8 @@ class Toc(zeit.cms.browser.view.Base):
         # This would make the new registry persistent.
         default_registry.removeSub(registry)
         site.setSiteManager(registry)
-        connector = zeit.connector.connector.TransactionBoundCachingConnector(
-            {'default': self.dav_archive_url})
-        zope.interface.alsoProvides(connector, ITocConnector)
-        registry.registerUtility(connector, ITocConnector)
+        connector = zope.component.getUtility(ITocConnector)
+        registry.registerUtility(connector, IConnector)
         zope.component.hooks.setSite(site)
         return
 
@@ -414,3 +409,11 @@ class Excluder(object):
             folders_to_exclude,
             {ele.title() for ele in folders_to_exclude})
         return not any(folder in folder_path for folder in folders_to_exclude)
+
+
+def toc_connector_factory():
+    config = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.content.volume')
+    dav_archive_url = config.get('dav-archive-url')
+    return zeit.connector.connector.TransactionBoundCachingConnector(
+            {'default': dav_archive_url})

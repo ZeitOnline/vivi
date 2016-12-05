@@ -5,14 +5,17 @@ from collections import defaultdict
 
 import lxml.etree
 
+import zope.component
+
 import zeit.cms.content.sources
 from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
+import zeit.connector.mock
 from zeit.content.article.testing import create_article
+import zeit.content.volume.interfaces
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import zeit.content.volume.testing
-import zeit.connector.mock
 
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
@@ -50,9 +53,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             self.repository['ZEI']['2015']['01'] = Folder()
             for foldername in folders:
                 self.repository['ZEI']['2015']['01'][foldername] = Folder()
-        relevant_ressorts = toc.list_relevant_ressort_folders(
-            'http://xml.zeit.de'
-            '/ZEI/2015/01')
+            relevant_ressorts = toc.list_relevant_ressort_folders(
+                'http://xml.zeit.de'
+                '/ZEI/2015/01')
         foldernames = [tup[0] for tup in relevant_ressorts]
         self.assertIn('politik', foldernames)
 
@@ -139,12 +142,28 @@ Dossier\r
             self.assertEqual(False,
                              excluder.is_relevant(lxml.etree.fromstring(xml)))
 
+    def test_init_toc_connector_is_registered_as_connector(self):
+        old_connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        # register_archive_connector is called in __init__
+        # check for the correct side effects
+        t = Toc()
+        new_connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        assert old_connector is not new_connector
+        assert new_connector is zope.component.getUtility(
+            zeit.content.volume.interfaces.ITocConnector)
+
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
 
     def setUp(self):
         super(TocBrowserTest, self).setUp()
+        toc_connector = zope.component.getUtility(
+            zeit.content.volume.interfaces.ITocConnector)
+        self.zca.patch_utility(toc_connector,
+                               zeit.connector.interfaces.IConnector)
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -167,6 +186,9 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                 article.page = self.article_page
                 self.repository['ZEI']['2015']['01']['politik'][
                     'test_artikel'] = article
+
+    def tearDown(self):
+        self.zca.reset()
 
     def test_toc_generates_right_headers(self):
         b = self.browser
