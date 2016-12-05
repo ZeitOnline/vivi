@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.7.4 (unreleased)
+2.7.4 (2016-12-05)
 ------------------
 
 - FIX: Use a proper schema field for ``display_name``, so
