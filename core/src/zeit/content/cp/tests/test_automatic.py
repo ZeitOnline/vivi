@@ -108,23 +108,6 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
     <block...href="http://xml.zeit.de/testcontent"...""",
             lxml.etree.tostring(xml, pretty_print=True))
 
-    def test_rendered_xml_contains_automatic_items_in_cp_feed(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)], 1)
-        xml = zeit.content.cp.interfaces.IRenderedXML(
-            self.repository['cp'])
-        self.assertEllipsis(
-            """...
-<feed>
-  <reference...href="http://xml.zeit.de/testcontent"...""",
-            lxml.etree.tostring(xml, pretty_print=True))
-
     def test_cms_content_iter_returns_filled_in_blocks(self):
         lead = self.repository['cp']['lead']
         lead.count = 1

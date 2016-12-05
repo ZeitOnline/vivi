@@ -334,71 +334,6 @@ def publish_priority_cp(context):
         return zeit.cms.workflow.interfaces.PRIORITY_HIGH
 
 
-class Feed(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
-    zope.interface.implements(zeit.content.cp.interfaces.ICPFeed)
-
-    # The feed items are ordered chronologically descending,
-    # so the XSLT can just get the first n items to build the actual feed.
-    items = zeit.cms.content.reference.MultiResource(
-        '.feed.reference', 'related')
-
-    def set_items_and_supress_errors(self, items):
-        # XXX copy&paste from MultiResource.__set__, is there a better way to
-        # do this?
-        prop = type(self).items
-        references = prop.references(self)
-        value = tuple(
-            references.create(x, suppress_errors=True) for x in items)
-        super(zeit.cms.content.reference.MultiResource, prop).__set__(
-            self, value)
-        prop.update_metadata(self, suppress_errors=True)
-
-
-@zope.component.adapter(
-    zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_feed_items(context, event):
-    if not event.publishing:
-        # This event should only happen while publishing. It used to be on
-        # BeforePublish, but since that requires another checkin/checkout
-        # cycle, and the centerpage is cycled during publish anyway, we can
-        # register it like this and avoid the additional cycle.
-        return
-    feed = zeit.content.cp.interfaces.ICPFeed(context)
-    feed.items = extract_feed_items(context)
-
-
-def extract_feed_items(context):
-    feed = zeit.content.cp.interfaces.ICPFeed(context)
-    items = []
-    check_items = []
-    for item in feed.items:
-        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
-            check_item = item.original_content
-        else:
-            check_item = item
-        items.append(item)
-        check_items.append(check_item)
-
-    teasers = zeit.content.cp.interfaces.ITeaseredContent(context)
-    for item in teasers:
-        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
-            if item.original_content in check_items:
-                continue
-        elif item in check_items:
-            continue
-        items.insert(0, item)
-
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.cp')
-    while len(items) > int(config['cp-feed-max-items']):
-        del items[-1]
-
-    return items
-
-
 NSMAP = collections.OrderedDict((
     ('cp', 'http://namespaces.zeit.de/CMS/cp'),
     ('py', 'http://codespeak.net/lxml/objectify/pytype'),
@@ -422,29 +357,7 @@ def rendered_xml(context):
             **context.xml.body.cluster.attrib),
         zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
     ))
-    _render_feed(root)
     return root
-
-
-def _render_feed(root):
-    # Performance optimization: Since automatic CPs are populated with (sorted)
-    # queries, there is not much point in trying to preserve a "historical
-    # ordering" (i.e. when each article first appeared on the CP). Thus we can
-    # simply copy the XML references of the teaser blocks into the feed,
-    # instead of running the automatic queries *again*.
-    feed = ElementMaker.feed()
-    root.append(feed)
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.cp')
-    for i, teaser in enumerate(root.xpath(
-            '//container[@cp:type="teaser"]/block', namespaces=NSMAP)):
-        if i > config['cp-feed-max-items']:
-            break
-        item = copy.copy(teaser)
-        item.tag = 'reference'
-        item.set('type', 'intern')
-        del item.attrib['uniqueId']
-        feed.append(item)
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICP2015)
@@ -457,7 +370,6 @@ def rendered_xml(context):
     root.append(body)
     for region in context.body.values():
         body.append(zeit.content.cp.interfaces.IRenderedXML(region))
-    _render_feed(root)
     return root
 
 

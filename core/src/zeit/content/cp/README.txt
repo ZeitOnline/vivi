@@ -25,7 +25,6 @@ The ancient XML representation looked as follows:
     </cluster>
     <cluster area="teaser-mosaic"/>
   </body>
-  <feed/>
 </centerpage>
 >>> import zeit.connector.interfaces
 >>> print zeit.connector.interfaces.IWebDAVProperties(cp)[

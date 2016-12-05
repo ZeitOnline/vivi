@@ -74,12 +74,6 @@
          zope.container.interfaces.IObjectMovedEvent"
     handler=".centerpage.modified_propagator" />
 
-  <adapter
-    factory=".centerpage.Feed"
-    provides="zeit.content.cp.interfaces.ICPFeed"
-    />
-  <subscriber handler=".centerpage.update_feed_items" />
-
   <!-- Areas -->
   <adapter
     factory=".area.RegionFactory"

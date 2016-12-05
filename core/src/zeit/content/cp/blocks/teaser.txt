@@ -84,7 +84,6 @@ archive-print-volume
     </cluster>
     <cluster area="teaser-mosaic"/>
   </body>
-  <feed/>
 </centerpage>
 <BLANKLINE>
 
