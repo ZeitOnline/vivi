@@ -53,9 +53,10 @@ class IAuthor(zope.interface.Interface):
         title=_('VG-Wort Code'), required=False,
         constraint=valid_vgwortcode)
 
-    display_name = zope.interface.Attribute(
-        'The computed display name. Default is "firstname lastname",'
-        ' a user entered value takes precedence.')
+    display_name = zope.schema.TextLine(
+        title=u'The computed display name. Default is "firstname lastname",'
+              u' a user entered value takes precedence.',
+        required=False)
     entered_display_name = zope.schema.TextLine(
         title=_('Display name'),
         required=False,
