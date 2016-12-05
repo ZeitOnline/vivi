@@ -22,10 +22,9 @@ import zope.component
 import zope.component.registry
 import zope.interface
 import zope.site.site
-
 import toc_config
 
-# TODO Documentation of TOC in readme of zeit.content.volume
+
 class Toc(zeit.cms.browser.view.Base):
     """
     View for creating a Table of Content as a csv file.
