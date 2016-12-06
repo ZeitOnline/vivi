@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.12.2 (unreleased)
+3.13.0 (2016-12-06)
 -------------------
 
 - BUG-585: Remove support for XSLT-based RSS feeds.
