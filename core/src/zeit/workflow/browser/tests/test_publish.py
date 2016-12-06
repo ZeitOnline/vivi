@@ -73,8 +73,10 @@ class TestPublish(
             s = self.selenium
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
-            s.verifyText('css=li.error',
-                         'Error during publish/retract: OSError*')
+            s.verifyText(
+                'css=li.error',
+                'Publishing\n'
+                'RuntimeError: Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 
@@ -86,6 +88,7 @@ class TestPublish(
         self.repository['other'] = ExampleContentType()
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
+        transaction.commit()
         IPublish(self.repository['other']).publish()
         IPublish(self.repository['testcontent']).publish()
         transaction.commit()

@@ -118,7 +118,7 @@ class PublishRetractTask(object):
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
             self.log(obj, error_message)
             self._log_timer(uniqueId)
-            raise
+            raise RuntimeError(error_message)
         self._log_timer(uniqueId)
         return "Published."
 
