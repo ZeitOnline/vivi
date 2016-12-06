@@ -150,10 +150,13 @@ Dossier\r
         t = Toc()
         new_connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
+        # Check if a new IConnector was registered
         assert old_connector is not new_connector
-        assert new_connector is zope.component.getUtility(
+        # Check if the toc.connector is a the ITocConnector
+        assert t.connector is zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
-
+        assert t.connector is zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
