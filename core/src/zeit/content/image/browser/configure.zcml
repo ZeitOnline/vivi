@@ -233,14 +233,15 @@
     />
   </configure>
 
-  <browser:defaultView
-    zcml:condition="not-have zeit.content.image.variants"
-    name="view.html"
+  <browser:page
+    name="index.html"
     for="..interfaces.IRepositoryImageGroup"
+    class=".imagegroup.DefaultView"
+    permission="zope.View"
     />
+
   <browser:defaultView
-    zcml:condition="have zeit.content.image.variants"
-    name="variant.html"
+    name="index.html"
     for="..interfaces.IRepositoryImageGroup"
     />
 

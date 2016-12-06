@@ -165,17 +165,23 @@ class ImageGroupBrowserTest(
         self.assertEqual(3, len(group.keys()))
         self.assertIn('obama-clinton-120x120.jpg', group.keys())
 
-    def test_display_type_imagegroup_opens_variant_html_on_save(self):
+    def test_display_type_imagegroup_uses_variant_html_by_default(self):
         self.add_imagegroup()
         self.set_display_type('Bildergruppe')
         self.save_imagegroup()
-        self.assertEndsWith('@@variant.html', self.browser.url)
+        b = self.browser
+        self.assertEndsWith('@@variant.html', b.url)
+        b.open('http://localhost/++skin++vivi/repository/imagegroup')
+        self.assertEndsWith('@@variant.html', b.url)
 
-    def test_display_type_infographic_opens_view_html_on_save(self):
+    def test_display_type_infographic_uses_view_html_by_default(self):
         self.add_imagegroup()
         self.set_display_type('Infografik')
         self.save_imagegroup()
-        self.assertEndsWith('@@view.html', self.browser.url)
+        b = self.browser
+        self.assertEndsWith('@@view.html', b.url)
+        b.open('http://localhost/++skin++vivi/repository/imagegroup')
+        self.assertEndsWith('@@view.html', b.url)
 
     def test_display_type_imagegroup_shows_edit_tab(self):
         self.add_imagegroup()
