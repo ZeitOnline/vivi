@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.92.4 (unreleased)
+2.93.0 (2016-12-06)
 -------------------
 
 - Add ``set_none`` parameter to ``apply_default_values`` helper function.
