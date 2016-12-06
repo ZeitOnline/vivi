@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2016-11-30 15:14+0100\n"
-"PO-Revision-Date: 2016-11-30 15:14+0100\n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
+"PO-Revision-Date: 2016-12-06 16:38+0100\n"
+"Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -2701,15 +2701,15 @@ msgstr "E-Mail-Adresse"
 
 #: zeit/content/author/interfaces.py:42
 msgid "Twitter handle"
-msgstr "Twitter"
+msgstr "Twitter (z.B. jochen)"
 
 #: zeit/content/author/interfaces.py:43
 msgid "Facebook handle"
-msgstr "Facebook"
+msgstr "Facebook (z.b. jochen.wegner)"
 
 #: zeit/content/author/interfaces.py:45
 msgid "Instagram handle"
-msgstr "Instagram"
+msgstr "Instagram (z.B. jochenjochen)"
 
 #: zeit/content/author/interfaces.py:48
 msgid "VG-Wort ID"
