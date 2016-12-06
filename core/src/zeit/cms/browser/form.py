@@ -56,7 +56,7 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
 MARKER = object()
 
 
-def apply_default_values(context, interface):
+def apply_default_values(context, interface, set_none=False):
     """Apply default values from ``interface`` to ``context``."""
     for name, field in zope.schema.getFields(interface).items():
         if field.readonly:
@@ -64,7 +64,7 @@ def apply_default_values(context, interface):
         __traceback_info__ = (name,)
         default = getattr(field, 'default')
         # don't set None values (#9406)
-        if default is None:
+        if default is None and not set_none:
             continue
         current = getattr(context, name, MARKER)
         # don't cause a field to be written unnecessarily
