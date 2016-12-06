@@ -12,3 +12,11 @@ class IRawXML(zeit.cms.interfaces.IAsset,
 
     title = zope.schema.TextLine(
         title=_('Title'))
+
+
+class IUserDashboard(IRawXML):
+    """Marker interface for the dashboard config file at ``/konto``,
+    so zeit.web can register a special view for it.
+
+    We do need to declare this in vivi, so it can de/serialize the interface.
+    """
