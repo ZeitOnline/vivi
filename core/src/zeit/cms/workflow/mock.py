@@ -8,10 +8,6 @@ import zope.interface
 import zope.testing.cleanup
 
 
-_can_publish = {}
-zope.testing.cleanup.addCleanUp(_can_publish.clear)
-
-
 class MockPublish(object):
     """A mock publisher."""
 
@@ -45,14 +41,6 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,
                                                         self.context))
-
-
-_published = {}
-zope.testing.cleanup.addCleanUp(_published.clear)
-_publish_times = {}
-zope.testing.cleanup.addCleanUp(_publish_times.clear)
-_publish_times_semantic = {}
-zope.testing.cleanup.addCleanUp(_publish_times_semantic.clear)
 
 
 class MockPublishInfo(object):
@@ -102,3 +90,17 @@ class MockPublishInfo(object):
 
     def set_can_publish(self, can):
         _can_publish[self.context.uniqueId] = can
+
+
+_can_publish = {}
+_published = {}
+_publish_times = {}
+_publish_times_semantic = {}
+
+
+def reset():
+    _can_publish.clear()
+    _published.clear()
+    _publish_times.clear()
+    _publish_times_semantic.clear()
+zope.testing.cleanup.addCleanUp(reset)

@@ -81,12 +81,11 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
         'created',
         'published',
         'date_last_published', 'last_published_by',
-        'date_first_released'
+        'date_last_published_semantic', 'date_first_released'
     )
 
     omit_fields = (
         'date_print_published',
-        'date_last_published_semantic',
         'error_messages'
     )
 

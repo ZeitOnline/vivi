@@ -9,6 +9,24 @@ zeit.cms changes
 - ZON-3409: Depend on `z3c.celery`.
 
 
+2.92.3 (unreleased)
+-------------------
+
+- BUG-558: Display ``date_last_published_semantic`` on workflow form.
+
+
+2.92.2 (2016-11-25)
+-------------------
+
+- ZON-3172: Assume default "free" for ``access`` when content has no value.
+
+
+2.92.1 (2016-11-23)
+-------------------
+
+- ZON-2996: Prevent deleting published content
+
+
 2.92.0 (2016-10-19)
 -------------------
 
