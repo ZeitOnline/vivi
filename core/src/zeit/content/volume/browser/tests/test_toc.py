@@ -158,15 +158,13 @@ Dossier\r
         assert t.connector is zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
 
+
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.volume.testing.ZCML_LAYER
 
     def setUp(self):
         super(TocBrowserTest, self).setUp()
-        toc_connector = zope.component.getUtility(
-            zeit.content.volume.interfaces.ITocConnector)
-        self.zca.patch_utility(toc_connector,
-                               zeit.connector.interfaces.IConnector)
+        # Create the volume object with the mock IConnector
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -175,10 +173,19 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.ressort_names = ['dossier', 'politik']
         self.article_page = 1
         with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['2015'] = Folder()
+            self.repository['2015']['01'] = Folder()
+            self.repository['2015']['01']['ausgabe'] = volume
+        # Now use the mock ITocConnector to mock the archive folders and the
+        # article
+        toc_connector = zope.component.getUtility(
+            zeit.content.volume.interfaces.ITocConnector)
+        self.zca.patch_utility(toc_connector,
+                               zeit.connector.interfaces.IConnector)
+        with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['ZEI'] = Folder()
             self.repository['ZEI']['2015'] = Folder()
             self.repository['ZEI']['2015']['01'] = Folder()
-            self.repository['ZEI']['2015']['01']['ausgabe'] = volume
             for ressort_name in self.ressort_names:
                 self.repository['ZEI']['2015']['01'][ressort_name] = Folder()
             with zeit.cms.testing.interaction():
@@ -189,8 +196,6 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                 article.page = self.article_page
                 self.repository['ZEI']['2015']['01']['politik'][
                     'test_artikel'] = article
-
-    def tearDown(self):
         self.zca.reset()
 
     def test_toc_generates_right_headers(self):
@@ -200,7 +205,7 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                         '.toc.Toc._create_toc_content') as create_content:
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/repository/'
-                   'ZEI/2015/01/ausgabe/@@toc.csv')
+                   '2015/01/ausgabe/@@toc.csv')
             self.assertEqual('text/csv', b.headers['content-type'])
             self.assertEqual('attachment; '
                              'filename="table_of_content_2015_01.csv"',
@@ -211,7 +216,7 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
-               'ZEI/2015/01/ausgabe/@@toc.csv')
+               '2015/01/ausgabe/@@toc.csv')
         self.assertIn(self.article_title, b.contents)
         self.assertIn(str(self.article_page), b.contents)
         for ressort_name in self.ressort_names:
