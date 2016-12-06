@@ -385,7 +385,7 @@ Set the file data:
 After adding the image we're back at the image group:
 
 >>> browser.url
-'http://localhost/++skin++cms/repository/2006/new-hampshire'
+'http://localhost/++skin++cms/repository/2006/new-hampshire/variant.html'
 
 So we can directly add the next image:
 
