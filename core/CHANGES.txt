@@ -1,7 +1,7 @@
 zeit.content.rawxml changes
 ===========================
 
-0.5.0 (unreleased)
+0.5.0 (2016-12-06)
 ------------------
 
 - ZON-3393: Add marker interface ``IUserDashboard``.
