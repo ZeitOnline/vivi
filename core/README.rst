@@ -83,10 +83,11 @@ Inhaltsverzeichnis
 
 Außerdem kann für jedes Ausgabenobjekt ein Inhaltsverzeichnis als csv
 erstellt werden (über /ausgabe/@@toc.csv). Dieses Inhaltsverzeichnis
-wird allerdings nicht durch Parsen der XML's im repository erzeugt, sondern
-durch das Parsen der XML's die unter
+wird allerdings nicht durch Parsen der XML's im repository erzeugt, da
+das IHV erstellt werden soll bevor der Print-Import Stufe 2 gelaufen ist,
+sondern durch das Parsen der XML's die unter
 http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv
-liegen.
+liegen, die bereits vorher zur Verfügung stehen sollten.
 Welche Produkte das Inhaltsverzeichnis umfasst, wird zurzeit über die
 product config bestimmt::
 
