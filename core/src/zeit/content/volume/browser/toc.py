@@ -22,7 +22,6 @@ import zope.component
 import zope.component.registry
 import zope.interface
 import zope.site.site
-import toc_config
 
 
 class Toc(zeit.cms.browser.view.Base):
@@ -136,8 +135,6 @@ class Toc(zeit.cms.browser.view.Base):
         config = zope.app.appsetup.product\
             .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
-        if not ids_as_string:
-            ids_as_string = toc_config.PRODUCT_IDS
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
     def _get_all_paths_for_product_ids(self, product_ids):
