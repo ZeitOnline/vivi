@@ -46,6 +46,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_list_relevant_ressort_folders_returns_correct_directories(self):
         toc = Toc()
+        toc_connector = zope.component.getUtility(
+            zeit.content.volume.interfaces.ITocConnector)
+        self.zca.patch_utility(toc_connector,
+                               zeit.connector.interfaces.IConnector)
         folders = ['images', 'leserbriefe', 'politik']
         with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['ZEI'] = Folder()
@@ -58,7 +62,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 '/ZEI/2015/01')
         foldernames = [tup[0] for tup in relevant_ressorts]
         self.assertIn('politik', foldernames)
-
+        self.zca.reset()
+            
     def test__get_all_product_ids_for_volume_zeit_product_id_found(self):
         t = Toc()
         ids = t._get_all_product_ids_for_volume()

@@ -9,9 +9,6 @@ product_config = """
     dav-archive-url test
     toc-product-ids ZEI
 </product-config>
-<product-config zeit.connector>
-    repository-path {here}/browser/tests/testcontent
-</product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))
 
 
