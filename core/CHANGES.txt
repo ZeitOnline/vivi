@@ -9,7 +9,13 @@ zeit.cms changes
 - ZON-3409: Depend on `z3c.celery`.
 
 
-2.92.3 (unreleased)
+2.93.0 (2016-12-06)
+-------------------
+
+- Add ``set_none`` parameter to ``apply_default_values`` helper function.
+
+
+2.92.3 (2016-12-06)
 -------------------
 
 - BUG-558: Display ``date_last_published_semantic`` on workflow form.
