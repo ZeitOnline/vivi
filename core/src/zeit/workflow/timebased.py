@@ -77,7 +77,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                     _('scheduled-retracting-cancelled',
                       default=(u"Scheduled retracting cancelled "
                                "(job #${job})."),
-                      mapping=dict(job=self.publish_job_id)))
+                      mapping=dict(job=self.retract_job_id)))
             if released_to is not None:
                 self.retract_job_id = self.add_job(
                     zeit.workflow.publish.RETRACT_TASK,
