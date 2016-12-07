@@ -1,6 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+import celery.result
 import datetime
 import lovely.remotetask.interfaces
 import pytz
@@ -103,13 +104,10 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def cancel_job(self, job_id):
         if not job_id:
             return False
-        try:
-            status = self.tasks.getStatus(job_id)
-        except KeyError:
+        promise = celery.result.AsyncResult(job_id)
+        if promise.status != u'PENDING':
             return False
-        if status != lovely.remotetask.interfaces.DELAYED:
-            return False
-        self.tasks.cancel(job_id)
+        promise.revoke()
         return True
 
     @property

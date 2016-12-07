@@ -56,6 +56,7 @@ class CelerySettingsLayer(plone.testing.Layer):
 
         self['celery_config'] = z3c.celery.conftest.celery_config(
             self['zope_conf_name'])
+        self['celery_config']['task_track_started'] = True
         self['celery_parameters'] = z3c.celery.conftest.celery_parameters()
         self['celery_includes'] = ['zeit.workflow.publish']
 
@@ -79,6 +80,7 @@ class CelerySettingsLayer(plone.testing.Layer):
 
     def testSetUp(self):
         with open(self['logfile_name'], 'w') as logfile:
+            logfile.seek(0)
             logfile.truncate(0)
 
     def tearDown(self):

@@ -110,7 +110,7 @@ class PublishRetractTask(object):
         timer.mark('Looked up object')
 
         try:
-            self._run(obj, info)
+            result = self._run(obj, info)
         except Exception as e:
             logger.error("Error during publish/retract", exc_info=True)
             error_message = _(
@@ -120,7 +120,7 @@ class PublishRetractTask(object):
             self._log_timer(uniqueId)
             raise RuntimeError(error_message)
         self._log_timer(uniqueId)
-        return "Published."
+        return result
 
     def _log_timer(self, uniqueId):
         timer.mark('Done %s' % uniqueId)
@@ -286,13 +286,14 @@ class PublishTask(PublishRetractTask):
             logger.error("Could not publish %s" % obj.uniqueId)
             self.log(
                 obj, _("Could not publish because conditions not satisifed."))
-            return
+            return "Could not publish because conditions not satisfied."
 
         obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
         self.call_publish_script(obj)
         self.recurse(self.after_publish, True, obj, obj)
         obj = self.recurse(self.unlock, True, obj, obj)
+        return "Published."
 
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
@@ -346,6 +347,7 @@ class RetractTask(PublishRetractTask):
         obj = self.recurse(self.before_retract, False, obj, obj)
         self.call_retract_script(obj)
         self.recurse(self.after_retract, False, obj, obj)
+        return "Retracted."
 
     def before_retract(self, obj, master):
         """Do things before the actual retract."""
