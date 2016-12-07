@@ -103,4 +103,7 @@ class IVolumeReference(zeit.cms.content.interfaces.IReference):
 
 
 class ITocConnector(zope.interface.Interface):
-    """Marker Interface for a the Connector to get the Tocdata from /cms/wf-archiv/archiv"""
+    """
+    Marker Interface for a the Connector to get the Tocdata from
+    /cms/wf-archiv/archiv
+    """
