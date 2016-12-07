@@ -49,6 +49,11 @@ class ObjectLog(persistent.Persistent):
 
         # Create savepoint to assign oid to log-entries. Required for
         # displaying in the same transaction.
+        __traceback_info__ = (
+            'If you see this in a test you tried to run something '
+            'asynchronously but inline of the process. Do not do this! '
+            'Either run the test inline synchronously (default) or as actual '
+            'end to end test using z3c.celery.layer.EndToEndLayer.')
         transaction.savepoint(optimistic=True)
 
     def clean(self, timedelta):
