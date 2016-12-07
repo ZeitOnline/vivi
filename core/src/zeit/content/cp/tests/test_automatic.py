@@ -91,6 +91,25 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             zeit.content.cp.interfaces.IRenderedXML(leader),
             pretty_print=True))
 
+    def test_leader_block_takes_everything_if_area_configured(self):
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
+
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.require_lead_candidates = False
+        lead.automatic = True
+        lead.automatic_type = 'query'
+
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/normal'),
+            dict(uniqueId='http://xml.zeit.de/leader')], 2)
+        result = IRenderedArea(lead).values()
+        self.assertEqual(
+            'http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
+
     def test_renders_xml_with_filled_in_blocks(self):
         lead = self.repository['cp']['lead']
         lead.count = 1

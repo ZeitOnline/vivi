@@ -55,12 +55,11 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # This assumes that the *first* block always has a leader layout,
             # since otherwise the first result that may_be_leader might be
             # given to a non-leader block.
-            if block.layout.id in ['leader', 'zon-large']:
+            if self.context.require_lead_candidates and block.layout.is_leader:
                 teaser = pop_filter(content, is_lead_candidate)
                 if teaser is None:
                     teaser = pop_filter(content)
-                    block.change_layout(
-                        zeit.content.cp.layout.get_layout('buttons'))
+                    block.change_layout(self.context.default_teaser_layout)
             else:
                 teaser = pop_filter(content)
             if teaser is None:

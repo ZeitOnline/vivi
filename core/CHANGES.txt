@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.13.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3441: Make requiring lead_candidate configurable on the layout
+  and the area.
 
 
 3.13.0 (2016-12-06)
