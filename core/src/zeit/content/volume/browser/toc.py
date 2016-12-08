@@ -131,14 +131,6 @@ class Toc(zeit.cms.browser.view.Base):
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
-    def _get_all_product_ids_for_volume(self):
-        """ List [First Product ID, Second ...] """
-        # Change it if the volume content object "knows" which Products it has
-        config = zope.app.appsetup.product \
-            .getProductConfiguration('zeit.content.volume')
-        ids_as_string = config.get('toc-product-ids')
-        return [product_id.strip() for product_id in ids_as_string.split(' ')]
-
     def _get_all_paths_for_product_ids(self):
         """
         Creates a list of unix-paths to all given products
