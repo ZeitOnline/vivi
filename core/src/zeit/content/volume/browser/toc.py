@@ -107,42 +107,44 @@ class Toc(zeit.cms.browser.view.Base):
         }
         """
         results = OrderedDict()
-        for path in self._get_all_paths_for_product_ids():
+        for prod_uid in self._get_product_uids():
             result_for_product = {}
-            for ressort_folder in self.list_relevant_ressort_folders(path):
+            for ressort_folder in self.list_relevant_ressort_folders(prod_uid):
                 result_for_ressort = []
-                for article_element in \
-                        self._get_all_article_elements(ressort_folder):
-                    toc_entry = self._create_toc_element(article_element)
+                for article in self._get_all_article_elements(ressort_folder):
+                    toc_entry = self._create_toc_element(article)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
                 ressort_folder_name = ressort_folder.__name__\
                     .replace('-', ' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
-            results[self._full_product_name(path)] = result_for_product
+            results[self._full_product_name(prod_uid)] = result_for_product
         return results
 
     @property
     def product_ids(self):
         """ List [First Product ID, Second ...] """
-        config = zope.app.appsetup.product\
-                .getProductConfiguration('zeit.content.volume')
+        config = zope.app.appsetup.product \
+            .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
-    def _get_all_paths_for_product_ids(self):
+    def _get_product_uids(self):
         """
         Creates a list of unix-paths to all given products
         :param product_ids: [str]
         :return: [str]
         """
-        # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
-        volume_string = '%02d' % self.context.volume
-        # You need the XML prefix here
-        prefix = 'http://xml.zeit.de'
-        return [posixpath.join(*[str(e) for e in
-                                 [prefix, dir_name, self.context.year, volume_string, '']])
-                for dir_name in self.product_ids]
+        return [self.context.fill_template('http://xml.zeit.de/%s/{year}/{'
+                                         'name}/' % x)
+            for x in self.product_ids]
+        # # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
+        # volume_string = '%02d' % self.context.volume
+        # # You need the XML prefix here
+        # prefix = 'http://xml.zeit.de'
+        # return [posixpath.join(*[str(e) for e in
+        #                          [prefix, dir_name, self.context.year, volume_string, '']])
+        #         for dir_name in self.product_ids]
 
     def list_relevant_ressort_folders(self, path):
         """
