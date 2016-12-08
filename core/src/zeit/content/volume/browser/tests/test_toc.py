@@ -66,8 +66,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             
     def test__get_all_product_ids_for_volume_zeit_product_id_found(self):
         t = Toc()
-        ids = t._get_all_product_ids_for_volume()
-        self.assertIn('ZEI', ids)
+        self.assertIn('ZEI', t.product_ids)
 
     def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
         article_xml = u"""

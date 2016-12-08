@@ -32,30 +32,26 @@ class Toc(zeit.cms.browser.view.Base):
     E.g.
     cms-backend.zeit.de/cms/archiv-wf/archiv/ZEI/2016/23/entdecken/03-Normalo
     """
-    # Christ und Welt product ID is a special case,
-    # because in the products.xml the deprecated product ID 'CW' is present.
-    PRODUCT_ID_DIR_NAME_EXCEPTIONS = {'CW': 'ZECW'}
     CSV_DELIMITER = '\t'
 
     def __init__(self, *args, **kwargs):
         super(Toc, self).__init__(*args, **kwargs)
-        config = zope.app.appsetup.product\
+
+        config = zope.app.appsetup.product \
             .getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
-        self.dav_archive_url_parsed = self._parse_config()
+        self.dav_archive_url_parsed = urlparse.urlparse(self.dav_archive_url)
         self.excluder = Excluder()
         self._register_archive_connector()
         self.connector = zope.component.getUtility(ITocConnector)
 
-    def _parse_config(self):
-        """
-        Parse DAV-Archive URL.
-        :return: urlparse.ParseResult
-        """
-        return urlparse.urlparse(self.dav_archive_url)
-
     def _register_archive_connector(self):
-        """Register the ITocConnecor utility if necessary"""
+        """
+        Due to the need of using another section of the WebDAV-Server(
+        /cms/wf-archiv...) a new
+        IConnector has to be registered, otherwise the
+        cms.repository.Repository could not be used afterwards.
+        """
         default_registry = zope.component.getSiteManager()
         site = zope.site.site.SiteManagerContainer()
         registry = zope.site.site.LocalSiteManager(site, default_folder=False)
@@ -68,7 +64,6 @@ class Toc(zeit.cms.browser.view.Base):
         connector = zope.component.getUtility(ITocConnector)
         registry.registerUtility(connector, IConnector)
         zope.component.hooks.setSite(site)
-        return
 
     def __call__(self):
         self.product_id_mapping = self._create_product_id_full_name_mapping()
@@ -112,8 +107,7 @@ class Toc(zeit.cms.browser.view.Base):
         }
         """
         results = OrderedDict()
-        product_ids = self._get_all_product_ids_for_volume()
-        for product_path in self._get_all_paths_for_product_ids(product_ids):
+        for product_path in self._get_all_paths_for_product_ids():
             result_for_product = {}
             for ressort_folder_name, ressort_folder in \
                     self.list_relevant_ressort_folders(product_path):
@@ -123,42 +117,41 @@ class Toc(zeit.cms.browser.view.Base):
                     toc_entry = self._create_toc_element(article_element)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
-                ressort_folder_name = ressort_folder_name.replace('-', ' ')\
+                ressort_folder_name = ressort_folder_name.replace('-', ' ') \
                     .title()
                 result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(product_path)] = result_for_product
         return results
 
-    def _get_all_product_ids_for_volume(self):
-        """ Returns List [First Product ID, Second ...] """
-        # Change it if the volume content object "knows" which Products it has
+    @property
+    def product_ids(self):
+        """ List [First Product ID, Second ...] """
         config = zope.app.appsetup.product\
+                .getProductConfiguration('zeit.content.volume')
+        ids_as_string = config.get('toc-product-ids')
+        return [product_id.strip() for product_id in ids_as_string.split(' ')]
+
+    def _get_all_product_ids_for_volume(self):
+        """ List [First Product ID, Second ...] """
+        # Change it if the volume content object "knows" which Products it has
+        config = zope.app.appsetup.product \
             .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
-    def _get_all_paths_for_product_ids(self, product_ids):
+    def _get_all_paths_for_product_ids(self):
         """
         Creates a list of unix-paths to all given products
         :param product_ids: [str]
         :return: [str]
         """
-        product_dir_names = [self._replace_product_id_by_its_dirname(prod_id)
-                             for prod_id in product_ids]
         # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
         volume_string = '%02d' % self.context.volume
         # You need the XML prefix here
         prefix = 'http://xml.zeit.de'
         return [posixpath.join(*[str(e) for e in
-                [prefix, dir_name, self.context.year, volume_string, '']])
-                for dir_name in product_dir_names]
-
-    def _replace_product_id_by_its_dirname(self, product_id):
-        """
-        :param product_id: str
-        :return: str
-        """
-        return self.PRODUCT_ID_DIR_NAME_EXCEPTIONS.get(product_id, product_id)
+                                 [prefix, dir_name, self.context.year, volume_string, '']])
+                for dir_name in self.product_ids]
 
     def list_relevant_ressort_folders(self, path):
         """
@@ -282,7 +275,7 @@ class Toc(zeit.cms.browser.view.Base):
         d = OrderedDict()
         for ressort_page_tuple in sorted(
                 ressort_min_page_number_tuples, key=lambda
-                resort_page_tup: resort_page_tup[1]):
+                        resort_page_tup: resort_page_tup[1]):
             d[ressort_page_tuple[0]] = ressorts.get(ressort_page_tuple[0])
         return d
 
