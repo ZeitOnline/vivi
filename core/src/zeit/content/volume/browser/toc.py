@@ -107,20 +107,19 @@ class Toc(zeit.cms.browser.view.Base):
         }
         """
         results = OrderedDict()
-        for product_path in self._get_all_paths_for_product_ids():
+        for path in self._get_all_paths_for_product_ids():
             result_for_product = {}
-            for ressort_folder_name, ressort_folder in \
-                    self.list_relevant_ressort_folders(product_path):
+            for ressort_folder in self.list_relevant_ressort_folders(path):
                 result_for_ressort = []
                 for article_element in \
                         self._get_all_article_elements(ressort_folder):
                     toc_entry = self._create_toc_element(article_element)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
-                ressort_folder_name = ressort_folder_name.replace('-', ' ') \
-                    .title()
+                ressort_folder_name = ressort_folder.__name__\
+                    .replace('-', ' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
-            results[self._full_product_name(product_path)] = result_for_product
+            results[self._full_product_name(path)] = result_for_product
         return results
 
     @property
@@ -153,7 +152,7 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             product_folder = \
                 zeit.cms.interfaces.ICMSContent(self.connector[path])
-            return [item for item in product_folder.items()
+            return [item[1] for item in product_folder.items()
                     if self._is_relevant_folder_item(item)]
         except KeyError:
             return []

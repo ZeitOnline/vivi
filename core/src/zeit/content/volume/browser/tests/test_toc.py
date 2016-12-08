@@ -60,7 +60,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             relevant_ressorts = toc.list_relevant_ressort_folders(
                 'http://xml.zeit.de'
                 '/ZEI/2015/01')
-        foldernames = [tup[0] for tup in relevant_ressorts]
+        foldernames = [folder.__name__ for folder in relevant_ressorts]
         self.assertIn('politik', foldernames)
         self.zca.reset()
             
