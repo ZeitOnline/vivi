@@ -135,16 +135,9 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
-        return [self.context.fill_template('http://xml.zeit.de/%s/{year}/{'
-                                         'name}/' % x)
-            for x in self.product_ids]
-        # # Volumes <10 would lead to wrong paths like YEAR/1 instead of YEAR/01
-        # volume_string = '%02d' % self.context.volume
-        # # You need the XML prefix here
-        # prefix = 'http://xml.zeit.de'
-        # return [posixpath.join(*[str(e) for e in
-        #                          [prefix, dir_name, self.context.year, volume_string, '']])
-        #         for dir_name in self.product_ids]
+        return [self.context.fill_template(
+                'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
+                self.product_ids]
 
     def list_relevant_ressort_folders(self, path):
         """
@@ -160,8 +153,8 @@ class Toc(zeit.cms.browser.view.Base):
             return []
 
     def _is_relevant_folder_item(self, item):
-        return self.excluder.is_relevant_folder(item[0]) \
-               and IFolder.providedBy(item[1])
+        return IFolder.providedBy(item[1])and \
+               self.excluder.is_relevant_folder(item[0])
 
     def _get_all_article_elements(self, ressort_folder):
         """
@@ -169,7 +162,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param ressort_folder:
         :return: [lxml.etree Article element, ...]
         """
-        return [resource.xml for _, resource in ressort_folder.items()
+        return [resource.xml for resource in ressort_folder.values()
                 if IArticle.providedBy(resource)]
 
     def _create_toc_element(self, article_element):
@@ -208,6 +201,7 @@ class Toc(zeit.cms.browser.view.Base):
         return toc_entry
 
     def _normalize_page(self, toc_dict):
+        """ """
         page_string = toc_dict.get('page', u'')
         res = re.findall('\d+', page_string)
         toc_dict['page'] = res[0].lstrip("0") if res else u"-1"
