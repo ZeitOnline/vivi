@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.dynamicfolder',
-    version='1.2.3.dev0',
+    version='2.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -21,7 +21,7 @@ setup(
         'mock',
         'plone.testing',
         'setuptools',
-        'zeit.cms >= 2.90.0.dev0',
+        'zeit.cms >= 3.0.dev0',
         'zeit.connector',
         'zeit.content.cp',
         'zeit.content.rawxml',
