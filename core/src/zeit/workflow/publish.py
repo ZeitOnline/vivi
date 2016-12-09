@@ -19,6 +19,7 @@ import zope.app.appsetup.product
 import zope.app.security.interfaces
 import zope.component
 import zope.event
+import zope.i18n
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.management
@@ -126,7 +127,7 @@ class PublishRetractTask(object):
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
             self.log(obj, error_message)
             self._log_timer(uniqueId)
-            raise RuntimeError(error_message)
+            raise RuntimeError(zope.i18n.translate(error_message))
         self._log_timer(uniqueId)
         return result
 
