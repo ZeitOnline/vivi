@@ -7,7 +7,6 @@ import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.testing
 import zeit.retresco.update
-import zeit.workflow.testing
 import zope.component
 import zope.event
 import zope.lifecycleevent
@@ -148,4 +147,3 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
