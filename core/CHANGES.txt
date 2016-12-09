@@ -1,8 +1,8 @@
 zeit.content.author changes
 ===========================
 
-2.7.5 (unreleased)
-------------------
+3.0 (unreleased)
+----------------
 
 - Nothing changed yet.
 
