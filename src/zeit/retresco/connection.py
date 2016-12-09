@@ -6,6 +6,9 @@ import lxml.builder
 import pytz
 import requests
 import requests.exceptions
+import requests.sessions
+import signal
+import urllib
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
@@ -102,6 +105,16 @@ class TMS(object):
             result.append(page)
         return result
 
+    def get_article_body(self, uuid, timeout=None):
+        __traceback_info__ = (uuid,)
+        try:
+            response = self._request(
+                'GET /in-text-linked-documents/{}'.format(
+                    urllib.quote(uuid)), timeout=timeout)
+            return response['body']
+        except (KeyError, requests.Timeout):
+            return None
+
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
@@ -157,13 +170,13 @@ class TMS(object):
             if 'in-text-linked' in kw.get('params', {}).keys():
                 url = url + '?in-text-linked'
                 kw.pop('params')
-
             response = method(url, **kw)
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
-            message = '{verb} {path} returned {error}\n{body}'.format(
-                verb=verb, path=path, error=str(e), body=e.response.text)
+            body = getattr(e.response, 'text', '<body/>')
+            message = '{verb} {path} {error!r}\n{body}'.format(
+                verb=verb, path=path, error=e, body=body)
             if status < 500:
                 raise zeit.retresco.interfaces.TMSError(message, status)
             raise zeit.retresco.interfaces.TechnicalError(message)
@@ -244,3 +257,41 @@ class JSONTypeConverter(object):
         return [self(x) for x in o]
 
 encode_json = JSONTypeConverter()
+
+
+def signal_timeout_request(self, method, url, **kw):
+    """The requests library does not allow to specify a duration within which
+    a request has to return a response. You can only limit the time to
+    wait for the connection to be established or the first byte to be sent.
+
+    We now utilize the SIGALRM signal to enforce a hard timeout and abort the
+    request even if the server is still sending its response.
+    """
+
+    class SignalTimeout(Exception):
+        pass
+
+    def handler(signum, frame):
+        raise SignalTimeout()
+
+    try:
+        # Handler registration fails if it's attempted in a worker thread
+        signal.signal(signal.SIGALRM, handler)
+        # Timeout tuples (connect, read) shall not invoke signal timeouts
+        sig_timeout = float(kw['timeout'])
+    except (KeyError, TypeError, ValueError):
+        sig_timeout = None
+    else:
+        signal.setitimer(signal.ITIMER_REAL, sig_timeout)
+
+    try:
+        return original_session_request(self, method, url, **kw)
+    except SignalTimeout:
+        raise requests.exceptions.Timeout(
+            'Request attempt timed out after %s seconds' % sig_timeout)
+    finally:
+        if sig_timeout:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+
+original_session_request = requests.sessions.Session.request
+requests.sessions.Session.request = signal_timeout_request
