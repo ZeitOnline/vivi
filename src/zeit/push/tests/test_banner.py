@@ -7,7 +7,6 @@ import lxml.etree
 import zeit.content.article.testing
 import zeit.push.banner
 import zeit.push.testing
-import zeit.workflow.testing
 import zope.security.management
 
 
@@ -21,8 +20,6 @@ class StaticArticlePublisherTest(zeit.push.testing.TestCase):
 
     def test_sets_first_paragraph_and_publishes(self):
         self.publisher.send('mytext', 'http://zeit.de/foo')
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
         article = self.repository['foo']
         self.assertEqual(True, IPublishInfo(article).published)
         self.assertEllipsis(
@@ -32,15 +29,11 @@ class StaticArticlePublisherTest(zeit.push.testing.TestCase):
     def test_updates_last_semantic_change(self):
         before = ISemanticChange(self.repository['foo']).last_semantic_change
         self.publisher.send('mytext', 'http://zeit.de/foo')
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
         after = ISemanticChange(self.repository['foo']).last_semantic_change
         self.assertGreater(after, before)
 
     def test_regression_handles_unicode(self):
         self.publisher.send(u'mütext', 'http://zeit.de/foo')
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
         article = self.repository['foo']
         self.assertEllipsis(
             '...m&#252;text...',
