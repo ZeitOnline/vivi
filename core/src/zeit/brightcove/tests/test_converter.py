@@ -312,7 +312,6 @@ class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
                 video, semantic_change=True) as co:
             co.title = u'local change'
         transaction.commit()
-        zeit.workflow.testing.run_publish()
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
@@ -331,7 +330,6 @@ class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
                 playlist, semantic_change=True) as co:
             co.title = u'local change'
         transaction.commit()
-        zeit.workflow.testing.run_publish()
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertTrue(info.published)
@@ -355,7 +353,6 @@ class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
         zeit.cms.workflow.interfaces.IPublish(video).publish()
-        zeit.workflow.testing.run_publish()
         self.assertEqual(
             0, len(zeit.brightcove.testing.RequestHandler.posts_received))
 
