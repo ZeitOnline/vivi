@@ -1,6 +1,6 @@
+import kombu
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import logging
@@ -8,10 +8,8 @@ import lovely.remotetask.interfaces
 import os
 import pkg_resources
 import plone.testing
-import sys
 import tempfile
 import threading
-import transaction
 import z3c.celery.conftest
 import z3c.celery.layer
 import z3c.celery.testing
@@ -32,13 +30,18 @@ product_config = """
     publish-script true
     retract-script true
     dependency-publish-limit 100
-
-    task-queue-homepage homepage
-    task-queue-highprio highprio
-    task-queue-default general
-    task-queue-lowprio lowprio
 </product-config>
 """
+
+
+CELERY_QUEUES = ('homepage', 'highprio', 'default', 'lowprio')
+ADDITIONAL_CELERY_CONFIG = {
+    'task_track_started': True,
+    'task_routes': ('zeit.cms.celery.route_task',),
+    'task_default_queue': 'default',
+    'task_queues': [kombu.Queue(q) for q in CELERY_QUEUES],
+    'URGENCY_TO_QUEUE': {q: q for q in CELERY_QUEUES}
+}
 
 
 class CelerySettingsLayer(plone.testing.Layer):
@@ -56,8 +59,9 @@ class CelerySettingsLayer(plone.testing.Layer):
 
         self['celery_config'] = z3c.celery.conftest.celery_config(
             self['zope_conf_name'])
-        self['celery_config']['task_track_started'] = True
+        self['celery_config'].update(ADDITIONAL_CELERY_CONFIG)
         self['celery_parameters'] = z3c.celery.conftest.celery_parameters()
+        self['celery_worker_parameters'] = {'queues': CELERY_QUEUES}
         self['celery_includes'] = ['zeit.workflow.publish']
 
         self['logfile_name'] = self.create_log_file()
@@ -91,6 +95,7 @@ class CelerySettingsLayer(plone.testing.Layer):
         del self['celery_config']
         del self['celery_includes']
         del self['celery_parameters']
+        del self['celery_worker_parameters']
         logging.root.removeHandler(self['log_hander'])
         del self['log_hander']
         os.unlink(self['logfile_name'])
@@ -180,25 +185,6 @@ class RemoteTaskHelper(object):
         for thread in threading.enumerate():
             if thread.getName() == task._threadName():
                 thread.join()
-
-
-def run_publish(priorities=(PRIORITY_DEFAULT,)):
-    handler = logging.StreamHandler(sys.stdout)
-    logging.root.addHandler(handler)
-    oldlevel = logging.root.level
-    logging.root.setLevel(logging.ERROR)
-    if isinstance(priorities, str):
-        priorities = [priorities]
-    for priority in priorities:
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % priority]
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
-        tasks.process()
-    logging.root.removeHandler(handler)
-    logging.root.setLevel(oldlevel)
-    transaction.commit()  # trigger publish via celery
 
 
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):

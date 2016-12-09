@@ -349,7 +349,7 @@ Publish the folder again and verify the log:
 
 >>> job_id = publish.publish()
 >>> print logfile.getvalue()
-Running job None
+Running job <GUID>
 Publishing http://xml.zeit.de/online/2007/01/
 Could not checkout http://xml.zeit.de/online/2007/01/
 ...publish.sh:

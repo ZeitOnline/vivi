@@ -218,7 +218,6 @@ cms_product_config = """\
   trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true
 
-  task-queue-async events
   cache-expiration-config 600
   celery-config /dev/null
 </product-config>

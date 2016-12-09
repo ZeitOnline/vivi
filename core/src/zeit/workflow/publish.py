@@ -77,7 +77,8 @@ class Publish(object):
 
         if async:
             self.log(self.context, _('Publication scheduled'))
-            return PUBLISH_TASK.delay(self.context.uniqueId)
+            return PUBLISH_TASK.apply_async(
+                (self.context.uniqueId,), urgency=self.get_urgency(priority))
         else:
             PUBLISH_TASK(self.context.uniqueId)
 
@@ -85,13 +86,20 @@ class Publish(object):
         """Retract object."""
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            return RETRACT_TASK.delay(self.context.uniqueId)
+            return RETRACT_TASK.apply_async(
+                (self.context.uniqueId,), urgency=self.get_urgency(priority))
         else:
             RETRACT_TASK(self.context.uniqueId)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, msg)
+
+    def get_urgency(self, priority):
+        if priority is None:
+            priority = zeit.cms.workflow.interfaces.IPublishPriority(
+                self.context)
+        return priority
 
 
 class PublishRetractTask(object):

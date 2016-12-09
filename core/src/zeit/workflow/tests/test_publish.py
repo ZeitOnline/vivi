@@ -92,7 +92,6 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
     def publish(self, content):
         IPublishInfo(content).urgent = True
         IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
 
     def test_should_not_publish_more_dependencies_than_the_limit_breadth(self):
         content = self.repository['testcontent']
@@ -150,16 +149,14 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
         info = IPublishInfo(content)
         info.urgent = True
         self.assertFalse(info.published)
-        publish = IPublish(content)
         with mock.patch(
-                'zeit.cms.workflow.interfaces.IPublishPriority') as priority:
+                'zeit.cms.workflow.interfaces.IPublishPriority') as priority,\
+                mock.patch.object(zeit.workflow.publish.PUBLISH_TASK,
+                                  'apply_async') as apply_async:
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
-            publish.publish()
-        zeit.workflow.testing.run_publish()
-        self.assertFalse(info.published)
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_LOW)
-        self.assertTrue(info.published)
+            IPublish(content).publish()
+        apply_async.assert_called_with(
+            (u'http://xml.zeit.de/testcontent',), urgency='lowprio')
 
 
 class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
