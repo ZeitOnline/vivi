@@ -135,13 +135,11 @@ Authors are published along with the articles that reference them:
 ...     co.authorships = [co.authorships.create(repository['shakespeare'])]
 
 >>> import transaction
->>> import zeit.workflow.testing
 >>> zeit.cms.workflow.interfaces.IPublishInfo(
 ...     repository['testcontent']).urgent = True
 >>> transaction.commit()
 >>> ignored = zeit.cms.workflow.interfaces.IPublish(
 ...     repository['testcontent']).publish()
->>> zeit.workflow.testing.run_publish()
 
 >>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
 >>> info.published

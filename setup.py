@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.author',
-    version='2.7.5.dev0',
+    version='3.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de',
@@ -19,7 +19,7 @@ setup(
         'mock',
         'pysolr',
         'setuptools',
-        'zeit.cms>=2.38.0.dev0',
+        'zeit.cms >= 3.0.dev0',
         'zeit.content.article >= 3.21.1.dev0',
         'zeit.content.image>=2.13.0.dev0',
         'zeit.edit',
