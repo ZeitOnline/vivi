@@ -49,7 +49,7 @@ def unindex_on_remove(context, event):
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
-@z3c.celery.task()
+@z3c.celery.task(urgency='search')
 def index_async(uniqueId, enrich=False, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
@@ -93,13 +93,13 @@ def index(content, enrich=False, publish=False):
             continue
 
 
-@z3c.celery.task()
+@z3c.celery.task(urgency='search')
 def unindex_async(uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     conn.delete_id(uuid)
 
 
-@z3c.celery.task()
+@z3c.celery.task(urgency='async')
 def index_parallel(unique_id, enrich=False, publish=False):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
