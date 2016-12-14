@@ -115,7 +115,7 @@ class Toc(zeit.cms.browser.view.Base):
                     toc_entry = self._create_toc_element(article)
                     if toc_entry:
                         result_for_ressort.append(toc_entry)
-                ressort_folder_name = ressort_folder.__name__\
+                ressort_folder_name = ressort_folder.__name__ \
                     .replace('-', ' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
             results[self._full_product_name(prod_uid)] = result_for_product
@@ -136,7 +136,7 @@ class Toc(zeit.cms.browser.view.Base):
         :return: [str]
         """
         return [self.context.fill_template(
-                'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
+            'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
                 self.product_ids]
 
     def list_relevant_ressort_folders(self, path):
@@ -204,7 +204,11 @@ class Toc(zeit.cms.browser.view.Base):
         """ """
         page_string = toc_dict.get('page', u'')
         res = re.findall('\d+', page_string)
-        toc_dict['page'] = res[0].lstrip("0") if res else u"-1"
+        if res:
+            page = int(res[0].lstrip("0"))
+        else:
+            page = sys.maxint
+        toc_dict['page'] = page
 
     def _normalize_teaser(self, toc_entry):
         """Delete linebreaks and a too much whitespace"""
@@ -229,21 +233,10 @@ class Toc(zeit.cms.browser.view.Base):
         for product_name, ressort_dict in toc_data.iteritems():
             for ressort_name, articles in ressort_dict.iteritems():
                 toc_data[product_name][ressort_name] = \
-                    sorted(articles, key=self._get_page_from_article)
+                    sorted(articles, key=lambda x: x.get('page', sys.maxint))
         for product_name, ressort_dict in toc_data.iteritems():
             toc_data[product_name] = self._sorted_ressorts(ressort_dict)
         return toc_data
-
-    def _get_page_from_article(self, article):
-        """
-        :param article: {'page':str}
-        :return: int
-        """
-        try:
-            return int(article.get('page'))
-        except ValueError:
-            # The empty string will raise a Value Error
-            return sys.maxint
 
     def _sorted_ressorts(self, ressorts):
         """
@@ -257,12 +250,12 @@ class Toc(zeit.cms.browser.view.Base):
             # Empty ressorts should be listed as last entries in toc
             min_page = sys.maxint
             if articles:
-                min_page = self._get_page_from_article(articles[0])
+                min_page = articles[0].get('page', sys.maxint)
             ressort_min_page_number_tuples.append((resort_name, min_page))
         d = OrderedDict()
         for ressort_page_tuple in sorted(
-                ressort_min_page_number_tuples, key=lambda
-                        resort_page_tup: resort_page_tup[1]):
+                ressort_min_page_number_tuples, key=lambda resort_page_tup:
+                resort_page_tup[1]):
             d[ressort_page_tuple[0]] = ressorts.get(ressort_page_tuple[0])
         return d
 
@@ -305,7 +298,11 @@ class Toc(zeit.cms.browser.view.Base):
     def _format_toc_element(self, toc_entry):
         title_teaser = \
             toc_entry.get("title") + u" " + toc_entry.get("teaser")
-        return [toc_entry.get("page"), toc_entry.get("author"), title_teaser]
+        page = toc_entry.get('page')
+        if page == sys.maxint:
+            page = ''
+        return [str(page), toc_entry.get("author"),
+                title_teaser]
 
 
 class Excluder(object):

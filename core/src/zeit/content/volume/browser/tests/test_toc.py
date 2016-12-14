@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import mock
 from ordereddict import OrderedDict
 from collections import defaultdict
@@ -22,27 +23,41 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TocFunctionalTest, self).setUp()
-        self.connector = zeit.connector.mock.connector_factory()
         self.toc_data = OrderedDict()
         self.toc_data['Die Zeit'] = OrderedDict(
-                    {'Politik': [{'page': '1',
-                                  'title': 'title',
-                                  'teaser': 'tease',
-                                  'author': 'Autor'}]
-                     }
+            {'Politik': [{'page': '1',
+                          'title': 'title',
+                          'teaser': 'tease',
+                          'author': 'Autor'}]
+             }
         )
         self.toc_data['Anderer'] = OrderedDict(
-                    {'Dossier': [
-                        {'page': '1',
-                         'title': 'title',
-                         'teaser': 'tease',
-                         'author': 'Autor'},
-                        {'page': '3',
-                         'title': 'title2',
-                         'teaser': 'tease',
-                         'author': 'Autor'}
-                                 ]}
+            {'Dossier': [
+                {'page': '1',
+                 'title': 'title',
+                 'teaser': 'tease',
+                 'author': 'Autor'},
+                {'page': '3',
+                 'title': 'title2',
+                 'teaser': 'tease',
+                 'author': 'Autor'}
+            ]}
         )
+        self.article_xml_template = u"""
+            <article>
+                <head>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document"
+                    name="page">{page}</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document"
+                    name="author">Autor</attribute>
+                </head>
+                <body>
+                     <title>Titel</title>
+                     <subtitle>Das soll der Teaser
+                     sein</subtitle>
+                </body>
+            </article>
+        """
 
     def test_list_relevant_ressort_folders_returns_correct_directories(self):
         toc = Toc()
@@ -63,29 +78,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         foldernames = [folder.__name__ for folder in relevant_ressorts]
         self.assertIn('politik', foldernames)
         self.zca.reset()
-            
-    def test__get_all_product_ids_for_volume_zeit_product_id_found(self):
-        t = Toc()
-        self.assertIn('ZEI', t.product_ids)
 
     def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
-        article_xml = u"""
-            <article>
-                <head>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document"
-                    name="page">20-20</attribute>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document"
-                    name="author">Autor</attribute>
-                </head>
-                <body>
-                     <title>Titel</title>
-                     <subtitle>Das soll der Teaser
-                     sein</subtitle>
-                </body>
-            </article>
-        """
-
-        expected = {'page': '20',
+        article_xml = self.article_xml_template.format(page='20-20')
+        expected = {'page': 20,
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
                     'author': 'Autor'}
@@ -116,6 +112,13 @@ Dossier\r
         toc = Toc()
         assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
+    def test_empty_page_node_in_xml_results_in_max_int_page_in_toc_entry(self):
+        article_xml = self.article_xml_template.format(page='')
+        article_element = lxml.etree.fromstring(article_xml)
+        t = Toc()
+        entry = t._create_toc_element(article_element)
+        assert sys.maxint == entry.get('page')
+
     def test_product_source_has_zeit_product_id(self):
         t = Toc()
         volume = mock.Mock()
@@ -124,6 +127,22 @@ Dossier\r
         t.context = volume
         mapping = t._create_product_id_full_name_mapping()
         self.assertEqual('Die Zeit'.lower(), mapping.get('ZEI', '').lower())
+
+    def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
+        toc_data = {
+            'Die Zeit': {
+                'Politik':
+                    [
+                        {'page': sys.maxint, 'title': 'title2'},
+                        {'page': 1, 'title': 'title1'}
+                    ]
+            }
+        }
+        toc_data = OrderedDict(toc_data)
+        t = Toc()
+        result = t._sort_toc_data(toc_data)
+        assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
+            'page')
 
     def test_article_excluder_excludes_irrelevant_aritcles(self):
         excluder = Excluder()
@@ -156,7 +175,7 @@ Dossier\r
             zeit.connector.interfaces.IConnector)
         # Check if a new IConnector was registered
         assert old_connector is not new_connector
-        # Check if the toc.connector is a the ITocConnector
+        # Check if the toc.connector is the ITocConnector
         assert t.connector is zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
         assert t.connector is zope.component.getUtility(
