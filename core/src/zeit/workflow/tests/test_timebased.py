@@ -62,7 +62,7 @@ class TimeBasedWorkflowEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         assert 'Published.' == result.get()
 
         with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''...
+            self.assertEllipsis('''\
 Running job {0.workflow.publish_job_id}
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
 Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
@@ -88,10 +88,11 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
         # Make sure the task is completed before asserting its output:
         assert 'Published.' == result.get()
         with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''...
+            self.assertEllipsis("""\
 Running job {0.workflow.publish_job_id}
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)
+Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),
                                 logfile.read())
 
     def test_released_from__revokes_job_on_change(self):

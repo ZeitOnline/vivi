@@ -174,7 +174,7 @@ class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         assert 'Published.' == publish.get()
 
         with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''...
+            self.assertEllipsis('''\
 Running job ...-...-...-...
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
 Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)''',
