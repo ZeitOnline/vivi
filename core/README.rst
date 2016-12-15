@@ -84,10 +84,11 @@ Inhaltsverzeichnis
 Außerdem kann für jedes Ausgabenobjekt ein Inhaltsverzeichnis als csv
 erstellt werden (über /ausgabe/@@toc.csv). Dieses Inhaltsverzeichnis
 wird allerdings nicht durch Parsen der XML's im repository erzeugt, da
-das IHV erstellt werden soll bevor der Print-Import Stufe 2 gelaufen ist,
-sondern durch das Parsen der XML's die unter
+das IHV erstellt werden soll noch bevor der Print-Import Stufe 2 gelaufen
+ist. Der Print-Import Stufe 1, der bereits gelaufen sein sollte, sorgt
+dafür, dass die XML's unter
 http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv
-liegen, die bereits vorher zur Verfügung stehen sollten.
+liegen. Diese werden benutzt, um das Inhaltsverzeichnis zu erstellen.
 Welche Produkte das Inhaltsverzeichnis umfasst, wird zurzeit über die
 product config bestimmt::
 
@@ -100,4 +101,6 @@ Hamburg".
 Wird nun beispielsweise versucht das IHV für die Ausgabe 2016/35
 zu ermitteln, werden für die Print-Ausgabe die Unterordner von
 http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/35
+und
+http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEIH/2016/35
 nach Artikeln durchsucht und diese werden dann dem IHV hinzugefügt.
