@@ -72,10 +72,6 @@ class Toc(zeit.cms.browser.view.Base):
             'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
-    # def _create_product_id_full_name_mapping(self):
-    #     products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
-    #     return dict([(product.id, product.title) for product in products])
-
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
         volume_formatted = self.context.fill_template("{year}_{name}")
@@ -93,7 +89,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _get_via_dav(self):
         """
         Get and parse xml form webdav und create toc entries.
-        :return: Sorted OrderedDict of Toc entries.
+        :return: OrderedDict of Toc entries.
         Sorted like toc-product-ids given list in the product config.
         {
         'Product Name':
