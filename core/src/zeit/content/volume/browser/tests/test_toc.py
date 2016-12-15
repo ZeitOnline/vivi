@@ -60,7 +60,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             </article>
         """
 
-    def test_list_relevant_ressort_folders_returns_correct_directories(self):
+    def test_list_relevant_ressort_folders_excludes_leserbriefe_and_images(
+            self):
         toc = Toc()
         toc_connector = zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
@@ -80,7 +81,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertIn('politik', foldernames)
         self.zca.reset()
 
-    def test_create_toc_element_from_xml_with_linebreak_in_teaser(self):
+    def test_create_toc_element_should_flatten_linebreaks(self):
         article_xml = self.article_xml_template.format(page='20-20')
         expected = {'page': 20,
                     'title': 'Titel',
@@ -91,7 +92,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         result = toc._create_toc_element(article_element)
         self.assertEqual(expected, result)
 
-    def test_create_csv_with_all_values_is_exact(self):
+    def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
 Politik\r
 1\tAutor\ttitle tease\r
@@ -104,7 +105,7 @@ Dossier\r
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
-    def test_create_csv_with_missing_values_in_toc_data(self):
+    def test_create_csv_with_missing_toc_value_has_empty_field(self):
         # Delete an author in input toc data
         product, ressort_dict = self.toc_data.iteritems().next()
         ressort, article_list = ressort_dict.iteritems().next()
@@ -120,7 +121,7 @@ Dossier\r
         entry = t._create_toc_element(article_element)
         assert sys.maxint == entry.get('page')
 
-    def test_product_source_has_zeit_product_id(self):
+    def test_product_id_mapping_has_full_name_for_zei_product_id(self):
         t = Toc()
         volume = mock.Mock()
         volume.year = 2015
@@ -145,7 +146,7 @@ Dossier\r
         assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
 
-    def test_article_excluder_excludes_irrelevant_aritcles(self):
+    def test_article_excluder_excludes_blacklisted_property_values(self):
         excluder = Excluder()
         xml_template = u"""
         <article>
@@ -219,9 +220,8 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                     'test_artikel'] = article
         self.zca.reset()
 
-    def test_toc_generates_right_headers(self):
+    def test_toc_view_is_csv_file_download(self):
         b = self.browser
-        b.handleErrors = False
         with mock.patch('zeit.content.volume.browser'
                         '.toc.Toc._create_toc_content') as create_content:
             create_content.return_value = 'some csv'
@@ -233,9 +233,8 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
                              b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
-    def test_toc_generates_correct_csv(self):
+    def test_toc_generates_csv(self):
         b = self.browser
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
                '2015/01/ausgabe/@@toc.csv')
         self.assertIn(self.article_title, b.contents)

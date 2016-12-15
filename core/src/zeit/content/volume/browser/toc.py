@@ -85,7 +85,6 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_content(self):
         """
         Create Table of Contents for the given Volume as a csv.
-        :param volume: ..volume.Volume Content Instance
         :return: str - Table of content csv string
         """
         toc_data = self._get_via_dav()
@@ -95,14 +94,13 @@ class Toc(zeit.cms.browser.view.Base):
     def _get_via_dav(self):
         """
         Get and parse xml form webdav und create toc entries.
-        :param volume: ..volume.Volume Instance
-        :return: Sorted Dict of Toc entries.
+        :return: Sorted OrderedDict of Toc entries.
         Sorted like toc-product-ids given list in the product config.
         {
         'Product Name':
             {
             'Ressort' :
-                [{'page': str, 'title': str, 'teaser': str, 'author': str},...]
+                [{'page': int, 'title': str, 'teaser': str, 'author': str},...]
             }
         }
         """
@@ -131,7 +129,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _get_product_uids(self):
         """
-        Creates a list of unix-paths to all given products
+        Creates a list of uids to all given products.
         :param product_ids: [str]
         :return: [str]
         """
@@ -139,14 +137,14 @@ class Toc(zeit.cms.browser.view.Base):
             'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
                 self.product_ids]
 
-    def list_relevant_ressort_folders(self, path):
+    def list_relevant_ressort_folders(self, product_uid):
         """
-        :param path: path to product for the volume
-        :return: [('foldername', zeit.cms.repository.folder.Folder), ...]
+        :param product_uid: uid to product for the volume
+        :return: [zeit.cms.repository.folder.Folder, ...]
         """
         try:
             product_folder = \
-                zeit.cms.interfaces.ICMSContent(self.connector[path])
+                zeit.cms.interfaces.ICMSContent(self.connector[product_uid])
             return [item[1] for item in product_folder.items()
                     if self._is_relevant_folder_item(item)]
         except KeyError:
@@ -158,8 +156,9 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _get_all_article_elements(self, ressort_folder):
         """
-        Get all DAV Server paths to article files in path.
-        :param ressort_folder:
+        Returns lxml-Objects for all Articles in ressort_folder.
+        Using the adapted IArticle doesn't work due to some difference in
+        the page xml element, which can't be parsed the normal way.
         :return: [lxml.etree Article element, ...]
         """
         return [resource.xml for resource in ressort_folder.values()
@@ -168,7 +167,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
         """
         return self._get_metadata_from_article_xml(article_element) \
             if self.excluder.is_relevant(article_element) else None
@@ -176,10 +175,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
         Get all relevant normalized metadata from article xml tree.
-        Using the adapted IArticle doesn't work due to some difference in
-        the page xml element, which can't be parsed.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': str, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
         """
         xpaths = {
             'title': "body/title/text()",
@@ -201,7 +198,7 @@ class Toc(zeit.cms.browser.view.Base):
         return toc_entry
 
     def _normalize_page(self, toc_dict):
-        """ """
+        """Transform page to correct integer"""
         page_string = toc_dict.get('page', u'')
         res = re.findall('\d+', page_string)
         if res:
@@ -216,18 +213,18 @@ class Toc(zeit.cms.browser.view.Base):
         toc_entry['teaser'] = teaser.replace('\n', u' ')
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
 
-    def _full_product_name(self, product_path):
+    def _full_product_name(self, product_uid):
         """
-        :param product_path: str -  /PRODUCT_ID/YEAR/VOL/
+        :param product_uid: str -  /PRODUCT_ID/YEAR/VOL/
         """
-        splitted_path = product_path.split(posixpath.sep)
+        splitted_path = product_uid.split(posixpath.sep)
         product_id = splitted_path[-4]
         return self.product_id_mapping.get(product_id, product_id)
 
     def _sort_toc_data(self, toc_data):
         """
-        Sort the toc data dict
-        :param toc_data:
+        Sort the toc data dict.
+        :param toc_data: Table of content data as dict.
         :return: OrderedDict
         """
         for product_name, ressort_dict in toc_data.iteritems():
@@ -241,7 +238,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _sorted_ressorts(self, ressorts):
         """
         Ressort dicts will be sorted by min page of its articles.
-        Expects articles in ressorts dict to be sorted by page
+        Expects articles in ressorts dict to be sorted by page.
         :param ressorts: {RESSORTNAME: [ARTICLES AS DICT]}
         :return: OrderedDict
         """
@@ -351,7 +348,6 @@ class Excluder(object):
                                          for r in self._jobname_exclude]
 
     def is_relevant(self, article_lxml_tree):
-        # TODO A lot of Code repetition
         title_values = article_lxml_tree.xpath(self.TITLE_XPATH)
         supertitle_values = article_lxml_tree.xpath(self.SUPERTITLE_XPATH)
         jobname_values = article_lxml_tree.xpath(self.JOBNAME_XPATH)
@@ -377,6 +373,7 @@ class Excluder(object):
         return not(title_exclude or supertitle_exclude or jobname_exclude)
 
     def is_relevant_folder(self, folder_path):
+        """Checks if a folder is on the blacklist."""
         folders_to_exclude = {'images', 'leserbriefe'}
         folders_to_exclude = set.union(
             folders_to_exclude,
