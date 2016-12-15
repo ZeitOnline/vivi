@@ -6,7 +6,9 @@ import grokcore.component as grok
 import os.path
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zope.container.contained
 import zope.interface
+import zope.security.proxy
 
 
 @grok.subscribe(
@@ -29,6 +31,8 @@ def mark_section_content_on_checkin(context, event):
 
 def apply_markers(content):
     content = zope.security.proxy.getObject(content)
+    # Dear Zope, why is ContainedProxy not a zope.proxy?
+    content = zope.container.contained.getProxiedObject(content)
 
     for iface in zope.interface.providedBy(content):
         if issubclass(iface, ISectionMarker):
