@@ -11,7 +11,7 @@ import zope.proxy
 
 class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    zope.interface.implementsOnly(
+    zope.interface.implements(
         zeit.content.rawxml.interfaces.IRawXML)
 
     default_template = u'<your-xml-here/>'
