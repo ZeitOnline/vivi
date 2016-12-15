@@ -15,7 +15,7 @@ from zeit.cms.repository.interfaces import IFolder
 import zeit.connector.connector
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
-from zeit.content.volume.interfaces import ITocConnector
+from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
 
 import zope.app.appsetup.product
 import zope.component
@@ -34,9 +34,9 @@ class Toc(zeit.cms.browser.view.Base):
     """
     CSV_DELIMITER = '\t'
 
-    def __init__(self, *args, **kwargs):
-        super(Toc, self).__init__(*args, **kwargs)
-
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
         config = zope.app.appsetup.product \
             .getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
@@ -66,16 +66,15 @@ class Toc(zeit.cms.browser.view.Base):
         zope.component.hooks.setSite(site)
 
     def __call__(self):
-        self.product_id_mapping = self._create_product_id_full_name_mapping()
         filename = self._generate_file_name()
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader(
             'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
-    def _create_product_id_full_name_mapping(self):
-        products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self.context))
-        return dict([(product.id, product.title) for product in products])
+    # def _create_product_id_full_name_mapping(self):
+    #     products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
+    #     return dict([(product.id, product.title) for product in products])
 
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
@@ -219,7 +218,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         splitted_path = product_uid.split(posixpath.sep)
         product_id = splitted_path[-4]
-        return self.product_id_mapping.get(product_id, product_id)
+        return PRODUCT_MAPPING.get(product_id, product_id)
 
     def _sort_toc_data(self, toc_data):
         """

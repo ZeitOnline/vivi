@@ -62,7 +62,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_list_relevant_ressort_folders_excludes_leserbriefe_and_images(
             self):
-        toc = Toc()
+        toc = Toc(None, None)
         toc_connector = zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
         self.zca.patch_utility(toc_connector,
@@ -88,7 +88,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'teaser': 'Das soll der Teaser sein',
                     'author': 'Autor'}
         article_element = lxml.etree.fromstring(article_xml)
-        toc = Toc()
+        toc = Toc(None, None)
         result = toc._create_toc_element(article_element)
         self.assertEqual(expected, result)
 
@@ -101,7 +101,7 @@ Dossier\r
 1\tAutor\ttitle tease\r
 3\tAutor\ttitle2 tease\r
 """
-        toc = Toc()
+        toc = Toc(None, None)
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
@@ -111,23 +111,18 @@ Dossier\r
         ressort, article_list = ressort_dict.iteritems().next()
         article_list[0]['author'] = ''
         input_data = {product: {ressort: article_list}}
-        toc = Toc()
+        toc = Toc(None, None)
         assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
     def test_empty_page_node_in_xml_results_in_max_int_page_in_toc_entry(self):
         article_xml = self.article_xml_template.format(page='')
         article_element = lxml.etree.fromstring(article_xml)
-        t = Toc()
+        t = Toc(None, None)
         entry = t._create_toc_element(article_element)
         assert sys.maxint == entry.get('page')
 
     def test_product_id_mapping_has_full_name_for_zei_product_id(self):
-        t = Toc()
-        volume = mock.Mock()
-        volume.year = 2015
-        volume.volume = 1
-        t.context = volume
-        mapping = t._create_product_id_full_name_mapping()
+        mapping = zeit.content.volume.interfaces.PRODUCT_MAPPING
         self.assertEqual('Die Zeit'.lower(), mapping.get('ZEI', '').lower())
 
     def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
@@ -141,7 +136,7 @@ Dossier\r
             }
         }
         toc_data = OrderedDict(toc_data)
-        t = Toc()
+        t = Toc(None, None)
         result = t._sort_toc_data(toc_data)
         assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
@@ -172,7 +167,7 @@ Dossier\r
             zeit.connector.interfaces.IConnector)
         # register_archive_connector is called in __init__
         # check for the correct side effects
-        t = Toc()
+        t = Toc(None, None)
         new_connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         # Check if a new IConnector was registered
