@@ -9,6 +9,7 @@ import lxml.etree
 import zope.component
 
 import zeit.cms.content.sources
+import zeit.cms.content.add
 from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
 import zeit.connector.mock
@@ -196,8 +197,7 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.ressort_names = ['dossier', 'politik']
         self.article_page = 1
         with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['2015'] = Folder()
-            self.repository['2015']['01'] = Folder()
+            zeit.cms.content.add.find_or_create_folder('2015', '01')
             self.repository['2015']['01']['ausgabe'] = volume
         # Now use the mock ITocConnector to mock the archive folders and the
         # article
@@ -206,11 +206,9 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.zca.patch_utility(toc_connector,
                                zeit.connector.interfaces.IConnector)
         with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['ZEI'] = Folder()
-            self.repository['ZEI']['2015'] = Folder()
-            self.repository['ZEI']['2015']['01'] = Folder()
             for ressort_name in self.ressort_names:
-                self.repository['ZEI']['2015']['01'][ressort_name] = Folder()
+                zeit.cms.content.add.find_or_create_folder('ZEI', '2015',
+                                                           '01', ressort_name)
             with zeit.cms.testing.interaction():
                 article = create_article()
                 article.year = 2015
