@@ -63,9 +63,9 @@ class TimeBasedWorkflowEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
         with open(self.layer['logfile_name']) as logfile:
             self.assertEllipsis('''\
-Running job {0.workflow.publish_job_id}
+Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),  # noqa
                                 logfile.read())
 
     def test_released_from__in_future_is_published_later(self):
@@ -89,10 +89,10 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
         assert 'Published.' == result.get()
         with open(self.layer['logfile_name']) as logfile:
             self.assertEllipsis("""\
-Running job {0.workflow.publish_job_id}
+Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
 Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)
-Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),
+Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),  # noqa
                                 logfile.read())
 
     def test_released_from__revokes_job_on_change(self):
@@ -132,10 +132,10 @@ Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),
         assert 'Retracted.' == result.get()
 
         with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''...
-Running job {0.workflow.retract_job_id}
+            self.assertEllipsis("""...
+Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Retracting http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
                                 logfile.read())
 
     def test_released_to__in_future_is_retracted_later(self):

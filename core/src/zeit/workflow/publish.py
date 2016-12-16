@@ -112,7 +112,7 @@ class PublishRetractTask(object):
         info = (type(self).__name__, uniqueId, self.jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
-        logger.info("Running job %s", self.jobid)
+        logger.info("Running job %s for %s", self.jobid, uniqueId)
 
         obj = self.repository.getContent(uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
