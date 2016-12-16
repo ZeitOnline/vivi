@@ -8,6 +8,7 @@ zeit.cms changes
 
 - ZON-3409: Depend on `z3c.celery`.
 
+- ZON-3454: Remove view ``zeit.workflow.task_queue_length``.
 
 2.93.1 (2016-12-15)
 -------------------
