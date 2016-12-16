@@ -7,7 +7,9 @@ import zeit.cms.repository.interfaces
 import zeit.cms.util
 import zeit.connector.interfaces
 import zeit.connector.resource
+import zope.container.contained
 import zope.interface
+import zope.proxy
 import zope.schema
 
 
@@ -74,6 +76,8 @@ class TypeDeclaration(object):
     def _serialize_provided_interfaces_to_dav(self, obj):
         # Remove all proxies to not get any implements from proxies
         unwrapped = zope.proxy.removeAllProxies(obj)
+        # Dear Zope, why is ContainedProxy not a zope.proxy?
+        unwrapped = zope.container.contained.getProxiedObject(unwrapped)
         # We don't want to store ILocalContent of course since we're about to
         # add to the repository. (Unfortunately, __provides__ is a custom type
         # and not a simple list, so we can only manipulate it through the

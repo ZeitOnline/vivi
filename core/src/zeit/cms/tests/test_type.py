@@ -1,5 +1,5 @@
 import mock
-import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
@@ -7,6 +7,7 @@ import zeit.cms.testing
 import zeit.cms.type
 import zeit.connector.interfaces
 import zope.component
+import zope.container.contained
 import zope.interface
 
 
@@ -114,11 +115,21 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
         zeit.cms.type.restore_provided_interfaces_from_dav(f_remote, event)
         self.assertEquals(f_remote.__class__, f_remote.__provides__._cls)
 
+
+class StoreProvidedInterfacesIntegration(zeit.cms.testing.ZeitCmsTestCase):
+
     def test_checkout_checkin_keeps_provides(self):
-        zope.interface.alsoProvides(self.content, ITestInterface)
-        self.repository['foo'] = self.content
-        content = self.repository['foo']
+        content = zeit.cms.repository.unknown.PersistentUnknownResource(u'x')
+        zope.interface.alsoProvides(content, ITestInterface)
+        self.repository['foo'] = content
         self.assertTrue(ITestInterface.providedBy(self.repository['foo']))
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            self.assertTrue(ITestInterface.providedBy(co))
+        co = zeit.cms.checkout.interfaces.ICheckoutManager(
+            self.repository['foo']).checkout()
+        self.assertTrue(ITestInterface.providedBy(co))
+        # Most content types provide IContained, so they don't get wrapped in a
+        # ContainedProxy, but since some mistakenly didn't, be extra careful.
+        wrapped = zope.container.contained.ContainedProxy(co)
+        wrapped.__parent__ = co.__parent__
+        wrapped.__name__ = co.__name__
+        zeit.cms.checkout.interfaces.ICheckinManager(wrapped).checkin()
         self.assertTrue(ITestInterface.providedBy(self.repository['foo']))

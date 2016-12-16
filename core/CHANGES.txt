@@ -9,6 +9,12 @@ zeit.cms changes
 - ZON-3409: Depend on `z3c.celery`.
 
 
+2.93.1 (2016-12-15)
+-------------------
+
+- MAINT: Be defensive about ContainedProxy vs provided interfaces
+
+
 2.93.0 (2016-12-06)
 -------------------
 
