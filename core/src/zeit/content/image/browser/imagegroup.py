@@ -8,6 +8,7 @@ import re
 import zc.table.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
+import zeit.cms.browser.view
 import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
@@ -233,3 +234,18 @@ class ThumbnailLarge(Thumbnail):
 
     first_choice = re.compile(r'.*-[5-9][0-9]+x\d+')
     view_name = 'preview'
+
+
+class DefaultView(zeit.cms.browser.view.Base):
+    # XXX zope.publisher.defaultview insists on abusing the ZCA adapter
+    # registry to store plain strings instead of real adapters, so we cannot
+    # perform the distinction there, since no adapter is called.
+
+    def __call__(self):
+        view = '@@variant.html'
+        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.image.variants'):
+            view = '@@view.html'
+        if self.context.display_type == INFOGRAPHIC_DISPLAY_TYPE:
+            view = '@@view.html'
+        self.request.response.redirect(self.url(self.context, view))
