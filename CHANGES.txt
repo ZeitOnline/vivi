@@ -1,7 +1,13 @@
 zeit.content.image changes
 ==========================
 
-2.18.1 (unreleased)
+2.18.2 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+2.18.1 (2016-12-06)
 -------------------
 
 - ZON-3363: Some UI/form field tweaks for infographics.
