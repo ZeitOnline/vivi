@@ -2,8 +2,8 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-2.0 (unreleased)
-----------------
+1.2.3 (unreleased)
+------------------
 
 - Nothing changed yet.
 
