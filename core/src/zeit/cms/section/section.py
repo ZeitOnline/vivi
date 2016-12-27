@@ -39,7 +39,9 @@ def apply_markers(content):
             zope.interface.noLongerProvides(content, iface)
 
     # Ressort markers take precedence over section markers (ZON-2507)
-    markers = get_ressort_markers(content) or get_folder_markers(content)
+    markers = (
+        get_markers_for_section(find_ressort_section(content), content) or
+        get_markers_for_section(find_folder_section(content), content))
     zope.interface.alsoProvides(content, *markers)
 
 
@@ -50,11 +52,6 @@ def find_section(context):
     return find_ressort_section(context) or find_folder_section(context)
 
 
-def get_ressort_markers(content):
-    section = find_ressort_section(content)
-    return get_markers_for_section(section, content)
-
-
 def find_ressort_section(context):
     meta = ICommonMetadata(context, None)
     if meta is None:
@@ -63,11 +60,6 @@ def find_ressort_section(context):
     return sm.adapters.lookup(
         (zope.interface.providedBy(context),), IRessortSection,
         name=meta.ressort)
-
-
-def get_folder_markers(content):
-    section = find_folder_section(content)
-    return get_markers_for_section(section, content)
 
 
 def find_folder_section(context):
