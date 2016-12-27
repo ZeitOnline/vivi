@@ -52,8 +52,6 @@ def find_section(context):
 
 def get_ressort_markers(content):
     section = find_ressort_section(content)
-    if section is None:
-        return []
     return get_markers_for_section(section, content)
 
 
