@@ -111,7 +111,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     """
 
     title = _('Add author')
-    form_fields = (FormBase._form_fields.omit('__name__') +
+    form_fields = (FormBase._form_fields.omit(*EditForm.omit_fields) +
                    zope.formlib.form.FormFields(IDuplicateConfirmation))
     factory = zeit.content.author.author.Author
     next_view = 'view.html'
