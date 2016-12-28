@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2016-11-30 15:14+0100\n"
-"PO-Revision-Date: 2016-12-06 16:38+0100\n"
-"Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
+"PO-Revision-Date: 2016-12-28 13:38+0100\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -3029,7 +3029,7 @@ msgstr ""
 
 #: zeit/content/cp/centerpage.py:240
 msgid "Centerpage 2009"
-msgstr "Center-Page 2009"
+msgstr "Center-Page"
 
 #. Default: ""
 #: zeit/content/cp/centerpage.py:490
