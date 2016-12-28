@@ -94,9 +94,37 @@ class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
 VOLUME_COVER_SOURCE = VolumeCoverSource()
 
 
+class ProductNameMapper():
+
+    def __init__(self):
+        self.mapping = None
+
+    def __getitem__(self, key):
+        if not self.mapping:
+            products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self))
+            self.mapping = dict([(product.id, product.title) for product in
+                                 products])
+        return self.mapping.get(key)
+
+    def get(self, key, default):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+PRODUCT_MAPPING = ProductNameMapper()
+
+
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
 
     teaserText = zope.schema.Text(
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+
+class ITocConnector(zope.interface.Interface):
+    """
+    Marker Interface for a the Connector to get the Tocdata from
+    /cms/wf-archiv/archiv
+    """

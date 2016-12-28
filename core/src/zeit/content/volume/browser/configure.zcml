@@ -30,7 +30,15 @@
      for="..interfaces.IVolume"
      name="view.html"
      />
-
+    <browser:page
+      for="..interfaces.IVolume"
+      name="toc.csv"
+      class=".toc.Toc"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      menu="zeit-context-views"
+      title="Table of Content"
+      permission="zope.View"
+    />
    <browser:menuItem
      for="..interfaces.IVolume"
      action="@@view.html"

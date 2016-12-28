@@ -74,10 +74,38 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
         <product id="ZMLB">Zeit Magazin</product>
     </products>
 
-In Produktion ist diese `products.xml`_ in Benutzung.
 
-.. _`products.xml`: http://cms-backend.zeit.de:9000/cms/work/data/products.xml
+In Produktion ist diese `products.xml` in Benutzung.
 
+.. _`products.xml`: http://http://cms-backend.zeit.de:9000/cms/work/data/products.xml
+
+
+Inhaltsverzeichnis
+==================
+
+Außerdem kann für jedes Ausgabenobjekt ein Inhaltsverzeichnis als csv
+erstellt werden (über /ausgabe/@@toc.csv). Dieses Inhaltsverzeichnis
+wird allerdings nicht durch Parsen der XML's im repository erzeugt, da
+das IHV erstellt werden soll noch bevor der Print-Import Stufe 2 gelaufen
+ist. Der Print-Import Stufe 1, der bereits gelaufen sein sollte, sorgt
+dafür, dass die XML's unter
+http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv
+liegen. Diese werden benutzt, um das Inhaltsverzeichnis zu erstellen.
+Welche Produkte das Inhaltsverzeichnis umfasst, wird zurzeit über die
+product config bestimmt::
+
+    <product-config zeit.content.volume>
+        toc-product-ids ZEI ZEIH
+    </product-config>
+
+Bei dieser Konfiguration umfasst das IHV dann nur "Die Zeit" und "Die Zeit
+Hamburg".
+Wird nun beispielsweise versucht das IHV für die Ausgabe 2016/35
+zu ermitteln, werden für die Print-Ausgabe die Unterordner von
+http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEI/2016/35
+und
+http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv/ZEIH/2016/35
+nach Artikeln durchsucht und diese werden dann dem IHV hinzugefügt.
 
 Ausgabenseite
 =============
@@ -125,3 +153,4 @@ ist es natürlich `umfangreicher`_)::
 
 .. _`Centerpage`: https://github.com/zeitonline/zeit.content.cp
 .. _`umfangreicher`: http://cms-backend.zeit.de:9000/cms/work/data/ausgabe-ZEI.py
+

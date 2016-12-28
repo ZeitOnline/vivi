@@ -5,7 +5,7 @@ zeit.content.volume changes
 1.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+-  ZON-3367: Table of content functionality
 
 
 1.2.2 (2016-10-19)
