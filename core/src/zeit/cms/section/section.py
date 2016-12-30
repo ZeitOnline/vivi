@@ -91,7 +91,11 @@ def parent_folder(content):
 def get_markers_for_section(section, content):
     if section is None:
         return []
-    sm = zope.component.getSiteManager()
+    # XXX We're seeing poisoning of the sm.adapters._v_lookup._cache in
+    # production if we use the local registry instead of the global one, which
+    # then causes `sm.adapters.lookup((IZONSection,), ISectionMarker)` to
+    # return None instead of IZONContent. We cannot explain this, see BUG-505.
+    sm = zope.component.getGlobalSiteManager()
     result = []
     # Content-type specific markers come first, so they are treated as more
     # specific than the generic markers in adapter lookups.
