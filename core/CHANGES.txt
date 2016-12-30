@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.93.2 (unreleased)
+2.93.2 (2016-12-30)
 -------------------
 
 - BUG-505: Work around strange zope.component bug that intermittently
