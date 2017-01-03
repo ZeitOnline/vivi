@@ -164,8 +164,12 @@ class Toc(zeit.cms.browser.view.Base):
         :param article_element: lxml.etree Article element
         :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
         """
-        return self._get_metadata_from_article_xml(article_element) \
-            if self.excluder.is_relevant(article_element) else None
+        toc_entry = self._get_metadata_from_article_xml(article_element)
+        if self._is_sane(toc_entry) and self.excluder.is_relevant(
+                article_element):
+            return toc_entry
+        else:
+            return None
 
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
@@ -183,6 +187,19 @@ class Toc(zeit.cms.browser.view.Base):
         for key, xpath in xpaths.iteritems():
             res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
+
+    def _is_sane(self, toc_entry):
+        """
+        Check, if toc_entry could be an relevant entry.
+        :param toc_entry:  {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :return: bool
+        """
+        required_entries = ['title', 'author', 'teaser']
+        for entry in required_entries:
+            value = toc_entry.get(entry)
+            if value and not value[0].isspace():
+                return True
+        return False
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
