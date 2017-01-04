@@ -29,7 +29,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Politik': [{'page': '1',
                           'title': 'title',
                           'teaser': 'tease',
-                          'author': 'Autor'}]
+                          'author': 'Autor',
+                          'supertitle': 'Super'
+                        }]
              }
         )
         self.toc_data['Anderer'] = OrderedDict(
@@ -37,11 +39,14 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 {'page': '1',
                  'title': 'title',
                  'teaser': 'tease',
-                 'author': 'Autor'},
+                 'author': 'Autor',
+                 'supertitle': 'Super'
+                 },
                 {'page': '3',
                  'title': 'title2',
                  'teaser': 'tease',
-                 'author': 'Autor'}
+                 'author': 'Autor',
+                 'supertitle': 'Super'}
             ]}
         )
         self.article_xml_template = u"""
@@ -86,7 +91,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         expected = {'page': 20,
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
-                    'author': 'Autor'}
+                    'author': 'Autor',
+                    'supertitle': ''
+                    }
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc(None, None)
         result = toc._create_toc_element(article_element)
@@ -95,11 +102,11 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
 Politik\r
-1\tAutor\ttitle tease\r
+1\tAutor\tSuper title tease\r
 Anderer\r
 Dossier\r
-1\tAutor\ttitle tease\r
-3\tAutor\ttitle2 tease\r
+1\tAutor\tSuper title tease\r
+3\tAutor\tSuper title2 tease\r
 """
         toc = Toc(None, None)
         res = toc._create_csv(self.toc_data)

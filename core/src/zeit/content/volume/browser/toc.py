@@ -181,7 +181,9 @@ class Toc(zeit.cms.browser.view.Base):
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
-            'author': "//attribute[@name='author']/text()"
+            'supertitle': "body/supertitle/text()",
+            'author': "//attribute[@name='author']/text()",
+
         }
         res = {}
         for key, xpath in xpaths.iteritems():
@@ -305,8 +307,10 @@ class Toc(zeit.cms.browser.view.Base):
         return
 
     def _format_toc_element(self, toc_entry):
-        title_teaser = \
-            toc_entry.get("title") + u" " + toc_entry.get("teaser")
+        title_teaser = " ".join(
+            [toc_entry.get("supertitle"),
+             toc_entry.get("title"),
+             toc_entry.get("teaser")])
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
@@ -348,7 +352,7 @@ class Excluder(object):
     ]
 
     _jobname_exclude = [
-        u'(Traumstück|AS-Zahl)'
+        u'(Mail |AS-Zahl|Impressum)'
     ]
 
     def __init__(self):
