@@ -643,7 +643,7 @@ class ILivePropertyManager(zope.interface.Interface):
 class ISemanticChange(zope.interface.Interface):
     """Indicates when the content last changed meaningfully, as opposed to
     small corrections like fixed typos. This might be shown to the reader,
-    e.g. as ‘Aktualisiert am’ on article pages.
+    e.g. as "Aktualisiert am" on article pages.
     """
 
     last_semantic_change = zope.schema.Datetime(
