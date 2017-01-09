@@ -193,6 +193,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    commentsPremoderate = zope.schema.Bool(
+        title=_("Comments premoderate"),
+        required=False,
+        default=False)
+
     commentsAllowed = zope.schema.Bool(
         title=_("Comments allowed"),
         required=False,
