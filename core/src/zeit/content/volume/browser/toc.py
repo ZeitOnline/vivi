@@ -300,7 +300,7 @@ class Toc(zeit.cms.browser.view.Base):
         for product_name, ressort_dict in toc_entries.iteritems():
             yield [product_name]
             for ressort_name, toc_entries in ressort_dict.iteritems():
-                yield [ressort_name]
+                yield ['', ressort_name]
                 for toc_entry in toc_entries:
                     yield self._format_toc_element(toc_entry)
         return
