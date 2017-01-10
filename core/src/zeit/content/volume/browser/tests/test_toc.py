@@ -95,10 +95,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
-Politik\r
+\tPolitik\r
 1\tSuper title tease\r
 Anderer\r
-Dossier\r
+\tDossier\r
 1\tSuper title tease\r
 3\tSuper title2 tease\r
 """
