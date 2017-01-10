@@ -95,7 +95,7 @@ class Toc(zeit.cms.browser.view.Base):
         'Product Name':
             {
             'Ressort' :
-                [{'page': int, 'title': str, 'teaser': str, 'author': str},...]
+                [{'page': int, 'title': str, 'teaser': str},...]
             }
         }
         """
@@ -162,7 +162,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
         if self._is_sane(toc_entry) and self.excluder.is_relevant(
@@ -175,15 +175,13 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str}
         """
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
             'supertitle': "body/supertitle/text()",
-            'author': "//attribute[@name='author']/text()",
-
         }
         res = {}
         for key, xpath in xpaths.iteritems():
@@ -193,10 +191,10 @@ class Toc(zeit.cms.browser.view.Base):
     def _is_sane(self, toc_entry):
         """
         Check, if toc_entry could be an relevant entry.
-        :param toc_entry:  {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :param toc_entry:  {'page': int, 'title': str, 'teaser': str}
         :return: bool
         """
-        required_entries = ['title', 'author', 'teaser']
+        required_entries = ['title', 'teaser']
         for entry in required_entries:
             value = toc_entry.get(entry)
             if value and not value[0].isspace():
@@ -315,8 +313,7 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), toc_entry.get("author"),
-                title_teaser]
+        return [str(page), title_teaser]
 
 
 class Excluder(object):

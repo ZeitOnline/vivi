@@ -29,7 +29,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Politik': [{'page': '1',
                           'title': 'title',
                           'teaser': 'tease',
-                          'author': 'Autor',
                           'supertitle': 'Super'
                         }]
              }
@@ -39,13 +38,11 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 {'page': '1',
                  'title': 'title',
                  'teaser': 'tease',
-                 'author': 'Autor',
                  'supertitle': 'Super'
                  },
                 {'page': '3',
                  'title': 'title2',
                  'teaser': 'tease',
-                 'author': 'Autor',
                  'supertitle': 'Super'}
             ]}
         )
@@ -54,8 +51,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 <head>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
                     name="page">{page}</attribute>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document"
-                    name="author">Autor</attribute>
                 </head>
                 <body>
                      <title>Titel</title>
@@ -91,7 +86,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         expected = {'page': 20,
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
-                    'author': 'Autor',
                     'supertitle': ''
                     }
         article_element = lxml.etree.fromstring(article_xml)
@@ -102,24 +96,15 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
 Politik\r
-1\tAutor\tSuper title tease\r
+1\tSuper title tease\r
 Anderer\r
 Dossier\r
-1\tAutor\tSuper title tease\r
-3\tAutor\tSuper title2 tease\r
+1\tSuper title tease\r
+3\tSuper title2 tease\r
 """
         toc = Toc(None, None)
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
-
-    def test_create_csv_with_missing_toc_value_has_empty_field(self):
-        # Delete an author in input toc data
-        product, ressort_dict = self.toc_data.iteritems().next()
-        ressort, article_list = ressort_dict.iteritems().next()
-        article_list[0]['author'] = ''
-        input_data = {product: {ressort: article_list}}
-        toc = Toc(None, None)
-        assert toc.CSV_DELIMITER*2 in toc._create_csv(input_data)
 
     def test_empty_page_node_in_xml_results_in_max_int_page_in_toc_entry(self):
         article_xml = self.article_xml_template.format(page='')
