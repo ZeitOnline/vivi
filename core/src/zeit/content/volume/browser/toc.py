@@ -214,10 +214,11 @@ class Toc(zeit.cms.browser.view.Base):
     def _normalize_page(self, toc_dict):
         """Transform page to correct integer"""
         page_string = toc_dict.get('page', u'')
-        res = re.findall('\d+', page_string)
-        if res:
-            page = int(res[0].lstrip("0"))
-        else:
+        page_entries = [page_string .lstrip("0")
+                         for page_string in re.findall('\d+', page_string)]
+        try:
+            page = int(page_entries[0])
+        except (IndexError, ValueError):
             page = sys.maxint
         toc_dict['page'] = page
 
