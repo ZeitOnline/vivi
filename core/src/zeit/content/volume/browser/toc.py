@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
-import StringIO
-import csv
-import urlparse
-import re
-import sys
-import posixpath
-from ordereddict import OrderedDict
 
-import zeit.cms.browser.view
+from ordereddict import OrderedDict
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.sources
-import zeit.cms.interfaces
 from zeit.cms.repository.interfaces import IFolder
-import zeit.connector.connector
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
-
+import csv
+import posixpath
+import re
+import StringIO
+import sys
+import urlparse
+import zeit.cms.browser.view
+import zeit.cms.content.sources
+import zeit.cms.interfaces
+import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
 import zope.component.registry
@@ -95,7 +94,8 @@ class Toc(zeit.cms.browser.view.Base):
         'Product Name':
             {
             'Ressort' :
-                [{'page': int, 'title': str, 'teaser': str},...]
+                [{'page': int, 'title': str, 'teaser': str, 'supertitle': str},
+                ...]
             }
         }
         """
@@ -162,7 +162,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': int, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
         if self._is_sane(toc_entry) and self.excluder.is_relevant(
@@ -175,7 +175,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': int, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
         """
         xpaths = {
             'title': "body/title/text()",
@@ -191,7 +191,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _is_sane(self, toc_entry):
         """
         Check, if toc_entry could be an relevant entry.
-        :param toc_entry:  {'page': int, 'title': str, 'teaser': str}
+        :param toc_entry:  {'page': int, 'title': str, 'teaser': str,
+        'supertitle': str}
         :return: bool
         """
         required_entries = ['title', 'teaser']
@@ -212,8 +213,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _normalize_page(self, toc_dict):
         """Transform page to correct integer"""
         page_string = toc_dict.get('page', u'')
-        page_entries = [page_string .lstrip("0")
-                         for page_string in re.findall('\d+', page_string)]
+        page_entries = [page_string .lstrip("0") for page_string in
+                        re.findall('\d+', page_string)]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
