@@ -42,7 +42,9 @@ zugegriffen werden. Der Zugriff erfolg über Dict-Notation, d.h.
 Diese werden dynamisch beim ``Volume`` angezeigt und dann direkt im XML
 desselben gespeichert.
 
-In der Produktion wird `diese Konfigurationsdatei` verwendet.
+In der Produktion wird `diese Konfigurationsdatei`_ verwendet.
+
+.. _`diese Konfigurationsdatei`: http://cms-backend.zeit.de:9000/cms/work/data/volume-covers.xml
 
 
 Product-Source
@@ -72,10 +74,10 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
         <product id="ZMLB">Zeit Magazin</product>
     </products>
 
+
 In Produktion ist diese `products.xml` in Benutzung.
 
 .. _`products.xml`: http://http://cms-backend.zeit.de:9000/cms/work/data/products.xml
-.. _`diese Konfigurationsdatei`: http://cms-backend.zeit.de:9000/cms/work/data/volume-covers.xml
 
 
 Inhaltsverzeichnis
@@ -104,3 +106,51 @@ http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv-in/ZEI/2016/35
 und
 http://cms-backend.zeit.de:9000/cms/archiv-wf/archiv-in/ZEIH/2016/35
 nach Artikeln durchsucht und diese werden dann dem IHV hinzugefügt.
+
+Ausgabenseite
+=============
+
+Nicht alle Produkte haben öffentlich sichtbare Ausgaben, bzw. diese Ansichten
+sind teilweise unterschiedlich organisiert. Daher gibt es in zeit.web keinen
+View für Ausgabenobjekte, sondern zu diesem Zweck kann ein eigenes
+Content-Objekt, die sog. "Ausgabenseite" (typischerweise eine `Centerpage`_)
+angelegt werden. Dieser Zusammenhang wird in der ``products.xml`` als
+``centerpage`` eingestellt::
+
+    <product
+      id="ZEI"
+      volume="True"
+      location="http://xml.zeit.de/{year}/{name}/ausgabe"
+      centerpage="http://xml.zeit.de/{year}/{name}/index">
+      Die Zeit</product>
+
+Dadurch kann man die CP auffinden, indem man das Ausgabenobjekt auf
+``zeit.content.cp.interfaces.ICenterPage(volume)`` adaptiert.
+
+Die Ausgabenseite kann automatisch erzeugt werden, wenn ein Ausgabenobjekt
+erstellt wird. Dazu gibt man mit ``cp_template`` ein Template-Skript an, was
+dann ausgeführt wird, um das Objekt zu erzeugen. Das Objekt wird dann an die
+von ``centerpage`` beschriebenen Stelle gelegt::
+
+    <product
+      id="ZEI"
+      volume="True"
+      centerpage="http://xml.zeit.de/{year}/{name}/index">
+      cp_template="http://xml.zeit.de/data/ausgabe-ZEI.py"
+      Die Zeit</product>
+
+Das Ausgabenobjekt wird an das Skript im ``context``-dict unter dem Namen
+``volume`` übergeben, und muss das erzeugte Objekt mit Hilfe der Hilfsfunktion
+``__return`` zurückgeben (siehe ``zeit.content.text.interfaces.IPythonScript``).
+Ein minimaler Inhalt für so ein Skript könnte z.B. so aussehen (in Produktion
+ist es natürlich `umfangreicher`_)::
+
+    import zeit.content.cp.centerpage
+    cp = zeit.content.cp.centerpage.CenterPage()
+    cp.year = context['volume'].year
+    cp.volume = context['volume'].volume
+    __return(cp)
+
+.. _`Centerpage`: https://github.com/zeitonline/zeit.content.cp
+.. _`umfangreicher`: http://cms-backend.zeit.de:9000/cms/work/data/ausgabe-ZEI.py
+

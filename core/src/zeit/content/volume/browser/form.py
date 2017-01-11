@@ -74,10 +74,6 @@ class Add(Base, zeit.cms.browser.form.AddForm):
     factory = zeit.content.volume.volume.Volume
     checkout = False
 
-    def suggestName(self, object):
-        """Define __name__ automatically."""
-        return str(object.volume).rjust(2, '0')
-
     def setUpWidgets(self, *args, **kw):
         super(Add, self).setUpWidgets(*args, **kw)
         settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
@@ -86,24 +82,39 @@ class Add(Base, zeit.cms.browser.form.AddForm):
         if not self.widgets['volume'].hasInput():
             self.widgets['volume'].setRenderedValue(settings.default_volume)
 
-    def add(self, object):
-        path = self.volume_location(object)
-        # The last part of the path is the filename for the volume object.
-        volume_filename = path[-1]
-        container = zeit.cms.content.add.find_or_create_folder(*path[:-1])
-        if self._check_duplicate_volume(container, volume_filename):
+    def add(self, volume):
+        folder, filename = self._create_folder(volume, volume.product.location)
+        if folder is None:
             return
-        container[volume_filename] = object
-        self._created_object = container[volume_filename]
+        folder[filename] = volume
+        self._created_object = folder[filename]
+
+        cp_template = zeit.cms.interfaces.ICMSContent(
+            volume.product.cp_template, None)
+        if zeit.content.text.interfaces.IPythonScript.providedBy(cp_template):
+            folder, filename = self._create_folder(
+                volume, volume.product.centerpage)
+            if folder is None:
+                return
+            folder[filename] = cp_template(volume=volume)
+
         self._finished_add = True
 
-    def volume_location(self, object):
-        location = object.fill_template(object.product.location)
-        location = location.replace(zeit.cms.interfaces.ID_NAMESPACE, '')
-        return [x for x in location.split('/') if x]
+    def _create_folder(self, volume, location_template):
+        path, filename = self._make_path(volume, location_template)
+        folder = zeit.cms.content.add.find_or_create_folder(*path)
+        if self._check_duplicate_item(folder, filename):
+            return (None, None)
+        return folder, filename
 
-    def _check_duplicate_volume(self, location, name):
-        if location.get(name) is not None:
+    def _make_path(self, volume, location_template):
+        uniqueId = volume.fill_template(location_template)
+        uniqueId = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '')
+        path = [x for x in uniqueId.split('/') if x]
+        return path[:-1], path[-1]
+
+    def _check_duplicate_item(self, folder, name):
+        if name in folder:
             transaction.doom()
             self.errors = (DuplicateVolumeWarning(),)
             self.status = _('There were errors')

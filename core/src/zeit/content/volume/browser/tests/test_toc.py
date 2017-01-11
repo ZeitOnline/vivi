@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
-import sys
-import mock
-from ordereddict import OrderedDict
 from collections import defaultdict
-
-import lxml.etree
-
-import zope.component
-
-import zeit.cms.content.sources
-import zeit.cms.content.add
+from ordereddict import OrderedDict
 from zeit.cms.repository.folder import Folder
-import zeit.cms.testing
-import zeit.connector.mock
 from zeit.content.article.testing import create_article
-import zeit.content.volume.interfaces
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
+import lxml.etree
+import mock
+import sys
+import zeit.cms.content.add
+import zeit.cms.content.sources
+import zeit.cms.testing
+import zeit.content.volume.interfaces
 import zeit.content.volume.testing
+import zope.component
 
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
@@ -62,7 +58,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_list_relevant_ressort_folders_excludes_leserbriefe_and_images(
             self):
-        toc = Toc(None, None)
+        toc = Toc(mock.Mock(), mock.Mock())
         toc_connector = zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
         self.zca.patch_utility(toc_connector,
@@ -89,7 +85,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'supertitle': ''
                     }
         article_element = lxml.etree.fromstring(article_xml)
-        toc = Toc(None, None)
+        toc = Toc(mock.Mock(), mock.Mock())
         result = toc._create_toc_element(article_element)
         self.assertEqual(expected, result)
 
@@ -102,14 +98,14 @@ Anderer\r
 1\tSuper title tease\r
 3\tSuper title2 tease\r
 """
-        toc = Toc(None, None)
+        toc = Toc(mock.Mock(), mock.Mock())
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
     def test_empty_page_node_in_xml_results_in_max_int_page_in_toc_entry(self):
         article_xml = self.article_xml_template.format(page='')
         article_element = lxml.etree.fromstring(article_xml)
-        t = Toc(None, None)
+        t = Toc(mock.Mock(), mock.Mock())
         entry = t._create_toc_element(article_element)
         assert sys.maxint == entry.get('page')
 
@@ -128,7 +124,7 @@ Anderer\r
             }
         }
         toc_data = OrderedDict(toc_data)
-        t = Toc(None, None)
+        t = Toc(mock.Mock(), mock.Mock())
         result = t._sort_toc_data(toc_data)
         assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
@@ -159,7 +155,7 @@ Anderer\r
             zeit.connector.interfaces.IConnector)
         # register_archive_connector is called in __init__
         # check for the correct side effects
-        t = Toc(None, None)
+        t = Toc(mock.Mock(), mock.Mock())
         new_connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         # Check if a new IConnector was registered

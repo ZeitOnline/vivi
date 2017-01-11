@@ -1,4 +1,6 @@
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
+import zeit.content.text.python
 import zeit.content.volume.testing
 
 
@@ -61,7 +63,6 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn('volume with the given name already exists', b.contents)
 
     def test_ICommonMetadata_can_be_adapted_to_added_volume(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         b = self.browser
         self.open_add_form()
         b.getControl('Year').value = '2010'
@@ -77,3 +78,25 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(
             u'http://xml.zeit.de/2010/02/ausgabe',
             volume.uniqueId)
+
+    def test_adds_centerpage_in_addition_to_volume(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            template = zeit.content.text.python.PythonScript()
+            template.text = """import zeit.content.cp.centerpage
+cp = zeit.content.cp.centerpage.CenterPage()
+cp.year = context['volume'].year
+cp.volume = context['volume'].volume
+__return(cp)"""
+            self.repository['ausgabe-cp-template'] = template
+        self.open_add_form()
+        b = self.browser
+        b.getControl('Year').value = '2010'
+        b.getControl('Volume').value = '2'
+        b.getControl('Add').click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            cp = zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/2010/02/index')
+            self.assertTrue(
+                zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
+            self.assertEqual(2010, cp.year)
+            self.assertEqual(2, cp.volume)

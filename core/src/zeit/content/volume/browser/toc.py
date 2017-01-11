@@ -13,13 +13,10 @@ import StringIO
 import sys
 import urlparse
 import zeit.cms.browser.view
-import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
-import zope.component.registry
-import zope.interface
 import zope.site.site
 
 
@@ -41,8 +38,13 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = urlparse.urlparse(self.dav_archive_url)
         self.excluder = Excluder()
-        self._register_archive_connector()
+        # We need to remember our context DAV properties, as we can't get to
+        # them after we change IConnector to ITocConnector. But since we only
+        # need year+volume (for fill_template), we can get away with this.
+        self._context_year = self.context.year
+        self._context_volume = self.context.volume
         self.connector = zope.component.getUtility(ITocConnector)
+        self._register_archive_connector()
 
     def _register_archive_connector(self):
         """
@@ -60,8 +62,7 @@ class Toc(zeit.cms.browser.view.Base):
         # This would make the new registry persistent.
         default_registry.removeSub(registry)
         site.setSiteManager(registry)
-        connector = zope.component.getUtility(ITocConnector)
-        registry.registerUtility(connector, IConnector)
+        registry.registerUtility(self.connector, IConnector)
         zope.component.hooks.setSite(site)
 
     def __call__(self):
@@ -71,9 +72,15 @@ class Toc(zeit.cms.browser.view.Base):
             'Content-Disposition', 'attachment; filename="%s"' % filename)
         return self._create_toc_content()
 
+    def _fill_template(self, text):
+        dummy = zeit.content.volume.volume.Volume()
+        dummy.year = self._context_year
+        dummy.volume = self._context_volume
+        return dummy.fill_template(text)
+
     def _generate_file_name(self):
         toc_file_string = _("Table of Content").lower().replace(" ", "_")
-        volume_formatted = self.context.fill_template("{year}_{name}")
+        volume_formatted = self._fill_template("{year}_{name}")
         return "{}_{}.csv".format(toc_file_string, volume_formatted)
 
     def _create_toc_content(self):
@@ -128,7 +135,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
-        return [self.context.fill_template(
+        return [self._fill_template(
             'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
                 self.product_ids]
 
