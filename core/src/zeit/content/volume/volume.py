@@ -29,18 +29,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         </volume>
     """
 
-    year = zeit.cms.content.property.ObjectPathProperty(
-        '.body.year', zeit.content.volume.interfaces.IVolume['year'])
-    volume = zeit.cms.content.property.ObjectPathProperty(
-        '.body.volume', zeit.content.volume.interfaces.IVolume['volume'])
-    teaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.body.teaserText',
-        zeit.content.volume.interfaces.IVolume['teaserText'])
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('date_digital_published',))
+        ('date_digital_published', 'year', 'volume', 'teaserText'))
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
