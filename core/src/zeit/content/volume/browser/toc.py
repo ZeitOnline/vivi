@@ -9,7 +9,6 @@ from ordereddict import OrderedDict
 
 import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.sources
 import zeit.cms.interfaces
 from zeit.cms.repository.interfaces import IFolder
 import zeit.connector.connector
@@ -19,8 +18,6 @@ from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
 
 import zope.app.appsetup.product
 import zope.component
-import zope.component.registry
-import zope.interface
 import zope.site.site
 
 
@@ -42,8 +39,8 @@ class Toc(zeit.cms.browser.view.Base):
         self.dav_archive_url = config.get('dav-archive-url')
         self.dav_archive_url_parsed = urlparse.urlparse(self.dav_archive_url)
         self.excluder = Excluder()
-        self._register_archive_connector()
         self.connector = zope.component.getUtility(ITocConnector)
+        self._register_archive_connector()
 
     def _register_archive_connector(self):
         """
@@ -61,8 +58,7 @@ class Toc(zeit.cms.browser.view.Base):
         # This would make the new registry persistent.
         default_registry.removeSub(registry)
         site.setSiteManager(registry)
-        connector = zope.component.getUtility(ITocConnector)
-        registry.registerUtility(connector, IConnector)
+        registry.registerUtility(self.connector, IConnector)
         zope.component.hooks.setSite(site)
 
     def __call__(self):
