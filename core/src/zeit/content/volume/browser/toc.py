@@ -354,11 +354,11 @@ class Excluder(object):
     ]
 
     def __init__(self):
-        self._compiled_title_regexs = [re.compile(r)
+        self._compiled_title_regexs = [re.compile(r, re.IGNORECASE)
                                        for r in self._title_exclude]
-        self._compiled_supertitle_regexs = [re.compile(r)
+        self._compiled_supertitle_regexs = [re.compile(r, re.IGNORECASE)
                                             for r in self._supertitle_exclude]
-        self._compiled_jobname_regexs = [re.compile(r)
+        self._compiled_jobname_regexs = [re.compile(r, re.IGNORECASE)
                                          for r in self._jobname_exclude]
 
     def is_relevant(self, article_lxml_tree):
