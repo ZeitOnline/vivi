@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
-import StringIO
-import csv
-import urlparse
-import re
-import sys
-import posixpath
-from ordereddict import OrderedDict
 
-import zeit.cms.browser.view
+from ordereddict import OrderedDict
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.interfaces
 from zeit.cms.repository.interfaces import IFolder
-import zeit.connector.connector
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
-
+import csv
+import posixpath
+import re
+import StringIO
+import sys
+import urlparse
+import zeit.cms.browser.view
+import zeit.cms.interfaces
+import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
 import zope.site.site
@@ -102,7 +101,8 @@ class Toc(zeit.cms.browser.view.Base):
         'Product Name':
             {
             'Ressort' :
-                [{'page': int, 'title': str, 'teaser': str, 'author': str},...]
+                [{'page': int, 'title': str, 'teaser': str, 'supertitle': str},
+                ...]
             }
         }
         """
@@ -169,27 +169,45 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
         """
-        return self._get_metadata_from_article_xml(article_element) \
-            if self.excluder.is_relevant(article_element) else None
+        toc_entry = self._get_metadata_from_article_xml(article_element)
+        if self._is_sane(toc_entry) and self.excluder.is_relevant(
+                article_element):
+            return toc_entry
+        else:
+            return None
 
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': int, 'author': str, 'title': str, 'teaser': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
         """
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
-            'author': "//attribute[@name='author']/text()"
+            'supertitle': "body/supertitle/text()",
         }
         res = {}
         for key, xpath in xpaths.iteritems():
             res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
+
+    def _is_sane(self, toc_entry):
+        """
+        Check, if toc_entry could be an relevant entry.
+        :param toc_entry:  {'page': int, 'title': str, 'teaser': str,
+        'supertitle': str}
+        :return: bool
+        """
+        required_entries = ['title', 'teaser']
+        for entry in required_entries:
+            value = toc_entry.get(entry)
+            if value and not value[0].isspace():
+                return True
+        return False
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.iteritems():
@@ -202,10 +220,11 @@ class Toc(zeit.cms.browser.view.Base):
     def _normalize_page(self, toc_dict):
         """Transform page to correct integer"""
         page_string = toc_dict.get('page', u'')
-        res = re.findall('\d+', page_string)
-        if res:
-            page = int(res[0].lstrip("0"))
-        else:
+        page_entries = [page_string .lstrip("0") for page_string in
+                        re.findall('\d+', page_string)]
+        try:
+            page = int(page_entries[0])
+        except (IndexError, ValueError):
             page = sys.maxint
         toc_dict['page'] = page
 
@@ -289,19 +308,20 @@ class Toc(zeit.cms.browser.view.Base):
         for product_name, ressort_dict in toc_entries.iteritems():
             yield [product_name]
             for ressort_name, toc_entries in ressort_dict.iteritems():
-                yield [ressort_name]
+                yield ['', ressort_name]
                 for toc_entry in toc_entries:
                     yield self._format_toc_element(toc_entry)
         return
 
     def _format_toc_element(self, toc_entry):
-        title_teaser = \
-            toc_entry.get("title") + u" " + toc_entry.get("teaser")
+        title_teaser = " ".join(
+            [toc_entry.get("supertitle"),
+             toc_entry.get("title"),
+             toc_entry.get("teaser")])
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), toc_entry.get("author"),
-                title_teaser]
+        return [str(page), title_teaser]
 
 
 class Excluder(object):
@@ -338,15 +358,15 @@ class Excluder(object):
     ]
 
     _jobname_exclude = [
-        u'(Traumstück|AS-Zahl)'
+        u'(Mail |AS-Zahl|Impressum)'
     ]
 
     def __init__(self):
-        self._compiled_title_regexs = [re.compile(r)
+        self._compiled_title_regexs = [re.compile(r, re.IGNORECASE)
                                        for r in self._title_exclude]
-        self._compiled_supertitle_regexs = [re.compile(r)
+        self._compiled_supertitle_regexs = [re.compile(r, re.IGNORECASE)
                                             for r in self._supertitle_exclude]
-        self._compiled_jobname_regexs = [re.compile(r)
+        self._compiled_jobname_regexs = [re.compile(r, re.IGNORECASE)
                                          for r in self._jobname_exclude]
 
     def is_relevant(self, article_lxml_tree):
