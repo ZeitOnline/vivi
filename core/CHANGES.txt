@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.3.2 (unreleased)
+1.3.2 (2017-01-12)
 ------------------
 
 - Minor improvements and changes to the table of contents
