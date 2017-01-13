@@ -92,14 +92,16 @@ def get_markers_for_section(section, content):
     if section is None:
         return []
     # XXX We're seeing poisoning of the sm.adapters._v_lookup._cache in
-    # production if we use the local registry instead of the global one, which
-    # then causes `sm.adapters.lookup((IZONSection,), ISectionMarker)` to
-    # return None instead of IZONContent. We cannot explain this, see BUG-505.
-    sm = zope.component.getGlobalSiteManager()
+    # production inside lovely.remotetask, which then causes
+    # `lookup((IZONSection,), ISectionMarker)` to return None instead of
+    # IZONContent. We cannot explain this (see BUG-505), so we work around it
+    # by bypassing the cache here.
+    sm = zope.component.getSiteManager()
+    lookup = sm.adapters._v_lookup._uncached_lookup
     result = []
     # Content-type specific markers come first, so they are treated as more
     # specific than the generic markers in adapter lookups.
-    result.append(sm.adapters.lookup(
+    result.append(lookup(
         (section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
-    result.append(sm.adapters.lookup((section,), ISectionMarker))
+    result.append(lookup((section,), ISectionMarker))
     return filter(None, result)
