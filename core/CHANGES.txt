@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.93.3 (unreleased)
+2.93.3 (2017-01-13)
 -------------------
 
 - BUG-505: Try a different workaround for the zope.component cache poisoning
