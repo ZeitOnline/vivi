@@ -402,6 +402,15 @@ class IPortraitbox(IReference, ILayoutable):
         required=False,
         default=u'short')
 
+    name = zope.schema.TextLine(
+        title=_('First and last name'),
+        required=False)
+
+    text = zope.schema.Text(
+        title=_('Text'),
+        required=False,
+        missing_value=u'')
+
 
 class IAuthor(IReference):
 
