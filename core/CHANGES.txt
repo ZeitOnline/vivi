@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.9 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3485: Allow portraitbox to lack a reference and override fields locally.
 
 
 3.21.8 (2017-01-31)
