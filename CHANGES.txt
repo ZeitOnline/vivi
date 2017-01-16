@@ -4,7 +4,7 @@ zeit.push changes
 1.17.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Make push base URL configurable (for staging)
 
 
 1.17.5 (2016-11-08)
