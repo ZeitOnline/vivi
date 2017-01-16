@@ -77,8 +77,10 @@ class Message(grok.Adapter):
 
     @property
     def url(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
         return zeit.push.interfaces.IPushURL(self.context).replace(
-            zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
+            zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
 
     @property
     def additional_parameters(self):

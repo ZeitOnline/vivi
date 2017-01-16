@@ -99,7 +99,7 @@ class ConnectionBase(object):
             log.warn('No channel given for push notification for %s', link)
         arguments = {
             'title': kw.get('override_text') or kw.get('teaserTitle', title),
-            'link': self.rewrite_url(link, self.config['mobile-target-host']),
+            'link': self.rewrite_url(link, self.config['push-target-url']),
             'channels': channels,
             'headline': self.get_headline(channels),
             'text': kw.get('teaserText', ''),
@@ -125,8 +125,8 @@ class ConnectionBase(object):
         is_blog = (
             url.startswith('http://blog.zeit.de') or
             url.startswith('http://www.zeit.de/blog/'))
-        url = url.replace('http://www.zeit.de', target_host, 1)
-        url = url.replace('http://blog.zeit.de', target_host + '/blog', 1)
+        url = url.replace('http://www.zeit.de/', target_host, 1)
+        url = url.replace('http://blog.zeit.de', target_host + 'blog', 1)
         if is_blog:
             url += '?feed=articlexml'
         return url
@@ -202,7 +202,7 @@ class Message(zeit.push.message.Message):
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
-                self.product_config['mobile-image-url'] + '/')
+                self.product_config['mobile-image-url'])
         return result
 
     @property

@@ -81,7 +81,7 @@ class DataTest(zeit.push.testing.TestCase):
 
 class RewriteURLTest(unittest.TestCase):
 
-    target_host = 'http://www.staging.zeit.de'
+    target_host = 'http://www.staging.zeit.de/'
 
     def rewrite(self, url):
         return zeit.push.mobile.ConnectionBase.rewrite_url(
@@ -89,17 +89,17 @@ class RewriteURLTest(unittest.TestCase):
 
     def test_www_zeit_de_is_replaced_with_staging(self):
         self.assertEqual(
-            self.target_host + '/foo/bar',
+            self.target_host + 'foo/bar',
             self.rewrite('http://www.zeit.de/foo/bar'))
 
     def test_blog_zeit_de_is_replaced_with_staging_and_appends_query(self):
         self.assertEqual(
-            self.target_host + '/blog/foo/bar?feed=articlexml',
+            self.target_host + 'blog/foo/bar?feed=articlexml',
             self.rewrite('http://blog.zeit.de/foo/bar'))
 
     def test_zeit_de_blog_is_replaced_with_staging_and_appends_query(self):
         self.assertEqual(
-            self.target_host + '/blog/foo/bar?feed=articlexml',
+            self.target_host + 'blog/foo/bar?feed=articlexml',
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
 
 
