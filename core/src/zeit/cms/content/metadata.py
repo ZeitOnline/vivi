@@ -96,6 +96,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],
         zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort')
 
+    commentsPremoderate = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentsPremoderate'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments_premoderate')
+
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
