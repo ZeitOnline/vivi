@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-01-18 10:20+0100\n"
-"PO-Revision-Date: 2017-01-18 10:20+0100\n"
+"POT-Creation-Date: 2017-01-18 12:08+0100\n"
+"PO-Revision-Date: 2017-01-18 12:08+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -41,19 +41,23 @@ msgstr "Brightcove ID"
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
 
-#: zeit/brightcove/interfaces.py:102 zeit/cms/content/interfaces.py:260
+#: zeit/brightcove/interfaces.py:102 zeit/cms/content/interfaces.py:212
+msgid "Banner"
+msgstr "Banner"
+
+#: zeit/brightcove/interfaces.py:106 zeit/cms/content/interfaces.py:265
 msgid "Breaking news"
 msgstr "In den Schlagzeilen anzeigen (Print)"
 
-#: zeit/brightcove/interfaces.py:106 zeit/content/video/interfaces.py:83
+#: zeit/brightcove/interfaces.py:110 zeit/content/video/interfaces.py:83
 msgid "Video still copyright"
 msgstr "Standbild-Copyright"
 
-#: zeit/brightcove/interfaces.py:113 zeit/content/video/interfaces.py:98
+#: zeit/brightcove/interfaces.py:117 zeit/content/video/interfaces.py:98
 msgid "Video IDs"
 msgstr "Video-Ids"
 
-#: zeit/brightcove/interfaces.py:118
+#: zeit/brightcove/interfaces.py:122
 msgid "URI of the Playlist-Video"
 msgstr "URI der Playlist"
 
@@ -63,7 +67,7 @@ msgstr "Id"
 
 #: zeit/brightcove/interfaces.py:30 zeit/calendar/interfaces.py:30
 #: zeit/cms/browser/listing.py:266 zeit/cms/content/browser/template.py:43
-#: zeit/cms/content/interfaces.py:157 zeit/cms/content/interfaces.py:569
+#: zeit/cms/content/interfaces.py:157 zeit/cms/content/interfaces.py:574
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
@@ -112,22 +116,22 @@ msgstr "URI des Standbildes"
 msgid "URI of the video file"
 msgstr "URI der Video-Datei"
 
-#: zeit/brightcove/interfaces.py:86 zeit/cms/content/interfaces.py:197
+#: zeit/brightcove/interfaces.py:86 zeit/cms/content/interfaces.py:202
 #: zeit/content/quiz/interfaces.py:46
 msgid "Comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: zeit/brightcove/interfaces.py:90
+#: zeit/brightcove/interfaces.py:90 zeit/cms/content/interfaces.py:197
+msgid "Comments premoderate"
+msgstr "Kommentare prämoderieren"
+
+#: zeit/brightcove/interfaces.py:94
 msgid "Ignore for update"
 msgstr "Beim Aktualisieren ignorieren"
 
-#: zeit/brightcove/interfaces.py:94 zeit/cms/content/interfaces.py:190
+#: zeit/brightcove/interfaces.py:98 zeit/cms/content/interfaces.py:190
 msgid "Daily newsletter"
 msgstr "Newsletter"
-
-#: zeit/brightcove/interfaces.py:98 zeit/cms/content/interfaces.py:207
-msgid "Banner"
-msgstr "Banner"
 
 #: zeit/calendar/browser/calendar_macros.pt:23
 msgid "Reactivate event"
@@ -189,7 +193,7 @@ msgstr "Kalender"
 msgid "Day"
 msgstr "Tag"
 
-#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:708
+#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:713
 msgid "Month"
 msgstr "Monat"
 
@@ -246,7 +250,7 @@ msgstr "Termin bearbeiten"
 #: zeit/content/image/browser/form.py:70 zeit/content/link/browser/form.py:54
 #: zeit/content/quiz/browser/answer.py:42
 #: zeit/content/quiz/browser/question.py:39
-#: zeit/content/quiz/browser/quiz.py:75 zeit/content/video/browser/video.py:72
+#: zeit/content/quiz/browser/quiz.py:75 zeit/content/video/browser/video.py:74
 #: zeit/edit/browser/form.py:66 zeit/edit/browser/view.py:136
 #: zeit/push/browser/form.py:113
 msgid "Apply"
@@ -309,7 +313,7 @@ msgid "Where should the article be placed."
 msgstr "Wo soll der Artikel erscheinen?"
 
 #: zeit/calendar/interfaces.py:51 zeit/cms/browser/listing.py:279
-#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:693
+#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:698
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -393,7 +397,7 @@ msgstr "Debatten-URL"
 msgid "debate-action-url-description"
 msgstr "z.B. mailto:leser-studium@zeit.de"
 
-#: zeit/cms/admin/browser/admin.py:16 zeit/cms/admin/browser/admin.py:24
+#: zeit/cms/admin/browser/admin.py:16 zeit/cms/admin/browser/admin.py:27
 msgid "admin-field-group"
 msgstr "Admin"
 
@@ -450,7 +454,7 @@ msgstr "Menu of addable configuration objects"
 msgid "Badges"
 msgstr " "
 
-#: zeit/cms/asset/browser/form.py:18 zeit/content/video/browser/video.py:59
+#: zeit/cms/asset/browser/form.py:18 zeit/content/video/browser/video.py:61
 msgid "Teaser elements"
 msgstr "Teaser-Elemente"
 
@@ -827,7 +831,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
-#: zeit/content/video/browser/video.py:48
+#: zeit/content/video/browser/video.py:49
 msgid "Navigation"
 msgstr "Navigation"
 
@@ -843,14 +847,14 @@ msgstr "Kopf"
 #: zeit/content/image/browser/form.py:22
 #: zeit/content/infobox/browser/form.py:26
 #: zeit/content/infobox/browser/form.py:81
-#: zeit/content/video/browser/video.py:44
+#: zeit/content/video/browser/video.py:45
 #: zeit/content/volume/browser/form.py:41
 msgid "Texts"
 msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:26 zeit/content/article/browser/form.py:37
 #: zeit/content/article/edit/browser/form.py:464
-#: zeit/content/video/browser/video.py:52
+#: zeit/content/video/browser/video.py:53
 msgid "Options"
 msgstr "Optionen"
 
@@ -1019,143 +1023,139 @@ msgstr "VG Wort Id"
 msgid "Should this article be listed in the daily newsletter?"
 msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
 
-#: zeit/cms/content/interfaces.py:202
+#: zeit/cms/content/interfaces.py:207
 msgid "Show commentthread"
 msgstr "Kommentare anzeigen"
 
-#: zeit/cms/content/interfaces.py:212
+#: zeit/cms/content/interfaces.py:217
 msgid "Banner in Content"
 msgstr "Banner im Content"
 
-#: zeit/cms/content/interfaces.py:217
+#: zeit/cms/content/interfaces.py:222
 msgid "Banner id"
 msgstr "Banner-Id"
 
-#: zeit/cms/content/interfaces.py:221 zeit/content/volume/interfaces.py:22
+#: zeit/cms/content/interfaces.py:226 zeit/content/volume/interfaces.py:22
 msgid "Product id"
 msgstr "Standard-Quelle"
 
-#: zeit/cms/content/interfaces.py:234
+#: zeit/cms/content/interfaces.py:239
 msgid "Foldable"
 msgstr "Einklappbar"
 
-#: zeit/cms/content/interfaces.py:239
+#: zeit/cms/content/interfaces.py:244
 msgid "Minimal header"
 msgstr "Minimal-Header"
 
-#: zeit/cms/content/interfaces.py:244
+#: zeit/cms/content/interfaces.py:249
 msgid "Color scheme"
 msgstr "Farbwelt"
 
-#: zeit/cms/content/interfaces.py:249
+#: zeit/cms/content/interfaces.py:254
 msgid "Countings"
 msgstr "Countings"
 
-#: zeit/cms/content/interfaces.py:254
+#: zeit/cms/content/interfaces.py:259
 #: zeit/cms/workingcopy/browser/configure.zcml:16
 #: zeit/content/article/browser/form.py:105 zeit/content/text/interfaces.py:30
 msgid "Content"
 msgstr "Inhalt"
 
-#: zeit/cms/content/interfaces.py:265
+#: zeit/cms/content/interfaces.py:270
 msgid "Content that was pushed to mobile"
 msgstr "Wichtige Nachricht (Als push nach mobile)"
 
-#: zeit/cms/content/interfaces.py:270
+#: zeit/cms/content/interfaces.py:275
 msgid "Show in rankings"
 msgstr "In Rankings anzeigen"
 
-#: zeit/cms/content/interfaces.py:275
+#: zeit/cms/content/interfaces.py:280
 msgid "CAP title"
 msgstr "CAP-Titel"
 
-#: zeit/cms/content/interfaces.py:279
+#: zeit/cms/content/interfaces.py:284
 msgid "Mobile URL"
 msgstr "Mobile-URL"
 
-#: zeit/cms/content/interfaces.py:285
+#: zeit/cms/content/interfaces.py:290
 msgid "Deeplink URL"
 msgstr "Deep-Link-URL"
 
-#: zeit/cms/content/interfaces.py:290
+#: zeit/cms/content/interfaces.py:295
 msgid "Breadcrumb title"
 msgstr "Nachrichtenüberschrift"
 
-#: zeit/cms/content/interfaces.py:296
+#: zeit/cms/content/interfaces.py:301
 msgid "Rebrush website content"
 msgstr "Rebrush-Content"
 
-#: zeit/cms/content/interfaces.py:301
+#: zeit/cms/content/interfaces.py:306
 msgid "tldr title"
 msgstr "Überschrift (tl;dr)"
 
-#: zeit/cms/content/interfaces.py:306
+#: zeit/cms/content/interfaces.py:311
 msgid "tldr text"
 msgstr "tl;dr"
 
-#: zeit/cms/content/interfaces.py:311
+#: zeit/cms/content/interfaces.py:316
 msgid "tldr milestone"
 msgstr "Milestone"
 
-#: zeit/cms/content/interfaces.py:316
+#: zeit/cms/content/interfaces.py:321
 msgid "tldr date"
 msgstr "tatsächliches Ereignisdatum"
 
-#: zeit/cms/content/interfaces.py:320
+#: zeit/cms/content/interfaces.py:325
 msgid "Storystreams"
 msgstr "Storystreams"
 
-#: zeit/cms/content/interfaces.py:327
+#: zeit/cms/content/interfaces.py:332
 msgid "Advertisement title"
 msgstr "Auszeichnungs-Titel"
 
-#: zeit/cms/content/interfaces.py:331
+#: zeit/cms/content/interfaces.py:336
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:335
+#: zeit/cms/content/interfaces.py:340
 msgid "Bigshare Buttons"
 msgstr "große Share-Buttons anzeigen"
 
-#: zeit/cms/content/interfaces.py:385
+#: zeit/cms/content/interfaces.py:390
 msgid "Invalid hex literal"
 msgstr "Kein gültiger Farbwert"
 
-#: zeit/cms/content/interfaces.py:465 zeit/content/cp/interfaces.py:713
+#: zeit/cms/content/interfaces.py:470 zeit/content/cp/interfaces.py:713
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:609
-msgid "Hits today"
-msgstr "Treffer heute"
-
-#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:703
+#: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:708
 #: zeit/content/article/interfaces.py:193 zeit/content/image/interfaces.py:36
 #: zeit/content/volume/interfaces.py:30
 msgid "Year"
 msgstr "Jahr"
 
-#: zeit/cms/content/interfaces.py:610
+#: zeit/cms/content/interfaces.py:614
+msgid "Hits today"
+msgstr "Treffer heute"
+
+#: zeit/cms/content/interfaces.py:615
 msgid "Indicates how many times a page viewed today."
 msgstr "Gibt an wie oft die Seite heute angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:615
+#: zeit/cms/content/interfaces.py:620
 msgid "Total hits"
 msgstr "Gesamttreffer"
 
-#: zeit/cms/content/interfaces.py:616
+#: zeit/cms/content/interfaces.py:621
 msgid ""
 "Indicates how many times a page was viewed in total, i.e. during its entire "
 "life time."
 msgstr "Gibt an wie oft die Seite insgesamt angezeigt wurde."
 
-#: zeit/cms/content/interfaces.py:622
+#: zeit/cms/content/interfaces.py:627
 msgid "URI to the access counting details"
 msgstr "URI für counting Details"
-
-#: zeit/cms/content/interfaces.py:655
-msgid "Last semantic change"
-msgstr "Letzte inhaltliche Änderung"
 
 #: zeit/cms/content/interfaces.py:66
 #: zeit/content/article/edit/interfaces.py:418
@@ -1164,20 +1164,24 @@ msgstr "Letzte inhaltliche Änderung"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:661
+#: zeit/cms/content/interfaces.py:660
+msgid "Last semantic change"
+msgstr "Letzte inhaltliche Änderung"
+
+#: zeit/cms/content/interfaces.py:666
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:682
+#: zeit/cms/content/interfaces.py:687
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:689
+#: zeit/cms/content/interfaces.py:694
 #: zeit/content/image/browser/image_view.pt:6
 msgid "Type"
 msgstr "Typ"
 
-#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:698
+#: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:703
 msgid "Sub ressort"
 msgstr "Unterressort"
 
@@ -2314,8 +2318,8 @@ msgid "Page teaser"
 msgstr "Seiten-Überschrift"
 
 #: zeit/content/article/edit/interfaces.py:174
-#: zeit/content/article/edit/video.py:76 zeit/content/video/browser/video.py:69
-#: zeit/content/video/browser/video.py:80 zeit/content/video/interfaces.py:130
+#: zeit/content/article/edit/video.py:76 zeit/content/video/browser/video.py:71
+#: zeit/content/video/browser/video.py:82 zeit/content/video/interfaces.py:130
 #: zeit/content/video/video.py:127
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
@@ -4126,7 +4130,7 @@ msgstr "Pythonskript"
 msgid "Plain text"
 msgstr "Embed"
 
-#: zeit/content/video/browser/video.py:121
+#: zeit/content/video/browser/video.py:123
 msgid "View playlist"
 msgstr "Playlist anzeigen"
 
