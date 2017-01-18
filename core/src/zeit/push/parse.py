@@ -90,7 +90,7 @@ def print_payload_documentation():
     zope.app.appsetup.product.setProductConfiguration('zeit.push', {
         PARSE_BREAKING_CHANNEL: 'Eilmeldung',
         PARSE_NEWS_CHANNEL: 'News',
-        'mobile-target-host': 'http://www.zeit.de',
+        'push-target-url': 'http://www.zeit.de',
     })
     conn = PayloadDocumentation(
         'application_id', 'rest_api_key', expire_interval=9000)
