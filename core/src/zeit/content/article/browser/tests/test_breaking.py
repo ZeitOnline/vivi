@@ -52,6 +52,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual(26, article.volume)
             self.assertEqual('ZEDE', article.product.id)
             self.assertEqual(True, article.commentsAllowed)
+            self.assertEqual(False, article.commentsPremoderate)
 
     def test_marks_article_as_breaking(self):
         self.create_breakingnews()

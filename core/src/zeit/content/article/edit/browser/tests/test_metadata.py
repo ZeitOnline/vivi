@@ -172,6 +172,10 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('metadata-comments.commentsAllowed')
         s.waitForNotChecked('metadata-comments.commentsAllowed')
 
+    def test_comments_premoderate_option_is_available(self):
+        s = self.selenium
+        s.waitForElementPresent('metadata-comments.commentsPremoderate')
+
 
 @unittest.skip(
     'Drag&Drop does not work, the icon is never dropped on the clipboard')
