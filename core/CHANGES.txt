@@ -1,10 +1,12 @@
 zeit.cms changes
 ================
 
-2.93.4 (unreleased)
+2.94.0 (unreleased)
 -------------------
 
 - ZON-3464: Add banner content option
+
+- ZON-3576: Add commentsPremoderate property
 
 
 2.93.3 (2017-01-13)
