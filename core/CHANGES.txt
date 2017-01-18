@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.94.0 (unreleased)
+2.94.0 (2017-01-18)
 -------------------
 
 - ZON-3464: Add banner content option
