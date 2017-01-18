@@ -208,6 +208,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    banner_content = zope.schema.Bool(
+        title=_("Banner in Content"),
+        required=False,
+        default=True)
+
     banner_id = zope.schema.TextLine(
         title=_('Banner id'),
         required=False)

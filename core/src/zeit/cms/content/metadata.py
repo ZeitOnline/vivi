@@ -32,6 +32,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'breadcrumb_title',
 
             'banner',
+            'banner_content',
             'breaking_news',
             'countings',
             'foldable',
