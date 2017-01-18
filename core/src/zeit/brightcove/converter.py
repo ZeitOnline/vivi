@@ -243,6 +243,7 @@ class Video(Converter):
     id_prefix = 'vid'  # for old-style asset IDs
     authorships = mapped_authors('customFields', 'authors')
     commentsAllowed = mapped_bool('customFields', 'allow_comments')
+    commentsPremoderate = mapped_bool('customFields', 'premoderate_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')

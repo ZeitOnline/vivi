@@ -229,10 +229,11 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
             self.repository['Adrian_Pohr']],
             [x.target for x in cmsobj.authorships])
 
-    def test_comments_should_default_to_true(self):
+    def test_comments_should_default_to_true_premoderate_false(self):
         video = Video.find_by_id('1234')
         video.data['customFields'].clear()
         self.assertTrue(video.commentsAllowed)
+        self.assertFalse(video.commentsPremoderate)
 
     def test_dailynl_should_default_to_false(self):
         video = Video.find_by_id('1234')
