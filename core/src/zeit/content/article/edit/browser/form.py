@@ -516,8 +516,7 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
     form_fields = FormFields(ICommonMetadata).select(
-        'minimal_header', 'in_rankings', 'is_content',
-        'banner', 'countings', 'overscrolling')
+        'minimal_header', 'banner', 'countings', 'overscrolling')
 
 
 class OptionsLayout(zeit.edit.browser.form.InlineForm):
