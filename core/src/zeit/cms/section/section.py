@@ -34,15 +34,17 @@ def apply_markers(content):
     # Dear Zope, why is ContainedProxy not a zope.proxy?
     content = zope.container.contained.getProxiedObject(content)
 
-    for iface in zope.interface.providedBy(content):
-        if issubclass(iface, ISectionMarker):
-            zope.interface.noLongerProvides(content, iface)
-
+    current_markers = [x for x in zope.interface.providedBy(content)
+                       if issubclass(x, ISectionMarker)]
     # Ressort markers take precedence over section markers (ZON-2507)
-    markers = (
+    new_markers = (
         get_markers_for_section(find_ressort_section(content), content) or
         get_markers_for_section(find_folder_section(content), content))
-    zope.interface.alsoProvides(content, *markers)
+
+    if current_markers != new_markers:
+        for iface in current_markers:
+            zope.interface.noLongerProvides(content, iface)
+        zope.interface.alsoProvides(content, *new_markers)
 
 
 @grok.adapter(ICMSContent)

@@ -4,7 +4,7 @@ zeit.cms changes
 2.94.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Only write section markers if they actually changed, not every time
 
 
 2.94.0 (2017-01-18)
