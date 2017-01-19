@@ -255,6 +255,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    overscrolling = zope.schema.Bool(
+        title=_('Overscrolling'),
+        required=False,
+        default=True)
+
     is_content = zope.schema.Bool(
         title=_('Content'),
         required=False,

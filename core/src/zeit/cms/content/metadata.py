@@ -42,6 +42,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'lead_candidate',
             'push_news',
             'rebrush_website_content',
+            'overscrolling',
 
             'tldr_title',
             'tldr_text',
