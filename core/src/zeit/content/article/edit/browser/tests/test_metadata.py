@@ -174,6 +174,7 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_comments_premoderate_option_is_available(self):
         s = self.selenium
+        s.click('metadata-comments.commentSectionEnable')
         s.waitForElementPresent('metadata-comments.commentsPremoderate')
 
 
