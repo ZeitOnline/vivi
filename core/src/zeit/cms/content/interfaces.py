@@ -255,8 +255,8 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
-    is_content = zope.schema.Bool(
-        title=_('Content'),
+    overscrolling = zope.schema.Bool(
+        title=_('Overscrolling'),
         required=False,
         default=True)
 
@@ -270,11 +270,6 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Content that was pushed to mobile'),
         required=False,
         default=False)
-
-    in_rankings = zope.schema.Bool(
-        title=_('Show in rankings'),
-        required=False,
-        default=True)
 
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),

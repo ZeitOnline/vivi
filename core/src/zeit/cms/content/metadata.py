@@ -36,12 +36,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'breaking_news',
             'countings',
             'foldable',
-            'in_rankings',
-            'is_content',
             'minimal_header',
             'lead_candidate',
             'push_news',
             'rebrush_website_content',
+            'overscrolling',
 
             'tldr_title',
             'tldr_text',
