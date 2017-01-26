@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3629: Add overscrolling option
 
 
 3.21.5 (2017-01-18)
