@@ -4,7 +4,7 @@ zeit.cms changes
 2.94.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3629: Add overscrolling option
 
 
 2.94.1 (2017-01-25)
