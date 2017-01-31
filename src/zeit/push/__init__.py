@@ -15,7 +15,6 @@ product_config = """\
   mobile-image-url http://img.zeit.de/
   parse-channel-breaking Eilmeldung
   parse-channel-news News
-  parse-image-pattern 184x84
   urbanairship-audience-group subscriptions
   urbanairship-ios-segment 77c49d90-f6ca-465c-b33f-110f1cdcdacd
 </product-config>

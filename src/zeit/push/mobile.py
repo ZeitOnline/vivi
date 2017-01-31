@@ -208,19 +208,7 @@ class Message(zeit.push.message.Message):
     @property
     def image(self):
         images = zeit.content.image.interfaces.IImages(self.context, None)
-        if images is None or images.image is None:
-            return None
-        image = images.image
-        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
-            for name in image:
-                if self._image_pattern in name:
-                    return image[name]
-        else:
-            return image
-
-    @property
-    def _image_pattern(self):
-        return self.product_config['parse-image-pattern']
+        return getattr(images, 'image', None)
 
     @zope.cachedescriptors.property.Lazy
     def product_config(self):
