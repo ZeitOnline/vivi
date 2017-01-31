@@ -333,6 +333,12 @@ def normalize_quotation_marks(context, event):
         normalize_quotes(
             lxml.etree.fromstring(lxml.etree.tostring(context.xml.body)))))
 
+    if context.xml.find('teaser') is not None:
+        context.xml.teaser = lxml.objectify.fromstring(lxml.etree.tostring(
+            normalize_quotes(
+                lxml.etree.fromstring(
+                    lxml.etree.tostring(context.xml.teaser)))))
+
 
 def normalize_quotes(node):
     if node.text:

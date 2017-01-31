@@ -157,7 +157,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
 
 class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
 
-    def test_main_image_is_none_if_first_body_is_empty(self):
+    def test_normalize_body(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
         p.text = '“up” and „down‟ and «around»'
@@ -167,6 +167,14 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
             body = zeit.content.article.edit.interfaces.IEditableBody(co)
             block = body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
+
+    def test_normalize_teaser(self):
+        article = self.get_article()
+        article.teaserTitle = u'“up” and „down‟ and «around»'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['article']) as co:
+            self.assertEqual('"up" and "down" and "around"', co.teaserTitle)
 
 
 class LayoutHeaderByArticleTemplate(
