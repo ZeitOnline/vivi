@@ -203,7 +203,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_enabled(self):
         for service in self.message_config:
-            if service['type'] not in ['parse', 'mobile']:
+            if service['type'] != 'mobile':
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
@@ -215,7 +215,7 @@ class AccountData(grok.Adapter):
     @property
     def mobile_text(self):
         for service in self.message_config:
-            if service['type'] not in ['parse', 'mobile']:
+            if service['type'] != 'mobile':
                 continue
             if service.get(
                     'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
