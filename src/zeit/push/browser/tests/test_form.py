@@ -61,7 +61,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
-             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
         self.open_form()
@@ -91,7 +91,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
-             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
         self.open_form()
@@ -175,7 +175,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             'type': 'parse',
             'enabled': True,
             'override_text': 'overridden_text',
-            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+            'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS
         }]
 
         b = self.browser
@@ -189,13 +189,13 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             'type': 'mobile',
             'enabled': True,
             'override_text': 'overridden_text',
-            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+            'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS
         }, push.message_config)
         self.assertNotIn({
             'type': 'parse',
             'enabled': True,
             'override_text': 'overridden_text',
-            'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL
+            'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS
         }, push.message_config)
 
 

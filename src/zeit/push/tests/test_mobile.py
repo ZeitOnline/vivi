@@ -1,6 +1,6 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
 import mock
 import pytz
 import unittest
@@ -54,7 +54,7 @@ class DataTest(zeit.push.testing.TestCase):
         catalog.messages['parse-news-title'] = 'ZEIT ONLINE'
         api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
-        data = api.data('foo', 'any', channels=PARSE_NEWS_CHANNEL,
+        data = api.data('foo', 'any', channels=CONFIG_CHANNEL_NEWS,
                         teaserSupertitle='super', teaserTitle='title',
                         teaserText='teaser', override_text=None,
                         image_url='http://images.zeit.de/example')
@@ -250,7 +250,7 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = ({
                 'type': 'mobile', 'enabled': True,
-                'channels': PARSE_NEWS_CHANNEL,
+                'channels': CONFIG_CHANNEL_NEWS,
             },)
         content = self.repository['testcontent']
         self.assertTrue(content.push_news)

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import grokcore.component as grok
 import logging
 import pytz
@@ -41,8 +41,8 @@ class ConnectionBase(object):
         """Return forward-compatible list of channels.
 
         We currently use channels as a monovalent value, set to either
-        PARSE_NEWS_CHANNEL or PARSE_BREAKING_CHANNEL. Make sure to retrieve the
-        according title from the config and return it as a list.
+        CONFIG_CHANNEL_NEWS or CONFIG_CHANNEL_BREAKING. Make sure to retrieve
+        the according title from the config and return it as a list.
 
         If `channels` already is a list, just return it. This is intended for
         forward-compatibility, if we start using multiple channels.
@@ -59,7 +59,7 @@ class ConnectionBase(object):
         news or breaking news, it also influences the headline.
 
         """
-        if self.config.get(PARSE_NEWS_CHANNEL) in channels:
+        if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
             headline = _('parse-news-title')
         else:
             headline = _('parse-breaking-title')
@@ -135,7 +135,7 @@ class ConnectionBase(object):
     def add_tracking(url, channels, device):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.push') or {}
-        if config.get(PARSE_BREAKING_CHANNEL) in channels:
+        if config.get(CONFIG_CHANNEL_BREAKING) in channels:
             channel = 'eilmeldung'
         else:
             channel = 'wichtige_news'
@@ -236,6 +236,6 @@ def set_push_news_flag(context, event):
     for service in push.message_config:
         if (service['type'] in ['mobile', 'parse'] and
                 service.get('enabled') and
-                service.get('channels') == PARSE_NEWS_CHANNEL):
+                service.get('channels') == CONFIG_CHANNEL_NEWS):
             context.push_news = True
             break
