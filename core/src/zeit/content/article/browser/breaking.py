@@ -74,7 +74,7 @@ class Add(zeit.cms.browser.form.AddForm,
         if data.pop('mobile', False):
             message_config.append({
                 'type': 'mobile', 'enabled': True,
-                'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL,
+                'channels': zeit.push.interfaces.CONFIG_CHANNEL_BREAKING,
             })
             message_config.append(
                 {'type': 'ios-legacy', 'enabled': True})

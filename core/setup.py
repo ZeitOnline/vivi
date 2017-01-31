@@ -57,7 +57,7 @@ setup(
         'zeit.content.volume>=1.1.0.dev0',
         'zeit.edit>=2.14.0.dev0',
         'zeit.objectlog>=0.2',
-        'zeit.push>=1.11.0.dev0',
+        'zeit.push>=1.19.0.dev0',
         'zeit.wysiwyg>=1.41.0dev',
         'zope.app.appsetup',
         'zope.app.component>=3.4.0b3',
