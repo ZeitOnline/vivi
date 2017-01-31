@@ -2,7 +2,6 @@
 
   <include package="zope.component" file="meta.zcml" />
 
-  <utility factory=".parse.from_product_config" name="parse" />
   <utility factory=".urbanairship.from_product_config" name="urbanairship" />
   <utility factory=".twitter.from_product_config" name="twitter" />
   <utility factory=".facebook.Connection" name="facebook" />
