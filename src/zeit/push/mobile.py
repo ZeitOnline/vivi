@@ -60,9 +60,9 @@ class ConnectionBase(object):
 
         """
         if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
-            headline = _('parse-news-title')
+            headline = _('push-news-title')
         else:
-            headline = _('parse-breaking-title')
+            headline = _('push-breaking-title')
 
         # There's no i18n in the mobile app, so we translate to a hard-coded
         # language here.
@@ -166,8 +166,8 @@ class Message(zeit.push.message.Message):
     grok.name('mobile')
 
     def send_push_notification(self, service_name, **kw):
-        """Overwrite to send push notifications to Parse and Urban Airship."""
-        super(Message, self).send_push_notification('parse', **kw)
+        # BBB This used to send to both parse and urbanairship, so we use
+        # a generic name in the message_config.
         super(Message, self).send_push_notification('urbanairship', **kw)
 
     def log_success(self, name):
@@ -215,26 +215,13 @@ class Message(zeit.push.message.Message):
         return zope.app.appsetup.product.getProductConfiguration('zeit.push')
 
 
-class ParseMessage(Message):
-    """Also register the mobile message under the name `parse` for bw compat.
-
-    Since the message config is stored on the article, there are many articles
-    that contain a message config for `parse`. To make sure those messages are
-    send to Parse (bw-compat) & Urban Airship (fw-compat), we need to register
-    the new `mobile` message also under the old name `parse`.
-
-    """
-
-    grok.name('parse')
-
-
 @grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
     for service in push.message_config:
-        if (service['type'] in ['mobile', 'parse'] and
+        if (service['type'] == 'mobile' and
                 service.get('enabled') and
                 service.get('channels') == CONFIG_CHANNEL_NEWS):
             context.push_news = True
