@@ -1,10 +1,10 @@
 zeit.push changes
 =================
 
-1.18.1 (unreleased)
+1.19.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove parse.com, they have shut down
 
 
 1.18.0 (2017-01-16)
