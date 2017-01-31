@@ -13,8 +13,8 @@ product_config = """\
   facebook-campus-account fb-campus
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
-  parse-channel-breaking Eilmeldung
-  parse-channel-news News
+  channel-breaking Eilmeldung
+  channel-news News
   urbanairship-audience-group subscriptions
   urbanairship-ios-segment 77c49d90-f6ca-465c-b33f-110f1cdcdacd
 </product-config>

@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import json
 import logging
 import urbanairship
@@ -27,10 +27,10 @@ class Connection(zeit.push.mobile.ConnectionBase):
         # Add tag to payload, so App knows which kind of notification was send.
         # (The audience part was already consumed by the SDK.)
         channels = self.get_channel_list(kw.get('channels'))
-        if PARSE_BREAKING_CHANNEL in channels:
-            tag = self.config.get(PARSE_BREAKING_CHANNEL)
+        if CONFIG_CHANNEL_BREAKING in channels:
+            tag = self.config.get(CONFIG_CHANNEL_BREAKING)
         else:
-            tag = self.config.get(PARSE_NEWS_CHANNEL)
+            tag = self.config.get(CONFIG_CHANNEL_NEWS)
         data['android']['tag'] = tag
         data['ios']['tag'] = tag
 
@@ -114,8 +114,8 @@ class PayloadDocumentation(Connection):
 
 def print_payload_documentation():
     zope.app.appsetup.product.setProductConfiguration('zeit.push', {
-        PARSE_BREAKING_CHANNEL: 'Eilmeldung',
-        PARSE_NEWS_CHANNEL: 'News',
+        CONFIG_CHANNEL_BREAKING: 'Eilmeldung',
+        CONFIG_CHANNEL_NEWS: 'News',
         'push-target-url': 'http://www.zeit.de',
         'urbanairship-audience-group': 'subscriptions',
         'urbanairship-ios-segment': '80436826-1e09-4a8a-9c26-5016f3df8e9f',
@@ -131,9 +131,9 @@ def print_payload_documentation():
     }
     print '[{"//": "*** Eilmeldung ***"},'
     conn.send('Title', 'http://www.zeit.de/test/artikel',
-              channels=PARSE_BREAKING_CHANNEL, **params)
+              channels=CONFIG_CHANNEL_BREAKING, **params)
     print '\n'
     print '{"//": "*** Wichtige Nachrichten ***"},'
     conn.send('Title', 'http://www.zeit.de/test/artikel',
-              channels=PARSE_NEWS_CHANNEL, **params)
+              channels=CONFIG_CHANNEL_NEWS, **params)
     print ']'

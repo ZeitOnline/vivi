@@ -206,7 +206,7 @@ class AccountData(grok.Adapter):
             if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
-                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
                 break
         else:
             service = None
@@ -218,7 +218,7 @@ class AccountData(grok.Adapter):
             if service['type'] not in ['parse', 'mobile']:
                 continue
             if service.get(
-                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
                 break
         else:
             service = None

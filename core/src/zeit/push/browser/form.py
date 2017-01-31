@@ -84,7 +84,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             {'type': 'mobile',
              'enabled': data.pop('mobile_enabled', False),
              'override_text': data.pop('mobile_text', None),
-             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
         ]
 
 
