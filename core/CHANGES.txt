@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.19.2 (unreleased)
+1.19.2 (2017-01-31)
 -------------------
 
 - Remove more parse.com remnants
