@@ -135,7 +135,7 @@ class TestPortraitbox(ReferenceTest):
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
             pbox.name = u'ref-name'
-            assert ref.name == u'ref-name'
+            self.assertEqual(ref.name, u'ref-name')
 
     def test_local_name_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
@@ -143,14 +143,14 @@ class TestPortraitbox(ReferenceTest):
                         '.references') as pbox:
             pbox.name = u'ref-name'
             ref.name = u'local-name'
-            assert ref.name == u'local-name'
+            self.assertEqual(ref.name, u'local-name')
 
     def test_default_text_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
             pbox.text = u'ref-text'
-            assert ref.text == u'ref-text'
+            self.assertEqual(ref.text, u'ref-text')
 
     def test_local_text_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
@@ -158,7 +158,7 @@ class TestPortraitbox(ReferenceTest):
                         '.references') as pbox:
             pbox.text = u'ref-text'
             ref.text = u'local-text'
-            assert ref.text == u'local-text'
+            self.assertEqual(ref.text, u'local-text')
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
