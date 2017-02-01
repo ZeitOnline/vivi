@@ -145,28 +145,6 @@ def factor_block_from_timeline(body, context, position):
     return block
 
 
-class OverridableProperty(object):
-
-    def __init__(self, name):
-        self.name = name
-
-    def __get__(self, inst, cls):
-        if inst is None:
-            return self
-        field = zeit.content.article.edit.interfaces.IPortraitbox[self.name]
-        value = getattr(inst, '_%s_local' % self.name)
-        if value is not field.missing_value:
-            return value
-        elif inst.references:
-            return getattr(inst.references, self.name)
-        else:
-            field.missing_value
-
-    def __set__(self, inst, value):
-        __traceback_info__ = (self.name, value)
-        setattr(inst, '_%s_local' % self.name, value)
-
-
 class Portraitbox(Reference):
 
     grok.implements(
@@ -179,12 +157,16 @@ class Portraitbox(Reference):
     _name_local = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'name_local',
         zeit.content.article.edit.interfaces.IPortraitbox['name'])
-    name = OverridableProperty('name')
+    name = zeit.cms.content.reference.OverridableProperty(
+        zeit.content.portraitbox.interfaces.IPortraitbox['name'],
+        original='references')
 
     _text_local = zeit.cms.content.property.Structure(
         '.text', 'text_local',
         zeit.content.article.edit.interfaces.IPortraitbox['text'])
-    text = OverridableProperty('text')
+    text = zeit.cms.content.reference.OverridableProperty(
+        zeit.content.portraitbox.interfaces.IPortraitbox['text'],
+        original='references')
 
     def __init__(self, *args, **kw):
         super(Portraitbox, self).__init__(*args, **kw)
