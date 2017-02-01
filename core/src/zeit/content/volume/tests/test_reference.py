@@ -1,6 +1,7 @@
 import lxml.objectify
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.volume
+import zeit.content.cp.centerpage
 import zeit.content.volume.testing
 import zope.component
 
@@ -16,12 +17,32 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         self.volume = self.repository['testvolume']
 
     def test_volume_can_be_adapted_to_IXMLReference(self):
-        result = zope.component.getAdapter(
+        reference = zope.component.getAdapter(
             self.volume,
             zeit.cms.content.interfaces.IXMLReference,
             name='related')
-        self.assertEqual('volume', result.tag)
-        self.assertEqual(self.volume.uniqueId, result.get('href'))
+        self.assertEqual('volume', reference.tag)
+        self.assertEqual(self.volume.uniqueId, reference.get('href'))
+
+    def test_reference_honors_ICommonMetadata_xml_format(self):
+        from zeit.content.volume.volume import Volume
+        from zeit.cms.repository.folder import Folder
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        volume.teaserText = 'original'
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.repository['2015'] = Folder()
+        self.repository['2015']['01'] = Folder()
+        self.repository['2015']['01']['ausgabe'] = volume
+        self.repository['2015']['01'][
+            'index'] = zeit.content.cp.centerpage.CenterPage()
+
+        reference = zope.component.getAdapter(
+            volume,
+            zeit.cms.content.interfaces.IXMLReference,
+            name='related')
+        self.assertEqual(volume.teaserText, reference.description)
 
     def test_volume_can_be_adapted_to_IReference(self):
         from zeit.content.volume.interfaces import IVolumeReference

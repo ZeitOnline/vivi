@@ -139,6 +139,25 @@ class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'volume'
 
 
+class VolumeMetadata(grok.Adapter):
+    """Since ICenterPage inherits from ICommonMetadata, we need to ensure
+    that adapting a volume to ICommonMetadata returns fields from the volume,
+    and not the CP.
+    """
+
+    grok.context(zeit.content.volume.interfaces.IVolume)
+    grok.implements(zeit.cms.content.interfaces.ICommonMetadata)
+
+    missing = object()
+
+    def __getattr__(self, name):
+        value = getattr(self.context, name, self.missing)
+        if value is self.missing:
+            field = zeit.cms.content.interfaces.ICommonMetadata.get(name, None)
+            return field.default
+        return value
+
+
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
 @grok.implementer(zeit.content.volume.interfaces.IVolume)
 def retrieve_volume_using_info_from_metadata(context):
