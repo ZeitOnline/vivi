@@ -10,7 +10,9 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
     def setUp(self):
         from zeit.content.volume.volume import Volume
         super(VolumeReferenceTest, self).setUp()
-        self.repository['testvolume'] = Volume()
+        volume = Volume()
+        volume.teaserText = 'original'
+        self.repository['testvolume'] = volume
         self.volume = self.repository['testvolume']
 
     def test_volume_can_be_adapted_to_IXMLReference(self):
@@ -23,7 +25,6 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_volume_can_be_adapted_to_IReference(self):
         from zeit.content.volume.interfaces import IVolumeReference
-
         node = zope.component.getAdapter(
             self.volume, zeit.cms.content.interfaces.IXMLReference,
             name='related')
@@ -32,8 +33,17 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         reference = zope.component.getMultiAdapter(
             (source, node),
             zeit.cms.content.interfaces.IReference, name='related')
-
-        reference.teaserText = 'Test teaser'
-
         self.assertEqual(True, IVolumeReference.providedBy(reference))
-        self.assertEqual('Test teaser', reference.xml.teaserText.text)
+
+    def test_teasertext_can_be_overridden(self):
+        node = zope.component.getAdapter(
+            self.volume, zeit.cms.content.interfaces.IXMLReference,
+            name='related')
+        source = zeit.content.article.edit.volume.Volume(
+            None, lxml.objectify.XML('<volume/>'))
+        reference = zope.component.getMultiAdapter(
+            (source, node),
+            zeit.cms.content.interfaces.IReference, name='related')
+        self.assertEqual('original', reference.teaserText)
+        reference.teaserText = u'local'
+        self.assertEqual('local', reference.teaserText)

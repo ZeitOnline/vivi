@@ -26,4 +26,9 @@ class RelatedReference(zeit.cms.content.reference.Reference):
     grok.implements(zeit.content.volume.interfaces.IVolumeReference)
     grok.name('related')
 
-    teaserText = zeit.cms.content.property.ObjectPathProperty('.teaserText')
+    _teaserText_local = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'teasertext_local',
+        zeit.content.volume.interfaces.IVolumeReference['teaserText'])
+    teaserText = zeit.cms.content.reference.OverridableProperty(
+        zeit.content.volume.interfaces.IVolume['teaserText'],
+        original='target')
