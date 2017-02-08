@@ -503,3 +503,51 @@ class Traverser(object):
         if reference is not None:
             return reference
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
+
+
+class OverridableProperty(object):
+    """Descriptor that allows acessing an attribute either on the local
+    instance or on an another object accessible from there.
+
+    class MyReference(object):
+
+        @property
+        def target(self):
+            return MyArticle()
+
+        teaserText = OverridableProperty(
+            ICommonMetadata['teaserText'], original='target')
+
+        _teaserText_local = None
+
+    The idea is that reading ``reference.teaserText`` first tries the "local"
+    variant (an attribute that adheres to the naming convention
+    ``_NAME_local``). If that is not present, it tries to read from the target
+    object. If that doesn't work, we return the field's missing_value.
+
+    Writing the property always writes to the "local" attribute.
+    """
+
+    def __init__(self, field, original):
+        """Parameters:
+        field: a zope.schema.Field, used for its name and missing_value
+        original: the name on the instance under which we get the target object
+        """
+        self.field = field
+        self.original = original
+
+    def __get__(self, inst, cls):
+        if inst is None:
+            return self
+        value = getattr(inst, '_%s_local' % self.field.__name__)
+        original = getattr(inst, self.original)
+        if value is not self.field.missing_value:
+            return value
+        elif original:
+            return getattr(original, self.field.__name__)
+        else:
+            self.field.missing_value
+
+    def __set__(self, inst, value):
+        __traceback_info__ = (self.field.__name__, value)
+        setattr(inst, '_%s_local' % self.field.__name__, value)

@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-3533: Implement dependent products
 
+- ZON-3485: Introduce ``OverridableProperty`` descriptor
+
 
 2.94.2 (2017-01-26)
 -------------------
