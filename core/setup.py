@@ -34,5 +34,8 @@ setup(
         'zope.security',
     ],
     entry_points={
+        'fanstatic.libraries': [
+            'zeit_content_volume=zeit.content.volume.browser.resources:lib',
+        ],
     },
 )

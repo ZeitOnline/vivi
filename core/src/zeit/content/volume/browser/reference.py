@@ -49,18 +49,25 @@ class Display(zeit.cms.browser.view.Base):
     def cover_image(self):
         height = 300
 
-        if not self.context.target or not self.context.target.covers:
+        if not self.context.target:
             return ''
 
-        cover_name = self.context.target.covers.keys()[0]
-        if not self.context.target.covers[cover_name]:
+        # Right now the first definition in VolumeCoverSource is taken
+        # the cover for the reference. That's at least nontransparent to
+        # someone who edits the volume-covers.xml. Maybe make it
+        # configurable via the source?
+        source = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
+            self.context.target)
+        cover_name = list(source)[0]
+        cover = self.context.target.get_cover(cover_name,
+                                              self.context.target.product.id)
+        if not cover:
             return ''
-
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         cover_url = '{}{}/@@raw'.format(
             self.url(repository),
-            self.context.target.covers[cover_name].variant_url(
+            cover.variant_url(
                 'original', thumbnail=True)
         )
         return '<img src="{}" alt="" height="{}" border="0" />'.format(

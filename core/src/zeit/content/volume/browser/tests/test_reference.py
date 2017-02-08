@@ -18,7 +18,8 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
         volume.volume = 49
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
         if cover_image:
-            volume.covers['portrait'] = self.repository['imagegroup']
+            volume.set_cover('portrait', volume.product.id, self.repository[
+                'imagegroup'])
         self.repository['volume'] = volume
 
         xml = XMLRelatedReference(self.repository['volume'])

@@ -18,17 +18,6 @@
       />
   </class>
 
-  <class class=".volume.VolumeCovers">
-    <require
-      interface="zope.interface.common.mapping.IEnumerableMapping"
-      permission="zope.View"
-      />
-    <require
-      interface="zope.interface.common.mapping.IWriteMapping"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <class class=".reference.RelatedReference">
     <require
       interface=".interfaces.IVolumeReference"

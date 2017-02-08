@@ -23,30 +23,59 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         super(TestVolumeCovers, self).setUp()
         self.repository['imagegroup'] = create_image_group()
         self.volume = Volume()
+        self.volume.product = zeit.cms.content.sources.Product(u'ZEI')
 
-    def test_setattr_stores_uniqueId_in_XML_of_Volume(self):
-        self.volume.covers['ipad'] = self.repository['imagegroup']
+    def add_ipad_zeit_cover_to_volume(self):
+        node = lxml.objectify.E.cover(
+            href='http://xml.zeit.de/imagegroup/', id='ipad', product_id='ZEI')
+        lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
+        self.volume.xml.covers.append(node)
+
+    def test_set_cover_raises_value_error_for_invalid_values(self):
+        with self.assertRaises(ValueError):
+            self.volume.set_cover('ipad', 'TEST', self.repository[
+                'imagegroup'])
+
+    def test_set_cover_stores_uniqueId_in_XML_of_Volume(self):
+        self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-            '<cover href="http://xml.zeit.de/imagegroup/" id="ipad"/>'
+            '<cover href="http://xml.zeit.de/imagegroup/" id="ipad" '
+            'product_id="ZEI"/>'
             '</covers>',
             lxml.etree.tostring(self.volume.xml.covers))
 
-    def test_setattr_deletes_existing_node_if_value_is_None(self):
-        self.volume.covers['ipad'] = self.repository['imagegroup']
-        self.volume.covers['ipad'] = None
+    def test_set_cover_deletes_existing_node_if_value_is_None(self):
+        self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
+        self.volume.set_cover('ipad', 'ZEI', None)
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
             lxml.etree.tostring(self.volume.xml.covers))
 
-    def test_getattr_retrieves_ICMSContent_via_uniqueId_in_XML_of_Volume(self):
-        node = lxml.objectify.E.cover(
-            href='http://xml.zeit.de/imagegroup/', id='ipad')
-        lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
-        self.volume.xml.covers.append(node)
-
+    def test_get_cover_gets_ICMSContent_via_uniqueId_and_product_of_Volume(
+            self):
+        self.add_ipad_zeit_cover_to_volume()
         self.assertEqual(
-            self.repository['imagegroup'], self.volume.covers['ipad'])
+            self.repository['imagegroup'], self.volume.get_cover('ipad',
+                                                                 'ZEI'))
+
+    def test_get_cover_retrieves_zei_cover_of_Volume_if_only_cover_is_given(
+            self):
+        self.add_ipad_zeit_cover_to_volume()
+        self.assertEqual(
+            self.repository['imagegroup'], self.volume.get_cover('ipad'))
+
+    def test_get_cover_retrieves_none_for_if_product_is_not_in_volume(
+            self):
+        self.add_ipad_zeit_cover_to_volume()
+        self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
+
+    def test_get_cover_gets_zei_cover_of_Volume_if_dependent_product_is_given(
+            self):
+        self.add_ipad_zeit_cover_to_volume()
+        self.assertEqual(
+            self.repository['imagegroup'], self.volume.get_cover('ipad',
+                                                                 'ZMLB'))
 
 
 class TestReference(zeit.content.volume.testing.FunctionalTestCase):
@@ -56,8 +85,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        self.repository['2015'] = Folder()
-        self.repository['2015']['01'] = Folder()
+        zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_content_with_missing_values_does_not_adapt_to_IVolume(self):
@@ -123,7 +151,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_looks_up_centerpage_from_product_setting(self):
-        self.repository['2015']['01']['index'] = zeit.content.cp.centerpage \
+        self.repository['2015']['01']['index'] = zeit.content.cp.centerpage\
             .CenterPage()
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
@@ -155,7 +183,6 @@ class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
         super(TestOrder, self).setUp()
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
-
         self.solr = mock.Mock()
         self.zca.patch_utility(self.solr, zeit.solr.interfaces.ISolr)
 

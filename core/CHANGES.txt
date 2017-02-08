@@ -7,6 +7,8 @@ zeit.content.volume changes
 
 - ZON-3533: Support dependent products
 
+- ZON-3535: Covers per product
+
 
 1.3.2 (2017-01-12)
 ------------------

@@ -25,8 +25,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Politik': [{'page': '1',
                           'title': 'title',
                           'teaser': 'tease',
-                          'supertitle': 'Super'
-                        }]
+                          'supertitle': 'Super'}]
              }
         )
         self.toc_data['Anderer'] = OrderedDict(

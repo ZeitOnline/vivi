@@ -44,16 +44,13 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         max=53)
 
     teaserText = zope.schema.Text(
-        title=_("Teaser text"),
+        title=_("Volume text"),
         required=False,
         max_length=170)
 
     date_digital_published = zope.schema.Datetime(
         title=_('Date of digital publication'),
         required=False)
-
-    covers = zope.interface.Attribute(
-        'Convenience method to adapt to IVolumeCovers')
 
     previous = zope.interface.Attribute(
         'The previous IVolume object (by date_digital_published) or None')
@@ -67,6 +64,39 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         ``http://xml.zeit.de/{year}/{name}/ausgabe``.
         """
 
+    def get_cover(cover_id, product_id, use_fallback):
+        """
+        Get a cover of a product.
+        For example volume.get_cover('printcover','ZEI') returns the
+        printcover of DIE ZEIT of this specific volume.
+        If no product_id is given or if no Cover is found and use_fallback
+        is set, the method looks for a cover of the main_product.
+        :param cover_id: str cover ID set in volume-covers.xml
+        :param product_id: str product ID set in products.xml
+        :param product_id: bool specifies if a fallback should be used.
+        :return: zeit.content.image.interfaces.IImageGroup or None
+        """
+
+    def set_cover(cover_id, product_id, image):
+        """
+        Set an image as a cover of product.
+        """
+
+
+class IVolumeReference(zeit.cms.content.interfaces.IReference):
+
+    teaserText = zope.schema.Text(
+        title=_("Volume text"),
+        required=False,
+        max_length=170)
+
+
+class ITocConnector(zope.interface.Interface):
+    """
+    Marker Interface for a the Connector to get the Tocdata from
+    /cms/wf-archiv/archiv
+    """
+
 
 class VolumeSource(zeit.cms.content.contentsource.CMSContentSource):
 
@@ -74,15 +104,6 @@ class VolumeSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'volume'
 
 VOLUME_SOURCE = VolumeSource()
-
-
-class IVolumeCovers(zope.interface.common.mapping.IMapping):
-    """Mapping from uniqueId to IImageGroup to save several covers on a volume.
-
-    This interface is used to define the available covers via an XML source and
-    to store the chosen cover images as references on the IVolume.
-
-    """
 
 
 class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
@@ -101,7 +122,7 @@ class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
 VOLUME_COVER_SOURCE = VolumeCoverSource()
 
 
-class ProductNameMapper():
+class ProductNameMapper(object):
 
     def __init__(self):
         self.mapping = None
@@ -120,18 +141,3 @@ class ProductNameMapper():
             return default
 
 PRODUCT_MAPPING = ProductNameMapper()
-
-
-class IVolumeReference(zeit.cms.content.interfaces.IReference):
-
-    teaserText = zope.schema.Text(
-        title=_("Teaser text"),
-        required=False,
-        max_length=170)
-
-
-class ITocConnector(zope.interface.Interface):
-    """
-    Marker Interface for a the Connector to get the Tocdata from
-    /cms/wf-archiv/archiv
-    """

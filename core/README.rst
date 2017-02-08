@@ -11,17 +11,25 @@ werden.
 
 Um von einem ``ICommonMetadata`` (z.B. einen Artikel) zur zugehörigen Ausgabe
 zu kommen, genügt es auf ``zeit.content.volume.interfaces.IVolume`` zu
-adaptieren. Um beispielsweise das Cover-Bild ``printcover`` für die Ausgabe
-eines Artikels zu lesen, genügt folgender Aufruf::
+adaptieren. Um beispielsweise das Cover-Bild ``printcover`` für das Produkt
+zu erhalten, genügt folgender Aufruf::
 
     volume = zeit.content.volume.interfaces.IVolume(article)
-    image = volume.covers['printcover']
+    image = volume.get_cover('printcover', article.product.id)
 
 Dabei wird vorausgesetzt, dass der Artikel einem Produkt zugeordnet ist, das
-Ausgaben unterstützt (siehe Produkt-Source weiter unten) und eine Ausgabe
-mit  selben Jahr & Ausgabennummer existiert. Diese Ausgabe muss außerdem an
-der "richtigen" Stelle im Vivi hinterlegt sein. Der genaue Ort wird durch
-die Produkt-Source bestimmt (siehe unten).
+Ausgaben unterstützt  oder das als Beilage einer solchen Ausgabe definiert
+sind (siehe Produkt-Source und Beiliegende Produkte des Ausgabenobjekts
+weiter unten) Außerdem muss  eine Ausgabe mit  selben Jahr & Ausgabennummer
+existiert. Diese Ausgabe muss außerdem an der "richtigen" Stelle im Vivi
+hinterlegt sein. Der genaue Ort wird durch die Produkt-Source bestimmt
+(siehe unten).
+
+Für beiliegende Produkte gilt außerdem, dass ,sollte für die Ausgabe kein
+Cover für die Beilage definiert sein, aber es ist ein Cover für das
+Hauptprodukt vorhanden, wird das Cover des Hauptprodukts zurückgegeben.
+Sucht man beispielsweise nach dem Printcover des Zeit Magazins und dies
+kann nicht gefunden werden, dann wird das printcover von DIE ZEIT geliefert.
 
 
 Cover-Bilder
@@ -36,12 +44,11 @@ Coverbildern. Beispiel::
       <cover id="ipad">iPad</cover>
     </covers>
 
-Über das Attribut ``Volume.covers`` kann auf die entsprechende ``id``
-zugegriffen werden. Der Zugriff erfolg über Dict-Notation, d.h.
-``volume.covers['ipad']``.
 
-Diese werden dynamisch beim ``Volume`` angezeigt und dann direkt im XML
-desselben gespeichert.
+Sie definiert welche Cover für jedes der Pordukte (sowohl für das Haupt- als
+auch für die beiligende Produkte) definiert werden können. Für jedes Produkt
+ kann ein entsprechendes Cover angegeben und dann direkt im XML
+des Produkts gespeichert werden.
 
 In der Produktion wird `diese Konfigurationsdatei`_ verwendet.
 
