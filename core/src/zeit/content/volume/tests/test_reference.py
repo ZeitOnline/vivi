@@ -68,3 +68,5 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual('original', reference.teaserText)
         reference.teaserText = u'local'
         self.assertEqual('local', reference.teaserText)
+        reference.teaserText = None
+        self.assertEqual('original', reference.teaserText)
