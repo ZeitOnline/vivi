@@ -390,7 +390,7 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             volume.year = 2006
             volume.volume = 23
             volume.product = zeit.cms.content.sources.Product(u'ZEI')
-            volume.covers['portrait'] = self.repository['imagegroup']
+            volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
             self.repository['2006']['23'] = volume
             add_to_clipboard(
                 self.repository['2006']['23'], 'my_volume')

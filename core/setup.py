@@ -54,7 +54,7 @@ setup(
         'zeit.content.portraitbox',
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video',
-        'zeit.content.volume>=1.1.0.dev0',
+        'zeit.content.volume>=1.4.0.dev0',
         'zeit.edit>=2.14.0.dev0',
         'zeit.objectlog>=0.2',
         'zeit.push>=1.19.0.dev0',
