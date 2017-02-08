@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.3.3 (unreleased)
+1.4.0 (2017-02-08)
 ------------------
 
 - ZON-3533: Support dependent products
