@@ -4,9 +4,10 @@ Ausgabe
 
 Das Paket ``zeit.content.volume`` stellt den Content-Typ ``Volume`` zur
 Verfügung, der Information zu einer PRINT-Ausgabe bereitstellt (z.B. Jahr,
-Nummer, Coverbild). Über eine Konfigurationsdatei und Eintragungen in der
-``products.xml`` können mögliche Coverbilder und die generischen Speicherorte
-eingestellt werden.
+Nummer, beiliegende Produkte, Coverbild). Über eine Konfigurationsdatei und
+Eintragungen in der ``products.xml`` können mögliche beiliegende Produkte und
+Coverbilder und die generischen Speicherorte der Coverbilder eingestellt
+werden.
 
 Um von einem ``ICommonMetadata`` (z.B. einen Artikel) zur zugehörigen Ausgabe
 zu kommen, genügt es auf ``zeit.content.volume.interfaces.IVolume`` zu
@@ -17,10 +18,10 @@ eines Artikels zu lesen, genügt folgender Aufruf::
     image = volume.covers['printcover']
 
 Dabei wird vorausgesetzt, dass der Artikel einem Produkt zugeordnet ist, das
-Ausgaben unterstützt (siehe Produkt-Source weiter unten, aktuell nur ``ZEI``)
-und eine Ausgabe mit selben Jahr & Ausgabennummer existiert. Diese Ausgabe muss
-außerdem an der "richtigen" Stelle im Vivi hinterlegt sein. Der genaue Ort wird
-durch die Produkt-Source bestimmt (siehe unten).
+Ausgaben unterstützt (siehe Produkt-Source weiter unten) und eine Ausgabe
+mit  selben Jahr & Ausgabennummer existiert. Diese Ausgabe muss außerdem an
+der "richtigen" Stelle im Vivi hinterlegt sein. Der genaue Ort wird durch
+die Produkt-Source bestimmt (siehe unten).
 
 
 Cover-Bilder
@@ -78,7 +79,6 @@ Im folgenden Beispiel werden beide Optionen ausgesteuert::
 In Produktion ist diese `products.xml` in Benutzung.
 
 .. _`products.xml`: http://http://cms-backend.zeit.de:9000/cms/work/data/products.xml
-
 
 Inhaltsverzeichnis
 ==================
@@ -154,3 +154,50 @@ ist es natürlich `umfangreicher`_)::
 .. _`Centerpage`: https://github.com/zeitonline/zeit.content.cp
 .. _`umfangreicher`: http://cms-backend.zeit.de:9000/cms/work/data/ausgabe-ZEI.py
 
+Beiliegende Produkte des Ausgabenobjekts
+========================================
+Für Produkte die Ausgaben unterstützen können mittels der products.xml auch
+zusätzliche beiliegende Produkte definiert werden. Dies geschieht mittels
+des Attributes 'relates_to', dessen Wert eine andere Product-ID sein muss.
+Will man beispielsweise ausdrücken, dass das Zeit Magazin eine Beilage von
+DIE ZEIT ist, schreibt man in die products.xml::
+
+    <products>
+        <product id="ZEI"
+                 volume="True"
+                 location="http://xml.zeit.de/{year}/{name}/ausgabe">
+                 centerpage="http://xml.zeit.de/{year}/{name}/index">
+                 cp_template="http://xml.zeit.de/data/ausgabe-ZEI.py"
+                 Die Zeit</product>
+        <product id="ZMLB"
+                 relates_to="ZEI">
+                  Zeit Magazin</product>
+    </products>
+
+Man kann das Produkt des Ausgabenobjekts fragen, welche potentiellen
+Beilagen es hat. Für obige Konfiguration sieht das dann so aus::
+
+    >>> volume.product.title
+    u'Die Zeit'
+    >>> volume.product.dependent_products
+    [<zeit.cms.content.sources.Product object at 0x7fee6a2363d0>]
+    >>> volume.product.dependent_products[0].title
+    u'Zeit Magazin'
+
+Content der gleichen Print Ausgabe adaptiert dann auch zum gleichen
+Ausgabenobjekt::
+
+    >>> zmlb_content.product.title
+    u'Zeit Magazin'
+    >>> zei_content.product.title
+    u'Die Zeit'
+    >>> IVolume(zei_content) == IVolume(zmlb_content)
+    True
+
+Achtung: Nicht möglich ist, dass beim Anlegen eines
+Ausgabenobjekt unterschieden wird, ob ein konkretes Ausgabenobjekt
+tatsächlich eine bestimmte Beilage hatte. Beispielsweise ist die Beilage
+"Zeit Doktor" nicht bei jeder Ausgabe von DIE ZEIT dabei, taucht aber bei
+den dependent_products des Produkts der Ausgabe immer auf, da dies allein
+über die products.xml definiert wird. Da das für unsere Anwendung bis jetzt
+aber egal ist, bleibt das erstmal so.
