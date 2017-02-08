@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.94.3 (unreleased)
+2.95.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3533: Implement dependent products
 
 
 2.94.2 (2017-01-26)

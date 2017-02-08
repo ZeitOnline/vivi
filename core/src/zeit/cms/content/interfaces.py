@@ -358,6 +358,10 @@ class IProduct(zope.interface.Interface):
         'used to create the public-facing CP of this product')
     autochannel = zope.interface.Attribute(
         'Set false to suppress setting channel on ressort changes')
+    relates_to = zope.interface.Attribute(
+        'Product-ID of another Product we belong to')
+    dependent_products = zope.interface.Attribute(
+        'List of products whose relates_to points to us')
 
 
 class ISerie(zope.interface.Interface):

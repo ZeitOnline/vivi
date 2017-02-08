@@ -7,7 +7,18 @@
              centerpage="http://xml.zeit.de/{year}/{name}/index"
              cp_template="http://xml.zeit.de/ausgabe-cp-template">
              Die Zeit</product>
-    <product id="ZMLB">Zeit Magazin</product>
+    <product id="ZMLB"
+             relates_to="ZEI">
+             Zeit Magazin</product>
+    <!--This is a wrong configuration because Test is not capable of being a
+    volume (volume isn't set to "true")
+     -->
+    <product id="BADDEPENDENCY"
+             relates_to="TEST">
+             Bad Idea</product>
+    <product id="Dev"
+             volume="True">
+             DEV</product>
     <product id="TEST">Test/Development</product>
     <product id="ZTCS">Zeit Campus</product>
     <product id="ZTWI">Zeit Wissen</product>
