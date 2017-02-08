@@ -94,7 +94,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id and product_id not in \
                 [prod.id for prod in self._all_products]:
-            return None
+            raise ValueError('%s is not a valid product id for %s' % (
+                product_id, self))
         path = '//covers/cover[@id="{}" and @product_id="{}"]' \
             .format(cover_id, product_id)
         node = self.xml.xpath(path)

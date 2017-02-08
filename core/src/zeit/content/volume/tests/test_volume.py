@@ -62,9 +62,9 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.add_ipad_cover()
         self.assertEqual(self.cover, self.volume.get_cover('ipad'))
 
-    def test_returns_none_if_product_is_not_in_volume(self):
-        self.add_ipad_cover()
-        self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
+    def test_raises_if_product_is_not_in_volume(self):
+        with self.assertRaises(ValueError):
+            self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
 
     def test_returns_main_product_if_no_dependent_cover_present(self):
         self.add_ipad_cover()
