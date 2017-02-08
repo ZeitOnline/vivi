@@ -92,6 +92,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             iter(result).next()['uniqueId'], None)
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
+        if product_id is None and use_fallback:
+            product_id = self.product.id
         if product_id and product_id not in \
                 [prod.id for prod in self._all_products]:
             raise ValueError('%s is not a valid product id for %s' % (
@@ -102,11 +104,11 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         uniqueId = node[0].get('href') if node else None
         if uniqueId:
             return zeit.cms.interfaces.ICMSContent(uniqueId, None)
-        # Fallback: try to find product for main product
-        # Stop recursion (product id will be equal to self.product.id
-        # in the next call)
-        elif product_id != self.product.id and use_fallback:
-            return self.get_cover(cover_id, self.product.id)
+        if use_fallback:
+            # Fall back to the main product (which must be self.product,
+            # since we respond only to ids out of self._all_products)
+            return self.get_cover(
+                cover_id, self.product.id, use_fallback=False)
 
     def set_cover(self, cover_id, product_id, imagegroup):
         if not self._is_valid_cover_id_and_product_id(cover_id, product_id):
