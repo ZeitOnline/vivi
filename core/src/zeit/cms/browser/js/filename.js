@@ -34,10 +34,32 @@ zeit.cms.normalize_filename = function(filename) {
 
 
 $(document).ready(function() {
-    $('form:not([action$="zeit.content.link.Add"]) #form\\.__name__').bind(
-        'change', function() {
-        var input = $(this);
-        input.val(zeit.cms.normalize_filename(input.val()));
+    var excluded = [
+        'zeit.cms.repository.file.Add',
+        'zeit.content.link.Add',
+        'zeit.content.rawxml.Add',
+        'zeit.content.text.Add'
+    ];
+
+    $('form').each(function(index, form) {
+        form = $(form);
+        var name_input = form.find('#form\\.__name__');
+        if (!name_input.length) {
+            return;
+        }
+
+        var action = form.attr('action');
+        for (var i = 0; i < excluded.length; i++) {
+            var item = excluded[i];
+            if (action.substr(-item.length) == item) {
+                return;
+            }
+        }
+
+        name_input.bind('change', function() {
+            var input = $(this);
+            input.val(zeit.cms.normalize_filename(input.val()));
+        });
     });
 });
 
