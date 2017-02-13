@@ -19,6 +19,7 @@ import zope.testing.cleanup
 
 
 logger = logging.getLogger('zeit.cms.content.sources')
+zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 
 
 class SimpleXMLSourceBase(object):
@@ -114,6 +115,67 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, value):
         return self.titles.get(value, value)
+
+
+class IObjectSource(zope.schema.interfaces.IIterableSource):
+    pass
+
+
+class ObjectSource(object):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        zope.interface.implements(IObjectSource)
+
+        def find(self, id):
+            return self.factory.find(self.context, id)
+
+    def _values(self):
+        raise NotImplementedError()
+
+    def getTitle(self, context, value):
+        return value.title
+
+    def getToken(self, context, value):
+        return value.id
+
+    def isAvailable(self, value, context):
+        return value.is_allowed(context)
+
+    def getValues(self, context):
+        return [x for x in self._values().values()
+                if self.isAvailable(x, context)]
+
+    def find(self, context, id):
+        value = self._values().get(id)
+        if (not value or not self.isAvailable(value, context) or
+                not self.filterValue(context, value)):
+            return None
+        return value
+
+
+class AllowedBase(object):
+
+    def __init__(self, id, title, available):
+        self.id = id
+        self.title = title
+
+        if available is None:
+            available = 'zope.interface.Interface'
+        try:
+            available = zope.dottedname.resolve.resolve(available)
+        except ImportError:
+            available = None
+        self.available_iface = available
+
+    def is_allowed(self, context):
+        if self.available_iface is None:
+            return False
+        return self.available_iface.providedBy(context)
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, self.__class__) and self.id == other.id
 
 
 class NavigationSource(XMLSource):
@@ -314,14 +376,13 @@ class SerieSource(SimpleContextualXMLSource):
         return super(SerieSource, self).getToken(context, value.serienname)
 
 
-class Product(object):
+class Product(AllowedBase):
 
     def __init__(self, id=None, title=None, vgwortcode=None,
                  href=None, target=None, label=None, show=None,
                  volume=None, location=None, centerpage=None, cp_template=None,
-                 autochannel=True):
-        self.id = id
-        self.title = title
+                 autochannel=True, relates_to=None):
+        super(Product, self).__init__(id, title, None)
         self.vgwortcode = vgwortcode
         self.href = href
         self.target = target
@@ -332,39 +393,59 @@ class Product(object):
         self.centerpage = centerpage
         self.cp_template = cp_template
         self.autochannel = autochannel
-
-    def __eq__(self, other):
-        if not zope.security.proxy.isinstance(other, self.__class__):
-            return False
-        return self.id == other.id
+        self.relates_to = relates_to
+        self.dependent_products = []
 
 
-class ProductSource(SimpleContextualXMLSource):
+class ProductSource(ObjectSource, SimpleContextualXMLSource):
 
     config_url = 'source-products'
 
-    def getValues(self, context):
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
         tree = self._get_tree()
-        return [Product(unicode(node.get('id')),
-                        unicode(node.text.strip()),
-                        unicode_or_none(node.get('vgwortcode')),
-                        unicode_or_none(node.get('href')),
-                        unicode_or_none(node.get('target')),
-                        unicode_or_none(node.get('label')),
-                        unicode_or_none(node.get('show')),
-                        node.get('volume', '').lower() == 'true',
-                        unicode_or_none(node.get('location')),
-                        unicode_or_none(node.get('centerpage')),
-                        unicode_or_none(node.get('cp_template')),
-                        node.get('autochannel', '').lower() != 'false',
-                        )
-                for node in tree.iterchildren('*')]
+        result = collections.OrderedDict()
+        for node in tree.iterchildren('*'):
+            product = Product(
+                unicode(node.get('id')),
+                unicode(node.text.strip()),
+                unicode_or_none(node.get('vgwortcode')),
+                unicode_or_none(node.get('href')),
+                unicode_or_none(node.get('target')),
+                unicode_or_none(node.get('label')),
+                unicode_or_none(node.get('show')),
+                node.get('volume', '').lower() == 'true',
+                unicode_or_none(node.get('location')),
+                unicode_or_none(node.get('centerpage')),
+                unicode_or_none(node.get('cp_template')),
+                node.get('autochannel', '').lower() != 'false',
+                unicode_or_none(node.get('relates_to'))
+            )
+            result[product.id] = product
+        self._add_dependent_products(result)
+        return result
 
     def getTitle(self, context, value):
         return value.title
 
     def getToken(self, context, value):
-        return super(ProductSource, self).getToken(context, value.id)
+        return super(ProductSource, self).getToken(context, value)
+
+    def _add_dependent_products(self, products):
+        """
+        Add the dependent products to given products.
+        Dependent products are defined in the product.xml via the "relates_to"
+        attribute.
+        """
+        dependent_products = collections.defaultdict(list)
+        main_products = []
+        for value in products.values():
+            if value.volume:
+                main_products.append(value)
+            if value.relates_to:
+                dependent_products[value.relates_to] += [value]
+        for product in main_products:
+            product.dependent_products = dependent_products[product.id]
 
 PRODUCT_SOURCE = ProductSource()
 
@@ -419,70 +500,6 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
         import zeit.cms.type  # break circular import
         return (value.queryTaggedValue('zeit.cms.addform') !=
                 zeit.cms.type.SKIP_ADD)
-
-
-zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
-
-
-class IObjectSource(zope.schema.interfaces.IIterableSource):
-    pass
-
-
-class ObjectSource(object):
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        zope.interface.implements(IObjectSource)
-
-        def find(self, id):
-            return self.factory.find(self.context, id)
-
-    def _values(self):
-        raise NotImplementedError()
-
-    def getTitle(self, context, value):
-        return value.title
-
-    def getToken(self, context, value):
-        return value.id
-
-    def isAvailable(self, value, context):
-        return value.is_allowed(context)
-
-    def getValues(self, context):
-        return [x for x in self._values().values()
-                if self.isAvailable(x, context)]
-
-    def find(self, context, id):
-        value = self._values().get(id)
-        if (not value or not self.isAvailable(value, context) or
-                not self.filterValue(context, value)):
-            return None
-        return value
-
-
-class AllowedBase(object):
-
-    def __init__(self, id, title, available):
-        self.id = id
-        self.title = title
-
-        if available is None:
-            available = 'zope.interface.Interface'
-        try:
-            available = zope.dottedname.resolve.resolve(available)
-        except ImportError:
-            available = None
-        self.available_iface = available
-
-    def is_allowed(self, context):
-        if self.available_iface is None:
-            return False
-        return self.available_iface.providedBy(context)
-
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, self.__class__) and self.id == other.id
 
 
 class StorystreamReference(AllowedBase):

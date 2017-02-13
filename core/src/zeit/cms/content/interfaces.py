@@ -193,6 +193,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    commentsPremoderate = zope.schema.Bool(
+        title=_("Comments premoderate"),
+        required=False,
+        default=False)
+
     commentsAllowed = zope.schema.Bool(
         title=_("Comments allowed"),
         required=False,
@@ -205,6 +210,11 @@ class ICommonMetadata(zope.interface.Interface):
 
     banner = zope.schema.Bool(
         title=_("Banner"),
+        required=False,
+        default=True)
+
+    banner_content = zope.schema.Bool(
+        title=_("Banner in Content"),
         required=False,
         default=True)
 
@@ -245,8 +255,8 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
-    is_content = zope.schema.Bool(
-        title=_('Content'),
+    overscrolling = zope.schema.Bool(
+        title=_('Overscrolling'),
         required=False,
         default=True)
 
@@ -260,11 +270,6 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Content that was pushed to mobile'),
         required=False,
         default=False)
-
-    in_rankings = zope.schema.Bool(
-        title=_('Show in rankings'),
-        required=False,
-        default=True)
 
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
@@ -353,6 +358,10 @@ class IProduct(zope.interface.Interface):
         'used to create the public-facing CP of this product')
     autochannel = zope.interface.Attribute(
         'Set false to suppress setting channel on ressort changes')
+    relates_to = zope.interface.Attribute(
+        'Product-ID of another Product we belong to')
+    dependent_products = zope.interface.Attribute(
+        'List of products whose relates_to points to us')
 
 
 class ISerie(zope.interface.Interface):
@@ -641,6 +650,10 @@ class ILivePropertyManager(zope.interface.Interface):
 
 
 class ISemanticChange(zope.interface.Interface):
+    """Indicates when the content last changed meaningfully, as opposed to
+    small corrections like fixed typos. This might be shown to the reader,
+    e.g. as "Aktualisiert am" on article pages.
+    """
 
     last_semantic_change = zope.schema.Datetime(
         title=_('Last semantic change'),

@@ -12,5 +12,4 @@
       permission="zeit.cms.admin.EditSemantic"
       />
   </class>
-
 </configure>

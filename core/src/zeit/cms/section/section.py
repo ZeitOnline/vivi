@@ -34,13 +34,17 @@ def apply_markers(content):
     # Dear Zope, why is ContainedProxy not a zope.proxy?
     content = zope.container.contained.getProxiedObject(content)
 
-    for iface in zope.interface.providedBy(content):
-        if issubclass(iface, ISectionMarker):
-            zope.interface.noLongerProvides(content, iface)
-
+    current_markers = [x for x in zope.interface.providedBy(content)
+                       if issubclass(x, ISectionMarker)]
     # Ressort markers take precedence over section markers (ZON-2507)
-    markers = get_ressort_markers(content) or get_folder_markers(content)
-    zope.interface.alsoProvides(content, *markers)
+    new_markers = (
+        get_markers_for_section(find_ressort_section(content), content) or
+        get_markers_for_section(find_folder_section(content), content))
+
+    if current_markers != new_markers:
+        for iface in current_markers:
+            zope.interface.noLongerProvides(content, iface)
+        zope.interface.alsoProvides(content, *new_markers)
 
 
 @grok.adapter(ICMSContent)
@@ -48,13 +52,6 @@ def apply_markers(content):
 def find_section(context):
     # Ressort markers take precedence over section markers (ZON-2507)
     return find_ressort_section(context) or find_folder_section(context)
-
-
-def get_ressort_markers(content):
-    section = find_ressort_section(content)
-    if section is None:
-        return []
-    return get_markers_for_section(section, content)
 
 
 def find_ressort_section(context):
@@ -65,11 +62,6 @@ def find_ressort_section(context):
     return sm.adapters.lookup(
         (zope.interface.providedBy(context),), IRessortSection,
         name=meta.ressort)
-
-
-def get_folder_markers(content):
-    section = find_folder_section(content)
-    return get_markers_for_section(section, content)
 
 
 def find_folder_section(context):
@@ -101,11 +93,17 @@ def parent_folder(content):
 def get_markers_for_section(section, content):
     if section is None:
         return []
+    # XXX We're seeing poisoning of the sm.adapters._v_lookup._cache in
+    # production inside lovely.remotetask, which then causes
+    # `lookup((IZONSection,), ISectionMarker)` to return None instead of
+    # IZONContent. We cannot explain this (see BUG-505), so we work around it
+    # by bypassing the cache here.
     sm = zope.component.getSiteManager()
+    lookup = sm.adapters._v_lookup._uncached_lookup
     result = []
     # Content-type specific markers come first, so they are treated as more
     # specific than the generic markers in adapter lookups.
-    result.append(sm.adapters.lookup(
+    result.append(lookup(
         (section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
-    result.append(sm.adapters.lookup((section,), ISectionMarker))
+    result.append(lookup((section,), ISectionMarker))
     return filter(None, result)

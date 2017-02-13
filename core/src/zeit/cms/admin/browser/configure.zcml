@@ -9,7 +9,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin.html"
-    class=".admin.EditForm"
+    class=".admin.EditFormCI"
     permission="zeit.cms.admin.View"
     />
 
@@ -20,6 +20,23 @@
     permission="zeit.cms.admin.View"
     menu="zeit-context-views" title="Admin Menu"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="admin-edit.html"
+    class=".admin.EditFormCO"
+    permission="zeit.cms.admin.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@admin-edit.html"
+    permission="zeit.cms.admin.View"
+    menu="zeit-context-views" title="Admin CO"
+    filter="python:modules['zeit.cms.checkout.interfaces'].ILocalContent.providedBy(context)"
     />
 
 </configure>

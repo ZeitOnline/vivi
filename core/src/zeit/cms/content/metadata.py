@@ -32,15 +32,15 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'breadcrumb_title',
 
             'banner',
+            'banner_content',
             'breaking_news',
             'countings',
             'foldable',
-            'in_rankings',
-            'is_content',
             'minimal_header',
             'lead_candidate',
             'push_news',
             'rebrush_website_content',
+            'overscrolling',
 
             'tldr_title',
             'tldr_text',
@@ -94,6 +94,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     printRessort = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],
         zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort')
+
+    commentsPremoderate = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentsPremoderate'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments_premoderate')
 
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],

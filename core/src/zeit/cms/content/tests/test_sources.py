@@ -89,3 +89,27 @@ class AccessSourceTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_non_translatable_ids_should_return_none(self):
         access_source = zeit.cms.content.sources.AccessSource().factory
         assert access_source.translate_to_c1('hrmpf') is None
+
+
+class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def setUp(self):
+        source = zeit.cms.content.sources.PRODUCT_SOURCE
+        self.values = list(source(None))
+
+    def test_zeit_has_zeit_magazin_as_dependent_products(self):
+        for value in self.values:
+            if value.id == "ZEI":
+                self.assertEqual('Zeit Magazin', value.dependent_products[0]
+                                 .title)
+
+    def test_source_without_dependencies_has_empty_list_as_dependent_products(
+            self):
+        self.assertEqual([], self.values[1].dependent_products)
+
+    def test_invalid_dependent_products_configuration_has_no_effect_on_product(
+            self):
+        for value in self.values:
+            if value.id == "BADDEPENDENCY":
+                self.assertEqual([], value.dependent_products)
+                break

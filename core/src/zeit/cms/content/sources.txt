@@ -239,6 +239,8 @@ Products
 >>> pprint([x.id for x in products])
 [u'ZEI',
  u'ZMLB',
+ u'BADDEPENDENCY',
+ u'Dev',
  u'TEST',
  u'ZTCS',
  u'ZTWI',

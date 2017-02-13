@@ -10,6 +10,53 @@ zeit.cms changes
 
 - ZON-3454: Remove view ``zeit.workflow.task_queue_length``.
 
+2.95.1 (2017-02-13)
+-------------------
+
+- MAINT: Skip filename conventions for rawxml and text, too.
+
+
+2.95.0 (2017-02-08)
+-------------------
+
+- ZON-3533: Implement dependent products
+
+- ZON-3485: Introduce ``OverridableProperty`` descriptor
+
+
+2.94.2 (2017-01-26)
+-------------------
+
+- ZON-3629: Add overscrolling option
+
+
+2.94.1 (2017-01-25)
+-------------------
+
+- PERF: Only write section markers if they actually changed, not every time
+
+
+2.94.0 (2017-01-18)
+-------------------
+
+- ZON-3464: Add banner content option
+
+- ZON-3576: Add commentsPremoderate property
+
+
+2.93.3 (2017-01-13)
+-------------------
+
+- BUG-505: Try a different workaround for the zope.component cache poisoning
+
+
+2.93.2 (2016-12-30)
+-------------------
+
+- BUG-505: Work around strange zope.component bug that intermittently
+  causes IZONContent to not be found as an ISectionMarker.
+
+
 2.93.1 (2016-12-15)
 -------------------
 
