@@ -1,5 +1,5 @@
 from datetime import datetime
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
 import json
 import mock
 import os
@@ -53,7 +53,7 @@ class PushTest(unittest.TestCase):
         with mock.patch('urbanairship.push.core.Push.send', send):
             with mock.patch('urbanairship.push.core.PushResponse') as push:
                 api.send('Push', 'http://example.com',
-                         channels=PARSE_NEWS_CHANNEL)
+                         channels=CONFIG_CHANNEL_NEWS)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
@@ -61,7 +61,7 @@ class PushTest(unittest.TestCase):
             'invalid', 'invalid', 'invalid', 'invalid', 1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             api.send('Being pushy.', 'http://example.com',
-                     channels=PARSE_NEWS_CHANNEL)
+                     channels=CONFIG_CHANNEL_NEWS)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
@@ -76,7 +76,7 @@ class PushTest(unittest.TestCase):
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 api.send('Being pushy.', 'http://example.com',
-                         channels=PARSE_NEWS_CHANNEL)
+                         channels=CONFIG_CHANNEL_NEWS)
 
 
 class ConnectionTest(zeit.push.testing.TestCase):
@@ -88,7 +88,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_pushes_to_android_and_ios(self):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
             self.assertEqual(
                 ['android'], push.call_args_list[0][0][0].device_types)
             self.assertEqual(
@@ -97,7 +97,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_audience_tag_depends_on_channel(self):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
             self.assertEqual(
                 {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
                 push.call_args_list[0][0][0].audience)
@@ -121,7 +121,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(api, 'push') as push:
-                api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+                api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[0][0][0].options['expiry'])
@@ -132,7 +132,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_enriches_payload_with_tag_to_categorize_notification(self):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
             android = push.call_args_list[0][0][0].notification['android']
             self.assertEqual('News', android['extra']['tag'])
             ios = push.call_args_list[1][0][0].notification['ios']
@@ -141,7 +141,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_ios_audience_contains_segment(self):
         api = self.connection()
         with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL)
+            api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
             # This segment ID is from the UA test application, otherwise our
             # integration test would fail.
             self.assertEqual(

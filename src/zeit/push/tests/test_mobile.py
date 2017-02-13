@@ -1,6 +1,6 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
 import mock
 import pytz
 import unittest
@@ -42,8 +42,8 @@ class DataTest(zeit.push.testing.TestCase):
 
     def test_translates_title_based_on_channel(self):
         catalog = self.create_catalog()
-        catalog.messages['parse-news-title'] = 'bar'
-        catalog.messages['parse-breaking-title'] = 'foo'
+        catalog.messages['push-news-title'] = 'bar'
+        catalog.messages['push-breaking-title'] = 'foo'
         api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
         self.assertEqual('bar', api.get_headline(['News']))
@@ -51,10 +51,10 @@ class DataTest(zeit.push.testing.TestCase):
 
     def test_transmits_metadata(self):
         catalog = self.create_catalog()
-        catalog.messages['parse-news-title'] = 'ZEIT ONLINE'
+        catalog.messages['push-news-title'] = 'ZEIT ONLINE'
         api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
-        data = api.data('foo', 'any', channels=PARSE_NEWS_CHANNEL,
+        data = api.data('foo', 'any', channels=CONFIG_CHANNEL_NEWS,
                         teaserSupertitle='super', teaserTitle='title',
                         teaserText='teaser', override_text=None,
                         image_url='http://images.zeit.de/example')
@@ -81,7 +81,7 @@ class DataTest(zeit.push.testing.TestCase):
 
 class RewriteURLTest(unittest.TestCase):
 
-    target_host = 'http://www.staging.zeit.de'
+    target_host = 'http://www.staging.zeit.de/'
 
     def rewrite(self, url):
         return zeit.push.mobile.ConnectionBase.rewrite_url(
@@ -89,17 +89,17 @@ class RewriteURLTest(unittest.TestCase):
 
     def test_www_zeit_de_is_replaced_with_staging(self):
         self.assertEqual(
-            self.target_host + '/foo/bar',
+            self.target_host + 'foo/bar',
             self.rewrite('http://www.zeit.de/foo/bar'))
 
     def test_blog_zeit_de_is_replaced_with_staging_and_appends_query(self):
         self.assertEqual(
-            self.target_host + '/blog/foo/bar?feed=articlexml',
+            self.target_host + 'blog/foo/bar?feed=articlexml',
             self.rewrite('http://blog.zeit.de/foo/bar'))
 
     def test_zeit_de_blog_is_replaced_with_staging_and_appends_query(self):
         self.assertEqual(
-            self.target_host + '/blog/foo/bar?feed=articlexml',
+            self.target_host + 'blog/foo/bar?feed=articlexml',
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
 
 
@@ -172,39 +172,12 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IPushNotifier, name=service_name)
         return push_notifier.calls
 
-    def test_sends_push_via_parse_and_urbanairship(self):
+    def test_sends_push_via_urbanairship(self):
         message = zope.component.getAdapter(
             self.create_content(title='content_title'),
             zeit.push.interfaces.IMessage, name=self.name)
         message.send()
-        self.assertEqual(1, len(self.get_calls('parse')))
         self.assertEqual(1, len(self.get_calls('urbanairship')))
-
-    def test_sends_push_to_parse_if_urbanairship_fails(self):
-        from zeit.push.interfaces import WebServiceError
-        message = zope.component.getAdapter(
-            self.create_content(title='content_title'),
-            zeit.push.interfaces.IMessage, name=self.name)
-        urbanairship_notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship')
-        with mock.patch.object(urbanairship_notifier, 'send',
-                               side_effect=WebServiceError('Unauthorized')):
-            message.send()
-            self.assertEqual(1, len(self.get_calls('parse')))
-            self.assertEqual(0, len(self.get_calls('urbanairship')))
-
-    def test_sends_push_to_urbanairship_if_parse_fails(self):
-        from zeit.push.interfaces import WebServiceError
-        message = zope.component.getAdapter(
-            self.create_content(title='content_title'),
-            zeit.push.interfaces.IMessage, name=self.name)
-        parse_notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='parse')
-        with mock.patch.object(parse_notifier, 'send',
-                               side_effect=WebServiceError('Unauthorized')):
-            message.send()
-            self.assertEqual(0, len(self.get_calls('parse')))
-            self.assertEqual(1, len(self.get_calls('urbanairship')))
 
     def test_provides_image_url_if_image_is_referenced(self):
         from zeit.cms.interfaces import ICMSContent
@@ -227,18 +200,7 @@ class MessageTest(zeit.push.testing.TestCase):
             [('content_title', u'http://www.zeit.de/content', {
                 'teaserSupertitle': 'super', 'teaserText': 'teaser',
                 'teaserTitle': 'title'})],
-            self.get_calls('parse'))
-        self.assertEqual(
-            [('content_title', u'http://www.zeit.de/content', {
-                'teaserSupertitle': 'super', 'teaserText': 'teaser',
-                'teaserTitle': 'title'})],
             self.get_calls('urbanairship'))
-
-
-class ParseMessageTest(zeit.push.testing.TestCase):
-    """Ensure bw-compat for messages retrieved for `parse` message configs."""
-
-    name = 'parse'
 
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
@@ -250,7 +212,7 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = ({
                 'type': 'mobile', 'enabled': True,
-                'channels': PARSE_NEWS_CHANNEL,
+                'channels': CONFIG_CHANNEL_NEWS,
             },)
         content = self.repository['testcontent']
         self.assertTrue(content.push_news)
@@ -276,11 +238,6 @@ class IntegrationTest(zeit.push.testing.TestCase):
         push = IPushMessages(self.content)
         push.message_config = [{'type': 'mobile', 'enabled': True}]
         self.publish(self.content)
-        self.assertEqual([(
-            'content_title', u'http://www.zeit.de/content',
-            {'enabled': True, 'type': 'mobile'})],
-            zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name='parse').calls)
         self.assertEqual([(
             'content_title', u'http://www.zeit.de/content',
             {'enabled': True, 'type': 'mobile'})],

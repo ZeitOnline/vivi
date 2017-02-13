@@ -77,8 +77,10 @@ class Message(grok.Adapter):
 
     @property
     def url(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
         return zeit.push.interfaces.IPushURL(self.context).replace(
-            zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
+            zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
 
     @property
     def additional_parameters(self):
@@ -201,10 +203,10 @@ class AccountData(grok.Adapter):
     @property
     def mobile_enabled(self):
         for service in self.message_config:
-            if service['type'] not in ['parse', 'mobile']:
+            if service['type'] != 'mobile':
                 continue
             if service.get(
-                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
                 break
         else:
             service = None
@@ -213,10 +215,10 @@ class AccountData(grok.Adapter):
     @property
     def mobile_text(self):
         for service in self.message_config:
-            if service['type'] not in ['parse', 'mobile']:
+            if service['type'] != 'mobile':
                 continue
             if service.get(
-                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
                 break
         else:
             service = None

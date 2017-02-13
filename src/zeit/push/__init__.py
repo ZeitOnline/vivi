@@ -11,11 +11,10 @@ product_config = """\
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
   facebook-campus-account fb-campus
-  mobile-image-url http://img.zeit.de
-  mobile-target-host http://www.zeit.de
-  parse-channel-breaking Eilmeldung
-  parse-channel-news News
-  parse-image-pattern 184x84
+  push-target-url http://www.zeit.de/
+  mobile-image-url http://img.zeit.de/
+  channel-breaking Eilmeldung
+  channel-news News
   urbanairship-audience-group subscriptions
   urbanairship-ios-segment 77c49d90-f6ca-465c-b33f-110f1cdcdacd
 </product-config>

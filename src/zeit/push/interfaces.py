@@ -124,8 +124,8 @@ class IPushMessages(zope.interface.Interface):
         'List of IMessage objects, one for each enabled message_config entry')
 
 
-PARSE_NEWS_CHANNEL = 'parse-channel-news'
-PARSE_BREAKING_CHANNEL = 'parse-channel-breaking'
+CONFIG_CHANNEL_NEWS = 'channel-news'
+CONFIG_CHANNEL_BREAKING = 'channel-breaking'
 
 
 class IPushURL(zope.interface.Interface):
