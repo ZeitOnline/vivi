@@ -86,6 +86,10 @@ class IVideo(IBrightcoveContent,
         title=_("Comments allowed"),
         default=True)
 
+    commentsPremoderate = zope.schema.Bool(
+        title=_("Comments premoderate"),
+        default=False)
+
     ignore_for_update = zope.schema.Bool(
         title=_("Ignore for update"),
         default=False)
