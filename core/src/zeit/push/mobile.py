@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
-from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import grokcore.component as grok
 import logging
 import pytz
@@ -41,8 +41,8 @@ class ConnectionBase(object):
         """Return forward-compatible list of channels.
 
         We currently use channels as a monovalent value, set to either
-        PARSE_NEWS_CHANNEL or PARSE_BREAKING_CHANNEL. Make sure to retrieve the
-        according title from the config and return it as a list.
+        CONFIG_CHANNEL_NEWS or CONFIG_CHANNEL_BREAKING. Make sure to retrieve
+        the according title from the config and return it as a list.
 
         If `channels` already is a list, just return it. This is intended for
         forward-compatibility, if we start using multiple channels.
@@ -59,10 +59,10 @@ class ConnectionBase(object):
         news or breaking news, it also influences the headline.
 
         """
-        if self.config.get(PARSE_NEWS_CHANNEL) in channels:
-            headline = _('parse-news-title')
+        if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
+            headline = _('push-news-title')
         else:
-            headline = _('parse-breaking-title')
+            headline = _('push-breaking-title')
 
         # There's no i18n in the mobile app, so we translate to a hard-coded
         # language here.
@@ -99,7 +99,7 @@ class ConnectionBase(object):
             log.warn('No channel given for push notification for %s', link)
         arguments = {
             'title': kw.get('override_text') or kw.get('teaserTitle', title),
-            'link': self.rewrite_url(link, self.config['mobile-target-host']),
+            'link': self.rewrite_url(link, self.config['push-target-url']),
             'channels': channels,
             'headline': self.get_headline(channels),
             'text': kw.get('teaserText', ''),
@@ -125,8 +125,8 @@ class ConnectionBase(object):
         is_blog = (
             url.startswith('http://blog.zeit.de') or
             url.startswith('http://www.zeit.de/blog/'))
-        url = url.replace('http://www.zeit.de', target_host, 1)
-        url = url.replace('http://blog.zeit.de', target_host + '/blog', 1)
+        url = url.replace('http://www.zeit.de/', target_host, 1)
+        url = url.replace('http://blog.zeit.de', target_host + 'blog', 1)
         if is_blog:
             url += '?feed=articlexml'
         return url
@@ -135,7 +135,7 @@ class ConnectionBase(object):
     def add_tracking(url, channels, device):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.push') or {}
-        if config.get(PARSE_BREAKING_CHANNEL) in channels:
+        if config.get(CONFIG_CHANNEL_BREAKING) in channels:
             channel = 'eilmeldung'
         else:
             channel = 'wichtige_news'
@@ -166,8 +166,8 @@ class Message(zeit.push.message.Message):
     grok.name('mobile')
 
     def send_push_notification(self, service_name, **kw):
-        """Overwrite to send push notifications to Parse and Urban Airship."""
-        super(Message, self).send_push_notification('parse', **kw)
+        # BBB This used to send to both parse and urbanairship, so we use
+        # a generic name in the message_config.
         super(Message, self).send_push_notification('urbanairship', **kw)
 
     def log_success(self, name):
@@ -202,42 +202,17 @@ class Message(zeit.push.message.Message):
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
-                self.product_config['mobile-image-url'] + '/')
+                self.product_config['mobile-image-url'])
         return result
 
     @property
     def image(self):
         images = zeit.content.image.interfaces.IImages(self.context, None)
-        if images is None or images.image is None:
-            return None
-        image = images.image
-        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
-            for name in image:
-                if self._image_pattern in name:
-                    return image[name]
-        else:
-            return image
-
-    @property
-    def _image_pattern(self):
-        return self.product_config['parse-image-pattern']
+        return getattr(images, 'image', None)
 
     @zope.cachedescriptors.property.Lazy
     def product_config(self):
         return zope.app.appsetup.product.getProductConfiguration('zeit.push')
-
-
-class ParseMessage(Message):
-    """Also register the mobile message under the name `parse` for bw compat.
-
-    Since the message config is stored on the article, there are many articles
-    that contain a message config for `parse`. To make sure those messages are
-    send to Parse (bw-compat) & Urban Airship (fw-compat), we need to register
-    the new `mobile` message also under the old name `parse`.
-
-    """
-
-    grok.name('parse')
 
 
 @grok.subscribe(
@@ -246,8 +221,8 @@ class ParseMessage(Message):
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
     for service in push.message_config:
-        if (service['type'] in ['mobile', 'parse'] and
+        if (service['type'] == 'mobile' and
                 service.get('enabled') and
-                service.get('channels') == PARSE_NEWS_CHANNEL):
+                service.get('channels') == CONFIG_CHANNEL_NEWS):
             context.push_news = True
             break
