@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.95.1 (unreleased)
+2.95.1 (2017-02-13)
 -------------------
 
 - MAINT: Skip filename conventions for rawxml and text, too.
