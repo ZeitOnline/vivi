@@ -1,10 +1,16 @@
 zeit.content.author changes
 ===========================
 
-2.7.5 (unreleased)
+2.7.6 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.7.5 (2016-12-29)
+------------------
+
+- MAINT: Remove superfluous field `display_name` from context-free AddForm.
 
 
 2.7.4 (2016-12-05)
