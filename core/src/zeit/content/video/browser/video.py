@@ -24,7 +24,8 @@ class Base(zeit.push.browser.form.SocialBase):
         'product', 'ressort', 'keywords', 'serie',
         'dailyNewsletter', 'banner', 'banner_id',
         'breaking_news', 'has_recensions', 'commentsAllowed',
-        'related', 'channels', 'lead_candidate', 'video_still_copyright',
+        'commentsPremoderate', 'related', 'channels', 'lead_candidate',
+        'video_still_copyright',
         # remaining:
         '__name__',
         'created', 'date_first_released', 'modified', 'expires',
@@ -51,7 +52,8 @@ class Base(zeit.push.browser.form.SocialBase):
         gocept.form.grouped.Fields(
             _("Options"),
             ('dailyNewsletter', 'banner', 'banner_id',
-             'breaking_news', 'has_recensions', 'commentsAllowed'),
+             'breaking_news', 'has_recensions', 'commentsAllowed',
+             'commentsPremoderate'),
             css_class='column-right checkboxes'),
         social_fields,
         CommonMetadataFormBase.auto_cp_fields,
