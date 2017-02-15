@@ -4,7 +4,7 @@ zeit.cms changes
 2.95.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove obsolete syndication/channel support on publish
 
 
 2.95.1 (2017-02-13)

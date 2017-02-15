@@ -68,25 +68,3 @@ def log_workflow_changes(workflow, event):
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IRetractedEvent)
-def remove_from_channels_after_retract(context, event):
-    """Removes objects from channels when they're retracted."""
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
-    syndicated_in = relations.get_relations(context)
-    for feed in list(syndicated_in):
-        # XXX we might want to store the kind of relation
-        if not zeit.cms.syndication.interfaces.IFeed.providedBy(feed):
-            continue
-        with zeit.cms.checkout.helper.checked_out(feed) as checked_out:
-            if checked_out is not None:
-                try:
-                    checked_out.remove(context)
-                except ValueError:
-                    # Was not in the feed, i.e. the index wasn't up to date.
-                    # Ignore.
-                    pass
