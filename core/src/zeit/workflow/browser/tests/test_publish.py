@@ -76,7 +76,7 @@ class TestPublish(
             s.verifyText(
                 'css=li.error',
                 'Publishing\n'
-                'RuntimeError: Error during publish/retract: OSError*')
+                'HandleAfterAbort: Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 
