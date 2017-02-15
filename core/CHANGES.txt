@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.95.3 (unreleased)
+2.95.3 (2017-02-15)
 -------------------
 
 - PERF: Don't update relationship index twice on checkin
