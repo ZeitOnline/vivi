@@ -8,6 +8,7 @@ import lovely.remotetask.interfaces
 import os
 import pkg_resources
 import plone.testing
+import stat
 import tempfile
 import threading
 import z3c.celery.conftest
@@ -54,8 +55,8 @@ class CelerySettingsLayer(plone.testing.Layer):
     def setUp(self):
         # Maybe we also want to truncate this file in future for test isolation
         self['storage_file_fixture'] = z3c.celery.conftest.storage_file()
-        self['zope_conf_name'] = self.create_zope_conf(
-            next(self['storage_file_fixture']))
+        self['zodb_path'] = next(self['storage_file_fixture'])
+        self['zope_conf_name'] = self.create_zope_conf(self['zodb_path'])
 
         self['celery_config'] = z3c.celery.conftest.celery_config(
             self['zope_conf_name'])
@@ -64,15 +65,22 @@ class CelerySettingsLayer(plone.testing.Layer):
         self['celery_worker_parameters'] = {'queues': CELERY_QUEUES}
         self['celery_includes'] = ['zeit.workflow.publish']
 
-        self['logfile_name'] = self.create_log_file()
+        self['logfile_name'] = self.create_temp_file()
         self['log_hander'] = logging.FileHandler(self['logfile_name'])
         logging.root.addHandler(self['log_hander'])
 
-    def create_log_file(self):
-        with tempfile.NamedTemporaryFile(delete=False) as logfile:
-            return logfile.name
+    def create_temp_file(self):
+        with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+            return tmpfile.name
 
     def create_zope_conf(self, storage_file_name):
+        self['publish-script-path'] = self.create_temp_file()
+        with open(self['publish-script-path'], 'w') as f:
+            f.write('#!/bin/sh\nexit 0')
+        os.chmod(self['publish-script-path'], 0o755)
+        self.product_config = self.product_config.replace(
+            'publish-script true', 'publish-script {}'.format(
+                self['publish-script-path']))
         with tempfile.NamedTemporaryFile(delete=False) as conf:
             conf.write(z3c.celery.testing.ZOPE_CONF_TEMPLATE.format(
                 zodb_path=storage_file_name,
@@ -90,6 +98,7 @@ class CelerySettingsLayer(plone.testing.Layer):
     def tearDown(self):
         os.unlink(self['zope_conf_name'])
         del self['zope_conf_name']
+        del self['zodb_path']
         next(self['storage_file_fixture'], None)
         del self['storage_file_fixture']
         del self['celery_config']
@@ -98,6 +107,8 @@ class CelerySettingsLayer(plone.testing.Layer):
         del self['celery_worker_parameters']
         logging.root.removeHandler(self['log_hander'])
         del self['log_hander']
+        os.unlink(self['publish-script-path'])
+        del self['publish-script-path']
         os.unlink(self['logfile_name'])
         del self['logfile_name']
 
@@ -136,10 +147,6 @@ class WorkflowScriptsLayer(plone.testing.Layer):
         product_config['retract-script'] = self['retract-script']
 
     def _make_copy(self, script):
-        import os
-        import pkg_resources
-        import stat
-        import tempfile
         source = pkg_resources.resource_string(__name__, script)
         destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
