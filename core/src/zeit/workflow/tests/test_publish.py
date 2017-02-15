@@ -6,14 +6,20 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import mock
+import os
 import pytz
+import shutil
 import time
 import transaction
+import z3c.celery.testing
 import zeit.cms.related.interfaces
 import zeit.cms.testing
+import zeit.objectlog.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
+import zope.i18n
 import zope.app.appsetup.product
+import zope.component
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
@@ -159,6 +165,14 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
             (u'http://xml.zeit.de/testcontent',), urgency='lowprio')
 
 
+def get_object_log_messages(zodb_path, obj):
+    """Return the messages of an object log from an persistent, opened ZODB."""
+    with z3c.celery.testing.open_zodb_copy(zodb_path) as root:
+        log = zope.component.getUtility(
+            zeit.objectlog.interfaces.IObjectLog, context=root)
+        return [x.message for x in log.get_log(obj)]
+
+
 class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
@@ -177,5 +191,47 @@ class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEllipsis('''\
 Running job ...-...-...-...
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)''',
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...''',
                                 logfile.read())
+
+        # We have only one ZODB for the celery test worker, so there is no
+        # strict test isolation here.
+        assert u'Published' in get_object_log_messages(
+            self.layer['zodb_path'], content)
+
+
+class CeleryPublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
+
+    def setUp(self):
+        super(CeleryPublishErrorEndToEndTest, self).setUp()
+        self.bak_path = self.layer['publish-script-path'] + '.bak'
+        shutil.move(self.layer['publish-script-path'], self.bak_path)
+        with open(self.layer['publish-script-path'], 'w') as f:
+            f.write('#!/bin/sh\nexit 1')
+        os.chmod(self.layer['publish-script-path'], 0o755)
+
+    def tearDown(self):
+        shutil.move(self.bak_path, self.layer['publish-script-path'])
+        super(CeleryPublishErrorEndToEndTest, self).tearDown()
+
+    def test_error_during_publish_is_written_to_objectlog(self):
+        somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
+        content = ICMSContent(somalia)
+        info = IPublishInfo(content)
+        self.assertFalse(info.published)
+
+        publish = IPublish(content).publish()
+        transaction.commit()
+
+        with self.assertRaises(Exception) as err:
+            publish.get()
+
+        assert ("Error during publish/retract: ScriptError: ('', 1)"
+                ) == str(err.exception)
+        # We have only one ZODB for the celery test worker, so there is no
+        # strict test isolation here.
+        assert u"Error during publish/retract: ScriptError: ('', 1)" in [
+            zope.i18n.interpolate(m, m.mapping)
+            for m in get_object_log_messages(self.layer['zodb_path'], content)]

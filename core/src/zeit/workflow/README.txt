@@ -452,7 +452,7 @@ fails when there is 'JPG' in the input data:
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
 >>> job_id = publish.publish()
 Traceback (most recent call last):
-RuntimeError: Error during publish/retract: ScriptError: ('error\n', 1)
+HandleAfterAbort: Error during publish/retract: ScriptError: ('error\n', 1)
 
 >>> print_log(log.get_log(jpg))
 http://xml.zeit.de/2006/DSC00109_2.JPG

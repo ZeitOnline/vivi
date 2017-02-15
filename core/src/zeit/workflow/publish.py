@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import threading
 import time
+import z3c.celery.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -125,9 +126,11 @@ class PublishRetractTask(object):
             error_message = _(
                 "Error during publish/retract: ${exc}: ${message}",
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
-            self.log(obj, error_message)
             self._log_timer(uniqueId)
-            raise RuntimeError(zope.i18n.translate(error_message))
+            raise z3c.celery.celery.HandleAfterAbort(
+                self.log, obj, error_message,
+                message=zope.i18n.translate(
+                    error_message, target_language='de'))
         self._log_timer(uniqueId)
         return result
 
