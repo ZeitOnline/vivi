@@ -76,21 +76,21 @@ class Publish(object):
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Publish pre-conditions not satisifed.")
 
-        if async:
-            self.log(self.context, _('Publication scheduled'))
-            return PUBLISH_TASK.apply_async(
-                (self.context.uniqueId,), urgency=self.get_urgency(priority))
-        else:
-            PUBLISH_TASK(self.context.uniqueId)
+        return self._execute_task(
+            PUBLISH_TASK, _('Publication scheduled'), priority, async)
 
     def retract(self, priority=None, async=True):
         """Retract object."""
+        return self._execute_task(
+            RETRACT_TASK, _('Retracting scheduled'), priority, async)
+
+    def _execute_task(self, task, message, priority, async):
         if async:
-            self.log(self.context, _('Retracting scheduled'))
-            return RETRACT_TASK.apply_async(
+            self.log(self.context, message)
+            return task.apply_async(
                 (self.context.uniqueId,), urgency=self.get_urgency(priority))
         else:
-            RETRACT_TASK(self.context.uniqueId)
+            task(self.context.uniqueId)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
