@@ -1,4 +1,5 @@
 import gocept.async
+import grokcore.component as grok
 import logging
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
@@ -10,7 +11,7 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_index_on_checkin(context, event):
@@ -21,7 +22,7 @@ def update_index_on_checkin(context, event):
     relations.index(context)
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_referencing_objects_handler(context, event):
