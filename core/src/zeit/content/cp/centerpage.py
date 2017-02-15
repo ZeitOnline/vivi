@@ -303,6 +303,9 @@ def cp_references(context):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_centerpage_on_checkin(context, event):
+    if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+            'zeit.content.cp.update_metadata'):
+        return
     for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
         context.updateMetadata(content)
 

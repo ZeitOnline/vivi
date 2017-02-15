@@ -4,6 +4,7 @@
    i18n_domain="zope"
    >
 
+  <meta:provides feature="zeit.content.cp.update_metadata" />
   <meta:provides feature="zeit.retresco.tms" />
 
   <include package="zeit.cms" file="ftesting.zcml" />
