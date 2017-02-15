@@ -1,10 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <subscriber
-    handler=".corehandlers.update_index_on_checkin"
-    for="zeit.cms.interfaces.ICMSContent
-         zeit.cms.repository.interfaces.BeforeObjectAddEvent"
-    />
+  <!-- everything is grokked by zeit.cms already -->
 
 </configure>
 

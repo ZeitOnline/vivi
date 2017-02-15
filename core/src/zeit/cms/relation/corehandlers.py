@@ -24,6 +24,18 @@ def update_index_on_checkin(context, event):
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
+    zope.container.interfaces.IObjectAddedEvent)
+def update_index_on_add(context, event):
+    if not zeit.cms.repository.interfaces.ICollection.providedBy(
+            context.__parent__):
+        return
+    relations = zope.component.getUtility(
+        zeit.cms.relation.interfaces.IRelations)
+    relations.index(context)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_referencing_objects_handler(context, event):
     """Update metadata in objects which reference the checked-in object."""
