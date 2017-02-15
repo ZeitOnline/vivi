@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.13.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove obsolete free teaser guard on checkin (see 3.1.0)
 
 
 3.13.1 (2016-12-07)

@@ -143,7 +143,6 @@
   </class>
 
   <adapter factory=".teaser.XMLTeaserLinkUpdater" name="xmlteaserlink" />
-  <subscriber handler=".teaser.warn_about_free_teasers" />
 
   <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
   <adapter factory=".teaser.images_for_teaser" />

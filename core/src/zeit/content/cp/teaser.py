@@ -167,34 +167,6 @@ def xml_teaser_for_block(context, index):
     return zeit.content.cp.teaser.XMLTeaser(context, xml, str(index))
 
 
-@zope.component.adapter(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.IObjectModifiedEvent)
-def warn_about_free_teasers(context, event):
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
-    relating_objects = relations.get_relations(context)
-    for obj in relating_objects:
-        if zeit.content.cp.interfaces.ICenterPage.providedBy(obj):
-            # BBB Before the uniqueId/href convention, the content uniqueId was
-            # stored in the ``{link}href`` attribute.
-            blocks = obj.xml.xpath(
-                '//block[@cp:free-teaser '
-                'and (@href={id} or @link:href={id})]'.format(
-                    id=xml.sax.saxutils.quoteattr(context.uniqueId)),
-                namespaces=dict(link='http://namespaces.zeit.de/CMS/link',
-                                cp='http://namespaces.zeit.de/CMS/cp'))
-            if blocks:
-                # Close enough
-                source = zope.component.getUtility(
-                    z3c.flashmessage.interfaces.IMessageSource, name='session')
-                source.send(_(
-                    '"${name}" is referenced by a free teaser in "${teaser}"',
-                    mapping=dict(name=context.uniqueId, teaser=obj.uniqueId)),
-                    'error')
-                break
-
-
 class FakeRenameInfo(grokcore.component.Adapter):
     """IXMLTeaser cannot be renamed."""
 
