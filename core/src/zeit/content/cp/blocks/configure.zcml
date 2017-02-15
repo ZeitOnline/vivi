@@ -24,8 +24,6 @@
     factory=".teaser.TeaserBlock"
     />
 
-  <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />
-
   <adapter factory=".teaser.ColumnSpec" trusted="yes" />
   <class class=".teaser.ColumnSpec">
     <require

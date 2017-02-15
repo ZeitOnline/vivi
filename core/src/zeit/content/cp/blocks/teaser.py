@@ -18,9 +18,6 @@ import zope.interface
 import zope.schema
 
 
-CP_FEED_NAME = '%s.lead'
-
-
 class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBlockColumns)
@@ -186,33 +183,6 @@ def extract_manual_teasers(context):
             yield content
 
 
-def cp_feed_name(name):
-    return CP_FEED_NAME % name
-
-
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def create_cp_channel(context, event):
-    feed = zeit.cms.syndication.feed.Feed()
-    teasers = zeit.content.cp.interfaces.ITeaseredContent(context)
-    for i, obj in enumerate(teasers):
-        if zeit.cms.interfaces.ICMSContent.providedBy(obj):
-            feed.insert(i, obj)
-    feed_name = cp_feed_name(context.__name__)
-    if automatic_enabled(context):
-        feed.xml.set('automatic', 'True')
-    context.__parent__[feed_name] = feed
-
-
-def automatic_enabled(centerpage):
-    for region in centerpage.values():
-        for area in region.values():
-            if area.automatic:
-                return True
-    return False
-
-
 @grok.subscribe(
     zeit.content.cp.interfaces.ITeaserBlock,
     zope.container.interfaces.IObjectMovedEvent)
@@ -270,31 +240,6 @@ def set_layout_to_default_when_moved_down_from_first_position(area, event):
             previously_first) and
             area.values().index(previously_first)) > 0:
         previously_first.layout = area.default_teaser_layout
-
-
-@grok.adapter(zeit.content.cp.interfaces.ICenterPage, name='excerpt')
-@grok.implementer(zeit.cms.syndication.interfaces.IFeed)
-def feed_excerpt(context):
-    return zeit.cms.interfaces.ICMSContent(
-        cp_feed_name(context.uniqueId), None)
-
-
-class ExcerptDependency(object):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
-
-    def get_dependencies(self):
-        cp_feed = zope.component.queryAdapter(
-            self.context, zeit.cms.syndication.interfaces.IFeed,
-            name='excerpt')
-        if cp_feed is None:
-            return []
-        return [cp_feed]
 
 
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)

@@ -277,16 +277,6 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             lead.automatic = True
             lead.automatic_type = 'query'
 
-    def test_channel_has_automatic_attribute(self):
-        self.solr.search.return_value = pysolr.Results([], 0)
-        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
-            lead = cp['lead']
-            lead.count = 1
-            lead.automatic = True
-            lead.automatic_type = 'query'
-        self.assertEqual(
-            'True', self.repository['cp.lead'].xml.get('automatic'))
-
 
 class AutomaticAreaElasticsearchTest(
         zeit.content.cp.testing.FunctionalTestCase):
