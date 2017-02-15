@@ -1,4 +1,5 @@
 import BTrees
+import grokcore.component as grok
 import persistent
 import zc.relation.catalog
 import zeit.cms.interfaces
@@ -50,8 +51,8 @@ def referenced_by(content, catalog):
     return zeit.cms.relation.interfaces.IReferences(content, None)
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.relation.interfaces.IReferences)
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.cms.relation.interfaces.IReferences)
 def references(context):
     result = []
     for name, adapter in zope.component.getAdapters(

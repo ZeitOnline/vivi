@@ -41,8 +41,6 @@
       />
   </class>
 
-  <subscriber handler=".workflow.remove_from_channels_after_retract" />
-
   <!-- Asset workflow -->
   <adapter factory=".asset.AssetWorkflow"
     provides="zeit.workflow.interfaces.IAssetWorkflow"

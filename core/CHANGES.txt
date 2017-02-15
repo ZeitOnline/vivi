@@ -10,6 +10,18 @@ zeit.cms changes
 
 - ZON-3454: Remove view ``zeit.workflow.task_queue_length``.
 
+2.95.3 (2017-02-15)
+-------------------
+
+- PERF: Don't update relationship index twice on checkin
+
+
+2.95.2 (2017-02-15)
+-------------------
+
+- MAINT: Remove obsolete syndication/channel support on publish
+
+
 2.95.1 (2017-02-13)
 -------------------
 

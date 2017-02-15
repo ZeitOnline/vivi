@@ -34,10 +34,11 @@ The content doesn't have any relateds currently, nor is it related anywhere:
 
 Relate b and c to a via IRelatedContent
 
+>>> from zeit.cms.checkout.helper import checked_out
 >>> import zeit.cms.related.interfaces
->>> related = zeit.cms.related.interfaces.IRelatedContent(a)
->>> related.related = (repository['b'], repository['c'])
->>> repository['a'] = a
+>>> with checked_out(repository['a']) as co:
+...     related = zeit.cms.related.interfaces.IRelatedContent(co)
+...     related.related = (repository['b'], repository['c'])
 
 We could ask for b's relations:
 
@@ -98,8 +99,7 @@ Checkin
 -------
 
 Objects are indexed before checkin. We will check a out and back in and verify
-it is indexed[#cleancatalog]_. Let a relate checkout and relate
-c[#needsinteraction]_:
+it is indexed[#cleancatalog]_. Let a relate checkout and relate c:
 
 >>> import zeit.cms.checkout.interfaces
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
@@ -123,6 +123,24 @@ The relation can be queried now:
 1
 >>> res[0].uniqueId
 u'http://xml.zeit.de/d'
+
+
+Adding
+------
+
+Objects are index when they are first added to the repository. (Most content
+types are checked out immediately after create, but that's rather accidental,
+so we probably shouldn't rely on it here).
+
+>>> new = ExampleContentType()
+>>> related = zeit.cms.related.interfaces.IRelatedContent(new)
+>>> related.related = (repository['e'],)
+>>> repository['new'] = new
+>>> res = sorted(relations.get_relations(repository['e']))
+>>> len(res)
+1
+>>> res[0].uniqueId
+u'http://xml.zeit.de/new'
 
 
 Updating related metadata
@@ -307,6 +325,7 @@ Clean up:
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces
@@ -330,6 +349,7 @@ Clean up:
     >>> repository['b'] = ExampleContentType()
     >>> repository['c'] = ExampleContentType()
     >>> repository['d'] = ExampleContentType()
+    >>> repository['e'] = ExampleContentType()
 
 
 .. [#cleancatalog] Clean the catalog:
@@ -337,9 +357,3 @@ Clean up:
     >>> for name in ('a', 'b', 'c', 'd'):
     ...     relations._catalog.unindex_doc(
     ...         'http://xml.zeit.de/%s' % name)
-
-
-.. [#needsinteraction]
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()
