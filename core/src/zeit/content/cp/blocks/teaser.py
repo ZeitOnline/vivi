@@ -186,13 +186,6 @@ def extract_manual_teasers(context):
             yield content
 
 
-# XXX Does anyone actually use this, pulling an IFeed into a CP via autopilot?
-@grok.adapter(zeit.cms.syndication.interfaces.IFeed)
-@grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
-def extract_teasers(context):
-    return iter(context)
-
-
 def cp_feed_name(name):
     return CP_FEED_NAME % name
 
