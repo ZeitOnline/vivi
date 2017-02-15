@@ -73,7 +73,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         is set, the method looks for a cover of the main_product.
         :param cover_id: str cover ID set in volume-covers.xml
         :param product_id: str product ID set in products.xml
-        :param product_id: bool specifies if a fallback should be used.
+        :param use_fallback: bool specifies if a fallback should be used.
         :return: zeit.content.image.interfaces.IImageGroup or None
         """
 

@@ -10,6 +10,7 @@ import zeit.content.volume.interfaces
 import zeit.workflow.interfaces
 import zope.interface
 import zope.schema
+import zeit.content.article.article
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -91,6 +92,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return zeit.cms.interfaces.ICMSContent(
             iter(result).next()['uniqueId'], None)
 
+
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
             product_id = self.product.id
@@ -159,6 +161,43 @@ class VolumeMetadata(grok.Adapter):
             field = zeit.cms.content.interfaces.ICommonMetadata.get(name, None)
             return field.default
         return value
+
+
+# This Adapter is used to publish all content of a Volume
+# which is marked as urgent. Wie läuft das mit den names.
+# Action for button:
+# 1. Register the Adapter
+# 2. publish Volume
+# 3. unregister the Adapter
+class VolumeUrgentContentDependency(object):
+
+    zope.component.adapts(zeit.content.volume.interfaces.IVolume)
+    zope.interface.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        Q = zeit.solr.query
+        query = Q.and_(
+            Q.or_(*[Q.field('product_id', p.id) for p in
+                    # Forbidden, add to interface or compute it here...
+                    self.context._all_products]),
+            Q.field_raw('type', zeit.content.article.article.ArticleType.type),
+            Q.field_raw('year', self.context.year),
+            Q.field_raw('volume', self.context.volume),
+            Q.field('published', 'not-published'),
+            Q.bool_field('urgent', True),
+            Q.not_(Q.field('uniqueId', self.volume.uniqueId))
+        )
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        result = solr.search(query, fl='uniqueId', rows=1000)
+        if not result:
+            return []
+        else:
+            # TODO return w00t? List of unique ID's or the article objects
+            return [res.get('uniqueId') for res in result]
 
 
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
