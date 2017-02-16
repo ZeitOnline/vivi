@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<head xmlns:D="DAV:" xmlns:nsx="http://namespaces.zeit.de/CMS/tagging">
+  <attribute ns="DAV:" name="href">/cms/work/static/css/zon.css</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:4cdf24f7-3750-4c8e-becd-bd3e446bce28}</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2017-02-16T14:45:18.590372+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">file</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt; &lt;initialized_object&gt; &lt;klass&gt; &lt;global name="Provides" module="zope.interface.declarations"/&gt; &lt;/klass&gt; &lt;arguments&gt; &lt;tuple&gt; &lt;global name="LocalFile" module="zeit.cms.repository.file"/&gt; &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt; &lt;/tuple&gt; &lt;/arguments&gt; &lt;/initialized_object&gt; &lt;/pickle&gt;</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2017-02-16T14:45:18.590372+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2017-02-16T14:45:18.639877+00:00</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">ldap.puppe</attribute>
+  <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+  <attribute ns="DAV:" name="resourcetype"/>
+  <attribute ns="DAV:" name="creationdate">2017-02-16T14:45:18Z</attribute>
+  <attribute ns="DAV:" name="getcontentlength">201649</attribute>
+  <attribute ns="DAV:" name="getlastmodified">Thu, 16 Feb 2017 14:45:18 GMT</attribute>
+  <attribute ns="DAV:" name="getetag">"141e5c-313b1-548a6d8909744"</attribute>
+  <attribute ns="http://apache.org/dav/props/" name="executable">F</attribute>
+  <attribute ns="DAV:" name="supportedlock"> </attribute>
+  <attribute ns="DAV:" name="lockdiscovery"> 0 ldap.puppeSecond-239 opaquelocktoken:635e4688-053a-451f-b4b9-8c323ee851e5 </attribute>
+  <attribute ns="DAV:" name="getcontenttype">text/css</attribute>
+</head>

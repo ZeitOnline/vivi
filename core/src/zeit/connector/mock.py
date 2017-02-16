@@ -77,12 +77,13 @@ class Connector(zeit.connector.filesystem.Connector):
             raise KeyError(unicode(id))
         return super(Connector, self).__getitem__(id)
 
-    def _get_content_type(self, id, type):
+    def _get_content_type(self, id, type, properties):
         content_type = self._content_types.get(id, '')
         if content_type:
             return content_type
         else:
-            return super(Connector, self)._get_content_type(id, type)
+            return super(Connector, self)._get_content_type(
+                id, type, properties)
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)

@@ -125,7 +125,7 @@ class Connector(object):
             unicode(id), name, type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            content_type=self._get_content_type(id, type))
+            content_type=self._get_content_type(id, type, properties))
 
     def _get_body(self, id):
         try:
@@ -141,8 +141,10 @@ class Connector(object):
         self.body_cache[id] = data
         return StringIO(data)
 
-    def _get_content_type(self, id, type):
-        return 'httpd/unix-directory' if type == 'collection' else ''
+    def _get_content_type(self, id, type, properties):
+        if type == 'collection':
+            return 'httpd/unix-directory'
+        return properties.get(('getcontenttype', 'DAV:'), '')
 
     def __setitem__(self, id, object):
         raise NotImplementedError()

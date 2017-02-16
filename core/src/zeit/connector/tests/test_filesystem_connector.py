@@ -76,6 +76,10 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
             ('copyrights', 'http://namespaces.zeit.de/CMS/document')]
         self.assertEqual(u'', copyrights)
 
+    def test_raw_files_return_dav_contenttype(self):
+        css = self.connector['http://xml.zeit.de/online/2007/02/zon.css']
+        self.assertEqual('text/css', css.contentType)
+
 
 class CachingTest(zeit.connector.testing.FilesystemConnectorTest):
 
