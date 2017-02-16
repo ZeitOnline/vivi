@@ -132,6 +132,9 @@ def update_author_freetext(obj, event):
 
 
 class Dependencies(grok.Adapter):
+    """When content is published, make sure that all author objects
+    referenced by it are also available to the published content.
+    """
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('zeit.content.author')
@@ -141,7 +144,12 @@ class Dependencies(grok.Adapter):
         self.context = context
 
     def get_dependencies(self):
-        return [x.target for x in self.context.authorships]
+        result = []
+        for ref in self.context.authorships:
+            author = ref.target
+            if not zeit.cms.workflow.interfaces.IPublishInfo(author).published:
+                result.append(author)
+        return result
 
 
 @grok.adapter(
