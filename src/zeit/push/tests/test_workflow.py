@@ -72,7 +72,4 @@ class SendingNotifications(zeit.push.testing.TestCase):
         push = IPushMessages(content)
         push.message_config = [{'type': 'mypush', 'enabled': True}]
         self.publish(content)
-        # This is sort of assertNothingRaised, except that publishing
-        # runs in a separate thread (remotetask), so we would not see
-        # the exception here anyway.
         self.assertNotEqual(None, push.date_last_pushed)
