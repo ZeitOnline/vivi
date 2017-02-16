@@ -1,5 +1,6 @@
 import zeit.solr.interfaces
 import zope.component
+import zeit.content.video.testing
 
 
 class TestSolrIndexing(zeit.content.video.testing.TestCase):
