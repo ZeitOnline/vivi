@@ -4,7 +4,8 @@ zeit.content.author changes
 2.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT/PERF: Only publish an author object along with its article if
+  it's not published yet
 
 
 2.7.5 (2016-12-29)
