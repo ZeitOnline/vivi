@@ -171,8 +171,6 @@
 
   <include package="z3c.noop" />
 
-  <include package="lovely.remotetask" />
-
   <include package="gocept.form" />
   <include package="gocept.lxml" />
 

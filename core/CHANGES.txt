@@ -10,6 +10,11 @@ zeit.cms changes
 
 - ZON-3454: Remove view ``zeit.workflow.task_queue_length``.
 
+- ZON-3514:
+
+  * Remove RemoteTaskHelper as it's no longer needed.
+  * Remove TaskServices.
+
 2.95.3 (2017-02-15)
 -------------------
 
@@ -2816,7 +2821,7 @@ Technische Änderungen
 - Änderungsdatum in Dateilisten in CET statt GMT (bug #4354).
 - Extra-BU bei Bildergallerien.
 - Begrenzung des Veröffentlichungszeitruams auf Daten bis 2030, weil sonst der
-  lovely.remotetask mist baut.
+  lovely.remotetask Mist baut.
 - Konzept von temporären Checkouts um parallel veröffentlichen zu können.
 
 

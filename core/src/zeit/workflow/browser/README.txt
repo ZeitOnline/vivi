@@ -3,7 +3,7 @@ Zeit Workflow
 =============
 
 The workflow is state oriented. There are several states which can all be set
-using the workflow tab[#browser]_[#tasks]_:
+using the workflow tab[#browser]_[#site]_:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/testcontent')
 >>> browser.getLink('Workflow').click()
@@ -133,10 +133,6 @@ Date first released
 +++++++++++++++++++
 
 The "date first released" is the date when the object was first published.
-Since publishing is done asynchronously we have to trigger processing:
-
->>> run_tasks()
-
 Reload the workflow page.
 
 >>> browser.getLink('Workflow').click()
@@ -229,7 +225,6 @@ Do a publish/retract cycle to set the property to false:
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
 
->>> run_tasks()
 >>> browser.getLink('Workflow').click()
 
 The retract action is protected by javascript (which doesn't matter here):
@@ -268,7 +263,6 @@ Go back to the repository and publish:
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
->>> run_tasks()
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
@@ -304,7 +298,6 @@ checked out:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
->>> run_tasks()
 >>> browser.getLink('Checkout').click()
 >>> checked_out = browser.url
 
@@ -318,7 +311,6 @@ Unpublish now:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
->>> run_tasks()
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
@@ -436,23 +428,11 @@ other information
     >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
-.. [#tasks] Start processing of remote tasks
+.. [#site] Set the site
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-    >>> import transaction
 
-    >>> import zope.publisher.browser
-    >>> import zope.security.management
-    >>> import lovely.remotetask.interfaces
-    >>> import lovely.remotetask.processor
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
-    >>> def run_tasks():
-    ...     principal = zeit.cms.testing.create_interaction()
-    ...     transaction.abort()
-    ...     tasks.process()
-    ...     zope.security.management.endInteraction()
 
 .. [#needs-repository]
 

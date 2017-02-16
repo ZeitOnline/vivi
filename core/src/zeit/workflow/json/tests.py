@@ -1,7 +1,6 @@
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import celery.states
 import json
-import lovely.remotetask.interfaces
 import mock
 import transaction
 import uuid
@@ -34,15 +33,6 @@ class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
         workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
         workflow.urgent = True
         transaction.commit()
-
-    def process(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
-        zeit.cms.testing.create_interaction()
-        tasks.process()
 
 
 class PublishJSONTest(JSONTestCase):

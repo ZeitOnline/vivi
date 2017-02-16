@@ -149,11 +149,7 @@ Updating related metadata
 After an object was checked in which is related by other objects, the other
 object's metadata is updated automatically.
 
-Q: Should we do this asynchronously via remotetask? This might be a good choice
-especially when there are many objects relating. On the other hand, the user
-might want to update a channel...  let's decide that later.
-
-Add another relation from b to c, so that updateing c will update a and b:
+Add another relation from b to c, so that updating c will update a and b:
 
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['b']).checkout()

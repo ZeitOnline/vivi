@@ -756,10 +756,6 @@ True
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
 
-    >>> import lovely.remotetask.interfaces
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
-
 
 .. [#cleanup] Clean up
 
