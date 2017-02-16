@@ -76,6 +76,7 @@ class EditGallery(EditBase):
 class EditPortraitbox(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IPortraitbox
+    fields = ('references', 'name', 'text')
     undo_description = _('edit portraitbox block')
 
 

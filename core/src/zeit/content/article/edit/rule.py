@@ -22,7 +22,12 @@ def content(context):
 
 @glob(zeit.content.article.edit.interfaces.IReference)
 def content(context):
-    return [context.references]
+    field = zope.interface.implementedBy(type(
+        zope.security.proxy.getObject(context))).get('references')
+    if field.required:
+        return [context.references]
+    else:
+        return filter(None, [context.references])
 
 
 @glob(zeit.content.article.edit.interfaces.IImage)

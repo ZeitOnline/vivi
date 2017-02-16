@@ -154,6 +154,20 @@ class Portraitbox(Reference):
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout', zope.schema.TextLine())
 
+    _name_local = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'name_local',
+        zeit.content.article.edit.interfaces.IPortraitbox['name'])
+    name = zeit.cms.content.reference.OverridableProperty(
+        zeit.content.portraitbox.interfaces.IPortraitbox['name'],
+        original='references')
+
+    _text_local = zeit.cms.content.property.Structure(
+        '.text', 'text_local',
+        zeit.content.article.edit.interfaces.IPortraitbox['text'])
+    text = zeit.cms.content.reference.OverridableProperty(
+        zeit.content.portraitbox.interfaces.IPortraitbox['text'],
+        original='references')
+
     def __init__(self, *args, **kw):
         super(Portraitbox, self).__init__(*args, **kw)
         if not self.layout:

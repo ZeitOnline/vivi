@@ -2,6 +2,7 @@ from zeit.edit.rule import Rule
 import zeit.cms.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
+import zope.security.proxy
 
 
 class RuleTest(zeit.content.article.testing.FunctionalTestCase):
@@ -19,6 +20,7 @@ error_if(True, u'foo')
         self.repository['info'] = zeit.content.infobox.infobox.Infobox()
         block = self.get_factory(self.get_article(), 'infobox')()
         block.references = self.repository['info']
+        block = zope.security.proxy.ProxyFactory(block)
         r = Rule("""
 from zeit.content.infobox.interfaces import IInfobox
 applicable(True)
