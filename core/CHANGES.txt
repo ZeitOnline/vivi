@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.10 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Build release 3.21.9 again because it's broken.
 
 
 3.21.9 (2017-02-16)
