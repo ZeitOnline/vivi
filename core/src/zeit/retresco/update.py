@@ -39,6 +39,8 @@ def index_after_add(event):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
+    if event.publishing:
+        return
     index_async(context.uniqueId, enrich=True)
 
 
