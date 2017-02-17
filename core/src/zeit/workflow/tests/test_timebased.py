@@ -1,5 +1,3 @@
-import zope.i18n
-import zope.component
 from ..timebased import TimeBasedWorkflow
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
@@ -13,6 +11,8 @@ import zeit.cms.testing
 import zeit.content.article.cds
 import zeit.content.article.testing
 import zeit.workflow.testing
+import zope.component
+import zope.i18n
 
 
 class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
