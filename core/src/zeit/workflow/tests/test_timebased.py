@@ -2,6 +2,7 @@ import zope.i18n
 import zope.component
 from ..timebased import TimeBasedWorkflow
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import celery.result
 import datetime
 import mock
@@ -34,6 +35,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
 
             assert apply_async.called
             self.assertIn('countdown', apply_async.call_args[1])
+            assert PRIORITY_TIMEBASED == apply_async.call_args[1]['urgency']
 
 
 class TimeBasedWorkflowEndToEndTest(zeit.cms.testing.FunctionalTestCase):

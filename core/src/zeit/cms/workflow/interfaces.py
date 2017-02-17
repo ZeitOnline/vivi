@@ -128,6 +128,7 @@ PRIORITY_HOMEPAGE = 'homepage'
 PRIORITY_HIGH = 'highprio'
 PRIORITY_DEFAULT = 'default'
 PRIORITY_LOW = 'lowprio'
+PRIORITY_TIMEBASED = 'timebased'
 
 
 class IPublishPriority(zope.interface.Interface):

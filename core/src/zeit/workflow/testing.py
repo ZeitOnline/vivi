@@ -33,7 +33,7 @@ product_config = """
 """
 
 
-CELERY_QUEUES = ('homepage', 'highprio', 'default', 'lowprio')
+CELERY_QUEUES = ('homepage', 'highprio', 'default', 'lowprio', 'timebased')
 ADDITIONAL_CELERY_CONFIG = {
     'task_track_started': True,
     'task_routes': ('zeit.cms.celery.route_task',),

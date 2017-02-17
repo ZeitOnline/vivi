@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import celery.result
 import datetime
 import pytz
@@ -94,7 +95,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
         if delay > 0:
             job_id = task.apply_async(
-                (self.context.uniqueId,), countdown=delay).id
+                (self.context.uniqueId,), countdown=delay,
+                urgency=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay(self.context.uniqueId).id
         return job_id
