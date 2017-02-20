@@ -53,6 +53,7 @@ class Base(object):
             self.context)
         # In the Addform there is no volume object. Thus we have to wait for
         # it to be created.
+        context.test_query()
         if getattr(self.context, 'product', None) is not None:
             for product in (
                     [self.context.product] +

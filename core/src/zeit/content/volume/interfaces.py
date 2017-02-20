@@ -82,6 +82,8 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         Set an image as a cover of product.
         """
 
+    def test_query():
+        """Test purposes"""
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
 

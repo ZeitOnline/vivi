@@ -135,6 +135,35 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
+    def test_query(self):
+        connector = zope.component.getUtility(
+             zeit.connector.interfaces.IConnector)
+        import pdb; pdb.set_trace()
+        # Can it get this from the interface
+        year = zeit.connector.search.SearchVar(
+            'year', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+        volume = zeit.connector.search.SearchVar(
+            'volume', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+        query_props = [
+            year, volume
+        ]
+        result = connector.search([query_props], (
+            (year == str(self.year)) &
+            (volume == str(self.volume))
+        )
+                                  )
+        # result = connector.search(
+        #     [FIRST_RELEASED, DAILY_NEWSLETTER], (
+        #     FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
+        #     (DAILY_NEWSLETTER == 'yes')))  # noqa
+
+        for item in result:
+            unique_id = item[0]
+            obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
+            if obj is not None:
+                # yield obj
+                pass
+
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
 
@@ -163,12 +192,6 @@ class VolumeMetadata(grok.Adapter):
         return value
 
 
-# This Adapter is used to publish all content of a Volume
-# which is marked as urgent. Wie läuft das mit den names.
-# Action for button:
-# 1. Register the Adapter
-# 2. publish Volume
-# 3. unregister the Adapter
 class VolumeUrgentContentDependency(object):
 
     zope.component.adapts(zeit.content.volume.interfaces.IVolume)
