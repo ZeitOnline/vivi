@@ -143,16 +143,9 @@ class ReferenceProperty(object):
         """Returns name of the schema field."""
         class_ = type(instance)
         for name in dir(class_):
-            try:
-                attribute = getattr(class_, name, None)
-            except gocept.cache.property.TransactionJoinError:
-                # We are during a commit where we cannot create a transaction
-                # bound cache - but are searching for a ReferenceProperty
-                # either:
-                pass
-            else:
-                if attribute is self:
-                    return name
+            attribute = getattr(class_, name, None)
+            if attribute is self:
+                return name
 
     def _reference_nodes(self, instance):
         try:
@@ -329,15 +322,9 @@ def update_metadata_on_checkin(context, event):
     for name in dir(cls):
         # other descriptors might not support reading them from the class,
         # but the one that we want does.
-        try:
-            attr = getattr(cls, name, None)
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit where we cannot create a transaction bound
-            # cache - which is not interesting here either:
-            pass
-        else:
-            if isinstance(attr, ReferenceProperty):
-                attr.update_metadata(context)
+        attr = getattr(cls, name, None)
+        if isinstance(attr, ReferenceProperty):
+            attr.update_metadata(context)
 
 
 class References(tuple):

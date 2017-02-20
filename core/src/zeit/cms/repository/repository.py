@@ -103,13 +103,7 @@ class Container(zope.container.contained.Contained):
             self.connector.copy(object.uniqueId, new_id)
             event = True
 
-        try:
-            self._local_unique_map_data.clear()
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit and accessing the cache for the first
-            # time, so we can safely ignore to clean it because it does not
-            # exist:
-            pass
+        self._local_unique_map_data.clear()
 
         if event:
             object, event = zope.container.contained.containedEvent(
@@ -126,13 +120,7 @@ class Container(zope.container.contained.Contained):
 
         id = self._get_id_for_name(name)
         del self.connector[id]
-        try:
-            self._local_unique_map_data.clear()
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit and accessing the cache for the first
-            # time, so we can safely ignore to clean it because it does not
-            # exist:
-            pass
+        self._local_unique_map_data.clear()
 
     def __repr__(self):
         return '<%s.%s %s>' % (
@@ -160,14 +148,6 @@ class Container(zope.container.contained.Contained):
     @property
     def _local_unique_map(self):
         __traceback_info__ = (self.uniqueId,)
-        try:
-            self._local_unique_map_data
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit and accessing the cache for the first
-            # time. It cannot be created during a commit so we have to run
-            # without a cache:
-            return dict(self.connector.listCollection(self.uniqueId))
-
         if not self._local_unique_map_data:
             self._local_unique_map_data.update(
                 self.connector.listCollection(self.uniqueId))
@@ -228,16 +208,10 @@ class Repository(persistent.Persistent, Container):
 
     def getUncontainedContent(self, unique_id):
         try:
-            self.uncontained_content
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit so caching is not possible.
+            content = self.uncontained_content[unique_id]
+        except KeyError:
             content = self._get_uncontained_copy(unique_id)
-        else:
-            try:
-                content = self.uncontained_content[unique_id]
-            except KeyError:
-                content = self._get_uncontained_copy(unique_id)
-                self.uncontained_content[unique_id] = content
+            self.uncontained_content[unique_id] = content
         return content
 
     def addContent(self, content, ignore_conflicts=False):
@@ -341,13 +315,7 @@ def invalidate_uncontained_content(event):
     repository = zope.component.queryUtility(
         zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
-        try:
-            repository.uncontained_content.pop(event.id, None)
-        except gocept.cache.property.TransactionJoinError:
-            # We are during a commit and accessing the cache for the first
-            # time, thus it does not exist, so it is safe to omit the
-            # invalidation:
-            pass
+        repository.uncontained_content.pop(event.id, None)
 
 
 @grokcore.component.adapter(
