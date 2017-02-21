@@ -60,15 +60,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                       default=(u"Scheduled publication cancelled "
                                "(job #${job})."),
                       mapping=dict(job=self.publish_job_id)))
-            if released_from is not None:
-                self.publish_job_id = self.add_job(
-                    zeit.workflow.publish.PUBLISH_TASK,
-                    released_from)
-                self.log(_('scheduled-for-publishing-on',
-                           default=u"To be published on ${date} (job #${job})",
-                           mapping=dict(
-                               date=self.format_datetime(released_from),
-                               job=self.publish_job_id)))
+            self.add_publish_job(released_from)
 
         if self.released_to != released_to:
             cancelled = self.cancel_job(self.retract_job_id)
@@ -78,17 +70,35 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                       default=(u"Scheduled retracting cancelled "
                                "(job #${job})."),
                       mapping=dict(job=self.retract_job_id)))
-            if released_to is not None:
-                self.retract_job_id = self.add_job(
-                    zeit.workflow.publish.RETRACT_TASK,
-                    released_to)
-                self.log(_('scheduled-for-retracting-on',
-                           default=u"To be retracted on ${date} (job #${job})",
-                           mapping=dict(
-                               date=self.format_datetime(released_to),
-                               job=self.retract_job_id)))
+            self.add_retract_job(released_to)
 
         self.released_from, self.released_to = value
+
+    def add_publish_job(self, released_from):
+        if released_from is None:
+            return
+
+        self.publish_job_id = self.add_job(
+            zeit.workflow.publish.PUBLISH_TASK,
+            released_from)
+        self.log(_('scheduled-for-publishing-on',
+                   default=u"To be published on ${date} (job #${job})",
+                   mapping=dict(
+                       date=self.format_datetime(released_from),
+                       job=self.publish_job_id)))
+
+    def add_retract_job(self, released_to):
+        if released_to is None:
+            return
+
+        self.retract_job_id = self.add_job(
+            zeit.workflow.publish.RETRACT_TASK,
+            released_to)
+        self.log(_('scheduled-for-retracting-on',
+                   default=u"To be retracted on ${date} (job #${job})",
+                   mapping=dict(
+                       date=self.format_datetime(released_to),
+                       job=self.retract_job_id)))
 
     def add_job(self, task, when):
         delay = when - datetime.datetime.now(pytz.UTC)
