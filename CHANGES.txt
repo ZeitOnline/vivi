@@ -1,10 +1,11 @@
 zeit.wysiwyg changes
 ====================
 
-2.0.8 (unreleased)
+3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove ``update_metadata_on_checkin()`` adapter as it is not supported by
+  celery and not needed outside XSLT. (ZON-3724)
 
 
 2.0.7 (2016-09-26)

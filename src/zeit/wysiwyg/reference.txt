@@ -58,22 +58,6 @@ After checking in the article, its references are added to the index.
 >>> article = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 
-Change the image metadata and check in:
-
->>> image = repository['2006']['DSC00109_2.JPG']
->>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
->>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
->>> metadata.copyrights = ((u'ZEIT ONLINE', u'http://zeit.de'),)
->>> metadata.caption = u'Cap cap cap'
->>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
-
-Now the changes are propagated to the article:
-
->>> import transaction
->>> transaction.commit()
->>> article = repository['test']
->>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
-<...<image...<bu...>Cap cap cap</bu>...
 
 Here we check that each type of possible references is found:
 
