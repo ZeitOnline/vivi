@@ -16,7 +16,6 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import gocept.cache.property
 import urllib
 import urlparse
 import z3c.traverser.interfaces
@@ -143,8 +142,7 @@ class ReferenceProperty(object):
         """Returns name of the schema field."""
         class_ = type(instance)
         for name in dir(class_):
-            attribute = getattr(class_, name, None)
-            if attribute is self:
+            if getattr(class_, name, None) is self:
                 return name
 
     def _reference_nodes(self, instance):

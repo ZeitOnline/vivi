@@ -92,6 +92,7 @@ class ZCMLLayer(plone.testing.Layer):
         z3c.celery.CELERY.conf.task_always_eager = False
 
         zeit.cms.workflow.mock.reset()
+
         self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
