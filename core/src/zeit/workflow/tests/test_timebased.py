@@ -67,7 +67,7 @@ class TimeBasedWorkflowEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEllipsis('''\
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)'''.format(self),  # noqa
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...'''.format(self),  # noqa
                                 logfile.read())
 
     def test_released_from__in_future_is_published_later(self):
