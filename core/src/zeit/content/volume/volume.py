@@ -92,7 +92,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return zeit.cms.interfaces.ICMSContent(
             iter(result).next()['uniqueId'], None)
 
-
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
             product_id = self.product.id
@@ -135,34 +134,29 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def test_query(self):
-        connector = zope.component.getUtility(
-             zeit.connector.interfaces.IConnector)
-        import pdb; pdb.set_trace()
-        # Can it get this from the interface
-        year = zeit.connector.search.SearchVar(
-            'year', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
-        volume = zeit.connector.search.SearchVar(
-            'volume', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
-        query_props = [
-            year, volume
-        ]
-        result = connector.search([query_props], (
-            (year == str(self.year)) &
-            (volume == str(self.volume))
+    def all_content_via_solr(self, additional_query_contstraints=None, rows=1000):
+        """
+        Generator to find ICMSContent of this volume via Solr.
+        If u pass a list of additional query strings, they will be added as
+        and AND operand to the query field.
+        """
+        if not additional_query_contstraints:
+            additional_query_contstraints = []
+        Q = zeit.solr.query
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        query = Q.and_(
+            Q.not_(Q.field('uniqueId', self.uniqueId)),
+            Q.or_(*[Q.field('product_id', p.id) for p in
+                    self._all_products]),
+            Q.field_raw('year', self.year),
+            Q.field_raw('volume', self.volume),
+            * additional_query_contstraints
         )
-                                  )
-        # result = connector.search(
-        #     [FIRST_RELEASED, DAILY_NEWSLETTER], (
-        #     FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
-        #     (DAILY_NEWSLETTER == 'yes')))  # noqa
+        result = solr.search(query, fl='uniqueId', rows=rows)
+        return [zeit.cms.interfaces.ICMSContent(item['uniqueId'], None) for
+                item in result]
 
-        for item in result:
-            unique_id = item[0]
-            obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
-            if obj is not None:
-                # yield obj
-                pass
+
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -190,37 +184,6 @@ class VolumeMetadata(grok.Adapter):
             field = zeit.cms.content.interfaces.ICommonMetadata.get(name, None)
             return field.default
         return value
-
-
-class VolumeUrgentContentDependency(object):
-
-    zope.component.adapts(zeit.content.volume.interfaces.IVolume)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
-
-    def get_dependencies(self):
-        Q = zeit.solr.query
-        query = Q.and_(
-            Q.or_(*[Q.field('product_id', p.id) for p in
-                    # Forbidden, add to interface or compute it here...
-                    self.context._all_products]),
-            Q.field_raw('type', zeit.content.article.article.ArticleType.type),
-            Q.field_raw('year', self.context.year),
-            Q.field_raw('volume', self.context.volume),
-            Q.field('published', 'not-published'),
-            Q.bool_field('urgent', True),
-            Q.not_(Q.field('uniqueId', self.volume.uniqueId))
-        )
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        result = solr.search(query, fl='uniqueId', rows=1000)
-        if not result:
-            return []
-        else:
-            # TODO return w00t? List of unique ID's or the article objects
-            return [res.get('uniqueId') for res in result]
 
 
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)

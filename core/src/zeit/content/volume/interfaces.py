@@ -82,8 +82,13 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         Set an image as a cover of product.
         """
 
-    def test_query():
-        """Test purposes"""
+    def all_content_via_solr(additional_queries, rows):
+        """
+        :param additional_queries:
+        :param rows:
+        :return: [ICMSContent]
+        """
+
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
 
