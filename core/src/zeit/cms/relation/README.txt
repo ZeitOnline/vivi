@@ -169,8 +169,6 @@ Update the teaserTitle of c:
 Check c in and "process":
 
 >>> c = zeit.cms.checkout.interfaces.ICheckinManager(c).checkin()
->>> import transaction
->>> transaction.commit()
 
 The xml structure of a and b contain "Tease me" now:
 
@@ -212,7 +210,6 @@ circular references. Let c relate to b and change something:
 And check in:
 
 >>> c = zeit.cms.checkout.interfaces.ICheckinManager(c).checkin()
->>> transaction.commit()
 >>> print lxml.etree.tostring(repository['b'].xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   ...
@@ -270,7 +267,6 @@ Check out "c" and modify it. Then check in.
 ...     repository['c']).checkout()
 >>> checked_out.teaserTitle = 'New teaser title'
 >>> c = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
->>> transaction.commit()
 
 "d" has not changed:
 

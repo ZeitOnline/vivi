@@ -4,7 +4,6 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.etree
 import mock
-import transaction
 import zeit.cms.testing
 import zope.copypastemove.interfaces
 
@@ -20,7 +19,6 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
 
         zope.copypastemove.interfaces.IObjectMover(article).moveTo(
             self.repository, 'changed')
-        transaction.commit()
         referencing = self.repository['referencing']
         with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
             self.assertEqual(
@@ -35,7 +33,6 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['article'] = ExampleContentType()
         zope.copypastemove.interfaces.IObjectMover(
             self.repository['article']).moveTo(self.repository, 'changed')
-        transaction.commit()
         article = self.repository['changed']
         self.assertEqual(
             ('http://xml.zeit.de/article',),
