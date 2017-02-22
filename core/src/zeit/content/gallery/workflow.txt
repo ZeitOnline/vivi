@@ -101,8 +101,8 @@ published w/o images:
 
 Delete the folder and try to publish:
 
->>> del repository['image-folder']
 >>> import transaction
+>>> del repository['image-folder']
 >>> transaction.commit()
 >>> logfile.seek(0)
 >>> logfile.truncate()
