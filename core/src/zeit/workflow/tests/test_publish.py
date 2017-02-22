@@ -35,7 +35,7 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         super(PublishRetractLockingTest, self).setUp()
         self.obj = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
-        self.desc = zeit.workflow.publish.TaskDescription(self.obj)
+        self.desc = zeit.workflow.publish.SingleInput(self.obj)
         self.task = FakePublishTask()
 
     def run_task_in_thread(self, i, desc):
@@ -69,7 +69,7 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
     def test_parallel_with_differnt_obj(self):
         t1 = threading.Thread(
             target=self.run_task_in_thread, args=(1, self.desc))
-        desc = zeit.workflow.publish.TaskDescription(
+        desc = zeit.workflow.publish.SingleInput(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed'))
         t2 = threading.Thread(
             target=self.run_task_in_thread, args=(2, desc))

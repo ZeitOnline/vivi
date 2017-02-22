@@ -33,20 +33,6 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-class TaskDescription(object):
-    """Data to be passed to publish/retract tasks."""
-
-    def __init__(self, obj):
-        self.uniqueId = obj.uniqueId
-        self.principal = self.get_principal().id
-
-    @staticmethod
-    def get_principal():
-        interaction = zope.security.management.getInteraction()
-        for p in interaction.participations:
-            return p.principal
-
-
 class Publish(object):
 
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
@@ -68,8 +54,7 @@ class Publish(object):
         task = u'zeit.workflow.publish'
         if async:
             self.log(self.context, _('Publication scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            return self.tasks(priority).add(task, SingleInput(self.context))
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
@@ -83,8 +68,7 @@ class Publish(object):
         task = u'zeit.workflow.retract'
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            return self.tasks(priority).add(task, SingleInput(self.context))
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
@@ -100,6 +84,20 @@ class Publish(object):
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, msg)
+
+
+class SingleInput(object):
+    """Data to be passed to publish/retract tasks."""
+
+    def __init__(self, obj):
+        self.uniqueId = obj.uniqueId
+        self.principal = self.get_principal().id
+
+    @staticmethod
+    def get_principal():
+        interaction = zope.security.management.getInteraction()
+        for p in interaction.participations:
+            return p.principal
 
 
 active_objects = set()

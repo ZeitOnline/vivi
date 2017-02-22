@@ -93,7 +93,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def add_job(self, task_name, when):
         delay = when - datetime.datetime.now(pytz.UTC)
         delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
-        task_description = zeit.workflow.publish.TaskDescription(self.context)
+        task_description = zeit.workflow.publish.SingleInput(self.context)
         if delay > 0:
             job_id = self.tasks.addCronJob(
                 task_name, task_description, delay=delay)
