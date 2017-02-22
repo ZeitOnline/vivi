@@ -144,8 +144,6 @@ is the unique Id of the object. Create a resource first:
 
 Let's have a look into the collection `/online/2007/01`. It is empty so far:
 
->>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
-[]
 >>> resource.id in connector
 False
 
@@ -188,7 +186,8 @@ True
 Also the collection contains the resource now:
 
 >>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
-[(u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer')]
+[(u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer'),
+ (u'zon.css', u'http://xml.zeit.de/online/2007/02/zon.css')]
 
 
 Add Method
@@ -207,7 +206,8 @@ resource and add id using the `add` method:
 >>> pprint(list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/02')))
 [(u'DaimlerChrysler', u'http://xml.zeit.de/online/2007/02/DaimlerChrysler'),
- (u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer')]
+ (u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer'),
+ (u'zon.css', u'http://xml.zeit.de/online/2007/02/zon.css')]
 
 
 Adding Collections
