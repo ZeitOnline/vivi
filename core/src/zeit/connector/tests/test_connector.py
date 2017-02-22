@@ -161,9 +161,8 @@ class MoveConflictDetectionBase(object):
             self.connector.move(source.id, target.id)
         self.assertEqual(
             ['source', 'target'],
-            [name for name, unique_id in
-             self.connector.listCollection(
-                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
+            sorted([name for name, unique_id in self.connector.listCollection(
+                'http://xml.zeit.de/%s' % self.layer.testfolder) if name]))
 
     def test_move_should_fail_if_target_is_existing_directory(self):
         source = self.get_resource('source', '',
