@@ -377,7 +377,7 @@ class PublishTask(PublishRetractTask):
 
         obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
-        self.call_publish_script(obj)
+        self.call_publish_script(self.get_all_paths(obj, True))
         self.recurse(self.after_publish, True, obj, obj)
         obj = self.recurse(self.unlock, True, obj, obj)
 
@@ -399,12 +399,11 @@ class PublishTask(PublishRetractTask):
         new_obj = self.cycle(obj)
         return new_obj
 
-    def call_publish_script(self, obj):
+    def call_publish_script(self, paths):
         """Actually do the publication."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publish_script = config['publish-script']
-        paths = self.get_all_paths(obj, True)
         self.call_script(publish_script, '\n'.join(paths))
         timer.mark('Called publish script')
 
