@@ -28,16 +28,16 @@ Get a file-like resource:
 >>> res = connector['http://xml.zeit.de/index']
 >>> res
 <zeit.connector.resource.CachedResource object at 0x...>
->>> res.data
-<...StringIO...at 0x...>
+>>> type(res.data)
+<type 'file'>
 
 After committing we'll still get a file back:
 
 >>> import transaction
 >>> transaction.commit()
 >>> res = connector['http://xml.zeit.de/index']
->>> res.data
-<...StringIO...at 0x...>
+>>> type(res.data)
+<type 'file'>
 
 The directory listing is empty:
 
