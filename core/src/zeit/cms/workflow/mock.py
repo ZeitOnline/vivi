@@ -1,6 +1,7 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
@@ -41,6 +42,11 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,
                                                         self.context))
+
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+        for obj in objects:
+            obj = zeit.cms.interfaces.ICMSContent(obj)
+            self.publish(obj, priority, async)
 
 
 class MockPublishInfo(object):

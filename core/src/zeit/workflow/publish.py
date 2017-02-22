@@ -2,7 +2,7 @@ from __future__ import with_statement
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import ZODB.POSException
 import logging
 import lovely.remotetask.interfaces
@@ -74,6 +74,21 @@ class Publish(object):
                 lovely.remotetask.interfaces.ITask, name=task)
             task.run_sync(self.context)
 
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+        ids = []
+        for obj in objects:
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                ids.append(obj.uniqueId)
+            else:
+                ids.append(obj)
+        task = u'zeit.workflow.publish-multiple'
+        if async:
+            return self.tasks(priority).add(task, MultiInput(ids))
+        else:
+            task = zope.component.getUtility(
+                lovely.remotetask.interfaces.ITask, name=task)
+            task.run_sync(ids)
+
     def tasks(self, priority):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
@@ -129,6 +144,30 @@ class SingleInput(object):
 
     def __unicode__(self):
         return self.uniqueId
+
+
+class MultiInput(SingleInput):
+
+    def __init__(self, ids):
+        self.ids = ids
+        self.principal = self.get_principal().id
+
+    def resolve(self):
+        return [self.repository.getContent(x) for x in self.ids]
+
+    def acquire_active_lock(self):
+        for id in self.ids:
+            acquired = self._acquire_active_lock(id)
+            if not acquired:
+                return False
+        return True
+
+    def release_active_lock(self):
+        for id in self.ids:
+            self._release_active_lock(id)
+
+    def __unicode__(self):
+        return unicode(self.ids)
 
 
 active_objects = set()
@@ -203,9 +242,9 @@ class PublishRetractTask(object):
 
     def run_sync(self, obj):
         timer.start(u'Synchronous %s started: %s' % (
-            type(self).__name__, obj.uniqueId))
+            type(self).__name__, obj))
         self.run(obj)
-        timer.mark('Done %s' % obj.uniqueId)
+        timer.mark('Done %s' % obj)
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -459,6 +498,33 @@ class RetractTask(PublishRetractTask):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+class MultiPublishTask(PublishTask):
+    """Publish multiple objects"""
+
+    def run(self, objects):
+        logger.info('Publishing %s', objects)
+
+        published = []
+        for obj in objects:
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if info.can_publish() == CAN_PUBLISH_ERROR:
+                logger.error("Skipping %s", obj.uniqueId)
+                self.log(obj, _(
+                    "Could not publish because conditions not satisifed."))
+                continue
+
+            obj = self.recurse(self.lock, True, obj, obj)
+            obj = self.recurse(self.before_publish, True, obj, obj)
+            published.append(obj)
+
+        paths = [self.convert_uid_to_path(x.uniqueId) for x in published]
+        self.call_publish_script(paths)
+
+        for obj in published:
+            self.recurse(self.after_publish, True, obj, obj)
+            obj = self.recurse(self.unlock, True, obj, obj)
 
 
 class Timer(threading.local):

@@ -210,3 +210,36 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
         zeit.workflow.testing.run_publish(
             zeit.cms.workflow.interfaces.PRIORITY_LOW)
         self.assertTrue(info.published)
+
+
+class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    def test_publishes_multiple_objects_in_single_script_call(self):
+        c1 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        c2 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero')
+        IPublishInfo(c1).urgent = True
+        IPublishInfo(c2).urgent = True
+        IPublish(self.repository).publish_multiple([c1, c2])
+        with mock.patch(
+                'zeit.workflow.publish.PublishTask'
+                '.call_publish_script') as script:
+            zeit.workflow.testing.run_publish(
+                zeit.cms.workflow.interfaces.PRIORITY_LOW)
+            script.assert_called_with(['work/online/2007/01/Somalia',
+                                       'work/online/2007/01/eta-zapatero'])
+        self.assertTrue(IPublishInfo(c1).published)
+        self.assertTrue(IPublishInfo(c2).published)
+
+    def test_accepts_uniqueId_as_well_as_ICMSContent(self):
+        with mock.patch('zeit.workflow.publish.MultiPublishTask.run') as run:
+            IPublish(self.repository).publish_multiple([
+                self.repository['testcontent'],
+                'http://xml.zeit.de/online/2007/01/Somalia'], async=False)
+            ids = run.call_args[0][0]
+            self.assertEqual([
+                'http://xml.zeit.de/testcontent',
+                'http://xml.zeit.de/online/2007/01/Somalia'], ids)
