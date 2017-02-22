@@ -33,39 +33,6 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-class Timer(threading.local):
-
-    def start(self, message):
-        self.times = []
-        self.mark(message)
-
-    def mark(self, message):
-        self.times.append((time.time(), message))
-
-    def get_timings(self):
-        result = []
-        last = None
-        total = 0
-        for when, message in self.times:
-            if last is None:
-                diff = 0
-            else:
-                diff = when - last
-            total += diff
-            last = when
-            result.append((diff, total, message))
-        return result
-
-    def __unicode__(self):
-        result = []
-        for diff, total, message in self.get_timings():
-            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
-        return u'\n'.join(result)
-
-
-timer = Timer()
-
-
 class TaskDescription(object):
     """Data to be passed to publish/retract tasks."""
 
@@ -482,3 +449,36 @@ class RetractTask(PublishRetractTask):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+class Timer(threading.local):
+
+    def start(self, message):
+        self.times = []
+        self.mark(message)
+
+    def mark(self, message):
+        self.times.append((time.time(), message))
+
+    def get_timings(self):
+        result = []
+        last = None
+        total = 0
+        for when, message in self.times:
+            if last is None:
+                diff = 0
+            else:
+                diff = when - last
+            total += diff
+            last = when
+            result.append((diff, total, message))
+        return result
+
+    def __unicode__(self):
+        result = []
+        for diff, total, message in self.get_timings():
+            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
+        return u'\n'.join(result)
+
+
+timer = Timer()
