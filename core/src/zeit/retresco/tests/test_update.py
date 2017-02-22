@@ -33,7 +33,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository['t1'] = ExampleContentType()
-        transaction.commit()
         self.tms.enrich.assert_called_with(repository['t1'])
         self.tms.index.assert_called_with(repository['t1'])
 
@@ -48,7 +47,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         event = zope.lifecycleevent.ObjectAddedEvent(content)
         for ignored in zope.component.subscribers((content_sub, event), None):
             pass
-        transaction.commit()
         self.assertFalse(self.tms.index.called)
 
     def test_checkin_should_index(self):
@@ -84,7 +82,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 cmscontent.return_value = None
                 zeit.retresco.update.index_async(
                     'http://xml.zeit.de/testcontent')
-                transaction.commit()
                 self.assertFalse(index.called)
 
     def test_publish_should_not_be_called_on_index_if_res_not_published(self):
@@ -124,7 +121,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
-        transaction.commit()
         self.tms.delete_id.assert_called_with(uuid)
 
     def test_remove_from_workingcopy_does_nothing(self):
@@ -132,7 +128,6 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         event = zope.lifecycleevent.ObjectRemovedEvent(content)
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
         zope.event.notify(event)
-        transaction.commit()
         self.assertFalse(self.tms.delete.called)
 
     def test_publish_should_index_with_published_true(self):
