@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - ZON-3513: Use z3c.celery for the async tasks.
 
+- PERF: Don't update TMS during publishing.
+
 
 1.8.0 (2016-12-05)
 ------------------
