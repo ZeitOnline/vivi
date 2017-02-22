@@ -344,7 +344,7 @@ class PublishTask(PublishRetractTask):
 
 @shared_task(bind=True)
 def PUBLISH_TASK(self, uniqueId):
-    return PublishTask(self.task_id).run(uniqueId)
+    return PublishTask(getattr(self, 'task_id', 'sync-task')).run(uniqueId)
 
 
 class RetractTask(PublishRetractTask):
