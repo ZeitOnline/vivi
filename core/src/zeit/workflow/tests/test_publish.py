@@ -22,9 +22,9 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
     def __init__(self):
         self.test_log = []
 
-    def run(self, obj, info):
+    def run(self, obj):
         time.sleep(0.1)
-        self.test_log.append((obj, info))
+        self.test_log.append(obj)
 
 
 class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):

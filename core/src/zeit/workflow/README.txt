@@ -665,7 +665,7 @@ Create a subclass for PublishRetractTask which raises a ConflictError when run:
 >>> import zeit.workflow.publish
 >>> class ConflictingTask(zeit.workflow.publish.PublishRetractTask):
 ...     run_count = 0
-...     def run(self, obj, info):
+...     def run(self, obj):
 ...         self.run_count += 1
 ...         raise ZODB.POSException.ConflictError()
 

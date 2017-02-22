@@ -93,11 +93,42 @@ class SingleInput(object):
         self.uniqueId = obj.uniqueId
         self.principal = self.get_principal().id
 
+    def resolve(self):
+        return self.repository.getContent(self.uniqueId)
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
     @staticmethod
     def get_principal():
         interaction = zope.security.management.getInteraction()
         for p in interaction.participations:
             return p.principal
+
+    def acquire_active_lock(self):
+        return self._acquire_active_lock(self.uniqueId)
+
+    def _acquire_active_lock(self, uniqueId):
+        with active_objects_lock:
+            if uniqueId in active_objects:
+                return False
+            active_objects.add(uniqueId)
+            return True
+
+    def release_active_lock(self):
+        self._release_active_lock(self.uniqueId)
+
+    def _release_active_lock(self, uniqueId):
+        with active_objects_lock:
+            active_objects.remove(uniqueId)
+
+    def __str__(self):
+        return unicode(self).encode('ascii', 'backslashreplace')
+
+    def __unicode__(self):
+        return self.uniqueId
 
 
 active_objects = set()
@@ -111,33 +142,30 @@ class PublishRetractTask(object):
     # outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
-        info = (type(self).__name__, input.uniqueId, jobid)
+        info = (type(self).__name__, unicode(input), jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
         logger.info("Running job %s" % jobid)
-        uniqueId = input.uniqueId
-        principal = input.principal
 
-        self.login(principal)
+        self.login(input.principal)
         timer.mark('Logged in')
 
-        obj = self.repository.getContent(input.uniqueId)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        obj = input.resolve()
         timer.mark('Looked up object')
 
         retries = 0
         while True:
             try:
                 try:
-                    acquired = self.acquire_active_lock(uniqueId)
+                    acquired = input.acquire_active_lock()
                     if acquired:
-                        self.run(obj, info)
+                        self.run(obj)
                     else:
                         self.log(
                             obj, _('A publish/retract job is already active.'
                                    ' Aborting'))
-                        logger.info("Aborting parallel publish/retract of %r"
-                                    % uniqueId)
+                        logger.info(
+                            'Aborting parallel publish/retract of %s', input)
                     transaction.commit()
                     timer.mark('Commited')
                 except ZODB.POSException.ConflictError, e:
@@ -166,8 +194,8 @@ class PublishRetractTask(object):
                 break
             finally:
                 if acquired:
-                    self.release_active_lock(uniqueId)
-        timer.mark('Done %s' % input.uniqueId)
+                    input.release_active_lock()
+        timer.mark(u'Done %s' % input)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
@@ -176,22 +204,10 @@ class PublishRetractTask(object):
     def run_sync(self, obj):
         timer.start(u'Synchronous %s started: %s' % (
             type(self).__name__, obj.uniqueId))
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-        self.run(obj, info)
+        self.run(obj)
         timer.mark('Done %s' % obj.uniqueId)
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
-
-    def acquire_active_lock(self, uniqueId):
-        with active_objects_lock:
-            if uniqueId in active_objects:
-                return False
-            active_objects.add(uniqueId)
-            return True
-
-    def release_active_lock(self, uniqueId):
-        with active_objects_lock:
-            active_objects.remove(uniqueId)
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -295,11 +311,6 @@ class PublishRetractTask(object):
         return zope.component.getUtility(
             zeit.objectlog.interfaces.IObjectLog).log
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
     @staticmethod
     def lock(obj, master=None):
         zope.event.notify(
@@ -355,8 +366,9 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
-    def run(self, obj, info):
+    def run(self, obj):
         logger.info('Publishing %s' % obj.uniqueId)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if info.can_publish() == CAN_PUBLISH_ERROR:
             logger.error("Could not publish %s" % obj.uniqueId)
             self.log(
@@ -407,8 +419,9 @@ class PublishTask(PublishRetractTask):
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
-    def run(self, obj, info):
+    def run(self, obj):
         logger.info('Retracting %s' % obj.uniqueId)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if not info.published:
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
