@@ -205,7 +205,7 @@ class PublishRetractTask(object):
                                    ' Aborting'))
                         logger.info(
                             'Aborting parallel publish/retract of %s', input)
-                    transaction.commit()
+                    self.commit()
                     timer.mark('Commited')
                 except ZODB.POSException.ConflictError, e:
                     timer.mark('Conflict')
@@ -239,6 +239,9 @@ class PublishRetractTask(object):
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
         return message
+
+    def commit(self):  # Extension point for subclasses
+        transaction.commit()
 
     def run_sync(self, obj):
         timer.start(u'Synchronous %s started: %s' % (
@@ -525,6 +528,19 @@ class MultiPublishTask(PublishTask):
         for obj in published:
             self.recurse(self.after_publish, True, obj, obj)
             obj = self.recurse(self.unlock, True, obj, obj)
+
+    def commit(self):
+        # Work around limitations of our ZODB-based DAV cache.
+        # Since publishing a sizable amount of objects will result in a rather
+        # long-running transaction (100 articles take about two minutes), the
+        # probability of ConflictErrors is very high there, see ZON-3715 for
+        # details. We prevent this by simply not writing to the DAV cache
+        # inside the job, which is the only change this commit() would be
+        # writing -- since the DAV changes itself happen immediately without
+        # transaction isolation anyway. The DAV cache will then be updated
+        # shortly afterwards by the invalidator (since that runs for all
+        # changes and doesn't discriminate changes made by vivi itself).
+        transaction.abort()
 
 
 class Timer(threading.local):
