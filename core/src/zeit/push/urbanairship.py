@@ -24,18 +24,9 @@ class Connection(zeit.push.mobile.ConnectionBase):
     def send(self, text, link, **kw):
         data = self.data(text, link, **kw)
 
-        # Add tag to payload, so App knows which kind of notification was send.
-        # (The audience part was already consumed by the SDK.)
-        channels = self.get_channel_list(kw.get('channels'))
-        if CONFIG_CHANNEL_BREAKING in channels:
-            tag = self.config.get(CONFIG_CHANNEL_BREAKING)
-        else:
-            tag = self.config.get(CONFIG_CHANNEL_NEWS)
-        data['android']['tag'] = tag
-        data['ios']['tag'] = tag
-
         # We need channels to define the target audience in order to avoid
         # accidental pushes to *all* devices.
+        channels = self.get_channel_list(kw.get('channels'))
         if not channels:
             raise ValueError('No channel given to define target audience.')
         audience_channels = {
@@ -53,12 +44,26 @@ class Connection(zeit.push.mobile.ConnectionBase):
             self.android_master_secret
         ).create_push()
         android.audience = audience_channels
-        android.options = {'expiry': expiry}
-        android.device_types = ['android']
-        android.notification = {'android': {
-            'extra': data['android'],
-            'alert': data['android']['text'],  # for the UI
-        }}
+        android.expiry = expiry
+        android.device_types = urbanairship.device_types('android')
+        android.notification = {
+            'actions': {
+                'open': {
+                    'type': 'deep_link',
+                    'content': data['android']['deep_link']
+                }
+            },
+            'alert': data['android']['alert'],
+            'android': {
+                'extra': {
+                    'headline': data['android']['headline'],
+                    'tag': data['android']['tag'],
+                    'url': data['android']['url']
+                },
+                'priority': data['android']['priority'],
+                'title': data['android']['headline']
+            }
+        }
         self.push(android)
 
         # Send ios notification.
@@ -66,17 +71,27 @@ class Connection(zeit.push.mobile.ConnectionBase):
             self.ios_application_key,
             self.ios_master_secret
         ).create_push()
-        ios.audience = {'AND': [
-            {'segment': self.config['urbanairship-ios-segment']},
-            audience_channels,
-        ]}
-        ios.options = {'expiry': expiry}
-        ios.device_types = ['ios']
-        ios.notification = {'ios': {
-            'title': data['ios'].pop('alert-title'),
-            'alert': data['ios'].pop('alert'),
-            'extra': data['ios']
-        }}
+        ios.audience = audience_channels
+        ios.expiry = expiry
+        ios.device_types = urbanairship.device_types('ios')
+        ios.notification = {
+            'actions': {
+                'open': {
+                    'type': 'deep_link',
+                    'content': data['ios']['deep_link']
+                }
+            },
+            'alert': data['ios']['alert'],
+            'ios': {
+                'extra': {
+                    'headline': data['ios']['headline'],
+                    'tag': data['ios']['tag'],
+                    'url': data['ios']['url']
+                },
+                'sound': data['ios']['sound'],
+                'title': data['ios']['headline']
+            }
+        }
         self.push(ios)
 
     def push(self, push):
@@ -117,8 +132,7 @@ def print_payload_documentation():
         CONFIG_CHANNEL_BREAKING: 'Eilmeldung',
         CONFIG_CHANNEL_NEWS: 'News',
         'push-target-url': 'http://www.zeit.de',
-        'urbanairship-audience-group': 'subscriptions',
-        'urbanairship-ios-segment': '80436826-1e09-4a8a-9c26-5016f3df8e9f',
+        'urbanairship-audience-group': 'subscriptions'
     })
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
@@ -127,13 +141,12 @@ def print_payload_documentation():
         'teaserTitle': 'TeaserTitle',
         'teaserText': 'TeaserText',
         'teaserSupertitle': 'TeaserSupertitle',
-        'image_url': 'http://img.zeit.de/test/image',
     }
     print '[{"//": "*** Eilmeldung ***"},'
-    conn.send('Title', 'http://www.zeit.de/test/artikel',
+    conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
               channels=CONFIG_CHANNEL_BREAKING, **params)
     print '\n'
     print '{"//": "*** Wichtige Nachrichten ***"},'
-    conn.send('Title', 'http://www.zeit.de/test/artikel',
+    conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
               channels=CONFIG_CHANNEL_NEWS, **params)
     print ']'
