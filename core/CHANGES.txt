@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.86 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- push-titles aktualisiert zu Lesetipp und Eilmeldung.
 
 
 2.0.85 (2017-02-16)

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Feb 16 14:08:01 2017\n"
+"POT-Creation-Date: Thu Feb 23 13:32:22 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -162,27 +162,27 @@ msgid "Complete event"
 msgstr ""
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/sourceedit.pt:16
-#: zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5
+#: zeit/cms/browser/lightbox.pt:2
 #: zeit/cms/browser/main_template.pt:47
 #: zeit/cms/browser/main_template.pt:180
 #: zeit/cms/browser/main_template.pt:203
 #: zeit/cms/browser/main_template.pt:221
-#: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
-#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
-#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
+#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
+#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
 #: zeit/edit/browser/inlineform.pt:16
 #: zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
@@ -2364,9 +2364,9 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:614
 #: zeit/content/cp/interfaces.py:912
 #: zeit/content/gallery/interfaces.py:101
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
-#: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
+#: zeit/wysiwyg/browser/resources/reference/image.pt:26
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
 msgid "Layout"
 msgstr ""
 
@@ -2445,15 +2445,15 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/article/edit/interfaces.py:464
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 msgid "short"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:386
 #: zeit/content/article/edit/interfaces.py:465
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 msgid "wide"
 msgstr ""
 
@@ -2516,11 +2516,11 @@ msgid "Attribution"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:480
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
-#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
 msgid "URL"
 msgstr ""
 
@@ -2879,11 +2879,11 @@ msgstr ""
 msgid "RSS block"
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:148
+#: zeit/content/cp/blocks/teaser.py:151
 msgid "List of teasers"
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:94
+#: zeit/content/cp/blocks/teaser.py:97
 msgid "No default teaser layout defined for this area."
 msgstr ""
 
@@ -3103,16 +3103,16 @@ msgstr ""
 msgid "Centerpage 2009"
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:409
+#: zeit/content/cp/centerpage.py:406
 #. Default: ""
 msgid "The centerpage ${uniqueId} is of type ${content_type}, but this vivi handles ${current_type}."
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:225
+#: zeit/content/cp/configure.zcml:226
 msgid "Edit Area"
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:230
+#: zeit/content/cp/configure.zcml:231
 msgid "Edit Article Flow"
 msgstr ""
 
@@ -3617,6 +3617,11 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
+#: zeit/content/cp/teaser.py:191
+#. Default: ""
+msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
+msgstr ""
+
 #: zeit/content/dynamicfolder/folder.py:217
 msgid "Dynamic Folder"
 msgstr ""
@@ -3644,8 +3649,8 @@ msgid "Image sub text"
 msgstr ""
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/reference-details.pt:11
 #: zeit/content/image/browser/image-details.pt:6
+#: zeit/content/image/browser/reference-details.pt:11
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
 msgid "edit"
