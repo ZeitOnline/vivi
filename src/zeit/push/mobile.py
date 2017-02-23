@@ -5,6 +5,7 @@ import grokcore.component as grok
 import logging
 import pytz
 import urllib
+import urlparse
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -27,7 +28,7 @@ class ConnectionBase(object):
     zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     LANGUAGE = 'de'
-    PUSH_ACTION_ID = 'de.zeit.online.PUSH'
+    APP_IDENTIFIER = 'zeitapp'
 
     def __init__(self, expire_interval):
         self.expire_interval = expire_interval
@@ -73,63 +74,54 @@ class ConnectionBase(object):
         return (datetime.now(pytz.UTC).replace(microsecond=0) +
                 timedelta(seconds=self.expire_interval))
 
-    def android_data(self, title, link, channels, headline, text, supertitle):
-        return {
-            'action': self.PUSH_ACTION_ID,
-            'headline': headline,
-            'text': title,
-            'teaser': text,
-            'url': self.add_tracking(link, channels, 'android'),
-        }
-
-    def ios_data(self, title, link, channels, headline, text, supertitle):
-        return {
-            'headline': supertitle,
-            'alert-title': headline,
-            'alert': title,
-            'teaser': text,
-            'url': self.add_tracking(link, channels, 'ios'),
-        }
-
     def data(self, title, link, **kw):
         """Return data for push notifications to Android and iOS."""
-        image_url = kw.get('image_url')
         channels = self.get_channel_list(kw.get('channels'))
         if not channels:
             log.warn('No channel given for push notification for %s', link)
-        arguments = {
-            'title': kw.get('override_text') or kw.get('teaserTitle', title),
-            'link': self.rewrite_url(link, self.config['push-target-url']),
-            'channels': channels,
-            'headline': self.get_headline(channels),
-            'text': kw.get('teaserText', ''),
-            'supertitle': kw.get('teaserSupertitle', ''),
+
+        is_breaking = self.config.get(CONFIG_CHANNEL_BREAKING) in channels
+
+        # Extra tag helps the app know which kind of notification was send
+        if is_breaking:
+            extra_tag = self.config.get(CONFIG_CHANNEL_BREAKING)
+        else:
+            extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
+
+        path = self.strip_to_path(link)
+        push_target = self.config['push-target-url'].rstrip('/')
+        full_link = '/'.join((push_target, path))
+        deep_link = '://'.join((self.APP_IDENTIFIER, path))
+
+        return {
+            'ios': {
+                'alert': title,
+                'deep_link': self.add_tracking(deep_link, channels, 'ios'),
+                'headline': self.get_headline(channels),
+                'sound': 'chime.aiff' if is_breaking else '',
+                'tag': extra_tag,
+                'url': self.add_tracking(full_link, channels, 'ios')
+            },
+            'android': {
+                'alert': title,
+                'deep_link': self.add_tracking(deep_link, channels, 'android'),
+                'headline': 'ZEIT ONLINE {}'.format(
+                    self.get_headline(channels)),
+                'priority': 2 if is_breaking else 0,
+                'tag': extra_tag,
+                'url': self.add_tracking(full_link, channels, 'android')
+            }
         }
-
-        data = {
-            'android': self.android_data(**arguments),
-            'ios': self.ios_data(**arguments)
-        }
-
-        if image_url:
-            data['android']['imageUrl'] = image_url
-            data['ios']['imageUrl'] = image_url
-
-        return data
 
     def send(self, text, link, **kw):
         raise NotImplementedError
 
     @staticmethod
-    def rewrite_url(url, target_host):
-        is_blog = (
-            url.startswith('http://blog.zeit.de') or
-            url.startswith('http://www.zeit.de/blog/'))
-        url = url.replace('http://www.zeit.de/', target_host, 1)
-        url = url.replace('http://blog.zeit.de', target_host + 'blog', 1)
-        if is_blog:
-            url += '?feed=articlexml'
-        return url
+    def strip_to_path(url):
+        if '://' not in url:
+            url = '//' + url.lstrip('/')  # ensure valid url
+        return urlparse.urlunparse(
+            ['', ''] + list(urlparse.urlparse(url)[2:])).lstrip('/')
 
     @staticmethod
     def add_tracking(url, channels, device):
@@ -153,11 +145,11 @@ class ConnectionBase(object):
             'utm_campaign': channel,
             'utm_content': 'zeitde_{device}_link_x'.format(device=device),
         }
-        tracking = urllib.urlencode(tracking)
-        if '?' in url:
-            return url + '&' + tracking
-        else:
-            return url + '?' + tracking
+
+        tracking_query = urllib.urlencode(tracking)
+        parsed_url = list(urlparse.urlparse(url))  # ParseResult is immutable
+        parsed_url[4] = '&'.join((parsed_url[4], tracking_query))
+        return urlparse.urlunparse(parsed_url)
 
 
 class Message(zeit.push.message.Message):
