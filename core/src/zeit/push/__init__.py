@@ -16,7 +16,6 @@ product_config = """\
   channel-breaking Eilmeldung
   channel-news News
   urbanairship-audience-group subscriptions
-  urbanairship-ios-segment 77c49d90-f6ca-465c-b33f-110f1cdcdacd
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

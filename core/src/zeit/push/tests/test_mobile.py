@@ -1,6 +1,6 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
+from zeit.push.interfaces import CONFIG_CHANNEL_BREAKING, CONFIG_CHANNEL_NEWS
 import mock
 import pytz
 import unittest
@@ -49,58 +49,101 @@ class DataTest(zeit.push.testing.TestCase):
         self.assertEqual('bar', api.get_headline(['News']))
         self.assertEqual('foo', api.get_headline(['Eilmeldung']))
 
-    def test_transmits_metadata(self):
+    def test_transmits_news_metadata(self):
         catalog = self.create_catalog()
-        catalog.messages['push-news-title'] = 'ZEIT ONLINE'
+        catalog.messages['push-news-title'] = 'News'
         api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
-        data = api.data('foo', 'any', channels=CONFIG_CHANNEL_NEWS,
-                        teaserSupertitle='super', teaserTitle='title',
-                        teaserText='teaser', override_text=None,
-                        image_url='http://images.zeit.de/example')
+        data = api.data('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
 
         android = data['android']
-        self.assertEqual('ZEIT ONLINE', android['headline'])
-        self.assertEqual('title', android['text'])
-        self.assertEqual('teaser', android['teaser'])
-        self.assertEqual('http://images.zeit.de/example', android['imageUrl'])
+        self.assertEqual('ZEIT ONLINE News', android['headline'])
+        self.assertEqual('foo', android['alert'])
+        self.assertEqual(0, android['priority'])
 
         ios = data['ios']
-        self.assertEqual('super', ios['headline'])
-        self.assertEqual('ZEIT ONLINE', ios['alert-title'])
-        self.assertEqual('title', ios['alert'])
-        self.assertEqual('teaser', ios['teaser'])
-        self.assertEqual('http://images.zeit.de/example', ios['imageUrl'])
+        self.assertEqual('News', ios['headline'])
+        self.assertEqual('foo', ios['alert'])
+        self.assertEqual('', ios['sound'])
 
-    def test_message_config_may_override_text(self):
+    def test_transmits_breaking_metadata(self):
+        catalog = self.create_catalog()
+        catalog.messages['push-breaking-title'] = 'Breaking'
         api = zeit.push.mobile.ConnectionBase(1)
-        data = api.data('foo', 'any', override_text='mytext')
-        self.assertEqual('mytext', data['android']['text'])
-        self.assertEqual('mytext', data['ios']['alert'])
+        api.LANGUAGE = 'tt'
+        data = api.data('bar', 'any', channels=CONFIG_CHANNEL_BREAKING)
+
+        android = data['android']
+        self.assertEqual('ZEIT ONLINE Breaking', android['headline'])
+        self.assertEqual('bar', android['alert'])
+        self.assertEqual(2, android['priority'])
+
+        ios = data['ios']
+        self.assertEqual('Breaking', ios['headline'])
+        self.assertEqual('bar', ios['alert'])
+        self.assertEqual('chime.aiff', ios['sound'])
+
+    def test_www_url_is_replaced_with_staging(self):
+        api = zeit.push.mobile.ConnectionBase(1)
+        api.config['push-target-url'] = 'http://www.staging.zeit.de'
+        data = api.data('', 'http://www.zeit.de/foo/bar')
+        self.assertTrue(
+            data['android']['url'].startswith(
+                'http://www.staging.zeit.de/foo/bar'))
+        self.assertTrue(
+            data['ios']['url'].startswith(
+                'http://www.staging.zeit.de/foo/bar'))
+
+    def test_url_replacement_works_without_scheme(self):
+        api = zeit.push.mobile.ConnectionBase(1)
+        api.config['push-target-url'] = 'foo.zeit.de'
+        data = api.data('', 'http://www.zeit.de/bar')
+        self.assertTrue(
+            data['android']['url'].startswith(
+                'foo.zeit.de/bar'))
+        self.assertTrue(
+            data['ios']['url'].startswith(
+                'foo.zeit.de/bar'))
+
+    def test_url_replacement_works_with_trailing_slash(self):
+        api = zeit.push.mobile.ConnectionBase(1)
+        api.config['push-target-url'] = 'http://bar.zeit.de/'
+        data = api.data('', 'http://www.zeit.de/foo')
+        self.assertTrue(
+            data['android']['url'].startswith(
+                'http://bar.zeit.de/foo'))
+        self.assertTrue(
+            data['ios']['url'].startswith(
+                'http://bar.zeit.de/foo'))
+
+    def test_deep_link_starts_with_app_identifier(self):
+        with mock.patch('zeit.push.mobile.ConnectionBase') as ConnectionBase:
+            api = ConnectionBase(1)
+            api.APP_IDENTIFIER = 'foobar'
+            data = api.data('', 'http://www.zeit.de/article/one')
+            self.assertTrue(
+                data['android']['deep_link'].startswith(
+                    'foobar://article/one'))
+            self.assertTrue(
+                data['ios']['deep_link'].startswith(
+                    'foobar://article/one'))
 
 
-class RewriteURLTest(unittest.TestCase):
+class StripToPathTest(unittest.TestCase):
 
-    target_host = 'http://www.staging.zeit.de/'
+    layer = zeit.push.testing.ZCML_LAYER
 
-    def rewrite(self, url):
-        return zeit.push.mobile.ConnectionBase.rewrite_url(
-            url, self.target_host)
-
-    def test_www_zeit_de_is_replaced_with_staging(self):
+    def test_strip_to_path_works_with_full_url(self):
         self.assertEqual(
-            self.target_host + 'foo/bar',
-            self.rewrite('http://www.zeit.de/foo/bar'))
+            'foo/bar?query=arg#frag',
+            zeit.push.mobile.ConnectionBase.strip_to_path(
+                'https://www.zeit.de/foo/bar?query=arg#frag'))
 
-    def test_blog_zeit_de_is_replaced_with_staging_and_appends_query(self):
+    def test_strip_to_path_works_with_partial_url(self):
         self.assertEqual(
-            self.target_host + 'blog/foo/bar?feed=articlexml',
-            self.rewrite('http://blog.zeit.de/foo/bar'))
-
-    def test_zeit_de_blog_is_replaced_with_staging_and_appends_query(self):
-        self.assertEqual(
-            self.target_host + 'blog/foo/bar?feed=articlexml',
-            self.rewrite('http://www.zeit.de/blog/foo/bar'))
+            'foo/bar?query=arg&param',
+            zeit.push.mobile.ConnectionBase.strip_to_path(
+                'www.zeit.de/foo/bar?query=arg&param'))
 
 
 class AddTrackingTest(unittest.TestCase):
