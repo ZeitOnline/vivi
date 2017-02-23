@@ -665,7 +665,7 @@ Create a subclass for PublishRetractTask which raises a ConflictError when run:
 >>> import zeit.workflow.publish
 >>> class ConflictingTask(zeit.workflow.publish.PublishRetractTask):
 ...     run_count = 0
-...     def run(self, obj, info):
+...     def run(self, obj):
 ...         self.run_count += 1
 ...         raise ZODB.POSException.ConflictError()
 
@@ -673,7 +673,7 @@ When we run this task it'll be tried three times. After the third run the
 conflict error logged:
 
 >>> task = ConflictingTask()
->>> input = zeit.workflow.publish.TaskDescription(jpg)
+>>> input = zeit.workflow.publish.SingleInput(jpg)
 >>> message = task(None, 1, input)
 >>> print zope.i18n.translate(message)
 Error during publish/retract: ConflictError: database conflict error

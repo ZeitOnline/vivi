@@ -99,6 +99,22 @@ class IPublicationStatus(zope.interface.Interface):
         values=('published', 'not-published', 'published-with-changes'))
 
 
+PRIORITY_HOMEPAGE = 'homepage'
+PRIORITY_HIGH = 'highprio'
+PRIORITY_DEFAULT = 'default'
+PRIORITY_LOW = 'lowprio'
+
+
+class IPublishPriority(zope.interface.Interface):
+    """Adapts ICMSContent to a PRIORITY_* value."""
+
+
+@grok.adapter(zope.interface.Interface)
+@grok.implementer(IPublishPriority)
+def publish_priority_default(context):
+    return PRIORITY_DEFAULT
+
+
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 
@@ -123,21 +139,13 @@ class IPublish(zope.interface.Interface):
 
         """
 
+    def publish_multiple(objects, priority=PRIORITY_LOW, async=True):
+        """Publish multiple objects in one transaction, given as a list of
+        either ICMSContent or uniqueIds.
 
-PRIORITY_HOMEPAGE = 'homepage'
-PRIORITY_HIGH = 'highprio'
-PRIORITY_DEFAULT = 'default'
-PRIORITY_LOW = 'lowprio'
-
-
-class IPublishPriority(zope.interface.Interface):
-    """Adapts ICMSContent to a PRIORITY_* value."""
-
-
-@grok.adapter(zope.interface.Interface)
-@grok.implementer(IPublishPriority)
-def publish_priority_default(context):
-    return PRIORITY_DEFAULT
+        (This method doesn't really fit here, on an adapter from ICMSContent,
+        but it doesn't make sense to introduce another extension point yet.)
+        """
 
 
 class IWithMasterObjectEvent(zope.component.interfaces.IObjectEvent):

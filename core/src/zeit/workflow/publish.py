@@ -2,7 +2,7 @@ from __future__ import with_statement
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import ZODB.POSException
 import logging
 import lovely.remotetask.interfaces
@@ -33,53 +33,6 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-class Timer(threading.local):
-
-    def start(self, message):
-        self.times = []
-        self.mark(message)
-
-    def mark(self, message):
-        self.times.append((time.time(), message))
-
-    def get_timings(self):
-        result = []
-        last = None
-        total = 0
-        for when, message in self.times:
-            if last is None:
-                diff = 0
-            else:
-                diff = when - last
-            total += diff
-            last = when
-            result.append((diff, total, message))
-        return result
-
-    def __unicode__(self):
-        result = []
-        for diff, total, message in self.get_timings():
-            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
-        return u'\n'.join(result)
-
-
-timer = Timer()
-
-
-class TaskDescription(object):
-    """Data to be passed to publish/retract tasks."""
-
-    def __init__(self, obj):
-        self.uniqueId = obj.uniqueId
-        self.principal = self.get_principal().id
-
-    @staticmethod
-    def get_principal():
-        interaction = zope.security.management.getInteraction()
-        for p in interaction.participations:
-            return p.principal
-
-
 class Publish(object):
 
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
@@ -101,8 +54,7 @@ class Publish(object):
         task = u'zeit.workflow.publish'
         if async:
             self.log(self.context, _('Publication scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            return self.tasks(priority).add(task, SingleInput(self.context))
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
@@ -116,12 +68,26 @@ class Publish(object):
         task = u'zeit.workflow.retract'
         if async:
             self.log(self.context, _('Retracting scheduled'))
-            return self.tasks(priority).add(
-                task, TaskDescription(self.context))
+            return self.tasks(priority).add(task, SingleInput(self.context))
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
             task.run_sync(self.context)
+
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+        ids = []
+        for obj in objects:
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                ids.append(obj.uniqueId)
+            else:
+                ids.append(obj)
+        task = u'zeit.workflow.publish-multiple'
+        if async:
+            return self.tasks(priority).add(task, MultiInput(ids))
+        else:
+            task = zope.component.getUtility(
+                lovely.remotetask.interfaces.ITask, name=task)
+            task.run_sync(ids)
 
     def tasks(self, priority):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -135,6 +101,75 @@ class Publish(object):
         log.log(obj, msg)
 
 
+class SingleInput(object):
+    """Data to be passed to publish/retract tasks."""
+
+    def __init__(self, obj):
+        self.uniqueId = obj.uniqueId
+        self.principal = self.get_principal().id
+
+    def resolve(self):
+        return self.repository.getContent(self.uniqueId)
+
+    @property
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    @staticmethod
+    def get_principal():
+        interaction = zope.security.management.getInteraction()
+        for p in interaction.participations:
+            return p.principal
+
+    def acquire_active_lock(self):
+        return self._acquire_active_lock(self.uniqueId)
+
+    def _acquire_active_lock(self, uniqueId):
+        with active_objects_lock:
+            if uniqueId in active_objects:
+                return False
+            active_objects.add(uniqueId)
+            return True
+
+    def release_active_lock(self):
+        self._release_active_lock(self.uniqueId)
+
+    def _release_active_lock(self, uniqueId):
+        with active_objects_lock:
+            active_objects.remove(uniqueId)
+
+    def __str__(self):
+        return unicode(self).encode('ascii', 'backslashreplace')
+
+    def __unicode__(self):
+        return self.uniqueId
+
+
+class MultiInput(SingleInput):
+
+    def __init__(self, ids):
+        self.ids = ids
+        self.principal = self.get_principal().id
+
+    def resolve(self):
+        return [self.repository.getContent(x) for x in self.ids]
+
+    def acquire_active_lock(self):
+        for id in self.ids:
+            acquired = self._acquire_active_lock(id)
+            if not acquired:
+                return False
+        return True
+
+    def release_active_lock(self):
+        for id in self.ids:
+            self._release_active_lock(id)
+
+    def __unicode__(self):
+        return unicode(self.ids)
+
+
 active_objects = set()
 active_objects_lock = threading.Lock()
 
@@ -146,34 +181,31 @@ class PublishRetractTask(object):
     # outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
-        info = (type(self).__name__, input.uniqueId, jobid)
+        info = (type(self).__name__, unicode(input), jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
         logger.info("Running job %s" % jobid)
-        uniqueId = input.uniqueId
-        principal = input.principal
 
-        self.login(principal)
+        self.login(input.principal)
         timer.mark('Logged in')
 
-        obj = self.repository.getContent(input.uniqueId)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        obj = input.resolve()
         timer.mark('Looked up object')
 
         retries = 0
         while True:
             try:
                 try:
-                    acquired = self.acquire_active_lock(uniqueId)
+                    acquired = input.acquire_active_lock()
                     if acquired:
-                        self.run(obj, info)
+                        self.run(obj)
                     else:
                         self.log(
                             obj, _('A publish/retract job is already active.'
                                    ' Aborting'))
-                        logger.info("Aborting parallel publish/retract of %r"
-                                    % uniqueId)
-                    transaction.commit()
+                        logger.info(
+                            'Aborting parallel publish/retract of %s', input)
+                    self.commit()
                     timer.mark('Commited')
                 except ZODB.POSException.ConflictError, e:
                     timer.mark('Conflict')
@@ -201,32 +233,23 @@ class PublishRetractTask(object):
                 break
             finally:
                 if acquired:
-                    self.release_active_lock(uniqueId)
-        timer.mark('Done %s' % input.uniqueId)
+                    input.release_active_lock()
+        timer.mark(u'Done %s' % input)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
         return message
 
+    def commit(self):  # Extension point for subclasses
+        transaction.commit()
+
     def run_sync(self, obj):
         timer.start(u'Synchronous %s started: %s' % (
-            type(self).__name__, obj.uniqueId))
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-        self.run(obj, info)
-        timer.mark('Done %s' % obj.uniqueId)
+            type(self).__name__, obj))
+        self.run(obj)
+        timer.mark('Done %s' % obj)
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
-
-    def acquire_active_lock(self, uniqueId):
-        with active_objects_lock:
-            if uniqueId in active_objects:
-                return False
-            active_objects.add(uniqueId)
-            return True
-
-    def release_active_lock(self, uniqueId):
-        with active_objects_lock:
-            active_objects.remove(uniqueId)
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -330,11 +353,6 @@ class PublishRetractTask(object):
         return zope.component.getUtility(
             zeit.objectlog.interfaces.IObjectLog).log
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
     @staticmethod
     def lock(obj, master=None):
         zope.event.notify(
@@ -390,8 +408,9 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
-    def run(self, obj, info):
+    def run(self, obj):
         logger.info('Publishing %s' % obj.uniqueId)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if info.can_publish() == CAN_PUBLISH_ERROR:
             logger.error("Could not publish %s" % obj.uniqueId)
             self.log(
@@ -400,7 +419,7 @@ class PublishTask(PublishRetractTask):
 
         obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
-        self.call_publish_script(obj)
+        self.call_publish_script(self.get_all_paths(obj, True))
         self.recurse(self.after_publish, True, obj, obj)
         obj = self.recurse(self.unlock, True, obj, obj)
 
@@ -422,12 +441,11 @@ class PublishTask(PublishRetractTask):
         new_obj = self.cycle(obj)
         return new_obj
 
-    def call_publish_script(self, obj):
+    def call_publish_script(self, paths):
         """Actually do the publication."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publish_script = config['publish-script']
-        paths = self.get_all_paths(obj, True)
         self.call_script(publish_script, '\n'.join(paths))
         timer.mark('Called publish script')
 
@@ -442,8 +460,9 @@ class PublishTask(PublishRetractTask):
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
-    def run(self, obj, info):
+    def run(self, obj):
         logger.info('Retracting %s' % obj.uniqueId)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if not info.published:
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
@@ -482,3 +501,76 @@ class RetractTask(PublishRetractTask):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+class MultiPublishTask(PublishTask):
+    """Publish multiple objects"""
+
+    def run(self, objects):
+        logger.info('Publishing %s', objects)
+
+        published = []
+        for obj in objects:
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if info.can_publish() == CAN_PUBLISH_ERROR:
+                logger.error("Skipping %s", obj.uniqueId)
+                self.log(obj, _(
+                    "Could not publish because conditions not satisifed."))
+                continue
+
+            obj = self.recurse(self.lock, True, obj, obj)
+            obj = self.recurse(self.before_publish, True, obj, obj)
+            published.append(obj)
+
+        paths = [self.convert_uid_to_path(x.uniqueId) for x in published]
+        self.call_publish_script(paths)
+
+        for obj in published:
+            self.recurse(self.after_publish, True, obj, obj)
+            obj = self.recurse(self.unlock, True, obj, obj)
+
+    def commit(self):
+        # Work around limitations of our ZODB-based DAV cache.
+        # Since publishing a sizable amount of objects will result in a rather
+        # long-running transaction (100 articles take about two minutes), the
+        # probability of ConflictErrors is very high there, see ZON-3715 for
+        # details. We prevent this by simply not writing to the DAV cache
+        # inside the job, which is the only change this commit() would be
+        # writing -- since the DAV changes itself happen immediately without
+        # transaction isolation anyway. The DAV cache will then be updated
+        # shortly afterwards by the invalidator (since that runs for all
+        # changes and doesn't discriminate changes made by vivi itself).
+        transaction.abort()
+
+
+class Timer(threading.local):
+
+    def start(self, message):
+        self.times = []
+        self.mark(message)
+
+    def mark(self, message):
+        self.times.append((time.time(), message))
+
+    def get_timings(self):
+        result = []
+        last = None
+        total = 0
+        for when, message in self.times:
+            if last is None:
+                diff = 0
+            else:
+                diff = when - last
+            total += diff
+            last = when
+            result.append((diff, total, message))
+        return result
+
+    def __unicode__(self):
+        result = []
+        for diff, total, message in self.get_timings():
+            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
+        return u'\n'.join(result)
+
+
+timer = Timer()
