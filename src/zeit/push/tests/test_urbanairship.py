@@ -9,7 +9,6 @@ import urbanairship.push.core
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-import zope.app.appsetup.product
 
 
 def send(self):
@@ -100,10 +99,10 @@ class ConnectionTest(zeit.push.testing.TestCase):
             api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
             self.assertEqual(
                 {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-                push.call_args_list[0][0][0].audience)
+                push.call_args_list[0][0][0].audience)  # Android
             self.assertEqual(
                 {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-                push.call_args_list[1][0][0].audience['AND'][1])
+                push.call_args_list[1][0][0].audience)  # iOS
 
     def test_raises_if_no_channel_given(self):
         api = self.connection()
@@ -124,10 +123,10 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
-                    push.call_args_list[0][0][0].options['expiry'])
+                    push.call_args_list[0][0][0].expiry)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
-                    push.call_args_list[1][0][0].options['expiry'])
+                    push.call_args_list[1][0][0].expiry)
 
     def test_enriches_payload_with_tag_to_categorize_notification(self):
         api = self.connection()
@@ -137,13 +136,3 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual('News', android['extra']['tag'])
             ios = push.call_args_list[1][0][0].notification['ios']
             self.assertEqual('News', ios['extra']['tag'])
-
-    def test_ios_audience_contains_segment(self):
-        api = self.connection()
-        with mock.patch.object(api, 'push') as push:
-            api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-            # This segment ID is from the UA test application, otherwise our
-            # integration test would fail.
-            self.assertEqual(
-                '77c49d90-f6ca-465c-b33f-110f1cdcdacd',
-                push.call_args_list[1][0][0].audience['AND'][0]['segment'])
