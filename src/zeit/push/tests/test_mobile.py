@@ -245,6 +245,15 @@ class MessageTest(zeit.push.testing.TestCase):
                 'teaserTitle': 'title'})],
             self.get_calls('urbanairship'))
 
+    def test_message_text_favours_override_text_over_title(self):
+        message = zope.component.getAdapter(
+            self.create_content(title='nay'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config = {'override_text': 'yay'}
+        message.send()
+        self.assertEqual('yay', message.text)
+        self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
+
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
