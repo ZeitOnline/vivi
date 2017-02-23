@@ -89,7 +89,7 @@ class ConnectionBase(object):
             extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
 
         path = self.strip_to_path(link)
-        push_target = self.config['push-target-url'].rstrip('/')
+        push_target = self.config.get('push-target-url', '').rstrip('/')
         full_link = '/'.join((push_target, path))
         deep_link = '://'.join((self.APP_IDENTIFIER, path))
 
@@ -182,7 +182,7 @@ class Message(zeit.push.message.Message):
 
     @zope.cachedescriptors.property.Lazy
     def text(self):
-        return self.context.title
+        return self.config.get('override_text', self.context.title)
 
     @zope.cachedescriptors.property.Lazy
     def additional_parameters(self):
