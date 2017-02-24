@@ -2,6 +2,7 @@ from celery import shared_task
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import logging
 import os.path
 import pytz
@@ -30,36 +31,19 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-class Timer(threading.local):
+class LogMultipleException(Exception):
+    """Carry multiple messages for objects needed for object log."""
 
-    def start(self, message):
-        self.times = []
-        self.mark(message)
+    def __init__(self, objs_and_messages, has_errors):
+        """Store the data for later logging.
 
-    def mark(self, message):
-        self.times.append((time.time(), message))
+        objs_and_messages ... list of tuples(<object>, <message>)
+        has_errors ... boolean telling whether there are error messages in
+                       `objs_and_messages`.
 
-    def get_timings(self):
-        result = []
-        last = None
-        total = 0
-        for when, message in self.times:
-            if last is None:
-                diff = 0
-            else:
-                diff = when - last
-            total += diff
-            last = when
-            result.append((diff, total, message))
-        return result
-
-    def __unicode__(self):
-        result = []
-        for diff, total, message in self.get_timings():
-            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
-        return u'\n'.join(result)
-
-timer = Timer()
+        """
+        self.objs_and_messages = objs_and_messages
+        self.has_errors = has_errors
 
 
 class Publish(object):
@@ -78,20 +62,33 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         return self._execute_task(
-            PUBLISH_TASK, _('Publication scheduled'), priority, async)
+            PUBLISH_TASK, [self.context.uniqueId], priority, async,
+            _('Publication scheduled'))
 
     def retract(self, priority=None, async=True):
         """Retract object."""
         return self._execute_task(
-            RETRACT_TASK, _('Retracting scheduled'), priority, async)
+            RETRACT_TASK, [self.context.uniqueId], priority, async,
+            _('Retracting scheduled'))
 
-    def _execute_task(self, task, message, priority, async):
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+        """Publish multiple objects."""
+        ids = []
+        for obj in objects:
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                ids.append(obj.uniqueId)
+            else:
+                ids.append(obj)
+        return self._execute_task(MULTI_PUBLISH_TASK, ids, priority, async)
+
+    def _execute_task(self, task, ids, priority, async, message=None):
         if async:
-            self.log(self.context, message)
+            if message:
+                self.log(self.context, message)
             return task.apply_async(
-                (self.context.uniqueId,), urgency=self.get_urgency(priority))
+                (ids,), urgency=self.get_urgency(priority))
         else:
-            task(self.context.uniqueId)
+            task(ids)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -109,33 +106,48 @@ class PublishRetractTask(object):
     def __init__(self, jobid):
         self.jobid = jobid
 
-    def run(self, uniqueId):
-        info = (type(self).__name__, uniqueId, self.jobid)
+    def run(self, ids):
+        """Run task in worker."""
+        ids_str = ', '.join(ids)
+        info = (type(self).__name__, ids_str, self.jobid)
         __traceback_info__ = info
         timer.start(u'Job %s started: %s (%s)' % info)
-        logger.info("Running job %s for %s", self.jobid, uniqueId)
+        logger.info("Running job %s for %s", self.jobid, ids_str)
 
-        obj = self.repository.getContent(uniqueId)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        objs = [self.repository.getContent(uniqueId)
+                for uniqueId in ids]
         timer.mark('Looked up object')
 
         try:
-            result = self._run(obj, info)
+            result = self._run(objs)
+        except LogMultipleException as e:
+            if e.has_errors:
+                message = _(
+                    'Errors during publish/retract multiple items.')
+            else:
+                # See MultiPublishTask._run for an explanation why we are
+                # successful despite the exception.
+                message = _('Successfully published multiple items.')
+            self.handle_execption(ids_str, e.objs_and_messages, message)
         except Exception as e:
             logger.error("Error during publish/retract", exc_info=True)
             error_message = _(
                 "Error during publish/retract: ${exc}: ${message}",
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
-            self._log_timer(uniqueId)
-            raise z3c.celery.celery.HandleAfterAbort(
-                self.log, obj, error_message,
-                message=zope.i18n.translate(
-                    error_message, target_language='de'))
-        self._log_timer(uniqueId)
-        return result
+            self.handle_execption(
+                ids_str, [(obj, error_message) for obj in objs], error_message)
+        else:
+            self._log_timer(ids_str)
+            return result
 
-    def _log_timer(self, uniqueId):
-        timer.mark('Done %s' % uniqueId)
+    def handle_execption(self, ids_str, objs_and_messages, message):
+        self._log_timer(ids_str)
+        raise z3c.celery.celery.HandleAfterAbort(
+            self.log_on_abort, objs_and_messages,
+            message=zope.i18n.translate(message, target_language='de'))
+
+    def _log_timer(self, ids_str):
+        timer.mark('Done %s' % ids_str)
         timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
@@ -227,10 +239,14 @@ class PublishRetractTask(object):
             path_prefix,
             uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
 
-    @property
-    def log(self):
-        return zope.component.getUtility(
-            zeit.objectlog.interfaces.IObjectLog).log
+    def log(self, obj, message, error=False):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        log.log(obj, message)
+
+    def log_on_abort(self, objs_and_messages):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        for obj, message in objs_and_messages:
+            log.log(obj, message)
 
     @property
     def repository(self):
@@ -292,19 +308,34 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
-    def _run(self, obj, info):
-        logger.info('Publishing %s' % obj.uniqueId)
-        if info.can_publish() == CAN_PUBLISH_ERROR:
-            logger.error("Could not publish %s" % obj.uniqueId)
-            self.log(
-                obj, _("Could not publish because conditions not satisifed."))
+    def _run(self, objs):
+        logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
+        published = []
+        for obj in objs:
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if info.can_publish() == CAN_PUBLISH_ERROR:
+                logger.error("Could not publish %s" % obj.uniqueId)
+                self.log(
+                    obj,
+                    _("Could not publish because conditions not satisifed."),
+                    error=True)
+                continue
+            obj = self.recurse(self.lock, True, obj, obj)
+            obj = self.recurse(self.before_publish, True, obj, obj)
+            published.append(obj)
+
+        if objs and not published:
             return "Could not publish because conditions not satisfied."
 
-        obj = self.recurse(self.lock, True, obj, obj)
-        obj = self.recurse(self.before_publish, True, obj, obj)
-        self.call_publish_script(obj)
-        self.recurse(self.after_publish, True, obj, obj)
-        obj = self.recurse(self.unlock, True, obj, obj)
+        paths = []
+        for obj in published:
+            paths.extend(self.get_all_paths(obj, True))
+
+        self.call_publish_script(paths)
+
+        for obj in published:
+            self.recurse(self.after_publish, True, obj, obj)
+            obj = self.recurse(self.unlock, True, obj, obj)
         return "Published."
 
     def before_publish(self, obj, master):
@@ -325,12 +356,11 @@ class PublishTask(PublishRetractTask):
         new_obj = self.cycle(obj)
         return new_obj
 
-    def call_publish_script(self, obj):
+    def call_publish_script(self, paths):
         """Actually do the publication."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publish_script = config['publish-script']
-        paths = self.get_all_paths(obj, True)
         self.call_script(publish_script, '\n'.join(paths))
         timer.mark('Called publish script')
 
@@ -343,22 +373,25 @@ class PublishTask(PublishRetractTask):
 
 
 @shared_task(bind=True)
-def PUBLISH_TASK(self, uniqueId):
-    return PublishTask(getattr(self, 'task_id', 'sync-task')).run(uniqueId)
+def PUBLISH_TASK(self, ids):
+    return PublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 
 
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
-    def _run(self, obj, info):
-        logger.info('Retracting %s' % obj.uniqueId)
-        if not info.published:
-            logger.warning(
-                "Retracting object %s which is not published." % obj.uniqueId)
+    def _run(self, objs):
+        logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
+        for obj in objs:
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if not info.published:
+                logger.warning(
+                    "Retracting object %s which is not published.",
+                    obj.uniqueId)
 
-        obj = self.recurse(self.before_retract, False, obj, obj)
-        self.call_retract_script(obj)
-        self.recurse(self.after_retract, False, obj, obj)
+            obj = self.recurse(self.before_retract, False, obj, obj)
+            self.call_retract_script(obj)
+            self.recurse(self.after_retract, False, obj, obj)
         return "Retracted."
 
     def before_retract(self, obj, master):
@@ -394,5 +427,68 @@ class RetractTask(PublishRetractTask):
 
 
 @shared_task(bind=True)
-def RETRACT_TASK(self, uniqueId):
-    return RetractTask(self.task_id).run(uniqueId)
+def RETRACT_TASK(self, ids):
+    return RetractTask(getattr(self, 'task_id', 'sync-task')).run(ids)
+
+
+class MultiPublishTask(PublishTask):
+    """Publish multiple objects"""
+
+    def _run(self, objs):
+        self._log_entries = []
+        self._logged_error = False
+        super(MultiPublishTask, self)._run(objs)
+        # Work around limitations of our ZODB-based DAV cache.
+        # Since publishing a sizeable amount of objects will result in a rather
+        # long-running transaction (100 articles take about two minutes), the
+        # probability of ConflictErrors is very high there, see ZON-3715 for
+        # details. We prevent this by simply not writing to the DAV cache
+        # inside the job, which is the only change this commit() would be
+        # writing -- since the DAV changes itself happen immediately without
+        # transaction isolation anyway. The DAV cache will then be updated
+        # shortly afterwards by the invalidator (since that runs for all
+        # changes and doesn't discriminate changes made by vivi itself).
+        raise LogMultipleException(self._log_entries, self._logged_error)
+
+    def log(self, obj, message, error=False):
+        self._log_entries.append((obj, message))
+        if error:
+            self._logged_error = True
+
+
+@shared_task(bind=True)
+def MULTI_PUBLISH_TASK(self, ids):
+    return MultiPublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
+
+
+class Timer(threading.local):
+
+    def start(self, message):
+        self.times = []
+        self.mark(message)
+
+    def mark(self, message):
+        self.times.append((time.time(), message))
+
+    def get_timings(self):
+        result = []
+        last = None
+        total = 0
+        for when, message in self.times:
+            if last is None:
+                diff = 0
+            else:
+                diff = when - last
+            total += diff
+            last = when
+            result.append((diff, total, message))
+        return result
+
+    def __unicode__(self):
+        result = []
+        for diff, total, message in self.get_timings():
+            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
+        return u'\n'.join(result)
+
+
+timer = Timer()

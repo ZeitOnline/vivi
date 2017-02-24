@@ -15,6 +15,9 @@ zeit.cms changes
   * Remove RemoteTaskHelper as it's no longer needed.
   * Remove TaskServices.
 
+- ZON-3447: Implement ``IPublish().publish_multiple([id, id, id, ...])``
+
+
 2.95.3 (2017-02-15)
 -------------------
 
