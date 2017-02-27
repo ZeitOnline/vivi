@@ -1,13 +1,12 @@
 # coding: utf-8
+
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import pkg_resources
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
 import zeit.workflow.testing
-import plone.testing
-import gocept.httpserverlayer.wsgi
-
-import gocept.selenium
 
 
 product_config = """
@@ -37,10 +36,6 @@ WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
-
-WORKFLOW_ZCML_LAYER  = plone.testing.Layer(
-    name='Layer', module=__name__, bases=(ZCML_LAYER,
-                                          zeit.workflow.testing.SCRIPTS_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
