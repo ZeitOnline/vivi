@@ -27,7 +27,6 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
     def publish_all(self, action, data):
         additional_constraints = [
             query.field('published', 'not-published'),
-
             query.or_(
                 # Only Articles marked as urgent and infoboxes should be
                 # published
