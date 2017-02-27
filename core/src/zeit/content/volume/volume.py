@@ -134,11 +134,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_solr(self, additional_query_contstraints=None, rows=1000):
+    def all_content_via_solr(self, additional_query_contstraints=None,
+                             rows=1000):
         """
-        Generator to find ICMSContent of this volume via Solr.
+        Get all content for this volume via Solr.
         If u pass a list of additional query strings, they will be added as
-        and AND operand to the query field.
+        an AND-operand to the query field.
         """
         if not additional_query_contstraints:
             additional_query_contstraints = []
@@ -155,8 +156,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         result = solr.search(query, fl='uniqueId', rows=rows)
         return [zeit.cms.interfaces.ICMSContent(item['uniqueId'], None) for
                 item in result]
-
-
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
