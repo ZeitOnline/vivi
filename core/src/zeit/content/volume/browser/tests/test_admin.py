@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import pysolr
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import mock
+import pysolr
 import zeit.cms.testing
 import zeit.content.volume.testing
 
