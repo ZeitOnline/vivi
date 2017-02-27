@@ -54,9 +54,9 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
                 IPublishInfo(content).urgent = True
                 self.assertFalse(IPublishInfo(content).published)
                 self.assertTrue(IPublishInfo(content).can_publish())
-        b.getControl('Publish content of this volume').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
+                b.getControl('Publish content of this volume').click()
+        # with zeit.cms.testing.site(self.getRootFolder()):
+        #     with zeit.cms.testing.interaction():
                 with mock.patch(
                         'zeit.workflow.publish.PublishTask'
                         '.call_publish_script') as script:
