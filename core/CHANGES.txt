@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.7.4 (unreleased)
+2.7.4 (2017-02-28)
 ------------------
 
 - Add visible gallery entry count (Re: BUG-637)
