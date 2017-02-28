@@ -66,3 +66,29 @@ class TestEntryImages(zeit.cms.testing.FunctionalTestCase):
         images = zeit.content.image.interfaces.IImages(entry)
         assert hasattr(images, 'fill_color')
         assert images.image is entry.image
+
+
+class TestVisibleEntryCount(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.gallery.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(TestVisibleEntryCount, self).setUp()
+        gallery = zeit.content.gallery.gallery.Gallery()
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        gallery.image_folder = repository['2007']
+        entries = {'01.jpg': None, '02.jpg': 'image-only', '03.jpg': 'hidden'}
+        for key in entries:
+            zeit.content.gallery.testing.add_image('2007', key)
+        gallery.reload_image_folder()
+        for key, layout in entries.items():
+            entry = gallery[key]
+            entry.layout = layout
+            gallery[key] = entry
+        self.gallery = gallery
+
+    def test_visible_entry_count_should_consider_layout(self):
+        count = zeit.content.gallery.interfaces.IVisibleEntryCount(
+            self.gallery)
+        self.assertEqual(2, count)

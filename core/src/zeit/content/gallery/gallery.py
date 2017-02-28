@@ -364,6 +364,12 @@ def update_gallery_on_entry_change(entry, event):
     entry.__parent__[entry.__name__] = entry
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
+def get_visible_entry_count_for_gallery(context):
+    container = context._entries_container
+    return len(container.xpath('block[not(@layout="hidden")]/@name'))
+
+
 class EntryMetadata(object):
     """ImageMetadata composition from gallery entry and its image."""
 
