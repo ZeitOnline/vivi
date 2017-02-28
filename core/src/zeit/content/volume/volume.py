@@ -5,12 +5,13 @@ import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.content.article.article
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
-import zeit.workflow.interfaces
 import zope.interface
 import zope.schema
-import zeit.content.article.article
+import zeit.solr.query
+import zeit.workflow.interfaces
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -134,8 +135,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_solr(self, additional_query_contstraints=None,
-                             rows=1000):
+    def all_content_via_solr(self, additional_query_contstraints=None):
         """
         Get all content for this volume via Solr.
         If u pass a list of additional query strings, they will be added as
@@ -153,7 +153,9 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             Q.field_raw('volume', self.volume),
             * additional_query_contstraints
         )
-        result = solr.search(query, fl='uniqueId', rows=rows)
+        result = solr.search(query, fl='uniqueId', rows=1000)
+        # We dont expect more then 250 results for a volume
+        assert result.hits < 250
         return [zeit.cms.interfaces.ICMSContent(item['uniqueId'], None) for
                 item in result]
 

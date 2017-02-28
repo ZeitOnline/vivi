@@ -12,7 +12,6 @@ import zeit.content.volume.testing
 class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.volume.testing.ZCML_LAYER
-    # Copy und Paste from zeit.cms/...admin/browser/tests/test_admin.py
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
