@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.4.1 (unreleased)
+1.5 (unreleased)
 ------------------
 
 - ZON-3447: Publish all content for volume
