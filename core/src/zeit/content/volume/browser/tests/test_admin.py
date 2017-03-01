@@ -21,13 +21,15 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         volume.volume = 1
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
         with zeit.cms.testing.site(self.getRootFolder()):
-            zeit.cms.content.add.find_or_create_folder('2015', '01')
-            self.repository['2015']['01']['ausgabe'] = volume
-            content = ExampleContentType()
-            content.year = 2015
-            content.volume = 1
-            content.product = zeit.cms.content.sources.Product(u'ZEI')
-            self.repository['testcontent'] = content
+            with zeit.cms.testing.interaction():
+                zeit.cms.content.add.find_or_create_folder('2015', '01')
+                self.repository['2015']['01']['ausgabe'] = volume
+                content = ExampleContentType()
+                content.year = 2015
+                content.volume = 1
+                content.product = zeit.cms.content.sources.Product(u'ZEI')
+                self.repository['testcontent'] = content
+                IPublishInfo(self.repository['testcontent']).urgent = True
 
     def test_view_has_action_buttons(self):
         # Cause the VolumeAdminForm has additional actions
@@ -46,14 +48,6 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.zca.patch_utility(solr, zeit.solr.interfaces.ISolr)
         solr.search.return_value = pysolr.Results(
             [{'uniqueId': 'http://xml.zeit.de/testcontent'}], 1)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                # Create test content and make it publishable
-                content = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/testcontent')
-                IPublishInfo(content).urgent = True
-                self.assertFalse(IPublishInfo(content).published)
-                self.assertTrue(IPublishInfo(content).can_publish())
         b.getControl('Publish content of this volume').click()
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
@@ -63,4 +57,5 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
                     zeit.workflow.testing.run_publish(
                         zeit.cms.workflow.interfaces.PRIORITY_LOW)
                     script.assert_called_with(['work/testcontent'])
-                    self.assertTrue(IPublishInfo(content).published)
+                    self.assertTrue(
+                        IPublishInfo(self.repository['testcontent']).published)
