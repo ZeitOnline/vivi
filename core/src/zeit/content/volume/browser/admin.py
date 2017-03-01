@@ -38,7 +38,7 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
                         'type',
                         zeit.content.article.article.ArticleType.type)),
                 Q.field_raw('type',
-                                zeit.content.infobox.infobox.InfoboxType.type),
+                            zeit.content.infobox.infobox.InfoboxType.type),
             ),
 
         ]
