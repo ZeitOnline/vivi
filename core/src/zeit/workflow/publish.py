@@ -522,7 +522,9 @@ class MultiPublishTask(PublishTask):
             obj = self.recurse(self.before_publish, True, obj, obj)
             published.append(obj)
 
-        paths = [self.convert_uid_to_path(x.uniqueId) for x in published]
+        paths = []
+        for obj in published:
+            paths.extend(self.get_all_paths(obj, True))
         self.call_publish_script(paths)
 
         for obj in published:
