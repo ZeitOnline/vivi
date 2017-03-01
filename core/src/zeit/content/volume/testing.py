@@ -1,11 +1,13 @@
 # coding: utf-8
+
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import pkg_resources
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
+import zeit.workflow.testing
 
-import gocept.httpserverlayer.wsgi
-import gocept.selenium
 
 product_config = """
 <product-config zeit.content.volume>
@@ -21,7 +23,9 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         product_config +
         zeit.cms.testing.cms_product_config +
         zeit.content.image.testing.product_config +
-        zeit.content.cp.testing.product_config))
+        zeit.content.cp.testing.product_config +
+        zeit.workflow.testing.product_config
+    ))
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(

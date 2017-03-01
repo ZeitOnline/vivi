@@ -73,13 +73,20 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         is set, the method looks for a cover of the main_product.
         :param cover_id: str cover ID set in volume-covers.xml
         :param product_id: str product ID set in products.xml
-        :param product_id: bool specifies if a fallback should be used.
+        :param use_fallback: bool specifies if a fallback should be used.
         :return: zeit.content.image.interfaces.IImageGroup or None
         """
 
     def set_cover(cover_id, product_id, image):
         """
         Set an image as a cover of product.
+        """
+
+    def all_content_via_solr(additional_query_contstraints):
+        """
+        Get all Content for this volume with a Solr-Lookup.
+        :param additional_query_contstraints: [str] Additional Solr-Querries
+        :return: [ICMSContent]
         """
 
 

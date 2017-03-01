@@ -170,10 +170,10 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)
 
 
-class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
+class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestOrder, self).setUp()
+        super(TestVolumeSolrQuerries, self).setUp()
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
         self.solr = mock.Mock()
@@ -219,3 +219,21 @@ class TestOrder(zeit.content.volume.testing.FunctionalTestCase):
             [{'uniqueId': 'http://xml.zeit.de/2015/02/ausgabe'}], 1)
         self.assertEqual(None, volume.next)
         self.assertEqual(None, volume.previous)
+
+    def test_all_content_via_solr_returns_empty_list_if_no_content(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        self.solr.search.return_value = pysolr.Results(
+            [], 0)
+        self.assertEqual([], volume.all_content_via_solr(
+            additional_query_contstraints=['foo:bar']))
+
+    def test_all_content_via_solr_returns_ICMS_content(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        content = ExampleContentType()
+        self.repository['2015']['01']['article'] = content
+        self.solr.search.return_value = pysolr.Results(
+                [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
+        self.assertListEqual([content], volume.all_content_via_solr(
+            additional_query_contstraints=['foo:bar']))

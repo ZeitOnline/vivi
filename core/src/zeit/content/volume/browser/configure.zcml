@@ -26,6 +26,14 @@
      permission="zope.View"
      />
 
+    <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="admin.html"
+    class=".admin.VolumeAdminForm"
+    permission="zeit.cms.admin.View"
+    />
+
    <browser:defaultView
      for="..interfaces.IVolume"
      name="view.html"

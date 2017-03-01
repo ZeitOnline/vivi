@@ -5,11 +5,13 @@ import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.content.article.article
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
-import zeit.workflow.interfaces
 import zope.interface
 import zope.schema
+import zeit.solr.query
+import zeit.workflow.interfaces
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -132,6 +134,34 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             self))
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
+
+    def all_content_via_solr(self, additional_query_contstraints=None):
+        """
+        Get all content for this volume via Solr.
+        If u pass a list of additional query strings, they will be added as
+        an AND-operand to the query field.
+        """
+        if not additional_query_contstraints:
+            additional_query_contstraints = []
+        Q = zeit.solr.query
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        query = Q.and_(
+            Q.not_(Q.field('uniqueId', self.uniqueId)),
+            Q.or_(*[Q.field('product_id', p.id) for p in
+                    self._all_products]),
+            Q.field_raw('year', self.year),
+            Q.field_raw('volume', self.volume),
+            * additional_query_contstraints
+        )
+        result = solr.search(query, fl='uniqueId', rows=1000)
+        # We assume a maximum content amount per usual production print volume
+        assert result.hits < 250
+        content = []
+        for item in result:
+            item = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+            if item is not None:
+                content.append(item)
+        return content
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
