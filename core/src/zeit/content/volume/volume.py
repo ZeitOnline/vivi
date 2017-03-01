@@ -154,7 +154,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             * additional_query_contstraints
         )
         result = solr.search(query, fl='uniqueId', rows=1000)
-        # We dont expect more then 250 results for a volume
+        # We assume a maximum content amount per usual production print volume
         assert result.hits < 250
         return [zeit.cms.interfaces.ICMSContent(item['uniqueId'], None) for
                 item in result]
