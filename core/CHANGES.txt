@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.96.1 (unreleased)
+2.96.1 (2017-03-01)
 -------------------
 
 - Handle dependencies in publish_multiple
