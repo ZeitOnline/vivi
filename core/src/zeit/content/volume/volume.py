@@ -156,8 +156,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         result = solr.search(query, fl='uniqueId', rows=1000)
         # We assume a maximum content amount per usual production print volume
         assert result.hits < 250
-        return [zeit.cms.interfaces.ICMSContent(item['uniqueId'], None) for
-                item in result]
+        content = []
+        for item in result:
+            item = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+            if item is not None:
+                content.append(item)
+        return content
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
