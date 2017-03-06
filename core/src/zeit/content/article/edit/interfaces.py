@@ -408,8 +408,7 @@ class IPortraitbox(IReference, ILayoutable):
 
     text = zope.schema.Text(
         title=_('Text'),
-        required=False,
-        missing_value=u'')
+        required=False)
 
 
 class IAuthor(IReference):
