@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.21.11 (unreleased)
+3.21.11 (2017-03-06)
 --------------------
 
 - BUG-669: Serialize empty local text in portraitbox module correctly
