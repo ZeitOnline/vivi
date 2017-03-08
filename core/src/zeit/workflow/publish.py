@@ -78,8 +78,11 @@ class Publish(object):
         ids = []
         for obj in objects:
             if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                self.log(obj, _('Collective Publication'))
                 ids.append(obj.uniqueId)
             else:
+                self.log(zeit.cms.interfaces.ICMSContent.providedBy(obj),
+                         _('Collective Publication'))
                 ids.append(obj)
         task = u'zeit.workflow.publish-multiple'
         if async:
