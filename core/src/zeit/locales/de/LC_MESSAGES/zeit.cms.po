@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-03-01 11:22+0100\n"
-"PO-Revision-Date: 2017-03-01 11:25+0100\n"
+"POT-Creation-Date: 2017-03-08 17:19+0100\n"
+"PO-Revision-Date: 2017-03-08 17:19+0100\n"
 "Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -540,7 +540,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/syndication/browser/feed.py:150
-#: zeit/content/article/edit/interfaces.py:418
+#: zeit/content/article/edit/interfaces.py:417
 #: zeit/content/article/interfaces.py:156 zeit/content/author/author.py:83
 msgid "Author"
 msgstr "Autor"
@@ -1148,7 +1148,7 @@ msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
 #: zeit/cms/content/interfaces.py:66
-#: zeit/content/article/edit/interfaces.py:427
+#: zeit/content/article/edit/interfaces.py:426
 #: zeit/content/image/interfaces.py:42 zeit/content/volume/browser/form.py:34
 #: zeit/content/volume/interfaces.py:42 zeit/content/volume/volume.py:171
 msgid "Volume"
@@ -1725,7 +1725,7 @@ msgid "Too few keywords given."
 msgstr "Bitte mindestens 3 Schlagworte vergeben"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:453 zeit/workflow/publishinfo.py:45
+#: zeit/workflow/publish.py:456 zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -2289,7 +2289,7 @@ msgid "Cardstack block"
 msgstr "Kartenstapel"
 
 #: zeit/content/article/edit/citation.py:35
-#: zeit/content/article/edit/interfaces.py:482
+#: zeit/content/article/edit/interfaces.py:481
 msgid "Citation"
 msgstr "Zitat"
 
@@ -2301,7 +2301,7 @@ msgstr "Seitenumbruch"
 #: zeit/content/article/edit/interfaces.py:186
 #: zeit/content/article/edit/interfaces.py:364
 #: zeit/content/article/edit/interfaces.py:400
-#: zeit/content/article/edit/interfaces.py:505
+#: zeit/content/article/edit/interfaces.py:504
 #: zeit/content/article/interfaces.py:45 zeit/content/cp/interfaces.py:614
 #: zeit/content/cp/interfaces.py:912 zeit/content/gallery/interfaces.py:101
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
@@ -2380,14 +2380,14 @@ msgid "Drag an infobox here"
 msgstr "Ziehen Sie Infoboxen hierher, um sie zu verknüpfen"
 
 #: zeit/content/article/edit/interfaces.py:385
-#: zeit/content/article/edit/interfaces.py:473
+#: zeit/content/article/edit/interfaces.py:472
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 msgid "short"
 msgstr "kurz / klein"
 
 #: zeit/content/article/edit/interfaces.py:386
-#: zeit/content/article/edit/interfaces.py:474
+#: zeit/content/article/edit/interfaces.py:473
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 msgid "wide"
@@ -2418,53 +2418,53 @@ msgstr "Vor- und Nachname"
 msgid "Text"
 msgstr "Text"
 
-#: zeit/content/article/edit/interfaces.py:419
+#: zeit/content/article/edit/interfaces.py:418
 msgid "Drag an author here"
 msgstr "Ziehen Sie Autoren hierher, um sie zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:428
+#: zeit/content/article/edit/interfaces.py:427
 msgid "Drag a volume here"
 msgstr "Ziehen Sie ein Ausgabenobjekt hierher, um es zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:436
+#: zeit/content/article/edit/interfaces.py:435
 msgid "The root element must be <raw>."
 msgstr "Der Wurzelkonten muss ein <raw> Element sein."
 
-#: zeit/content/article/edit/interfaces.py:443
+#: zeit/content/article/edit/interfaces.py:442
 msgid "XML source"
 msgstr "XML-Quelltext"
 
-#: zeit/content/article/edit/interfaces.py:451
+#: zeit/content/article/edit/interfaces.py:450
 #: zeit/content/cp/interfaces.py:941
 msgid "Raw text reference"
 msgstr "Embed-Link"
 
-#: zeit/content/article/edit/interfaces.py:456
+#: zeit/content/article/edit/interfaces.py:455
 #: zeit/content/cp/interfaces.py:946
 msgid "Raw text"
 msgstr "Embed-Code (optional)"
 
-#: zeit/content/article/edit/interfaces.py:463
+#: zeit/content/article/edit/interfaces.py:462
 #: zeit/content/video/interfaces.py:126
 msgid "Audio id"
 msgstr "Audio-Id"
 
-#: zeit/content/article/edit/interfaces.py:466
+#: zeit/content/article/edit/interfaces.py:465
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:40
 msgid "Expires"
 msgstr "Ablaufdatum"
 
-#: zeit/content/article/edit/interfaces.py:475
+#: zeit/content/article/edit/interfaces.py:474
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:55
 msgid "double"
 msgstr "doppelt"
 
-#: zeit/content/article/edit/interfaces.py:485
+#: zeit/content/article/edit/interfaces.py:484
 msgid "Attribution"
 msgstr "Zitatgeber"
 
-#: zeit/content/article/edit/interfaces.py:489
+#: zeit/content/article/edit/interfaces.py:488
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
@@ -2473,47 +2473,47 @@ msgstr "Zitatgeber"
 msgid "URL"
 msgstr "URL"
 
-#: zeit/content/article/edit/interfaces.py:493
+#: zeit/content/article/edit/interfaces.py:492
 msgid "Citation 2"
 msgstr "Zitat 2"
 
-#: zeit/content/article/edit/interfaces.py:497
+#: zeit/content/article/edit/interfaces.py:496
 msgid "Attribution 2"
 msgstr "Zuordnung 2"
 
-#: zeit/content/article/edit/interfaces.py:501
+#: zeit/content/article/edit/interfaces.py:500
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:35
 msgid "URL 2"
 msgstr "URL 2"
 
-#: zeit/content/article/edit/interfaces.py:513
+#: zeit/content/article/edit/interfaces.py:512
 msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
-#: zeit/content/article/edit/interfaces.py:519
+#: zeit/content/article/edit/interfaces.py:518
 #: zeit/content/cp/interfaces.py:996
 msgid "Cardstack id"
 msgstr "ID"
 
-#: zeit/content/article/edit/interfaces.py:521
+#: zeit/content/article/edit/interfaces.py:520
 #: zeit/content/cp/interfaces.py:998
 msgid "Advertorial?"
 msgstr "Advertorial?"
 
-#: zeit/content/article/edit/interfaces.py:528
+#: zeit/content/article/edit/interfaces.py:527
 #: zeit/content/cp/interfaces.py:883
 msgid "Quiz id"
 msgstr "ID"
 
-#: zeit/content/article/edit/interfaces.py:530
+#: zeit/content/article/edit/interfaces.py:529
 msgid "Enable adreload"
 msgstr "Adreload aktivieren"
 
-#: zeit/content/article/edit/interfaces.py:537
+#: zeit/content/article/edit/interfaces.py:536
 msgid "Article body"
 msgstr "Artikeltext"
 
-#: zeit/content/article/edit/interfaces.py:538
+#: zeit/content/article/edit/interfaces.py:537
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
 
@@ -4837,23 +4837,23 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:204
+#: zeit/workflow/publish.py:207
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 "Abgebrochen: Veröffentlichen oder Zurückziehen für dieses Objekt bereits "
 "aktiv."
 
 #. Default: ""
-#: zeit/workflow/publish.py:224
+#: zeit/workflow/publish.py:227
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: zeit/workflow/publish.py:417 zeit/workflow/publish.py:517
+#: zeit/workflow/publish.py:420 zeit/workflow/publish.py:520
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:481
+#: zeit/workflow/publish.py:484
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4864,6 +4864,10 @@ msgstr "wird veröffentlicht"
 #: zeit/workflow/publish.py:70
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
+
+#: zeit/workflow/publish.py:81 zeit/workflow/publish.py:85
+msgid "Collective Publication"
+msgstr "Sammelveröffentlichung"
 
 #: zeit/workflow/source.py:43
 msgid "yes"

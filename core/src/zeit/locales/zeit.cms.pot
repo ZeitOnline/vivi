@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Mar  1 11:21:13 2017\n"
+"POT-Creation-Date: Wed Mar  8 17:19:02 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -588,7 +588,7 @@ msgstr ""
 
 #: zeit/cms/browser/listing.py:262
 #: zeit/cms/syndication/browser/feed.py:150
-#: zeit/content/article/edit/interfaces.py:418
+#: zeit/content/article/edit/interfaces.py:417
 #: zeit/content/article/interfaces.py:156
 #: zeit/content/author/author.py:83
 msgid "Author"
@@ -1198,7 +1198,7 @@ msgid "Last semantic change"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:66
-#: zeit/content/article/edit/interfaces.py:427
+#: zeit/content/article/edit/interfaces.py:426
 #: zeit/content/image/interfaces.py:42
 #: zeit/content/volume/browser/form.py:34
 #: zeit/content/volume/interfaces.py:42
@@ -1771,7 +1771,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:453
+#: zeit/workflow/publish.py:456
 #: zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr ""
@@ -2347,7 +2347,7 @@ msgid "Cardstack block"
 msgstr ""
 
 #: zeit/content/article/edit/citation.py:35
-#: zeit/content/article/edit/interfaces.py:482
+#: zeit/content/article/edit/interfaces.py:481
 msgid "Citation"
 msgstr ""
 
@@ -2359,7 +2359,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:186
 #: zeit/content/article/edit/interfaces.py:364
 #: zeit/content/article/edit/interfaces.py:400
-#: zeit/content/article/edit/interfaces.py:505
+#: zeit/content/article/edit/interfaces.py:504
 #: zeit/content/article/interfaces.py:45
 #: zeit/content/cp/interfaces.py:614
 #: zeit/content/cp/interfaces.py:912
@@ -2444,14 +2444,14 @@ msgid "Drag an infobox here"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:385
-#: zeit/content/article/edit/interfaces.py:473
+#: zeit/content/article/edit/interfaces.py:472
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 msgid "short"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:386
-#: zeit/content/article/edit/interfaces.py:474
+#: zeit/content/article/edit/interfaces.py:473
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 msgid "wide"
@@ -2485,53 +2485,53 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:419
+#: zeit/content/article/edit/interfaces.py:418
 msgid "Drag an author here"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:428
+#: zeit/content/article/edit/interfaces.py:427
 msgid "Drag a volume here"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:436
+#: zeit/content/article/edit/interfaces.py:435
 msgid "The root element must be <raw>."
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:443
+#: zeit/content/article/edit/interfaces.py:442
 msgid "XML source"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:451
+#: zeit/content/article/edit/interfaces.py:450
 #: zeit/content/cp/interfaces.py:941
 msgid "Raw text reference"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:456
+#: zeit/content/article/edit/interfaces.py:455
 #: zeit/content/cp/interfaces.py:946
 msgid "Raw text"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:463
+#: zeit/content/article/edit/interfaces.py:462
 #: zeit/content/video/interfaces.py:126
 msgid "Audio id"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:466
+#: zeit/content/article/edit/interfaces.py:465
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:40
 msgid "Expires"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:475
+#: zeit/content/article/edit/interfaces.py:474
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:55
 msgid "double"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:485
+#: zeit/content/article/edit/interfaces.py:484
 msgid "Attribution"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:489
+#: zeit/content/article/edit/interfaces.py:488
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
@@ -2540,47 +2540,47 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:493
+#: zeit/content/article/edit/interfaces.py:492
 msgid "Citation 2"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:497
+#: zeit/content/article/edit/interfaces.py:496
 msgid "Attribution 2"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:501
+#: zeit/content/article/edit/interfaces.py:500
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:35
 msgid "URL 2"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:513
+#: zeit/content/article/edit/interfaces.py:512
 msgid "Liveblog id"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:519
+#: zeit/content/article/edit/interfaces.py:518
 #: zeit/content/cp/interfaces.py:996
 msgid "Cardstack id"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:521
+#: zeit/content/article/edit/interfaces.py:520
 #: zeit/content/cp/interfaces.py:998
 msgid "Advertorial?"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:528
+#: zeit/content/article/edit/interfaces.py:527
 #: zeit/content/cp/interfaces.py:883
 msgid "Quiz id"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:530
+#: zeit/content/article/edit/interfaces.py:529
 msgid "Enable adreload"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:537
+#: zeit/content/article/edit/interfaces.py:536
 msgid "Article body"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:538
+#: zeit/content/article/edit/interfaces.py:537
 msgid "breaking-news-more-shortly"
 msgstr ""
 
@@ -4883,21 +4883,21 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:204
+#: zeit/workflow/publish.py:207
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 
-#: zeit/workflow/publish.py:224
+#: zeit/workflow/publish.py:227
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:417
-#: zeit/workflow/publish.py:517
+#: zeit/workflow/publish.py:420
+#: zeit/workflow/publish.py:520
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:481
+#: zeit/workflow/publish.py:484
 msgid "Retracted"
 msgstr ""
 
@@ -4907,6 +4907,11 @@ msgstr ""
 
 #: zeit/workflow/publish.py:70
 msgid "Retracting scheduled"
+msgstr ""
+
+#: zeit/workflow/publish.py:81
+#: zeit/workflow/publish.py:85
+msgid "Collective Publication"
 msgstr ""
 
 #: zeit/workflow/source.py:43
