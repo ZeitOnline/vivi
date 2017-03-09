@@ -189,6 +189,7 @@ class Toc(zeit.cms.browser.view.Base):
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
             'supertitle': "body/supertitle/text()",
+            'access': "//attribute[@name='access']/text()"
         }
         res = {}
         for key, xpath in xpaths.iteritems():
@@ -321,7 +322,11 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), title_teaser]
+
+        access = toc_entry.get('access')
+        if not access:
+            access = "Nicht Gesetzt"
+        return [str(page), title_teaser, access]
 
 
 class Excluder(object):
