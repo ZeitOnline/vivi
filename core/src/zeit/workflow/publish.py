@@ -149,6 +149,11 @@ class SingleInput(object):
         return self.uniqueId
 
 
+# BBB for persistent instances
+class TaskDescription(SingleInput):
+    pass
+
+
 class MultiInput(SingleInput):
 
     def __init__(self, ids):
