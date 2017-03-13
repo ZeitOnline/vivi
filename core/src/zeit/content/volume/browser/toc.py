@@ -248,7 +248,6 @@ class Toc(zeit.cms.browser.view.Base):
                 zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
                 self.context, toc_entry['access'])
 
-
     def _full_product_name(self, product_uid):
         """
         :param product_uid: str -  /PRODUCT_ID/YEAR/VOL/
