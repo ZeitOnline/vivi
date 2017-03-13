@@ -18,6 +18,7 @@ import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
 import zope.site.site
+import zeit.cms.content.sources
 
 
 class Toc(zeit.cms.browser.view.Base):
@@ -219,6 +220,7 @@ class Toc(zeit.cms.browser.view.Base):
                 if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
+        self._normalize_access_element(toc_entry)
         return toc_entry
 
     def _normalize_page(self, toc_entry):
@@ -237,6 +239,15 @@ class Toc(zeit.cms.browser.view.Base):
         teaser = toc_entry.get('teaser', u'')
         toc_entry['teaser'] = teaser.replace('\n', u' ')
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
+
+    def _normalize_access_element(self, toc_entry):
+        if not toc_entry['access']:
+            toc_entry['access'] = "Nicht Gesetzt"
+        else:
+            toc_entry['access'] = \
+                zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
+                self.context, toc_entry['access'])
+
 
     def _full_product_name(self, product_uid):
         """
@@ -325,11 +336,7 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-
-        access = toc_entry.get('access')
-        if not access:
-            access = "Nicht Gesetzt"
-        return [str(page), title_teaser, access]
+        return [str(page), title_teaser, toc_entry.get('access')]
 
 
 class Excluder(object):

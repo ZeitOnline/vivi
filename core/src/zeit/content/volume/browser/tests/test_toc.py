@@ -25,20 +25,20 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Politik': [{'page': '1',
                           'title': 'title',
                           'teaser': 'tease',
-                          'access': 'frei',
+                          'access': u'frei verfügbar',
                           'supertitle': 'Super'}]
              }
         )
         self.toc_data['Anderer'] = OrderedDict(
             {'Dossier': [
                 {'page': '1',
-                 'access': 'frei',
+                 'access': u'frei verfügbar',
                  'title': 'title',
                  'teaser': 'tease',
                  'supertitle': 'Super'
                  },
                 {'page': '3',
-                 'access': 'frei',
+                 'access': u'frei verfügbar',
                  'title': 'title2',
                  'teaser': 'tease',
                  'supertitle': 'Super'}
@@ -50,7 +50,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
                     name="page">{page}</attribute>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
-                    name="access">frei</attribute>
+                    name="access">free</attribute>
                 </head>
                 <body>
                      <title>Titel</title>
@@ -87,7 +87,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
                     'supertitle': '',
-                    'access': 'frei'
+                    'access': u'frei verfügbar'
                     }
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc(mock.Mock(), mock.Mock())
@@ -97,11 +97,11 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
 \tPolitik\r
-1\tSuper title tease\tfrei\r
+1\tSuper title tease\tfrei verfügbar\r
 Anderer\r
 \tDossier\r
-1\tSuper title tease\tfrei\r
-3\tSuper title2 tease\tfrei\r
+1\tSuper title tease\tfrei verfügbar\r
+3\tSuper title2 tease\tfrei verfügbar\r
 """
         toc = Toc(mock.Mock(), mock.Mock())
         res = toc._create_csv(self.toc_data)
