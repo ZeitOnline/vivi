@@ -101,7 +101,8 @@ class Toc(zeit.cms.browser.view.Base):
         'Product Name':
             {
             'Ressort' :
-                [{'page': int, 'title': str, 'teaser': str, 'supertitle': str},
+                [{'page': int, 'title': str, 'teaser': str, 'supertitle':
+                str, 'access': bool},
                 ...]
             }
         }
@@ -169,7 +170,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle':
+        str, 'access': bool}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
         if self._is_sane(toc_entry) and self.excluder.is_relevant(
@@ -182,7 +184,8 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str,
+        'access': bool}
         """
         xpaths = {
             'title': "body/title/text()",
@@ -200,7 +203,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Check, if toc_entry could be an relevant entry.
         :param toc_entry:  {'page': int, 'title': str, 'teaser': str,
-        'supertitle': str}
+        'supertitle': str,''access': bool}
         :return: bool
         """
         required_entries = ['title', 'teaser']
@@ -218,16 +221,16 @@ class Toc(zeit.cms.browser.view.Base):
         self._normalize_page(toc_entry)
         return toc_entry
 
-    def _normalize_page(self, toc_dict):
+    def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
-        page_string = toc_dict.get('page', u'')
+        page_string = toc_entry.get('page', u'')
         page_entries = [page_string .lstrip("0") for page_string in
                         re.findall('\d+', page_string)]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
             page = sys.maxint
-        toc_dict['page'] = page
+        toc_entry['page'] = page
 
     def _normalize_teaser(self, toc_entry):
         """Delete linebreaks and a too much whitespace"""
