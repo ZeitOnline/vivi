@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.21.12 (unreleased)
+3.21.12 (2017-03-15)
 --------------------
 
 - ZON-3792: Put ``access`` widget behind feature toggle ``zeit.cms.rr-access``
