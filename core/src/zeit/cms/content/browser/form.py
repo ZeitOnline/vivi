@@ -53,6 +53,9 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         zeit.cms.content.interfaces.ICommonMetadata).omit('push_news')
 
     def setUpWidgets(self, *args, **kw):
+        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.cms.rr-access'):
+            self.form_fields = self.form_fields.omit('access')
         super(CommonMetadataFormBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('teaserText')
         self.set_charlimit('tldr_text')
