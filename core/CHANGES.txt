@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.96.6 (unreleased)
+2.96.6 (2017-03-20)
 -------------------
 
 - FIX: Work around the longstanding "context menu UI bug" by hiding
