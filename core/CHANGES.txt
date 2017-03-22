@@ -2,6 +2,12 @@ zeit.content.volume changes
 ===========================
 
 
+1.5.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.5.1 (2017-03-22)
 ------------------
 
