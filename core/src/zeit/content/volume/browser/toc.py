@@ -18,6 +18,7 @@ import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
 import zope.site.site
+import zeit.cms.content.sources
 
 
 class Toc(zeit.cms.browser.view.Base):
@@ -101,7 +102,8 @@ class Toc(zeit.cms.browser.view.Base):
         'Product Name':
             {
             'Ressort' :
-                [{'page': int, 'title': str, 'teaser': str, 'supertitle': str},
+                [{'page': int, 'title': str, 'teaser': str, 'supertitle':
+                str, 'access': bool},
                 ...]
             }
         }
@@ -169,7 +171,8 @@ class Toc(zeit.cms.browser.view.Base):
     def _create_toc_element(self, article_element):
         """
         :param article_element: lxml.etree Article element
-        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle':
+        str, 'access': bool}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
         if self._is_sane(toc_entry) and self.excluder.is_relevant(
@@ -182,13 +185,15 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
-        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str}
+        :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str,
+        'access': bool}
         """
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
             'supertitle': "body/supertitle/text()",
+            'access': "//attribute[@name='access']/text()"
         }
         res = {}
         for key, xpath in xpaths.iteritems():
@@ -199,7 +204,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         Check, if toc_entry could be an relevant entry.
         :param toc_entry:  {'page': int, 'title': str, 'teaser': str,
-        'supertitle': str}
+        'supertitle': str,''access': bool}
         :return: bool
         """
         required_entries = ['title', 'teaser']
@@ -215,24 +220,33 @@ class Toc(zeit.cms.browser.view.Base):
                 if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
+        self._normalize_access_element(toc_entry)
         return toc_entry
 
-    def _normalize_page(self, toc_dict):
+    def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
-        page_string = toc_dict.get('page', u'')
+        page_string = toc_entry.get('page', u'')
         page_entries = [page_string .lstrip("0") for page_string in
                         re.findall('\d+', page_string)]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
             page = sys.maxint
-        toc_dict['page'] = page
+        toc_entry['page'] = page
 
     def _normalize_teaser(self, toc_entry):
         """Delete linebreaks and a too much whitespace"""
         teaser = toc_entry.get('teaser', u'')
         toc_entry['teaser'] = teaser.replace('\n', u' ')
         toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
+
+    def _normalize_access_element(self, toc_entry):
+        if not toc_entry['access']:
+            toc_entry['access'] = "Nicht Gesetzt"
+        else:
+            toc_entry['access'] = \
+                zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
+                self.context, toc_entry['access'])
 
     def _full_product_name(self, product_uid):
         """
@@ -321,7 +335,7 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), title_teaser]
+        return [str(page), title_teaser, toc_entry.get('access')]
 
 
 class Excluder(object):
