@@ -61,7 +61,7 @@ class ConnectionBase(object):
 
         """
         if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
-            headline = _('push-news-title')
+            return None
         else:
             headline = _('push-breaking-title')
 
@@ -93,11 +93,12 @@ class ConnectionBase(object):
         full_link = '/'.join((push_target, path))
         deep_link = '://'.join((self.APP_IDENTIFIER, path))
 
+        headline = self.get_headline(channels)
         return {
             'ios': {
                 'alert': title,
                 'deep_link': self.add_tracking(deep_link, channels, 'ios'),
-                'headline': self.get_headline(channels),
+                'headline': headline,
                 'sound': 'chime.aiff' if is_breaking else '',
                 'tag': extra_tag,
                 'url': self.add_tracking(full_link, channels, 'ios')
@@ -106,7 +107,7 @@ class ConnectionBase(object):
                 'alert': title,
                 'deep_link': self.add_tracking(deep_link, channels, 'android'),
                 'headline': 'ZEIT ONLINE {}'.format(
-                    self.get_headline(channels)),
+                    headline) if headline else None,
                 'priority': 2 if is_breaking else 0,
                 'tag': extra_tag,
                 'url': self.add_tracking(full_link, channels, 'android')
