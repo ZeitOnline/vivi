@@ -46,7 +46,7 @@ class DataTest(zeit.push.testing.TestCase):
         catalog.messages['push-breaking-title'] = 'foo'
         api = zeit.push.mobile.ConnectionBase(1)
         api.LANGUAGE = 'tt'
-        self.assertEqual(None, api.get_headline(['News']))
+        self.assertEqual('bar', api.get_headline(['News']))
         self.assertEqual('foo', api.get_headline(['Eilmeldung']))
 
     def test_transmits_news_metadata(self):
@@ -57,12 +57,12 @@ class DataTest(zeit.push.testing.TestCase):
         data = api.data('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
 
         android = data['android']
-        self.assertEqual(None, android['headline'])
+        self.assertEqual('ZEIT ONLINE News', android['headline'])
         self.assertEqual('foo', android['alert'])
         self.assertEqual(0, android['priority'])
 
         ios = data['ios']
-        self.assertEqual(None, ios['headline'])
+        self.assertEqual('News', ios['headline'])
         self.assertEqual('foo', ios['alert'])
         self.assertEqual('', ios['sound'])
 
