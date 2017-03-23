@@ -163,6 +163,14 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
+    def set_contents_access(self, access='free', constraints=None):
+        cnts = self.all_content_via_solr(constraints)
+        for cnt in cnts:
+            with zeit.cms.checkout.helper.checked_out(cnt) as working:
+                working.access = (
+                    zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
+                        self, access))
+
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
 
