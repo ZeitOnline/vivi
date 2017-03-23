@@ -234,6 +234,30 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         content = ExampleContentType()
         self.repository['2015']['01']['article'] = content
         self.solr.search.return_value = pysolr.Results(
-                [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
+            [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
         self.assertListEqual([content], volume.all_content_via_solr(
             additional_query_contstraints=['foo:bar']))
+
+    def test_all_volume_contents_should_change_access_value(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        repo = self.repository['2015']['01']
+        content01 = ExampleContentType()
+        content02 = ExampleContentType()
+        repo['article01'] = content01
+        repo['article02'] = content02
+
+        self.solr.search.return_value = pysolr.Results(
+            [{'uniqueId': 'http://xml.zeit.de/2015/01/article01'},
+             {'uniqueId': 'http://xml.zeit.de/2015/01/article02'}],
+            2)
+
+        cnt = volume.all_content_via_solr(
+            additional_query_contstraints=['foo:bar'])
+        for c in cnt:
+            self.assertEqual('free', c.access)
+
+        volume.set_contents_access('abo')
+
+        for c in cnt:
+            self.assertEqual('abopflichtig', c.access)
