@@ -167,10 +167,13 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def set_contents_access(self, access='free', constraints=None):
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
-            with zeit.cms.checkout.helper.checked_out(cnt) as working:
-                working.access = (
-                    zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
-                        self, access))
+            try:
+                with zeit.cms.checkout.helper.checked_out(cnt) as working:
+                    working.access = (
+                        zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
+                            self, access))
+            except:
+                pass
         IPublish(self).publish_multiple(cnts)
 
 
