@@ -169,9 +169,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as working:
-                    working.access = (
-                        zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
-                            self, access))
+                    working.access = unicode(access)
             except:
                 pass
         IPublish(self).publish_multiple(cnts)
