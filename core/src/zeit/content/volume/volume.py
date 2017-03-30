@@ -164,7 +164,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def set_contents_access(self, access='free', constraints=None):
+    def set_contents_access(self, access='registration', published=True):
+        Q = zeit.solr.query
+        if published:
+            constraints = [Q.field('published', 'published')]
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
             try:
