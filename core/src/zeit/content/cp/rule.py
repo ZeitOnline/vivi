@@ -73,9 +73,11 @@ def centerpage(context):
 def all_modules(context):
     cp = zeit.content.cp.interfaces.ICenterPage(context, None)
     if cp is None:
-        return []
-    result = []
-    for region in cp.values():
-        for area in region.values():
-            result.extend(area.values())
-    return result
+        return iter([])
+
+    def inner():
+        for region in cp.values():
+            for area in region.values():
+                for module in area.values():
+                    yield module
+    return inner()

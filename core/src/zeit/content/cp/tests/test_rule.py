@@ -110,7 +110,7 @@ error_if(centerpage.title == 'foo')
     def test_all_modules_glob(self):
         r = Rule("""
 applicable(is_block)
-error_if(len(all_modules) == 2)
+error_if(len(list(all_modules)) == 2)
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)

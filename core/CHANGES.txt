@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.13.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3840: Make `all_modules` rule glob lazy, it's both expensive to
+  compute and only rarely actually needed
 
 
 3.13.4 (2017-02-15)
