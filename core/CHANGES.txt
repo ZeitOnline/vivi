@@ -10,7 +10,6 @@ zeit.content.volume changes
 - ZON-3687: Move default string for volume teaser text here from zeit.web
 
 
-
 1.5.1 (2017-03-22)
 ------------------
 
