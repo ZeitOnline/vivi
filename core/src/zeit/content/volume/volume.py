@@ -198,10 +198,6 @@ class CoverDependency(grok.Adapter):
     grok.context(zeit.content.volume.interfaces.IVolume)
     grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
 
-    def __init__(self, context):
-        super(CoverDependency, self).__init__(context)
-        self.context = context
-
     def get_dependencies(self):
         cover_names = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
             self.context)
