@@ -61,8 +61,12 @@ class CheckoutManager(object):
     def checkout(self, event=True, temporary=False, publishing=False):
         self._guard_checkout()
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         if lockable is not None and not lockable.locked():
-            timeout = 30 if temporary else 3600
+            timeout = 'checkout-lock-timeout'
+            if temporary:
+                timeout += '-temporary'
+            timeout = int(config[timeout])
             try:
                 lockable.lock(timeout=timeout)
             except zope.app.locking.interfaces.LockingError, e:
