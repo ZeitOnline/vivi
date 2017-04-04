@@ -1,3 +1,4 @@
+# coding: utf-8
 from datetime import datetime
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -173,12 +174,16 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         cp = zeit.content.cp.interfaces.ICenterPage(volume)
         self.assertEqual('http://xml.zeit.de/2015/01/index', cp.uniqueId)
 
+    def test_no_teaserText_present_returns_default_string(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        self.assertEqual(u'Teäser 01/2015', volume.teaserText)
+
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
         zeit.cms.workflow.interfaces.IPublish(volume).publish(async=False)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
-
 
 class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
 
