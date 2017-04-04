@@ -5,6 +5,7 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
+import zeit.content.article.interfaces
 import zope.interface
 
 
@@ -206,3 +207,16 @@ def set_default_channel_to_ressort(context, event):
     if channel in context.channels:
         return
     context.channels = context.channels + (channel,)
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def log_access_change(context, event):
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    for description in event.descriptions:
+        if 'access' in description.attributes:
+            log.log(context, _('Access changed'))
+        break
+    else:
+        return
