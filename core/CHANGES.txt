@@ -5,6 +5,8 @@ zeit.content.volume changes
 1.6.0 (unreleased)
 ------------------
 
+- ZON-3841: Add volume covers publication dependency
+
 - ZON-3687: Move default string for volume teaser text here from zeit.web
 
 

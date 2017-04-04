@@ -2,6 +2,7 @@
 from datetime import datetime
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import zeit.content.cp.centerpage
 import lxml.etree
@@ -11,6 +12,7 @@ import pysolr
 import pytz
 import zeit.cms.content.sources
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
@@ -20,7 +22,6 @@ import zeit.content.volume.volume
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        from zeit.content.image.testing import create_image_group
         super(TestVolumeCovers, self).setUp()
         self.repository['imagegroup'] = create_image_group()
         self.cover = self.repository['imagegroup']
@@ -142,6 +143,9 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
+        # Add a cover image-group
+        self.repository['imagegroup'] = create_image_group()
+        volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_looks_up_centerpage_from_product_setting(self):
@@ -175,6 +179,11 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
             'http://xml.zeit.de/2015/01/ausgabe')
         self.assertEqual(u'Teäser 01/2015', volume.teaserText)
 
+    def test_covers_are_published_with_the_volume(self):
+        volume = self.repository['2015']['01']['ausgabe']
+        zeit.cms.workflow.interfaces.IPublish(volume).publish(async=False)
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['imagegroup']).published)
 
 class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
 
