@@ -191,6 +191,31 @@ class VolumeMetadata(grok.Adapter):
         return value
 
 
+class CoverDependency(grok.Adapter):
+    """
+    If a Volume is published, its covers are published as well.
+    """
+    grok.context(zeit.content.volume.interfaces.IVolume)
+    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        super(CoverDependency, self).__init__(context)
+        self.context = context
+
+    def get_dependencies(self):
+        cover_names = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
+            self.context)
+        covers = []
+        for product in self.context._all_products:
+            for cover_name in cover_names:
+                cover = self.context.get_cover(cover_name,
+                                               product_id=product.id,
+                                               use_fallback=False)
+                if cover:
+                    covers.append(cover)
+        return covers
+
+
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
 @grok.implementer(zeit.content.volume.interfaces.IVolume)
 def retrieve_volume_using_info_from_metadata(context):
