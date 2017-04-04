@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.6.0 (unreleased)
+1.6.0 (2017-04-04)
 ------------------
 
 - ZON-3841: Add volume covers publication dependency
