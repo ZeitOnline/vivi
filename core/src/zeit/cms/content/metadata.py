@@ -1,3 +1,4 @@
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
