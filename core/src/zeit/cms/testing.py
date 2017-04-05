@@ -201,6 +201,9 @@ cms_product_config = """\
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
 
+  checkout-lock-timeout 3600
+  checkout-lock-timeout-temporary 30
+
   preview-prefix http://localhost/preview-prefix
   live-prefix http://localhost/live-prefix
   friebert-wc-preview-prefix /wcpreview
