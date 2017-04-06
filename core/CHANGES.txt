@@ -1,10 +1,17 @@
 zeit.cms changes
 ================
 
-2.96.7 (unreleased)
+2.97.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+2.97.0 (2017-04-06)
+-------------------
+
+- ZON-3475: Make checkout lock timeout configurable
+  product-config ``zeit.cms:checkout-lock-timeout[-temporary]``
 
 
 2.96.6 (2017-03-20)
