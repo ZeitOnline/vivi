@@ -164,8 +164,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         published = datetime.datetime(2015, 1, 1, 0, 0, tzinfo=pytz.UTC)
         volume.date_digital_published = published
         data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
-        self.assertEqual('Ausgabe', data['title'])
-        self.assertEqual('Ausgabe', data['teaser'])
+        self.assertEqual(u'Teäser 01/2015', data['title'])
+        self.assertEqual(u'Teäser 01/2015', data['teaser'])
         self.assertEqual(published, data['payload']['date_digital_published'])
 
     def test_does_not_index_volume_properties_for_articles(self):
