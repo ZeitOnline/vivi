@@ -4,7 +4,7 @@ zeit.cms changes
 2.97.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3851: Log article access changes in Vivi-Chronik.
 
 
 2.97.0 (2017-04-06)
