@@ -280,7 +280,7 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         for c in cnt:
             self.assertEqual('free', c.access)
 
-        volume.set_contents_access('abo')
+        volume.set_contents_access('free', 'abo')
 
         for c in cnt:
             self.assertEqual('abo', c.access)
