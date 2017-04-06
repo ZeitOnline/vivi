@@ -6,7 +6,6 @@ import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
-import zeit.content.article.article
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
 import zope.interface
@@ -32,7 +31,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.volume.interfaces.IVolume,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('date_digital_published', 'year', 'volume', 'teaserText'))
+        ('date_digital_published', 'year', 'volume'))
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
@@ -51,6 +50,23 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if self._product_id == value.id:
             return
         self._product_id = value.id if value is not None else None
+
+    _teaserText = zeit.cms.content.dav.DAVProperty(
+        zeit.content.volume.interfaces.IVolume['teaserText'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'teaserText')
+
+    @property
+    def teaserText(self):
+        text = self._teaserText
+        if text is None:
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.content.volume')
+            text = config['default-teaser-text'].decode('utf-8')
+        return self.fill_template(text)
+
+    @teaserText.setter
+    def teaserText(self, value):
+        self._teaserText = value
 
     def fill_template(self, text):
         return self._fill_template(self, text)
@@ -206,6 +222,27 @@ class VolumeMetadata(grok.Adapter):
             field = zeit.cms.content.interfaces.ICommonMetadata.get(name, None)
             return field.default
         return value
+
+
+class CoverDependency(grok.Adapter):
+    """
+    If a Volume is published, its covers are published as well.
+    """
+    grok.context(zeit.content.volume.interfaces.IVolume)
+    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
+
+    def get_dependencies(self):
+        cover_names = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
+            self.context)
+        covers = []
+        for product in self.context._all_products:
+            for cover_name in cover_names:
+                cover = self.context.get_cover(cover_name,
+                                               product_id=product.id,
+                                               use_fallback=False)
+                if cover:
+                    covers.append(cover)
+        return covers
 
 
 @grok.adapter(zeit.cms.content.interfaces.ICommonMetadata)
