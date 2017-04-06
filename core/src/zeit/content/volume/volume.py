@@ -164,15 +164,18 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def set_contents_access(self, access='registration', published=True):
+    def set_contents_access(self, access_from="abo",
+                            access_to='registration', published=True):
         Q = zeit.solr.query
+        constraints = [Q.field('access', access_from)]
         if published:
-            constraints = [Q.field('published', 'published')]
+            constraints = [Q.field('published', 'published'),
+                           Q.and_(Q.field('access', access_from))]
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as working:
-                    working.access = unicode(access)
+                    working.access = unicode(access_to)
             except:
                 pass
         IPublish(self).publish_multiple(cnts)
