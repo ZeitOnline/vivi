@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.89 (unreleased)
+2.0.89 (2017-04-07)
 +++++++++++++++++++
 
 - news-push-title aktualisiert. Von Lesetipp zu Info.
