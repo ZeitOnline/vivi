@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.6.1 (unreleased)
+1.6.1 (2017-04-07)
 ------------------
 
 - FIX: if the product id wasn't found in the products.xml, the toc contained only an empty string
