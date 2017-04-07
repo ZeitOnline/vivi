@@ -257,12 +257,6 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         repo = self.repository['2015']['01']
-        # XXX would be nice to have a not-published content here to check the
-        # important
-        # if published:
-        #     constraints = [Q.field('published', 'published')]
-        # in volume.set_content_access but solr testing is not so easy at the
-        # moment
         content01 = ExampleContentType()
         content02 = ExampleContentType()
         content03 = ExampleContentType()
@@ -270,6 +264,7 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         repo['article02'] = content02
         repo['article03'] = content03
 
+        # XXX We rely quite a bit on solr queries here, but cannot test them.
         self.solr.search.return_value = pysolr.Results(
             [{'uniqueId': 'http://xml.zeit.de/2015/01/article01'},
              {'uniqueId': 'http://xml.zeit.de/2015/01/article02'},
