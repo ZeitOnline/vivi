@@ -4,14 +4,13 @@ zeit.locales CHANGES
 2.0.90 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- ZON-3851: Übersetzungen aktualisiert
 
 
 2.0.89 (2017-04-07)
 +++++++++++++++++++
 
 - news-push-title aktualisiert. Von Lesetipp zu Info.
-- ZON-3851: Übersetzungen aktualisiert
 
 
 2.0.88 (2017-03-08)
