@@ -64,5 +64,6 @@ class AccessChangeEvent(zeit.content.article.testing.FunctionalTestCase):
                     zeit.cms.content.interfaces.ICommonMetadata,
                     'access'))
             entries = list(log.get_log())
-            assert entries[-1].message == u'Access changed from "frei ' \
-                                          u'verf\xfcgbar" to "abopflichtig"'
+            assert (
+                entries[-1].message ==
+                'Access changed from "${old}" to "${new}"')

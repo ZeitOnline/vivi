@@ -224,9 +224,9 @@ def log_access_change(context, event):
                 context, access_old)
             access_new_translation = src.ACCESS_SOURCE.factory.getTitle(
                 context, context.access)
-            log.log(context, u'{} {} "{}" {} "{}"'.format(
-                _('Access changed'), _('from'), access_old_translation, _('to'),
-                access_new_translation))
+            log.log(context, _("Access changed from \"${old}\" to \"${new}\"",
+                               mapping=dict(old=access_old_translation,
+                                            new=access_new_translation)))
         break
     else:
         return
