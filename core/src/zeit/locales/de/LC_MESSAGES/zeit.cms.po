@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-03-08 17:19+0100\n"
-"PO-Revision-Date: 2017-03-08 17:19+0100\n"
+"POT-Creation-Date: 2017-04-07 11:05+0200\n"
+"PO-Revision-Date: 2017-04-07 11:05+0200\n"
 "Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -4624,7 +4624,7 @@ msgstr ""
 
 #: zeit/push/mobile.py:64
 msgid "push-news-title"
-msgstr "Lesetipp"
+msgstr "Info"
 
 #: zeit/push/mobile.py:66
 msgid "push-breaking-title"

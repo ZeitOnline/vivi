@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.89 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- news-push-title aktualisiert. Von Lesetipp zu Info.
 
 
 2.0.88 (2017-03-08)
