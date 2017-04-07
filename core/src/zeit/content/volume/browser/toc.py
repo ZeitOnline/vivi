@@ -335,7 +335,7 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), title_teaser, toc_entry.get('access')]
+        return [str(page), title_teaser, '', '', toc_entry.get('access')]
 
 
 class Excluder(object):
