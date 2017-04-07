@@ -223,7 +223,6 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
 
     def test_toc_generates_csv(self):
         b = self.browser
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
                '2015/01/ausgabe/@@toc.csv')
         self.assertIn(self.article_title, b.contents)
