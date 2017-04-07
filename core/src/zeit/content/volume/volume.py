@@ -180,8 +180,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def set_contents_access(self, access_from=u'abo',
-                            access_to=u'registration', published=True):
+    def set_contents_access(self, access_from, access_to, published=True):
         Q = zeit.solr.query
         constraints = [Q.field('access', access_from)]
         if published:
