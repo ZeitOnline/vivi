@@ -5,7 +5,9 @@ zeit.content.volume changes
 1.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: if the product id wasn't found in the products.xml, the toc contained only an empty string
+
+- Change toc format
 
 
 1.6.0 (2017-04-04)
