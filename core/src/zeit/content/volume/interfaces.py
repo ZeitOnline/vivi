@@ -1,5 +1,4 @@
 # coding: utf8
-from collections import defaultdict
 from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.source
 import zeit.cms.content.interfaces
@@ -139,7 +138,7 @@ class ProductNameMapper(object):
             products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self))
             self.mapping = dict([(product.id, product.title) for product in
                                  products])
-        return self.mapping.get(key)
+        return self.mapping[key]
 
     def get(self, key, default):
         try:
