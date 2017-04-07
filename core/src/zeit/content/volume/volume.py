@@ -168,7 +168,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                     self._all_products]),
             Q.field_raw('year', self.year),
             Q.field_raw('volume', self.volume),
-            * additional_query_contstraints
+            *additional_query_contstraints
         )
         result = solr.search(query, fl='uniqueId', rows=1000)
         # We assume a maximum content amount per usual production print volume
