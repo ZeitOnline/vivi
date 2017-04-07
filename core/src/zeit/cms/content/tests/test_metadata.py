@@ -58,9 +58,11 @@ class AccessChangeEvent(zeit.content.article.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/Somalia')
         log = zeit.objectlog.interfaces.ILog(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.access = u'abo'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.content.interfaces.ICommonMetadata,
                     'access'))
             entries = list(log.get_log())
-            assert entries[-1].message == 'Access changed'
+            assert entries[-1].message == u'Access changed from "frei ' \
+                                          u'verf\xfcgbar" to "abopflichtig"'
