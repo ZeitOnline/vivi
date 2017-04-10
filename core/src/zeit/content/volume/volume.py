@@ -8,10 +8,11 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
-import zope.interface
-import zope.schema
 import zeit.solr.query
 import zeit.workflow.interfaces
+import zope.interface
+import zope.lifecycleevent
+import zope.schema
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -188,8 +189,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
             try:
-                with zeit.cms.checkout.helper.checked_out(cnt) as working:
-                    working.access = unicode(access_to)
+                with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                    co.access = unicode(access_to)
+                    zope.lifecycleevent.modified(
+                        co, zope.lifecycleevent.Attributes(
+                            zeit.cms.content.interfaces.ICommonMetadata,
+                            'access'))
             except:
                 pass
         IPublish(self).publish_multiple(cnts)
