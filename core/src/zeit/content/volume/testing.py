@@ -13,7 +13,7 @@ product_config = """
 <product-config zeit.content.volume>
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
     dav-archive-url test
-    toc-product-ids ZEI
+    toc-product-ids ZEI BAD
     default-teaser-text Teäser {{name}}/{{year}}
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))

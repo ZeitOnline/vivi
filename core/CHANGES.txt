@@ -2,10 +2,18 @@ zeit.content.volume changes
 ===========================
 
 
-1.6.1 (unreleased)
+1.6.2 (unreleased)
 ------------------
 
 - ZON-3384: Change access value after x weeks
+
+
+1.6.1 (2017-04-07)
+------------------
+
+- FIX: if the product id wasn't found in the products.xml, the toc contained only an empty string
+
+- Change toc format
 
 
 1.6.0 (2017-04-04)
