@@ -188,15 +188,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             constraints.append(Q.field_raw('published', 'published*'))
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
-            try:
-                with zeit.cms.checkout.helper.checked_out(cnt) as co:
-                    co.access = unicode(access_to)
-                    zope.lifecycleevent.modified(
-                        co, zope.lifecycleevent.Attributes(
-                            zeit.cms.content.interfaces.ICommonMetadata,
-                            'access'))
-            except:
-                pass
+            with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                co.access = unicode(access_to)
+                zope.lifecycleevent.modified(
+                    co, zope.lifecycleevent.Attributes(
+                        zeit.cms.content.interfaces.ICommonMetadata, 'access')
+                )
         IPublish(self).publish_multiple(cnts)
 
 
