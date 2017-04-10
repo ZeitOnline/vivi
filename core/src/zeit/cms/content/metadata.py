@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.content.dav
@@ -6,7 +7,6 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
-import zeit.content.article.interfaces
 import zope.interface
 
 
@@ -211,19 +211,18 @@ def set_default_channel_to_ressort(context, event):
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
+    zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.IObjectModifiedEvent)
 def log_access_change(context, event):
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    import zeit.cms.content.sources as src
     for description in event.descriptions:
         if 'access' in description.attributes:
             access_old = zeit.cms.interfaces.ICMSContent(
                 context.uniqueId).access
-            access_old_translation = src.ACCESS_SOURCE.factory.getTitle(
-                context, access_old)
-            access_new_translation = src.ACCESS_SOURCE.factory.getTitle(
-                context, context.access)
+            access_old_translation = ICommonMetadata[
+                'access'].source.factory.getTitle(context, access_old)
+            access_new_translation = ICommonMetadata[
+                'access'].source.factory.getTitle(context, context.access)
             log.log(context, _("Access changed from \"${old}\" to \"${new}\"",
                                mapping=dict(old=access_old_translation,
                                             new=access_new_translation)))
