@@ -2,7 +2,6 @@ from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.content.dav
-import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
@@ -12,12 +11,10 @@ import zope.interface
 
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    zope.interface.implements(
-        zeit.cms.content.interfaces.ICommonMetadata)
+    zope.interface.implements(ICommonMetadata)
 
     zeit.cms.content.dav.mapProperties(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ICommonMetadata, zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         (
             'banner_id',
             'cap_title',
@@ -55,15 +52,12 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ))
 
     zeit.cms.content.dav.mapProperties(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('access',), use_default=True)
+        ICommonMetadata, zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('access',),
+        use_default=True)
 
     authors = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['authors'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'author',
-        use_default=True)
+        ICommonMetadata['authors'], zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'author', use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
@@ -71,46 +65,39 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     keywords = zeit.cms.tagging.tag.Tags()
 
     title = zeit.cms.content.property.ObjectPathProperty(
-        '.body.title',
-        zeit.cms.content.interfaces.ICommonMetadata['title'])
+        '.body.title', ICommonMetadata['title'])
     subtitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.subtitle',
-        zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
+        '.body.subtitle', ICommonMetadata['subtitle'])
     supertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.supertitle',
-        zeit.cms.content.interfaces.ICommonMetadata['supertitle'])
+        '.body.supertitle', ICommonMetadata['supertitle'])
     byline = zeit.cms.content.property.ObjectPathProperty(
-        '.body.byline',
-        zeit.cms.content.interfaces.ICommonMetadata['byline'])
+        '.body.byline', ICommonMetadata['byline'])
 
     teaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.title',
-        zeit.cms.content.interfaces.ICommonMetadata['teaserTitle'])
+        '.teaser.title', ICommonMetadata['teaserTitle'])
     teaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.text',
-        zeit.cms.content.interfaces.ICommonMetadata['teaserText'])
+        '.teaser.text', ICommonMetadata['teaserText'])
     teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.teaser.supertitle',
-        zeit.cms.content.interfaces.ICommonMetadata['teaserSupertitle'])
+        '.teaser.supertitle', ICommonMetadata['teaserSupertitle'])
 
     printRessort = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['printRessort'],
-        zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort')
+        ICommonMetadata['printRessort'], zeit.cms.interfaces.PRINT_NAMESPACE,
+        'ressort')
 
     commentsPremoderate = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['commentsPremoderate'],
+        ICommonMetadata['commentsPremoderate'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments_premoderate')
 
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
+        ICommonMetadata['commentsAllowed'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
 
     commentSectionEnable = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
+        ICommonMetadata['commentSectionEnable'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
+        ICommonMetadata['dailyNewsletter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
 
     _product_id = zeit.cms.content.dav.DAVProperty(
@@ -126,8 +113,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def product(self):
-        source = zeit.cms.content.interfaces.ICommonMetadata[
-            'product'].source(self)
+        source = ICommonMetadata['product'].source(self)
         for value in source:
             if value.id == self._product_id:
                 return value
@@ -153,8 +139,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def serie(self):
-        source = zeit.cms.content.interfaces.ICommonMetadata[
-            'serie'].source(self)
+        source = ICommonMetadata['serie'].source(self)
         return source.factory.values.get(self._serie)
 
     @serie.setter
@@ -179,20 +164,15 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
                                for channel in value)
 
     storystreams = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['storystreams'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'storystreams',
-        use_default=True)
+        ICommonMetadata['storystreams'], zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'storystreams', use_default=True)
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
 def set_default_channel_to_ressort(context, event):
     relevant_change = False
     for description in event.descriptions:
-        if (not issubclass(
-                description.interface,
-                zeit.cms.content.interfaces.ICommonMetadata)):
+        if not issubclass(description.interface, ICommonMetadata):
             continue
         if ('ressort' in description.attributes or
                 'sub_ressort' in description.attributes):
@@ -210,9 +190,7 @@ def set_default_channel_to_ressort(context, event):
     context.channels = context.channels + (channel,)
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
 def log_access_change(context, event):
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     for description in event.descriptions:
