@@ -89,6 +89,17 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :return: [ICMSContent]
         """
 
+    def change_contents_access(access_from, access_to, published):
+        """
+        Change the access value, from access_from to access_to, for all
+        content of this volume.
+        :param access_from: access value to replace
+        :param access_to: new acces value
+        :param published: bool to specify if only published content should
+        be changed
+        :return: None
+        """
+
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
 
