@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Mar  8 17:19:02 2017\n"
+"POT-Creation-Date: Fri Apr  7 16:41:31 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -162,30 +162,30 @@ msgid "Complete event"
 msgstr ""
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
 #: zeit/cms/browser/action-menu-item.pt:2
 #: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5
+#: zeit/cms/browser/lightbox.pt:2
 #: zeit/cms/browser/main_template.pt:47
 #: zeit/cms/browser/main_template.pt:180
 #: zeit/cms/browser/main_template.pt:203
 #: zeit/cms/browser/main_template.pt:221
-#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
-#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/sourceedit.pt:16
 #: zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
-#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
-#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/edit/browser/inlineform.pt:16
 #: zeit/edit/browser/inlineform.pt:38
+#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -541,6 +541,11 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
+#: zeit/cms/browser/dropobject-widget.pt:16
+#: zeit/cms/browser/objectsequence-edit-widget.pt:30
+msgid "Add new..."
+msgstr ""
+
 #: zeit/cms/browser/form.py:287
 #: zeit/content/article/edit/browser/workflow.pt:4
 #: zeit/content/quiz/browser/answer.py:55
@@ -682,11 +687,6 @@ msgstr ""
 msgid "Add object"
 msgstr ""
 
-#: zeit/cms/browser/objectsequence-edit-widget.pt:30
-#: zeit/cms/browser/dropobject-widget.pt:16
-msgid "Add new..."
-msgstr ""
-
 #: zeit/cms/browser/secondary_context_actions.pt:5
 msgid "Additional actions"
 msgstr ""
@@ -797,23 +797,23 @@ msgstr ""
 msgid "not allowed"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:101
+#: zeit/cms/checkout/manager.py:105
 msgid "Object is not local content"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:106
+#: zeit/cms/checkout/manager.py:110
 msgid "Cannot acquire lock"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:123
+#: zeit/cms/checkout/manager.py:127
 msgid "Unknown error"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:151
+#: zeit/cms/checkout/manager.py:155
 msgid "Checked in with semantic change"
 msgstr ""
 
-#: zeit/cms/checkout/manager.py:153
+#: zeit/cms/checkout/manager.py:157
 msgid "Checked in"
 msgstr ""
 
@@ -928,6 +928,12 @@ msgstr ""
 
 #: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
+msgstr ""
+
+#: zeit/cms/content/browser/template-properties.pt:48
+#: zeit/cms/syndication/browser/feed_sorting.pt:7
+#: zeit/content/article/edit/browser/workflow.pt:10
+msgid "Save"
 msgstr ""
 
 #: zeit/cms/content/browser/template-properties.pt:8
@@ -1076,7 +1082,7 @@ msgid "Banner id"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:226
-#: zeit/content/volume/interfaces.py:29
+#: zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr ""
 
@@ -1169,7 +1175,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:707
 #: zeit/content/article/interfaces.py:193
 #: zeit/content/image/interfaces.py:36
-#: zeit/content/volume/interfaces.py:37
+#: zeit/content/volume/interfaces.py:36
 msgid "Year"
 msgstr ""
 
@@ -1201,8 +1207,8 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:426
 #: zeit/content/image/interfaces.py:42
 #: zeit/content/volume/browser/form.py:34
-#: zeit/content/volume/interfaces.py:42
-#: zeit/content/volume/volume.py:171
+#: zeit/content/volume/interfaces.py:41
+#: zeit/content/volume/volume.py:187
 msgid "Volume"
 msgstr ""
 
@@ -1236,6 +1242,11 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:92
 #: zeit/content/cp/interfaces.py:420
 msgid "Subchannel"
+msgstr ""
+
+#: zeit/cms/content/metadata.py:227
+#. Default: ""
+msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
 #: zeit/cms/interfaces.py:34
@@ -1644,12 +1655,6 @@ msgstr ""
 msgid "Feed contents"
 msgstr ""
 
-#: zeit/cms/syndication/browser/feed_sorting.pt:7
-#: zeit/cms/content/browser/template-properties.pt:48
-#: zeit/content/article/edit/browser/workflow.pt:10
-msgid "Save"
-msgstr ""
-
 #: zeit/cms/syndication/browser/form.py:14
 msgid "Add Channel"
 msgstr ""
@@ -1771,7 +1776,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:456
+#: zeit/workflow/publish.py:461
 #: zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr ""
@@ -2276,8 +2281,8 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
-#: zeit/workflow/browser/retract.pt:8
 #: zeit/workflow/browser/publish.pt:9
+#: zeit/workflow/browser/retract.pt:8
 msgid "Reloading"
 msgstr ""
 
@@ -2365,8 +2370,8 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:912
 #: zeit/content/gallery/interfaces.py:101
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
 msgid "Layout"
 msgstr ""
 
@@ -2533,10 +2538,10 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:488
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
-#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
 msgid "URL"
 msgstr ""
 
@@ -3660,8 +3665,8 @@ msgid "Image sub text"
 msgstr ""
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/reference-details.pt:11
 #: zeit/content/image/browser/image-details.pt:6
+#: zeit/content/image/browser/reference-details.pt:11
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
 msgid "edit"
@@ -4228,16 +4233,16 @@ msgstr ""
 msgid "edit volume teaser text"
 msgstr ""
 
-#: zeit/content/volume/browser/toc.py:82
+#: zeit/content/volume/browser/toc.py:83
 msgid "Table of Content"
 msgstr ""
 
-#: zeit/content/volume/interfaces.py:47
-#: zeit/content/volume/interfaces.py:96
+#: zeit/content/volume/interfaces.py:46
+#: zeit/content/volume/interfaces.py:95
 msgid "Volume text"
 msgstr ""
 
-#: zeit/content/volume/interfaces.py:52
+#: zeit/content/volume/interfaces.py:51
 msgid "Date of digital publication"
 msgstr ""
 
@@ -4266,9 +4271,9 @@ msgstr ""
 msgid "move '${type}' block"
 msgstr ""
 
-#: zeit/edit/browser/layout.foldable-forms.pt:7
 #: zeit/edit/browser/layout.fold.pt:2
 #: zeit/edit/browser/layout.fold.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:7
 msgid "Fold"
 msgstr ""
 
@@ -4883,21 +4888,21 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:207
+#: zeit/workflow/publish.py:212
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 
-#: zeit/workflow/publish.py:227
+#: zeit/workflow/publish.py:232
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:420
-#: zeit/workflow/publish.py:520
+#: zeit/workflow/publish.py:425
+#: zeit/workflow/publish.py:525
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:484
+#: zeit/workflow/publish.py:489
 msgid "Retracted"
 msgstr ""
 
@@ -4984,6 +4989,16 @@ msgstr ""
 msgid "from Article"
 msgstr ""
 
+#: zeit/wysiwyg/browser/resources/reference/image.pt:31
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
+msgid "small"
+msgstr ""
+
+#: zeit/wysiwyg/browser/resources/reference/image.pt:32
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
+msgid "large"
+msgstr ""
+
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 msgid "Hochkant"
 msgstr ""
@@ -4996,17 +5011,7 @@ msgstr ""
 msgid "Second Video"
 msgstr ""
 
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
-#: zeit/wysiwyg/browser/resources/reference/image.pt:31
-msgid "small"
-msgstr ""
-
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
-msgstr ""
-
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
-#: zeit/wysiwyg/browser/resources/reference/image.pt:32
-msgid "large"
 msgstr ""
 
