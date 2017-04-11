@@ -14,43 +14,41 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(ICommonMetadata)
 
-    zeit.cms.content.dav.mapProperties(
-        ICommonMetadata, DOCUMENT_SCHEMA_NS,
-        (
-            'banner_id',
-            'cap_title',
-            'color_scheme',
-            'copyrights',
-            'page',
-            'ressort',
-            'sub_ressort',
-            'vg_wort_id',
-            'volume',
-            'year',
-            'mobile_alternative',
-            'deeplink_url',
-            'breadcrumb_title',
+    zeit.cms.content.dav.mapProperties(ICommonMetadata, DOCUMENT_SCHEMA_NS, (
+        'banner_id',
+        'cap_title',
+        'color_scheme',
+        'copyrights',
+        'page',
+        'ressort',
+        'sub_ressort',
+        'vg_wort_id',
+        'volume',
+        'year',
+        'mobile_alternative',
+        'deeplink_url',
+        'breadcrumb_title',
 
-            'banner',
-            'banner_content',
-            'breaking_news',
-            'countings',
-            'foldable',
-            'minimal_header',
-            'lead_candidate',
-            'push_news',
-            'rebrush_website_content',
-            'overscrolling',
+        'banner',
+        'banner_content',
+        'breaking_news',
+        'countings',
+        'foldable',
+        'minimal_header',
+        'lead_candidate',
+        'push_news',
+        'rebrush_website_content',
+        'overscrolling',
 
-            'tldr_title',
-            'tldr_text',
-            'tldr_milestone',
-            'tldr_date',
+        'tldr_title',
+        'tldr_text',
+        'tldr_milestone',
+        'tldr_date',
 
-            'advertisement_title',
-            'advertisement_text',
-            'bigshare_buttons',
-        ))
+        'advertisement_title',
+        'advertisement_text',
+        'bigshare_buttons',
+    ))
 
     zeit.cms.content.dav.mapProperties(
         ICommonMetadata, DOCUMENT_SCHEMA_NS, ('access',), use_default=True)
