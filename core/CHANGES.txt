@@ -9,7 +9,6 @@ zeit.cms changes
 - MAINT: Dont start multipublish task if no objects to publish are given
 
 
-
 2.97.0 (2017-04-06)
 -------------------
 
