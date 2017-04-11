@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.property
@@ -14,7 +15,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     zope.interface.implements(ICommonMetadata)
 
     zeit.cms.content.dav.mapProperties(
-        ICommonMetadata, zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ICommonMetadata, DOCUMENT_SCHEMA_NS,
         (
             'banner_id',
             'cap_title',
@@ -52,12 +53,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ))
 
     zeit.cms.content.dav.mapProperties(
-        ICommonMetadata, zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('access',),
-        use_default=True)
+        ICommonMetadata, DOCUMENT_SCHEMA_NS, ('access',), use_default=True)
 
     authors = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['authors'], zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'author', use_default=True)
+        ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author',
+        use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
@@ -86,19 +86,17 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     commentsPremoderate = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['commentsPremoderate'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments_premoderate')
+        DOCUMENT_SCHEMA_NS, 'comments_premoderate')
 
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['commentsAllowed'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
+        ICommonMetadata['commentsAllowed'], DOCUMENT_SCHEMA_NS, 'comments')
 
     commentSectionEnable = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['commentSectionEnable'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
+        DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['dailyNewsletter'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
+        ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
@@ -108,8 +106,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'http://namespaces.zeit.de/CMS/workflow', 'product-name')
 
     _serie = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(),
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'serie')
+        zope.schema.TextLine(), DOCUMENT_SCHEMA_NS, 'serie')
 
     @property
     def product(self):
@@ -135,7 +132,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     _channels = zeit.cms.content.dav.DAVProperty(
         zope.schema.Tuple(value_type=zope.schema.TextLine()),
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'channels')
+        DOCUMENT_SCHEMA_NS, 'channels')
 
     @property
     def serie(self):
@@ -164,7 +161,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
                                for channel in value)
 
     storystreams = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['storystreams'], zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,
         'storystreams', use_default=True)
 
 
