@@ -13,6 +13,9 @@ import zeit.workflow.interfaces
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
+import logging
+
+log = logging.getLogger()
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -188,12 +191,17 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             constraints.append(Q.field_raw('published', 'published*'))
         cnts = self.all_content_via_solr(constraints)
         for cnt in cnts:
-            with zeit.cms.checkout.helper.checked_out(cnt) as co:
-                co.access = unicode(access_to)
-                zope.lifecycleevent.modified(
-                    co, zope.lifecycleevent.Attributes(
-                        zeit.cms.content.interfaces.ICommonMetadata, 'access')
-                )
+            try:
+                with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                    co.access = unicode(access_to)
+                    zope.lifecycleevent.modified(
+                        co, zope.lifecycleevent.Attributes(
+                            zeit.cms.content.interfaces.ICommonMetadata,
+                            'access')
+                    )
+            except:
+                log.error("Couldn't change access for {}. Skipping "
+                          "it.".format(cnt.uniqueId))
         IPublish(self).publish_multiple(cnts)
 
 
