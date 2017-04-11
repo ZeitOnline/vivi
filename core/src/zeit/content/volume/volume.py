@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublish
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
@@ -7,10 +8,14 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
-import zope.interface
-import zope.schema
 import zeit.solr.query
 import zeit.workflow.interfaces
+import zope.interface
+import zope.lifecycleevent
+import zope.schema
+import logging
+
+log = logging.getLogger()
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -167,7 +172,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                     self._all_products]),
             Q.field_raw('year', self.year),
             Q.field_raw('volume', self.volume),
-            * additional_query_contstraints
+            *additional_query_contstraints
         )
         result = solr.search(query, fl='uniqueId', rows=1000)
         # We assume a maximum content amount per usual production print volume
@@ -178,6 +183,26 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             if item is not None:
                 content.append(item)
         return content
+
+    def change_contents_access(self, access_from, access_to, published=True):
+        Q = zeit.solr.query
+        constraints = [Q.field('access', access_from)]
+        if published:
+            constraints.append(Q.field_raw('published', 'published*'))
+        cnts = self.all_content_via_solr(constraints)
+        for cnt in cnts:
+            try:
+                with zeit.cms.checkout.helper.checked_out(cnt) as co:
+                    co.access = unicode(access_to)
+                    zope.lifecycleevent.modified(
+                        co, zope.lifecycleevent.Attributes(
+                            zeit.cms.content.interfaces.ICommonMetadata,
+                            'access')
+                    )
+            except:
+                log.error("Couldn't change access for {}. Skipping "
+                          "it.".format(cnt.uniqueId))
+        IPublish(self).publish_multiple(cnts)
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):

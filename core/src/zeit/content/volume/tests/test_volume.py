@@ -185,6 +185,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
 
+
 class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -249,6 +250,33 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         content = ExampleContentType()
         self.repository['2015']['01']['article'] = content
         self.solr.search.return_value = pysolr.Results(
-                [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
+            [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
         self.assertListEqual([content], volume.all_content_via_solr(
             additional_query_contstraints=['foo:bar']))
+
+    def test_all_volume_contents_should_change_access_value(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        repo = self.repository['2015']['01']
+        content01 = ExampleContentType()
+        content02 = ExampleContentType()
+        content03 = ExampleContentType()
+        repo['article01'] = content01
+        repo['article02'] = content02
+        repo['article03'] = content03
+
+        # XXX We rely quite a bit on solr queries here, but cannot test them.
+        self.solr.search.return_value = pysolr.Results(
+            [{'uniqueId': 'http://xml.zeit.de/2015/01/article01'},
+             {'uniqueId': 'http://xml.zeit.de/2015/01/article02'},
+             {'uniqueId': 'http://xml.zeit.de/2015/01/article03'}],
+            2)
+
+        cnt = volume.all_content_via_solr()
+        for c in cnt:
+            self.assertEqual('free', c.access)
+
+        volume.change_contents_access('free', 'abo')
+
+        for c in cnt:
+            self.assertEqual('abo', c.access)
