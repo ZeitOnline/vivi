@@ -243,3 +243,12 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual([
                 'http://xml.zeit.de/testcontent',
                 'http://xml.zeit.de/online/2007/01/Somalia'], ids)
+
+    def test_empty_list_of_objects_does_not_start_publish_task(self):
+        IPublish(self.repository).publish_multiple([])
+        with mock.patch(
+                'zeit.workflow.publish.PublishTask'
+                '.call_publish_script') as script:
+                    zeit.workflow.testing.run_publish(
+                        zeit.cms.workflow.interfaces.PRIORITY_LOW)
+                    self.assertFalse(script.called)

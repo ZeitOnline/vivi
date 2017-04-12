@@ -75,6 +75,10 @@ class Publish(object):
             task.run_sync(self.context)
 
     def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+        if not objects:
+            logger.warning('Not starting a publishing task, because no objects'
+                           ' to publish were given')
+            return
         ids = []
         for obj in objects:
             if zeit.cms.interfaces.ICMSContent.providedBy(obj):
