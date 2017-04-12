@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.7.0 (unreleased)
+1.7.0 (2017-04-12)
 ------------------
 
 - ZON-3384: Change access value after x weeks
