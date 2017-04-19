@@ -46,8 +46,8 @@ class TeaserBarBackwardCompatibilityTest(
     def test_can_read_old_xml_and_recognizes_teaserbar_ids_correctly(self):
         cp = zeit.content.cp.centerpage.CenterPage(StringIO.StringIO(
             CENTERPAGE.format(content=(
-                TEASERBAR.format(uuid='FOO')
-                + TEASERBAR.format(uuid='BAR')))))
+                TEASERBAR.format(uuid='FOO') +
+                TEASERBAR.format(uuid='BAR')))))
         self.assertEqual(['FOO', 'BAR'], cp['teaser-mosaic'].keys())
 
 
