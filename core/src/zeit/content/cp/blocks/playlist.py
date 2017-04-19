@@ -1,6 +1,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.content.property
+import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.block
@@ -21,7 +22,7 @@ zeit.edit.block.register_element_factory(
 
 
 @grok.adapter(zeit.content.cp.interfaces.IPlaylistBlock)
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     playlist = context.referenced_playlist
     if playlist is not None:

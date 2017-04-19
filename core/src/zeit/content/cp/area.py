@@ -6,6 +6,7 @@ import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import zeit.cms.content.property
+import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
@@ -459,7 +460,7 @@ def region_to_area(context):
 
 
 @grok.adapter(zeit.content.cp.interfaces.IArea)
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     if (context.automatic and
             context.automatic_type == 'centerpage' and

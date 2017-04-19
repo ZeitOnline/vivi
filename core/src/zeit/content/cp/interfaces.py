@@ -518,13 +518,6 @@ class IContentQuery(zope.interface.Interface):
         """Returns list of content objects."""
 
 
-class ICMSContentIterable(zope.interface.Interface):
-    """An iterable object iterating over CMSContent."""
-
-    def __iter__():
-        pass
-
-
 class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """Returns an iterable content objects in a CenterPage, that are referenced
     by ITeaserBlocks, in the same order they appear in the CenterPage.

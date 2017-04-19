@@ -17,6 +17,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.reference
+import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
@@ -283,10 +284,10 @@ _test_helper_cp_changed = False
 
 
 @grok.adapter(zeit.edit.interfaces.IContainer)
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     return itertools.chain(*[
-        zeit.content.cp.interfaces.ICMSContentIterable(block)
+        zeit.cms.interfaces.ICMSContentIterable(block)
         for block in context.values()
         if block is not None])
 
@@ -306,7 +307,7 @@ def update_centerpage_on_checkin(context, event):
     if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
             'zeit.content.cp.update_metadata'):
         return
-    for content in zeit.content.cp.interfaces.ICMSContentIterable(context):
+    for content in zeit.cms.interfaces.ICMSContentIterable(context):
         context.updateMetadata(content)
 
     context.header_image = context.header_image

@@ -2,7 +2,7 @@ from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.content.cp.interfaces import ICMSContentIterable
+from zeit.cms.interfaces import ICMSContentIterable
 from zeit.content.cp.interfaces import ILeadTime, ILeadTimeWorklist
 import grokcore.component as grok
 import pytz

@@ -1,6 +1,7 @@
 import copy
 import grokcore.component as grok
 import zeit.cms.content.property
+import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -15,7 +16,7 @@ def cms_content_to_centerpage(context):
 
 
 @zope.component.adapter(zeit.edit.interfaces.IElement)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@zope.interface.implementer(zeit.cms.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     return iter([])
 
