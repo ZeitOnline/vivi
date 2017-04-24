@@ -18,6 +18,8 @@ import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.infobox.interfaces
+import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.workflow.interfaces
@@ -27,7 +29,6 @@ import zope.dublincore.interfaces
 import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy
-
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 # supertitle+title+subtitle are here since their order is important for XSLT,
@@ -207,6 +208,20 @@ def disable_is_amp_if_access_is_restricted(article, event):
 
     if article.access and article.access != u'free':
         article.is_amp = False
+
+
+@grok.adapter(zeit.content.article.interfaces.IArticle)
+@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
+def iter_referenced_content(context):
+    referenced_content = []
+    body = zeit.content.article.edit.interfaces.IEditableBody(context, None)
+    if not body:
+        return referenced_content
+    for element in body.values():
+        if zeit.content.article.edit.interfaces.IReference.providedBy(
+                element) and element.references:
+            referenced_content.append(element.references)
+    return referenced_content
 
 
 class LayoutDependency(object):
