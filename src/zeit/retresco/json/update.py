@@ -13,7 +13,6 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
                 not self.request.form.get('_body_decoded')):
             decoded = self.request.bodyStream.read(
                 int(self.request['CONTENT_LENGTH']))
-
             try:
                 for doc_id in json.loads(decoded).get('doc_ids'):
                     try:
