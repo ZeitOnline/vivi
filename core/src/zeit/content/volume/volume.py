@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublish
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
@@ -202,7 +201,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             except:
                 log.error("Couldn't change access for {}. Skipping "
                           "it.".format(cnt.uniqueId))
-        IPublish(self).publish_multiple(cnts)
+        return cnts
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):

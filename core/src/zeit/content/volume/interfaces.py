@@ -91,12 +91,13 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     def change_contents_access(access_from, access_to, published):
         """
         Change the access value, from access_from to access_to, for all
-        content of this volume.
+        content of this volume and returns the content. The changed content
+        wont be published by this method.
         :param access_from: access value to replace
         :param access_to: new acces value
         :param published: bool to specify if only published content should
         be changed
-        :return: None
+        :return: [CMSContent, ...]
         """
 
 
