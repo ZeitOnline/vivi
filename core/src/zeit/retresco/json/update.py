@@ -18,7 +18,7 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
                     try:
                         content = zeit.cms.content.contentuuid.uuid_to_content(
                             zeit.cms.content.interfaces.IUUID(doc_id))
-                        index_async(content.uniqueId)
+                        index_async(content.uniqueId, True, True)
                     except (AttributeError, TypeError):
                         log.warning('Error invalid UUID %s', doc_id,
                                     exc_info=True)
