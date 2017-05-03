@@ -94,7 +94,9 @@ class Publish(object):
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
-            task.run_sync(ids)
+            objs = [zeit.cms.interfaces.ICMSContent(unique_id) for
+                    unique_id in ids]
+            task.run_sync(objs)
 
     def tasks(self, priority):
         config = zope.app.appsetup.product.getProductConfiguration(
