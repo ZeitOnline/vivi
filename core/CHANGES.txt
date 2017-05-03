@@ -4,7 +4,7 @@ zeit.cms changes
 2.97.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Synchronous multi publish works with ID's now
 
 
 2.97.1 (2017-04-12)
