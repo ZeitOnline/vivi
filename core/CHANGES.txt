@@ -5,7 +5,7 @@ zeit.content.volume changes
 1.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3384: Don't publish content in change_contents_access
 
 
 1.7.0 (2017-04-12)
