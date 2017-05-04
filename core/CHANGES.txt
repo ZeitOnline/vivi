@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.7.2 (unreleased)
+1.7.2 (2017-05-04)
 ------------------
 
 - BUG-711: Friedbert preview doesn't render article with wrong volume reference
