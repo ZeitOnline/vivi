@@ -190,6 +190,13 @@ class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
             ['${name}: ${new_value}', 'Published', 'Retracted'],
             [x.message for x in logs])
 
+    def test_synchronous_multi_publishing_works_with_unique_ids(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(article)
+        info.urgent = True
+        IPublish(article).publish_multiple([article.uniqueId], async=False)
+        self.assertTrue(info.published)
+
 
 class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
 
@@ -239,10 +246,12 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             IPublish(self.repository).publish_multiple([
                 self.repository['testcontent'],
                 'http://xml.zeit.de/online/2007/01/Somalia'], async=False)
-            ids = run.call_args[0][0]
+            objs = run.call_args[0][0]
             self.assertEqual([
-                'http://xml.zeit.de/testcontent',
-                'http://xml.zeit.de/online/2007/01/Somalia'], ids)
+                zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/testcontent'),
+                zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')], objs)
 
     def test_empty_list_of_objects_does_not_start_publish_task(self):
         IPublish(self.repository).publish_multiple([])
