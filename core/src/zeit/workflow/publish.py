@@ -81,12 +81,11 @@ class Publish(object):
             return
         ids = []
         for obj in objects:
-            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
-                self.log(obj, _('Collective Publication'))
+            obj = zeit.cms.interfaces.ICMSContent(obj)
+            self.log(obj, _('Collective Publication'))
+            if async:
                 ids.append(obj.uniqueId)
             else:
-                self.log(zeit.cms.interfaces.ICMSContent(obj),
-                         _('Collective Publication'))
                 ids.append(obj)
         task = u'zeit.workflow.publish-multiple'
         if async:
@@ -94,9 +93,7 @@ class Publish(object):
         else:
             task = zope.component.getUtility(
                 lovely.remotetask.interfaces.ITask, name=task)
-            objs = [zeit.cms.interfaces.ICMSContent(unique_id) for
-                    unique_id in ids]
-            task.run_sync(objs)
+            task.run_sync(ids)
 
     def tasks(self, priority):
         config = zope.app.appsetup.product.getProductConfiguration(
