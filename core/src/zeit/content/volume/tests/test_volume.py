@@ -56,9 +56,13 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
             lxml.etree.tostring(self.volume.xml.covers))
 
-    def test_raises_if_product_is_not_in_volume(self):
+    def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):
         with self.assertRaises(ValueError):
-            self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
+            self.volume.set_cover('ipad', 'TEST', self.repository[
+                'imagegroup'])
+
+    def test_returns_none_if_invalid_product_id_used_in_get_cover(self):
+        self.assertEqual(None, self.volume.get_cover('ipad', 'TEST'))
 
     def test_resolves_given_product_id(self):
         self.add_ipad_cover('ZMLB')
