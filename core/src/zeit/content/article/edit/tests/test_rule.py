@@ -41,3 +41,22 @@ error_if(IImage.providedBy(content[0]), u'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
+
+    def test_IVolume_content_returns_referenced_object(self):
+        from zeit.content.volume.volume import Volume
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        zeit.cms.content.add.find_or_create_folder('2015', '01')
+        self.repository['2015']['01']['ausgabe'] = volume
+        block = self.get_factory(self.get_article(), 'volume')()
+        block.references = block.references.create(
+            volume)
+        r = Rule("""
+from zeit.content.volume.interfaces import IVolume
+applicable(True)
+error_if(IVolume.providedBy(content[0]), u'bar')
+""")
+        s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
+        self.assertEquals(zeit.edit.rule.ERROR, s.status)

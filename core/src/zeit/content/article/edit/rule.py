@@ -38,6 +38,14 @@ def content(context):
         return []
 
 
+@glob(zeit.content.article.edit.interfaces.IVolume)
+def content(context):
+    if context.references.target:
+        return [context.references.target]
+    else:
+        return []
+
+
 @glob(zeit.content.article.edit.interfaces.ILayoutable)
 def layout(context):
     return context.layout
