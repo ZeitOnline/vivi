@@ -1,14 +1,22 @@
 from zeit.retresco.update import index_async
 import json
 import logging
-import zeit.cms.browser.view
+import zeit.cms.content.contentuuid
+import zeit.cms.content.interfaces
 
 log = logging.getLogger(__name__)
 
 
-class UpdateKeywords(zeit.cms.browser.view.Base):
+class UpdateKeywords(object):
 
+    # A hopefully more correct version than zeit.cms.browser.view.JSON
     def __call__(self):
+        self.request.response.setHeader('Content-Type', 'application/json')
+        status, result = self.update()
+        self.request.response.setStatus(status)
+        return json.dumps(result)
+
+    def update(self):
         status = {
             'message': '',
             'invalid': [],
@@ -18,8 +26,7 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
 
         if self.request.method != 'POST':
             status['message'] = 'Only POST supported'
-            self.request.response.setStatus(405)
-            return json.dumps(status)
+            return 405, status
 
         try:
             body = self.request.bodyStream.read(
@@ -28,8 +35,7 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
         except:
             status['message'] = (
                 'JSON body with parameter doc_ids (list of uuids) required')
-            self.request.response.setStatus(400)
-            return json.dumps(status)
+            return 400, status
 
         for doc_id in doc_ids:
             try:
@@ -46,4 +52,4 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
         status['message'] = 'Nothing updated'
         if status['updated']:
             status['message'] = 'Update successful'
-        return json.dumps(status)
+        return 200, status
