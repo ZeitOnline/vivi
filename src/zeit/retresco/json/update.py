@@ -9,9 +9,12 @@ log = logging.getLogger(__name__)
 class UpdateKeywords(zeit.cms.browser.view.Base):
 
     def __call__(self):
-
-        status = {'updated': [], 'invalid': [], 'updated_content': [],
-                'message': ''}
+        status = {
+            'message': '',
+            'invalid': [],
+            'updated': [],
+            'updated_content': [],
+        }
 
         if self.request.method != 'POST':
             status['message'] = 'Only POST supported'
@@ -30,17 +33,16 @@ class UpdateKeywords(zeit.cms.browser.view.Base):
                     status['updated_content'].append(content.uniqueId)
                 except (AttributeError, TypeError):
                     status['invalid'].append(doc_id)
-                    pass
+                    continue
+                else:
+                    log.info('Scheduling %s for reindex', content.uniqueId)
             status['message'] = 'Nothing updated'
             if status['updated']:
-                log.info('Update successful')
                 status['message'] = 'Update successful'
             return json.dumps(status)
 
         except (TypeError, ValueError):
-            log.warning('JSON body with parameter doc_ids (list of uuids) '
-                        'required', exc_info=True)
-            status['message'] = ('JSON body with parameter doc_ids '
-                                 '(list of uuids) required')
+            status['message'] = (
+                'JSON body with parameter doc_ids (list of uuids) required')
             self.request.response.setStatus(400)
             return json.dumps(status)
