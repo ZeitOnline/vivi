@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.9.0 (unreleased)
+1.9.0 (2017-05-08)
 ------------------
 
 - ZON-3173: Add endpoint for TMS reindexing
