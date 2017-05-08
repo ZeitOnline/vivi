@@ -11,6 +11,7 @@
   <!-- We provide the actual implementation to the mocks registered
        by zeit.cms.tagging. -->
   <includeOverrides package="zeit.retresco" />
+  <include package="zeit.retresco.json" />
   <include package="zeit.retresco.xmlrpc" />
 
   <include package="zeit.content.article" file="ftesting.zcml" />
