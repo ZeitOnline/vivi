@@ -4,7 +4,7 @@ zeit.cms changes
 2.97.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Serialize tag uniqueIds correctly in formlib widget
 
 
 2.97.2 (2017-05-05)

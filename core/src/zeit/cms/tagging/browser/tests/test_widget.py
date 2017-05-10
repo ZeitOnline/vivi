@@ -1,3 +1,4 @@
+# coding: utf-8
 import gocept.testing.mock
 import mock
 import unittest
@@ -32,8 +33,18 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
             self.browser.contents)
 
 
-class InputWidget(zeit.cms.testing.SeleniumTestCase,
+class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_serializes_tag_ids_with_unicode_escapes(self):
+        self.setup_tags(u'Bärlin')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        self.assertEllipsis(r'...tag://B\\xe4rlin...', self.browser.contents)
+
+
+class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
+                    zeit.cms.tagging.testing.TaggingHelper):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 

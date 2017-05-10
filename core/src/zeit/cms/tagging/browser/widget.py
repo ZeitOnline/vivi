@@ -73,7 +73,7 @@ class Widget(grokcore.component.MultiAdapter,
         # XXX Maybe there's a better place to fix this inconsistency but right
         # now I opt for a quick solution to a fair mess of failing tests.
         return json.dumps([{
-            'code': TAG_NAMESPACE + x.code,
+            'code': x.uniqueId,
             'label': x.label,
             'pinned': x.pinned} for x in value or ()])
 
