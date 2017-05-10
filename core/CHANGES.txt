@@ -2,8 +2,8 @@ zeit.retresco changes
 =====================
 
 
-1.9.1 (unreleased)
-------------------
+1.10.0 (2017-05-10)
+-------------------
 
 - ZON-3896: Retrieve more metadata for topic page list
 
