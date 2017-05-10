@@ -214,14 +214,25 @@ def _update_topiclist():
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
 
 
+TOPIC_PAGE_ATTRIBUTES = {
+    'id': '',
+    'meta_description': '',
+    'meta_title': '',
+    'topic_type': 'type',
+}
+
+
 def _build_topic_xml():
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     E = lxml.builder.ElementMaker()
     root = E.topics()
     for row in tms.get_all_topicpages():
-        # XXX What other attributes might be interesting to use in a
-        # dynamicfolder template?
-        root.append(E.topic(row['title'], id=row['id']))
+        attributes = {}
+        for tms, vivi in TOPIC_PAGE_ATTRIBUTES.items():
+            if not vivi:
+                vivi = tms
+            attributes[vivi] = row[tms]
+        root.append(E.topic(row['title'], **attributes))
     return root
 
 
