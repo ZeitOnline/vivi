@@ -66,7 +66,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(InputWidget, self).setUp()
+        super(InputWidgetUI, self).setUp()
         self.patches = gocept.testing.mock.Patches()
         display = self.patches.add(
             'zeit.cms.tagging.browser.widget.Widget.display_update_button',
@@ -75,7 +75,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     def tearDown(self):
         self.patches.reset()
-        super(InputWidget, self).tearDown()
+        super(InputWidgetUI, self).tearDown()
 
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
