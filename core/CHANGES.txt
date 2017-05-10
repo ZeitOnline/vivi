@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.10.1 (unreleased)
+1.10.1 (2017-05-10)
 -------------------
 
 - MAINT: Don't try to TMS-publish content that's missing required fields
