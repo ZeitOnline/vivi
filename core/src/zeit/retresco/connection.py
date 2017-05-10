@@ -171,6 +171,7 @@ class TMS(object):
                 url = url + '?in-text-linked'
                 kw.pop('params')
             response = method(url, **kw)
+            log.debug(dump_request(response))
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
@@ -295,3 +296,18 @@ def signal_timeout_request(self, method, url, **kw):
 
 original_session_request = requests.sessions.Session.request
 requests.sessions.Session.request = signal_timeout_request
+
+
+def dump_request(response):
+    """Debug helper. Pass a `requests` response and receive an executable curl
+    command line.
+    """
+    request = response.request
+    command = "curl -X {method} -H {headers} -d '{data}' '{uri}'"
+    method = request.method
+    uri = request.url
+    data = request.body
+    headers = ["'{0}: {1}'".format(k, v) for k, v in request.headers.items()]
+    headers = " -H ".join(headers)
+    return command.format(
+        method=method, headers=headers, data=data, uri=uri)
