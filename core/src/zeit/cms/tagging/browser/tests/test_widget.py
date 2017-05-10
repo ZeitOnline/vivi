@@ -1,5 +1,6 @@
 # coding: utf-8
 import gocept.testing.mock
+import json
 import mock
 import unittest
 import zeit.cms.tagging.testing
@@ -41,6 +42,22 @@ class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
         self.assertEllipsis(r'...tag://B\\xe4rlin...', self.browser.contents)
+
+
+class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
+                 zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_serializes_tag_ids_with_unicode_escapes(self):
+        self.setup_tags(u'Bärlin')
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        b.open('@@update_tags')
+        self.assertEqual([{
+            'code': 'tag://B\\xe4rlin',
+            'label': u'Bärlin',
+            'pinned': False,
+        }], json.loads(b.contents)['tags'])
 
 
 class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,

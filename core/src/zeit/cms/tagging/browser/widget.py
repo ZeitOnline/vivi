@@ -94,7 +94,7 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         tagger.update()
         zope.lifecycleevent.modified(self.context)
         return dict(tags=[
-            dict(code=zeit.cms.tagging.interfaces.ID_NAMESPACE + tag.code,
+            dict(code=tag.uniqueId,
                  label=tag.label,
                  pinned=tag.pinned)
             for tag in tagger.values()])
