@@ -10,6 +10,7 @@ class Tag(object):
 
     zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
 
+    # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = u'☃'
 
     def __init__(self, label, entity_type):
