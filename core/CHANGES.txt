@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.97.4 (unreleased)
+2.97.4 (2017-05-10)
 -------------------
 
 - FIX: Serialize tag uniqueIds correctly in update json view
