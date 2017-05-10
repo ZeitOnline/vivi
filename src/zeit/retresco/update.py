@@ -90,8 +90,14 @@ def index(content, enrich=False, publish=False):
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
                 if pub_info.published:
-                    log.info('Publishing: %s', content.uniqueId)
-                    conn.publish(content)
+                    if zeit.retresco.interfaces.ITMSRepresentation(
+                            content)() is not None:
+                        log.info('Publishing: %s', content.uniqueId)
+                        conn.publish(content)
+                    else:
+                        log.info(
+                            'Skip publish for %s, missing required fields',
+                            content.uniqueId)
         except (zeit.retresco.interfaces.TMSError,
                 zeit.retresco.interfaces.TechnicalError):
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)

@@ -113,12 +113,15 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_publish_should_be_called_on_index_if_res_published(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
-            content = self.repository['testcontent']
-            pub_info = mock.Mock()
-            pub_info.published = True
-            pub.return_value = pub_info
-            zeit.retresco.update.index(content, False, True)
-            self.assertTrue(self.tms.publish.called)
+            with mock.patch(
+                    'zeit.retresco.interfaces.ITMSRepresentation') as tmsrep:
+                tmsrep().return_value = {'not empty': ''}
+                content = self.repository['testcontent']
+                pub_info = mock.Mock()
+                pub_info.published = True
+                pub.return_value = pub_info
+                zeit.retresco.update.index(content, False, True)
+                self.assertTrue(self.tms.publish.called)
 
     def test_publish_should_not_be_called_on_index_without_option(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
