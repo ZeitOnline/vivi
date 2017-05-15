@@ -71,6 +71,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def teaserText(self, value):
         self._teaserText = value
 
+    @property
+    def teaserSupertitle(self):  # For display in CP-editor
+        return self.fill_template('Ausgabe {name}/{year}')
+
     def fill_template(self, text):
         return self._fill_template(self, text)
 
