@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.98.1 (unreleased)
+2.99.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-669: Honor the configured field's missing_value in `Structure` descriptor
 
 
 2.98.0 (2017-05-22)

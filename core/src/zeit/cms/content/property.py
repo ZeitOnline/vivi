@@ -107,7 +107,7 @@ class Structure(ObjectPathProperty):
     def __get__(self, instance, class_):
         node = self.getNode(instance)
         if node is None:
-            return None
+            return self.field.missing_value if self.field else None
         node = lxml.objectify.fromstring(unicode(self.remove_namespaces(node)))
         result = [xml.sax.saxutils.escape(unicode(node))]
         for child in node.iterchildren():
@@ -116,9 +116,11 @@ class Structure(ObjectPathProperty):
         return u''.join(result)
 
     def __set__(self, instance, value):
-        # Objectify value:
-        xml = lxml.objectify.fromstring(u'<xml>%s</xml>' % value)
-        self.path.setattr(instance.xml, xml)
+        if self.field and value is self.field.missing_value:
+            value = None
+        else:
+            value = lxml.objectify.fromstring(u'<xml>%s</xml>' % value)
+        self.path.setattr(instance.xml, value)
 
 
 class ObjectPathAttributeProperty(ObjectPathProperty):
