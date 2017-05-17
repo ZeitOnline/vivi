@@ -112,17 +112,27 @@ def update_display_name(obj, event):
 # zeit.vgwort.report uses the fact that the references to author objects are
 # copied to the freetext 'author' webdav property to filter out which content
 # objects to report.
+def update_author_freetext(content):
+    content.authors = [x.target.display_name for x in content.authorships]
+
+
 @grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
-def update_author_freetext(obj, event):
+def update_freetext_on_change(context, event):
     if event.descriptions:
         for description in event.descriptions:
             if (issubclass(description.interface,
                 zeit.cms.content.interfaces.ICommonMetadata) and
                     'authorships' in description.attributes):
-                ref_names = [x.target.display_name for x in obj.authorships]
-                obj.authors = ref_names
+                update_author_freetext(context)
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+def update_freetext_on_add(context, event):
+    update_author_freetext(context)
 
 
 class Dependencies(grok.Adapter):
