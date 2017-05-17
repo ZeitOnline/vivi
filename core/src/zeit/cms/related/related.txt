@@ -12,6 +12,14 @@ content[#functionaltest]_:
 Add content to repository:
 
 >>> repository['content'] = content
+>>> content = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['content']).checkout()
+
+We need to force assigning of _p_jar to content so the Persistent mechanisms
+work (in production this happens automatically at the end of the browser
+request for checkout):
+>>> import transaction
+>>> transaction.commit()
 
 Adapt it to IRelatedContent, currently there are no references:
 
@@ -69,6 +77,12 @@ Let's have a look at the source:
 (<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,)
 >>> related.related[0].uniqueId
 u'http://xml.zeit.de/related'
+
+The context has been marked as changed, since otherwise the XML won't be stored
+on commit:
+
+>>> content._p_changed
+True
 
 
 Assigning the same content object again doesn't change the xml:
@@ -262,6 +276,7 @@ ValueError: Could not create XML reference type 'related' for foo
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
 
     Do some imports and get the repository
 
