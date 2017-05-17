@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
+import collections
 import grokcore.component as grok
 import logging
 import pytz
@@ -146,10 +147,11 @@ class ConnectionBase(object):
             'utm_content': 'zeitde_{device}_link_x'.format(device=device),
         }
 
-        tracking_query = urllib.urlencode(tracking)
-        parsed_url = list(urlparse.urlparse(url))  # ParseResult is immutable
-        parsed_url[4] = '&'.join((parsed_url[4], tracking_query))
-        return urlparse.urlunparse(parsed_url)
+        parts = list(urlparse.urlparse(url))
+        query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
+        query.update(tracking)
+        parts[4] = urllib.urlencode(query, doseq=True)
+        return urlparse.urlunparse(parts)
 
 
 class Message(zeit.push.message.Message):
