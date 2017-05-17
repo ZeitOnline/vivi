@@ -164,7 +164,7 @@ class Portraitbox(Reference):
     _text_local = zeit.cms.content.property.Structure(
         '.text', zeit.content.article.edit.interfaces.IPortraitbox['text'])
     text = zeit.cms.content.reference.OverridableProperty(
-        zeit.content.portraitbox.interfaces.IPortraitbox['text'],
+        zeit.content.article.edit.interfaces.IPortraitbox['text'],
         original='references')
 
     def __init__(self, *args, **kw):
