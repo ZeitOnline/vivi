@@ -9,6 +9,7 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
@@ -84,23 +85,16 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.content.author.add_contextfree'
 
 
-@grok.implementer(zeit.content.image.interfaces.IImages)
-@grok.adapter(zeit.content.author.interfaces.IAuthor)
-class AuthorImages(object):
+class AuthorImages(zeit.cms.related.related.RelatedBase):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
+    zope.component.adapts(zeit.content.author.interfaces.IAuthor)
+    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.image_group', 'fill_color',
         zeit.content.image.interfaces.IImages['fill_color'])
-
-    def __init__(self, context):
-        self.context = context
-        self.__parent__ = context
-        self.xml = zope.security.proxy.getObject(context.xml)
-        self.uniqueId = context.uniqueId
 
 
 @grok.subscribe(
