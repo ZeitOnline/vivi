@@ -137,7 +137,7 @@ class ConnectionBase(object):
         else:
             device = 'iospush'
 
-        tracking = {
+        tracking = collections.OrderedDict(sorted({
             'wt_zmc':
             'fix.int.zonaudev.push.{channel}.zeitde.{device}.link.x'.format(
                 channel=channel, device=device),
@@ -145,11 +145,12 @@ class ConnectionBase(object):
             'utm_source': 'push_zonaudev_int',
             'utm_campaign': channel,
             'utm_content': 'zeitde_{device}_link_x'.format(device=device),
-        }
+        }.items()))
 
         parts = list(urlparse.urlparse(url))
         query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
-        query.update(tracking)
+        for key, value in tracking.items():
+            query[key] = value
         parts[4] = urllib.urlencode(query, doseq=True)
         return urlparse.urlunparse(parts)
 
