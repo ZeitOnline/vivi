@@ -313,19 +313,19 @@ The actions are logged:
 http://xml.zeit.de/online/2007/01/studiVZ
      Urgent: yes
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2008 6 13  07:38:48  (job #...)
+     To publish on 2008 6 13  07:38:48  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
-     Scheduled publication cancelled (job #...).
+     Scheduled publish cancelled (job #...).
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2008 6 13  07:38:49  (job #...)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Published
-http://xml.zeit.de/online/2007/01/studiVZ
-     To be published on 2000 2 3  01:00:00  (job #...)
+     To publish on 2008 6 13  07:38:49  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
      Published
 http://xml.zeit.de/online/2007/01/studiVZ
-     To be retracted on 2008 6 13  07:38:50  (job #...)
+     To publish on 2000 2 3  01:00:00  (job #...)
+http://xml.zeit.de/online/2007/01/studiVZ
+     Published
+http://xml.zeit.de/online/2007/01/studiVZ
+     To retract on 2008 6 13  07:38:50  (job #...)
 http://xml.zeit.de/online/2007/01/studiVZ
      Retracted
 
