@@ -4,7 +4,7 @@ zeit.push changes
 1.20.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-715: Append tracking query parameters correctly (without superflous `&`)
 
 
 1.20.1 (2017-02-23)
