@@ -67,6 +67,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                 'timebased-%s-cancel' % taskname,
                 default='Scheduled %s cancelled (job #${job}).' % taskname,
                 mapping={'job': jobid()}))
+            setattr(self, '%s_job_id' % taskname, None)
         if timestamp is not None:
             setattr(self, '%s_job_id' % taskname, self.add_job(
                 'zeit.workflow.%s' % taskname, timestamp))
