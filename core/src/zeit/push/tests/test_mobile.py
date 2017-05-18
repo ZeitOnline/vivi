@@ -1,6 +1,7 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.push.interfaces import CONFIG_CHANNEL_BREAKING, CONFIG_CHANNEL_NEWS
+import gocept.testing.assertion
 import mock
 import pytz
 import unittest
@@ -146,13 +147,16 @@ class StripToPathTest(unittest.TestCase):
                 'www.zeit.de/foo/bar?query=arg&param'))
 
 
-class AddTrackingTest(unittest.TestCase):
+class AddTrackingTest(unittest.TestCase,
+                      gocept.testing.assertion.String):
 
     layer = zeit.push.testing.ZCML_LAYER
 
     def test_adds_tracking_information_as_query_string(self):
         url = zeit.push.mobile.ConnectionBase.add_tracking(
             'http://www.zeit.de/foo/bar', ['News'], 'android')
+        # No thanks to parse_qs() for "benevolently" ignoring this.
+        self.assertNotIn('?&', url)
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual(
             'fix.int.zonaudev.push.wichtige_news.zeitde.andpush.link.x',
@@ -161,6 +165,13 @@ class AddTrackingTest(unittest.TestCase):
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
         self.assertEqual('wichtige_news', qs['utm_campaign'][0])
         self.assertEqual('fix', qs['utm_medium'][0])
+
+    def test_preserves_existing_query_string(self):
+        url = zeit.push.mobile.ConnectionBase.add_tracking(
+            'http://www.zeit.de/foo/bar?baz=qux', ['News'], 'android')
+        self.assertStartsWith('http://www.zeit.de/foo/bar?baz=qux&', url)
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('qux', qs['baz'][0])
 
     def test_adds_tracking_information_blog(self):
         url = zeit.push.mobile.ConnectionBase.add_tracking(
