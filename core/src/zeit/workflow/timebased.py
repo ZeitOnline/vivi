@@ -1,4 +1,4 @@
-from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import datetime
@@ -33,10 +33,10 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_ALWAYS)
     retract_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'retract_job_id',
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_ALWAYS)
 
     def __init__(self, context):
         self.context = self.__parent__ = context
