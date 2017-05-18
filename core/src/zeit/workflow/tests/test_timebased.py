@@ -13,7 +13,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_removing_release_period_should_remove_jobid(self):
         content = self.repository['testcontent']
-        workflow = zeit.workflow.interfaces.IContentWorkflow(content)
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         workflow.release_period = (
             datetime.now(pytz.UTC) + timedelta(days=1), None)
         self.assertNotEqual(None, workflow.publish_job_id)
@@ -26,9 +26,9 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_should_cancel_job_when_changed_during_checkout(self):
         content = self.repository['testcontent']
-        workflow = zeit.workflow.interfaces.IContentWorkflow(content)
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         with checked_out(content) as co:
-            workflow = zeit.workflow.interfaces.IContentWorkflow(co)
+            workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (
                 datetime.now(pytz.UTC) + timedelta(days=1), None)
         # Put job into "delayed" state, otherwise it won't cancel.
@@ -40,7 +40,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('delayed', tasks.getStatus(job1))
 
         with checked_out(content) as co:
-            workflow = zeit.workflow.interfaces.IContentWorkflow(co)
+            workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (
                 datetime.now(pytz.UTC) + timedelta(days=2), None)
         tasks.process()
