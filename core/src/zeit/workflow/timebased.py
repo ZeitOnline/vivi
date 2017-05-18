@@ -2,6 +2,7 @@ from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import datetime
+import grokcore.component as grok
 import lovely.remotetask.interfaces
 import pytz
 import rwproperty
@@ -119,7 +120,12 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         tzinfo = zope.interface.common.idatetime.ITZInfo(request, None)
         if tzinfo is not None:
             dt = dt.astimezone(tzinfo)
-        formatter = request.locale.dates.getFormatter('dateTime', 'medium')
+        if isinstance(request, lovely.remotetask.processor.ProcessorRequest):
+            # Happens when triggered from schedule_imported_retract_jobs()
+            locale = zope.i18n.locales.locales.getLocale('de')
+        else:
+            locale = request.locale
+        formatter = locale.dates.getFormatter('dateTime', 'medium')
         return formatter.format(dt)
 
 
@@ -146,3 +152,20 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if workflow.released_to:
             date = workflow.released_to.isoformat()
         entry.set('expires', date)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def schedule_imported_retract_jobs(context, event):
+    """Since the print-import (exporter.zeit.de) works only on the DAV-level,
+    it can not create vivi jobs. Thus we do that here. (This especially applies
+    to imagegroups.)
+    """
+    workflow = zeit.workflow.interfaces.ITimeBasedPublishing(context, None)
+    if (workflow is None or
+        workflow.retract_job_id or
+        not workflow.released_to or
+            workflow.released_to < datetime.datetime.now(pytz.UTC)):
+        return
+    workflow.setup_job('retract', workflow.released_to)
