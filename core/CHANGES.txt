@@ -7,6 +7,8 @@ zeit.content.author changes
 - BUG-562: Base author images implementation on the default IImages
   implementation, so all the mechanics works out properly
 
+- BUG-708: Copy to freetext on create too, since that does not send modified
+
 
 2.7.6 (2017-02-16)
 ------------------
