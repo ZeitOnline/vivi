@@ -10,6 +10,7 @@ import unittest
 import zeit.cms.testing
 import zeit.content.author.author
 import zeit.content.author.testing
+import zope.interface
 
 
 NONZERO = 3
@@ -85,6 +86,8 @@ class FreetextCopyTest(unittest.TestCase):
 
     def test_authorships_should_be_copied_to_freetext_on_create(self):
         content = mock.Mock()
+        zope.interface.alsoProvides(
+            content, zeit.cms.checkout.interfaces.ILocalContent)
         author1, author2 = mock.Mock(), mock.Mock()
         author1.target.display_name = mock.sentinel.author1
         author2.target.display_name = mock.sentinel.author2
