@@ -32,13 +32,6 @@ class Base(zeit.push.browser.form.SocialBase):
         'thumbnail', 'video_still', 'flv_url', 'authorships')
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-    social_fields_list = list(social_fields.fields)
-    social_fields_list.remove('bigshare_buttons')
-    social_fields.fields = tuple(social_fields_list)
-
-    @property
-    def social_form_fields(self):
-        return super(Base, self).social_form_fields.omit('bigshare_buttons')
 
     field_groups = (
         gocept.form.grouped.Fields(
