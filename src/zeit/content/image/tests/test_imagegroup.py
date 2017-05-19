@@ -1,10 +1,12 @@
 # coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
-import mock
 import PIL
+import mock
 import zeit.cms.testing
 import zeit.content.image.testing
+import zope.event
+import zope.lifecycleevent
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
@@ -268,3 +270,12 @@ class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual(
                 self.group['master-image-mobile.jpg'],
                 self.thumbnails.master_image('square__mobile'))
+
+    def test_thumbnail_is_removed_on_delete(self):
+        self.group['second'] = create_local_image('new-hampshire-450x200.jpg')
+        self.thumbnails.THUMBNAIL_WIDTH = 100
+        self.thumbnails.source_image(self.group['second'])
+        del self.group['second']
+        self.assertEqual(
+            ['master-image.jpg', 'thumbnail-source-master-image.jpg'],
+            self.group.keys())
