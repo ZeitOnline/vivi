@@ -5,9 +5,6 @@ import zeit.magazin.browser.social
 
 base = zeit.content.link.browser.form.Base
 social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-social_fields_list = list(social_fields.fields)
-social_fields_list.remove('bigshare_buttons')
-social_fields.fields = tuple(social_fields_list)
 field_groups = (
     base.field_groups[:4] +
     (social_fields,) +
