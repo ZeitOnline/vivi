@@ -1,6 +1,5 @@
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
@@ -31,8 +30,6 @@ class Base(zeit.push.browser.form.SocialBase):
         'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'flv_url', 'authorships')
 
-    social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-
     field_groups = (
         gocept.form.grouped.Fields(
             _("Texts"),
@@ -48,7 +45,7 @@ class Base(zeit.push.browser.form.SocialBase):
              'breaking_news', 'has_recensions', 'commentsAllowed',
              'commentsPremoderate'),
             css_class='column-right checkboxes'),
-        social_fields,
+        zeit.push.browser.form.SocialBase.social_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
