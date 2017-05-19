@@ -47,7 +47,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
         'advertisement_title',
         'advertisement_text',
-        'bigshare_buttons',
     ))
 
     zeit.cms.content.dav.mapProperties(
