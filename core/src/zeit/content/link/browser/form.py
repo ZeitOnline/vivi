@@ -15,13 +15,9 @@ class Base(zeit.push.browser.form.SocialBase):
     # XXX We should switch to explicit select.
     form_fields = zope.formlib.form.FormFields(
         zeit.content.link.interfaces.ILink).omit(
-            'xml', 'authors', 'push_news', 'deeplink_url', 'blog',
-            'bigshare_buttons')
+            'xml', 'authors', 'push_news', 'deeplink_url', 'blog')
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-    social_fields_list = list(social_fields.fields)
-    social_fields_list.remove('bigshare_buttons')
-    social_fields.fields = tuple(social_fields_list)
 
     field_groups = (
         base.field_groups[:4] +
@@ -29,10 +25,6 @@ class Base(zeit.push.browser.form.SocialBase):
          base.option_fields,
          base.author_fields)
     )
-
-    @property
-    def social_form_fields(self):
-        return super(Base, self).social_form_fields.omit('bigshare_buttons')
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):

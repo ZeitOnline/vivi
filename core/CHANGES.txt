@@ -4,7 +4,7 @@ zeit.content.link changes
 2.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3917 remove bigshare button checkbox
 
 
 2.1.6 (2016-09-26)
