@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import zeit.cms.content.browser.form
 import zeit.content.link.interfaces
 import zeit.content.link.link
@@ -17,11 +16,9 @@ class Base(zeit.push.browser.form.SocialBase):
         zeit.content.link.interfaces.ILink).omit(
             'xml', 'authors', 'push_news', 'deeplink_url', 'blog')
 
-    social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-
     field_groups = (
         base.field_groups[:4] +
-        (social_fields,
+        (zeit.push.browser.form.SocialBase.social_fields,
          base.option_fields,
          base.author_fields)
     )
