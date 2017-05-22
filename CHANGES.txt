@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.7.7 (unreleased)
+2.7.7 (2017-05-22)
 ------------------
 
 - BUG-562: Base author images implementation on the default IImages
