@@ -11,7 +11,7 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.video.interfaces
 import zeit.push.interfaces
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.interface
 
 
@@ -156,16 +156,11 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
         node.set('type', 'video')
 
 
-class Dependencies(grokcore.component.Adapter):
+class Dependencies(zeit.workflow.dependency.DependencyBase):
 
     grokcore.component.context(
         zeit.content.video.interfaces.IVideo)
     grokcore.component.name('zeit.content.video')
-    grokcore.component.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
 
     def get_dependencies(self):
         relations = zope.component.getUtility(

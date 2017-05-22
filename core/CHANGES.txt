@@ -6,6 +6,8 @@ zeit.content.video changes
 
 - ZON-4006: Update to mobile field split
 
+- BUG-500: Update to new dependency API
+
 
 2.7.4 (2017-07-07)
 ------------------
