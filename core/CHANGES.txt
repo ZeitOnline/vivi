@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.7.5 (unreleased)
+2.7.5 (2017-05-22)
 ------------------
 
 - ZON-3917 remove bigshare button checkbox
