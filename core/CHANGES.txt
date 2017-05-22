@@ -6,14 +6,14 @@ zeit.cms changes
 
 - ZON-3917: Remove big share buttons field from ICommenMetadata
 
-- BUG-562: RelatedBase must use XML-Persistent, so changes are stored
-  properly on commit
+- ZON-3942: Create retract jobs after publishing imported objects that
+  only have `released_to` set
 
 - BUG-301: Cancel scheduled publish jobs when timestamps are changed,
   regardless of while checked-out or checked-in
 
-- ZON-3942: Create retract jobs after publishing imported objects that
-  only have `released_to` set
+- BUG-562: RelatedBase must use XML-Persistent, so changes are stored
+  properly on commit
 
 
 2.97.5 (2017-05-11)
