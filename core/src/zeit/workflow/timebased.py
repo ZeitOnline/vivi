@@ -61,7 +61,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     def setup_job(self, taskname, timestamp):
         _msg = _  # Avoid i18nextract picking up constructed messageids.
-        jobid = lambda: getattr(self, '%s_job_id' % taskname)  # noqa
+        jobid = lambda: getattr(self, '%s_job_id' % taskname)  # NOQA
         cancelled = self.cancel_job(jobid())
         if cancelled:
             self.log(_msg(
