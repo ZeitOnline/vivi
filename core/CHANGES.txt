@@ -8,6 +8,7 @@ zeit.push changes
 
 - ZON-3917: remove bigshare button checkbox
 
+
 1.20.1 (2017-02-23)
 -------------------
 
