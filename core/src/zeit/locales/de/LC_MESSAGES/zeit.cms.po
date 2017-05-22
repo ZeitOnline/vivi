@@ -14,16 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-04-07 16:42+0200\n"
-"PO-Revision-Date: 2017-04-07 16:42+0200\n"
-"Last-Translator: Tobias Kabbeck <tobias.kabbeck@zeit.de>\n"
+"POT-Creation-Date: 2017-05-18 10:45+0200\n"
+"PO-Revision-Date: 2017-05-18 10:47+0200\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.0\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -141,22 +141,22 @@ msgid "Complete event"
 msgstr "Termin erledigen"
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
-#: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/globalmenuitem.pt:5 zeit/cms/browser/lightbox.pt:2
+#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/main_template.pt:47 zeit/cms/browser/main_template.pt:180
 #: zeit/cms/browser/main_template.pt:203 zeit/cms/browser/main_template.pt:221
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
-#: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
-#: zeit/cms/browser/sourceedit.pt:39
-#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
-#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
@@ -546,7 +546,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:417
-#: zeit/content/article/interfaces.py:156 zeit/content/author/author.py:83
+#: zeit/content/article/interfaces.py:156 zeit/content/author/author.py:84
 msgid "Author"
 msgstr "Autor"
 
@@ -1156,7 +1156,7 @@ msgstr "Letzte inhaltliche Änderung"
 #: zeit/cms/content/interfaces.py:66
 #: zeit/content/article/edit/interfaces.py:426
 #: zeit/content/image/interfaces.py:42 zeit/content/volume/browser/form.py:34
-#: zeit/content/volume/interfaces.py:41 zeit/content/volume/volume.py:187
+#: zeit/content/volume/interfaces.py:41 zeit/content/volume/volume.py:217
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -1189,7 +1189,8 @@ msgstr "Channel"
 msgid "Subchannel"
 msgstr "Subchannel"
 
-#: zeit/cms/content/metadata.py:227
+#. Default: ""
+#: zeit/cms/content/metadata.py:199
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -1729,7 +1730,7 @@ msgid "Too few keywords given."
 msgstr "Bitte mindestens 3 Schlagworte vergeben"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:461 zeit/workflow/publishinfo.py:45
+#: zeit/workflow/publish.py:464 zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -2308,9 +2309,9 @@ msgstr "Seitenumbruch"
 #: zeit/content/article/edit/interfaces.py:504
 #: zeit/content/article/interfaces.py:45 zeit/content/cp/interfaces.py:614
 #: zeit/content/cp/interfaces.py:912 zeit/content/gallery/interfaces.py:101
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
-#: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
+#: zeit/wysiwyg/browser/resources/reference/image.pt:26
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 msgid "Layout"
 msgstr "Layout"
 
@@ -2385,15 +2386,15 @@ msgstr "Ziehen Sie Infoboxen hierher, um sie zu verknüpfen"
 
 #: zeit/content/article/edit/interfaces.py:385
 #: zeit/content/article/edit/interfaces.py:472
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 msgid "short"
 msgstr "kurz / klein"
 
 #: zeit/content/article/edit/interfaces.py:386
 #: zeit/content/article/edit/interfaces.py:473
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 msgid "wide"
 msgstr "breit / groß"
 
@@ -2469,11 +2470,11 @@ msgid "Attribution"
 msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:488
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
-#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 msgid "URL"
 msgstr "URL"
 
@@ -3599,8 +3600,8 @@ msgid "Image sub text"
 msgstr "Bildunterschrift"
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/image-details.pt:6
 #: zeit/content/image/browser/reference-details.pt:11
+#: zeit/content/image/browser/image-details.pt:6
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
 msgid "edit"
@@ -4182,7 +4183,7 @@ msgstr "Teaser-Text bearbeiten"
 msgid "Table of Content"
 msgstr "Inhaltsverzeichnis"
 
-#: zeit/content/volume/interfaces.py:46 zeit/content/volume/interfaces.py:95
+#: zeit/content/volume/interfaces.py:46 zeit/content/volume/interfaces.py:107
 msgid "Volume text"
 msgstr "Ausgaben-Hinweis"
 
@@ -4841,23 +4842,23 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:212
+#: zeit/workflow/publish.py:215
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 "Abgebrochen: Veröffentlichen oder Zurückziehen für dieses Objekt bereits "
 "aktiv."
 
 #. Default: ""
-#: zeit/workflow/publish.py:232
+#: zeit/workflow/publish.py:235
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: zeit/workflow/publish.py:425 zeit/workflow/publish.py:525
+#: zeit/workflow/publish.py:428 zeit/workflow/publish.py:528
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:489
+#: zeit/workflow/publish.py:492
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4869,7 +4870,7 @@ msgstr "wird veröffentlicht"
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:81 zeit/workflow/publish.py:85
+#: zeit/workflow/publish.py:85
 msgid "Collective Publication"
 msgstr "Sammelveröffentlichung"
 
@@ -4885,25 +4886,21 @@ msgstr "nein"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#. Default: "Scheduled publication cancelled (job #${job})."
-#: zeit/workflow/timebased.py:59
-msgid "scheduled-publishing-cancelled"
-msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
-
-#. Default: "To be published on ${date} (job #${job})"
-#: zeit/workflow/timebased.py:67
-msgid "scheduled-for-publishing-on"
+#: zeit/workflow/timebased.py:126
+msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
 
-#. Default: "Scheduled retracting cancelled (job #${job})."
-#: zeit/workflow/timebased.py:77
-msgid "scheduled-retracting-cancelled"
-msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
+#: zeit/workflow/timebased.py:127
+msgid "timebased-publish-cancel"
+msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
 
-#. Default: "To be retracted on ${date} (job #${job})"
-#: zeit/workflow/timebased.py:85
-msgid "scheduled-for-retracting-on"
+#: zeit/workflow/timebased.py:128
+msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
+
+#: zeit/workflow/timebased.py:129
+msgid "timebased-retract-cancel"
+msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 
 #. Default: ""
 #: zeit/workflow/workflow.py:48
