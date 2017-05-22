@@ -1,6 +1,12 @@
 zeit.content.video changes
 ==========================
 
+2.7.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.7.3 (2017-05-22)
 ------------------
 
