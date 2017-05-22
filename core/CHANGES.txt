@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.97.6 (unreleased)
+2.98.0 (2017-05-22)
 -------------------
 
 - ZON-3917: Remove big share buttons field from ICommenMetadata
