@@ -14,7 +14,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
 import zeit.find.search
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.interface
 import zope.security.proxy
 
@@ -137,17 +137,13 @@ def update_freetext_on_add(context, event):
     update_author_freetext(context)
 
 
-class Dependencies(grok.Adapter):
+class Dependencies(zeit.workflow.dependency.DependencyBase):
     """When content is published, make sure that all author objects
     referenced by it are also available to the published content.
     """
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('zeit.content.author')
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
 
     def get_dependencies(self):
         result = []
