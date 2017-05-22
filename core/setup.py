@@ -21,7 +21,7 @@ setup(
         'pytz',
         'setuptools',
         'zc.sourcefactory',
-        'zeit.cms >= 2.95.0.dev0',
+        'zeit.cms >= 2.106.0.dev0',
         'zeit.content.article >= 3.23.0.dev0',
         'zeit.content.cp',
         'zeit.content.image',

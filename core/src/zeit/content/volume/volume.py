@@ -12,7 +12,7 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
 import zeit.edit.interfaces
 import zeit.solr.query
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
@@ -288,12 +288,14 @@ class VolumeMetadata(grok.Adapter):
         return value
 
 
-class CoverDependency(grok.Adapter):
+class CoverDependency(zeit.workflow.dependency.DependencyBase):
     """
     If a Volume is published, its covers are published as well.
     """
     grok.context(zeit.content.volume.interfaces.IVolume)
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
+    grok.name('zeit.content.volume.cover')
+
+    retract_dependencies = True
 
     def get_dependencies(self):
         cover_names = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
