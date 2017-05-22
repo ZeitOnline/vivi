@@ -74,9 +74,6 @@
     />
   <adapter factory=".reference.XMLReferenceUpdater" name="gallery" />
 
-  <!-- Workflow -->
-  <adapter factory=".workflow.PublicationDependencies" />
-
   <!-- Metadata -->
   <adapter factory=".gallery.EntryMetadata" />
   <view

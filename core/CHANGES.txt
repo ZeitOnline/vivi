@@ -6,6 +6,8 @@ zeit.content.gallery changes
 
 - ZON-4006: Update to mobile field split
 
+- BUG-500: Update to new dependency API
+
 
 2.7.5 (2017-05-22)
 ------------------

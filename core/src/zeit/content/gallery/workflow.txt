@@ -70,15 +70,14 @@ done.
 Done http://xml.zeit.de/online/gallery (...s)
 
 
-On retract the folder is also *not* retracted (there was a policy change in the
-core, initially the folder was retracted automatically):
+On retract the folder is also retracted:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> tid = publish.retract()
 >>> tasks.process()
 >>> image_info.published
-True
+False
 >>> gallery_info.published
 False
 
@@ -89,9 +88,15 @@ Running job ...
 Retracting http://xml.zeit.de/online/gallery
 ...retract.sh:
 Retracting test script
+work/image-folder/thumbnails/01.jpg
+work/image-folder/thumbnails/
+work/image-folder/01.jpg
+work/image-folder/
 work/online/gallery
 done.
 <BLANKLINE>
+Could not checkout http://xml.zeit.de/image-folder/
+Could not checkout http://xml.zeit.de/image-folder/thumbnails/
 Done http://xml.zeit.de/online/gallery (...s)
 
 
