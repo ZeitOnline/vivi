@@ -39,8 +39,6 @@
       />
   </class>
 
-  <adapter factory=".article.LayoutDependency" name="layout"/>
-
   <subscriber handler=".article.updateTextLengthOnChange" />
   <subscriber handler=".article.disallowCommentsIfCommentsAreNotShown" />
 

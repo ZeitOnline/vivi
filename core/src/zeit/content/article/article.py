@@ -22,7 +22,7 @@ import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zeit.workflow.workflow
 import zope.component
 import zope.dublincore.interfaces
@@ -231,14 +231,10 @@ def iter_referenced_content(context):
     return referenced_content
 
 
-class LayoutDependency(object):
+class LayoutDependency(zeit.workflow.dependency.DependencyBase):
 
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('zeit.content.article.layout')
 
     def get_dependencies(self):
         layout = self.context.layout
