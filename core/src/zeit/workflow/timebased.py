@@ -1,7 +1,8 @@
-from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import datetime
+import grokcore.component as grok
 import lovely.remotetask.interfaces
 import pytz
 import rwproperty
@@ -33,10 +34,10 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_ALWAYS)
     retract_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'retract_job_id',
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_ALWAYS)
 
     def __init__(self, context):
         self.context = self.__parent__ = context
@@ -53,42 +54,29 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             value = None, None
         released_from, released_to = value
         if self.released_from != released_from:
-            cancelled = self.cancel_job(self.publish_job_id)
-            if cancelled:
-                self.log(
-                    _('scheduled-publishing-cancelled',
-                      default=(u"Scheduled publication cancelled "
-                               "(job #${job})."),
-                      mapping=dict(job=self.publish_job_id)))
-            if released_from is not None:
-                self.publish_job_id = self.add_job(
-                    u'zeit.workflow.publish',
-                    released_from)
-                self.log(_('scheduled-for-publishing-on',
-                           default=u"To be published on ${date} (job #${job})",
-                           mapping=dict(
-                               date=self.format_datetime(released_from),
-                               job=self.publish_job_id)))
-
+            self.setup_job('publish', released_from)
         if self.released_to != released_to:
-            cancelled = self.cancel_job(self.retract_job_id)
-            if cancelled:
-                self.log(
-                    _('scheduled-retracting-cancelled',
-                      default=(u"Scheduled retracting cancelled "
-                               "(job #${job})."),
-                      mapping=dict(job=self.publish_job_id)))
-            if released_to is not None:
-                self.retract_job_id = self.add_job(
-                    u'zeit.workflow.retract',
-                    released_to)
-                self.log(_('scheduled-for-retracting-on',
-                           default=u"To be retracted on ${date} (job #${job})",
-                           mapping=dict(
-                               date=self.format_datetime(released_to),
-                               job=self.retract_job_id)))
-
+            self.setup_job('retract', released_to)
         self.released_from, self.released_to = value
+
+    def setup_job(self, taskname, timestamp):
+        _msg = _  # Avoid i18nextract picking up constructed messageids.
+        jobid = lambda: getattr(self, '%s_job_id' % taskname)  # noqa
+        cancelled = self.cancel_job(jobid())
+        if cancelled:
+            self.log(_msg(
+                'timebased-%s-cancel' % taskname,
+                default='Scheduled %s cancelled (job #${job}).' % taskname,
+                mapping={'job': jobid()}))
+            setattr(self, '%s_job_id' % taskname, None)
+        if timestamp is not None:
+            setattr(self, '%s_job_id' % taskname, self.add_job(
+                'zeit.workflow.%s' % taskname, timestamp))
+            self.log(_msg(
+                'timebased-%s-add' % taskname,
+                default='To %s on ${date} (job #${job})' % taskname,
+                mapping={
+                    'date': self.format_datetime(timestamp), 'job': jobid()}))
 
     def add_job(self, task_name, when):
         delay = when - datetime.datetime.now(pytz.UTC)
@@ -96,9 +84,9 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         task_description = zeit.workflow.publish.SingleInput(self.context)
         if delay > 0:
             job_id = self.tasks.addCronJob(
-                task_name, task_description, delay=delay)
+                unicode(task_name), task_description, delay=delay)
         else:
-            job_id = self.tasks.add(task_name, task_description)
+            job_id = self.tasks.add(unicode(task_name), task_description)
         return job_id
 
     def cancel_job(self, job_id):
@@ -132,8 +120,21 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         tzinfo = zope.interface.common.idatetime.ITZInfo(request, None)
         if tzinfo is not None:
             dt = dt.astimezone(tzinfo)
-        formatter = request.locale.dates.getFormatter('dateTime', 'medium')
+        if isinstance(request, lovely.remotetask.processor.ProcessorRequest):
+            # Happens when triggered from schedule_imported_retract_jobs()
+            locale = zope.i18n.locales.locales.getLocale('de')
+        else:
+            locale = request.locale
+        formatter = locale.dates.getFormatter('dateTime', 'medium')
         return formatter.format(dt)
+
+
+# Declare the messageids we dynamically construct in setup_job(), so
+# i18nextract can find them.
+_('timebased-publish-add')
+_('timebased-publish-cancel')
+_('timebased-retract-add')
+_('timebased-retract-cancel')
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
@@ -151,3 +152,20 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if workflow.released_to:
             date = workflow.released_to.isoformat()
         entry.set('expires', date)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def schedule_imported_retract_jobs(context, event):
+    """Since the print-import (exporter.zeit.de) works only on the DAV-level,
+    it can not create vivi jobs. Thus we do that here. (This especially applies
+    to imagegroups.)
+    """
+    workflow = zeit.workflow.interfaces.ITimeBasedPublishing(context, None)
+    if (workflow is None or
+        workflow.retract_job_id or
+        not workflow.released_to or
+            workflow.released_to < datetime.datetime.now(pytz.UTC)):
+        return
+    workflow.setup_job('retract', workflow.released_to)
