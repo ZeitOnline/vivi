@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.7.3 (unreleased)
+2.7.3 (2017-05-22)
 ------------------
 
 - ZON-3917 remove bigshare button checkbox
