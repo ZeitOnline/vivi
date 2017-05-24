@@ -158,12 +158,10 @@ class ConnectionBase(object):
 class Message(zeit.push.message.Message):
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
+    # BBB This used to send to both parse and urbanairship, so we use
+    # a generic name in the message_config.
     grok.name('mobile')
-
-    def send_push_notification(self, service_name, **kw):
-        # BBB This used to send to both parse and urbanairship, so we use
-        # a generic name in the message_config.
-        super(Message, self).send_push_notification('urbanairship', **kw)
+    type = 'urbanairship'
 
     def log_success(self, name):
         message = (
