@@ -84,13 +84,22 @@ class Message(grok.Adapter):
 
     def log_success(self):
         self.object_log.log(_(
-            'Push notification for "${name}" sent. (Message: "${message}")',
-            mapping={'name': self.type.capitalize(), 'message': self.text}))
+            'Push notification for "${name}" sent.'
+            ' (Message: "${message}", Details: ${details})',
+            mapping={'name': self.type.capitalize(),
+                     'message': self.text,
+                     'details': self.log_message_details}))
 
     def log_error(self, reason):
         self.object_log.log(_(
-            'Error during push to ${name}: ${reason}',
-            mapping={'name': self.type.capitalize(), 'reason': reason}))
+            'Error during push to ${name} ${details}: ${reason}',
+            mapping={'name': self.type.capitalize(),
+                     'details': self.log_message_details,
+                     'reason': reason}))
+
+    @property
+    def log_message_details(self):
+        return '-'
 
 
 @grok.adapter(zeit.cms.interfaces.ICMSContent)

@@ -163,23 +163,12 @@ class Message(zeit.push.message.Message):
     grok.name('mobile')
     type = 'urbanairship'
 
-    def log_success(self, name):
-        message = (
-            self.config.get('override_text') or
-            self.additional_parameters.get('teaserTitle') or
-            self.text)
-
+    @property
+    def log_message_details(self):
         notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=name)
+            zeit.push.interfaces.IPushNotifier, name=self.type)
         channels = notifier.get_channel_list(self.config.get('channels'))
-
-        self.object_log.log(_(
-            'Push notification for "${name}" sent. '
-            '(Message: "${message}", Channels: ${channels})',
-            mapping={
-                'name': name.capitalize(),
-                'message': message,
-                'channels': ' '.join(channels)}))
+        return 'Channels %s' % ' '.join(channels)
 
     @zope.cachedescriptors.property.Lazy
     def text(self):
