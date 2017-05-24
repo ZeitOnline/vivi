@@ -216,8 +216,6 @@ def _update_topiclist():
 
 TOPIC_PAGE_ATTRIBUTES = {
     'id': '',
-    'meta_description': '',
-    'meta_title': '',
     'topic_type': 'type',
 }
 
