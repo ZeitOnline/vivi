@@ -52,3 +52,7 @@ class Message(zeit.push.message.Message):
 
     grok.name('twitter')
     get_text_from = 'short_text'
+
+    @property
+    def log_message_details(self):
+        return 'Account %s' % self.config.get('account', '-')

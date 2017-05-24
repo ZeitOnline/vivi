@@ -4,7 +4,7 @@ zeit.push changes
 1.20.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-621: Log Twitter and Facebook account name to objectlog
 
 
 1.20.2 (2017-05-22)
