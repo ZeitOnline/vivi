@@ -38,25 +38,17 @@ class Message(grok.Adapter):
         kw = {}
         kw.update(self.config)
         kw.update(self.additional_parameters)
-        self.send_push_notification(self.type, **kw)
 
-    def send_push_notification(self, service_name, **kw):
-        """Forward sending of the actual push notification to `IPushNotifier`.
-
-        Log success and error in the object log, so the user knows about a
-        failure and can act on it.
-
-        """
         try:
             notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=service_name)
+                zeit.push.interfaces.IPushNotifier, name=self.type)
             notifier.send(self.text, self.url, **kw)
-            self.log_success(name=service_name)
-            log.info('Push notification for %s sent', service_name)
+            self.log_success()
+            log.info('Push notification for %s sent', self.type)
         except Exception, e:
-            self.log_error(name=service_name, reason=str(e))
+            self.log_error(str(e))
             log.error(u'Error during push to %s with config %s',
-                      service_name, self.config, exc_info=True)
+                      self.type, self.config, exc_info=True)
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
@@ -90,15 +82,15 @@ class Message(grok.Adapter):
     def object_log(self):
         return zeit.objectlog.interfaces.ILog(self.context)
 
-    def log_success(self, name):
+    def log_success(self):
         self.object_log.log(_(
             'Push notification for "${name}" sent. (Message: "${message}")',
-            mapping={'name': name.capitalize(), 'message': self.text}))
+            mapping={'name': self.type.capitalize(), 'message': self.text}))
 
-    def log_error(self, name, reason):
+    def log_error(self, reason):
         self.object_log.log(_(
             'Error during push to ${name}: ${reason}',
-            mapping={'name': name.capitalize(), 'reason': reason}))
+            mapping={'name': self.type.capitalize(), 'reason': reason}))
 
 
 @grok.adapter(zeit.cms.interfaces.ICMSContent)
