@@ -137,9 +137,8 @@ class Toc(zeit.cms.browser.view.Base):
         :param product_ids: [str]
         :return: [str]
         """
-        return [self._fill_template(
-            'http://xml.zeit.de/%s/{year}/{name}/' % x) for x in
-                self.product_ids]
+        return [self._fill_template('http://xml.zeit.de/%s/{year}/{name}/' % x)
+                for x in self.product_ids]
 
     def list_relevant_ressort_folders(self, product_uid):
         """
@@ -155,8 +154,8 @@ class Toc(zeit.cms.browser.view.Base):
             return []
 
     def _is_relevant_folder_item(self, item):
-        return IFolder.providedBy(item[1])and \
-               self.excluder.is_relevant_folder(item[0])
+        return (IFolder.providedBy(item[1]) and
+                self.excluder.is_relevant_folder(item[0]))
 
     def _get_all_article_elements(self, ressort_folder):
         """
@@ -418,8 +417,8 @@ class Excluder(object):
 
 
 def toc_connector_factory():
-    config = zope.app.appsetup.product\
-            .getProductConfiguration('zeit.content.volume')
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.volume')
     dav_archive_url = config.get('dav-archive-url')
     return zeit.connector.connector.TransactionBoundCachingConnector(
-            {'default': dav_archive_url})
+        {'default': dav_archive_url})

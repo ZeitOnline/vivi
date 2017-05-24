@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
-
+import zeit.cms.admin.browser.admin
 import zeit.content.article.article
 import zeit.content.infobox.infobox
-import zeit.cms.admin.browser.admin
-import zope.formlib.form
 import zeit.solr.query
+import zope.formlib.form
 
 
 class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
@@ -20,8 +18,9 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
 
     @property
     def actions(self):
-        return list(super(VolumeAdminForm, self).actions) + \
-               list(self.extra_actions)
+        return (
+            list(super(VolumeAdminForm, self).actions) +
+            list(self.extra_actions))
 
     @zope.formlib.form.action(_("Publish content of this volume"),
                               extra_actions)
