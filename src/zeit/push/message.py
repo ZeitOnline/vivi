@@ -41,7 +41,7 @@ class Message(grok.Adapter):
         self.send_push_notification(self.type, **kw)
 
     def send_push_notification(self, service_name, **kw):
-        """Forward sending of the acutal push notification to `IPushNotifier`.
+        """Forward sending of the actual push notification to `IPushNotifier`.
 
         Log success and error in the object log, so the user knows about a
         failure and can act on it.
