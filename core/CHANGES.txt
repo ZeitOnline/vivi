@@ -4,7 +4,8 @@ zeit.cms changes
 2.98.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3948: Implement configurable path blacklist to prevent publishing
+  product-config ``zeit.workflow:blacklist``
 
 
 2.98.0 (2017-05-22)
