@@ -4,7 +4,8 @@ zeit.push changes
 1.20.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-674: Don't perform push-target-url replacement twice,
+  and don't squash non-www.zeit.de URLs
 
 
 1.20.2 (2017-05-22)

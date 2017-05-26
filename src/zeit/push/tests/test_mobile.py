@@ -84,38 +84,15 @@ class DataTest(zeit.push.testing.TestCase):
         self.assertEqual('bar', ios['alert'])
         self.assertEqual('chime.aiff', ios['sound'])
 
-    def test_www_url_is_replaced_with_staging(self):
+    def test_full_url_is_passed_through(self):
         api = zeit.push.mobile.ConnectionBase(1)
-        api.config['push-target-url'] = 'http://www.staging.zeit.de'
-        data = api.data('', 'http://www.zeit.de/foo/bar')
+        data = api.data('', 'https://www.zeit.de/foo/bar')
         self.assertTrue(
             data['android']['url'].startswith(
-                'http://www.staging.zeit.de/foo/bar'))
+                'https://www.zeit.de/foo/bar?'))
         self.assertTrue(
             data['ios']['url'].startswith(
-                'http://www.staging.zeit.de/foo/bar'))
-
-    def test_url_replacement_works_without_scheme(self):
-        api = zeit.push.mobile.ConnectionBase(1)
-        api.config['push-target-url'] = 'foo.zeit.de'
-        data = api.data('', 'http://www.zeit.de/bar')
-        self.assertTrue(
-            data['android']['url'].startswith(
-                'foo.zeit.de/bar'))
-        self.assertTrue(
-            data['ios']['url'].startswith(
-                'foo.zeit.de/bar'))
-
-    def test_url_replacement_works_with_trailing_slash(self):
-        api = zeit.push.mobile.ConnectionBase(1)
-        api.config['push-target-url'] = 'http://bar.zeit.de/'
-        data = api.data('', 'http://www.zeit.de/foo')
-        self.assertTrue(
-            data['android']['url'].startswith(
-                'http://bar.zeit.de/foo'))
-        self.assertTrue(
-            data['ios']['url'].startswith(
-                'http://bar.zeit.de/foo'))
+                'https://www.zeit.de/foo/bar?'))
 
     def test_deep_link_starts_with_app_identifier(self):
         api = zeit.push.mobile.ConnectionBase(1)
@@ -127,23 +104,6 @@ class DataTest(zeit.push.testing.TestCase):
         self.assertTrue(
             data['ios']['deep_link'].startswith(
                 'foobar://article/one'))
-
-
-class StripToPathTest(unittest.TestCase):
-
-    layer = zeit.push.testing.ZCML_LAYER
-
-    def test_strip_to_path_works_with_full_url(self):
-        self.assertEqual(
-            'foo/bar?query=arg#frag',
-            zeit.push.mobile.ConnectionBase.strip_to_path(
-                'https://www.zeit.de/foo/bar?query=arg#frag'))
-
-    def test_strip_to_path_works_with_partial_url(self):
-        self.assertEqual(
-            'foo/bar?query=arg&param',
-            zeit.push.mobile.ConnectionBase.strip_to_path(
-                'www.zeit.de/foo/bar?query=arg&param'))
 
 
 class AddTrackingTest(unittest.TestCase,

@@ -89,9 +89,9 @@ class ConnectionBase(object):
         else:
             extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
 
-        path = self.strip_to_path(link)
-        push_target = self.config.get('push-target-url', '').rstrip('/')
-        full_link = u'%s/%s' % (push_target, path)
+        parts = urlparse.urlparse(link)
+        path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
+        full_link = u'%s://%s/%s' % (parts.scheme, parts.netloc, path)
         deep_link = u'%s://%s' % (self.APP_IDENTIFIER, path)
 
         return {
@@ -116,13 +116,6 @@ class ConnectionBase(object):
 
     def send(self, text, link, **kw):
         raise NotImplementedError
-
-    @staticmethod
-    def strip_to_path(url):
-        if '://' not in url:
-            url = '//' + url.lstrip('/')  # ensure valid url
-        return urlparse.urlunparse(
-            ['', ''] + list(urlparse.urlparse(url)[2:])).lstrip('/')
 
     @staticmethod
     def add_tracking(url, channels, device):
