@@ -91,8 +91,8 @@ class ConnectionBase(object):
 
         path = self.strip_to_path(link)
         push_target = self.config.get('push-target-url', '').rstrip('/')
-        full_link = '/'.join((push_target, path))
-        deep_link = '://'.join((self.APP_IDENTIFIER, path))
+        full_link = u'%s/%s' % (push_target, path)
+        deep_link = u'%s://%s' % (self.APP_IDENTIFIER, path)
 
         return {
             'ios': {
