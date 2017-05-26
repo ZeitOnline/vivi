@@ -118,16 +118,15 @@ class DataTest(zeit.push.testing.TestCase):
                 'http://bar.zeit.de/foo'))
 
     def test_deep_link_starts_with_app_identifier(self):
-        with mock.patch('zeit.push.mobile.ConnectionBase') as ConnectionBase:
-            api = ConnectionBase(1)
-            api.APP_IDENTIFIER = 'foobar'
-            data = api.data('', 'http://www.zeit.de/article/one')
-            self.assertTrue(
-                data['android']['deep_link'].startswith(
-                    'foobar://article/one'))
-            self.assertTrue(
-                data['ios']['deep_link'].startswith(
-                    'foobar://article/one'))
+        api = zeit.push.mobile.ConnectionBase(1)
+        api.APP_IDENTIFIER = 'foobar'
+        data = api.data('', 'http://www.zeit.de/article/one')
+        self.assertTrue(
+            data['android']['deep_link'].startswith(
+                'foobar://article/one'))
+        self.assertTrue(
+            data['ios']['deep_link'].startswith(
+                'foobar://article/one'))
 
 
 class StripToPathTest(unittest.TestCase):
