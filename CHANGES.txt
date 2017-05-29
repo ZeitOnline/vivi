@@ -4,7 +4,7 @@ zeit.newsletter changes
 1.3.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-512: Mark content as sent even when an error occurs
 
 
 1.3.5 (2016-09-26)
