@@ -7,7 +7,7 @@
   </h1>
   <div class="warning"
        i18n:translate="rename-box-warning">
-    Note: Renaming destroys links. 
+    Note: Renaming destroys links.
   </div>
 
   <span class="nextURL" tal:content="view/nextURL" />
@@ -24,4 +24,4 @@
         input.val(zeit.cms.normalize_filename(input.val()));
     });
   </script>
-</div>  
+</div>
