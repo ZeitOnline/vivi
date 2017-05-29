@@ -4,7 +4,7 @@ zeit.cms changes
 2.98.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-730: Prevent renaming published content
 
 
 2.98.0 (2017-05-22)
