@@ -4,7 +4,7 @@ zeit.content.image changes
 2.18.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-719: Normalize uploaded image file names
 
 
 2.18.1 (2016-12-06)

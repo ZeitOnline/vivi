@@ -1,3 +1,5 @@
+# coding: utf-8
+import pkg_resources
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -27,3 +29,27 @@ class TestDelete(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis(
             '...Do you really want to delete your workingcopy?...',
             self.browser.contents)
+
+
+class TestImage(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_normalizes_filename_on_upload(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/2006/')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Image (single)']
+        b.open(menu.value[0])
+
+        b.getControl(name='form.copyrights.0..combination_00').value = (
+            'ZEIT ONLINE')
+        b.getControl(name='form.copyrights.0..combination_01').value = (
+            'http://www.zeit.de/')
+        b.getControl(name='form.blob').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/new-hampshire-artikel.jpg'),
+            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+        b.getControl(name='form.actions.add').click()
+        self.assertIn('/foeoe.jpg/@@edit.html', b.url)
