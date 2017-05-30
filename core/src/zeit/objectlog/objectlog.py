@@ -56,6 +56,12 @@ class ObjectLog(persistent.Persistent):
             'end to end test using z3c.celery.layer.EndToEndLayer.')
         transaction.savepoint(optimistic=True)
 
+    def delete(self, object):
+        key = zope.app.keyreference.interfaces.IKeyReference(object, None)
+        if key is None:
+            return
+        self._object_log.pop(key, None)
+
     def clean(self, timedelta):
         reference_time = int(10e6 * (
             time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
