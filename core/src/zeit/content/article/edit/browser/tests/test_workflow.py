@@ -194,7 +194,7 @@ zeit.cms.with_lock = function(callable) {
 
 
 class WorkflowEndToEnd(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_checkin_redirects_to_repository(self):
         s = self.selenium

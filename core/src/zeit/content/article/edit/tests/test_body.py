@@ -117,9 +117,12 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_values_does_not_set_block_ids(self):
         body = self.get_body()
-        find_id_attributes = lambda: body.xml.xpath(
-            '//*[@ns:__name__]',
-            namespaces={'ns': 'http://namespaces.zeit.de/CMS/cp'})
+
+        def find_id_attributes():
+            return body.xml.xpath(
+                '//*[@ns:__name__]',
+                namespaces={'ns': 'http://namespaces.zeit.de/CMS/cp'})
+
         self.assertFalse(find_id_attributes())
         body.values()
         self.assertFalse(find_id_attributes())
