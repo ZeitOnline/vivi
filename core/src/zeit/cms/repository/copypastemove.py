@@ -52,3 +52,16 @@ class CMSObjectCopier(zope.copypastemove.ObjectCopier):
 def delete_objectlog_on_delete(event):
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.delete(event.object)
+
+
+@grok.subscribe(
+    zeit.cms.repository.interfaces.IRepositoryContent,
+    zope.lifecycleevent.interfaces.IObjectMovedEvent)
+def delete_objectlog_on_move(context, event):
+    if not all([event.oldParent, event.oldName]):
+        return
+    if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    log.delete(zeit.cms.content.keyreference.UniqueIdKeyReference(
+        event.oldParent, event.oldName))

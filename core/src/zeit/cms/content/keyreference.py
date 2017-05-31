@@ -28,3 +28,9 @@ class CMSContentKeyReference(object):
         if v:
             return v
         return cmp(self.referenced_object, other.referenced_object)
+
+
+class UniqueIdKeyReference(CMSContentKeyReference):
+
+    def __init__(self, parent, name):
+        self.referenced_object = parent.uniqueId + name
