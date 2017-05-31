@@ -211,7 +211,7 @@ def disable_is_amp_if_access_is_restricted(article, event):
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)
-@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.edit.interfaces.IElementReferences)
 def iter_referenced_content(context):
     referenced_content = []
     body = zeit.content.article.edit.interfaces.IEditableBody(context, None)

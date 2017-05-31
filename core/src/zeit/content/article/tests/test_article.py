@@ -11,6 +11,7 @@ import zeit.cms.section.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.magazin.interfaces
+import zeit.edit.interfaces
 import zeit.edit.rule
 import zope.component
 import zope.event
@@ -374,14 +375,14 @@ class ArticleCMSContentIterableTest(
         self.repository['pbox'] = pbox
         ref = self.create_empty_portraitbox_reference()
         ref.references = pbox
-        self.assertEqual([pbox], list(zeit.cms.interfaces.ICMSContentIterable(
+        self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
 
     def test_articles_cms_iterable_is_empty_if_no_references_are_set(self):
-        self.assertEqual([], list(zeit.cms.interfaces.ICMSContentIterable(
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
 
     def test_articles_cms_iterable_is_empty_if_empty_reference_is_set(self):
         self.create_empty_portraitbox_reference()
-        self.assertEqual([], list(zeit.cms.interfaces.ICMSContentIterable(
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
