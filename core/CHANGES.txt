@@ -4,7 +4,7 @@ zeit.cms changes
 2.101.1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- BUG-345: Delete objectlog entries on delete and move
 
 
 2.101.0 (2017-06-21)

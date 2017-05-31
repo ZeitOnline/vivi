@@ -77,7 +77,7 @@ setup(
         'zdaemon',
         'zeit.connector>=2.7.0.dev0',
         'zeit.find',
-        'zeit.objectlog>=0.6',
+        'zeit.objectlog>=1.1.0.dev0',
         'zope.app.appsetup',
         'zope.app.component>=3.4.0b3',
         'zope.app.exception',

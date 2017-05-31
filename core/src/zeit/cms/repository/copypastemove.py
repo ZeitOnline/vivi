@@ -1,3 +1,4 @@
+import grokcore.component as grok
 import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.interfaces
@@ -45,3 +46,9 @@ class CMSObjectCopier(zope.copypastemove.ObjectCopier):
         new = target[new_name]
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(new, obj))
         return new_name
+
+
+@grok.subscribe(zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent)
+def delete_objectlog_on_delete(event):
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    log.delete(event.object)
