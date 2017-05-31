@@ -1,10 +1,16 @@
 zeit.content.article changes
 ============================
 
-3.21.13 (unreleased)
+3.21.14 (unreleased)
 --------------------
 
 - Nothing changed yet.
+
+
+3.21.13 (2017-05-05)
+--------------------
+
+- FIX: unpublished volume reference does not trigger warning in AAD
 
 
 3.21.12 (2017-03-15)
