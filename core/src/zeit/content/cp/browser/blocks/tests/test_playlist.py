@@ -1,9 +1,9 @@
 from zeit.content.video.playlist import Playlist
 import urllib2
-import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zeit.edit.interfaces
 
 
 class TestPlaylist(zeit.cms.testing.BrowserTestCase):
@@ -96,5 +96,5 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
         with zeit.cms.testing.site(self.getRootFolder()):
             self.assertEqual(
                 [self.repository['my-playlist']],
-                list(zeit.cms.interfaces.ICMSContentIterable(
+                list(zeit.edit.interfaces.IElementReferences(
                     self.repository['centerpage'])))

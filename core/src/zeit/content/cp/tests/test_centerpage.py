@@ -6,11 +6,11 @@ import lxml.etree
 import mock
 import unittest
 import zeit.cms.testcontenttype.testcontenttype
-import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zeit.edit.interfaces
 import zope.component
 import zope.copypastemove.interfaces
 
@@ -85,7 +85,7 @@ class TestContentIter(unittest.TestCase):
             return_value=[mock.sentinel.block1,
                           None,
                           mock.sentinel.block2])
-        with mock.patch('zeit.cms.interfaces.ICMSContentIterable') as \
+        with mock.patch('zeit.edit.interfaces.IElementReferences') as \
                 ci:
             cms_content_iter(centerpage)
             self.assertEqual(2, ci.call_count)

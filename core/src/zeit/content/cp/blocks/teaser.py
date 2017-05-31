@@ -149,7 +149,7 @@ zeit.edit.block.register_element_factory(
 
 
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
-@grok.implementer(zeit.cms.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
     for teaser in context:
         yield teaser

@@ -2,8 +2,8 @@ from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.cms.interfaces import ICMSContentIterable
 from zeit.content.cp.interfaces import ILeadTime, ILeadTimeWorklist
+from zeit.edit.interfaces import IElementReferences
 import grokcore.component as grok
 import pytz
 import zeit.cms.content.dav
@@ -40,7 +40,7 @@ def find_leader(cp):
     # The CMS does not have a concept for "*the* lead teaser/article", and in
     # fact it simply is the first teaser on the page.
     try:
-        return next(ICMSContentIterable(cp))
+        return next(IElementReferences(cp))
     except StopIteration:
         return None
 
