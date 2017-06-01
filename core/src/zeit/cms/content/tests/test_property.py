@@ -1,8 +1,9 @@
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import gocept.testing.assertion
+import lxml.etree
 import mock
 import unittest
-import zeit.cms.testing
+import zope.schema
 
 
 class TestDAVConverterWrapper(unittest.TestCase):
@@ -44,3 +45,20 @@ class TestDAVConverterWrapper(unittest.TestCase):
             converter.toProperty.assert_called_with(mock.sentinel.value)
             prop.__set__.assert_called_with(
                 mock.sentinel.instance, converter.toProperty.return_value)
+
+
+class TestStructure(unittest.TestCase,
+                    gocept.testing.assertion.Ellipsis):
+
+    def test_setting_missing_value_deletes_xml_content(self):
+        from zeit.cms.content.property import Structure
+        content = ExampleContentType()
+        prop = Structure(
+            '.head.foo', zope.schema.Text(missing_value='missing'))
+        prop.__set__(content, 'qux')
+        self.assertEllipsis(
+            '<foo...>qux</foo>', lxml.etree.tostring(content.xml.head.foo))
+        prop.__set__(content, 'missing')
+        self.assertEllipsis(
+            '<foo...xsi:nil="true"/>',
+            lxml.etree.tostring(content.xml.head.foo))
