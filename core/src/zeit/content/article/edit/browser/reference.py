@@ -79,6 +79,13 @@ class EditPortraitbox(EditBase):
     fields = ('references', 'name', 'text')
     undo_description = _('edit portraitbox block')
 
+    @property
+    def form_fields(self):
+        form_fields = super(EditPortraitbox, self).form_fields
+        form_fields[
+            'text'].custom_widget = zeit.cms.browser.widget.MarkdownWidget
+        return form_fields
+
 
 class EditInfobox(EditBase):
 
