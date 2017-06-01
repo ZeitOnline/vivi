@@ -4,7 +4,7 @@ zeit.cms changes
 2.99.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix broken release
 
 
 2.99.0 (2017-06-01)
