@@ -290,10 +290,11 @@ class DefaultTemplateByContentType(
             'wide', self.repository['article'].main_image_variant_name)
 
 
-class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
+class AccessRestrictsAMPandFBIA(
+    zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AccessRestrictsAMP, self).setUp()
+        super(AccessRestrictsAMPandFBIA, self).setUp()
         self.repository['article'] = self.get_article()
         self.article = self.repository['article']
 
@@ -302,40 +303,50 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
             article, zope.lifecycleevent.Attributes(
                 zeit.cms.content.interfaces.ICommonMetadata, field)))
 
-    def test_setting_access_to_abo_or_registration_disables_is_amp(self):
+    def test_setting_access_to_abo_or_registration_disables_amp_and_fbia(self):
         with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.is_amp = True
+            article.is_instant_article = True
             article.access = u'abo'
             self.notify_modified(article)
             self.assertEqual(False, article.is_amp)
+            self.assertEqual(False, article.is_instant_article)
 
             article.is_amp = True
+            article.is_instant_article = True
             article.access = u'registration'
             self.notify_modified(article)
             self.assertEqual(False, article.is_amp)
+            self.assertEqual(False, article.is_instant_article)
 
-    def test_setting_access_to_free_does_not_change_is_amp(self):
+    def test_setting_access_to_free_does_not_change_is_amp_and_fbia(self):
         with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.is_amp = True
+            article.is_instant_article = True
             article.access = u'free'
             self.notify_modified(article)
             self.assertEqual(True, article.is_amp)
+            self.assertEqual(True, article.is_instant_article)
 
     def test_do_not_change_is_amp_if_access_is_missing(self):
         """For bw-compat old articles without access are treated as free."""
         with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.is_amp = True
+            article.is_instant_article = True
             article.access = None
             self.notify_modified(article)
             self.assertEqual(True, article.is_amp)
+            self.assertEqual(True, article.is_instant_article)
 
     def test_only_change_is_amp_if_access_was_changed(self):
         with zeit.cms.checkout.helper.checked_out(self.article) as article:
             article.access = u'abo'
             article.is_amp = True
+            article.is_instant_article = True
             article.year = 2016
             self.notify_modified(article, 'year')
             self.assertEqual(True, article.is_amp)
+            self.assertEqual(True, article.is_instant_article)
 
 
 class ArticleXMLReferenceUpdate(

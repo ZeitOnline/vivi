@@ -4,6 +4,8 @@ zeit.content.article changes
 3.22.0 (unreleased)
 -------------------
 
+- ZON-3920: Disable FBIA if content is not free
+
 - BUG-669: Set up portraitbox module properly
 
 
