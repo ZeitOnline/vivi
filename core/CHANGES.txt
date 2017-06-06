@@ -4,7 +4,7 @@ zeit.content.article changes
 3.21.14 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ZON-3810: Add IElementReferences Adapter
 
 
 3.21.13 (2017-05-05)
