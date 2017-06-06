@@ -355,11 +355,11 @@ class ArticleXMLReferenceUpdate(
             lxml.etree.tostring(reference, pretty_print=True))
 
 
-class ArticleCMSContentIterableTest(
+class ArticleElementReferencesTest(
         zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ArticleCMSContentIterableTest, self).setUp()
+        super(ArticleElementReferencesTest, self).setUp()
         self.article = self.get_article()
 
     def create_empty_portraitbox_reference(self):
@@ -369,7 +369,7 @@ class ArticleCMSContentIterableTest(
         portraitbox_reference._validate = mock.Mock()
         return portraitbox_reference
 
-    def test_articles_cms_iterable_iterates_over_refernces(self):
+    def test_articles_element_references_iterates_over_references(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
         pbox = Portraitbox()
         self.repository['pbox'] = pbox
@@ -378,11 +378,12 @@ class ArticleCMSContentIterableTest(
         self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
 
-    def test_articles_cms_iterable_is_empty_if_no_references_are_set(self):
+    def test_articles_element_references_is_empty_if_no_references_are_set(self):
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
 
-    def test_articles_cms_iterable_is_empty_if_empty_reference_is_set(self):
+    def test_articles_element_references_is_empty_if_empty_reference_is_set(
+            self):
         self.create_empty_portraitbox_reference()
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
