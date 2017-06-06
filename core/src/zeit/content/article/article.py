@@ -221,7 +221,8 @@ def iter_referenced_content(context):
         if zeit.content.article.edit.interfaces.IReference.providedBy(
                 element) and element.references:
             if zeit.cms.content.interfaces.IReference.providedBy(
-                    element.references):
+                    element.references) and \
+                    element.references.target:
                 referenced_content.append(element.references.target)
             else:
                 referenced_content.append(element.references)
