@@ -1,7 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.menu
 import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
@@ -41,6 +43,11 @@ class Rename(zeit.cms.browser.lightbox.Form):
                             mapping=dict(old_name=old_name,
                                          new_name=new_name)))
 
+    @cachedproperty
+    def can_rename(self):
+        return not zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context).published
+
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     """Rename menu item."""
@@ -48,7 +55,9 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     title = _('Rename')
 
     def render(self):
-        if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-                self.context):
+        if (zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+                self.context) and
+            not zeit.cms.workflow.interfaces.IPublishInfo(
+                self.context).published):
             return super(MenuItem, self).render()
         return ''
