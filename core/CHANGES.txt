@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - FIX: Make DAV property access work in parallel indexing
 
+- MAINT: Use variant URL for TMS teaser images
+
 
 1.10.2 (2017-05-24)
 -------------------
