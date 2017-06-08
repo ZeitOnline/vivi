@@ -4,6 +4,8 @@ Changes
 2.15.0 (unreleased)
 -------------------
 
+- ZON-3948: Dont publish content if it is in a test folder
+
 - ZON-3810: Add IElementReferences Interface
 
 
