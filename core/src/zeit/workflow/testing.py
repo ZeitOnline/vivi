@@ -27,6 +27,8 @@ product_config = """
     retract-script true
     dependency-publish-limit 100
 
+    blacklist /blacklist
+
     task-queue-homepage homepage
     task-queue-highprio highprio
     task-queue-default general

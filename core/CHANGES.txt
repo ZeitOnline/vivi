@@ -1,10 +1,13 @@
 zeit.cms changes
 ================
 
-2.99.2 (unreleased)
+2.100.0 (unreleased)
 -------------------
 
 - BUG-730: Prevent renaming published content
+
+- ZON-3948: Implement configurable path blacklist to prevent publishing
+  product-config ``zeit.workflow:blacklist``
 
 
 2.99.1 (2017-06-01)
