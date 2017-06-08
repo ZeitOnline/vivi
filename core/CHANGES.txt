@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.22.2 (unreleased)
+3.23.0 (unreleased)
 -------------------
 
 - ZON-3810: Add IElementReferences Adapter
