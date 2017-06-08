@@ -21,14 +21,13 @@ class TestHeaderImage(zeit.cms.testing.BrowserTestCase):
         self.xml_url = 'http://localhost/++skin++vivi/workingcopy/zope.user/' \
             'centerpage/@@xml_source_edit.html'
 
-
     def test_can_create_headerimage_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser
         self.assertEqual(1, b.contents.count('type-headerimage'))
-        b.open('informatives/@@landing-zone-drop-module?block_type=headerimage')
+        b.open('informatives/@@landing-zone-drop-module?'
+               'block_type=headerimage')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-headerimage'))
-
 
     def test_headerimage_animate_default_is_set(self):
         b = self.browser
@@ -37,7 +36,6 @@ class TestHeaderImage(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.open(self.xml_url)
         self.assertEllipsis('...animate="False"...', b.contents)
-
 
     def test_headerimage_animate_true_is_set(self):
         b = self.browser

@@ -3,6 +3,7 @@ import grokcore.component as grok
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 import zeit.edit.block
 import zope.interface
 
@@ -21,7 +22,7 @@ zeit.edit.block.register_element_factory(
 
 
 @grok.adapter(zeit.content.cp.interfaces.IPlaylistBlock)
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
     playlist = context.referenced_playlist
     if playlist is not None:

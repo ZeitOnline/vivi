@@ -171,7 +171,8 @@ class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
         self.browser.open(
             'http://localhost/++skin++vivi/repository/cp/@@checkout')
         self.browser.open('informatives/@@schematic-preview')
-        self.assertEllipsis('...major...active...minor...', self.browser.contents)
+        self.assertEllipsis('...major...active...minor...',
+                            self.browser.contents)
 
 
 class TooltipSeleniumTest(

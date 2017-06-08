@@ -1,6 +1,7 @@
 from zeit.edit.rule import glob
 import itertools
 import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 import zope.component
 import zope.interface
 
@@ -50,7 +51,7 @@ def layout(context):
 @glob(zeit.content.cp.interfaces.IBlock)
 def content(context):
     return list(
-        zeit.content.cp.interfaces.ICMSContentIterable(context, []))
+        zeit.edit.interfaces.IElementReferences(context, []))
 
 
 @glob(zope.interface.Interface)

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.13.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3810: Use IElementReferences instead of ICMSContentIterable
 
 
 3.13.5 (2017-03-30)

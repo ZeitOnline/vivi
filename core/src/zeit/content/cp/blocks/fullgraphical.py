@@ -3,6 +3,7 @@ import grokcore.component
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 import zope.interface
 
 
@@ -28,7 +29,7 @@ class FullGraphicalBlock(zeit.content.cp.blocks.block.Block):
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.IFullGraphicalBlock)
-@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grokcore.component.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
     if context.referenced_object is not None:
         yield context.referenced_object

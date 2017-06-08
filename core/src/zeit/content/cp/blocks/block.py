@@ -15,7 +15,7 @@ def cms_content_to_centerpage(context):
 
 
 @zope.component.adapter(zeit.edit.interfaces.IElement)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@zope.interface.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
     return iter([])
 

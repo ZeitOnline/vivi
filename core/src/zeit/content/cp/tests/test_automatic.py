@@ -136,7 +136,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         self.solr.search.return_value = pysolr.Results([
             dict(uniqueId='http://xml.zeit.de/testcontent',
                  lead_candidate=True)], 1)
-        content = zeit.content.cp.interfaces.ICMSContentIterable(lead)
+        content = zeit.edit.interfaces.IElementReferences(lead)
         self.assertEqual(
             ['http://xml.zeit.de/testcontent'],
             [x.uniqueId for x in content])
@@ -388,7 +388,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()])
 
     def test_yields_centerpage_in_addition_to_teaser_when_iterating(self):
-        content = zeit.content.cp.interfaces.ICMSContentIterable(self.cp)
+        content = zeit.edit.interfaces.IElementReferences(self.cp)
         self.assertEqual([
             u'http://xml.zeit.de/cp_with_teaser',
             u'http://xml.zeit.de/t1',

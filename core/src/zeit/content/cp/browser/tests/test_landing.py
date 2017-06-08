@@ -21,8 +21,7 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
             zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
-        with zeit.cms.checkout.helper.checked_out(
-            content) as co:
+        with zeit.cms.checkout.helper.checked_out(content) as co:
             relateds = zeit.cms.related.interfaces.IRelatedContent(co)
             relateds.related = (c1, c2)
         self.cp = zeit.content.cp.centerpage.CenterPage()
