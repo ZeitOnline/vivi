@@ -11,11 +11,13 @@ import zeit.cms.section.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.magazin.interfaces
+import zeit.edit.interfaces
 import zeit.edit.rule
 import zope.component
 import zope.event
 import zope.interface
 import zope.lifecycleevent
+import zeit.cms.content.reference
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -362,3 +364,37 @@ class ArticleXMLReferenceUpdate(
         self.assertIn(
             'genre="nachricht"',
             lxml.etree.tostring(reference, pretty_print=True))
+
+
+class ArticleElementReferencesTest(
+        zeit.content.article.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ArticleElementReferencesTest, self).setUp()
+        self.article = self.get_article()
+
+    def create_empty_portraitbox_reference(self):
+        from zeit.content.article.edit.body import EditableBody
+        body = EditableBody(self.article, self.article.xml.body)
+        portraitbox_reference = body.create_item('portraitbox', 1)
+        portraitbox_reference._validate = mock.Mock()
+        return portraitbox_reference
+
+    def test_articles_element_references_iterates_over_references(self):
+        from zeit.content.portraitbox.portraitbox import Portraitbox
+        pbox = Portraitbox()
+        self.repository['pbox'] = pbox
+        ref = self.create_empty_portraitbox_reference()
+        ref.references = pbox
+        self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(
+            self.article)))
+
+    def test_articles_element_references_is_empty_if_no_references_are_set(self):
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
+            self.article)))
+
+    def test_articles_element_references_is_empty_if_empty_reference_is_set(
+            self):
+        self.create_empty_portraitbox_reference()
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
+            self.article)))

@@ -3,7 +3,7 @@ import zeit.content.article.edit.browser.testing
 
 
 class HTMLConvertTest(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(HTMLConvertTest, self).setUp()

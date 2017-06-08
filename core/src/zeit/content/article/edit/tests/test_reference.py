@@ -55,8 +55,8 @@ class ReferenceTest(unittest.TestCase):
         ref = self.get_ref()
         obj = mock.Mock()
         obj.uniqueId = 'my-id'
-        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') as\
-            xru:
+        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') \
+                as xru:
             ref.references = obj
             xru.assert_called_with(obj, None)
             xru.return_value.update.assert_called_with(ref.xml)

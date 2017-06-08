@@ -151,7 +151,7 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
         import zope.component
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as article:
+                self.repository['article']) as article:
             body = zeit.content.article.edit.body.EditableBody(
                 article, article.xml.body)
             factory = zope.component.getAdapter(
@@ -163,7 +163,7 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.video.video import Video
         self.repository['video'] = Video()
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['video']) as co:
+                self.repository['video']) as co:
             co.expires = datetime(2012, 1, 1, tzinfo=pytz.UTC)
 
         with self.video_block() as block:
@@ -174,9 +174,9 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
             article.xml.body.division.video.get('expires'))
 
 
-class VideoEmptyMarker(
-    zeit.content.article.testing.FunctionalTestCase,
-    zeit.content.article.edit.tests.test_reference.EmptyMarkerTest):
+class VideoEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
+                       zeit.content.article.edit.tests.test_reference
+                       .EmptyMarkerTest):
 
     block_type = 'video'
 
