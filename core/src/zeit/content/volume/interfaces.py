@@ -4,7 +4,6 @@ import zc.sourcefactory.source
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zope.interface
-import zope.interface.common.mapping
 import zope.schema
 
 
@@ -48,8 +47,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         max_length=170)
 
     date_digital_published = zope.schema.Datetime(
-        title=_('Date of digital publication'),
-        required=False)
+        title=_('Date of digital publication'))
 
     previous = zope.interface.Attribute(
         'The previous IVolume object (by date_digital_published) or None')

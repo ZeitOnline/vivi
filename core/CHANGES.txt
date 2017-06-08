@@ -8,6 +8,8 @@ zeit.content.volume changes
 - ZON-3810: Publish boxes of articles as well, if the content of the volume is
   published 
 
+- ZON-3951: Make date_digital_published required
+
 
 1.7.3 (2017-05-22)
 ------------------

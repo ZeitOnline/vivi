@@ -17,6 +17,7 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
                '@@zeit.content.volume.Add')
+        b.getControl('Date of digital publication').value = '2017-01-01'
 
     def test_add_form_prefills_year_and_volume_from_global_settings(self):
         self.open_add_form()
