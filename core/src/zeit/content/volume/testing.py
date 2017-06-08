@@ -16,21 +16,22 @@ product_config = """
     toc-product-ids ZEI BAD
     default-teaser-text Teäser {{name}}/{{year}}
 </product-config>
+""".format(here=pkg_resources.resource_filename(__name__, '.'))
+
+article_config = """
 <product-config zeit.content.article>
     image-display-mode-source file://{z_c_article_root}/edit/tests/image-display-modes.xml
     legacy-display-mode-source file://{z_c_article_root}/edit/tests/legacy-display-modes.xml
     image-variant-name-source file://{z_c_article_root}/edit/tests/image-variant-names.xml
     legacy-variant-name-source file://{z_c_article_root}/edit/tests/legacy-variant-names.xml
 </product-config>
-""".format(here=pkg_resources.resource_filename(__name__, '.'),
-           z_c_article_root=pkg_resources.resource_filename(
-               'zeit.content.article', '')
-           )
-
+""".format(z_c_article_root=pkg_resources.resource_filename(
+               'zeit.content.article', ''))
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', product_config=(
         product_config +
+        article_config +
         zeit.cms.testing.cms_product_config +
         zeit.content.image.testing.product_config +
         zeit.content.cp.testing.product_config +
