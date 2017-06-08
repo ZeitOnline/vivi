@@ -197,7 +197,8 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
-def disable_is_amp_if_access_is_restricted(article, event):
+def disable_is_amp_and_is_instant_article_if_access_is_restricted(
+        article, event):
     """Restricted content should not be promoted by Google."""
     for desc in event.descriptions:
         if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
@@ -208,6 +209,7 @@ def disable_is_amp_if_access_is_restricted(article, event):
 
     if article.access and article.access != u'free':
         article.is_amp = False
+        article.is_instant_article = False
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)
