@@ -1,10 +1,13 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
+import re
+import urlparse
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.workflow.interfaces
+import zope.app.appsetup.product
 import zope.authentication.interfaces
 import zope.component
 import zope.interface
@@ -49,6 +52,16 @@ class PublishInfo(object):
 
     def can_publish(self):
         raise NotImplementedError()
+
+    def matches_blacklist(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        blacklist = re.split(', *', config['blacklist'])
+        path = urlparse.urlparse(self.context.uniqueId).path
+        for item in blacklist:
+            if path.startswith(item):
+                return True
+        return False
 
     @property
     def _error_mapping(self):
