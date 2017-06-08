@@ -1,3 +1,4 @@
+import itertools
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
@@ -7,12 +8,16 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
+import zeit.content.portraitbox.interfaces
+import zeit.content.infobox.interfaces
+import zeit.edit.interfaces
 import zeit.solr.query
 import zeit.workflow.interfaces
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
 import logging
+
 
 log = logging.getLogger()
 
@@ -40,6 +45,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         zope.schema.TextLine(),
         zeit.workflow.interfaces.WORKFLOW_NS,
         'product-id')
+
+    assets_to_publish = [zeit.content.portraitbox.interfaces.IPortraitbox,
+                         zeit.content.infobox.interfaces.IInfobox
+                         ]
 
     @property
     def product(self):
@@ -208,6 +217,46 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 log.error("Couldn't change access for {}. Skipping "
                           "it.".format(cnt.uniqueId))
         return cnts
+
+    def content_with_references_for_publishing(self):
+        Q = zeit.solr.query
+        additional_constraints = [
+            Q.field('published', 'not-published'),
+            Q.and_(
+                Q.bool_field('urgent', True),
+                Q.field_raw(
+                    'type',
+                    zeit.content.article.article.ArticleType.type)),
+        ]
+        articles_to_publish = self.all_content_via_solr(
+            additional_query_contstraints=additional_constraints)
+        # Flatten the list of lists and remove duplicates
+        return list(set(itertools.chain.from_iterable(
+            [self._with_references(article) for article in
+             articles_to_publish])))
+
+    def _with_references(self, article):
+        """
+        :param content: CMSContent
+        :return: [referenced_content1, ..., content]
+        """
+        # XXX Using zeit.cms.relation.IReferences would make sense here as
+        # well but due to some license issues with images referenced by
+        # articles we have to be careful what we want to publish
+        with_dependencies = [
+            content for content in zeit.edit.interfaces.IElementReferences(
+                article, []) if self._needs_publishing(content)
+        ]
+        with_dependencies.append(article)
+        return with_dependencies
+
+    def _needs_publishing(self, content):
+        # Dont publish content which is already published
+        if zeit.cms.workflow.interfaces.IPublishInfo(content).published:
+            return False
+        # content has to provide one of interfaces defined above
+        return any([interface.providedBy(content) for interface
+                    in self.assets_to_publish])
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):

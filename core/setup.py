@@ -22,7 +22,7 @@ setup(
         'setuptools',
         'zc.sourcefactory',
         'zeit.cms >= 2.95.0.dev0',
-        'zeit.content.article >= 3.21.1.dev0',
+        'zeit.content.article >= 3.23.0.dev0',
         'zeit.content.cp',
         'zeit.content.image',
         'zeit.content.text>=2.1.0.dev0',

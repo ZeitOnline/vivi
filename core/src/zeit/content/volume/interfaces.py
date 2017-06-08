@@ -100,6 +100,12 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :return: [CMSContent, ...]
         """
 
+    def content_with_references_for_publishing():
+        """
+        Looks up all referenced content of relevant content of this volume.
+        :return: [ICMSContent, ...]
+        """
+
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
 

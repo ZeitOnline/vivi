@@ -5,7 +5,8 @@ zeit.content.volume changes
 1.7.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3810: Publish boxes of articles as well, if the content of the volume is
+  published 
 
 
 1.7.3 (2017-05-22)
