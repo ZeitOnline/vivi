@@ -190,3 +190,12 @@ class OrderUpdatedEvent(zope.container.contained.ContainerModifiedEvent):
     def __init__(self, context, *old_order):
         super(OrderUpdatedEvent, self).__init__(context)
         self.old_order = old_order
+
+
+class IElementReferences(zope.interface.Interface):
+    """
+    Iterate over the elements which are referenced in the body.
+    """
+
+    def __iter__():
+        pass

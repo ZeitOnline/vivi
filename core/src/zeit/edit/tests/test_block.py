@@ -34,7 +34,8 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
             'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body',
             self.container.uniqueId)
         self.assertEqual(
-            'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body/foo',
+            'http://block.vivi.zeit.de/http://xml.zeit.de/testcontent#body/'
+            'foo',
             self.block.uniqueId)
 
     def test_resolving_block_ids_uses_traversal(self):

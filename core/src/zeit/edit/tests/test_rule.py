@@ -275,13 +275,15 @@ class RecursiveValidatorTest(unittest.TestCase):
         self.assertEqual(ERROR, validator.status)
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def validating_workflow_for_testcontent(context):
     return zeit.edit.rule.ValidatingWorkflow(context)
 
 
-@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.edit.interfaces.IValidator)
 def validator_for_testcontent(context):
     validator = mock.Mock(

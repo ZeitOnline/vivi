@@ -1,10 +1,10 @@
 Changes
 =======
 
-2.14.2 (unreleased)
+2.15.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3810: Add IElementReferences Interface
 
 
 2.14.1 (2016-09-26)

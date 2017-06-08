@@ -1,6 +1,6 @@
+from zope.publisher.browser import TestRequest
 import json
 import lxml.objectify
-import unittest
 import zeit.cms.workingcopy.interfaces
 import zeit.edit.testing
 import zeit.edit.tests.fixture
@@ -20,7 +20,7 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
 
         self.landing_zone = zeit.edit.browser.landing.LandingZone()
         self.landing_zone.context = self.context = factory()
-        self.landing_zone.request = self.request = zope.publisher.browser.TestRequest()
+        self.landing_zone.request = self.request = TestRequest()
         self.landing_zone.block_type = 'block'
 
     def test_order_bottom_appends_at_bottom(self):
