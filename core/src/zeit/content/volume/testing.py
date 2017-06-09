@@ -18,15 +18,16 @@ product_config = """
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))
 
+# Prevent circular dependency
 article_config = """
 <product-config zeit.content.article>
-    image-display-mode-source file://{z_c_article_root}/edit/tests/image-display-modes.xml
-    legacy-display-mode-source file://{z_c_article_root}/edit/tests/legacy-display-modes.xml
-    image-variant-name-source file://{z_c_article_root}/edit/tests/image-variant-names.xml
-    legacy-variant-name-source file://{z_c_article_root}/edit/tests/legacy-variant-names.xml
+    image-display-mode-source file://{article}/image-display-modes.xml
+    legacy-display-mode-source file://{article}/legacy-display-modes.xml
+    image-variant-name-source file://{article}/image-variant-names.xml
+    legacy-variant-name-source file://{article}/legacy-variant-names.xml
 </product-config>
-""".format(z_c_article_root=pkg_resources.resource_filename(
-               'zeit.content.article', ''))
+""".format(article=pkg_resources.resource_filename(
+    'zeit.content.article.edit.tests', ''))
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', product_config=(
