@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.10.3 (unreleased)
+1.10.3 (2017-06-09)
 -------------------
 
 - FIX: Make DAV property access work in parallel indexing
