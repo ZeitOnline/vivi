@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.92 (unreleased)
+2.0.92 (2017-06-09)
 +++++++++++++++++++
 
 - ZON-3948: Übersetzungen aktualisiert
