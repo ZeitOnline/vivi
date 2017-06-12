@@ -191,6 +191,23 @@ def factor_block_from_portraitbox(body, context, position):
 
 
 @grok.subscribe(
+    zeit.content.article.edit.interfaces.IPortraitbox,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def reset_local_properties(context, event):
+    for description in event.descriptions:
+        if (description.interface is
+            zeit.content.article.edit.interfaces.IPortraitbox and
+                'references' in description.attributes):
+            break
+    else:
+        return
+    value = context.references
+    context.references = None
+    if value is not None:
+        context.references = value
+
+
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_reference_metadata(article, event):

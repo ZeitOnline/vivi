@@ -4,7 +4,7 @@ zeit.content.article changes
 3.23.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3485: Reset local values when the referenced portraitbox is changed
 
 
 3.23.0 (2017-06-09)
