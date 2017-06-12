@@ -291,7 +291,7 @@ def validator_for_testcontent(context):
     return validator
 
 
-class ValidatingWorkflowTest(unittest.TestCase):
+class ValidatingWorkflowTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ValidatingWorkflowTest, self).setUp()
@@ -307,7 +307,7 @@ class ValidatingWorkflowTest(unittest.TestCase):
 
     def test_validating_workflow_cannot_publish_when_validation_failed(self):
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(
-            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
+            self.repository['testcontent'])
         self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
 
     def test_validating_workflow_provides_error_messages_for_publish_info(
@@ -316,7 +316,7 @@ class ValidatingWorkflowTest(unittest.TestCase):
         import zeit.workflow.browser.publish
 
         view = zeit.workflow.browser.publish.Publish()
-        view.context = ExampleContentType()
+        view.context = self.repository['testcontent']
         view.can_publish()
         self.assertEqual(
             'Mock Validator Error Message', view.error_messages[1])
