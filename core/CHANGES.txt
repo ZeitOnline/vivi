@@ -4,7 +4,7 @@ zeit.cms changes
 2.100.1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ZON-3485: Respect missing_value in MarkdownWidget
 
 
 2.100.0 (2017-06-09)
