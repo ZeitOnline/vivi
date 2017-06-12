@@ -1,7 +1,6 @@
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
-import zope.security.checker
 
 
 class _DeleteProperty(object):
@@ -24,9 +23,13 @@ class _DeleteProperty(object):
 
 DeleteProperty = _DeleteProperty()
 
-# Make DeleteProperty a rock
-zope.security.checker.BasicTypes[_DeleteProperty] = (
-    zope.security.checker.NoProxy)
+try:
+    import zope.security.checker
+    # Make DeleteProperty a rock
+    zope.security.checker.BasicTypes[_DeleteProperty] = (
+        zope.security.checker.NoProxy)
+except ImportError:
+    pass  # soft dependency
 
 
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')

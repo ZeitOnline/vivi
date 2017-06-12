@@ -13,7 +13,6 @@ import urlparse
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
-import zope.app.appsetup.product
 import zope.app.file.image
 import zope.interface
 
@@ -313,6 +312,7 @@ class Connector(object):
 
 
 def connector_factory():
+    import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector') or {}
     repository_path = config.get('repository-path')

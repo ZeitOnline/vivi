@@ -785,6 +785,7 @@ class Connector(object):
 
     @classmethod
     def factory(cls):
+        import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector')
         document_store = (config or {}).get('document-store')

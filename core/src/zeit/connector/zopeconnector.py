@@ -6,7 +6,6 @@ import transaction
 import transaction.interfaces
 import zeit.connector.connector
 import zeit.connector.interfaces
-import zope.app.appsetup.product
 import zope.component
 import zope.event
 import zope.interface
@@ -94,6 +93,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
 
 def connectorFactory():
     """Factory for creating the connector with data from zope.conf."""
+    import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector')
     if config:

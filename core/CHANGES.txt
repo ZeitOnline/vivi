@@ -4,7 +4,7 @@ CHANGES
 2.9.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3997: Move Zope dependencies to setuptools extra
 
 
 2.9.0 (2017-02-16)

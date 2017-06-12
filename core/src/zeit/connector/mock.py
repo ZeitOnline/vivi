@@ -16,7 +16,6 @@ import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
-import zope.app.appsetup.product
 import zope.event
 
 
@@ -294,6 +293,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
 
 def connector_factory():
+    import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector')
     repository_path = (config or {}).get('repository-path')
