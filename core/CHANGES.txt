@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.100.2 (unreleased)
+2.100.2 (2017-06-13)
 --------------------
 
 - BUG-730: Remove rename warning, its most common case is now prohibited anyway
