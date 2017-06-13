@@ -5,10 +5,6 @@
     <span tal:replace="python:context.uniqueId"
           i18n:name="object-unique-id"/>
   </h1>
-  <div class="warning"
-       i18n:translate="rename-box-warning">
-    Note: Renaming destroys links.
-  </div>
 
   <span class="nextURL" tal:content="view/nextURL" />
 
