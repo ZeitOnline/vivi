@@ -20,6 +20,7 @@ setup(
         'gocept.cache>=0.2.2',
         'gocept.lxml',
         'lxml',
+        'pytz',
         'setuptools',
         'zc.set',
         'zope.app.file',
@@ -27,6 +28,7 @@ setup(
         'zope.event',
         'zope.interface',
         'zope.schema',
+        'zope.security',
     ],
     extras_require={
         'zope': [
@@ -41,7 +43,6 @@ setup(
             'zope.component',
             'zope.file',
             'zope.location>=3.4b2',
-            'zope.security',
             'zope.testing',
         ],
         'test': [
