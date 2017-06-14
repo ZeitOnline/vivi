@@ -7,14 +7,6 @@
       tal:attributes="cms:context view/homepage/@@absolute_url"
       i18n:translate="">Retract
     <span i18n:name="target" i18n:translate="">homepage banner</span></li>
-  <li action="retract"
-      tal:attributes="cms:context view/ios_legacy/@@absolute_url"
-      i18n:translate="">Retract
-    <span i18n:name="target" i18n:translate="">iOS legacy</span></li>
-  <li action="retract"
-      tal:attributes="cms:context view/wrapper/@@absolute_url"
-      i18n:translate="">Retract
-    <span i18n:name="target" i18n:translate="">wrapper banner</span></li>
   <li action="close" i18n:translate="">Done</li>
 </ol>
 
