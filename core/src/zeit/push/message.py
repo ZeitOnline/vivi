@@ -132,11 +132,7 @@ class AccountData(grok.Adapter):
     def facebook_main_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
         service = self._get_facebook_service(source.MAIN_ACCOUNT)
-        result = service and service.get('override_text')
-        if not result:  # BBB
-            push = zeit.push.interfaces.IPushMessages(self.context)
-            result = push.long_text
-        return result
+        return service and service.get('override_text')
 
     @property
     def facebook_magazin_enabled(self):
@@ -148,11 +144,7 @@ class AccountData(grok.Adapter):
     def facebook_magazin_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
         service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
-        result = service and service.get('override_text')
-        if not result:  # BBB
-            push = zeit.push.interfaces.IPushMessages(self.context)
-            result = push.long_text
-        return result
+        return service and service.get('override_text')
 
     @property
     def facebook_campus_enabled(self):
@@ -164,8 +156,7 @@ class AccountData(grok.Adapter):
     def facebook_campus_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
         service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
-        result = service and service.get('override_text')
-        return result
+        return service and service.get('override_text')
 
     def _get_facebook_service(self, account):
         for service in self.message_config:
