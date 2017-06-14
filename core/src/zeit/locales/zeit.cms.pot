@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Jun  9 15:07:04 2017\n"
+"POT-Creation-Date: Wed Jun 14 16:10:46 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1510,17 +1510,12 @@ msgstr ""
 msgid "Reload folder"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename-box.pt:30
+#: zeit/cms/repository/browser/rename-box.pt:26
 msgid "Only unpublished objects can be renamed."
 msgstr ""
 
 #: zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
-msgstr ""
-
-#: zeit/cms/repository/browser/rename-box.pt:8
-#. Default: "Note: Renaming destroys links."
-msgid "rename-box-warning"
 msgstr ""
 
 #: zeit/cms/repository/browser/rename.py:16
@@ -4673,19 +4668,14 @@ msgstr ""
 msgid "Long push text"
 msgstr ""
 
+#: zeit/push/message.py:86
+#. Default: ""
+msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
+msgstr ""
+
 #: zeit/push/message.py:94
 #. Default: ""
-msgid "Push notification for \"${name}\" sent. (Message: \"${message}\")"
-msgstr ""
-
-#: zeit/push/message.py:99
-#. Default: ""
-msgid "Error during push to ${name}: ${reason}"
-msgstr ""
-
-#: zeit/push/mobile.py:178
-#. Default: ""
-msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Channels: ${channels})"
+msgid "Error during push to ${name} ${details}: ${reason}"
 msgstr ""
 
 #: zeit/push/mobile.py:65

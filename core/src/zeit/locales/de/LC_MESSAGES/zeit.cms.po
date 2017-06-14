@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-06-09 15:07+0200\n"
-"PO-Revision-Date: 2017-06-09 15:08+0200\n"
+"POT-Creation-Date: 2017-06-14 16:11+0200\n"
+"PO-Revision-Date: 2017-06-14 16:19+0200\n"
 "Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1458,21 +1458,13 @@ msgstr "Es gibt keine auswählbaren Objekte in diesem Ordner."
 msgid "Reload folder"
 msgstr "Ordner neu laden"
 
-#: zeit/cms/repository/browser/rename-box.pt:30
+#: zeit/cms/repository/browser/rename-box.pt:26
 msgid "Only unpublished objects can be renamed."
 msgstr "Nur unveröffentlichte Inhalte können umbenannt werden."
 
 #: zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr "${object-unique-id} umbenennen"
-
-#. Default: "Note: Renaming destroys links."
-#: zeit/cms/repository/browser/rename-box.pt:8
-msgid "rename-box-warning"
-msgstr ""
-"Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses Objekt "
-"ungültig machen. Objekte sollten nur umbenannt werden, wenn sie noch nicht "
-"veröffentlicht verlinkt oder anderweitig referenziert sind."
 
 #: zeit/cms/repository/browser/rename.py:16
 #: zeit/cms/repository/interfaces.py:202
@@ -4614,23 +4606,20 @@ msgid "Long push text"
 msgstr "Facebook-Posting"
 
 #. Default: ""
-#: zeit/push/message.py:94
-msgid "Push notification for \"${name}\" sent. (Message: \"${message}\")"
-msgstr "Push Notification für ${name} versendet. (Nachricht: “${message}”)"
-
-#. Default: ""
-#: zeit/push/message.py:99
-msgid "Error during push to ${name}: ${reason}"
-msgstr "Fehler beim Versenden der Push Notification für “${name}”: ${reason}"
-
-#. Default: ""
-#: zeit/push/mobile.py:178
+#: zeit/push/message.py:86
 msgid ""
-"Push notification for \"${name}\" sent. (Message: \"${message}\", Channels: "
-"${channels})"
+"Push notification for \"${name}\" sent. (Message: \"${message}\", Details: "
+"${details})"
 msgstr ""
-"Push Notification für ${name} versendet. (Nachricht: “${message}”, Channel: "
-"“${channels}”)"
+"Push Notification für ${name} versendet. (Nachricht: “${message}”, Details: "
+"“${details}”)"
+
+#. Default: ""
+#: zeit/push/message.py:94
+msgid "Error during push to ${name} ${details}: ${reason}"
+msgstr ""
+"Fehler beim Versenden der Push Notification für “${name}” (${details}):  "
+"${reason}"
 
 #: zeit/push/mobile.py:65
 msgid "push-news-title"
@@ -4970,6 +4959,26 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 msgid "large"
 msgstr "vollbreit"
+
+#~ msgid "rename-box-warning"
+#~ msgstr ""
+#~ "Achtung: Das Umbenennen von Objekten wird Referenzen/Links auf dieses "
+#~ "Objekt ungültig machen. Objekte sollten nur umbenannt werden, wenn sie "
+#~ "noch nicht veröffentlicht verlinkt oder anderweitig referenziert sind."
+
+#~ msgid "Push notification for \"${name}\" sent. (Message: \"${message}\")"
+#~ msgstr "Push Notification für ${name} versendet. (Nachricht: “${message}”)"
+
+#~ msgid "Error during push to ${name}: ${reason}"
+#~ msgstr ""
+#~ "Fehler beim Versenden der Push Notification für “${name}”: ${reason}"
+
+#~ msgid ""
+#~ "Push notification for \"${name}\" sent. (Message: \"${message}\", "
+#~ "Channels: ${channels})"
+#~ msgstr ""
+#~ "Push Notification für ${name} versendet. (Nachricht: “${message}”, "
+#~ "Channel: “${channels}”)"
 
 #~ msgid "Bigshare Buttons"
 #~ msgstr "große Share-Buttons anzeigen"
