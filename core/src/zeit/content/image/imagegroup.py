@@ -13,6 +13,7 @@ import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.connector.interfaces
@@ -535,3 +536,18 @@ def create_thumbnail_source_on_add(context, event):
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(group)
     thumbnails.source_image(thumbnails.master_image(''))
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImageGroup,
+    zeit.cms.repository.interfaces.IObjectReloadedEvent)
+def refresh_thumbnail_source(context, event):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            context):
+        return
+    thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+    for name, image in context.items():
+        if name.startswith(thumbnails.SOURCE_IMAGE_PREFIX):
+            del context[name]
+    for view, name in context.master_images:
+        thumbnails.source_image(context[name])
