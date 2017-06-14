@@ -143,15 +143,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertEqual('facebook', b.getControl('Facebook Main Text').value)
 
-    def test_shows_long_text_as_bbb_for_facebook_override_text(self):
-        article = self.get_article()
-        push = zeit.push.interfaces.IPushMessages(article)
-        push.long_text = 'facebook'
-        self.open_form()
-        b = self.browser
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Main Text').value)
-
     def test_stores_mobile_override_text(self):
         self.open_form()
         b = self.browser

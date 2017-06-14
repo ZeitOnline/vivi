@@ -93,10 +93,6 @@ class IPushMessages(zope.interface.Interface):
     date_last_pushed = zope.schema.Datetime(
         title=_('Last push'), required=False, readonly=True)
 
-    # BBB deprecated, Facebook texts are now stored per account in
-    # message_config.
-    long_text = zope.schema.Text(
-        title=_('Long push text'), required=False)
     short_text = zope.schema.TextLine(
         title=_('Short push text'),
         required=False,
