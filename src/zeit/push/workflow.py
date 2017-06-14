@@ -29,11 +29,6 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('short_text',))
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.push.interfaces.IPushMessages,
-        zeit.workflow.interfaces.WORKFLOW_NS,
-        ('date_last_pushed',), writeable=WRITEABLE_LIVE)
-
     @property
     def messages(self):
         result = []
@@ -82,5 +77,3 @@ def send_push_on_publish(context, event):
                 mapping={'type': message.type.capitalize(), 'reason': str(e)}))
             log.error('Error during push to %s with config %s',
                       message.type, config, exc_info=True)
-
-    push.date_last_pushed = datetime.now(pytz.UTC)
