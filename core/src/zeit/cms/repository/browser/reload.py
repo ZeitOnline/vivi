@@ -1,10 +1,9 @@
-import zope.event
-
-import zeit.connector.interfaces
-
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
-from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
+import zope.event
 
 
 class Reload(zeit.cms.browser.view.Base):
@@ -14,6 +13,8 @@ class Reload(zeit.cms.browser.view.Base):
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(
                 self.context.uniqueId))
+        zope.event.notify(
+            zeit.cms.repository.interfaces.ObjectReloadedEvent(self.context))
         self.redirect(self.url(self.context, '@@view.html'))
         return ''
 

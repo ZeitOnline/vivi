@@ -4,7 +4,7 @@ zeit.cms changes
 2.100.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- MAINT: Send specific event when a user triggers a cache refresh
 
 
 2.100.2 (2017-06-13)

@@ -204,3 +204,15 @@ class IAutomaticallyRenameable(zope.interface.Interface):
         constraint=valid_name)
 
     uniqueId = zope.interface.Attribute('Current uniqueId')
+
+
+class IObjectReloadedEvent(zope.component.interfaces.IObjectEvent):
+    """An event sent when a reload action is triggered through the UI, so we
+    can differentiate from zeit.connector.interfaces.ResourceInvaliatedEvent,
+    which is triggered by the invalidator, too.
+    """
+
+
+class ObjectReloadedEvent(zope.component.interfaces.ObjectEvent):
+
+    zope.interface.implements(IObjectReloadedEvent)
