@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4006: Update to mobile field split
 
 
 2.7.5 (2017-05-22)
