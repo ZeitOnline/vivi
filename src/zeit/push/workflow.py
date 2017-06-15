@@ -1,9 +1,7 @@
-from datetime import datetime
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import logging
-import pytz
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
@@ -44,6 +42,26 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
             content, zeit.push.interfaces.IMessage, name=typ)
         message.config = config
         return message
+
+    MISSING = object()
+
+    def get(self, **query):
+        for item in self.message_config:
+            found = {key: item.get(key, self.MISSING) for key in query}
+            if found == query:
+                return item
+
+    def set(self, query, **values):
+        config = self.message_config[:]
+        for item in config:
+            found = {key: item.get(key, self.MISSING) for key in query}
+            if found == query:
+                item.update(values)
+                break
+        else:
+            values.update(query)
+            config += (values,)
+        self.message_config = config
 
 
 @grok.subscribe(

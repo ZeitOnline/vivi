@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.20.3 (unreleased)
+1.21.0 (unreleased)
 -------------------
 
 - BUG-674: Don't perform push-target-url replacement twice,

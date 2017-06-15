@@ -48,11 +48,14 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
+        # No entries for Facebook Magazin and Campus are created, since we
+        # did not enable those.
+        self.assertEqual(4, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'},
             push.message_config)
         self.assertIn(
-            {'type': 'twitter', 'enabled': True,
+            {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
              'account': 'twitter_ressort_wissen'},
             push.message_config)
         self.assertIn(
@@ -77,12 +80,12 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(6, len(push.message_config))
+        self.assertEqual(4, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
         self.assertIn(
-            {'type': 'twitter', 'enabled': False,
+            {'type': 'twitter', 'enabled': False, 'variant': 'ressort',
              'account': 'twitter_ressort_wissen'},
             push.message_config)
         self.assertIn(
@@ -109,7 +112,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'twitter', 'enabled': True,
+            {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
              'account': 'twitter_ressort_wissen'},
             push.message_config)
 
