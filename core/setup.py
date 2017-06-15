@@ -24,7 +24,7 @@ setup(
         'setuptools',
         'zeit.cms>=2.94.0.dev0',
         'zeit.connector',
-        'zeit.push >= 1.17.0.dev0',
+        'zeit.push >= 1.21.0.dev0',
         'zeit.solr>=2.2.0.dev0',
         'zope.annotation',
         'zope.app.zcmlfiles',

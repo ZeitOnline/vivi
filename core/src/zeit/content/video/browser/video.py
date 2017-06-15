@@ -10,7 +10,8 @@ import zope.formlib.form
 import zope.formlib.form
 
 
-class Base(zeit.push.browser.form.SocialBase):
+class Base(zeit.push.browser.form.SocialBase,
+           zeit.push.browser.form.MobileBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
@@ -46,6 +47,7 @@ class Base(zeit.push.browser.form.SocialBase):
              'commentsPremoderate'),
             css_class='column-right checkboxes'),
         zeit.push.browser.form.SocialBase.social_fields,
+        zeit.push.browser.form.MobileBase.mobile_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
@@ -59,12 +61,6 @@ class Base(zeit.push.browser.form.SocialBase):
 class Edit(Base, zeit.cms.browser.form.EditForm):
 
     title = _('Video')
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(self.context, data)
-        super(Edit, self).handle_edit_action.success(data)
 
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):
