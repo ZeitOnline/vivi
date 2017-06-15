@@ -4,7 +4,7 @@ zeit.cms changes
 2.100.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- FIX: Empty blacklist config entry prevents publishing
 
 
 2.100.2 (2017-06-13)

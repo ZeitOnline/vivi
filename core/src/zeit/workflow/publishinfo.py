@@ -59,7 +59,7 @@ class PublishInfo(object):
         blacklist = re.split(', *', config['blacklist'])
         path = urlparse.urlparse(self.context.uniqueId).path
         for item in blacklist:
-            if path.startswith(item):
+            if item and path.startswith(item):
                 return True
         return False
 
