@@ -935,7 +935,7 @@
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="socialmedia"
-    class=".social.SocialContainer"
+    class=".push.SocialContainer"
     permission="zope.View"
     weight="75"
     />
@@ -943,7 +943,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".social.SocialContainer"
+    view=".push.SocialContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.social"
     class="zeit.edit.browser.form.FormLoader"
@@ -955,7 +955,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.social"
-    class=".social.Social"
+    class=".push.Social"
     permission="zope.View"
     />
 
@@ -967,7 +967,7 @@
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="mobileapps"
-    class=".social.MobileContainer"
+    class=".push.MobileContainer"
     permission="zope.View"
     weight="77"
     />
@@ -975,7 +975,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".social.MobileContainer"
+    view=".push.MobileContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.mobile"
     class="zeit.edit.browser.form.FormLoader"
@@ -987,7 +987,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.mobile"
-    class=".social.Mobile"
+    class=".push.Mobile"
     permission="zope.View"
     />
 
