@@ -32,7 +32,8 @@ class Message(grok.Adapter):
         Re-sending can be done manually by re-enabling the service.
 
         """
-        self._disable_message_config()
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        push.set(self.config, enabled=False)
         if not self.text:
             raise ValueError('No text configured')
         kw = {}
@@ -49,14 +50,6 @@ class Message(grok.Adapter):
             self.log_error(str(e))
             log.error(u'Error during push to %s with config %s',
                       self.type, self.config, exc_info=True)
-
-    def _disable_message_config(self):
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        config = push.message_config[:]
-        for service in config:
-            if service == self.config:
-                service['enabled'] = False
-        push.message_config = config
 
     @property
     def text(self):
@@ -118,148 +111,156 @@ class AccountData(grok.Adapter):
         self.__parent__ = context  # make security work
 
     @property
-    def message_config(self):
-        return zeit.push.interfaces.IPushMessages(
-            self.context).message_config
+    def push(self):
+        return zeit.push.interfaces.IPushMessages(self.context)
 
     @property
     def facebook_main_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAIN_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
+        return service and service.get('enabled')
 
+    @facebook_main_enabled.setter
+    def facebook_main_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAIN_ACCOUNT),
+            enabled=value)
+
+    # We cannot use the key ``text``, since the first positional parameter of
+    # IPushNotifier.send() is also called text, which causes TypeError.
     @property
     def facebook_main_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAIN_ACCOUNT)
+        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
         return service and service.get('override_text')
+
+    @facebook_main_text.setter
+    def facebook_main_text(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAIN_ACCOUNT),
+            override_text=value)
 
     @property
     def facebook_magazin_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(
+            type='facebook', account=source.MAGAZIN_ACCOUNT)
+        return service and service.get('enabled')
+
+    @facebook_magazin_enabled.setter
+    def facebook_magazin_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAGAZIN_ACCOUNT),
+            enabled=value)
 
     @property
     def facebook_magazin_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
+        service = self.push.get(
+            type='facebook', account=source.MAGAZIN_ACCOUNT)
         return service and service.get('override_text')
+
+    @facebook_magazin_text.setter
+    def facebook_magazin_text(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAGAZIN_ACCOUNT),
+            override_text=value)
 
     @property
     def facebook_campus_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(type='facebook', account=source.CAMPUS_ACCOUNT)
+        return service and service.get('enabled')
+
+    @facebook_campus_enabled.setter
+    def facebook_campus_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.CAMPUS_ACCOUNT),
+            enabled=value)
 
     @property
     def facebook_campus_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
+        service = self.push.get(
+            type='facebook', account=source.CAMPUS_ACCOUNT)
         return service and service.get('override_text')
-
-    def _get_facebook_service(self, account):
-        for service in self.message_config:
-            if service['type'] != 'facebook':
-                continue
-            if service.get('account') == account:
-                return service
-        return None
-
-    @property
-    def twitter_main_enabled(self):
-        service = self._get_twitter_service(main=True)
-        return service and service['enabled']
-
-    @property
-    def twitter_ressort(self):
-        service = self._get_twitter_service(main=False)
-        return service and service['account']
-
-    @property
-    def twitter_ressort_enabled(self):
-        service = self._get_twitter_service(main=False)
-        return service and service['enabled']
-
-    def _get_twitter_service(self, main=True):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        for service in self.message_config:
-            if service['type'] != 'twitter':
-                continue
-            account = service.get('account')
-            is_main = (account == source.MAIN_ACCOUNT)
-            if is_main == main:
-                return service
-        return None
-
-    @property
-    def mobile_enabled(self):
-        for service in self.message_config:
-            if service['type'] != 'mobile':
-                continue
-            if service.get(
-                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
-                break
-        else:
-            service = None
-        return service and service['enabled']
-
-    @property
-    def mobile_text(self):
-        for service in self.message_config:
-            if service['type'] != 'mobile':
-                continue
-            if service.get(
-                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
-                break
-        else:
-            service = None
-        return service and service.get('override_text')
-
-    # Writing happens all services at once in the form, so we don't need to
-    # worry about identifying entries in message_config (which would be quite
-    # cumbersome).
-
-    @facebook_main_enabled.setter
-    def facebook_main_enabled(self, value):
-        pass
-
-    @facebook_main_text.setter
-    def facebook_main_text(self, value):
-        pass
-
-    @facebook_magazin_enabled.setter
-    def facebook_magazin_enabled(self, value):
-        pass
-
-    @facebook_magazin_text.setter
-    def facebook_magazin_text(self, value):
-        pass
-
-    @facebook_campus_enabled.setter
-    def facebook_campus_enabled(self, value):
-        pass
 
     @facebook_campus_text.setter
     def facebook_campus_text(self, value):
-        pass
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.CAMPUS_ACCOUNT),
+            override_text=value)
+
+    @property
+    def twitter_main_enabled(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        service = self.push.get(type='twitter', account=source.MAIN_ACCOUNT)
+        return service and service.get('enabled')
 
     @twitter_main_enabled.setter
     def twitter_main_enabled(self, value):
-        pass
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        self.push.set(dict(
+            type='twitter', account=source.MAIN_ACCOUNT),
+            enabled=value)
+
+    @property
+    def twitter_ressort(self):
+        return self._nonmain_twitter_service.get('account')
 
     @twitter_ressort.setter
     def twitter_ressort(self, value):
-        pass
+        self.push.set(
+            dict(type='twitter', variant='ressort'), account=value)
+
+    @property
+    def twitter_ressort_enabled(self):
+        return self._nonmain_twitter_service.get('enabled')
 
     @twitter_ressort_enabled.setter
     def twitter_ressort_enabled(self, value):
-        pass
+        self.push.set(
+            dict(type='twitter', variant='ressort'), enabled=value)
+
+    @property
+    def _nonmain_twitter_service(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        for service in self.push.message_config:
+            if service['type'] != 'twitter':
+                continue
+            if service.get('variant') == 'ressort':
+                return service
+            # BBB `variant` was introduced in zeit.push-1.21
+            if service.get('account') != source.MAIN_ACCOUNT:
+                return service
+        return {}
+
+    @property
+    def mobile_enabled(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('enabled')
 
     @mobile_enabled.setter
     def mobile_enabled(self, value):
-        pass
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            enabled=value)
+
+    @property
+    def mobile_text(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('override_text')
 
     @mobile_text.setter
     def mobile_text(self, value):
-        pass
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            override_text=value)

@@ -119,6 +119,17 @@ class IPushMessages(zope.interface.Interface):
     messages = zope.interface.Attribute(
         'List of IMessage objects, one for each enabled message_config entry')
 
+    def get(**query):
+        """Returns the first entry in message_config that matches the given
+        query key/values.
+        """
+
+    def set(query, **values):
+        """Updates the first entry in message_config that matches the given
+        query key/values with the given values. If none is found, a new entry
+        is appended, combining query and values.
+        """
+
 
 CONFIG_CHANNEL_NEWS = 'channel-news'
 CONFIG_CHANNEL_BREAKING = 'channel-breaking'
