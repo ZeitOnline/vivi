@@ -1939,11 +1939,13 @@
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
 .type-article #form-social .field.fieldname-short_text .label,
-.type-article #form-mobile .field.fieldname-mobile_text .label {
-    display: none;
+.type-article #form-mobile .field.fieldname-mobile_title .label,
+ .type-article #form-mobile .field.fieldname-mobile_text .label {
+   display: none;
 }
 
 .type-article #social\.short_text,
+.type-article #mobile\.mobile_title,
 .type-article #mobile\.mobile_text {
     width: 100%;
 }
@@ -1976,13 +1978,12 @@
 }
 
 .type-article #form-mobile .field.fieldname-is_amp {
-    margin-top: 4em; /* XXX margin against previous non-float? */
+    margin-top: 7em; /* XXX margin against previous non-float? */
 }
 
 /* XXX We should use <fieldset>, but we'd have to combine the templates of
    zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
 .type-article #form-social .field.fieldname-short_text,
-.type-article #form-mobile .field.fieldname-mobile_text,
 .type-article #form-mobile .field.fieldname-is_amp {
     padding-top: 1em;
     border-top: 1px solid #d5dee7;
@@ -1990,7 +1991,6 @@
 
 .type-article #form-social .field.fieldname-facebook_main_text:before ,
 .type-article #form-social .field.fieldname-short_text:before ,
-.type-article #form-mobile .field.fieldname-mobile_text:before ,
 .type-article #form-mobile .field.fieldname-is_amp:before {
     font-variant: small-caps;
     font-weight: bold;
@@ -2001,9 +2001,6 @@
 }
 .type-article #form-social .field.fieldname-short_text:before {
     content: "Twitter";
-}
-.type-article #form-mobile .field.fieldname-mobile_text:before {
-    content: "Apps/Watch"
 }
 .type-article #form-mobile .field.fieldname-is_amp:before {
     content: "Mobile Plattformen";
