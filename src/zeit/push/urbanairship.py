@@ -251,10 +251,6 @@ class Message(zeit.push.message.Message):
     @zope.cachedescriptors.property.Lazy
     def additional_parameters(self):
         result = {}
-        for name in ['teaserTitle', 'teaserText', 'teaserSupertitle']:
-            value = getattr(self.context, name)
-            if value:
-                result[name] = value
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
@@ -311,11 +307,7 @@ def print_payload_documentation():
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
         'ios_application_key', 'ios_master_secret', expire_interval=9000)
-    params = {
-        'teaserTitle': 'TeaserTitle',
-        'teaserText': 'TeaserText',
-        'teaserSupertitle': 'TeaserSupertitle',
-    }
+    params = {}
     print '[{"//": "*** Eilmeldung ***"},'
     conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
               channels=CONFIG_CHANNEL_BREAKING, **params)

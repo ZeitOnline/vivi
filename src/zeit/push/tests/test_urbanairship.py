@@ -294,9 +294,7 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name=self.name)
         message.send()
         self.assertEqual(
-            [('content_title', u'http://www.zeit.de/content', {
-                'teaserSupertitle': 'super', 'teaserText': 'teaser',
-                'teaserTitle': 'title'})],
+            [('content_title', u'http://www.zeit.de/content', {})],
             self.get_calls('urbanairship'))
 
     def test_message_text_favours_override_text_over_title(self):

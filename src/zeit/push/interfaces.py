@@ -27,10 +27,7 @@ class IMessage(zope.interface.Interface):
         as parameters.
 
         Currently `additional_parameters` is only used for mobile push
-        notifications to enrich the parameteres with `teaserTitle`,
-        `teaserText`, `teaserSupertitle` and `image_url`. These information are
-        read from the context.
-
+        notifications to enrich the parameters with `image_url`.
         """
 
 
