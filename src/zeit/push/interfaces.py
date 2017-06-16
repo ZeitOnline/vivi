@@ -258,5 +258,8 @@ class IAccountData(zope.interface.Interface):
         source=twitterAccountSource,
         required=False)
 
-    mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
+    mobile_title = zope.schema.TextLine(
+        title=_('Mobile title'), required=False)
+    mobile_text = zope.schema.Text(
+        title=_('Mobile text'), required=False)
     mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))

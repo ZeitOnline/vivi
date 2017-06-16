@@ -294,7 +294,8 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name=self.name)
         message.send()
         self.assertEqual(
-            [('content_title', u'http://www.zeit.de/content', {})],
+            [('content_title', u'http://www.zeit.de/content',
+              {'mobile_title': None})],
             self.get_calls('urbanairship'))
 
     def test_message_text_favours_override_text_over_title(self):
@@ -345,7 +346,8 @@ class IntegrationTest(zeit.push.testing.TestCase):
         self.publish(self.content)
         self.assertEqual([(
             'content_title', u'http://www.zeit.de/content',
-            {'enabled': True, 'type': 'mobile'})],
+            {'enabled': True, 'type': 'mobile',
+             'mobile_title': None})],
             zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='urbanairship').calls)
 

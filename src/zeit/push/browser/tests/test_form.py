@@ -44,7 +44,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Enable mobile push').selected = True
-        b.getControl('Mobile title').value = 'mobile'
+        b.getControl('Mobile title').value = 'mobile title'
+        b.getControl('Mobile text').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -64,6 +65,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
+             'title': 'mobile title',
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -94,6 +96,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
+             'title': 'mobile title',
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -149,7 +152,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_stores_mobile_override_text(self):
         self.open_form()
         b = self.browser
-        b.getControl('Mobile title').value = 'mobile'
+        b.getControl('Mobile title').value = 'mobile title'
+        b.getControl('Mobile text').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -161,7 +165,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         else:
             self.fail('mobile message_config is missing')
         self.open_form()
-        self.assertEqual('mobile', b.getControl('Mobile title').value)
+        self.assertEqual('mobile', b.getControl('Mobile text').value)
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
