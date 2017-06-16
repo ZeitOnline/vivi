@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'setuptools',
         'zeit.cms>=2.88.0.dev0',
-        'zeit.content.article',
+        'zeit.content.article>=3.24.0.dev0',
         'zeit.content.cp',
         'zeit.content.gallery',
         'zeit.content.infobox',
