@@ -254,6 +254,18 @@ class AccountData(grok.Adapter):
             enabled=value)
 
     @property
+    def mobile_title(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('title')
+
+    @mobile_title.setter
+    def mobile_title(self, value):
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            title=value)
+
+    @property
     def mobile_text(self):
         service = self.push.get(
             type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)

@@ -250,7 +250,9 @@ class Message(zeit.push.message.Message):
 
     @zope.cachedescriptors.property.Lazy
     def additional_parameters(self):
-        result = {}
+        result = {
+            'mobile_title': self.config.get('title'),
+        }
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
