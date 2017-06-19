@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
 
@@ -263,3 +264,10 @@ class IAccountData(zope.interface.Interface):
     mobile_text = zope.schema.Text(
         title=_('Mobile text'), required=False)
     mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))
+
+    mobile_uses_image = zope.schema.Bool(title=_('Mobile push with image'))
+    mobile_image = zope.schema.Choice(
+        title=_('Mobile image'),
+        description=_("Drag an image group here"),
+        source=zeit.content.image.interfaces.imageGroupSource,
+        required=False)

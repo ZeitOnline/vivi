@@ -65,7 +65,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
-             'title': 'mobile title',
+             'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -96,7 +96,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
-             'title': 'mobile title',
+             'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -155,6 +155,26 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('mobile', service['override_text'])
         self.open_form()
         self.assertEqual('mobile', b.getControl('Mobile text').value)
+
+    def test_stores_mobile_image(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Mobile image').value = (
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+
+        self.open_form()
+        b.getControl('Mobile image').value = ''
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual(None, service['image'])
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
