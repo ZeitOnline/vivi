@@ -57,7 +57,7 @@ class MobileBase(Base):
     mobile_fields = gocept.form.grouped.Fields(
         _("Mobile apps"),
         ('mobile_title', 'mobile_text', 'mobile_enabled',
-         'mobile_uses_image', 'mobile_image'),
+         'mobile_uses_image', 'mobile_image', 'mobile_buttons'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -69,7 +69,7 @@ class MobileBase(Base):
         return self.FormFieldsFactory(
             zeit.push.interfaces.IAccountData).select(
                 'mobile_enabled', 'mobile_title', 'mobile_text',
-                'mobile_uses_image', 'mobile_image')
+                'mobile_uses_image', 'mobile_image', 'mobile_buttons')
 
     def setUpWidgets(self, *args, **kw):
         super(MobileBase, self).setUpWidgets(*args, **kw)
