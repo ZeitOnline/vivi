@@ -3,6 +3,7 @@ from zeit.content.article.edit.browser.form import FormFields
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.push.browser.form
+import zope.interface
 
 
 class SocialContainer(zeit.edit.browser.form.FoldableFormGroup):
@@ -41,6 +42,11 @@ class Mobile(zeit.push.browser.form.MobileBase,
         self.form_fields += self.FormFieldsFactory(
             zeit.content.article.interfaces.IArticle).select(
                 'is_amp', 'is_instant_article')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(Mobile, self).__call__()
 
     def setUpWidgets(self, *args, **kw):
         super(Mobile, self).setUpWidgets(*args, **kw)

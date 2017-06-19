@@ -1940,7 +1940,8 @@
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
 .type-article #form-social .field.fieldname-short_text .label,
 .type-article #form-mobile .field.fieldname-mobile_title .label,
- .type-article #form-mobile .field.fieldname-mobile_text .label {
+.type-article #form-mobile .field.fieldname-mobile_text .label,
+.type-article #form-mobile .field.fieldname-mobile_image .label {
    display: none;
 }
 
@@ -1978,7 +1979,7 @@
 }
 
 .type-article #form-mobile .field.fieldname-is_amp {
-    margin-top: 7em; /* XXX margin against previous non-float? */
+    clear: left;
 }
 
 /* XXX We should use <fieldset>, but we'd have to combine the templates of
