@@ -276,3 +276,31 @@ class AccountData(grok.Adapter):
         self.push.set(dict(
             type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
             override_text=value)
+
+    @property
+    def mobile_uses_image(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('uses_image')
+
+    @mobile_uses_image.setter
+    def mobile_uses_image(self, value):
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            uses_image=value)
+
+    @property
+    def mobile_image(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        if not service:
+            return None
+        return zeit.cms.interfaces.ICMSContent(service.get('image'), None)
+
+    @mobile_image.setter
+    def mobile_image(self, value):
+        if value is not None:
+            value = value.uniqueId
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            image=value)
