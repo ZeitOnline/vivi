@@ -176,6 +176,16 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         service = push.get(type='mobile')
         self.assertEqual(None, service['image'])
 
+    def test_stores_mobile_buttons(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Mobile buttons').displayValue = ['Share']
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual('share', service['buttons'])
+
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
 

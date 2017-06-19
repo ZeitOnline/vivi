@@ -234,6 +234,16 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
 facebookAccountSource = FacebookAccountSource()
 
 
+class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.push'
+    config_url = 'mobile-buttons'
+    attribute = 'id'
+
+
+MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
+
+
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
@@ -270,4 +280,8 @@ class IAccountData(zope.interface.Interface):
         title=_('Mobile image'),
         description=_("Drag an image group here"),
         source=zeit.content.image.interfaces.imageGroupSource,
+        required=False)
+    mobile_buttons = zope.schema.Choice(
+        title=_('Mobile buttons'),
+        source=MOBILE_BUTTONS_SOURCE,
         required=False)

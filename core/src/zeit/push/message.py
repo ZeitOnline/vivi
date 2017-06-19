@@ -304,3 +304,15 @@ class AccountData(grok.Adapter):
         self.push.set(dict(
             type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
             image=value)
+
+    @property
+    def mobile_buttons(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('buttons')
+
+    @mobile_buttons.setter
+    def mobile_buttons(self, value):
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            buttons=value)
