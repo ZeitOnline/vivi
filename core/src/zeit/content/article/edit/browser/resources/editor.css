@@ -1715,10 +1715,6 @@
   overflow-y: scroll;
 }
 
-.type-article .disabled label {
-  color: #999999;
-}
-
 .type-article .inline-form fieldset.memo {
   background: #ffffff;
   margin: 0px;

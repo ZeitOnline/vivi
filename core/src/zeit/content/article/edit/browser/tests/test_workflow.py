@@ -247,32 +247,6 @@ class Publish(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.LAYER
 
-    def prepare_content(self, urgent):
-        root = self.getRootFolder()
-        with zeit.cms.testing.site(root):
-            with zeit.cms.testing.interaction():
-                content = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                IContentWorkflow(content).urgent = urgent
-
-    def test_urgent_denies_marking_edited_and_corrected(self):
-        self.prepare_content(urgent=True)
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.publish?show_form=1')
-        self.assertTrue(b.getControl('Corrected').disabled)
-        self.assertTrue(b.getControl('Edited').disabled)
-
-    def test_non_urgent_allows_marking_edited_and_corrected(self):
-        self.prepare_content(urgent=False)
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.publish?show_form=1')
-        self.assertFalse(b.getControl('Corrected').disabled)
-        self.assertFalse(b.getControl('Edited').disabled)
-
     def test_validation_errors_are_displayed_during_publish(self):
         # Create article with divisions, otherwise the recursive validator has
         # no children to validate
