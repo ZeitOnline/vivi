@@ -138,14 +138,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        for service in push.message_config:
-            if (service['type'] != 'facebook'
-                or service.get('account') != 'fb-test'):
-                continue
-            self.assertEqual('facebook', service['override_text'])
-            break
-        else:
-            self.fail('facebook message_config is missing')
+        service = push.get(type='facebook', account='fb-test')
+        self.assertEqual('facebook', service['override_text'])
         self.open_form()
         self.assertEqual('facebook', b.getControl('Facebook Main Text').value)
 
@@ -157,13 +151,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        for service in push.message_config:
-            if service['type'] != 'mobile':
-                continue
-            self.assertEqual('mobile', service['override_text'])
-            break
-        else:
-            self.fail('mobile message_config is missing')
+        service = push.get(type='mobile')
+        self.assertEqual('mobile', service['override_text'])
         self.open_form()
         self.assertEqual('mobile', b.getControl('Mobile text').value)
 
