@@ -72,8 +72,11 @@ class MobileBase(Base):
     def setUpWidgets(self, *args, **kw):
         super(MobileBase, self).setUpWidgets(*args, **kw)
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
-            self._set_widget_required('mobile_title')
             self._set_widget_required('mobile_text')
+        if hasattr(self.widgets['mobile_text'], 'extra'):
+            # i.e. we're not in read-only mode
+            self.widgets['mobile_text'].extra += (
+                ' cms:charwarning="40" cms:charlimit="150"')
 
 
 class SocialAddForm(
