@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-06-16 13:28+0200\n"
-"PO-Revision-Date: 2017-06-16 13:31+0200\n"
+"POT-Creation-Date: 2017-06-19 14:48+0200\n"
+"PO-Revision-Date: 2017-06-19 14:49+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1840,6 +1840,7 @@ msgstr "Bild"
 #: zeit/content/article/edit/interfaces.py:314
 #: zeit/content/article/interfaces.py:56 zeit/content/cp/interfaces.py:354
 #: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:391
+#: zeit/push/interfaces.py:284
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
@@ -2111,19 +2112,19 @@ msgstr "Alle Google News Keywords"
 msgid "Show less"
 msgstr "Weniger anzeigen"
 
-#: zeit/content/article/edit/browser/push.py:10 zeit/push/browser/form.py:23
+#: zeit/content/article/edit/browser/push.py:11 zeit/push/browser/form.py:23
 msgid "Social media"
 msgstr "Social Media und Apps"
 
-#: zeit/content/article/edit/browser/push.py:18
+#: zeit/content/article/edit/browser/push.py:19
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
-#: zeit/content/article/edit/browser/push.py:26 zeit/push/browser/form.py:58
+#: zeit/content/article/edit/browser/push.py:27 zeit/push/browser/form.py:58
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
-#: zeit/content/article/edit/browser/push.py:34
+#: zeit/content/article/edit/browser/push.py:35
 msgid "edit mobile apps"
 msgstr "Push bearbeiten"
 
@@ -4544,59 +4545,71 @@ msgstr "Name der FB-Seite (z.B. \"ZEIT ONLINE\")"
 msgid "Create"
 msgstr "Erzeugen"
 
-#: zeit/push/interfaces.py:245
+#: zeit/push/interfaces.py:253
 msgid "Enable Facebook"
 msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
 
-#: zeit/push/interfaces.py:247
+#: zeit/push/interfaces.py:255
 msgid "Facebook Main Text"
 msgstr "Facebook-Posting ZEIT ONLINE"
 
-#: zeit/push/interfaces.py:250
+#: zeit/push/interfaces.py:258
 msgid "Enable Facebook Magazin"
 msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
 
-#: zeit/push/interfaces.py:252
+#: zeit/push/interfaces.py:260
 msgid "Facebook Magazin Text"
 msgstr "Facebook-Posting ZEITmagazin"
 
-#: zeit/push/interfaces.py:255
+#: zeit/push/interfaces.py:263
 msgid "Enable Facebook Campus"
 msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
 
-#: zeit/push/interfaces.py:257
+#: zeit/push/interfaces.py:265
 msgid "Facebook Campus Text"
 msgstr "Facebook-Posting ZEITcampus"
 
-#: zeit/push/interfaces.py:259
+#: zeit/push/interfaces.py:267
 msgid "Enable Twitter"
 msgstr "Direkt auf Twitter @zeitonline veröffentlichen"
 
-#: zeit/push/interfaces.py:261
+#: zeit/push/interfaces.py:269
 msgid "Enable Twitter Ressort"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:263
+#: zeit/push/interfaces.py:271
 msgid "Additional Twitter"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:268
+#: zeit/push/interfaces.py:276
 msgid "Mobile title"
 msgstr "Push-Überschrift"
 
-#: zeit/push/interfaces.py:270
+#: zeit/push/interfaces.py:278
 msgid "Mobile text"
 msgstr "Push-Text"
 
-#: zeit/push/interfaces.py:271
+#: zeit/push/interfaces.py:279
 msgid "Enable mobile push"
 msgstr "Pushnachricht über mobile Apps versenden"
 
-#: zeit/push/interfaces.py:94
+#: zeit/push/interfaces.py:281
+msgid "Mobile push with image"
+msgstr "Mit Bild pushen"
+
+#: zeit/push/interfaces.py:283
+msgid "Mobile image"
+msgstr "Mobiles Bild"
+
+#: zeit/push/interfaces.py:288
+msgid "Mobile buttons"
+msgstr "Push mit Buttons"
+
+#: zeit/push/interfaces.py:92
 msgid "Last push"
 msgstr "Letztes Social Media Posting"
 
-#: zeit/push/interfaces.py:97
+#: zeit/push/interfaces.py:95
 msgid "Short push text"
 msgstr "Tweet"
 
