@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.101.1 (unreleased)
+2.102.0 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ZON-4012: JS for "insert bullet" button
 
 
 2.101.0 (2017-06-21)
