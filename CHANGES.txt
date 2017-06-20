@@ -4,6 +4,8 @@ zeit.content.image changes
 2.18.2 (unreleased)
 -------------------
 
+- MAINT: Recreate thumbnail sources when user triggers cache refresh
+
 - ZON-4027: Ignore errors when rendering image details so they always
   render an edit button
 
