@@ -38,6 +38,43 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
 
 
+class MobileFormTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.LAYER
+
+    def setUp(self):
+        super(MobileFormTest, self).setUp()
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/'
+            'online/2007/01/Somalia/@@checkout')
+
+    def get_article(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                return zeit.cms.interfaces.ICMSWCContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+
+    def open_form(self):
+        # XXX A simple browser.reload() does not work, why?
+        self.browser.open(
+            'http://localhost/++skin++vivi/workingcopy/zope.user/'
+            'Somalia/@@edit.form.mobile?show_form=1')
+
+    def test_sets_manual_flag_when_changing_image(self):
+        self.open_form()
+        b = self.browser
+        b.getControl(name='mobile.mobile_image').value = (
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        b.handleErrors = False
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+        self.assertEqual(True, service['image_set_manually'])
+
+
 class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):

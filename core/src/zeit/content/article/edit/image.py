@@ -128,6 +128,25 @@ def copy_image_to_body(context, event):
 @grokcore.component.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
+def copy_image_to_push(context, event):
+    for description in event.descriptions:
+        if (description.interface is zeit.content.image.interfaces.IImages and
+                'image' in description.attributes):
+            break
+    else:
+        return
+
+    push = zeit.push.interfaces.IPushMessages(context)
+    service = push.get(type='mobile')
+    if service and service.get('image_set_manually'):
+        return
+    image = zeit.content.image.interfaces.IImages(context).image
+    zeit.push.interfaces.IAccountData(context).mobile_image = image
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
 def change_variant_name_on_template_change(context, event):
     IArticle = zeit.content.article.interfaces.IArticle
     for description in event.descriptions:

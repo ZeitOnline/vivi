@@ -53,3 +53,14 @@ class Mobile(zeit.push.browser.form.MobileBase,
         if self.context.access != u'free':
             self.widgets['is_amp'].extra = 'disabled="disabled"'
             self.widgets['is_instant_article'].extra = 'disabled="disabled"'
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        accountdata = zeit.push.interfaces.IAccountData(self.context)
+        previous = accountdata.mobile_image
+        super(Mobile, self).handle_edit_action.success(data)
+        current = accountdata.mobile_image
+        if current != previous:
+            push = zeit.push.interfaces.IPushMessages(self.context)
+            push.set({'type': 'mobile'}, image_set_manually=True)
