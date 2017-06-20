@@ -81,6 +81,7 @@ class MobileBase(Base):
             # i.e. we're not in read-only mode
             self.widgets['mobile_text'].extra += (
                 ' cms:charwarning="40" cms:charlimit="150"')
+            self.widgets['mobile_text'].cssClass = 'js-addbullet'
 
 
 class SocialAddForm(
