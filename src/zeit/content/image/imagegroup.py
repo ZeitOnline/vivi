@@ -551,3 +551,17 @@ def refresh_thumbnail_source(context, event):
             del context[name]
     for view, name in context.master_images:
         thumbnails.source_image(context[name])
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage,
+    zope.lifecycleevent.IObjectRemovedEvent)
+def remove_thumbnail_source_on_delete(context, event):
+    group = context.__parent__
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            group):
+        return
+    thumbnails = zeit.content.image.interfaces.IThumbnails(group)
+    thumbnail_name = thumbnails.source_image_name(context)
+    if thumbnail_name in group:
+        del group[thumbnail_name]
