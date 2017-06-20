@@ -6,6 +6,8 @@ zeit.cms changes
 
 - FIX: Empty blacklist config entry prevents publishing
 
+- FIX: Improve error handling with unloadable object references
+
 
 2.100.2 (2017-06-13)
 --------------------
