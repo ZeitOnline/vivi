@@ -1,7 +1,9 @@
 <div class="image_details" i18n:domain="zeit.cms">
 
   <div class="overlay-anchor">
-    <img tal:replace="structure context/@@preview/tag" />
+    <tal:block on-error="nothing">
+      <img tal:replace="structure context/@@preview/tag" />
+    </tal:block>
     <div class="overlay"><div class="overlay-position">
       <a class="button edit-button" i18n:translate="" target="_blank"
          tal:attributes="href string:${context/@@absolute_url}">edit</a>
