@@ -7,6 +7,8 @@ zeit.content.image changes
 - ZON-4027: Ignore errors when rendering image details so they always
   render an edit button
 
+- ZON-3940: Remove thumbnail images when their corresponding image is removed
+
 
 2.18.1 (2016-12-06)
 -------------------
