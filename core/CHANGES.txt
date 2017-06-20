@@ -4,7 +4,8 @@ zeit.content.image changes
 2.18.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4027: Ignore errors when rendering image details so they always
+  render an edit button
 
 
 2.18.1 (2016-12-06)

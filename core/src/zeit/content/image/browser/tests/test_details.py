@@ -22,3 +22,17 @@ class ImageDetails(zeit.cms.testing.SeleniumTestCase):
         self.eval('window.jQuery(document).trigger_fragment_ready();')
         s.click('css=.toggle_infos')
         s.waitForVisible('css=.picture_information')
+
+
+class ImageDetailsErrorHandling(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_no_image_exists_still_renders(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository[
+                'imagegroup'] = zeit.content.image.imagegroup.ImageGroup()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/imagegroup/@@object-details-body')
+        self.assertEllipsis('...edit-button...', b.contents)
