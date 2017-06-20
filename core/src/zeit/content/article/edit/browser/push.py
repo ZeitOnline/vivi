@@ -21,6 +21,18 @@ class Social(zeit.push.browser.form.SocialBase,
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
 
+    def __init__(self, context, request):
+        super(Social, self).__init__(context, request)
+        self.form_fields += self.FormFieldsFactory(
+            zeit.content.article.interfaces.IArticle).select(
+                'is_amp', 'is_instant_article')
+
+    def setUpWidgets(self, *args, **kw):
+        super(Social, self).setUpWidgets(*args, **kw)
+        if self.context.access != u'free':
+            self.widgets['is_amp'].extra = 'disabled="disabled"'
+            self.widgets['is_instant_article'].extra = 'disabled="disabled"'
+
 
 class MobileContainer(zeit.edit.browser.form.FoldableFormGroup):
 
@@ -37,22 +49,10 @@ class Mobile(zeit.push.browser.form.MobileBase,
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
 
-    def __init__(self, context, request):
-        super(Mobile, self).__init__(context, request)
-        self.form_fields += self.FormFieldsFactory(
-            zeit.content.article.interfaces.IArticle).select(
-                'is_amp', 'is_instant_article')
-
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(Mobile, self).__call__()
-
-    def setUpWidgets(self, *args, **kw):
-        super(Mobile, self).setUpWidgets(*args, **kw)
-        if self.context.access != u'free':
-            self.widgets['is_amp'].extra = 'disabled="disabled"'
-            self.widgets['is_instant_article'].extra = 'disabled="disabled"'
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
