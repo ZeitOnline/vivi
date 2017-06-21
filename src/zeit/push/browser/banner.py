@@ -13,18 +13,6 @@ class Retract(object):
         return ICMSContent(notifier.uniqueId)
 
     @property
-    def ios_legacy(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='ios-legacy')
-        return ICMSContent(notifier.uniqueId)
-
-    @property
-    def wrapper(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='wrapper')
-        return ICMSContent(notifier.uniqueId)
-
-    @property
     def banner_matches(self):
         breaking = zeit.content.article.interfaces.IBreakingNews(
             self.context, None)

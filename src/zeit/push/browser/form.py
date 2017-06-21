@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.push.interfaces import facebookAccountSource, twitterAccountSource
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.testcontenttype.interfaces
@@ -7,16 +6,24 @@ import zeit.cms.testcontenttype.testcontenttype
 import zope.formlib.form
 
 
-class SocialBase(zeit.cms.browser.form.CharlimitMixin):
+class Base(zeit.cms.browser.form.CharlimitMixin):
 
     FormFieldsFactory = zope.formlib.form.FormFields
+
+    def _set_widget_required(self, name):
+        field = self.widgets[name].context
+        cloned = field.bind(field.context)
+        cloned.required = True
+        self.widgets[name].context = cloned
+
+
+class SocialBase(Base):
 
     social_fields = gocept.form.grouped.Fields(
         _("Social media"),
         ('facebook_main_text', 'facebook_main_enabled',
          'short_text', 'twitter_main_enabled',
-         'twitter_ressort_enabled', 'twitter_ressort',
-         'mobile_text', 'mobile_enabled'),
+         'twitter_ressort_enabled', 'twitter_ressort'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -34,10 +41,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             self.FormFieldsFactory(
                 zeit.push.interfaces.IAccountData).select(
                     'twitter_main_enabled',
-                    'twitter_ressort_enabled', 'twitter_ressort') +
-            self.FormFieldsFactory(
-                zeit.push.interfaces.IAccountData).select(
-                    'mobile_text', 'mobile_enabled'))
+                    'twitter_ressort_enabled', 'twitter_ressort'))
 
     def setUpWidgets(self, *args, **kw):
         super(SocialBase, self).setUpWidgets(*args, **kw)
@@ -46,47 +50,34 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             self._set_widget_required('facebook_main_text')
         if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
             self._set_widget_required('twitter_ressort')
+
+
+class MobileBase(Base):
+
+    mobile_fields = gocept.form.grouped.Fields(
+        _("Mobile apps"),
+        ('mobile_text', 'mobile_enabled'),
+        css_class='wide-widgets column-left')
+
+    def __init__(self, *args, **kw):
+        super(MobileBase, self).__init__(*args, **kw)
+        self.form_fields += self.mobile_form_fields
+
+    @property
+    def mobile_form_fields(self):
+        return self.FormFieldsFactory(
+            zeit.push.interfaces.IAccountData).select(
+                'mobile_text', 'mobile_enabled')
+
+    def setUpWidgets(self, *args, **kw):
+        super(MobileBase, self).setUpWidgets(*args, **kw)
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
             self._set_widget_required('mobile_text')
 
-    def _set_widget_required(self, name):
-        field = self.widgets[name].context
-        cloned = field.bind(field.context)
-        cloned.required = True
-        self.widgets[name].context = cloned
-
-    def applyAccountData(self, object, data):
-        # We cannot use the key ``text``, since the first positional parameter
-        # of IPushNotifier.send() is also called text, which would result in a
-        # TypeError.
-        zeit.push.interfaces.IPushMessages(object).message_config = [
-            {'type': 'facebook',
-             'enabled': data.pop('facebook_main_enabled', False),
-             'override_text': data.pop('facebook_main_text', None),
-             'account': facebookAccountSource(None).MAIN_ACCOUNT},
-            {'type': 'facebook',
-             'enabled': data.pop('facebook_magazin_enabled', False),
-             'override_text': data.pop('facebook_magazin_text', None),
-             'account': facebookAccountSource(None).MAGAZIN_ACCOUNT},
-            {'type': 'facebook',
-             'enabled': data.pop('facebook_campus_enabled', False),
-             'override_text': data.pop('facebook_campus_text', None),
-             'account': facebookAccountSource(None).CAMPUS_ACCOUNT},
-            {'type': 'twitter',
-             'enabled': data.pop('twitter_main_enabled', False),
-             'account': twitterAccountSource(None).MAIN_ACCOUNT},
-            {'type': 'twitter',
-             'enabled': data.pop('twitter_ressort_enabled', False),
-             'account': data.pop('twitter_ressort', None)},
-            {'type': 'mobile',
-             'enabled': data.pop('mobile_enabled', False),
-             'override_text': data.pop('mobile_text', None),
-             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
-        ]
-
 
 class SocialAddForm(
-        SocialBase, zeit.cms.content.browser.form.CommonMetadataAddForm):
+        SocialBase, MobileBase,
+        zeit.cms.content.browser.form.CommonMetadataAddForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.testcontenttype.interfaces.IExampleContentType).omit(
@@ -95,19 +86,9 @@ class SocialAddForm(
 
     field_groups = (
         zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups +
-        (SocialBase.social_fields,))
-
-    def applyChanges(self, object, data):
-        self.applyAccountData(object, data)
-        return super(SocialAddForm, self).applyChanges(object, data)
+        (SocialBase.social_fields, MobileBase.mobile_fields))
 
 
-class SocialEditForm(SocialBase, zeit.cms.browser.form.EditForm):
+class SocialEditForm(SocialBase, MobileBase, zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields()
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(self.context, data)
-        super(SocialEditForm, self).handle_edit_action.success(data)

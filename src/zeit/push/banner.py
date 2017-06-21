@@ -64,36 +64,7 @@ def homepage_banner():
     return StaticArticlePublisher(config['homepage-banner-uniqueid'])
 
 
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-def ios_legacy():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-    return StaticArticlePublisher(config['ios-legacy-uniqueid'])
-
-
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-def wrapper_banner():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-    return StaticArticlePublisher(config['wrapper-banner-uniqueid'])
-
-
 class HomepageMessage(zeit.push.message.Message):
 
     grok.name('homepage')
     get_text_from = 'short_text'
-
-
-class LegacyIOSMessage(zeit.push.message.Message):
-
-    grok.name('ios-legacy')
-    get_text_from = 'short_text'
-
-
-class WrapperMessage(zeit.push.message.Message):
-
-    grok.name('wrapper')
-    get_text_from = 'short_text'
-
-    @property
-    def url(self):
-        return zeit.push.interfaces.IPushURL(self.context).replace(
-            zeit.cms.interfaces.ID_NAMESPACE, 'http://wrapper.zeit.de/')

@@ -1,13 +1,19 @@
 zeit.push changes
 =================
 
-1.20.3 (unreleased)
+1.21.0 (unreleased)
 -------------------
+
+- ZON-4006: Split off mobile fields into their own form
 
 - BUG-674: Don't perform push-target-url replacement twice,
   and don't squash non-www.zeit.de URLs
 
 - BUG-621: Log Twitter and Facebook account name to objectlog
+
+- MAINT: Remove obsolete banner control files (wrapper, ios-legacy)
+
+- MAINT: Remove broken/unused ``IPushMessages.date_last_pushed``
 
 
 1.20.2 (2017-05-22)

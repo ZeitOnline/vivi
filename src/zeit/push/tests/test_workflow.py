@@ -2,6 +2,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.push.interfaces import IPushMessages
+import gocept.testing.assertion
 import lxml.etree
 import mock
 import zeit.cms.content.interfaces
@@ -30,7 +31,8 @@ class PushServiceProperties(zeit.push.testing.TestCase):
             content.xml, pretty_print=True))
 
 
-class SendingNotifications(zeit.push.testing.TestCase):
+class SendingNotifications(zeit.push.testing.TestCase,
+                           gocept.testing.assertion.String):
 
     def setUp(self):
         super(SendingNotifications, self).setUp()
@@ -61,13 +63,6 @@ class SendingNotifications(zeit.push.testing.TestCase):
         self.publish(content)
         self.assertFalse(self.notifier.send.called)
 
-    def test_updates_last_push_date(self):
-        content = ICMSContent('http://xml.zeit.de/testcontent')
-        push = IPushMessages(content)
-        self.assertEqual(None, push.date_last_pushed)
-        self.publish(content)
-        self.assertNotEqual(None, push.date_last_pushed)
-
     def test_error_during_push_is_caught(self):
         self.notifier.send.side_effect = RuntimeError('provoked')
         content = ICMSContent('http://xml.zeit.de/testcontent')
@@ -77,4 +72,5 @@ class SendingNotifications(zeit.push.testing.TestCase):
         # This is sort of assertNothingRaised, except that publishing
         # runs in a separate thread (remotetask), so we would not see
         # the exception here anyway.
-        self.assertNotEqual(None, push.date_last_pushed)
+        log = list(zeit.objectlog.interfaces.ILog(content).get_log())
+        self.assertStartsWith('Error while sending', log[-1].message)
