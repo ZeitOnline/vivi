@@ -99,6 +99,7 @@ Fill out some values:
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
+>>> browser.getControl('External company ID').value = 'externalid'
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
 False
@@ -109,6 +110,8 @@ Verify some values:
 'Opernball'
 >>> browser.getControl(name='form.year').value
 '2007'
+>>> browser.getControl('External company ID').value
+'externalid'
 
 Let's verify get the right file data back from the image:
 
