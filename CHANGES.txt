@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.18.2 (unreleased)
+2.19.0 (2017-06-21)
 -------------------
 
 - MAINT: Recreate thumbnail sources when user triggers cache refresh
