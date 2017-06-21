@@ -4,6 +4,8 @@ zeit.locales CHANGES
 2.0.93 (unreleased)
 +++++++++++++++++++
 
+- ZON-3677: Übersetzungen aktualisiert
+
 - BUG-621: Übersetzungen aktualisiert
 
 
