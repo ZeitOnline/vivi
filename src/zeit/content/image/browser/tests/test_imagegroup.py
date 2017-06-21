@@ -1,3 +1,4 @@
+# coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.testing.assertion
 import mock
@@ -196,6 +197,18 @@ class ImageGroupBrowserTest(
         self.save_imagegroup()
         self.assertNotIn(
             'repository/imagegroup/@@variant.html', self.browser.contents)
+
+    def test_normalizes_image_filename_on_upload(self):
+        self.add_imagegroup()
+        self.browser.getControl(name='form.master_image_blobs.0.').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/new-hampshire-artikel.jpg'),
+            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+        self.save_imagegroup()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['imagegroup']
+            self.assertEqual(['foeoe.jpg'], group.keys())
 
 
 class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):

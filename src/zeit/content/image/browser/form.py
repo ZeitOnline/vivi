@@ -51,7 +51,7 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
         if not name:
             name = getattr(blob, 'filename', '')
         if name:
-            image.__name__ = name
+            image.__name__ = zeit.cms.interfaces.normalize_filename(name)
         self.applyChanges(image, data)
         return image
 
