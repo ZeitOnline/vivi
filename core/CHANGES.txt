@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-4012: JS for "insert bullet" button
 
+- ZON-4013: Support `warning` state in `limitedInput`
+
 
 2.101.0 (2017-06-21)
 --------------------
