@@ -91,17 +91,6 @@ class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
 
-    def test_shows_long_text_as_bbb_for_facebook_override_text(self):
-        content = self.get_content()
-        push = zeit.push.interfaces.IPushMessages(content)
-        push.long_text = 'facebook'
-        self.open_form()
-        b = self.browser
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Main Text').value)
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Magazin Text').value)
-
     def test_stores_facebook_magazin_override_text(self):
         self.open_form()
         b = self.browser
