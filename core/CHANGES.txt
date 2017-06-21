@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - ZON-3950: Leave other workflow checkboxes alone when checking `urgent`
 
+- ZON-4006: Move mobile fields to their own form 
+
 
 3.23.1 (2017-06-12)
 -------------------
