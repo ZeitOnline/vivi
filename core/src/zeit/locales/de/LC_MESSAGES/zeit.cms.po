@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-06-21 09:24+0200\n"
-"PO-Revision-Date: 2017-06-21 09:24+0200\n"
+"POT-Creation-Date: 2017-06-21 11:33+0200\n"
+"PO-Revision-Date: 2017-06-21 11:34+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1119,7 +1119,7 @@ msgid "Hits today"
 msgstr "Treffer heute"
 
 #: zeit/cms/content/interfaces.py:61 zeit/cms/content/interfaces.py:703
-#: zeit/content/article/interfaces.py:193 zeit/content/image/interfaces.py:36
+#: zeit/content/article/interfaces.py:193 zeit/content/image/interfaces.py:54
 #: zeit/content/volume/interfaces.py:35
 msgid "Year"
 msgstr "Jahr"
@@ -1148,7 +1148,7 @@ msgstr "Letzte inhaltliche Änderung"
 
 #: zeit/cms/content/interfaces.py:66
 #: zeit/content/article/edit/interfaces.py:426
-#: zeit/content/image/interfaces.py:42 zeit/content/volume/browser/form.py:34
+#: zeit/content/image/interfaces.py:60 zeit/content/volume/browser/form.py:34
 #: zeit/content/volume/interfaces.py:40 zeit/content/volume/volume.py:266
 msgid "Volume"
 msgstr "Ausgabe"
@@ -1457,7 +1457,7 @@ msgstr "Löschen"
 msgid "There are no selectable objects in this folder."
 msgstr "Es gibt keine auswählbaren Objekte in diesem Ordner."
 
-#: zeit/cms/repository/browser/reload.py:24
+#: zeit/cms/repository/browser/reload.py:25
 msgid "Reload folder"
 msgstr "Ordner neu laden"
 
@@ -1840,7 +1840,7 @@ msgstr "Bild"
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:314
 #: zeit/content/article/interfaces.py:56 zeit/content/cp/interfaces.py:354
-#: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:391
+#: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:417
 #: zeit/push/interfaces.py:281
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -3592,14 +3592,14 @@ msgid "Images"
 msgstr "Bilder"
 
 #: zeit/content/gallery/browser/details.pt:24
-#: zeit/content/image/interfaces.py:77
-#: zeit/content/image/browser/image-details.pt:19
+#: zeit/content/image/interfaces.py:103
+#: zeit/content/image/browser/image-details.pt:21
 msgid "Image sub text"
 msgstr "Bildunterschrift"
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/reference-details.pt:11
-#: zeit/content/image/browser/image-details.pt:6
+#: zeit/content/image/browser/reference-details.pt:13
+#: zeit/content/image/browser/image-details.pt:8
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
 msgid "edit"
@@ -3754,19 +3754,19 @@ msgstr "Bild zeigen"
 msgid "Volume/Year"
 msgstr "Ausgabe/Jahr"
 
-#: zeit/content/image/browser/image_view.pt:39
+#: zeit/content/image/browser/image_view.pt:40
 msgid "Image title: ${caption}"
 msgstr "Bildtitel ${caption}"
 
-#: zeit/content/image/browser/image_view.pt:42
+#: zeit/content/image/browser/image_view.pt:43
 msgid "ALT: ${alt}"
 msgstr "ALT: ${alt}"
 
-#: zeit/content/image/browser/image_view.pt:45
+#: zeit/content/image/browser/image_view.pt:46
 msgid "Image sub text: ${caption}"
 msgstr "Bildunterschrift: ${caption}"
 
-#: zeit/content/image/browser/image_view.pt:54
+#: zeit/content/image/browser/image_view.pt:55
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
@@ -3791,7 +3791,7 @@ msgid "Master image"
 msgstr "Hauptbild"
 
 #: zeit/content/image/browser/imagegroup.py:143
-#: zeit/content/image/interfaces.py:390
+#: zeit/content/image/interfaces.py:416
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3830,96 +3830,108 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:348
+#: zeit/content/image/imagegroup.py:349
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:182
+#: zeit/content/image/interfaces.py:108
+msgid "Links to"
+msgstr "Verlinkt nach"
+
+#: zeit/content/image/interfaces.py:109
+msgid "Enter a URL this image should link to."
+msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
+
+#: zeit/content/image/interfaces.py:208
 msgid "Viewport was used multiple times"
 msgstr "Dieselbe Anzeige wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:186
+#: zeit/content/image/interfaces.py:212
 msgid "Image was used multiple times"
 msgstr "Dasselbe Bild wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:215
+#: zeit/content/image/interfaces.py:241
 msgid "File name of image group"
 msgstr "Dateiname der Bildergruppe"
 
-#: zeit/content/image/interfaces.py:222
+#: zeit/content/image/interfaces.py:248
 msgid "Mapping of viewport to master image"
 msgstr "Motive"
 
-#: zeit/content/image/interfaces.py:229
+#: zeit/content/image/interfaces.py:255
 msgid "Viewport"
 msgstr "Anzeige"
 
-#: zeit/content/image/interfaces.py:232
+#: zeit/content/image/interfaces.py:258
 msgid "Image file"
 msgstr "Datei"
 
-#: zeit/content/image/interfaces.py:236
+#: zeit/content/image/interfaces.py:262
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:239
+#: zeit/content/image/interfaces.py:265
 msgid "Display Type"
 msgstr "Typ"
 
-#: zeit/content/image/interfaces.py:31
-msgid "Image title"
-msgstr "Bildtitel"
-
-#: zeit/content/image/interfaces.py:396
+#: zeit/content/image/interfaces.py:422
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/image/interfaces.py:404
+#: zeit/content/image/interfaces.py:430
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
-#: zeit/content/image/interfaces.py:48
+#: zeit/content/image/interfaces.py:49
+msgid "Image title"
+msgstr "Bildtitel"
+
+#: zeit/content/image/interfaces.py:66
 msgid "Origin"
 msgstr "Quelle"
 
-#: zeit/content/image/interfaces.py:53
+#: zeit/content/image/interfaces.py:71
 msgid "Copyrights"
 msgstr "Copyrights"
 
-#: zeit/content/image/interfaces.py:59
-msgid "Copyright"
-msgstr "Copyright"
+#: zeit/content/image/interfaces.py:77
+msgid "Photographer"
+msgstr "Fotograf"
 
-#: zeit/content/image/interfaces.py:63 zeit/content/link/link.py:43
+#: zeit/content/image/interfaces.py:81
+msgid "Image company"
+msgstr "Agentur"
+
+#: zeit/content/image/interfaces.py:85
+msgid "Image company freetext"
+msgstr "Agentur Freitext"
+
+#: zeit/content/image/interfaces.py:86
+msgid "Overrides image company"
+msgstr "überschreibt Agentur-Auswahl"
+
+#: zeit/content/image/interfaces.py:89 zeit/content/link/link.py:43
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr "Link"
 
-#: zeit/content/image/interfaces.py:64
+#: zeit/content/image/interfaces.py:90
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: zeit/content/image/interfaces.py:67 zeit/content/image/interfaces.py:87
+#: zeit/content/image/interfaces.py:93 zeit/content/image/interfaces.py:113
 #: zeit/content/link/interfaces.py:31
 msgid "set nofollow"
 msgstr "rel=\"nofollow\" setzen"
 
-#: zeit/content/image/interfaces.py:71
+#: zeit/content/image/interfaces.py:97
 msgid "Alternative text"
 msgstr "ALT-Text"
 
-#: zeit/content/image/interfaces.py:72
+#: zeit/content/image/interfaces.py:98
 msgid "Enter a textual description of the image"
 msgstr "Geben Sie eine Beschreibung des Bildes ein."
-
-#: zeit/content/image/interfaces.py:82
-msgid "Links to"
-msgstr "Verlinkt nach"
-
-#: zeit/content/image/interfaces.py:83
-msgid "Enter a URL this image should link to."
-msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
 #: zeit/content/link/browser/form.py:31
 msgid "Add link"
@@ -4964,6 +4976,9 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Copyright"
+#~ msgstr "Copyright"
 
 #~ msgid "Last push"
 #~ msgstr "Letztes Social Media Posting"

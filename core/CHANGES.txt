@@ -6,6 +6,8 @@ zeit.locales CHANGES
 
 - ZON-3677: Übersetzungen aktualisiert
 
+- ZON-3174: Übersetzungen aktualisiert
+
 - BUG-621: Übersetzungen aktualisiert
 
 
