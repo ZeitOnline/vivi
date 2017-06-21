@@ -83,7 +83,8 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        name = getattr(blob, 'filename', '')
+        name = zeit.cms.interfaces.normalize_filename(
+            getattr(blob, 'filename', ''))
         zeit.cms.browser.form.apply_changes_with_setattr(
             image,
             self.form_fields.omit('__name__', 'display_type'), data)
