@@ -197,6 +197,21 @@ class ImageGroupBrowserTest(
         self.assertNotIn(
             'repository/imagegroup/@@variant.html', self.browser.contents)
 
+    def test_prefills_external_id_from_image_filename(self):
+        b = self.browser
+        self.add_imagegroup()
+        b.getControl(name='form.master_image_blobs.0.').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/opernball.jpg'),
+            'image/jpeg', 'dpa Picture-Alliance-90999280-HighRes.jpg')
+        self.save_imagegroup()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['imagegroup']
+        self.assertEqual(
+            '90999280',
+            zeit.content.image.interfaces.IImageMetadata(group).external_id)
+
 
 class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
 

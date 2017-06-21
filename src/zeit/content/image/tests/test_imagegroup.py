@@ -7,6 +7,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
 import zope.event
+import zope.lifecycleevent
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
@@ -236,6 +237,25 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             0.3, self.group.get_variant_by_size('cinema__300x160').zoom)
         self.assertEqual(
             1.0, self.group.get_variant_by_size('cinema__600x320').zoom)
+
+    def test_does_not_change_external_id_when_already_set(self):
+        meta = zeit.content.image.interfaces.IImageMetadata(self.group)
+        meta.external_id = u'12345'
+        self.group['6789.jpg'] = create_local_image('opernball.jpg')
+        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
+            self.group['6789.jpg']))
+        self.assertEqual('12345', meta.external_id)
+
+    def test_external_id_matches_single_number_in_filename(self):
+        def search(filename):
+            match = zeit.content.image.imagegroup.EXTERNAL_ID_PATTERN.search(
+                filename)
+            return match and match.group(1)
+        self.assertEqual(None, search('asdf-120x120.jpg'))
+        self.assertEqual(
+            '90999280', search('dpa Picture-Alliance-90999280-HighRes.jpg'))
+        self.assertEqual('90997723', search('90997723-HighRes Kopie.jpg'))
+        self.assertEqual('90997723', search('90997723.jpg'))
 
 
 class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):

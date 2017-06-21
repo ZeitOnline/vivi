@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
@@ -15,11 +16,16 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to', 'nofollow', 'origin', 'external_id'))
+        ('alt', 'caption', 'links_to', 'nofollow', 'origin'))
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
         ('title', 'year', 'volume'))
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageMetadata,
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        ('external_id',), writeable=WRITEABLE_ALWAYS)
 
     _copyrights = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageMetadata['copyrights'],
