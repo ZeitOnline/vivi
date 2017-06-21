@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
 
@@ -27,10 +28,7 @@ class IMessage(zope.interface.Interface):
         as parameters.
 
         Currently `additional_parameters` is only used for mobile push
-        notifications to enrich the parameteres with `teaserTitle`,
-        `teaserText`, `teaserSupertitle` and `image_url`. These information are
-        read from the context.
-
+        notifications to enrich the parameters with `image_url`.
         """
 
 
@@ -236,6 +234,16 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
 facebookAccountSource = FacebookAccountSource()
 
 
+class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.push'
+    config_url = 'mobile-buttons'
+    attribute = 'id'
+
+
+MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
+
+
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
@@ -261,5 +269,19 @@ class IAccountData(zope.interface.Interface):
         source=twitterAccountSource,
         required=False)
 
-    mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
+    mobile_title = zope.schema.TextLine(
+        title=_('Mobile title'), required=False)
+    mobile_text = zope.schema.Text(
+        title=_('Mobile text'), required=False)
     mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))
+
+    mobile_uses_image = zope.schema.Bool(title=_('Mobile push with image'))
+    mobile_image = zope.schema.Choice(
+        title=_('Mobile image'),
+        description=_("Drag an image group here"),
+        source=zeit.content.image.interfaces.imageGroupSource,
+        required=False)
+    mobile_buttons = zope.schema.Choice(
+        title=_('Mobile buttons'),
+        source=MOBILE_BUTTONS_SOURCE,
+        required=False)
