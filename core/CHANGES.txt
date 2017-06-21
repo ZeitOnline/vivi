@@ -4,7 +4,7 @@ zeit.content.link changes
 2.1.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4006: Update to mobile field split
 
 
 2.1.7 (2017-05-22)

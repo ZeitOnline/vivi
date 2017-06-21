@@ -9,7 +9,8 @@ import zope.formlib.form
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 
-class Base(zeit.push.browser.form.SocialBase):
+class Base(zeit.push.browser.form.SocialBase,
+           zeit.push.browser.form.MobileBase):
 
     # XXX We should switch to explicit select.
     form_fields = zope.formlib.form.FormFields(
@@ -19,6 +20,7 @@ class Base(zeit.push.browser.form.SocialBase):
     field_groups = (
         base.field_groups[:4] +
         (zeit.push.browser.form.SocialBase.social_fields,
+         zeit.push.browser.form.MobileBase.mobile_fields,
          base.option_fields,
          base.author_fields)
     )
@@ -29,21 +31,11 @@ class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
     title = _('Add link')
     factory = zeit.content.link.link.Link
 
-    def applyChanges(self, object, data):
-        self.applyAccountData(object, data)
-        return super(Add, self).applyChanges(object, data)
-
 
 class Edit(Base,
            zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _('Edit link')
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(self.context, data)
-        super(Edit, self).handle_edit_action.success(data)
 
 
 class Display(Base, zeit.cms.content.browser.form.CommonMetadataDisplayForm):
