@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Jun 19 14:48:35 2017\n"
+"POT-Creation-Date: Wed Jun 21 09:23:20 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -272,6 +272,7 @@ msgstr ""
 #: zeit/cms/repository/browser/file.py:106
 #: zeit/content/article/edit/browser/form.py:579
 #: zeit/content/article/edit/browser/form.py:613
+#: zeit/content/article/edit/browser/push.py:58
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -751,7 +752,7 @@ msgid "There was an error while checking in your version of ${name}."
 msgstr ""
 
 #: zeit/cms/checkout/browser/manager.py:107
-#: zeit/cms/repository/repository.py:228
+#: zeit/cms/repository/repository.py:221
 #. Default: ""
 msgid "There was a conflict while adding ${name}"
 msgstr ""
@@ -1893,7 +1894,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:354
 #: zeit/content/cp/interfaces.py:956
 #: zeit/content/image/interfaces.py:391
-#: zeit/push/interfaces.py:284
+#: zeit/push/interfaces.py:281
 msgid "Drag an image group here"
 msgstr ""
 
@@ -2176,12 +2177,12 @@ msgstr ""
 msgid "edit social media"
 msgstr ""
 
-#: zeit/content/article/edit/browser/push.py:27
+#: zeit/content/article/edit/browser/push.py:39
 #: zeit/push/browser/form.py:58
 msgid "Mobile apps"
 msgstr ""
 
-#: zeit/content/article/edit/browser/push.py:35
+#: zeit/content/article/edit/browser/push.py:47
 msgid "edit mobile apps"
 msgstr ""
 
@@ -4607,71 +4608,67 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: zeit/push/interfaces.py:253
+#: zeit/push/interfaces.py:250
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/push/interfaces.py:255
+#: zeit/push/interfaces.py:252
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:258
+#: zeit/push/interfaces.py:255
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/interfaces.py:260
+#: zeit/push/interfaces.py:257
 msgid "Facebook Magazin Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:263
+#: zeit/push/interfaces.py:260
 msgid "Enable Facebook Campus"
 msgstr ""
 
-#: zeit/push/interfaces.py:265
+#: zeit/push/interfaces.py:262
 msgid "Facebook Campus Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:267
+#: zeit/push/interfaces.py:264
 msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:269
+#: zeit/push/interfaces.py:266
 msgid "Enable Twitter Ressort"
 msgstr ""
 
-#: zeit/push/interfaces.py:271
+#: zeit/push/interfaces.py:268
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:276
+#: zeit/push/interfaces.py:273
 msgid "Mobile title"
 msgstr ""
 
-#: zeit/push/interfaces.py:278
+#: zeit/push/interfaces.py:275
 msgid "Mobile text"
 msgstr ""
 
-#: zeit/push/interfaces.py:279
+#: zeit/push/interfaces.py:276
 msgid "Enable mobile push"
 msgstr ""
 
-#: zeit/push/interfaces.py:281
+#: zeit/push/interfaces.py:278
 msgid "Mobile push with image"
 msgstr ""
 
-#: zeit/push/interfaces.py:283
+#: zeit/push/interfaces.py:280
 msgid "Mobile image"
 msgstr ""
 
-#: zeit/push/interfaces.py:288
+#: zeit/push/interfaces.py:285
 msgid "Mobile buttons"
 msgstr ""
 
 #: zeit/push/interfaces.py:92
-msgid "Last push"
-msgstr ""
-
-#: zeit/push/interfaces.py:95
 msgid "Short push text"
 msgstr ""
 
@@ -4685,11 +4682,11 @@ msgstr ""
 msgid "Error during push to ${name} ${details}: ${reason}"
 msgstr ""
 
-#: zeit/push/mobile.py:65
+#: zeit/push/urbanairship.py:75
 msgid "push-news-title"
 msgstr ""
 
-#: zeit/push/mobile.py:67
+#: zeit/push/urbanairship.py:77
 msgid "push-breaking-title"
 msgstr ""
 

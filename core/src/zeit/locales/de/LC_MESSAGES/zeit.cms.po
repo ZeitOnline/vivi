@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-06-19 14:48+0200\n"
-"PO-Revision-Date: 2017-06-19 14:49+0200\n"
+"POT-Creation-Date: 2017-06-21 09:24+0200\n"
+"PO-Revision-Date: 2017-06-21 09:24+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -241,6 +241,7 @@ msgstr "Termin bearbeiten"
 #: zeit/cms/repository/browser/file.py:106
 #: zeit/content/article/edit/browser/form.py:579
 #: zeit/content/article/edit/browser/form.py:613
+#: zeit/content/article/edit/browser/push.py:58
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -709,7 +710,7 @@ msgstr ""
 
 #. Default: ""
 #: zeit/cms/checkout/browser/manager.py:107
-#: zeit/cms/repository/repository.py:228
+#: zeit/cms/repository/repository.py:221
 msgid "There was a conflict while adding ${name}"
 msgstr "Es gab einen Konflikt beim hinzufügen von ${name}"
 
@@ -1840,7 +1841,7 @@ msgstr "Bild"
 #: zeit/content/article/edit/interfaces.py:314
 #: zeit/content/article/interfaces.py:56 zeit/content/cp/interfaces.py:354
 #: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:391
-#: zeit/push/interfaces.py:284
+#: zeit/push/interfaces.py:281
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
@@ -2120,11 +2121,11 @@ msgstr "Social Media und Apps"
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
-#: zeit/content/article/edit/browser/push.py:27 zeit/push/browser/form.py:58
+#: zeit/content/article/edit/browser/push.py:39 zeit/push/browser/form.py:58
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
-#: zeit/content/article/edit/browser/push.py:35
+#: zeit/content/article/edit/browser/push.py:47
 msgid "edit mobile apps"
 msgstr "Push bearbeiten"
 
@@ -4545,71 +4546,67 @@ msgstr "Name der FB-Seite (z.B. \"ZEIT ONLINE\")"
 msgid "Create"
 msgstr "Erzeugen"
 
-#: zeit/push/interfaces.py:253
+#: zeit/push/interfaces.py:250
 msgid "Enable Facebook"
 msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
 
-#: zeit/push/interfaces.py:255
+#: zeit/push/interfaces.py:252
 msgid "Facebook Main Text"
 msgstr "Facebook-Posting ZEIT ONLINE"
 
-#: zeit/push/interfaces.py:258
+#: zeit/push/interfaces.py:255
 msgid "Enable Facebook Magazin"
 msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
 
-#: zeit/push/interfaces.py:260
+#: zeit/push/interfaces.py:257
 msgid "Facebook Magazin Text"
 msgstr "Facebook-Posting ZEITmagazin"
 
-#: zeit/push/interfaces.py:263
+#: zeit/push/interfaces.py:260
 msgid "Enable Facebook Campus"
 msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
 
-#: zeit/push/interfaces.py:265
+#: zeit/push/interfaces.py:262
 msgid "Facebook Campus Text"
 msgstr "Facebook-Posting ZEITcampus"
 
-#: zeit/push/interfaces.py:267
+#: zeit/push/interfaces.py:264
 msgid "Enable Twitter"
 msgstr "Direkt auf Twitter @zeitonline veröffentlichen"
 
-#: zeit/push/interfaces.py:269
+#: zeit/push/interfaces.py:266
 msgid "Enable Twitter Ressort"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:271
+#: zeit/push/interfaces.py:268
 msgid "Additional Twitter"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:276
+#: zeit/push/interfaces.py:273
 msgid "Mobile title"
 msgstr "Push-Überschrift"
 
-#: zeit/push/interfaces.py:278
+#: zeit/push/interfaces.py:275
 msgid "Mobile text"
 msgstr "Push-Text"
 
-#: zeit/push/interfaces.py:279
+#: zeit/push/interfaces.py:276
 msgid "Enable mobile push"
 msgstr "Pushnachricht über mobile Apps versenden"
 
-#: zeit/push/interfaces.py:281
+#: zeit/push/interfaces.py:278
 msgid "Mobile push with image"
 msgstr "Mit Bild pushen"
 
-#: zeit/push/interfaces.py:283
+#: zeit/push/interfaces.py:280
 msgid "Mobile image"
 msgstr "Mobiles Bild"
 
-#: zeit/push/interfaces.py:288
+#: zeit/push/interfaces.py:285
 msgid "Mobile buttons"
 msgstr "Push mit Buttons"
 
 #: zeit/push/interfaces.py:92
-msgid "Last push"
-msgstr "Letztes Social Media Posting"
-
-#: zeit/push/interfaces.py:95
 msgid "Short push text"
 msgstr "Tweet"
 
@@ -4629,11 +4626,11 @@ msgstr ""
 "Fehler beim Versenden der Push Notification für “${name}” (${details}):  "
 "${reason}"
 
-#: zeit/push/mobile.py:65
+#: zeit/push/urbanairship.py:75
 msgid "push-news-title"
 msgstr "Info"
 
-#: zeit/push/mobile.py:67
+#: zeit/push/urbanairship.py:77
 msgid "push-breaking-title"
 msgstr "Eilmeldung"
 
@@ -4967,6 +4964,9 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Last push"
+#~ msgstr "Letztes Social Media Posting"
 
 #~ msgid "iOS legacy"
 #~ msgstr "Steuerdatei"
