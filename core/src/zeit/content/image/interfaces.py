@@ -6,6 +6,7 @@ import zc.form.interfaces
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -23,6 +24,23 @@ class ImageProcessingError(TypeError):
 
 class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
+
+
+class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'copyright-company-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [unicode(node)
+                for node in tree.iterchildren('*')
+                if self.isAvailable(node, context)]
+
+    def getTitle(self, context, value):
+        return value
+
+COPYRIGHT_COMPANY_SOURCE = CopyrightCompanySource()
 
 
 class IImageMetadata(zope.interface.Interface):
@@ -51,14 +69,22 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=((u'©', None, False),),
+        default=((u'©', None, None, None, False),),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(
-                title=_("Copyright"),
+                title=_('Photographer'),
                 min_length=3,
                 required=True),
+             zope.schema.Choice(
+                 title=_('Image company'),
+                 source=COPYRIGHT_COMPANY_SOURCE,
+                 required=False),
+             zope.schema.TextLine(
+                 title=_('Image company freetext'),
+                 description=_('Overrides image company'),
+                 required=False),
              zope.schema.URI(
                  title=_('Link'),
                  description=_('Link to copyright holder'),
