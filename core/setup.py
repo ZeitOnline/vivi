@@ -23,7 +23,7 @@ setup(
         'setuptools',
         'zc.form',
         'zeit.cms>=2.90.0.dev0',
-        'zeit.content.article>=3.7.0.dev0',
+        'zeit.content.article>=3.24.0.dev0',
         'zeit.content.gallery',
         'zeit.content.link',
         'zeit.content.portraitbox',
