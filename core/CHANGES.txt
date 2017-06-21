@@ -4,6 +4,8 @@ zeit.cms changes
 2.100.3 (unreleased)
 --------------------
 
+- MAINT: Send specific event when a user triggers a cache refresh
+
 - FIX: Empty blacklist config entry prevents publishing
 
 - FIX: Improve error handling with unloadable object references
