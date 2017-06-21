@@ -7,6 +7,7 @@ import collections
 import grokcore.component as grok
 import lxml.objectify
 import persistent
+import re
 import sys
 import urlparse
 import z3c.traverser.interfaces
@@ -21,6 +22,7 @@ import zeit.content.image.interfaces
 import zeit.content.image.variant
 import zope.app.container.contained
 import zope.interface
+import zope.lifecycleevent.interfaces
 import zope.location.interfaces
 import zope.security.proxy
 
@@ -455,6 +457,25 @@ def find_master_image(context):
             master_image = image
             break
     return master_image
+
+
+EXTERNAL_ID_PATTERN = re.compile('^[^\d]*([\d]+)[^\d]*$')
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage,
+    zope.lifecycleevent.interfaces.IObjectAddedEvent)
+def guess_external_id(context, event):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            context.__parent__):
+        return
+    meta = zeit.content.image.interfaces.IImageMetadata(context.__parent__)
+    if meta.external_id:
+        return
+    match = EXTERNAL_ID_PATTERN.search(context.__name__)
+    if not match:
+        return
+    meta.external_id = match.group(1)
 
 
 class ThumbnailTraverser(object):
