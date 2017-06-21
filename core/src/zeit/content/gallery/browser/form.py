@@ -12,7 +12,8 @@ import zope.formlib.form
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 
-class GalleryFormBase(zeit.push.browser.form.SocialBase):
+class GalleryFormBase(zeit.push.browser.form.SocialBase,
+                      zeit.push.browser.form.MobileBase):
 
     # XXX We should switch to explicit select.
     form_fields = (
@@ -37,6 +38,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase):
             _("misc."),
             css_class='column-right'),
         zeit.push.browser.form.SocialBase.social_fields,
+        zeit.push.browser.form.MobileBase.mobile_fields,
         base.option_fields,
     )
 
@@ -48,21 +50,11 @@ class AddGallery(GalleryFormBase,
     factory = zeit.content.gallery.gallery.Gallery
     next_view = 'overview.html'
 
-    def applyChanges(self, object, data):
-        self.applyAccountData(object, data)
-        return super(AddGallery, self).applyChanges(object, data)
-
 
 class EditGallery(GalleryFormBase,
                   zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit gallery")
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(self.context, data)
-        super(EditGallery, self).handle_edit_action.success(data)
 
 
 class DisplayGallery(GalleryFormBase,
