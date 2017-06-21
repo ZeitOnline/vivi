@@ -40,7 +40,7 @@ class ImageGroupHelperMixin(object):
         b = self.browser
         b.getControl(name='form.copyrights.0..combination_00').value = (
             'ZEIT ONLINE')
-        b.getControl(name='form.copyrights.0..combination_01').value = (
+        b.getControl(name='form.copyrights.0..combination_03').value = (
             'http://www.zeit.de/')
 
     def _upload_image(self, field, filename):
