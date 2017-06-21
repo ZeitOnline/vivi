@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-06-21 11:33+0200\n"
-"PO-Revision-Date: 2017-06-21 11:34+0200\n"
+"POT-Creation-Date: 2017-06-21 11:47+0200\n"
+"PO-Revision-Date: 2017-06-21 11:47+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1840,7 +1840,7 @@ msgstr "Bild"
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:314
 #: zeit/content/article/interfaces.py:56 zeit/content/cp/interfaces.py:354
-#: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:417
+#: zeit/content/cp/interfaces.py:956 zeit/content/image/interfaces.py:421
 #: zeit/push/interfaces.py:281
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -3592,7 +3592,7 @@ msgid "Images"
 msgstr "Bilder"
 
 #: zeit/content/gallery/browser/details.pt:24
-#: zeit/content/image/interfaces.py:103
+#: zeit/content/image/interfaces.py:107
 #: zeit/content/image/browser/image-details.pt:21
 msgid "Image sub text"
 msgstr "Bildunterschrift"
@@ -3791,7 +3791,7 @@ msgid "Master image"
 msgstr "Hauptbild"
 
 #: zeit/content/image/browser/imagegroup.py:143
-#: zeit/content/image/interfaces.py:416
+#: zeit/content/image/interfaces.py:420
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3834,51 +3834,59 @@ msgstr ""
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:108
+#: zeit/content/image/interfaces.py:101
+msgid "Alternative text"
+msgstr "ALT-Text"
+
+#: zeit/content/image/interfaces.py:102
+msgid "Enter a textual description of the image"
+msgstr "Geben Sie eine Beschreibung des Bildes ein."
+
+#: zeit/content/image/interfaces.py:112
 msgid "Links to"
 msgstr "Verlinkt nach"
 
-#: zeit/content/image/interfaces.py:109
+#: zeit/content/image/interfaces.py:113
 msgid "Enter a URL this image should link to."
 msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
-#: zeit/content/image/interfaces.py:208
+#: zeit/content/image/interfaces.py:212
 msgid "Viewport was used multiple times"
 msgstr "Dieselbe Anzeige wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:212
+#: zeit/content/image/interfaces.py:216
 msgid "Image was used multiple times"
 msgstr "Dasselbe Bild wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:241
+#: zeit/content/image/interfaces.py:245
 msgid "File name of image group"
 msgstr "Dateiname der Bildergruppe"
 
-#: zeit/content/image/interfaces.py:248
+#: zeit/content/image/interfaces.py:252
 msgid "Mapping of viewport to master image"
 msgstr "Motive"
 
-#: zeit/content/image/interfaces.py:255
+#: zeit/content/image/interfaces.py:259
 msgid "Viewport"
 msgstr "Anzeige"
 
-#: zeit/content/image/interfaces.py:258
+#: zeit/content/image/interfaces.py:262
 msgid "Image file"
 msgstr "Datei"
 
-#: zeit/content/image/interfaces.py:262
+#: zeit/content/image/interfaces.py:266
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:265
+#: zeit/content/image/interfaces.py:269
 msgid "Display Type"
 msgstr "Typ"
 
-#: zeit/content/image/interfaces.py:422
+#: zeit/content/image/interfaces.py:426
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/image/interfaces.py:430
+#: zeit/content/image/interfaces.py:434
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
@@ -3920,18 +3928,14 @@ msgstr "Link"
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: zeit/content/image/interfaces.py:93 zeit/content/image/interfaces.py:113
+#: zeit/content/image/interfaces.py:93 zeit/content/image/interfaces.py:117
 #: zeit/content/link/interfaces.py:31
 msgid "set nofollow"
 msgstr "rel=\"nofollow\" setzen"
 
 #: zeit/content/image/interfaces.py:97
-msgid "Alternative text"
-msgstr "ALT-Text"
-
-#: zeit/content/image/interfaces.py:98
-msgid "Enter a textual description of the image"
-msgstr "Geben Sie eine Beschreibung des Bildes ein."
+msgid "External company ID"
+msgstr "Bild-ID der Agentur"
 
 #: zeit/content/link/browser/form.py:31
 msgid "Add link"
