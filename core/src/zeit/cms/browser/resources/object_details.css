@@ -164,6 +164,10 @@
   float: right;
 }
 
+.overlay-anchor {
+    min-height: 2em;
+}
+
 .overlay-anchor .overlay {
     display: none;
 }
@@ -206,4 +210,8 @@
     background: url("./icons/icons_sprites.png") no-repeat scroll 10px -685px #666 !important;
     color: #fff !important;
     margin-left: 2em;
+}
+
+.object-reference.error {
+    width: 100%;
 }

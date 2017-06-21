@@ -350,7 +350,8 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             d.addErrback(function(error) {
                 zeit.cms.log_error(error);
                 MochiKit.DOM.addElementClass(self.details, 'error');
-                self.details.innerHTML = 'Fehler beim Laden';
+                self.details.innerHTML = (
+                    'Fehler beim Laden: ' + self.input.value);
                 return error;
             });
             d.addBoth(function(result) {

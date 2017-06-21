@@ -173,14 +173,7 @@ class Repository(persistent.Persistent, Container):
     def keys(self):
         if not self._initalizied:
             return []
-        keys = super(Repository, self).keys()
-        try:
-            keys.remove(u'online')
-        except KeyError:
-            pass
-        else:
-            keys.insert(0, u'online')
-        return keys
+        return super(Repository, self).keys()
 
     def getContent(self, unique_id):
         if not isinstance(unique_id, basestring):
