@@ -93,6 +93,10 @@ class IImageMetadata(zope.interface.Interface):
                  title=_('set nofollow'),
                 required=False))))
 
+    external_id = zope.schema.TextLine(
+        title=_('External company ID'),
+        required=False)
+
     alt = zope.schema.TextLine(
         title=_("Alternative text"),
         description=_("Enter a textual description of the image"),
