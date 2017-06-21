@@ -90,13 +90,6 @@ class IPushMessages(zope.interface.Interface):
 
     """
 
-    date_last_pushed = zope.schema.Datetime(
-        title=_('Last push'), required=False, readonly=True)
-
-    # BBB deprecated, Facebook texts are now stored per account in
-    # message_config.
-    long_text = zope.schema.Text(
-        title=_('Long push text'), required=False)
     short_text = zope.schema.TextLine(
         title=_('Short push text'),
         required=False,
@@ -122,6 +115,17 @@ class IPushMessages(zope.interface.Interface):
 
     messages = zope.interface.Attribute(
         'List of IMessage objects, one for each enabled message_config entry')
+
+    def get(**query):
+        """Returns the first entry in message_config that matches the given
+        query key/values.
+        """
+
+    def set(query, **values):
+        """Updates the first entry in message_config that matches the given
+        query key/values with the given values. If none is found, a new entry
+        is appended, combining query and values.
+        """
 
 
 CONFIG_CHANNEL_NEWS = 'channel-news'
