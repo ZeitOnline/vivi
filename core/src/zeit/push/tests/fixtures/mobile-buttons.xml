@@ -1,0 +1,5 @@
+<buttons>
+  <button id="yesno">Ja/Nein</button>
+  <button id="share">Share</button>
+  <button id="thumbs">Thumbsup/down</button>
+</buttons>

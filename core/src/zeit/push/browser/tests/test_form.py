@@ -44,7 +44,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Enable mobile push').selected = True
-        b.getControl('Mobile title').value = 'mobile'
+        b.getControl('Mobile title').value = 'mobile title'
+        b.getControl('Mobile text').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -64,6 +65,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
+             'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -94,6 +96,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
+             'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
             push.message_config)
 
@@ -135,33 +138,53 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        for service in push.message_config:
-            if (service['type'] != 'facebook'
-                or service.get('account') != 'fb-test'):
-                continue
-            self.assertEqual('facebook', service['override_text'])
-            break
-        else:
-            self.fail('facebook message_config is missing')
+        service = push.get(type='facebook', account='fb-test')
+        self.assertEqual('facebook', service['override_text'])
         self.open_form()
         self.assertEqual('facebook', b.getControl('Facebook Main Text').value)
 
     def test_stores_mobile_override_text(self):
         self.open_form()
         b = self.browser
-        b.getControl('Mobile title').value = 'mobile'
+        b.getControl('Mobile title').value = 'mobile title'
+        b.getControl('Mobile text').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        for service in push.message_config:
-            if service['type'] != 'mobile':
-                continue
-            self.assertEqual('mobile', service['override_text'])
-            break
-        else:
-            self.fail('mobile message_config is missing')
+        service = push.get(type='mobile')
+        self.assertEqual('mobile', service['override_text'])
         self.open_form()
-        self.assertEqual('mobile', b.getControl('Mobile title').value)
+        self.assertEqual('mobile', b.getControl('Mobile text').value)
+
+    def test_stores_mobile_image(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Mobile image').value = (
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+
+        self.open_form()
+        b.getControl('Mobile image').value = ''
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual(None, service['image'])
+
+    def test_stores_mobile_buttons(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Mobile buttons').displayValue = ['Share']
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual('share', service['buttons'])
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
