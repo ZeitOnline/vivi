@@ -10,7 +10,11 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/brightcove'
 
 
 class IAPIConnection(zope.interface.Interface):
-    """Brightcove API connection."""
+    """Brightcove API connection, deprecated in 2017."""
+
+
+class ICMSAPI(zope.interface.Interface):
+    """Brightcove CMS-API connection."""
 
 
 class IBrightcoveObject(zope.interface.Interface):

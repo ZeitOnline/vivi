@@ -21,6 +21,11 @@
     factory=".connection.connection_factory"
     />
 
+  <utility
+    provides="zeit.brightcove.interfaces.ICMSAPI"
+    factory=".connection2.from_product_config"
+    />
+
   <subscriber
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"

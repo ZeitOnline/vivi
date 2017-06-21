@@ -201,6 +201,10 @@ product_config = """\
     read-url http://localhost:{port}/
     write-url http://localhost:{port}/
     timeout 300
+    api-url none
+    oauth-url none
+    client-id none
+    client-secret none
     video-folder video
     playlist-folder video/playlist
 </product-config>
