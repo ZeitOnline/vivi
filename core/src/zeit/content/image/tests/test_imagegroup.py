@@ -3,17 +3,10 @@ from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 import PIL
 import mock
-<<<<<<< HEAD
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
 import zope.event
-=======
-import zeit.cms.testing
-import zeit.content.image.testing
-import zope.event
-import zope.lifecycleevent
->>>>>>> master
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
