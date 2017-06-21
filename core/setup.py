@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.article',
-    version='3.23.2.dev0',
+    version='3.24.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -57,7 +57,7 @@ setup(
         'zeit.content.volume>=1.4.0.dev0',
         'zeit.edit>=2.15.0.dev0',
         'zeit.objectlog>=0.2',
-        'zeit.push>=1.19.0.dev0',
+        'zeit.push>=1.21.0.dev0',
         'zeit.wysiwyg>=1.41.0dev',
         'zope.app.appsetup',
         'zope.app.component>=3.4.0b3',
