@@ -1,7 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
 import zc.sourcefactory.source
+import zc.sourcefactory.basic
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
@@ -244,6 +246,25 @@ class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
 MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 
+class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    product_configuration = 'zeit.push'
+
+    def getValues(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+             self.product_configuration)
+        path = config['push-payload-templates']
+        template_folder = zeit.cms.interfaces.ICMSContent(
+            "http://xml.zeit.de/{}".format(path))
+        return [template_json for template_json in template_folder]
+
+    def getTitle(self, value):
+        return value.split('.')[0].capitalize()
+
+
+PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()
+
+
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
@@ -285,3 +306,7 @@ class IAccountData(zope.interface.Interface):
         title=_('Mobile buttons'),
         source=MOBILE_BUTTONS_SOURCE,
         required=False)
+    payload_template = zope.schema.Choice(
+        title=_('Payload Template'),
+        source=PAYLOAD_TEMPLATE_SOURCE,
+        required=True)

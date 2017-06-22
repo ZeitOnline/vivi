@@ -316,3 +316,16 @@ class AccountData(grok.Adapter):
         self.push.set(dict(
             type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
             buttons=value)
+
+    @property
+    def payload_template(self):
+        service = self.push.get(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+        return service and service.get('payload_template')
+
+    @mobile_buttons.setter
+    def payload_template(self, value):
+        # Hier koennte man natuerlich auch validieren
+        self.push.set(dict(
+            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            payload_template=value)
