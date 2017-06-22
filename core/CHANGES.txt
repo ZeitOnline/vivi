@@ -8,6 +8,8 @@ zeit.cms changes
 
 - ZON-4013: Support `warning` state in `limitedInput`
 
+- FIX: Improve styling of unloadable object references
+
 
 2.101.0 (2017-06-21)
 --------------------
