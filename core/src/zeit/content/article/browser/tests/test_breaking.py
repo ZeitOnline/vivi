@@ -202,5 +202,4 @@ class RetractBannerTest(
         s.waitForElementNotPresent('css=.lightbox')
         # Button is gone now, since there's nothing to retract anymore
         s.waitForElementNotPresent('id=breaking-retract-banner')
-        s.assertElementPresent(
-            'css=#breaking-retract .publish-state.not-published')
+        s.assertNotElementPresent('css=#breaking-retract .publish-state')
