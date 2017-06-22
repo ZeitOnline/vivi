@@ -8,6 +8,9 @@ zeit.content.article changes
 
 - ZON-4006: Move mobile fields to their own form 
 
+- BUG-133: Hide the whole "breaking news" info, not just the retract button
+  when the banner doesn't match anymore
+
 
 3.23.1 (2017-06-12)
 -------------------
