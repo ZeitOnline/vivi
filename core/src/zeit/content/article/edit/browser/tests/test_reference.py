@@ -5,6 +5,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.sources
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
+import zeit.content.portraitbox.portraitbox
 import zope.security.management
 
 
@@ -412,3 +413,28 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertTextPresent('Die Zeit, Jahrgang: 2006, Ausgabe 23')
         s.assertAttribute('css=.block.type-volume img@src',
                           '*/imagegroup/thumbnails/original/@@raw')
+
+
+class PortraitboxForm(
+        zeit.content.article.edit.browser.testing.BrowserTestCase):
+
+    block_type = 'portraitbox'
+
+    def test_setting_reference_clears_local_values(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                box = zeit.content.portraitbox.portraitbox.Portraitbox()
+                box.name = u'My Name'
+                self.repository['portrait'] = box
+        self.get_article(with_empty_block=True)
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-portraitbox?show_form=1')
+        b.getControl('First and last name').value = 'local'
+        b.getControl('Apply').click()
+        b.open('@@edit-portraitbox?show_form=1')
+        self.assertEqual('local', b.getControl('First and last name').value)
+        b.getControl(name='EditPortraitbox.blockname.references').value = (
+            'http://xml.zeit.de/portrait')
+        b.getControl('Apply').click()
+        b.open('@@edit-portraitbox?show_form=1')
+        self.assertEqual('My Name', b.getControl('First and last name').value)

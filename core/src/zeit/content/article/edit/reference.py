@@ -162,10 +162,9 @@ class Portraitbox(Reference):
         original='references')
 
     _text_local = zeit.cms.content.property.Structure(
-        '.text', 'text_local',
-        zeit.content.article.edit.interfaces.IPortraitbox['text'])
+        '.text', zeit.content.article.edit.interfaces.IPortraitbox['text'])
     text = zeit.cms.content.reference.OverridableProperty(
-        zeit.content.portraitbox.interfaces.IPortraitbox['text'],
+        zeit.content.article.edit.interfaces.IPortraitbox['text'],
         original='references')
 
     def __init__(self, *args, **kw):
@@ -189,6 +188,23 @@ def factor_block_from_portraitbox(body, context, position):
     block = PortraitboxFactory(body)(position)
     block.references = context
     return block
+
+
+@grok.subscribe(
+    zeit.content.article.edit.interfaces.IPortraitbox,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def reset_local_properties(context, event):
+    for description in event.descriptions:
+        if (description.interface is
+            zeit.content.article.edit.interfaces.IPortraitbox and
+                'references' in description.attributes):
+            break
+    else:
+        return
+    value = context.references
+    context.references = None
+    if value is not None:
+        context.references = value
 
 
 @grok.subscribe(

@@ -58,11 +58,6 @@ class Publish(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)
-        if IPublishInfo(self.context).urgent:
-            # XXX This needs a better mechanism.
-            for name in ('corrected', 'edited', 'seo_optimized'):
-                self.widgets[name].extra = 'disabled="disabled"'
-                self.widgets[name].vivi_css_class = 'disabled'
         self.widgets['export_cds'].vivi_css_class = 'visual-clear'
 
         items = list(self.widgets.__Widgets_widgets_items__)

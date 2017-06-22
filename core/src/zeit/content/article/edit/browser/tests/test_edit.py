@@ -124,7 +124,10 @@ class SaveTextTest(TextViewHelper,
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
-        view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n', 'factory': 'div'}, {'text': '\n<a><strong></strong></a>', 'factory': 'p'}]
+        view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',
+                                      'factory': 'div'},
+                                     {'text': '\n<a><strong></strong></a>',
+                                      'factory': 'p'}]
         view.update()
         self.assertEqual('p', view.context['id-7'].type)
 
@@ -147,7 +150,7 @@ class AutoSaveTextTest(TextViewHelper,
 
 
 class TestTextEditing(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestTextEditing, self).setUp()
@@ -291,7 +294,7 @@ class TestTextEditing(
 
 @unittest.skip('Sending arrow keys does not work')
 class TestEditingMultipleParagraphs(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestEditingMultipleParagraphs, self).setUp()
@@ -325,7 +328,7 @@ class TestEditingMultipleParagraphs(
         self.open('/repository/article/@@checkout')
 
     def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
-        self):
+            self):
         s = self.selenium
         second_p = (
             '//*[contains(@class, "block") and contains(@class, "type-p")][2]'
@@ -338,7 +341,7 @@ class TestEditingMultipleParagraphs(
             'window.getSelection().getRangeAt(0).startOffset == 3')
 
     def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(
-        self):
+            self):
         s = self.selenium
         first_p = 'css=.block.type-p .editable p'
         s.waitForElementPresent(first_p)
@@ -350,7 +353,7 @@ class TestEditingMultipleParagraphs(
 
 
 class TestLinkEditing(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestLinkEditing, self).setUp()
@@ -646,7 +649,7 @@ class TestLinkEditing(
 
 
 class TestFolding(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestFolding, self).setUp()
@@ -703,7 +706,7 @@ class TestFolding(
 
 
 class TestDivision(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestDivision, self).setUp()
@@ -735,7 +738,7 @@ class TestDivision(
 
 
 class TestLimitedInput(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestLimitedInput, self).setUp()
@@ -759,7 +762,7 @@ class TestLimitedInput(
 
 
 class TestCountedInput(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestCountedInput, self).setUp()
@@ -856,7 +859,7 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
 
 
 class AutoSaveIntegration(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(AutoSaveIntegration, self).setUp()
@@ -927,7 +930,7 @@ class DirtySaveVersusPersistTests(
 
 @unittest.skip("no typeKeys 'til webdriver")
 class BackButtonPreventionTest(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_backspace_somewhere_does_not_cause_back_button(self):
         pass

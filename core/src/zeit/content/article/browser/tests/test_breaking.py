@@ -81,8 +81,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
-            for service in ['homepage', 'ios-legacy', 'wrapper',
-                            'urbanairship', 'twitter', 'facebook']:
+            for service in ['homepage', 'urbanairship', 'twitter', 'facebook']:
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=service)
                 self.assertEqual(1, len(notifier.calls))
@@ -122,10 +121,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 push.message_config)
             self.assertIn(
                 {'type': 'homepage', 'enabled': False}, push.message_config)
-            self.assertIn(
-                {'type': 'ios-legacy', 'enabled': False}, push.message_config)
-            self.assertIn(
-                {'type': 'wrapper', 'enabled': False}, push.message_config)
 
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
@@ -165,36 +160,34 @@ class RetractBannerTest(
     def setUp(self):
         super(RetractBannerTest, self).setUp()
         # Set up dummy banner articles.
-        for name in ['homepage', 'ios-legacy', 'wrapper']:
-            content = zeit.content.article.testing.create_article()
-            IBreakingNewsBody(content).text = (
-                '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>')
-            self.repository[name] = content
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=name)
-            notifier.uniqueId = content.uniqueId
+        content = zeit.content.article.testing.create_article()
+        IBreakingNewsBody(content).text = (
+            '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>')
+        self.repository['homepage'] = content
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='homepage')
+        notifier.uniqueId = content.uniqueId
 
-            # Publish homepage banner so the retract button is shown.
-            IPublishInfo(self.repository['homepage']).urgent = True
-            IPublish(self.repository['homepage']).publish()
-            zeit.workflow.testing.run_publish(
-                zeit.cms.workflow.interfaces.PRIORITY_HIGH)
+        # Publish homepage banner so the retract button is shown.
+        IPublishInfo(self.repository['homepage']).urgent = True
+        IPublish(self.repository['homepage']).publish()
+        zeit.workflow.testing.run_publish(
+            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 
-            # Make Somalia breaking news, so the retract section is shown.
-            article = ICMSContent(
-                'http://xml.zeit.de/online/2007/01/Somalia')
-            with zeit.cms.checkout.helper.checked_out(article) as co:
-                zeit.content.article.interfaces.IBreakingNews(
-                    co).is_breaking = True
+        # Make Somalia breaking news, so the retract section is shown.
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            zeit.content.article.interfaces.IBreakingNews(
+                co).is_breaking = True
 
         self.start_tasks()
 
     def tearDown(self):
         self.stop_tasks()
-        for name in ['homepage', 'ios-legacy', 'wrapper']:
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=name)
-            del notifier.uniqueId
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='homepage')
+        del notifier.uniqueId
         super(RetractBannerTest, self).tearDown()
 
     def test_retract_banner_endtoend(self):

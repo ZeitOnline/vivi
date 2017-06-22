@@ -213,6 +213,38 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(
                 image_group.uniqueId, image_block.references.target.uniqueId)
 
+    def test_image_referenced_via_IImages_is_copied_to_push(self):
+        from zeit.content.image.interfaces import IImages
+        import zeit.cms.browser.form
+        import zeit.cms.interfaces
+        import zeit.push.interfaces
+        import zope.lifecycleevent
+
+        self.repository['article'] = self.get_article()
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['article']) as co:
+            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
+
+            push = zeit.push.interfaces.IPushMessages(co)
+            service = push.get(type='mobile')
+            self.assertEqual(image_id, service['image'])
+
+            IImages(co).image = None
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
+            service = push.get(type='mobile')
+            self.assertEqual(None, service['image'])
+
+            push.set({'type': 'mobile'}, image_set_manually=True)
+            IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
+            service = push.get(type='mobile')
+            self.assertEqual(None, service['image'])
+
     def test_image_block_retrieves_the_correct_xml_node(self):
         # The lxml.objectify API offer an insiduous source of bugs: Iterating
         # over a single element a) is possible and b) yields all siblings with

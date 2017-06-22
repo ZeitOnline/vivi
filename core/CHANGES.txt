@@ -1,11 +1,41 @@
 zeit.content.article changes
 ============================
 
-3.21.14 (unreleased)
---------------------
+3.24.0 (unreleased)
+-------------------
+
+- ZON-3950: Leave other workflow checkboxes alone when checking `urgent`
+
+- ZON-4006: Move mobile fields to their own form 
 
 - BUG-133: Hide the whole "breaking news" info, not just the retract button
   when the banner doesn't match anymore
+
+
+3.23.1 (2017-06-12)
+-------------------
+
+- ZON-3485: Reset local values when the referenced portraitbox is changed
+
+
+3.23.0 (2017-06-09)
+-------------------
+
+- ZON-3810: Add IElementReferences Adapter
+
+
+3.22.1 (2017-06-01)
+-------------------
+
+- Fix broken release
+
+
+3.22.0 (2017-06-01)
+-------------------
+
+- ZON-3920: Disable FBIA if content is not free
+
+- BUG-669: Set up portraitbox module properly
 
 
 3.21.13 (2017-05-05)

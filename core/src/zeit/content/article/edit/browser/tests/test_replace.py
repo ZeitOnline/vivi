@@ -132,7 +132,7 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
 
 
 class FindReplaceTest(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_finding_text_works_accross_non_text_blocks(self):
         s = self.selenium

@@ -76,13 +76,9 @@ class Add(zeit.cms.browser.form.AddForm,
                 'type': 'mobile', 'enabled': True,
                 'channels': zeit.push.interfaces.CONFIG_CHANNEL_BREAKING,
             })
-            message_config.append(
-                {'type': 'ios-legacy', 'enabled': True})
         if data.pop('homepage', False):
             message_config.append(
                 {'type': 'homepage', 'enabled': True})
-            message_config.append(
-                {'type': 'wrapper', 'enabled': True})
         if data.pop('social', False):
             message_config.append(
                 {'type': 'facebook', 'enabled': True,
