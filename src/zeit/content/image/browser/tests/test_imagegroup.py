@@ -273,7 +273,7 @@ class ThumbnailBrowserTest(
 
         with zeit.cms.testing.site(self.getRootFolder()):
             group = self.repository['imagegroup']
-        self.assertIn('thumbnail-source-DSC00109_2.JPG', group)
+        self.assertIn('thumbnail-source-dsc00109-2.jpg', group)
 
     def test_thumbnail_images_are_hidden_in_content_listing(self):
         self.add_imagegroup()
@@ -285,6 +285,6 @@ class ThumbnailBrowserTest(
 
         with zeit.cms.testing.site(self.getRootFolder()):
             self.assertEqual(
-                ['DSC00109_2.JPG', 'thumbnail-source-DSC00109_2.JPG'],
+                ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
                 [x.__name__ for x in self.repository['imagegroup'].values()])
             self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)
