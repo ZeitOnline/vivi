@@ -165,7 +165,7 @@
 }
 
 .overlay-anchor {
-    min-height: 2em;
+    min-height: 100px;
 }
 
 .overlay-anchor .overlay {

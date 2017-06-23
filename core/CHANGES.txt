@@ -1,12 +1,20 @@
 zeit.cms changes
 ================
 
-2.102.0 (unreleased)
+2.102.1 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
+2.102.0 (2017-06-22)
 --------------------
 
 - ZON-4012: JS for "insert bullet" button
 
 - ZON-4013: Support `warning` state in `limitedInput`
+
+- FIX: Improve styling of unloadable object references
 
 
 2.101.0 (2017-06-21)
