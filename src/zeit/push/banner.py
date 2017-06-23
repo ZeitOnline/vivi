@@ -8,6 +8,7 @@ from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import grokcore.component as grok
 import logging
 import pytz
+import transaction
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -68,3 +69,11 @@ class HomepageMessage(zeit.push.message.Message):
 
     grok.name('homepage')
     get_text_from = 'short_text'
+
+    def _disable_message_config(self):
+        transaction.get().addAfterCommitHook(
+            self._disable_message_config_on_commit)
+
+    def _disable_message_config_on_commit(self, commit_success):
+        if commit_success:
+            super(HomepageMessage, self)._disable_message_config()
