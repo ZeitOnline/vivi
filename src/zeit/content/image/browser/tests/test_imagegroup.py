@@ -1,3 +1,4 @@
+# coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.testing.assertion
 import mock
@@ -212,6 +213,18 @@ class ImageGroupBrowserTest(
             '90999280',
             zeit.content.image.interfaces.IImageMetadata(group).external_id)
 
+    def test_normalizes_image_filename_on_upload(self):
+        self.add_imagegroup()
+        self.browser.getControl(name='form.master_image_blobs.0.').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/new-hampshire-artikel.jpg'),
+            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+        self.save_imagegroup()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = self.repository['imagegroup']
+            self.assertEqual(['foeoe.jpg'], group.keys())
+
 
 class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
 
@@ -275,7 +288,7 @@ class ThumbnailBrowserTest(
 
         with zeit.cms.testing.site(self.getRootFolder()):
             group = self.repository['imagegroup']
-        self.assertIn('thumbnail-source-DSC00109_2.JPG', group)
+        self.assertIn('thumbnail-source-dsc00109-2.jpg', group)
 
     def test_thumbnail_images_are_hidden_in_content_listing(self):
         self.add_imagegroup()
@@ -287,6 +300,6 @@ class ThumbnailBrowserTest(
 
         with zeit.cms.testing.site(self.getRootFolder()):
             self.assertEqual(
-                ['DSC00109_2.JPG', 'thumbnail-source-DSC00109_2.JPG'],
+                ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
                 [x.__name__ for x in self.repository['imagegroup'].values()])
             self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)
