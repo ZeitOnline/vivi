@@ -80,8 +80,6 @@ copyright is filled with the default value though:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value
 '\xc2\xa9'
->>> browser.getControl(name='form.copyrights.0..combination_01').value
-''
 
 Fill out some values:
 
@@ -99,8 +97,9 @@ Fill out some values:
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
+>>> browser.getControl('External company ID').value = 'externalid'
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
 False
@@ -111,6 +110,8 @@ Verify some values:
 'Opernball'
 >>> browser.getControl(name='form.year').value
 '2007'
+>>> browser.getControl('External company ID').value
+'externalid'
 
 Let's verify get the right file data back from the image:
 
@@ -178,7 +179,7 @@ Make sure the image is not changed by looking at the image view:
   ...
   <ol class="image-copyrights">
     <li>
-      ZEIT ONLINE
+      ZEIT ONLINE / -
       (<a href="http://www.zeit.de/">http://www.zeit.de/</a>)
     </li>
   </ol>...
@@ -226,8 +227,6 @@ The image file is required:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <...
@@ -344,8 +343,6 @@ Lets create an image group:
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> set_file_data('opernball.jpg', 'master_image_blobs.0.')
 >>> browser.getControl(name='form.actions.add').click()
 

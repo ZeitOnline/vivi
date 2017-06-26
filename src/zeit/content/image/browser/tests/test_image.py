@@ -44,7 +44,7 @@ class TestImage(zeit.cms.testing.BrowserTestCase):
 
         b.getControl(name='form.copyrights.0..combination_00').value = (
             'ZEIT ONLINE')
-        b.getControl(name='form.copyrights.0..combination_01').value = (
+        b.getControl(name='form.copyrights.0..combination_03').value = (
             'http://www.zeit.de/')
         b.getControl(name='form.blob').add_file(
             pkg_resources.resource_stream(

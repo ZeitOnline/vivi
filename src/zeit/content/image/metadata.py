@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.dav
@@ -21,6 +22,11 @@ class ImageMetadata(object):
         'http://namespaces.zeit.de/CMS/document',
         ('title', 'year', 'volume'))
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.image.interfaces.IImageMetadata,
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        ('external_id',), writeable=WRITEABLE_ALWAYS)
+
     _copyrights = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageMetadata['copyrights'],
         'http://namespaces.zeit.de/CMS/document', 'copyrights',
@@ -28,11 +34,14 @@ class ImageMetadata(object):
 
     @property
     def copyrights(self):
-        # migration for nofollow (VIV-104)
         result = list(self._copyrights)
         for i, item in enumerate(result):
+            # Migration for nofollow (VIV-104)
             if len(item) == 2:
-                result[i] = item + (False,)
+                result[i] = (item[0], None, None, item[1], False)
+            # Migration for companies (ZON-3174)
+            if len(item) == 3:
+                result[i] = (item[0], None, None, item[1], item[2])
         return tuple(result)
 
     @copyrights.setter
@@ -120,7 +129,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for child in entry.iterchildren('copyright'):
             entry.remove(child)
 
-        for text, link, nofollow in context.copyrights:
+        for text, company, freetext, link, nofollow in context.copyrights:
             node = lxml.objectify.E.copyright(text)
             if link:
                 node.set('link', link)
