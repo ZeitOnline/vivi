@@ -11,6 +11,8 @@ zeit.push changes
 
 - BUG-621: Log Twitter and Facebook account name to objectlog
 
+- BUG-201: Make homepage publisher safe from ConflictErrors
+
 - MAINT: Remove obsolete banner control files (wrapper, ios-legacy)
 
 - MAINT: Remove broken/unused ``IPushMessages.date_last_pushed``
