@@ -14,8 +14,6 @@ group[#browser]_:
 >>> set_file_data('opernball.jpg')
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open('@@view.html')
@@ -89,8 +87,6 @@ It is possible to select the master image of an image group:
 >>> browser.getControl('Viewport').displayValue = ['Desktop']
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Image', index=0).displayValue
 ['obama-clinton-120x120.jpg']
