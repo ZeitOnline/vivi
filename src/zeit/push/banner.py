@@ -77,3 +77,8 @@ class HomepageMessage(zeit.push.message.Message):
     def _disable_message_config_on_commit(self, commit_success):
         if commit_success:
             super(HomepageMessage, self)._disable_message_config()
+
+    @property
+    def url(self):
+        # zeit.web expects a uniqueId and then renders the link itself.
+        return self.context.uniqueId
