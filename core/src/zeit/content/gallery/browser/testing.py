@@ -21,7 +21,7 @@ def add_image(browser, name):
     file_control.add_file(test_data, 'image/jpeg', name)
     browser.getControl(name='form.copyrights.0..combination_00').value = (
         'ZEIT ONLINE')
-    browser.getControl(name='form.copyrights.0..combination_01').value = (
+    browser.getControl(name='form.copyrights.0..combination_03').value = (
         'http://www.zeit.de/')
     browser.getControl(name='form.actions.add').click()
     browser.getLink('Checkin').click()

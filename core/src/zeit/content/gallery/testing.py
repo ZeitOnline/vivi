@@ -4,6 +4,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.interfaces
+import zeit.content.image.testing
 import zeit.imp.tests
 import zeit.push
 import zeit.workflow.testing
@@ -26,6 +27,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
+        zeit.content.image.testing.product_config +
         zeit.imp.tests.product_config +
         zeit.push.product_config +
         product_config))

@@ -51,7 +51,7 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         entry = self.gallery['01.jpg']
         metadata = zeit.content.image.interfaces.IImageMetadata(entry.image)
         self.assertEquals(
-            ((u'ZEIT online', u'http://www.zeit.de', False),),
+            ((u'ZEIT online', None, None, u'http://www.zeit.de', False),),
             metadata.copyrights)
         pil = PIL.Image.open(entry.image.open())
         zeit.imp.interfaces.IStorer(entry).store('10x10', pil)
@@ -59,5 +59,5 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         entry = self.gallery['01-10x10.jpg']
         metadata = zeit.content.image.interfaces.IImageMetadata(entry.image)
         self.assertEquals(
-            ((u'ZEIT online', u'http://www.zeit.de', False),),
+            ((u'ZEIT online', None, None, u'http://www.zeit.de', False),),
             metadata.copyrights)
