@@ -4,7 +4,7 @@ zeit.content.image changes
 2.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3174: Add heuristics for Reuters external IDs
 
 
 2.20.0 (2017-06-26)
