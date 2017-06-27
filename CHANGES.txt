@@ -8,6 +8,7 @@ zeit.content.image changes
 
 
 2.20.0 (2017-06-26)
+-------------------
 
 - ZON-3174: Extend copyright field to include company (dropdown and freetext),
   add field for external ID
