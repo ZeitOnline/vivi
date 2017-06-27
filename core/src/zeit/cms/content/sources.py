@@ -542,8 +542,11 @@ class AccessSource(XMLSource):
 ACCESS_SOURCE = AccessSource()
 
 
-class PrintRessortSource(SimpleXMLSource):
+class PrintRessortSource(XMLSource):
 
+    product_configuration = 'zeit.cms'
     config_url = 'source-printressorts'
+    attribute = 'id'
+
 
 PRINT_RESSORT_SOURCE = PrintRessortSource()
