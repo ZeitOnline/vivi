@@ -151,6 +151,11 @@ class FakeTag(object):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
                 self.code.encode('unicode_escape'))
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.code == other.code
+
 
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
