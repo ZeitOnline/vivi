@@ -247,6 +247,7 @@ Products
  u'ZTGS',
  u'tdb',
  u'tbd',
+ u'Reuters',
  u'KINZ',
  u'ZEDE']
 >>> terms = zope.component.getMultiAdapter(
