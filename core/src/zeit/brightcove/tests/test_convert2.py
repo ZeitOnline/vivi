@@ -88,3 +88,15 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         bc = BCVideo.from_cms(cms)
         self.assertEqual('erde/umwelt', bc.data['custom_fields']['serie'])
         self.assertEqual(cms.serie, bc.serie)
+
+    def test_converts_related(self):
+        cms = CMSVideo()
+        related = zeit.cms.related.interfaces.IRelatedContent(cms)
+        related.related = (
+            zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/eta-zapatero'),)
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero',
+            bc.data['custom_fields']['ref_link1'])
+        self.assertEqual(related.related, bc.related)

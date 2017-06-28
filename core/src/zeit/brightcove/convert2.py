@@ -83,6 +83,35 @@ class ProductProperty(dictproperty):
         return super(ProductProperty, self).__get__(instance, cls)
 
 
+class RelatedProperty(dictproperty):
+
+    RELATED_COUNT = range(1, 6)
+
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        custom = instance.data.get('custom_fields', {})
+        if not custom:
+            return self.field.default
+        return self.converter.to_cms(
+            [custom.get('ref_link%s' % i) for i in self.RELATED_COUNT])
+
+    def __set__(self, instance, value):
+        if not value:
+            value = ()
+        custom = instance.data.setdefault('custom_fields', {})
+        for i in self.RELATED_COUNT:
+            try:
+                item = value[i - 1]
+            except IndexError:
+                custom['ref_link%s' % i] = ''
+                custom['ref_title%s' % i] = ''
+            else:
+                id, title = self.converter.to_bc(item)
+                custom['ref_link%s' % i] = id
+                custom['ref_title%s' % i] = title
+
+
 class Video(object):
     """Converts video data between CMS and Brightcove.
 
@@ -113,6 +142,10 @@ class Video(object):
                             converter='KeywordsConverter')
     product = ProductProperty('custom_fields/produkt-id', IVideo, 'product',
                               converter='ProductConverter')
+    related = RelatedProperty(
+        'custom_fields/ref_*',
+        zeit.cms.related.interfaces.IRelatedContent, 'related',
+        converter='RelatedConverter')
     ressort = dictproperty('custom_fields/ressort', IVideo, 'ressort')
     serie = dictproperty('custom_fields/serie', IVideo, 'serie',
                          converter='SeriesConverter')
@@ -253,3 +286,27 @@ class SeriesConverter(Converter):
 
     def to_cms(self, value):
         return self.context.source(None).find(value)
+
+
+class RelatedConverter(Converter):
+
+    grok.baseclass()
+
+    # Our method signatures are not symmetrical (single- vs multi-valued),
+    # but this way it's rather convenient to use in RelatedProperty.
+
+    def to_bc(self, value):
+        metadata = zeit.cms.content.interfaces.ICommonMetadata(value, None)
+        if metadata and metadata.teaserTitle:
+            title = metadata.teaserTitle
+        else:
+            title = u'unknown'
+        return value.uniqueId, title
+
+    def to_cms(self, value):
+        result = []
+        for item in value:
+            if not item:
+                continue  # Micro-optimization
+            result.append(zeit.cms.interfaces.ICMSContent(item, None))
+        return tuple(result)
