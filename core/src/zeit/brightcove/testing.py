@@ -249,12 +249,17 @@ class BrightcoveLayer(plone.testing.Layer):
             new=self.resolve_video_id)
         self.resolve_patch.start()
 
+        self.cmsapi_patch = mock.patch(
+            'zeit.brightcove.connection2.CMSAPI._request')
+        self.cmsapi_patch.start()
+
     @staticmethod
     def resolve_video_id(video_id):
         return zeit.brightcove.converter.Video.find_by_id(video_id).uniqueId
 
     def tearDown(self):
         self.resolve_patch.stop()
+        self.cmsapi_patch.stop()
 
     def testSetUp(self):
         pass

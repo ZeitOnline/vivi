@@ -16,6 +16,9 @@ class IAPIConnection(zope.interface.Interface):
 class ICMSAPI(zope.interface.Interface):
     """Brightcove CMS-API connection."""
 
+    def update_video(bcvideo):
+        """Updates the video metadata."""
+
 
 class IBrightcoveObject(zope.interface.Interface):
     """A representation of an object as stored in Brightcove."""

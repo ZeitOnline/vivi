@@ -1,5 +1,7 @@
 from zeit.brightcove.convert2 import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
+import mock
+import transaction
 import zeit.brightcove.testing
 import zeit.cms.testing
 
@@ -100,3 +102,60 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/eta-zapatero',
             bc.data['custom_fields']['ref_link1'])
         self.assertEqual(related.related, bc.related)
+
+
+class SaveTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(SaveTest, self).setUp()
+        self.repository['myvid'] = CMSVideo()
+        self.request_patch = mock.patch(
+            'zeit.brightcove.connection2.CMSAPI._request')
+        self.request = self.request_patch.start()
+
+    def tearDown(self):
+        self.request_patch.stop()
+        super(SaveTest, self).tearDown()
+
+    def test_video_changes_are_written_to_brightcove_on_checkin(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['myvid'], semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+        self.assertEqual(
+            'local change', self.request.call_args[1]['body']['name'])
+
+    def test_changes_are_not_written_during_publish(self):
+        zeit.cms.workflow.interfaces.IPublish(
+            self.repository['myvid']).publish(async=False)
+        self.assertEqual(False, self.request.called)
+
+    def test_video_is_published_on_checkin(self):
+        video = self.repository['myvid']
+        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        last_published = info.date_last_published
+
+        with zeit.cms.checkout.helper.checked_out(video):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        self.assertGreater(info.date_last_published, last_published)
+
+    def test_playlist_is_published_on_checkin(self):
+        self.repository['playlist'] = zeit.content.video.playlist.Playlist()
+        playlist = self.repository['playlist']
+        zeit.cms.workflow.interfaces.IPublish(playlist).publish(async=False)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        last_published = info.date_last_published
+
+        with zeit.cms.checkout.helper.checked_out(playlist):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        self.assertGreater(info.date_last_published, last_published)

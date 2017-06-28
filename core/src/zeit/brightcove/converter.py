@@ -550,14 +550,6 @@ def adapt_old_video_id_to_new_object(old_id):
         return playlist_location(None).get(pls_id)
 
 
-@grok.subscribe(
-    zeit.content.video.interfaces.IVideo,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_brightcove(context, event):
-    if not event.publishing:
-        zeit.brightcove.interfaces.IBrightcoveObject(context).save()
-
-
 @grok.adapter(zeit.content.video.interfaces.IVideo)
 @grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
 def video_from_cms(context):
@@ -568,10 +560,3 @@ def video_from_cms(context):
 @grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
 def playlist_from_cms(context):
     return Playlist.from_cms(context)
-
-
-def publish_on_checkin(context, event):
-    # prevent infinite loop, since there is a checkout/checkin cycle during
-    # publishing (to update XML references etc.)
-    if not event.publishing:
-        zeit.cms.workflow.interfaces.IPublish(context).publish()

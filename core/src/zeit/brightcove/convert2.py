@@ -192,6 +192,22 @@ class Video(object):
             self.id or '(unknown)')
 
 
+@grok.subscribe(
+    zeit.content.video.interfaces.IVideo,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def update_brightcove(context, event):
+    if not event.publishing:
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        api.update_video(Video.from_cms(context))
+
+
+def publish_on_checkin(context, event):
+    # prevent infinite loop, since there is a checkout/checkin cycle during
+    # publishing (to update XML references etc.)
+    if not event.publishing:
+        zeit.cms.workflow.interfaces.IPublish(context).publish()
+
+
 class ITypeConverter(zope.interface.Interface):
 
     def to_bc(value):
