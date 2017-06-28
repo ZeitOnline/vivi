@@ -36,7 +36,7 @@ class CMSAPI(object):
             raise RuntimeError('Maximum retries exceeded for %s' % request)
 
         verb, path = request.split(' ')
-        log.info(request)
+        log.info('%s%s', request, ' (retry)' if _retries else '')
 
         try:
             response = requests.request(
@@ -56,6 +56,8 @@ class CMSAPI(object):
                 # serializing those requests, which isn't much of a plus.
                 self._access_token = self._retrieve_access_token()
                 return self._request(request, body=body, _retries=_retries + 1)
+            message = getattr(err.response, 'text', '<no message>')
+            err.args = (u'%s: %s' % (err.args[0], message),) + err.args[1:]
             log.error('%s returned %s', request, status, exc_info=True)
             raise
 
