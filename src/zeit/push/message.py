@@ -32,8 +32,7 @@ class Message(grok.Adapter):
         Re-sending can be done manually by re-enabling the service.
 
         """
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        push.set(self.config, enabled=False)
+        self._disable_message_config()
         if not self.text:
             raise ValueError('No text configured')
         kw = {}
@@ -50,6 +49,10 @@ class Message(grok.Adapter):
             self.log_error(str(e))
             log.error(u'Error during push to %s with config %s',
                       self.type, self.config, exc_info=True)
+
+    def _disable_message_config(self):
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        push.set(self.config, enabled=False)
 
     @property
     def text(self):
