@@ -22,3 +22,10 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase):
         bc = BCVideo()
         with self.assertRaises(AttributeError):
             bc.id = 'id'
+
+    def test_bc_names_with_slash_denote_nested_dict(self):
+        cms = CMSVideo()
+        cms.ressort = u'Deutschland'
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual('Deutschland', bc.ressort)
+        self.assertEqual('Deutschland', bc.data['custom_fields']['ressort'])

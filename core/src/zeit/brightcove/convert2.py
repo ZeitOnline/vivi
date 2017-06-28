@@ -13,11 +13,16 @@ class dictproperty(object):
 
     def __init__(self, bc_name, iface=None, fieldname=None, field=None):
         """The value is stored in the instance's data dict, under the key
-        ``bc_name``. Pass either iface and fieldname, or for special cases a
+        ``bc_name`` (may contain '/' to denote nested dicts).
+
+        Pass either iface and fieldname, or for special cases a
         zope.schema.Field instance, so we can look up type conversion
         accordingly, and access CMS values that reside in adapters.
         """
         self.bc_name = bc_name
+        segments = self.bc_name.split('/')
+        self.path = segments[:-1]
+        self.name = segments[-1]
 
         assert (iface and fieldname) or field
         if field:
@@ -30,12 +35,18 @@ class dictproperty(object):
     def __get__(self, instance, cls):
         if instance is None:
             return self
-        return instance.data[self.bc_name]
+        data = instance.data
+        for x in self.path:
+            data = data.get(x, {})
+        return data[self.name]
 
     def __set__(self, instance, value):
         if self.field.readonly:
             raise AttributeError('Cannot set %s', self.bc_name)
-        instance.data[self.bc_name] = value
+        data = instance.data
+        for x in self.path:
+            data = data.setdefault(x, {})
+        data[self.name] = value
 
 
 class Video(object):
@@ -52,12 +63,15 @@ class Video(object):
     title = dictproperty('name', IVideo, 'title')
     teaserText = dictproperty('description', IVideo, 'teaserText')
 
+    ressort = dictproperty('custom_fields/ressort', IVideo, 'ressort')
+
     def __init__(self):
         self.data = {}
 
     @classmethod
     def from_cms(cls, video):
         instance = cls()
+        instance.data['id'] = video.brightcove_id
         adapters = {}
         for prop in instance.properties:
             if prop.field.readonly:
