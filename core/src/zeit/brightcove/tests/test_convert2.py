@@ -23,6 +23,10 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase):
         with self.assertRaises(AttributeError):
             bc.id = 'id'
 
+    def test_missing_data_returns_field_default(self):
+        bc = BCVideo()
+        self.assertEqual(None, bc.ressort)
+
     def test_bc_names_with_slash_denote_nested_dict(self):
         cms = CMSVideo()
         cms.ressort = u'Deutschland'

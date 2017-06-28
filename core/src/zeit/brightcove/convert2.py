@@ -29,7 +29,10 @@ class dictproperty(object):
         data = instance.data
         for x in self.path:
             data = data.get(x, {})
-        value = data[self.name]
+        try:
+            value = data[self.name]
+        except KeyError:
+            return self.field.default
         converter = ITypeConverter(self.field)
         return converter.to_cms(value)
 
