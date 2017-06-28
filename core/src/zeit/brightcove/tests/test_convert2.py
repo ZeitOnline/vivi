@@ -40,3 +40,20 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase):
         bc = BCVideo.from_cms(cms)
         self.assertEqual(True, bc.commentsAllowed)
         self.assertEqual('1', bc.data['custom_fields']['allow_comments'])
+
+    def test_converts_authors(self):
+        from zeit.content.author.author import Author
+        self.repository['a1'] = Author()
+        self.repository['a2'] = Author()
+
+        cms = CMSVideo()
+        cms.authorships = (
+            cms.authorships.create(self.repository['a1']),
+            cms.authorships.create(self.repository['a2'])
+        )
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual(
+            'http://xml.zeit.de/a1 http://xml.zeit.de/a2',
+            bc.data['custom_fields']['authors'])
+        self.assertEqual(
+            (self.repository['a1'], self.repository['a2']), bc.authorships)

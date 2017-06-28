@@ -1,5 +1,7 @@
 from zeit.content.video.interfaces import IVideo
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import zeit.cms.interfaces
 import zope.interface
 import zope.schema
 
@@ -13,15 +15,20 @@ class dictproperty(object):
     # Video.properties set it for us instead.
     __name__ = None
 
-    def __init__(self, bc_name, field):
+    def __init__(self, bc_name, field, converter=None):
         """The value is stored in the instance's data dict, under the key
         ``bc_name`` (may contain '/' to denote nested dicts).
+
+        You can pass the class name of an ITypeConverter (to prevent source
+        code ordering / import time issues), otherwise one will be looked up
+        for the given field.
         """
         self.bc_name = bc_name
         segments = self.bc_name.split('/')
         self.path = segments[:-1]
         self.name = segments[-1]
         self.field = field
+        self._converter = converter
 
     def __get__(self, instance, cls):
         if instance is None:
@@ -33,8 +40,7 @@ class dictproperty(object):
             value = data[self.name]
         except KeyError:
             return self.field.default
-        converter = ITypeConverter(self.field)
-        return converter.to_cms(value)
+        return self.converter.to_cms(value)
 
     def __set__(self, instance, value):
         if self.field.readonly:
@@ -42,8 +48,14 @@ class dictproperty(object):
         data = instance.data
         for x in self.path:
             data = data.setdefault(x, {})
-        converter = ITypeConverter(self.field)
-        data[self.name] = converter.to_bc(value)
+        data[self.name] = self.converter.to_bc(value)
+
+    @cachedproperty
+    def converter(self):
+        if self._converter is None:
+            return ITypeConverter(self.field)
+        else:
+            return globals()[self._converter](self.field)
 
 
 class Video(object):
@@ -60,6 +72,8 @@ class Video(object):
     title = dictproperty('name', IVideo['title'])
     teaserText = dictproperty('description', IVideo['teaserText'])
 
+    authorships = dictproperty('custom_fields/authors', IVideo['authorships'],
+                               'AuthorshipsConverter')
     commentsAllowed = dictproperty(
         'custom_fields/allow_comments', IVideo['commentsAllowed'])
     ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
@@ -104,9 +118,9 @@ class ITypeConverter(zope.interface.Interface):
         pass
 
 
-class DefaultPassthroughConverter(grok.Adapter):
+class Converter(grok.Adapter):
 
-    grok.context(zope.interface.Interface)
+    grok.baseclass()
     grok.implements(ITypeConverter)
 
     def to_bc(self, value):
@@ -116,13 +130,35 @@ class DefaultPassthroughConverter(grok.Adapter):
         return value
 
 
-class BoolConverter(grok.Adapter):
+class DefaultPassthroughConverter(Converter):
+
+    grok.context(zope.interface.Interface)
+
+
+class BoolConverter(Converter):
 
     grok.context(zope.schema.Bool)
-    grok.implements(ITypeConverter)
 
     def to_bc(self, value):
         return '1' if value else '0'
 
     def to_cms(self, value):
         return value == '1'
+
+
+class AuthorshipsConverter(Converter):
+
+    # used explicitly, since we cannot register an adapter for a field instance
+    grok.baseclass()
+
+    SEPARATOR = u' '
+
+    def to_bc(self, value):
+        return self.SEPARATOR.join(x.target.uniqueId for x in value)
+
+    def to_cms(self, value):
+        if not value:
+            return ()
+        authors = [zeit.cms.interfaces.ICMSContent(x, None)
+                   for x in value.split(self.SEPARATOR)]
+        return tuple([x for x in authors if x is not None])
