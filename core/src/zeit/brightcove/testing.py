@@ -245,7 +245,7 @@ class BrightcoveLayer(plone.testing.Layer):
         product_config['retract-script'] = 'true'
 
         self.resolve_patch = mock.patch(
-            'zeit.brightcove.converter.resolve_video_id',
+            'zeit.brightcove.resolve.resolve_video_id',
             new=self.resolve_video_id)
         self.resolve_patch.start()
 
