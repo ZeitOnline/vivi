@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zope.interface
@@ -18,6 +17,21 @@ class ICMSAPI(zope.interface.Interface):
 
     def update_video(bcvideo):
         """Updates the video metadata."""
+
+
+class ISession(zope.interface.Interface):
+    """Integrates ICMSAPI with the ``transaction`` module.
+    Clients should call ``zeit.brightcove.session.get()`` to get the current
+    thread-local Session instance, which they then can use to make changes.
+
+    Note that the Brightcove API does not support transactions, so we muddle
+    through by trying to commit last in the 2PC protocol. (This also means,
+    if you update multiple videos and the first errors out, the other ones
+    will NOT be updated.)
+    """
+
+    def update_video(bcvideo):
+        """Updates the video metadata (on transaction commit)."""
 
 
 class IBrightcoveObject(zope.interface.Interface):

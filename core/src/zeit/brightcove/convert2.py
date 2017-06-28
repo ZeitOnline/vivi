@@ -197,8 +197,8 @@ class Video(object):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_brightcove(context, event):
     if not event.publishing:
-        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
-        api.update_video(Video.from_cms(context))
+        session = zeit.brightcove.session.get()
+        session.update_video(Video.from_cms(context))
 
 
 def publish_on_checkin(context, event):
