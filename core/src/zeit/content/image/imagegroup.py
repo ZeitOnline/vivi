@@ -6,6 +6,7 @@ import StringIO
 import collections
 import grokcore.component as grok
 import lxml.objectify
+import os.path
 import persistent
 import re
 import sys
@@ -472,10 +473,14 @@ def guess_external_id(context, event):
     meta = zeit.content.image.interfaces.IImageMetadata(context.__parent__)
     if meta.external_id:
         return
-    match = EXTERNAL_ID_PATTERN.search(context.__name__)
-    if not match:
-        return
-    meta.external_id = match.group(1)
+    filename = context.__name__
+    if filename.lower().startswith(u'rts'):  # Reuters
+        meta.external_id = os.path.splitext(filename)[0]
+    else:  # Getty, dpa
+        match = EXTERNAL_ID_PATTERN.search(filename)
+        if not match:
+            return
+        meta.external_id = match.group(1)
 
 
 class ThumbnailTraverser(object):
