@@ -246,16 +246,38 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             self.group['6789.jpg']))
         self.assertEqual('12345', meta.external_id)
 
+
+class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(ExternalIDTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+
+    def search(self, filename):
+        context = mock.Mock()
+        context.__parent__ = self.group
+        context.__name__ = filename
+        zeit.content.image.imagegroup.guess_external_id(context, None)
+        meta = zeit.content.image.interfaces.IImageMetadata(self.group)
+        result = meta.external_id
+        meta.external_id = None
+        return result
+
     def test_external_id_matches_single_number_in_filename(self):
-        def search(filename):
-            match = zeit.content.image.imagegroup.EXTERNAL_ID_PATTERN.search(
-                filename)
-            return match and match.group(1)
-        self.assertEqual(None, search('asdf-120x120.jpg'))
-        self.assertEqual(
-            '90999280', search('dpa Picture-Alliance-90999280-HighRes.jpg'))
-        self.assertEqual('90997723', search('90997723-HighRes Kopie.jpg'))
-        self.assertEqual('90997723', search('90997723.jpg'))
+        self.assertEqual(None, self.search('asdf-120x120.jpg'))
+        self.assertEqual('90999280', self.search(
+            'dpa Picture-Alliance-90999280-HighRes.jpg'))
+        self.assertEqual('90997723', self.search('90997723-HighRes Kopie.jpg'))
+        self.assertEqual('90997723', self.search('90997723.jpg'))
+
+    def test_external_id_matches_reuters_filenames(self):
+        self.assertEqual('rtsu6hm', self.search('rtsu6hm.jpg'))
+        self.assertEqual('RTSU6HM', self.search('RTSU6HM.jpg'))
+        self.assertEqual(u'rtsü6hm', self.search(u'rtsü6hm.jpg'))
+        self.assertEqual('6', self.search('Kopie von rtsu6hm.jpg'))
+        self.assertEqual(None, self.search('wartsnurab.jpg'))
 
 
 class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
