@@ -29,3 +29,10 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase):
         bc = BCVideo.from_cms(cms)
         self.assertEqual('Deutschland', bc.ressort)
         self.assertEqual('Deutschland', bc.data['custom_fields']['ressort'])
+
+    def test_looks_up_type_conversion_by_field(self):
+        cms = CMSVideo()
+        cms.commentsAllowed = True
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual(True, bc.commentsAllowed)
+        self.assertEqual('1', bc.data['custom_fields']['allow_comments'])

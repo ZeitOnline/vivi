@@ -1,4 +1,6 @@
 from zeit.content.video.interfaces import IVideo
+import grokcore.component as grok
+import zope.interface
 import zope.schema
 
 
@@ -38,7 +40,9 @@ class dictproperty(object):
         data = instance.data
         for x in self.path:
             data = data.get(x, {})
-        return data[self.name]
+        value = data[self.name]
+        converter = ITypeConverter(self.field)
+        return converter.to_cms(value)
 
     def __set__(self, instance, value):
         if self.field.readonly:
@@ -46,7 +50,8 @@ class dictproperty(object):
         data = instance.data
         for x in self.path:
             data = data.setdefault(x, {})
-        data[self.name] = value
+        converter = ITypeConverter(self.field)
+        data[self.name] = converter.to_bc(value)
 
 
 class Video(object):
@@ -63,6 +68,8 @@ class Video(object):
     title = dictproperty('name', IVideo, 'title')
     teaserText = dictproperty('description', IVideo, 'teaserText')
 
+    commentsAllowed = dictproperty(
+        'custom_fields/allow_comments', IVideo, 'commentsAllowed')
     ressort = dictproperty('custom_fields/ressort', IVideo, 'ressort')
 
     def __init__(self):
@@ -101,3 +108,36 @@ class Video(object):
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__,
             self.id or '(unknown)')
+
+
+class ITypeConverter(zope.interface.Interface):
+
+    def to_bc(value):
+        pass
+
+    def to_cms(value):
+        pass
+
+
+class DefaultPassthroughConverter(grok.Adapter):
+
+    grok.context(zope.interface.Interface)
+    grok.implements(ITypeConverter)
+
+    def to_bc(self, value):
+        return value
+
+    def to_cms(self, value):
+        return value
+
+
+class BoolConverter(grok.Adapter):
+
+    grok.context(zope.schema.Bool)
+    grok.implements(ITypeConverter)
+
+    def to_bc(self, value):
+        return '1' if value else '0'
+
+    def to_cms(self, value):
+        return value == '1'
