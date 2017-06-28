@@ -67,3 +67,16 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'staatsanwaltschaft;parlament',
             bc.data['custom_fields']['cmskeywords'])
         self.assertEqual(cms.keywords, bc.keywords)
+
+    def test_converts_product(self):
+        cms = CMSVideo()
+        cms.product = zeit.cms.content.sources.PRODUCT_SOURCE(None).find(
+            'TEST')
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual('TEST', bc.data['custom_fields']['produkt-id'])
+        self.assertEqual(cms.product, bc.product)
+
+    def test_product_defaults_to_reuters(self):
+        bc = BCVideo()
+        bc.data['reference_id'] = '1234'
+        self.assertEqual('Reuters', bc.product.id)

@@ -58,6 +58,18 @@ class dictproperty(object):
             return globals()[self._converter](self.field)
 
 
+class ProductProperty(dictproperty):
+
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        if (not instance.data.get('custom_fields', {}).get('produkt-id') and
+                instance.data.get('reference_id')):
+            return zeit.cms.content.sources.PRODUCT_SOURCE(None).find(
+                'Reuters')  # XXX Magic hard-coded defaults.
+        return super(ProductProperty, self).__get__(instance, cls)
+
+
 class Video(object):
     """Converts video data between CMS and Brightcove.
 
@@ -86,6 +98,8 @@ class Video(object):
         'custom_fields/recensions', IVideo['has_recensions'])
     keywords = dictproperty('custom_fields/cmskeywords', IVideo['keywords'],
                             'KeywordsConverter')
+    product = ProductProperty('custom_fields/produkt-id', IVideo['product'],
+                              'ProductConverter')
     ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
     subtitle = dictproperty('long_description', IVideo['subtitle'])
     supertitle = dictproperty('custom_fields/supertitle', IVideo['supertitle'])
@@ -195,3 +209,14 @@ class KeywordsConverter(Converter):
         keywords = [whitelist.get(code)
                     for code in value.split(self.SEPARATOR)]
         return tuple([x for x in keywords if x is not None])
+
+
+class ProductConverter(Converter):
+
+    grok.baseclass()
+
+    def to_bc(self, value):
+        return value.id if value else None
+
+    def to_cms(self, value):
+        return self.context.source(None).find(value)
