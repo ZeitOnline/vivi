@@ -154,7 +154,7 @@ class FakeTag(object):
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self.code == other.code
+        return self.code == other.code and self.pinned == other.pinned
 
 
 class TaggingHelper(object):
