@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.103.1 (unreleased)
+2.104.0 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ZON-3983: Base SerieSource on ObjectSource
 
 
 2.103.0 (2017-06-27)

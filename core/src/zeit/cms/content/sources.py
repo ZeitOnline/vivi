@@ -323,10 +323,12 @@ def unicode_or_none(value):
         return unicode(value)
 
 
-class Serie(object):
+class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
                  column=False, video=False):
+        super(Serie, self).__init__(serienname, title, None)
+        self.id = serienname
         self.serienname = serienname
         self.title = title
         self.url = url
@@ -340,16 +342,12 @@ class Serie(object):
         return self.serienname == other.serienname
 
 
-class SerieSource(SimpleContextualXMLSource):
+class SerieSource(ObjectSource, SimpleContextualXMLSource):
 
     config_url = 'source-serie'
 
-    @property
-    def values(self):
-        return self._fill_values()
-
     @CONFIG_CACHE.cache_on_arguments()
-    def _fill_values(self):
+    def _values(self):
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             # XXX: For compat reasons we need a fallback `serienname`.
@@ -366,14 +364,8 @@ class SerieSource(SimpleContextualXMLSource):
                 node.get('video') == u'yes')
         return result
 
-    def getValues(self, context):
-        return self.values.values()
-
     def getTitle(self, context, value):
         return value.serienname
-
-    def getToken(self, context, value):
-        return super(SerieSource, self).getToken(context, value.serienname)
 
 
 class Product(AllowedBase):
@@ -427,9 +419,6 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
 
     def getTitle(self, context, value):
         return value.title
-
-    def getToken(self, context, value):
-        return super(ProductSource, self).getToken(context, value)
 
     def _add_dependent_products(self, products):
         """
