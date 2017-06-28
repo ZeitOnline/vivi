@@ -155,7 +155,7 @@ class mapped_serie(mapped):
     def __get__(self, instance, class_):
         value = super(mapped_serie, self).__get__(instance, class_)
         source = zeit.content.video.interfaces.IVideo['serie'].source(instance)
-        return source.factory.values.get(value)
+        return source.find(value)
 
     def __set__(self, instance, value):
         super(mapped_serie, self).__set__(instance, value.serienname)

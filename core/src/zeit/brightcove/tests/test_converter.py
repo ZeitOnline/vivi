@@ -91,7 +91,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Video.find_by_id('1234')
         self.assertEquals('erde/energie', video.serie.serienname)
         source = zeit.content.video.interfaces.IVideo['serie'].source(None)
-        video.serie = source.factory.values.get('erde/umwelt')
+        video.serie = source.find('erde/umwelt')
         self.assertEquals('erde/umwelt', video.data['customFields']['serie'])
 
     def test_video_still_copyright(self):
