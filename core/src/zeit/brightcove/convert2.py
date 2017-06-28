@@ -76,7 +76,19 @@ class Video(object):
                                'AuthorshipsConverter')
     commentsAllowed = dictproperty(
         'custom_fields/allow_comments', IVideo['commentsAllowed'])
+    commentsPremoderate = dictproperty(
+        'custom_fields/premoderate_comments', IVideo['commentsPremoderate'])
+    banner = dictproperty('custom_fields/banner', IVideo['banner'])
+    banner_id = dictproperty('custom_fields/banner-id', IVideo['banner_id'])
+    dailyNewsletter = dictproperty(
+        'custom_fields/newsletter', IVideo['dailyNewsletter'])
+    has_recensions = dictproperty(
+        'custom_fields/recensions', IVideo['has_recensions'])
     ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
+    subtitle = dictproperty('long_description', IVideo['subtitle'])
+    supertitle = dictproperty('custom_fields/supertitle', IVideo['supertitle'])
+    video_still_copyright = dictproperty(
+        'custom_fields/credit', IVideo['video_still_copyright'])
 
     def __init__(self):
         self.data = {}
