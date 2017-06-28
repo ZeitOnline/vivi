@@ -99,7 +99,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @property
     def serie(self):
         source = zeit.content.video.interfaces.IVideo['serie'].source(self)
-        return source.factory.values.get(self._serie)
+        return source.find(self._serie)
 
     @serie.setter
     def serie(self, value):
