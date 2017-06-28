@@ -29,7 +29,7 @@ class CMSAPI(object):
         self.timeout = timeout
 
     def update_video(self, bcvideo):
-        self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.data)
+        self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.write_data)
 
     def _request(self, request, body=None, _retries=0):
         if _retries >= self.MAX_RETRIES:

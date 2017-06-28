@@ -37,6 +37,11 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual('Deutschland', bc.ressort)
         self.assertEqual('Deutschland', bc.data['custom_fields']['ressort'])
 
+    def test_readonly_fields_are_removed_for_writing(self):
+        bc = BCVideo()
+        bc.data['id'] = 'foo'
+        self.assertNotIn('id', bc.write_data)
+
     def test_looks_up_type_conversion_by_field(self):
         cms = CMSVideo()
         cms.commentsAllowed = True

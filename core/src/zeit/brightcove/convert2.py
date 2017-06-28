@@ -175,6 +175,15 @@ class Video(object):
         return instance
 
     @property
+    def write_data(self):
+        """Copy of our data dict, with all readonly properties removed."""
+        data = self.data.copy()  # first-level copy is sufficient right now.
+        for prop in self._dictproperties:
+            if prop.field.readonly:
+                data.pop(prop.bc_name, None)
+        return data
+
+    @property
     def _dictproperties(self):
         cls = type(self)
         result = []
