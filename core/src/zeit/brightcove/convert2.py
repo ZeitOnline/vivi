@@ -13,26 +13,15 @@ class dictproperty(object):
     # Video.properties set it for us instead.
     __name__ = None
 
-    def __init__(self, bc_name, iface=None, fieldname=None, field=None):
+    def __init__(self, bc_name, field):
         """The value is stored in the instance's data dict, under the key
         ``bc_name`` (may contain '/' to denote nested dicts).
-
-        Pass either iface and fieldname, or for special cases a
-        zope.schema.Field instance, so we can look up type conversion
-        accordingly, and access CMS values that reside in adapters.
         """
         self.bc_name = bc_name
         segments = self.bc_name.split('/')
         self.path = segments[:-1]
         self.name = segments[-1]
-
-        assert (iface and fieldname) or field
-        if field:
-            self.iface = None
-            self.field = field
-        else:
-            self.iface = iface
-            self.field = iface[fieldname]
+        self.field = field
 
     def __get__(self, instance, cls):
         if instance is None:
@@ -64,13 +53,13 @@ class Video(object):
     Can be constructed from both a CMS object and a BC API result dict.
     """
 
-    id = dictproperty('id', field=zope.schema.TextLine(readonly=True))
-    title = dictproperty('name', IVideo, 'title')
-    teaserText = dictproperty('description', IVideo, 'teaserText')
+    id = dictproperty('id', zope.schema.TextLine(readonly=True))
+    title = dictproperty('name', IVideo['title'])
+    teaserText = dictproperty('description', IVideo['teaserText'])
 
     commentsAllowed = dictproperty(
-        'custom_fields/allow_comments', IVideo, 'commentsAllowed')
-    ressort = dictproperty('custom_fields/ressort', IVideo, 'ressort')
+        'custom_fields/allow_comments', IVideo['commentsAllowed'])
+    ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
 
     def __init__(self):
         self.data = {}
@@ -79,17 +68,10 @@ class Video(object):
     def from_cms(cls, video):
         instance = cls()
         instance.data['id'] = video.brightcove_id
-        adapters = {}
         for prop in instance.properties:
             if prop.field.readonly:
                 continue
-            wrapped = video
-            if prop.iface:
-                wrapped = adapters.get(prop.iface)
-                if wrapped is None:
-                    wrapped = prop.iface(video)
-                    adapters[prop.iface] = wrapped
-            setattr(instance, prop.__name__, prop.field.get(wrapped))
+            setattr(instance, prop.__name__, prop.field.get(video))
         return instance
 
     @property
