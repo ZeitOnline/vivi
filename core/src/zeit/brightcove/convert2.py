@@ -84,6 +84,8 @@ class Video(object):
         'custom_fields/newsletter', IVideo['dailyNewsletter'])
     has_recensions = dictproperty(
         'custom_fields/recensions', IVideo['has_recensions'])
+    keywords = dictproperty('custom_fields/cmskeywords', IVideo['keywords'],
+                            'KeywordsConverter')
     ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
     subtitle = dictproperty('long_description', IVideo['subtitle'])
     supertitle = dictproperty('custom_fields/supertitle', IVideo['supertitle'])
@@ -170,7 +172,26 @@ class AuthorshipsConverter(Converter):
 
     def to_cms(self, value):
         if not value:
-            return ()
+            return self.context.default
         authors = [zeit.cms.interfaces.ICMSContent(x, None)
                    for x in value.split(self.SEPARATOR)]
         return tuple([x for x in authors if x is not None])
+
+
+class KeywordsConverter(Converter):
+
+    grok.baseclass()
+
+    SEPARATOR = u';'
+
+    def to_bc(self, value):
+        return self.SEPARATOR.join(x.code for x in value)
+
+    def to_cms(self, value):
+        if not value:
+            return self.context.default
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        keywords = [whitelist.get(code)
+                    for code in value.split(self.SEPARATOR)]
+        return tuple([x for x in keywords if x is not None])

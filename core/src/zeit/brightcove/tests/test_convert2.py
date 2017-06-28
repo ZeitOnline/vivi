@@ -4,7 +4,8 @@ import zeit.brightcove.testing
 import zeit.cms.testing
 
 
-class VideoTest(zeit.cms.testing.FunctionalTestCase):
+class VideoTest(zeit.cms.testing.FunctionalTestCase,
+                zeit.cms.tagging.testing.TaggingHelper):
 
     layer = zeit.brightcove.testing.ZCML_LAYER
 
@@ -57,3 +58,12 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase):
             bc.data['custom_fields']['authors'])
         self.assertEqual(
             (self.repository['a1'], self.repository['a2']), bc.authorships)
+
+    def test_converts_keywords(self):
+        cms = CMSVideo()
+        self.setup_tags('staatsanwaltschaft', 'parlament')
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual(
+            'staatsanwaltschaft;parlament',
+            bc.data['custom_fields']['cmskeywords'])
+        self.assertEqual(cms.keywords, bc.keywords)
