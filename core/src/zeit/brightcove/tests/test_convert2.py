@@ -80,3 +80,11 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         bc = BCVideo()
         bc.data['reference_id'] = '1234'
         self.assertEqual('Reuters', bc.product.id)
+
+    def test_converts_serie(self):
+        cms = CMSVideo()
+        cms.serie = zeit.content.video.interfaces.IVideo['serie'].source(
+            None).find('erde/umwelt')
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual('erde/umwelt', bc.data['custom_fields']['serie'])
+        self.assertEqual(cms.serie, bc.serie)

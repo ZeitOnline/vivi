@@ -101,6 +101,8 @@ class Video(object):
     product = ProductProperty('custom_fields/produkt-id', IVideo['product'],
                               'ProductConverter')
     ressort = dictproperty('custom_fields/ressort', IVideo['ressort'])
+    serie = dictproperty('custom_fields/serie', IVideo['serie'],
+                         'SeriesConverter')
     subtitle = dictproperty('long_description', IVideo['subtitle'])
     supertitle = dictproperty('custom_fields/supertitle', IVideo['supertitle'])
     video_still_copyright = dictproperty(
@@ -113,14 +115,14 @@ class Video(object):
     def from_cms(cls, video):
         instance = cls()
         instance.data['id'] = video.brightcove_id
-        for prop in instance.properties:
+        for prop in instance._dictproperties:
             if prop.field.readonly:
                 continue
             setattr(instance, prop.__name__, prop.field.get(video))
         return instance
 
     @property
-    def properties(self):
+    def _dictproperties(self):
         cls = type(self)
         result = []
         for propname in dir(cls):
@@ -217,6 +219,17 @@ class ProductConverter(Converter):
 
     def to_bc(self, value):
         return value.id if value else None
+
+    def to_cms(self, value):
+        return self.context.source(None).find(value)
+
+
+class SeriesConverter(Converter):
+
+    grok.baseclass()
+
+    def to_bc(self, value):
+        return value.serienname if value else None
 
     def to_cms(self, value):
         return self.context.source(None).find(value)
