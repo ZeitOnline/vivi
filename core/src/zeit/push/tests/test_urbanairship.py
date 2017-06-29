@@ -102,6 +102,11 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual('News', ios['extra']['tag'])
 
 
+class PayloadTemplatesTest(ConnectionTest):
+
+    def test_payload(self):
+        pass
+
 class DataTest(ConnectionTest):
 
     def create_catalog(self):

@@ -86,6 +86,9 @@ class Connection(object):
                 timedelta(seconds=self.expire_interval))
 
     def create_payload(self, text, link, **kw):
+        article = kw.get('context')
+        push = zeit.push.interfaces.IPushMessages(article)
+        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find('dummy.json')
         channels = self.get_channel_list(kw.get('channels'))
         parts = urlparse.urlparse(link)
         path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
@@ -143,6 +146,11 @@ class Connection(object):
         }
 
     def send(self, text, link, **kw):
+        # If I have the Context here i should be able to get all information
+        # to build the correct payload.
+        # Another option would be to build the payload in the message class
+        # and let this class only build an Urbanairship push object and
+        # handle firing of the request to ua...
         channels = self.get_channel_list(kw.get('channels'))
         if not channels:
             raise ValueError('No channel given to define target audience.')
@@ -231,9 +239,6 @@ class Connection(object):
 class Message(zeit.push.message.Message):
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
-    # BBB This used to send to both parse and urbanairship, so we use
-    # a generic name in the message_config.
-    # TODO What is the point of this?
     grok.name('mobile')
     type = 'urbanairship'
 
@@ -252,6 +257,8 @@ class Message(zeit.push.message.Message):
     def additional_parameters(self):
         result = {
             'mobile_title': self.config.get('title'),
+            'context': self.context,
+            'nelf': self
         }
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(

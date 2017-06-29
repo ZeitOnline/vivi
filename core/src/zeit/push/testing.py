@@ -62,6 +62,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
 
+    def create_test_payload_template(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            zeit.cms.content.add.find_or_create_folder('work',
+                                                       'payload-templates')
+
+
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(ZCML_LAYER,))
