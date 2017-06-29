@@ -50,18 +50,6 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    year = zope.schema.Int(
-        title=_("Year"),
-        min=1900,
-        max=2100,
-        required=False)
-
-    volume = zope.schema.Int(
-        title=_("Volume"),
-        min=1,
-        max=53,
-        required=False)
-
     origin = zope.schema.TextLine(
         title=_("Origin"),
         default=u'',

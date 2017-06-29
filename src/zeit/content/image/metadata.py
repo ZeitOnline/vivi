@@ -20,7 +20,7 @@ class ImageMetadata(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
-        ('title', 'year', 'volume'))
+        ('title',))
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
