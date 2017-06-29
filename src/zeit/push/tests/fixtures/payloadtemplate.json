@@ -1,0 +1,64 @@
+[
+  {
+    "audience": {
+      "OR": [
+        {
+          "group": "subscriptions",
+          "tag": "Eilmeldung"
+        }
+      ]
+    },
+    "device_types": [
+      "android"
+    ],
+    "notification": {
+      "actions": {
+        "open": {
+          "content": "zeitapp://test/artikel?utm_campaign=eilmeldung&utm_content=zeitde_andpush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.andpush.link.x",
+          "type": "deep_link"
+        }
+      },
+      "alert": "PushTitle",
+      "android": {
+        "extra": {
+          "headline": "ZEIT ONLINE push-breaking-title",
+          "tag": "Eilmeldung",
+          "url": "http://www.zeit.de/test/artikel?utm_campaign=eilmeldung&utm_content=zeitde_andpush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.andpush.link.x"
+        },
+        "priority": 2,
+        "title": "ZEIT ONLINE push-breaking-title"
+      }
+    }
+  },
+  {
+    "audience": {
+      "OR": [
+        {
+          "group": "subscriptions",
+          "tag": "Eilmeldung"
+        }
+      ]
+    },
+    "device_types": [
+      "ios"
+    ],
+    "notification": {
+      "actions": {
+        "open": {
+          "content": "zeitapp://test/artikel?utm_campaign=eilmeldung&utm_content=zeitde_iospush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.iospush.link.x",
+          "type": "deep_link"
+        }
+      },
+      "alert": "PushTitle",
+      "ios": {
+        "extra": {
+          "headline": "push-breaking-title",
+          "tag": "Eilmeldung",
+          "url": "http://www.zeit.de/test/artikel?utm_campaign=eilmeldung&utm_content=zeitde_iospush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.iospush.link.x"
+        },
+        "sound": "chime.aiff",
+        "title": "push-breaking-title"
+      }
+    }
+  }
+]
