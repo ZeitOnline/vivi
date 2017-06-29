@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.7.5 (unreleased)
+1.7.5 (2017-06-29)
 ------------------
 
 - FIX: Add volume object to mass publication
