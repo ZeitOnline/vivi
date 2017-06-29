@@ -1,6 +1,7 @@
 from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import zc.iso8601.parse
 import zeit.cms.interfaces
 import zope.interface
 import zope.schema
@@ -123,6 +124,8 @@ class Video(object):
     """
 
     id = dictproperty('id', field=zope.schema.TextLine(readonly=True))
+
+    # read/write fields
     title = dictproperty('name', IVideo, 'title')
     teaserText = dictproperty('description', IVideo, 'teaserText')
 
@@ -153,6 +156,27 @@ class Video(object):
     supertitle = dictproperty('custom_fields/supertitle', IVideo, 'supertitle')
     video_still_copyright = dictproperty(
         'custom_fields/credit', IVideo, 'video_still_copyright')
+
+    # readonly fields
+    date_created = dictproperty(
+        'created_at', field=zope.schema.Datetime(readonly=True))
+    date_first_released = dictproperty(
+        'published_at',
+        zeit.cms.workflow.interfaces.IPublishInfo, 'date_first_released')
+    date_last_modified = dictproperty(
+        'updated_at',
+        zeit.cms.workflow.interfaces.IModified, 'date_last_modified')
+    expires = dictproperty(
+        'schedule/ends_at', zeit.brightcove.interfaces.IVideo, 'expires')
+    ignore_for_update = dictproperty(
+        'custom_fields/ignore_for_update',
+        field=zope.schema.Bool(readonly=True))
+    sources = dictproperty('sources', IVideo, 'renditions',
+                           converter='SourceConverter')
+    state = dictproperty(
+        'state', zeit.brightcove.interfaces.IBrightcoveContent, 'item_state')
+    thumbnail = dictproperty('images/thumbnail/src', IVideo, 'thumbnail')
+    video_still = dictproperty('images/poster/src', IVideo, 'video_still')
 
     def __init__(self):
         self.data = {}
@@ -251,6 +275,21 @@ class BoolConverter(Converter):
         return value == '1'
 
 
+class DatetimeConverter(Converter):
+
+    grok.context(zope.schema.Datetime)
+
+    def to_bc(self, value):
+        if not value:
+            return None
+        return value.isoformat()
+
+    def to_cms(self, value):
+        if not value:
+            return None
+        return zc.iso8601.parse.datetimetz(value)
+
+
 class AuthorshipsConverter(Converter):
 
     # used explicitly, since we cannot register an adapter for a field instance
@@ -331,4 +370,21 @@ class RelatedConverter(Converter):
             if not item:
                 continue  # Micro-optimization
             result.append(zeit.cms.interfaces.ICMSContent(item, None))
+        return tuple(result)
+
+
+class SourceConverter(Converter):
+
+    grok.baseclass()
+
+    def to_cms(self, value):
+        result = []
+        for item in value:
+            vr = zeit.content.video.video.VideoRendition()
+            vr.url = item.get('src')
+            if not vr.url:
+                continue
+            vr.frame_width = item.get('width')
+            vr.video_duration = item.get('duration')
+            result.append(vr)
         return tuple(result)

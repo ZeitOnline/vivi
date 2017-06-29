@@ -1,6 +1,8 @@
+from datetime import datetime
 from zeit.brightcove.convert2 import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
 import mock
+import pytz
 import transaction
 import zeit.brightcove.testing
 import zeit.cms.testing
@@ -107,6 +109,35 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/eta-zapatero',
             bc.data['custom_fields']['ref_link1'])
         self.assertEqual(related.related, bc.related)
+
+    def test_converts_sources(self):
+        bc = BCVideo()
+        bc.data['sources'] = [{
+            'asset_id': '83006421001',
+            'codec': 'H264',
+            'container': 'MP4',
+            'duration': 85163,
+            'encoding_rate': 1264000,
+            'height': 720,
+            'remote': False,
+            'size': 13453446,
+            'src': 'https://brightcove.hs.llnwd.net/e1/pd/...',
+            'uploaded_at': '2010-05-05T08:26:48.704Z',
+            'width': 1280,
+        }]
+        sources = bc.sources
+        self.assertEqual(1, len(sources))
+        src = sources[0]
+        self.assertEqual(1280, src.frame_width)
+        self.assertEqual('https://brightcove.hs.llnwd.net/e1/pd/...', src.url)
+        self.assertEqual(85163, src.video_duration)
+
+    def test_converts_timestamps(self):
+        bc = BCVideo()
+        bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
+        self.assertEqual(
+            datetime(2017, 5, 15, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            bc.date_created)
 
 
 class SaveTest(zeit.cms.testing.FunctionalTestCase):
