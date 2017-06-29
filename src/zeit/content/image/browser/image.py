@@ -166,11 +166,11 @@ class ImageListRepresentation(
 
     @property
     def volume(self):
-        return self.image_metadata.volume
+        return None
 
     @property
     def year(self):
-        return self.image_metadata.year
+        return None
 
     @property
     def searchableText(self):
