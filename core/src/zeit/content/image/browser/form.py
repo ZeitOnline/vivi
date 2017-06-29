@@ -38,7 +38,7 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
     form_fields = (zope.formlib.form.FormFields(
         zeit.content.image.browser.interfaces.IFileAddSchema) +
-        ImageFormBase.form_fields.omit('references'))
+        ImageFormBase.form_fields.omit('references', 'external_id'))
 
     title = _("Add image")
     factory = zeit.content.image.image.LocalImage
