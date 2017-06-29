@@ -231,9 +231,11 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         articles_to_publish = self.all_content_via_solr(
             additional_query_contstraints=additional_constraints)
         # Flatten the list of lists and remove duplicates
-        return list(set(itertools.chain.from_iterable(
+        articles_with_references = list(set(itertools.chain.from_iterable(
             [self._with_references(article) for article in
              articles_to_publish])))
+        articles_with_references.append(self)
+        return articles_with_references
 
     def _with_references(self, article):
         """
