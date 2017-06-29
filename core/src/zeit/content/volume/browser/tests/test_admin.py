@@ -93,8 +93,13 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         with mock.patch('zeit.workflow.publish.PublishTask'
                         '.call_publish_script') as script:
             self.publish_content()
-            script.assert_called_with(['work/testcontent'])
-        self.assertTrue(IPublishInfo(self.repository['testcontent']).published)
+            script.assert_called_with(['work/testcontent',
+                                       'work/2015/01/ausgabe'])
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.assertTrue(IPublishInfo(self.repository['testcontent'])
+                            .published)
+            self.assertTrue(IPublishInfo(self.repository['2015']['01']
+                                         ['ausgabe']).published)
 
     def test_referenced_boxes_of_articles_are_published_as_well(self):
         article = self.create_article_with_references()
@@ -113,3 +118,4 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.publish_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['image']).published)
+
