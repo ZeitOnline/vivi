@@ -4,10 +4,17 @@ zeit.content.article changes
 3.24.0 (unreleased)
 -------------------
 
-- ZON-4006: Move mobile fields to their own form 
+- ZON-4006: Move mobile fields to their own form
 
 - BUG-133: Hide the whole "breaking news" info, not just the retract button
   when the banner doesn't match anymore
+
+
+3.23.4 (2017-06-29)
+-------------------
+
+- BUG-743: Ignore empty imagegroups in IElementReferences
+
 
 3.23.3 (2017-06-26)
 -------------------
