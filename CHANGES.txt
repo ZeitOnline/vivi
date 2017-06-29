@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.20.3 (unreleased)
+2.20.3 (2017-06-29)
 -------------------
 
 - FIX: Remove year+volume remnants
