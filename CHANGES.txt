@@ -4,6 +4,8 @@ zeit.content.image changes
 2.20.2 (unreleased)
 -------------------
 
+- MAINT: Make photographer non-required
+
 - MAINT: Remove obsolete year+volume fields
 
 
