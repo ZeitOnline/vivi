@@ -5,11 +5,13 @@ import lxml.etree
 import mock
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
+import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.content.image.imagegroup
 import zeit.magazin.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
@@ -17,7 +19,6 @@ import zope.component
 import zope.event
 import zope.interface
 import zope.lifecycleevent
-import zeit.cms.content.reference
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -388,6 +389,19 @@ class ArticleElementReferencesTest(
         ref.references = pbox
         self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
+
+    def test_empty_imagegroup_not_in_element_references(self):
+        from zeit.content.article.edit.body import EditableBody
+        self.repository['image-group'] = \
+            zeit.content.image.imagegroup.ImageGroup()
+        body = EditableBody(self.article, self.article.xml.body)
+        image_group = body.create_item('image', 3)
+        image_group.references = image_group.references.create(
+             self.repository['image-group'])
+        image_group._validate = mock.Mock()
+        self.repository['article_with_empty_ref'] = self.article
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
+            self.repository['article_with_empty_ref'])))
 
     def test_articles_element_references_is_empty_if_no_references_are_set(self):
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
