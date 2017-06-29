@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2017-06-21 11:47+0200\n"
-"PO-Revision-Date: 2017-06-21 11:47+0200\n"
+"PO-Revision-Date: 2017-06-29 12:54+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -3912,7 +3912,7 @@ msgstr "Agentur"
 
 #: zeit/content/image/interfaces.py:85
 msgid "Image company freetext"
-msgstr "Agentur Freitext"
+msgstr "Agentur (Freitext)"
 
 #: zeit/content/image/interfaces.py:86
 msgid "Overrides image company"
