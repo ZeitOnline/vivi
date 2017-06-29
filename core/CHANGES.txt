@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.94 (unreleased)
+2.0.94 (2017-06-29)
 +++++++++++++++++++
 
 - ZON-3174: Übersetzungen aktualisiert
