@@ -201,9 +201,6 @@ class Video(object):
             self.id or '(unknown)')
 
 
-@grok.subscribe(
-    zeit.content.video.interfaces.IVideo,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_brightcove(context, event):
     if not event.publishing:
         session = zeit.brightcove.session.get()
