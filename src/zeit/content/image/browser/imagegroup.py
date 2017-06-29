@@ -38,7 +38,8 @@ class AddForm(FormBase,
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references', 'master_images') +
+        FormBase.form_fields.omit(
+            'references', 'master_images', 'external_id') +
         zope.formlib.form.FormFields(IMasterImageUploadSchema))
 
     form_fields['master_image_blobs'].custom_widget = (
