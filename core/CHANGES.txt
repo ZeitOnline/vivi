@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-3983: Base SerieSource on ObjectSource
 
+- MAINT: Provide `toggleFormFieldHelp` JS to make zc.form combinationwidget happy
+
 
 2.103.0 (2017-06-27)
 --------------------
