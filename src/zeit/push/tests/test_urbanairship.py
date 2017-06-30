@@ -102,10 +102,42 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual('News', ios['extra']['tag'])
 
 
-class PayloadTemplatesTest(ConnectionTest):
+class PayloadSourceTest(zeit.push.testing.TestCase):
 
-    def test_payload(self):
-        pass
+    def setUp(self):
+        super(PayloadSourceTest, self).setUp()
+        self.create_test_payload_template()
+        self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
+
+    def test_getValues_returns_all_templaes_as_text_objects(self):
+        # Change this if we decide we want a new content type PaylaodTemplate
+        self.assertTrue(1, len(self.templates))
+        self.assertTrue(zeit.content.text.text.Text, type(self.templates[0]))
+
+    def test_getTitle_returns_capitalized_title(self):
+        self.assertTrue('Template',
+            zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.getTitle(
+                self.templates[0]))
+
+    def test_getToken_returns_unique_id(self):
+        self.assertTrue('http://xml.zeit.de/data/payload-templates/template'
+                        '.json',
+                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory\
+                        .getToken(self.templates[0]))
+
+    def test_find_returns_correct_template(self):
+        result = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
+            'http://xml.zeit.de/data/payload-templates/template.json'
+        )
+        self.assertEqual(self.templates[0], result)
+
+
+class PayloadTemplatesTest(zeit.push.testing.TestCase):
+
+    def test_payloadtemplate_is_loaded(self):
+        self.create_test_payload_template()
+        templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
+
 
 class DataTest(ConnectionTest):
 

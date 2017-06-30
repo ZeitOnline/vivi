@@ -17,7 +17,7 @@ product_config = """\
   channel-news News
   urbanairship-audience-group subscriptions
   mobile-buttons file://{fixtures}/mobile-buttons.xml
-  push-payload-templates payload-templates
+  push-payload-templates data/payload-templates
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

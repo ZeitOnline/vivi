@@ -1,3 +1,4 @@
+import pkg_resources
 import plone.testing
 import gocept.selenium
 import logging
@@ -6,6 +7,7 @@ import zeit.content.article.testing
 import zeit.push.interfaces
 import zeit.workflow.testing
 import zope.interface
+import zeit.content.text.text
 
 
 log = logging.getLogger(__name__)
@@ -64,9 +66,17 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def create_test_payload_template(self):
         with zeit.cms.testing.site(self.getRootFolder()):
-            zeit.cms.content.add.find_or_create_folder('work',
-                                                       'payload-templates')
-
+            with zeit.cms.testing.interaction():
+                zeit.cms.content.add.find_or_create_folder('data',
+                                                           'payload-templates')
+                template = zeit.content.text.text.Text()
+                filename = "{fixtures}/payloadtemplate.json".format(
+                    fixtures=pkg_resources.resource_filename(
+                        __name__, 'tests/fixtures'))
+                with open(filename) as jsonfile:
+                    template.text = jsonfile.read()
+                self.repository['data']['payload-templates']['template.json']\
+                    = template
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
