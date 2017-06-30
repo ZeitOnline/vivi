@@ -1,3 +1,4 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
 import zc.sourcefactory.source
@@ -248,18 +249,27 @@ MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    product_configuration = 'zeit.push'
-
+    @CONFIG_CACHE.cache_on_arguments()
     def getValues(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-             self.product_configuration)
-        path = config['push-payload-templates']
+        payload_path = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push').get('push-payload-templates')
         template_folder = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/{}".format(path))
-        return [template_json for template_json in template_folder]
+            "http://xml.zeit.de/{}".format(payload_path))
+        return [template_json for template_json in template_folder.values()]
 
     def getTitle(self, value):
-        return value.split('.')[0].capitalize()
+        return value.__name__.split('.')[0].capitalize()
+
+    def getToken(self, value):
+        return value.uniqueId
+
+    def find(self, id):
+        # hier kriege ich erstmal so kein token
+        ret = None
+        for val in self.getValues():
+            if val.uniqueId == id:
+                ret = val
+        return ret
 
 
 PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()
