@@ -132,13 +132,6 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
         self.assertEqual(self.templates[0], result)
 
 
-class PayloadTemplatesTest(zeit.push.testing.TestCase):
-
-    def test_payloadtemplate_is_loaded(self):
-        self.create_test_payload_template()
-        templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
-
-
 class DataTest(ConnectionTest):
 
     def create_catalog(self):
