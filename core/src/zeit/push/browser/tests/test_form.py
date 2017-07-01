@@ -15,8 +15,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         # Add payload_template placehodler
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                self.repository['payload-templates'] = Folder()
-                self.repository['payload-templates']['foo.json'] = \
+                self.repository['data'] = Folder()
+                self.repository['data']['payload-templates'] = Folder()
+                self.repository['data']['payload-templates']['foo.json'] = \
                     ExampleContentType()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
@@ -205,7 +206,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual('foo.json', service['payload_template'])
+        self.assertEqual('http://xml.zeit.de/data/payload-templates/foo.json',
+                         service['payload_template'])
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
