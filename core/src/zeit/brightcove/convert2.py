@@ -245,12 +245,7 @@ class Video(object):
 
     @cachedproperty
     def uniqueId(self):
-        path = self.__parent__.uniqueId
-        # XXX Folders in mock connector have no trailing slash, but in the real
-        # connector they do.
-        if not path.endswith('/'):
-            path += '/'
-        return path + self.id
+        return self.__parent__.uniqueId + self.id
 
     @property
     def write_data(self):
