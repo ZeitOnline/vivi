@@ -2,6 +2,7 @@ from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zc.iso8601.parse
+import zeit.brightcove.resolve
 import zeit.cms.interfaces
 import zope.interface
 import zope.schema
@@ -190,7 +191,14 @@ class Video(object):
     def find_by_id(cls, id):
         api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
         data = api.get_video(id)
-        data['sources'] = api.get_video_sources(id)
+        if data is not None:
+            data['sources'] = api.get_video_sources(id)
+        else:
+            # Since BC gives us no further information, we need to try and
+            # resolve the CMS uniqueId by ourselves.
+            cmsobj = zeit.cms.interfaces.ICMSContent(
+                zeit.brightcove.resolve.query_video_id(id), None)
+            return DeletedVideo(id, cmsobj)
         return cls.from_bc(data)
 
     @classmethod
@@ -269,6 +277,21 @@ class Video(object):
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__,
             self.id or '(unknown)')
+
+
+class DeletedVideo(Video):
+
+    def __init__(self, id, cmsobj):
+        # We fake just enough API so VideoUpdater can perform the delete
+        # (or skip us entirely if we don't even have a CMS object anymore).
+        super(DeletedVideo, self).__init__()
+        self.data['id'] = id
+        if cmsobj is not None:
+            self.__dict__['__parent__'] = cmsobj.__parent__
+            self.__dict__['uniqueId'] = cmsobj.uniqueId
+        else:
+            self.__dict__['uniqueId'] = (
+                'http://xml.zeit.de/__deleted_video__/' + id)
 
 
 def update_brightcove(context, event):

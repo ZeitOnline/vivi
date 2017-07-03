@@ -29,7 +29,13 @@ class CMSAPI(object):
         self.timeout = timeout
 
     def get_video(self, id):
-        return self._request('GET /videos/%s' % id)
+        try:
+            return self._request('GET /videos/%s' % id)
+        except requests.exceptions.RequestException, err:
+            status = getattr(err.response, 'status_code', None)
+            if status == 404:
+                return None
+            raise
 
     def get_video_sources(self, id):
         return self._request('GET /videos/%s/sources' % id)

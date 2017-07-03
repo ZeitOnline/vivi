@@ -191,6 +191,19 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual('http://example.com/still', cms.video_still)
         self.assertEqual('http://example.com/rendition', cms.renditions[0].url)
 
+    def test_creates_deleted_video_on_notfound(self):
+        with mock.patch('zeit.brightcove.connection2.CMSAPI.get_video') as get:
+            with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
+                get.return_value = None
+                query.return_value = (
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                bc = BCVideo.find_by_id('nonexistent')
+        self.assertIsInstance(bc, zeit.brightcove.convert2.DeletedVideo)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
+
 
 class SaveTest(zeit.cms.testing.FunctionalTestCase):
 

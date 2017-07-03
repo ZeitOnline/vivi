@@ -16,7 +16,9 @@ class ICMSAPI(zope.interface.Interface):
     """Brightcove CMS-API connection."""
 
     def get_video(id):
-        """Returns the video metadata as a dict."""
+        """Returns the video metadata as a dict.
+        If no video was found by Brightcove, returns None.
+        """
 
     def get_video_sources(id):
         """Returns a list of dicts with data about video sources/renditions."""
