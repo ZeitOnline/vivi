@@ -51,6 +51,14 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual(True, bc.commentsAllowed)
         self.assertEqual('1', bc.data['custom_fields']['allow_comments'])
 
+    def test_looks_up_folder_from_product_config(self):
+        bc = BCVideo()
+        bc.data['id'] = 'myvid'
+        bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
+        self.assertEqual('http://xml.zeit.de/video/2017-05/myvid', bc.uniqueId)
+        self.assertEqual(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2017-05/'), bc.__parent__)
+
     def test_converts_authors(self):
         from zeit.content.author.author import Author
         self.repository['a1'] = Author()

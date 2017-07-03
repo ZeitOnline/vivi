@@ -211,6 +211,19 @@ class Video(object):
         instance.data.update(data)
         return instance
 
+    @cachedproperty
+    def __parent__(self):
+        return zeit.cms.content.interfaces.IAddLocation(self)
+
+    @cachedproperty
+    def uniqueId(self):
+        path = self.__parent__.uniqueId
+        # XXX Folders in mock connector have no trailing slash, but in the real
+        # connector they do.
+        if not path.endswith('/'):
+            path += '/'
+        return path + self.id
+
     @property
     def write_data(self):
         """Copy of our data dict, with all readonly properties removed."""
@@ -251,6 +264,15 @@ def publish_on_checkin(context, event):
         zeit.cms.workflow.interfaces.IPublish(context).publish()
 
 
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
+@grok.adapter(Video)
+def video_location(bcobj):
+    conf = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
+    path = conf['video-folder']
+    return zeit.cms.content.add.find_or_create_folder(
+        *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')]))
+
+
 class ITypeConverter(zope.interface.Interface):
 
     def to_bc(value):
@@ -275,6 +297,14 @@ class Converter(grok.Adapter):
 class DefaultPassthroughConverter(Converter):
 
     grok.context(zope.interface.Interface)
+
+
+class TextConverter(Converter):
+
+    grok.context(zope.schema.TextLine)
+
+    def to_cms(self, value):
+        return unicode(value)
 
 
 class BoolConverter(Converter):
