@@ -15,6 +15,12 @@ class IAPIConnection(zope.interface.Interface):
 class ICMSAPI(zope.interface.Interface):
     """Brightcove CMS-API connection."""
 
+    def get_video(id):
+        """Returns the video metadata as a dict."""
+
+    def get_video_sources(id):
+        """Returns a list of dicts with data about video sources/renditions."""
+
     def update_video(bcvideo):
         """Updates the video metadata."""
 

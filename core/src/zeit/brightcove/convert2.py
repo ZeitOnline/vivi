@@ -182,6 +182,13 @@ class Video(object):
         self.data = {}
 
     @classmethod
+    def find_by_id(cls, id):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        data = api.get_video(id)
+        data['sources'] = api.get_video_sources(id)
+        return cls.from_bc(data)
+
+    @classmethod
     def from_cms(cls, video):
         instance = cls()
         instance.data['id'] = video.brightcove_id
@@ -196,6 +203,12 @@ class Video(object):
                     wrapped = prop.iface(video)
                     adapters[prop.iface] = wrapped
             setattr(instance, prop.__name__, prop.field.get(wrapped))
+        return instance
+
+    @classmethod
+    def from_bc(cls, data):
+        instance = cls()
+        instance.data.update(data)
         return instance
 
     @property

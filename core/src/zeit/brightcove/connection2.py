@@ -28,6 +28,12 @@ class CMSAPI(object):
         self.client_secret = client_secret
         self.timeout = timeout
 
+    def get_video(self, id):
+        return self._request('GET /videos/%s' % id)
+
+    def get_video_sources(self, id):
+        return self._request('GET /videos/%s/sources' % id)
+
     def update_video(self, bcvideo):
         self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.write_data)
 
