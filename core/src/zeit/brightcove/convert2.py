@@ -189,6 +189,12 @@ class Video(object):
         return cls.from_bc(data)
 
     @classmethod
+    def from_bc(cls, data):
+        instance = cls()
+        instance.data.update(data)
+        return instance
+
+    @classmethod
     def from_cms(cls, video):
         instance = cls()
         instance.data['id'] = video.brightcove_id
@@ -196,20 +202,19 @@ class Video(object):
         for prop in instance._dictproperties:
             if prop.field.readonly:
                 continue
-            wrapped = video
-            if prop.iface:
-                wrapped = adapters.get(prop.iface)
-                if wrapped is None:
-                    wrapped = prop.iface(video)
-                    adapters[prop.iface] = wrapped
+            wrapped = cls._maybe_adapt(video, prop.iface, adapters)
             setattr(instance, prop.__name__, prop.field.get(wrapped))
         return instance
 
-    @classmethod
-    def from_bc(cls, data):
-        instance = cls()
-        instance.data.update(data)
-        return instance
+    @staticmethod
+    def _maybe_adapt(video, iface, cache):
+        if not iface:
+            return video
+        wrapped = cache.get(iface)
+        if wrapped is None:
+            wrapped = iface(video)
+            cache[iface] = wrapped
+        return wrapped
 
     @cachedproperty
     def __parent__(self):
