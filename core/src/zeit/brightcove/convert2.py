@@ -123,7 +123,11 @@ class Video(object):
     Can be constructed from both a CMS object and a BC API result dict.
     """
 
-    id = dictproperty('id', field=zope.schema.TextLine(readonly=True))
+    id = dictproperty(
+        'id', IVideo, 'brightcove_id',
+        # Monkey-patched by zeit.brightcove.__init__, which doesn't work
+        # with interfaces, so we need to fudge the fieldname a little.
+        field=zope.schema.TextLine(readonly=True, __name__='brightcove_id'))
 
     # read/write fields
     title = dictproperty('name', IVideo, 'title')
@@ -164,17 +168,18 @@ class Video(object):
         'published_at',
         zeit.cms.workflow.interfaces.IPublishInfo, 'date_first_released')
     date_last_modified = dictproperty(
-        'updated_at',
-        zeit.cms.workflow.interfaces.IModified, 'date_last_modified')
+        # zeit.cms.workflow.IModified['date_last_modified'] is not writeable.
+        'updated_at', field=zope.schema.Datetime(readonly=True))
     expires = dictproperty(
-        'schedule/ends_at', zeit.brightcove.interfaces.IVideo, 'expires')
+        # IBrightcoveContent, don't apply to CMS.
+        'schedule/ends_at', field=zope.schema.Datetime(readonly=True))
     ignore_for_update = dictproperty(
         'custom_fields/ignore_for_update',
         field=zope.schema.Bool(readonly=True))
     sources = dictproperty('sources', IVideo, 'renditions',
                            converter='SourceConverter')
-    state = dictproperty(
-        'state', zeit.brightcove.interfaces.IBrightcoveContent, 'item_state')
+    # IBrightcoveContent, don't apply to CMS.
+    state = dictproperty('state', field=zope.schema.TextLine(readonly=True))
     thumbnail = dictproperty('images/thumbnail/src', IVideo, 'thumbnail')
     video_still = dictproperty('images/poster/src', IVideo, 'video_still')
 
@@ -205,6 +210,16 @@ class Video(object):
             wrapped = cls._maybe_adapt(video, prop.iface, adapters)
             setattr(instance, prop.__name__, prop.field.get(wrapped))
         return instance
+
+    def apply_to_cms(self, video):
+        adapters = {}
+        for prop in self._dictproperties:
+            if not prop.field.__name__:
+                continue
+            wrapped = self._maybe_adapt(video, prop.iface, adapters)
+            # Cannot use prop.field.set(), since we might want to set fields
+            # that are declared readonly in CMS (e.g. date_first_released).
+            setattr(wrapped, prop.field.__name__, getattr(self, prop.__name__))
 
     @staticmethod
     def _maybe_adapt(video, iface, cache):

@@ -147,6 +147,50 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             datetime(2017, 5, 15, 8, 24, 55, 916000, tzinfo=pytz.UTC),
             bc.date_created)
 
+    def test_applies_values_to_cms_object(self):
+        from zeit.content.author.author import Author
+        self.repository['a1'] = Author()
+        cms = CMSVideo()
+        bc = BCVideo()
+        bc.data = {
+            'id': 'myvid',
+            'name': 'title',
+            'created_at': '2017-05-15T08:24:55.916Z',
+            'state': 'ACTIVE',
+            'custom_fields': {
+                'allow_comments': '1',
+                'authors': 'http://xml.zeit.de/a1',
+                'cmskeywords': 'testtag;testtag2',
+                'produkt-id': 'TEST',
+                'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
+                'serie': 'erde/umwelt',
+            },
+            'images': {
+                'thumbnail': {'src': 'http://example.com/thumbnail'},
+                'poster': {'src': 'http://example.com/still'},
+            },
+            'sources': [{
+                'src': 'http://example.com/rendition',
+            }],
+        }
+        bc.apply_to_cms(cms)
+        self.assertEqual('myvid', cms.brightcove_id)
+        self.assertEqual('title', cms.title)
+        self.assertEqual(True, cms.commentsAllowed)
+        self.assertEqual(['http://xml.zeit.de/a1'],
+                         [x.target.uniqueId for x in cms.authorships])
+        self.assertEqual(['testtag', 'testtag2'],
+                         [x.code for x in cms.keywords])
+        self.assertEqual('TEST', cms.product.id)
+        self.assertEqual(
+            (zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
+            zeit.cms.related.interfaces.IRelatedContent(cms).related)
+        self.assertEqual('erde/umwelt', cms.serie.serienname)
+        self.assertEqual('http://example.com/thumbnail', cms.thumbnail)
+        self.assertEqual('http://example.com/still', cms.video_still)
+        self.assertEqual('http://example.com/rendition', cms.renditions[0].url)
+
 
 class SaveTest(zeit.cms.testing.FunctionalTestCase):
 
