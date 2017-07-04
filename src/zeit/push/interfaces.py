@@ -249,7 +249,8 @@ MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    @CONFIG_CACHE.cache_on_arguments()
+    # For testing purposes, this should not be cached at all
+    # @CONFIG_CACHE.cache_on_arguments()
     def getValues(self):
         payload_path = zope.app.appsetup.product.getProductConfiguration(
             'zeit.push').get('push-payload-templates')
@@ -264,7 +265,6 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         return value.uniqueId
 
     def find(self, id):
-        # hier kriege ich erstmal so kein token
         ret = None
         for val in self.getValues():
             if val.uniqueId == id:

@@ -217,6 +217,13 @@ class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
     def test_applies_push_configuration_to_added_object(self):
 
         b = self.browser
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['data'] = Folder()
+                self.repository['data']['payload-templates'] = Folder()
+                self.repository['data']['payload-templates']['foo.json'] = \
+                    ExampleContentType()
+        b.handleErrors = False
         b.open('http://localhost/++skin++vivi'
                '/repository/@@zeit.cms.testcontenttype.AddSocial')
         b.getControl('File name').value = 'social'

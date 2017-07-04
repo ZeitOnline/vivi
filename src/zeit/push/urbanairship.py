@@ -6,6 +6,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import collections
 import grokcore.component as grok
+import jinja2
 import json
 import logging
 import pytz
@@ -38,47 +39,57 @@ class Connection(object):
 
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret, expire_interval):
+        self.credentials = {
+            'android': [android_application_key, android_master_secret],
+            'ios': [ios_application_key, ios_master_secret]
+        }
+        # TODO Clean this up. I dont know yet which parts rely on this
+        # interface
         self.android_application_key = android_application_key
         self.android_master_secret = android_master_secret
         self.ios_application_key = ios_application_key
         self.ios_master_secret = ios_master_secret
         self.expire_interval = expire_interval
+        self.jinja_env = jinja2.Environment(
+            loader=jinja2.FunctionLoader(load_template))
+
+
 
     @zope.cachedescriptors.property.Lazy
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration(
             'zeit.push') or {}
 
-    def get_channel_list(self, channels):
-        """Return forward-compatible list of channels.
-
-        We currently use channels as a monovalent value, set to either
-        CONFIG_CHANNEL_NEWS or CONFIG_CHANNEL_BREAKING. Make sure to retrieve
-        the according title from the config and return it as a list.
-
-        If `channels` already is a list, just return it. This is intended for
-        forward-compatibility, if we start using multiple channels.
-
-        """
-        if isinstance(channels, list):
-            return channels
-        return [x for x in self.config.get(channels, '').split(' ') if x]
-
-    def get_headline(self, channels):
-        """Return translation for the headline, which depends on the channel.
-
-        Since the channel is used to classify the push notification as ordinary
-        news or breaking news, it also influences the headline.
-
-        """
-        if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
-            headline = _('push-news-title')
-        else:
-            headline = _('push-breaking-title')
-
-        # There's no i18n in the mobile app, so we translate to a hard-coded
-        # language here.
-        return zope.i18n.translate(headline, target_language=self.LANGUAGE)
+    # def get_channel_list(self, channels):
+    #     """Return forward-compatible list of channels.
+    #
+    #     We currently use channels as a monovalent value, set to either
+    #     CONFIG_CHANNEL_NEWS or CONFIG_CHANNEL_BREAKING. Make sure to retrieve
+    #     the according title from the config and return it as a list.
+    #
+    #     If `channels` already is a list, just return it. This is intended for
+    #     forward-compatibility, if we start using multiple channels.
+    #
+    #     """
+    #     if isinstance(channels, list):
+    #         return channels
+    #     return [x for x in self.config.get(channels, '').split(' ') if x]
+    #
+    # def get_headline(self, channels):
+    #     """Return translation for the headline, which depends on the channel.
+    #
+    #     Since the channel is used to classify the push notification as ordinary
+    #     news or breaking news, it also influences the headline.
+    #
+    #     """
+    #     if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
+    #         headline = _('push-news-title')
+    #     else:
+    #         headline = _('push-breaking-title')
+    #
+    #     # There's no i18n in the mobile app, so we translate to a hard-coded
+    #     # language here.
+    #     return zope.i18n.translate(headline, target_language=self.LANGUAGE)
 
     @property
     def expiration_datetime(self):
@@ -87,107 +98,130 @@ class Connection(object):
 
     def create_payload(self, text, link, **kw):
         article = kw.get('context')
-        push = zeit.push.interfaces.IPushMessages(article)
-        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find('dummy.json')
-        channels = self.get_channel_list(kw.get('channels'))
-        parts = urlparse.urlparse(link)
-        path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
-        full_link = u'%s://%s/%s' % (parts.scheme, parts.netloc, path)
-        deep_link = u'%s://%s' % (self.APP_IDENTIFIER, path)
-        android_headline = 'ZEIT ONLINE {}'.format(self.get_headline(channels))
+        push_message = kw.get('push_config')
+        template = self.jinja_env.get_template(push_message.get(
+            'payload_template'))
+        rendered_template = template.render(**self.create_template_vars(
+            text, link, article, push_message))
+        return self.validate_template(rendered_template)
+        # Should be set in template
+        # android_headline = 'ZEIT ONLINE {}'.format(self.get_headline(channels))
+        #
+        # is_breaking = self.config.get(CONFIG_CHANNEL_BREAKING) in channels
+        # # Extra tag helps the app know which kind of notification was send
+        # if is_breaking:
+        #     extra_tag = self.config.get(CONFIG_CHANNEL_BREAKING)
+        # else:
+        #     extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
+        #
+        # return {
+        #     'android': {
+        #         'actions': {
+        #             'open': {
+        #                 'type': 'deep_link',
+        #                 'content': self.add_tracking(
+        #                     deep_link, channels, 'android')
+        #             }
+        #         },
+        #         'alert': text,
+        #         'android': {
+        #             'extra': {
+        #                 'headline': android_headline,
+        #                 'tag': extra_tag,
+        #                 'url': self.add_tracking(
+        #                     full_link, channels, 'android')
+        #             },
+        #             'priority': 2 if is_breaking else 0,
+        #             'title': android_headline,
+        #         }
+        #     },
+        #     'ios': {
+        #         'actions': {
+        #             'open': {
+        #                 'type': 'deep_link',
+        #                 'content': self.add_tracking(
+        #                     deep_link, channels, 'ios')
+        #             }
+        #         },
+        #         'alert': text,
+        #         'ios': {
+        #             'extra': {
+        #                 'headline': self.get_headline(channels),
+        #                 'tag': extra_tag,
+        #                 'url': self.add_tracking(full_link, channels, 'ios')
+        #             },
+        #             'sound': 'chime.aiff' if is_breaking else '',
+        #             'title': self.get_headline(channels),
+        #         }
+        #     }
+        # }
 
-        is_breaking = self.config.get(CONFIG_CHANNEL_BREAKING) in channels
-        # Extra tag helps the app know which kind of notification was send
-        if is_breaking:
-            extra_tag = self.config.get(CONFIG_CHANNEL_BREAKING)
-        else:
-            extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
-
-        return {
-            'android': {
-                'actions': {
-                    'open': {
-                        'type': 'deep_link',
-                        'content': self.add_tracking(
-                            deep_link, channels, 'android')
-                    }
-                },
-                'alert': text,
-                'android': {
-                    'extra': {
-                        'headline': android_headline,
-                        'tag': extra_tag,
-                        'url': self.add_tracking(
-                            full_link, channels, 'android')
-                    },
-                    'priority': 2 if is_breaking else 0,
-                    'title': android_headline,
-                }
-            },
-            'ios': {
-                'actions': {
-                    'open': {
-                        'type': 'deep_link',
-                        'content': self.add_tracking(
-                            deep_link, channels, 'ios')
-                    }
-                },
-                'alert': text,
-                'ios': {
-                    'extra': {
-                        'headline': self.get_headline(channels),
-                        'tag': extra_tag,
-                        'url': self.add_tracking(full_link, channels, 'ios')
-                    },
-                    'sound': 'chime.aiff' if is_breaking else '',
-                    'title': self.get_headline(channels),
-                }
-            }
-        }
+    def validate_template(self, payload_string):
+        # TODO Implement it!
+        # If not proper json a pretty good Value Error will be raised here
+        push_messages = json.loads(payload_string)
+        # Work with colander here?
+        # Maybe make use of functionality of the urbanairship python module,
+        #  or its validation API
+        return push_messages
 
     def send(self, text, link, **kw):
-        # If I have the Context here i should be able to get all information
-        # to build the correct payload.
-        # Another option would be to build the payload in the message class
-        # and let this class only build an Urbanairship push object and
-        # handle firing of the request to ua...
-        channels = self.get_channel_list(kw.get('channels'))
-        if not channels:
-            raise ValueError('No channel given to define target audience.')
+        # channels = self.get_channel_list(kw.get('channels'))
+        # if not channels:
+        #     raise ValueError('No channel given to define target audience.')
 
         # We need channels to define the target audience in order to avoid
         # accidental pushes to *all* devices.
-        audience_channels = {
-            'OR': [{'group': self.config['urbanairship-audience-group'],
-                    'tag': channel} for channel in channels],
-        }
+        # audience_channels = {
+        #     'OR': [{'group': self.config['urbanairship-audience-group'],
+        #             'tag': channel} for channel in channels],
+        # }
 
         # The expiration datetime must not contain microseconds, therefore we
         # cannot use `isoformat`.
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
-        payload = self.create_payload(text, link, **kw)
+        push_messages = self.create_payload(text, link, **kw)
+        to_push = []
+        for push_message in push_messages:
+            # Check out https://docs.urbanairship.com/api/ua/#push-object
+            # "all" is not supported, although its part of the UA-API
+            # We do make the assumption, that for every device defined in the
+            #  devices-array there is also a key defined in 'notifcation' dict
+            # e.g if "devices" = ["android"] => ["notifcation"]["android"]
+            # is present.
+            # https://docs.urbanairship.com/api/ua/#push-object
+            for device in push_message.get('device_types', []):
+                application_credentials = self.credentials.get('device',
+                                                               [None, None])
+                ua_push_object = urbanairship.Airship(
+                    *application_credentials
+                ).create_push()
+                ua_push_object.audience = push_message.get('audience')
+                ua_push_object.expiry = expiry
+                ua_push_object.device_types = urbanairship.device_types(device)
+                ua_push_object.notification = push_message[device]
+                to_push.append(ua_push_object)
 
-        # Send android notification.
-        android = urbanairship.Airship(
-            self.android_application_key,
-            self.android_master_secret
-        ).create_push()
-        android.audience = audience_channels
-        android.expiry = expiry
-        android.device_types = urbanairship.device_types('android')
-        android.notification = payload['android']
-        self.push(android)
+        # Urban airship does support batch pushing, but
+        # the python module does not
+        # https://github.com/urbanairship/python-library/issues/34
+        # Still we should not push each object directly after is
+        # created, because otherwise the whole push process can fail with
+        # a later object
+        # Great validation would be a solution to this problem :)
+        for ua_push_object in to_push:
+            self.push(ua_push_object)
 
-        # Send ios notification.
-        ios = urbanairship.Airship(
-            self.ios_application_key,
-            self.ios_master_secret
-        ).create_push()
-        ios.audience = audience_channels
-        ios.expiry = expiry
-        ios.device_types = urbanairship.device_types('ios')
-        ios.notification = payload['ios']
-        self.push(ios)
+            # # Send ios notification.
+            # ios = urbanairship.Airship(
+            #     self.ios_application_key,
+            #     self.ios_master_secret
+            # ).create_push()
+            # ios.audience = audience_channels
+            # ios.expiry = expiry
+            # ios.device_types = urbanairship.device_types('ios')
+            # ios.notification = payload['ios']
+            # self.push(ios)
 
     def push(self, push):
         log.debug('Sending Push to Urban Airship: %s', push.payload)
@@ -204,36 +238,48 @@ class Connection(object):
                 push.payload, exc_info=True)
             raise zeit.push.interfaces.TechnicalError(str(e))
 
-    @staticmethod
-    def add_tracking(url, channels, device):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push') or {}
-        if config.get(CONFIG_CHANNEL_BREAKING) in channels:
-            channel = 'eilmeldung'
-        else:
-            channel = 'wichtige_news'
-        if device == 'android':
-            device = 'andpush'
-        else:
-            device = 'iospush'
+    # @staticmethod
+    # def add_tracking(url, channels, device):
+    #     config = zope.app.appsetup.product.getProductConfiguration(
+    #         'zeit.push') or {}
+    #     if config.get(CONFIG_CHANNEL_BREAKING) in channels:
+    #         channel = 'eilmeldung'
+    #     else:
+    #         channel = 'wichtige_news'
+    #     if device == 'android':
+    #         device = 'andpush'
+    #     else:
+    #         device = 'iospush'
+    #
+    #     tracking = collections.OrderedDict(sorted(
+    #         {
+    #             'wt_zmc': 'fix.int.zonaudev.push.{channel}.zeitde.{'
+    #                       'device}.link.x'.format(channel=channel,
+    #                                               device=device),
+    #             'utm_medium': 'fix',
+    #             'utm_source': 'push_zonaudev_int',
+    #             'utm_campaign': channel,
+    #             'utm_content': 'zeitde_{device}_link_x'.format(device=device),
+    #         }.items())
+    #     )
+    #     parts = list(urlparse.urlparse(url))
+    #     query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
+    #     for key, value in tracking.items():
+    #         query[key] = value
+    #     parts[4] = urllib.urlencode(query, doseq=True)
+    #     return urlparse.urlunparse(parts)
 
-        tracking = collections.OrderedDict(sorted(
-            {
-                'wt_zmc': 'fix.int.zonaudev.push.{channel}.zeitde.{'
-                          'device}.link.x'.format(channel=channel,
-                                                  device=device),
-                'utm_medium': 'fix',
-                'utm_source': 'push_zonaudev_int',
-                'utm_campaign': channel,
-                'utm_content': 'zeitde_{device}_link_x'.format(device=device),
-            }.items())
-        )
-        parts = list(urlparse.urlparse(url))
-        query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
-        for key, value in tracking.items():
-            query[key] = value
-        parts[4] = urllib.urlencode(query, doseq=True)
-        return urlparse.urlunparse(parts)
+    def create_template_vars(self, text, link, article, push_config):
+        parts = urlparse.urlparse(link)
+        path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
+        full_link = u'%s://%s/%s' % (parts.scheme, parts.netloc, path)
+        deep_link = u'%s://%s' % (self.APP_IDENTIFIER, path)
+        vars = push_config
+        vars['article'] = article
+        vars['text'] = text
+        vars['zon_link'] = full_link
+        vars['app_link'] = deep_link
+        return vars
 
 
 class Message(zeit.push.message.Message):
@@ -258,7 +304,7 @@ class Message(zeit.push.message.Message):
         result = {
             'mobile_title': self.config.get('title'),
             'context': self.context,
-            'nelf': self
+            'push_config': self.config
         }
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
@@ -298,6 +344,19 @@ def from_product_config():
         ios_application_key=config['urbanairship-ios-application-key'],
         ios_master_secret=config['urbanairship-ios-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
+
+
+def load_template(name):
+    """
+    Returns the template text as unicode
+    :param name: Name
+    :return:
+    """
+    template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(name)
+    if not template:
+        raise jinja2.TemplateNotFound("Could not find template %s in %s" % (
+            name, zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE))
+    return template.text
 
 
 class PayloadDocumentation(Connection):
