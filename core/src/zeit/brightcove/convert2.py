@@ -114,8 +114,8 @@ class RelatedProperty(dictproperty):
                 custom['ref_title%s' % i] = title
 
 
-class Video(object):
-    """Converts video data between CMS and Brightcove.
+class Converter(object):
+    """Converts data between CMS and Brightcove.
 
     * Stores json data received from the Brightcove API in a nested dict
     * Presents it as properties with CMS names and with CMS types for reading
@@ -123,6 +123,87 @@ class Video(object):
 
     Can be constructed from both a CMS object and a BC API result dict.
     """
+
+    id = NotImplemented
+
+    def __init__(self):
+        self.data = {}
+
+    @classmethod
+    def from_bc(cls, data):
+        instance = cls()
+        instance.data.update(data)
+        return instance
+
+    @classmethod
+    def from_cms(cls, cmsobj):
+        instance = cls()
+        # This is coupled to our IAddLocation and importing implementation.
+        instance.data['id'] = cmsobj.__name__
+        adapters = {}
+        for prop in instance._dictproperties:
+            if prop.field.readonly:
+                continue
+            wrapped = cls._maybe_adapt(cmsobj, prop.iface, adapters)
+            setattr(instance, prop.__name__, prop.field.get(wrapped))
+        return instance
+
+    def apply_to_cms(self, cmsobj):
+        adapters = {}
+        for prop in self._dictproperties:
+            if not prop.field.__name__:
+                continue
+            wrapped = self._maybe_adapt(cmsobj, prop.iface, adapters)
+            # Cannot use prop.field.set(), since we might want to set fields
+            # that are declared readonly in CMS (e.g. date_first_released).
+            setattr(wrapped, prop.field.__name__, getattr(self, prop.__name__))
+
+    @staticmethod
+    def _maybe_adapt(obj, iface, cache):
+        if not iface:
+            return obj
+        wrapped = cache.get(iface)
+        if wrapped is None:
+            wrapped = iface(obj)
+            cache[iface] = wrapped
+        return wrapped
+
+    @cachedproperty
+    def __parent__(self):
+        return zeit.cms.content.interfaces.IAddLocation(self)
+
+    @cachedproperty
+    def uniqueId(self):
+        return self.__parent__.uniqueId + self.id
+
+    @property
+    def write_data(self):
+        """Copy of our data dict, with all readonly properties removed."""
+        data = self.data.copy()  # first-level copy is sufficient right now.
+        for prop in self._dictproperties:
+            if prop.field.readonly:
+                data.pop(prop.bc_name, None)
+        return data
+
+    @property
+    def _dictproperties(self):
+        cls = type(self)
+        result = []
+        for propname in dir(cls):
+            prop = getattr(cls, propname)
+            if not isinstance(prop, dictproperty):
+                continue
+            prop.__name__ = propname
+            result.append(prop)
+        return result
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.id or '(unknown)')
+
+
+class Video(Converter):
 
     id = dictproperty(
         'id', IVideo, 'brightcove_id',
@@ -184,9 +265,6 @@ class Video(object):
     thumbnail = dictproperty('images/thumbnail/src', IVideo, 'thumbnail')
     video_still = dictproperty('images/poster/src', IVideo, 'video_still')
 
-    def __init__(self):
-        self.data = {}
-
     @classmethod
     def find_by_id(cls, id):
         api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
@@ -200,78 +278,6 @@ class Video(object):
                 zeit.brightcove.resolve.query_video_id(id), None)
             return DeletedVideo(id, cmsobj)
         return cls.from_bc(data)
-
-    @classmethod
-    def from_bc(cls, data):
-        instance = cls()
-        instance.data.update(data)
-        return instance
-
-    @classmethod
-    def from_cms(cls, video):
-        instance = cls()
-        instance.data['id'] = video.brightcove_id
-        adapters = {}
-        for prop in instance._dictproperties:
-            if prop.field.readonly:
-                continue
-            wrapped = cls._maybe_adapt(video, prop.iface, adapters)
-            setattr(instance, prop.__name__, prop.field.get(wrapped))
-        return instance
-
-    def apply_to_cms(self, video):
-        adapters = {}
-        for prop in self._dictproperties:
-            if not prop.field.__name__:
-                continue
-            wrapped = self._maybe_adapt(video, prop.iface, adapters)
-            # Cannot use prop.field.set(), since we might want to set fields
-            # that are declared readonly in CMS (e.g. date_first_released).
-            setattr(wrapped, prop.field.__name__, getattr(self, prop.__name__))
-
-    @staticmethod
-    def _maybe_adapt(video, iface, cache):
-        if not iface:
-            return video
-        wrapped = cache.get(iface)
-        if wrapped is None:
-            wrapped = iface(video)
-            cache[iface] = wrapped
-        return wrapped
-
-    @cachedproperty
-    def __parent__(self):
-        return zeit.cms.content.interfaces.IAddLocation(self)
-
-    @cachedproperty
-    def uniqueId(self):
-        return self.__parent__.uniqueId + self.id
-
-    @property
-    def write_data(self):
-        """Copy of our data dict, with all readonly properties removed."""
-        data = self.data.copy()  # first-level copy is sufficient right now.
-        for prop in self._dictproperties:
-            if prop.field.readonly:
-                data.pop(prop.bc_name, None)
-        return data
-
-    @property
-    def _dictproperties(self):
-        cls = type(self)
-        result = []
-        for propname in dir(cls):
-            prop = getattr(cls, propname)
-            if not isinstance(prop, dictproperty):
-                continue
-            prop.__name__ = propname
-            result.append(prop)
-        return result
-
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.id or '(unknown)')
 
 
 class DeletedVideo(Video):
