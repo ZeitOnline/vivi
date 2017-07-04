@@ -1,14 +1,18 @@
 from zeit.brightcove.update2 import import_video
+from datetime import datetime
+from zeit.brightcove.update2 import import_video, import_playlist
 from zeit.cms.interfaces import ICMSContent
 import mock
+import pytz
 import transaction
 import zeit.brightcove.testing
+import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.video.video
 
 
-class ImportCMSVideoTest(zeit.cms.testing.FunctionalTestCase):
+class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.brightcove.testing.ZCML_LAYER
 
@@ -18,6 +22,7 @@ class ImportCMSVideoTest(zeit.cms.testing.FunctionalTestCase):
             'id': 'myvid',
             'name': 'title',
             'created_at': '2017-05-15T08:24:55.916Z',
+            'updated_at': '2017-05-16T08:24:55.916Z',
             'state': 'ACTIVE',
             'custom_fields': {},
         }
@@ -39,6 +44,10 @@ class ImportCMSVideoTest(zeit.cms.testing.FunctionalTestCase):
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual('changed', video.title)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(video)
+        self.assertEqual(
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            lsc.last_semantic_change)
 
     def test_should_publish_after_update(self):
         bc = self.create_video()

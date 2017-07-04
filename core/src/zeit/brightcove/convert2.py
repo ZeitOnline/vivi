@@ -251,8 +251,8 @@ class Video(Converter):
         'published_at',
         zeit.cms.workflow.interfaces.IPublishInfo, 'date_first_released')
     date_last_modified = dictproperty(
-        # zeit.cms.workflow.IModified['date_last_modified'] is not writeable.
-        'updated_at', field=zope.schema.Datetime(readonly=True))
+        'updated_at',
+        zeit.cms.content.interfaces.ISemanticChange, 'last_semantic_change')
     expires = dictproperty(
         # IBrightcoveContent, don't apply to CMS.
         'schedule/ends_at', field=zope.schema.Datetime(readonly=True))

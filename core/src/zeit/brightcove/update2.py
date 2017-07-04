@@ -65,8 +65,9 @@ class import_video(object):
         if self.bcobj.skip_import:
             return True
         log.info('Updating %s', self.bcobj)
+        # We overwrite last_semantic_change with the BC value.
         with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=True, events=False) as co:
+                self.cmsobj, semantic_change=None, events=False) as co:
             # Don't send events here, a full checkout/checkin cycle is done
             # during publish anyway, directly below (and so we don't publish
             # twice due to the publish_on_checkin handler).
