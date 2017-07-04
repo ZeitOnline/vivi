@@ -69,10 +69,6 @@ class Connector(object):
 
         result = []
         for name in sorted(names):
-            try:
-                name = name.decode('utf-8')
-            except:
-                continue
             child_id = unicode(
                 self._get_cannonical_id(self._make_id(path + (name, ))))
             result.append((name, child_id))
@@ -81,12 +77,19 @@ class Connector(object):
 
     def _get_collection_names(self, path):
         absolute_path = self._absolute_path(path)
-        names = (set(os.listdir(absolute_path))
-                 if os.path.isdir(absolute_path) else set())
+        names = set()
+
+        if os.path.isdir(absolute_path):
+            for name in os.listdir(absolute_path):
+                try:
+                    name = name.decode('utf-8')
+                except:
+                    continue
+                names.add(name)
         for x in names.copy():
-            if x.startswith('.'):
+            if x.startswith(u'.'):
                 names.remove(x)
-            elif x.endswith('.meta') and x[:-5] in names:
+            elif x.endswith(u'.meta') and x[:-5] in names:
                 names.remove(x)
         return names
 

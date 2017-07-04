@@ -4,7 +4,7 @@ CHANGES
 2.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Another stab at dealing with brokenly encoded filenames
 
 
 2.10.0 (2017-06-12)
