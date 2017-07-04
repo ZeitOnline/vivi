@@ -43,13 +43,17 @@ class ConnectionTest(zeit.push.testing.TestCase):
         super(ConnectionTest, self).setUp()
         self.api = zeit.push.urbanairship.Connection(
             os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_ANDROID_APPLICATION_KEY'],
+                    'ZEIT_PUSH_URBANAIRSHIP_ANDROID_APPLICATION_KEY'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_ANDROID_MASTER_SECRET'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
             1
         )
         self.create_test_payload_template()
