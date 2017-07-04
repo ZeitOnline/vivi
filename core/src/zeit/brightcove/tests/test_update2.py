@@ -1,4 +1,3 @@
-from zeit.brightcove.update2 import import_video
 from datetime import datetime
 from zeit.brightcove.update2 import import_video, import_playlist
 from zeit.cms.interfaces import ICMSContent
@@ -117,6 +116,66 @@ class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
         with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
             import_video(deleted)
             self.assertEqual(True, retract.called)
+
+
+class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.ZCML_LAYER
+
+    def create_playlist(self):
+        bc = zeit.brightcove.convert2.Playlist()
+        bc.data = {
+            'id': 'mypls',
+            'name': 'title',
+            'updated_at': '2017-05-15T08:24:55.916Z',
+        }
+        return bc
+
+    def test_new_playlist_should_be_added_to_cms(self):
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        import_playlist(self.create_playlist())
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        self.assertEqual(True, info.published)
+
+    def test_changed_playlist_should_be_written_to_cms_if_newer(self):
+        bc = self.create_playlist()
+        import_playlist(bc)
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        last_published = info.date_last_published
+
+        bc.title = 'changed'
+        import_playlist(bc)
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
+
+        bc.data['updated_at'] = '2017-05-16T08:24:55.916Z'
+        import_playlist(bc)
+
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('changed', playlist.title)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(playlist)
+        self.assertEqual(
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            lsc.last_semantic_change)
+        self.assertGreater(info.date_last_published, last_published)
+
+    def test_unknown_playlist_should_be_deleted(self):
+        bc = self.create_playlist()
+        import_playlist(bc)
+        other = self.create_playlist()
+        other.data['id'] = 'other'
+        import_playlist(other)
+
+        import_playlist.delete_except([other])
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        self.assertNotEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/other', None))
 
 
 class ExportTest(zeit.cms.testing.FunctionalTestCase):
