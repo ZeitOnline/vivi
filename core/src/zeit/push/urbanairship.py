@@ -38,10 +38,13 @@ class Connection(object):
     APP_IDENTIFIER = 'zeitapp'
 
     def __init__(self, android_application_key, android_master_secret,
-                 ios_application_key, ios_master_secret, expire_interval):
+                 ios_application_key, ios_master_secret,
+                 web_application_key, web_master_secret, expire_interval,
+                 ):
         self.credentials = {
             'android': [android_application_key, android_master_secret],
-            'ios': [ios_application_key, ios_master_secret]
+            'ios': [ios_application_key, ios_master_secret],
+            'web': [web_application_key, web_master_secret]
         }
         # TODO Clean this up. I dont know yet which parts rely on this
         # interface
@@ -49,6 +52,9 @@ class Connection(object):
         self.android_master_secret = android_master_secret
         self.ios_application_key = ios_application_key
         self.ios_master_secret = ios_master_secret
+        self.web_application_key = web_application_key
+        self.web_master_secret = web_master_secret
+
         self.expire_interval = expire_interval
         self.jinja_env = jinja2.Environment(
             loader=jinja2.FunctionLoader(load_template))
@@ -343,6 +349,8 @@ def from_product_config():
         android_master_secret=config['urbanairship-android-master-secret'],
         ios_application_key=config['urbanairship-ios-application-key'],
         ios_master_secret=config['urbanairship-ios-master-secret'],
+        web_application_key=config['urbanairship-web-application-key'],
+        web_master_secret=config['urbanairship-web-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
 
 
