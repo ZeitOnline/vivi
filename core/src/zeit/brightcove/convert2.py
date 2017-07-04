@@ -174,7 +174,7 @@ class Video(object):
     expires = dictproperty(
         # IBrightcoveContent, don't apply to CMS.
         'schedule/ends_at', field=zope.schema.Datetime(readonly=True))
-    ignore_for_update = dictproperty(
+    skip_import = dictproperty(
         'custom_fields/ignore_for_update',
         field=zope.schema.Bool(readonly=True))
     sources = dictproperty('sources', IVideo, 'renditions',
