@@ -1,3 +1,4 @@
+import collections
 import logging
 import requests
 import zeit.brightcove.interfaces
@@ -43,7 +44,49 @@ class CMSAPI(object):
     def update_video(self, bcvideo):
         self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.write_data)
 
-    def _request(self, request, body=None, _retries=0):
+    def get_playlist(self, id):
+        try:
+            return self._request('GET /playlists/%s' % id)
+        except requests.exceptions.RequestException, err:
+            status = getattr(err.response, 'status_code', None)
+            if status == 404:
+                return None
+            raise
+
+    def get_all_playlists(self):
+        # The only use we have for playlists is to know the videos contained
+        # in them, which only makes sense with explicit (not search-based)
+        # playlists.
+        total = self._request(
+            'GET /counts/playlists', params={'q': 'type:EXPLICIT'})
+        total = total.get('count')
+
+        retrieved = collections.OrderedDict()
+        offset = 0
+        # Paginating should not be a huge performance issue in practise, since
+        # there are currently less than 100 playlists in the production system.
+        while len(retrieved) < total:
+            batch = self._request('GET /playlists', params={
+                'q': 'type:EXPLICIT',
+                'offset': offset,
+                'limit': 20,
+            })
+            if not batch:
+                break
+            offset += len(batch)
+            # Since BC unfortunately does not provide a time-stable sorting,
+            # each new request might contain items we've already seen (if the
+            # content changed in BC in the meantime), so we must deduplicate,
+            # see https://support.brightcove.com/overview-cms-api#largeDataSets
+            #
+            # The case that we might miss items because they have been pushed
+            # out of our view is not a problem, since we'll likely catch those
+            # on the next import run, and also: playlists aren't created often.
+            for data in batch:
+                retrieved[data['id']] = data
+        return retrieved.values()
+
+    def _request(self, request, body=None, params=None, _retries=0):
         if _retries >= self.MAX_RETRIES:
             raise RuntimeError('Maximum retries exceeded for %s' % request)
 
@@ -52,7 +95,7 @@ class CMSAPI(object):
 
         try:
             response = requests.request(
-                verb.lower(), self.base_url + path, json=body,
+                verb.lower(), self.base_url + path, json=body, params=params,
                 headers={'Authorization': 'Bearer %s' % self._access_token},
                 timeout=self.timeout)
             response.raise_for_status()
