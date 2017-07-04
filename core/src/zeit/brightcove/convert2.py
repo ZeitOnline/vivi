@@ -1,9 +1,10 @@
-from zeit.content.video.interfaces import IVideo
+from zeit.content.video.interfaces import IVideo, IPlaylist
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zc.iso8601.parse
 import zeit.brightcove.resolve
 import zeit.cms.interfaces
+import zeit.content.video.video
 import zope.interface
 import zope.schema
 
@@ -304,6 +305,47 @@ def video_location(bcobj):
         *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')]))
 
 
+class Playlist(Converter):
+
+    # Playlists are only imported, never exported, so all our fields are
+    # basically readonly, even if some are not, strictly technically speaking.
+    id = dictproperty('id', field=zope.schema.TextLine(readonly=True))
+    title = dictproperty('name', IPlaylist, 'title')
+    teaserText = dictproperty('description', IPlaylist, 'teaserText')
+    videos = dictproperty('video_ids', IPlaylist, 'videos',
+                          converter='PlaylistVideosConverter')
+    date_created = dictproperty(
+        'created_at', field=zope.schema.Datetime(readonly=True))
+    date_last_modified = dictproperty(
+        'updated_at',
+        zeit.cms.content.interfaces.ISemanticChange, 'last_semantic_change')
+
+    @classmethod
+    def find_by_id(cls, id):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        data = api.get_playlist(id)
+        if data is None:
+            return None
+        return cls.from_bc(data)
+
+    @classmethod
+    def find_all(cls):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        result = []
+        for data in api.get_all_playlists():
+            result.append(cls.from_bc(data))
+        return result
+
+
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
+@grok.adapter(Playlist)
+def playlist_location(bcobj):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['playlist-folder']
+    return zeit.cms.content.add.find_or_create_folder(*path.split('/'))
+
+
 class ITypeConverter(zope.interface.Interface):
 
     def to_bc(value):
@@ -462,3 +504,24 @@ class SourceConverter(Converter):
             vr.video_duration = item.get('duration')
             result.append(vr)
         return tuple(result)
+
+
+class PlaylistVideosConverter(Converter):
+
+    grok.baseclass()
+
+    def to_bc(self, value):
+        return [x.brightcove_id for x in value]
+
+    def to_cms(self, value):
+        if not value:
+            return []
+        result = []
+        for id in value:
+            resolved = zeit.brightcove.resolve.query_video_id(id)
+            if resolved:
+                # This is really wasteful and only due to XMLReferenceUpdater.
+                content = zeit.cms.interfaces.ICMSContent(resolved, None)
+                if content is not None:
+                    result.append(content)
+        return result

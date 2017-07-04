@@ -5,6 +5,7 @@ import mock
 import pytz
 import zeit.brightcove.testing
 import zeit.cms.testing
+import zeit.content.video.playlist
 
 
 class VideoTest(zeit.cms.testing.FunctionalTestCase,
@@ -202,3 +203,18 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
+
+
+class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.ZCML_LAYER
+
+    def test_converts_video_list(self):
+        bc = zeit.brightcove.convert2.Playlist()
+        bc.data['video_ids'] = ['search-must-be-mocked']
+        playlist = zeit.content.video.playlist.Playlist()
+        with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
+            query.return_value = 'http://xml.zeit.de/online/2007/01/Somalia'
+            bc.apply_to_cms(playlist)
+            self.assertEqual(['http://xml.zeit.de/online/2007/01/Somalia'],
+                             [x.uniqueId for x in playlist.videos])
