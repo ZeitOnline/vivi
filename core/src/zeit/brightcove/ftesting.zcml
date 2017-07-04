@@ -10,7 +10,6 @@
   <meta:provides feature="zeit.brightcove.write_on_checkin" />
 
   <include package="zeit.brightcove" />
-  <include package="zeit.brightcove.browser" />
 
   <include package="zeit.solr" />
 
