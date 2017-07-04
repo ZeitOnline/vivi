@@ -210,6 +210,12 @@ product_config = """\
 </product-config>
 """
 
+# XXX appending to product config is not very well supported right now
+cms_product_config = zeit.cms.testing.cms_product_config.replace(
+    '</product-config>', """\
+  task-queue-brightcove brightcove
+</product-config>""")
+
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
@@ -221,7 +227,7 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
         super(ZCMLLayer, self).setUp()
 
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=(
-    zeit.cms.testing.cms_product_config +
+    cms_product_config +
     zeit.solr.testing.product_config +
     zeit.workflow.testing.product_config +
     zeit.content.video.testing.product_config +

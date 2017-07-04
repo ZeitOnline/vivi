@@ -4,6 +4,7 @@ import gocept.runner
 import logging
 import zeit.brightcove.convert2
 import zeit.brightcove.session
+import zeit.cms.async
 import zeit.cms.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
@@ -87,6 +88,13 @@ class import_video(object):
                 log.warning('Could not checkout %s', self.cmsobj)
             else:
                 self.bcobj.apply_to_cms(co)
+
+
+# Triggered by BC notification webhook, which we receive in
+# zeit.brightcove.json.update.Notification
+@zeit.cms.async.function(queue='brightcove')
+def import_video_async(video_id):
+    import_video(zeit.brightcove.convert2.Video.find_by_id(video_id))
 
 
 def export_video(context, event):
