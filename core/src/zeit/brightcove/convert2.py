@@ -289,19 +289,6 @@ class DeletedVideo(Video):
                 'http://xml.zeit.de/__deleted_video__/' + id)
 
 
-def update_brightcove(context, event):
-    if not event.publishing:
-        session = zeit.brightcove.session.get()
-        session.update_video(Video.from_cms(context))
-
-
-def publish_on_checkin(context, event):
-    # prevent infinite loop, since there is a checkout/checkin cycle during
-    # publishing (to update XML references etc.)
-    if not event.publishing:
-        zeit.cms.workflow.interfaces.IPublish(context).publish()
-
-
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 @grok.adapter(Video)
 def video_location(bcobj):

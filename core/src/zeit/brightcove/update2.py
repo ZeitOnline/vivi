@@ -1,7 +1,8 @@
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.brightcove.convert2 import DeletedVideo
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import logging
 import zeit.brightcove.convert2
+import zeit.brightcove.session
 import zeit.cms.interfaces
 import zeit.content.video.video
 
@@ -75,3 +76,16 @@ class import_video(object):
                 self.bcobj.apply_to_cms(co)
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(async=False)
+
+
+def export_video(context, event):
+    if not event.publishing:
+        session = zeit.brightcove.session.get()
+        session.update_video(zeit.brightcove.convert2.Video.from_cms(context))
+
+
+def publish_on_checkin(context, event):
+    # prevent infinite loop, since there is a checkout/checkin cycle during
+    # publishing (to update XML references etc.)
+    if not event.publishing:
+        zeit.cms.workflow.interfaces.IPublish(context).publish()

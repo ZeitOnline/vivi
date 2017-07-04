@@ -1,9 +1,11 @@
 from zeit.brightcove.update2 import import_video
 from zeit.cms.interfaces import ICMSContent
 import mock
+import transaction
 import zeit.brightcove.testing
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.video.video
 
 
 class ImportCMSVideoTest(zeit.cms.testing.FunctionalTestCase):
@@ -106,3 +108,75 @@ class ImportCMSVideoTest(zeit.cms.testing.FunctionalTestCase):
         with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
             import_video(deleted)
             self.assertEqual(True, retract.called)
+
+
+class ExportTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(ExportTest, self).setUp()
+        self.repository['myvid'] = zeit.content.video.video.Video()
+        self.request_patch = mock.patch(
+            'zeit.brightcove.connection2.CMSAPI._request')
+        self.request = self.request_patch.start()
+
+    def tearDown(self):
+        self.request_patch.stop()
+        super(ExportTest, self).tearDown()
+
+    def test_video_changes_are_written_to_brightcove_on_checkin(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['myvid'], semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+        self.assertEqual(
+            'local change', self.request.call_args[1]['body']['name'])
+
+    def test_changes_are_not_written_during_publish(self):
+        zeit.cms.workflow.interfaces.IPublish(
+            self.repository['myvid']).publish(async=False)
+        self.assertEqual(False, self.request.called)
+
+    def test_changes_are_written_on_commit(self):
+        video = zeit.brightcove.convert2.Video()
+        zeit.brightcove.session.get().update_video(video)
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+        # Changes are not written again
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+
+    def test_changes_are_not_written_on_abort(self):
+        video = zeit.brightcove.convert2.Video()
+        zeit.brightcove.session.get().update_video(video)
+        transaction.abort()
+        self.assertEqual(0, self.request.call_count)
+
+    def test_video_is_published_on_checkin(self):
+        video = self.repository['myvid']
+        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        last_published = info.date_last_published
+
+        with zeit.cms.checkout.helper.checked_out(video):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        self.assertGreater(info.date_last_published, last_published)
+
+    def test_playlist_is_published_on_checkin(self):
+        self.repository['playlist'] = zeit.content.video.playlist.Playlist()
+        playlist = self.repository['playlist']
+        zeit.cms.workflow.interfaces.IPublish(playlist).publish(async=False)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        last_published = info.date_last_published
+
+        with zeit.cms.checkout.helper.checked_out(playlist):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        self.assertGreater(info.date_last_published, last_published)
