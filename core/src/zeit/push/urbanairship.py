@@ -299,10 +299,8 @@ class Message(zeit.push.message.Message):
 
     @property
     def log_message_details(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name=self.type)
-        channels = notifier.get_channel_list(self.config.get('channels'))
-        return 'Channels %s' % ' '.join(channels)
+        template = self.config.get('payload_template')
+        return 'Pushed with template %s' % template
 
     @zope.cachedescriptors.property.Lazy
     def text(self):
@@ -385,7 +383,8 @@ def print_payload_documentation():
     })
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
-        'ios_application_key', 'ios_master_secret', expire_interval=9000)
+        'ios_application_key', 'ios_master_secret', 'web_application_key',
+        'web_master_secret', expire_interval=9000)
     params = {}
     print '[{"//": "*** Eilmeldung ***"},'
     conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
