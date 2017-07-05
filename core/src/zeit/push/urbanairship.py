@@ -186,10 +186,11 @@ class Connection(object):
         # The expiration datetime must not contain microseconds, therefore we
         # cannot use `isoformat`.
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
-        push_messages = self.create_payload(text, link, **kw)
         to_push = []
+        push_messages = self.create_payload(text, link, **kw)
         for push_message in push_messages:
-            # Check out https://docs.urbanairship.com/api/ua/#push-object
+            # Check out
+            # https://docs.urbanairship.com/api/ua/#push-object
             # "all" is not supported, although its part of the UA-API
             # We do make the assumption, that for every device defined in the
             #  devices-array there is also a key defined in 'notifcation' dict
@@ -197,15 +198,17 @@ class Connection(object):
             # is present.
             # https://docs.urbanairship.com/api/ua/#push-object
             for device in push_message.get('device_types', []):
-                application_credentials = self.credentials.get('device',
+                application_credentials = self.credentials.get(device,
                                                                [None, None])
                 ua_push_object = urbanairship.Airship(
                     *application_credentials
                 ).create_push()
+                import pdb; pdb.set_trace()
                 ua_push_object.audience = push_message.get('audience')
                 ua_push_object.expiry = expiry
                 ua_push_object.device_types = urbanairship.device_types(device)
-                ua_push_object.notification = push_message[device]
+                ua_push_object.notification = push_message['notification'][
+                    device]
                 to_push.append(ua_push_object)
 
         # Urban airship does support batch pushing, but
