@@ -203,12 +203,10 @@ class Connection(object):
                 ua_push_object = urbanairship.Airship(
                     *application_credentials
                 ).create_push()
-                import pdb; pdb.set_trace()
-                ua_push_object.audience = push_message.get('audience')
                 ua_push_object.expiry = expiry
+                ua_push_object.audience = push_message['audience']
                 ua_push_object.device_types = urbanairship.device_types(device)
-                ua_push_object.notification = push_message['notification'][
-                    device]
+                ua_push_object.notification = push_message['notification']
                 to_push.append(ua_push_object)
 
         # Urban airship does support batch pushing, but
@@ -334,6 +332,7 @@ class Message(zeit.push.message.Message):
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
+    # TODO Deal with channels
     for service in push.message_config:
         if (service['type'] == 'mobile' and
                 service.get('enabled') and
