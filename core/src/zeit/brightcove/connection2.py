@@ -86,6 +86,20 @@ class CMSAPI(object):
                 retrieved[data['id']] = data
         return retrieved.values()
 
+    # Helper functions to register our notification webhook,
+    # see <https://support.brightcove.com/cms-api-notifications>
+    def get_subscriptions(self):
+        return self._request('GET /subscriptions')
+
+    def create_subscription(self, url):
+        return self._request('POST /subscriptions', {
+            'endpoint': url,
+            'events': ['video-change']
+        })
+
+    def delete_subscription(self, id):
+        self._request('DELETE /subscriptions/' + id)
+
     def _request(self, request, body=None, params=None, _retries=0):
         if _retries >= self.MAX_RETRIES:
             raise RuntimeError('Maximum retries exceeded for %s' % request)
