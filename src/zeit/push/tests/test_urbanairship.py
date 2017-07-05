@@ -1,6 +1,7 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.push.interfaces import CONFIG_CHANNEL_BREAKING, CONFIG_CHANNEL_NEWS
+from zeit.cms.interfaces import ICMSContent
 import json
 import mock
 import os
@@ -62,8 +63,27 @@ class ConnectionTest(zeit.push.testing.TestCase):
         )
         self.create_test_payload_template()
 
+    def test_push_works(self):
+        additional_params = \
+            {
+                'push_config': {
+                    'uses_image': False,
+                    'payload_template':
+                        u'http://xml.zeit.de/data/payload-templates/template.json',
+                    'enabled': True,
+                    'override_text': u'asd',
+                    'channels': 'channel-news',
+                    'type': 'mobile'},
+                'context': ICMSContent(
+                    "http://xml.zeit.de/online/2007/01/Somalia")
+            }
+        with mock.patch('urbanairship.push.core.Push.send', send):
+            with mock.patch('urbanairship.push.core.PushResponse') as push:
+                self.api.send('Push', 'http://example.com',
+                              **additional_params)
+                self.assertEqual(200, push.call_args[0][0].status_code)
+
     def test_smth_pushy(self):
-        from zeit.cms.interfaces import ICMSContent
         message_config = {
             'uses_image': False,
             'payload_template':
@@ -439,8 +459,6 @@ class PushTest(unittest.TestCase):
         #     'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET']
         self.web_application_key = ''
         self.web_master_secret = ''
-
-
 
     def test_push_works(self):
         api = zeit.push.urbanairship.Connection(
