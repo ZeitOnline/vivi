@@ -258,3 +258,11 @@ IBreakingNews.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
 IBreakingNews.setTaggedValue(
     'zeit.cms.title', _('Add breaking news'))
+
+
+class IErrorPage(IArticle):
+    """Marker interface for error pages, so zeit.web can render them
+    differently.
+
+    This interface is applied manually.
+    """
