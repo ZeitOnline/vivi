@@ -7,6 +7,12 @@ log = logging.getLogger(__name__)
 
 
 class Notification(object):
+    """This view is a receiver for notification events. We register it as a
+    "subscription" in the Brightcove API, and _they_ will call it each time a
+    video is added/changed/deleted.
+
+    See <https://support.brightcove.com/cms-api-notifications> for details.
+    """
 
     def __call__(self):
         body = self.request.bodyStream.read(
