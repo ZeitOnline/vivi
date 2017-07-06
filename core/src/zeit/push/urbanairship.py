@@ -54,7 +54,6 @@ class Connection(object):
         self.ios_master_secret = ios_master_secret
         self.web_application_key = web_application_key
         self.web_master_secret = web_master_secret
-
         self.expire_interval = expire_interval
         self.jinja_env = jinja2.Environment(
             cache_size=0,
@@ -67,21 +66,7 @@ class Connection(object):
         return zope.app.appsetup.product.getProductConfiguration(
             'zeit.push') or {}
 
-    # def get_channel_list(self, channels):
-    #     """Return forward-compatible list of channels.
-    #
-    #     We currently use channels as a monovalent value, set to either
-    #     CONFIG_CHANNEL_NEWS or CONFIG_CHANNEL_BREAKING. Make sure to retrieve
-    #     the according title from the config and return it as a list.
-    #
-    #     If `channels` already is a list, just return it. This is intended for
-    #     forward-compatibility, if we start using multiple channels.
-    #
-    #     """
-    #     if isinstance(channels, list):
-    #         return channels
-    #     return [x for x in self.config.get(channels, '').split(' ') if x]
-    #
+    # TODO Headlines have to be implemented in another way
     # def get_headline(self, channels):
     #     """Return translation for the headline, which depends on the channel.
     #
@@ -111,57 +96,7 @@ class Connection(object):
         rendered_template = template.render(**self.create_template_vars(
             text, link, article, push_message))
         return self.validate_template(rendered_template)
-        # Should be set in template
-        # android_headline = 'ZEIT ONLINE {}'.format(self.get_headline(channels))
-        #
-        # is_breaking = self.config.get(CONFIG_CHANNEL_BREAKING) in channels
-        # # Extra tag helps the app know which kind of notification was send
-        # if is_breaking:
-        #     extra_tag = self.config.get(CONFIG_CHANNEL_BREAKING)
-        # else:
-        #     extra_tag = self.config.get(CONFIG_CHANNEL_NEWS)
-        #
-        # return {
-        #     'android': {
-        #         'actions': {
-        #             'open': {
-        #                 'type': 'deep_link',
-        #                 'content': self.add_tracking(
-        #                     deep_link, channels, 'android')
-        #             }
-        #         },
-        #         'alert': text,
-        #         'android': {
-        #             'extra': {
-        #                 'headline': android_headline,
-        #                 'tag': extra_tag,
-        #                 'url': self.add_tracking(
-        #                     full_link, channels, 'android')
-        #             },
-        #             'priority': 2 if is_breaking else 0,
-        #             'title': android_headline,
-        #         }
-        #     },
-        #     'ios': {
-        #         'actions': {
-        #             'open': {
-        #                 'type': 'deep_link',
-        #                 'content': self.add_tracking(
-        #                     deep_link, channels, 'ios')
-        #             }
-        #         },
-        #         'alert': text,
-        #         'ios': {
-        #             'extra': {
-        #                 'headline': self.get_headline(channels),
-        #                 'tag': extra_tag,
-        #                 'url': self.add_tracking(full_link, channels, 'ios')
-        #             },
-        #             'sound': 'chime.aiff' if is_breaking else '',
-        #             'title': self.get_headline(channels),
-        #         }
-        #     }
-        # }
+        # TODO Use standard headline
 
     def validate_template(self, payload_string):
         # TODO Implement it!
@@ -173,17 +108,6 @@ class Connection(object):
         return push_messages
 
     def send(self, text, link, **kw):
-        # channels = self.get_channel_list(kw.get('channels'))
-        # if not channels:
-        #     raise ValueError('No channel given to define target audience.')
-
-        # We need channels to define the target audience in order to avoid
-        # accidental pushes to *all* devices.
-        # audience_channels = {
-        #     'OR': [{'group': self.config['urbanairship-audience-group'],
-        #             'tag': channel} for channel in channels],
-        # }
-
         # The expiration datetime must not contain microseconds, therefore we
         # cannot use `isoformat`.
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
@@ -198,6 +122,7 @@ class Connection(object):
             # e.g if "devices" = ["android"] => ["notifcation"]["android"]
             # is present.
             # https://docs.urbanairship.com/api/ua/#push-object
+            #
             for device in push_message.get('device_types', []):
                 application_credentials = self.credentials.get(device,
                                                                [None, None])
@@ -220,16 +145,6 @@ class Connection(object):
         for ua_push_object in to_push:
             self.push(ua_push_object)
 
-            # # Send ios notification.
-            # ios = urbanairship.Airship(
-            #     self.ios_application_key,
-            #     self.ios_master_secret
-            # ).create_push()
-            # ios.audience = audience_channels
-            # ios.expiry = expiry
-            # ios.device_types = urbanairship.device_types('ios')
-            # ios.notification = payload['ios']
-            # self.push(ios)
 
     def push(self, push):
         log.debug('Sending Push to Urban Airship: %s', push.payload)
@@ -246,36 +161,37 @@ class Connection(object):
                 push.payload, exc_info=True)
             raise zeit.push.interfaces.TechnicalError(str(e))
 
-    # @staticmethod
-    # def add_tracking(url, channels, device):
-    #     config = zope.app.appsetup.product.getProductConfiguration(
-    #         'zeit.push') or {}
-    #     if config.get(CONFIG_CHANNEL_BREAKING) in channels:
-    #         channel = 'eilmeldung'
-    #     else:
-    #         channel = 'wichtige_news'
-    #     if device == 'android':
-    #         device = 'andpush'
-    #     else:
-    #         device = 'iospush'
-    #
-    #     tracking = collections.OrderedDict(sorted(
-    #         {
-    #             'wt_zmc': 'fix.int.zonaudev.push.{channel}.zeitde.{'
-    #                       'device}.link.x'.format(channel=channel,
-    #                                               device=device),
-    #             'utm_medium': 'fix',
-    #             'utm_source': 'push_zonaudev_int',
-    #             'utm_campaign': channel,
-    #             'utm_content': 'zeitde_{device}_link_x'.format(device=device),
-    #         }.items())
-    #     )
-    #     parts = list(urlparse.urlparse(url))
-    #     query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
-    #     for key, value in tracking.items():
-    #         query[key] = value
-    #     parts[4] = urllib.urlencode(query, doseq=True)
-    #     return urlparse.urlunparse(parts)
+    # XXX Not used but maybe we will use something simmilar in another form
+    @staticmethod
+    def add_tracking(url, channels, device):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push') or {}
+        if config.get(CONFIG_CHANNEL_BREAKING) in channels:
+            channel = 'eilmeldung'
+        else:
+            channel = 'wichtige_news'
+        if device == 'android':
+            device = 'andpush'
+        else:
+            device = 'iospush'
+
+        tracking = collections.OrderedDict(sorted(
+            {
+                'wt_zmc': 'fix.int.zonaudev.push.{channel}.zeitde.{'
+                          'device}.link.x'.format(channel=channel,
+                                                  device=device),
+                'utm_medium': 'fix',
+                'utm_source': 'push_zonaudev_int',
+                'utm_campaign': channel,
+                'utm_content': 'zeitde_{device}_link_x'.format(device=device),
+            }.items())
+        )
+        parts = list(urlparse.urlparse(url))
+        query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
+        for key, value in tracking.items():
+            query[key] = value
+        parts[4] = urllib.urlencode(query, doseq=True)
+        return urlparse.urlunparse(parts)
 
     def create_template_vars(self, text, link, article, push_config):
         parts = urlparse.urlparse(link)
@@ -375,6 +291,10 @@ class PayloadDocumentation(Connection):
 
 
 def print_payload_documentation():
+    # TODO Change this documentation. It should illustrate how the payload
+    # templates are used.
+    # Another idea is a new endpoint which creates the JSON which would be
+    #  send to UA given an article
     zope.app.appsetup.product.setProductConfiguration('zeit.push', {
         CONFIG_CHANNEL_BREAKING: 'Eilmeldung',
         CONFIG_CHANNEL_NEWS: 'News',
