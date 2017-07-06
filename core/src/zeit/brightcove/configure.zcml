@@ -31,16 +31,16 @@
     zcml:condition="have zeit.brightcove.write_on_checkin"
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".convert2.update_brightcove" />
+    handler=".update2.export_video" />
 
   <subscriber
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".convert2.publish_on_checkin" />
+    handler=".update2.publish_on_checkin" />
 
   <subscriber
     for="zeit.content.video.interfaces.IPlaylist
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".convert2.publish_on_checkin" />
+    handler=".update2.publish_on_checkin" />
 
 </configure>

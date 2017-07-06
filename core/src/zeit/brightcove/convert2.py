@@ -1,12 +1,77 @@
+from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
+import zc.iso8601.parse
+import zeit.brightcove.resolve
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.related.interfaces
+import zeit.content.video.video
+import zope.component
 
 
-class Video(object):
+class Converter(object):
 
     def __init__(self):
         self.data = {}
+
+    @classmethod
+    def from_bc(cls, data):
+        instance = cls()
+        instance.data.update(data)
+        return instance
+
+    @cachedproperty
+    def __parent__(self):
+        return zeit.cms.content.interfaces.IAddLocation(self)
+
+    @cachedproperty
+    def uniqueId(self):
+        return self.__parent__.uniqueId + self.id
+
+    @cachedproperty
+    def id(self):
+        return str(self.data.get('id', ''))
+
+    @cachedproperty
+    def date_created(self):
+        return self.cms_date(self.data.get('created_at'))
+
+    @staticmethod
+    def bc_bool(value):
+        return '1' if value else '0'
+
+    @staticmethod
+    def cms_bool(value):
+        return value == '1'
+
+    @staticmethod
+    def cms_date(value):
+        if not value:
+            return None
+        return zc.iso8601.parse.datetimetz(value)
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.id or '(unknown)')
+
+
+class Video(Converter):
+
+    @classmethod
+    def find_by_id(cls, id):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        data = api.get_video(id)
+        if data is not None:
+            data['sources'] = api.get_video_sources(id)
+        else:
+            # Since BC gives us no further information, we need to try and
+            # resolve the CMS uniqueId by ourselves.
+            cmsobj = zeit.cms.interfaces.ICMSContent(
+                zeit.brightcove.resolve.query_video_id(id), None)
+            return DeletedVideo(id, cmsobj)
+        return cls.from_bc(data)
 
     @classmethod
     def from_cms(cls, cmsobj):
@@ -56,9 +121,72 @@ class Video(object):
 
         return instance
 
-    @staticmethod
-    def bc_bool(value):
-        return '1' if value else '0'
+    def apply_to_cms(self, cmsobj):
+        data = self.data
+        custom = data.get('custom_fields', {})
+
+        cmsobj.brightcove_id = data.get('id')
+        cmsobj.title = data.get('name')
+        cmsobj.teaserText = data.get('description')
+        cmsobj.subtitle = data.get('long_description')
+        authors = [zeit.cms.interfaces.ICMSContent(x, None)
+                   for x in custom.get('authors', '').split(' ')]
+        cmsobj.authorships = tuple([x for x in authors if x is not None])
+        cmsobj.commentsAllowed = self.cms_bool(custom.get('allow_comments'))
+        cmsobj.commentsPremoderate = self.cms_bool(
+            custom.get('premoderate_comments'))
+        cmsobj.banner = custom.get('banner')
+        cmsobj.banner = custom.get('banner_id')
+        cmsobj.dailyNewsletter = custom.get('newsletter')
+        cmsobj.has_recensions = custom.get('recensions')
+        cmsobj.ressort = custom.get('ressort')
+        cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
+        cmsobj.supertitle = custom.get('supertitle')
+        cmsobj.video_still_copyright = custom.get('credit')
+        cmsobj.thumbnail = data.get(
+            'images', {}).get('thumbnail', {}).get('src')
+        cmsobj.video_still = data.get(
+            'images', {}).get('poster', {}).get('src')
+
+        product_source = IVideo['product'].source(cmsobj)
+        if not custom.get('produkt-id') and data.get('reference_id'):
+            # XXX Magic hard-coded defaults.
+            cmsobj.product = product_source.find('Reuters')
+        else:
+            cmsobj.product = product_source.find(custom.get('produkt-id'))
+
+        related = []
+        for item in [custom.get('ref_link%s' % i) for i in range(1, 6)]:
+            if not item:
+                continue  # Micro-optimization
+            related.append(zeit.cms.interfaces.ICMSContent(item, None))
+        zeit.cms.related.interfaces.IRelatedContent(
+            cmsobj).related = tuple(related)
+
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        keywords = [
+            whitelist.get(code)
+            for code in custom.get('cmskeywords', '').split(';')]
+        cmsobj.keywords = tuple([x for x in keywords if x is not None])
+
+        zeit.cms.workflow.interfaces.IPublishInfo(
+            cmsobj).date_first_released = self.cms_date(
+                data.get('published_at'))
+        zeit.cms.content.interfaces.ISemanticChange(
+            cmsobj).last_semantic_change = self.cms_date(
+                data.get('updated_at'))
+
+        renditions = []
+        for item in data.get('sources', ()):
+            vr = zeit.content.video.video.VideoRendition()
+            vr.url = item.get('src')
+            if not vr.url:
+                continue
+            vr.frame_width = item.get('width')
+            vr.video_duration = item.get('duration')
+            renditions.append(vr)
+        cmsobj.renditions = renditions
 
     @property
     def write_data(self):
@@ -69,24 +197,85 @@ class Video(object):
                 data[key] = self.data[key]
         return data
 
-    @cachedproperty
-    def id(self):
-        return str(self.data.get('id', ''))
+    @property
+    def state(self):
+        return self.data.get('state')
 
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.id or '(unknown)')
-
-
-def update_brightcove(context, event):
-    if not event.publishing:
-        session = zeit.brightcove.session.get()
-        session.update_video(Video.from_cms(context))
+    @property
+    def skip_import(self):
+        return self.cms_bool(self.data.get('custom_fields', {}).get(
+            'ignore_for_update'))
 
 
-def publish_on_checkin(context, event):
-    # prevent infinite loop, since there is a checkout/checkin cycle during
-    # publishing (to update XML references etc.)
-    if not event.publishing:
-        zeit.cms.workflow.interfaces.IPublish(context).publish()
+class DeletedVideo(Video):
+
+    def __init__(self, id, cmsobj):
+        # We fake just enough API so VideoUpdater can perform the delete
+        # (or skip us entirely if we don't even have a CMS object anymore).
+        super(DeletedVideo, self).__init__()
+        self.data['id'] = id
+        if cmsobj is not None:
+            self.__dict__['__parent__'] = cmsobj.__parent__
+            self.__dict__['uniqueId'] = cmsobj.uniqueId
+        else:
+            self.__dict__['uniqueId'] = (
+                'http://xml.zeit.de/__deleted_video__/' + id)
+
+
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
+@grok.adapter(Video)
+def video_location(bcobj):
+    conf = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
+    path = conf['video-folder']
+    return zeit.cms.content.add.find_or_create_folder(
+        *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')]))
+
+
+class Playlist(Converter):
+
+    @classmethod
+    def find_by_id(cls, id):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        data = api.get_playlist(id)
+        if data is None:
+            return None
+        return cls.from_bc(data)
+
+    @classmethod
+    def find_all(cls):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        result = []
+        for data in api.get_all_playlists():
+            result.append(cls.from_bc(data))
+        return result
+
+    def apply_to_cms(self, cmsobj):
+        cmsobj.title = self.data.get('name')
+        cmsobj.teaserText = self.data.get('description')
+
+        zeit.cms.content.interfaces.ISemanticChange(
+            cmsobj).last_semantic_change = self.cms_date(
+                self.data.get('updated_at'))
+
+        videos = []
+        for id in self.data.get('video_ids', ()):
+            resolved = zeit.brightcove.resolve.query_video_id(id)
+            if resolved:
+                # This is really wasteful and only due to XMLReferenceUpdater.
+                content = zeit.cms.interfaces.ICMSContent(resolved, None)
+                if content is not None:
+                    videos.append(content)
+        cmsobj.videos = videos
+
+    @property
+    def updated_at(self):
+        return self.cms_date(self.data.get('updated_at'))
+
+
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
+@grok.adapter(Playlist)
+def playlist_location(bcobj):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['playlist-folder']
+    return zeit.cms.content.add.find_or_create_folder(*path.split('/'))

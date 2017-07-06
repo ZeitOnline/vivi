@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="update_video"
+    class=".update.Notification"
+    permission="zope.Public"
+    />
+
+</configure>

@@ -15,8 +15,24 @@ class IAPIConnection(zope.interface.Interface):
 class ICMSAPI(zope.interface.Interface):
     """Brightcove CMS-API connection."""
 
+    def get_video(id):
+        """Returns the video metadata as a dict.
+        If no video was found by Brightcove, returns None.
+        """
+
+    def get_video_sources(id):
+        """Returns a list of dicts with data about video sources/renditions."""
+
     def update_video(bcvideo):
         """Updates the video metadata."""
+
+    def get_playlist(id):
+        """Returns the playlist metadata as a dict.
+        If no playlist was found by Brightcove, returns None.
+        """
+
+    def get_all_playlists():
+        """Returns a list of dicts with the metadata of all playlists."""
 
 
 class ISession(zope.interface.Interface):

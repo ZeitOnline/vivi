@@ -6,7 +6,7 @@ import zope.schema
 
 
 zeit.content.video.video.Video.brightcove_id = DAVProperty(
-    zope.schema.ASCIILine(
+    zope.schema.TextLine(
         title=_('Brightcove Id'),
         readonly=True,
     ),

@@ -1,9 +1,11 @@
+from datetime import datetime
 from zeit.brightcove.convert2 import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
 import mock
-import transaction
+import pytz
 import zeit.brightcove.testing
 import zeit.cms.testing
+import zeit.content.video.playlist
 
 
 class VideoTest(zeit.cms.testing.FunctionalTestCase,
@@ -29,6 +31,14 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         cms.commentsAllowed = True
         bc = BCVideo.from_cms(cms)
         self.assertEqual('1', bc.data['custom_fields']['allow_comments'])
+
+    def test_looks_up_folder_from_product_config(self):
+        bc = BCVideo()
+        bc.data['id'] = 'myvid'
+        bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
+        self.assertEqual('http://xml.zeit.de/video/2017-05/myvid', bc.uniqueId)
+        self.assertEqual(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2017-05/'), bc.__parent__)
 
     def test_converts_authors(self):
         from zeit.content.author.author import Author
@@ -60,6 +70,13 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         bc = BCVideo.from_cms(cms)
         self.assertEqual('TEST', bc.data['custom_fields']['produkt-id'])
 
+    def test_product_defaults_to_reuters(self):
+        bc = BCVideo()
+        bc.data['reference_id'] = '1234'
+        cms = CMSVideo()
+        bc.apply_to_cms(cms)
+        self.assertEqual('Reuters', cms.product.id)
+
     def test_converts_serie(self):
         cms = CMSVideo()
         cms.serie = zeit.content.video.interfaces.IVideo['serie'].source(
@@ -78,74 +95,105 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/eta-zapatero',
             bc.data['custom_fields']['ref_link1'])
 
+    def test_converts_sources(self):
+        bc = BCVideo()
+        bc.data['sources'] = [{
+            'asset_id': '83006421001',
+            'codec': 'H264',
+            'container': 'MP4',
+            'duration': 85163,
+            'encoding_rate': 1264000,
+            'height': 720,
+            'remote': False,
+            'size': 13453446,
+            'src': 'https://brightcove.hs.llnwd.net/e1/pd/...',
+            'uploaded_at': '2010-05-05T08:26:48.704Z',
+            'width': 1280,
+        }]
+        cms = CMSVideo()
+        bc.apply_to_cms(cms)
+        sources = cms.renditions
+        self.assertEqual(1, len(sources))
+        src = sources[0]
+        self.assertEqual(1280, src.frame_width)
+        self.assertEqual('https://brightcove.hs.llnwd.net/e1/pd/...', src.url)
+        self.assertEqual(85163, src.video_duration)
 
-class SaveTest(zeit.cms.testing.FunctionalTestCase):
+    def test_converts_timestamps(self):
+        bc = BCVideo()
+        bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
+        self.assertEqual(
+            datetime(2017, 5, 15, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            bc.date_created)
+
+    def test_applies_values_to_cms_object(self):
+        from zeit.content.author.author import Author
+        self.repository['a1'] = Author()
+        cms = CMSVideo()
+        bc = BCVideo()
+        bc.data = {
+            'id': 'myvid',
+            'name': 'title',
+            'created_at': '2017-05-15T08:24:55.916Z',
+            'state': 'ACTIVE',
+            'custom_fields': {
+                'allow_comments': '1',
+                'authors': 'http://xml.zeit.de/a1',
+                'cmskeywords': 'testtag;testtag2',
+                'produkt-id': 'TEST',
+                'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
+                'serie': 'erde/umwelt',
+            },
+            'images': {
+                'thumbnail': {'src': 'http://example.com/thumbnail'},
+                'poster': {'src': 'http://example.com/still'},
+            },
+            'sources': [{
+                'src': 'http://example.com/rendition',
+            }],
+        }
+        bc.apply_to_cms(cms)
+        self.assertEqual('myvid', cms.brightcove_id)
+        self.assertEqual('title', cms.title)
+        self.assertEqual(True, cms.commentsAllowed)
+        self.assertEqual(['http://xml.zeit.de/a1'],
+                         [x.target.uniqueId for x in cms.authorships])
+        self.assertEqual(['testtag', 'testtag2'],
+                         [x.code for x in cms.keywords])
+        self.assertEqual('TEST', cms.product.id)
+        self.assertEqual(
+            (zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
+            zeit.cms.related.interfaces.IRelatedContent(cms).related)
+        self.assertEqual('erde/umwelt', cms.serie.serienname)
+        self.assertEqual('http://example.com/thumbnail', cms.thumbnail)
+        self.assertEqual('http://example.com/still', cms.video_still)
+        self.assertEqual('http://example.com/rendition', cms.renditions[0].url)
+
+    def test_creates_deleted_video_on_notfound(self):
+        with mock.patch('zeit.brightcove.connection2.CMSAPI.get_video') as get:
+            with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
+                get.return_value = None
+                query.return_value = (
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                bc = BCVideo.find_by_id('nonexistent')
+        self.assertIsInstance(bc, zeit.brightcove.convert2.DeletedVideo)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
+
+
+class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.brightcove.testing.ZCML_LAYER
 
-    def setUp(self):
-        super(SaveTest, self).setUp()
-        self.repository['myvid'] = CMSVideo()
-        self.request_patch = mock.patch(
-            'zeit.brightcove.connection2.CMSAPI._request')
-        self.request = self.request_patch.start()
-
-    def tearDown(self):
-        self.request_patch.stop()
-        super(SaveTest, self).tearDown()
-
-    def test_video_changes_are_written_to_brightcove_on_checkin(self):
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['myvid'], semantic_change=True) as co:
-            co.title = u'local change'
-        transaction.commit()
-        self.assertEqual(1, self.request.call_count)
-        self.assertEqual(
-            'local change', self.request.call_args[1]['body']['name'])
-
-    def test_changes_are_not_written_during_publish(self):
-        zeit.cms.workflow.interfaces.IPublish(
-            self.repository['myvid']).publish(async=False)
-        self.assertEqual(False, self.request.called)
-
-    def test_changes_are_written_on_commit(self):
-        video = BCVideo()
-        zeit.brightcove.session.get().update_video(video)
-        transaction.commit()
-        self.assertEqual(1, self.request.call_count)
-        # Changes are not written again
-        transaction.commit()
-        self.assertEqual(1, self.request.call_count)
-
-    def test_changes_are_not_written_on_abort(self):
-        video = BCVideo()
-        zeit.brightcove.session.get().update_video(video)
-        transaction.abort()
-        self.assertEqual(0, self.request.call_count)
-
-    def test_video_is_published_on_checkin(self):
-        video = self.repository['myvid']
-        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        last_published = info.date_last_published
-
-        with zeit.cms.checkout.helper.checked_out(video):
-            pass
-        transaction.commit()
-        zeit.workflow.testing.run_publish()
-
-        self.assertGreater(info.date_last_published, last_published)
-
-    def test_playlist_is_published_on_checkin(self):
-        self.repository['playlist'] = zeit.content.video.playlist.Playlist()
-        playlist = self.repository['playlist']
-        zeit.cms.workflow.interfaces.IPublish(playlist).publish(async=False)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        last_published = info.date_last_published
-
-        with zeit.cms.checkout.helper.checked_out(playlist):
-            pass
-        transaction.commit()
-        zeit.workflow.testing.run_publish()
-
-        self.assertGreater(info.date_last_published, last_published)
+    def test_converts_video_list(self):
+        bc = zeit.brightcove.convert2.Playlist()
+        bc.data['video_ids'] = ['search-must-be-mocked']
+        playlist = zeit.content.video.playlist.Playlist()
+        with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
+            query.return_value = 'http://xml.zeit.de/online/2007/01/Somalia'
+            bc.apply_to_cms(playlist)
+            self.assertEqual(['http://xml.zeit.de/online/2007/01/Somalia'],
+                             [x.uniqueId for x in playlist.videos])
