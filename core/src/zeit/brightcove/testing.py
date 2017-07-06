@@ -201,6 +201,10 @@ product_config = """\
     read-url http://localhost:{port}/
     write-url http://localhost:{port}/
     timeout 300
+    api-url none
+    oauth-url none
+    client-id none
+    client-secret none
     video-folder video
     playlist-folder video/playlist
 </product-config>
@@ -241,9 +245,13 @@ class BrightcoveLayer(plone.testing.Layer):
         product_config['retract-script'] = 'true'
 
         self.resolve_patch = mock.patch(
-            'zeit.brightcove.converter.resolve_video_id',
+            'zeit.brightcove.resolve.resolve_video_id',
             new=self.resolve_video_id)
         self.resolve_patch.start()
+
+        self.cmsapi_patch = mock.patch(
+            'zeit.brightcove.connection2.CMSAPI._request')
+        self.cmsapi_patch.start()
 
     @staticmethod
     def resolve_video_id(video_id):
@@ -251,6 +259,7 @@ class BrightcoveLayer(plone.testing.Layer):
 
     def tearDown(self):
         self.resolve_patch.stop()
+        self.cmsapi_patch.stop()
 
     def testSetUp(self):
         pass

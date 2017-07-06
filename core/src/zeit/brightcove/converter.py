@@ -7,13 +7,12 @@ import lxml.etree
 import pytz
 import transaction
 import zeit.brightcove.interfaces
+import zeit.brightcove.resolve
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.connector.interfaces
-import zeit.connector.search
 import zeit.content.video.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
@@ -457,7 +456,8 @@ class Playlist(Converter):
     def videos(self):
         return tuple(
             video for video in (
-                zeit.cms.interfaces.ICMSContent(query_video_id(str(id)), None)
+                zeit.cms.interfaces.ICMSContent(
+                    zeit.brightcove.resolve.query_video_id(str(id)), None)
                 for id in self.data['videoIds'])
             if video is not None)
 
@@ -509,55 +509,6 @@ def playlist_location(bc_object):
     return zeit.cms.content.add.find_or_create_folder(*path.split('/'))
 
 
-BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
-    'id', 'http://namespaces.zeit.de/CMS/brightcove')
-
-
-def resolve_video_id(video_id):
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
-    result = list(
-        connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
-    if not result:
-        raise LookupError(video_id)
-    if len(result) > 1:
-        msg = 'Found multiple CMS objects with video id %r.' % video_id
-        log.warning(msg)
-        raise LookupError(msg)
-    result = result[0]
-    unique_id = result[0]
-    return unique_id
-
-
-def query_video_id(video_id, default=None):
-    """Resolve video or return a default value."""
-    try:
-        return resolve_video_id(video_id)
-    except LookupError:
-        return default
-
-
-@grok.adapter(basestring, name='http://video.zeit.de/')
-@grok.implementer(zeit.cms.interfaces.ICMSContent)
-def adapt_old_video_id_to_new_object(old_id):
-    video_prefix = 'http://video.zeit.de/video/'
-    playlist_prefix = 'http://video.zeit.de/playlist/'
-    if old_id.startswith(video_prefix):
-        video_id = old_id.replace(video_prefix, '', 1)
-        return zeit.cms.interfaces.ICMSContent(query_video_id(video_id), None)
-    elif old_id.startswith(playlist_prefix):
-        pls_id = old_id.replace(playlist_prefix, '', 1)
-        return playlist_location(None).get(pls_id)
-
-
-@grok.subscribe(
-    zeit.content.video.interfaces.IVideo,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_brightcove(context, event):
-    if not event.publishing:
-        zeit.brightcove.interfaces.IBrightcoveObject(context).save()
-
-
 @grok.adapter(zeit.content.video.interfaces.IVideo)
 @grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
 def video_from_cms(context):
@@ -568,10 +519,3 @@ def video_from_cms(context):
 @grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
 def playlist_from_cms(context):
     return Playlist.from_cms(context)
-
-
-def publish_on_checkin(context, event):
-    # prevent infinite loop, since there is a checkout/checkin cycle during
-    # publishing (to update XML references etc.)
-    if not event.publishing:
-        zeit.cms.workflow.interfaces.IPublish(context).publish()
