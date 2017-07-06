@@ -38,6 +38,6 @@
   <include package="zeit.imp.browser" />
 
   <include package="zeit.brightcove" />
-  <include package="zeit.brightcove.browser" />
+  <include package="zeit.brightcove.json" />
 
 </configure>
