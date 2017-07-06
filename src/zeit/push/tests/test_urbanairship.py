@@ -51,14 +51,10 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET'],
-            # Dont use Web credentials. They are not set as an
-            # envvars right now.
-            # os.environ[
-            #     'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
-            # os.environ[
-            #     'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
-            '',
-            '',
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
             1
         )
         self.create_test_payload_template()
@@ -452,13 +448,10 @@ class PushTest(unittest.TestCase):
             'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY']
         self.ios_master_secret = os.environ[
             'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET']
-        # Dont use them from envvars right now
-        # self.web_application_key  = os.environ[
-        #     'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY']
-        # self.web_application_key=  os.environ[
-        #     'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET']
-        self.web_application_key = ''
-        self.web_master_secret = ''
+        self.web_application_key  = os.environ[
+            'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY']
+        self.web_application_key=  os.environ[
+            'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET']
 
     def test_push_works(self):
         api = zeit.push.urbanairship.Connection(
