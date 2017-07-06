@@ -3,7 +3,7 @@
     "audience": {
       "OR": [
         {
-          "group": "My group",
+          "group": "subscriptions",
           "tag": "Eilmeldung"
         }
       ]
