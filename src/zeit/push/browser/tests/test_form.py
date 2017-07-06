@@ -77,7 +77,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS,
-             'payload_template': 'foo.json'},
+             'payload_template': 'http://xml.zeit.de/data/payload-templates/foo.json'},
             push.message_config)
 
         self.open_form()
@@ -109,7 +109,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
              'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS,
-             'payload_template': 'foo.json'},
+             'payload_template': 'http://xml.zeit.de/data/payload-templates/foo.json'},
             push.message_config)
 
         self.open_form()
@@ -230,6 +230,7 @@ class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
         b.getControl('Enable Twitter', index=0).selected = True
+        b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl(name='form.actions.add').click()
         with zeit.cms.testing.site(self.getRootFolder()):
             content = zeit.cms.interfaces.ICMSContent(

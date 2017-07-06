@@ -57,10 +57,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
             1
         )
-        self.create_test_payload_template()
-
-    def test_push_works(self):
-        additional_params = \
+        self.additional_params = \
             {
                 'push_config': {
                     'uses_image': False,
@@ -73,77 +70,52 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'context': ICMSContent(
                     "http://xml.zeit.de/online/2007/01/Somalia")
             }
-        with mock.patch('urbanairship.push.core.Push.send', send):
-            with mock.patch('urbanairship.push.core.PushResponse') as push:
-                self.api.send('Push', 'http://example.com',
-                              **additional_params)
-                self.assertEqual(200, push.call_args[0][0].status_code)
+        self.create_test_payload_template()
 
-    def test_smth_pushy(self):
-        message_config = {
-            'uses_image': False,
-            'payload_template':
-                u'http://xml.zeit.de/data/payload-templates/template.json',
-            'enabled': True,
-            'override_text': u'asd',
-            'channels': 'channel-news',
-            'type': 'mobile'}
-        result = {
-            'context': ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"),
-            'push_config': message_config
-        }
-        payload = self.api.create_payload(
-            "some_text",
-            "http://zeit.de/an_article",
-            **result)
+    # def test_push_works(self):
+    #     with mock.patch('urbanairship.push.core.Push.send', send):
+    #         with mock.patch('urbanairship.push.core.PushResponse') as push:
+    #             self.api.send('Push', 'http://example.com',
+    #                           **self.additional_params)
+    #             self.assertEqual(200, push.call_args[0][0].status_code)
 
-    # def test_pushes_to_android_and_ios(self):
-    #     with mock.patch.object(self.api, 'push') as push:
-    #         self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-    #         self.assertEqual(
-    #             ['android'], push.call_args_list[0][0][0].device_types)
-    #         self.assertEqual(
-    #             ['ios'], push.call_args_list[1][0][0].device_types)
-    #
-    # def test_audience_tag_depends_on_channel(self):
-    #     with mock.patch.object(self.api, 'push') as push:
-    #         self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-    #         self.assertEqual(
-    #             {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-    #             push.call_args_list[0][0][0].audience)  # Android
-    #         self.assertEqual(
-    #             {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-    #             push.call_args_list[1][0][0].audience)  # iOS
-    #
-    # def test_raises_if_no_channel_given(self):
-    #     with self.assertRaises(ValueError):
-    #         self.api.send('Being pushy.', 'http://example.com')
-    #
-    # def test_raises_if_channel_not_in_product_config(self):
-    #     with self.assertRaises(ValueError):
-    #         self.api.send('foo', 'any', channels='i-am-not-in-product-config')
-    #
-    # def test_sets_expiration_time_in_payload(self):
-    #     self.api.expire_interval = 3600
-    #     with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
-    #         mock_datetime.now.return_value = (
-    #             datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
-    #         with mock.patch.object(self.api, 'push') as push:
-    #             self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-    #             self.assertEqual(
-    #                 '2014-07-01T11:15:07',
-    #                 push.call_args_list[0][0][0].expiry)
-    #             self.assertEqual(
-    #                 '2014-07-01T11:15:07',
-    #                 push.call_args_list[1][0][0].expiry)
-    #
-    # def test_enriches_payload_with_tag_to_categorize_notification(self):
-    #     with mock.patch.object(self.api, 'push') as push:
-    #         self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-    #         android = push.call_args_list[0][0][0].notification['android']
-    #         self.assertEqual('News', android['extra']['tag'])
-    #         ios = push.call_args_list[1][0][0].notification['ios']
-    #         self.assertEqual('News', ios['extra']['tag'])
+    def test_sets_expiration_time_in_payload(self):
+        self.api.expire_interval = 3600
+        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
+            mock_datetime.now.return_value = (
+                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
+            with mock.patch.object(self.api, 'push') as push:
+                self.api.send('foo', 'any', **self.additional_params)
+                self.assertEqual(
+                    '2014-07-01T11:15:07',
+                    push.call_args_list[0][0][0].expiry)
+                self.assertEqual(
+                    '2014-07-01T11:15:07',
+                    push.call_args_list[1][0][0].expiry)
+
+    def test_calculates_expiration_datetime_based_on_expire_interval(self):
+        self.api.expire_interval = 3600
+        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
+            mock_datetime.now.return_value = (
+                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
+            self.assertEqual(
+                datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
+                self.api.expiration_datetime)
+
+    def test_full_url_is_passed_through(self):
+        template_vars = self.api.create_template_vars(
+            '', 'https://www.zeit.de/foo/bar', '', {})
+        self.assertTrue(
+            template_vars.get('zon_link').startswith(
+                'https://www.zeit.de/foo/bar'))
+
+    def test_deep_link_starts_with_app_identifier(self):
+        self.api.APP_IDENTIFIER = 'foobar'
+        template_vars = self.api.create_template_vars(
+            '', 'http://www.zeit.de/article/one', '', {})
+        self.assertTrue(
+            template_vars.get('app_link').startswith(
+                'foobar://article/one'))
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
@@ -153,7 +125,7 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
         self.create_test_payload_template()
         self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
-    def test_getValues_returns_all_templaes_as_text_objects(self):
+    def test_getValues_returns_all_templates_as_text_objects(self):
         # Change this if we decide we want a new content type PaylaodTemplate
         self.assertTrue(1, len(self.templates))
         self.assertTrue(zeit.content.text.text.Text, type(self.templates[0]))
@@ -178,94 +150,6 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
     def test_load_template_returns_unicode(self):
         zeit.push.urbanairship.load_template(
             'http://xml.zeit.de/data/payload-templates/template.json')
-
-
-class DataTest(ConnectionTest):
-
-    def create_catalog(self):
-        domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
-        self.zca.patch_utility(domain, name='zeit.cms')
-        catalog = zeit.cms.testing.TestCatalog()
-        domain.addCatalog(catalog)
-        return catalog
-
-    def test_calculates_expiration_datetime_based_on_expire_interval(self):
-        self.api.expire_interval = 3600
-        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
-            mock_datetime.now.return_value = (
-                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
-            self.assertEqual(
-                datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
-                self.api.expiration_datetime)
-
-    def test_channels_string_is_looked_up_in_product_config(self):
-        product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push')
-        product_config['foo'] = 'bar qux'
-        self.assertEqual(['bar', 'qux'], self.api.get_channel_list('foo'))
-
-    def test_translates_title_based_on_channel(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-news-title'] = 'bar'
-        catalog.messages['push-breaking-title'] = 'foo'
-        self.api.LANGUAGE = 'tt'
-        self.assertEqual('bar', self.api.get_headline(['News']))
-        self.assertEqual('foo', self.api.get_headline(['Eilmeldung']))
-
-    def test_transmits_news_metadata(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-news-title'] = 'News'
-        self.api.LANGUAGE = 'tt'
-        payload = self.api.create_payload(
-            'foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-
-        android = payload['android']
-        self.assertEqual(
-            'ZEIT ONLINE News', android['android']['extra']['headline'])
-        self.assertEqual('foo', android['alert'])
-        self.assertEqual(0, android['android']['priority'])
-
-        ios = payload['ios']
-        self.assertEqual('News', ios['ios']['extra']['headline'])
-        self.assertEqual('foo', ios['alert'])
-        self.assertEqual('', ios['ios']['sound'])
-
-    def test_transmits_breaking_metadata(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-breaking-title'] = 'Breaking'
-        self.api.LANGUAGE = 'tt'
-        payload = self.api.create_payload(
-            'bar', 'any', channels=CONFIG_CHANNEL_BREAKING)
-
-        android = payload['android']
-        self.assertEqual(
-            'ZEIT ONLINE Breaking', android['android']['extra']['headline'])
-        self.assertEqual('bar', android['alert'])
-        self.assertEqual(2, android['android']['priority'])
-
-        ios = payload['ios']
-        self.assertEqual('Breaking', ios['ios']['extra']['headline'])
-        self.assertEqual('bar', ios['alert'])
-        self.assertEqual('chime.aiff', ios['ios']['sound'])
-
-    def test_full_url_is_passed_through(self):
-        payload = self.api.create_payload('', 'https://www.zeit.de/foo/bar')
-        self.assertTrue(
-            payload['android']['android']['extra']['url'].startswith(
-                'https://www.zeit.de/foo/bar?'))
-        self.assertTrue(
-            payload['ios']['ios']['extra']['url'].startswith(
-                'https://www.zeit.de/foo/bar?'))
-
-    def test_deep_link_starts_with_app_identifier(self):
-        self.api.APP_IDENTIFIER = 'foobar'
-        payload = self.api.create_payload('', 'http://www.zeit.de/article/one')
-        self.assertTrue(
-            payload['android']['actions']['open']['content'].startswith(
-                'foobar://article/one'))
-        self.assertTrue(
-            payload['ios']['actions']['open']['content'].startswith(
-                'foobar://article/one'))
 
 
 class AddTrackingTest(unittest.TestCase,
@@ -391,6 +275,8 @@ class MessageTest(zeit.push.testing.TestCase):
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
     def test_sets_flag_on_checkin(self):
+        # TODO Channels is not passed correctly anymore
+        # Another way is needed
         content = self.repository['testcontent']
         self.assertFalse(content.push_news)
         with checked_out(content) as co:
@@ -428,12 +314,15 @@ class IntegrationTest(zeit.push.testing.TestCase):
             'content_title', u'http://www.zeit.de/content',
             {'enabled': True,
              'type': 'mobile',
-             'mobile_title': None})],
+             'mobile_title': None,
+             'context': ICMSContent('http://xml.zeit.de/content'),
+             'push_config': {'enabled': True, 'type': 'mobile'}
+             })],
             zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='urbanairship').calls)
 
 
-class PushTest(unittest.TestCase):
+class PushTest(ConnectionTest):
 
     level = 2
     layer = zeit.push.testing.ZCML_LAYER
@@ -450,7 +339,7 @@ class PushTest(unittest.TestCase):
             'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET']
         self.web_application_key  = os.environ[
             'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY']
-        self.web_application_key=  os.environ[
+        self.web_master_secret = os.environ[
             'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET']
 
     def test_push_works(self):
@@ -459,17 +348,18 @@ class PushTest(unittest.TestCase):
             self.ios_application_key, self.ios_master_secret,
             self.web_application_key, self.web_master_secret, 1)
         with mock.patch('urbanairship.push.core.Push.send', send):
-            with mock.patch('urbanairship.push.core.PushResponse') as push:
+            with mock.patch('urbanairship.push.core.PuhResponse') as push:
                 api.send('Push', 'http://example.com',
-                         channels=CONFIG_CHANNEL_NEWS)
+                         **self.additional_params)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.urbanairship.Connection(
-            'invalid', 'invalid', 'invalid', 'invalid', 1)
+            'invalid', 'invalid', 'invalid', 'invalid', 'invalid', 'invalid',
+            1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             api.send('Being pushy.', 'http://example.com',
-                     channels=CONFIG_CHANNEL_NEWS)
+                     **self.additional_params)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
@@ -479,9 +369,10 @@ class PushTest(unittest.TestCase):
         response.json.return_value = {}
         api = zeit.push.urbanairship.Connection(
             self.android_application_key, self.android_master_secret,
-            self.ios_application_key, self.ios_master_secret, 1)
+            self.ios_application_key, self.ios_master_secret,
+            self.web_application_key, self.web_master_secret, 1)
         with mock.patch('requests.sessions.Session.request') as request:
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 api.send('Being pushy.', 'http://example.com',
-                         channels=CONFIG_CHANNEL_NEWS)
+                         **self.additional_params)
