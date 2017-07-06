@@ -57,6 +57,7 @@ class Connection(object):
 
         self.expire_interval = expire_interval
         self.jinja_env = jinja2.Environment(
+            cache_size=0,
             loader=jinja2.FunctionLoader(load_template))
 
 
