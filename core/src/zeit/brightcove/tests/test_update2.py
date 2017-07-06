@@ -39,7 +39,7 @@ class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
     def test_changed_video_should_be_written_to_cms(self):
         bc = self.create_video()
         import_video(bc)
-        bc.title = 'changed'
+        bc.data['name'] = 'changed'
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual('changed', video.title)
@@ -148,7 +148,7 @@ class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         last_published = info.date_last_published
 
-        bc.title = 'changed'
+        bc.data['name'] = 'changed'
         import_playlist(bc)
         playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
         self.assertEqual('title', playlist.title)

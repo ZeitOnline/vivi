@@ -134,9 +134,9 @@ class import_playlist(import_video):
         return True
 
     def update(self):
-        last_modified = zeit.cms.content.interfaces.ISemanticChange(
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
             self.cmsobj).last_semantic_change
-        if self.bcobj.date_last_modified <= last_modified:
+        if self.bcobj.updated_at <= lsc:
             return False
         self._update()
         IPublish(self.cmsobj).publish(async=False)
