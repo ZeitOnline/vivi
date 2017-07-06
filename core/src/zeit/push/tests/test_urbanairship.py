@@ -1,6 +1,6 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import CONFIG_CHANNEL_BREAKING, CONFIG_CHANNEL_NEWS
+from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
 from zeit.cms.interfaces import ICMSContent
 import json
 import mock
@@ -71,13 +71,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     "http://xml.zeit.de/online/2007/01/Somalia")
             }
         self.create_test_payload_template()
-
-    # def test_push_works(self):
-    #     with mock.patch('urbanairship.push.core.Push.send', send):
-    #         with mock.patch('urbanairship.push.core.PushResponse') as push:
-    #             self.api.send('Push', 'http://example.com',
-    #                           **self.additional_params)
-    #             self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_sets_expiration_time_in_payload(self):
         self.api.expire_interval = 3600
@@ -327,39 +320,20 @@ class PushTest(ConnectionTest):
     level = 2
     layer = zeit.push.testing.ZCML_LAYER
 
-    def setUp(self):
-        super(PushTest, self).setUp()
-        self.android_application_key = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_ANDROID_APPLICATION_KEY']
-        self.android_master_secret = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_ANDROID_MASTER_SECRET']
-        self.ios_application_key = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY']
-        self.ios_master_secret = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET']
-        self.web_application_key  = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY']
-        self.web_master_secret = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET']
-
     def test_push_works(self):
-        api = zeit.push.urbanairship.Connection(
-            self.android_application_key, self.android_master_secret,
-            self.ios_application_key, self.ios_master_secret,
-            self.web_application_key, self.web_master_secret, 1)
         with mock.patch('urbanairship.push.core.Push.send', send):
             with mock.patch('urbanairship.push.core.PuhResponse') as push:
-                api.send('Push', 'http://example.com',
+                self.api.send('Push', 'http://example.com',
                          **self.additional_params)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
-        api = zeit.push.urbanairship.Connection(
+        invalid_connection = zeit.push.urbanairship.Connection(
             'invalid', 'invalid', 'invalid', 'invalid', 'invalid', 'invalid',
             1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
-            api.send('Being pushy.', 'http://example.com',
-                     **self.additional_params)
+            invalid_connection.send('Being pushy.', 'http://example.com',
+                                    **self.additional_params)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
@@ -367,12 +341,8 @@ class PushTest(ConnectionTest):
         response.headers = {}
         response.content = ''
         response.json.return_value = {}
-        api = zeit.push.urbanairship.Connection(
-            self.android_application_key, self.android_master_secret,
-            self.ios_application_key, self.ios_master_secret,
-            self.web_application_key, self.web_master_secret, 1)
         with mock.patch('requests.sessions.Session.request') as request:
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
-                api.send('Being pushy.', 'http://example.com',
-                         **self.additional_params)
+                self.api.send('Being pushy.', 'http://example.com',
+                              **self.additional_params)
