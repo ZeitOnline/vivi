@@ -3,7 +3,9 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zc.iso8601.parse
 import zeit.brightcove.resolve
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.content.video.video
 import zope.component
 
