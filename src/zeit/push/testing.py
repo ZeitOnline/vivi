@@ -28,7 +28,7 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
-
+# TODO Is this still relevant? I guess not.
 class MobilePushNotifier(PushNotifier):
 
     def get_channel_list(self, channels):
@@ -64,18 +64,23 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
 
-    def create_test_payload_template(self):
+    def create_test_payload_template(self,
+                                     template_text=None,
+                                     template_name='template.json'):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 zeit.cms.content.add.find_or_create_folder('data',
                                                            'payload-templates')
                 template = zeit.content.text.text.Text()
-                filename = "{fixtures}/payloadtemplate.json".format(
-                    fixtures=pkg_resources.resource_filename(
-                        __name__, 'tests/fixtures'))
-                with open(filename) as jsonfile:
-                    template.text = jsonfile.read()
-                self.repository['data']['payload-templates']['template.json']\
+                if not template_text:
+                    filename = "{fixtures}/payloadtemplate.json".format(
+                        fixtures=pkg_resources.resource_filename(
+                            __name__, 'tests/fixtures'))
+                    with open(filename) as jsonfile:
+                        template.text = jsonfile.read()
+                else:
+                    template.text = template_text
+                self.repository['data']['payload-templates'][template_name]\
                     = template
 
 
