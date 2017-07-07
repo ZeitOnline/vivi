@@ -26,6 +26,31 @@ class APIIntegration(unittest.TestCase):
 
 class CMSAPI(unittest.TestCase):
 
+    def test_auth_failed_retries_request(self):
+        api = zeit.brightcove.connection2.CMSAPI('', '', '', '', None)
+        with mock.patch.object(api, '_retrieve_access_token') as token:
+            with mock.patch('requests.request') as request:
+                token.return_value = 'token'
+                request_calls = []
+
+                def fail_once(*args, **kw):
+                    if not request_calls:
+                        request_calls.append(1)
+                        err = requests.exceptions.RequestException()
+                        err.response = mock.Mock()
+                        err.response.status_code = 401
+                        raise err
+                    response = mock.MagicMock()
+                    response.__iter__.return_value = ()
+                    response.json.return_value = {}
+                    return response
+                request.side_effect = fail_once
+                api._request('GET /foo', {'body': True}, {'params': 2})
+                self.assertEqual(2, request.call_count)
+                request.assert_called_with(
+                    'get', '/foo', headers={'Authorization': 'Bearer token'},
+                    json={'body': True}, params={'params': 2}, timeout=None)
+
     def test_aborts_after_max_retries(self):
         api = zeit.brightcove.connection2.CMSAPI('', '', '', '', None)
         with mock.patch.object(api, '_retrieve_access_token') as token:

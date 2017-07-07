@@ -125,7 +125,11 @@ class CMSAPI(object):
                 # bother at all, since a normal lock would only accomplish
                 # serializing those requests, which isn't much of a plus.
                 self._access_token = self._retrieve_access_token()
-                return self._request(request, body=body, _retries=_retries + 1)
+                # XXX We can't really use **kw here without making our
+                # signature really vague, but that means we have to explicitly
+                # pass each of our parameters.
+                return self._request(
+                    request, body=body, params=params, _retries=_retries + 1)
             message = getattr(err.response, 'text', '<no message>')
             err.args = (u'%s: %s' % (err.args[0], message),) + err.args[1:]
             log.error('%s returned %s', request, status, exc_info=True)
