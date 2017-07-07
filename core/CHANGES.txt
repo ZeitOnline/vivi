@@ -5,7 +5,7 @@ zeit.content.volume changes
 1.7.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add another tab to toc format
 
 
 1.7.5 (2017-06-29)
