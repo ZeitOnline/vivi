@@ -91,10 +91,10 @@ class Video(Converter):
         custom['allow_comments'] = cls.bc_bool(cmsobj.commentsAllowed)
         custom['premoderate_comments'] = cls.bc_bool(
             cmsobj.commentsPremoderate)
-        custom['banner'] = cmsobj.banner
-        custom['banner_id'] = cmsobj.banner
-        custom['newsletter'] = cmsobj.dailyNewsletter
-        custom['recensions'] = cmsobj.has_recensions
+        custom['banner'] = cls.bc_bool(cmsobj.banner)
+        custom['banner_id'] = cmsobj.banner_id
+        custom['newsletter'] = cls.bc_bool(cmsobj.dailyNewsletter)
+        custom['recensions'] = cls.bc_bool(cmsobj.has_recensions)
         custom['produkt-id'] = cmsobj.product.id if cmsobj.product else None
         custom['cmskeywords'] = u';'.join(x.code for x in cmsobj.keywords)
         custom['ressort'] = cmsobj.ressort
@@ -119,6 +119,14 @@ class Video(Converter):
                 custom['ref_link%s' % i] = item.uniqueId
                 custom['ref_title%s' % i] = title
 
+        # Only strings are allowed in `custom_fields`
+        empty = []
+        for key, value in custom.items():
+            if value is None:
+                empty.append(key)
+        for key in empty:
+            del custom[key]
+
         return instance
 
     def apply_to_cms(self, cmsobj):
@@ -135,10 +143,10 @@ class Video(Converter):
         cmsobj.commentsAllowed = self.cms_bool(custom.get('allow_comments'))
         cmsobj.commentsPremoderate = self.cms_bool(
             custom.get('premoderate_comments'))
-        cmsobj.banner = custom.get('banner')
+        cmsobj.banner = self.cms_bool(custom.get('banner'))
         cmsobj.banner = custom.get('banner_id')
-        cmsobj.dailyNewsletter = custom.get('newsletter')
-        cmsobj.has_recensions = custom.get('recensions')
+        cmsobj.dailyNewsletter = self.cms_bool(custom.get('newsletter'))
+        cmsobj.has_recensions = self.cms_bool(custom.get('recensions'))
         cmsobj.ressort = custom.get('ressort')
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')

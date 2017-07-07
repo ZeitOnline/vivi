@@ -4,6 +4,8 @@ zeit.brightcove changes
 2.10.1 (unreleased)
 -------------------
 
+- FIX: Correctly map boolean fields, remove None items from custom fields
+
 - FIX: Correctly retry API requests on auth failure
 
 - MAINT: Add debug logging to API connection

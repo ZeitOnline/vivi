@@ -126,6 +126,18 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             datetime(2017, 5, 15, 8, 24, 55, 916000, tzinfo=pytz.UTC),
             bc.date_created)
 
+    def test_only_strings_in_custom_fields(self):
+        from zeit.content.author.author import Author
+        self.repository['a1'] = Author()
+        cms = CMSVideo()
+        cms.authorships = (cms.authorships.create(self.repository['a1']),)
+        cms.product = zeit.cms.content.sources.PRODUCT_SOURCE(None).find(
+            'TEST')
+        bc = BCVideo.from_cms(cms)
+        for key, value in bc.data['custom_fields'].items():
+            self.assertIsInstance(
+                value, basestring, '%s should be a string' % key)
+
     def test_applies_values_to_cms_object(self):
         from zeit.content.author.author import Author
         self.repository['a1'] = Author()
