@@ -1,10 +1,16 @@
 zeit.content.video changes
 ==========================
 
-2.7.4 (unreleased)
+2.7.5 (unreleased)
 ------------------
 
 - ZON-4006: Update to mobile field split
+
+
+2.7.4 (2017-07-07)
+------------------
+
+- ZON-3983: Update to SerieSource API change
 
 
 2.7.3 (2017-05-22)
