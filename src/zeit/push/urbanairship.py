@@ -116,13 +116,6 @@ class Connection(object):
         for push_message in push_messages:
             # Check out
             # https://docs.urbanairship.com/api/ua/#push-object
-            # "all" is not supported, although its part of the UA-API
-            # We do make the assumption, that for every device defined in the
-            #  devices-array there is also a key defined in 'notifcation' dict
-            # e.g if "devices" = ["android"] => ["notifcation"]["android"]
-            # is present.
-            # https://docs.urbanairship.com/api/ua/#push-object
-            #
             for device in push_message.get('device_types', []):
                 application_credentials = self.credentials.get(device,
                                                                [None, None])
