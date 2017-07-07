@@ -9,7 +9,6 @@
 
   <!-- Enable all feature toggles in tests. -->
   <meta:provides feature="zeit.cms.decentral-syndication" />
-  <meta:provides feature="zeit.cms.rr-access" />
 
 
   <include package="zeit.cms" file="application.zcml" />
