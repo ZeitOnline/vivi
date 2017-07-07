@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.95 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Übersetzungen aktualisiert
 
 
 2.0.94 (2017-06-29)
