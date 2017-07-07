@@ -112,6 +112,7 @@ class CMSAPI(object):
                 verb.lower(), self.base_url + path, json=body, params=params,
                 headers={'Authorization': 'Bearer %s' % self._access_token},
                 timeout=self.timeout)
+            log.debug(dump_request(response))
             response.raise_for_status()
         except requests.exceptions.RequestException, err:
             status = getattr(err.response, 'status_code', 510)
@@ -158,3 +159,18 @@ def from_product_config():
         config['client-secret'],
         float(config['timeout'])
     )
+
+
+def dump_request(response):
+    """Debug helper. Pass a `requests` response and receive an executable curl
+    command line.
+    """
+    request = response.request
+    command = "curl -X {method} -H {headers} -d '{data}' '{uri}'"
+    method = request.method
+    uri = request.url
+    data = request.body
+    headers = ["'{0}: {1}'".format(k, v) for k, v in request.headers.items()]
+    headers = " -H ".join(headers)
+    return command.format(
+        method=method, headers=headers, data=data, uri=uri)

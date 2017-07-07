@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add debug logging to API connection
 
 
 2.10.0 (2017-07-07)
