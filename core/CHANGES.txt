@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.2.1 (unreleased)
+2.2.1 (2017-07-07)
 ------------------
 
 - ZON-4062: Set up Brightcove notification webhook
