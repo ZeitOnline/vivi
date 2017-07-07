@@ -8,7 +8,7 @@ zeit.brightcove changes
   This is enabled via feature toggle ``zeit.brightcove.write_on_checkin``
   (since e.g. in staging we only have readonly credentials).
 
-- ZON-3983: Update to serie source API change
+- ZON-4062: Import videos+playlists using the Brightcove "CMS API"
 
 
 2.9.0 (2017-01-18)
