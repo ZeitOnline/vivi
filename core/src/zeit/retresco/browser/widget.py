@@ -1,4 +1,7 @@
+import urlparse
 import zeit.cms.tagging.browser.widget
+import zeit.retresco.interfaces
+import zope.component
 
 
 class RetrescoTagWidget(zeit.cms.tagging.browser.widget.Widget):
@@ -8,3 +11,8 @@ class RetrescoTagWidget(zeit.cms.tagging.browser.widget.Widget):
     again.
 
     """
+
+    @property
+    def tms_host(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        return urlparse.urlparse(tms.url).netloc
