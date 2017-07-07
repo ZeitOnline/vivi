@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-2.105 (unreleased)
-------------------
+2.104.1 (2017-07-07)
+--------------------
 
 - MAINT: Add link to TMS to keyword widget
 
