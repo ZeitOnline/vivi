@@ -1,8 +1,10 @@
+import gocept.async.tests
 import json
+import mock
 import urllib2
 import zeit.retresco.testing
-import zeit.retresco.update
 import zope.testbrowser.testing
+
 
 class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
 
@@ -24,31 +26,19 @@ class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
             b.post('http://localhost/@@update_keywords',
                    '{"foo" : "bar"}', 'application/x-javascript')
 
-    def test_endpoint_skips_invalid_doc_ids(self):
-        b = zope.testbrowser.testing.Browser()
-        b.post('http://localhost/@@update_keywords',
-               '{"doc_ids" : [1, 2, 3]}', 'application/x-javascript')
-        status = {
-            'updated_content': [],
-            'updated': [],
-            'message': 'Nothing updated',
-            'invalid': [1, 2, 3]}
-        self.assertEquals(status, json.loads(b.contents))
-        self.assertEquals('200 Ok', b.headers.getheader('status'))
-
-    def test_endpoint_successful_update_vaild_article(self):
+    def test_endpoint_creates_async_job(self):
         b = zope.testbrowser.testing.Browser()
         b.post('http://localhost/@@update_keywords',
                '{"doc_ids" : ['
-                '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}", '
-                '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
-                'application/x-javascript')
-        status = {
-            'updated_content': ['http://xml.zeit.de/online/2007/01/Somalia',
-                                'http://xml.zeit.de/online/2007/01/Somalia'],
-            'updated': ['{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}',
-                        '{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}'],
-            'message': 'Update successful',
-            'invalid': []}
-        self.assertEquals(status, json.loads(b.contents))
+               '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}", '
+               '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
+               'application/x-javascript')
+        self.assertEquals({'message': 'OK'}, json.loads(b.contents))
         self.assertEquals('200 Ok', b.headers.getheader('status'))
+        with mock.patch('zeit.retresco.update.index') as index:
+            with zeit.cms.testing.site(self.getRootFolder()):
+                gocept.async.tests.process()
+            self.assertEqual(2, index.call_count)
+            self.assertEqual(
+                'http://xml.zeit.de/online/2007/01/Somalia',
+                index.call_args[0][0])
