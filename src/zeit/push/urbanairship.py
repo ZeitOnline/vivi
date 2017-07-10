@@ -1,3 +1,4 @@
+# coding=utf-8
 # Why is this needed?
 from __future__ import absolute_import
 
@@ -284,26 +285,36 @@ class PayloadDocumentation(Connection):
 
 
 def print_payload_documentation():
-    # TODO Change this documentation. It should illustrate how the payload
-    # templates are used.
-    # Another idea is a new endpoint which creates the JSON which would be
-    #  send to UA given an article
-    zope.app.appsetup.product.setProductConfiguration('zeit.push', {
-        CONFIG_CHANNEL_BREAKING: 'Eilmeldung',
-        CONFIG_CHANNEL_NEWS: 'News',
+    config = {
         'push-target-url': 'http://www.zeit.de',
-        'urbanairship-audience-group': 'subscriptions'
-    })
+        'push-payload-templates': 'data/payload-templates'
+    }
+    docstring = """
+    Um ein neues Pushtemplate zu erstellen muss unter
+    http://vivi.zeit.de/repository/{template_path} eine neue Textdatei
+    angelegt werden. In dieser Textdatei kann dann mithilfe der Jinja2
+    Template Sprache (http://jinja.pocoo.org/docs/2.9/) das JSON definiert
+    werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
+    gesendet wird. Dafür muss das entsprechende Template in dem
+    Artikelanlagedialog ausgewählt werden. In dem Template können sowohl auf
+    eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
+    Pushnachricht zugegriffen werden. Im Folgenden nun ein Beispiel wie ein
+    solches Template funktioniert.
+    """.format(template_path=config.get('push-payload-templates'))
+    # Use a test aritcle
+    print docstring
+    # Build Template vars
+    #
+    zope.app.appsetup.product.setProductConfiguration('zeit.push', config)
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
         'ios_application_key', 'ios_master_secret', 'web_application_key',
         'web_master_secret', expire_interval=9000)
     params = {}
-    print '[{"//": "*** Eilmeldung ***"},'
     conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
               channels=CONFIG_CHANNEL_BREAKING, **params)
     print '\n'
     print '{"//": "*** Wichtige Nachrichten ***"},'
     conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
-              channels=CONFIG_CHANNEL_NEWS, **params)
+             channels=CONFIG_CHANNEL_NEWS, **params)
     print ']'
