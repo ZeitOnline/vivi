@@ -44,3 +44,12 @@ class TestSemantic(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(
             False, zeit.cms.content.interfaces.ISemanticChange(
                 self.content).has_semantic_change)
+
+    def test_setting_adjust_first_released_overwrites_dfr(self):
+        lsc = datetime.datetime(2013, 10, 30, tzinfo=pytz.UTC)
+        semantic = IAdjustSemanticPublish(self.content)
+        semantic.adjust_first_released = lsc
+
+        self.assertEqual(
+            lsc, zeit.cms.workflow.interfaces.IPublishInfo(
+                self.content).date_first_released)
