@@ -2,15 +2,13 @@ from setuptools import setup, find_packages
 import os
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.txt')).read()
-NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
 
 setup(
     name='zeit.edit',
     version='2.15.1.dev0',
     description="Vivi Editor",
-    long_description=README + '\n\n' + NEWS,
+    long_description='',
     keywords='',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
