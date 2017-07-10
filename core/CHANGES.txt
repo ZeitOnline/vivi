@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.104.3 (unreleased)
+2.104.3 (2017-07-10)
 --------------------
 
 - MAINT: Allow changing date_first_released in admin tab
