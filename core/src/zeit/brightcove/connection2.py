@@ -86,6 +86,25 @@ class CMSAPI(object):
                 retrieved[data['id']] = data
         return retrieved.values()
 
+    def find_videos(self, query, sort='created_at'):
+        # XXX Structurally very similar to get_all_playlists(), refactor?
+        offset = 0
+        retrieved = collections.OrderedDict()
+        while True:
+            batch = self._request('GET /videos', params={
+                'q': query,
+                'sort': sort,
+                'offset': offset,
+                'limit': 20,
+            })
+            # Dear Brightcove, why don't you return total_hits?
+            if not batch:
+                break
+            offset += len(batch)
+            for data in batch:
+                retrieved[data['id']] = data
+        return retrieved.values()
+
     # Helper functions to register our notification webhook,
     # see <https://support.brightcove.com/cms-api-notifications>
     def get_subscriptions(self):

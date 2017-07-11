@@ -74,6 +74,15 @@ class Video(Converter):
         return cls.from_bc(data)
 
     @classmethod
+    def find_last_modified(cls, hours):
+        api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+        result = []
+        for data in api.find_videos('updated_at:-%sh' % hours):
+            data['sources'] = api.get_video_sources(data['id'])
+            result.append(cls.from_bc(data))
+        return result
+
+    @classmethod
     def from_cms(cls, cmsobj):
         instance = cls()
         data = instance.data
