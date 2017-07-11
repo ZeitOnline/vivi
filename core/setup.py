@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.arbeit',
-    version='0.1.dev0',
+    version='1.0.0.dev0',
     author='Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -17,6 +17,8 @@ setup(
     install_requires=[
         'grokcore.component',
         'zeit.cms',
+        'zeit.content.article',
+        'zeit.content.cp',
         'setuptools',
         'zope.component',
         'zope.interface',

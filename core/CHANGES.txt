@@ -1,0 +1,8 @@
+zeit.arbeit changes
+====================
+
+
+1.0.0 (unreleased)
+------------------
+
+- ARBEIT-1: Add arbeit speicifc interfaces
