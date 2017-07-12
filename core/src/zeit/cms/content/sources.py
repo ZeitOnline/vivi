@@ -178,9 +178,9 @@ class AllowedBase(object):
             other, self.__class__) and self.id == other.id
 
 
-class NavigationSource(XMLSource):
+class RessortSource(XMLSource):
 
-    config_url = 'source-navigation'
+    config_url = 'source-ressorts'
     attribute = 'name'
     title_xpath = '/ressorts/ressort'
 
@@ -259,9 +259,9 @@ class MasterSlaveSource(XMLSource):
         return getattr(data, self.master_value_key)
 
 
-class SubNavigationSource(MasterSlaveSource):
+class SubRessortSource(MasterSlaveSource):
 
-    config_url = 'source-navigation'
+    config_url = 'source-ressorts'
     attribute = 'name'
     slave_tag = 'subnavigation'
     master_node_xpath = '/ressorts/ressort'

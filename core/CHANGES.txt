@@ -4,7 +4,7 @@ zeit.cms changes
 2.105.1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- MAINT: Rename navigation source
 
 
 2.105.0 (2017-07-12)

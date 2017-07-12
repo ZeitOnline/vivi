@@ -192,12 +192,12 @@ cms_product_config = """\
 <product-config zeit.cms>
   source-access file://{base}/content/access.xml
   source-serie file://{base}/content/serie.xml
-  source-navigation file://{base}/content/navigation.xml
+  source-ressorts file://{base}/content/ressorts.xml
   source-keyword file://{base}/content/zeit-ontologie-prism.xml
   source-products file://{base}/content/products.xml
   source-badges file://{base}/asset/badges.xml
   source-banners file://{base}/content/banners.xml
-  source-channels file://{base}/content/navigation.xml
+  source-channels file://{base}/content/ressorts.xml
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
 

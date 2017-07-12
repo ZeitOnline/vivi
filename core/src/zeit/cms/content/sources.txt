@@ -53,10 +53,10 @@ The serie source returns the possible "serie" values:
   False,
   False]]
 
-Navigation
+Ressort
 ++++++++++
 
->>> navi = zeit.cms.content.sources.NavigationSource()
+>>> navi = zeit.cms.content.sources.RessortSource()
 >>> navi = navi(content)
 >>> pprint(list(navi))
 [u'Deutschland',
@@ -120,19 +120,19 @@ u'Kultur'
 
 
 
-SubNavigation
+SubRessort
 +++++++++++++
 
-The sub navigation is dependent on the navigation.
+The sub Ressort is dependent on the Ressort.
 
 There are different contexts: a content object, a container (add form) and an
 ajax something.
 
->>> sub_ressort = zeit.cms.content.sources.SubNavigationSource()
+>>> sub_ressort = zeit.cms.content.sources.SubRessortSource()
 >>> bound = sub_ressort(content)
 
-Currently the content has *no* navigation/ressort element selected. This means
-that we get *all* sub navigation elements
+Currently the content has *no* ressort element selected. This means
+that we get *all* sub ressort elements
 
 >>> pprint(sorted(list(bound)))
 [u'Datenschutz',
@@ -193,7 +193,7 @@ Set the ressort to None, i.e. not selected, yet. Also create a new source to
 avoide the memoize:
 
 >>> content.ressort = None
->>> sub_ressort = zeit.cms.content.sources.SubNavigationSource()
+>>> sub_ressort = zeit.cms.content.sources.SubRessortSource()
 >>> bound = sub_ressort(content)
 >>> terms = zope.component.getMultiAdapter(
 ...     (bound, request),
@@ -207,7 +207,7 @@ u'Meinung'
 When the source is bound to an object which doesn't provide ICommonMetadata the
 titles do still work:
 
->>> sub_ressort = zeit.cms.content.sources.SubNavigationSource()
+>>> sub_ressort = zeit.cms.content.sources.SubRessortSource()
 >>> bound = sub_ressort(object())
 >>> terms = zope.component.getMultiAdapter(
 ...     (bound, request),
