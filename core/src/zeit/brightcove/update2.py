@@ -52,6 +52,7 @@ class import_video(object):
         log.info('Deactivating %s', self.bcobj)
         if IPublishInfo(self.cmsobj).published:
             IPublish(self.cmsobj).retract(async=False)
+        return True
 
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:
