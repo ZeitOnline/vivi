@@ -2,7 +2,7 @@ zeit.arbeit changes
 ====================
 
 
-1.0.0 (unreleased)
+1.0.0 (2017-07-12)
 ------------------
 
 - ARBEIT-1: Add arbeit speicifc interfaces
