@@ -208,6 +208,7 @@ product_config = """\
     client-secret none
     video-folder video
     playlist-folder video/playlist
+    index-principal zope.user
 </product-config>
 """
 

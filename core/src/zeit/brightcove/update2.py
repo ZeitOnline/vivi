@@ -92,7 +92,8 @@ class import_video(object):
 
 # Triggered by BC notification webhook, which we receive in
 # zeit.brightcove.json.update.Notification
-@zeit.cms.async.function(queue='brightcove')
+@zeit.cms.async.function(
+    queue='brightcove', principal=('zeit.brightcove', 'index-principal'))
 def import_video_async(video_id):
     import_video(zeit.brightcove.convert2.Video.find_by_id(video_id))
 
