@@ -4,7 +4,7 @@ zeit.newsletter changes
 1.3.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Rename navigation source
 
 
 1.3.5 (2016-09-26)
