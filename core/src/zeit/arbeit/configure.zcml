@@ -6,6 +6,19 @@
   <grok:grok package="." />
 
   <adapter
+    factory=".interfaces.IZARContent"
+    for=".interfaces.IZARSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    />
+
+  <adapter
+    factory=".interfaces.IZARSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="Arbeit"
+    />
+
+  <adapter
     factory=".interfaces.IZARFolder"
     for=".interfaces.IZARSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
@@ -26,10 +39,4 @@
     name="centerpage"
     />
 
-  <adapter
-    factory=".interfaces.IZARSection"
-    for="zeit.cms.content.interfaces.ICommonMetadata"
-    provides="zeit.cms.section.interfaces.IRessortSection"
-    name="Arbeit"
-    />
 </configure>
