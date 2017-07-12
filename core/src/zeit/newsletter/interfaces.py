@@ -88,7 +88,7 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
     ressorts = zope.schema.List(
         title=_('Ressorts'),
         value_type=zope.schema.Choice(
-            source=zeit.cms.content.sources.NavigationSource()),
+            source=zeit.cms.content.sources.RessortSource()),
     )
 
     video_playlist = zope.schema.TextLine(
