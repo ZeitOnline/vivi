@@ -5,6 +5,7 @@ zeit.cms changes
 --------------------
 
 - BUG-748: Handle IAutomaticallyRenameable in timebased workflow
+  and object log
 
 
 2.106.0 (2017-07-18)
