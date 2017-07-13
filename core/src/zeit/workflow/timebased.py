@@ -5,7 +5,6 @@ import datetime
 import grokcore.component as grok
 import lovely.remotetask.interfaces
 import pytz
-import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -42,11 +41,11 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def __init__(self, context):
         self.context = self.__parent__ = context
 
-    @rwproperty.getproperty
+    @property
     def release_period(self):
         return self.released_from, self.released_to
 
-    @rwproperty.setproperty
+    @release_period.setter
     def release_period(self, value):
         """When setting the release period jobs to publish retract are created.
         """
