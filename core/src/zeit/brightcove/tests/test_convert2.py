@@ -84,6 +84,14 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         bc = BCVideo.from_cms(cms)
         self.assertEqual('erde/umwelt', bc.data['custom_fields']['serie'])
 
+    def test_converts_channels(self):
+        cms = CMSVideo()
+        cms.channels = (('Deutschland', 'Meinung'), ('International', None))
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual(
+            'Deutschland Meinung;International',
+            bc.data['custom_fields']['channels'])
+
     def test_converts_related(self):
         cms = CMSVideo()
         related = zeit.cms.related.interfaces.IRelatedContent(cms)
@@ -151,6 +159,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'custom_fields': {
                 'allow_comments': '1',
                 'authors': 'http://xml.zeit.de/a1',
+                'channels': 'Deutschland Meinung;International',
                 'cmskeywords': 'testtag;testtag2',
                 'produkt-id': 'TEST',
                 'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
@@ -172,6 +181,8 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
                          [x.target.uniqueId for x in cms.authorships])
         self.assertEqual(['testtag', 'testtag2'],
                          [x.code for x in cms.keywords])
+        self.assertEqual((('Deutschland', 'Meinung'), ('International', None)),
+                         cms.channels)
         self.assertEqual('TEST', cms.product.id)
         self.assertEqual(
             (zeit.cms.interfaces.ICMSContent(

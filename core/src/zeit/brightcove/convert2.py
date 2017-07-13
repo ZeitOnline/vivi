@@ -108,6 +108,8 @@ class Video(Converter):
         custom['cmskeywords'] = u';'.join(x.code for x in cmsobj.keywords)
         custom['ressort'] = cmsobj.ressort
         custom['serie'] = cmsobj.serie.serienname if cmsobj.serie else None
+        custom['channels'] = u';'.join([' '.join([x for x in channel if x])
+                                        for channel in cmsobj.channels])
         custom['supertitle'] = cmsobj.supertitle
         custom['credit'] = cmsobj.video_still_copyright
 
@@ -171,6 +173,26 @@ class Video(Converter):
             cmsobj.product = product_source.find('Reuters')
         else:
             cmsobj.product = product_source.find(custom.get('produkt-id'))
+
+        channel_source = zeit.cms.content.sources.ChannelSource()(cmsobj)
+        subchannel_source = zeit.cms.content.sources.SubChannelSource()(cmsobj)
+        channels = []
+        for item in custom.get('channels', '').split(';'):
+            parts = item.split(' ')
+            if len(parts) == 1:
+                channel = parts[0]
+                subchannel = None
+            elif len(parts) == 2:
+                channel = parts[0]
+                subchannel = parts[1]
+            else:
+                continue
+            if channel in channel_source:
+                if subchannel in subchannel_source:
+                    channels.append((channel, subchannel))
+                else:
+                    channels.append((channel, None))
+        cmsobj.channels = channels
 
         related = []
         for item in [custom.get('ref_link%s' % i) for i in range(1, 6)]:

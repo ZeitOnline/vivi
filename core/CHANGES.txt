@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.10.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3984: Map channels to/from BC custom field
 
 
 2.10.2 (2017-07-12)
@@ -26,7 +26,7 @@ zeit.brightcove changes
 2.10.0 (2017-07-07)
 -------------------
 
-- ZON-3894: Write to Brightcove using the new "CMS API"
+- ZON-3984: Write to Brightcove using the new "CMS API"
   This is enabled via feature toggle ``zeit.brightcove.write_on_checkin``
   (since e.g. in staging we only have readonly credentials).
 
