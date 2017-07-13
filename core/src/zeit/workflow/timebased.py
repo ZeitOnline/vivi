@@ -78,9 +78,18 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                     'date': self.format_datetime(timestamp), 'job': jobid()}))
 
     def add_job(self, task_name, when):
+        task_description = zeit.workflow.publish.SingleInput(self.context)
+
+        # Special cases that keep piling up, sigh.
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context)
+        if renameable.renameable and renameable.rename_to:
+            parent = zeit.cms.interfaces.ICMSContent(
+                self.context.uniqueId).__parent__
+            task_description.uniqueId = parent.uniqueId + renameable.rename_to
+
         delay = when - datetime.datetime.now(pytz.UTC)
         delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
-        task_description = zeit.workflow.publish.SingleInput(self.context)
         if delay > 0:
             job_id = self.tasks.addCronJob(
                 unicode(task_name), task_description, delay=delay)

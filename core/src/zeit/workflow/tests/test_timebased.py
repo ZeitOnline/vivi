@@ -51,6 +51,22 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('cancelled', tasks.getStatus(job1))
         self.assertEqual('delayed', tasks.getStatus(job2))
 
+    def test_should_schedule_job_for_renamed_uniqueId(self):
+        with checked_out(self.repository['testcontent']) as co:
+            rn = zeit.cms.repository.interfaces.IAutomaticallyRenameable(co)
+            rn.renameable = True
+            rn.rename_to = 'changed'
+            workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
+            workflow.release_period = (
+                datetime.now(pytz.UTC) + timedelta(days=1), None)
+
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['changed'])
+        tasks = zope.component.getUtility(
+            lovely.remotetask.interfaces.ITaskService, 'general')
+        job = tasks.jobs[workflow.publish_job_id]
+        self.assertEqual('http://xml.zeit.de/changed', job.input.uniqueId)
+
 
 class PrintImportSchedulingTest(zeit.cms.testing.FunctionalTestCase):
 
