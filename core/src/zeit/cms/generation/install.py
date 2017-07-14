@@ -44,6 +44,10 @@ def installSolrTaskService():
     _install_task_service('tasks.solr', 'solr', max_threads=1)
 
 
+def installBrightcoveTaskService():
+    _install_task_service('tasks.brightcove', 'brightcove', max_threads=4)
+
+
 def _install_task_service(name, utility_name, max_threads):
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
@@ -86,6 +90,7 @@ def install(root):
     installGeneralTaskService()
     installEventTaskService()
     installSolrTaskService()
+    installBrightcoveTaskService()
     installHighPriorityTaskService()
     installLowPriorityTaskService()
     installHomepageTaskService()

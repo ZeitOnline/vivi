@@ -86,6 +86,12 @@ class Widget(grokcore.component.MultiAdapter,
             result.append(tag)
         return tuple(result)
 
+    tms_host = None
+
+    @property
+    def uuid(self):
+        return zeit.cms.content.interfaces.IUUID(self.context.context).id
+
 
 class UpdateTags(zeit.cms.browser.view.JSON):
 

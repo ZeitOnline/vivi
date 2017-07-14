@@ -75,11 +75,11 @@ class ICommonMetadata(zope.interface.Interface):
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource())
+        source=zeit.cms.content.sources.RessortSource())
 
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubNavigationSource(),
+        source=zeit.cms.content.sources.SubRessortSource(),
         required=False)
 
     channels = zope.schema.Tuple(
@@ -691,12 +691,12 @@ class IContentAdder(zope.interface.Interface):
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource(),
+        source=zeit.cms.content.sources.RessortSource(),
         required=False)
 
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubNavigationSource(),
+        source=zeit.cms.content.sources.SubRessortSource(),
         required=False)
 
     year = zope.schema.Int(

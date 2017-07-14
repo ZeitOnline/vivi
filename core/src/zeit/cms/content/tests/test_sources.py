@@ -113,3 +113,10 @@ class ProductSourceTest(zeit.cms.testing.ZeitCmsTestCase):
             if value.id == "BADDEPENDENCY":
                 self.assertEqual([], value.dependent_products)
                 break
+
+
+class PrintRessortTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_source_has_title(self):
+        source = zeit.cms.content.sources.PRINT_RESSORT_SOURCE
+        self.assertEqual("Chanson", source.factory.getTitle(None, 'Chancen'))

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.101.1.dev0',
+    version='2.105.2.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -24,7 +24,7 @@ setup(
         'decorator',
         'docutils',
         'fanstatic[cssmin,jsmin]',
-        'gocept.async>=0.1.1',
+        'gocept.async>=0.4.0.dev0',
         'gocept.cache>=0.2',
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.5',

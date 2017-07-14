@@ -389,7 +389,7 @@ included. Setup an article with ICommonMetadata:
 >>> art2.volume = 4
 >>> art2.ressort = u'International'
 >>> art2.breadcrumb_title = u'Streik'
->>> art2.serie = ICommonMetadata['serie'].source.factory.values['Autotest']
+>>> art2.serie = ICommonMetadata['serie'].source(None).find('Autotest')
 
 Provide the interface:
 

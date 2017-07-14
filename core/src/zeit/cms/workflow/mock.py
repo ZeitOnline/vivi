@@ -55,7 +55,6 @@ class MockPublishInfo(object):
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
     error_messages = ()
-    date_first_released = None
     date_print_published = None
     last_modified_by = u'testuser'
     last_published_by = u'testuser'
@@ -87,6 +86,14 @@ class MockPublishInfo(object):
     def date_last_published_semantic(self, value):
         _publish_times_semantic[self.context.uniqueId] = value
 
+    @property
+    def date_first_released(self):
+        return _publish_times_first.get(self.context.uniqueId)
+
+    @date_first_released.setter
+    def date_first_released(self, value):
+        _publish_times_first[self.context.uniqueId] = value
+
     def can_publish(self):
         return _can_publish.get(
             self.context.uniqueId,
@@ -102,6 +109,7 @@ _can_publish = {}
 _published = {}
 _publish_times = {}
 _publish_times_semantic = {}
+_publish_times_first = {}
 
 
 def reset():
@@ -109,4 +117,5 @@ def reset():
     _published.clear()
     _publish_times.clear()
     _publish_times_semantic.clear()
+    _publish_times_first.clear()
 zope.testing.cleanup.addCleanUp(reset)

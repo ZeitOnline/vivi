@@ -108,9 +108,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def product(self):
         source = ICommonMetadata['product'].source(self)
-        for value in source:
-            if value.id == self._product_id:
-                return value
+        return source.find(self._product_id)
 
     @product.setter
     def product(self, value):
@@ -134,7 +132,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def serie(self):
         source = ICommonMetadata['serie'].source(self)
-        return source.factory.values.get(self._serie)
+        return source.find(self._serie)
 
     @serie.setter
     def serie(self, value):

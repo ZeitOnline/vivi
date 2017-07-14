@@ -1,5 +1,5 @@
 <ressorts>
-  <!-- ressort names must match /cms/forms/navigation.xml -->
+  <!-- ressort names must match /cms/work/data/ressorts.xml -->
   <ressort name="Politik">
     <category>International</category>
     <category>Deutschland</category>

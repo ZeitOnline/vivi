@@ -8,7 +8,7 @@ import zope.app.appsetup.product
 log = logging.getLogger(__name__)
 
 
-def function(queue=None):
+def function(queue=None, principal=None):
     """Decorator that marks a function for async execution.
 
     If no queue name is given, it is taken from product config (which is the
@@ -22,7 +22,7 @@ def function(queue=None):
         functions = frame.f_locals.get(name, None)
         if functions is None:
             frame.f_locals[name] = functions = []
-        functions.append((func, queue))
+        functions.append((func, queue, principal))
         return func
     return decorate
 
@@ -31,9 +31,13 @@ class GlobalAsyncFunctionsGrokker(martian.GlobalGrokker):
 
     def grok(self, name, module, module_info, config, **kw):
         functions = module_info.getAnnotation('zeit.cms.async', [])
-        for func, queue in functions:
+        for func, queue, principal in functions:
             if queue is None:
                 queue = 'async'
+            if principal is not None:
+                package, key = principal
+                principal = zope.app.appsetup.product.getProductConfiguration(
+                    package)[key]
             cfg = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.cms') or {}
             queuename = cfg.get('task-queue-%s' % queue, '')
@@ -42,5 +46,5 @@ class GlobalAsyncFunctionsGrokker(martian.GlobalGrokker):
                 log.warning(
                     'Missing product config zeit.cms:task-queue-%s', queue)
             setattr(module, func.__name__, gocept.async.function(
-                queuename)(func))
+                queuename, principal)(func))
         return True

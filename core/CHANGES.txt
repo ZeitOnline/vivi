@@ -1,10 +1,66 @@
 zeit.cms changes
 ================
 
-2.101.1 (unreleased)
+2.105.2 (unreleased)
 --------------------
 
 - BUG-345: Delete objectlog entries on delete and move
+
+
+2.105.1 (2017-07-13)
+--------------------
+
+- MAINT: Rename navigation source
+
+
+2.105.0 (2017-07-12)
+--------------------
+
+- ZON-4065: Support setting async principal explicitly
+
+
+2.104.3 (2017-07-10)
+--------------------
+
+- MAINT: Allow changing date_first_released in admin tab
+
+
+2.104.2 (2017-07-07)
+--------------------
+
+- MAINT: Remove obsolete feature toggle ``zeit.cms.rr-access``
+
+
+2.104.1 (2017-07-07)
+--------------------
+
+- MAINT: Add link to TMS to keyword widget
+
+
+2.104.0 (2017-07-07)
+--------------------
+
+- ZON-4065: Install separate task queue for brightcove imports
+
+- ZON-3983: Base SerieSource on ObjectSource
+
+- MAINT: Provide `toggleFormFieldHelp` JS to make zc.form combinationwidget happy
+
+
+2.103.0 (2017-06-27)
+--------------------
+
+- ZON-4008: Add title to PrintRessortSource
+
+
+2.102.0 (2017-06-22)
+--------------------
+
+- ZON-4012: JS for "insert bullet" button
+
+- ZON-4013: Support `warning` state in `limitedInput`
+
+- FIX: Improve styling of unloadable object references
 
 
 2.101.0 (2017-06-21)
