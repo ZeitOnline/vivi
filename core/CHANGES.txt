@@ -4,7 +4,7 @@ zeit.cms changes
 2.105.2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- BUG-345: Only reset actual publishinfo properties on copy
 
 
 2.105.1 (2017-07-13)

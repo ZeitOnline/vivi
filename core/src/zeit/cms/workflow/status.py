@@ -40,9 +40,14 @@ def reset_publishinfo_on_copy(context, event):
     # most fields of IPublishInfo are marked readonly, so they don't get a
     # security declaration for writing
     info = zope.security.proxy.getObject(info)
+    live = zope.component.getUtility(
+        zeit.cms.content.interfaces.ILivePropertyManager)
     for name, field in zope.schema.getFields(
             zeit.cms.workflow.interfaces.IPublishInfo).items():
-        if name == 'error_messages':
+        prop = getattr(type(info), name)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            continue
+        if not live.is_writeable_live(prop.namespace, prop.name):
             continue
         current = getattr(info, name)
         if current != field.default:
