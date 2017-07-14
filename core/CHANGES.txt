@@ -6,6 +6,8 @@ zeit.cms changes
 
 - BUG-345: Delete objectlog entries on delete and move
 
+- BUG-345: Only reset actual publishinfo properties on copy
+
 
 2.105.1 (2017-07-13)
 --------------------
