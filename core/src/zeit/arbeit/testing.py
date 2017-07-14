@@ -14,7 +14,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         zeit.cms.testing.cms_product_config +
         zeit.content.article.testing.product_config +
         zeit.content.cp.testing.product_config
-        ))
+    ))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
