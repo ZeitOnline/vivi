@@ -12,6 +12,12 @@ zeit.content.article changes
   when the banner doesn't match anymore
 
 
+3.24.1 (2017-07-17)
+-------------------
+
+- MAINT: Remove obsolete feature toggle ``zeit.cms.rr-access``
+
+
 3.24.0 (2017-07-05)
 -------------------
 
