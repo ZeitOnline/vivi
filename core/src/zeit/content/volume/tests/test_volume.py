@@ -188,6 +188,9 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublish(volume).publish(async=False)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
+        zeit.cms.workflow.interfaces.IPublish(volume).retract(async=False)
+        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['imagegroup']).published)
 
 
 class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
