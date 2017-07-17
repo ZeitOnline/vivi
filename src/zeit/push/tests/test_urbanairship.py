@@ -287,17 +287,12 @@ class MessageTest(zeit.push.testing.TestCase):
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
     def test_sets_flag_on_checkin(self):
-        # TODO channel is not passed correctly anymore because it is defined
-        #  in the template. So another way of figuring out if it was a
-        # push_news is necessary, or we have to create the payload here again.
-        # This tests just fakes it.
         content = self.repository['testcontent']
         self.assertFalse(content.push_news)
         with checked_out(content) as co:
             push = zeit.push.interfaces.IPushMessages(co)
             push.message_config = ({
                 'type': 'mobile', 'enabled': True,
-                'channels': CONFIG_CHANNEL_NEWS,
             },)
         content = self.repository['testcontent']
         self.assertTrue(content.push_news)

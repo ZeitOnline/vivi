@@ -1,10 +1,8 @@
 # coding=utf-8
-# Why is this needed?
 from __future__ import absolute_import
 
 from datetime import datetime, timedelta
 
-from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import collections
 import grokcore.component as grok
@@ -241,11 +239,12 @@ class Message(zeit.push.message.Message):
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
-    # TODO Deal with channels
     for service in push.message_config:
+        # Just ignore channels for now
+        # Everything which is would get this flag now
+        # Is this relvant for anything else then the CP described in VIV-526?
         if (service['type'] == 'mobile' and
-                service.get('enabled') and
-                service.get('channels') == CONFIG_CHANNEL_NEWS):
+                service.get('enabled')):
             context.push_news = True
             break
 
