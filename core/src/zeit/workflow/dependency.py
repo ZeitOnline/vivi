@@ -1,18 +1,14 @@
+import grokcore.component as grok
 import zeit.cms.interfaces
 import zeit.workflow.interfaces
 import zope.component
-import zope.interface
 
 
-class Dependencies(object):
+class Dependencies(grok.Adapter):
     """Adapter to find the publication dependencies of an object."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
 
     def get_dependencies(self):
         dependencies = set()
