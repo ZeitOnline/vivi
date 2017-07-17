@@ -161,9 +161,7 @@ Dependencies
 
 Dependent objects are not exported to the CDS:
 
->>> class Dep(object):
-...     def __init__(self, context):
-...         self.context = context
+>>> class Dep(zeit.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         return (repository['online']['2007']['01']['eta-zapatero'],)
 ...
