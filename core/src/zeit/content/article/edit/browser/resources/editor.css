@@ -1945,6 +1945,11 @@
    display: none;
 }
 
+.type-article #form-mobile .field.fieldname-mobile_payload_template .label {
+  /* Counteract float left */
+  clear: both;
+}
+
 .type-article #social\.short_text,
 .type-article #mobile\.mobile_title,
 .type-article #mobile\.mobile_text {
