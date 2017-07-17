@@ -184,12 +184,16 @@ class MultiInput(SingleInput):
 active_objects = set()
 active_objects_lock = threading.Lock()
 
+MODE_PUBLISH = 'publish'
+MODE_RETRACT = 'retract'
+
 
 class PublishRetractTask(object):
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
     # inputSchema = zope.schema.Object()  # XXX
     # outputSchema = None or an error message
+    mode = NotImplemented  # MODE_PUBLISH or MODE_RETRACT
 
     def __call__(self, service, jobid, input):
         info = (type(self).__name__, unicode(input), jobid)
@@ -290,7 +294,7 @@ class PublishRetractTask(object):
         timer.mark('Cycled %s' % obj.uniqueId)
         return obj
 
-    def recurse(self, method, dependencies, obj, *args):
+    def recurse(self, method, obj, *args):
         """Apply method recursively on obj."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
@@ -317,21 +321,25 @@ class PublishRetractTask(object):
                 stack.extend(new_obj.values())
                 timer.mark('Recursed into %s' % (new_obj.uniqueId,))
 
-            if dependencies:
-                # Dive into dependent objects
-                deps = zeit.workflow.interfaces.IPublicationDependencies(
-                    new_obj)
+            # Dive into dependent objects
+            deps = zeit.workflow.interfaces.IPublicationDependencies(new_obj)
+            if self.mode == MODE_PUBLISH:
                 stack.extend(deps.get_dependencies())
-                timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
+            elif self.mode == MODE_RETRACT:
+                stack.extend(deps.get_retract_dependencies())
+            else:
+                raise ValueError('Task mode must be %r or %r, not %r' % (
+                    MODE_PUBLISH, MODE_RETRACT, self.mode))
+            timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
 
             if result_obj is None:
                 result_obj = new_obj
 
         return result_obj
 
-    def get_all_paths(self, obj, dependencies):
+    def get_all_paths(self, obj):
         unique_ids = []
-        self.recurse(self.get_unique_id, dependencies, obj, unique_ids)
+        self.recurse(self.get_unique_id, obj, unique_ids)
         # The publish/retract scripts doesn't want URLs but local paths, so
         # munge them.
         paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
@@ -419,6 +427,8 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
+    mode = MODE_PUBLISH
+
     def run(self, obj):
         logger.info('Publishing %s' % obj.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -428,11 +438,11 @@ class PublishTask(PublishRetractTask):
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
-        obj = self.recurse(self.lock, True, obj, obj)
-        obj = self.recurse(self.before_publish, True, obj, obj)
-        self.call_publish_script(self.get_all_paths(obj, True))
-        self.recurse(self.after_publish, True, obj, obj)
-        obj = self.recurse(self.unlock, True, obj, obj)
+        obj = self.recurse(self.lock, obj, obj)
+        obj = self.recurse(self.before_publish, obj, obj)
+        self.call_publish_script(self.get_all_paths(obj))
+        self.recurse(self.after_publish, obj, obj)
+        obj = self.recurse(self.unlock, obj, obj)
 
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
@@ -471,6 +481,8 @@ class PublishTask(PublishRetractTask):
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
+    mode = MODE_RETRACT
+
     def run(self, obj):
         logger.info('Retracting %s' % obj.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -478,9 +490,9 @@ class RetractTask(PublishRetractTask):
             logger.warning(
                 "Retracting object %s which is not published." % obj.uniqueId)
 
-        obj = self.recurse(self.before_retract, False, obj, obj)
+        obj = self.recurse(self.before_retract, obj, obj)
         self.call_retract_script(obj)
-        self.recurse(self.after_retract, False, obj, obj)
+        self.recurse(self.after_retract, obj, obj)
 
     def before_retract(self, obj, master):
         """Do things before the actual retract."""
@@ -497,7 +509,7 @@ class RetractTask(PublishRetractTask):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         retract_script = config['retract-script']
-        paths = reversed(self.get_all_paths(obj, False))
+        paths = reversed(self.get_all_paths(obj))
         self.call_script(retract_script, '\n'.join(paths))
 
     def after_retract(self, obj, master):
@@ -529,18 +541,18 @@ class MultiPublishTask(PublishTask):
                     "Could not publish because conditions not satisifed."))
                 continue
 
-            obj = self.recurse(self.lock, True, obj, obj)
-            obj = self.recurse(self.before_publish, True, obj, obj)
+            obj = self.recurse(self.lock, obj, obj)
+            obj = self.recurse(self.before_publish, obj, obj)
             published.append(obj)
 
         paths = []
         for obj in published:
-            paths.extend(self.get_all_paths(obj, True))
+            paths.extend(self.get_all_paths(obj))
         self.call_publish_script(paths)
 
         for obj in published:
-            self.recurse(self.after_publish, True, obj, obj)
-            obj = self.recurse(self.unlock, True, obj, obj)
+            self.recurse(self.after_publish, obj, obj)
+            obj = self.recurse(self.unlock, obj, obj)
 
     def commit(self):
         # Work around limitations of our ZODB-based DAV cache.

@@ -709,9 +709,7 @@ Simple dependencies
 Let's assume the Somalia article has a dependency on the politik.feed. This
 is done via a named adapter to IPublicationDependencies:
 
->>> class SomaliaFeed(object):
-...     def __init__(self, context):
-...         self.context = context
+>>> class SomaliaFeed(zeit.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
 ...             return (repository['politik.feed'],)
@@ -790,6 +788,57 @@ http://xml.zeit.de/politik.feed
     ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
 
+Dependend retract
++++++++++++++++++
+
+Retract does *not* honour dependencies by default:
+
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> job_id = publish.retract()
+>>> tasks.process()
+BeforeRetractEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+>>> feed_workflow.published
+True
+
+Make sure the file would actually have been removed:
+
+>>> print logfile.getvalue(),
+Running job ...
+Retracting http://xml.zeit.de/online/2007/01/Somalia
+...retract.sh:
+Retracting test script
+work/online/2007/01/Somalia
+done.
+...
+
+If the dependencies adapter allows it, the dependencies are retracted as well:
+
+>>> SomaliaFeed.retract_dependencies = True
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> job_id = publish.retract()
+>>> tasks.process()
+BeforeRetractEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+BeforeRetractEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/politik.feed
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+>>> feed_workflow.published
+False
+
 
 Recursive dependencies
 ++++++++++++++++++++++
@@ -799,9 +848,7 @@ published when either is published.
 
 Add the reverse dependency:
 
->>> class FeedSomalia(object):
-...     def __init__(self, context):
-...         self.context = context
+>>> class FeedSomalia(zeit.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context == feed:
 ...             return (somalia,)
@@ -835,42 +882,13 @@ PublishedEvent
 http://xml.zeit.de/politik.feed
      Published
 http://xml.zeit.de/politik.feed
+     Retracted
+http://xml.zeit.de/politik.feed
      Published
-
-Dependend retract
-+++++++++++++++++
-
-Retract does *not* honours dependencies:
-
->>> logfile.seek(0)
->>> logfile.truncate()
->>> job_id = publish.retract()
->>> tasks.process()
-BeforeRetractEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
-RetractedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
->>> feed_workflow.published
-True
-
-Make sure the file would actually have been removed:
-
->>> print logfile.getvalue(),
-Running job ...
-Retracting http://xml.zeit.de/online/2007/01/Somalia
-...retract.sh:
-Retracting test script
-work/online/2007/01/Somalia
-done.
-...
 
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 True
-
-
 
 Depending on non workflowed objects
 +++++++++++++++++++++++++++++++++++
@@ -880,9 +898,7 @@ will be published nevertheles.
 
 Let somalia also depend on the /2007 folder:
 
->>> class SomaliaFolder(object):
-...     def __init__(self, context):
-...         self.context = context
+>>> class SomaliaFolder(zeit.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
 ...             return (repository['2007'],)
