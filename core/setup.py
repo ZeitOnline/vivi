@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'pytz',
         'setuptools',
-        'zeit.cms>=2.104.0.dev0',
+        'zeit.cms>=2.106.0.dev0',
         'zeit.connector',
         'zeit.push >= 1.21.0.dev0',
         'zeit.solr>=2.2.0.dev0',
