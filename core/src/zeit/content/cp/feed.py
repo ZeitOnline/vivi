@@ -16,6 +16,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.workflow.dependency
 import zeit.content.cp.interfaces
 import zeit.content.image.image
 import zeit.edit.interfaces
@@ -181,12 +182,10 @@ class FeedValidator(object):
             self.messages.append(self.context.error)
 
 
-class FaviconDependency(grok.Adapter):
+class FaviconDependency(zeit.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.cp.interfaces.IFeed)
-    grok.name('favicon')
-    grok.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
+    grok.name('zeit.content.cp.favicon')
 
     def get_dependencies(self):
         icon = zeit.cms.interfaces.ICMSContent(self.context.favicon, None)

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.13.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-500: Update to new dependency API
 
 
 3.13.6 (2017-06-09)
