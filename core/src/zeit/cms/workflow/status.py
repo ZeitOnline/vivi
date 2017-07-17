@@ -47,7 +47,7 @@ def reset_publishinfo_on_copy(context, event):
         prop = getattr(type(info), name)
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
             continue
-        if not live.is_writeable_live(prop.namespace, prop.name):
+        if not live.is_writeable_live(prop.name, prop.namespace):
             continue
         current = getattr(info, name)
         if current != field.default:
