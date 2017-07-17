@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 
 from datetime import datetime, timedelta
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import collections
@@ -60,8 +61,6 @@ class Connection(object):
             cache_size=0,
             loader=jinja2.FunctionLoader(load_template))
 
-
-
     @zope.cachedescriptors.property.Lazy
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration(
@@ -71,8 +70,8 @@ class Connection(object):
     # def get_headline(self, channels):
     #     """Return translation for the headline, which depends on the channel.
     #
-    #     Since the channel is used to classify the push notification as ordinary
-    #     news or breaking news, it also influences the headline.
+    #     Since the channel is used to classify the push notification as
+    #     ordinary news or breaking news, it also influences the headline.
     #
     #     """
     #     if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
@@ -138,7 +137,6 @@ class Connection(object):
         # Great validation would be a solution to this problem :)
         for ua_push_object in to_push:
             self.push(ua_push_object)
-
 
     def push(self, push):
         log.debug('Sending Push to Urban Airship: %s', push.payload)
@@ -269,7 +267,7 @@ def load_template(name):
     """
     Returns the template text as unicode
     :param name: Name
-    :return:
+    :return: unicode
     """
     template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(name)
     if not template:
@@ -278,43 +276,77 @@ def load_template(name):
     return template.text
 
 
-class PayloadDocumentation(Connection):
-
-    def push(self, data):
-        print json.dumps(data.payload, indent=2, sort_keys=True) + ','
-
-
 def print_payload_documentation():
+    import zeit.content.article.article
+    import pkg_resources
+
+    class PayloadDocumentation(Connection):
+
+        def push(self, data):
+            print json.dumps(data.payload, indent=2, sort_keys=True)
+
+    def build_test_arcicle(article_url):
+        article = zeit.content.article.article.Article()
+        article.uniqueId = article_url
+        article.title = "Titel des Testartikels"
+        return article
+
     config = {
         'push-target-url': 'http://www.zeit.de',
         'push-payload-templates': 'data/payload-templates'
     }
-    docstring = """
+    zope.app.appsetup.product.setProductConfiguration('zeit.push', config)
+    conn = PayloadDocumentation(
+        'android_application_key', 'android_master_secret',
+        'ios_application_key', 'ios_master_secret', 'web_application_key',
+        'web_master_secret', expire_interval=9000)
+    article_url = 'http://www.zeit.de/testartikel'
+    article = build_test_arcicle(article_url)
+    # Use a different jinja environment here which uses the test payload
+    # template
+    payload_path = "{fixtures}/payloadtemplate.json".format(
+        fixtures=pkg_resources.resource_filename(
+            __name__, 'tests/fixtures'))
+    template_text = None
+    with open(payload_path) as f:
+        template_text = f.read().decode('utf-8')
+    conn.jinja_env = jinja2.Environment(
+        loader=jinja2.FunctionLoader(lambda x: template_text))
+    push_config = {
+        'buttons': 'YES/NO',
+        'uses_image': True,
+        'image': 'IMAGE_URL',
+        'enabled': True,
+        'override_text': u'Foo',
+        'type': 'mobile',
+        'title': u'Bar'}
+    params = {
+        'push_config': push_config,
+        'context': article,
+    }
+    template_vars = conn.create_template_vars('PushTitle',
+                                              article_url,
+                                              article,
+                                              push_config)
+    print u"""
     Um ein neues Pushtemplate zu erstellen muss unter
     http://vivi.zeit.de/repository/{template_path} eine neue Textdatei
     angelegt werden. In dieser Textdatei kann dann mithilfe der Jinja2
     Template Sprache (http://jinja.pocoo.org/docs/2.9/) das JSON definiert
     werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
     gesendet wird. Dafür muss das entsprechende Template in dem
-    Artikelanlagedialog ausgewählt werden. In dem Template können sowohl auf
+    Artikeldialog ausgewählt werden. In dem Template können sowohl auf
     eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
     Pushnachricht zugegriffen werden. Im Folgenden nun ein Beispiel wie ein
     solches Template funktioniert.
-    """.format(template_path=config.get('push-payload-templates'))
-    # Use a test aritcle
-    print docstring
-    # Build Template vars
-    #
-    zope.app.appsetup.product.setProductConfiguration('zeit.push', config)
-    conn = PayloadDocumentation(
-        'android_application_key', 'android_master_secret',
-        'ios_application_key', 'ios_master_secret', 'web_application_key',
-        'web_master_secret', expire_interval=9000)
-    params = {}
-    conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
-              channels=CONFIG_CHANNEL_BREAKING, **params)
-    print '\n'
-    print '{"//": "*** Wichtige Nachrichten ***"},'
-    conn.send('PushTitle', 'http://www.zeit.de/test/artikel',
-             channels=CONFIG_CHANNEL_NEWS, **params)
-    print ']'
+    Nutz man das Template
+    {template_text}
+    """.format(
+        template_path=config.get('push-payload-templates'),
+        template_text=template_text
+        )
+    print u"mit der push-Konfiguration:"
+    template_vars['article'] = 'article'
+    print json.dumps(template_vars, indent=2, sort_keys=True)
+    print u"werden folgende payloads an Urbanairship versandt:"
+    conn.send('PushTitle', article_url, **params)
