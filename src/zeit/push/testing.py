@@ -28,6 +28,7 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
+
 # TODO Is this still relevant? I guess not.
 class MobilePushNotifier(PushNotifier):
 
