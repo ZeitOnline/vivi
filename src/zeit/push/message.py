@@ -321,15 +321,15 @@ class AccountData(grok.Adapter):
             buttons=value)
 
     @property
-    def payload_template(self):
+    def mobile_payload_template(self):
         # Convert the token back to the value
         service = self.push.get(
             type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
         return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
             .factory.find(service.get('payload_template'))
 
-    @mobile_buttons.setter
-    def payload_template(self, value):
+    @mobile_payload_template.setter
+    def mobile_payload_template(self, value):
         token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.getToken(
             value)
         # Use the token here instead of the value

@@ -316,7 +316,7 @@ class IAccountData(zope.interface.Interface):
         title=_('Mobile buttons'),
         source=MOBILE_BUTTONS_SOURCE,
         required=False)
-    payload_template = zope.schema.Choice(
+    mobile_payload_template = zope.schema.Choice(
         title=_('Payload Template'),
         source=PAYLOAD_TEMPLATE_SOURCE,
         required=True)

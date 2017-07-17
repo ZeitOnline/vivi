@@ -58,7 +58,7 @@ class MobileBase(Base):
         _("Mobile apps"),
         ('mobile_title', 'mobile_text', 'mobile_enabled',
          'mobile_uses_image', 'mobile_image', 'mobile_buttons',
-         'payload_template'),
+         'mobile_payload_template'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -71,7 +71,7 @@ class MobileBase(Base):
             zeit.push.interfaces.IAccountData).select(
                 'mobile_enabled', 'mobile_title', 'mobile_text',
                 'mobile_uses_image', 'mobile_image', 'mobile_buttons',
-                'payload_template')
+                'mobile_payload_template')
 
     def setUpWidgets(self, *args, **kw):
         super(MobileBase, self).setUpWidgets(*args, **kw)
