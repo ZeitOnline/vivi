@@ -157,6 +157,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.category.ad_thisweeks_groups_above = \
             self.THISWEEKS_AD_GROUPS_ABOVE
         self.repository['mynl'] = self.category
+        self.category = self.repository['mynl']
         self.newsletter = self.repository['mynl']['newsletter'] = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
             self.category, self.newsletter)
@@ -220,7 +221,8 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(0, len(video_group))
 
     def test_should_not_break_if_playlist_id_resolves_to_something_else(self):
-        self.category.video_playlist = self.category.uniqueId
+        with checked_out(self.category) as co:
+            co.video_playlist = self.category.uniqueId
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertNotEqual(0, len(body))
@@ -248,7 +250,8 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         playlist.videos = (video1, video2)
         self.repository['playlist'] = playlist
 
-        self.category.video_playlist = playlist.uniqueId
+        with checked_out(self.category) as co:
+            co.video_playlist = playlist.uniqueId
         self.category.last_created = created - datetime.timedelta(1)
 
         self.builder(())
@@ -288,7 +291,8 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         playlist.videos = (video1, video2, video3)
         self.repository['playlist'] = playlist
 
-        self.category.video_playlist = playlist.uniqueId
+        with checked_out(self.category) as co:
+            co.video_playlist = playlist.uniqueId
         self.category.last_created = datetime.datetime(
             2014, 9, 22, 18, 0, tzinfo=pytz.UTC)
         self.builder(())
