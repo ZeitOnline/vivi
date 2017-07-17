@@ -247,55 +247,55 @@ class AccountData(grok.Adapter):
     @property
     def mobile_enabled(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and service.get('enabled')
 
     @mobile_enabled.setter
     def mobile_enabled(self, value):
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             enabled=value)
 
     @property
     def mobile_title(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and service.get('title')
 
     @mobile_title.setter
     def mobile_title(self, value):
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             title=value)
 
     @property
     def mobile_text(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and service.get('override_text')
 
     @mobile_text.setter
     def mobile_text(self, value):
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             override_text=value)
 
     @property
     def mobile_uses_image(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and service.get('uses_image')
 
     @mobile_uses_image.setter
     def mobile_uses_image(self, value):
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             uses_image=value)
 
     @property
     def mobile_image(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         if not service:
             return None
         return zeit.cms.interfaces.ICMSContent(service.get('image'), None)
@@ -305,26 +305,26 @@ class AccountData(grok.Adapter):
         if value is not None:
             value = value.uniqueId
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             image=value)
 
     @property
     def mobile_buttons(self):
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and service.get('buttons')
 
     @mobile_buttons.setter
     def mobile_buttons(self, value):
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             buttons=value)
 
     @property
     def mobile_payload_template(self):
         # Convert the token back to the value
         service = self.push.get(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS)
+            type='mobile')
         return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
             .factory.find(service.get('payload_template'))
 
@@ -334,5 +334,5 @@ class AccountData(grok.Adapter):
             value)
         # Use the token here instead of the value
         self.push.set(dict(
-            type='mobile', channels=zeit.push.interfaces.CONFIG_CHANNEL_NEWS),
+            type='mobile'),
             payload_template=token)
