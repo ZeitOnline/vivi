@@ -77,7 +77,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS,
              'payload_template': 'http://xml.zeit.de/data/payload-templates/'
                                  'foo.json'},
             push.message_config)
@@ -110,7 +109,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS,
              'payload_template': 'http://xml.zeit.de/data/payload-templates/'
                                  'foo.json'},
             push.message_config)

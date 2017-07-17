@@ -3,7 +3,6 @@ from __future__ import absolute_import
 
 from datetime import datetime, timedelta
 
-from zeit.push.interfaces import CONFIG_CHANNEL_NEWS, CONFIG_CHANNEL_BREAKING
 import collections
 import grokcore.component as grok
 import jinja2
@@ -63,23 +62,6 @@ class Connection(object):
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration(
             'zeit.push') or {}
-
-    # TODO Headlines have to be implemented in another way
-    # def get_headline(self, channels):
-    #     """Return translation for the headline, which depends on the channel.
-    #
-    #     Since the channel is used to classify the push notification as
-    #     ordinary news or breaking news, it also influences the headline.
-    #
-    #     """
-    #     if self.config.get(CONFIG_CHANNEL_NEWS) in channels:
-    #         headline = _('push-news-title')
-    #     else:
-    #         headline = _('push-breaking-title')
-    #
-    #     # There's no i18n in the mobile app, so we translate to a hard-coded
-    #     # language here.
-    #     return zope.i18n.translate(headline, target_language=self.LANGUAGE)
 
     @property
     def expiration_datetime(self):
@@ -153,17 +135,8 @@ class Connection(object):
 
     # XXX Not used but maybe we will use something simmilar in another form
     @staticmethod
-    def add_tracking(url, channels, device):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push') or {}
-        if config.get(CONFIG_CHANNEL_BREAKING) in channels:
-            channel = 'eilmeldung'
-        else:
-            channel = 'wichtige_news'
-        if device == 'android':
-            device = 'andpush'
-        else:
-            device = 'iospush'
+    def add_tracking(url, channel, device):
+        # Well use channel differntly
 
         tracking = collections.OrderedDict(sorted(
             {
@@ -240,9 +213,8 @@ class Message(zeit.push.message.Message):
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
     for service in push.message_config:
-        # Just ignore channels for now
-        # Everything which is would get this flag now
-        # Is this relvant for anything else then the CP described in VIV-526?
+        # Just ignore channels for now, everything gets this flag now
+        # Is this relevant for anything else then the CP described in VIV-526?
         if (service['type'] == 'mobile' and
                 service.get('enabled')):
             context.push_news = True
@@ -318,7 +290,7 @@ def print_payload_documentation():
         'enabled': True,
         'override_text': u'Foo',
         'type': 'mobile',
-        'title': u'Bar'}
+        'title': u'Foo'}
     params = {
         'push_config': push_config,
         'context': article,

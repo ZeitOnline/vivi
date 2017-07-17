@@ -50,9 +50,6 @@ class IPushNotifier(zope.interface.Interface):
 
         * ``enabled``: If the service is enabled.
 
-        * ``channels``: Restrict push notification to users listening to this
-          kind of pushes (`News` or `Eilmeldung`). [only `mobile`]
-
         * ``override_text``: Text that should be used instead of the given
           `text` parameter. [only `mobile` & `facebook`]
 
@@ -127,10 +124,6 @@ class IPushMessages(zope.interface.Interface):
         query key/values with the given values. If none is found, a new entry
         is appended, combining query and values.
         """
-
-
-CONFIG_CHANNEL_NEWS = 'channel-news'
-CONFIG_CHANNEL_BREAKING = 'channel-breaking'
 
 
 class IPushURL(zope.interface.Interface):

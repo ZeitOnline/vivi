@@ -1,7 +1,6 @@
 # coding=utf-8
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import CONFIG_CHANNEL_NEWS
 from zeit.cms.interfaces import ICMSContent
 import json
 import mock
@@ -171,7 +170,7 @@ class AddTrackingTest(unittest.TestCase,
 
     def test_adds_tracking_information_as_query_string(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://www.zeit.de/foo/bar', ['News'], 'android')
+            'http://www.zeit.de/foo/bar', 'wichtige_news', 'andpush')
         # No thanks to parse_qs() for "benevolently" ignoring this.
         self.assertNotIn('?&', url)
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
@@ -185,7 +184,7 @@ class AddTrackingTest(unittest.TestCase,
 
     def test_preserves_existing_query_string(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://www.zeit.de/foo/bar?baz=qux', ['News'], 'android')
+            'http://www.zeit.de/foo/bar?baz=qux', 'wichtige_news', 'andpush')
         self.assertStartsWith('http://www.zeit.de/foo/bar?baz=qux&', url)
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('qux', qs['baz'][0])
@@ -193,32 +192,26 @@ class AddTrackingTest(unittest.TestCase,
     def test_adds_tracking_information_blog(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
             'http://www.zeit.de/blog/foo/bar?feed=articlexml',
-            ['News'], 'android')
+            'wichtige_news', 'andpush')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('articlexml', qs['feed'][0])
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
 
     def test_creates_android_push_link_for_android(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', [], 'android')
+            'http://URL', '', 'andpush')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('zeitde_andpush_link_x', qs['utm_content'][0])
 
     def test_creates_ios_push_link_for_ios(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', [], 'ios')
+            'http://URL', [], 'iospush')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('zeitde_iospush_link_x', qs['utm_content'][0])
 
-    def test_creates_breaking_news_link_for_breaking_news_channel(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', ['Eilmeldung'], 'device')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('eilmeldung', qs['utm_campaign'][0])
-
     def test_creates_news_link_for_news_channel(self):
         url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', ['News'], 'device')
+            'http://URL', 'wichtige_news', 'device')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('wichtige_news', qs['utm_campaign'][0])
 
