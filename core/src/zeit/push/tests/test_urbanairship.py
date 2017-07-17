@@ -63,7 +63,8 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'push_config': {
                     'uses_image': True,
                     'payload_template':
-                        u'http://xml.zeit.de/data/payload-templates/template.json',
+                        u'http://xml.zeit.de/data/payload-templates/'
+                        u'template.json',
                     'enabled': True,
                     'override_text': u'foo',
                     'type': 'mobile'},
@@ -143,13 +144,13 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
 
     def test_getTitle_returns_capitalized_title(self):
         self.assertTrue('Template',
-            zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.getTitle(
-                self.templates[0]))
+                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+                        .getTitle(self.templates[0]))
 
     def test_getToken_returns_unique_id(self):
         self.assertTrue('http://xml.zeit.de/data/payload-templates/template'
                         '.json',
-                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory\
+                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
                         .getToken(self.templates[0]))
 
     def test_find_returns_correct_template(self):
@@ -344,7 +345,7 @@ class PushTest(ConnectionTest):
         with mock.patch('urbanairship.push.core.Push.send', send):
             with mock.patch('urbanairship.push.core.PushResponse') as push:
                 self.api.send('Push', 'http://example.com',
-                         **self.additional_params)
+                              **self.additional_params)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
