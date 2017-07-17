@@ -790,6 +790,35 @@ http://xml.zeit.de/politik.feed
     ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
 
+Dependend retract
++++++++++++++++++
+
+Retract does *not* honours dependencies:
+
+>>> logfile.seek(0)
+>>> logfile.truncate()
+>>> job_id = publish.retract()
+>>> tasks.process()
+BeforeRetractEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+RetractedEvent
+    Object: http://xml.zeit.de/online/2007/01/Somalia
+    Master: http://xml.zeit.de/online/2007/01/Somalia
+>>> feed_workflow.published
+True
+
+Make sure the file would actually have been removed:
+
+>>> print logfile.getvalue(),
+Running job ...
+Retracting http://xml.zeit.de/online/2007/01/Somalia
+...retract.sh:
+Retracting test script
+work/online/2007/01/Somalia
+done.
+...
+
 
 Recursive dependencies
 ++++++++++++++++++++++
@@ -836,35 +865,6 @@ http://xml.zeit.de/politik.feed
      Published
 http://xml.zeit.de/politik.feed
      Published
-
-Dependend retract
-+++++++++++++++++
-
-Retract does *not* honours dependencies:
-
->>> logfile.seek(0)
->>> logfile.truncate()
->>> job_id = publish.retract()
->>> tasks.process()
-BeforeRetractEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
-RetractedEvent
-    Object: http://xml.zeit.de/online/2007/01/Somalia
-    Master: http://xml.zeit.de/online/2007/01/Somalia
->>> feed_workflow.published
-True
-
-Make sure the file would actually have been removed:
-
->>> print logfile.getvalue(),
-Running job ...
-Retracting http://xml.zeit.de/online/2007/01/Somalia
-...retract.sh:
-Retracting test script
-work/online/2007/01/Somalia
-done.
-...
 
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
