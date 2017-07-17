@@ -1,20 +1,15 @@
-import zope.component
-import zope.interface
-
+import grokcore.component as grok
 import zeit.content.gallery.interfaces
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 
 
-class PublicationDependencies(object):
+class PublicationDependencies(zeit.workflow.dependency.DependencyBase):
     """Gallery dependencies."""
 
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-    zope.component.adapts(
-        zeit.content.gallery.interfaces.IGallery)
+    grok.context(zeit.content.gallery.interfaces.IGallery)
+    grok.name('zeit.content.gallery.image_folder')
 
-    def __init__(self, context):
-        self.context = context
+    retract_dependencies = True
 
     def get_dependencies(self):
         if self.context.image_folder is not None:
