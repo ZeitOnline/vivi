@@ -2,6 +2,7 @@ import pkg_resources
 import plone.testing
 import gocept.selenium
 import logging
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.interfaces
@@ -46,8 +47,29 @@ class PushMockLayer(plone.testing.Layer):
 
 PUSH_MOCK_LAYER = PushMockLayer()
 
+
+class UrbanairshipTemplateLayer(plone.testing.Layer):
+
+    defaultBases = (BASE_ZCML_LAYER, )
+
+    def testSetUp(self):
+        # Add a dummy template
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+            with zeit.cms.testing.interaction():
+                zeit.cms.content.add.find_or_create_folder('data',
+                                                           'payload-templates')
+                repository = zope.component.getUtility(
+                    zeit.cms.repository.interfaces.IRepository)
+                textcontent = zeit.content.text.text.Text()
+                textcontent.text = ''
+                repository['data']['payload-templates']['foo.json'] = \
+                    textcontent
+
+
+URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
+
 ZCML_LAYER = plone.testing.Layer(
-    bases=(BASE_ZCML_LAYER, PUSH_MOCK_LAYER),
+    bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER),
     name='ZCMLPushMockLayer',
     module=__name__)
 
