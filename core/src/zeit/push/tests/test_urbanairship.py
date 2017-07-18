@@ -61,9 +61,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             {
                 'push_config': {
                     'uses_image': True,
-                    'payload_template':
-                        u'http://xml.zeit.de/data/urbanairship-templates/'
-                        u'template.json',
+                    'payload_template': u'template.json',
                     'enabled': True,
                     'override_text': u'foo',
                     'type': 'mobile'},
@@ -122,8 +120,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
         """
         self.create_test_payload_template(template_text=tempate_content,
                                           template_name="bar.json")
-        self.additional_params['push_config']['payload_template'] = \
-            "http://xml.zeit.de/data/urbanairship-templates/bar.json"
+        self.additional_params['push_config']['payload_template'] = "bar.json"
         payload = self.api.create_payload("", "", **self.additional_params)
         self.assertEqual(u'Bildß', payload[0].get('message'))
         self.assertEqual(article.title, payload[0].get('title'))
@@ -137,7 +134,8 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
         self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
     def test_getValues_returns_all_templates_as_text_objects(self):
-        # Change this if we decide we want a new content type PaylaodTemplate
+        # Change this if we decide we want a new
+        # content type PaylaodTemplate
         self.assertTrue(1, len(self.templates))
         self.assertTrue(zeit.content.text.text.Text, type(self.templates[0]))
 
@@ -146,21 +144,19 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
                         zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
                         .getTitle(self.templates[0]))
 
-    def test_getToken_returns_unique_id(self):
-        self.assertTrue('http://xml.zeit.de/data/urbanairship-templates/ '
-                        'template.json',
+    def test_getToken_returns_template_name(self):
+        self.assertTrue('template.json',
                         zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
                         .getToken(self.templates[0]))
 
     def test_find_returns_correct_template(self):
-        uniq = 'http://xml.zeit.de/data/urbanairship-templates/template.json'
+        template_name = 'template.json'
         result = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
-            uniq)
-        self.assertEqual(uniq, result.uniqueId)
+            template_name)
+        self.assertEqual(template_name, result.__name__)
 
     def test_load_template_returns_unicode(self):
-        zeit.push.urbanairship.load_template(
-            'http://xml.zeit.de/data/urbanairship-templates/template.json')
+        zeit.push.urbanairship.load_template('template.json')
 
 
 class AddTrackingTest(unittest.TestCase,

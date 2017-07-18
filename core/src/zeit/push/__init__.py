@@ -15,7 +15,7 @@ product_config = """\
   mobile-image-url http://img.zeit.de/
   urbanairship-audience-group subscriptions
   mobile-buttons file://{fixtures}/mobile-buttons.xml
-  push-payload-templates data/urbanairship-templates
+  push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
