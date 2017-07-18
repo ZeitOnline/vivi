@@ -1,6 +1,12 @@
 zeit.content.author changes
 ===========================
 
+2.7.9 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.7.8 (2017-07-18)
 ------------------
 
