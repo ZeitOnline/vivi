@@ -62,7 +62,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'push_config': {
                     'uses_image': True,
                     'payload_template':
-                        u'http://xml.zeit.de/data/payload-templates/'
+                        u'http://xml.zeit.de/data/urbanairship-templates/'
                         u'template.json',
                     'enabled': True,
                     'override_text': u'foo',
@@ -123,7 +123,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
         self.create_test_payload_template(template_text=tempate_content,
                                           template_name="bar.json")
         self.additional_params['push_config']['payload_template'] = \
-            "http://xml.zeit.de/data/payload-templates/bar.json"
+            "http://xml.zeit.de/data/urbanairship-templates/bar.json"
         payload = self.api.create_payload("", "", **self.additional_params)
         self.assertEqual(u'Bildß', payload[0].get('message'))
         self.assertEqual(article.title, payload[0].get('title'))
@@ -147,20 +147,20 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
                         .getTitle(self.templates[0]))
 
     def test_getToken_returns_unique_id(self):
-        self.assertTrue('http://xml.zeit.de/data/payload-templates/template'
-                        '.json',
+        self.assertTrue('http://xml.zeit.de/data/urbanairship-templates/ '
+                        'template.json',
                         zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
                         .getToken(self.templates[0]))
 
     def test_find_returns_correct_template(self):
-        to_find = 'http://xml.zeit.de/data/payload-templates/template.json'
+        uniq = 'http://xml.zeit.de/data/urbanairship-templates/template.json'
         result = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
-            to_find)
-        self.assertEqual(to_find, result.uniqueId)
+            uniq)
+        self.assertEqual(uniq, result.uniqueId)
 
     def test_load_template_returns_unicode(self):
         zeit.push.urbanairship.load_template(
-            'http://xml.zeit.de/data/payload-templates/template.json')
+            'http://xml.zeit.de/data/urbanairship-templates/template.json')
 
 
 class AddTrackingTest(unittest.TestCase,

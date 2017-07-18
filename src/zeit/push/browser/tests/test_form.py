@@ -1,5 +1,3 @@
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.repository.folder import Folder
 import zeit.cms.testing
 import zeit.push.interfaces
 import zeit.push.testing
@@ -69,8 +67,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'payload_template': 'http://xml.zeit.de/data/payload-templates/'
-                                 'foo.json'},
+             'payload_template': 'http://xml.zeit.de/data/urbanairship-'
+                                 'templates/foo.json'},
             push.message_config)
 
         self.open_form()
@@ -101,8 +99,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'payload_template': 'http://xml.zeit.de/data/payload-templates/'
-                                 'foo.json'},
+             'payload_template': 'http://xml.zeit.de/data/urbanairship-'
+                                 'templates/foo.json'},
             push.message_config)
 
         self.open_form()
@@ -199,7 +197,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual('http://xml.zeit.de/data/payload-templates/foo.json',
+        self.assertEqual('http://xml.zeit.de/data/urbanairship-templates/'
+                         'foo.json',
                          service['payload_template'])
 
 
