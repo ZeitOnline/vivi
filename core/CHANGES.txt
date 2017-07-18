@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-1.1.0 (unreleased)
+1.1.0 (2017-07-18)
 ------------------
 
 - BUG-345: Implement `IObjectLog.delete`
