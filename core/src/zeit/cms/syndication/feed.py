@@ -4,7 +4,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import os.path
-import rwproperty
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -240,38 +239,38 @@ class Entry(object):
     def __init__(self, element):
         self.xml = element
 
-    @rwproperty.getproperty
+    @property
     def pinned(self):
         return self.xml.get('pinned') == 'true'
 
-    @rwproperty.setproperty
+    @pinned.setter
     def pinned(self, value):
         self._set_bool('pinned', value)
 
-    @rwproperty.getproperty
+    @property
     def hidden(self):
         return self.xml.get('hp_hide') == 'true'
 
-    @rwproperty.setproperty
+    @hidden.setter
     def hidden(self, value):
         self._set_bool('hp_hide', value)
 
-    @rwproperty.getproperty
+    @property
     def big_layout(self):
         return self.xml.get('layout') == 'big'
 
-    @rwproperty.setproperty
+    @big_layout.setter
     def big_layout(self, value):
         if value:
             self.xml.set('layout', 'big')
         else:
             self.xml.attrib.pop('layout', None)
 
-    @rwproperty.getproperty
+    @property
     def hidden_relateds(self):
         return self.xml.get('hidden_relateds') == 'true'
 
-    @rwproperty.setproperty
+    @hidden_relateds.setter
     def hidden_relateds(self, value):
         self._set_bool('hidden_relateds', value)
 

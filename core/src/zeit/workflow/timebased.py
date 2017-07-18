@@ -5,7 +5,6 @@ import datetime
 import grokcore.component as grok
 import lovely.remotetask.interfaces
 import pytz
-import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -42,11 +41,11 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def __init__(self, context):
         self.context = self.__parent__ = context
 
-    @rwproperty.getproperty
+    @property
     def release_period(self):
         return self.released_from, self.released_to
 
-    @rwproperty.setproperty
+    @release_period.setter
     def release_period(self, value):
         """When setting the release period jobs to publish retract are created.
         """
@@ -79,9 +78,18 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
                     'date': self.format_datetime(timestamp), 'job': jobid()}))
 
     def add_job(self, task_name, when):
+        task_description = zeit.workflow.publish.SingleInput(self.context)
+
+        # Special cases that keep piling up, sigh.
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context)
+        if renameable.renameable and renameable.rename_to:
+            parent = zeit.cms.interfaces.ICMSContent(
+                self.context.uniqueId).__parent__
+            task_description.uniqueId = parent.uniqueId + renameable.rename_to
+
         delay = when - datetime.datetime.now(pytz.UTC)
         delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
-        task_description = zeit.workflow.publish.SingleInput(self.context)
         if delay > 0:
             job_id = self.tasks.addCronJob(
                 unicode(task_name), task_description, delay=delay)

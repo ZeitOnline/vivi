@@ -54,7 +54,6 @@ setup(
         'pytest',
         'pytz',
         'repoze.vhm',
-        'rwproperty>=1.0',
         'setuptools',
         'sprout',
         'transaction',
