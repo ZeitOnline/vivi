@@ -12,14 +12,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
         super(SocialFormTest, self).setUp()
-        # Add payload_template placehodler
-        # all other aad browser tests should fail now
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['data'] = Folder()
-                self.repository['data']['payload-templates'] = Folder()
-                self.repository['data']['payload-templates']['foo.json'] = \
-                    ExampleContentType()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'testcontent/@@checkout')
@@ -218,8 +210,6 @@ class SocialAddFormTest(SocialFormTest):
     def test_applies_push_configuration_to_added_object(self):
 
         b = self.browser
-
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi'
                '/repository/@@zeit.cms.testcontenttype.AddSocial')
         b.getControl('File name').value = 'social'
@@ -243,12 +233,6 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TwitterShorteningTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['data'] = Folder()
-                self.repository['data']['payload-templates'] = Folder()
-                self.repository['data']['payload-templates']['foo.json'] = \
-                    ExampleContentType()
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium
         s.open(s.getLocation().replace('edit', 'edit-social'))

@@ -153,10 +153,10 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
                         .getToken(self.templates[0]))
 
     def test_find_returns_correct_template(self):
+        to_find = 'http://xml.zeit.de/data/payload-templates/template.json'
         result = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
-            'http://xml.zeit.de/data/payload-templates/template.json'
-        )
-        self.assertEqual(self.templates[0], result)
+            to_find)
+        self.assertEqual(to_find, result.uniqueId)
 
     def test_load_template_returns_unicode(self):
         zeit.push.urbanairship.load_template(
