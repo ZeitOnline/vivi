@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.7.7 (unreleased)
+1.7.7 (2017-07-18)
 ------------------
 
 - BUG-500: Update to new dependency API
