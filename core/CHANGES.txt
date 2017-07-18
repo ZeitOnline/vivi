@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.2.3 (unreleased)
+1.2.3 (2017-07-18)
 ------------------
 
 - BUG-500: Update to new dependency API
