@@ -243,7 +243,8 @@ def load_template(name):
     template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(name)
     if not template:
         raise jinja2.TemplateNotFound("Could not find template %s in %s" % (
-            name, zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE))
+            name, zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+            .template_folder.uniqueId))
     return template.text
 
 
@@ -264,7 +265,7 @@ def print_payload_documentation():
 
     config = {
         'push-target-url': 'http://www.zeit.de',
-        'push-payload-templates': 'data/payload-templates'
+        'push-payload-templates': 'data/urbanairship-templates'
     }
     zope.app.appsetup.product.setProductConfiguration('zeit.push', config)
     conn = PayloadDocumentation(

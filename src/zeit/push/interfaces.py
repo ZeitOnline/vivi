@@ -242,27 +242,25 @@ MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    # For testing purposes, this should not be cached at all
-    # @CONFIG_CACHE.cache_on_arguments()
+    @property
+    def template_folder(self):
+        template_folder_path = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.push').get('push-payload-templates')
+        return zeit.cms.interfaces.ICMSContent(template_folder_path)
+
     def getValues(self):
-        payload_path = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push').get('push-payload-templates')
-        template_folder = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/{}".format(payload_path))
-        return [template_json for template_json in template_folder.values()]
+        return list(self.template_folder.values())
 
     def getTitle(self, value):
         return value.__name__.split('.')[0].capitalize()
 
     def getToken(self, value):
-        return value.uniqueId
+        return value.__name__
 
     def find(self, id):
-        ret = None
-        for val in self.getValues():
-            if val.uniqueId == id:
-                ret = val
-        return ret
+        if not id:
+            return None
+        return self.template_folder.get(id)
 
 
 PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()

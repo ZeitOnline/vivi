@@ -67,8 +67,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'payload_template': 'http://xml.zeit.de/data/urbanairship-'
-                                 'templates/foo.json'},
+             'payload_template': 'foo.json'},
             push.message_config)
 
         self.open_form()
@@ -99,8 +98,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'payload_template': 'http://xml.zeit.de/data/urbanairship-'
-                                 'templates/foo.json'},
+             'payload_template': 'foo.json'},
             push.message_config)
 
         self.open_form()
@@ -162,6 +160,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_stores_mobile_image(self):
         self.open_form()
         b = self.browser
+        b.handleErrors = False
         b.getControl('Mobile image').value = (
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         b.getControl('Apply').click()
@@ -197,9 +196,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual('http://xml.zeit.de/data/urbanairship-templates/'
-                         'foo.json',
-                         service['payload_template'])
+        self.assertEqual('foo.json', service['payload_template'])
 
 
 class SocialAddFormTest(SocialFormTest):
