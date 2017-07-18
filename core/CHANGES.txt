@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.13.7 (unreleased)
+3.13.7 (2017-07-18)
 -------------------
 
 - BUG-500: Update to new dependency API
