@@ -81,7 +81,7 @@ class Connection(object):
     def validate_template(self, payload_string):
         # TODO Implement it!
         # If not proper json a pretty good Value Error will be raised here
-        push_messages = json.loads(payload_string)
+        push_messages = json.loads(payload_string, strict=False)
         # Work with colander here?
         # Maybe make use of functionality of the urbanairship python module,
         #  or its validation API
