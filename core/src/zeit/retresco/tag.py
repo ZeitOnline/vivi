@@ -13,6 +13,11 @@ class Tag(object):
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = u'☃'
 
+    # For zeit.web, populated by ITMS.get_article_keywords() with the
+    # TMS-provided path to the corresponding topicpage; without a leading
+    # slash, so it plays nice with route_url() which already has the slash.
+    link = None
+
     def __init__(self, label, entity_type):
         self.label = label
         self.entity_type = entity_type
