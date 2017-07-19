@@ -69,14 +69,12 @@ class Connection(object):
                 timedelta(seconds=self.expire_interval))
 
     def create_payload(self, text, link, **kw):
-        article = kw.get('context')
-        push_message = kw.get('push_config')
-        template = self.jinja_env.get_template(push_message.get(
+        push_message = kw.get('message')
+        template = self.jinja_env.get_template(push_message.config.get(
             'payload_template'))
         rendered_template = template.render(**self.create_template_vars(
-            text, link, article, push_message))
+            text, link, push_message.context, push_message.config))
         return self.validate_template(rendered_template)
-        # TODO Use standard headline
 
     def validate_template(self, payload_string):
         # TODO Implement it!
@@ -188,8 +186,7 @@ class Message(zeit.push.message.Message):
     def additional_parameters(self):
         result = {
             'mobile_title': self.config.get('title'),
-            'context': self.context,
-            'push_config': self.config
+            'message': self
         }
         if self.image:
             result['image_url'] = self.image.uniqueId.replace(
