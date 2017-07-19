@@ -1,4 +1,5 @@
 from zeit.cms.checkout.helper import checked_out
+import collections
 import gocept.runner
 import grokcore.component as grok
 import logging
@@ -114,6 +115,44 @@ class TMS(object):
             return response['body']
         except (KeyError, requests.Timeout):
             return None
+
+    def get_article_keywords(self, uuid, timeout=None):
+        __traceback_info__ = (uuid,)
+        try:
+            response = self._request(
+                'GET /in-text-linked-documents/{}'.format(
+                    urllib.quote(uuid)), timeout=timeout)
+            data = response['entity_links']
+        except (KeyError, requests.Timeout):
+            return ()
+
+        entity_links = collections.OrderedDict()
+        for item in data:
+            if not item['link'] or item['status'] == 'linked':
+                # Don't duplicate keyword if in-text-link is already present.
+                continue
+            # zeit.web expects the path without a leading slash
+            item['link'] = item['link'][1:]
+            entity_links[(item['key'], item['key_type'])] = item
+
+        # Keywords pinned in vivi come first.
+        result = []
+        for kw in response['payload'].get('keywords', ()):
+            if not kw['pinned']:
+                continue
+            keyword = zeit.retresco.tag.Tag(kw['label'], kw['entity_type'])
+            tms = entity_links.pop((keyword.label, keyword.entity_type), None)
+            if not tms:
+                continue
+            keyword.link = tms['link']
+            result.append(keyword)
+        # Then we add the rest, TMS returns those sorted by descending score.
+        for tms in entity_links.values():
+            keyword = zeit.retresco.tag.Tag(tms['key'], tms['key_type'])
+            keyword.link = tms['link']
+            result.append(keyword)
+
+        return result
 
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
