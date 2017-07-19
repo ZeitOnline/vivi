@@ -206,6 +206,48 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual('mytopic', result[0]['id'])
             self.assertEqual('Mytopic', result[0]['title'])
 
+    def test_get_article_keywords_order_is_given_by_cms_payload(self):
+        self.layer['request_handler'].response_body = json.dumps({
+            'entity_links': [
+                # already linked: ignored
+                {'key': 'Merkel', 'key_type': 'person', 'score': "10.0",
+                 'status': 'linked', 'link': '/thema/merkel'},
+                # pinned: comes first
+                {'key': 'Obama', 'key_type': 'person', 'score': "8.0",
+                 'status': 'not_linked', 'link': '/thema/obama'},
+                # not pinned: after pinned ones, by score
+                {'key': 'Clinton', 'key_type': 'person', 'score': "6.0",
+                 'status': 'not_linked', 'link': '/thema/clinton'},
+                # not in CMS list: after pinned ones, by score
+                {'key': 'Berlin', 'key_type': 'location', 'score': "5.0",
+                 'status': 'not_linked', 'link': '/thema/berlin'},
+                # no link: ignored
+                {'key': 'Washington', 'key_type': 'location', 'score': "3.0",
+                 'status': 'not_linked', 'link': None},
+                # pinned: comes first
+                {'key': 'New York', 'key_type': 'location', 'score': "1.0",
+                 'status': 'not_linked', 'link': '/thema/newyork'},
+            ],
+            'payload': {
+                'keywords': [
+                    {'label': 'New York', 'entity_type': 'location',
+                     'pinned': True},
+                    {'label': 'Obama', 'entity_type': 'person',
+                     'pinned': True},
+                    {'label': 'Merkel', 'entity_type': 'person',
+                     'pinned': True},
+                    {'label': 'Clinton', 'entity_type': 'person',
+                     'pinned': False},
+                ],
+            },
+        })
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = tms.get_article_keywords('myid')
+        self.assertEqual(
+            ['New York', 'Obama', 'Clinton', 'Berlin'],
+            [x.label for x in result])
+        self.assertEqual('thema/newyork', result[0].link)
+
 
 class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
