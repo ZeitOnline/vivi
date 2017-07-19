@@ -15,9 +15,13 @@
       permission="zope.Public"
       />
 
-  <class class="zeit.content.article.article.Article">
-    <implements interface="zeit.edit.interfaces.IEditable" />
-  </class>
+  <gocept:pagelet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class="zeit.edit.browser.editor.Editor"
+    permission="zope.View"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"

@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - ZON-4006: Move mobile fields to their own form
 
+- MAINT: Remove superfluous IEditable interface
+
 
 3.24.2 (2017-07-18)
 -------------------
