@@ -38,6 +38,13 @@ def send(self):
     return urbanairship.push.core.PushResponse(response)
 
 
+class MockMessage(object):
+
+    def __init__(self, context, message_config):
+        self.context = context
+        self.config = message_config
+
+
 class ConnectionTest(zeit.push.testing.TestCase):
 
     def setUp(self):
@@ -59,15 +66,16 @@ class ConnectionTest(zeit.push.testing.TestCase):
         )
         self.additional_params = \
             {
-                'push_config': {
-                    'uses_image': True,
-                    'payload_template': u'template.json',
-                    'enabled': True,
-                    'override_text': u'foo',
-                    'type': 'mobile'},
-                'context': ICMSContent(
-                    "http://xml.zeit.de/online/2007/01/Somalia")
+                'message': MockMessage(
+                    ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"),
+                    {
+                        'uses_image': True,
+                        'payload_template': u'template.json',
+                        'enabled': True,
+                        'override_text': u'foo',
+                        'type': 'mobile'})
             }
+
         self.create_test_payload_template()
 
     def test_sets_expiration_time_in_payload(self):
@@ -109,7 +117,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'foobar://article/one'))
 
     def test_payload_loads_jinja_payload_variables(self):
-        article = self.additional_params.get("context")
+        article = self.additional_params.get("message").context
         tempate_content = u"""
         [
             {
@@ -120,7 +128,8 @@ class ConnectionTest(zeit.push.testing.TestCase):
         """
         self.create_test_payload_template(template_text=tempate_content,
                                           template_name="bar.json")
-        self.additional_params['push_config']['payload_template'] = "bar.json"
+        self.additional_params['message'].config['payload_template'] = \
+            "bar.json"
         payload = self.api.create_payload("", "", **self.additional_params)
         self.assertEqual(u'Bildß', payload[0].get('message'))
         self.assertEqual(article.title, payload[0].get('title'))
@@ -259,8 +268,8 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual(
             [('content_title', u'http://www.zeit.de/content',
               {'mobile_title': None,
-               'push_config': {},
-               'context': self.repository['content']})],
+               'message': message
+               })],
             self.get_calls('urbanairship'))
 
     def test_message_text_favours_override_text_over_title(self):
@@ -308,16 +317,12 @@ class IntegrationTest(zeit.push.testing.TestCase):
         push = IPushMessages(self.content)
         push.message_config = [{'type': 'mobile', 'enabled': True}]
         self.publish(self.content)
-        self.assertEqual([(
-            'content_title', u'http://www.zeit.de/content',
-            {'enabled': True,
-             'type': 'mobile',
-             'mobile_title': None,
-             'context': ICMSContent('http://xml.zeit.de/content'),
-             'push_config': {'enabled': True, 'type': 'mobile'}
-             })],
-            zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name='urbanairship').calls)
+        calls = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
+        self.assertEqual(calls[0][0], 'content_title')
+        self.assertEqual(calls[0][1], u'http://www.zeit.de/content')
+        self.assertEqual(calls[0][2].get('enabled'), True)
+        self.assertEqual(calls[0][2].get('type'), 'mobile')
 
 
 class PushTest(ConnectionTest):
