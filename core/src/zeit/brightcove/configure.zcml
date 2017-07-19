@@ -18,29 +18,24 @@
     />
 
   <utility
-    provides="zeit.brightcove.interfaces.IAPIConnection"
-    factory=".connection.connection_factory"
-    />
-
-  <utility
     provides="zeit.brightcove.interfaces.ICMSAPI"
-    factory=".connection2.from_product_config"
+    factory=".connection.from_product_config"
     />
 
   <subscriber
     zcml:condition="have zeit.brightcove.write_on_checkin"
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".update2.export_video" />
+    handler=".update.export_video" />
 
   <subscriber
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".update2.publish_on_checkin" />
+    handler=".update.publish_on_checkin" />
 
   <subscriber
     for="zeit.content.video.interfaces.IPlaylist
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".update2.publish_on_checkin" />
+    handler=".update.publish_on_checkin" />
 
 </configure>

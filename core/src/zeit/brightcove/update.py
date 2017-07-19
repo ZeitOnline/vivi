@@ -1,236 +1,184 @@
-import datetime
+from zeit.brightcove.convert import DeletedVideo
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import gocept.runner
-import grokcore.component as grok
-import itertools
 import logging
-import pytz
-import zeit.cms.content.interfaces
-import zeit.brightcove.converter
-import zeit.cms.content.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.workflow.interfaces
-import zope.component
+import zeit.brightcove.convert
+import zeit.brightcove.session
+import zeit.cms.async
+import zeit.cms.interfaces
+import zeit.content.video.playlist
+import zeit.content.video.video
 
 
 log = logging.getLogger(__name__)
 
 
-@gocept.runner.transaction_per_item
-def update_from_brightcove():
-    # getting the playlists seems to be much more likely to fail, and since
-    # we want to take what we can get, we do it *after* we have processed
-    # the videos (instead of combining both steps)
-    return itertools.chain(
-        VideoUpdater.update_all(),
-        PlaylistUpdater.update_all())
+class import_video(object):
+    """Updates the CMS state to the given BC state, by exactly one of:
+    deleting the CMS object, retracting deactivated objects, adding a new CMS
+    object or updating the existing CMS object.
+
+    This is a class only to better organize the code.
+    """
+
+    cms_class = zeit.content.video.video.Video
+
+    def __init__(self, bcobj):
+        log.debug('Import for video %s', bcobj.uniqueId)
+        self.bcobj = bcobj
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(
+            self.bcobj.uniqueId, None)
+        log.debug('CMS object resolved: %r', self.cmsobj)
+        success = (self.delete() or self.deactivate() or
+                   self.add() or self.update())
+        if not success:
+            log.warning('Not processed: %s', self.bcobj.uniqueId)
+
+    def delete(self):
+        if not isinstance(self.bcobj, DeletedVideo):
+            return False
+        elif self.cmsobj is None:
+            # Deleted in BC and no CMS object: we're done.
+            return True
+        log.info('Deleting %s', self.bcobj)
+        if IPublishInfo(self.cmsobj).published:
+            IPublish(self.cmsobj).retract(async=False)
+        del self.bcobj.__parent__[self.bcobj.id]
+        return True
+
+    def deactivate(self):
+        if self.bcobj.state != 'INACTIVE' or self.cmsobj is None:
+            return False
+        log.info('Deactivating %s', self.bcobj)
+        if IPublishInfo(self.cmsobj).published:
+            IPublish(self.cmsobj).retract(async=False)
+        return True
+
+    def add(self):
+        if self.cmsobj is not None or self.bcobj.skip_import:
+            return False
+        self._add()
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(async=False)
+        return True
+
+    def _add(self):
+        log.info('Adding %s', self.bcobj)
+        folder = self.bcobj.__parent__
+        cmsobj = self.cms_class()
+        self.bcobj.apply_to_cms(cmsobj)
+        folder[self.bcobj.id] = cmsobj
+        self.cmsobj = folder[self.bcobj.id]
+
+    def update(self):
+        if self.bcobj.skip_import:
+            return True
+        self._update()
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(async=False)
+
+    def _update(self):
+        log.info('Updating %s', self.bcobj)
+        # We overwrite last_semantic_change with the BC value.
+        with zeit.cms.checkout.helper.checked_out(
+                self.cmsobj, semantic_change=None, events=False) as co:
+            # Don't send events here, a full checkout/checkin cycle is done
+            # during publish anyway, directly below (and so we don't publish
+            # twice due to the publish_on_checkin handler).
+            if co is None:
+                log.warning('Could not checkout %s', self.cmsobj)
+            else:
+                self.bcobj.apply_to_cms(co)
+
+
+# Triggered by BC notification webhook, which we receive in
+# zeit.brightcove.json.update.Notification
+@zeit.cms.async.function(
+    queue='brightcove', principal=('zeit.brightcove', 'index-principal'))
+def import_video_async(video_id):
+    import_video(zeit.brightcove.convert.Video.find_by_id(video_id))
+
+
+def export_video(context, event):
+    if not event.publishing:
+        session = zeit.brightcove.session.get()
+        session.update_video(zeit.brightcove.convert.Video.from_cms(context))
+
+
+def publish_on_checkin(context, event):
+    # prevent infinite loop, since there is a checkout/checkin cycle during
+    # publishing (to update XML references etc.)
+    if not event.publishing:
+        zeit.cms.workflow.interfaces.IPublish(context).publish()
+
+
+class import_playlist(import_video):
+    # Inheriting from import_video is only mechanical, so we can reuse
+    # _add() and _update(), we actually don't have anything else in common.
+
+    cms_class = zeit.content.video.playlist.Playlist
+
+    def __init__(self, bcobj):
+        log.debug('Import for playlist %s', bcobj.uniqueId)
+        self.bcobj = bcobj
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(
+            self.bcobj.uniqueId, None)
+        log.debug('CMS object resolved: %r', self.cmsobj)
+        success = self.add() or self.update()
+        if not success:
+            log.warning('Not processed: %s', self.bcobj.uniqueId)
+
+    def add(self):
+        if self.cmsobj is not None:
+            return False
+        self._add()
+        IPublish(self.cmsobj).publish(async=False)
+        return True
+
+    def update(self):
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
+            self.cmsobj).last_semantic_change
+        if self.bcobj.updated_at <= lsc:
+            return False
+        self._update()
+        IPublish(self.cmsobj).publish(async=False)
+
+    @classmethod
+    def generate_actions(cls):
+        """Fulfills the gocept.runner.transaction_per_item API by returning an
+        iterable of callables.
+        """
+        playlists = zeit.brightcove.convert.Playlist.find_all()
+        for item in playlists:
+            yield lambda: cls(item)
+        yield lambda: cls.delete_except(playlists)
+
+    @classmethod
+    def delete_except(cls, known):
+        """There is no way in the BC API to get data about deleted playlists,
+        so we fall back on deleting any playlist that BC does not know about.
+        """
+        if not known:  # safetybelt
+            return
+        folder = zeit.brightcove.convert.playlist_location(None)
+        cms_names = set(folder.keys())
+        bc_names = set(x.id for x in known)
+        for name in cms_names - bc_names:
+            log.info('Deleting <Playlist id=%s>', name)
+            cmsobj = folder[name]
+            if IPublishInfo(cmsobj).published:
+                IPublish(cmsobj).retract(async=False)
+            del folder[name]
 
 
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
-def _update_from_brightcove():
+def import_playlists():
     log.info('Update run started')
-    update_from_brightcove()
+    _import_playlists()
     log.info('Update run finished')
 
 
-class BaseUpdater(grok.Adapter):
-
-    grok.baseclass()
-    grok.implements(zeit.brightcove.interfaces.IUpdate)
-
-    def __init__(self, context):
-        log.debug('%r(%s)', self, context.uniqueId)
-        self.publish_job_id = None
-        self.bcobj = context
-        self.cmsobj = zeit.cms.interfaces.ICMSContent(
-            self.bcobj.uniqueId, None)
-        log.debug('CMS object resolved: %r', self.cmsobj)
-
-    def __call__(self):
-        success = self.delete() or self.add() or self.update()
-        if not success:
-            log.warning('Object %s not processed.', self.bcobj.uniqueId)
-
-    @classmethod
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
-    @classmethod
-    def update_all(cls):
-        for x in cls.get_objects():
-            yield cls(x)
-
-    @classmethod
-    def get_objects(cls):
-        raise NotImplementedError()
-
-    def add(self):
-        if self.cmsobj is None:
-            log.info('Adding %s', self.bcobj)
-            log.debug('Getting add location')
-            folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
-            log.debug('Adding ...')
-            folder[str(self.bcobj.id)] = self.bcobj.to_cms()
-            self.cmsobj = folder[str(self.bcobj.id)]
-            log.debug('Create publish job')
-            self._publish_if_allowed()
-            self.changed = True
-            return True
-
-    def delete(self):
-        pass
-
-    def update(self):
-        pass
-
-    def _update_cmsobj(self):
-        log.info('Updating %s', self.bcobj)
-        with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=True, events=False) as co:
-            # We don't need to send events here as a full checkout/checkin
-            # cycle is done during publication anyway, below.
-            if co is None:
-                log.warning('Could not update %s', self.cmsobj)
-            else:
-                self.bcobj.to_cms(co)
-
-    def _publish_cmsobj(self):
-        info = zeit.cms.workflow.interfaces.IPublicationStatus(self.cmsobj)
-        if info.published in ('not-published', 'published-with-changes'):
-            self._publish_if_allowed()
-
-    def _publish_if_allowed(self):
-        self.publish_job_id = zeit.cms.workflow.interfaces.IPublish(
-            self.cmsobj).publish(async=False)
-
-
-class VideoUpdater(BaseUpdater):
-
-    grok.context(zeit.brightcove.converter.Video)
-
-    @classmethod
-    def get_objects(cls):
-        now = datetime.datetime.now(pytz.UTC)
-        from_date = (
-            datetime.datetime(now.year, now.month, now.day, now.hour) -
-            datetime.timedelta(hours=10))
-        return zeit.brightcove.converter.Video.find_modified(
-            from_date=from_date)
-
-    def add(self):
-        if not self.bcobj.ignore_for_update:
-            return super(VideoUpdater, self).add()
-
-    def delete(self):
-        if self.bcobj.item_state == 'ACTIVE':
-            # Handled elsewhere
-            return False
-        if self.bcobj.item_state == 'DELETED' and self.cmsobj is None:
-            # Deleted in BC and no CMS object. We're done.
-            return True
-        if self.bcobj.item_state == 'INACTIVE' and self.cmsobj is None:
-            # The item needs to be imported (but must not be published)
-            return False
-        if zeit.cms.workflow.interfaces.IPublishInfo(
-                self.cmsobj).published:
-            log.info('Retracting %s', self.bcobj)
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
-                async=False)
-        elif self.bcobj.item_state == 'DELETED':
-            log.info('Deleting %s', self.bcobj)
-            if zeit.cms.workflow.interfaces.IPublishInfo(
-                    self.cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
-                    async=False)
-            folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
-            del folder[str(self.bcobj.id)]
-            return True
-
-    def update(self):
-        """Overwrite fields in CMS if Brightcove content is newer.
-
-        When an update takes place, all fields present in CMS and Brightcove
-        will be set to the Brightcove values. Fields only present in CMS will
-        remain unchanged.
-        """
-        # Update video in CMS iff the BC version is newer.
-        new = self.bcobj.to_cms()
-        changed = True
-
-        # A bug in Brightcove may cause the last-modified date to remain
-        # unchanged even when the video-still URL is actually changed.
-        # (Also note that Brightcove has the misfeature of sometimes returning
-        # old data for several minutes even directly after we POSTed to update
-        # something.)
-        if self.bcobj.ignore_for_update:
-            return True
-        current_mtime = zeit.cms.content.interfaces.ISemanticChange(
-            self.cmsobj).last_semantic_change
-        new_mtime = zeit.cms.content.interfaces.ISemanticChange(
-            new).last_semantic_change
-        if (current_mtime and new_mtime and current_mtime >= new_mtime and
-                self.cmsobj.video_still == new.video_still):
-            changed = False
-
-        if changed:
-            self._update_cmsobj()
-        self._publish_cmsobj()
-        self.changed = changed
-        return True
-
-    def _publish_if_allowed(self):
-        if self.bcobj.item_state == 'ACTIVE':
-            super(VideoUpdater, self)._publish_if_allowed()
-
-
-class PlaylistUpdater(BaseUpdater):
-
-    grok.context(zeit.brightcove.converter.Playlist)
-
-    @classmethod
-    def get_objects(cls):
-        return zeit.brightcove.converter.Playlist.find_all()
-
-    @classmethod
-    def update_all(cls):
-        objects = cls.get_objects()
-        for x in objects:
-            yield cls(x)
-        yield lambda: cls.delete_remaining_except(objects)
-
-    def update(self):
-        current = self.bcobj.from_cms(self.cmsobj)
-        changed = False
-
-        curdata = current.data
-        newdata = self.bcobj.data
-        for key in self.bcobj.fields.split(','):
-            if key == 'id':
-                continue
-            if curdata.get(key) != newdata.get(key):
-                changed = True
-                break
-
-        if changed:
-            self._update_cmsobj()
-        self._publish_cmsobj()
-        self.changed = changed
-        return True
-
-    @classmethod
-    def delete_remaining_except(cls, bc_objects):
-        if not bc_objects:
-            return
-        folder = zeit.cms.content.interfaces.IAddLocation(
-            iter(bc_objects).next())
-        cms_names = set(folder.keys())
-        bc_names = set(str(x.id) for x in bc_objects)
-        for name in cms_names - bc_names:
-            log.info('Deleting <Playlist id=%s>', name)
-            cmsobj = folder[name]
-            if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract(
-                    async=False)
-            else:
-                del folder[name]
+@gocept.runner.transaction_per_item
+def _import_playlists():
+    return import_playlist.generate_actions()

@@ -1,120 +1,199 @@
-from __future__ import absolute_import
+import collections
 import logging
-import json
-import urllib
-import urllib2
+import requests
+import zeit.brightcove.interfaces
 import zope.app.appsetup.product
+import zope.interface
 
 
 log = logging.getLogger(__name__)
 
 
-# see JSON spec which excludes Unicode control characters
-# Brightcove is still capable of delivering these characters within JSON data.
-RESTRICTED_CHARACTERS = set(xrange(0, 0x1f))
+class CMSAPI(object):
+    """Connection to the Brightcove "CMS API".
 
-# see http://www.w3.org/TR/xml11/#NT-RestrictedChar
-for a, b in [(0x1, 0x8), (0xb, 0xc), (0xe, 0x1f), (0x7f, 0x84), (0x86, 0x9f)]:
-    RESTRICTED_CHARACTERS.update(xrange(a, b + 1))
+    * Overview: <https://support.brightcove.com/overview-cms-api>
+    * API Reference: <https://brightcovelearning.github.io
+        /Brightcove-API-References/cms-api/v1/doc/index.html>
+    """
 
-# see http://timelessrepo.com/json-isnt-a-javascript-subset
-RESTRICTED_CHARACTERS.update(xrange(0x2028, 0x2029 + 1))
+    zope.interface.implements(zeit.brightcove.interfaces.ICMSAPI)
 
-RESTRICTED_CHARACTERS_MAP = dict((c, None) for c in RESTRICTED_CHARACTERS)
+    MAX_RETRIES = 2
+    _access_token = None
 
-
-class APIConnection(object):
-
-    def __init__(self, read_token, write_token, read_url, write_url, timeout):
-        self.read_token = read_token
-        self.write_token = write_token
-        self.read_url = read_url
-        self.write_url = write_url
+    def __init__(self, base_url, oauth_url, client_id, client_secret, timeout):
+        self.base_url = base_url
+        self.oauth_url = oauth_url
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.timeout = timeout
 
-    def parse_json(self, text):
-        # decode to make sure not to filter characters from utf-8 strings
-        # since that might leave strings behind that aren't valid utf-8
-        text = text.decode('utf-8')
-        return json.loads(text.translate(RESTRICTED_CHARACTERS_MAP))
+    def get_video(self, id):
+        try:
+            return self._request('GET /videos/%s' % id)
+        except requests.exceptions.RequestException, err:
+            status = getattr(err.response, 'status_code', None)
+            if status == 404:
+                return None
+            raise
 
-    def post(self, command, **kwargs):
-        if self.write_token == 'disabled':
-            log.info('POST %s disabled, no write token configured', command)
-            return
-        params = dict(
-            (key, value) for key, value in kwargs.items() if key and value)
-        params['token'] = self.write_token
-        data = dict(method=command, params=params)
-        post_data = urllib.urlencode(dict(json=json.dumps(data)))
-        log.info("POST %s", command)
-        log.debug("POST %s(%s)", command, data)
-        request = urllib2.urlopen(
-            self.write_url, post_data, timeout=self.timeout)
-        response = self.parse_json(request.read())
-        __traceback_info__ = (response, )
-        log.debug("POST response %s", response)
-        error = response.get('error')
-        if error:
-            raise RuntimeError(error)
-        return response['result']
+    def get_video_sources(self, id):
+        return self._request('GET /videos/%s/sources' % id)
 
-    def get(self, command, **kwargs):
-        url = '%s?%s' % (self.read_url, urllib.urlencode(dict(
-            output='JSON',
-            media_delivery='http',
-            command=command,
-            token=self.read_token,
-            **kwargs)))
-        log.info("GET %s", url)
-        request = urllib2.urlopen(url, timeout=self.timeout)
-        response = self.parse_json(request.read())
-        log.debug('GET response %s', response)
-        __traceback_info__ = (url, response)
-        error = response.get('error')
-        if error:
-            raise RuntimeError(error)
-        return response
+    def update_video(self, bcvideo):
+        self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.write_data)
 
-    def get_list(self, command, item_class, **kwargs):
-        return ItemResultSet(self, command, item_class, **kwargs)
+    def get_playlist(self, id):
+        try:
+            return self._request('GET /playlists/%s' % id)
+        except requests.exceptions.RequestException, err:
+            status = getattr(err.response, 'status_code', None)
+            if status == 404:
+                return None
+            raise
 
+    def get_all_playlists(self):
+        # The only use we have for playlists is to know the videos contained
+        # in them, which only makes sense with explicit (not search-based)
+        # playlists.
+        total = self._request(
+            'GET /counts/playlists', params={'q': 'type:EXPLICIT'})
+        total = total.get('count')
 
-class ItemResultSet(object):
+        retrieved = collections.OrderedDict()
+        offset = 0
+        # Paginating should not be a huge performance issue in practise, since
+        # there are currently less than 100 playlists in the production system.
+        while len(retrieved) < total:
+            batch = self._request('GET /playlists', params={
+                'q': 'type:EXPLICIT',
+                'offset': offset,
+                'limit': 20,
+            })
+            if not batch:
+                break
+            offset += len(batch)
+            # Since BC unfortunately does not provide a time-stable sorting,
+            # each new request might contain items we've already seen (if the
+            # content changed in BC in the meantime), so we must deduplicate,
+            # see https://support.brightcove.com/overview-cms-api#largeDataSets
+            #
+            # The case that we might miss items because they have been pushed
+            # out of our view is not a problem, since we'll likely catch those
+            # on the next import run, and also: playlists aren't created often.
+            for data in batch:
+                retrieved[data['id']] = data
+        return retrieved.values()
 
-    def __init__(self, connection, command, item_class, **kwargs):
-        self.connection = connection
-        self.command = command
-        self.item_class = item_class
-        self.data = kwargs
-
-    def __iter__(self):
-        page = 0
-        count = 0
+    def find_videos(self, query, sort='created_at'):
+        # XXX Structurally very similar to get_all_playlists(), refactor?
+        offset = 0
+        retrieved = collections.OrderedDict()
         while True:
-            data = self.connection.get(self.command,
-                                       page_size='10',
-                                       page_number=str(page),
-                                       get_item_count='true',
-                                       **self.data)
-            for item in data['items']:
-                if item:
-                    yield self.item_class(item)
-                count += 1
-            total_count = int(data['total_count'])
-            if count >= total_count:
+            batch = self._request('GET /videos', params={
+                'q': query,
+                'sort': sort,
+                'offset': offset,
+                'limit': 20,
+            })
+            # Dear Brightcove, why don't you return total_hits?
+            if not batch:
                 break
-            if not data['items']:
-                break
-            page += 1
+            offset += len(batch)
+            for data in batch:
+                retrieved[data['id']] = data
+        return retrieved.values()
+
+    # Helper functions to register our notification webhook,
+    # see <https://support.brightcove.com/cms-api-notifications>
+    def get_subscriptions(self):
+        return self._request('GET /subscriptions')
+
+    def create_subscription(self, url):
+        return self._request('POST /subscriptions', {
+            'endpoint': url,
+            'events': ['video-change']
+        })
+
+    def delete_subscription(self, id):
+        self._request('DELETE /subscriptions/' + id)
+
+    def _request(self, request, body=None, params=None, _retries=0):
+        if _retries >= self.MAX_RETRIES:
+            raise RuntimeError('Maximum retries exceeded for %s' % request)
+
+        verb, path = request.split(' ')
+        log.info('%s%s', request, ' (retry)' if _retries else '')
+
+        try:
+            response = requests.request(
+                verb.lower(), self.base_url + path, json=body, params=params,
+                headers={'Authorization': 'Bearer %s' % self._access_token},
+                timeout=self.timeout)
+            log.debug(dump_request(response))
+            response.raise_for_status()
+        except requests.exceptions.RequestException, err:
+            status = getattr(err.response, 'status_code', 510)
+            if status == 401:
+                log.debug('Refreshing access token')
+                # We're not taking any precautions about several threads
+                # hitting an expired token simultaneously. Preventing duplicate
+                # "get token" requests would require a lot of effort (e.g.
+                # dogpile lock), which doesn't seem worthwile. Instead we don't
+                # bother at all, since a normal lock would only accomplish
+                # serializing those requests, which isn't much of a plus.
+                self._access_token = self._retrieve_access_token()
+                # XXX We can't really use **kw here without making our
+                # signature really vague, but that means we have to explicitly
+                # pass each of our parameters.
+                return self._request(
+                    request, body=body, params=params, _retries=_retries + 1)
+            message = getattr(err.response, 'text', '<no message>')
+            err.args = (u'%s: %s' % (err.args[0], message),) + err.args[1:]
+            log.error('%s returned %s', request, status, exc_info=True)
+            raise
+
+        try:
+            return response.json()
+        except:
+            log.error('%s returned invalid json %r', request, response.text)
+            raise ValueError('No valid JSON found for %s' % request)
+
+    def _retrieve_access_token(self):
+        # See <http://docs.brightcove.com/en/video-cloud/oauth-api
+        #      /getting-started/oauth-api-overview.html>
+        response = requests.post(
+            self.oauth_url + '/access_token',
+            data={'grant_type': 'client_credentials'},
+            auth=(self.client_id, self.client_secret),
+            timeout=self.timeout)
+        response.raise_for_status()
+        return response.json()['access_token']
 
 
-def connection_factory():
+def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.brightcove')
-    return APIConnection(
-        config['read-token'],
-        config['write-token'],
-        config['read-url'],
-        config['write-url'],
-        float(config['timeout']))
+    return CMSAPI(
+        config['api-url'],
+        config['oauth-url'],
+        config['client-id'],
+        config['client-secret'],
+        float(config['timeout'])
+    )
+
+
+def dump_request(response):
+    """Debug helper. Pass a `requests` response and receive an executable curl
+    command line.
+    """
+    request = response.request
+    command = "curl -X {method} -H {headers} -d '{data}' '{uri}'"
+    method = request.method
+    uri = request.url
+    data = request.body
+    headers = ["'{0}: {1}'".format(k, v) for k, v in request.headers.items()]
+    headers = " -H ".join(headers)
+    return command.format(
+        method=method, headers=headers, data=data, uri=uri)

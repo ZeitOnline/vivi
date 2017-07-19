@@ -1,6 +1,6 @@
 import grokcore.component as grok
 import logging
-import zeit.brightcove.converter
+import zeit.brightcove.convert
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -48,4 +48,4 @@ def adapt_old_video_id_to_new_object(old_id):
         return zeit.cms.interfaces.ICMSContent(query_video_id(video_id), None)
     elif old_id.startswith(playlist_prefix):
         pls_id = old_id.replace(playlist_prefix, '', 1)
-        return zeit.brightcove.converter.playlist_location(None).get(pls_id)
+        return zeit.brightcove.convert.playlist_location(None).get(pls_id)

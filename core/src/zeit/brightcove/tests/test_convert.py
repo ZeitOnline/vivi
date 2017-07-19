@@ -1,5 +1,5 @@
 from datetime import datetime
-from zeit.brightcove.convert2 import Video as BCVideo
+from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
 import mock
 import pytz
@@ -11,7 +11,7 @@ import zeit.content.video.playlist
 class VideoTest(zeit.cms.testing.FunctionalTestCase,
                 zeit.cms.tagging.testing.TaggingHelper):
 
-    layer = zeit.brightcove.testing.ZCML_LAYER
+    layer = zeit.brightcove.testing.LAYER
 
     def test_converts_cms_fields_to_bc_names(self):
         cms = CMSVideo()
@@ -194,13 +194,13 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual('http://example.com/rendition', cms.renditions[0].url)
 
     def test_creates_deleted_video_on_notfound(self):
-        with mock.patch('zeit.brightcove.connection2.CMSAPI.get_video') as get:
+        with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:
             with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
                 get.return_value = None
                 query.return_value = (
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 bc = BCVideo.find_by_id('nonexistent')
-        self.assertIsInstance(bc, zeit.brightcove.convert2.DeletedVideo)
+        self.assertIsInstance(bc, zeit.brightcove.convert.DeletedVideo)
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
         self.assertEqual(
@@ -209,10 +209,10 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
 
 class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.brightcove.testing.ZCML_LAYER
+    layer = zeit.brightcove.testing.LAYER
 
     def test_converts_video_list(self):
-        bc = zeit.brightcove.convert2.Playlist()
+        bc = zeit.brightcove.convert.Playlist()
         bc.data['video_ids'] = ['search-must-be-mocked']
         playlist = zeit.content.video.playlist.Playlist()
         with mock.patch('zeit.brightcove.resolve.query_video_id') as query:

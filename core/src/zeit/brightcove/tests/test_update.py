@@ -1,435 +1,250 @@
-from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
-from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
-from zeit.brightcove.update import update_from_brightcove
-import copy
-import datetime
+from datetime import datetime
+from zeit.brightcove.update import import_video, import_playlist
+from zeit.cms.interfaces import ICMSContent
 import mock
-import socket
-import time
+import pytz
+import transaction
 import zeit.brightcove.testing
-import zeit.cms.checkout.helper
+import zeit.cms.content.interfaces
+import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.video.video
 
 
-class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
+class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
 
-    def setUp(self):
-        super(UpdateVideoTest, self).setUp()
-        self.old_video = copy.deepcopy(VIDEO_1234)
-        self.old_playlist = copy.deepcopy(PLAYLIST_2345)
+    layer = zeit.brightcove.testing.LAYER
 
-    def tearDown(self):
-        zeit.brightcove.testing.RequestHandler.sleep = 0
-        VIDEO_1234.update(self.old_video)
-        PLAYLIST_2345.clear()
-        PLAYLIST_2345.update(self.old_playlist)
-        super(UpdateVideoTest, self).tearDown()
+    def create_video(self):
+        bc = zeit.brightcove.convert.Video()
+        bc.data = {
+            'id': 'myvid',
+            'name': 'title',
+            'created_at': '2017-05-15T08:24:55.916Z',
+            'updated_at': '2017-05-16T08:24:55.916Z',
+            'state': 'ACTIVE',
+            'custom_fields': {},
+        }
+        return bc
 
-    def test_new_video_in_bc_should_be_added_to_repository(self):
-        # hack around test setup
-        del self.repository['video']['2010-03']['1234']
-
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
+    def test_new_video_should_be_added_to_cms(self):
         self.assertEqual(
-            u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
-            video.title)
+            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        import_video(self.create_video())
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual('title', video.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        self.assertTrue(info.published)
+        self.assertEqual(True, info.published)
 
-    def test_new_ignored_video_in_bc_should_not_be_added_to_repository(self):
-        # hack around test setup
-        del self.repository['video']['2010-03']['1234']
-        VIDEO_1234['customFields']['ignore_for_update'] = '1'
-
-        update_from_brightcove()
-        self.assertFalse('1234' in self.repository['video']['2010-03'])
-
-    def test_update_should_not_overwrite_local_edits_with_old_bc_data(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        with zeit.cms.checkout.helper.checked_out(
-                video, semantic_change=True) as co:
-            co.title = u'local change'
-
-        VIDEO_1234['name'] = u'upstream change'
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        self.assertEqual(u'local change', video.title)
-
-    def test_update_should_overwrite_local_data_with_newer_bc_edits(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        with zeit.cms.checkout.helper.checked_out(
-            video, semantic_change=True) as co:
-            co.title = u'local change'
-
-        VIDEO_1234['name'] = u'upstream change'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        self.assertEqual(u'upstream change', video.title)
-
-    def test_updated_relateds_should_overwrite_local_data_with_newer_bc_edits(
-        self):
-        from zeit.cms.related.interfaces import IRelatedContent
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-        VIDEO_1234['customFields']['ref_link1'] = (
-            'http://xml.zeit.de/online/2007/01/Somalia')
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        related = IRelatedContent(video)
+    def test_changed_video_should_be_written_to_cms(self):
+        bc = self.create_video()
+        import_video(bc)
+        bc.data['name'] = 'changed'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual('changed', video.title)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(video)
         self.assertEqual(
-            ['http://xml.zeit.de/online/2007/01/Somalia'],
-            [x.uniqueId for x in related.related])
-
-    def test_difference_of_video_still_counts_as_newer_upstream_edit(self):
-        # A bug in Brightcove may cause the last-modified date to remain
-        # unchanged even when the video-still URL is actually changed.
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        with zeit.cms.checkout.helper.checked_out(video) as co:
-            co.title = u'local change'
-
-        VIDEO_1234['name'] = u'upstream change'
-        VIDEO_1234['videoStillURL'] = 'http://videostillurl2'
-
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        self.assertEqual(u'upstream change', video.title)
-
-    def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
-        VIDEO_1234['lastModifiedDate'] = '1268053197834'
-        with mock.patch('zeit.cms.checkout.manager.CheckoutManager.checkin'
-                        ) as checkin:
-            update_from_brightcove()
-            self.assertFalse(checkin.called)
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            lsc.last_semantic_change)
 
     def test_should_publish_after_update(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        last_published = zeit.cms.workflow.interfaces.IPublishInfo(
-            video).date_last_published
-        zeit.cms.workflow.interfaces.IPublish(video).retract()
-
-        VIDEO_1234['name'] = u'upstream change'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
+        bc = self.create_video()
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        self.assertTrue(info.published)
-        self.assertGreater(info.date_last_published, last_published)
-
-    def test_videos_should_only_be_published_once_per_run(self):
-        VIDEO_1234['name'] = u'upstream change'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        with mock.patch(
-            'zeit.cms.workflow.interfaces.IPublish') as publish:
-            update_from_brightcove()
-        self.assertEqual(u'http://xml.zeit.de/video/2010-03/1234',
-                         publish.call_args[0][0].uniqueId)  # Safety belt
-        self.assertEqual(1, publish().publish.call_count)
-
-    def test_unpublished_videos_should_be_published(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        info.published = False
-        update_from_brightcove()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        self.assertTrue(info.published)
-
-    def test_published_but_changed_videos_should_be_published_again(self):
-        # this behaviour is useful in problematic cases such as
-        # 1. update_from_brightcove: new video
-        # 2. publish of said video fails for some reason
-        # 3. update_from_brightcove: no changes, but we should try to publish
-        #    again so the changes from (1) become visible
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        info.published = True
-        # force last_published < last_modified
-        info.date_last_published -= datetime.timedelta(hours=1)
         last_published = info.date_last_published
-
-        update_from_brightcove()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        import_video(bc)
         self.assertGreater(info.date_last_published, last_published)
 
-    def test_deleted_and_not_published_should_be_deleted_from_cms(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = False
-        VIDEO_1234['itemState'] = 'DELETED'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234', None))
-
-    def test_deleted_and_published_should_be_retracted(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = True
-        VIDEO_1234['itemState'] = 'DELETED'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            update_from_brightcove()
-            self.assertTrue(retract.called)
-
-    def test_deleted_and_published_should_not_be_deleted(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = True
-        VIDEO_1234['itemState'] = 'DELETED'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234', None))
-
-    def test_deleted_videos_should_not_be_imported(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        del video.__parent__[video.__name__]
-        VIDEO_1234['itemState'] = 'DELETED'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234', None))
-
-    def test_inactive_and_published_video_should_be_retracted(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = True
-        VIDEO_1234['itemState'] = 'INACTIVE'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            update_from_brightcove()
-            self.assertTrue(retract.called)
-
-    def test_inactive_and_not_published_video_should_not_be_retracted(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = False
-        VIDEO_1234['itemState'] = 'INACTIVE'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            update_from_brightcove()
-            self.assertFalse(retract.called)
-
-    def test_inactive_video_should_not_be_deleted(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        zeit.cms.workflow.interfaces.IPublishInfo(video).published = False
-        VIDEO_1234['itemState'] = 'INACTIVE'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        update_from_brightcove()
-        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234', None))
-
-    def test_inactive_videos_should_be_imported_but_not_published(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        del video.__parent__[video.__name__]
-        VIDEO_1234['itemState'] = 'INACTIVE'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
+    def test_should_publish_only_once(self):
+        # Safetybelt against the "publish videos after checkin" feature
+        bc = self.create_video()
+        import_video(bc)  # Create CMS object
         with mock.patch('zeit.workflow.publish.Publish.publish') as publish:
-            update_from_brightcove()
-            self.assertFalse(publish.called)
+            import_video(bc)
+            self.assertEqual(1, publish.call_count)
 
-    def test_deleted_videos_not_in_cms_should_be_left_alone(self):
-        video = zeit.cms.interfaces.ICMSContent(
-
-            'http://xml.zeit.de/video/2010-03/1234')
-        del video.__parent__[video.__name__]
-
-        VIDEO_1234['itemState'] = 'DELETED'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-
-        update_from_brightcove()
-
-        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234', None))
-
-    def test_timeout_should_not_block_but_raise(self):
-        import urllib2
-        import zope.component
-        zeit.brightcove.testing.RequestHandler.sleep = 1
-        connection = zope.component.getUtility(
-            zeit.brightcove.interfaces.IAPIConnection)
-        timeout = connection.timeout
-        connection.timeout = 0.5
-
-        def reset():
-            connection.timeout = timeout
-        self.addCleanup(reset)
-
-        self.assertRaises(
-            (socket.timeout, urllib2.URLError),
-            lambda: update_from_brightcove())
-
-    def test_ignore_for_update_should_not_update_repository(self):
-        VIDEO_1234['customFields']['ignore_for_update'] = '1'
-        soon = str(int((time.time() + 10) * 1000))
-        VIDEO_1234['lastModifiedDate'] = soon
-        VIDEO_1234['name'] = 'test title'
-        update_from_brightcove()
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/2010-03/1234')
-        self.assertEquals(
-            'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
-            video.title)
-
-
-class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
-
-    def setUp(self):
-        super(UpdatePlaylistTest, self).setUp()
-        self.old_playlist = PLAYLIST_2345.copy()
-        self.old_playlist_items = PLAYLIST_LIST_RESPONSE['items'][:]
-
-    def tearDown(self):
-        PLAYLIST_2345.update(self.old_playlist)
-        PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
-        super(UpdatePlaylistTest, self).tearDown()
-
-    def test_new_playlist_in_bc_should_be_added_to_repository(self):
-        # hack around test setup
-        del self.repository['video']['playlist']['2345']
-
-        update_from_brightcove()
-
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        self.assertEqual('Videos zum Thema Film', playlist.title)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        self.assertTrue(info.published)
-
-    def test_update_always_overwrites_local_data_with_bc_data(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        with zeit.cms.checkout.helper.checked_out(
-            playlist, semantic_change=True) as co:
-            co.title = u'local change'
-
-        PLAYLIST_2345['name'] = u'upstream change'
-
-        update_from_brightcove()
-
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        self.assertEqual(u'upstream change', playlist.title)
-
-    def test_changed_videoids_should_be_written(self):
-        PLAYLIST_2345['videoIds'] = [1234]
-        update_from_brightcove()
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
+    def test_ignored_video_should_not_be_added_to_cms(self):
         self.assertEqual(
-            ['http://xml.zeit.de/video/2010-03/1234'],
-            [v.uniqueId for v in playlist.videos])
+            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        bc = self.create_video()
+        bc.data['custom_fields']['ignore_for_update'] = '1'
+        import_video(bc)
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
 
-    def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
-        with mock.patch('zeit.brightcove.converter.Playlist.to_cms') as to_cms:
-            update_from_brightcove()
-            self.assertFalse(to_cms.called)
+    def test_ignored_video_should_not_be_updated_in_cms(self):
+        bc = self.create_video()
+        import_video(bc)
+        bc.data['name'] = 'changed'
+        bc.data['custom_fields']['ignore_for_update'] = '1'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual('title', video.title)
 
-    def test_should_publish_after_update(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        last_published = zeit.cms.workflow.interfaces.IPublishInfo(
-            playlist).date_last_published
-        zeit.cms.workflow.interfaces.IPublish(playlist).retract()
+    def test_inactive_video_should_be_retracted(self):
+        bc = self.create_video()
+        import_video(bc)
+        bc.data['state'] = 'INACTIVE'
+        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
+            import_video(bc)
+            self.assertEqual(True, retract.called)
 
-        PLAYLIST_2345['name'] = u'upstream change'
-        update_from_brightcove()
+    def test_inactive_video_should_be_imported_but_not_published(self):
+        bc = self.create_video()
+        bc.data['state'] = 'INACTIVE'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        self.assertEqual(False, info.published)
 
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
+    def test_deleted_video_should_be_deleted_from_cms(self):
+        bc = self.create_video()
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
+        import_video(deleted)
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+
+    def test_deleted_video_should_be_retracted(self):
+        bc = self.create_video()
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
+        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
+            import_video(deleted)
+            self.assertEqual(True, retract.called)
+
+
+class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.LAYER
+
+    def create_playlist(self):
+        bc = zeit.brightcove.convert.Playlist()
+        bc.data = {
+            'id': 'mypls',
+            'name': 'title',
+            'updated_at': '2017-05-15T08:24:55.916Z',
+        }
+        return bc
+
+    def test_new_playlist_should_be_added_to_cms(self):
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        import_playlist(self.create_playlist())
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        self.assertTrue(info.published)
-        self.assertGreater(info.date_last_published, last_published)
+        self.assertEqual(True, info.published)
 
-    def test_unpublished_playlists_should_be_published(self):
-        pls = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
-        info.published = False
-        update_from_brightcove()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
-        self.assertTrue(info.published)
-
-    def test_published_but_changed_playlists_should_be_published_again(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
+    def test_changed_playlist_should_be_written_to_cms_if_newer(self):
+        bc = self.create_playlist()
+        import_playlist(bc)
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        info.published = True
-        # force last_published < last_modified
-        info.date_last_published -= datetime.timedelta(hours=1)
         last_published = info.date_last_published
 
-        update_from_brightcove()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        bc.data['name'] = 'changed'
+        import_playlist(bc)
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('title', playlist.title)
+
+        bc.data['updated_at'] = '2017-05-16T08:24:55.916Z'
+        import_playlist(bc)
+
+        playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
+        self.assertEqual('changed', playlist.title)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(playlist)
+        self.assertEqual(
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
+            lsc.last_semantic_change)
         self.assertGreater(info.date_last_published, last_published)
 
-    def test_deleted_and_not_published_should_be_deleted_from_cms(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456')
+    def test_unknown_playlist_should_be_deleted(self):
+        bc = self.create_playlist()
+        import_playlist(bc)
+        other = self.create_playlist()
+        other.data['id'] = 'other'
+        import_playlist(other)
+
+        import_playlist.delete_except([other])
+        self.assertEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        self.assertNotEqual(
+            None, ICMSContent('http://xml.zeit.de/video/playlist/other', None))
+
+
+class ExportTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.LAYER
+
+    def setUp(self):
+        super(ExportTest, self).setUp()
+        self.repository['myvid'] = zeit.content.video.video.Video()
+        self.request_patch = mock.patch(
+            'zeit.brightcove.connection.CMSAPI._request')
+        self.request = self.request_patch.start()
+
+    def tearDown(self):
+        self.request_patch.stop()
+        super(ExportTest, self).tearDown()
+
+    def test_video_changes_are_written_to_brightcove_on_checkin(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['myvid'], semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+        self.assertEqual(
+            'local change', self.request.call_args[1]['body']['name'])
+
+    def test_changes_are_not_written_during_publish(self):
+        zeit.cms.workflow.interfaces.IPublish(
+            self.repository['myvid']).publish(async=False)
+        self.assertEqual(False, self.request.called)
+
+    def test_changes_are_written_on_commit(self):
+        video = zeit.brightcove.convert.Video()
+        zeit.brightcove.session.get().update_video(video)
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+        # Changes are not written again
+        transaction.commit()
+        self.assertEqual(1, self.request.call_count)
+
+    def test_changes_are_not_written_on_abort(self):
+        video = zeit.brightcove.convert.Video()
+        zeit.brightcove.session.get().update_video(video)
+        transaction.abort()
+        self.assertEqual(0, self.request.call_count)
+
+    def test_video_is_published_on_checkin(self):
+        video = self.repository['myvid']
+        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        last_published = info.date_last_published
+
+        with zeit.cms.checkout.helper.checked_out(video):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        self.assertGreater(info.date_last_published, last_published)
+
+    def test_playlist_is_published_on_checkin(self):
+        self.repository['playlist'] = zeit.content.video.playlist.Playlist()
+        playlist = self.repository['playlist']
+        zeit.cms.workflow.interfaces.IPublish(playlist).publish(async=False)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        info.published = False
+        last_published = info.date_last_published
 
-        del PLAYLIST_LIST_RESPONSE['items'][-1]
-        update_from_brightcove()
-        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456', None))
+        with zeit.cms.checkout.helper.checked_out(playlist):
+            pass
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
 
-    def test_deleted_and_published_should_be_retracted(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456')
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        info.published = True
-
-        del PLAYLIST_LIST_RESPONSE['items'][-1]
-        update_from_brightcove()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        self.assertFalse(info.published)
-
-    def test_deleted_and_published_should_not_be_deleted(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456')
-        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
-        info.published = True
-
-        del PLAYLIST_LIST_RESPONSE['items'][-1]
-        update_from_brightcove()
-        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456', None))
+        self.assertGreater(info.date_last_published, last_published)

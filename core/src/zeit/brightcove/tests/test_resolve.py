@@ -72,8 +72,9 @@ class QueryVideoIdTest(unittest.TestCase):
                                mock.sentinel.default))
 
 
-class BackwardCompatibleUniqueIdsTest(
-        zeit.brightcove.testing.BrightcoveTestCase):
+class BackwardCompatibleUniqueIdsTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.brightcove.testing.LAYER
 
     def test_videos_should_be_resolvable(self):
         from zeit.cms.interfaces import ICMSContent
@@ -87,6 +88,9 @@ class BackwardCompatibleUniqueIdsTest(
     def test_playlists_should_be_resolvable(self):
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         from zeit.cms.interfaces import ICMSContent
+        from zeit.cms.repository.folder import Folder
+        self.repository['video'] = Folder()
+        self.repository['video']['playlist'] = Folder()
         self.repository['video']['playlist']['1234'] = ExampleContentType()
         expected_unique_id = 'http://xml.zeit.de/video/playlist/1234'
         result = ICMSContent('http://video.zeit.de/playlist/1234')

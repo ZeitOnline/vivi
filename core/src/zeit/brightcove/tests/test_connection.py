@@ -1,53 +1,84 @@
-# coding: utf-8
-from StringIO import StringIO
-import json
 import mock
+import os
+import pytest
+import requests.exceptions
 import unittest
 import zeit.brightcove.connection
 
 
-class ConnectionTest(unittest.TestCase):
-    # mix in some non-ASCII chars everywhere to guard against #10600
+@pytest.mark.slow
+class APIIntegration(unittest.TestCase):
 
-    def test_strings_should_be_read_from_json_as_unicode(self):
-        conn = zeit.brightcove.connection.APIConnection(
-            None, None, None, None, None)
-        response = conn.parse_json(u'{"föö": "bar"}'.encode('utf-8'))
-        self.assertTrue(isinstance(response.iterkeys().next(), unicode))
-        self.assertTrue(isinstance(response.itervalues().next(), unicode))
+    level = 2
 
-    def test_json_invalid_characters_are_removed_from_json_data(self):
-        conn = zeit.brightcove.connection.APIConnection(
-            None, None, None, None, None)
-        response = conn.parse_json(u'{"föö": "\u0009"}'.encode('utf-8'))
-        self.assertEqual('', response[u'föö'])
+    def setUp(self):
+        self.api = zeit.brightcove.connection.CMSAPI(
+            'https://cms.api.brightcove.com/v1/accounts/18140073001',
+            'https://oauth.brightcove.com/v4',
+            os.environ.get('ZEIT_BRIGHTCOVE_CLIENT_ID'),
+            os.environ.get('ZEIT_BRIGHTCOVE_CLIENT_SECRET'),
+            timeout=2)
 
-        response = conn.parse_json(u'{"föö": "\u2028"}'.encode('utf-8'))
-        self.assertEqual('', response[u'föö'])
+    def test_invalid_accesstoken_refreshes_and_retries_request(self):
+        data = self.api._request('GET /video_fields')
+        self.assertIn('custom_fields', data.keys())
 
-    def test_xml_restricted_characters_are_removed_from_json_data(self):
-        conn = zeit.brightcove.connection.APIConnection(
-            None, None, None, None, None)
-        response = conn.parse_json(u'{"föö": "\u007f"}'.encode('utf-8'))
-        self.assertEqual('', response[u'föö'])
 
-    def test_post_writes_to_the_configured_url(self):
-        conn = zeit.brightcove.connection.APIConnection(
-            None, 'my-write-token', None, 'http://write.url', 4711.0)
-        with mock.patch('urllib2.urlopen') as urlopen:
-            urlopen.return_value = StringIO(json.dumps({'result': 'okay'}))
-            result = conn.post('my-command', arg1='foo', arg2=42)
-        self.assertEqual((
-            ('http://write.url',
-             'json=%7B%22params%22%3A+%7B%22arg1%22%3A+%22foo%22%2C+%22arg2'
-             '%22%3A+42%2C+%22token%22%3A+%22my-write-token%22%7D%2C+%22method'
-             '%22%3A+%22my-command%22%7D'),
-            dict(timeout=4711.0)), urlopen.call_args)
-        self.assertEqual(u'okay', result)
+class CMSAPI(unittest.TestCase):
 
-    def test_post_does_nothing_if_write_token_is_disabled(self):
-        conn = zeit.brightcove.connection.APIConnection(
-            None, 'disabled', None, None, None)
-        with mock.patch('urllib2.urlopen') as urlopen:
-            conn.post('my-command', arg1='foo', arg2=42)
-        self.assertFalse(urlopen.called)
+    def test_auth_failed_retries_request(self):
+        api = zeit.brightcove.connection.CMSAPI('', '', '', '', None)
+        with mock.patch.object(api, '_retrieve_access_token') as token:
+            with mock.patch('requests.request') as request:
+                token.return_value = 'token'
+                request_calls = []
+
+                def fail_once(*args, **kw):
+                    if not request_calls:
+                        request_calls.append(1)
+                        err = requests.exceptions.RequestException()
+                        err.response = mock.Mock()
+                        err.response.status_code = 401
+                        raise err
+                    response = mock.MagicMock()
+                    response.__iter__.return_value = ()
+                    response.json.return_value = {}
+                    return response
+                request.side_effect = fail_once
+                api._request('GET /foo', {'body': True}, {'params': 2})
+                self.assertEqual(2, request.call_count)
+                request.assert_called_with(
+                    'get', '/foo', headers={'Authorization': 'Bearer token'},
+                    json={'body': True}, params={'params': 2}, timeout=None)
+
+    def test_aborts_after_max_retries(self):
+        api = zeit.brightcove.connection.CMSAPI('', '', '', '', None)
+        with mock.patch.object(api, '_retrieve_access_token') as token:
+            with mock.patch('requests.request') as request:
+                token.return_value = ''
+                request.side_effect = requests.exceptions.RequestException()
+                request.side_effect.response = mock.Mock()
+                request.side_effect.response.status_code = 401
+
+                with self.assertRaises(RuntimeError):
+                    api._request('GET /video_fields')
+                self.assertEqual(2, token.call_count)
+
+    def test_paginates_through_playlists(self):
+        api = zeit.brightcove.connection.CMSAPI('', '', '', '', None)
+        with mock.patch.object(api, '_request') as request:
+            request.side_effect = [
+                {'count': 5},
+                [{'id': 1}, {'id': 2}],
+                [{'id': 2}, {'id': 3}, {'id': 4}],
+                [],
+            ]
+            result = api.get_all_playlists()
+            self.assertEqual(
+                [{'id': 1}, {'id': 2}, {'id': 3}, {'id': 4}], result)
+            self.assertEqual(
+                0, request.call_args_list[1][1]['params']['offset'])
+            self.assertEqual(
+                2, request.call_args_list[2][1]['params']['offset'])
+            self.assertEqual(
+                5, request.call_args_list[3][1]['params']['offset'])

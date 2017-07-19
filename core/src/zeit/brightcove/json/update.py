@@ -1,6 +1,6 @@
 import json
 import logging
-import zeit.brightcove.update2
+import zeit.brightcove.update
 
 
 log = logging.getLogger(__name__)
@@ -20,4 +20,4 @@ class Notification(object):
         data = json.loads(body)
         if data.get('event') != 'video-change' or not data.get('video'):
             return
-        zeit.brightcove.update2.import_video_async(data.get('video'))
+        zeit.brightcove.update.import_video_async(data.get('video'))

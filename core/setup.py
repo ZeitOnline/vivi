@@ -34,7 +34,6 @@ setup(
     ]),
     entry_points="""
     [console_scripts]
-    update-brightcove-repository=zeit.brightcove.update:_update_from_brightcove
     brightcove-import-playlists=zeit.brightcove.update2:import_playlists
     """
 )
