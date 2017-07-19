@@ -164,6 +164,8 @@ class CommonMetadata(Converter):
                     x for x in self.context.authors if x],
             'channels': [' '.join([x for x in channel if x])
                          for channel in self.context.channels],
+            'keywords': [{'label': x.label, 'entity_type': x.entity_type,
+                          'pinned': x.pinned} for x in self.context.keywords],
             'product_id': self.context.product and self.context.product.id,
             'serie': self.context.serie and self.context.serie.serienname,
             'storystreams': [x.centerpage_id
