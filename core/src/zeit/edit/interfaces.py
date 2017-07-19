@@ -11,10 +11,6 @@ import zope.viewlet.interfaces
 BLOCK_NAMESPACE = 'http://block.vivi.zeit.de/'
 
 
-class IEditable(zope.interface.Interface):
-    """Marker for objects editable through zeit.edit."""
-
-
 class IElementFactory(zope.interface.Interface):
 
     title = zope.schema.TextLine(

@@ -4,7 +4,8 @@ Changes
 2.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove superfluous IEditable interface, it's only used for
+  registering one view, which can more clearly be done directly
 
 
 2.15.0 (2017-06-09)
