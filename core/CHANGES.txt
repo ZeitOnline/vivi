@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.13.8 (unreleased)
 -------------------
 
+- MAINT: Remove unused RSS block and feed caching functionality
+
 - MAINT: Remove superfluous IEditable interface
 
 

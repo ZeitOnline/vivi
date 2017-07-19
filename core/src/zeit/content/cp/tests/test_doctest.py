@@ -11,9 +11,4 @@ def test_suite():
         'rule.txt',
         'teaser.txt',
         package=zeit.content.cp))
-    suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
-        'feed.txt',
-        layer=zeit.content.cp.testing.FEED_SERVER_LAYER,
-        globs=dict(layer=zeit.content.cp.testing.FEED_SERVER_LAYER),
-        package=zeit.content.cp))
     return suite

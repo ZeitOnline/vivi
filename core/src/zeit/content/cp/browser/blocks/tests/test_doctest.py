@@ -30,10 +30,4 @@ def test_suite():
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
     ))
-    rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
-        'rss.txt',
-        package='zeit.content.cp.browser.blocks',
-        layer=zeit.content.cp.testing.FEED_SERVER_LAYER,
-        globs=dict(layer=zeit.content.cp.testing.FEED_SERVER_LAYER))
-    suite.addTest(rss_test)
     return suite

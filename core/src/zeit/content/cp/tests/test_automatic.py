@@ -250,7 +250,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
         zope.component.getAdapter(
-            lead, zeit.edit.interfaces.IElementFactory, name='rss')()
+            lead, zeit.edit.interfaces.IElementFactory, name='xml')()
 
         empty = pysolr.Results([], 0)
         return_values = [pysolr.Results([
@@ -263,7 +263,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
 
         result = lead.values()
         self.assertEqual(
-            ['teaser', 'teaser', 'rss'], [x.type for x in result])
+            ['teaser', 'teaser', 'xml'], [x.type for x in result])
         self.assertEqual(
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
         self.assertEqual(

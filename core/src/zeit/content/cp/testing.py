@@ -30,7 +30,6 @@ product_config = """
     cp-feed-max-items 200
     cp-types-url file://{fixtures}/cp-types.xml
     feed-update-minimum-age 30
-    rss-folder rss
     scales-fullgraphical-url file://{fixtures}/scales-fullgraphical.xml
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
@@ -89,37 +88,6 @@ ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 ZCML_LAYER = plone.testing.Layer(
     bases=(CP_LAYER, SOLR_MOCK_LAYER, ELASTICSEARCH_MOCK_LAYER),
     name='ZCMLLayer', module=__name__)
-
-
-class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,
-                     SimpleHTTPServer.SimpleHTTPRequestHandler):
-
-    serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
-    serve_favicon = False
-    delay_request_by = 0
-
-    def send_head(self):
-        time.sleep(self.delay_request_by)
-        if self.path == '/favicon.ico' and not self.serve_favicon:
-            self.path = '/does-not-exist'
-        return SimpleHTTPServer.SimpleHTTPRequestHandler.send_head(self)
-
-    def translate_path(self, path):
-        cur_path = os.getcwd()
-        os.chdir(self.serve_from)
-        try:
-            return SimpleHTTPServer.SimpleHTTPRequestHandler.translate_path(
-                self, path)
-        finally:
-            os.chdir(cur_path)
-
-    def guess_type(self, path):
-        return 'application/xml'
-
-
-FEED_SERVER_LAYER = gocept.httpserverlayer.custom.Layer(
-    RequestHandler, name='FeedServerLayer', module=__name__,
-    bases=(ZCML_LAYER,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([

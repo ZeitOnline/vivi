@@ -160,29 +160,12 @@
       permission="zope.View" />
   </class>
 
-  <!-- RSS Feed -->
-  <class class=".feed.Feed">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IFeed"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.IFeed"
-      permission="zeit.EditContent"
-      />
-  </class>
 
   <adapter factory="zeit.edit.rule.ValidatingWorkflow"
     provides="zeit.cms.workflow.interfaces.IPublishInfo"
     for=".interfaces.IFeed"
     trusted="yes"
     />
-
-  <adapter
-    for="zeit.content.cp.interfaces.IFeed"
-    factory=".feed.FeedValidator" />
-
-  <utility factory=".feed.FeedManager" />
 
   <class class=".automatic.AutomaticArea">
     <require

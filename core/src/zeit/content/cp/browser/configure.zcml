@@ -143,24 +143,6 @@
   <adapter factory=".teaser.ItemTraverser" name="item" />
   <adapter factory=".teaser.ListRepresentation" />
 
-  <adapter factory=".feed.ListRepresentation" />
-  <browser:page
-    for="zeit.content.cp.interfaces.IFeed"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    class="zeit.cms.browser.sourceedit.XMLDisplayForm"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IFeed"
-    name="Checkout"
-    class=".feed.CheckoutMenuItem"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    manager="zeit.cms.browser.interfaces.IContextActions"
-    permission="zeit.Checkout"
-    />
-
   <!-- Module library -->
 
   <browser:view
