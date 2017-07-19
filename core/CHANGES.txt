@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.13.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove superfluous IEditable interface
 
 
 3.13.7 (2017-07-18)

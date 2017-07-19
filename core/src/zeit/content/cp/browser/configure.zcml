@@ -84,10 +84,6 @@
 
   <!-- Editor -->
 
-  <class class="zeit.content.cp.centerpage.CenterPage">
-    <implements interface="zeit.edit.interfaces.IEditable" />
-  </class>
-
   <gocept:pagelet
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
