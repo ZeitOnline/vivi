@@ -1,11 +1,16 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zope">
 
-  <class class="zeit.newsletter.newsletter.Newsletter">
-    <implements interface="zeit.edit.interfaces.IEditable" />
-  </class>
+  <gocept:pagelet
+    for="zeit.newsletter.interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class="zeit.edit.browser.editor.Editor"
+    permission="zope.View"
+    />
 
   <adapter
     for="..interfaces.INewsletter
