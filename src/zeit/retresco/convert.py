@@ -212,13 +212,9 @@ class ImageReference(Converter):
         image = self.context.image
         if image is None:
             return {}
-        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
-            path = image.variant_url('wide', width=190, height=111)
-        else:
-            path = image.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, '/')
         return {
-            'teaser_img_url': path,
+            'teaser_img_url': image.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'teaser_img_subline': IImageMetadata(image).caption,
             'payload': {
                 'teaser_image': image.uniqueId,

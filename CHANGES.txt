@@ -5,7 +5,8 @@ zeit.retresco changes
 1.10.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Use just path for TMS teaser images, TMS offers configurable
+  prefix and suffix now
 
 
 1.10.5 (2017-07-12)
