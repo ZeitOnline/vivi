@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.10.6 (unreleased)
+1.11.0 (unreleased)
 -------------------
 
 - ZON-3994: Retrieve article keywords from TMS, putting pinned ones first
