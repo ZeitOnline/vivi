@@ -214,7 +214,6 @@
 
 
   <browser:viewlet
-    zcml:condition="have zeit.cms.rr-access"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MetadataForms"
