@@ -46,8 +46,8 @@ class TestPublish(
         s = self.selenium
         s.click('link=Publish')
         s.waitForElementPresent('css=ol#worklist')
-        s.waitForElementPresent('css=li.busy[action=publish]')
-        s.waitForElementNotPresent('css=li.busy[action=publish]')
+        s.waitForElementPresent('css=li.busy[action=start_job]')
+        s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
 
     def test_publish_with_warnings_are_displayed_but_offer_force_publish(self):
@@ -96,8 +96,8 @@ class TestPublish(
         s.click('css=#bottomcontent a[title="Additional actions"]')
         s.click('css=#bottomcontent a[title=Retract]')
         s.waitForElementPresent('css=ol#worklist')
-        s.waitForElementPresent('css=li.busy[action=retract]')
-        s.waitForElementNotPresent('css=li.busy[action=retract]')
+        s.waitForElementPresent('css=li.busy[action=start_job]')
+        s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
         self.assertFalse(
             IPublishInfo(self.repository['testcontent']).published)
@@ -139,8 +139,8 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase,
         s.click('css=a[title="Additional actions"]')
         s.click('link=Retract')
         s.waitForElementPresent('css=ol#worklist')
-        s.waitForElementPresent('css=li.busy[action=retract]')
-        s.waitForElementNotPresent('css=li.busy[action=retract]')
+        s.waitForElementPresent('css=li.busy[action=start_job]')
+        s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
         self.assertFalse(self.publish_info.published)
 
