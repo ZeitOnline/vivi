@@ -43,4 +43,4 @@ def update_async(uuid):
         log.warning('TMS wants to update invalid id %s, ignored', uuid)
     else:
         zeit.retresco.update.index(
-            content.uniqueId, entrich=True, publish=True)
+            content.uniqueId, enrich=True, publish=True)

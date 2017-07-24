@@ -53,7 +53,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         repository['t1'] = ExampleContentType()
         process()
         self.tms.enrich.assert_called_with(repository['t1'])
-        self.tms.index.assert_called_with(repository['t1'])
+        self.tms.index.assert_called_with(repository['t1'], None)
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -78,7 +78,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pass
         process()
         self.tms.enrich.assert_called_with(content)
-        self.tms.index.assert_called_with(content)
+        self.tms.index.assert_called_with(content, None)
+        # Checkin should not change keywords on content
+        self.assertEqual(False, self.tms.generate_keyword_list.called)
 
     def test_index_should_be_called_from_async(self):
         checkout_and_checkin()
@@ -108,7 +110,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pub_info = mock.Mock()
             pub_info.published = False
             pub.return_value = pub_info
-            zeit.retresco.update.index(content, False, True)
+            zeit.retresco.update.index(content, enrich=False, publish=True)
             self.assertFalse(self.tms.publish.called)
 
     def test_publish_should_be_called_on_index_if_res_published(self):
@@ -120,7 +122,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 pub_info = mock.Mock()
                 pub_info.published = True
                 pub.return_value = pub_info
-                zeit.retresco.update.index(content, False, True)
+                zeit.retresco.update.index(content, enrich=False, publish=True)
                 self.assertTrue(self.tms.publish.called)
 
     def test_publish_should_not_be_called_on_index_without_option(self):

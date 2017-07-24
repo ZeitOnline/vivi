@@ -106,6 +106,13 @@ class TMS(object):
             result.append(page)
         return result
 
+    def get_article_data(self, content):
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
+        try:
+            return self._request('GET /content/%s' % uuid)
+        except:
+            return {}
+
     def get_article_body(self, uuid, timeout=None):
         __traceback_info__ = (uuid,)
         try:

@@ -32,7 +32,7 @@ def index_after_add(event):
         return
     log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
         context.uniqueId, gocept.async.is_async()))
-    index_async(context.uniqueId, enrich=True)
+    index_async(context.uniqueId)
 
 
 @grok.subscribe(
@@ -41,7 +41,7 @@ def index_after_add(event):
 def index_after_checkin(context, event):
     if event.publishing:
         return
-    index_async(context.uniqueId, enrich=True)
+    index_async(context.uniqueId)
 
 
 @grok.subscribe(
@@ -55,38 +55,43 @@ def unindex_on_remove(context, event):
 
 
 @zeit.cms.async.function(queue='search')
-def index_async(uniqueId, enrich=False, publish=False):
+def index_async(uniqueId):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
-        index(context, enrich, publish)
+        index(context, enrich=True)
 
 
-def index(content, enrich=False, publish=False):
+def index(content, enrich=False, update_keywords=False, publish=False):
+    if update_keywords and not enrich:
+        raise ValueError('enrich is required for update_keywords')
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     stack = [content]
     while stack:
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        log.info('Updating: %s, enrich: %s, publish: %s',
-                 content.uniqueId, enrich, publish)
+        log.info('Updating: %s, enrich: %s, keywords: %s, publish: %s',
+                 content.uniqueId, enrich, update_keywords, publish)
         try:
-            body = None
             if enrich:
                 log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
                 body = response.get('body')
-                tagger = zeit.retresco.tagger.Tagger(content)
-                tagger.update(conn.generate_keyword_list(response))
-            if body:
-                log.debug('Enrich with body: %s', content.uniqueId)
-                conn.index(content, body)
+                if update_keywords:
+                    tagger = zeit.retresco.tagger.Tagger(content)
+                    tagger.update(conn.generate_keyword_list(response))
             else:
-                log.debug('Enrich w/o body: %s', content.uniqueId)
-                conn.index(content)
+                # For reindex-only, preserve the previously enriched body.
+                # Note: This only works when content is already published in
+                # TMS, but for a large-scale reindex where we don't want to
+                # have to enrich again that's probably fine.
+                body = conn.get_article_data(content).get('body')
+
+            conn.index(content, body)
+
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
                 if pub_info.published:
@@ -127,9 +132,11 @@ def index_parallel(unique_id, enrich=False, publish=False):
                 'Skip indexing %s, it is an image/group', item.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(item):
-            index_parallel.delay(item.uniqueId, enrich, publish)
+            index_parallel.delay(
+                item.uniqueId,
+                enrich=enrich, update_keywords=enrich, publish=publish)
         else:
-            index(item, enrich, publish)
+            index(item, enrich=enrich, update_keywords=enrich, publish=publish)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
