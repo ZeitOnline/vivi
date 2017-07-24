@@ -18,4 +18,4 @@ class Update(zope.app.publisher.xmlrpc.XMLRPCView):
                 u'%s does not exist anymore, should be deleted from TMS',
                 uniqueId)
             return
-        zeit.retresco.update.index(content)
+        zeit.retresco.update.index(content, enrich=True)
