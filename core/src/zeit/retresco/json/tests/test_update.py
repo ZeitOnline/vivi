@@ -42,3 +42,6 @@ class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
             self.assertEqual(
                 'http://xml.zeit.de/online/2007/01/Somalia',
                 index.call_args[0][0])
+            self.assertEqual(
+                {'enrich': True, 'publish': True},
+                index.call_args[1])
