@@ -32,7 +32,7 @@ def index_after_add(event):
         return
     log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
         context.uniqueId, gocept.async.is_async()))
-    index_async(context.uniqueId, enrich=True)
+    index_async(context.uniqueId)
 
 
 @grok.subscribe(
@@ -41,7 +41,7 @@ def index_after_add(event):
 def index_after_checkin(context, event):
     if event.publishing:
         return
-    index_async(context.uniqueId, enrich=True)
+    index_async(context.uniqueId)
 
 
 @grok.subscribe(
@@ -55,13 +55,13 @@ def unindex_on_remove(context, event):
 
 
 @zeit.cms.async.function(queue='search')
-def index_async(uniqueId, enrich=False, publish=False):
+def index_async(uniqueId):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
-        index(context, enrich, publish)
+        index(context, enrich=True)
 
 
 def index(content, enrich=False, publish=False):
