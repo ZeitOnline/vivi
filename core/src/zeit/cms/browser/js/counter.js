@@ -10,7 +10,7 @@ var check_char_limit = function(target, span, warning, limit) {
         span.css("color", "#ffa500").html(label);
         target.removeClass('error');
     } else {
-        span.css("color", "#000").html(label);
+        span.css("color", "#006622").html(label);
         target.removeClass('error');
     }
 };
