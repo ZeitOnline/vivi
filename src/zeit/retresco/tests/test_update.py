@@ -79,6 +79,8 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         process()
         self.tms.enrich.assert_called_with(content)
         self.tms.index.assert_called_with(content)
+        # Checkin should not change keywords on content
+        self.assertEqual(False, self.tms.generate_keyword_list.called)
 
     def test_index_should_be_called_from_async(self):
         checkout_and_checkin()
@@ -108,7 +110,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pub_info = mock.Mock()
             pub_info.published = False
             pub.return_value = pub_info
-            zeit.retresco.update.index(content, False, True)
+            zeit.retresco.update.index(content, enrich=False, publish=True)
             self.assertFalse(self.tms.publish.called)
 
     def test_publish_should_be_called_on_index_if_res_published(self):
@@ -120,7 +122,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 pub_info = mock.Mock()
                 pub_info.published = True
                 pub.return_value = pub_info
-                zeit.retresco.update.index(content, False, True)
+                zeit.retresco.update.index(content, enrich=False, publish=True)
                 self.assertTrue(self.tms.publish.called)
 
     def test_publish_should_not_be_called_on_index_without_option(self):

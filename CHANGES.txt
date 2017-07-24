@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - Use dlps as TMS date
 
+- MAINT: Don't change content keywords on checkin
+
 
 1.11.0 (2017-07-19)
 -------------------
