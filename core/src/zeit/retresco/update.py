@@ -64,23 +64,26 @@ def index_async(uniqueId):
         index(context, enrich=True)
 
 
-def index(content, enrich=False, publish=False):
+def index(content, enrich=False, update_keywords=False, publish=False):
+    if update_keywords and not enrich:
+        raise ValueError('enrich is required for update_keywords')
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     stack = [content]
     while stack:
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        log.info('Updating: %s, enrich: %s, publish: %s',
-                 content.uniqueId, enrich, publish)
+        log.info('Updating: %s, enrich: %s, keywords: %s, publish: %s',
+                 content.uniqueId, enrich, update_keywords, publish)
         try:
             body = None
             if enrich:
                 log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
                 body = response.get('body')
-                tagger = zeit.retresco.tagger.Tagger(content)
-                tagger.update(conn.generate_keyword_list(response))
+                if update_keywords:
+                    tagger = zeit.retresco.tagger.Tagger(content)
+                    tagger.update(conn.generate_keyword_list(response))
             if body:
                 log.debug('Enrich with body: %s', content.uniqueId)
                 conn.index(content, body)
@@ -127,9 +130,11 @@ def index_parallel(unique_id, enrich=False, publish=False):
                 'Skip indexing %s, it is an image/group', item.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(item):
-            index_parallel.delay(item.uniqueId, enrich, publish)
+            index_parallel.delay(
+                item.uniqueId,
+                enrich=enrich, update_keywords=enrich, publish=publish)
         else:
-            index(item, enrich, publish)
+            index(item, enrich=enrich, update_keywords=enrich, publish=publish)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
