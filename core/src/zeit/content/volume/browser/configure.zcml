@@ -26,11 +26,30 @@
      permission="zope.View"
      />
 
-    <browser:page
+   <browser:page
     for="..interfaces.IVolume"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin.html"
     class=".admin.VolumeAdminForm"
+    permission="zeit.cms.admin.View"
+    />
+
+   <adapter factory=".admin.render_publish_action" name="render" />
+
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="do-publish-all"
+    class="zeit.workflow.browser.publish.Publish"
+    template="publish-all.pt"
+    permission="zeit.cms.admin.View"
+    />
+
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish-all"
+    class=".admin.PublishAll"
     permission="zeit.cms.admin.View"
     />
 

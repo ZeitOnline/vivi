@@ -288,6 +288,17 @@ class VolumeMetadata(grok.Adapter):
         return value
 
 
+@grok.adapter(zeit.content.volume.interfaces.IVolume)
+@grok.implementer(zeit.cms.workflow.interfaces.IPublishPriority)
+def publish_priority_volume(context):
+    # XXX Kludgy. The JS-based "do-publish-all" uses the context's priority to
+    # retrieve the task queue where it looks up the job id, and
+    # publish_multiple runs with PRIORITY_LOW (which makes sense). To connect
+    # these two, we set IVolume to low, even though that's not really
+    # warrantend, semantically speaking.
+    return zeit.cms.workflow.interfaces.PRIORITY_LOW
+
+
 class CoverDependency(zeit.workflow.dependency.DependencyBase):
     """
     If a Volume is published, its covers are published as well.
