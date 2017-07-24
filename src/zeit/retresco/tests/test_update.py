@@ -53,7 +53,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         repository['t1'] = ExampleContentType()
         process()
         self.tms.enrich.assert_called_with(repository['t1'])
-        self.tms.index.assert_called_with(repository['t1'])
+        self.tms.index.assert_called_with(repository['t1'], None)
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -78,7 +78,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pass
         process()
         self.tms.enrich.assert_called_with(content)
-        self.tms.index.assert_called_with(content)
+        self.tms.index.assert_called_with(content, None)
         # Checkin should not change keywords on content
         self.assertEqual(False, self.tms.generate_keyword_list.called)
 

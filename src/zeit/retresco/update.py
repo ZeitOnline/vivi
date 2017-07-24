@@ -76,7 +76,6 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         log.info('Updating: %s, enrich: %s, keywords: %s, publish: %s',
                  content.uniqueId, enrich, update_keywords, publish)
         try:
-            body = None
             if enrich:
                 log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
@@ -84,12 +83,15 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                 if update_keywords:
                     tagger = zeit.retresco.tagger.Tagger(content)
                     tagger.update(conn.generate_keyword_list(response))
-            if body:
-                log.debug('Enrich with body: %s', content.uniqueId)
-                conn.index(content, body)
             else:
-                log.debug('Enrich w/o body: %s', content.uniqueId)
-                conn.index(content)
+                # For reindex-only, preserve the previously enriched body.
+                # Note: This only works when content is already published in
+                # TMS, but for a large-scale reindex where we don't want to
+                # have to enrich again that's probably fine.
+                body = conn.get_article_data(content).get('body')
+
+            conn.index(content, body)
+
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
                 if pub_info.published:

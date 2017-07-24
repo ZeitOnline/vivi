@@ -39,7 +39,8 @@ class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
     def test_xmlrpc_update_should_call_index(self):
         id = 'http://xml.zeit.de/online/2007/01/Somalia'
         self.update(id)
-        self.tms.index.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
+        self.tms.index.assert_called_with(
+            zeit.cms.interfaces.ICMSContent(id), None)
         self.tms.enrich.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
         self.assertIn(
             "zope.index triggered TMS index update for "
@@ -56,4 +57,5 @@ class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
         self.repository[u'föö'] = ExampleContentType()
         id = u'http://xml.zeit.de/föö'
         self.update(id)
-        self.tms.index.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
+        self.tms.index.assert_called_with(
+            zeit.cms.interfaces.ICMSContent(id), None)
