@@ -36,8 +36,12 @@ class GlobalAsyncFunctionsGrokker(martian.GlobalGrokker):
                 queue = 'async'
             if principal is not None:
                 package, key = principal
-                principal = zope.app.appsetup.product.getProductConfiguration(
-                    package)[key]
+                cfg = zope.app.appsetup.product.getProductConfiguration(
+                    package) or {}
+                principal = cfg.get(key)
+                if not principal:
+                    # Should only happen for i18nextract.
+                    log.warning('Missing product config %s:%s', package, key)
             cfg = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.cms') or {}
             queuename = cfg.get('task-queue-%s' % queue, '')
