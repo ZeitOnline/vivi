@@ -9,6 +9,8 @@ zeit.retresco changes
 
 - MAINT: Don't change content keywords on checkin
 
+- MAINT: Preserve enriched body during no-enrich bulk reindex
+
 
 1.11.0 (2017-07-19)
 -------------------
