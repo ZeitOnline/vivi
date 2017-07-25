@@ -12,7 +12,6 @@ import pytz
 import urbanairship
 import urllib
 import urlparse
-import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
@@ -20,8 +19,6 @@ import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
 import zope.cachedescriptors.property
-import zope.component
-import zope.i18n
 import zope.interface
 
 
@@ -45,14 +42,6 @@ class Connection(object):
             'ios': [ios_application_key, ios_master_secret],
             'web': [web_application_key, web_master_secret]
         }
-        # TODO Clean this up. I dont know yet which parts rely on this
-        # interface
-        self.android_application_key = android_application_key
-        self.android_master_secret = android_master_secret
-        self.ios_application_key = ios_application_key
-        self.ios_master_secret = ios_master_secret
-        self.web_application_key = web_application_key
-        self.web_master_secret = web_master_secret
         self.expire_interval = expire_interval
         self.jinja_env = jinja2.Environment(
             cache_size=0,

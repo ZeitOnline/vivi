@@ -160,7 +160,6 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_stores_mobile_image(self):
         self.open_form()
         b = self.browser
-        b.handleErrors = False
         b.getControl('Mobile image').value = (
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         b.getControl('Apply').click()
