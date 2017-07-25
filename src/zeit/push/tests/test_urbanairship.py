@@ -74,7 +74,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
-                self.api.send('foo', 'any', message=self.message)
+                self.api.send('any', 'any', message=self.message)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[0][0][0].expiry)
@@ -90,37 +90,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
             self.assertEqual(
                 datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
                 self.api.expiration_datetime)
-
-    def test_full_url_is_passed_through(self):
-        template_vars = self.api.create_template_vars(
-            '', 'https://www.zeit.de/foo/bar', '', {})
-        self.assertTrue(
-            template_vars.get('zon_link').startswith(
-                'https://www.zeit.de/foo/bar'))
-
-    def test_deep_link_starts_with_app_identifier(self):
-        self.api.APP_IDENTIFIER = 'foobar'
-        template_vars = self.api.create_template_vars(
-            '', 'http://www.zeit.de/article/one', '', {})
-        self.assertTrue(
-            template_vars.get('app_link').startswith(
-                'foobar://article/one'))
-
-    def test_payload_loads_jinja_payload_variables(self):
-        template_content = u"""
-        [
-            {
-                "title": "{{article.title}}",
-                "message": "{%if uses_image %}Bildß{% endif %}"
-            }
-        ]
-        """
-        self.create_test_payload_template(template_text=template_content,
-                                          template_name="bar.json")
-        self.message.config['payload_template'] = 'bar.json'
-        payload = self.api.create_payload(self.message)
-        self.assertEqual(u'Bildß', payload[0].get('message'))
-        self.assertEqual(self.message.context.title, payload[0].get('title'))
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
@@ -152,22 +121,9 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
             template_name)
         self.assertEqual(template_name, result.__name__)
 
-    def test_load_template_returns_unicode(self):
-        zeit.push.urbanairship.load_template('template.json')
 
-    def test_changes_to_content_are_applied_immediately(self):
-        api = zeit.push.urbanairship.Connection(
-            None, None, None, None, None, None, None)
-        message = zeit.push.urbanairship.Message(
-            self.repository['testcontent'])
-        self.create_test_payload_template('{"one": 1}', 'foo.json')
-        message.config['payload_template'] = 'foo.json'
-        self.assertEqual({'one': 1}, api.create_payload(message))
-        self.create_test_payload_template('{"two": 1}', 'foo.json')
-        self.assertEqual({'two': 1}, api.create_payload(message))
-
-
-class MessageTest(zeit.push.testing.TestCase):
+class MessageTest(zeit.push.testing.TestCase,
+                  gocept.testing.assertion.String):
 
     name = 'mobile'
 
@@ -223,6 +179,40 @@ class MessageTest(zeit.push.testing.TestCase):
         message.send()
         self.assertEqual('yay', message.text)
         self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
+
+    def test_changes_to_template_are_applied_immediately(self):
+        message = zeit.push.urbanairship.Message(
+            self.repository['testcontent'])
+        self.create_test_payload_template('{"one": 1}', 'foo.json')
+        message.config['payload_template'] = 'foo.json'
+        self.assertEqual({'one': 1}, message.render())
+        self.create_test_payload_template('{"two": 1}', 'foo.json')
+        self.assertEqual({'two': 1}, message.render())
+
+    def test_payload_loads_jinja_payload_variables(self):
+        template_content = u"""
+        [
+            {
+                "title": "{{article.title}}",
+                "message": "{%if not uses_image %}Bildß{% endif %}"
+            }
+        ]
+        """
+        self.create_test_payload_template(template_text=template_content,
+                                          template_name="bar.json")
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        payload = message.render()
+        self.assertEqual(u'Bildß', payload[0].get('message'))
+        self.assertEqual(message.context.title, payload[0].get('title'))
+
+    def test_deep_link_starts_with_app_identifier(self):
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        self.assertStartsWith(message.app_link, 'zeitapp://content')
 
 
 class IntegrationTest(zeit.push.testing.TestCase):
