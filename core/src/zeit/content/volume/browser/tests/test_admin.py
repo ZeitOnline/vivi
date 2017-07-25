@@ -78,10 +78,8 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
 
     def publish_content(self):
         b = self.browser
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
-               '2015/01/ausgabe/@@admin.html')
-        b.getControl('Publish content of this volume').click()
+               '2015/01/ausgabe/@@publish-all')
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 zeit.workflow.testing.run_publish(
@@ -119,3 +117,38 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['image']).published)
 
+
+class PublishAllContent(zeit.cms.testing.SeleniumTestCase,
+                        zeit.workflow.testing.RemoteTaskHelper):
+
+    log_errors = True
+
+    layer = zeit.content.volume.testing.WEBDRIVER_LAYER
+    login_as = 'zmgr:mgrpw'
+
+    def setUp(self):
+        super(PublishAllContent, self).setUp()
+        solr = mock.Mock()
+        solr.search.return_value = pysolr.Results([], 0)
+        self.zca.patch_utility(solr, zeit.solr.interfaces.ISolr)
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['ausgabe'] = volume
+        self.start_tasks()
+
+    def tearDown(self):
+        self.stop_tasks()
+        super(PublishAllContent, self).tearDown()
+
+    def test_publish_shows_spinner(self):
+        s = self.selenium
+        self.open('/repository/ausgabe/@@admin.html', self.login_as)
+        s.click('id=form.actions.publish-all')
+        s.waitForElementPresent('css=ol#worklist')
+        s.waitForElementPresent('css=li.busy[action=start_job]')
+        s.waitForElementNotPresent('css=li.busy[action=start_job]')
+        s.assertElementNotPresent('id=publish.errors')
+        s.waitForPageToLoad()
