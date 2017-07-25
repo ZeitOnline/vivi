@@ -81,17 +81,13 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def create_test_payload_template(self,
                                      template_text=None,
                                      template_name='template.json'):
+        if not template_text:
+            template_text = pkg_resources.resource_string(
+                __name__, 'tests/fixtures/payloadtemplate.json')
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 template = zeit.content.text.text.Text()
-                if not template_text:
-                    filename = "{fixtures}/payloadtemplate.json".format(
-                        fixtures=pkg_resources.resource_filename(
-                            __name__, 'tests/fixtures'))
-                    with open(filename) as jsonfile:
-                        template.text = jsonfile.read()
-                else:
-                    template.text = template_text
+                template.text = template_text
                 self.repository['data']['urbanairship-templates'][
                     template_name] = template
 
