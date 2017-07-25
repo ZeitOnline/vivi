@@ -282,20 +282,6 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
 
 
-class PushNewsFlagTest(zeit.push.testing.TestCase):
-
-    def test_sets_flag_on_checkin(self):
-        content = self.repository['testcontent']
-        self.assertFalse(content.push_news)
-        with checked_out(content) as co:
-            push = zeit.push.interfaces.IPushMessages(co)
-            push.message_config = ({
-                'type': 'mobile', 'enabled': True,
-            },)
-        content = self.repository['testcontent']
-        self.assertTrue(content.push_news)
-
-
 class IntegrationTest(zeit.push.testing.TestCase):
 
     def setUp(self):
