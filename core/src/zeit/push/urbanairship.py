@@ -204,20 +204,6 @@ class Message(zeit.push.message.Message):
         return zope.app.appsetup.product.getProductConfiguration('zeit.push')
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def set_push_news_flag(context, event):
-    push = zeit.push.interfaces.IPushMessages(context)
-    for service in push.message_config:
-        # Just ignore channels for now, everything gets this flag now
-        # Is this relevant for anything else then the CP described in VIV-526?
-        if (service['type'] == 'mobile' and
-                service.get('enabled')):
-            context.push_news = True
-            break
-
-
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
