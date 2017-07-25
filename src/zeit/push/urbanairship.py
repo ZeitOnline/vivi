@@ -120,29 +120,6 @@ class Connection(object):
                 push.payload, exc_info=True)
             raise zeit.push.interfaces.TechnicalError(str(e))
 
-    # XXX Not used but maybe we will use something simmilar in another form
-    @staticmethod
-    def add_tracking(url, channel, device):
-        # Well use channel differntly
-
-        tracking = collections.OrderedDict(sorted(
-            {
-                'wt_zmc': 'fix.int.zonaudev.push.{channel}.zeitde.{'
-                          'device}.link.x'.format(channel=channel,
-                                                  device=device),
-                'utm_medium': 'fix',
-                'utm_source': 'push_zonaudev_int',
-                'utm_campaign': channel,
-                'utm_content': 'zeitde_{device}_link_x'.format(device=device),
-            }.items())
-        )
-        parts = list(urlparse.urlparse(url))
-        query = collections.OrderedDict(urlparse.parse_qs(parts[4]))
-        for key, value in tracking.items():
-            query[key] = value
-        parts[4] = urllib.urlencode(query, doseq=True)
-        return urlparse.urlunparse(parts)
-
     def create_template_vars(self, text, link, article, push_config):
         parts = urlparse.urlparse(link)
         path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
