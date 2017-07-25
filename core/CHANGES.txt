@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.11.2 (unreleased)
+1.11.2 (2017-07-25)
 -------------------
 
 - MAINT: Optionally change content keywords on bulk index
