@@ -155,6 +155,17 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
     def test_load_template_returns_unicode(self):
         zeit.push.urbanairship.load_template('template.json')
 
+    def test_changes_to_content_are_applied_immediately(self):
+        api = zeit.push.urbanairship.Connection(
+            None, None, None, None, None, None, None)
+        message = zeit.push.urbanairship.Message(
+            self.repository['testcontent'])
+        self.create_test_payload_template('{"one": 1}', 'foo.json')
+        message.config['payload_template'] = 'foo.json'
+        self.assertEqual({'one': 1}, api.create_payload(message))
+        self.create_test_payload_template('{"two": 1}', 'foo.json')
+        self.assertEqual({'two': 1}, api.create_payload(message))
+
 
 class MessageTest(zeit.push.testing.TestCase):
 
