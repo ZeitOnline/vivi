@@ -89,8 +89,9 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
             urbanairship = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='urbanairship')
-            self.assertEqual(zeit.push.interfaces.CONFIG_CHANNEL_BREAKING,
-                             urbanairship.calls[0][2]['channels'])
+            self.assertEqual(
+                'eilmeldung.json',
+                urbanairship.calls[0][2]['message'].config['payload_template'])
             facebook = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='facebook')
             self.assertEqual(
@@ -117,7 +118,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
                 {'type': 'mobile', 'enabled': False,
-                 'channels': zeit.push.interfaces.CONFIG_CHANNEL_BREAKING},
+                 'payload_template': 'eilmeldung.json'},
                 push.message_config)
             self.assertIn(
                 {'type': 'homepage', 'enabled': False}, push.message_config)
