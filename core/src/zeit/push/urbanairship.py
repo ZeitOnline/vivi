@@ -57,12 +57,11 @@ class Connection(object):
         return (datetime.now(pytz.UTC).replace(microsecond=0) +
                 timedelta(seconds=self.expire_interval))
 
-    def create_payload(self, text, link, **kw):
-        push_message = kw.get('message')
-        template = self.jinja_env.get_template(push_message.config.get(
+    def create_payload(self, message):
+        template = self.jinja_env.get_template(message.config.get(
             'payload_template'))
         rendered_template = template.render(**self.create_template_vars(
-            text, link, push_message.context, push_message.config))
+            message.text, message.url, message.context, message.config))
         return self.validate_template(rendered_template)
 
     def validate_template(self, payload_string):
@@ -79,7 +78,7 @@ class Connection(object):
         # cannot use `isoformat`.
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
         to_push = []
-        push_messages = self.create_payload(text, link, **kw)
+        push_messages = self.create_payload(kw['message'])
         for push_message in push_messages:
             # Check out
             # https://docs.urbanairship.com/api/ua/#push-object
@@ -149,24 +148,20 @@ class Message(zeit.push.message.Message):
 
     @zope.cachedescriptors.property.Lazy
     def additional_parameters(self):
-        result = {
-            'mobile_title': self.config.get('title'),
-            'message': self
-        }
-        if self.image:
-            result['image_url'] = self.image.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE,
-                self.product_config['mobile-image-url'])
-        return result
+        return {'message': self}
 
     @property
     def image(self):
         images = zeit.content.image.interfaces.IImages(self.context, None)
         return getattr(images, 'image', None)
 
-    @zope.cachedescriptors.property.Lazy
-    def product_config(self):
-        return zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    @property
+    def image_url(self):
+        if self.image is None:
+            return None
+        cfg = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+        return self.image.uniqueId.replace(
+            zeit.cms.interfaces.ID_NAMESPACE, cfg['mobile-image-url'])
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
@@ -232,22 +227,22 @@ def print_payload_documentation():
         template_text = f.read().decode('utf-8')
     conn.jinja_env = jinja2.Environment(
         loader=jinja2.FunctionLoader(lambda x: template_text))
-    push_config = {
+    message = Message(article)
+    message.config = {
         'buttons': 'YES/NO',
         'uses_image': True,
-        'image': 'IMAGE_URL',
+        'image': 'http://xml.zeit.de/image',
+        'image_url': 'http://img.zeit.de/image',
         'enabled': True,
         'override_text': u'Foo',
         'type': 'mobile',
         'title': u'Foo'}
     params = {
-        'push_config': push_config,
+        'message': message,
         'context': article,
     }
-    template_vars = conn.create_template_vars('PushTitle',
-                                              article_url,
-                                              article,
-                                              push_config)
+    template_vars = conn.create_template_vars(
+        'PushTitle', article_url, article, message.config)
     print u"""
     Um ein neues Pushtemplate zu erstellen muss unter
     http://vivi.zeit.de/repository/{template_path} eine neue Textdatei
@@ -259,14 +254,13 @@ def print_payload_documentation():
     eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
     Pushnachricht zugegriffen werden. Im Folgenden nun ein Beispiel wie ein
     solches Template funktioniert.
-    Nutz man das Template
+    Nutzt man das Template
     {template_text}
     """.format(
         template_path=config.get('push-payload-templates'),
-        template_text=template_text
-        )
+        template_text=template_text)
     print u"mit der push-Konfiguration:"
     template_vars['article'] = 'article'
     print json.dumps(template_vars, indent=2, sort_keys=True)
-    print u"werden folgende payloads an Urbanairship versandt:"
+    print u"\nwerden folgende payloads an Urbanairship versandt:"
     conn.send('PushTitle', article_url, **params)
