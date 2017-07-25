@@ -43,9 +43,6 @@ class Connection(object):
             'web': [web_application_key, web_master_secret]
         }
         self.expire_interval = expire_interval
-        self.jinja_env = jinja2.Environment(
-            cache_size=0,
-            loader=jinja2.FunctionLoader(load_template))
 
     @zope.cachedescriptors.property.Lazy
     def config(self):
@@ -58,8 +55,7 @@ class Connection(object):
                 timedelta(seconds=self.expire_interval))
 
     def create_payload(self, message):
-        template = self.jinja_env.get_template(message.config.get(
-            'payload_template'))
+        template = load_template(message.config.get('payload_template'))
         rendered_template = template.render(**self.create_template_vars(
             message.text, message.url, message.context, message.config))
         return self.validate_template(rendered_template)
@@ -188,7 +184,7 @@ def load_template(name):
         raise jinja2.TemplateNotFound("Could not find template %s in %s" % (
             name, zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
             .template_folder.uniqueId))
-    return template.text
+    return jinja2.Template(template.text)
 
 
 def print_payload_documentation():
