@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.11.1 (unreleased)
+1.11.1 (2017-07-25)
 -------------------
 
 - Use dlps as TMS date
