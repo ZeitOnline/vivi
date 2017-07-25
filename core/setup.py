@@ -28,6 +28,7 @@ setup(
         'zeit.cms >= 2.102.0.dev0',
         'zeit.content.article',
         'zeit.content.image',
+        'zeit.content.text',
         'zeit.objectlog',
         'zope.app.appsetup',
         'zope.component',
