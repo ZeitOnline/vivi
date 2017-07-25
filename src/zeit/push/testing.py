@@ -56,9 +56,8 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
         # Add a dummy template
         with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
             with zeit.cms.testing.interaction():
-                zeit.cms.content.add.find_or_create_folder('data',
-                                                           'urbanairship'
-                                                           '-templates')
+                zeit.cms.content.add.find_or_create_folder(
+                    'data', 'urbanairship-templates')
                 repository = zope.component.getUtility(
                     zeit.cms.repository.interfaces.IRepository)
                 textcontent = zeit.content.text.text.Text()
@@ -84,9 +83,6 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
                                      template_name='template.json'):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                zeit.cms.content.add.find_or_create_folder('data',
-                                                           'urbanairship'
-                                                           '-templates')
                 template = zeit.content.text.text.Text()
                 if not template_text:
                     filename = "{fixtures}/payloadtemplate.json".format(
