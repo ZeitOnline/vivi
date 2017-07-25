@@ -38,13 +38,6 @@ def send(self):
     return urbanairship.push.core.PushResponse(response)
 
 
-class MockMessage(object):
-
-    def __init__(self, context, message_config):
-        self.context = context
-        self.config = message_config
-
-
 class ConnectionTest(zeit.push.testing.TestCase):
 
     def setUp(self):
@@ -64,18 +57,15 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
             1
         )
-        self.additional_params = \
-            {
-                'message': MockMessage(
-                    ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"),
-                    {
-                        'uses_image': True,
-                        'payload_template': u'template.json',
-                        'enabled': True,
-                        'override_text': u'foo',
-                        'type': 'mobile'})
-            }
-
+        self.message = zeit.push.urbanairship.Message(
+            ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
+        self.message.config = {
+            'uses_image': True,
+            'payload_template': u'template.json',
+            'enabled': True,
+            'override_text': u'foo',
+            'type': 'mobile'
+        }
         self.create_test_payload_template()
 
     def test_sets_expiration_time_in_payload(self):
@@ -84,7 +74,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
-                self.api.send('foo', 'any', **self.additional_params)
+                self.api.send('foo', 'any', message=self.message)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[0][0][0].expiry)
@@ -117,8 +107,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'foobar://article/one'))
 
     def test_payload_loads_jinja_payload_variables(self):
-        article = self.additional_params.get("message").context
-        tempate_content = u"""
+        template_content = u"""
         [
             {
                 "title": "{{article.title}}",
@@ -126,13 +115,12 @@ class ConnectionTest(zeit.push.testing.TestCase):
             }
         ]
         """
-        self.create_test_payload_template(template_text=tempate_content,
+        self.create_test_payload_template(template_text=template_content,
                                           template_name="bar.json")
-        self.additional_params['message'].config['payload_template'] = \
-            "bar.json"
-        payload = self.api.create_payload("", "", **self.additional_params)
+        self.message.config['payload_template'] = 'bar.json'
+        payload = self.api.create_payload(self.message)
         self.assertEqual(u'Bildß', payload[0].get('message'))
-        self.assertEqual(article.title, payload[0].get('title'))
+        self.assertEqual(self.message.context.title, payload[0].get('title'))
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
@@ -203,8 +191,7 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name=self.name)
         self.assertEqual(image, message.image)
         self.assertEqual(
-            'http://img.zeit.de/2006/DSC00109_2.JPG',
-            message.additional_parameters['image_url'])
+            'http://img.zeit.de/2006/DSC00109_2.JPG', message.image_url)
 
     def test_reads_metadata_from_content(self):
         message = zope.component.getAdapter(
@@ -214,9 +201,7 @@ class MessageTest(zeit.push.testing.TestCase):
         message.send()
         self.assertEqual(
             [('content_title', u'http://www.zeit.de/content',
-              {'mobile_title': None,
-               'message': message
-               })],
+              {'message': message})],
             self.get_calls('urbanairship'))
 
     def test_message_text_favours_override_text_over_title(self):
