@@ -28,8 +28,6 @@ class Connection(object):
 
     zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
-    LANGUAGE = 'de'
-
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret,
                  web_application_key, web_master_secret, expire_interval,
