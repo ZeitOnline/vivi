@@ -171,4 +171,6 @@ def reindex():
             index_parallel.delay(id, args.enrich, args.publish)
         else:
             index(
-                zeit.cms.interfaces.ICMSContent(id), args.enrich, args.publish)
+                zeit.cms.interfaces.ICMSContent(id),
+                enrich=args.enrich, update_keywords=args.enrich,
+                publish=args.publish)
