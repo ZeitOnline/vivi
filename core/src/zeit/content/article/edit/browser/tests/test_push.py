@@ -65,7 +65,7 @@ class MobileFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.getControl(name='mobile.mobile_image').value = (
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        b.handleErrors = False
+        b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
