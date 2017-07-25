@@ -141,8 +141,7 @@ class Message(zeit.push.message.Message):
 
     @property
     def log_message_details(self):
-        template = self.config.get('payload_template')
-        return 'Pushed with template %s' % template
+        return 'Template %s' % self.config.get('payload_template')
 
     @zope.cachedescriptors.property.Lazy
     def text(self):
