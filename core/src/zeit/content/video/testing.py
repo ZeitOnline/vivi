@@ -3,7 +3,7 @@ import pkg_resources
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
-import zeit.push
+import zeit.push.testing
 import zeit.solr.testing
 import zeit.workflow.testing
 
@@ -19,15 +19,18 @@ product_config = """\
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
-        zeit.push.product_config +
+        zeit.push.testing.product_config +
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
         zeit.workflow.testing.product_config +
         product_config))
 
+PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
+    name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
+
 
 LAYER = plone.testing.Layer(
-    bases=(ZCML_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER),
+    bases=(PUSH_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER),
     name='Layer', module=__name__)
 
 
