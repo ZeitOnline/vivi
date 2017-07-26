@@ -194,8 +194,7 @@ def print_payload_documentation():
     article = zeit.content.article.article.Article()
     article.uniqueId = 'http://xml.zeit.de/testartikel'
     article.title = "Titel des Testartikels"
-    zope.component.provideAdapter(
-        lambda x: x.uniqueId, (type(article),), zeit.push.interfaces.IPushURL)
+    zope.component.provideAdapter(zeit.push.message.default_push_url)
 
     message = Message(article)
     message.config = {
