@@ -6,7 +6,7 @@ import zeit.push.workflow
 
 class SocialFormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.push.testing.ZCML_LAYER
+    layer = zeit.push.testing.LAYER
 
     def setUp(self):
         super(SocialFormTest, self).setUp()
@@ -200,7 +200,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
 
 class SocialAddFormTest(SocialFormTest):
 
-    layer = zeit.push.testing.ZCML_LAYER
+    layer = zeit.push.testing.LAYER
 
     def test_applies_push_configuration_to_added_object(self):
 
