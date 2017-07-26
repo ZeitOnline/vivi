@@ -28,4 +28,16 @@
       />
   </class>
 
+  <class class=".jinja.JinjaTemplate">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IJinjaTemplate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IJinjaTemplate"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

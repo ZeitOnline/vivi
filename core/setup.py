@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.text',
-    version='2.1.1.dev0',
+    version='2.2.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -15,6 +15,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
+        'Jinja2',
         'persistent',
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
@@ -25,6 +26,7 @@ setup(
         'zope.formlib',
         'zope.i18n',
         'zope.interface',
+        'zope.publisher',
         'zope.schema',
         'zope.testbrowser',
     ],

@@ -1,10 +1,10 @@
 zeit.content.text changes
 =========================
 
-2.1.1 (unreleased)
+2.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4007: Add jinja template content type.
 
 
 2.1.0 (2016-10-19)

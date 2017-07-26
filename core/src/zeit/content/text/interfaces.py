@@ -65,3 +65,14 @@ class IPythonScript(IText):
         The keyword arguments are provided to the code in a dict named
         ``context``.
         """
+
+
+class IJinjaTemplate(IText):
+
+    title = zope.schema.TextLine(title=_("Title"))
+
+    def __call__(**kw):
+        """Renders the content as a jina template and returns the result.
+
+        The keyword arguments are provided to the template.
+        """
