@@ -37,7 +37,7 @@ class Message(grok.Adapter):
             raise ValueError('No text configured')
         kw = {}
         kw.update(self.config)
-        kw.update(self.additional_parameters)
+        kw['message'] = self
 
         try:
             notifier = zope.component.getUtility(
@@ -69,10 +69,6 @@ class Message(grok.Adapter):
             'zeit.push')
         return zeit.push.interfaces.IPushURL(self.context).replace(
             zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
-
-    @property
-    def additional_parameters(self):
-        return {}
 
     @zope.cachedescriptors.property.Lazy
     def object_log(self):
