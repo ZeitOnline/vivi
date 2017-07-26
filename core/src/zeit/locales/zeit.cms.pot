@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Jul 24 13:51:57 2017\n"
+"POT-Creation-Date: Wed Jul 26 11:01:01 2017\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -229,6 +229,7 @@ msgstr ""
 #: zeit/content/infobox/interfaces.py:18
 #: zeit/content/quiz/interfaces.py:64
 #: zeit/content/rawxml/interfaces.py:14
+#: zeit/content/text/interfaces.py:72
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/newsletter/interfaces.py:43
 #: zeit/newsletter/interfaces.py:56
@@ -477,6 +478,7 @@ msgstr ""
 #: zeit/content/quiz/browser/configure.zcml:107
 #: zeit/content/rawxml/browser/configure.zcml:15
 #: zeit/content/text/browser/configure.zcml:14
+#: zeit/content/text/browser/configure.zcml:57
 #: zeit/edit/browser/editor.py:8
 msgid "Edit"
 msgstr ""
@@ -1841,7 +1843,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:354
 #: zeit/content/cp/interfaces.py:956
 #: zeit/content/image/interfaces.py:408
-#: zeit/push/interfaces.py:281
+#: zeit/push/interfaces.py:301
 msgid "Drag an image group here"
 msgstr ""
 
@@ -4118,6 +4120,7 @@ msgid "Add plain text"
 msgstr ""
 
 #: zeit/content/text/browser/form.py:29
+#: zeit/content/text/browser/jinja.py:14
 msgid "Edit plain text"
 msgstr ""
 
@@ -4132,6 +4135,10 @@ msgstr ""
 
 #: zeit/content/text/interfaces.py:33
 msgid "Encoding"
+msgstr ""
+
+#: zeit/content/text/jinja.py:27
+msgid "Jinja template"
 msgstr ""
 
 #: zeit/content/text/python.py:44
@@ -4597,86 +4604,82 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: zeit/push/interfaces.py:250
+#: zeit/push/interfaces.py:270
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/push/interfaces.py:252
+#: zeit/push/interfaces.py:272
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:255
+#: zeit/push/interfaces.py:275
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/interfaces.py:257
+#: zeit/push/interfaces.py:277
 msgid "Facebook Magazin Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:260
+#: zeit/push/interfaces.py:280
 msgid "Enable Facebook Campus"
 msgstr ""
 
-#: zeit/push/interfaces.py:262
+#: zeit/push/interfaces.py:282
 msgid "Facebook Campus Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:264
+#: zeit/push/interfaces.py:284
 msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:266
+#: zeit/push/interfaces.py:286
 msgid "Enable Twitter Ressort"
 msgstr ""
 
-#: zeit/push/interfaces.py:268
+#: zeit/push/interfaces.py:288
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:273
+#: zeit/push/interfaces.py:293
 msgid "Mobile title"
 msgstr ""
 
-#: zeit/push/interfaces.py:275
+#: zeit/push/interfaces.py:295
 msgid "Mobile text"
 msgstr ""
 
-#: zeit/push/interfaces.py:276
+#: zeit/push/interfaces.py:296
 msgid "Enable mobile push"
 msgstr ""
 
-#: zeit/push/interfaces.py:278
+#: zeit/push/interfaces.py:298
 msgid "Mobile push with image"
 msgstr ""
 
-#: zeit/push/interfaces.py:280
+#: zeit/push/interfaces.py:300
 msgid "Mobile image"
 msgstr ""
 
-#: zeit/push/interfaces.py:285
+#: zeit/push/interfaces.py:305
 msgid "Mobile buttons"
 msgstr ""
 
-#: zeit/push/interfaces.py:92
+#: zeit/push/interfaces.py:309
+msgid "Payload Template"
+msgstr ""
+
+#: zeit/push/interfaces.py:89
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/message.py:82
+#: zeit/push/message.py:78
 #. Default: ""
 msgid "Push notification for \"${name}\" sent. (Message: \"${message}\", Details: ${details})"
 msgstr ""
 
-#: zeit/push/message.py:90
+#: zeit/push/message.py:86
 #. Default: ""
 msgid "Error during push to ${name} ${details}: ${reason}"
-msgstr ""
-
-#: zeit/push/urbanairship.py:75
-msgid "push-news-title"
-msgstr ""
-
-#: zeit/push/urbanairship.py:77
-msgid "push-breaking-title"
 msgstr ""
 
 #: zeit/push/workflow.py:93
