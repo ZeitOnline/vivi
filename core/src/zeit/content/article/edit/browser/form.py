@@ -414,6 +414,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     def _success_handler(self):
         self.signal('reload-inline-form', 'leadteaser')
         self.signal('reload-inline-form', 'article-content-main-image')
+        self.signal('reload-inline-form', 'mobile')
         body = IEditableBody(self.context)
         # XXX it would be nicer if we didn't need to know the reload URL here
         # (e.g. write it onto the DOM element)
