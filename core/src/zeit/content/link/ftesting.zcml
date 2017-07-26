@@ -15,5 +15,6 @@
   <include package="zeit.push" />
   <include package="zeit.push" file="mock-webservice.zcml" />
   <include package="zeit.push.browser" />
+  <include package="zeit.content.text" />
 
 </configure>
