@@ -77,6 +77,7 @@ class MobileBase(Base):
         super(MobileBase, self).setUpWidgets(*args, **kw)
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
             self._set_widget_required('mobile_text')
+            self._set_widget_required('mobile_payload_template')
         if self.request.form.get('%s.mobile_uses_image' % self.prefix):
             self._set_widget_required('mobile_image')
         if hasattr(self.widgets['mobile_text'], 'extra'):
