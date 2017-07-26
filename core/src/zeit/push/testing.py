@@ -3,7 +3,6 @@ import logging
 import pkg_resources
 import plone.testing
 import urlparse
-import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.text.jinja
@@ -30,7 +29,7 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
-BASE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
     zeit.push.product_config +
     zeit.cms.testing.cms_product_config +
     zeit.workflow.testing.product_config +
@@ -51,7 +50,7 @@ PUSH_MOCK_LAYER = PushMockLayer()
 
 class UrbanairshipTemplateLayer(plone.testing.Layer):
 
-    defaultBases = (BASE_ZCML_LAYER, )
+    defaultBases = (ZCML_LAYER,)
 
     def create_template(self, text=None, name='template.json'):
         if not text:
@@ -78,7 +77,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
 
-ZCML_LAYER = plone.testing.Layer(
+LAYER = plone.testing.Layer(
     bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER),
     name='ZCMLPushMockLayer',
     module=__name__)
@@ -86,14 +85,14 @@ ZCML_LAYER = plone.testing.Layer(
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = LAYER
 
     def create_payload_template(self, text=None, name='template.json'):
         self.layer['create_template'](text, name)
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(ZCML_LAYER,))
+    name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

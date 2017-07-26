@@ -7,7 +7,7 @@ import zope.component
 
 class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.push.testing.ZCML_LAYER
+    layer = zeit.push.testing.LAYER
 
     def setUp(self):
         super(RetractBannerTest, self).setUp()
