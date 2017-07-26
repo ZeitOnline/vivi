@@ -37,8 +37,6 @@
   <include package="zeit.content.volume" />
   <include package="zeit.content.volume.browser" />
 
-  <include package="zeit.push" />
-  <include package="zeit.push" file="mock-webservice.zcml" />
-  <include package="zeit.push.browser" />
+  <include package="zeit.push" file="testing.zcml" />
 
 </configure>
