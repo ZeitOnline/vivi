@@ -308,4 +308,4 @@ class IAccountData(zope.interface.Interface):
     mobile_payload_template = zope.schema.Choice(
         title=_('Payload Template'),
         source=PAYLOAD_TEMPLATE_SOURCE,
-        required=True)
+        required=False)
