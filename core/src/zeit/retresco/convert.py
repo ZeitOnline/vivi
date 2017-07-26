@@ -115,7 +115,6 @@ class CommonMetadata(Converter):
         'lead_candidate': '',
         'page': '',
         'printRessort': 'print_ressort',
-        'push_news': '',
         'ressort': '',
         'sub_ressort': '',
         'subtitle': '',
