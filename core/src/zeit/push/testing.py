@@ -1,8 +1,12 @@
-import plone.testing
 import gocept.selenium
 import logging
+import pkg_resources
+import plone.testing
+import urlparse
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
+import zeit.content.text.jinja
 import zeit.push.interfaces
 import zeit.workflow.testing
 import zope.interface
@@ -26,14 +30,6 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
-
-class MobilePushNotifier(PushNotifier):
-
-    def get_channel_list(self, channels):
-        """Required for zeit.push.mobile.Message.log_success"""
-        return 'News'
-
-
 BASE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
     zeit.push.product_config +
     zeit.cms.testing.cms_product_config +
@@ -52,8 +48,38 @@ class PushMockLayer(plone.testing.Layer):
 
 PUSH_MOCK_LAYER = PushMockLayer()
 
+
+class UrbanairshipTemplateLayer(plone.testing.Layer):
+
+    defaultBases = (BASE_ZCML_LAYER, )
+
+    def create_template(self, text=None, name='template.json'):
+        if not text:
+            text = pkg_resources.resource_string(
+                __name__, 'tests/fixtures/payloadtemplate.json')
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+            with zeit.cms.testing.interaction():
+                cfg = zope.app.appsetup.product.getProductConfiguration(
+                    'zeit.push')
+                folder = zeit.cms.content.add.find_or_create_folder(
+                    *urlparse.urlparse(
+                        cfg['push-payload-templates']).path[1:].split('/'))
+                template = zeit.content.text.jinja.JinjaTemplate()
+                template.text = text
+                template.title = name.split('.')[0].capitalize()
+                folder[name] = template
+
+    def setUp(self):
+        self['create_template'] = self.create_template
+
+    def testSetUp(self):
+        self.create_template('', 'foo.json')
+
+
+URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
+
 ZCML_LAYER = plone.testing.Layer(
-    bases=(BASE_ZCML_LAYER, PUSH_MOCK_LAYER),
+    bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER),
     name='ZCMLPushMockLayer',
     module=__name__)
 
@@ -61,6 +87,9 @@ ZCML_LAYER = plone.testing.Layer(
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
+
+    def create_payload_template(self, text=None, name='template.json'):
+        self.layer['create_template'](text, name)
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(

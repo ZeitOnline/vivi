@@ -28,6 +28,7 @@ setup(
         'zeit.cms >= 2.102.0.dev0',
         'zeit.content.article',
         'zeit.content.image',
+        'zeit.content.text>=2.2.0.dev0',
         'zeit.objectlog',
         'zope.app.appsetup',
         'zope.component',
@@ -38,7 +39,6 @@ setup(
     entry_points={
         'console_scripts': [
             'facebook-access-token = zeit.push.facebook:create_access_token',
-            'parse-payload-doc = zeit.push.parse:print_payload_documentation',
             'ua-payload-doc = zeit.push.urbanairship:print_payload_documentation',
         ],
         'fanstatic.libraries': [

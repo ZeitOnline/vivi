@@ -1,8 +1,12 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
+import zc.sourcefactory.basic
 import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.content.image.interfaces
+import zeit.content.text.interfaces
 import zope.interface
 import zope.schema
 
@@ -16,19 +20,12 @@ class IMessage(zope.interface.Interface):
         'Property that can be overriden if `get_text_from` is not sufficient '
         'to retrieve the text for the notification')
 
-    additional_parameters = zope.interface.Attribute(
-        'Additional parameters that should be send to `IPushNotifier` as **kw')
-
     def send():
         """Send push notification to external service via `IPushNotifier`.
 
         Will fetch the `IPushNotifier` utility using the name that was used to
-        register this `IMessage` adapter. Calls the utility providing the
-        message config, `additional_parameters`, `text` and a link to context
-        as parameters.
-
-        Currently `additional_parameters` is only used for mobile push
-        notifications to enrich the parameters with `image_url`.
+        register this `IMessage` adapter. Calls `IPushNotifier.send()`
+        to perform the actual sending.
         """
 
 
@@ -45,10 +42,10 @@ class IPushNotifier(zope.interface.Interface):
 
         * ``type``: Name of the external service.
 
-        * ``enabled``: If the service is enabled.
+        * ``message``: The IMessage object
+        [only used in `mobile`]
 
-        * ``channels``: Restrict push notification to users listening to this
-          kind of pushes (`News` or `Eilmeldung`). [only `mobile`]
+        * ``enabled``: If the service is enabled.
 
         * ``override_text``: Text that should be used instead of the given
           `text` parameter. [only `mobile` & `facebook`]
@@ -124,10 +121,6 @@ class IPushMessages(zope.interface.Interface):
         query key/values with the given values. If none is found, a new entry
         is appended, combining query and values.
         """
-
-
-CONFIG_CHANNEL_NEWS = 'channel-news'
-CONFIG_CHANNEL_BREAKING = 'channel-breaking'
 
 
 class IPushURL(zope.interface.Interface):
@@ -244,6 +237,33 @@ class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
 MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 
+class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    @property
+    def template_folder(self):
+        template_folder_path = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.push').get('push-payload-templates')
+        return zeit.cms.interfaces.ICMSContent(template_folder_path)
+
+    def getValues(self):
+        return [x for x in self.template_folder.values()
+                if zeit.content.text.interfaces.IJinjaTemplate.providedBy(x)]
+
+    def getTitle(self, value):
+        return value.title
+
+    def getToken(self, value):
+        return value.__name__
+
+    def find(self, id):
+        if not id:
+            return None
+        return self.template_folder.get(id)
+
+
+PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()
+
+
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
@@ -285,3 +305,7 @@ class IAccountData(zope.interface.Interface):
         title=_('Mobile buttons'),
         source=MOBILE_BUTTONS_SOURCE,
         required=False)
+    mobile_payload_template = zope.schema.Choice(
+        title=_('Payload Template'),
+        source=PAYLOAD_TEMPLATE_SOURCE,
+        required=True)

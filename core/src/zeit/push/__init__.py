@@ -13,10 +13,9 @@ product_config = """\
   facebook-campus-account fb-campus
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
-  channel-breaking Eilmeldung
-  channel-news News
   urbanairship-audience-group subscriptions
   mobile-buttons file://{fixtures}/mobile-buttons.xml
+  push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

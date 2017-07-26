@@ -1,6 +1,7 @@
+# coding=utf-8
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-from zeit.push.interfaces import CONFIG_CHANNEL_BREAKING, CONFIG_CHANNEL_NEWS
+from zeit.cms.interfaces import ICMSContent
 import json
 import mock
 import os
@@ -50,34 +51,22 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
             1
         )
-
-    def test_pushes_to_android_and_ios(self):
-        with mock.patch.object(self.api, 'push') as push:
-            self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-            self.assertEqual(
-                ['android'], push.call_args_list[0][0][0].device_types)
-            self.assertEqual(
-                ['ios'], push.call_args_list[1][0][0].device_types)
-
-    def test_audience_tag_depends_on_channel(self):
-        with mock.patch.object(self.api, 'push') as push:
-            self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-            self.assertEqual(
-                {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-                push.call_args_list[0][0][0].audience)  # Android
-            self.assertEqual(
-                {'OR': [{'group': 'subscriptions', 'tag': 'News'}]},
-                push.call_args_list[1][0][0].audience)  # iOS
-
-    def test_raises_if_no_channel_given(self):
-        with self.assertRaises(ValueError):
-            self.api.send('Being pushy.', 'http://example.com')
-
-    def test_raises_if_channel_not_in_product_config(self):
-        with self.assertRaises(ValueError):
-            self.api.send('foo', 'any', channels='i-am-not-in-product-config')
+        self.message = zeit.push.urbanairship.Message(
+            ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
+        self.message.config = {
+            'uses_image': True,
+            'payload_template': u'template.json',
+            'enabled': True,
+            'override_text': u'foo',
+            'type': 'mobile'
+        }
+        self.create_payload_template()
 
     def test_sets_expiration_time_in_payload(self):
         self.api.expire_interval = 3600
@@ -85,31 +74,13 @@ class ConnectionTest(zeit.push.testing.TestCase):
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
-                self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
+                self.api.send('any', 'any', message=self.message)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[0][0][0].expiry)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
                     push.call_args_list[1][0][0].expiry)
-
-    def test_enriches_payload_with_tag_to_categorize_notification(self):
-        with mock.patch.object(self.api, 'push') as push:
-            self.api.send('foo', 'any', channels=CONFIG_CHANNEL_NEWS)
-            android = push.call_args_list[0][0][0].notification['android']
-            self.assertEqual('News', android['extra']['tag'])
-            ios = push.call_args_list[1][0][0].notification['ios']
-            self.assertEqual('News', ios['extra']['tag'])
-
-
-class DataTest(ConnectionTest):
-
-    def create_catalog(self):
-        domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
-        self.zca.patch_utility(domain, name='zeit.cms')
-        catalog = zeit.cms.testing.TestCatalog()
-        domain.addCatalog(catalog)
-        return catalog
 
     def test_calculates_expiration_datetime_based_on_expire_interval(self):
         self.api.expire_interval = 3600
@@ -120,136 +91,39 @@ class DataTest(ConnectionTest):
                 datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
                 self.api.expiration_datetime)
 
-    def test_channels_string_is_looked_up_in_product_config(self):
-        product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push')
-        product_config['foo'] = 'bar qux'
-        self.assertEqual(['bar', 'qux'], self.api.get_channel_list('foo'))
 
-    def test_translates_title_based_on_channel(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-news-title'] = 'bar'
-        catalog.messages['push-breaking-title'] = 'foo'
-        self.api.LANGUAGE = 'tt'
-        self.assertEqual('bar', self.api.get_headline(['News']))
-        self.assertEqual('foo', self.api.get_headline(['Eilmeldung']))
+class PayloadSourceTest(zeit.push.testing.TestCase):
 
-    def test_transmits_news_metadata(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-news-title'] = 'News'
-        self.api.LANGUAGE = 'tt'
-        payload = self.api.create_payload(
-            'foo', 'any', channels=CONFIG_CHANNEL_NEWS)
+    def setUp(self):
+        super(PayloadSourceTest, self).setUp()
+        self.create_payload_template()
+        self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
-        android = payload['android']
-        self.assertEqual(
-            'ZEIT ONLINE News', android['android']['extra']['headline'])
-        self.assertEqual('foo', android['alert'])
-        self.assertEqual(0, android['android']['priority'])
+    def test_getValues_returns_all_templates_as_text_objects(self):
+        # Change this if we decide we want a new
+        # content type PaylaodTemplate
+        self.assertTrue(1, len(self.templates))
+        self.assertTrue(zeit.content.text.text.Text, type(self.templates[0]))
 
-        ios = payload['ios']
-        self.assertEqual('News', ios['ios']['extra']['headline'])
-        self.assertEqual('foo', ios['alert'])
-        self.assertEqual('', ios['ios']['sound'])
+    def test_getTitle_returns_capitalized_title(self):
+        self.assertTrue('Template',
+                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+                        .getTitle(self.templates[0]))
 
-    def test_transmits_breaking_metadata(self):
-        catalog = self.create_catalog()
-        catalog.messages['push-breaking-title'] = 'Breaking'
-        self.api.LANGUAGE = 'tt'
-        payload = self.api.create_payload(
-            'bar', 'any', channels=CONFIG_CHANNEL_BREAKING)
+    def test_getToken_returns_template_name(self):
+        self.assertTrue('template.json',
+                        zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+                        .getToken(self.templates[0]))
 
-        android = payload['android']
-        self.assertEqual(
-            'ZEIT ONLINE Breaking', android['android']['extra']['headline'])
-        self.assertEqual('bar', android['alert'])
-        self.assertEqual(2, android['android']['priority'])
-
-        ios = payload['ios']
-        self.assertEqual('Breaking', ios['ios']['extra']['headline'])
-        self.assertEqual('bar', ios['alert'])
-        self.assertEqual('chime.aiff', ios['ios']['sound'])
-
-    def test_full_url_is_passed_through(self):
-        payload = self.api.create_payload('', 'https://www.zeit.de/foo/bar')
-        self.assertTrue(
-            payload['android']['android']['extra']['url'].startswith(
-                'https://www.zeit.de/foo/bar?'))
-        self.assertTrue(
-            payload['ios']['ios']['extra']['url'].startswith(
-                'https://www.zeit.de/foo/bar?'))
-
-    def test_deep_link_starts_with_app_identifier(self):
-        self.api.APP_IDENTIFIER = 'foobar'
-        payload = self.api.create_payload('', 'http://www.zeit.de/article/one')
-        self.assertTrue(
-            payload['android']['actions']['open']['content'].startswith(
-                'foobar://article/one'))
-        self.assertTrue(
-            payload['ios']['actions']['open']['content'].startswith(
-                'foobar://article/one'))
+    def test_find_returns_correct_template(self):
+        template_name = 'template.json'
+        result = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
+            template_name)
+        self.assertEqual(template_name, result.__name__)
 
 
-class AddTrackingTest(unittest.TestCase,
-                      gocept.testing.assertion.String):
-
-    layer = zeit.push.testing.ZCML_LAYER
-
-    def test_adds_tracking_information_as_query_string(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://www.zeit.de/foo/bar', ['News'], 'android')
-        # No thanks to parse_qs() for "benevolently" ignoring this.
-        self.assertNotIn('?&', url)
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual(
-            'fix.int.zonaudev.push.wichtige_news.zeitde.andpush.link.x',
-            qs['wt_zmc'][0])
-        self.assertEqual('zeitde_andpush_link_x', qs['utm_content'][0])
-        self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
-        self.assertEqual('wichtige_news', qs['utm_campaign'][0])
-        self.assertEqual('fix', qs['utm_medium'][0])
-
-    def test_preserves_existing_query_string(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://www.zeit.de/foo/bar?baz=qux', ['News'], 'android')
-        self.assertStartsWith('http://www.zeit.de/foo/bar?baz=qux&', url)
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('qux', qs['baz'][0])
-
-    def test_adds_tracking_information_blog(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://www.zeit.de/blog/foo/bar?feed=articlexml',
-            ['News'], 'android')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('articlexml', qs['feed'][0])
-        self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
-
-    def test_creates_android_push_link_for_android(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', [], 'android')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('zeitde_andpush_link_x', qs['utm_content'][0])
-
-    def test_creates_ios_push_link_for_ios(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', [], 'ios')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('zeitde_iospush_link_x', qs['utm_content'][0])
-
-    def test_creates_breaking_news_link_for_breaking_news_channel(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', ['Eilmeldung'], 'device')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('eilmeldung', qs['utm_campaign'][0])
-
-    def test_creates_news_link_for_news_channel(self):
-        url = zeit.push.urbanairship.Connection.add_tracking(
-            'http://URL', ['News'], 'device')
-        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
-        self.assertEqual('wichtige_news', qs['utm_campaign'][0])
-
-
-class MessageTest(zeit.push.testing.TestCase):
+class MessageTest(zeit.push.testing.TestCase,
+                  gocept.testing.assertion.String):
 
     name = 'mobile'
 
@@ -282,10 +156,8 @@ class MessageTest(zeit.push.testing.TestCase):
         message = zope.component.getAdapter(
             self.create_content(image=image),
             zeit.push.interfaces.IMessage, name=self.name)
-        self.assertEqual(image, message.image)
         self.assertEqual(
-            'http://img.zeit.de/2006/DSC00109_2.JPG',
-            message.additional_parameters['image_url'])
+            'http://img.zeit.de/2006/DSC00109_2.JPG', message.image_url)
 
     def test_reads_metadata_from_content(self):
         message = zope.component.getAdapter(
@@ -295,7 +167,7 @@ class MessageTest(zeit.push.testing.TestCase):
         message.send()
         self.assertEqual(
             [('content_title', u'http://www.zeit.de/content',
-              {'mobile_title': None})],
+              {'message': message})],
             self.get_calls('urbanairship'))
 
     def test_message_text_favours_override_text_over_title(self):
@@ -307,20 +179,38 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual('yay', message.text)
         self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
 
+    def test_changes_to_template_are_applied_immediately(self):
+        message = zeit.push.urbanairship.Message(
+            self.repository['testcontent'])
+        self.create_payload_template('{"one": 1}', 'foo.json')
+        message.config['payload_template'] = 'foo.json'
+        self.assertEqual({'one': 1}, message.render())
+        self.create_payload_template('{"two": 1}', 'foo.json')
+        self.assertEqual({'two': 1}, message.render())
 
-class PushNewsFlagTest(zeit.push.testing.TestCase):
+    def test_payload_loads_jinja_payload_variables(self):
+        template_content = u"""
+        [
+            {
+                "title": "{{article.title}}",
+                "message": "{%if not uses_image %}Bildß{% endif %}"
+            }
+        ]
+        """
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        payload = message.render()
+        self.assertEqual(u'Bildß', payload[0].get('message'))
+        self.assertEqual(message.context.title, payload[0].get('title'))
 
-    def test_sets_flag_on_checkin(self):
-        content = self.repository['testcontent']
-        self.assertFalse(content.push_news)
-        with checked_out(content) as co:
-            push = zeit.push.interfaces.IPushMessages(co)
-            push.message_config = ({
-                'type': 'mobile', 'enabled': True,
-                'channels': CONFIG_CHANNEL_NEWS,
-            },)
-        content = self.repository['testcontent']
-        self.assertTrue(content.push_news)
+    def test_deep_link_starts_with_app_identifier(self):
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        self.assertStartsWith(message.app_link, 'zeitapp://content')
 
 
 class IntegrationTest(zeit.push.testing.TestCase):
@@ -344,46 +234,33 @@ class IntegrationTest(zeit.push.testing.TestCase):
         push = IPushMessages(self.content)
         push.message_config = [{'type': 'mobile', 'enabled': True}]
         self.publish(self.content)
-        self.assertEqual([(
-            'content_title', u'http://www.zeit.de/content',
-            {'enabled': True, 'type': 'mobile',
-             'mobile_title': None})],
-            zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name='urbanairship').calls)
+        calls = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
+        self.assertEqual(calls[0][0], 'content_title')
+        self.assertEqual(calls[0][1], u'http://www.zeit.de/content')
+        self.assertEqual(calls[0][2].get('enabled'), True)
+        self.assertEqual(calls[0][2].get('type'), 'mobile')
 
 
-class PushTest(unittest.TestCase):
+class PushTest(ConnectionTest):
 
     level = 2
     layer = zeit.push.testing.ZCML_LAYER
 
-    def setUp(self):
-        super(PushTest, self).setUp()
-        self.android_application_key = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_ANDROID_APPLICATION_KEY']
-        self.android_master_secret = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_ANDROID_MASTER_SECRET']
-        self.ios_application_key = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY']
-        self.ios_master_secret = os.environ[
-            'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET']
-
     def test_push_works(self):
-        api = zeit.push.urbanairship.Connection(
-            self.android_application_key, self.android_master_secret,
-            self.ios_application_key, self.ios_master_secret, 1)
         with mock.patch('urbanairship.push.core.Push.send', send):
             with mock.patch('urbanairship.push.core.PushResponse') as push:
-                api.send('Push', 'http://example.com',
-                         channels=CONFIG_CHANNEL_NEWS)
+                self.api.send('Push', 'http://example.com',
+                              **self.additional_params)
                 self.assertEqual(200, push.call_args[0][0].status_code)
 
     def test_invalid_credentials_should_raise(self):
-        api = zeit.push.urbanairship.Connection(
-            'invalid', 'invalid', 'invalid', 'invalid', 1)
+        invalid_connection = zeit.push.urbanairship.Connection(
+            'invalid', 'invalid', 'invalid', 'invalid', 'invalid', 'invalid',
+            1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
-            api.send('Being pushy.', 'http://example.com',
-                     channels=CONFIG_CHANNEL_NEWS)
+            invalid_connection.send('Being pushy.', 'http://example.com',
+                                    **self.additional_params)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
@@ -391,11 +268,8 @@ class PushTest(unittest.TestCase):
         response.headers = {}
         response.content = ''
         response.json.return_value = {}
-        api = zeit.push.urbanairship.Connection(
-            self.android_application_key, self.android_master_secret,
-            self.ios_application_key, self.ios_master_secret, 1)
         with mock.patch('requests.sessions.Session.request') as request:
             request.return_value = response
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
-                api.send('Being pushy.', 'http://example.com',
-                         channels=CONFIG_CHANNEL_NEWS)
+                self.api.send('Being pushy.', 'http://example.com',
+                              **self.additional_params)
