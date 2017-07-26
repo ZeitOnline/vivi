@@ -177,6 +177,7 @@ def from_product_config():
 
 def print_payload_documentation():
     import mock
+    import zeit.connector.interfaces
     import zeit.content.article.article
     import zeit.content.image.image
 
@@ -197,6 +198,9 @@ def print_payload_documentation():
     article = zeit.content.article.article.Article()
     article.uniqueId = 'http://xml.zeit.de/testartikel'
     article.title = 'Titel des Testartikels'
+    zope.component.provideAdapter(
+        lambda x: {},
+        (type(article),), zeit.connector.interfaces.IWebDAVReadProperties)
     zope.component.provideAdapter(zeit.push.message.default_push_url)
     image = zeit.content.image.image.Image()
     image.uniqueId = 'http://xml.zeit.de/my-image'
@@ -230,7 +234,8 @@ Artikeldialog ausgewählt werden. In dem Template können sowohl auf
 eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
 Pushnachricht zugegriffen werden:"""
     vars = message.template_variables
-    vars['article'] = str(vars['article'])
+    vars['article'] = {x: '...' for x in zope.schema.getFieldNames(
+        zeit.content.article.interfaces.IArticle)}
     print json.dumps(vars, indent=2, sort_keys=True)
 
     print (u"\nIm Folgenden nun ein Beispiel wie ein solches Template"
