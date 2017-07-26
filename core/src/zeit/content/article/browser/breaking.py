@@ -74,7 +74,8 @@ class Add(zeit.cms.browser.form.AddForm,
         if data.pop('mobile', False):
             message_config.append({
                 'type': 'mobile', 'enabled': True,
-                'channels': zeit.push.interfaces.CONFIG_CHANNEL_BREAKING,
+                # XXX hard-coded value
+                'payload_template': 'eilmeldung.json',
             })
         if data.pop('homepage', False):
             message_config.append(

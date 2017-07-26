@@ -1,3 +1,4 @@
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
@@ -5,6 +6,7 @@ import plone.testing
 import re
 import shutil
 import tempfile
+import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
@@ -70,6 +72,16 @@ class ArticleLayer(plone.testing.Layer):
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = (
             'testtag|testtag2|testtag3')
+
+        # XXX Duplicated from zeit.push.testing.UrbanairshipTemplateLayer
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+            zeit.cms.content.add.find_or_create_folder(
+                'data', 'urbanairship-templates')
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            repository['data']['urbanairship-templates'][
+                'foo.json'] = ExampleContentType()
+
 
 LAYER = ArticleLayer()
 

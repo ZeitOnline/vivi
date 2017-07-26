@@ -1939,16 +1939,30 @@
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
 .type-article #form-social .field.fieldname-short_text .label,
-.type-article #form-mobile .field.fieldname-mobile_title .label,
 .type-article #form-mobile .field.fieldname-mobile_text .label,
 .type-article #form-mobile .field.fieldname-mobile_image .label {
    display: none;
 }
 
+.type-article #form-mobile .field.fieldname-mobile_payload_template .label,
+.type-article #form-mobile .field.fieldname-mobile_title .label {
+  /* Counteract float left */
+  clear: both;
+}
+
 .type-article #social\.short_text,
-.type-article #mobile\.mobile_title,
 .type-article #mobile\.mobile_text {
-    width: 100%;
+  width: 100%;
+}
+
+.fieldname-mobile_title .widget:before{
+  content: "ZEIT ONLINE";
+  color: lightslategray;
+  float: left;
+  display: block;
+  vertical-align: middle;
+  line-height: 1.9rem;
+  margin-right: 10px;
 }
 
 .type-article #form-social .field.fieldname-short_text {
