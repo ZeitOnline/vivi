@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 from datetime import datetime, timedelta
 import grokcore.component as grok
-import jinja2
 import json
 import logging
 import pkg_resources
@@ -102,9 +101,8 @@ class Message(zeit.push.message.Message):
     APP_IDENTIFIER = 'zeitapp'
 
     def render(self):
-        template = self.load_template(self.config.get('payload_template'))
-        rendered_template = template.render(**self.template_variables)
-        return self.validate_template(rendered_template)
+        template = self.find_template(self.config.get('payload_template'))
+        return self.validate_template(template(**self.template_variables))
 
     @property
     def template_variables(self):
@@ -126,16 +124,14 @@ class Message(zeit.push.message.Message):
         # XXX Maybe use the urbanairship python module validation API.
         return result
 
-    def load_template(self, name):
-        if isinstance(name, jinja2.Template):  # print_payload_documentation()
-            return name
+    def find_template(self, name):
         source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
         template = source.find(name)
         if template is None:
-            raise jinja2.TemplateNotFound(
+            raise KeyError(
                 'Could not find template %s in %s' % (
                     name, source.template_folder.uniqueId))
-        return jinja2.Template(template.text)
+        return template
 
     @property
     def text(self):
@@ -180,6 +176,7 @@ def print_payload_documentation():
     import zeit.connector.interfaces
     import zeit.content.article.article
     import zeit.content.image.image
+    import zeit.content.text.jinja
 
     class PayloadDocumentation(Connection):
         def push(self, data):
@@ -244,5 +241,7 @@ Pushnachricht zugegriffen werden:"""
     print u"\nmit der push-Konfiguration"
     print json.dumps(message.config, indent=2, sort_keys=True)
     print u"\nwerden folgende Payloads an Urbanairship versandt:"
-    message.config['payload_template'] = jinja2.Template(template_text)
+    template = zeit.content.text.jinja.JinjaTemplate()
+    template.text = template_text
+    message.find_template = lambda x: template
     conn.send('any', 'any', message=message)

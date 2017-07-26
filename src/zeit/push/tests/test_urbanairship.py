@@ -66,7 +66,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
             'override_text': u'foo',
             'type': 'mobile'
         }
-        self.create_test_payload_template()
+        self.create_payload_template()
 
     def test_sets_expiration_time_in_payload(self):
         self.api.expire_interval = 3600
@@ -96,7 +96,7 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
 
     def setUp(self):
         super(PayloadSourceTest, self).setUp()
-        self.create_test_payload_template()
+        self.create_payload_template()
         self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
     def test_getValues_returns_all_templates_as_text_objects(self):
@@ -182,10 +182,10 @@ class MessageTest(zeit.push.testing.TestCase,
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(
             self.repository['testcontent'])
-        self.create_test_payload_template('{"one": 1}', 'foo.json')
+        self.create_payload_template('{"one": 1}', 'foo.json')
         message.config['payload_template'] = 'foo.json'
         self.assertEqual({'one': 1}, message.render())
-        self.create_test_payload_template('{"two": 1}', 'foo.json')
+        self.create_payload_template('{"two": 1}', 'foo.json')
         self.assertEqual({'two': 1}, message.render())
 
     def test_payload_loads_jinja_payload_variables(self):
@@ -197,8 +197,7 @@ class MessageTest(zeit.push.testing.TestCase,
             }
         ]
         """
-        self.create_test_payload_template(template_text=template_content,
-                                          template_name="bar.json")
+        self.create_payload_template(template_content, 'bar.json')
         message = zope.component.getAdapter(
             self.create_content(),
             zeit.push.interfaces.IMessage, name=self.name)

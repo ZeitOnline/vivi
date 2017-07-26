@@ -1,14 +1,15 @@
-import pkg_resources
-import plone.testing
 import gocept.selenium
 import logging
+import pkg_resources
+import plone.testing
+import urlparse
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
+import zeit.content.text.jinja
 import zeit.push.interfaces
 import zeit.workflow.testing
 import zope.interface
-import zeit.content.text.text
 
 
 log = logging.getLogger(__name__)
@@ -52,18 +53,27 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
     defaultBases = (BASE_ZCML_LAYER, )
 
-    def testSetUp(self):
-        # Add a dummy template
+    def create_template(self, text=None, name='template.json'):
+        if not text:
+            text = pkg_resources.resource_string(
+                __name__, 'tests/fixtures/payloadtemplate.json')
         with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
             with zeit.cms.testing.interaction():
-                zeit.cms.content.add.find_or_create_folder(
-                    'data', 'urbanairship-templates')
-                repository = zope.component.getUtility(
-                    zeit.cms.repository.interfaces.IRepository)
-                textcontent = zeit.content.text.text.Text()
-                textcontent.text = ''
-                repository['data']['urbanairship-templates']['foo.json'] = \
-                    textcontent
+                cfg = zope.app.appsetup.product.getProductConfiguration(
+                    'zeit.push')
+                folder = zeit.cms.content.add.find_or_create_folder(
+                    *urlparse.urlparse(
+                        cfg['push-payload-templates']).path[1:].split('/'))
+                template = zeit.content.text.jinja.JinjaTemplate()
+                template.text = text
+                template.title = name.split('.')[0].capitalize()
+                folder[name] = template
+
+    def setUp(self):
+        self['create_template'] = self.create_template
+
+    def testSetUp(self):
+        self.create_template('', 'foo.json')
 
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
@@ -78,18 +88,8 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
 
-    def create_test_payload_template(self,
-                                     template_text=None,
-                                     template_name='template.json'):
-        if not template_text:
-            template_text = pkg_resources.resource_string(
-                __name__, 'tests/fixtures/payloadtemplate.json')
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                template = zeit.content.text.text.Text()
-                template.text = template_text
-                self.repository['data']['urbanairship-templates'][
-                    template_name] = template
+    def create_payload_template(self, text=None, name='template.json'):
+        self.layer['create_template'](text, name)
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(

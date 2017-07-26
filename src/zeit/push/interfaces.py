@@ -1,11 +1,12 @@
 from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
-import zc.sourcefactory.source
 import zc.sourcefactory.basic
+import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
+import zeit.content.text.interfaces
 import zope.interface
 import zope.schema
 
@@ -245,10 +246,11 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         return zeit.cms.interfaces.ICMSContent(template_folder_path)
 
     def getValues(self):
-        return list(self.template_folder.values())
+        return [x for x in self.template_folder.values()
+                if zeit.content.text.interfaces.IJinjaTemplate.providedBy(x)]
 
     def getTitle(self, value):
-        return value.__name__.split('.')[0].capitalize()
+        return value.title
 
     def getToken(self, value):
         return value.__name__
