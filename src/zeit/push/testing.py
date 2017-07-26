@@ -4,7 +4,6 @@ import pkg_resources
 import plone.testing
 import urlparse
 import zeit.cms.testing
-import zeit.content.article.testing
 import zeit.content.text.jinja
 import zeit.push.interfaces
 import zeit.workflow.testing
@@ -29,11 +28,37 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
-    zeit.push.product_config +
-    zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    zeit.content.article.testing.product_config))
+product_config = """\
+<product-config zeit.push>
+  twitter-accounts file://{fixtures}/twitter-accounts.xml
+  twitter-main-account twitter-test
+  facebook-accounts file://{fixtures}/facebook-accounts.xml
+  facebook-main-account fb-test
+  facebook-magazin-account fb-magazin
+  facebook-campus-account fb-campus
+  push-target-url http://www.zeit.de/
+  mobile-image-url http://img.zeit.de/
+  urbanairship-audience-group subscriptions
+  mobile-buttons file://{fixtures}/mobile-buttons.xml
+  push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
+</product-config>
+""".format(fixtures=pkg_resources.resource_filename(
+    __name__, 'tests/fixtures'))
+
+
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
+
+    def setUp(self):
+        # Break circular dependency
+        import zeit.content.article.testing
+        self.product_config = (
+            product_config +
+            zeit.cms.testing.cms_product_config +
+            zeit.workflow.testing.product_config +
+            zeit.content.article.testing.product_config)
+        super(ZCMLLayer, self).setUp()
+
+ZCML_LAYER = ZCMLLayer('testing.zcml')
 
 
 class PushMockLayer(plone.testing.Layer):
