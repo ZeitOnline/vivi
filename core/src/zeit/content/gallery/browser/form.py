@@ -19,8 +19,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase,
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
-            zeit.content.gallery.interfaces.IGalleryMetadata).omit(
-                'push_news') +
+            zeit.content.gallery.interfaces.IGalleryMetadata) +
         zope.formlib.form.FormFields(
             zeit.content.gallery.interfaces.IMaxLengthHTMLContent))
 
