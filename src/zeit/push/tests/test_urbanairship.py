@@ -156,7 +156,6 @@ class MessageTest(zeit.push.testing.TestCase,
         message = zope.component.getAdapter(
             self.create_content(image=image),
             zeit.push.interfaces.IMessage, name=self.name)
-        self.assertEqual(image, message.image)
         self.assertEqual(
             'http://img.zeit.de/2006/DSC00109_2.JPG', message.image_url)
 

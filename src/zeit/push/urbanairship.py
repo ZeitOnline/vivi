@@ -11,7 +11,6 @@ import urbanairship
 import urlparse
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.content.article.article
 import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.message
@@ -104,13 +103,22 @@ class Message(zeit.push.message.Message):
 
     def render(self):
         template = self.load_template(self.config.get('payload_template'))
-        variables = self.config.copy()
-        variables['article'] = self.context
-        variables['text'] = self.text
-        variables['zon_link'] = self.url
-        variables['app_link'] = self.app_link
-        rendered_template = template.render(**variables)
+        rendered_template = template.render(**self.template_variables)
         return self.validate_template(rendered_template)
+
+    @property
+    def template_variables(self):
+        result = self.config.copy()
+        for key in ['enabled', 'override_text', 'type']:
+            result.pop(key, None)
+        result.update({
+            'article': self.context,
+            'text': self.text,
+            'zon_link': self.url,
+            'app_link': self.app_link,
+            'image': self.image_url,
+        })
+        return result
 
     def validate_template(self, text):
         # If not proper json, a pretty good ValueError will be raised here.
@@ -134,16 +142,13 @@ class Message(zeit.push.message.Message):
         return self.config.get('override_text', self.context.title)
 
     @property
-    def image(self):
-        images = zeit.content.image.interfaces.IImages(self.context, None)
-        return getattr(images, 'image', None)
-
-    @property
     def image_url(self):
-        if self.image is None:
+        image = zeit.content.image.interfaces.IImages(self.context, None)
+        image = getattr(image, 'image', None)
+        if image is None:
             return None
         cfg = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        return self.image.uniqueId.replace(
+        return image.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, cfg['mobile-image-url'])
 
     @property
@@ -171,6 +176,10 @@ def from_product_config():
 
 
 def print_payload_documentation():
+    import mock
+    import zeit.content.article.article
+    import zeit.content.image.image
+
     class PayloadDocumentation(Connection):
         def push(self, data):
             print json.dumps(data.payload, indent=2, sort_keys=True)
@@ -180,45 +189,55 @@ def print_payload_documentation():
         'web_master_secret', expire_interval=9000)
 
     config = {
-        'push-target-url': 'http://www.zeit.de',
+        'push-target-url': 'http://www.zeit.de/',
+        'mobile-image-url': 'http://img.zeit.de/',
     }
     zope.app.appsetup.product.setProductConfiguration('zeit.push', config)
 
     article = zeit.content.article.article.Article()
     article.uniqueId = 'http://xml.zeit.de/testartikel'
-    article.title = "Titel des Testartikels"
+    article.title = 'Titel des Testartikels'
     zope.component.provideAdapter(zeit.push.message.default_push_url)
+    image = zeit.content.image.image.Image()
+    image.uniqueId = 'http://xml.zeit.de/my-image'
+    imageref = mock.Mock()
+    imageref.image = image
+    zope.component.provideAdapter(
+        lambda x: imageref,
+        (type(article),), zeit.content.image.interfaces.IImages)
 
     message = Message(article)
     message.config = {
         'buttons': 'YES/NO',
         'uses_image': True,
         'image': 'http://xml.zeit.de/image',
-        'image_url': 'http://img.zeit.de/image',
         'enabled': True,
-        'override_text': u'Foo',
+        'override_text': u'Some message text',
         'type': 'mobile',
-        'title': u'Foo'}
+        'title': u'Message title'}
 
     template_text = pkg_resources.resource_string(
         __name__, 'tests/fixtures/payloadtemplate.json')
 
-    print u"""
-    Um ein neues Pushtemplate zu erstellen muss unter
-    http://vivi.zeit.de/repository/data/urbanairship-templates eine neue
-    Textdatei angelegt werden. In dieser Textdatei kann dann mit der Jinja2
-    Template Sprache (http://jinja.pocoo.org/docs/2.9/) das JSON definiert
-    werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
-    gesendet wird. Dafür muss das entsprechende Template in dem
-    Artikeldialog ausgewählt werden. In dem Template können sowohl auf
-    eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
-    Pushnachricht zugegriffen werden. Im Folgenden nun ein Beispiel wie ein
-    solches Template funktioniert.
-    Nutzt man das Template
-    """
+    print u"""\
+Um ein neues Pushtemplate zu erstellen muss unter
+http://vivi.zeit.de/repository/data/urbanairship-templates eine neue
+Textdatei angelegt werden. In dieser Textdatei kann dann mit der Jinja2
+Template Sprache (http://jinja.pocoo.org/docs/2.9/) das JSON definiert
+werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
+gesendet wird. Dafür muss das entsprechende Template in dem
+Artikeldialog ausgewählt werden. In dem Template können sowohl auf
+eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
+Pushnachricht zugegriffen werden:"""
+    vars = message.template_variables
+    vars['article'] = str(vars['article'])
+    print json.dumps(vars, indent=2, sort_keys=True)
+
+    print (u"\nIm Folgenden nun ein Beispiel wie ein solches Template"
+           u" funktioniert. Nutzt man das Template")
     print template_text
-    print u"mit der push-Konfiguration:"
+    print u"\nmit der push-Konfiguration"
     print json.dumps(message.config, indent=2, sort_keys=True)
-    print u"\nwerden folgende payloads an Urbanairship versandt:"
+    print u"\nwerden folgende Payloads an Urbanairship versandt:"
     message.config['payload_template'] = jinja2.Template(template_text)
     conn.send('any', 'any', message=message)
