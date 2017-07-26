@@ -49,18 +49,6 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return self.checkin(context, '&semantic_change=None');
     },
 
-    // BBB Clients should use `action="start_job" cms:param="publish"` instead
-    publish: function(context) {
-        var self = this;
-        return self.start_job(context, 'publish');
-    },
-
-    // BBB Clients should use `action="start_job" cms:param="retract"` instead
-    retract: function(context) {
-        var self = this;
-        return self.start_job(context, 'retract');
-    },
-
     start_job: function(context, action) {
         var self = this;
         if (isNull(context)) {
