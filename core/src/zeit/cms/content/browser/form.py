@@ -50,7 +50,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         option_fields,
     )
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).omit('push_news')
+        zeit.cms.content.interfaces.ICommonMetadata)
 
     def setUpWidgets(self, *args, **kw):
         super(CommonMetadataFormBase, self).setUpWidgets(*args, **kw)

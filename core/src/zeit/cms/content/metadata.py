@@ -36,7 +36,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'foldable',
         'minimal_header',
         'lead_candidate',
-        'push_news',
         'rebrush_website_content',
         'overscrolling',
 

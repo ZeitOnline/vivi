@@ -266,11 +266,6 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=False)
 
-    push_news = zope.schema.Bool(
-        title=_('Content that was pushed to mobile'),
-        required=False,
-        default=False)
-
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
