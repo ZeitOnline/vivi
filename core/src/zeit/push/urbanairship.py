@@ -16,7 +16,6 @@ import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
-import zope.cachedescriptors.property
 import zope.interface
 
 
@@ -39,22 +38,20 @@ class Connection(object):
         }
         self.expire_interval = expire_interval
 
-    @zope.cachedescriptors.property.Lazy
-    def config(self):
-        return zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push') or {}
-
     @property
     def expiration_datetime(self):
         return (datetime.now(pytz.UTC).replace(microsecond=0) +
                 timedelta(seconds=self.expire_interval))
 
     def send(self, text, link, **kw):
-        # XXX The API with text+link might be somewhat outdated.
+        # Since the UA payloads we need contain much more data than just text
+        # and link, we talk to the IMessage object instead.
         message = kw['message']
+
         # The expiration datetime must not contain microseconds, therefore we
         # cannot use `isoformat`.
         expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+
         to_push = []
         for push_message in message.render():
             # Check out
@@ -132,11 +129,7 @@ class Message(zeit.push.message.Message):
                     name, source.template_folder.uniqueId))
         return jinja2.Template(template.text)
 
-    @zope.cachedescriptors.property.Lazy
-    def additional_parameters(self):
-        return {'message': self}
-
-    @zope.cachedescriptors.property.Lazy
+    @property
     def text(self):
         return self.config.get('override_text', self.context.title)
 

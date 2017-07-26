@@ -19,19 +19,12 @@ class IMessage(zope.interface.Interface):
         'Property that can be overriden if `get_text_from` is not sufficient '
         'to retrieve the text for the notification')
 
-    additional_parameters = zope.interface.Attribute(
-        'Additional parameters that should be send to `IPushNotifier` as **kw')
-
     def send():
         """Send push notification to external service via `IPushNotifier`.
 
         Will fetch the `IPushNotifier` utility using the name that was used to
-        register this `IMessage` adapter. Calls the utility providing the
-        message config, `additional_parameters`, `text` and a link to context
-        as parameters.
-
-        Currently `additional_parameters` is only used for mobile push
-        notifications to enrich the parameters with `image_url`.
+        register this `IMessage` adapter. Calls `IPushNotifier.send()`
+        to perform the actual sending.
         """
 
 
@@ -47,6 +40,9 @@ class IPushNotifier(zope.interface.Interface):
         Additional kw parameters:
 
         * ``type``: Name of the external service.
+
+        * ``message``: The IMessage object
+        [only used in `mobile`]
 
         * ``enabled``: If the service is enabled.
 
