@@ -25,6 +25,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.browser.open(
             'http://localhost/++skin++vivi/workingcopy/zope.user/'
             'testcontent/@@edit-social.html')
+        self.browser.getControl('Payload Template').displayValue = ['Foo']
 
     def test_stores_IPushMessage_fields(self):
         self.open_form()
@@ -66,7 +67,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
+             'payload_template': 'foo.json'},
             push.message_config)
 
         self.open_form()
@@ -97,7 +98,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
              'title': 'mobile title', 'uses_image': False,
-             'channels': zeit.push.interfaces.CONFIG_CHANNEL_NEWS},
+             'payload_template': 'foo.json'},
             push.message_config)
 
         self.open_form()
@@ -186,12 +187,23 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         service = push.get(type='mobile')
         self.assertEqual('share', service['buttons'])
 
+    def test_stores_payload_template(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Payload Template').displayValue = ['Foo']
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        service = push.get(type='mobile')
+        self.assertEqual('foo.json', service['payload_template'])
 
-class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
+
+class SocialAddFormTest(SocialFormTest):
 
     layer = zeit.push.testing.ZCML_LAYER
 
     def test_applies_push_configuration_to_added_object(self):
+
         b = self.browser
         b.open('http://localhost/++skin++vivi'
                '/repository/@@zeit.cms.testcontenttype.AddSocial')
@@ -199,6 +211,7 @@ class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
         b.getControl('Enable Twitter', index=0).selected = True
+        b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl(name='form.actions.add').click()
         with zeit.cms.testing.site(self.getRootFolder()):
             content = zeit.cms.interfaces.ICMSContent(

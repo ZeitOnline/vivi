@@ -6,6 +6,8 @@ zeit.push changes
 
 - ZON-4006: Split off mobile fields into their own form
 
+- ZON-4007: Make UA Payload configurable via Templates
+
 - BUG-674: Don't perform push-target-url replacement twice,
   and don't squash non-www.zeit.de URLs
 
