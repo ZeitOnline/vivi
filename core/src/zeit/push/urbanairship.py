@@ -129,7 +129,7 @@ class Message(zeit.push.message.Message):
         template = source.find(name)
         if template is None:
             raise KeyError(
-                'Could not find template %s in %s' % (
+                'Could not find template %r in %s' % (
                     name, source.template_folder.uniqueId))
         return template
 
