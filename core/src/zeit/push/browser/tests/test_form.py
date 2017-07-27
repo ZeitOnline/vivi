@@ -197,6 +197,24 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         service = push.get(type='mobile')
         self.assertEqual('foo.json', service['payload_template'])
 
+    def test_payload_template_is_required_when_enabled(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Enable mobile push').selected = True
+        b.getControl('Mobile text').value = 'foo'
+        b.getControl('Payload Template').displayValue = []
+        b.getControl('Apply').click()
+        self.assertEllipsis(
+            '...Payload Template...Required input is missing...', b.contents)
+        b.getControl('Payload Template').displayValue = ['Foo']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        b.getControl('Enable mobile push').selected = False
+        b.getControl('Payload Template').displayValue = []
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
 
 class SocialAddFormTest(SocialFormTest):
 
