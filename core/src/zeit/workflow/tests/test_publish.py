@@ -261,3 +261,35 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
                     zeit.workflow.testing.run_publish(
                         zeit.cms.workflow.interfaces.PRIORITY_LOW)
                     self.assertFalse(script.called)
+
+    def test_error_in_one_item_continues_with_other_items(self):
+        c1 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        c2 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero')
+        IPublishInfo(c1).urgent = True
+        IPublishInfo(c2).urgent = True
+        IPublish(self.repository).publish_multiple([c1, c2])
+        transaction.commit()
+
+        calls = []
+
+        def after_publish(context, event):
+            calls.append(context.uniqueId)
+            if context.uniqueId == c1.uniqueId:
+                raise RuntimeError('provoked')
+        self.zca.patch_handler(
+            after_publish,
+            (zeit.cms.interfaces.ICMSContent,
+             zeit.cms.workflow.interfaces.IPublishedEvent))
+
+        log = zeit.objectlog.interfaces.ILog(c1)
+        logs = len(list(log.get_log()))
+
+        zeit.workflow.testing.run_publish(
+            zeit.cms.workflow.interfaces.PRIORITY_LOW)
+
+        # PublishedEvent still happens for c2, even though c1 raised
+        self.assertIn(c2.uniqueId, calls)
+        # Error is logged
+        self.assertEqual(logs + 1, len(list(log.get_log())))

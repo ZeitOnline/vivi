@@ -181,6 +181,10 @@ class MultiInput(SingleInput):
         return unicode(self.ids)
 
 
+class MultiPublishError(Exception):
+    pass
+
+
 active_objects = set()
 active_objects_lock = threading.Lock()
 
@@ -240,7 +244,16 @@ class PublishRetractTask(object):
                             mapping=dict(
                                 exc=e.__class__.__name__,
                                 message=str(e)))
-                self.log(obj, message)
+                if isinstance(e, MultiPublishError):
+                    for content, error in e.args[0]:
+                        submessage = _(
+                            "Error during publish/retract: ${exc}: ${message}",
+                            mapping=dict(
+                                exc=error.__class__.__name__,
+                                message=str(error)))
+                        self.log(content, submessage)
+                else:
+                    self.log(obj, message)
                 break
             else:
                 # Everything okay.
@@ -532,6 +545,7 @@ class MultiPublishTask(PublishTask):
     def run(self, objects):
         logger.info('Publishing %s', objects)
 
+        errors = []
         published = []
         for obj in objects:
             info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -542,8 +556,12 @@ class MultiPublishTask(PublishTask):
                 continue
 
             obj = self.recurse(self.lock, obj, obj)
-            obj = self.recurse(self.before_publish, obj, obj)
-            published.append(obj)
+            try:
+                obj = self.recurse(self.before_publish, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+            else:
+                published.append(obj)
 
         paths = []
         for obj in published:
@@ -551,8 +569,14 @@ class MultiPublishTask(PublishTask):
         self.call_publish_script(paths)
 
         for obj in published:
-            self.recurse(self.after_publish, obj, obj)
-            obj = self.recurse(self.unlock, obj, obj)
+            try:
+                self.recurse(self.after_publish, obj, obj)
+                obj = self.recurse(self.unlock, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+
+        if errors:
+            raise MultiPublishError(errors)
 
     def commit(self):
         # Work around limitations of our ZODB-based DAV cache.
