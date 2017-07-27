@@ -122,7 +122,7 @@ class Message(zeit.push.message.Message):
         # If not proper json, a pretty good ValueError will be raised here.
         result = json.loads(text, strict=False)
         # XXX Maybe use the urbanairship python module validation API.
-        return result
+        return result['messages']
 
     def find_template(self, name):
         source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory

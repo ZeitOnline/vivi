@@ -57,6 +57,12 @@
     permission="zeit.workflow.Publish"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="zeit.push.payload_template_title"
+    class=".mobile.FindTitle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
 </configure>
-
-
