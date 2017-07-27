@@ -169,21 +169,17 @@ class MessageTest(zeit.push.testing.TestCase,
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(
             self.repository['testcontent'])
-        self.create_payload_template('{"one": 1}', 'foo.json')
+        self.create_payload_template('{"messages": {"one": 1}}', 'foo.json')
         message.config['payload_template'] = 'foo.json'
         self.assertEqual({'one': 1}, message.render())
-        self.create_payload_template('{"two": 1}', 'foo.json')
+        self.create_payload_template('{"messages": {"two": 1}}', 'foo.json')
         self.assertEqual({'two': 1}, message.render())
 
     def test_payload_loads_jinja_payload_variables(self):
-        template_content = u"""
-        [
-            {
-                "title": "{{article.title}}",
-                "message": "{%if not uses_image %}Bildß{% endif %}"
-            }
-        ]
-        """
+        template_content = u"""{"messages":[{
+            "title": "{{article.title}}",
+            "message": "{%if not uses_image %}Bildß{% endif %}"
+        }]}"""
         self.create_payload_template(template_content, 'bar.json')
         message = zope.component.getAdapter(
             self.create_content(),
