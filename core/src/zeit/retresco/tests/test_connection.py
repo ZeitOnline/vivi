@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from zeit.retresco.tag import Tag
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.retresco.tag import Tag
 import json
 import lxml.builder
 import mock
@@ -13,6 +13,7 @@ import requests.sessions
 import time
 import zeit.cms.tagging.interfaces
 import zeit.content.rawxml.rawxml
+import zeit.content.text.text
 import zeit.retresco.connection
 import zeit.retresco.interfaces
 import zeit.retresco.testing
@@ -253,22 +254,58 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_updates_configured_content_and_publishes(self):
         self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
+        text = zeit.content.text.text.Text()
+        text.text = ''
+        self.repository['redirects'] = text
+
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.retresco')
         config['topiclist'] = 'http://xml.zeit.de/topics'
+        config['topic-redirect-id'] = 'http://xml.zeit.de/redirects'
+
         with mock.patch(
                 'zeit.retresco.connection.TMS.get_all_topicpages') as pages:
-            pages.return_value = [{
-                'id': 'berlin',
-                'title': 'Berlin',
-                'topic_type': 'location',
-            }]
+            pages.return_value = []
             zeit.retresco.connection._update_topiclist()
+
         topics = self.repository['topics']
-        self.assertEqual(1, len(topics.xml.xpath('//topic')))
-        self.assertEqual('topics', topics.xml.tag)
-        self.assertEqual('Berlin', topics.xml.find('topic')[0])
         self.assertEqual(True, IPublishInfo(topics).published)
+        redirects = self.repository['redirects']
+        self.assertEqual(True, IPublishInfo(redirects).published)
+
+    def test_topiclist_produces_xml(self):
+        pages = [{
+            'id': 'berlin',
+            'title': 'Berlin',
+            'topic_type': 'location',
+        }]
+        xml = zeit.retresco.connection._build_topic_xml(pages)
+        self.assertEqual('topics', xml.tag)
+        topics = xml.xpath('//topic')
+        self.assertEqual(1, len(topics))
+        self.assertEqual('Berlin', topics[0].text)
+
+    def test_topiclist_excludes_pages_with_redirect(self):
+        pages = [{
+            'id': 'berlin',
+            'title': 'Berlin',
+            'topic_type': 'location',
+            'redirect': '/thema/hamburg'
+        }]
+        xml = zeit.retresco.connection._build_topic_xml(pages)
+        self.assertEqual([], xml.xpath('//topic'))
+
+    def test_redirects_include_pages_with_redirect(self):
+        pages = [{
+            'id': 'berlin',
+            'title': 'Berlin',
+            'topic_type': 'location',
+            'redirect': '/thema/hamburg'
+        }]
+        text = zeit.retresco.connection._build_topic_redirects(pages)
+        self.assertEllipsis(
+            '...location = /thema/berlin { return 301 '
+            'http://www.zeit.de/thema/hamburg; }...', text)
 
 
 class SlowAdapter(requests.adapters.BaseAdapter):
