@@ -256,11 +256,13 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.retresco')
         config['topiclist'] = 'http://xml.zeit.de/topics'
-        with mock.patch('zeit.retresco.connection._build_topic_xml') as xml:
-            E = lxml.builder.ElementMaker()
-            xml.return_value = E.topics(
-                E.topic('Berlin', url_value='berlin')
-            )
+        with mock.patch(
+                'zeit.retresco.connection.TMS.get_all_topicpages') as pages:
+            pages.return_value = [{
+                'id': 'berlin',
+                'title': 'Berlin',
+                'topic_type': 'location',
+            }]
             zeit.retresco.connection._update_topiclist()
         topics = self.repository['topics']
         self.assertEqual(1, len(topics.xml.xpath('//topic')))

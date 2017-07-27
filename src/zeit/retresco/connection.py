@@ -254,9 +254,11 @@ def _update_topiclist():
     if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
         raise ValueError(
             '%s is not a raw xml document' % config['topiclist'])
+    log.info('Retrieving all topic pages from TMS')
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    topicpages = tms.get_all_topicpages()
     with checked_out(keywords) as co:
-        log.info('Retrieving all topic pages from TMS')
-        co.xml = _build_topic_xml()
+        co.xml = _build_topic_xml(topicpages)
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
 
 
@@ -266,11 +268,10 @@ TOPIC_PAGE_ATTRIBUTES = {
 }
 
 
-def _build_topic_xml():
-    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+def _build_topic_xml(topicpages):
     E = lxml.builder.ElementMaker()
     root = E.topics()
-    for row in tms.get_all_topicpages():
+    for row in topicpages:
         attributes = {}
         for tms, vivi in TOPIC_PAGE_ATTRIBUTES.items():
             if not vivi:
