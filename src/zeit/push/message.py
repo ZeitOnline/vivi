@@ -307,7 +307,10 @@ class AccountData(grok.Adapter):
 
     @mobile_payload_template.setter
     def mobile_payload_template(self, value):
-        token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.getToken(
-            value)
+        if value is None:
+            token = None
+        else:
+            token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
+                .factory.getToken(value)
         # Use the token here instead of the value
         self.push.set(dict(type='mobile'), payload_template=token)
