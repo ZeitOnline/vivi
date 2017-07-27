@@ -375,7 +375,7 @@ class PublishRetractTask(object):
     @staticmethod
     def lock(obj, master=None):
         zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(obj.uniqueId))
+            zeit.connector.interfaces.ResourceInvalidatedEvent(obj.uniqueId))
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
         if (lockable is not None and
                 not lockable.locked() and
