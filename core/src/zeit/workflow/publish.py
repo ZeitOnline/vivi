@@ -24,6 +24,7 @@ import zope.app.appsetup.product
 import zope.app.security.interfaces
 import zope.component
 import zope.event
+import zope.i18nmessageid
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.management
@@ -377,10 +378,14 @@ class PublishRetractTask(object):
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvalidatedEvent(obj.uniqueId))
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
-        if (lockable is not None and
-                not lockable.locked() and
-                not lockable.ownLock()):
-            lockable.lock(timeout=240)
+        if lockable is not None:
+            if not lockable.ownLock():
+                if lockable.locked():
+                    raise zope.app.locking.interfaces.LockingError(
+                        _('The content object is locked by ${name}.',
+                          mapping=dict(name=lockable.locker())))
+                else:
+                    lockable.lock(timeout=240)
         timer.mark('Locked %s' % obj.uniqueId)
         return obj
 
