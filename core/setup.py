@@ -16,6 +16,7 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'Jinja2',
+        'mock',
         'persistent',
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
