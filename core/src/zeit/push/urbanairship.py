@@ -139,12 +139,11 @@ class Message(zeit.push.message.Message):
 
     @property
     def image_url(self):
-        image = zeit.content.image.interfaces.IImages(self.context, None)
-        image = getattr(image, 'image', None)
-        if image is None:
+        image = self.config.get('image')
+        if not image:
             return None
         cfg = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-        return image.uniqueId.replace(
+        return image.replace(
             zeit.cms.interfaces.ID_NAMESPACE, cfg['mobile-image-url'])
 
     @property

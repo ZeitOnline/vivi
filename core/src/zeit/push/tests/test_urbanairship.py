@@ -114,14 +114,12 @@ class MessageTest(zeit.push.testing.TestCase,
 
     name = 'mobile'
 
-    def create_content(self, image=None, **kw):
+    def create_content(self, **kw):
         """Create content with values given in arguments."""
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         content = ExampleContentType()
         for key, value in kw.items():
             setattr(content, key, value)
-        if image is not None:
-            zeit.content.image.interfaces.IImages(content).image = image
         self.repository['content'] = content
         return self.repository['content']
 
@@ -138,11 +136,10 @@ class MessageTest(zeit.push.testing.TestCase,
         self.assertEqual(1, len(self.get_calls('urbanairship')))
 
     def test_provides_image_url_if_image_is_referenced(self):
-        from zeit.cms.interfaces import ICMSContent
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         message = zope.component.getAdapter(
-            self.create_content(image=image),
+            self.create_content(),
             zeit.push.interfaces.IMessage, name=self.name)
+        message.config['image'] = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         self.assertEqual(
             'http://img.zeit.de/2006/DSC00109_2.JPG', message.image_url)
 
