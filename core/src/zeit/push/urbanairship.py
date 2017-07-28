@@ -102,7 +102,7 @@ class Message(zeit.push.message.Message):
 
     def render(self):
         template = self.find_template(self.config.get('payload_template'))
-        return self.validate_template(template(**self.template_variables))
+        return self.validate_template(template(self.template_variables))
 
     @property
     def template_variables(self):
