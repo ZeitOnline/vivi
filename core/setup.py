@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.video',
-    version='2.7.3.dev0',
+    version='2.7.6.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -24,7 +24,7 @@ setup(
         'setuptools',
         'zeit.cms >= 3.0.dev0',
         'zeit.connector',
-        'zeit.push >= 1.17.0.dev0',
+        'zeit.push >= 1.21.0.dev0',
         'zeit.solr>=2.2.0.dev0',
         'zope.annotation',
         'zope.app.zcmlfiles',

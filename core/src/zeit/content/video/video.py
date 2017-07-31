@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
@@ -11,7 +11,7 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.video.interfaces
 import zeit.push.interfaces
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.interface
 
 
@@ -99,7 +99,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @property
     def serie(self):
         source = zeit.content.video.interfaces.IVideo['serie'].source(self)
-        return source.factory.values.get(self._serie)
+        return source.find(self._serie)
 
     @serie.setter
     def serie(self, value):
@@ -131,12 +131,11 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'video'
 
 
-class VideoXMLReferenceUpdater(grokcore.component.Adapter):
+class VideoXMLReferenceUpdater(grok.Adapter):
 
-    grokcore.component.context(zeit.content.video.interfaces.IVideo)
-    grokcore.component.name('brightcove-image')
-    grokcore.component.implements(
-        zeit.cms.content.interfaces.IXMLReferenceUpdater)
+    grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('brightcove-image')
+    grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     def update(self, node, suppress_errors=False):
         still_node = node.find('video-still')
@@ -156,16 +155,10 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
         node.set('type', 'video')
 
 
-class Dependencies(grokcore.component.Adapter):
+class Dependencies(zeit.workflow.dependency.DependencyBase):
 
-    grokcore.component.context(
-        zeit.content.video.interfaces.IVideo)
-    grokcore.component.name('zeit.content.video')
-    grokcore.component.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
+    grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('zeit.content.video')
 
     def get_dependencies(self):
         relations = zope.component.getUtility(
@@ -174,7 +167,7 @@ class Dependencies(grokcore.component.Adapter):
                 if zeit.content.video.interfaces.IPlaylist.providedBy(x)]
 
 
-@grokcore.component.adapter(zeit.content.video.interfaces.IVideo)
-@grokcore.component.implementer(zeit.push.interfaces.IPushURL)
+@grok.adapter(zeit.content.video.interfaces.IVideo)
+@grok.implementer(zeit.push.interfaces.IPushURL)
 def video_push_url(context):
     return context.uniqueId + '/' + context.seo_slug

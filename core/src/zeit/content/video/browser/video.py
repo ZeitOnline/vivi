@@ -1,6 +1,5 @@
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
@@ -11,7 +10,8 @@ import zope.formlib.form
 import zope.formlib.form
 
 
-class Base(zeit.push.browser.form.SocialBase):
+class Base(zeit.push.browser.form.SocialBase,
+           zeit.push.browser.form.MobileBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
@@ -31,15 +31,6 @@ class Base(zeit.push.browser.form.SocialBase):
         'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'flv_url', 'authorships')
 
-    social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-    social_fields_list = list(social_fields.fields)
-    social_fields_list.remove('bigshare_buttons')
-    social_fields.fields = tuple(social_fields_list)
-
-    @property
-    def social_form_fields(self):
-        return super(Base, self).social_form_fields.omit('bigshare_buttons')
-
     field_groups = (
         gocept.form.grouped.Fields(
             _("Texts"),
@@ -55,7 +46,8 @@ class Base(zeit.push.browser.form.SocialBase):
              'breaking_news', 'has_recensions', 'commentsAllowed',
              'commentsPremoderate'),
             css_class='column-right checkboxes'),
-        social_fields,
+        zeit.push.browser.form.SocialBase.social_fields,
+        zeit.push.browser.form.MobileBase.mobile_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
@@ -69,12 +61,6 @@ class Base(zeit.push.browser.form.SocialBase):
 class Edit(Base, zeit.cms.browser.form.EditForm):
 
     title = _('Video')
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(self.context, data)
-        super(Edit, self).handle_edit_action.success(data)
 
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):

@@ -169,8 +169,12 @@ class TestVideoEdit(zeit.cms.testing.BrowserTestCase):
                     async=False)
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
-        self.assertEqual([
-            (u'See this video!',
-             u'http://www.zeit.de/video/my-video',
-             {'enabled': True, 'account': 'twitter-test', 'type': 'twitter'})],
-            twitter.calls)
+        self.assertEqual(
+            u'See this video!', twitter.calls[0][0])
+        self.assertEqual(
+            u'http://www.zeit.de/video/my-video', twitter.calls[0][1])
+        params = twitter.calls[0][2]
+        del params['message']
+        self.assertEqual(
+            {'enabled': True, 'account': 'twitter-test', 'type': 'twitter'},
+            params)
