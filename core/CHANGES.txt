@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - MAINT: Remove superfluous IEditable interface
 
+- MAINT: Use new method for publishing
+
 
 3.13.7 (2017-07-18)
 -------------------
