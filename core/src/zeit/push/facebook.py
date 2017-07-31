@@ -44,6 +44,10 @@ class Message(zeit.push.message.Message):
             text = super(Message, self).text
         return text
 
+    @property
+    def log_message_details(self):
+        return 'Account %s' % self.config.get('account', '-')
+
 
 def create_access_token(argv=None):
     parser = argparse.ArgumentParser(
