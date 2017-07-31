@@ -1,10 +1,13 @@
 # coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
-import mock
 import PIL
+import mock
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
+import zope.event
+import zope.lifecycleevent
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
@@ -235,6 +238,47 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             1.0, self.group.get_variant_by_size('cinema__600x320').zoom)
 
+    def test_does_not_change_external_id_when_already_set(self):
+        meta = zeit.content.image.interfaces.IImageMetadata(self.group)
+        meta.external_id = u'12345'
+        self.group['6789.jpg'] = create_local_image('opernball.jpg')
+        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
+            self.group['6789.jpg']))
+        self.assertEqual('12345', meta.external_id)
+
+
+class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(ExternalIDTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+
+    def search(self, filename):
+        context = mock.Mock()
+        context.__parent__ = self.group
+        context.__name__ = filename
+        zeit.content.image.imagegroup.guess_external_id(context, None)
+        meta = zeit.content.image.interfaces.IImageMetadata(self.group)
+        result = meta.external_id
+        meta.external_id = None
+        return result
+
+    def test_external_id_matches_single_number_in_filename(self):
+        self.assertEqual(None, self.search('asdf-120x120.jpg'))
+        self.assertEqual('90999280', self.search(
+            'dpa Picture-Alliance-90999280-HighRes.jpg'))
+        self.assertEqual('90997723', self.search('90997723-HighRes Kopie.jpg'))
+        self.assertEqual('90997723', self.search('90997723.jpg'))
+
+    def test_external_id_matches_reuters_filenames(self):
+        self.assertEqual('rtsu6hm', self.search('rtsu6hm.jpg'))
+        self.assertEqual('RTSU6HM', self.search('RTSU6HM.jpg'))
+        self.assertEqual(u'rtsü6hm', self.search(u'rtsü6hm.jpg'))
+        self.assertEqual('6', self.search('Kopie von rtsu6hm.jpg'))
+        self.assertEqual(None, self.search('wartsnurab.jpg'))
+
 
 class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
 
@@ -268,3 +312,18 @@ class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual(
                 self.group['master-image-mobile.jpg'],
                 self.thumbnails.master_image('square__mobile'))
+
+    def test_recreates_thumbnails_on_reload_event(self):
+        del self.group['thumbnail-source-master-image.jpg']
+        zope.event.notify(zeit.cms.repository.interfaces.ObjectReloadedEvent(
+            self.group))
+        self.assertIn('thumbnail-source-master-image.jpg', self.group.keys())
+
+    def test_thumbnail_is_removed_on_delete(self):
+        self.group['second'] = create_local_image('new-hampshire-450x200.jpg')
+        self.thumbnails.THUMBNAIL_WIDTH = 100
+        self.thumbnails.source_image(self.group['second'])
+        del self.group['second']
+        self.assertEqual(
+            ['master-image.jpg', 'thumbnail-source-master-image.jpg'],
+            self.group.keys())

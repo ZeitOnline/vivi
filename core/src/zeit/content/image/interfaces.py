@@ -6,6 +6,7 @@ import zc.form.interfaces
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -25,23 +26,28 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 
 
+class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'copyright-company-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [unicode(node)
+                for node in tree.iterchildren('*')
+                if self.isAvailable(node, context)]
+
+    def getTitle(self, context, value):
+        return value
+
+COPYRIGHT_COMPANY_SOURCE = CopyrightCompanySource()
+
+
 class IImageMetadata(zope.interface.Interface):
 
     title = zope.schema.TextLine(
         title=_("Image title"),
         default=u'',
-        required=False)
-
-    year = zope.schema.Int(
-        title=_("Year"),
-        min=1900,
-        max=2100,
-        required=False)
-
-    volume = zope.schema.Int(
-        title=_("Volume"),
-        min=1,
-        max=53,
         required=False)
 
     origin = zope.schema.TextLine(
@@ -51,14 +57,21 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=((u'©', None, False),),
+        default=((u'©', None, None, None, False),),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(
-                title=_("Copyright"),
-                min_length=3,
-                required=True),
+                title=_('Photographer'),
+                required=False),
+             zope.schema.Choice(
+                 title=_('Image company'),
+                 source=COPYRIGHT_COMPANY_SOURCE,
+                 required=False),
+             zope.schema.TextLine(
+                 title=_('Image company freetext'),
+                 description=_('Overrides image company'),
+                 required=False),
              zope.schema.URI(
                  title=_('Link'),
                  description=_('Link to copyright holder'),
@@ -66,6 +79,10 @@ class IImageMetadata(zope.interface.Interface):
              zope.schema.Bool(
                  title=_('set nofollow'),
                 required=False))))
+
+    external_id = zope.schema.TextLine(
+        title=_('External company ID'),
+        required=False)
 
     alt = zope.schema.TextLine(
         title=_("Alternative text"),

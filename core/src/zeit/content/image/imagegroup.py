@@ -6,13 +6,16 @@ import StringIO
 import collections
 import grokcore.component as grok
 import lxml.objectify
+import os.path
 import persistent
+import re
 import sys
 import urlparse
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.connector.interfaces
@@ -20,6 +23,7 @@ import zeit.content.image.interfaces
 import zeit.content.image.variant
 import zope.app.container.contained
 import zope.interface
+import zope.lifecycleevent.interfaces
 import zope.location.interfaces
 import zope.security.proxy
 
@@ -456,6 +460,29 @@ def find_master_image(context):
     return master_image
 
 
+EXTERNAL_ID_PATTERN = re.compile('^[^\d]*([\d]+)[^\d]*$')
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage,
+    zope.lifecycleevent.interfaces.IObjectAddedEvent)
+def guess_external_id(context, event):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            context.__parent__):
+        return
+    meta = zeit.content.image.interfaces.IImageMetadata(context.__parent__)
+    if meta.external_id:
+        return
+    filename = context.__name__
+    if filename.lower().startswith(u'rts'):  # Reuters
+        meta.external_id = os.path.splitext(filename)[0]
+    else:  # Getty, dpa
+        match = EXTERNAL_ID_PATTERN.search(filename)
+        if not match:
+            return
+        meta.external_id = match.group(1)
+
+
 class ThumbnailTraverser(object):
 
     zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
@@ -535,3 +562,32 @@ def create_thumbnail_source_on_add(context, event):
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(group)
     thumbnails.source_image(thumbnails.master_image(''))
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImageGroup,
+    zeit.cms.repository.interfaces.IObjectReloadedEvent)
+def refresh_thumbnail_source(context, event):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            context):
+        return
+    thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+    for name, image in context.items():
+        if name.startswith(thumbnails.SOURCE_IMAGE_PREFIX):
+            del context[name]
+    for view, name in context.master_images:
+        thumbnails.source_image(context[name])
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImage,
+    zope.lifecycleevent.IObjectRemovedEvent)
+def remove_thumbnail_source_on_delete(context, event):
+    group = context.__parent__
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            group):
+        return
+    thumbnails = zeit.content.image.interfaces.IThumbnails(group)
+    thumbnail_name = thumbnails.source_image_name(context)
+    if thumbnail_name in group:
+        del group[thumbnail_name]

@@ -1,10 +1,60 @@
 zeit.content.image changes
 ==========================
 
-2.18.2 (unreleased)
+2.20.4 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+2.20.3 (2017-06-29)
+-------------------
+
+- FIX: Remove year+volume remnants
+
+
+2.20.2 (2017-06-29)
+-------------------
+
+- MAINT: Make photographer non-required
+
+- MAINT: Remove obsolete year+volume fields
+
+
+2.20.1 (2017-06-28)
+-------------------
+
+- ZON-3174: Add heuristics for Reuters external IDs
+
+
+2.20.0 (2017-06-26)
+-------------------
+
+- ZON-3174: Extend copyright field to include company (dropdown and freetext),
+  add field for external ID
+
+
+2.19.2 (2017-06-21)
+-------------------
+
+- BUG-719: Normalize uploaded image file names
+
+
+2.19.1 (2017-06-21)
+-------------------
+
+- Fix brown-bag release
+
+
+2.19.0 (2017-06-21)
+-------------------
+
+- MAINT: Recreate thumbnail sources when user triggers cache refresh
+
+- ZON-4027: Ignore errors when rendering image details so they always
+  render an edit button
+
+- ZON-3940: Remove thumbnail images when their corresponding image is removed
 
 
 2.18.1 (2016-12-06)
