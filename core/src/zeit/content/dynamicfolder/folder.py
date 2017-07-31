@@ -16,7 +16,7 @@ import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zeit.content.dynamicfolder.interfaces
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.app.locking.interfaces
 import zope.container.contained
 import zope.interface
@@ -296,13 +296,14 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         return properties
 
 
-class ConfigDependency(grok.Adapter):
+class ConfigDependency(zeit.workflow.dependency.DependencyBase):
     """Publishes the config and content template files along with the dynamic
     folder."""
 
     grok.context(zeit.content.dynamicfolder.interfaces.IDynamicFolder)
-    grok.name('config')
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
+    grok.name('zeit.content.dynamicfolder.config')
+
+    retract_dependencies = True
 
     def get_dependencies(self):
         result = []
