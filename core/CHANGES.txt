@@ -10,6 +10,8 @@ zeit.cms changes
 
 - BUG-757: Collect errors during publish_multiple instead of aborting
 
+- BUG-199: Abort publish if content is already locked
+
 
 2.106.1 (2017-07-18)
 --------------------

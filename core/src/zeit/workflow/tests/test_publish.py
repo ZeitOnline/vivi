@@ -5,6 +5,7 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
+import lovely.remotetask.interfaces
 import mock
 import pytz
 import threading
@@ -15,6 +16,23 @@ import zeit.cms.testing
 import zeit.workflow.publish
 import zeit.workflow.testing
 import zope.app.appsetup.product
+
+
+class PublishTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    def test_object_already_checked_out_should_raise(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
+        input = zeit.workflow.publish.SingleInput(article)
+        input.principal = 'zope.producer'
+        tasks = zope.component.getUtility(
+            lovely.remotetask.interfaces.ITaskService, name='general')
+        tasks.add(u'zeit.workflow.publish', input)
+        zeit.workflow.testing.run_publish()
+        self.assertEqual(False, IPublishInfo(article).published)
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
