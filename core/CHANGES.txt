@@ -1,10 +1,42 @@
 zeit.brightcove changes
 =======================
 
-2.9.1 (unreleased)
-------------------
+2.10.4 (unreleased)
+-------------------
 
-- Nothing changed yet.
+- MAINT: Remove all old API code
+
+
+2.10.3 (2017-07-13)
+-------------------
+
+- ZON-3984: Map channels to/from BC custom field
+
+
+2.10.2 (2017-07-12)
+-------------------
+
+- FIX: Set explicit principal, since the notification hook runs anonymously
+
+
+2.10.1 (2017-07-07)
+-------------------
+
+- FIX: Correctly map boolean fields, remove None items from custom fields
+
+- FIX: Correctly retry API requests on auth failure
+
+- MAINT: Add debug logging to API connection
+
+
+2.10.0 (2017-07-07)
+-------------------
+
+- ZON-3984: Write to Brightcove using the new "CMS API"
+  This is enabled via feature toggle ``zeit.brightcove.write_on_checkin``
+  (since e.g. in staging we only have readonly credentials).
+
+- ZON-4062: Import videos+playlists using the Brightcove "CMS API"
 
 
 2.9.0 (2017-01-18)
