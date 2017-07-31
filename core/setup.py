@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.campus',
-    version='1.6.4.dev0',
+    version='1.6.5.dev0',
     author='Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'setuptools',
         'zeit.cms >= 3.0.dev0',
-        'zeit.content.article',
+        'zeit.content.article>=3.25.0.dev0',
         'zeit.content.cp',
         'zeit.content.gallery',
         'zeit.content.infobox',
