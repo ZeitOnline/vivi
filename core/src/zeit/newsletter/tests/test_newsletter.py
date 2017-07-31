@@ -1,5 +1,8 @@
+from datetime import datetime
+from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import mock
+import pytz
 import zeit.cms.testing
 import zeit.newsletter.testing
 import zeit.optivo.interfaces
@@ -133,3 +136,14 @@ class SendTest(zeit.newsletter.testing.TestCase):
                 ('test', 12345, 'recipientlist_test',
                  'test@example.com', '[test] thesubject',
                  mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
+
+    def test_send_updates_timestamp_even_when_error(self):
+        with checked_out(self.newsletter) as co:
+            zope.dublincore.interfaces.IDCTimes(co).created = datetime.now(
+                pytz.UTC)
+        self.renderer.side_effect = RuntimeError('provoked')
+        category = self.repository['mynl']
+        self.assertEqual(None, category.last_created)
+        with self.assertRaises(RuntimeError):
+            self.newsletter.send()
+        self.assertNotEqual(None, category.last_created)

@@ -43,10 +43,10 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         return self[BODY_NAME]
 
     def send(self):
-        self._send()
         category = zeit.newsletter.interfaces.INewsletterCategory(self)
         category.last_created = zope.dublincore.interfaces.IDCTimes(
             self).created
+        self._send()
 
     def send_test(self, to):
         self._send(to)
