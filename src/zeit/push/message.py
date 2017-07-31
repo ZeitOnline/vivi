@@ -37,34 +37,22 @@ class Message(grok.Adapter):
             raise ValueError('No text configured')
         kw = {}
         kw.update(self.config)
-        kw.update(self.additional_parameters)
-        self.send_push_notification(self.type, **kw)
+        kw['message'] = self
 
-    def send_push_notification(self, service_name, **kw):
-        """Forward sending of the acutal push notification to `IPushNotifier`.
-
-        Log success and error in the object log, so the user knows about a
-        failure and can act on it.
-
-        """
         try:
             notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=service_name)
+                zeit.push.interfaces.IPushNotifier, name=self.type)
             notifier.send(self.text, self.url, **kw)
-            self.log_success(name=service_name)
-            log.info('Push notification for %s sent', service_name)
+            self.log_success()
+            log.info('Push notification for %s sent', self.type)
         except Exception, e:
-            self.log_error(name=service_name, reason=str(e))
+            self.log_error(str(e))
             log.error(u'Error during push to %s with config %s',
-                      service_name, self.config, exc_info=True)
+                      self.type, self.config, exc_info=True)
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
-        config = push.message_config[:]
-        for service in config:
-            if service == self.config:
-                service['enabled'] = False
-        push.message_config = config
+        push.set(self.config, enabled=False)
 
     @property
     def text(self):
@@ -82,23 +70,28 @@ class Message(grok.Adapter):
         return zeit.push.interfaces.IPushURL(self.context).replace(
             zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
 
-    @property
-    def additional_parameters(self):
-        return {}
-
     @zope.cachedescriptors.property.Lazy
     def object_log(self):
         return zeit.objectlog.interfaces.ILog(self.context)
 
-    def log_success(self, name):
+    def log_success(self):
         self.object_log.log(_(
-            'Push notification for "${name}" sent. (Message: "${message}")',
-            mapping={'name': name.capitalize(), 'message': self.text}))
+            'Push notification for "${name}" sent.'
+            ' (Message: "${message}", Details: ${details})',
+            mapping={'name': self.type.capitalize(),
+                     'message': self.text,
+                     'details': self.log_message_details}))
 
-    def log_error(self, name, reason):
+    def log_error(self, reason):
         self.object_log.log(_(
-            'Error during push to ${name}: ${reason}',
-            mapping={'name': name.capitalize(), 'reason': reason}))
+            'Error during push to ${name} ${details}: ${reason}',
+            mapping={'name': self.type.capitalize(),
+                     'details': self.log_message_details,
+                     'reason': reason}))
+
+    @property
+    def log_message_details(self):
+        return '-'
 
 
 @grok.adapter(zeit.cms.interfaces.ICMSContent)
@@ -117,157 +110,207 @@ class AccountData(grok.Adapter):
         self.__parent__ = context  # make security work
 
     @property
-    def message_config(self):
-        return zeit.push.interfaces.IPushMessages(
-            self.context).message_config
+    def push(self):
+        return zeit.push.interfaces.IPushMessages(self.context)
 
     @property
     def facebook_main_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAIN_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
+        return service and service.get('enabled')
 
+    @facebook_main_enabled.setter
+    def facebook_main_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAIN_ACCOUNT),
+            enabled=value)
+
+    # We cannot use the key ``text``, since the first positional parameter of
+    # IPushNotifier.send() is also called text, which causes TypeError.
     @property
     def facebook_main_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAIN_ACCOUNT)
-        result = service and service.get('override_text')
-        if not result:  # BBB
-            push = zeit.push.interfaces.IPushMessages(self.context)
-            result = push.long_text
-        return result
+        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
+        return service and service.get('override_text')
+
+    @facebook_main_text.setter
+    def facebook_main_text(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAIN_ACCOUNT),
+            override_text=value)
 
     @property
     def facebook_magazin_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(
+            type='facebook', account=source.MAGAZIN_ACCOUNT)
+        return service and service.get('enabled')
+
+    @facebook_magazin_enabled.setter
+    def facebook_magazin_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAGAZIN_ACCOUNT),
+            enabled=value)
 
     @property
     def facebook_magazin_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.MAGAZIN_ACCOUNT)
-        result = service and service.get('override_text')
-        if not result:  # BBB
-            push = zeit.push.interfaces.IPushMessages(self.context)
-            result = push.long_text
-        return result
+        service = self.push.get(
+            type='facebook', account=source.MAGAZIN_ACCOUNT)
+        return service and service.get('override_text')
+
+    @facebook_magazin_text.setter
+    def facebook_magazin_text(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.MAGAZIN_ACCOUNT),
+            override_text=value)
 
     @property
     def facebook_campus_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
-        return service and service['enabled']
+        service = self.push.get(type='facebook', account=source.CAMPUS_ACCOUNT)
+        return service and service.get('enabled')
+
+    @facebook_campus_enabled.setter
+    def facebook_campus_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.CAMPUS_ACCOUNT),
+            enabled=value)
 
     @property
     def facebook_campus_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self._get_facebook_service(source.CAMPUS_ACCOUNT)
-        result = service and service.get('override_text')
-        return result
-
-    def _get_facebook_service(self, account):
-        for service in self.message_config:
-            if service['type'] != 'facebook':
-                continue
-            if service.get('account') == account:
-                return service
-        return None
-
-    @property
-    def twitter_main_enabled(self):
-        service = self._get_twitter_service(main=True)
-        return service and service['enabled']
-
-    @property
-    def twitter_ressort(self):
-        service = self._get_twitter_service(main=False)
-        return service and service['account']
-
-    @property
-    def twitter_ressort_enabled(self):
-        service = self._get_twitter_service(main=False)
-        return service and service['enabled']
-
-    def _get_twitter_service(self, main=True):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        for service in self.message_config:
-            if service['type'] != 'twitter':
-                continue
-            account = service.get('account')
-            is_main = (account == source.MAIN_ACCOUNT)
-            if is_main == main:
-                return service
-        return None
-
-    @property
-    def mobile_enabled(self):
-        for service in self.message_config:
-            if service['type'] != 'mobile':
-                continue
-            if service.get(
-                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
-                break
-        else:
-            service = None
-        return service and service['enabled']
-
-    @property
-    def mobile_text(self):
-        for service in self.message_config:
-            if service['type'] != 'mobile':
-                continue
-            if service.get(
-                    'channels') == zeit.push.interfaces.CONFIG_CHANNEL_NEWS:
-                break
-        else:
-            service = None
+        service = self.push.get(
+            type='facebook', account=source.CAMPUS_ACCOUNT)
         return service and service.get('override_text')
-
-    # Writing happens all services at once in the form, so we don't need to
-    # worry about identifying entries in message_config (which would be quite
-    # cumbersome).
-
-    @facebook_main_enabled.setter
-    def facebook_main_enabled(self, value):
-        pass
-
-    @facebook_main_text.setter
-    def facebook_main_text(self, value):
-        pass
-
-    @facebook_magazin_enabled.setter
-    def facebook_magazin_enabled(self, value):
-        pass
-
-    @facebook_magazin_text.setter
-    def facebook_magazin_text(self, value):
-        pass
-
-    @facebook_campus_enabled.setter
-    def facebook_campus_enabled(self, value):
-        pass
 
     @facebook_campus_text.setter
     def facebook_campus_text(self, value):
-        pass
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.CAMPUS_ACCOUNT),
+            override_text=value)
+
+    @property
+    def twitter_main_enabled(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        service = self.push.get(type='twitter', account=source.MAIN_ACCOUNT)
+        return service and service.get('enabled')
 
     @twitter_main_enabled.setter
     def twitter_main_enabled(self, value):
-        pass
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        self.push.set(dict(
+            type='twitter', account=source.MAIN_ACCOUNT),
+            enabled=value)
+
+    @property
+    def twitter_ressort(self):
+        return self._nonmain_twitter_service.get('account')
 
     @twitter_ressort.setter
     def twitter_ressort(self, value):
-        pass
+        self.push.set(
+            dict(type='twitter', variant='ressort'), account=value)
+
+    @property
+    def twitter_ressort_enabled(self):
+        return self._nonmain_twitter_service.get('enabled')
 
     @twitter_ressort_enabled.setter
     def twitter_ressort_enabled(self, value):
-        pass
+        self.push.set(
+            dict(type='twitter', variant='ressort'), enabled=value)
+
+    @property
+    def _nonmain_twitter_service(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        for service in self.push.message_config:
+            if service['type'] != 'twitter':
+                continue
+            if service.get('variant') == 'ressort':
+                return service
+            # BBB `variant` was introduced in zeit.push-1.21
+            if service.get('account') != source.MAIN_ACCOUNT:
+                return service
+        return {}
+
+    @property
+    def mobile_enabled(self):
+        service = self.push.get(type='mobile')
+        return service and service.get('enabled')
 
     @mobile_enabled.setter
     def mobile_enabled(self, value):
-        pass
+        self.push.set(dict(type='mobile'), enabled=value)
+
+    @property
+    def mobile_title(self):
+        service = self.push.get(type='mobile')
+        return service and service.get('title')
+
+    @mobile_title.setter
+    def mobile_title(self, value):
+        self.push.set(dict(type='mobile'), title=value)
+
+    @property
+    def mobile_text(self):
+        service = self.push.get(type='mobile')
+        return service and service.get('override_text')
 
     @mobile_text.setter
     def mobile_text(self, value):
-        pass
+        self.push.set(dict(type='mobile'), override_text=value)
+
+    @property
+    def mobile_uses_image(self):
+        service = self.push.get(type='mobile')
+        return service and service.get('uses_image')
+
+    @mobile_uses_image.setter
+    def mobile_uses_image(self, value):
+        self.push.set(dict(type='mobile'), uses_image=value)
+
+    @property
+    def mobile_image(self):
+        service = self.push.get(type='mobile')
+        if not service:
+            return None
+        return zeit.cms.interfaces.ICMSContent(service.get('image'), None)
+
+    @mobile_image.setter
+    def mobile_image(self, value):
+        if value is not None:
+            value = value.uniqueId
+        self.push.set(dict(type='mobile'), image=value)
+
+    @property
+    def mobile_buttons(self):
+        service = self.push.get(type='mobile')
+        return service and service.get('buttons')
+
+    @mobile_buttons.setter
+    def mobile_buttons(self, value):
+        self.push.set(dict(type='mobile'), buttons=value)
+
+    @property
+    def mobile_payload_template(self):
+        # Convert the token back to the value
+        service = self.push.get(type='mobile')
+        return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
+            .factory.find(service.get('payload_template'))
+
+    @mobile_payload_template.setter
+    def mobile_payload_template(self, value):
+        if value is None:
+            token = None
+        else:
+            token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
+                .factory.getToken(value)
+        # Use the token here instead of the value
+        self.push.set(dict(type='mobile'), payload_template=token)

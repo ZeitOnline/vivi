@@ -79,12 +79,3 @@ class FacebookMessageTest(zeit.push.testing.TestCase):
         # (see zeit.push.workflow.PushMessages._create_message)
         message.config = push.message_config[0]
         self.assertEqual('facebook', message.text)
-
-    def test_uses_long_text_as_bbb_for_facebook_override_text(self):
-        content = ExampleContentType()
-        self.repository['foo'] = content
-        push = zeit.push.interfaces.IPushMessages(content)
-        push.long_text = 'facebook'
-        message = zope.component.getAdapter(
-            content, zeit.push.interfaces.IMessage, name='facebook')
-        self.assertEqual('facebook', message.text)

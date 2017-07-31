@@ -1,8 +1,10 @@
-import plone.testing
 import gocept.selenium
 import logging
+import pkg_resources
+import plone.testing
+import urlparse
 import zeit.cms.testing
-import zeit.content.article.testing
+import zeit.content.text.jinja
 import zeit.push.interfaces
 import zeit.workflow.testing
 import zope.interface
@@ -26,46 +28,96 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
+product_config = """\
+<product-config zeit.push>
+  twitter-accounts file://{fixtures}/twitter-accounts.xml
+  twitter-main-account twitter-test
+  facebook-accounts file://{fixtures}/facebook-accounts.xml
+  facebook-main-account fb-test
+  facebook-magazin-account fb-magazin
+  facebook-campus-account fb-campus
+  push-target-url http://www.zeit.de/
+  mobile-image-url http://img.zeit.de/
+  urbanairship-audience-group subscriptions
+  mobile-buttons file://{fixtures}/mobile-buttons.xml
+  push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
+</product-config>
+""".format(fixtures=pkg_resources.resource_filename(
+    __name__, 'tests/fixtures'))
 
-class MobilePushNotifier(PushNotifier):
 
-    def get_channel_list(self, channels):
-        """Required for zeit.push.mobile.Message.log_success"""
-        return 'News'
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
+    def setUp(self):
+        # Break circular dependency
+        import zeit.content.article.testing
+        self.product_config = (
+            product_config +
+            zeit.cms.testing.cms_product_config +
+            zeit.workflow.testing.product_config +
+            zeit.content.article.testing.product_config)
+        super(ZCMLLayer, self).setUp()
 
-BASE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
-    zeit.push.product_config +
-    zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    zeit.content.article.testing.product_config))
+ZCML_LAYER = ZCMLLayer('testing.zcml')
 
 
 class PushMockLayer(plone.testing.Layer):
     """Helper layer to reset mock notifiers."""
 
     def testSetUp(self):
-        for service in ['urbanairship', 'twitter', 'facebook',
-                        'homepage', 'ios-legacy', 'wrapper']:
+        for service in ['urbanairship', 'twitter', 'facebook', 'homepage']:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
 
 PUSH_MOCK_LAYER = PushMockLayer()
 
-ZCML_LAYER = plone.testing.Layer(
-    bases=(BASE_ZCML_LAYER, PUSH_MOCK_LAYER),
+
+class UrbanairshipTemplateLayer(plone.testing.Layer):
+
+    defaultBases = (ZCML_LAYER,)
+
+    def create_template(self, text=None, name='template.json'):
+        if not text:
+            text = pkg_resources.resource_string(
+                __name__, 'tests/fixtures/payloadtemplate.json')
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+            with zeit.cms.testing.interaction():
+                cfg = zope.app.appsetup.product.getProductConfiguration(
+                    'zeit.push')
+                folder = zeit.cms.content.add.find_or_create_folder(
+                    *urlparse.urlparse(
+                        cfg['push-payload-templates']).path[1:].split('/'))
+                template = zeit.content.text.jinja.JinjaTemplate()
+                template.text = text
+                template.title = name.split('.')[0].capitalize()
+                folder[name] = template
+
+    def setUp(self):
+        self['create_template'] = self.create_template
+
+    def testSetUp(self):
+        self.create_template('', 'foo.json')
+
+
+URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
+
+LAYER = plone.testing.Layer(
+    bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER),
     name='ZCMLPushMockLayer',
     module=__name__)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = LAYER
+
+    def create_payload_template(self, text=None, name='template.json'):
+        self.layer['create_template'](text, name)
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(ZCML_LAYER,))
+    name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

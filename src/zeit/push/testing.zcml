@@ -16,4 +16,7 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
+  <include package="zeit.content.text" />
+  <include package="zeit.content.text.browser" />
+
 </configure>

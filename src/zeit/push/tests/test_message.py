@@ -23,7 +23,8 @@ class MessageTest(zeit.push.testing.TestCase):
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(
-            [('mytext', u'http://www.zeit.de/foo', {})], twitter.calls)
+            [('mytext', u'http://www.zeit.de/foo', {'message': message})],
+            twitter.calls)
 
     def test_no_text_configured_should_not_send(self):
         content = self.repository['testcontent']

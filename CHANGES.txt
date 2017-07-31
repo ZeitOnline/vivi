@@ -1,10 +1,65 @@
 zeit.push changes
 =================
 
-1.19.3 (unreleased)
+1.21.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4006: Split off mobile fields into their own form
+
+- ZON-4007: Make UA Payload configurable via Templates
+
+- BUG-674: Don't perform push-target-url replacement twice,
+  and don't squash non-www.zeit.de URLs
+
+- BUG-621: Log Twitter and Facebook account name to objectlog
+
+- MAINT: Remove broken/unused ``IPushMessages.date_last_pushed``
+
+
+1.20.6 (2017-06-27)
+-------------------
+
+- FIX: Make ConflictError workaround actually work
+
+
+1.20.5 (2017-06-27)
+-------------------
+
+- Fix merge mistake in 1.20.3
+
+
+1.20.4 (2017-06-26)
+-------------------
+
+- MAINT: Send uniqueId as banner URL, since zeit.web expects that
+
+
+1.20.3 (2017-06-26)
+-------------------
+
+- BUG-201: Make homepage publisher safe from ConflictErrors
+
+- MAINT: Remove obsolete banner control files (wrapper, ios-legacy)
+
+
+1.20.2 (2017-05-22)
+-------------------
+
+- BUG-715: Append tracking query parameters correctly (without superflous `&`)
+
+- ZON-3917: remove bigshare button checkbox
+
+
+1.20.1 (2017-02-23)
+-------------------
+
+- ZON-3727: Fix override text not being used as alert text
+
+
+1.20.0 (2017-02-23)
+-------------------
+
+- ZON-3727: Adjust to new urbanairship payload requirements
 
 
 1.19.2 (2017-01-31)
