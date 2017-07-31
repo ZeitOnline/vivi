@@ -1,10 +1,32 @@
 zeit.content.author changes
 ===========================
 
-2.7.6 (unreleased)
+2.7.9 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+2.7.8 (2017-07-18)
+------------------
+
+- BUG-500: Update to new dependency API
+
+
+2.7.7 (2017-05-22)
+------------------
+
+- BUG-562: Base author images implementation on the default IImages
+  implementation, so all the mechanics works out properly
+
+- BUG-708: Copy to freetext on create too, since that does not send modified
+
+
+2.7.6 (2017-02-16)
+------------------
+
+- MAINT/PERF: Only publish an author object along with its article if
+  it's not published yet
 
 
 2.7.5 (2016-12-29)

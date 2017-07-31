@@ -145,6 +145,14 @@ Authors are published along with the articles that reference them:
 >>> info.published
 True
 
+But not if they are already published (there are no changes that could be
+relevant for the article):
+
+>>> import zeit.workflow.interfaces
+>>> zeit.workflow.interfaces.IPublicationDependencies(
+...     repository['testcontent']).get_dependencies()
+[]
+
 
 References
 ==========

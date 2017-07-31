@@ -9,11 +9,12 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
 import zeit.find.search
-import zeit.workflow.interfaces
+import zeit.workflow.dependency
 import zope.interface
 import zope.security.proxy
 
@@ -84,23 +85,16 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.content.author.add_contextfree'
 
 
-@grok.implementer(zeit.content.image.interfaces.IImages)
-@grok.adapter(zeit.content.author.interfaces.IAuthor)
-class AuthorImages(object):
+class AuthorImages(zeit.cms.related.related.RelatedBase):
 
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
+    zope.component.adapts(zeit.content.author.interfaces.IAuthor)
+    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.image_group', 'fill_color',
         zeit.content.image.interfaces.IImages['fill_color'])
-
-    def __init__(self, context):
-        self.context = context
-        self.__parent__ = context
-        self.xml = zope.security.proxy.getObject(context.xml)
-        self.uniqueId = context.uniqueId
 
 
 @grok.subscribe(
@@ -118,30 +112,46 @@ def update_display_name(obj, event):
 # zeit.vgwort.report uses the fact that the references to author objects are
 # copied to the freetext 'author' webdav property to filter out which content
 # objects to report.
+def update_author_freetext(content):
+    content.authors = [x.target.display_name for x in content.authorships]
+
+
 @grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
-def update_author_freetext(obj, event):
+def update_freetext_on_change(context, event):
     if event.descriptions:
         for description in event.descriptions:
             if (issubclass(description.interface,
                 zeit.cms.content.interfaces.ICommonMetadata) and
                     'authorships' in description.attributes):
-                ref_names = [x.target.display_name for x in obj.authorships]
-                obj.authors = ref_names
+                update_author_freetext(context)
 
 
-class Dependencies(grok.Adapter):
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+def update_freetext_on_add(context, event):
+    if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        return
+    update_author_freetext(context)
+
+
+class Dependencies(zeit.workflow.dependency.DependencyBase):
+    """When content is published, make sure that all author objects
+    referenced by it are also available to the published content.
+    """
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('zeit.content.author')
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
-
-    def __init__(self, context):
-        self.context = context
 
     def get_dependencies(self):
-        return [x.target for x in self.context.authorships]
+        result = []
+        for ref in self.context.authorships:
+            author = ref.target
+            if not zeit.cms.workflow.interfaces.IPublishInfo(author).published:
+                result.append(author)
+        return result
 
 
 @grok.adapter(
