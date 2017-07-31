@@ -8,6 +8,8 @@ zeit.cms changes
 
 - ZON-3677: Remove `ICommonMetadata.push_news`, it's not used anymore
 
+- BUG-757: Collect errors during publish_multiple instead of aborting
+
 - BUG-199: Abort publish if content is already locked
 
 
