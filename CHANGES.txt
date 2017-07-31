@@ -5,6 +5,8 @@ zeit.retresco changes
 1.11.3 (unreleased)
 -------------------
 
+- ZON-4095: Generate nginx config file from TMS for topic page redirects
+
 - ZON-3677: Remove `ICommonMetadata.push_news`, it's not used anymore
 
 

@@ -54,6 +54,7 @@ product_config = """
     base-url http://localhost:[PORT]
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index zeit_pool
+    topic-redirect-prefix http://www.zeit.de
 </product-config>
 """
 
