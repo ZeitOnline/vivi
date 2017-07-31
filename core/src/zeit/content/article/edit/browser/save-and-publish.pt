@@ -4,7 +4,7 @@
 <tal:block condition="view/can_publish">
 <ol id="worklist">
   <li action="checkin_auto_lsc" i18n:translate="">Checking in</li>
-  <li action="publish" i18n:translate="">Publishing</li>
+  <li action="start_job" cms:param="publish" i18n:translate="">Publishing</li>
   <li action="reload" i18n:translate="">Reloading</li>
 </ol>
 

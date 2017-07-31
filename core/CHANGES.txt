@@ -8,6 +8,8 @@ zeit.content.article changes
 
 - MAINT: Remove superfluous IEditable interface
 
+- MAINT: Refactor markup for publishing
+
 
 3.24.2 (2017-07-18)
 -------------------
