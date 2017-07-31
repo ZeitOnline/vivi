@@ -3,7 +3,7 @@
 <h1 i18n:translate="">Retract</h1>
 
 <ol id="worklist">
-  <li action="retract"
+  <li action="start_job" cms:param="retract"
       tal:attributes="cms:context view/homepage/@@absolute_url"
       i18n:translate="">Retract
     <span i18n:name="target" i18n:translate="">homepage banner</span></li>
