@@ -80,8 +80,6 @@ copyright is filled with the default value though:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value
 '\xc2\xa9'
->>> browser.getControl(name='form.copyrights.0..combination_01').value
-''
 
 Fill out some values:
 
@@ -92,15 +90,14 @@ Fill out some values:
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl('Image title').value = 'Opernball'
->>> browser.getControl('Year').value = '2007'
->>> browser.getControl('Volume').value = '9'
 >>> browser.getControl('Alternative').value = 'Zwei Taenzer'
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
+>>> browser.getControl('External company ID').value = 'externalid'
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
 False
@@ -109,8 +106,8 @@ Verify some values:
 
 >>> browser.getControl(name='form.title').value
 'Opernball'
->>> browser.getControl(name='form.year').value
-'2007'
+>>> browser.getControl('External company ID').value
+'externalid'
 
 Let's verify get the right file data back from the image:
 
@@ -123,6 +120,7 @@ True
 
 Check the image in again:
 
+>>> browser.handleErrors = False
 >>> browser.getLink('Checkin').click()
 
 We have uploaded a new image now. Let's have a look at the metadata screen:
@@ -169,16 +167,10 @@ Make sure the image is not changed by looking at the image view:
         119x160
       </td>
     </tr>
-    <tr>
-      <td>Volume/Year</td>
-      <td>
-        9/2007
-      </td>
-    </tr>
   ...
   <ol class="image-copyrights">
     <li>
-      ZEIT ONLINE
+      ZEIT ONLINE / -
       (<a href="http://www.zeit.de/">http://www.zeit.de/</a>)
     </li>
   </ol>...
@@ -226,8 +218,6 @@ The image file is required:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <...
@@ -248,8 +238,6 @@ filename automatically[#no-references]_.
 
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
->>> browser.getControl(name='form.volume').value != '0'
-True
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
@@ -344,8 +332,6 @@ Lets create an image group:
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
-...     'http://www.zeit.de/')
 >>> set_file_data('opernball.jpg', 'master_image_blobs.0.')
 >>> browser.getControl(name='form.actions.add').click()
 
@@ -371,11 +357,6 @@ Images which are added to the group do not have any metadata on adding:
 Traceback (most recent call last):
     ...
 LookupError: label 'Title'...
-
->>> browser.getControl('Volume')
-Traceback (most recent call last):
-    ...
-LookupError: label 'Volume'...
 
 Set the file data:
 

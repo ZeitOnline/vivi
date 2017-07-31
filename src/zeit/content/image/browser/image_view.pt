@@ -12,14 +12,6 @@
         <span tal:replace="image/width" />x<span tal:replace="image/height" />
       </td>
     </tr>
-    <tr>
-      <td i18n:translate="">Volume/Year</td>
-      <td>
-        <span
-          tal:replace="view/metadata/volume" />/<span
-          tal:replace="view/metadata/year" />
-      </td>
-    </tr>
   </table>
   <a href="#" target="_new"
     tal:attributes="href string:${context/@@absolute_url}/@@raw">
@@ -28,7 +20,8 @@
   
   <ol class="image-copyrights">
     <li tal:repeat="copyright view/copyrights">
-      <span tal:replace="copyright/copyright">ZEIT</span>
+      <span tal:replace="copyright/copyright">ZEIT</span> /
+      <span tal:replace="python: copyright['company_text'] or copyright['company'] or '-'">dpa</span>
       (<a tal:attributes="href copyright/url"
         tal:content="copyright/url">
         http://...

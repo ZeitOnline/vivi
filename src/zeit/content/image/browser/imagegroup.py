@@ -38,7 +38,8 @@ class AddForm(FormBase,
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit('references', 'master_images') +
+        FormBase.form_fields.omit(
+            'references', 'master_images', 'external_id') +
         zope.formlib.form.FormFields(IMasterImageUploadSchema))
 
     form_fields['master_image_blobs'].custom_widget = (
@@ -83,7 +84,8 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        name = getattr(blob, 'filename', '')
+        name = zeit.cms.interfaces.normalize_filename(
+            getattr(blob, 'filename', ''))
         zeit.cms.browser.form.apply_changes_with_setattr(
             image,
             self.form_fields.omit('__name__', 'display_type'), data)

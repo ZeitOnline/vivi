@@ -26,7 +26,7 @@ Set a copyright which will be overwritten by the bulk change:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
 >>> browser.getControl(name='form.actions.add').click()
 
@@ -54,12 +54,12 @@ Fill in two copyrights:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'gocept')
->>> browser.getControl(name='form.copyrights.0..combination_01').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.gocept.com/')
 >>> browser.getControl('Add Copyrights').click()
 >>> browser.getControl(name='form.copyrights.1..combination_00').value = (
 ...     'Hans')
->>> browser.getControl(name='form.copyrights.1..combination_01').value = (
+>>> browser.getControl(name='form.copyrights.1..combination_03').value = (
 ...     'http://www.wurst.com/')
 >>> browser.getControl('Set copyrights').click()
 >>> print browser.contents
@@ -83,11 +83,11 @@ Let's see if that's correct:
 <?xml...
   <ol class="image-copyrights">
     <li>
-      gocept
+      gocept / -
       (<a href="http://www.gocept.com/">http://www.gocept.com/</a>)
     </li>
     <li>
-      Hans
+      Hans / -
       (<a href="http://www.wurst.com/">http://www.wurst.com/</a>)
     </li>
   </ol>
@@ -98,7 +98,7 @@ Let's see if that's correct:
 >>> browser.getLink('Metadata').click()
 >>> print browser.contents
 <?xml ...
-...gocept...
+...gocept
 ...<a href="http://www.gocept.com/">http://www.gocept.com/</a>
 ...
 ...Hans
