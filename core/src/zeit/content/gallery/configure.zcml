@@ -5,6 +5,8 @@
   <grok:grok package="." />
 
   <adapter factory=".gallery.galleryentry_factory" />
+  <adapter factory=".gallery.get_visible_entry_count_for_gallery"
+           provides=".interfaces.IVisibleEntryCount" />
   <adapter factory=".gallery.EntryXMLRepresentation" />
   <subscriber handler=".gallery.update_gallery_on_entry_change" />
 
@@ -71,9 +73,6 @@
     name="zeit.content.gallery"
     />
   <adapter factory=".reference.XMLReferenceUpdater" name="gallery" />
-
-  <!-- Workflow -->
-  <adapter factory=".workflow.PublicationDependencies" />
 
   <!-- Metadata -->
   <adapter factory=".gallery.EntryMetadata" />

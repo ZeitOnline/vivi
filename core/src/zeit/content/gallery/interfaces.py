@@ -147,6 +147,10 @@ class TextTooLongError(zope.schema.ValidationError):
                  mapping=dict(maximum=self.maximum, got=self.got))
 
 
+class IVisibleEntryCount(zope.interface.Interface):
+    """Count of gallery entries whose layout is not hidden"""
+
+
 class IMaxLengthHTMLContent(zeit.wysiwyg.interfaces.IHTMLContent):
 
     @zope.interface.invariant

@@ -4,11 +4,8 @@ import lxml.etree
 import lxml.objectify
 import rwproperty
 import xml.sax.saxutils
-import zeit.cms.connector
-import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
-import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.type
@@ -362,6 +359,12 @@ class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     zope.lifecycleevent.IObjectModifiedEvent)
 def update_gallery_on_entry_change(entry, event):
     entry.__parent__[entry.__name__] = entry
+
+
+@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
+def get_visible_entry_count_for_gallery(context):
+    container = context._entries_container
+    return len(container.xpath('block[not(@layout="hidden")]/@name'))
 
 
 class EntryMetadata(object):

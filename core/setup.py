@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.gallery',
-    version='2.7.4.dev0',
+    version='2.7.7.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -23,7 +23,7 @@ setup(
         'zeit.connector>=2.4.0.dev0',
         'zeit.imp>=0.15.0.dev0',
         'zeit.content.image',
-        'zeit.push>=1.7.0.dev0',
+        'zeit.push>=1.21.0.dev0',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',

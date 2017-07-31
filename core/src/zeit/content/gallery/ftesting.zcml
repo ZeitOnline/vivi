@@ -20,6 +20,7 @@
 
   <include package="zeit.push" />
   <include package="zeit.push.browser" />
+  <include package="zeit.content.text" />
 
   <grant
     principal="zope.user"

@@ -1,10 +1,28 @@
 zeit.content.gallery changes
 ============================
 
-2.7.4 (unreleased)
+2.7.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4006: Update to mobile field split
+
+
+2.7.6 (2017-07-18)
+------------------
+
+- BUG-500: Update to new dependency API
+
+
+2.7.5 (2017-05-22)
+------------------
+
+- ZON-3917 remove bigshare button checkbox
+
+
+2.7.4 (2017-02-28)
+------------------
+
+- Add visible gallery entry count (Re: BUG-637)
 
 
 2.7.3 (2016-10-04)
