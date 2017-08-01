@@ -31,21 +31,6 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-class LogMultipleException(Exception):
-    """Carry multiple messages for objects needed for object log."""
-
-    def __init__(self, objs_and_messages, has_errors):
-        """Store the data for later logging.
-
-        objs_and_messages ... list of tuples(<object>, <message>)
-        has_errors ... boolean telling whether there are error messages in
-                       `objs_and_messages`.
-
-        """
-        self.objs_and_messages = objs_and_messages
-        self.has_errors = has_errors
-
-
 class Publish(object):
 
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
@@ -120,37 +105,29 @@ class PublishRetractTask(object):
 
         try:
             result = self._run(objs)
-        except LogMultipleException as e:
-            if e.has_errors:
-                message = _(
-                    'Errors during publish/retract multiple items.')
-            else:
-                # See MultiPublishTask._run for an explanation why we are
-                # successful despite the exception.
-                message = _('Successfully published multiple items.')
-            self.handle_execption(ids_str, e.objs_and_messages, message)
+        except z3c.celery.celery.Abort:
+            raise
         except Exception as e:
             logger.error("Error during publish/retract", exc_info=True)
-            error_message = _(
+            message = _(
                 "Error during publish/retract: ${exc}: ${message}",
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
-            self.handle_execption(
-                ids_str, [(obj, error_message) for obj in objs], error_message)
+            raise z3c.celery.celery.HandleAfterAbort(
+                self._log_messages, [(obj, message) for obj in objs],
+                message=zope.i18n.translate(message, target_language='de'))
         else:
-            self._log_timer(ids_str)
             return result
+        finally:
+            timer.mark('Done %s' % ids_str)
+            timer_logger.debug(
+                'Timings:\n%s' % (unicode(timer).encode('utf8'),))
+            dummy, total, timer_message = timer.get_timings()[-1]
+            logger.info('%s (%2.4fs)' % (timer_message, total))
 
-    def handle_execption(self, ids_str, objs_and_messages, message):
-        self._log_timer(ids_str)
-        raise z3c.celery.celery.HandleAfterAbort(
-            self.log_on_abort, objs_and_messages,
-            message=zope.i18n.translate(message, target_language='de'))
-
-    def _log_timer(self, ids_str):
-        timer.mark('Done %s' % ids_str)
-        timer_logger.debug('Timings:\n%s' % (unicode(timer).encode('utf8'),))
-        dummy, total, timer_message = timer.get_timings()[-1]
-        logger.info('%s (%2.4fs)' % (timer_message, total))
+    def _log_messages(self, objs_and_messages):
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        for obj, message in objs_and_messages:
+            log.log(obj, message)
 
     def cycle(self, obj):
         """checkout/checkin obj to sync data as necessary.
@@ -242,11 +219,6 @@ class PublishRetractTask(object):
     def log(self, obj, message, error=False):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, message)
-
-    def log_on_abort(self, objs_and_messages):
-        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        for obj, message in objs_and_messages:
-            log.log(obj, message)
 
     @property
     def repository(self):
@@ -435,9 +407,7 @@ class MultiPublishTask(PublishTask):
     """Publish multiple objects"""
 
     def _run(self, objs):
-        self._log_entries = []
-        self._logged_error = False
-        super(MultiPublishTask, self)._run(objs)
+        result = super(MultiPublishTask, self)._run(objs)
         # Work around limitations of our ZODB-based DAV cache.
         # Since publishing a sizeable amount of objects will result in a rather
         # long-running transaction (100 articles take about two minutes), the
@@ -448,12 +418,7 @@ class MultiPublishTask(PublishTask):
         # transaction isolation anyway. The DAV cache will then be updated
         # shortly afterwards by the invalidator (since that runs for all
         # changes and doesn't discriminate changes made by vivi itself).
-        raise LogMultipleException(self._log_entries, self._logged_error)
-
-    def log(self, obj, message, error=False):
-        self._log_entries.append((obj, message))
-        if error:
-            self._logged_error = True
+        raise z3c.celery.celery.Abort(result)
 
 
 @shared_task(bind=True)

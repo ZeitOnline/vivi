@@ -212,10 +212,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...''',
             [saarland, flugsicherh])
         transaction.commit()
 
-        with self.assertRaises(Exception) as err:
-            publish.get()
-
-        assert "Successfully published multiple items." == str(err.exception)
+        assert "Published." == publish.get()
 
         with open(self.layer['logfile_name']) as logfile:
             self.assertEllipsis('''\
@@ -225,18 +222,14 @@ Running job ...-...-...-...-...
 Publishing http://xml.zeit.de/online/2007/01/Saarland-urgent,
            http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
 Done http://xml.zeit.de/online/2007/01/Saarland-urgent,
-     http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent (...s)
-Task zeit.workflow.publish.MULTI_PUBLISH_TASK[...] raised unexpected:
-     HandleAfterAbort(u'',)
-Traceback (most recent call last):
-...
-HandleAfterAbort''', logfile.read())
+     http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent (...s)''',
+                                logfile.read())
 
-        # We have only one ZODB for the celery test worker, so there is no
-        # strict test isolation here.
-        assert u'Published' in get_object_log_messages(
+        # Due to the DAV-cache transaction.abort() hack, no success message
+        # is logged to the content objects.
+        assert u'Published' not in get_object_log_messages(
             self.layer['zodb_path'], flugsicherh_content)
-        assert u'Published' in get_object_log_messages(
+        assert u'Published' not in get_object_log_messages(
             self.layer['zodb_path'], saarland_content)
 
 
@@ -319,38 +312,11 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-            with self.assertRaises(z3c.celery.celery.HandleAfterAbort) as err:
-                IPublish(self.repository).publish_multiple([c1, c2])
-            self.assertEqual('Successfully published multiple items.',
-                             str(err.exception))
+            IPublish(self.repository).publish_multiple([c1, c2])
             script.assert_called_with(['work/online/2007/01/Somalia',
                                        'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
-
-    def test_logs_could_not_publish_errors_in_object_log(self):
-        c1 = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
-        c2 = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/eta-zapatero')
-        IPublishInfo(c1).urgent = True
-        IPublishInfo(c2).urgent = True
-        with mock.patch(
-                'zeit.cms.workflow.interfaces.IPublishInfo') as MPublishInfo:
-            MPublishInfo().can_publish.return_value = CAN_PUBLISH_ERROR
-            with self.assertRaises(z3c.celery.celery.HandleAfterAbort) as err:
-                IPublish(self.repository).publish_multiple([c1, c2])
-            self.assertEqual('Errors during publish/retract multiple items.',
-                             str(err.exception))
-        self.assertFalse(IPublishInfo(c1).published)
-        self.assertFalse(IPublishInfo(c2).published)
-
-        log = zope.component.getUtility(
-            zeit.objectlog.interfaces.IObjectLog)
-        assert ('Could not publish because conditions not satisifed.' in
-                [x.message for x in log.get_log(c1)])
-        assert ('Could not publish because conditions not satisifed.' in
-                [x.message for x in log.get_log(c2)])
 
     def test_accepts_uniqueId_as_well_as_ICMSContent(self):
         with mock.patch('zeit.workflow.publish.MultiPublishTask.run') as run:
