@@ -488,18 +488,6 @@ class ICitation(zeit.edit.interfaces.IBlock):
         title=_('URL'),
         required=False)
 
-    text_2 = zope.schema.Text(
-        title=_('Citation 2'),
-        required=False)
-
-    attribution_2 = zope.schema.TextLine(
-        title=_('Attribution 2'),
-        required=False)
-
-    url_2 = zope.schema.URI(
-        title=_('URL 2'),
-        required=False)
-
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=CitationLayoutSource(),

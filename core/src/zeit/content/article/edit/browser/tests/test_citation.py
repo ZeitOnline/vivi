@@ -26,4 +26,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementPresent('css=.block.type-citation .inline-form '
                                '.field.fieldname-text')
         s.assertElementPresent('css=.block.type-citation .inline-form '
-                               '.field.fieldname-attribution_2')
+                               '.field.fieldname-attribution')
