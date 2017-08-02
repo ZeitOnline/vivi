@@ -7,6 +7,91 @@ zeit.retresco changes
 
 - ZON-3513: Use z3c.celery for the async tasks.
 
+
+1.11.3 (unreleased)
+-------------------
+
+- ZON-4095: Generate nginx config file from TMS for topic page redirects
+
+- ZON-3677: Remove `ICommonMetadata.push_news`, it's not used anymore
+
+
+1.11.2 (2017-07-25)
+-------------------
+
+- MAINT: Optionally change content keywords on bulk index
+
+
+1.11.1 (2017-07-25)
+-------------------
+
+- Use dlps as TMS date
+
+- MAINT: Don't change content keywords on checkin
+
+- MAINT: Preserve enriched body during no-enrich bulk reindex
+
+
+1.11.0 (2017-07-19)
+-------------------
+
+- ZON-3994: Retrieve article keywords from TMS, putting pinned ones first
+
+- MAINT: Use just path for TMS teaser images, TMS offers configurable
+  prefix and suffix now
+
+
+1.10.5 (2017-07-12)
+-------------------
+
+- PERF: Don't resolve anything in re-enrich hook,
+  just create async jobs, so we can handle large content amounts
+
+
+1.10.4 (2017-07-07)
+-------------------
+
+- MAINT: Add link to TMS to keyword widget
+
+
+1.10.3 (2017-06-09)
+-------------------
+
+- FIX: Make DAV property access work in parallel indexing
+
+- MAINT: Use variant URL for TMS teaser images
+
+
+1.10.2 (2017-05-24)
+-------------------
+
+- ZON-3925: Remove metadata from topic page list which TMS now does
+  not return anymore, but we didn't use anyway
+
+
+1.10.1 (2017-05-10)
+-------------------
+
+- MAINT: Don't try to TMS-publish content that's missing required fields
+
+
+1.10.0 (2017-05-10)
+-------------------
+
+- ZON-3896: Retrieve more metadata for topic page list
+
+- Log complete TMS request on debug level
+
+
+1.9.0 (2017-05-08)
+------------------
+
+- ZON-3173: Add endpoint for TMS reindexing
+
+
+1.8.1 (2017-02-23)
+------------------
+
 - PERF: Don't update TMS during publishing.
 
 
