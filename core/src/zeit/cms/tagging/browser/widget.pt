@@ -34,6 +34,12 @@ Only the first
 keywords are shown with the article.
 </div>
 
+<div tal:condition="view/tms_host">
+  <a i18n:translate=""
+     target="_blank"
+     tal:attributes="href string:http://${view/tms_host}/documents/show/${view/uuid}">Show in TMS</a>
+</div>
+
 </div>
 <script tal:content="string:
   new zeit.cms.tagging.Widget('${view/name}', ${view/keywords_shown});

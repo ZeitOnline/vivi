@@ -29,6 +29,7 @@ product_config = """
     publish-script true
     retract-script true
     dependency-publish-limit 100
+    blacklist /blacklist
 </product-config>
 """
 

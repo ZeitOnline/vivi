@@ -10,17 +10,18 @@ import zope.component
 import zope.interface
 
 
-class RelatedBase(object):
+class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
     zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
 
     def __init__(self, context):
         self.context = context
-        # make ReferenceProperty work (XXX slightly kludgy)
-        self.__parent__ = context
         self.xml = self.context.xml
         self.uniqueId = self.context.uniqueId
+        # Make ReferenceProperty and Persistent work (set parent last so we
+        # don't trigger a write).
+        self.__parent__ = context
 
 
 class RelatedContent(RelatedBase):

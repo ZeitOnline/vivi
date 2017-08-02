@@ -30,9 +30,6 @@ Let's open the document indicated by the javascript link:
     Rename
     http://xml.zeit.de/online/2007/01/Somalia
   </h1>
-  <div class="warning">
-    Note: Renaming destroys links.
-  </div>
   ...
 </div>
 

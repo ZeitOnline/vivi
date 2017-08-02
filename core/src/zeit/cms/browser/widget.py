@@ -631,6 +631,8 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
     def _toFieldValue(self, value):
         value = super(MarkdownWidget, self)._toFieldValue(
             value)
+        if not value:
+            return value
         try:
             return pypandoc.convert(value, to='html', format='markdown')
         except OSError:

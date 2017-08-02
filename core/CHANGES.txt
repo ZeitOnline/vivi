@@ -4,16 +4,236 @@ zeit.cms changes
 3.0 (unreleased)
 ----------------
 
-- ZON-3409: Use Celery for async tasks.
+- ZON-3409: Use zc3.celery for async tasks.
 
-- ZON-3409: Depend on `z3c.celery`.
 
-- ZON-3454: Remove view ``zeit.workflow.task_queue_length``.
+2.107.0 (unreleased)
+--------------------
 
-- ZON-3514:
+- ZON-3860: Support start_job() with URL parameter in publish.js
 
-  * Remove RemoteTaskHelper as it's no longer needed.
-  * Remove TaskServices.
+- ZON-3677: Remove `ICommonMetadata.push_news`, it's not used anymore
+
+- BUG-757: Collect errors during publish_multiple instead of aborting
+
+- BUG-199: Abort publish if content is already locked
+
+
+2.106.1 (2017-07-18)
+--------------------
+
+- BUG-748: Handle IAutomaticallyRenameable in timebased workflow
+  and object log
+
+
+2.106.0 (2017-07-18)
+--------------------
+
+- BUG-345: Delete objectlog entries on delete and move
+
+- BUG-345: Only reset actual publishinfo properties on copy
+
+- BUG-500: Add `retract_dependencies` flag to `IPublicationDependencies`
+
+
+2.105.1 (2017-07-13)
+--------------------
+
+- MAINT: Rename navigation source
+
+
+2.105.0 (2017-07-12)
+--------------------
+
+- ZON-4065: Support setting async principal explicitly
+
+
+2.104.3 (2017-07-10)
+--------------------
+
+- MAINT: Allow changing date_first_released in admin tab
+
+
+2.104.2 (2017-07-07)
+--------------------
+
+- MAINT: Remove obsolete feature toggle ``zeit.cms.rr-access``
+
+
+2.104.1 (2017-07-07)
+--------------------
+
+- MAINT: Add link to TMS to keyword widget
+
+
+2.104.0 (2017-07-07)
+--------------------
+
+- ZON-3983: Base SerieSource on ObjectSource
+
+- MAINT: Provide `toggleFormFieldHelp` JS to make zc.form combinationwidget happy
+
+
+2.103.1 (2017-07-08)
+--------------------
+
+- ZON-4065: Install separate task queue for brightcove imports
+
+
+2.103.0 (2017-06-27)
+--------------------
+
+- ZON-4008: Add title to PrintRessortSource
+
+
+2.102.0 (2017-06-22)
+--------------------
+
+- ZON-4012: JS for "insert bullet" button
+
+- ZON-4013: Support `warning` state in `limitedInput`
+
+- FIX: Improve styling of unloadable object references
+
+
+2.101.0 (2017-06-21)
+--------------------
+
+- MAINT: Send specific event when a user triggers a cache refresh
+
+- FIX: Empty blacklist config entry prevents publishing
+
+- FIX: Improve error handling with unloadable object references
+
+
+2.100.2 (2017-06-13)
+--------------------
+
+- BUG-730: Remove rename warning, its most common case is now prohibited anyway
+
+
+2.100.1 (2017-06-12)
+--------------------
+
+- ZON-3485: Respect missing_value in MarkdownWidget
+
+
+2.100.0 (2017-06-09)
+--------------------
+
+- BUG-730: Prevent renaming published content
+
+- ZON-3948: Implement configurable path blacklist to prevent publishing
+  product-config ``zeit.workflow:blacklist``
+
+
+2.99.1 (2017-06-01)
+-------------------
+
+- Fix broken release
+
+
+2.99.0 (2017-06-01)
+-------------------
+
+- BUG-669: Honor the configured field's missing_value in `Structure` descriptor
+
+
+2.98.0 (2017-05-22)
+-------------------
+
+- ZON-3917: Remove big share buttons field from ICommenMetadata
+
+- ZON-3942: Create retract jobs after publishing imported objects that
+  only have `released_to` set
+
+- BUG-301: Cancel scheduled publish jobs when timestamps are changed,
+  regardless of while checked-out or checked-in
+
+- BUG-562: RelatedBase must use XML-Persistent, so changes are stored
+  properly on commit
+
+
+2.97.5 (2017-05-11)
+-------------------
+
+- BUG-105: Remove unneded double-unpickle workaround; since it looks
+  as if it might provoke double free().
+
+
+2.97.4 (2017-05-10)
+-------------------
+
+- FIX: Serialize tag uniqueIds correctly in update json view
+
+
+2.97.3 (2017-05-10)
+-------------------
+
+- FIX: Serialize tag uniqueIds correctly in formlib widget
+
+
+2.97.2 (2017-05-05)
+-------------------
+
+- FIX: Synchronous multi publish works with ID's now
+
+
+2.97.1 (2017-04-12)
+-------------------
+
+- ZON-3851: Log article access changes in Vivi-Chronik.
+
+- MAINT: Dont start multipublish task if no objects to publish are given
+
+
+2.97.0 (2017-04-06)
+-------------------
+
+- ZON-3475: Make checkout lock timeout configurable
+  product-config ``zeit.cms:checkout-lock-timeout[-temporary]``
+
+
+2.96.6 (2017-03-20)
+-------------------
+
+- FIX: Work around the longstanding "context menu UI bug" by hiding
+  the main context menu when a child is selected
+
+
+2.96.5 (2017-03-15)
+-------------------
+
+- ZON-3792: Put ``access`` widget behind feature toggle ``zeit.cms.rr-access``
+
+
+2.96.4 (2017-03-10)
+-------------------
+
+- HOTFIX: Add bw-compat for persistent input instances of timebased publish jobs
+
+
+2.96.3 (2017-03-09)
+-------------------
+
+- FIX: IObjectLog needs ICMSContent to work.
+
+
+2.96.2 (2017-03-08)
+-------------------
+
+- FIX: Add Workflow log entry to publish_multiple
+
+
+2.96.1 (2017-03-01)
+-------------------
+
+- Handle dependencies in publish_multiple
+
+
+2.96.0 (2017-03-01)
+-------------------
+>>>>>>> master
 
 - ZON-3447: Implement ``IPublish().publish_multiple([id, id, id, ...])``
 

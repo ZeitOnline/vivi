@@ -5,23 +5,25 @@
     <span tal:replace="python:context.uniqueId"
           i18n:name="object-unique-id"/>
   </h1>
-  <div class="warning"
-       i18n:translate="rename-box-warning">
-    Note: Renaming destroys links. 
-  </div>
 
   <span class="nextURL" tal:content="view/nextURL" />
 
-  <form id="lightbox.form" action="#"
-        tal:attributes="action request/URL"
-        tal:content="structure view/form">
+  <tal:block condition="view/can_rename">
+    <form id="lightbox.form" action="#"
+          tal:attributes="action request/URL"
+          tal:content="structure view/form">
 
-  </form>
+    </form>
 
-  <script type="text/javascript">
-    $('#form\\.new_name').bind('change', function() {
-        var input = $(this);
-        input.val(zeit.cms.normalize_filename(input.val()));
-    });
-  </script>
-</div>  
+    <script type="text/javascript">
+      $('#form\\.new_name').bind('change', function() {
+          var input = $(this);
+          input.val(zeit.cms.normalize_filename(input.val()));
+      });
+    </script>
+  </tal:block>
+
+  <p tal:condition="not: view/can_rename" class="warning" i18n:translate="">
+    Only unpublished objects can be renamed.
+  </p>
+</div>

@@ -184,9 +184,6 @@
       />
   </class>
 
-  <!-- LXML -->
-  <subscriber handler=".lxmlpickle.clean_refs" />
-
   <class class=".reference.References">
     <require
       permission="zope.View"

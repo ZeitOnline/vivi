@@ -75,11 +75,11 @@ class ICommonMetadata(zope.interface.Interface):
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource())
+        source=zeit.cms.content.sources.RessortSource())
 
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubNavigationSource(),
+        source=zeit.cms.content.sources.SubRessortSource(),
         required=False)
 
     channels = zope.schema.Tuple(
@@ -266,11 +266,6 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=False)
 
-    push_news = zope.schema.Bool(
-        title=_('Content that was pushed to mobile'),
-        required=False,
-        default=False)
-
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
@@ -330,10 +325,6 @@ class ICommonMetadata(zope.interface.Interface):
     advertisement_text = zope.schema.Text(
         title=_("Advertisement text"),
         required=False)
-
-    bigshare_buttons = zope.schema.Bool(
-        title=_('Bigshare Buttons'),
-        default=False)
 
 
 class IProduct(zope.interface.Interface):
@@ -695,12 +686,12 @@ class IContentAdder(zope.interface.Interface):
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource(),
+        source=zeit.cms.content.sources.RessortSource(),
         required=False)
 
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubNavigationSource(),
+        source=zeit.cms.content.sources.SubRessortSource(),
         required=False)
 
     year = zope.schema.Int(

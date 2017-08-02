@@ -58,12 +58,15 @@ class Publish(object):
 
     def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
         """Publish multiple objects."""
+        if not objects:
+            logger.warning('Not starting a publishing task, because no objects'
+                           ' to publish were given')
+            return
         ids = []
         for obj in objects:
-            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
-                ids.append(obj.uniqueId)
-            else:
-                ids.append(obj)
+            obj = zeit.cms.interfaces.ICMSContent(obj)
+            self.log(obj, _('Collective Publication'))
+            ids.append(obj.uniqueId)
         return self._execute_task(MULTI_PUBLISH_TASK, ids, priority, async)
 
     def _execute_task(self, task, ids, priority, async, message=None):
@@ -86,7 +89,17 @@ class Publish(object):
         return priority
 
 
+class MultiPublishError(Exception):
+    pass
+
+
+MODE_PUBLISH = 'publish'
+MODE_RETRACT = 'retract'
+
+
 class PublishRetractTask(object):
+
+    mode = NotImplemented  # MODE_PUBLISH or MODE_RETRACT
 
     def __init__(self, jobid):
         self.jobid = jobid
@@ -112,8 +125,19 @@ class PublishRetractTask(object):
             message = _(
                 "Error during publish/retract: ${exc}: ${message}",
                 mapping=dict(exc=e.__class__.__name__, message=str(e)))
+            if isinstance(e, MultiPublishError):
+                to_log = []
+                for obj, error in e.args[0]:
+                    submessage = _(
+                        "Error during publish/retract: ${exc}: ${message}",
+                        mapping=dict(
+                            exc=error.__class__.__name__,
+                            message=str(error)))
+                    to_log.append((obj, submessage))
+            else:
+                to_log = [(obj, message) for obj in objs]
             raise z3c.celery.celery.HandleAfterAbort(
-                self._log_messages, [(obj, message) for obj in objs],
+                self._log_messages, to_log,
                 message=zope.i18n.translate(message, target_language='de'))
         else:
             return result
@@ -157,7 +181,7 @@ class PublishRetractTask(object):
         timer.mark('Cycled %s' % obj.uniqueId)
         return obj
 
-    def recurse(self, method, dependencies, obj, *args):
+    def recurse(self, method, obj, *args):
         """Apply method recursively on obj."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
@@ -184,21 +208,25 @@ class PublishRetractTask(object):
                 stack.extend(new_obj.values())
                 timer.mark('Recursed into %s' % (new_obj.uniqueId,))
 
-            if dependencies:
-                # Dive into dependent objects
-                deps = zeit.workflow.interfaces.IPublicationDependencies(
-                    new_obj)
+            # Dive into dependent objects
+            deps = zeit.workflow.interfaces.IPublicationDependencies(new_obj)
+            if self.mode == MODE_PUBLISH:
                 stack.extend(deps.get_dependencies())
-                timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
+            elif self.mode == MODE_RETRACT:
+                stack.extend(deps.get_retract_dependencies())
+            else:
+                raise ValueError('Task mode must be %r or %r, not %r' % (
+                    MODE_PUBLISH, MODE_RETRACT, self.mode))
+            timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
 
             if result_obj is None:
                 result_obj = new_obj
 
         return result_obj
 
-    def get_all_paths(self, obj, dependencies):
+    def get_all_paths(self, obj):
         unique_ids = []
-        self.recurse(self.get_unique_id, dependencies, obj, unique_ids)
+        self.recurse(self.get_unique_id, obj, unique_ids)
         # The publish/retract scripts doesn't want URLs but local paths, so
         # munge them.
         paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
@@ -228,12 +256,15 @@ class PublishRetractTask(object):
     @staticmethod
     def lock(obj, master=None):
         zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(obj.uniqueId))
+            zeit.connector.interfaces.ResourceInvalidatedEvent(obj.uniqueId))
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
-        if (lockable is not None and
-                not lockable.locked() and
-                not lockable.ownLock()):
-            lockable.lock(timeout=240)
+        if lockable is not None and not lockable.ownLock():
+            if lockable.locked():
+                raise zope.app.locking.interfaces.LockingError(
+                    _('The content object is locked by ${name}.',
+                      mapping=dict(name=lockable.locker())))
+            else:
+                lockable.lock(timeout=240)
         timer.mark('Locked %s' % obj.uniqueId)
         return obj
 
@@ -280,8 +311,11 @@ class PublishRetractTask(object):
 class PublishTask(PublishRetractTask):
     """Publish object."""
 
+    mode = MODE_PUBLISH
+
     def _run(self, objs):
         logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
+        errors = []
         published = []
         for obj in objs:
             info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
@@ -292,22 +326,33 @@ class PublishTask(PublishRetractTask):
                     _("Could not publish because conditions not satisifed."),
                     error=True)
                 continue
-            obj = self.recurse(self.lock, True, obj, obj)
-            obj = self.recurse(self.before_publish, True, obj, obj)
-            published.append(obj)
+            try:
+                obj = self.recurse(self.lock, obj, obj)
+                obj = self.recurse(self.before_publish, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+            else:
+                published.append(obj)
 
         if objs and not published:
             return "Could not publish because conditions not satisfied."
 
         paths = []
         for obj in published:
-            paths.extend(self.get_all_paths(obj, True))
+            paths.extend(self.get_all_paths(obj))
 
         self.call_publish_script(paths)
 
         for obj in published:
-            self.recurse(self.after_publish, True, obj, obj)
-            obj = self.recurse(self.unlock, True, obj, obj)
+            try:
+                self.recurse(self.after_publish, obj, obj)
+                obj = self.recurse(self.unlock, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+
+        if errors:
+            raise MultiPublishError(errors)
+
         return "Published."
 
     def before_publish(self, obj, master):
@@ -352,6 +397,8 @@ def PUBLISH_TASK(self, ids):
 class RetractTask(PublishRetractTask):
     """Retract an object."""
 
+    mode = MODE_RETRACT
+
     def _run(self, objs):
         logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
         for obj in objs:
@@ -361,9 +408,9 @@ class RetractTask(PublishRetractTask):
                     "Retracting object %s which is not published.",
                     obj.uniqueId)
 
-            obj = self.recurse(self.before_retract, False, obj, obj)
+            obj = self.recurse(self.before_retract, obj, obj)
             self.call_retract_script(obj)
-            self.recurse(self.after_retract, False, obj, obj)
+            self.recurse(self.after_retract, obj, obj)
         return "Retracted."
 
     def before_retract(self, obj, master):
@@ -381,7 +428,7 @@ class RetractTask(PublishRetractTask):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         retract_script = config['retract-script']
-        paths = reversed(self.get_all_paths(obj, False))
+        paths = reversed(self.get_all_paths(obj))
         self.call_script(retract_script, '\n'.join(paths))
 
     def after_retract(self, obj, master):

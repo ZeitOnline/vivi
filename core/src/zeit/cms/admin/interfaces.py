@@ -18,3 +18,8 @@ class IAdjustSemanticPublish(zope.interface.Interface):
         title=_('Adjust last published with semantic change'),
         required=False,
         max=zeit.cms.interfaces.MAX_PUBLISH_DATE)
+
+    adjust_first_released = zope.schema.Datetime(
+        title=_('Adjust first released'),
+        required=False,
+        max=zeit.cms.interfaces.MAX_PUBLISH_DATE)

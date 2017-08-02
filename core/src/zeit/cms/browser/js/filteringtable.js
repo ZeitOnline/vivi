@@ -73,6 +73,12 @@ zeit.cms.FilteringTable = gocept.Class.extend({
             return;
         }
 
+        var main_context_menu = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'li', 'secondary-actions');
+        if (main_context_menu) {
+            MochiKit.DOM.hideElement(main_context_menu);
+        }
+
         var metadata_url = base_url + '/@@metadata_preview';
 
         var d = MochiKit.Async.wait(0.25);

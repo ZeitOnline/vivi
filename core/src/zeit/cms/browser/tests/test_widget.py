@@ -1035,7 +1035,7 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
         from zeit.cms.browser.widget import MarkdownWidget
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
-        field = zope.schema.Text()
+        field = zope.schema.Text(required=False)
         field.__name__ = 'foo'
         self.widget = MarkdownWidget(field, self.request)
 
@@ -1047,3 +1047,7 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_converts_to_markdown_for_rendering(self):
         self.widget.setRenderedValue(u'<strong>umläut</strong>')
         self.assertEqual(u'**umläut**\n', self.widget._getFormValue())
+
+    def test_respects_missing_value(self):
+        self.request.form[self.widget.name] = ''
+        self.assertEqual(None, self.widget.getInputValue())

@@ -18,7 +18,8 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         if (override_result) {
             result = override_result;
         }
-        var d = self[action.getAttribute('action')](result);
+        var d = self[action.getAttribute('action')](
+            result, action.getAttribute('cms:param'));
         d.addCallbacks(
             function(result) {
                 self.done(action);
@@ -48,17 +49,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return self.checkin(context, '&semantic_change=None');
     },
 
-    publish: function(context) {
-        var self = this;
-        return self._start_job(context, 'publish');
-    },
-
-    retract: function(context) {
-        var self = this;
-        return self._start_job(context, 'retract');
-    },
-
-    _start_job: function(context, action) {
+    start_job: function(context, action) {
         var self = this;
         if (isNull(context)) {
             context = window.context_url;

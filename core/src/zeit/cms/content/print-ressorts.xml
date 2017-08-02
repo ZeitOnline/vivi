@@ -1,9 +1,9 @@
 <print-ressorts>
-  <ressort>Politik</ressort>
-  <ressort>Dossier</ressort>
-  <ressort>Wirtschaft</ressort>
-  <ressort>Wissen</ressort>
-  <ressort>Feuilleton</ressort>
-  <ressort>Entdecken</ressort>
-  <ressort>Chancen</ressort>
+  <ressort id="Politik">Politik</ressort>
+  <ressort id="Dossier">Dossier</ressort>
+  <ressort id="Wirtschaft">Wirtschaft</ressort>
+  <ressort id="Wissen">Wissen</ressort>
+  <ressort id="Feuilleton">Feuilleton</ressort>
+  <ressort id="Entdecken">Entdecken</ressort>
+  <ressort id="Chancen">Chanson</ressort>
 </print-ressorts>

@@ -1,20 +1,15 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
 import logging
-import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.relation.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
 import zope.component
 import zope.interface
-import zope.securitypolicy.interfaces
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
@@ -40,6 +35,11 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         writeable=WRITEABLE_ALWAYS)
 
     def can_publish(self):
+        if self.matches_blacklist():
+            self.error_messages = (
+                _('publish-preconditions-blacklist',
+                  mapping=self._error_mapping),)
+            return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         if self.urgent:
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         if self.edited and self.corrected:

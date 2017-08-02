@@ -130,14 +130,14 @@ class MasterSlaveDropdownUpdater(object):
 
 class SubNavigationUpdater(MasterSlaveDropdownUpdater):
 
-    master_source = zeit.cms.content.sources.NavigationSource()
-    slave_source = zeit.cms.content.sources.SubNavigationSource()
+    master_source = zeit.cms.content.sources.RessortSource()
+    slave_source = zeit.cms.content.sources.SubRessortSource()
 
 
 class ChannelUpdater(MasterSlaveDropdownUpdater):
 
-    master_source = zeit.cms.content.sources.NavigationSource()
-    slave_source = zeit.cms.content.sources.SubNavigationSource()
+    master_source = zeit.cms.content.sources.RessortSource()
+    slave_source = zeit.cms.content.sources.SubRessortSource()
 
 
 class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):

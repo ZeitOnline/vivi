@@ -157,7 +157,7 @@ class ContextViewsMenu(MenuItemBase, z3c.menu.simple.menu.ContextMenuItem):
 class SecondaryActions(DropDownMenuBase, MenuItemBase):
     """Menu for secondary actions."""
 
-    css = None
+    css = 'secondary-actions'
 
 
 class GlobalSecondaryActions(DropDownMenuBase, GlobalMenuItem):

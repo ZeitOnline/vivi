@@ -3,7 +3,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import mock
@@ -12,15 +11,33 @@ import pytz
 import shutil
 import time
 import transaction
+import unittest
 import z3c.celery.testing
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
-import zope.i18n
 import zope.app.appsetup.product
 import zope.component
+import zope.i18n
+
+
+class PublishTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    @unittest.skip('Needs to set principal for async task, ZON-4146')
+    def test_object_already_checked_out_should_raise(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
+        publish = zeit.cms.workflow.interfaces.IPublish(article)
+        # XXX principal='zope.producer'
+        publish._execute_task(
+            zeit.workflow.publish.PUBLISH_TASK, [article.uniqueId],
+            zeit.cms.workflow.interfaces.PRIORITY_LOW, async=False)
+        self.assertEqual(False, IPublishInfo(article).published)
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
@@ -145,6 +162,13 @@ class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             ['${name}: ${new_value}', 'Published', 'Retracted'],
             [x.message for x in logs])
+
+    def test_synchronous_multi_publishing_works_with_unique_ids(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(article)
+        info.urgent = True
+        IPublish(article).publish_multiple([article.uniqueId], async=False)
+        self.assertTrue(info.published)
 
 
 class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
@@ -312,7 +336,7 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-            IPublish(self.repository).publish_multiple([c1, c2])
+            IPublish(self.repository).publish_multiple([c1, c2], async=False)
             script.assert_called_with(['work/online/2007/01/Somalia',
                                        'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
@@ -327,3 +351,43 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual([
                 'http://xml.zeit.de/testcontent',
                 'http://xml.zeit.de/online/2007/01/Somalia'], ids)
+
+    def test_empty_list_of_objects_does_not_run_publish(self):
+        with mock.patch(
+                'zeit.workflow.publish.PublishTask'
+                '.call_publish_script') as script:
+            IPublish(self.repository).publish_multiple([], async=False)
+            self.assertFalse(script.called)
+
+    def test_error_in_one_item_continues_with_other_items(self):
+        c1 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        c2 = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero')
+        IPublishInfo(c1).urgent = True
+        IPublishInfo(c2).urgent = True
+
+        calls = []
+
+        def after_publish(context, event):
+            calls.append(context.uniqueId)
+            if context.uniqueId == c1.uniqueId:
+                raise RuntimeError('provoked')
+        self.zca.patch_handler(
+            after_publish,
+            (zeit.cms.interfaces.ICMSContent,
+             zeit.cms.workflow.interfaces.IPublishedEvent))
+
+        with self.assertRaises(RuntimeError):
+            IPublish(self.repository).publish_multiple([c1, c2], async=False)
+
+        # PublishedEvent still happens for c2, even though c1 raised
+        self.assertIn(c2.uniqueId, calls)
+        # Error is logged
+        log = zeit.objectlog.interfaces.ILog(c1)
+        self.assertEqual(
+            [u'${name}: ${new_value}',
+             u'Collective Publication',
+             u'Published',
+             u'Error during publish/retract: ${exc}: ${message}'],
+            [x.message for x in log.get_log()])

@@ -11,6 +11,7 @@ class ISection(zope.interface.Interface):
     z.c.checkout:IAfterCheckoutEvent.)
 
     Usage:
+
     * Create a specific section interface by inheriting from this,
       e.g. IMySection(ISection), and apply it to the folder.
     * Create an interface with which all content objects inside the folder
@@ -39,14 +40,16 @@ class IRessortSection(zope.interface.Interface):
     """Marks an ``ICommonMetadata.ressort`` value as a section.
 
     Usage:
+
     * Create a spefic section interface, e.g. IMySection(ISection)
-    * Register it an adapter to IRessortSection with the name of the ressort:
-      <adapter
-        factory="IMySection"
-        for="zeit.cms.content.interfaces.ICommonMetadata"
-        provides="zeit.cms.section.interfaces.IRessortSection"
-        name="MyRessort"
-        />
+    * Register it an adapter to IRessortSection with the name of the ressort::
+
+        <adapter
+          factory="IMySection"
+          for="zeit.cms.content.interfaces.ICommonMetadata"
+          provides="zeit.cms.section.interfaces.IRessortSection"
+          name="MyRessort"
+          />
     """
 
 

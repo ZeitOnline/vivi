@@ -1,4 +1,6 @@
+# coding: utf-8
 import gocept.testing.mock
+import json
 import mock
 import unittest
 import zeit.cms.tagging.testing
@@ -32,13 +34,39 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
             self.browser.contents)
 
 
-class InputWidget(zeit.cms.testing.SeleniumTestCase,
+class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_serializes_tag_ids_with_unicode_escapes(self):
+        self.setup_tags(u'Bärlin')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        self.assertEllipsis(r'...tag://B\\xe4rlin...', self.browser.contents)
+
+
+class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
+                 zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_serializes_tag_ids_with_unicode_escapes(self):
+        self.setup_tags(u'Bärlin')
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        b.open('@@update_tags')
+        self.assertEqual([{
+            'code': 'tag://B\\xe4rlin',
+            'label': u'Bärlin',
+            'pinned': False,
+        }], json.loads(b.contents)['tags'])
+
+
+class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
+                    zeit.cms.tagging.testing.TaggingHelper):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(InputWidget, self).setUp()
+        super(InputWidgetUI, self).setUp()
         self.patches = gocept.testing.mock.Patches()
         display = self.patches.add(
             'zeit.cms.tagging.browser.widget.Widget.display_update_button',
@@ -47,7 +75,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
 
     def tearDown(self):
         self.patches.reset()
-        super(InputWidget, self).tearDown()
+        super(InputWidgetUI, self).tearDown()
 
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
