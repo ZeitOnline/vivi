@@ -35,7 +35,7 @@ class UpdateKeywords(object):
         return 200, 'OK'
 
 
-@z3c.celery.task(urgency='search')
+@z3c.celery.task(queuename='search')
 def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(
