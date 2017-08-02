@@ -559,8 +559,8 @@ class MultiPublishTask(PublishTask):
                     "Could not publish because conditions not satisifed."))
                 continue
 
-            obj = self.recurse(self.lock, obj, obj)
             try:
+                obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_publish, obj, obj)
             except Exception, e:
                 errors.append((obj, e))
