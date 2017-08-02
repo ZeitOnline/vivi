@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import elasticsearch
 import json
 import zeit.cms.interfaces

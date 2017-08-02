@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import gocept.httpserverlayer.custom
 import json
 import mock
@@ -8,6 +9,7 @@ import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.image.testing
+import zeit.content.volume.testing
 import zeit.workflow.testing
 
 
@@ -45,6 +47,7 @@ product_config = """
     base-url http://localhost:[PORT]
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index zeit_pool
+    topic-redirect-prefix http://www.zeit.de
 </product-config>
 """
 
@@ -84,6 +87,7 @@ ZCML_LAYER = ZCMLLayer(
     product_config +
     zeit.workflow.testing.product_config +
     zeit.content.article.testing.product_config +
+    zeit.content.volume.testing.product_config +
     zeit.content.image.testing.product_config)
 
 

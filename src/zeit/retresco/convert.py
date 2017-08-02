@@ -115,7 +115,6 @@ class CommonMetadata(Converter):
         'lead_candidate': '',
         'page': '',
         'printRessort': 'print_ressort',
-        'push_news': '',
         'ressort': '',
         'sub_ressort': '',
         'subtitle': '',
@@ -164,6 +163,8 @@ class CommonMetadata(Converter):
                     x for x in self.context.authors if x],
             'channels': [' '.join([x for x in channel if x])
                          for channel in self.context.channels],
+            'keywords': [{'label': x.label, 'entity_type': x.entity_type,
+                          'pinned': x.pinned} for x in self.context.keywords],
             'product_id': self.context.product and self.context.product.id,
             'serie': self.context.serie and self.context.serie.serienname,
             'storystreams': [x.centerpage_id
@@ -188,11 +189,11 @@ class PublishInfo(Converter):
     def __call__(self):
         lsc = zeit.cms.content.interfaces.ISemanticChange(
             self.content).last_semantic_change
-        tms_date = self.context.date_first_released
+        tms_date = self.context.date_last_published_semantic
         if not tms_date:
-            tms_date = lsc
+            tms_date = self.context.date_first_released
         result = {
-            # Required field, but we only use it for display in the TMS UI.
+            # Required field
             'date': tms_date or MIN_DATE,
             'payload': {
                 'date_last_modified': IModified(

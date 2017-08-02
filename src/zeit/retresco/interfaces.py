@@ -19,12 +19,6 @@ class ITMS(zope.interface.Interface):
         """Analyzes the given ICMSContent and returns a list of
         zeit.cms.tagging.interfaces.ITag objects."""
 
-    def get_keywords(search_string):
-        """Get an iterable of tag objects which match the search string.
-
-        The tag objects provide zeit.cms.tagging.interfaces.ITag.
-        """
-
     def index(content, override_body=None):
         """Stores the given ICMSContent.
 
@@ -34,8 +28,33 @@ class ITMS(zope.interface.Interface):
     def enrich(content, intextlinks=True):
         """Performs TMS analysis ("enrich" and "in_text_links" if given)."""
 
+    def publish(content):
+        """Mark content as published in TMS.
+        This is normally done by the publisher, not vivi.
+        """
+
     def delete_id(uuid):
         """Deletes the document with the given IUUID."""
+
+    # vivi-internal
+
+    def get_keywords(search_string):
+        """Get an iterable of tag objects which match the search string.
+
+        The tag objects provide zeit.cms.tagging.interfaces.ITag.
+        """
+
+    def get_locations(search_string):
+        """Get an iterable of tag objects which match the search string
+        and have entity_type=location.
+        """
+
+    def get_article_data(content):
+        """Return the data stored in TMS for the given article as a dict,
+        unconverted i.e. in TMS format.
+        """
+
+    # zeit.web support
 
     def get_topicpages(start=0, rows=25):
         """Return an IResult containing dicts with topicpage metadata"""
@@ -57,7 +76,19 @@ class ITMS(zope.interface.Interface):
         Parameters for pagination are:
         `start`: offset the result by this many entries
         `rows`: return this many entries (i.e. items per page)
+        """
 
+    def get_article_body(uuid, timeout=None):
+        """Returns the (in-text-link annotated) article body XML."""
+
+    def get_article_keywords(uuid, timeout=None):
+        """Returns a list of ITag objects with an additional property `link`,
+        containing a path (without leading slash) to the corresponding
+        topicpage. Only keywords that have not already been in-text-linked in
+        this article are returned.
+
+        The result is sorted as follows: first pinned keywords, in the order
+        set in vivi, then remaining keywords sorted by descending TMS score.
         """
 
 

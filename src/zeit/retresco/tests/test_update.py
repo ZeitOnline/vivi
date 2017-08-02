@@ -34,7 +34,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         repository['t1'] = ExampleContentType()
         self.tms.enrich.assert_called_with(repository['t1'])
-        self.tms.index.assert_called_with(repository['t1'])
+        self.tms.index.assert_called_with(repository['t1'], None)
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -54,7 +54,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(content):
             pass
         self.tms.enrich.assert_called_with(content)
-        self.tms.index.assert_called_with(content)
+        self.tms.index.assert_called_with(content, None)
+        # Checkin should not change keywords on content
+        self.assertEqual(False, self.tms.generate_keyword_list.called)
 
     def test_index_should_be_called_from_async(self):
         run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
@@ -90,17 +92,20 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pub_info = mock.Mock()
             pub_info.published = False
             pub.return_value = pub_info
-            zeit.retresco.update.index(content, False, True)
+            zeit.retresco.update.index(content, enrich=False, publish=True)
             self.assertFalse(self.tms.publish.called)
 
     def test_publish_should_be_called_on_index_if_res_published(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
-            content = self.repository['testcontent']
-            pub_info = mock.Mock()
-            pub_info.published = True
-            pub.return_value = pub_info
-            zeit.retresco.update.index(content, False, True)
-            self.assertTrue(self.tms.publish.called)
+            with mock.patch(
+                    'zeit.retresco.interfaces.ITMSRepresentation') as tmsrep:
+                tmsrep().return_value = {'not empty': ''}
+                content = self.repository['testcontent']
+                pub_info = mock.Mock()
+                pub_info.published = True
+                pub.return_value = pub_info
+                zeit.retresco.update.index(content, enrich=False, publish=True)
+                self.assertTrue(self.tms.publish.called)
 
     def test_publish_should_not_be_called_on_index_without_option(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
