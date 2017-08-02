@@ -35,7 +35,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
             self.assertEqual(True, apply_async.called)
             self.assertIn('countdown', apply_async.call_args[1])
             self.assertEqual(
-                PRIORITY_TIMEBASED, apply_async.call_args[1]['urgency'])
+                PRIORITY_TIMEBASED, apply_async.call_args[1]['queuename'])
 
     def test_should_schedule_job_for_renamed_uniqueId(self):
         run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'

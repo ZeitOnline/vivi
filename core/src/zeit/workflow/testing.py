@@ -34,13 +34,15 @@ product_config = """
 """
 
 
-CELERY_QUEUES = ('homepage', 'highprio', 'default', 'lowprio', 'timebased')
+CELERY_QUEUES = (
+    'default', 'publish_homepage', 'publish_highprio', 'publish_default',
+    'publish_lowprio', 'publish_timebased')
 ADDITIONAL_CELERY_CONFIG = {
     'task_track_started': True,
     'task_routes': ('zeit.cms.celery.route_task',),
     'task_default_queue': 'default',
     'task_queues': [kombu.Queue(q) for q in CELERY_QUEUES],
-    'URGENCY_TO_QUEUE': {q: q for q in CELERY_QUEUES}
+    'QUEUENAMES': {q: q for q in CELERY_QUEUES}
 }
 
 

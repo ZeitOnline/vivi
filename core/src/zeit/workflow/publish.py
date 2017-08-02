@@ -74,7 +74,7 @@ class Publish(object):
             if message:
                 self.log(self.context, message)
             return task.apply_async(
-                (ids,), urgency=self.get_urgency(priority))
+                (ids,), queuename=self.get_priority(priority))
         else:
             task(ids)
 
@@ -82,7 +82,7 @@ class Publish(object):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, msg)
 
-    def get_urgency(self, priority):
+    def get_priority(self, priority):
         if priority is None:
             priority = zeit.cms.workflow.interfaces.IPublishPriority(
                 self.context)

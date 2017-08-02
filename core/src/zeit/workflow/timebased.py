@@ -94,7 +94,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
         if delay > 0:
             job_id = task.apply_async(
-                ([uniqueId],), countdown=delay, urgency=PRIORITY_TIMEBASED).id
+                ([uniqueId],), countdown=delay,
+                queuename=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
         return job_id

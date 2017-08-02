@@ -187,7 +187,8 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
             IPublish(content).publish()
         apply_async.assert_called_with(
-            ([u'http://xml.zeit.de/testcontent'],), urgency='lowprio')
+            ([u'http://xml.zeit.de/testcontent'],),
+            queuename='publish_lowprio')
 
 
 def get_object_log_messages(zodb_path, obj):
