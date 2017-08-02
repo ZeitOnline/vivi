@@ -2,6 +2,7 @@ import gocept.async.tests
 import json
 import mock
 import urllib2
+import zeit.cms.interfaces
 import zeit.retresco.testing
 import zope.testbrowser.testing
 
@@ -38,10 +39,11 @@ class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
         with mock.patch('zeit.retresco.update.index') as index:
             with zeit.cms.testing.site(self.getRootFolder()):
                 gocept.async.tests.process()
-            self.assertEqual(2, index.call_count)
-            self.assertEqual(
-                'http://xml.zeit.de/online/2007/01/Somalia',
-                index.call_args[0][0])
-            self.assertEqual(
-                {'enrich': True, 'publish': True},
-                index.call_args[1])
+                self.assertEqual(2, index.call_count)
+                self.assertEqual(
+                    zeit.cms.interfaces.ICMSContent(
+                        'http://xml.zeit.de/online/2007/01/Somalia'),
+                    index.call_args[0][0])
+                self.assertEqual(
+                    {'enrich': True, 'publish': True},
+                    index.call_args[1])
