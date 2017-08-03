@@ -22,9 +22,9 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
             self):
         workflow = TimeBasedWorkflow(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'))
-        run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
+        async = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
         with mock.patch('celery.Task.apply_async') as apply_async, \
-                mock.patch(run_instantly, return_value=False):
+                mock.patch(async, new=True):
             workflow.add_job(
                 zeit.workflow.publish.PUBLISH_TASK,
                 datetime.now(pytz.UTC) + timedelta(1))
@@ -37,9 +37,9 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
                 PRIORITY_TIMEBASED, apply_async.call_args[1]['queuename'])
 
     def test_should_schedule_job_for_renamed_uniqueId(self):
-        run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
+        async = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
         with mock.patch('celery.Task.apply_async') as apply_async, \
-                mock.patch(run_instantly, return_value=False), \
+                mock.patch(async, new=True), \
                 checked_out(self.repository['testcontent']) as co:
             rn = zeit.cms.repository.interfaces.IAutomaticallyRenameable(co)
             rn.renameable = True
