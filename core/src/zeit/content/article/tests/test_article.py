@@ -294,7 +294,7 @@ class DefaultTemplateByContentType(
 
 
 class AccessRestrictsAMPandFBIA(
-    zeit.content.article.testing.FunctionalTestCase):
+        zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
         super(AccessRestrictsAMPandFBIA, self).setUp()
@@ -403,7 +403,8 @@ class ArticleElementReferencesTest(
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.repository['article_with_empty_ref'])))
 
-    def test_articles_element_references_is_empty_if_no_references_are_set(self):
+    def test_articles_element_references_is_empty_if_no_references_are_set(
+            self):
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
 
