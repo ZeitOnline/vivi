@@ -23,8 +23,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
         workflow = TimeBasedWorkflow(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'))
         run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
-        with zeit.cms.testing.site(self.getRootFolder()), \
-                mock.patch('celery.Task.apply_async') as apply_async, \
+        with mock.patch('celery.Task.apply_async') as apply_async, \
                 mock.patch(run_instantly, return_value=False):
             workflow.add_job(
                 zeit.workflow.publish.PUBLISH_TASK,
