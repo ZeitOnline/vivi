@@ -1,6 +1,9 @@
+import plone.testing
 import zeit.cms.testing
+import zeit.cms.repository.interfaces
 import zeit.content.article.testing
 import zeit.content.cp.testing
+import zope.component
 
 product_config = """\
 <product-config zeit.arbeit>
@@ -20,3 +23,16 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
+
+
+class Layer(plone.testing.Layer):
+
+    defaultBases = (ZCML_LAYER,)
+
+    def testSetUp(self):
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            repository['arbeit'] = zeit.cms.repository.folder.Folder()
+
+LAYER = Layer()

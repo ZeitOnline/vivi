@@ -16,6 +16,7 @@ setup(
     namespace_packages=['zeit'],
     install_requires=[
         'grokcore.component',
+        'plone.testing',
         'zeit.cms',
         'zeit.content.article',
         'zeit.content.cp',
