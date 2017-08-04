@@ -4,6 +4,8 @@ zeit.cms changes
 2.107.0 (unreleased)
 --------------------
 
+- ARBEIT-96: Add "Arbeit" ressort to test ressorts.xml
+
 - ZON-3860: Support start_job() with URL parameter in publish.js
 
 - ZON-3677: Remove `ICommonMetadata.push_news`, it's not used anymore
