@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
+import zope.interface
+import zope.schema
 
 
 class IZARSection(zeit.cms.section.interfaces.ISection):
@@ -33,3 +36,17 @@ class IZARCenterPage(
         zeit.content.cp.interfaces.ICenterPage,
         zeit.cms.section.interfaces.ISectionMarker):
     pass
+
+
+class IZARInfobox(
+        zeit.content.infobox.interfaces.IInfobox,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
+
+
+class IDebate(zope.interface.Interface):
+
+    action_url = zope.schema.TextLine(
+        title=_("Debate action URL"),
+        description=_('debate-action-url-description'),
+        required=False)

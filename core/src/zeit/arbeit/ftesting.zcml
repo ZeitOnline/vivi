@@ -9,6 +9,9 @@
 
   <include package="zeit.content.article" file="ftesting.zcml"/>
   <include package="zeit.content.cp" file="ftesting.zcml"/>
+  <include package="zeit.content.infobox" file="ftesting.zcml"/>
+
   <include package="zeit.arbeit" />
+  <include package="zeit.arbeit.browser" />
 
 </configure>
