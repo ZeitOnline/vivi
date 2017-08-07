@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.7.8 (unreleased)
+1.8.0 (2017-08-07)
 ------------------
 
 - ZON-3860: Show lightbox with spinner while publishing content
