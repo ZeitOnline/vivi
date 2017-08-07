@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.7.6 (unreleased)
+2.7.6 (2017-08-07)
 ------------------
 
 - ZON-4006: Update to mobile field split
