@@ -2,7 +2,7 @@ zeit.campus changes
 ====================
 
 
-1.6.5 (unreleased)
+1.6.5 (2017-08-07)
 ------------------
 
 - ZON-4006: Update to mobile field split
