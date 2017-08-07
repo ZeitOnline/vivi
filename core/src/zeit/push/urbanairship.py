@@ -2,8 +2,10 @@
 from __future__ import absolute_import
 from datetime import datetime, timedelta
 import grokcore.component as grok
+import jinja2.runtime
 import json
 import logging
+import mock
 import pkg_resources
 import pytz
 import urbanairship
@@ -101,8 +103,13 @@ class Message(zeit.push.message.Message):
     APP_IDENTIFIER = 'zeitapp'
 
     def render(self):
+        return self.validate_template(self._render())
+
+    def _render(self):
         template = self.find_template(self.config.get('payload_template'))
-        return self.validate_template(template(self.template_variables))
+        # Kludgy way to make jinja autoescape work for JSON instead of HTML.
+        with mock.patch('jinja2.runtime.escape', new=json_escape):
+            return template(self.template_variables, autoescape=True)
 
     @property
     def template_variables(self):
@@ -168,6 +175,13 @@ def from_product_config():
         web_application_key=config['urbanairship-web-application-key'],
         web_master_secret=config['urbanairship-web-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
+
+
+def json_escape(value):
+    if isinstance(value, basestring):
+        return value.replace('"', r'\"')
+    else:
+        return value
 
 
 def print_payload_documentation():

@@ -187,8 +187,9 @@ class MessageTest(zeit.push.testing.TestCase,
 
     def test_template_escapes_variables_for_json(self):
         template_content = u"""{"messages":[{
-            "title": "{{article.title}}"
-            "subtitle": "{{foo}}"
+            "title": "{{article.title}}",
+            "subtitle": "{{foo}}",
+            "undefined": "{{nonexistent}}"
         }]}"""
         self.create_payload_template(template_content, 'bar.json')
         message = zope.component.getAdapter(
@@ -196,9 +197,10 @@ class MessageTest(zeit.push.testing.TestCase,
             zeit.push.interfaces.IMessage, name=self.name)
         message.config['payload_template'] = 'bar.json'
         message.config['foo'] = 'with "quotes"'
-        payload = message.render()
+        payload = message.render()[0]
         self.assertEqual('"Quoted" Title', payload['title'])
         self.assertEqual('with "quotes"', payload['subtitle'])
+        self.assertEqual('', payload['undefined'])
 
 
 class IntegrationTest(zeit.push.testing.TestCase):
