@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.13.8 (unreleased)
+3.13.8 (2017-08-07)
 -------------------
 
 - MAINT: Remove unused RSS block and feed caching functionality
