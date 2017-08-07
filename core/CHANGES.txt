@@ -1,6 +1,12 @@
 zeit.newsletter changes
 =======================
 
+1.4.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.4.1 (2017-08-07)
 ------------------
 
