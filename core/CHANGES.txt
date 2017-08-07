@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.15.1 (unreleased)
+2.15.1 (2017-08-07)
 -------------------
 
 - MAINT: Remove superfluous IEditable interface, it's only used for
