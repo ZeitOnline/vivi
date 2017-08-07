@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.107.0 (unreleased)
+2.107.0 (2017-08-07)
 --------------------
 
 - ARBEIT-96: Add "Arbeit" ressort to test ressorts.xml
