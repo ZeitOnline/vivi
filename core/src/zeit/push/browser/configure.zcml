@@ -65,4 +65,13 @@
     permission="zope.View"
     />
 
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    name="payload-template"
+    class=".mobile.PreviewPayload"
+    template="preview-payload.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
 </configure>
