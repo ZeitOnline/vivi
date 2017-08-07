@@ -185,6 +185,21 @@ class MessageTest(zeit.push.testing.TestCase,
             zeit.push.interfaces.IMessage, name=self.name)
         self.assertStartsWith(message.app_link, 'zeitapp://content')
 
+    def test_template_escapes_variables_for_json(self):
+        template_content = u"""{"messages":[{
+            "title": "{{article.title}}"
+            "subtitle": "{{foo}}"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(title='"Quoted" Title'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        message.config['foo'] = 'with "quotes"'
+        payload = message.render()
+        self.assertEqual('"Quoted" Title', payload['title'])
+        self.assertEqual('with "quotes"', payload['subtitle'])
+
 
 class IntegrationTest(zeit.push.testing.TestCase):
 
