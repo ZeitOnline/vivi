@@ -19,8 +19,8 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.content.text.interfaces.IJinjaTemplate['title'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
-    def __call__(self, variables):
-        template = Template(self.text)
+    def __call__(self, variables, **kw):
+        template = Template(self.text, **kw)
         return template.render(variables)
 
 
