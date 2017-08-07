@@ -38,9 +38,7 @@ class PreviewPayload(object):
 
     @cachedproperty
     def rendered(self):
-        template = self.message.find_template(
-            self.message.config.get('payload_template'))
-        return template(self.message.template_variables)
+        return self.message._render()
 
     def rendered_linenumbers(self):
         result = []
