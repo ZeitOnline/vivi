@@ -1,23 +1,16 @@
 # coding=utf-8
 from datetime import datetime
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 import json
 import mock
 import os
 import pytz
-import unittest
-import urlparse
 import gocept.testing.assertion
 import urbanairship.push.core
-import zeit.cms.testing
-import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-import zope.app.appsetup.product
 import zope.component
-import zope.i18n.translationdomain
 
 
 def send(self):
