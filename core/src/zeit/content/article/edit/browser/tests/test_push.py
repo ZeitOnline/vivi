@@ -117,4 +117,5 @@ class SocialFBIATest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
         s.waitForElementPresent(
             'css=.fieldname-is_instant_article .checkboxdisabled')
-        self.assertEqual(False, s.isEditable('css=#social\.is_instant_article'))
+        self.assertEqual(
+            False, s.isEditable('css=#social\.is_instant_article'))

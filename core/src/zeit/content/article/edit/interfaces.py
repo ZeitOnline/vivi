@@ -466,13 +466,17 @@ class IAudio(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class CitationLayoutSource(LayoutSourceBase):
+class CitationLayoutSource(zeit.cms.content.sources.XMLSource):
 
-    values = collections.OrderedDict([
-        (u'short', _('short')),
-        (u'wide', _('wide')),
-        (u'double', _('double')),
-    ])
+    product_configuration = 'zeit.content.article'
+    config_url = 'citation-layout-source'
+    attribute = 'id'
+
+    def isAvailable(self, node, context):
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super(CitationLayoutSource, self).isAvailable(node, article)
+
+CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 
 
 class ICitation(zeit.edit.interfaces.IBlock):
@@ -488,21 +492,10 @@ class ICitation(zeit.edit.interfaces.IBlock):
         title=_('URL'),
         required=False)
 
-    text_2 = zope.schema.Text(
-        title=_('Citation 2'),
-        required=False)
-
-    attribution_2 = zope.schema.TextLine(
-        title=_('Attribution 2'),
-        required=False)
-
-    url_2 = zope.schema.URI(
-        title=_('URL 2'),
-        required=False)
-
     layout = zope.schema.Choice(
         title=_('Layout'),
-        source=CitationLayoutSource(),
+        source=CITATION_LAYOUT_SOURCE,
+        default=u'default',
         required=False)
 
 

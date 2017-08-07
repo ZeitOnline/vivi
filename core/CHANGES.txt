@@ -4,7 +4,7 @@ zeit.content.article changes
 3.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ARBEIT-86: Add citation layout source
 
 
 3.25.0 (2017-08-07)

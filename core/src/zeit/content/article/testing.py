@@ -34,6 +34,7 @@ product_config = """
   infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
   template-source file://{base}/edit/tests/templates.xml
   header-module-source file://{base}/edit/tests/header-modules.xml
+  citation-layout-source file://{base}/edit/tests/citation-layouts.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
