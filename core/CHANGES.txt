@@ -1,6 +1,12 @@
 zeit.brightcove changes
 =======================
 
+2.10.7 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 2.10.6 (2017-08-08)
 -------------------
 
