@@ -4,7 +4,7 @@ zeit.cms changes
 2.107.1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- FIX: Translate collected publish_multi errormessages
 
 
 2.107.0 (2017-08-07)

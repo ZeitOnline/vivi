@@ -247,11 +247,18 @@ class PublishRetractTask(object):
                                 message=str(e)))
                 if isinstance(e, MultiPublishError):
                     for content, error in e.args[0]:
+                        # Like zeit.cms.browser.error.ErrorView.message
+                        args = getattr(error, 'args', None)
+                        if args:
+                            errormessage = zope.i18n.translate(
+                                args[0], target_language='de')
+                        else:
+                            errormessage = str(error)
                         submessage = _(
                             "Error during publish/retract: ${exc}: ${message}",
                             mapping=dict(
                                 exc=error.__class__.__name__,
-                                message=str(error)))
+                                message=errormessage))
                         self.log(content, submessage)
                 else:
                     self.log(obj, message)
