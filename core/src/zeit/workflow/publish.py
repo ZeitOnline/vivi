@@ -240,7 +240,8 @@ class PublishRetractTask(object):
                     continue
             except Exception, e:
                 transaction.abort()
-                logger.error("Error during publish/retract", exc_info=True)
+                logger.error('Error during publish/retract', exc_info=True)
+                messageid = 'Error during publish/retract: ${exc}: ${message}'
                 if isinstance(e, MultiPublishError):
                     all_errors = []
                     for content, error in e.args[0]:
@@ -251,21 +252,17 @@ class PublishRetractTask(object):
                                 args[0], target_language='de')
                         else:
                             errormessage = str(error)
-                        submessage = _(
-                            "Error during publish/retract: ${exc}: ${message}",
-                            mapping=dict(
-                                exc=error.__class__.__name__,
-                                message=errormessage))
+                        submessage = _(messageid, mapping={
+                            'exc': error.__class__.__name__,
+                            'message': errormessage})
                         self.log(content, submessage)
                         all_errors.append((content, u'%s: %s' % (
                             error.__class__.__name__, errormessage)))
-                    message = _(
-                        "Error during publish/retract: ${exc}: ${message}",
-                        mapping=dict(exc='', message=str(all_errors)))
+                    message = _(messageid, mapping={
+                        'exc': '', 'message': str(all_errors)})
                 else:
-                    message = _(
-                        "Error during publish/retract: ${exc}: ${message}",
-                        mapping=dict(exc=e.__class__.__name__, message=str(e)))
+                    message = _(messageid, mapping={
+                        'exc': e.__class__.__name__, 'message': str(e)})
                     self.log(obj, message)
                 break
             else:
