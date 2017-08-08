@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.7.7 (unreleased)
+2.8.0 (2017-08-08)
 ------------------
 
 - ZON-2752: Add `has_advertisement` field
