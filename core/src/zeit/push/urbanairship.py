@@ -233,7 +233,7 @@ def print_payload_documentation():
     template_text = pkg_resources.resource_string(
         __name__, 'tests/fixtures/payloadtemplate.json')
 
-    print u"""\
+    print """\
 Um ein neues Pushtemplate zu erstellen muss unter
 http://vivi.zeit.de/repository/data/urbanairship-templates eine neue
 Textdatei angelegt werden. In dieser Textdatei kann dann mit der Jinja2
@@ -248,12 +248,12 @@ Pushnachricht zugegriffen werden:"""
         zeit.content.article.interfaces.IArticle)}
     print json.dumps(vars, indent=2, sort_keys=True)
 
-    print (u"\nIm Folgenden nun ein Beispiel wie ein solches Template"
-           u" funktioniert. Nutzt man das Template")
+    print ("\nIm Folgenden nun ein Beispiel wie ein solches Template"
+           " funktioniert. Nutzt man das Template")
     print template_text
-    print u"\nmit der push-Konfiguration"
+    print "\nmit der push-Konfiguration"
     print json.dumps(message.config, indent=2, sort_keys=True)
-    print u"\nwerden folgende Payloads an Urbanairship versandt:"
+    print "\nwerden folgende Payloads an Urbanairship versandt:"
     template = zeit.content.text.jinja.JinjaTemplate()
     template.text = template_text
     message.find_template = lambda x: template
