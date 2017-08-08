@@ -85,6 +85,10 @@ class IVideo(IVideoContent):
 
     seo_slug = zope.interface.Attribute('URL tail for SEO.')
 
+    has_advertisement = zope.schema.Bool(
+        title=_('Has advertisement'),
+        default=True)
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 

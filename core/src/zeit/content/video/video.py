@@ -73,7 +73,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'expires', 'video_still', 'flv_url', 'thumbnail',
-         'video_still_copyright'))
+         'video_still_copyright', 'has_advertisement'))
 
     id_prefix = 'vid'
 
