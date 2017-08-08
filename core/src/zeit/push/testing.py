@@ -98,6 +98,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
     def testSetUp(self):
         self.create_template('', 'foo.json')
+        self.create_template('', 'eilmeldung.json')
 
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()

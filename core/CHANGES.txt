@@ -4,7 +4,7 @@ zeit.push changes
 1.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3677: Move `getDefaultTitle` to payload source
 
 
 1.21.0 (2017-08-07)

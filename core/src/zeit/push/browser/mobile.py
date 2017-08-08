@@ -1,10 +1,7 @@
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import json
 import logging
 import sys
-import zeit.content.text.jinja
 import zeit.push.interfaces
-import zope.component
 import zope.security.proxy
 
 log = logging.getLogger(__name__)
@@ -16,14 +13,9 @@ class FindTitle(object):
         name = self.request.form.get('q')
         if not name:
             return ''
-        template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
-            name)
-        try:
-            result = template(zeit.content.text.jinja.MockDict())
-            return json.loads(result)['default_title']
-        except:
-            log.debug('No default title for %s', name, exc_info=True)
-            return ''
+        source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+        template = source.find(name)
+        return source.getDefaultTitle(template)
 
 
 class PreviewPayload(object):
