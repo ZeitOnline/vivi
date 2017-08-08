@@ -241,11 +241,8 @@ class PublishRetractTask(object):
             except Exception, e:
                 transaction.abort()
                 logger.error("Error during publish/retract", exc_info=True)
-                message = _("Error during publish/retract: ${exc}: ${message}",
-                            mapping=dict(
-                                exc=e.__class__.__name__,
-                                message=str(e)))
                 if isinstance(e, MultiPublishError):
+                    all_errors = []
                     for content, error in e.args[0]:
                         # Like zeit.cms.browser.error.ErrorView.message
                         args = getattr(error, 'args', None)
@@ -260,7 +257,15 @@ class PublishRetractTask(object):
                                 exc=error.__class__.__name__,
                                 message=errormessage))
                         self.log(content, submessage)
+                        all_errors.append((content, u'%s: %s' % (
+                            error.__class__.__name__, errormessage)))
+                    message = _(
+                        "Error during publish/retract: ${exc}: ${message}",
+                        mapping=dict(exc='', message=str(all_errors)))
                 else:
+                    message = _(
+                        "Error during publish/retract: ${exc}: ${message}",
+                        mapping=dict(exc=e.__class__.__name__, message=str(e)))
                     self.log(obj, message)
                 break
             else:
