@@ -4,7 +4,7 @@ zeit.content.article changes
 3.25.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3677: Fill in default title from breaking news push payload template
 
 
 3.25.1 (2017-08-07)

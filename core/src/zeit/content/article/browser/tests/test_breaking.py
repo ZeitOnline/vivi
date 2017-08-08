@@ -117,7 +117,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
-                {'type': 'mobile', 'enabled': False,
+                {'type': 'mobile', 'enabled': False, 'title': 'Default title',
                  'payload_template': 'eilmeldung.json'},
                 push.message_config)
             self.assertIn(

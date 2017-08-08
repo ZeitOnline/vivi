@@ -72,10 +72,13 @@ class Add(zeit.cms.browser.form.AddForm,
     def create(self, data):
         message_config = []
         if data.pop('mobile', False):
+            source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
+            # XXX hard-coded value
+            template = source.find('eilmeldung.json')
             message_config.append({
                 'type': 'mobile', 'enabled': True,
-                # XXX hard-coded value
-                'payload_template': 'eilmeldung.json',
+                'title': source.getDefaultTitle(template),
+                'payload_template': template.__name__,
             })
         if data.pop('homepage', False):
             message_config.append(
