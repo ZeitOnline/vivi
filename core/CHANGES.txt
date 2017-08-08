@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.10.5 (unreleased)
+2.10.5 (2017-08-08)
 -------------------
 
 - ZON-2752: Import `economics=ad_supported` as `has_advertisement`
