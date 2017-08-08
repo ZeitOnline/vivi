@@ -94,6 +94,8 @@ class Video(Converter):
         data['name'] = cmsobj.title
         data['description'] = cmsobj.teaserText
         data['long_description'] = cmsobj.subtitle
+        data['economics'] = (
+            'AD_SUPPORTED' if cmsobj.has_advertisement else 'FREE')
 
         custom['authors'] = ' '.join(
             x.target.uniqueId for x in cmsobj.authorships)
@@ -158,6 +160,7 @@ class Video(Converter):
         cmsobj.banner = custom.get('banner_id')
         cmsobj.dailyNewsletter = self.cms_bool(custom.get('newsletter'))
         cmsobj.has_recensions = self.cms_bool(custom.get('recensions'))
+        cmsobj.has_advertisement = data.get('economics') == 'AD_SUPPORTED'
         cmsobj.ressort = custom.get('ressort')
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')
