@@ -152,3 +152,16 @@ class PublishAllContent(zeit.cms.testing.SeleniumTestCase,
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.assertElementNotPresent('id=publish.errors')
         s.waitForPageToLoad()
+
+    def test_multi_publish_errors_are_logged_on_volume(self):
+        s = self.selenium
+        self.open('/repository/ausgabe/@@admin.html', self.login_as)
+        with mock.patch(
+                'zeit.workflow.publish.MultiPublishTask.recurse') as recurse:
+            recurse.side_effect = RuntimeError('provoked')
+            s.click('id=form.actions.publish-all')
+            s.waitForElementPresent('css=li.busy[action=start_job]')
+            s.waitForElementNotPresent('css=li.busy[action=start_job]')
+            s.waitForPageToLoad()
+        s.click('css=li.workflow')
+        s.assertText('css=.fieldname-logs .widget', '*provoked*')
