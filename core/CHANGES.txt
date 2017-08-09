@@ -4,7 +4,7 @@ zeit.content.video changes
 2.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-2752: Show `has_advertisement` in form
 
 
 2.8.1 (2017-08-09)
