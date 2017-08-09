@@ -38,6 +38,12 @@ class TestVideo(zeit.content.video.testing.TestCase):
         video = factory.next()  # in repository
         self.assertEqual('VIDEO', video.serie.serienname)
 
+    def test_has_advertisement_defaults_to_true(self):
+        # For bw-compat to videos imported before we recognized the field.
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        self.assertEqual(True, video.has_advertisement)
+
 
 @pytest.mark.parametrize(
     'title,supertitle,result', [
