@@ -25,7 +25,7 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
-import z3c.celery.celery
+import z3c.celery.layer
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
@@ -42,6 +42,8 @@ import zope.testing.renormalizing
 
 
 class ZCMLLayer(plone.testing.Layer):
+
+    defaultBases = (z3c.celery.layer.EAGER_LAYER,)
 
     def __init__(self, config_file, product_config=None,
                  name='ZCMLLayer', module=None):
@@ -72,10 +74,6 @@ class ZCMLLayer(plone.testing.Layer):
             self.setup.local_product_config)
         self.setup.zca = gocept.zcapatch.Patches()
 
-        # This can be done here as the end to end tests use a separate celery
-        # app:
-        z3c.celery.CELERY.conf.task_always_eager = True
-
     def testTearDown(self):
         # We must *not* call zope.testing.cleanup.cleanUp() here, since that
         # (among many other things) empties the zope.component registry.
@@ -89,7 +87,6 @@ class ZCMLLayer(plone.testing.Layer):
             pass
         else:
             connector._reset()
-        z3c.celery.CELERY.conf.task_always_eager = False
 
         zeit.cms.workflow.mock.reset()
 
