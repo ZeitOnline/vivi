@@ -152,6 +152,8 @@ class PublishAllContent(zeit.cms.testing.SeleniumTestCase,
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.assertElementNotPresent('id=publish.errors')
         s.waitForPageToLoad()
+        s.click('css=li.workflow')
+        s.assertText('css=.fieldname-logs .widget', '*Collective Publication*')
 
     def test_multi_publish_errors_are_logged_on_volume(self):
         s = self.selenium
