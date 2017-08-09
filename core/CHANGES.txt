@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.8.1 (unreleased)
+2.8.1 (2017-08-09)
 ------------------
 
 - ZON-2752: Respect `has_advertisement` default True
