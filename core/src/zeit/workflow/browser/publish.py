@@ -49,10 +49,13 @@ class Publish(object):
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):
 
-    def __call__(self, job):
+    def __call__(self, job, objectlog=False):
         async_result = celery.result.AsyncResult(job)
         if async_result.failed():
-            self.send_message(unicode(async_result.result), type='error')
+            error = unicode(async_result.result)
+            self.send_message(error, type='error')
+            if objectlog:
+                zeit.objectlog.interfaces.ILog(self.context).log(error)
 
 
 class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):

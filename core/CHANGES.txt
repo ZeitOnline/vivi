@@ -7,6 +7,12 @@ zeit.cms changes
 - ZON-3409: Use zc3.celery for async tasks.
 
 
+2.108.0 (2017-08-09)
+--------------------
+
+- BUG-757: Allow storing publish_multiple errors in objectlog
+
+
 2.107.1 (2017-08-08)
 --------------------
 
