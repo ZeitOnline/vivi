@@ -346,14 +346,12 @@ class PublishTask(PublishRetractTask):
             else:
                 published.append(obj)
 
-        if objs and not published:
-            return "Could not publish because conditions not satisfied."
-
         paths = []
         for obj in published:
             paths.extend(self.get_all_paths(obj))
 
-        self.call_publish_script(paths)
+        if paths:
+            self.call_publish_script(paths)
 
         for obj in published:
             try:
