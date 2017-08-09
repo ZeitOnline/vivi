@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.107.2 (unreleased)
+2.108.0 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- BUG-757: Allow storing publish_multiple errors in objectlog
 
 
 2.107.1 (2017-08-08)

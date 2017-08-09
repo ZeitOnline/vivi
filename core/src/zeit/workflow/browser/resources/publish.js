@@ -18,8 +18,18 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         if (override_result) {
             result = override_result;
         }
-        var d = self[action.getAttribute('action')](
-            result, action.getAttribute('cms:param'));
+
+        var method = self[action.getAttribute('action')];
+        var params = [];
+        for (var i = 0; i < action.attributes.length - 1; i++) {
+            attr = action.attributes[i];
+            if (attr.name.indexOf('cms:param') == 0) params.push(attr);
+        }
+        params.sort(function(a, b) { return a.name.localeCompare(b.name); });
+        params = params.map(function(x) { return x.value; });
+        params.unshift(result);
+
+        var d = method.apply(self, params);
         d.addCallbacks(
             function(result) {
                 self.done(action);
@@ -49,11 +59,12 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return self.checkin(context, '&semantic_change=None');
     },
 
-    start_job: function(context, action) {
+    start_job: function(context, action, objectlog) {
         var self = this;
         if (isNull(context)) {
             context = window.context_url;
         }
+        console.log(context, action, objectlog);
         var d = MochiKit.Async.loadJSONDoc(context + '/@@' + action);
         d.addCallbacks(function(job) {
             if (job == false) {
@@ -61,7 +72,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             }
             return MochiKit.Async.callLater(
                 1, function() {
-                    return self.poll_until_complete(context, job);
+                    return self.poll_until_complete(context, job, objectlog);
                 });
             },
             function(err) {
@@ -74,27 +85,32 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return d;
     },
 
-    poll_until_complete: function(context, job) {
+    poll_until_complete: function(context, job, objectlog) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
             context + '/@@job-status', {'job': job});
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                return self.check_job_error(context, job);
+                return self.check_job_error(context, job, objectlog);
             }
             // XXX check for error cases as well.
             return MochiKit.Async.callLater(
-                1, bind(self.poll_until_complete, self), context, job);
+                1, bind(self.poll_until_complete, self),
+                context, job, objectlog);
         });
         d.addErrback(function(err) { zeit.cms.log_error(err); return err; });
         return d;
     },
 
-    check_job_error: function(context, job) {
+    check_job_error: function(context, job, objectlog) {
         var self = this;
+        if (isUndefinedOrNull(objectlog)) {
+            objectlog = 'False';
+        }
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            context + '/@@flash-job-errors', {'job': job});
+            context + '/@@flash-job-errors',
+            {'job': job, 'objectlog': objectlog});
         d.addErrback(function(err) { zeit.cms.log_error(err); return err; });
         return d;
     },

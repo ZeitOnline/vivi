@@ -50,7 +50,7 @@ class Publish(object):
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):
 
-    def __call__(self, job):
+    def __call__(self, job, objectlog=False):
         job = int(job)
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
@@ -63,6 +63,8 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
         error = tasks.getResult(job)
         if error is not None:
             self.send_message(error, type='error')
+            if objectlog:
+                zeit.objectlog.interfaces.ILog(self.context).log(error)
 
 
 class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
