@@ -122,20 +122,32 @@ class PublishRetractTask(object):
             raise
         except Exception as e:
             logger.error("Error during publish/retract", exc_info=True)
-            message = _(
-                "Error during publish/retract: ${exc}: ${message}",
-                mapping=dict(exc=e.__class__.__name__, message=str(e)))
+            messageid = 'Error during publish/retract: ${exc}: ${message}'
             if isinstance(e, MultiPublishError):
                 to_log = []
+                all_errors = []
                 for obj, error in e.args[0]:
-                    submessage = _(
-                        "Error during publish/retract: ${exc}: ${message}",
-                        mapping=dict(
-                            exc=error.__class__.__name__,
-                            message=str(error)))
+                    # Like zeit.cms.browser.error.ErrorView.message
+                    args = getattr(error, 'args', None)
+                    if args:
+                        errormessage = zope.i18n.translate(
+                            args[0], target_language='de')
+                    else:
+                        errormessage = str(error)
+
+                    submessage = _(messageid, mapping={
+                        'exc': error.__class__.__name__,
+                        'message': errormessage})
                     to_log.append((obj, submessage))
+                    all_errors.append((obj, u'%s: %s' % (
+                        error.__class__.__name__, errormessage)))
+                message = _(messageid, mapping={
+                    'exc': '', 'message': str(all_errors)})
             else:
+                message = _(messageid, mapping={
+                    'exc': e.__class__.__name__, 'message': str(e)})
                 to_log = [(obj, message) for obj in objs]
+
             raise z3c.celery.celery.HandleAfterAbort(
                 self._log_messages, to_log,
                 message=zope.i18n.translate(message, target_language='de'))

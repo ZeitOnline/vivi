@@ -7,8 +7,16 @@ zeit.cms changes
 - ZON-3409: Use zc3.celery for async tasks.
 
 
-2.107.0 (unreleased)
+2.107.1 (2017-08-08)
 --------------------
+
+- FIX: Translate collected publish_multi errormessages
+
+
+2.107.0 (2017-08-07)
+--------------------
+
+- ARBEIT-96: Add "Arbeit" ressort to test ressorts.xml
 
 - ZON-3860: Support start_job() with URL parameter in publish.js
 
