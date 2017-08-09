@@ -1,14 +1,10 @@
-import SimpleHTTPServer
 import __future__
-import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
-import os
 import pkg_resources
 import plone.testing
 import re
-import time
 import transaction
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.testcontenttype
