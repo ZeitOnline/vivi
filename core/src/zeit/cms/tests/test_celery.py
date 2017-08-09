@@ -1,7 +1,6 @@
 from celery import shared_task
 from mock import patch
 import transaction
-import zeit.cms.testing
 import zeit.workflow.testing
 
 
@@ -15,10 +14,8 @@ def no_default_queue():
     """Task without a default queue."""
 
 
-class RouteTaskTests(zeit.cms.testing.FunctionalTestCase):
+class RouteTaskTests(zeit.workflow.testing.CeleryTestCase):
     """Testing ..celery.route_task()."""
-
-    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
 
     def get_queue_name(self, task, **kw):
         result = task.apply_async(**kw)

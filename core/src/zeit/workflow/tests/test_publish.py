@@ -199,9 +199,7 @@ def get_object_log_messages(zodb_path, obj):
         return [x.message for x in log.get_log(obj)]
 
 
-class CeleryPublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
+class CeleryPublishEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
     def test_publish_via_celery_end_to_end(self):
         somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
@@ -258,9 +256,7 @@ Done http://xml.zeit.de/online/2007/01/Saarland-urgent,
             self.layer['zodb_path'], saarland_content)
 
 
-class CeleryPublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
+class CeleryPublishErrorEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
     def setUp(self):
         super(CeleryPublishErrorEndToEndTest, self).setUp()

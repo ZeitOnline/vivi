@@ -98,9 +98,7 @@ class PrintImportSchedulingTest(zeit.cms.testing.FunctionalTestCase):
             self.assertFalse(setup_job.called)
 
 
-class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.ZEIT_CELERY_END_TO_END_LAYER
+class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
     def setUp(self):
         super(TimeBasedCeleryEndToEndTest, self).setUp()

@@ -125,6 +125,12 @@ ZEIT_CELERY_END_TO_END_LAYER = plone.testing.Layer(
     name="ZeitCeleryEndToEndLayer")
 
 
+class CeleryTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZEIT_CELERY_END_TO_END_LAYER
+    level = 2
+
+
 class WorkflowScriptsLayer(plone.testing.Layer):
     """Layer which copies the publish/retract scripts and makes them
     executable."""
