@@ -49,6 +49,8 @@ class TestPublish(
         s.waitForElementPresent('css=li.busy[action=start_job]')
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
+        s.click('css=li.workflow')
+        s.assertText('css=.fieldname-logs .widget', '*Published*')
 
     def test_publish_with_warnings_are_displayed_but_offer_force_publish(self):
         # Even though validation warnings should be displayed, the user should
@@ -59,9 +61,11 @@ class TestPublish(
         s.waitForElementPresent('css=#publish\.errors')
         s.assertTextPresent('Validation Warning')
         s.click('link=Publish anyway')
-        s.waitForElementPresent('css=ol#worklist')
-        s.assertTextPresent('Publishing')
+        s.waitForElementPresent('css=li.busy[action=start_job]')
+        s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
+        s.click('css=li.workflow')
+        s.assertText('css=.fieldname-logs .widget', '*Published*')
 
     def test_error_during_publish_should_be_messaged(self):
         import zope.app.appsetup.product
@@ -142,6 +146,8 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase,
         s.waitForElementPresent('css=li.busy[action=start_job]')
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
+        s.click('css=li.workflow')
+        s.assertText('css=.fieldname-logs .widget', '*Retracted*')
         self.assertFalse(self.publish_info.published)
 
 
