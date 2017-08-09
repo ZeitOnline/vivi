@@ -23,7 +23,6 @@ product_config = """
     area-config-source file://{fixtures}/areas.xml
     module-config-source file://{fixtures}/blocks.xml
     cp-extra-url file://{fixtures}/cpextra.xml
-    cp-feed-max-items 200
     cp-types-url file://{fixtures}/cp-types.xml
     feed-update-minimum-age 30
     scales-fullgraphical-url file://{fixtures}/scales-fullgraphical.xml
