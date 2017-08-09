@@ -39,3 +39,11 @@ class IInfoboxReference(zope.interface.Interface):
         title=_('Infobox'),
         required=False,
         source=infoboxSource)
+
+
+class IDebate(zope.interface.Interface):
+
+    action_url = zope.schema.TextLine(
+        title=_("Debate action URL"),
+        description=_('debate-action-url-description'),
+        required=False)
