@@ -1,6 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import lxml.objectify
 import rwproperty
+import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -62,3 +64,13 @@ class InfoboxType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.infobox.interfaces.IInfobox
     type = 'infobox'
     title = _('Infobox')
+
+
+class Debate(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    grok.implements(zeit.content.infobox.interfaces.IDebate)
+
+    action_url = zeit.cms.content.dav.DAVProperty(
+        zeit.content.infobox.interfaces.IDebate['action_url'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'debate_action_url')

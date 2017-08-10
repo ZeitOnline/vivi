@@ -1,10 +1,11 @@
 zeit.content.infobox changes
 ============================
 
-1.24.2 (unreleased)
+1.25.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ARBEIT-96: Move debate interface und its dav property to z.c.infobox
+  because it is use in z.arbeit und z.campus
 
 
 1.24.1 (2016-08-23)
