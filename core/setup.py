@@ -20,7 +20,7 @@ setup(
         'zeit.cms>=2.107.0.dev0',
         'zeit.content.article',
         'zeit.content.cp',
-        'zeit.content.infobox',
+        'zeit.content.infobox>=1.25.0.dev0',
         'setuptools',
         'zope.component',
         'zope.interface',
