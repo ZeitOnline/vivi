@@ -2,7 +2,7 @@ zeit.arbeit changes
 ====================
 
 
-1.1.0 (unreleased)
+1.1.0 (2017-08-10)
 ------------------
 
 - ARBEIT-96: Add IZARInfobox just like IZCOInfobox
