@@ -6,6 +6,8 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.article
+import zeit.content.article.edit.citation
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
@@ -94,12 +96,13 @@ class Display(zeit.cms.browser.view.Base):
         for i, content in enumerate(self.context):
             try:
                 texts = zope.component.getMultiAdapter(
-                    (content, self.request), ITeaserRepresentation,
+                    (content, self.request),
+                    zeit.content.cp.interfaces.ITeaserRepresentation,
                     name=getattr(self.context.layout, 'id', ''))
             except zope.component.ComponentLookupError:
                 texts = zope.component.getMultiAdapter(
-                    (content, self.request), ITeaserRepresentation)
-
+                    (content, self.request),
+                    zeit.content.cp.interfaces.ITeaserRepresentation)
             if i == 0:
                 self.header_image = self.get_image(content)
 
@@ -141,21 +144,17 @@ class Display(zeit.cms.browser.view.Base):
             return self.url(image, '@@raw')
 
 
-class ITeaserRepresentation(zope.interface.Interface):
-    pass
-
-
-def make_text_entry(metadata, css_class, name=None):
-    if name is None:
-        name = css_class
-    return dict(css_class=css_class, content=getattr(metadata, name))
-
-
 @grok.adapter(
     zeit.cms.interfaces.ICMSContent,
     zope.publisher.interfaces.IPublicationRequest)
-@grok.implementer(ITeaserRepresentation)
+@grok.implementer(zeit.content.cp.interfaces.ITeaserRepresentation)
 def default_teaser_representation(content, request):
+
+    def make_text_entry(metadata, css_class, name=None):
+        if name is None:
+            name = css_class
+        return dict(css_class=css_class, content=getattr(metadata, name))
+
     texts = []
     metadata = zeit.cms.content.interfaces.ICommonMetadata(
         content, None)
@@ -177,42 +176,16 @@ def default_teaser_representation(content, request):
                 list_repr, 'teaserTitle', 'title'))
     return texts
 
-# There are some problems with this approach:
-#  1. Every new quote Teaser which is added as a quote layout needs to be
-#     registered here
-#  2. This is not DRY, we check for a citation in friedbert as well (Shove
-#     it to z.c.article)
-#  3. This depends on z.c.article which depends on z.c.cp. Cyclic imports
-#     incoming
-@grok.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zope.publisher.interfaces.IPublicationRequest,
-    name='zar-quote-yellow')
-@grok.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zope.publisher.interfaces.IPublicationRequest,
-    name='zar-quote-red')
-@grok.implementer(ITeaserRepresentation)
+
 def quote_teaser_representation(content, request):
     article = zeit.content.article.interfaces.IArticle(content, None)
-    if not article:
+    citation = zeit.content.article.edit.citation.find_first_citation(article)
+    if not (article and citation):
         return default_teaser_representation(content, request)
-    texts = []
-    # This is simmilar in friedbert as well
-    # Is there a good place in z.c.article
-    body = zeit.content.article.edit.interfaces.IEditableBody(article, None)
-    citation = None
-    for element in body.values():
-        if zeit.content.article.edit.interfaces.ICitation.providedBy(element):
-            citation = zeit.content.article.edit.interfaces.ICitation(
-                element).text
-            break
-    else:
-        return default_teaser_representation(content, request)
-    # Only add the citation as teaser text
-    texts.append(dict(css_class='teaserText', content=citation))
-    for name in ('teaserTitle', 'supertitle'):
-        texts.append(dict(css_class=name, content=''))
+    texts = list()
+    texts.append(dict(css_class='supertitle', content=''))
+    texts.append(dict(css_class='teaserTitle', content='Zitat:'))
+    texts.append(dict(css_class='teaserText', content=citation.text))
     return texts
 
 

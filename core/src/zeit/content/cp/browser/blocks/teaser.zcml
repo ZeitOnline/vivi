@@ -103,4 +103,22 @@
     weight="150"
     />
 
+  <!-- Quote Teaser -->
+
+  <adapter
+    for="zeit.cms.interfaces.ICMSContent
+         zope.publisher.interfaces.IPublicationRequest"
+    provides="zeit.content.cp.interfaces.ITeaserRepresentation"
+    name="zar-quote-red"
+    factory="zeit.content.cp.browser.blocks.teaser.quote_teaser_representation"
+  />
+
+  <adapter
+    for="zeit.cms.interfaces.ICMSContent
+         zope.publisher.interfaces.IPublicationRequest"
+    provides="zeit.content.cp.interfaces.ITeaserRepresentation"
+    name="zar-quote-yellow"
+    factory="zeit.content.cp.browser.blocks.teaser.quote_teaser_representation"
+  />
+
 </configure>

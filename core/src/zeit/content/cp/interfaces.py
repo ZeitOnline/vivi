@@ -524,6 +524,10 @@ class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """
 
 
+class ITeaserRepresentation(zope.interface.Interface):
+    """Specifies how a Teaser should be represented on a CP"""
+
+
 class ICPFeed(zope.interface.Interface):
     """Feed section of a CenterPage"""
 
