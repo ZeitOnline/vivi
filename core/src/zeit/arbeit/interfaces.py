@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.cms.repository.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
+import zeit.content.infobox.interfaces
 
 
 class IZARSection(zeit.cms.section.interfaces.ISection):
@@ -31,5 +33,11 @@ class IZARArticle(
 
 class IZARCenterPage(
         zeit.content.cp.interfaces.ICenterPage,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
+
+
+class IZARInfobox(
+        zeit.content.infobox.interfaces.IInfobox,
         zeit.cms.section.interfaces.ISectionMarker):
     pass

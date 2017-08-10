@@ -1,0 +1,32 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    for="..interfaces.IZARFolder"
+    name="zeit.content.infobox.Add"
+    permission="zeit.AddContent"
+    class=".infobox.Add"
+    menu="zeit-add-menu" title="Infobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IZARInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".infobox.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IZARInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".infobox.Display"
+    permission="zope.View"
+    />
+
+</configure>

@@ -12,13 +12,6 @@
     />
 
   <adapter
-    factory=".interfaces.IZARSection"
-    for="zeit.cms.content.interfaces.ICommonMetadata"
-    provides="zeit.cms.section.interfaces.IRessortSection"
-    name="Arbeit"
-    />
-
-  <adapter
     factory=".interfaces.IZARFolder"
     for=".interfaces.IZARSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
@@ -37,6 +30,20 @@
     for=".interfaces.IZARSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
     name="centerpage"
+    />
+
+  <adapter
+    factory=".interfaces.IZARInfobox"
+    for=".interfaces.IZARSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="infobox"
+    />
+
+    <adapter
+    factory=".interfaces.IZARSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="Arbeit"
     />
 
 </configure>
