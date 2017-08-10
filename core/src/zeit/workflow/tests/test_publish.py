@@ -11,7 +11,6 @@ import pytz
 import shutil
 import time
 import transaction
-import unittest
 import z3c.celery.testing
 import zeit.cms.related.interfaces
 import zeit.cms.testing
@@ -27,16 +26,15 @@ class PublishTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.LAYER
 
-    @unittest.skip('Needs to set principal for async task, ZON-4146')
     def test_object_already_checked_out_should_raise(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
-        publish = zeit.cms.workflow.interfaces.IPublish(article)
-        # XXX principal='zope.producer'
-        publish._execute_task(
-            zeit.workflow.publish.PUBLISH_TASK, [article.uniqueId],
-            zeit.cms.workflow.interfaces.PRIORITY_LOW, async=False)
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            with self.assertRaises(Exception) as info:
+                IPublish(article).publish(async=False)
+            self.assertIn('LockingError', str(info.exception))
         self.assertEqual(False, IPublishInfo(article).published)
 
 
