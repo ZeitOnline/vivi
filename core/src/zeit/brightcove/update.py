@@ -94,7 +94,6 @@ class import_video(object):
 # Triggered by BC notification webhook, which we receive in
 # zeit.brightcove.json.update.Notification
 @z3c.celery.task(queuename='brightcove')
-# XXX principal=('zeit.brightcove', 'index-principal'), see ZON-4146
 def import_video_async(video_id):
     import_video(zeit.brightcove.convert.Video.find_by_id(video_id))
 
