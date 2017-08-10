@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.10.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-769: Use field defaults if values are missing from BC data
 
 
 2.10.6 (2017-08-08)

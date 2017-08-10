@@ -214,6 +214,12 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
 
+    def test_missing_values_use_field_default(self):
+        bc = BCVideo()
+        cms = CMSVideo()
+        bc.apply_to_cms(cms)
+        self.assertTrue(cms.commentsAllowed)
+
 
 class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
 
