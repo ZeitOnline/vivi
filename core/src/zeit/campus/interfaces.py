@@ -6,6 +6,7 @@ import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
 import zope.interface
 
@@ -65,14 +66,6 @@ class ITopic(zope.interface.Interface):
 
     label = zope.schema.TextLine(
         title=_("Topic label"),
-        required=False)
-
-
-class IDebate(zope.interface.Interface):
-
-    action_url = zope.schema.TextLine(
-        title=_("Debate action URL"),
-        description=_('debate-action-url-description'),
         required=False)
 
 

@@ -94,16 +94,5 @@
       permission="zope.View"
       />
   </class>
-
-  <class class=".infobox.Debate">
-    <require
-      interface=".interfaces.IDebate"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IDebate"
-      permission="zeit.EditContent"
-      />
-  </class>
-
+  
 </configure>
