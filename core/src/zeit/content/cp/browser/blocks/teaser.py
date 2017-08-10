@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -91,26 +92,13 @@ class Display(zeit.cms.browser.view.Base):
         teasers = []
         self.header_image = None
         for i, content in enumerate(self.context):
-            texts = []
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                content, None)
-            if metadata is not None:
-                supertitle_property = (
-                    'teaserSupertitle' if metadata.teaserSupertitle
-                    else 'supertitle')
-                texts.append(self._make_text_entry(
-                    metadata, 'supertitle', supertitle_property))
-                for name in ('teaserTitle', 'teaserText'):
-                    texts.append(self._make_text_entry(metadata, name))
-            else:
-                # General-purpose fallback, mostly to support IAuthor teasers.
-                list_repr = zope.component.queryMultiAdapter(
-                    (content, self.request),
-                    zeit.cms.browser.interfaces.IListRepresentation)
-                if list_repr is None:
-                    continue
-                texts.append(self._make_text_entry(
-                    list_repr, 'teaserTitle', 'title'))
+            try:
+                texts = zope.component.getMultiAdapter(
+                    (content, self.request), ITeaserRepresentation,
+                    name=getattr(self.context.layout, 'id', ''))
+            except zope.component.ComponentLookupError:
+                texts = zope.component.getMultiAdapter(
+                    (content, self.request), ITeaserRepresentation)
 
             if i == 0:
                 self.header_image = self.get_image(content)
@@ -125,11 +113,6 @@ class Display(zeit.cms.browser.view.Base):
         for amount in columns:
             self.columns.append(teasers[idx:idx + amount])
             idx += amount
-
-    def _make_text_entry(self, metadata, css_class, name=None):
-        if name is None:
-            name = css_class
-        return dict(css_class=css_class, content=getattr(metadata, name))
 
     def get_image(self, content, image_pattern=None):
         if image_pattern is None:
@@ -156,6 +139,81 @@ class Display(zeit.cms.browser.view.Base):
                 image_pattern, thumbnail=True))
         else:
             return self.url(image, '@@raw')
+
+
+class ITeaserRepresentation(zope.interface.Interface):
+    pass
+
+
+def make_text_entry(metadata, css_class, name=None):
+    if name is None:
+        name = css_class
+    return dict(css_class=css_class, content=getattr(metadata, name))
+
+
+@grok.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zope.publisher.interfaces.IPublicationRequest)
+@grok.implementer(ITeaserRepresentation)
+def default_teaser_representation(content, request):
+    texts = []
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(
+        content, None)
+    if metadata is not None:
+        supertitle_property = (
+            'teaserSupertitle' if metadata.teaserSupertitle
+            else 'supertitle')
+        texts.append(make_text_entry(
+            metadata, 'supertitle', supertitle_property))
+        for name in ('teaserTitle', 'teaserText'):
+            texts.append(make_text_entry(metadata, name))
+    else:
+        # General-purpose fallback, mostly to support IAuthor teasers.
+        list_repr = zope.component.queryMultiAdapter(
+            (content, request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+        if list_repr is not None:
+            texts.append(make_text_entry(
+                list_repr, 'teaserTitle', 'title'))
+    return texts
+
+# There are some problems with this approach:
+#  1. Every new quote Teaser which is added as a quote layout needs to be
+#     registered here
+#  2. This is not DRY, we check for a citation in friedbert as well (Shove
+#     it to z.c.article)
+#  3. This depends on z.c.article which depends on z.c.cp. Cyclic imports
+#     incoming
+@grok.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zope.publisher.interfaces.IPublicationRequest,
+    name='zar-quote-yellow')
+@grok.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zope.publisher.interfaces.IPublicationRequest,
+    name='zar-quote-red')
+@grok.implementer(ITeaserRepresentation)
+def quote_teaser_representation(content, request):
+    article = zeit.content.article.interfaces.IArticle(content, None)
+    if not article:
+        return default_teaser_representation(content, request)
+    texts = []
+    # This is simmilar in friedbert as well
+    # Is there a good place in z.c.article
+    body = zeit.content.article.edit.interfaces.IEditableBody(article, None)
+    citation = None
+    for element in body.values():
+        if zeit.content.article.edit.interfaces.ICitation.providedBy(element):
+            citation = zeit.content.article.edit.interfaces.ICitation(
+                element).text
+            break
+    else:
+        return default_teaser_representation(content, request)
+    # Only add the citation as teaser text
+    texts.append(dict(css_class='teaserText', content=citation))
+    for name in ('teaserTitle', 'supertitle'):
+        texts.append(dict(css_class=name, content=''))
+    return texts
 
 
 class Drop(zeit.edit.browser.view.Action):

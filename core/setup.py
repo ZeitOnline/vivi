@@ -32,6 +32,7 @@ setup(
         'xml-compare',
         'zc.sourcefactory',
         'zeit.cms>=2.106.0.dev0',
+        'zeit.content.article',
         'zeit.content.image>=2.5.1.dev0',
         'zeit.content.quiz>=0.4.2',
         'zeit.content.text>=2.0.2.dev0',
