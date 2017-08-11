@@ -127,15 +127,22 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('foo', b.getControl('Title').value)
 
 
-class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
+class FunctionalDisplayTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
-        super(DisplayImagePositionsTest, self).setUp()
+        super(FunctionalDisplayTest, self).setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
+
+    def view(self, block):
+        view = zeit.content.cp.browser.blocks.teaser.Display()
+        view.context = block
+        view.request = self.request
+        view.update()
+        return view
 
     def create_teaserblock(self, layout, area='teaser-mosaic'):
         if area == 'teaser-mosaic':
@@ -160,13 +167,6 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
             block.insert(0, article)
         return block
 
-    def view(self, block):
-        view = zeit.content.cp.browser.blocks.teaser.Display()
-        view.context = block
-        view.request = self.request
-        view.update()
-        return view
-
     def test_layout_without_image_pattern_shows_no_header_image(self):
         view = self.view(self.create_teaserblock(layout='short'))
         self.assertEqual(None, view.header_image)
@@ -178,24 +178,6 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
             view.header_image)
-
-
-class DisplayNonMetadataTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
-
-    def setUp(self):
-        super(DisplayNonMetadataTest, self).setUp()
-        self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-
-    def view(self, block):
-        view = zeit.content.cp.browser.blocks.teaser.Display()
-        view.context = block
-        view.request = self.request
-        view.update()
-        return view
 
     def test_shows_list_representation_title_for_non_metadata(self):
         block = self.cp['lead'].create_item('teaser')
