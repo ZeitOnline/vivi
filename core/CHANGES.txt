@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.25.3 (unreleased)
+3.26.0 (unreleased)
 -------------------
 
 - ARBEIT-104: Add function to find first citation in article
