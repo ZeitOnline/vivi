@@ -1,4 +1,3 @@
-from celery import shared_task
 from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -10,6 +9,7 @@ import subprocess
 import tempfile
 import threading
 import time
+import z3c.celery
 import z3c.celery.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -18,13 +18,10 @@ import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.objectlog.interfaces
 import zope.app.appsetup.product
-import zope.app.security.interfaces
 import zope.component
 import zope.event
 import zope.i18n
 import zope.interface
-import zope.publisher.interfaces
-import zope.security.management
 
 
 logger = logging.getLogger(__name__)
@@ -399,7 +396,7 @@ class PublishTask(PublishRetractTask):
         return obj
 
 
-@shared_task(bind=True)
+@z3c.celery.task(bind=True)
 def PUBLISH_TASK(self, ids):
     return PublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 
@@ -455,7 +452,7 @@ class RetractTask(PublishRetractTask):
             zeit.cms.repository.interfaces.IRepository)
 
 
-@shared_task(bind=True)
+@z3c.celery.task(bind=True)
 def RETRACT_TASK(self, ids):
     return RetractTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 
@@ -478,7 +475,7 @@ class MultiPublishTask(PublishTask):
         raise z3c.celery.celery.Abort(result)
 
 
-@shared_task(bind=True)
+@z3c.celery.task(bind=True)
 def MULTI_PUBLISH_TASK(self, ids):
     return MultiPublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 

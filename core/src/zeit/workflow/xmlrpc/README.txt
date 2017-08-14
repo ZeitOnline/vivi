@@ -33,6 +33,7 @@ False
 Good. Let's publish:
 
 >>> job_id = publish('http://xml.zeit.de/online/2007/01/Somalia')
+>>> run_tasks()
 >>> workflow.published
 True
 
@@ -48,6 +49,7 @@ False
 Retract:
 
 >>> job_id = retract('http://xml.zeit.de/online/2007/01/Somalia')
+>>> run_tasks()
 >>> workflow.published
 False
 
@@ -67,3 +69,10 @@ Clean up:
     >>> import zeit.cms.repository.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
+
+    >>> import transaction
+    >>> def run_tasks():
+    ...     """Wait for already enqueued publish job, by running another job;
+    ...     since we only have on worker, this works out fine."""
+    ...     zeit.cms.testing.celery_ping.delay().get()
+    ...     transaction.abort()

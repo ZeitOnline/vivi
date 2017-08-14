@@ -71,10 +71,8 @@ class TestPublish(
             s = self.selenium
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
-            s.verifyText(
-                'css=li.error',
-                'Publishing\n'
-                'HandleAfterAbort: Error during publish/retract: OSError*')
+            s.assertText(
+                'css=li.error', 'Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 

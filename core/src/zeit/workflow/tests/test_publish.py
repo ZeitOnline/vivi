@@ -1,3 +1,4 @@
+from StringIO import StringIO
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
@@ -5,6 +6,7 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
+import logging
 import mock
 import os
 import pytz
@@ -113,7 +115,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
 
     def publish(self, content):
         IPublishInfo(content).urgent = True
-        IPublish(content).publish()
+        IPublish(content).publish(async=False)
 
     def test_should_not_publish_more_dependencies_than_the_limit_breadth(self):
         content = self.repository['testcontent']
@@ -189,15 +191,27 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
             queuename='publish_lowprio')
 
 
-def get_object_log_messages(zodb_path, obj):
-    """Return the messages of an object log from an persistent, opened ZODB."""
-    with z3c.celery.testing.open_zodb_copy(zodb_path) as root:
-        log = zope.component.getUtility(
-            zeit.objectlog.interfaces.IObjectLog, context=root)
-        return [x.message for x in log.get_log(obj)]
+def get_object_log(obj):
+    log = zeit.objectlog.interfaces.ILog(obj)
+    return [x.message for x in log.get_log()]
 
 
-class CeleryPublishEndToEndTest(zeit.workflow.testing.CeleryTestCase):
+class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(PublishEndToEndTest, self).setUp()
+        self.log = StringIO()
+        self.handler = logging.StreamHandler(self.log)
+        logging.root.addHandler(self.handler)
+        self.oldlevel = logging.root.level
+        logging.root.setLevel(logging.INFO)
+
+    def tearDown(self):
+        logging.root.removeHandler(self.handler)
+        logging.root.setLevel(self.oldlevel)
+        super(PublishEndToEndTest, self).tearDown()
 
     def test_publish_via_celery_end_to_end(self):
         somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
@@ -207,19 +221,16 @@ class CeleryPublishEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
         publish = IPublish(content).publish()
         transaction.commit()
-        assert 'Published.' == publish.get()
+        self.assertEqual('Published.', publish.get())
+        transaction.begin()
 
-        with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''\
-Running job ...-...-...-...
+        self.assertEllipsis("""\
+Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...''',
-                                logfile.read())
-
-        # We have only one ZODB for the celery test worker, so there is no
-        # strict test isolation here.
-        assert u'Published' in get_object_log_messages(
-            self.layer['zodb_path'], content)
+...
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...""",
+                            self.log.getvalue())
+        self.assertIn('Published', get_object_log(content))
 
     def test_publish_multiple_via_celery_end_to_end(self):
         flugsicherh = 'http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent'
@@ -232,41 +243,41 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...''',
         publish = IPublish(flugsicherh_content).publish_multiple(
             [saarland, flugsicherh])
         transaction.commit()
+        self.assertEqual('Published.', publish.get())
+        transaction.begin()
 
-        assert "Published." == publish.get()
-
-        with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''\
-Running job ...-...-...-...-...
-        for http://xml.zeit.de/online/2007/01/Saarland-urgent,
-            http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
+        self.assertEllipsis("""\
+Running job ...
+    for http://xml.zeit.de/online/2007/01/Saarland-urgent,
+        http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
 Publishing http://xml.zeit.de/online/2007/01/Saarland-urgent,
-           http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
+       http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
+...
 Done http://xml.zeit.de/online/2007/01/Saarland-urgent,
-     http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent (...s)''',
-                                logfile.read())
+ http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent (...s)""",
+                            self.log.getvalue())
 
         # Due to the DAV-cache transaction.abort() hack, no success message
         # is logged to the content objects.
-        assert u'Published' not in get_object_log_messages(
-            self.layer['zodb_path'], flugsicherh_content)
-        assert u'Published' not in get_object_log_messages(
-            self.layer['zodb_path'], saarland_content)
+        self.assertNotIn('Published', get_object_log(flugsicherh_content))
+        self.assertNotIn('Published', get_object_log(saarland_content))
 
 
-class CeleryPublishErrorEndToEndTest(zeit.workflow.testing.CeleryTestCase):
+class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
-        super(CeleryPublishErrorEndToEndTest, self).setUp()
-        self.bak_path = self.layer['publish-script-path'] + '.bak'
-        shutil.move(self.layer['publish-script-path'], self.bak_path)
-        with open(self.layer['publish-script-path'], 'w') as f:
+        super(PublishErrorEndToEndTest, self).setUp()
+        self.bak_path = self.layer['publish-script'] + '.bak'
+        shutil.move(self.layer['publish-script'], self.bak_path)
+        with open(self.layer['publish-script'], 'w') as f:
             f.write('#!/bin/sh\nexit 1')
-        os.chmod(self.layer['publish-script-path'], 0o755)
+        os.chmod(self.layer['publish-script'], 0o755)
 
     def tearDown(self):
-        shutil.move(self.bak_path, self.layer['publish-script-path'])
-        super(CeleryPublishErrorEndToEndTest, self).tearDown()
+        shutil.move(self.bak_path, self.layer['publish-script'])
+        super(PublishErrorEndToEndTest, self).tearDown()
 
     def test_error_during_publish_is_written_to_objectlog(self):
         somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
@@ -279,14 +290,14 @@ class CeleryPublishErrorEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
         with self.assertRaises(Exception) as err:
             publish.get()
+        transaction.begin()
 
-        assert ("Error during publish/retract: ScriptError: ('', 1)"
-                ) == str(err.exception)
-        # We have only one ZODB for the celery test worker, so there is no
-        # strict test isolation here.
-        assert u"Error during publish/retract: ScriptError: ('', 1)" in [
-            zope.i18n.interpolate(m, m.mapping)
-            for m in get_object_log_messages(self.layer['zodb_path'], content)]
+        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+                         str(err.exception))
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping)
+             for m in get_object_log(content)])
 
     def test_error_during_publish_multiple_is_written_to_objectlog(self):
         flugsicherh = 'http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent'
@@ -302,19 +313,18 @@ class CeleryPublishErrorEndToEndTest(zeit.workflow.testing.CeleryTestCase):
 
         with self.assertRaises(Exception) as err:
             publish.get()
+        transaction.begin()
 
-        assert ("Error during publish/retract: ScriptError: ('', 1)"
-                ) == str(err.exception)
-        # We have only one ZODB for the celery test worker, so there is no
-        # strict test isolation here.
-        assert u"Error during publish/retract: ScriptError: ('', 1)" in [
-            zope.i18n.interpolate(m, m.mapping)
-            for m in get_object_log_messages(self.layer['zodb_path'],
-                                             flugsicherh_content)]
-        assert u"Error during publish/retract: ScriptError: ('', 1)" in [
-            zope.i18n.interpolate(m, m.mapping)
-            for m in get_object_log_messages(self.layer['zodb_path'],
-                                             saarland_content)]
+        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+                         str(err.exception))
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping)
+             for m in get_object_log(flugsicherh_content)])
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping)
+             for m in get_object_log(saarland_content)])
 
 
 class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):

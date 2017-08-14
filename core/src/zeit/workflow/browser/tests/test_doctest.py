@@ -9,5 +9,5 @@ def test_suite():
         'README.txt',
         'indicator.txt',
         package='zeit.workflow.browser',
-        layer=zeit.workflow.testing.LAYER))
+        layer=zeit.workflow.testing.CELERY_LAYER))
     return suite

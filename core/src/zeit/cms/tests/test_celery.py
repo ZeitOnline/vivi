@@ -1,26 +1,27 @@
-from celery import shared_task
-from mock import patch
+import mock
 import transaction
+import z3c.celery
 import zeit.workflow.testing
 
 
-@shared_task(queuename='publish_homepage')
+@z3c.celery.task(queuename='publish_homepage')
 def hp_task():
     """Task with queue homepage."""
 
 
-@shared_task
+@z3c.celery.task
 def no_default_queue():
     """Task without a default queue."""
 
 
-class RouteTaskTests(zeit.workflow.testing.CeleryTestCase):
-    """Testing ..celery.route_task()."""
+class RouteTaskTests(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def get_queue_name(self, task, **kw):
         result = task.apply_async(**kw)
         publish = 'celery.events.dispatcher.EventDispatcher.publish'
-        with patch(publish) as publish:
+        with mock.patch(publish) as publish:
             transaction.commit()
         result.get()
         assert 'task-sent' == publish.call_args[0][0]

@@ -13,7 +13,7 @@ import zope.testbrowser.testing
 
 class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.testing.LAYER
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
         super(JSONTestCase, self).setUp()

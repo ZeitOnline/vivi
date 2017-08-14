@@ -14,7 +14,7 @@ class PublishInfoTest(zeit.cms.testing.FunctionalTestCase):
         info = IPublishInfo(content)
         self.assertEqual(None, info.last_published_by)
         info.urgent = True
-        IPublish(content).publish()
+        IPublish(content).publish(async=False)
         self.assertEqual('zope.user', info.last_published_by)
 
     def test_provides_interface(self):

@@ -1,9 +1,11 @@
 from ..timebased import TimeBasedWorkflow
+from StringIO import StringIO
 from datetime import datetime, timedelta
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import celery.result
+import logging
 import mock
 import pytz
 import time
@@ -98,13 +100,25 @@ class PrintImportSchedulingTest(zeit.cms.testing.FunctionalTestCase):
             self.assertFalse(setup_job.called)
 
 
-class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.CeleryTestCase):
+class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
         super(TimeBasedCeleryEndToEndTest, self).setUp()
         self.unique_id = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
         self.content = ICMSContent(self.unique_id)
         self.workflow = zeit.workflow.interfaces.IContentWorkflow(self.content)
+        self.log = StringIO()
+        self.handler = logging.StreamHandler(self.log)
+        logging.root.addHandler(self.handler)
+        self.oldlevel = logging.root.level
+        logging.root.setLevel(logging.INFO)
+
+    def tearDown(self):
+        logging.root.removeHandler(self.handler)
+        logging.root.setLevel(self.oldlevel)
+        super(TimeBasedCeleryEndToEndTest, self).tearDown()
 
     def test_time_based_workflow_basic_assumptions(self):
         assert not self.workflow.published
@@ -120,12 +134,12 @@ class TimeBasedCeleryEndToEndTest(zeit.workflow.testing.CeleryTestCase):
         # Make sure the task is completed before asserting its output:
         assert 'Published.' == result.get()
 
-        with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis('''\
+        self.assertEllipsis("""\
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...'''.format(self),  # noqa
-                                logfile.read())
+...
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
+                            self.log.getvalue())
 
     def test_released_from__in_future_is_published_later(self):
         publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
@@ -145,13 +159,12 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...'''.format(self),  # no
 
         # Make sure the task is completed before asserting its output:
         assert 'Published.' == result.get()
-        with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis("""\
+        self.assertEllipsis("""\
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)
-Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),  # noqa
-                                logfile.read())
+...
+Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
+                            self.log.getvalue())
 
     def test_released_from__revokes_job_on_change(self):
         publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
@@ -215,12 +228,12 @@ Task zeit.workflow.publish.PUBLISH_TASK[...] succeeded in ...""".format(self),  
         # Make sure the task is completed before asserting its output:
         assert 'Retracted.' == result.get()
 
-        with open(self.layer['logfile_name']) as logfile:
-            self.assertEllipsis("""...
+        self.assertEllipsis("""...
 Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
 Retracting http://xml.zeit.de/online/2007/01/Somalia-urgent
+...
 Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
-                                logfile.read())
+                            self.log.getvalue())
 
     def test_released_to__in_future_is_retracted_later(self):
         publish_on = datetime(2000, 2, 3, tzinfo=pytz.UTC)

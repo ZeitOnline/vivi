@@ -119,7 +119,7 @@ Use the urgent flag to override:
         <li class="message">http://xml.zeit.de/testcontent has been scheduled for publishing.</li>
         <li class="message">Updated on 2008 4 3  12:02:00 </li>
         ...
-        <div class="widget"><FORMATTED DATE>  [User]: Published<br />
+        <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
         ...
 
 
@@ -133,6 +133,10 @@ Date first released
 +++++++++++++++++++
 
 The "date first released" is the date when the object was first published.
+Since publishing is done asynchronously we have to trigger processing:
+
+>>> run_tasks()
+
 Reload the workflow page.
 
 >>> browser.getLink('Workflow').click()
@@ -225,6 +229,7 @@ Do a publish/retract cycle to set the property to false:
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
 
+>>> run_tasks()
 >>> browser.getLink('Workflow').click()
 
 The retract action is protected by javascript (which doesn't matter here):
@@ -263,6 +268,7 @@ Go back to the repository and publish:
 >>> browser.getControl('publish').click()
 >>> 'There were errors' in browser.contents
 False
+>>> run_tasks()
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
@@ -298,6 +304,7 @@ checked out:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
+>>> run_tasks()
 >>> browser.getLink('Checkout').click()
 >>> checked_out = browser.url
 
@@ -311,6 +318,7 @@ Unpublish now:
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
+>>> run_tasks()
 >>> browser.getLink('Workflow').click()
 >>> print browser.contents
 <?xml ...
@@ -433,6 +441,10 @@ other information
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
 
+    >>> def run_tasks():
+    ...     """Wait for already enqueued publish job, by running another job;
+    ...     since we only have on worker, this works out fine."""
+    ...     zeit.cms.testing.celery_ping.delay().get()
 
 .. [#needs-repository]
 

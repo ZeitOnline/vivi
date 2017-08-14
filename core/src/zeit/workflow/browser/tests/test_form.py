@@ -6,7 +6,7 @@ import zeit.workflow.testing
 
 class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.workflow.testing.LAYER
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def test_publish_content(self):
         b = self.browser
@@ -50,7 +50,7 @@ class ValidatingWorkflowFormTest(
         zeit.workflow.testing.FakeValidatingWorkflowMixin,
         zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.workflow.testing.LAYER
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def test_publish_with_validation_error_displays_message(self):
         self.register_workflow_with_error()

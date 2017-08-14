@@ -47,11 +47,11 @@ class AssetWorkflowTests(zeit.cms.testing.FunctionalTestCase):
 
         # Publish an asset:
         publish = zeit.cms.workflow.interfaces.IPublish(somalia)
-        publish.publish()
+        publish.publish(async=False)
         assert workflow.published
 
         # Retract of course also works:
-        publish.retract()
+        publish.retract(async=False)
         assert not workflow.published
 
 
