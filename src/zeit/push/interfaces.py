@@ -1,5 +1,6 @@
-from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
+import json
+import logging
 import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.source
@@ -7,8 +8,12 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
+import zeit.content.text.jinja
 import zope.interface
 import zope.schema
+
+
+log = logging.getLogger(__name__)
 
 
 class IMessage(zope.interface.Interface):
@@ -121,6 +126,10 @@ class IPushMessages(zope.interface.Interface):
         query key/values with the given values. If none is found, a new entry
         is appended, combining query and values.
         """
+
+    def delete(query):
+        """Removes the first entry in message_config that matches the given
+        query key/values."""
 
 
 class IPushURL(zope.interface.Interface):
@@ -259,6 +268,16 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         if not id:
             return None
         return self.template_folder.get(id)
+
+    def getDefaultTitle(self, value):
+        try:
+            result = value(zeit.content.text.jinja.MockDict())
+            return json.loads(result)['default_title']
+        except:
+            log.debug(
+                'No default title for %s', getattr(value, '__name__'),
+                exc_info=True)
+            return ''
 
 
 PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()

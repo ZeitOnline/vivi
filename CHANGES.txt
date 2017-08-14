@@ -1,7 +1,25 @@
 zeit.push changes
 =================
 
-1.21.0 (unreleased)
+1.21.3 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+1.21.2 (2017-08-14)
+-------------------
+
+- FIX: Repair bw-compat for twitter/ressort
+
+
+1.21.1 (2017-08-08)
+-------------------
+
+- ZON-3677: Move `getDefaultTitle` to payload source
+
+
+1.21.0 (2017-08-07)
 -------------------
 
 - ZON-4006: Split off mobile fields into their own form
