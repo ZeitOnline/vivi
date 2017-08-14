@@ -4,7 +4,7 @@ zeit.content.article changes
 3.25.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ARBEIT-104: Add function to find first citation in article
 
 
 3.25.2 (2017-08-08)
