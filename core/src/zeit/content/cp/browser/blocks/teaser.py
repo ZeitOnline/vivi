@@ -17,6 +17,7 @@ import zope.component
 import zope.event
 import zope.formlib.form
 import zope.lifecycleevent
+import zope.interface
 
 
 COLUMN_ID = 'column://'
@@ -97,12 +98,12 @@ class Display(zeit.cms.browser.view.Base):
             try:
                 texts = zope.component.getMultiAdapter(
                     (content, self.request),
-                    zeit.content.cp.interfaces.ITeaserRepresentation,
+                    ITeaserRepresentation,
                     name=getattr(self.context.layout, 'id', ''))
             except zope.component.ComponentLookupError:
                 texts = zope.component.getMultiAdapter(
                     (content, self.request),
-                    zeit.content.cp.interfaces.ITeaserRepresentation)
+                    ITeaserRepresentation)
             if i == 0:
                 self.header_image = self.get_image(content)
 
@@ -144,10 +145,20 @@ class Display(zeit.cms.browser.view.Base):
             return self.url(image, '@@raw')
 
 
+class ITeaserRepresentation(zope.interface.Interface):
+    """
+    Specifies how a Teaser should be represented on a CP.
+    Right now a teaser representation looks like:
+    [{css_class: 'supertitle', content: str},
+    {css_class: 'teaserTitle', content: str},
+    {css_class: 'teaserText', content: str}]
+    """
+
+
 @grok.adapter(
     zeit.cms.interfaces.ICMSContent,
     zope.publisher.interfaces.IPublicationRequest)
-@grok.implementer(zeit.content.cp.interfaces.ITeaserRepresentation)
+@grok.implementer(ITeaserRepresentation)
 def default_teaser_representation(content, request):
 
     def make_text_entry(metadata, css_class, name=None):
@@ -177,15 +188,18 @@ def default_teaser_representation(content, request):
     return texts
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent,
+                        zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(ITeaserRepresentation)
 def quote_teaser_representation(content, request):
     article = zeit.content.article.interfaces.IArticle(content, None)
     citation = zeit.content.article.edit.citation.find_first_citation(article)
     if not (article and citation):
         return default_teaser_representation(content, request)
     texts = list()
-    texts.append(dict(css_class='supertitle', content=''))
-    texts.append(dict(css_class='teaserTitle', content='Zitat:'))
-    texts.append(dict(css_class='teaserText', content=citation.text))
+    texts.append(dict(css_class='supertitle', content=_('')))
+    texts.append(dict(css_class='teaserTitle', content=_('Zitat:')))
+    texts.append(dict(css_class='teaserText', content=_(citation.text)))
     return texts
 
 
