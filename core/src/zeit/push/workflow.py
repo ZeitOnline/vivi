@@ -63,6 +63,11 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
             config += (values,)
         self.message_config = config
 
+    def delete(self, query):
+        config = self.message_config[:]
+        config.remove(query)
+        self.message_config = config
+
 
 @grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)

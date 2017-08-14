@@ -1,23 +1,16 @@
 # coding=utf-8
 from datetime import datetime
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 import json
 import mock
 import os
 import pytz
-import unittest
-import urlparse
 import gocept.testing.assertion
 import urbanairship.push.core
-import zeit.cms.testing
-import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-import zope.app.appsetup.product
 import zope.component
-import zope.i18n.translationdomain
 
 
 def send(self):
@@ -191,6 +184,23 @@ class MessageTest(zeit.push.testing.TestCase,
             self.create_content(),
             zeit.push.interfaces.IMessage, name=self.name)
         self.assertStartsWith(message.app_link, 'zeitapp://content')
+
+    def test_template_escapes_variables_for_json(self):
+        template_content = u"""{"messages":[{
+            "title": "{{article.title}}",
+            "subtitle": "{{foo}}",
+            "undefined": "{{nonexistent}}"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(title='"Quoted" Title'),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        message.config['foo'] = 'with "quotes"'
+        payload = message.render()[0]
+        self.assertEqual('"Quoted" Title', payload['title'])
+        self.assertEqual('with "quotes"', payload['subtitle'])
+        self.assertEqual('', payload['undefined'])
 
 
 class IntegrationTest(zeit.push.testing.TestCase):

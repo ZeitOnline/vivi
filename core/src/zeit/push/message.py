@@ -215,8 +215,16 @@ class AccountData(grok.Adapter):
 
     @twitter_ressort.setter
     def twitter_ressort(self, value):
+        service = self._nonmain_twitter_service
+        enabled = None
+        # BBB `variant` was introduced in zeit.push-1.21
+        if service and 'variant' not in service:
+            self.push.delete(service)
+            enabled = service.get('enabled')
         self.push.set(
             dict(type='twitter', variant='ressort'), account=value)
+        if enabled is not None:
+            self.twitter_ressort_enabled = enabled
 
     @property
     def twitter_ressort_enabled(self):
@@ -224,8 +232,16 @@ class AccountData(grok.Adapter):
 
     @twitter_ressort_enabled.setter
     def twitter_ressort_enabled(self, value):
+        service = self._nonmain_twitter_service
+        account = None
+        # BBB `variant` was introduced in zeit.push-1.21
+        if service and 'variant' not in service:
+            self.push.delete(service)
+            account = service.get('account')
         self.push.set(
             dict(type='twitter', variant='ressort'), enabled=value)
+        if account is not None:
+            self.twitter_ressort = account
 
     @property
     def _nonmain_twitter_service(self):
