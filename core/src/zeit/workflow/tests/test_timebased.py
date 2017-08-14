@@ -106,9 +106,10 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TimeBasedCeleryEndToEndTest, self).setUp()
-        self.unique_id = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
+        self.unique_id = 'http://xml.zeit.de/online/2007/01/Somalia'
         self.content = ICMSContent(self.unique_id)
         self.workflow = zeit.workflow.interfaces.IContentWorkflow(self.content)
+        self.workflow.urgent = True
         self.log = StringIO()
         self.handler = logging.StreamHandler(self.log)
         logging.root.addHandler(self.handler)
@@ -135,10 +136,10 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         assert 'Published.' == result.get()
 
         self.assertEllipsis("""\
-Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
-Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
+Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
+Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
+Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
     def test_released_from__in_future_is_published_later(self):
@@ -160,10 +161,10 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # no
         # Make sure the task is completed before asserting its output:
         assert 'Published.' == result.get()
         self.assertEllipsis("""\
-Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
-Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
+Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
+Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
+Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
     def test_released_from__revokes_job_on_change(self):
@@ -229,10 +230,10 @@ Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # no
         assert 'Retracted.' == result.get()
 
         self.assertEllipsis("""...
-Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia-urgent
-Retracting http://xml.zeit.de/online/2007/01/Somalia-urgent
+Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia
+Retracting http://xml.zeit.de/online/2007/01/Somalia
 ...
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent ...""".format(self),  # noqa
+Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
     def test_released_to__in_future_is_retracted_later(self):

@@ -214,10 +214,10 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         super(PublishEndToEndTest, self).tearDown()
 
     def test_publish_via_celery_end_to_end(self):
-        somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
-        content = ICMSContent(somalia)
+        content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(content)
         self.assertFalse(info.published)
+        info.urgent = True
 
         publish = IPublish(content).publish()
         transaction.commit()
@@ -226,41 +226,42 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
         self.assertEllipsis("""\
 Running job ...
-Publishing http://xml.zeit.de/online/2007/01/Somalia-urgent
+Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
-Done http://xml.zeit.de/online/2007/01/Somalia-urgent (...s)...""",
+Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
                             self.log.getvalue())
         self.assertIn('Published', get_object_log(content))
 
     def test_publish_multiple_via_celery_end_to_end(self):
-        flugsicherh = 'http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent'
-        saarland = 'http://xml.zeit.de/online/2007/01/Saarland-urgent'
-        flugsicherh_content = ICMSContent(flugsicherh)
-        saarland_content = ICMSContent(saarland)
-        self.assertFalse(IPublishInfo(flugsicherh_content).published)
-        self.assertFalse(IPublishInfo(saarland_content).published)
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        i1 = IPublishInfo(c1)
+        i2 = IPublishInfo(c2)
+        self.assertFalse(i1.published)
+        self.assertFalse(i2.published)
+        i1.urgent = True
+        i2.urgent = True
 
-        publish = IPublish(flugsicherh_content).publish_multiple(
-            [saarland, flugsicherh])
+        publish = IPublish(c1).publish_multiple([c1, c2])
         transaction.commit()
         self.assertEqual('Published.', publish.get())
         transaction.begin()
 
         self.assertEllipsis("""\
 Running job ...
-    for http://xml.zeit.de/online/2007/01/Saarland-urgent,
-        http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
-Publishing http://xml.zeit.de/online/2007/01/Saarland-urgent,
-       http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent
+    for http://xml.zeit.de/online/2007/01/Flugsicherheit,
+        http://xml.zeit.de/online/2007/01/Saarland
+Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
+       http://xml.zeit.de/online/2007/01/Saarland
 ...
-Done http://xml.zeit.de/online/2007/01/Saarland-urgent,
- http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent (...s)""",
+Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
+ http://xml.zeit.de/online/2007/01/Saarland (...s)""",
                             self.log.getvalue())
 
         # Due to the DAV-cache transaction.abort() hack, no success message
         # is logged to the content objects.
-        self.assertNotIn('Published', get_object_log(flugsicherh_content))
-        self.assertNotIn('Published', get_object_log(saarland_content))
+        self.assertNotIn('Published', get_object_log(c1))
+        self.assertNotIn('Published', get_object_log(c2))
 
 
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
@@ -280,10 +281,10 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         super(PublishErrorEndToEndTest, self).tearDown()
 
     def test_error_during_publish_is_written_to_objectlog(self):
-        somalia = 'http://xml.zeit.de/online/2007/01/Somalia-urgent'
-        content = ICMSContent(somalia)
+        content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(content)
         self.assertFalse(info.published)
+        info.urgent = True
 
         publish = IPublish(content).publish()
         transaction.commit()
@@ -300,15 +301,16 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
              for m in get_object_log(content)])
 
     def test_error_during_publish_multiple_is_written_to_objectlog(self):
-        flugsicherh = 'http://xml.zeit.de/online/2007/01/Flugsicherheit-urgent'
-        saarland = 'http://xml.zeit.de/online/2007/01/Saarland-urgent'
-        flugsicherh_content = ICMSContent(flugsicherh)
-        saarland_content = ICMSContent(saarland)
-        self.assertFalse(IPublishInfo(flugsicherh_content).published)
-        self.assertFalse(IPublishInfo(saarland_content).published)
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        i1 = IPublishInfo(c1)
+        i2 = IPublishInfo(c2)
+        self.assertFalse(i1.published)
+        self.assertFalse(i2.published)
+        i1.urgent = True
+        i2.urgent = True
 
-        publish = IPublish(flugsicherh_content).publish_multiple(
-            [saarland, flugsicherh])
+        publish = IPublish(c1).publish_multiple([c1, c2])
         transaction.commit()
 
         with self.assertRaises(Exception) as err:
@@ -319,12 +321,10 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
                          str(err.exception))
         self.assertIn(
             "Error during publish/retract: ScriptError: ('', 1)",
-            [zope.i18n.interpolate(m, m.mapping)
-             for m in get_object_log(flugsicherh_content)])
+            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
         self.assertIn(
             "Error during publish/retract: ScriptError: ('', 1)",
-            [zope.i18n.interpolate(m, m.mapping)
-             for m in get_object_log(saarland_content)])
+            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
 class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):

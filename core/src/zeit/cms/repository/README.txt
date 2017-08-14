@@ -329,7 +329,7 @@ u'01-2'
 >>> repository['online'].keys()
 [u'01', u'01-2', u'2005', u'2006', u'2007']
 >>> len(repository['online']['01'].keys())
-56
+53
 
 Let's clean that up again:
 
