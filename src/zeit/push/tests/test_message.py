@@ -49,3 +49,28 @@ class MessageTest(zeit.push.testing.TestCase):
         self.publish(content)
         self.assertEqual(
             [{'type': 'twitter', 'enabled': False}], push.message_config)
+
+    def test_twitter_ressort_bbb_compat_for_enabled(self):
+        content = self.create_content('mytext')
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'twitter', 'account': 'twitter_ressort_wissen'}]
+        data = zeit.push.interfaces.IAccountData(content)
+        data.twitter_ressort_enabled = True
+        self.assertEqual([{
+            'type': 'twitter', 'variant': 'ressort',
+            'account': 'twitter_ressort_wissen', 'enabled': True}
+        ], push.message_config)
+
+    def test_twitter_ressort_bbb_compat_for_ressort(self):
+        content = self.create_content('mytext')
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'twitter', 'account': 'twitter_ressort_wissen',
+            'enabled': True}]
+        data = zeit.push.interfaces.IAccountData(content)
+        data.twitter_ressort = 'twitter_ressort_politik'
+        self.assertEqual([{
+            'type': 'twitter', 'variant': 'ressort',
+            'account': 'twitter_ressort_politik', 'enabled': True}
+        ], push.message_config)
