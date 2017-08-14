@@ -127,6 +127,10 @@ class IPushMessages(zope.interface.Interface):
         is appended, combining query and values.
         """
 
+    def delete(query):
+        """Removes the first entry in message_config that matches the given
+        query key/values."""
+
 
 class IPushURL(zope.interface.Interface):
     """Interface to adapt `ICMSContent` to the base URL for push notifications.
