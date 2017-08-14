@@ -29,8 +29,6 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     title = _('Citation')
 
 
-# Could be defined as an Adapter (IArticle -> ICitation) as well
-# Im not sure, when to use just a function or an Adapter
 def find_first_citation(article):
     body = zeit.content.article.edit.interfaces.IEditableBody(article, None)
     if not body:
