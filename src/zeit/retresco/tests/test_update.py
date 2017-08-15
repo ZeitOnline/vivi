@@ -13,13 +13,6 @@ import zope.lifecycleevent
 import zope.security.management
 
 
-def checkout_and_checkin():
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
-    with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
-        pass
-
-
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -58,18 +51,12 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         # Checkin should not change keywords on content
         self.assertEqual(False, self.tms.generate_keyword_list.called)
 
-    def test_index_should_be_called_from_async(self):
-        run_instantly = 'z3c.celery.celery.TransactionAwareTask.run_instantly'
-        run_asynchronously = (
-            'z3c.celery.celery.TransactionAwareTask.run_asynchronously')
-        with mock.patch(run_instantly, return_value=False), \
-                mock.patch(run_asynchronously, return_value=False):
-            checkout_and_checkin()
-            self.assertFalse(self.tms.index.called)
-
-            zope.security.management.endInteraction()
-            transaction.commit()
-            self.assertTrue(self.tms.index.called)
+    def test_checkin_should_index_asynchronously(self):
+        content = self.repository['testcontent']
+        with mock.patch('zeit.retresco.update.index_async') as index:
+            with zeit.cms.checkout.helper.checked_out(content):
+                pass
+            self.assertTrue(index.delay.called)
 
     def test_folders_should_be_indexed_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
