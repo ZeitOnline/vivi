@@ -45,6 +45,7 @@ Descent to the repository:
   <CurrentFolder path="/repository/"
                  url="http://localhost"/>
   <Folders>
+    ...
     <Folder name="online" title="online"/>
     ...
   </Folders>
