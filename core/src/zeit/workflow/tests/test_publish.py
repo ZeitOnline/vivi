@@ -258,10 +258,8 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
  http://xml.zeit.de/online/2007/01/Saarland (...s)""",
                             self.log.getvalue())
 
-        # Due to the DAV-cache transaction.abort() hack, no success message
-        # is logged to the content objects.
-        self.assertNotIn('Published', get_object_log(c1))
-        self.assertNotIn('Published', get_object_log(c2))
+        self.assertIn('Published', get_object_log(c1))
+        self.assertIn('Published', get_object_log(c2))
 
 
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
@@ -393,6 +391,5 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             [u'${name}: ${new_value}',
              u'Collective Publication',
-             u'Published',
              u'Error during publish/retract: ${exc}: ${message}'],
             [x.message for x in log.get_log()])

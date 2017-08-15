@@ -253,7 +253,7 @@ class PublishRetractTask(object):
             path_prefix,
             uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
 
-    def log(self, obj, message, error=False):
+    def log(self, obj, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
         log.log(obj, message)
 
@@ -461,6 +461,7 @@ class MultiPublishTask(PublishTask):
     """Publish multiple objects"""
 
     def _run(self, objs):
+        self._to_log = []
         result = super(MultiPublishTask, self)._run(objs)
         # Work around limitations of our ZODB-based DAV cache.
         # Since publishing a sizeable amount of objects will result in a rather
@@ -472,7 +473,11 @@ class MultiPublishTask(PublishTask):
         # transaction isolation anyway. The DAV cache will then be updated
         # shortly afterwards by the invalidator (since that runs for all
         # changes and doesn't discriminate changes made by vivi itself).
-        raise z3c.celery.celery.Abort(result)
+        raise z3c.celery.celery.Abort(
+            self._log_messages, self._to_log, message=result)
+
+    def log(self, obj, message):
+        self._to_log.append((obj, message))
 
 
 @z3c.celery.task(bind=True)

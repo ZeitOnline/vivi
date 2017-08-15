@@ -270,7 +270,8 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         def berlin(dt):
             return TimeBasedWorkflow.format_datetime(dt)
 
-        assert [
+        self.assertEqual([
+            u'Urgent: yes',
             u'To publish on 2000 2 3  01:00:00  (job #{})'.format(
                 self.workflow.publish_job_id),
             u'To retract on {} (job #{})'.format(
@@ -279,7 +280,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                 cancel_retract_job_id),
             u'To retract on {} (job #{})'.format(
                 berlin(new_retract_on), self.workflow.retract_job_id),
-        ] == log_entries
+        ], log_entries)
 
     def test_removing_release_period_should_remove_jobid(self):
         self.workflow.release_period = (
