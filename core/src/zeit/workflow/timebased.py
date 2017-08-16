@@ -1,10 +1,10 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
-import celery.result
 import datetime
 import grokcore.component as grok
 import pytz
+import z3c.celery
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -103,7 +103,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def cancel_job(self, job_id):
         if not job_id:
             return False
-        promise = celery.result.AsyncResult(job_id)
+        promise = z3c.celery.CELERY.AsyncResult(job_id)
         if promise.status != u'PENDING':
             return False
         promise.revoke()
