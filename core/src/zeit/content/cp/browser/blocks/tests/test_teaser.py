@@ -127,15 +127,22 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('foo', b.getControl('Title').value)
 
 
-class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
+class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
-        super(DisplayImagePositionsTest, self).setUp()
+        super(FunctionalTeaserDisplayTest, self).setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
+
+    def view(self, block):
+        view = zeit.content.cp.browser.blocks.teaser.Display()
+        view.context = block
+        view.request = self.request
+        view.update()
+        return view
 
     def create_teaserblock(self, layout, area='teaser-mosaic'):
         if area == 'teaser-mosaic':
@@ -160,12 +167,15 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
             block.insert(0, article)
         return block
 
-    def view(self, block):
-        view = zeit.content.cp.browser.blocks.teaser.Display()
-        view.context = block
-        view.request = self.request
-        view.update()
-        return view
+    def create_article_with_citation(self):
+        import zeit.content.article.article
+        import zeit.content.article.edit.body
+        article = zeit.content.article.article.Article()
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        citation = body.create_item('citation', 1)
+        citation.text = u"Foo"
+        return article
 
     def test_layout_without_image_pattern_shows_no_header_image(self):
         view = self.view(self.create_teaserblock(layout='short'))
@@ -179,26 +189,47 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
             'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
             view.header_image)
 
-
-class DisplayNonMetadataTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
-
-    def setUp(self):
-        super(DisplayNonMetadataTest, self).setUp()
-        self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-
-    def view(self, block):
-        view = zeit.content.cp.browser.blocks.teaser.Display()
-        view.context = block
-        view.request = self.request
-        view.update()
-        return view
-
     def test_shows_list_representation_title_for_non_metadata(self):
         block = self.cp['lead'].create_item('teaser')
         block.insert(0, self.repository['2007'])
         view = self.view(block)
         self.assertEqual('2007', view.columns[0][0]['texts'][0]['content'])
+
+    def test_quote_teaser_shows_citation_text_if_article_has_citation(self):
+        article = self.create_article_with_citation()
+        self.repository['article_with_citation'] = article
+        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
+        quote_teaserblock.insert(0, article)
+        view = self.view(quote_teaserblock)
+        self.assertEqual('Foo', view.columns[0][0]['texts'][2][
+            'content'])
+        self.assertEqual('Zitat:', view.columns[0][0]['texts'][1][
+            'content'])
+
+    def test_teaser_with_non_quote_layout_shows_teaser_text(
+            self):
+        article = self.create_article_with_citation()
+        article.teaserTitle = 'Bar'
+        article.teaserText = 'Baz'
+        self.repository['article_with_citation'] = article
+        quote_teaserblock = self.create_teaserblock('large')
+        quote_teaserblock.insert(0, article)
+        view = self.view(quote_teaserblock)
+        self.assertEqual('Bar', view.columns[0][0]['texts'][1][
+            'content'])
+        self.assertEqual('Baz', view.columns[0][0]['texts'][2][
+            'content'])
+
+    def test_quote_teaser_without_quote_in_article_shows_teaser_text(
+            self):
+        article = zeit.content.article.article.Article()
+        article.teaserTitle = 'Bar'
+        article.teaserText = 'Baz'
+        self.repository['article_with_citation'] = article
+        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
+        quote_teaserblock.insert(0, article)
+        view = self.view(quote_teaserblock)
+        self.assertEqual('Bar', view.columns[0][0]['texts'][1][
+            'content'])
+        self.assertEqual('Baz', view.columns[0][0]['texts'][2][
+            'content'])
