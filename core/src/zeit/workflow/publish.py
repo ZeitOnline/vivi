@@ -296,6 +296,8 @@ class PublishRetractTask(object):
         properties to xml on checkout/checkin.
 
         """
+        if not zeit.cms.content.interfaces.IXMLContent.providedBy(obj):
+            return obj
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(obj)
         try:
             # We do not use the user's workingcopy but a "fresh" one which we

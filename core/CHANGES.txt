@@ -4,7 +4,7 @@ zeit.cms changes
 2.108.1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- BUG-773: Don't cycle non-XML content during publish
 
 
 2.108.0 (2017-08-09)
