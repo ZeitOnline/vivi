@@ -57,8 +57,6 @@ The publis script also got all the folders and files:
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
-Could not checkout http://xml.zeit.de/image-folder/
-Could not checkout http://xml.zeit.de/image-folder/thumbnails/
 ...publish.sh:
 Publishing test script
 work/online/gallery
@@ -95,8 +93,6 @@ work/image-folder/
 work/online/gallery
 done.
 <BLANKLINE>
-Could not checkout http://xml.zeit.de/image-folder/
-Could not checkout http://xml.zeit.de/image-folder/thumbnails/
 Done http://xml.zeit.de/online/gallery (...s)
 
 
