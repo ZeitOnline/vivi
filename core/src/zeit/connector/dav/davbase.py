@@ -1,20 +1,22 @@
 import base64
 import httplib
 import logging
+import lxml.etree
 import mimetypes
+import pkg_resources
 import re
 import socket
 import sys
 import urllib
 import urlparse
 
-import lxml.etree
-
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
 DEBUG_CONNECTION = False
 
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
+USER_AGENT = 'zeit.connector/' + pkg_resources.get_distribution(
+    'zeit.connector').version
 
 
 logger = logging.getLogger(__name__)
@@ -129,7 +131,7 @@ class HTTPBasicAuthCon(object):
         if host:
             headers['Host'] = host
         headers['Connection'] = 'keep-alive'
-        headers['User-Agent'] = 'zeit.connector'
+        headers['User-Agent'] = USER_AGENT
         headers.update(self.additional_headers)
         try:
             self._con.request(method, path, body, headers)

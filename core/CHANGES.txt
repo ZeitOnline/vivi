@@ -4,7 +4,7 @@ CHANGES
 2.10.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add package version to our user agent header
 
 
 2.10.1 (2017-07-04)
