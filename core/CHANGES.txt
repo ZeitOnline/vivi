@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.10.2 (unreleased)
+2.10.2 (2017-08-18)
 -------------------
 
 - MAINT: Add package version to our user agent header
