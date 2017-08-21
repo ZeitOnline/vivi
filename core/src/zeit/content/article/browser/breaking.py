@@ -41,7 +41,7 @@ class Add(zeit.cms.browser.form.AddForm,
             zeit.content.article.edit.interfaces.IBreakingNewsBody) +
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
-                'commentsAllowed') +
+                'commentsAllowed', 'commentsPremoderate') +
         zope.formlib.form.FormFields(
             IPushServices)
     )
@@ -49,7 +49,7 @@ class Add(zeit.cms.browser.form.AddForm,
     field_groups = (
         gocept.form.grouped.Fields('', (
             'ressort', 'sub_ressort', 'title', '__name__', 'text',
-            'commentsAllowed',
+            'commentsAllowed', 'commentsPremoderate',
             'homepage', 'mobile', 'social')),
     )
 
@@ -100,6 +100,8 @@ class Add(zeit.cms.browser.form.AddForm,
             self.context)
         article.year = settings.default_year
         article.volume = settings.default_volume
+
+        article.is_amp = True
 
         push = zeit.push.interfaces.IPushMessages(article)
         push.short_text = data['title']
