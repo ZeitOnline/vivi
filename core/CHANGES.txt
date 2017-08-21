@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.13.9 (unreleased)
+3.13.9 (2017-08-21)
 -------------------
 
 - ARBEIT-104: Show citation text for quote teasers in cp editor
