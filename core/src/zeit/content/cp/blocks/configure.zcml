@@ -128,6 +128,21 @@
     factory=".quiz.QuizBlock"
     />
 
+  <!-- Jobbox block -->
+  <class class=".jobbox.JobboxBlock">
+    <require
+      interface="..interfaces.IJobboxBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IJobboxBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="jobbox"
+    factory=".jobbox.JobboxBlock"
+    />
+
   <!-- Fullgraphical block -->
   <class class=".fullgraphical.FullGraphicalBlock">
     <require
