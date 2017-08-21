@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.26.1 (unreleased)
+3.26.1 (2017-08-21)
 -------------------
 
 - ZON-4152: Add `commentsPremoderate` field to breaking news form
