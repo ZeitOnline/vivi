@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <jobboxes>
-  <jobbox id="hp" title="Homepage" available="zeit.cms.interfaces.ICMSContent" feed_url="http://app-cache.zeit.de/academics-hp-feed" landing_url="http://jobs.zeit.de/" teaser="Aktuelle Jobs im ZEIT Stellenmarkt" />
+  <jobbox id="hp" title="Homepage" feed_url="http://app-cache.zeit.de/academics-hp-feed" landing_url="http://jobs.zeit.de/" teaser="Aktuelle Jobs im ZEIT Stellenmarkt" />
   <jobbox id="wissenschaft" title="Wissenschaft / Lehre / Forschung"
           available="zeit.arbeit.interfaces.IZARContent" feed_url="https://jobs.zeit.de/stellenangebote/nr_wissenschaft_&amp;_lehre_488536.html?format=rss_2.0" landing_url="http://jobs.zeit.de/stellenmarkt/wissenschaft_lehre_39811.html" teaser="Aktuelle Stellen in Wissenschaft  &amp; Lehre" />
   <jobbox id="it" title="Digitalisierung / Innovation"

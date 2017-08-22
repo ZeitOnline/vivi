@@ -1046,7 +1046,7 @@ class IJobboxBlock(IBlock):
         title=_('Jobbox'),
         source=JOBBOX_SOURCE)
 
-    jobbox_title = zope.interface.Attribute("Title")
+    jobbox_title = zope.interface.Attribute("Title of the chosen Jobbox")
 
 
 # BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.
