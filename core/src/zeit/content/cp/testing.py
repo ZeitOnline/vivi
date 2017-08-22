@@ -28,7 +28,7 @@ product_config = """
     scales-fullgraphical-url file://{fixtures}/scales-fullgraphical.xml
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
-    source-jobbox file://{fixtures}/jobboxes.xml
+    jobbox-source file://{fixtures}/jobboxes.xml
 </product-config>
 
 <product-config zeit.edit>

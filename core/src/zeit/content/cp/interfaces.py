@@ -997,16 +997,21 @@ class Jobbox(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, teaser, landing_url, feed_url):
         super(Jobbox, self).__init__(id, title, available)
+        self.id = id
         self.teaser = teaser
         self.url = landing_url
         self.feed_url = feed_url
+
+    def __eq__(self, other):
+        return super(Jobbox, self).__eq__(
+            zope.security.proxy.removeSecurityProxy(other))
 
 
 class JobboxSource(zeit.cms.content.sources.ObjectSource,
                    zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.cp'
-    config_url = 'source-jobbox'
+    config_url = 'jobbox-source'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -1029,7 +1034,7 @@ class JobboxSource(zeit.cms.content.sources.ObjectSource,
         cp = ICenterPage(context, None)
         if not cp:
             return False
-        return super(JobboxSource, self).isAvailable(self, value, cp)
+        return super(JobboxSource, self).isAvailable(value, cp)
 
 JOBBOX_SOURCE = JobboxSource()
 
@@ -1037,9 +1042,11 @@ JOBBOX_SOURCE = JobboxSource()
 class IJobboxBlock(IBlock):
     """The Jobbox block with a specific feed specified in source."""
 
-    jobbox_id = zope.schema.Choice(
+    jobbox = zope.schema.Choice(
         title=_('Jobbox'),
         source=JOBBOX_SOURCE)
+
+    jobbox_title = zope.interface.Attribute("Title")
 
 
 # BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.
