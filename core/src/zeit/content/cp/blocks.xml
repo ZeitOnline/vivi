@@ -8,6 +8,7 @@
   <module id="markup" title="HTML-Block"/>
   <module id="playlist" title="Video-Riegel"/>
   <module id="quiz" title="Quiz-Block"/>
+  <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="rss" title="RSS-Block"/>
   <module id="teaser" title="Teaser"/>
   <module id="video" title="Videoblock"/>

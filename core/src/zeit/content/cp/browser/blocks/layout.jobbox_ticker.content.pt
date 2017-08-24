@@ -1,0 +1,3 @@
+<div class="jobbox-ticker-title" tal:content="context/jobbox_ticker_title">
+  Jobboxtickertitle
+</div>

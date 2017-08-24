@@ -2,10 +2,10 @@ zeit.content.cp changes
 =======================
 
 
-3.13.10 (unreleased)
---------------------
+3.14.0 (unreleased)
+-------------------
 
-- Nothing changed yet.
+- ARBEIT-108: Add Jobbox with different feeds as module
 
 
 3.13.9 (2017-08-21)
