@@ -8,6 +8,12 @@ zeit.content.cp changes
 - ARBEIT-108: Add Jobbox with different feeds as module
 
 
+3.13.9 (2017-08-21)
+-------------------
+
+- ARBEIT-104: Show citation text for quote teasers in cp editor
+
+
 3.13.8 (2017-08-07)
 -------------------
 

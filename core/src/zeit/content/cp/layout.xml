@@ -68,6 +68,11 @@
         areas="solo duo minor major"
         />
     <layout
+        id="zar-quote-yellow"
+        title="Gelber Quote"
+        areas="solo duo minor major"
+        />
+    <layout
         id="parquet-regular"
         title="Parkett standard"
         areas="solo duo minor major"
