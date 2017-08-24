@@ -993,32 +993,32 @@ class ICardstackBlock(IBlock):
         default=False)
 
 
-class Jobbox(zeit.cms.content.sources.AllowedBase):
+class JobboxTicker(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, teaser, landing_url, feed_url):
-        super(Jobbox, self).__init__(id, title, available)
+        super(JobboxTicker, self).__init__(id, title, available)
         self.id = id
         self.teaser = teaser
         self.landing_url = landing_url
         self.feed_url = feed_url
 
     def __eq__(self, other):
-        return super(Jobbox, self).__eq__(
+        return super(JobboxTicker, self).__eq__(
             zope.security.proxy.removeSecurityProxy(other))
 
 
-class JobboxSource(zeit.cms.content.sources.ObjectSource,
+class JobboxTickerSource(zeit.cms.content.sources.ObjectSource,
                    zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.cp'
-    config_url = 'jobbox-source'
+    config_url = 'jobbox-ticker-source'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         result = collections.OrderedDict()
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
-            jobbox = Jobbox(
+            jobbox_ticker = JobboxTicker(
                 unicode(node.get('id')),
                 unicode(node.get('title')),
                 zeit.cms.content.sources.unicode_or_none(node.get(
@@ -1027,26 +1027,27 @@ class JobboxSource(zeit.cms.content.sources.ObjectSource,
                 unicode(node.get('landing_url')),
                 unicode(node.get('feed_url')),
                 )
-            result[jobbox.id] = jobbox
+            result[jobbox_ticker.id] = jobbox_ticker
         return result
 
     def isAvailable(self, value, context):
         cp = ICenterPage(context, None)
         if not cp:
             return False
-        return super(JobboxSource, self).isAvailable(value, cp)
+        return super(JobboxTickerSource, self).isAvailable(value, cp)
 
-JOBBOX_SOURCE = JobboxSource()
+JOBBOX_TICKER_SOURCE = JobboxTickerSource()
 
 
-class IJobboxBlock(IBlock):
+class IJobboxTickerBlock(IBlock):
     """The Jobbox block with a specific feed specified in source."""
 
-    jobbox = zope.schema.Choice(
-        title=_('Jobbox Feed'),
-        source=JOBBOX_SOURCE)
+    jobbox_ticker = zope.schema.Choice(
+        title=_('Jobbox Ticker'),
+        source=JOBBOX_TICKER_SOURCE)
 
-    jobbox_title = zope.interface.Attribute("Title of the chosen Jobbox")
+    jobbox_ticker_title = zope.interface.Attribute("Title of the chosen "
+                                                   "Jobbox Ticker")
 
 
 # BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.

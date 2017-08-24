@@ -104,6 +104,6 @@
   <include file="rawtext.zcml" />
   <include file="markup.zcml" />
   <include file="cardstack.zcml" />
-  <include file="jobbox.zcml" />
+  <include file="jobbox_ticker.zcml" />
 
 </configure>
