@@ -999,7 +999,7 @@ class Jobbox(zeit.cms.content.sources.AllowedBase):
         super(Jobbox, self).__init__(id, title, available)
         self.id = id
         self.teaser = teaser
-        self.url = landing_url
+        self.landing_url = landing_url
         self.feed_url = feed_url
 
     def __eq__(self, other):
@@ -1043,7 +1043,7 @@ class IJobboxBlock(IBlock):
     """The Jobbox block with a specific feed specified in source."""
 
     jobbox = zope.schema.Choice(
-        title=_('Jobbox'),
+        title=_('Jobbox Feed'),
         source=JOBBOX_SOURCE)
 
     jobbox_title = zope.interface.Attribute("Title of the chosen Jobbox")

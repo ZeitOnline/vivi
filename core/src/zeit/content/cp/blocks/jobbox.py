@@ -37,4 +37,4 @@ class JobboxBlock(zeit.content.cp.blocks.block.Block):
 
 zeit.edit.block.register_element_factory(
     [zeit.content.cp.interfaces.IArea],
-    'jobbox', _('Jobbox Block'))
+    'jobbox_feed', _('Jobbox Block'))

@@ -139,7 +139,7 @@
   </class>
   <adapter
     provides="zeit.edit.interfaces.IElement"
-    name="jobbox"
+    name="jobbox_feed"
     factory=".jobbox.JobboxBlock"
     />
 

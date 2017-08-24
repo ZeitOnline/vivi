@@ -16,7 +16,7 @@ class TestJobboxblock(zeit.content.cp.testing.FunctionalTestCase):
         return zope.component.getAdapter(
             lead,
             zeit.edit.interfaces.IElementFactory,
-            name='jobbox')()
+            name='jobbox_feed')()
 
     def test_jobbox_id_from_source_is_written_to_jobbox_block(self):
         block = self.create_jobboxblock()
@@ -30,7 +30,7 @@ class TestJobboxblock(zeit.content.cp.testing.FunctionalTestCase):
     def test_jobbox_object_is_recieved_from_jobbox_block(self):
         xml = lxml.objectify.fromstring("""
                 <container xmlns:cp="http://namespaces.zeit.de/CMS/cp"
-                cp:type="jobbox" module="jobbox" jobbox_id="hp"/>
+                cp:type="jobbox_feed" module="jobbox_feed" jobbox_id="hp"/>
                 """)
         block = self.create_jobboxblock()
         block.xml = xml
