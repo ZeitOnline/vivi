@@ -2,7 +2,7 @@ zeit.arbeit changes
 ====================
 
 
-1.1.1 (unreleased)
+1.2.0 (2017-08-29)
 ------------------
 
 - ARBEIT-61: Add jobbox ticker module for articles.
