@@ -46,4 +46,22 @@
     name="Arbeit"
     />
 
+  <class class=".jobbox_ticker.JobboxTicker">
+    <require
+      interface=".interfaces.IJobboxTicker"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IJobboxTicker"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".interfaces.JobboxTicker">
+    <require
+      attributes="id title available feed_url landing_url teaser"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>
