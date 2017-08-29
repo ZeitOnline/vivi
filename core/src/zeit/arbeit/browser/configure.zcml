@@ -29,4 +29,28 @@
     permission="zope.View"
     />
 
+  <browser:viewlet
+    for="..interfaces.IJobboxTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-jobboxticker"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="..interfaces.IJobboxTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-jobboxticker"
+    class=".jobbox_ticker.JobboxTicker"
+    permission="zope.View"
+    />
+
+  <class class="..jobbox_ticker.JobboxTicker">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+
 </configure>
