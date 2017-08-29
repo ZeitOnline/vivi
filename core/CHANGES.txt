@@ -5,7 +5,7 @@ zeit.arbeit changes
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ARBEIT-61: Add jobbox ticker module for articles.
 
 
 1.1.0 (2017-08-10)
