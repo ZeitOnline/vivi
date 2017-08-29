@@ -25,7 +25,8 @@ class JobboxTicker(zeit.edit.block.SimpleElement):
         # Since the values come in via xml config file, we cannot declare the
         # default on the field without major hassle.
         if self._jobbox is None:
-            source = zeit.arbeit.interfaces.IJobboxTicker['jobbox'].source(self)
+            source = zeit.arbeit.interfaces.IJobboxTicker['jobbox'].source(
+                self)
             return source.find('default')
         return self._jobbox
 
