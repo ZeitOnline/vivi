@@ -1007,8 +1007,9 @@ class JobboxTicker(zeit.cms.content.sources.AllowedBase):
             zope.security.proxy.removeSecurityProxy(other))
 
 
-class JobboxTickerSource(zeit.cms.content.sources.ObjectSource,
-                   zeit.cms.content.sources.SimpleContextualXMLSource):
+class JobboxTickerSource(
+        zeit.cms.content.sources.ObjectSource,
+        zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'jobbox-ticker-source'
@@ -1025,8 +1026,7 @@ class JobboxTickerSource(zeit.cms.content.sources.ObjectSource,
                     'available')),
                 unicode(node.get('teaser')),
                 unicode(node.get('landing_url')),
-                unicode(node.get('feed_url')),
-                )
+                unicode(node.get('feed_url')))
             result[jobbox_ticker.id] = jobbox_ticker
         return result
 
