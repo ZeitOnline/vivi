@@ -4,7 +4,7 @@ zeit.cms changes
 2.108.2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Show ZAR logo on ZAR resources
 
 
 2.108.1 (2017-08-17)

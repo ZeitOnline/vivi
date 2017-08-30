@@ -432,6 +432,10 @@ pre {
   background: transparent url("layout/logo_zco.png") no-repeat left center;
 }
 
+.section-IZARSection #main-navigation > li:first-child > a {
+  background: transparent url("layout/logo_zar.png") no-repeat left center;
+}
+
 #main-navigation > li:first-child > a > span {
   display: none;
 }
