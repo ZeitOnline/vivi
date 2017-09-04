@@ -4,7 +4,7 @@ zeit.cms changes
 2.108.3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ARBEIT-61: Add source for jobbox ticker feeds
 
 
 2.108.2 (2017-08-31)
