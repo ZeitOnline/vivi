@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.14.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ARBEIT-108: Move jobbox source to zeit.cms, it is used by both cp and article
 
 
 3.14.0 (2017-08-24)

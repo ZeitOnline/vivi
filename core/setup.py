@@ -31,7 +31,7 @@ setup(
         'setuptools',
         'xml-compare',
         'zc.sourcefactory',
-        'zeit.cms>=2.106.0.dev0',
+        'zeit.cms>=2.109.0.dev0',
         'zeit.content.article>=3.26',
         'zeit.content.image>=2.5.1.dev0',
         'zeit.content.quiz>=0.4.2',

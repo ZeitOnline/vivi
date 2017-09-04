@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 import lxml.etree
 import lxml.objectify
+import zeit.cms.content.sources
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
@@ -36,4 +36,4 @@ class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):
         block = self.create_jobboxblock()
         block.xml = xml
         self.assertTrue(isinstance(block.jobbox_ticker,
-                                   zeit.content.cp.interfaces.JobboxTicker))
+                                   zeit.cms.content.sources.JobboxTicker))
