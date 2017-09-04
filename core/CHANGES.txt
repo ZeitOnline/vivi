@@ -5,7 +5,7 @@ zeit.arbeit changes
 1.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ARBEIT-61: Move jobbox source to zeit.cms, it is used by both cp and article
 
 
 1.2.0 (2017-08-29)

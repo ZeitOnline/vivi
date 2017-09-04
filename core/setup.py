@@ -17,7 +17,7 @@ setup(
     install_requires=[
         'grokcore.component',
         'plone.testing',
-        'zeit.cms>=2.107.0.dev0',
+        'zeit.cms>=2.109.0.dev0',
         'zeit.content.article',
         'zeit.content.cp',
         'zeit.content.infobox>=1.25.0.dev0',

@@ -8,7 +8,6 @@ import pkg_resources
 
 product_config = """\
 <product-config zeit.arbeit>
-  article-jobbox-ticker-source file://{base}/tests/jobboxticker.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

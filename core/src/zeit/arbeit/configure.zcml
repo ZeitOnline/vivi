@@ -57,11 +57,4 @@
       />
   </class>
 
-  <class class=".interfaces.JobboxTicker">
-    <require
-      attributes="id title available feed_url landing_url teaser"
-      permission="zope.View"
-      />
-  </class>
-
 </configure>

@@ -31,8 +31,11 @@ class JobboxTickerTest(zeit.cms.testing.BrowserTestCase):
             ['Homepage'], b.getControl('Jobbox ticker').displayValue)
 
     def test_jobboxticker_source_has_specific_attributes(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = zeit.content.article.testing.create_article()
         jobbox = zeit.arbeit.interfaces.JOBBOX_TICKER_SOURCE.factory.getValues(
-                'Homepage')[0]
+            article)[0]
         self.assertEqual(
             'http://app-cache.zeit.de/academics-hp-feed',
             jobbox.feed_url)

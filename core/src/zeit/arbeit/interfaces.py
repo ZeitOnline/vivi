@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
@@ -10,7 +9,6 @@ import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.infobox.interfaces
 import zope.schema
-import collections
 
 
 class IZARSection(zeit.cms.section.interfaces.ISection):
@@ -47,41 +45,8 @@ class IZARInfobox(
     pass
 
 
-class JobboxTicker(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, available, feed_url, landing_url, teaser):
-        super(JobboxTicker, self).__init__(id, title, available)
-        self.feed_url = feed_url
-        self.landing_url = landing_url
-        self.teaser = teaser
-
-    def is_allowed(self, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(JobboxTicker, self).is_allowed(article)
-
-
-class JobboxTickerSource(
-        zeit.cms.content.sources.ObjectSource,
-        zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.arbeit'
-    config_url = 'article-jobbox-ticker-source'
-    attribute = 'id'
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
-        tree = self._get_tree()
-        result = collections.OrderedDict()
-        for node in tree.iterchildren('*'):
-            g = node.get
-            id = node.get(self.attribute)
-            result[id] = JobboxTicker(
-                id, g('title'), g('available', None),
-                g('feed_url', None), g('landing_url', None), g('teaser', None))
-        return result
-
-
-JOBBOX_TICKER_SOURCE = JobboxTickerSource()
+JOBBOX_TICKER_SOURCE = zeit.cms.content.sources.JobboxTickerSource(
+    zeit.content.article.interfaces.IArticle)
 
 
 class IJobboxTicker(zeit.edit.interfaces.IBlock):
