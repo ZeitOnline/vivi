@@ -51,8 +51,7 @@ JOBBOX_TICKER_SOURCE = zeit.cms.content.sources.JobboxTickerSource(
 
 class IJobboxTicker(zeit.edit.interfaces.IBlock):
 
-    # For editing
-    jobbox = zope.schema.Choice(
+    jobbox_ticker = zope.schema.Choice(
         title=_('Jobbox ticker'),
         required=True,
         source=JOBBOX_TICKER_SOURCE)

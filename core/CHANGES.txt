@@ -5,7 +5,7 @@ zeit.arbeit changes
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ARBEIT-61: Make IJobboxTicker API consistent with zeit.content.cp
 
 
 1.2.1 (2017-09-04)

@@ -1,13 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.arbeit.interfaces
-import zeit.cms.content.dav
-import zeit.cms.content.reference
-import zeit.cms.interfaces
+import zeit.cms.content.property
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
-import zope.interface
 
 
 class JobboxTicker(zeit.edit.block.SimpleElement):
@@ -18,20 +15,20 @@ class JobboxTicker(zeit.edit.block.SimpleElement):
 
     _jobbox = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty(
-            '.', 'id'), zeit.arbeit.interfaces.IJobboxTicker['jobbox'])
+            '.', 'id'), zeit.arbeit.interfaces.IJobboxTicker['jobbox_ticker'])
 
     @property
-    def jobbox(self):
+    def jobbox_ticker(self):
         # Since the values come in via xml config file, we cannot declare the
         # default on the field without major hassle.
         if self._jobbox is None:
-            source = zeit.arbeit.interfaces.IJobboxTicker['jobbox'].source(
-                self)
+            source = zeit.arbeit.interfaces.IJobboxTicker[
+                'jobbox_ticker'].source(self)
             return source.find('default')
         return self._jobbox
 
-    @jobbox.setter
-    def jobbox(self, value):
+    @jobbox_ticker.setter
+    def jobbox_ticker(self, value):
         self._jobbox = value
 
 
