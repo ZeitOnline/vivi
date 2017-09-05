@@ -1006,6 +1006,13 @@ class IJobboxTickerBlock(IBlock):
                                                    "Jobbox Ticker")
 
 
+class IPodcastBlock(IBlock):
+    """The Podcast block with a reference to a podcast."""
+
+    episode_id = zope.schema.TextLine(
+        title=_("Podcast id"))
+
+
 # BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.
 _("Autopilot")
 _("Parquet")

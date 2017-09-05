@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.14.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4190: Add module for referencing a podcast
 
 
 3.14.1 (2017-09-04)
