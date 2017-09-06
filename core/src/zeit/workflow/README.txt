@@ -345,7 +345,6 @@ Publish the folder again and verify the log:
 >>> print logfile.getvalue()
 Running job ... for http://xml.zeit.de/online/2007/01/
 Publishing http://xml.zeit.de/online/2007/01/
-Could not checkout http://xml.zeit.de/online/2007/01/
 ...publish.sh:
 Publishing test script
 work/online/2007/01/
@@ -429,7 +428,6 @@ work/online/2007/01/Arbeitsmarktzahlen
 work/online/2007/01/4schanzentournee-abgesang
 work/online/2007/01/
 done.
-Could not checkout http://xml.zeit.de/online/2007/01/
 Done http://xml.zeit.de/online/2007/01/ (...s)
 
 
@@ -693,10 +691,6 @@ When somalia is published, the folder and its content is also published:
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-Could not checkout http://xml.zeit.de/2007/
-Could not checkout http://xml.zeit.de/2007/01/
-Could not checkout http://xml.zeit.de/2007/02/
-Could not checkout http://xml.zeit.de/2007/03/
 ...publish.sh:
 Publishing test script
 work/online/2007/01/Somalia

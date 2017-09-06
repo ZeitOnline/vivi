@@ -13,6 +13,30 @@ zeit.cms changes
 - BUG-757: Allow storing publish_multiple errors in objectlog
 
 
+2.109.0 (2017-09-04)
+--------------------
+
+- ARBEIT-61: Add source for jobbox ticker feeds
+
+
+2.108.2 (2017-08-31)
+--------------------
+
+- Show ZAR logo on ZAR resources
+
+
+2.108.1 (2017-08-17)
+--------------------
+
+- BUG-773: Don't cycle non-XML content during publish
+
+
+2.108.0 (2017-08-09)
+--------------------
+
+- BUG-757: Allow storing publish_multiple errors in objectlog
+
+
 2.107.1 (2017-08-08)
 --------------------
 

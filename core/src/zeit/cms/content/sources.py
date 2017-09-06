@@ -539,3 +539,45 @@ class PrintRessortSource(XMLSource):
 
 
 PRINT_RESSORT_SOURCE = PrintRessortSource()
+
+
+class JobboxTicker(AllowedBase):
+
+    def __init__(self, id, title, available, teaser, landing_url, feed_url):
+        super(JobboxTicker, self).__init__(id, title, available)
+        self.id = id
+        self.teaser = teaser
+        self.landing_url = landing_url
+        self.feed_url = feed_url
+
+
+class JobboxTickerSource(ObjectSource, XMLSource):
+
+    product_configuration = 'zeit.cms'
+    config_url = 'source-jobbox-ticker'
+
+    def __init__(self, content_iface):
+        self.content_iface = content_iface
+        super(JobboxTickerSource, self).__init__()
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        tree = self._get_tree()
+        for node in tree.iterchildren('*'):
+            jobbox_ticker = JobboxTicker(
+                unicode(node.get('id')),
+                unicode(node.get('title')),
+                zeit.cms.content.sources.unicode_or_none(node.get(
+                    'available')),
+                unicode(node.get('teaser')),
+                unicode(node.get('landing_url')),
+                unicode(node.get('feed_url')))
+            result[jobbox_ticker.id] = jobbox_ticker
+        return result
+
+    def isAvailable(self, value, context):
+        content = self.content_iface(context, None)
+        if not content:
+            return False
+        return super(JobboxTickerSource, self).isAvailable(value, content)

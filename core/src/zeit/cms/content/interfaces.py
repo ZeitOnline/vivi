@@ -373,6 +373,15 @@ class IStorystreamReference(zope.interface.Interface):
     references = zope.interface.Attribute('')
 
 
+class IJobboxTicker(zope.interface.Interface):
+
+    id = zope.interface.Attribute('')
+    title = zope.interface.Attribute('')
+    teaser = zope.interface.Attribute('')
+    landing_url = zope.interface.Attribute('')
+    feed_url = zope.interface.Attribute('')
+
+
 def hex_literal(value):
     try:
         int(value, base=16)

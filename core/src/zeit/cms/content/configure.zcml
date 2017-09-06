@@ -130,6 +130,13 @@
       />
   </class>
 
+  <class class=".sources.JobboxTicker">
+    <require
+      interface=".interfaces.IJobboxTicker"
+      permission="zope.View"
+      />
+  </class>
+
   <!-- XML support -->
   <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
 
