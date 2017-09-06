@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.26.2 (unreleased)
+3.27.0 (2017-09-06)
 -------------------
 
 - ZON-4190: Add module for referencing a podcast
