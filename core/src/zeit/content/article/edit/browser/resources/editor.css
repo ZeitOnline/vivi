@@ -1133,15 +1133,16 @@
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
 }
 
-.type-article .module-icon-audio,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparen;t
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
 }
 
+.type-article .module-icon-audio,
+.type-article .module-icon-podcast,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
 }

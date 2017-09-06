@@ -287,6 +287,19 @@ class EditQuiz(zeit.edit.browser.form.InlineForm):
         return 'quiz.{0}'.format(self.context.__name__)
 
 
+class EditPodcast(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IPodcast).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit podcast block')
+
+    @property
+    def prefix(self):
+        return 'podcast.{0}'.format(self.context.__name__)
+
+
 class EditDivision(zeit.edit.browser.form.InlineForm):
 
     legend = None

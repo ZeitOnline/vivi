@@ -272,6 +272,17 @@
       />
   </class>
 
+  <class class=".podcast.Podcast">
+    <require
+      interface=".interfaces.IPodcast"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPodcast"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".body.BreakingNewsBody">
     <require
       interface=".interfaces.IBreakingNewsBody"

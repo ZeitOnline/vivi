@@ -523,6 +523,12 @@ class IQuiz(zeit.edit.interfaces.IBlock):
         default=True)
 
 
+class IPodcast(zeit.edit.interfaces.IBlock):
+
+    episode_id = zope.schema.TextLine(
+        title=_('Podcast id'))
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(
