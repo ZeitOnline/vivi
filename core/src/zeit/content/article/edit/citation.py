@@ -27,14 +27,3 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Citation
     title = _('Citation')
-
-
-def find_first_citation(article):
-    body = zeit.content.article.edit.interfaces.IEditableBody(article, None)
-    if not body:
-        return None
-    for element in body.values():
-        if zeit.content.article.edit.interfaces.ICitation.providedBy(element):
-            return zeit.content.article.edit.interfaces.ICitation(
-                element)
-    return None

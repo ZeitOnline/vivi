@@ -4,7 +4,7 @@ zeit.content.article changes
 3.28.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4206: Remove find_first_citation, replaced by `body.find_first(ICitation)`
 
 
 3.28.0 (2017-09-07)
