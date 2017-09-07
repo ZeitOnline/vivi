@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.109.1 (unreleased)
+2.109.1 (2017-09-07)
 --------------------
 
 - ZON-3885: Remove ad placeholder configuration source
