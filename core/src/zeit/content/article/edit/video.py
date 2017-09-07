@@ -97,8 +97,7 @@ def update_empty(context, event):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_video_metadata(article, event):
-    body = zeit.content.article.edit.interfaces.IEditableBody(article)
-    for block in body.values():
+    for block in article.body.values():
         video = zeit.content.article.edit.interfaces.IVideo(block, None)
         if video is not None:
             # Re-assigning the old value updates xml metadata

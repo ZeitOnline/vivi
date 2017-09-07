@@ -1,4 +1,3 @@
-from zeit.content.article.edit.interfaces import IEditableBody
 import transaction
 import unittest
 import zeit.cms.checkout.interfaces
@@ -41,7 +40,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
             with zeit.cms.testing.interaction():
                 wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
                 article = list(wc.values())[0]
-                image_block = IEditableBody(article)['blockname']
+                image_block = article.body['blockname']
                 return image_block
 
     def test_setting_image_reference_also_sets_manual_flag(self):

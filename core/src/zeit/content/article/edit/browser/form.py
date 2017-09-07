@@ -3,7 +3,6 @@ from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
-from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
@@ -64,8 +63,7 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 
     @property
     def body(self):
-        return zeit.content.article.edit.interfaces.IEditableBody(
-            self.context)
+        self.context.body
 
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm,
@@ -105,8 +103,8 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
         # even though the image is not displayed in the body area,
         # the body still needs to be updated so it knows the (possibly) new
         # UUID of the image block
-        body = IEditableBody(self.context)
-        self.signal('reload', 'editable-body', self.url(body, 'contents'))
+        self.signal(
+            'reload', 'editable-body', self.url(self.context.body, 'contents'))
 
 
 class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
@@ -212,8 +210,8 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
     def _success_handler(self):
         self.signal('reload-inline-form', 'teaser-image')
         self.signal('reload-inline-form', 'article-content-main-image')
-        body = IEditableBody(self.context)
-        self.signal('reload', 'editable-body', self.url(body, 'contents'))
+        self.signal(
+            'reload', 'editable-body', self.url(self.context.body, 'contents'))
 
 
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -415,10 +413,10 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'leadteaser')
         self.signal('reload-inline-form', 'article-content-main-image')
         self.signal('reload-inline-form', 'mobile')
-        body = IEditableBody(self.context)
         # XXX it would be nicer if we didn't need to know the reload URL here
         # (e.g. write it onto the DOM element)
-        self.signal('reload', 'editable-body', self.url(body, 'contents'))
+        self.signal(
+            'reload', 'editable-body', self.url(self.context.body, 'contents'))
 
 
 class TeaserSupertitle(zeit.edit.browser.form.InlineForm,

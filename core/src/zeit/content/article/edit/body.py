@@ -168,8 +168,7 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
 
     @property
     def children(self):
-        body = zeit.content.article.edit.interfaces.IEditableBody(self.context)
-        return body.values()
+        return self.context.body.values()
 
 
 @grok.subscribe(
@@ -216,21 +215,17 @@ class BreakingNewsBody(grok.Adapter):
     def text(self, value):
         if not self._paragraph:
             factory = zope.component.getAdapter(
-                self._body, zeit.edit.interfaces.IElementFactory,
+                self.context.body, zeit.edit.interfaces.IElementFactory,
                 name='p')
             factory()
         self._paragraph.text = value
 
     @property
     def _paragraph(self):
-        for block in self._body.values():
+        for block in self.context.body.values():
             if zeit.content.article.edit.interfaces.IParagraph.providedBy(
                     block):
                 return block
-
-    @property
-    def _body(self):
-        return zeit.content.article.edit.interfaces.IEditableBody(self.context)
 
     @property
     def article_id(self):

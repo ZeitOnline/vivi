@@ -122,6 +122,7 @@ Checking in requires the article to be valid:
 We check in the document. We look at the document in the repository then:
 
 >>> browser.reload()  # reload to show the checkin link
+>>> browser.handleErrors = False
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url

@@ -151,7 +151,6 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             article.xml.body.division.image.get('src'))
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
-        from zeit.content.article.edit.interfaces import IEditableBody
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
@@ -161,17 +160,14 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:
-            body = IEditableBody(co)
-            factory = zope.component.getAdapter(
-                body, zeit.edit.interfaces.IElementFactory, 'image')
-            image_block = factory()
+            co.body.create_item('image')
 
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
-            image_block = body.values()[0]
+            image_block = co.body.values()[0]
             self.assertEqual(image_id, image_block.references.target.uniqueId)
             self.assertFalse(image_block.is_empty)
 
@@ -181,7 +177,6 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, image_block.references)
 
     def test_IImages_is_not_copied_to_body_if_block_was_edited_manually(self):
-        from zeit.content.article.edit.interfaces import IEditableBody
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
@@ -196,10 +191,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:
-            body = IEditableBody(co)
-            factory = zope.component.getAdapter(
-                body, zeit.edit.interfaces.IElementFactory, 'image')
-            image_block = factory()
+            image_block = co.body.create_item('image')
             image_block.references = image_block.references.create(
                 image_group)
             image_block.set_manually = True
@@ -209,7 +201,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
-            image_block = body.values()[0]
+            image_block = co.body.values()[0]
             self.assertEqual(
                 image_group.uniqueId, image_block.references.target.uniqueId)
 
@@ -252,20 +244,15 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         # overlook the fact that when we find a single element via xpath,
         # that already is the one we want.
         from zeit.cms.interfaces import ICMSContent
-        from zeit.content.article.edit.interfaces import IEditableBody
-        import zope.component
 
         self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:
-            body = IEditableBody(co)
-            factory = zope.component.getAdapter(
-                body, zeit.edit.interfaces.IElementFactory, 'image')
-            block = factory()
+            block = co.body.create_item('image')
             block.references = block.references.create(ICMSContent(
                 'http://xml.zeit.de/2006/DSC00109_2.JPG'))
-            block = factory()
+            block = co.body.create_item('image')
             block.references = block.references.create(ICMSContent(
                 'http://xml.zeit.de/2006/DSC00109_3.JPG'))
 
@@ -275,16 +262,11 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_setting_same_image_again_keeps_it(self):
         from zeit.cms.interfaces import ICMSContent
-        from zeit.content.article.edit.interfaces import IEditableBody
-        import zope.component
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:
-            body = IEditableBody(co)
-            factory = zope.component.getAdapter(
-                body, zeit.edit.interfaces.IElementFactory, 'image')
-            block = factory()
+            block = co.body.create_item('image')
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
             block.references = block.references.create(
                 ICMSContent(image_id))

@@ -1,7 +1,6 @@
 from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.article.edit.interfaces import IEditableBody
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.interfaces
@@ -107,11 +106,8 @@ class Add(zeit.cms.browser.form.AddForm,
         push.short_text = data['title']
         push.message_config = message_config
 
-        body = IEditableBody(article)
-        image_factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory,
-            name='image')
-        image_factory()
+        body = article.body
+        body.create_item('image')
         if len(body) == 2:
             # The business rule is that each article should start with an image
             # block. Now IBreakingNewsBody caused a paragraph to be created

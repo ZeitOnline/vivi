@@ -211,11 +211,11 @@ def reset_local_properties(context, event):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_reference_metadata(article, event):
-    body = zeit.content.article.edit.interfaces.IEditableBody(article)
-    for block in body.values():
+    for block in article.body.values():
         if (zeit.content.article.edit.interfaces.IImage.providedBy(block) and
                 block.references is not None):
-            type(block).references.update_metadata(block)
+            cls = type((zope.security.proxy.getObject(block)))
+            cls.references.update_metadata(block)
         elif (zeit.content.article.edit.interfaces.IReference.providedBy(
                 block) and block.references is not None):
             # Re-assigning the old value updates xml metadata

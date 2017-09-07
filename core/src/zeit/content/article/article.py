@@ -66,6 +66,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
          'template', 'header_layout', 'is_instant_article', 'is_amp'))
 
     @property
+    def body(self):
+        return zeit.content.article.edit.interfaces.IEditableBody(self)
+
+    @property
     def paragraphs(self):
         return len(self.xml.xpath('//body/division/p'))
 
@@ -88,9 +92,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def main_image_block(self):
-        body = zeit.content.article.edit.interfaces.IEditableBody(self)
         try:
-            image_block = body.values()[0]
+            image_block = self.body.values()[0]
         except IndexError:
             return None
         if not zeit.content.article.edit.interfaces.IImage.providedBy(
@@ -129,7 +132,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         image_block.variant_name = value
 
     def _create_image_block_in_front(self):
-        body = zeit.content.article.edit.interfaces.IEditableBody(self)
+        body = self.body
         image_block = zope.component.getAdapter(
             body, zeit.edit.interfaces.IElementFactory, 'image')()
         ids = body.keys()
@@ -216,7 +219,7 @@ def disable_is_amp_and_is_instant_article_if_access_is_restricted(
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def iter_referenced_content(context):
     referenced_content = []
-    body = zeit.content.article.edit.interfaces.IEditableBody(context, None)
+    body = context.body
     if not body:
         return referenced_content
     for element in body.values():
@@ -294,8 +297,7 @@ def publish_priority_article(context):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def ensure_division_handler(context, event):
-    body = zeit.content.article.edit.interfaces.IEditableBody(context)
-    body.ensure_division()
+    context.body.ensure_division()
 
 
 @grok.subscribe(
@@ -331,7 +333,7 @@ def set_template_and_header_defaults(context, event):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def ensure_block_ids(context, event):
-    body = zeit.content.article.edit.interfaces.IEditableBody(context)
+    body = context.body
     # Keys are generated on demand, so we force this once, otherwise a
     # consistent result is not guaranteed (since different requests might
     # overlap and thus generate different keys).

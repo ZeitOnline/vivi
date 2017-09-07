@@ -143,8 +143,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         article.main_image = article.main_image.create(image)
-        body = zeit.content.article.edit.interfaces.IEditableBody(article)
-        block = body.values()[0]
+        block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
         self.assertFalse(block.is_empty)
 
@@ -153,8 +152,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         article.main_image = article.main_image.create(image)
-        body = zeit.content.article.edit.interfaces.IEditableBody(article)
-        block = body.values()[0]
+        block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
 
 
@@ -167,8 +165,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:
-            body = zeit.content.article.edit.interfaces.IEditableBody(co)
-            block = body.values()[0]
+            block = co.body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
 
     def test_normalize_teaser(self):

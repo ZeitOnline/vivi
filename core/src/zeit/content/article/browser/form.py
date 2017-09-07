@@ -1,5 +1,4 @@
 from zeit.cms.checkout.interfaces import ILocalContent
-from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.i18n import MessageFactory as _
 import gocept.form.grouped
 import uuid
@@ -60,10 +59,7 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.sub_ressort = self._get_source_value(article, 'sub_ressort')
         if article.ressort:
             article.channels = ((article.ressort, article.sub_ressort),)
-        image_factory = zope.component.getAdapter(
-            IEditableBody(article), zeit.edit.interfaces.IElementFactory,
-            name='image')
-        image_factory()
+        article.body.create_item('image')
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
         return article
 

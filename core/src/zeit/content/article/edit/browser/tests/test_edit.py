@@ -299,10 +299,8 @@ class TestEditingMultipleParagraphs(
     def setUp(self):
         super(TestEditingMultipleParagraphs, self).setUp()
         from zeit.cms.checkout.helper import checked_out
-        from zeit.edit.interfaces import IElementFactory
         from zeit.content.article.article import Article
         from zeit.content.article.interfaces import IArticle
-        from zeit.content.article.edit.interfaces import IEditableBody
 
         wl = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
@@ -315,15 +313,10 @@ class TestEditingMultipleParagraphs(
             co.title = 'foo'
             co.keywords = (
                 wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
-            body = IEditableBody(co)
-            p_factory = zope.component.getAdapter(
-                body, IElementFactory, 'p')
-            img_factory = zope.component.getAdapter(
-                body, IElementFactory, 'image')
-            paragraph = p_factory()
+            paragraph = co.body.create_item('p')
             paragraph.text = 'foo'
-            img_factory()
-            paragraph = p_factory()
+            co.body.create_item('image')
+            paragraph = co.body.create_item('p')
             paragraph.text = 'bar'
         self.open('/repository/article/@@checkout')
 

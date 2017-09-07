@@ -253,9 +253,7 @@ class Publish(zeit.cms.testing.BrowserTestCase):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 article = zeit.content.article.testing.create_article()
-                editor = zeit.content.article.edit.interfaces.IEditableBody(
-                    article)
-                editor.create_item('image')
+                article.body.create_item('image')
                 self.repository['article_with_division'] = article
                 zeit.cms.workflow.interfaces.IPublishInfo(
                     self.repository['article_with_division']).urgent = True

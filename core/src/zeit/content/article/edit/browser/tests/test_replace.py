@@ -2,7 +2,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import IWorkingcopy
 from zeit.content.article.edit.browser.tests.test_edit import click
-from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.edit.interfaces import IElementFactory
 import transaction
 import unittest
@@ -139,15 +138,10 @@ class FindReplaceTest(
         self.add_article()
         transaction.abort()
         co = list(IWorkingcopy(None).values())[0]
-        body = IEditableBody(co)
-        p_factory = zope.component.getAdapter(
-            body, IElementFactory, 'p')
-        img_factory = zope.component.getAdapter(
-            body, IElementFactory, 'image')
-        paragraph = p_factory()
+        paragraph = co.body.create_item('p')
         paragraph.text = 'foo bar baz'
-        img_factory()
-        paragraph = p_factory()
+        co.body.create_item('image')
+        paragraph = co.body.create_item('p')
         paragraph.text = 'foo baz'
         transaction.commit()
 
@@ -316,15 +310,10 @@ class FindReplaceTest(
             co.title = 'foo'
             co.keywords = (
                 wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
-            body = IEditableBody(co)
-            p_factory = zope.component.getAdapter(
-                body, IElementFactory, 'p')
-            img_factory = zope.component.getAdapter(
-                body, IElementFactory, 'image')
-            paragraph = p_factory()
+            paragraph = co.body.create_item('p')
             paragraph.text = 'foobar'
-            img_factory()
-            paragraph = p_factory()
+            paragraph = co.body.create_item('image')
+            paragraph = co.body.create_item('p')
             paragraph.text = 'foobaz'
         self.open('/repository/article/@@checkout')
 

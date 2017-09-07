@@ -1,7 +1,6 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.article.edit.interfaces import IBreakingNewsBody
-from zeit.content.article.edit.interfaces import IEditableBody
 import lxml.etree
 import zeit.cms.checkout.helper
 import zeit.cms.testing
@@ -139,8 +138,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
         with zeit.cms.testing.site(self.getRootFolder()):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-            body = IEditableBody(article)
-            para = body.values()[1]  # 0 is image
+            para = article.body.values()[1]  # 0 is image
             self.assertEqual('mytext', para.text)
 
     def test_body_text_not_given_creates_no_paragraph(self):
@@ -151,8 +149,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
         with zeit.cms.testing.site(self.getRootFolder()):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-            body = IEditableBody(article)
-            self.assertEqual(1, len(body))
+            self.assertEqual(1, len(article.body))
 
     def test_body_text_default_value_is_translated(self):
         b = self.browser
