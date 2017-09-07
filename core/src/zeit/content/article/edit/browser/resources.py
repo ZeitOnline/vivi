@@ -22,11 +22,6 @@ Resource('editor.js', depends=[
     editor_css,
 ])
 
-Resource('ads.js', depends=[
-    zeit.cms.browser.resources.base,
-    editor_js,
-])
-
 Resource('counter.js', depends=[zeit.cms.browser.resources.base,
                                 zeit.cms.browser.resources.counter_js])
 Resource('filename.js', depends=[
