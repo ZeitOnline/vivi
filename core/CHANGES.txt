@@ -4,7 +4,7 @@ Changes
 2.15.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4206: Introduce `IContainer.filter_values` and `find_first`
 
 
 2.15.1 (2017-08-07)

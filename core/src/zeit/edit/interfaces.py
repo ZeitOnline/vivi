@@ -67,6 +67,16 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
         IContainers contained in self.
         """
 
+    def filter_values(*interfaces):
+        """Returns only those items in self.values() that provide any of
+        the given interfaces.
+        """
+
+    def find_first(interface):
+        """Returns the first item in self.values() that provides the given
+        interface; None if no such item exists.
+        """
+
 
 class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""

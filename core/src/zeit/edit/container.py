@@ -212,6 +212,15 @@ class Base(UserDict.DictMixin,
                     return item
         return default
 
+    def filter_values(self, *interfaces):
+        for child in self.values():
+            if any([x.providedBy(child) for x in interfaces]):
+                yield child
+
+    def find_first(self, interface):
+        result = list(self.filter_values(interface))
+        return result[0] if result else None
+
     def __delitem__(self, key):
         item = self._delete(key)
         self._p_changed = True
