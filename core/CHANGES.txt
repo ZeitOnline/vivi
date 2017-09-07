@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.27.1 (unreleased)
+3.27.1 (2017-09-07)
 -------------------
 
 - ZON-3885: Remove ad placeholders
