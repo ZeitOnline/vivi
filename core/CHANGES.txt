@@ -4,7 +4,7 @@ zeit.content.article changes
 3.27.2 (unreleased)
 -------------------
 
-- MAINT: Add `IArticle.body` convenience helper
+- MAINT: Add `IArticle.body` and `header` convenience helpers
 
 
 3.27.1 (2017-09-07)

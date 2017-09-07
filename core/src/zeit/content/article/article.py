@@ -70,6 +70,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         return zeit.content.article.edit.interfaces.IEditableBody(self)
 
     @property
+    def header(self):
+        return zeit.content.article.edit.interfaces.IHeaderArea(self)
+
+    @property
     def paragraphs(self):
         return len(self.xml.xpath('//body/division/p'))
 

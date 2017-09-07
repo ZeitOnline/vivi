@@ -24,14 +24,12 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_can_adapt_article_to_header(self):
         article = Article()
-        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
-        self.assertEqual([], header.keys())
+        self.assertEqual([], article.header.keys())
 
     def test_for_bw_compat_header_creates_its_xml_node_if_not_present(self):
         article = Article()
         article.xml.head.remove(article.xml.head.header)
-        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
-        self.assertEqual([], header.keys())
+        self.assertEqual([], article.header.keys())
         self.assertEqual(1, len(article.xml.xpath('//head/header')))
 
     def test_migration_works_with_security(self):
@@ -40,11 +38,11 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(article, temporary=False) as co:
             co = zope.security.proxy.ProxyFactory(co)
             with self.assertNothingRaised():
-                zeit.content.article.edit.interfaces.IHeaderArea(co)
+                co.header
 
     def test_contains_at_most_one_module(self):
         article = Article()
-        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
+        header = article.header
         header.create_item('quiz')
         self.assertEqual(['quiz'], [x.type for x in header.values()])
         self.assertEqual('quiz', header.module.type)
@@ -56,18 +54,14 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         # On checkin, the cp:__name__ attributes are removed, so the header
         # needs to be able to function without them.
         article = Article()
-        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
-        header.create_item('quiz')
+        article.header.create_item('quiz')
         self.repository['article'] = article
-        header = zeit.content.article.edit.interfaces.IHeaderArea(
-            self.repository['article'])
+        header = self.repository['article'].header
         self.assertEqual(['quiz'], [x.type for x in header.values()])
 
     def test_index_is_implemented_via_values(self):
         article = Article()
-        header = zeit.content.article.edit.interfaces.IHeaderArea(article)
-        module = header.create_item('quiz')
+        module = article.header.create_item('quiz')
         self.repository['article'] = article
-        header = zeit.content.article.edit.interfaces.IHeaderArea(
-            self.repository['article'])
+        header = self.repository['article'].header
         self.assertEqual(0, header.index(module))

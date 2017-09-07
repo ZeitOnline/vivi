@@ -27,8 +27,7 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'article-content-main-image')
-        self.reload(
-            zeit.content.article.edit.interfaces.IHeaderArea(self.context))
+        self.reload(self.context.header)
 
 
 class TemplateUpdater(

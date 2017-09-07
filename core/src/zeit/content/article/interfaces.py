@@ -22,6 +22,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
     body = zope.interface.Attribute('Convenience access to IEditableBody')
+    header = zope.interface.Attribute('Convenience access to IHeaderArea')
 
     paragraphs = zope.schema.Int(
         title=_("Paragraphsamount"),

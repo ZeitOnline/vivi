@@ -120,4 +120,4 @@ def clear_header_module_if_not_allowed_by_template(context, event):
 
     source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
     if not source.allow_header_module(context):
-        zeit.content.article.edit.interfaces.IHeaderArea(context).clear()
+        context.header.clear()
