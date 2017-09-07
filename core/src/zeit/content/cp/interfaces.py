@@ -477,11 +477,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
-    def select_modules(*interfaces):
-        """Returns only those modules in self.values() that provide any of
-        the given interfaces.
-        """
-
     def adjust_auto_blocks_to_count():
         """Updates number of teaser in AutoPilot, if AutoPilot is enabled"""
 

@@ -169,7 +169,7 @@ def extract_teasers_from_cp(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers_from_area(context):
-    for teaser in context.select_modules(
+    for teaser in context.filter_values(
             zeit.content.cp.interfaces.ITeaserBlock):
         for content in list(teaser):
             yield content

@@ -425,8 +425,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             type=type_)
             for type_, channel, subchannel in value]))
 
-    def select_modules(self, *interfaces):
-        return zeit.content.cp.interfaces.IRenderedArea(self).select_modules(
+    def filter_values(self, *interfaces):
+        return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
             *interfaces)
 
 

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4206: Use `IContainer.filter_values` instead of our own `select_modules`
 
 
 3.15.0 (2017-09-06)

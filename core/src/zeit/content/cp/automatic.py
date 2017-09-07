@@ -75,10 +75,11 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             self, zeit.content.cp.interfaces.IContentQuery,
             name=self.automatic_type)
 
-    def select_modules(self, *interfaces):
-        for module in self.values():
-            if any([x.providedBy(module) for x in interfaces]):
-                yield module
+    def filter_values(self, *interfaces):
+        # XXX copy&paste from zeit.edit.container.Base.filter_values
+        for child in self.values():
+            if any([x.providedBy(child) for x in interfaces]):
+                yield child
 
 
 def pop_filter(items, predicate=None):
