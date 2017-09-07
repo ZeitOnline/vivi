@@ -193,7 +193,8 @@ def default_teaser_representation(content, request):
 @zope.interface.implementer(ITeaserRepresentation)
 def quote_teaser_representation(content, request):
     article = zeit.content.article.interfaces.IArticle(content, None)
-    citation = zeit.content.article.edit.citation.find_first_citation(article)
+    citation = article and article.body.find_first(
+        zeit.content.article.edit.interfaces.ICitation)
     if not (article and citation):
         return default_teaser_representation(content, request)
     texts = list()
