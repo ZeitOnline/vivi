@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.28.2 (unreleased)
+3.28.2 (2017-09-08)
 -------------------
 
 - FIX: Fix typo in article edit view after introducing IArticle.body
