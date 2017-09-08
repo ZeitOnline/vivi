@@ -61,10 +61,6 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Article')
     folded_workingcopy = False
 
-    @property
-    def body(self):
-        self.context.body
-
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm,
                          zeit.cms.browser.form.CharlimitMixin):
