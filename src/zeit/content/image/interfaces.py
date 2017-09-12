@@ -213,7 +213,12 @@ def unique_viewport_and_master_image(value):
     """
     viewports = set()
     master_images = set()
-    for viewport, master_image in value:
+    for item in value:
+        if item is None:
+            # XXX Tuple widget uses None for invalid items, regardless of its
+            # value_type, which in our case would expect a 2-element tuple.
+            continue
+        viewport, master_image = item
         if viewport in viewports:
             raise DuplicateViewport(viewport)
         if master_image in master_images:
