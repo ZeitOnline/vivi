@@ -6,6 +6,8 @@ zeit.content.image changes
 
 - BUG-749: Fix formlib validation bug
 
+- BUG-771: Don't break during deleting imagegroup due to deleted children
+
 
 2.20.3 (2017-06-29)
 -------------------
