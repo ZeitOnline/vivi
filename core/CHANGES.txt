@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Stop searching for default teaser layout on the first one we find
 
 
 3.16.0 (2017-09-07)

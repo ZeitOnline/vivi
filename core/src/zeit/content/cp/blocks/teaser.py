@@ -120,6 +120,7 @@ class TeaserBlock(
         for layout in source:
             if layout.is_default(self):
                 default = layout
+                break
         return default
 
     @layout.setter
