@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.28.3 (unreleased)
+3.28.3 (2017-09-14)
 -------------------
 
 - FIX: Add security declaration after introducing IArticle.header
