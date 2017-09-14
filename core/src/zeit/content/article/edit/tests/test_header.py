@@ -65,3 +65,11 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
         header = self.repository['article'].header
         self.assertEqual(0, header.index(module))
+
+    def test_header_has_security_declaration(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article, temporary=False) as co:
+            co = zope.security.proxy.ProxyFactory(co)
+            with self.assertNothingRaised():
+                co.header.clear()

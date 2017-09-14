@@ -32,14 +32,23 @@ class IEditableBody(IArticleArea):
         """
 
 
-class IHeaderArea(IArticleArea):
-    """Separate area for header that may contain one module."""
+class IReadHeaderArea(zeit.edit.interfaces.IReadContainer):
+
+    module = zope.interface.Attribute(
+        'Convenience access for self.values()[0] or None')
+
+
+class IWriteHeaderArea(zeit.edit.interfaces.IWriteContainer):
 
     def clear():
         """Delete all contained modules."""
 
-    module = zope.interface.Attribute(
-        'Convenience access for self.values()[0] or None')
+
+class IHeaderArea(
+        IReadHeaderArea,
+        IWriteHeaderArea,
+        IArticleArea):
+    """Separate area for header that may contain one module."""
 
 
 class IFindReplace(zope.interface.Interface):

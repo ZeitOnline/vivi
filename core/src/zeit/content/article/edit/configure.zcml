@@ -26,11 +26,11 @@
 
   <class class=".header.HeaderArea">
     <require
-      interface="zeit.edit.interfaces.IReadContainer"
+      interface=".interfaces.IReadHeaderArea"
       permission="zope.View"
       />
     <require
-      interface="zeit.edit.interfaces.IWriteContainer"
+      interface=".interfaces.IWriteHeaderArea"
       permission="zeit.EditContent"
       />
   </class>
