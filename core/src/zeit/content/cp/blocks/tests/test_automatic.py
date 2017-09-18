@@ -29,3 +29,19 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
 
         result = IRenderedArea(lead).values()
         self.assertEqual(['teaser', 'auto-teaser'], [x.type for x in result])
+
+    def test_automatic_teaser_block_uses_first_default_teaser_definition(self):
+        """There are two defaults defined for the duo are in layout.xml and the
+         first one should be used"""
+        self.repository['t1'] = ExampleContentType()
+        cp = self.repository['cp']
+        duo_region = cp['feature'].create_item('area')
+        duo_region.kind = 'duo'
+        duo_region.count = 1
+        duo_region.automatic = True
+        duo_region.automatic_type = 'query'
+
+        self.solr.search.return_value = pysolr.Results([
+            dict(uniqueId='http://xml.zeit.de/t1')], 1)
+        teaser = duo_region.values()[0]
+        self.assertEqual('two-side-by-side', teaser.layout.id)
