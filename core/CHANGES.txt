@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.16.2 (unreleased)
+3.16.2 (2017-09-18)
 -------------------
 
 - FIX: Use first default layout for automatic cps as well
