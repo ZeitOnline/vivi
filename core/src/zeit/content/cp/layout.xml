@@ -46,6 +46,13 @@
         default="duo"
         />
     <layout
+        id="second-duo-default"
+        title="Zweiter default teaser"
+        image_pattern="140x140"
+        areas="duo"
+        default="duo"
+        />
+    <layout
         id="large"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="140x140"

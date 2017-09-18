@@ -111,17 +111,13 @@ class TeaserBlock(
     @property
     def layout(self):
         id = self.xml.get('module')
-        default = zeit.content.cp.layout.NoBlockLayout(self)
         source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
             self)
         layout = source.find(id)
         if layout:
             return layout
-        for layout in source:
-            if layout.is_default(self):
-                default = layout
-                break
-        return default
+        return zeit.content.cp.interfaces.IArea(self).default_teaser_layout \
+            or zeit.content.cp.layout.NoBlockLayout(self)
 
     @layout.setter
     def layout(self, layout):

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.16.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Use first default layout for automatic cps as well
 
 
 3.16.1 (2017-09-14)
