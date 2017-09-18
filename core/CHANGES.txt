@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.20.4 (unreleased)
+2.20.4 (2017-09-18)
 -------------------
 
 - BUG-749: Fix formlib validation bug
