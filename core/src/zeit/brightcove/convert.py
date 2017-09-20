@@ -94,6 +94,8 @@ class Video(Converter):
         data['name'] = cmsobj.title
         data['description'] = cmsobj.teaserText
         data['long_description'] = cmsobj.subtitle
+        data['economics'] = (
+            'AD_SUPPORTED' if cmsobj.has_advertisement else 'FREE')
 
         custom['authors'] = ' '.join(
             x.target.uniqueId for x in cmsobj.authorships)
@@ -151,13 +153,19 @@ class Video(Converter):
         authors = [zeit.cms.interfaces.ICMSContent(x, None)
                    for x in custom.get('authors', '').split(' ')]
         cmsobj.authorships = tuple([x for x in authors if x is not None])
-        cmsobj.commentsAllowed = self.cms_bool(custom.get('allow_comments'))
-        cmsobj.commentsPremoderate = self.cms_bool(
-            custom.get('premoderate_comments'))
-        cmsobj.banner = self.cms_bool(custom.get('banner'))
-        cmsobj.banner = custom.get('banner_id')
-        cmsobj.dailyNewsletter = self.cms_bool(custom.get('newsletter'))
-        cmsobj.has_recensions = self.cms_bool(custom.get('recensions'))
+        cmsobj.commentsAllowed = self._default_if_missing(
+            custom, 'allow_comments', IVideo['commentsAllowed'], self.cms_bool)
+        cmsobj.commentsPremoderate = self._default_if_missing(
+            custom, 'premoderate_comments', IVideo['commentsPremoderate'],
+            self.cms_bool)
+        cmsobj.banner = self._default_if_missing(
+            custom, 'banner', IVideo['banner'], self.cms_bool)
+        cmsobj.banner_id = custom.get('banner_id')
+        cmsobj.dailyNewsletter = self._default_if_missing(
+            custom, 'newsletter', IVideo['dailyNewsletter'], self.cms_bool)
+        cmsobj.has_recensions = self._default_if_missing(
+            custom, 'recensions', IVideo['has_recensions'], self.cms_bool)
+        cmsobj.has_advertisement = data.get('economics') == 'AD_SUPPORTED'
         cmsobj.ressort = custom.get('ressort')
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')
@@ -226,6 +234,14 @@ class Video(Converter):
             vr.video_duration = item.get('duration')
             renditions.append(vr)
         cmsobj.renditions = renditions
+
+    def _default_if_missing(self, data, key, field, convert=None):
+        if key not in data:
+            return field.default
+        value = data[key]
+        if convert is not None:
+            value = convert(value)
+        return value
 
     @property
     def write_data(self):

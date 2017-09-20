@@ -103,6 +103,12 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/eta-zapatero',
             bc.data['custom_fields']['ref_link1'])
 
+    def test_converts_advertisement(self):
+        cms = CMSVideo()
+        cms.has_advertisement = False
+        bc = BCVideo.from_cms(cms)
+        self.assertEqual('FREE', bc.data['economics'])
+
     def test_converts_sources(self):
         bc = BCVideo()
         bc.data['sources'] = [{
@@ -156,6 +162,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'name': 'title',
             'created_at': '2017-05-15T08:24:55.916Z',
             'state': 'ACTIVE',
+            'economics': 'AD_SUPPORTED',
             'custom_fields': {
                 'allow_comments': '1',
                 'authors': 'http://xml.zeit.de/a1',
@@ -184,6 +191,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertEqual((('Deutschland', 'Meinung'), ('International', None)),
                          cms.channels)
         self.assertEqual('TEST', cms.product.id)
+        self.assertEqual(True, cms.has_advertisement)
         self.assertEqual(
             (zeit.cms.interfaces.ICMSContent(
                 'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
@@ -205,6 +213,12 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/Somalia', bc.uniqueId)
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/', bc.__parent__.uniqueId)
+
+    def test_missing_values_use_field_default(self):
+        bc = BCVideo()
+        cms = CMSVideo()
+        bc.apply_to_cms(cms)
+        self.assertTrue(cms.commentsAllowed)
 
 
 class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
