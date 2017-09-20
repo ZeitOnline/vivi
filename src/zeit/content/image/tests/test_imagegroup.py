@@ -246,6 +246,10 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             self.group['6789.jpg']))
         self.assertEqual('12345', meta.external_id)
 
+    def test_delete_group_does_not_try_to_recreate_deleted_children(self):
+        with self.assertNothingRaised():
+            del self.group.__parent__[self.group.__name__]
+
 
 class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
 
