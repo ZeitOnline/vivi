@@ -119,7 +119,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IArea['count'])
 
-    referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+    _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
@@ -222,6 +222,21 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             self._first_teaser_layout = None
         else:
             self._first_teaser_layout = value.id
+
+    @property
+    def referenced_cp(self):
+        return self._referenced_cp
+
+    @referenced_cp.setter
+    def referenced_cp(self, value):
+        # It is still possible to build larger circles (e.g A->C->A)
+        # but a sane user should not ignore the errormessage shown in the
+        # cp-editor and preview.
+        # Checking for larger circles is not reasonable here.
+        if value.uniqueId == \
+                zeit.content.cp.interfaces.ICenterPage(self).uniqueId:
+            raise ValueError("A centerpage can't reference itself!")
+        self._referenced_cp = value
 
     @property
     def default_teaser_layout(self):

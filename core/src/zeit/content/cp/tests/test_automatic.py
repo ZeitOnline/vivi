@@ -396,6 +396,16 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             u'http://xml.zeit.de/t3'],
             [x.uniqueId for x in content])
 
+    def test_recursivly_referenced_cps_raise_value_error(self):
+        cp_with_teaser = self.create_and_checkout_centerpage(
+            name='self_referencing_cp')
+        zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
+        area = cp_with_teaser['feature'].create_item('area')
+        area.automatic = True
+        area.automatic_type = 'centerpage'
+        with self.assertRaises(ValueError):
+            area.referenced_cp = cp_with_teaser
+
 
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
