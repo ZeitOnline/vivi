@@ -1,6 +1,6 @@
 import json
 import logging
-import z3c.celery
+import zeit.cms.celery
 import zeit.cms.content.contentuuid
 import zeit.cms.content.interfaces
 import zeit.retresco.update
@@ -35,7 +35,7 @@ class UpdateKeywords(object):
         return 200, 'OK'
 
 
-@z3c.celery.task(queuename='search')
+@zeit.cms.celery.task(queuename='search')
 def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(
