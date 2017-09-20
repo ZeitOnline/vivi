@@ -1,15 +1,15 @@
 import mock
 import transaction
-import z3c.celery
+import zeit.cms.celery
 import zeit.workflow.testing
 
 
-@z3c.celery.task(queuename='publish_homepage')
+@zeit.cms.celery.task(queuename='publish_homepage')
 def hp_task():
     """Task with queue homepage."""
 
 
-@z3c.celery.task
+@zeit.cms.celery.task
 def no_default_queue():
     """Task without a default queue."""
 

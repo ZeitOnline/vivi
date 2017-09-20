@@ -13,7 +13,6 @@ import pytz
 import shutil
 import time
 import transaction
-import z3c.celery.testing
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.objectlog.interfaces

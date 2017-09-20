@@ -9,8 +9,8 @@ import subprocess
 import tempfile
 import threading
 import time
-import z3c.celery
 import z3c.celery.celery
+import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -398,7 +398,7 @@ class PublishTask(PublishRetractTask):
         return obj
 
 
-@z3c.celery.task(bind=True)
+@zeit.cms.celery.task(bind=True)
 def PUBLISH_TASK(self, ids):
     return PublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 
@@ -454,7 +454,7 @@ class RetractTask(PublishRetractTask):
             zeit.cms.repository.interfaces.IRepository)
 
 
-@z3c.celery.task(bind=True)
+@zeit.cms.celery.task(bind=True)
 def RETRACT_TASK(self, ids):
     return RetractTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 
@@ -482,7 +482,7 @@ class MultiPublishTask(PublishTask):
         self._to_log.append((obj, message))
 
 
-@z3c.celery.task(bind=True)
+@zeit.cms.celery.task(bind=True)
 def MULTI_PUBLISH_TASK(self, ids):
     return MultiPublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
 

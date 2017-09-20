@@ -29,8 +29,8 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
-import z3c.celery
 import z3c.celery.layer
+import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
@@ -135,7 +135,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
     default_queue = 'default'
 
     def setUp(self):
-        self['celery_app'] = z3c.celery.CELERY
+        self['celery_app'] = zeit.cms.celery.CELERY
         self['celery_app'].conf.update(
             celery.contrib.testing.app.DEFAULT_TEST_CONFIG)
         self['celery_app'].conf.update({
@@ -177,7 +177,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
 # celery.contrib.testing.worker expects a 'ping' task, so it can check that the
 # worker is running properly.
-@z3c.celery.task(name='celery.ping')
+@zeit.cms.celery.task(name='celery.ping')
 def celery_ping():
     return 'pong'
 

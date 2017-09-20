@@ -1,7 +1,7 @@
 import grokcore.component as grok
 import inspect
 import logging
-import z3c.celery
+import zeit.cms.celery
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -55,7 +55,7 @@ class Dummy(object):
     uniqueId = None
 
 
-@z3c.celery.task
+@zeit.cms.celery.task
 def update_referencing_objects(uniqueId):
     # As we want to use this function as celery task, we need a serializable
     # argument, i.e. no ICMSContent object. In fact we do not need a complete
