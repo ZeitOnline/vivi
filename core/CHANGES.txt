@@ -1,8 +1,19 @@
 zeit.campus changes
 ====================
 
+1.6.7 (unreleased)
+------------------
 
-1.6.5 (unreleased)
+- Nothing changed yet.
+
+
+1.6.6 (2017-08-10)
+------------------
+
+- ARBEIT-96: Delete debate interaface and its property adapter
+
+
+1.6.5 (2017-08-07)
 ------------------
 
 - ZON-4006: Update to mobile field split
