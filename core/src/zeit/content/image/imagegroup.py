@@ -410,6 +410,17 @@ def find_repository_group(context):
     return zeit.cms.interfaces.ICMSContent(context.uniqueId)
 
 
+class RepositorySublocations(grok.Adapter):
+
+    grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
+    grok.implements(zope.location.interfaces.ISublocations)
+
+    def sublocations(self):
+        for key in self.context.keys():
+            if key in self.context:
+                yield self.context[key]
+
+
 class LocalSublocations(grok.Adapter):
 
     grok.context(zeit.content.image.interfaces.ILocalImageGroup)
