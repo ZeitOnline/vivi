@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.16.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Raise an error if centpage references itself in an area
 
 
 3.16.2 (2017-09-18)
