@@ -1,7 +1,31 @@
 zeit.content.video changes
 ==========================
 
-2.7.6 (unreleased)
+2.8.3 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.8.2 (2017-08-09)
+------------------
+
+- ZON-2752: Show `has_advertisement` in form
+
+
+2.8.1 (2017-08-09)
+------------------
+
+- ZON-2752: Respect `has_advertisement` default True
+
+
+2.8.0 (2017-08-08)
+------------------
+
+- ZON-2752: Add `has_advertisement` field
+
+
+2.7.6 (2017-08-07)
 ------------------
 
 - ZON-4006: Update to mobile field split

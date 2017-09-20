@@ -75,6 +75,11 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         ('has_recensions', 'expires', 'video_still', 'flv_url', 'thumbnail',
          'video_still_copyright'))
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.video.interfaces.IVideo,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('has_advertisement',), use_default=True)
+
     id_prefix = 'vid'
 
     # Note: zeit.brightcove will inject a brightcove_id property here in order
