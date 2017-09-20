@@ -32,7 +32,6 @@ setup(
         'plone.testing',
         'requests',
         'setuptools',
-        'z3c.celery',
         'zeit.cms >= 3.0.dev0',
         'zeit.content.author',
         'zeit.content.article',

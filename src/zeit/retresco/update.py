@@ -2,7 +2,7 @@ import argparse
 import gocept.runner
 import grokcore.component as grok
 import logging
-import z3c.celery
+import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -51,7 +51,7 @@ def unindex_on_remove(context, event):
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
-@z3c.celery.task(queuename='search')
+@zeit.cms.celery.task(queuename='search')
 def index_async(uniqueId):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
@@ -106,13 +106,13 @@ def index(content, enrich=False, update_keywords=False, publish=False):
             continue
 
 
-@z3c.celery.task(queuename='search')
+@zeit.cms.celery.task(queuename='search')
 def unindex_async(uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     conn.delete_id(uuid)
 
 
-@z3c.celery.task(queuename='manual')
+@zeit.cms.celery.task(queuename='manual')
 def index_parallel(unique_id, enrich=False, publish=False):
     content = zeit.cms.interfaces.ICMSContent(unique_id)
 
