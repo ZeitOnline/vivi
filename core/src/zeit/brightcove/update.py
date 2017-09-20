@@ -2,7 +2,7 @@ from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import gocept.runner
 import logging
-import z3c.celery
+import zeit.cms.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
 import zeit.cms.interfaces
@@ -93,7 +93,7 @@ class import_video(object):
 
 # Triggered by BC notification webhook, which we receive in
 # zeit.brightcove.json.update.Notification
-@z3c.celery.task(queuename='brightcove')
+@zeit.cms.celery.task(queuename='brightcove')
 def import_video_async(video_id):
     import_video(zeit.brightcove.convert.Video.find_by_id(video_id))
 
