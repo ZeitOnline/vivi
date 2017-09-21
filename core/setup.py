@@ -21,6 +21,7 @@ setup(
         'ZODB',
         'bugsnag',
         'celery >= 4.0',
+        'celery_longterm_scheduler',
         'decorator',
         'docutils',
         'fanstatic[cssmin,jsmin]',

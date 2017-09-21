@@ -1,6 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
+import celery_longterm_scheduler
 import datetime
 import grokcore.component as grok
 import pytz
@@ -90,12 +91,9 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         else:
             uniqueId = self.context.uniqueId
 
-        delay = when - datetime.datetime.now(pytz.UTC)
-        delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
-        if delay > 0:
+        if when > datetime.datetime.now(pytz.UTC):
             job_id = task.apply_async(
-                ([uniqueId],), countdown=delay,
-                queuename=PRIORITY_TIMEBASED).id
+                ([uniqueId],), eta=when, queuename=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
         return job_id
@@ -103,11 +101,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     def cancel_job(self, job_id):
         if not job_id:
             return False
-        promise = zeit.cms.celery.CELERY.AsyncResult(job_id)
-        if promise.status != u'PENDING':
-            return False
-        promise.revoke()
-        return True
+        return celery_longterm_scheduler.get_scheduler(
+            zeit.cms.celery.CELERY).revoke(job_id)
 
     def log(self, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)

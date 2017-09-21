@@ -4,6 +4,7 @@ import BaseHTTPServer
 import __future__
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
+import celery_longterm_scheduler
 import contextlib
 import copy
 import gocept.httpserverlayer.wsgi
@@ -29,7 +30,6 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
-import z3c.celery.layer
 import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
@@ -46,9 +46,20 @@ import zope.testbrowser.testing
 import zope.testing.renormalizing
 
 
+class CeleryEagerLayer(plone.testing.Layer):
+
+    def setUp(self):
+        zeit.cms.celery.CELERY.conf.task_always_eager = True
+
+    def tearDown(self):
+        zeit.cms.celery.CELERY.conf.task_always_eager = False
+
+CELERY_EAGER_LAYER = CeleryEagerLayer()
+
+
 class ZCMLLayer(plone.testing.Layer):
 
-    defaultBases = (z3c.celery.layer.EAGER_LAYER,)
+    defaultBases = (CELERY_EAGER_LAYER,)
 
     def __init__(self, config_file, product_config=None,
                  name='ZCMLLayer', module=None):
@@ -148,6 +159,8 @@ class CeleryWorkerLayer(plone.testing.Layer):
             'QUEUENAMES': {q: q for q in self.queues},
             'task_send_sent_event': True,  # So we can inspect routing in tests
 
+            'longterm_scheduler_backend': 'memory://',
+
             'ZODB': self['functional_setup'].db,
         })
         self.update_celery_config()
@@ -165,6 +178,9 @@ class CeleryWorkerLayer(plone.testing.Layer):
         # Switch database to the currently active DemoStorage,
         # see zeit.cms.testing.WSGILayer.testSetUp().
         self['celery_app'].conf['ZODB'] = self['functional_setup'].db
+
+        celery_longterm_scheduler.get_scheduler(
+            self['celery_app']).backend.__init__(None, None)
 
     def tearDown(self):
         self['celery_worker'].__exit__(None, None, None)

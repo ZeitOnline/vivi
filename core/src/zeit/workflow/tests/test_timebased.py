@@ -5,10 +5,10 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import celery.result
+import celery_longterm_scheduler
 import logging
 import mock
 import pytz
-import time
 import transaction
 import zeit.cms.testing
 import zeit.workflow.testing
@@ -20,28 +20,27 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.LAYER
 
-    def test_add_job_calls_async_celery_task_with_delay_for_future_execution(
+    def test_add_job_calls_apply_async_on_commit_with_eta_for_future_execution(
             self):
         workflow = TimeBasedWorkflow(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'))
         async = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
-        with mock.patch('celery.Task.apply_async') as apply_async, \
+        with mock.patch(
+                'celery_longterm_scheduler.Task.apply_async') as apply_async, \
                 mock.patch(async, new=True):
             workflow.add_job(
                 zeit.workflow.publish.PUBLISH_TASK,
                 datetime.now(pytz.UTC) + timedelta(1))
-
-            transaction.commit()  # needed as we are async here
+            self.assertEqual(False, apply_async.called)
+            transaction.commit()
 
             self.assertEqual(True, apply_async.called)
-            self.assertIn('countdown', apply_async.call_args[1])
+            self.assertIn('eta', apply_async.call_args[1])
             self.assertEqual(
                 PRIORITY_TIMEBASED, apply_async.call_args[1]['queuename'])
 
     def test_should_schedule_job_for_renamed_uniqueId(self):
-        async = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
-        with mock.patch('celery.Task.apply_async') as apply_async, \
-                mock.patch(async, new=True), \
+        with mock.patch('zeit.cms.celery.Task.apply_async') as apply_async, \
                 checked_out(self.repository['testcontent']) as co:
             rn = zeit.cms.repository.interfaces.IAutomaticallyRenameable(co)
             rn.renameable = True
@@ -49,7 +48,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (
                 datetime.now(pytz.UTC) + timedelta(days=1), None)
-            transaction.commit()  # needed as we are async here
+            transaction.commit()
             self.assertEqual(
                 'http://xml.zeit.de/changed',
                 apply_async.call_args[0][0][0][0])
@@ -147,20 +146,19 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
+
+        scheduler = celery_longterm_scheduler.get_scheduler(
+            self.layer['celery_app'])
+        scheduler.execute_pending(publish_on)
+        transaction.commit()
+
         result = celery.result.AsyncResult(self.workflow.publish_job_id)
-        assert u'PENDING' == result.state
-
-        # Let's wait a second and process; still not published:
-        time.sleep(1)
-        assert u'PENDING' == result.state
-
-        # Waiting another second will at least start to publish the object:
-        time.sleep(1)
-        assert result.state in (u'STARTED', u'SUCCESS')
-
-        # Make sure the task is completed before asserting its output:
         assert 'Published.' == result.get()
         self.assertEllipsis("""\
+Start executing tasks...
+Enqueuing...
+Revoked...
+End executing tasks...
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
@@ -172,24 +170,21 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
-        result = celery.result.AsyncResult(self.workflow.publish_job_id)
-        assert u'PENDING' == result.state
+        job_id = self.workflow.publish_job_id
+        scheduler = celery_longterm_scheduler.get_scheduler(
+            self.layer['celery_app'])
+        assert scheduler.backend.get(job_id)
 
         # The current job gets revoked on change of released_from:
         publish_on += timedelta(seconds=1)
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
-        assert u'PENDING' == result.state
-        with self.assertRaises(Exception) as err:
-            # The state is only changed after the timeout is reached.
-            result.wait()
-        assert 'TaskRevokedError' == err.exception.__class__.__name__
-        assert u'REVOKED' == result.state
+        with self.assertRaises(KeyError):
+            scheduler.backend.get(job_id)
 
         # The newly created job is pending its execution:
-        result = celery.result.AsyncResult(self.workflow.publish_job_id)
-        assert u'PENDING' == result.state
-        result.get()  # make sure we do not violate test isolation
+        new_job = self.workflow.publish_job_id
+        assert scheduler.backend.get(new_job)
 
     def test_released_from__revokes_job_on_change_while_checked_out(self):
         publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
@@ -198,8 +193,10 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (publish_on, None)
         transaction.commit()
-        result = celery.result.AsyncResult(self.workflow.publish_job_id)
-        assert u'PENDING' == result.state
+        job_id = self.workflow.publish_job_id
+        scheduler = celery_longterm_scheduler.get_scheduler(
+            self.layer['celery_app'])
+        assert scheduler.backend.get(job_id)
 
         # The current job gets revoked on change of released_from:
         publish_on += timedelta(seconds=1)
@@ -207,17 +204,12 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
             workflow.release_period = (publish_on, None)
         transaction.commit()
-        assert u'PENDING' == result.state
-        with self.assertRaises(Exception) as err:
-            # The state is only changed after the timeout is reached.
-            result.wait()
-        assert 'TaskRevokedError' == err.exception.__class__.__name__
-        assert u'REVOKED' == result.state
+        with self.assertRaises(KeyError):
+            scheduler.backend.get(job_id)
 
         # The newly created job is pending its execution:
-        result = celery.result.AsyncResult(self.workflow.publish_job_id)
-        assert u'PENDING' == result.state
-        result.get()  # make sure we do not violate test isolation
+        new_job = self.workflow.publish_job_id
+        assert scheduler.backend.get(new_job)
 
     def test_released_to__in_past_retracts_instantly(self):
         publish_on = datetime(2000, 2, 3, tzinfo=pytz.UTC)
@@ -243,24 +235,20 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         self.workflow.release_period = (publish_on, retract_on)
         transaction.commit()
         cancel_retract_job_id = self.workflow.retract_job_id
-        result = celery.result.AsyncResult(cancel_retract_job_id)
-        assert u'PENDING' == result.state
+        scheduler = celery_longterm_scheduler.get_scheduler(
+            self.layer['celery_app'])
+        assert scheduler.backend.get(cancel_retract_job_id)
 
         # The current job gets revoked on change of released_to:
         new_retract_on = retract_on + timedelta(seconds=1)
         self.workflow.release_period = (publish_on, new_retract_on)
         transaction.commit()
-        assert u'PENDING' == result.state
-        with self.assertRaises(Exception) as err:
-            # The state is only changed after the timeout is reached.
-            result.wait()
-        assert 'TaskRevokedError' == err.exception.__class__.__name__
-        assert u'REVOKED' == result.state
+        with self.assertRaises(KeyError):
+            scheduler.backend.get(cancel_retract_job_id)
 
         # The newly created job is pending its execution:
-        result = celery.result.AsyncResult(self.workflow.retract_job_id)
-        assert u'PENDING' == result.state
-        result.get()  # make sure we do not violate test isolation
+        new_job = self.workflow.retract_job_id
+        assert scheduler.backend.get(new_job)
 
         # The actions are logged:
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -285,6 +273,8 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
     def test_removing_release_period_should_remove_jobid(self):
         self.workflow.release_period = (
             datetime.now(pytz.UTC) + timedelta(days=1), None)
+        transaction.commit()
         self.assertNotEqual(None, self.workflow.publish_job_id)
         self.workflow.release_period = (None, None)
+        transaction.commit()
         self.assertEqual(None, self.workflow.publish_job_id)

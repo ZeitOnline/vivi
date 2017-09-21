@@ -1,4 +1,29 @@
-from z3c.celery import CELERY
+from __future__ import absolute_import
+import celery
+import celery_longterm_scheduler
+import celery_longterm_scheduler.backend
+import z3c.celery.celery
+import z3c.celery.loader
+
+
+class Task(z3c.celery.celery.TransactionAwareTask,
+           celery_longterm_scheduler.Task):
+    """Combines transactions and proper scheduling.
+
+    Note: the order is important so that scheduling jobs also only happens
+    on transaction commit.
+    """
+
+    def _assert_json_serializable(self, *args, **kw):
+        celery_longterm_scheduler.backend.serialize(args)
+        celery_longterm_scheduler.backend.serialize(kw)
+
+
+CELERY = celery.Celery(
+    __name__, task_cls=Task, loader=z3c.celery.loader.ZopeLoader,
+    # Disable argument type checking, it seems broken. Tasks complain about
+    # celery-internal kwargs passed to them, etc.
+    strict_typing=False)
 
 # Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
 task = CELERY.task
