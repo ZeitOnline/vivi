@@ -334,8 +334,7 @@ class PublishTask(PublishRetractTask):
                 logger.error("Could not publish %s" % obj.uniqueId)
                 self.log(
                     obj,
-                    _("Could not publish because conditions not satisifed."),
-                    error=True)
+                    _("Could not publish because conditions not satisifed."))
                 continue
             try:
                 obj = self.recurse(self.lock, obj, obj)
