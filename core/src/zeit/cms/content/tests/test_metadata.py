@@ -2,7 +2,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
-import zeit.content.article.testing
 import zope.lifecycleevent
 
 
@@ -51,11 +50,10 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEqual((), co.channels)
 
 
-class AccessChangeEvent(zeit.content.article.testing.FunctionalTestCase):
+class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_change_access_value_is_logged(self):
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['testcontent']
         log = zeit.objectlog.interfaces.ILog(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.access = u'abo'

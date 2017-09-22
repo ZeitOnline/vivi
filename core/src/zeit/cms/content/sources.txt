@@ -260,10 +260,3 @@ u'Zeit Online'
 u'1234abc'
 >>> list(products)[-1].vgwortcode is None
 True
-
-
-Banners
-+++++++
-
->>> pprint(list(zeit.cms.content.sources.BannerSource()))
-[2]

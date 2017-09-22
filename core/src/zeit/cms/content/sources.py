@@ -439,17 +439,6 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
 PRODUCT_SOURCE = ProductSource()
 
 
-class BannerSource(SimpleXMLSource):
-
-    config_url = 'source-banners'
-
-    def getValues(self):
-        tree = self._get_tree()
-        return [int(node.get('paragraph')) for node
-                in tree.xpath('//homepage/page_all') +
-                tree.xpath('//homepage/content_ad')]
-
-
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
