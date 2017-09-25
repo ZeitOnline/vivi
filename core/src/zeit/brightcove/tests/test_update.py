@@ -99,6 +99,17 @@ class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertEqual(False, info.published)
 
+    def test_changes_to_inactive_video_should_be_imported(self):
+        bc = self.create_video()
+        import_video(bc)
+        bc.data['name'] = 'changed'
+        bc.data['state'] = 'INACTIVE'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual('changed', video.title)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        self.assertEqual(False, info.published)
+
     def test_deleted_video_should_be_deleted_from_cms(self):
         bc = self.create_video()
         import_video(bc)
