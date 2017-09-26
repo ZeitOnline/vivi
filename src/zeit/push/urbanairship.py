@@ -1,6 +1,7 @@
 # coding: utf-8
 from __future__ import absolute_import
 from datetime import datetime, timedelta
+import bugsnag
 import grokcore.component as grok
 import jinja2.runtime
 import json
@@ -8,6 +9,7 @@ import logging
 import mock
 import pkg_resources
 import pytz
+import sys
 import urbanairship
 import urlparse
 import zeit.cms.content.interfaces
@@ -75,8 +77,16 @@ class Connection(object):
         # created, because otherwise the whole push process can fail with
         # a later object
         # Great validation would be a solution to this problem :)
-        for ua_push_object in to_push:
-            self.push(ua_push_object)
+        try:
+            for ua_push_object in to_push:
+                self.push(ua_push_object)
+        except:
+            path = urlparse.urlparse(link).path
+            info = sys.exc_info()
+            bugsnag.notify(
+                info[2], traceback=info[2], context=path, severity='error',
+                grouping_hash=message.config.get('payload_template'))
+            raise
 
     def push(self, push):
         log.debug('Sending Push to Urban Airship: %s', push.payload)
