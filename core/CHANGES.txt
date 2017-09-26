@@ -1,10 +1,10 @@
 zeit.content.article changes
 ============================
 
-3.28.4 (unreleased)
+3.29.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ARBEIT-116: Add box which is used as a profile_box in ZAR
 
 
 3.28.3 (2017-09-14)

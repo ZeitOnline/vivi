@@ -512,6 +512,27 @@
     weight="10"
     />
 
+   <!-- box -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-box"
+    class=".edit.EditBox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-box"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- division -->
 
   <browser:viewlet
@@ -610,6 +631,10 @@
   </class>
 
   <class class="..podcast.Podcast">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..box.Box">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

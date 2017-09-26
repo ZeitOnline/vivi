@@ -475,17 +475,35 @@ class IAudio(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class CitationLayoutSource(zeit.cms.content.sources.XMLSource):
-
+class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
+    """
+    Superclass for articleblocklayouts, which can be defined via XML
+    """
     product_configuration = 'zeit.content.article'
-    config_url = 'citation-layout-source'
     attribute = 'id'
 
     def isAvailable(self, node, context):
         article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(CitationLayoutSource, self).isAvailable(node, article)
+        return super(AvailableBlockLayoutSource,
+                     self).isAvailable(node, article)
+
+
+class CitationLayoutSource(AvailableBlockLayoutSource):
+
+    config_url = 'citation-layout-source'
 
 CITATION_LAYOUT_SOURCE = CitationLayoutSource()
+
+
+class BoxLayoutSource(AvailableBlockLayoutSource):
+
+    # If we want to check if the box is of a certain type (like infobox)
+    # We could change this behaviour of isAvailable to check for a type as well
+    # and maybe get rid of the superclass
+
+    config_url = 'box-layout-source'
+
+BOX_LAYOUT_SOURCE = BoxLayoutSource()
 
 
 class ICitation(zeit.edit.interfaces.IBlock):
@@ -536,6 +554,36 @@ class IPodcast(zeit.edit.interfaces.IBlock):
 
     episode_id = zope.schema.TextLine(
         title=_('Podcast id'))
+
+
+class IBox(zeit.edit.interfaces.IBlock):
+    """
+    This box is a first step to generalizing other boxes
+    (infobox, portraitbox...). Another field, the body, should be added, which
+    has the ability to contain other content, like additional images.
+    """
+
+    teaserSupertitle = zope.schema.TextLine(
+        title=_(u'Kicker'),
+        description=_(u'Please take care of capitalisation.'),
+        required=False,
+        max_length=70)
+
+    teaserTitle = zope.schema.TextLine(
+        title=_("Title"),
+        required=False,
+        max_length=70)
+
+    teaserText = zope.schema.Text(
+        title=_("Text"),
+        required=False
+    )
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        required=True,
+        source=BOX_LAYOUT_SOURCE
+    )
 
 
 class IBreakingNewsBody(zope.interface.Interface):
