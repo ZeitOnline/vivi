@@ -15,6 +15,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
+        'bugsnag',
         'fb',
         'gocept.testing',
         'grokcore.component',
