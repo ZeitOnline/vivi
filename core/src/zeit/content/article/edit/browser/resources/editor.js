@@ -241,7 +241,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (isUndefinedOrNull(place_cursor_at_end)
             && ! isUndefinedOrNull(self.initial_selection_node)) {
             text_node = self.initial_selection_node;
-            log('Placing cursor to ', text_node.parentNode.nodeName);
+            if (text_node.parentNode) {
+                log('Placing cursor to ', text_node.parentNode.nodeName);
+            }
             offset = self.initial_selection_offset;
         } else {
             text_node = self.initial_paragraph;

@@ -4,7 +4,7 @@ zeit.content.article changes
 3.28.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-782: Be defensive about body structure and cursor positioning
 
 
 3.28.3 (2017-09-14)
