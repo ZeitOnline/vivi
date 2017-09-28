@@ -173,6 +173,12 @@ class Message(zeit.push.message.Message):
     def log_message_details(self):
         return 'Template %s' % self.config.get('payload_template')
 
+    def log_success(self):
+        super(Message, self).log_success()
+        influxdb = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='influxdb')
+        influxdb.send(self.text, self.url, **self.config)
+
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
