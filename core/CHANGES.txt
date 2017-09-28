@@ -2,6 +2,12 @@ zeit.content.article changes
 ============================
 
 
+3.29.1 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 3.29.0 (2017-09-28)
 -------------------
 
