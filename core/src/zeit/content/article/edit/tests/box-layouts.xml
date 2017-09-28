@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<box-layouts>
+  <layout id="zar-profile" available="zeit.arbeit.interfaces.IZARContent">Zeit Arbeit Profilbox</layout>
+</box-layouts>

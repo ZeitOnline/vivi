@@ -283,6 +283,34 @@
       />
   </class>
 
+  <class class=".box.Box">
+    <require
+      interface=".interfaces.IBox"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBox"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+<!-- Adapter for box images and permissions -->
+
+  <adapter
+    factory=".box.BoxImages"
+    provides="zeit.content.image.interfaces.IImages"
+    trusted="yes"
+    />
+
+  <class class=".box.BoxImages">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.image.interfaces.IImages"
+      permission="zeit.EditContent" />
+  </class>
+
   <class class=".body.BreakingNewsBody">
     <require
       interface=".interfaces.IBreakingNewsBody"

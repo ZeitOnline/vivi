@@ -1,6 +1,7 @@
 from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 import json
+import zeit.cms.browser.widget
 import zeit.cms.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
@@ -298,6 +299,28 @@ class EditPodcast(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'podcast.{0}'.format(self.context.__name__)
+
+
+class EditBox(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    undo_description = _('edit profile block')
+    _form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IBox,
+        zeit.content.image.interfaces.IImages)
+    omit_fields = ('__name__', '__parent__', 'xml')
+
+    def setUpWidgets(self, *args, **kwargs):
+        super(EditBox, self).setUpWidgets(*args, **kwargs)
+        self.widgets['subtitle'].vivi_css_class = 'markdown-enabled'
+
+    @property
+    def form_fields(self):
+        form_fields = self._form_fields.omit(*self.omit_fields)
+        form_fields[
+            'subtitle'].custom_widget = \
+            zeit.cms.browser.widget.MarkdownWidget
+        return form_fields
 
 
 class EditDivision(zeit.edit.browser.form.InlineForm):
