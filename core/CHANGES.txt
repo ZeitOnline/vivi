@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.21.3 (unreleased)
+1.21.3 (2017-09-28)
 -------------------
 
 - MAINT: Send UA errors to bugsnag
