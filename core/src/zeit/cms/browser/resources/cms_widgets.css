@@ -535,6 +535,17 @@ table.properties textarea {
     width: 10em;
 }
 
+
+.markdown-enabled .label::after {
+    content: "";
+    background-image: url("icons/markdown.png");
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    float: right;
+    margin-top: -3px;
+}
+
 /* XXX specificity wars require additional selector before `a` */
 body a.button.configure_search,
 /* XXX Even more specificity wars */
