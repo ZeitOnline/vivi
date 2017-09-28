@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.109.2 (unreleased)
+2.109.2 (2017-09-28)
 --------------------
 
 - ARBEIT-116: Better markdown support
