@@ -19,14 +19,14 @@ class Box(zeit.edit.block.SimpleElement):
     grok.implements(IBox)
     type = 'box'
 
-    teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.supertitle', IBox['teaserSupertitle'])
+    supertitle = zeit.cms.content.property.ObjectPathProperty(
+        '.supertitle', IBox['supertitle'])
 
-    teaserTitle = zeit.cms.content.property.ObjectPathProperty(
-        '.title', IBox['teaserTitle'])
+    title = zeit.cms.content.property.ObjectPathProperty(
+        '.title', IBox['title'])
 
-    teaserText = zeit.cms.content.property.ObjectPathProperty(
-        '.text', IBox['teaserText'])
+    subtitle = zeit.cms.content.property.ObjectPathProperty(
+        '.subtitle', IBox['subtitle'])
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout',

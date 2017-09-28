@@ -18,18 +18,18 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
                % self.block_type)
         with zeit.cms.testing.site(self.getRootFolder()):
             group = zeit.content.image.testing.create_image_group()
-        b.getControl(name='form.teaserSupertitle').value = 'super'
-        b.getControl(name='form.teaserTitle').value = 'title'
-        b.getControl(name='form.teaserText').value = 'text'
+        b.getControl(name='form.supertitle').value = 'super'
+        b.getControl(name='form.title').value = 'title'
+        b.getControl(name='form.subtitle').value = 'text'
         b.getControl(name='form.image').value = group.uniqueId
         b.getControl(name='form.layout').displayValue = \
             ["Zeit Arbeit Profilbox"]
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
-        self.assertEllipsis('text', b.getControl('Text').value)
-        self.assertEqual('title', b.getControl(name='form.teaserTitle').value)
+        self.assertEllipsis('text', b.getControl(name='form.subtitle').value)
+        self.assertEqual('title', b.getControl(name='form.title').value)
         self.assertEqual('super', b.getControl(
-            name='form.teaserSupertitle').value)
+            name='form.supertitle').value)
         self.assertEqual(["Zeit Arbeit Profilbox"],
                          b.getControl(name='form.layout').displayValue)
         self.assertEqual(group.uniqueId, b.getControl(name='form.image').value)
@@ -39,7 +39,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b = self.browser
         b.open('editable-body/blockname/@@edit-%s?show_form=1'
                % self.block_type)
-        b.getControl(name='form.teaserText').value = '#h1 text'
+        b.getControl(name='form.subtitle').value = '#h1 text'
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
-        self.assertEllipsis('h1 text\n=======', b.getControl('Text').value)
+        self.assertEllipsis('h1 text\n=======', b.getControl(name="form.subtitle").value)

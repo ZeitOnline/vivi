@@ -314,7 +314,7 @@ class EditBox(zeit.edit.browser.form.InlineForm):
     def form_fields(self):
         form_fields = self._form_fields.omit(*self.omit_fields)
         form_fields[
-            'teaserText'].custom_widget = \
+            'subtitle'].custom_widget = \
             zeit.cms.browser.widget.MarkdownWidget
         return form_fields
 

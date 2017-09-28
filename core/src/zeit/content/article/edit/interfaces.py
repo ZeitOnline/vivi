@@ -563,19 +563,19 @@ class IBox(zeit.edit.interfaces.IBlock):
     has the ability to contain other content, like additional images.
     """
 
-    teaserSupertitle = zope.schema.TextLine(
-        title=_(u'Kicker'),
-        description=_(u'Please take care of capitalisation.'),
+    supertitle = zope.schema.TextLine(
+        title=_('Supertitle'),
+        description=_('Please take care of capitalisation.'),
         required=False,
         max_length=70)
 
-    teaserTitle = zope.schema.TextLine(
+    title = zope.schema.TextLine(
         title=_("Title"),
         required=False,
         max_length=70)
 
-    teaserText = zope.schema.Text(
-        title=_("Text"),
+    subtitle = zope.schema.Text(
+        title=_("Subtitle"),
         required=False
     )
 
