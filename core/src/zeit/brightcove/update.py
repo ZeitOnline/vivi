@@ -29,8 +29,7 @@ class import_video(object):
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
         log.debug('CMS object resolved: %r', self.cmsobj)
-        success = (self.delete() or self.deactivate() or
-                   self.add() or self.update())
+        success = (self.delete() or self.add() or self.update())
         if not success:
             log.warning('Not processed: %s', self.bcobj.uniqueId)
 
@@ -44,14 +43,6 @@ class import_video(object):
         if IPublishInfo(self.cmsobj).published:
             IPublish(self.cmsobj).retract(async=False)
         del self.bcobj.__parent__[self.bcobj.id]
-        return True
-
-    def deactivate(self):
-        if self.bcobj.state != 'INACTIVE' or self.cmsobj is None:
-            return False
-        log.info('Deactivating %s', self.bcobj)
-        if IPublishInfo(self.cmsobj).published:
-            IPublish(self.cmsobj).retract(async=False)
         return True
 
     def add(self):
@@ -76,6 +67,10 @@ class import_video(object):
         self._update()
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(async=False)
+        else:
+            log.info('Deactivating %s', self.bcobj)
+            if IPublishInfo(self.cmsobj).published:
+                IPublish(self.cmsobj).retract(async=False)
 
     def _update(self):
         log.info('Updating %s', self.bcobj)
