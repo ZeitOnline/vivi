@@ -310,6 +310,10 @@ class EditBox(zeit.edit.browser.form.InlineForm):
         zeit.content.image.interfaces.IImages)
     omit_fields = ('__name__', '__parent__', 'xml')
 
+    def setUpWidgets(self, *args, **kwargs):
+        super(EditBox, self).setUpWidgets(*args, **kwargs)
+        self.widgets['subtitle'].vivi_css_class = 'markdown-enabled'
+
     @property
     def form_fields(self):
         form_fields = self._form_fields.omit(*self.omit_fields)
