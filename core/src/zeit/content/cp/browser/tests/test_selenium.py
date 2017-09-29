@@ -1,5 +1,4 @@
 # coding: utf8
-import lovely.remotetask.interfaces
 import lxml.cssselect
 import transaction
 import zeit.cms.repository.interfaces
@@ -430,24 +429,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestOneClickPublish, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            for name, task in zope.component.getUtilitiesFor(
-                    lovely.remotetask.interfaces.ITaskService):
-                task.startProcessing()
         self.create_content_and_fill_clipboard()
-
-    def tearDown(self):
-        import threading
-        with zeit.cms.testing.site(self.getRootFolder()):
-            for name, task in zope.component.getUtilitiesFor(
-                    lovely.remotetask.interfaces.ITaskService):
-                thread_name = task._threadName()
-                task.stopProcessing()
-                for thread in threading.enumerate():
-                    if thread.getName() == thread_name:
-                        thread.join()
-                        break
-        super(TestOneClickPublish, self).tearDown()
 
     def _fill_lead(self):
         s = self.selenium
@@ -490,8 +472,10 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             s.click('xpath=//a[contains(., "Publish anyway")]')
             s.waitForPageToLoad()
             s.waitForElementPresent('css=li.error')
-            s.verifyText('css=li.error',
-                         'Error during publish/retract: OSError*')
+            s.verifyText(
+                'css=li.error',
+                'Publishing\n'
+                'HandleAfterAbort: Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 

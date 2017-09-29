@@ -142,7 +142,6 @@ The ``__parent__`` of a block is the area:
 
 Areas support ordering of their contents via the ``updateOrder`` method:
 
->>> transaction.commit()
 >>> [block_key] = informatives.keys()
 >>> block.__name__ == block_key
 True
@@ -162,7 +161,6 @@ True
 
 Blocks can be removed using __delitem__:
 
->>> transaction.commit()
 >>> len(informatives)
 1
 >>> del informatives[block.__name__]
@@ -213,8 +211,6 @@ When we now check in the centerpage, the changes in our article are propagated.
 We also check that the teaser object contains a link to its original article:
 
 >>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
->>> import gocept.async.tests
->>> gocept.async.tests.process()
 >>> cp = repository['cp']
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage ...
@@ -246,7 +242,6 @@ The metadata is updated (asynchronously) when the centerpage is checked in:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
 ...     pass
->>> gocept.async.tests.process()
 >>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
 <centerpage...
   <block href="http://xml.zeit.de/testcontent"...
@@ -261,16 +256,11 @@ Publish test content:
 ...     repository['testcontent']).urgent = True
 >>> job_id = zeit.cms.workflow.interfaces.IPublish(
 ...     repository['testcontent']).publish()
->>> import lovely.remotetask.interfaces
->>> tasks = zope.component.getUtility(
-...     lovely.remotetask.interfaces.ITaskService, 'general')
->>> tasks.process()
 
 The data is, again, updated when the CP is checked in:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
 ...     pass
->>> gocept.async.tests.process()
 >>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
 <centerpage...
   <block href="http://xml.zeit.de/testcontent"...
@@ -288,7 +278,6 @@ Referenced images
 ...     co.header_image = img
 >>> with zeit.cms.checkout.helper.checked_out(img) as co:
 ...     zeit.content.image.interfaces.IImageMetadata(co).title = 'updated'
->>> gocept.async.tests.process()
 >>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
 <centerpage...
   <header_image... title="updated"...>
@@ -321,7 +310,6 @@ Referenced images
 
     There is also such a handler for IObjectMovedEvent:
 
-    >>> transaction.commit()
     >>> import zope.container.contained
     >>> zope.event.notify(zope.container.contained.ObjectMovedEvent(
     ...     cp['lead'], None, None, None, None))

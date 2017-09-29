@@ -42,8 +42,7 @@ Add an object (e.g. a quiz) to the repository:
 >>> import zeit.content.quiz.quiz
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> quiz = zeit.content.quiz.quiz.Quiz()
->>> repository['my_quiz'] = quiz
+>>> repository['my_quiz'] = zeit.content.quiz.quiz.Quiz()
 
 Edit the quiz block, reference the newly added quiz and add both an image and
 a title to the teaser block:
@@ -134,7 +133,7 @@ have the latter contain an image that corresponds to our selected layout:
 >>> import zeit.content.image.testing
 >>> group = zeit.content.image.testing.create_image_group()
 >>> with zeit.cms.testing.interaction():
-...     with zeit.cms.checkout.helper.checked_out(quiz) as co:
+...     with zeit.cms.checkout.helper.checked_out(repository['my_quiz']) as co:
 ...         zeit.content.image.interfaces.IImages(co).image = group
 ...         co.teaserTitle = u'Teaser title'
 >>> group['image-group-148x84.jpg'] = zeit.content.image.image.LocalImage()

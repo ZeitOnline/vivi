@@ -68,12 +68,11 @@ class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
             self.repository['testcontent']).moveTo(
             self.repository, 'changed')
         self.repository['cp'] = cp
-        with checked_out(cp):
+        with checked_out(self.repository['cp']):
             pass
-        cp = self.repository['cp']
         self.assertIn(
             'http://xml.zeit.de/changed',
-            lxml.etree.tostring(cp.xml, pretty_print=True))
+            lxml.etree.tostring(self.repository['cp'].xml, pretty_print=True))
 
 
 class TestContentIter(unittest.TestCase):

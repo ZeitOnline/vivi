@@ -6,7 +6,6 @@ import pkg_resources
 import pyramid_dogpile_cache2
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zeit.workflow.testing
 import zope.interface
 
 
@@ -35,7 +34,6 @@ class MigrateTest(zeit.cms.testing.FunctionalTestCase):
         before_publish = zeit.cms.workflow.interfaces.IModified(
             self.repository['cp']).date_last_checkout
         IPublish(self.repository['cp']).publish()
-        zeit.workflow.testing.run_publish()
         after_publish = zeit.cms.workflow.interfaces.IModified(
             self.repository['cp']).date_last_checkout
         self.assertEqual(before_publish, after_publish)

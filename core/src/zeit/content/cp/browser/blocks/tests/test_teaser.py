@@ -159,12 +159,13 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         block.layout = zeit.content.cp.layout.get_layout(layout)
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         for i in range(3):
-            article = self.repository['t%s' % i] = ExampleContentType()
-            with zeit.cms.checkout.helper.checked_out(article) as co:
+            id = 't%s' % i
+            self.repository[id] = ExampleContentType()
+            with zeit.cms.checkout.helper.checked_out(
+                    self.repository[id]) as co:
                 zeit.content.image.interfaces.IImages(co).image = image
         for i in range(3):
-            article = self.repository['t%s' % i]
-            block.insert(0, article)
+            block.insert(0, self.repository['t%s' % i])
         return block
 
     def create_article_with_citation(self):

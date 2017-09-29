@@ -3,6 +3,7 @@ from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import lxml.etree
+import transaction
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
@@ -30,8 +31,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
     def publish(self, content):
         IPublishInfo(content).urgent = True
         IPublish(content).publish()
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.IPublishPriority(content))
+        transaction.commit()
 
     def test_sets_start_on_lead_article(self):
         self.publish(self.repository['cp'])
@@ -67,7 +67,6 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.publish(self.repository['foo'])
         before = IPublishInfo(self.repository['foo']).date_last_published
         self.publish(self.repository['cp'])
-        zeit.workflow.testing.run_publish()
         after = IPublishInfo(self.repository['foo']).date_last_published
         self.assertGreater(after, before)
 
