@@ -1,7 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
-import zeit.workflow.testing
 
 
 class TestPlaylist(zeit.content.video.testing.TestCase):
@@ -84,7 +83,6 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         pls = factory.next()  # in repository
 
         zeit.cms.workflow.interfaces.IPublish(video).publish()
-        zeit.workflow.testing.run_publish()
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(pls).published)
 
@@ -97,7 +95,6 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
             zeit.cms.related.interfaces.IRelatedContent(co).related = (video,)
 
         zeit.cms.workflow.interfaces.IPublish(video).publish()
-        zeit.workflow.testing.run_publish()
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(video).published)
         self.assertFalse(
