@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.7.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3409: Move from remotetask to celery
 
 
 2.7.7 (2017-08-07)
