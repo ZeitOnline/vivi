@@ -1,11 +1,10 @@
 zeit.content.article changes
 ============================
 
-
 3.29.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-3409: Move from remotetask to celery
 
 
 3.29.0 (2017-09-28)

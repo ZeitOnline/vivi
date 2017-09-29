@@ -193,6 +193,12 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
 class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
 
+    def setUp(self):
+        # We do not want a fake tagger as Portraitbox and Infobox do not
+        # support tagging in the real world, so skip the setup of the parent
+        # class and doe the one of the grandparent.
+        super(zeit.content.article.testing.FunctionalTestCase, self).setUp()
+
     def assert_updated(self, referenced, factory_name):
         self.repository['refed'] = referenced
         #
@@ -225,7 +231,9 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
 
     def test_portraitbox_metadata_should_be_updated(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
-        self.assert_updated(Portraitbox(), 'portraitbox')
+        portraitbox = Portraitbox()
+        portraitbox.text = u'huzenpups'
+        self.assert_updated(portraitbox, 'portraitbox')
 
     def test_infobox_metadata_should_be_updated(self):
         from zeit.content.infobox.infobox import Infobox

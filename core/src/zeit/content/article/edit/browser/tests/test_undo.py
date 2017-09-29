@@ -20,6 +20,7 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(fold)
         s.click(fold)
 
+        s.waitForVisible('link=Undo')
         s.click('link=Undo')  # Make undo pane visible
 
         s.assertValue('id=metadata-b.copyrights', '')  # before

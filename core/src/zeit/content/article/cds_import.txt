@@ -28,6 +28,8 @@ CDS content is imported from a filestore[#functional]_:
 ...     name="author">Dave Bowman</attribute>
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...     name="ressort">Wissen</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow"
+...     name="published">yes</attribute>
 ...  </head>
 ... </article>
 ... """
@@ -223,74 +225,9 @@ Automatic removal of unpublished articles
 Articles which were imported from the CDS and are not published within two days
 are deleted automatically in the night after those two days have passed.
 
-When importing an article, a job will be scheduled for 2 days + something:
+When importing an article, a job will be scheduled for 2 days + something.
 
->>> with fs.create('auto-delete') as f:
-...     f.write(article_xml)
->>> fs.move('auto-delete', 'tmp', 'new')
->>> zeit.content.article.cds.import_one()
-True
->>> 'auto-delete' in container
-True
-
-When we process the tasks now, nothing happens:
-
->>> tasks.process()
->>> 'auto-delete' in container
-True
-
-After the scheduled time has arrived, the article is gone:
-
->>> import datetime
->>> import time
->>> def new_now():
-...     now = datetime.datetime.now() + datetime.timedelta(days=3)
-...     return float(now.strftime('%s'))
->>> old_now = time.time
->>> time.time = new_now
->>> tasks.process()
->>> 'auto-delete' in container
-False
-
-When an article is published in the meantime, it will not be deleted:
-
->>> with fs.create('auto-delete') as f:
-...     f.write(article_xml)
->>> fs.move('auto-delete', 'tmp', 'new')
->>> zeit.content.article.cds.import_one()
-True
->>> 'auto-delete' in container
-True
-
-Make the article published:
-
->>> import zeit.cms.workflow
->>> import zeit.content.article.interfaces
->>> class PublishInfo(object):
-...     def __init__(self, context):
-...         pass
-...     published = True
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerAdapter(
-...     PublishInfo, (zeit.content.article.interfaces.IArticle,),
-...     zeit.cms.workflow.interfaces.IPublishInfo)
-
-When the removal time has come, the object will not be removed:
-
->>> time.time = new_now
->>> tasks.process()
->>> time.time = old_now
->>> 'auto-delete' in container
-True
-
-
-Remove the published adapter:
-
->>> gsm.unregisterAdapter(
-...     PublishInfo, (zeit.content.article.interfaces.IArticle,),
-...     zeit.cms.workflow.interfaces.IPublishInfo)
-True
-
+This is tested in ``tests.test_cds.CdsTest``.
 
 Broken XML
 ++++++++++
@@ -367,12 +304,8 @@ Clean up:
 .. [#functional]
 
     >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
     >>> import zope.component
-    >>> import lovely.remotetask.interfaces
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
+    >>> zeit.cms.testing.set_site()
 
 .. [#patch-connector] We have to patch the connector, so the search for the
     uuid gives us a useful result:

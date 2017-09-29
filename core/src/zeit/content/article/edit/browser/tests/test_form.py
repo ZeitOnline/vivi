@@ -9,7 +9,6 @@ import unittest
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
-import zeit.workflow.testing
 
 
 class MemoTest(zeit.cms.testing.BrowserTestCase):
@@ -82,8 +81,6 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
                 # silence annoying error message
                 ICDSWorkflow(article).export_cds = False
                 IPublish(article).publish()
-                zeit.workflow.testing.run_publish(
-                    zeit.cms.workflow.interfaces.PRIORITY_HIGH)
                 IPublishInfo(article).date_last_published = datetime.datetime(
                     2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc)
         b = self.browser

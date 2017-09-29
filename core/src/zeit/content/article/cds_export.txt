@@ -71,9 +71,6 @@ Now we can proceed to publish the article:
 At this point the article is not yet published. We need to run an
 asynchronous task which takes care of that:
 
->>> import zeit.workflow.testing
->>> zeit.workflow.testing.run_publish(
-...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 >>> zeit.cms.workflow.interfaces.IPublishInfo(content).published
 True
 
@@ -138,12 +135,6 @@ Now we can proceed to publish the article:
 >>> publish = zeit.cms.workflow.interfaces.IPublish(content)
 >>> tid = publish.publish()
 
-At this point the article is not yet published. We need to run an asynchronous
-task which takes care of that:
-
->>> zeit.workflow.testing.run_publish(
-...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
-
 Now, the publish process is finished and the article is published:
 
 >>> workflow.published
@@ -161,6 +152,7 @@ Dependencies
 
 Dependent objects are not exported to the CDS:
 
+>>> import transaction
 >>> class Dep(zeit.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         return (repository['online']['2007']['01']['eta-zapatero'],)
@@ -171,9 +163,8 @@ Dependent objects are not exported to the CDS:
 ...     (zeit.cms.interfaces.ICMSContent,),
 ...     zeit.workflow.interfaces.IPublicationDependencies,
 ...     name='dep')
+>>> transaction.commit()
 >>> tid = publish.publish()
->>> zeit.workflow.testing.run_publish(
-...     zeit.cms.workflow.interfaces.PRIORITY_HIGH)
 >>> len(fs.list('new'))
 1
 >>> gsm.unregisterAdapter(

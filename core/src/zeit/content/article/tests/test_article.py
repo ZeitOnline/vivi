@@ -353,12 +353,14 @@ class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):
 
     def test_writes_genre_as_attribute(self):
-        self.repository['article'] = article = self.get_article()
-        with zeit.cms.checkout.helper.checked_out(article) as co:
+        self.repository['article'] = self.get_article()
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['article']) as co:
             co.genre = u'nachricht'
 
         reference = zope.component.queryAdapter(
-            article, zeit.cms.content.interfaces.IXMLReference, name='related')
+            self.repository['article'],
+            zeit.cms.content.interfaces.IXMLReference, name='related')
         self.assertIn(
             'genre="nachricht"',
             lxml.etree.tostring(reference, pretty_print=True))

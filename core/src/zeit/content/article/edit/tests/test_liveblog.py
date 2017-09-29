@@ -24,5 +24,4 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
         lsc = ISemanticChange(article).last_semantic_change
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
         zeit.cms.workflow.interfaces.IPublish(article).publish()
-        zeit.workflow.testing.run_publish()
         self.assertEqual(lsc, ISemanticChange(article).last_semantic_change)

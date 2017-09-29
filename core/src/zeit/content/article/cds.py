@@ -1,13 +1,13 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import datetime
 import gocept.filestore
 import gocept.runner
 import logging
-import lovely.remotetask.interfaces
 import lxml.etree
 import os.path
 import pytz
+import zeit.cms.celery
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -28,21 +28,16 @@ PRINCIPAL = 'zope.cds'
 DELETE_TIMEOUT = datetime.timedelta(days=2)
 
 
-class RemoveIfNotPublishedTask(object):
-
-    zope.interface.implements(lovely.remotetask.interfaces.ITask)
-
-    def __call__(self, service, jobid, input):
-        article = zeit.cms.interfaces.ICMSContent(input, None)
-        if article is None:
-            # Was already deleted or moved. Do nothing.
-            return
-        if zeit.cms.workflow.interfaces.IPublishInfo(article).published:
-            # The article was published. Do nothing.
-            return
-        log.info("Removing %s because it was not published after %s" % (
-                 input, DELETE_TIMEOUT))
-        del article.__parent__[article.__name__]
+@zeit.cms.celery.task(queuename=PRIORITY_TIMEBASED)
+def remove_if_not_published(uniqueId):
+    article = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+    if article is None:
+        return  # Was already deleted or moved. Do nothing.
+    if zeit.cms.workflow.interfaces.IPublishInfo(article).published:
+        return  # The article was published. Do nothing.
+    log.info("Removing %s because it was not published after %s" % (
+             uniqueId, DELETE_TIMEOUT))
+    del article.__parent__[article.__name__]
 
 
 def get_cds_filestore(name):
@@ -157,21 +152,14 @@ def import_file(path):
     # Disable automatic export to CDS.
     zeit.content.article.interfaces.ICDSWorkflow(article).export_cds = False
 
-    # Create removal job
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.workflow')
-    queue = config['task-queue-%s' % PRIORITY_DEFAULT]
-    tasks = zope.component.getUtility(
-        lovely.remotetask.interfaces.ITaskService, name=queue)
     # Compute delete timeout which is > DELETE_TIMEOUT but in the night
     now = datetime.datetime.now(pytz.UTC)
     remove_at = now + DELETE_TIMEOUT + datetime.timedelta(days=1)
     remove_at = remove_at.replace(hour=1)
     remove_in = remove_at - datetime.datetime.now(pytz.UTC)
     delay = 60 * 60 * 24 * remove_in.days + remove_in.seconds
-    tasks.addCronJob(
-        u'zeit.content.article.cds.remove_if_not_published',
-        article.uniqueId, delay=delay)
+    remove_if_not_published.apply_async(
+        (article.uniqueId,), countdown=delay)
 
 
 def import_one():

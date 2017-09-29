@@ -151,11 +151,6 @@
   <!-- cds -->
   <subscriber handler=".cds.export" />
 
-  <utility
-    factory=".cds.RemoveIfNotPublishedTask"
-    name="zeit.content.article.cds.remove_if_not_published"
-    />
-
   <class class=".cds.CDSWorkflow">
     <require
       interface=".interfaces.ICDSWorkflow"

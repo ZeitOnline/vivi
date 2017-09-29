@@ -2,11 +2,12 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import lxml.etree
+import mock
+import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.testing
 import zeit.content.article.interfaces
 import zeit.content.article.testing
-import zeit.workflow.testing
 import zope.i18n.translationdomain
 
 
@@ -83,9 +84,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.browser.open('@@publish')
 
         with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                zeit.workflow.testing.run_publish(
-                    zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
             for service in ['homepage', 'urbanairship', 'twitter', 'facebook']:
@@ -118,9 +116,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.browser.open('@@publish')
 
         with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                zeit.workflow.testing.run_publish(
-                    zeit.cms.workflow.interfaces.PRIORITY_HIGH)
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
@@ -159,11 +154,16 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('foo', b.getControl('Article body').value)
 
 
-class RetractBannerTest(
-        zeit.content.article.testing.SeleniumTestCase,
-        zeit.workflow.testing.RemoteTaskHelper):
+class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
+        # We cannot retrieve the state of eager results, so fake them here, as
+        # publishing itself is tested elsewhere.
+        mocker = mock.patch('celery.result.AsyncResult.state',
+                            new_callable=mock.PropertyMock,
+                            return_value='SUCCESS')
+        mocker.start()
+        self.addCleanup(mocker.stop)
         super(RetractBannerTest, self).setUp()
         # Set up dummy banner articles.
         content = zeit.content.article.testing.create_article()
@@ -176,9 +176,7 @@ class RetractBannerTest(
 
         # Publish homepage banner so the retract button is shown.
         IPublishInfo(self.repository['homepage']).urgent = True
-        IPublish(self.repository['homepage']).publish()
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_HIGH)
+        IPublish(self.repository['homepage']).publish(async=False)
 
         # Make Somalia breaking news, so the retract section is shown.
         article = ICMSContent(
@@ -187,14 +185,7 @@ class RetractBannerTest(
             zeit.content.article.interfaces.IBreakingNews(
                 co).is_breaking = True
 
-        self.start_tasks()
-
-    def tearDown(self):
-        self.stop_tasks()
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='homepage')
-        del notifier.uniqueId
-        super(RetractBannerTest, self).tearDown()
+        transaction.commit()
 
     def test_retract_banner_endtoend(self):
         self.open('/repository/online/2007/01/Somalia')
