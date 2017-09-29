@@ -1,5 +1,4 @@
 # coding: utf-8
-
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
@@ -38,10 +37,15 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         zeit.content.cp.testing.product_config +
         zeit.workflow.testing.product_config
     ))
+# XXX We need a separate celery layer per ZCML: While CeleryWorkerLayer only
+# needs the ZODB, this is combined with ZCML in FunctionalTestSetup -- which
+# we should get rid of.
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    name='CeleryLayer', bases=(ZCML_LAYER,))
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(ZCML_LAYER,))
+    name='WSGILayer', bases=(CELERY_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
