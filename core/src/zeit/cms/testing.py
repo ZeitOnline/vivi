@@ -1,6 +1,10 @@
+from __future__ import absolute_import
 from zope.testing import doctest
 import BaseHTTPServer
 import __future__
+import celery.contrib.testing.app
+import celery.contrib.testing.worker
+import celery_longterm_scheduler
 import contextlib
 import copy
 import gocept.httpserverlayer.wsgi
@@ -10,6 +14,7 @@ import gocept.testing.assertion
 import gocept.zcapatch
 import inspect
 import json
+import kombu
 import logging
 import os
 import pkg_resources
@@ -25,6 +30,7 @@ import transaction
 import unittest
 import urllib2
 import xml.sax.saxutils
+import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
@@ -40,7 +46,20 @@ import zope.testbrowser.testing
 import zope.testing.renormalizing
 
 
+class CeleryEagerLayer(plone.testing.Layer):
+
+    def setUp(self):
+        zeit.cms.celery.CELERY.conf.task_always_eager = True
+
+    def tearDown(self):
+        zeit.cms.celery.CELERY.conf.task_always_eager = False
+
+CELERY_EAGER_LAYER = CeleryEagerLayer()
+
+
 class ZCMLLayer(plone.testing.Layer):
+
+    defaultBases = (CELERY_EAGER_LAYER,)
 
     def __init__(self, config_file, product_config=None,
                  name='ZCMLLayer', module=None):
@@ -112,6 +131,71 @@ class WSGILayer(plone.testing.Layer):
     def tearDown(self):
         del self['wsgi_app']
         del self['zope_app']
+
+
+class CeleryWorkerLayer(plone.testing.Layer):
+    """Sets up a thread-based celery worker.
+
+    Modeled after celery.contrib.testing.pytest.celery_session_worker and
+    celery_session_app.
+    """
+
+    queues = (
+        'default', 'publish_homepage', 'publish_highprio', 'publish_lowprio',
+        'publish_default', 'publish_timebased')
+    default_queue = 'default'
+
+    def setUp(self):
+        self['celery_app'] = zeit.cms.celery.CELERY
+        self['celery_app'].conf.update(
+            celery.contrib.testing.app.DEFAULT_TEST_CONFIG)
+        self['celery_app'].conf.update({
+            'task_always_eager': False,
+
+            'task_default_queue': self.default_queue,
+            'task_queues': [kombu.Queue(q) for q in self.queues],
+
+            'task_routes': ('zeit.cms.celery.route_task',),
+            'QUEUENAMES': {q: q for q in self.queues},
+            'task_send_sent_event': True,  # So we can inspect routing in tests
+
+            'longterm_scheduler_backend': 'memory://',
+
+            'ZODB': self['functional_setup'].db,
+        })
+        self.update_celery_config()
+
+        self['celery_worker'] = celery.contrib.testing.worker.start_worker(
+            self['celery_app'])
+        self['celery_worker'].__enter__()
+
+    def update_celery_config(self):
+        # XXX Work around cached_property usage in celery.app.base.
+        # This may be rather incomplete, but so far the tests work. :)
+        self['celery_app'].__dict__.pop('backend', None)
+
+    def testSetUp(self):
+        # Switch database to the currently active DemoStorage,
+        # see zeit.cms.testing.WSGILayer.testSetUp().
+        self['celery_app'].conf['ZODB'] = self['functional_setup'].db
+
+        celery_longterm_scheduler.get_scheduler(
+            self['celery_app']).backend.__init__(None, None)
+
+    def tearDown(self):
+        self['celery_worker'].__exit__(None, None, None)
+        del self['celery_worker']
+        # This should only remove any config changes made by us.
+        self['celery_app'].conf.clear()
+        self.update_celery_config()
+        del self['celery_app']
+
+
+# celery.contrib.testing.worker expects a 'ping' task, so it can check that the
+# worker is running properly.
+@zeit.cms.celery.task(name='celery.ping')
+def celery_ping():
+    return 'pong'
 
 
 class HTTPServer(BaseHTTPServer.HTTPServer):
@@ -216,7 +300,6 @@ cms_product_config = """\
   trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true
 
-  task-queue-async events
   cache-expiration-config 600
   celery-config /dev/null
 </product-config>

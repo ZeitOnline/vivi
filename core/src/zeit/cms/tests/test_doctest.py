@@ -10,7 +10,6 @@ def test_suite():
         package='zeit.cms'
     ))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'async.txt',
         'cleanup.txt',
         'cmscontent.txt',
         package='zeit.cms'

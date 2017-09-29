@@ -3,7 +3,7 @@ Zeit Workflow
 =============
 
 The workflow is state oriented. There are several states which can all be set
-using the workflow tab[#browser]_[#tasks]_:
+using the workflow tab[#browser]_[#site]_:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/testcontent')
 >>> browser.getLink('Workflow').click()
@@ -436,23 +436,15 @@ other information
     >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
 
-.. [#tasks] Start processing of remote tasks
+.. [#site] Set the site
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-    >>> import transaction
 
-    >>> import zope.publisher.browser
-    >>> import zope.security.management
-    >>> import lovely.remotetask.interfaces
-    >>> import lovely.remotetask.processor
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
     >>> def run_tasks():
-    ...     principal = zeit.cms.testing.create_interaction()
-    ...     transaction.abort()
-    ...     tasks.process()
-    ...     zope.security.management.endInteraction()
+    ...     """Wait for already enqueued publish job, by running another job;
+    ...     since we only have on worker, this works out fine."""
+    ...     zeit.cms.testing.celery_ping.delay().get()
 
 .. [#needs-repository]
 

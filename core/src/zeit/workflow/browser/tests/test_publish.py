@@ -6,19 +6,13 @@ import zope.component.hooks
 
 class TestPublish(
         zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.cms.testing.SeleniumTestCase,
-        zeit.workflow.testing.RemoteTaskHelper):
+        zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.workflow.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestPublish, self).setUp()
-        self.start_tasks()
         self.open('/repository/testcontent')
-
-    def tearDown(self):
-        self.stop_tasks()
-        super(TestPublish, self).tearDown()
 
     def prepare_content(self, id='http://xml.zeit.de/testcontent'):
         from zeit.workflow.interfaces import IContentWorkflow
@@ -77,8 +71,8 @@ class TestPublish(
             s = self.selenium
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
-            s.verifyText('css=li.error',
-                         'Error during publish/retract: OSError*')
+            s.assertText(
+                'css=li.error', 'Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 
@@ -90,6 +84,7 @@ class TestPublish(
         self.repository['other'] = ExampleContentType()
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
+        transaction.commit()
         IPublish(self.repository['other']).publish()
         IPublish(self.repository['testcontent']).publish()
         transaction.commit()
@@ -108,20 +103,14 @@ class TestPublish(
         self.assertTrue(IPublishInfo(self.repository['other']).published)
 
 
-class TestRetract(zeit.cms.testing.SeleniumTestCase,
-                  zeit.workflow.testing.RemoteTaskHelper):
+class TestRetract(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.workflow.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestRetract, self).setUp()
-        self.start_tasks()
         self.publish_info.published = True
         self.open('/repository/testcontent')
-
-    def tearDown(self):
-        self.stop_tasks()
-        super(TestRetract, self).tearDown()
 
     @property
     def publish_info(self):

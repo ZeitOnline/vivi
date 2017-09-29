@@ -316,10 +316,11 @@ class MultiResource(ReferenceProperty):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_metadata_on_checkin(context, event):
-    for name in dir(type(context)):
+    cls = type(context)
+    for name in dir(cls):
         # other descriptors might not support reading them from the class,
         # but the one that we want does.
-        attr = getattr(type(context), name, None)
+        attr = getattr(cls, name, None)
         if isinstance(attr, ReferenceProperty):
             attr.update_metadata(context)
 

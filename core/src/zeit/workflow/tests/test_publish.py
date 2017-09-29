@@ -1,3 +1,4 @@
+from StringIO import StringIO
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
@@ -5,17 +6,21 @@ from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
-import lovely.remotetask.interfaces
+import logging
 import mock
+import os
 import pytz
-import threading
+import shutil
 import time
 import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
+import zeit.objectlog.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
 import zope.app.appsetup.product
+import zope.component
+import zope.i18n
 
 
 class PublishTest(zeit.cms.testing.FunctionalTestCase):
@@ -26,12 +31,11 @@ class PublishTest(zeit.cms.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
-        input = zeit.workflow.publish.SingleInput(article)
-        input.principal = 'zope.producer'
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name='general')
-        tasks.add(u'zeit.workflow.publish', input)
-        zeit.workflow.testing.run_publish()
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            with self.assertRaises(Exception) as info:
+                IPublish(article).publish(async=False)
+            self.assertIn('LockingError', str(info.exception))
         self.assertEqual(False, IPublishInfo(article).published)
 
 
@@ -40,62 +44,13 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
     def __init__(self):
         self.test_log = []
 
-    def run(self, obj):
+    def _run(self, obj):
         time.sleep(0.1)
         self.test_log.append(obj)
 
-
-class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
-
-    def setUp(self):
-        super(PublishRetractLockingTest, self).setUp()
-        self.obj = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
-        self.desc = zeit.workflow.publish.SingleInput(self.obj)
-        self.task = FakePublishTask()
-
-    def run_task_in_thread(self, i, desc):
-        zeit.cms.testing.set_site(self.getRootFolder())
-        zeit.cms.testing.create_interaction()
-        self.task(None, i, desc)
-        transaction.abort()
-
-    def test_simple(self):
-        self.task(None, 1, self.desc)
-        self.assertEquals(1, len(self.task.test_log))
-
-    def test_parallel_with_same_obj(self):
-        import zope.component
-        t1 = threading.Thread(
-            target=self.run_task_in_thread, args=(1, self.desc))
-        t2 = threading.Thread(
-            target=self.run_task_in_thread, args=(2, self.desc))
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
-        self.assertEquals(1, len(self.task.test_log))
-        log = list(zope.component.getUtility(
-            zeit.objectlog.interfaces.IObjectLog).get_log(self.obj))
-        self.assertEquals(1, len(log))
-        self.assertEquals(
-            u'A publish/retract job is already active. Aborting',
-            log[0].message)
-
-    def test_parallel_with_differnt_obj(self):
-        t1 = threading.Thread(
-            target=self.run_task_in_thread, args=(1, self.desc))
-        desc = zeit.workflow.publish.SingleInput(
-            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/politik.feed'))
-        t2 = threading.Thread(
-            target=self.run_task_in_thread, args=(2, desc))
-        t1.start()
-        t2.start()
-        t1.join()
-        t2.join()
-        self.assertEquals(2, len(self.task.test_log))
+    @property
+    def jobid(self):
+        return None
 
 
 class RelatedDependency(object):
@@ -159,8 +114,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
 
     def publish(self, content):
         IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
+        IPublish(content).publish(async=False)
 
     def test_should_not_publish_more_dependencies_than_the_limit_breadth(self):
         content = self.repository['testcontent']
@@ -225,16 +179,149 @@ class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
         info = IPublishInfo(content)
         info.urgent = True
         self.assertFalse(info.published)
-        publish = IPublish(content)
         with mock.patch(
-                'zeit.cms.workflow.interfaces.IPublishPriority') as priority:
+                'zeit.cms.workflow.interfaces.IPublishPriority') as priority,\
+                mock.patch.object(zeit.workflow.publish.PUBLISH_TASK,
+                                  'apply_async') as apply_async:
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
-            publish.publish()
-        zeit.workflow.testing.run_publish()
+            IPublish(content).publish()
+        apply_async.assert_called_with(
+            ([u'http://xml.zeit.de/testcontent'],),
+            queuename='publish_lowprio')
+
+
+def get_object_log(obj):
+    log = zeit.objectlog.interfaces.ILog(obj)
+    return [x.message for x in log.get_log()]
+
+
+class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(PublishEndToEndTest, self).setUp()
+        self.log = StringIO()
+        self.handler = logging.StreamHandler(self.log)
+        logging.root.addHandler(self.handler)
+        self.oldlevel = logging.root.level
+        logging.root.setLevel(logging.INFO)
+
+    def tearDown(self):
+        logging.root.removeHandler(self.handler)
+        logging.root.setLevel(self.oldlevel)
+        super(PublishEndToEndTest, self).tearDown()
+
+    def test_publish_via_celery_end_to_end(self):
+        content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(content)
         self.assertFalse(info.published)
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_LOW)
-        self.assertTrue(info.published)
+        info.urgent = True
+
+        publish = IPublish(content).publish()
+        transaction.commit()
+        self.assertEqual('Published.', publish.get())
+        transaction.begin()
+
+        self.assertEllipsis("""\
+Running job ...
+Publishing http://xml.zeit.de/online/2007/01/Somalia
+...
+Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
+                            self.log.getvalue())
+        self.assertIn('Published', get_object_log(content))
+
+    def test_publish_multiple_via_celery_end_to_end(self):
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        i1 = IPublishInfo(c1)
+        i2 = IPublishInfo(c2)
+        self.assertFalse(i1.published)
+        self.assertFalse(i2.published)
+        i1.urgent = True
+        i2.urgent = True
+
+        publish = IPublish(c1).publish_multiple([c1, c2])
+        transaction.commit()
+        self.assertEqual('Published.', publish.get())
+        transaction.begin()
+
+        self.assertEllipsis("""\
+Running job ...
+    for http://xml.zeit.de/online/2007/01/Flugsicherheit,
+        http://xml.zeit.de/online/2007/01/Saarland
+Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
+       http://xml.zeit.de/online/2007/01/Saarland
+...
+Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
+ http://xml.zeit.de/online/2007/01/Saarland (...s)""",
+                            self.log.getvalue())
+
+        self.assertIn('Published', get_object_log(c1))
+        self.assertIn('Published', get_object_log(c2))
+
+
+class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(PublishErrorEndToEndTest, self).setUp()
+        self.bak_path = self.layer['publish-script'] + '.bak'
+        shutil.move(self.layer['publish-script'], self.bak_path)
+        with open(self.layer['publish-script'], 'w') as f:
+            f.write('#!/bin/sh\nexit 1')
+        os.chmod(self.layer['publish-script'], 0o755)
+
+    def tearDown(self):
+        shutil.move(self.bak_path, self.layer['publish-script'])
+        super(PublishErrorEndToEndTest, self).tearDown()
+
+    def test_error_during_publish_is_written_to_objectlog(self):
+        content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(content)
+        self.assertFalse(info.published)
+        info.urgent = True
+
+        publish = IPublish(content).publish()
+        transaction.commit()
+
+        with self.assertRaises(Exception) as err:
+            publish.get()
+        transaction.begin()
+
+        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+                         str(err.exception))
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping)
+             for m in get_object_log(content)])
+
+    def test_error_during_publish_multiple_is_written_to_objectlog(self):
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        i1 = IPublishInfo(c1)
+        i2 = IPublishInfo(c2)
+        self.assertFalse(i1.published)
+        self.assertFalse(i2.published)
+        i1.urgent = True
+        i2.urgent = True
+
+        publish = IPublish(c1).publish_multiple([c1, c2])
+        transaction.commit()
+
+        with self.assertRaises(Exception) as err:
+            publish.get()
+        transaction.begin()
+
+        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+                         str(err.exception))
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
+        self.assertIn(
+            "Error during publish/retract: ScriptError: ('', 1)",
+            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
 class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
@@ -248,12 +335,10 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/eta-zapatero')
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
-        IPublish(self.repository).publish_multiple([c1, c2])
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-            zeit.workflow.testing.run_publish(
-                zeit.cms.workflow.interfaces.PRIORITY_LOW)
+            IPublish(self.repository).publish_multiple([c1, c2], async=False)
             script.assert_called_with(['work/online/2007/01/Somalia',
                                        'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
@@ -264,21 +349,17 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             IPublish(self.repository).publish_multiple([
                 self.repository['testcontent'],
                 'http://xml.zeit.de/online/2007/01/Somalia'], async=False)
-            objs = run.call_args[0][0]
+            ids = run.call_args[0][0]
             self.assertEqual([
-                zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/testcontent'),
-                zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')], objs)
+                'http://xml.zeit.de/testcontent',
+                'http://xml.zeit.de/online/2007/01/Somalia'], ids)
 
-    def test_empty_list_of_objects_does_not_start_publish_task(self):
-        IPublish(self.repository).publish_multiple([])
+    def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-                    zeit.workflow.testing.run_publish(
-                        zeit.cms.workflow.interfaces.PRIORITY_LOW)
-                    self.assertFalse(script.called)
+            IPublish(self.repository).publish_multiple([], async=False)
+            self.assertFalse(script.called)
 
     def test_error_in_one_item_continues_with_other_items(self):
         c1 = zeit.cms.interfaces.ICMSContent(
@@ -287,8 +368,6 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/eta-zapatero')
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
-        IPublish(self.repository).publish_multiple([c1, c2])
-        transaction.commit()
 
         calls = []
 
@@ -301,13 +380,15 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
             (zeit.cms.interfaces.ICMSContent,
              zeit.cms.workflow.interfaces.IPublishedEvent))
 
-        log = zeit.objectlog.interfaces.ILog(c1)
-        logs = len(list(log.get_log()))
-
-        zeit.workflow.testing.run_publish(
-            zeit.cms.workflow.interfaces.PRIORITY_LOW)
+        with self.assertRaises(RuntimeError):
+            IPublish(self.repository).publish_multiple([c1, c2], async=False)
 
         # PublishedEvent still happens for c2, even though c1 raised
         self.assertIn(c2.uniqueId, calls)
         # Error is logged
-        self.assertEqual(logs + 1, len(list(log.get_log())))
+        log = zeit.objectlog.interfaces.ILog(c1)
+        self.assertEqual(
+            [u'${name}: ${new_value}',
+             u'Collective Publication',
+             u'Error during publish/retract: ${exc}: ${message}'],
+            [x.message for x in log.get_log()])

@@ -1,14 +1,18 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+import celery.contrib.pytest
+import celery.contrib.testing.app
+import celery.contrib.testing.worker
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
-import logging
-import lovely.remotetask.interfaces
+import kombu
+import mock
 import os
+import pkg_resources
 import plone.testing
-import sys
-import threading
+import stat
+import tempfile
+import z3c.celery.celery
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -26,13 +30,7 @@ product_config = """
     publish-script true
     retract-script true
     dependency-publish-limit 100
-
     blacklist /blacklist
-
-    task-queue-homepage homepage
-    task-queue-highprio highprio
-    task-queue-default general
-    task-queue-lowprio lowprio
 </product-config>
 """
 
@@ -64,10 +62,6 @@ class WorkflowScriptsLayer(plone.testing.Layer):
         product_config['retract-script'] = self['retract-script']
 
     def _make_copy(self, script):
-        import os
-        import pkg_resources
-        import stat
-        import tempfile
         source = pkg_resources.resource_string(__name__, script)
         destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
@@ -81,56 +75,18 @@ SCRIPTS_LAYER = WorkflowScriptsLayer()
 
 LAYER = plone.testing.Layer(
     name='Layer', module=__name__, bases=(ZCML_LAYER, SCRIPTS_LAYER))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    name='CeleryLayer', bases=(LAYER,))
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(LAYER,))
+    name='WSGILayer', bases=(CELERY_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
-
-
-class RemoteTaskHelper(object):
-
-    def start_tasks(self):
-        self.tasks = []
-        with zeit.cms.testing.site(self.getRootFolder()):
-            for name, task in zope.component.getUtilitiesFor(
-                    lovely.remotetask.interfaces.ITaskService):
-                task.startProcessing()
-                self.tasks.append(task)
-
-    def stop_tasks(self):
-        for task in self.tasks:
-            task.stopProcessing()
-            self._join_thread(task)
-
-    def _join_thread(self, task):
-        # XXX it would be nice if TaskService offered an API to do this
-        for thread in threading.enumerate():
-            if thread.getName() == task._threadName():
-                thread.join()
-
-
-def run_publish(priorities=(PRIORITY_DEFAULT,)):
-    handler = logging.StreamHandler(sys.stdout)
-    logging.root.addHandler(handler)
-    oldlevel = logging.root.level
-    logging.root.setLevel(logging.ERROR)
-    if isinstance(priorities, str):
-        priorities = [priorities]
-    for priority in priorities:
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % priority]
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
-        tasks.process()
-    logging.root.removeHandler(handler)
-    logging.root.setLevel(oldlevel)
 
 
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):

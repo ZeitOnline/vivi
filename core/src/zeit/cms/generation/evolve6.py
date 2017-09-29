@@ -1,12 +1,8 @@
-import lovely.remotetask.processor
-
 import zeit.cms.generation
 
 
 def update(root):
-    # Use MultiProcessor for parallel processing.
-    tasks = root.getSiteManager()['tasks.general']
-    tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
+    pass
 
 
 def evolve(context):

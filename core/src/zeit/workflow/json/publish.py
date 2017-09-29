@@ -25,8 +25,8 @@ class Publish(object):
         if self.publish_info.can_publish() == CAN_PUBLISH_ERROR:
             return False
         publish = zeit.cms.workflow.interfaces.IPublish(self.context)
-        return publish.publish()
+        return publish.publish().id
 
     def _retract(self):
         publish = zeit.cms.workflow.interfaces.IPublish(self.context)
-        return publish.retract()
+        return publish.retract().id

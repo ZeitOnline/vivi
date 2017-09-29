@@ -99,10 +99,11 @@ class IPublicationStatus(zope.interface.Interface):
         values=('published', 'not-published', 'published-with-changes'))
 
 
-PRIORITY_HOMEPAGE = 'homepage'
-PRIORITY_HIGH = 'highprio'
-PRIORITY_DEFAULT = 'default'
-PRIORITY_LOW = 'lowprio'
+PRIORITY_HOMEPAGE = 'publish_homepage'
+PRIORITY_HIGH = 'publish_highprio'
+PRIORITY_DEFAULT = 'publish_default'
+PRIORITY_LOW = 'publish_lowprio'
+PRIORITY_TIMEBASED = 'publish_timebased'
 
 
 class IPublishPriority(zope.interface.Interface):

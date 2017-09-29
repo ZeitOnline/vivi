@@ -20,11 +20,6 @@ class RenameInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE, use_default=True)
 
 
-class Dummy(object):
-
-    uniqueId = None
-
-
 @grok.subscribe(
     zeit.cms.repository.interfaces.IRepositoryContent,
     zope.lifecycleevent.interfaces.IObjectMovedEvent)
@@ -40,8 +35,5 @@ def store_redirect(context, event):
     lookup.rename(old_id, new_id)
     zeit.cms.redirect.interfaces.IRenameInfo(
         context).previous_uniqueIds += (old_id,)
-    # We need to update objects referencing the old name. But context already
-    # has the new name, so we need to substitute a dummy with the old name.
-    dummy = Dummy()
-    dummy.uniqueId = old_id
-    zeit.cms.relation.corehandlers.update_referencing_objects(dummy)
+    # We need to update objects referencing the old name.
+    zeit.cms.relation.corehandlers.update_referencing_objects.delay(old_id)

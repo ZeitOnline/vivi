@@ -1,7 +1,9 @@
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+import celery.states
 import json
-import lovely.remotetask.interfaces
+import mock
 import transaction
+import uuid
 import zeit.cms.testing
 import zeit.workflow.interfaces
 import zeit.workflow.testing
@@ -11,7 +13,7 @@ import zope.testbrowser.testing
 
 class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.testing.LAYER
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
         super(JSONTestCase, self).setUp()
@@ -31,15 +33,6 @@ class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
         workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
         workflow.urgent = True
         transaction.commit()
-
-    def process(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
-        zeit.cms.testing.create_interaction()
-        tasks.process()
 
 
 class PublishJSONTest(JSONTestCase):
@@ -63,18 +56,18 @@ class PublishJSONTest(JSONTestCase):
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
         self.assertNotEqual(False, result)
         try:
-            int(result)
+            uuid.UUID(result)
         except ValueError:
-            self.fail('a job id should be returned')
+            self.fail('a UUID should be returned as job id')
 
     def test_retract_should_return_job_id(self):
         result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@retract')
         self.assertNotEqual(False, result)
         try:
-            int(result)
+            uuid.UUID(result)
         except ValueError:
-            self.fail('a job id should be returned')
+            self.fail('a UUID should be returned as job id')
 
 
 class RemoteTaskTest(JSONTestCase):
@@ -84,12 +77,18 @@ class RemoteTaskTest(JSONTestCase):
         job = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
 
-        status = self.call_json(
-            'http://localhost/repository/online/2007/01/Somalia'
-            '/@@job-status?job=%s' % job)
-        self.assertEqual('queued', status)
-        self.process()
-        status = self.call_json(
-            'http://localhost/repository/online/2007/01/Somalia'
-            '/@@job-status?job=%s' % job)
-        self.assertEqual('completed', status)
+        with mock.patch('celery.result.AsyncResult.state',
+                        new_callable=mock.PropertyMock) as state:
+            state.return_value = celery.states.PENDING
+            status = self.call_json(
+                'http://localhost/repository/online/2007/01/Somalia'
+                '/@@job-status?job=%s' % job)
+            self.assertEqual('PENDING', status)
+
+        with mock.patch('celery.result.AsyncResult.state',
+                        new_callable=mock.PropertyMock) as state:
+            state.return_value = celery.states.SUCCESS
+            status = self.call_json(
+                'http://localhost/repository/online/2007/01/Somalia'
+                '/@@job-status?job=%s' % job)
+            self.assertEqual('SUCCESS', status)

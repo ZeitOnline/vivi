@@ -39,7 +39,7 @@ True
 >>> print repository.get('2005')
 None
 >>> repository.get('2005', 'default')
-'default' 
+'default'
 
 
 All objects in the the repository will also provide the IRepositoryContent
@@ -54,7 +54,7 @@ The repository itself provides IRepositoryContent too:
 >>> IRepositoryContent.providedBy(repository)
 True
 
- 
+
 Getting Content objects
 =======================
 
@@ -81,14 +81,14 @@ Constructing http://xml.zeit.de/online/2007/01/lebenslagen-01
 <zeit.cms.repository.unknown.PersistentUnknownResource...>
 
 
-The content object provides IRepositoryContent since it was read from the 
+The content object provides IRepositoryContent since it was read from the
 repository:
 
 >>> IRepositoryContent.providedBy(content)
 True
 
 It also provides the ICMSContent interface:
- 
+
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     zeit.cms.interfaces.ICMSContent, content)
@@ -272,7 +272,7 @@ BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource.
     New: None None
 Deleting http://xml.zeit.de/i_am_new
 >>> 'i_am_new' in repository
-False 
+False
 
 Getting the value of course doesn't work either:
 

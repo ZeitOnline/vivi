@@ -83,14 +83,6 @@
     permission="zope.View"
     />
 
-  <!-- nagios -->
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="zeit.workflow.task_queue_length"
-    class=".nagios.TaskQueueLength"
-    permission="zope.Public"
-    />
-
   <!-- 1 click publishing -->
 
   <browser:viewlet

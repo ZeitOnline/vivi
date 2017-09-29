@@ -105,7 +105,7 @@ exception:
 >>> workflow.urgent = False
 >>> workflow.can_publish()
 'can-publish-error'
->>> publish.publish()
+>>> publish.publish(async=False)
 Traceback (most recent call last):
     ...
 PublishingError: Publish pre-conditions not satisifed.
@@ -123,8 +123,7 @@ True
 Let's publish the object:
 
 >>> workflow.urgent = True
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> workflow.published
 True
 >>> workflow.date_last_published
@@ -133,8 +132,7 @@ datetime.datetime(...)
 
 One can publish more than once to put up a new version:
 
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> workflow.published
 True
 
@@ -146,8 +144,7 @@ After retracting an object it is no longer publically visible. Note that
 retract is unconditinally possible:
 
 >>> workflow.urgent = False
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 >>> workflow.published
 False
 
@@ -184,157 +181,14 @@ http://xml.zeit.de/online/2007/01/Somalia
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: yes
 http://xml.zeit.de/online/2007/01/Somalia
-     Publication scheduled
-http://xml.zeit.de/online/2007/01/Somalia
      Published
-http://xml.zeit.de/online/2007/01/Somalia
-     Publication scheduled
 http://xml.zeit.de/online/2007/01/Somalia
      Published
 http://xml.zeit.de/online/2007/01/Somalia
      Urgent: no
 http://xml.zeit.de/online/2007/01/Somalia
-     Retracting scheduled
-http://xml.zeit.de/online/2007/01/Somalia
      Retracted
 
-
-Time based publish / retract
-============================
-
-It is possible to set a publish and/or retract time. This will create a task
-which will be executed at the given time.
-
->>> studivz = repository['online']['2007']['01']['studiVZ']
->>> workflow = zeit.workflow.interfaces.IContentWorkflow(studivz)
->>> not not workflow.published
-False
->>>
->>> workflow.release_period
-(None, None)
->>> workflow.urgent = True
->>> workflow.can_publish()
-'can-publish-success'
->>> import datetime
->>> import pytz
->>> publish_on = (
-...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=3))
->>> workflow.release_period = (publish_on, None)
-
-Processing now doesn't publish because the publish time is not reached, yet:
-
->>> tasks.process()
->>> not not workflow.published
-False
-
-Let's wait a second and process; still not published:
-
->>> import time
->>> time.sleep(1)
->>> tasks.process()
->>> not not workflow.published
-False
-
-We can increase the publish time while a task is active, it will be cancelled
-then:
-
->>> job_id = workflow.publish_job_id
->>> tasks.getStatus(job_id)
-'delayed'
-
->>> publish_on += datetime.timedelta(seconds=1)
->>> workflow.release_period = (publish_on, None)
->>> tasks.getStatus(job_id)
-'cancelled'
->>> job_id = workflow.publish_job_id
->>> tasks.getStatus(job_id)
-'delayed'
->>> tasks.process()
-
-Waiting another two seconds will publish the object:
-
->>> time.sleep(2)
->>> tasks.process()
->>> workflow.published
-True
->>> tasks.getStatus(job_id)
-'completed'
-
-
-When we set an publication time in the past, the object will just be published
-imediately:
-
->>> orig_publish_date = workflow.date_last_published
->>> publish_on = datetime.datetime(2000, 2, 3, tzinfo=pytz.UTC)
->>> workflow.release_period = (publish_on, None)
->>> tasks.process()
->>> orig_publish_date < workflow.date_last_published
-True
-
-
-
-Retracting works in the same way:
-
->>> retract_on = (datetime.datetime.now(pytz.UTC) +
-...               datetime.timedelta(seconds=2))
->>> workflow.release_period = (publish_on, retract_on)
->>> tasks.process()
->>> job_id = workflow.retract_job_id
->>> tasks.getStatus(job_id)
-'delayed'
-
-Wait:
-
->>> time.sleep(2)
->>> tasks.process()
-
-The object is retracted now:
-
->>> workflow.published
-False
->>> tasks.getStatus(job_id)
-'completed'
-
-When we just set the same dates again, nothing happens:
-
->>> workflow.release_period = (publish_on, retract_on)
->>> workflow.published
-False
->>> tasks.getStatus(job_id)
-'completed'
-
-We can also reset the dates:
-
->>> workflow.release_period = (None, None)
-
-The actions are logged:
-
->>> print_log(log.get_log(studivz))
-http://xml.zeit.de/online/2007/01/studiVZ
-     Urgent: yes
-http://xml.zeit.de/online/2007/01/studiVZ
-     To publish on 2008 6 13  07:38:48  (job #...)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Scheduled publish cancelled (job #...).
-http://xml.zeit.de/online/2007/01/studiVZ
-     To publish on 2008 6 13  07:38:49  (job #...)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Published
-http://xml.zeit.de/online/2007/01/studiVZ
-     To publish on 2000 2 3  01:00:00  (job #...)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Published
-http://xml.zeit.de/online/2007/01/studiVZ
-     To retract on 2008 6 13  07:38:50  (job #...)
-http://xml.zeit.de/online/2007/01/studiVZ
-     Retracted
-
-The date is actually logged in the Europe/Belin time zone. Explicitly
-compare this and (preventing normalizer):
-
->>> entry = list(log.get_log(studivz))[5]
->>> u'2000 2 3  01:00:00' in zope.i18n.translate(entry.message)
-True
 
 Date first released
 ===================
@@ -354,8 +208,7 @@ True
 >>> workflow.urgent = True
 >>> import zeit.cms.workflow.interfaces
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> workflow.date_first_released
 datetime.datetime(...)
 
@@ -381,8 +234,7 @@ We expect the value to be in the xml now as well (amongst others):
 
 When we de-publish the object, the status-flag is removed again:
 
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
@@ -397,52 +249,6 @@ When we de-publish the object, the status-flag is removed again:
   </head>
   <body/>
 </testtype>
-
-
-Assets workflow
-===============
-
-The asset workflow is also a time based workflow but there are no constraints
-in regard to when an asset can be published.
-
-Make UnknownResources an asset to test the workflow:
-
->>> import zope.annotation.interfaces
->>> old_implements = list(zope.interface.implementedBy(
-...     zeit.cms.repository.unknown.PersistentUnknownResource))
->>> zope.interface.classImplementsOnly(
-...     zeit.cms.repository.unknown.PersistentUnknownResource,
-...     zeit.cms.interfaces.IAsset,
-...     zeit.cms.repository.interfaces.IUnknownResource)
-
->>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
->>> workflow
-<zeit.workflow.asset.AssetWorkflow...>
->>> workflow.can_publish()
-'can-publish-success'
->>> not not workflow.published
-False
-
-Publish somalia:
-
->>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
->>> job_id = publish.publish()
->>> tasks.process()
->>> workflow.published
-True
-
-Retract of course also works:
-
->>> job_id = publish.retract()
->>> tasks.process()
->>> workflow.published
-False
-
-Reset the implements:
-
->>> zope.interface.classImplementsOnly(
-...     zeit.cms.repository.unknown.PersistentUnknownResource,
-...     *old_implements)
 
 
 Recursive publish
@@ -484,8 +290,7 @@ False
 Now publish the folder:
 
 >>> workflow.urgent = True
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> workflow.published
 True
 
@@ -505,8 +310,7 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 
 Retracting is also possible recursivly:
 
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 >>> workflow.published
 False
 
@@ -537,10 +341,9 @@ Publish script
 The actual publishing happens by external the publish script[#loghandler]_.
 Publish the folder again and verify the log:
 
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> print logfile.getvalue()
-Running job ...
+Running job ... for http://xml.zeit.de/online/2007/01/
 Publishing http://xml.zeit.de/online/2007/01/
 ...publish.sh:
 Publishing test script
@@ -610,8 +413,7 @@ of publish:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 >>> print logfile.getvalue()
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/
@@ -639,51 +441,15 @@ fails when there is 'JPG' in the input data:
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(jpg)
 >>> workflow.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
->>> job_id = publish.publish()
->>> import transaction
->>> transaction.commit()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
+Traceback (most recent call last):
+HandleAfterAbort: Error during publish/retract: ScriptError: ('error\n', 1)
 
 >>> print_log(log.get_log(jpg))
 http://xml.zeit.de/2006/DSC00109_2.JPG
      Urgent: yes
 http://xml.zeit.de/2006/DSC00109_2.JPG
-     Publication scheduled
-http://xml.zeit.de/2006/DSC00109_2.JPG
-     Error during publish/retract: ScriptError: ('error\n', 1)
-
-
-Retry handling
---------------
-
-When there is a ConflictError, publication is tried again up too three times.
-Create a subclass for PublishRetractTask which raises a ConflictError when run:
-
->>> import ZODB.POSException
->>> import zeit.workflow.publish
->>> class ConflictingTask(zeit.workflow.publish.PublishRetractTask):
-...     run_count = 0
-...     def run(self, obj):
-...         self.run_count += 1
-...         raise ZODB.POSException.ConflictError()
-
-When we run this task it'll be tried three times. After the third run the
-conflict error logged:
-
->>> task = ConflictingTask()
->>> input = zeit.workflow.publish.SingleInput(jpg)
->>> message = task(None, 1, input)
->>> print zope.i18n.translate(message)
-Error during publish/retract: ConflictError: database conflict error
->>> print_log(log.get_log(jpg))
-http://xml.zeit.de/2006/DSC00109_2.JPG
-     Urgent: yes
-http://xml.zeit.de/2006/DSC00109_2.JPG
-     Publication scheduled
-http://xml.zeit.de/2006/DSC00109_2.JPG
-     Error during publish/retract: ConflictError: database conflict error
->>> task.run_count
-3
+      Error during publish/retract: ScriptError: ('error\n', 1)
 
 Reset the folder implements:
 
@@ -692,7 +458,6 @@ Reset the folder implements:
 ...     *old_implements)
 
 
->>> tasks.process()
 
 Dependencies
 ============
@@ -749,8 +514,7 @@ When we publish somalia now the feed is published
 automatically[#master-event-handler]_:
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -793,8 +557,7 @@ Retract does *not* honour dependencies by default:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -820,8 +583,7 @@ If the dependencies adapter allows it, the dependencies are retracted as well:
 >>> SomaliaFeed.retract_dependencies = True
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract()
->>> tasks.process()
+>>> job_id = publish.retract(async=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -862,8 +624,7 @@ Add the reverse dependency:
 
 Publish somalia again:
 
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -887,6 +648,8 @@ http://xml.zeit.de/politik.feed
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 True
+
+
 
 Depending on non workflowed objects
 +++++++++++++++++++++++++++++++++++
@@ -924,8 +687,7 @@ When somalia is published, the folder and its content is also published:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.publish()
->>> tasks.process()
+>>> job_id = publish.publish(async=False)
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
@@ -995,10 +757,6 @@ True
     >>> import zeit.cms.workflow.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
-
-    >>> import lovely.remotetask.interfaces
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
 
 
 .. [#cleanup] Clean up
