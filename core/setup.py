@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.push',
-    version='1.21.3.dev0',
+    version='1.21.4.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -15,6 +15,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
+        'bugsnag',
         'fb',
         'gocept.testing',
         'grokcore.component',
