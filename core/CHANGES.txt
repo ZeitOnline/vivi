@@ -4,13 +4,19 @@ zeit.cms changes
 3.0 (unreleased)
 ----------------
 
-- ZON-3409: Use zc3.celery for async tasks.
+- ZON-3409: Move from remotetask to celery
 
 
 2.108.0 (2017-08-09)
 --------------------
 
 - BUG-757: Allow storing publish_multiple errors in objectlog
+
+
+2.109.2 (2017-09-28)
+--------------------
+
+- ARBEIT-116: Better markdown support
 
 
 2.109.1 (2017-09-07)

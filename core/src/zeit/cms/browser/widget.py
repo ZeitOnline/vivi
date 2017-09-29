@@ -628,13 +628,16 @@ zope.formlib.itemswidgets.MultiDataHelper._toFieldValue = empty_toFieldValue
 
 class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
 
+    _extra_pandoc_args = ["--email-obfuscation", "none"]
+
     def _toFieldValue(self, value):
         value = super(MarkdownWidget, self)._toFieldValue(
             value)
         if not value:
             return value
         try:
-            return pypandoc.convert(value, to='html', format='markdown')
+            return pypandoc.convert(value, to='html', format='markdown',
+                                    extra_args=self._extra_pandoc_args)
         except OSError:
             return value
 
