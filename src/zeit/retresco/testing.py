@@ -42,13 +42,6 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 HTTP_LAYER = HTTPLayer(RequestHandler, name='HTTPLayer', module=__name__)
 
 
-# XXX appending to product config is not very well supported right now
-cms_product_config = zeit.cms.testing.cms_product_config.replace(
-    '</product-config>', """\
-  task-queue-search events
-</product-config>""")
-
-
 product_config = """
 <product-config zeit.retresco>
     base-url http://localhost:[PORT]
@@ -81,7 +74,7 @@ ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
-    defaultBases = (HTTP_LAYER,)
+    defaultBases = zeit.cms.testing.ZCMLLayer.defaultBases + (HTTP_LAYER,)
 
     def setUp(self):
         self.product_config = self.product_config.replace(
@@ -90,7 +83,7 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
 
 ZCML_LAYER = ZCMLLayer(
-    'ftesting.zcml', product_config=cms_product_config +
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config +
     product_config +
     zeit.workflow.testing.product_config +
     zeit.content.article.testing.product_config +
