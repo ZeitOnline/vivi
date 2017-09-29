@@ -160,7 +160,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.category = self.repository['mynl']
         self.newsletter = self.repository['mynl']['newsletter'] = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
-            self.category, self.newsletter)
+            self.repository['mynl'], self.newsletter)
 
     def create_content(self, name, ressort):
         content = ExampleContentType()
@@ -303,7 +303,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual('Video 3', video_group.values()[0].reference.title)
 
     def test_middle_advertisement_should_be_inserted(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_middle_title = u'Some ad'
         c1 = self.create_content('c1', u'Politik')
         c2 = self.create_content('c2', u'Wirtschaft')
@@ -314,7 +314,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(u'Some ad', advertisement.title)
 
     def test_thisweeks_advertisement_should_be_inserted(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_thisweeks_title = u'Some ad'
         c1 = self.create_content('c1', u'Politik')
         c2 = self.create_content('c2', u'Wirtschaft')
@@ -327,7 +327,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def test_thisweeks_advert_should_be_omitted_on_unchecked_weekday(self):
         weekday = datetime.date.today().weekday()
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_thisweeks_title = u'Some ad'
             setattr(co, 'ad_thisweeks_on_%d' % weekday, False)
         self.builder(())
@@ -336,7 +336,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
             any(ad.type == 'advertisement-thisweeks' for ad in body.values()))
 
     def test_bottom_advertisement_should_be_appended(self):
-        with checked_out(self.category) as co:
+        with checked_out(self.repository['mynl']) as co:
             co.ad_bottom_title = u'Some ad'
         self.builder(())
         body = self.newsletter['newsletter_body']
