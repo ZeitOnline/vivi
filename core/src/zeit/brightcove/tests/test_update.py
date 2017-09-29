@@ -242,7 +242,6 @@ class ExportTest(zeit.cms.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(video):
             pass
         transaction.commit()
-        zeit.workflow.testing.run_publish()
 
         self.assertGreater(info.date_last_published, last_published)
 
@@ -256,6 +255,5 @@ class ExportTest(zeit.cms.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(playlist):
             pass
         transaction.commit()
-        zeit.workflow.testing.run_publish()
 
         self.assertGreater(info.date_last_published, last_published)
