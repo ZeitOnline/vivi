@@ -4,7 +4,7 @@ zeit.content.video changes
 2.8.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3409: Move from remotetask to celery
 
 
 2.8.2 (2017-08-09)
