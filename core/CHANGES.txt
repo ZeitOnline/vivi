@@ -2,10 +2,10 @@ zeit.retresco changes
 =====================
 
 
-1.12.1 (unreleased)
--------------------
+1.13.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- ZON-3409: Move from remotetask to celery
 
 
 1.12.0 (2017-08-07)
