@@ -218,7 +218,6 @@ class IntegrationTest(zeit.push.testing.TestCase):
         from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
         IPublishInfo(content).urgent = True
         IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
 
     def test_publish_triggers_push_notification_via_message_config(self):
         from zeit.push.interfaces import IPushMessages

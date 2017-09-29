@@ -7,7 +7,6 @@ import lxml.etree
 import mock
 import zeit.cms.content.interfaces
 import zeit.push.testing
-import zeit.workflow.testing
 
 
 class PushServiceProperties(zeit.push.testing.TestCase):
@@ -47,7 +46,6 @@ class SendingNotifications(zeit.push.testing.TestCase,
     def publish(self, content):
         IPublishInfo(content).urgent = True
         IPublish(content).publish()
-        zeit.workflow.testing.run_publish()
 
     def test_enabled_service_is_called(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
