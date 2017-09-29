@@ -207,13 +207,11 @@ class TestDynamicFolder(
             info.published, '%s still published' % content.uniqueId)
 
     def test_publishes_folder_with_config_and_template(self):
-        zeit.cms.workflow.interfaces.IPublish(self.folder).publish()
-        zeit.workflow.testing.run_publish()
+        zeit.cms.workflow.interfaces.IPublish(self.folder).publish(async=False)
         self.assert_published(self.folder)
         self.assert_published(self.folder.config_file)
         self.assert_published(self.folder.content_template_file)
-        zeit.cms.workflow.interfaces.IPublish(self.folder).retract()
-        zeit.workflow.testing.run_publish()
+        zeit.cms.workflow.interfaces.IPublish(self.folder).retract(async=False)
         self.assert_not_published(self.folder)
         self.assert_not_published(self.folder.config_file)
         self.assert_not_published(self.folder.content_template_file)

@@ -21,7 +21,7 @@ setup(
         'mock',
         'plone.testing',
         'setuptools',
-        'zeit.cms >= 2.106.0.dev0',
+        'zeit.cms >= 3.0.dev0',
         'zeit.connector',
         'zeit.content.cp',
         'zeit.content.rawxml',

@@ -5,7 +5,7 @@ zeit.content.dynamicfolder changes
 1.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3409: Move from remotetask to celery
 
 
 1.2.3 (2017-07-18)
