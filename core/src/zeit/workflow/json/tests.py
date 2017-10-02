@@ -68,27 +68,3 @@ class PublishJSONTest(JSONTestCase):
             uuid.UUID(result)
         except ValueError:
             self.fail('a UUID should be returned as job id')
-
-
-class RemoteTaskTest(JSONTestCase):
-
-    def test_get_status(self):
-        self.enable_publish('http://xml.zeit.de/online/2007/01/Somalia')
-        job = self.call_json(
-            'http://localhost/repository/online/2007/01/Somalia/@@publish')
-
-        with mock.patch('celery.result.AsyncResult.state',
-                        new_callable=mock.PropertyMock) as state:
-            state.return_value = celery.states.PENDING
-            status = self.call_json(
-                'http://localhost/repository/online/2007/01/Somalia'
-                '/@@job-status?job=%s' % job)
-            self.assertEqual('PENDING', status)
-
-        with mock.patch('celery.result.AsyncResult.state',
-                        new_callable=mock.PropertyMock) as state:
-            state.return_value = celery.states.SUCCESS
-            status = self.call_json(
-                'http://localhost/repository/online/2007/01/Somalia'
-                '/@@job-status?job=%s' % job)
-            self.assertEqual('SUCCESS', status)
