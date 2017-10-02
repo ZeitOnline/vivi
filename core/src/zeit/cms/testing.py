@@ -147,6 +147,8 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
+        self['celery_previous_config'] = dict(self['celery_app'].conf)
+
         self['celery_app'].conf.update(
             celery.contrib.testing.app.DEFAULT_TEST_CONFIG)
         self['celery_app'].conf.update({
@@ -185,9 +187,13 @@ class CeleryWorkerLayer(plone.testing.Layer):
     def tearDown(self):
         self['celery_worker'].__exit__(None, None, None)
         del self['celery_worker']
-        # This should only remove any config changes made by us.
+
+        # This should remove any config additions made by us.
         self['celery_app'].conf.clear()
+        self['celery_app'].conf.update(self['celery_previous_config'])
+        del self['celery_previous_config']
         self.update_celery_config()
+
         del self['celery_app']
 
 
