@@ -11,14 +11,12 @@ import zope.security.management
 import zope.testbrowser.testing
 
 
-class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
+class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
-        super(JSONTestCase, self).setUp()
-        self.browser = zope.testbrowser.testing.Browser()
-        self.browser.addHeader('Authorization', 'Basic user:userpw')
+        super(PublishJSONTest, self).setUp()
         self.browser.handleErrors = False
 
     def call_json(self, url):
@@ -33,9 +31,6 @@ class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
         workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
         workflow.urgent = True
         transaction.commit()
-
-
-class PublishJSONTest(JSONTestCase):
 
     def test_negative_can_publish_should_return_false(self):
         result = self.call_json(
