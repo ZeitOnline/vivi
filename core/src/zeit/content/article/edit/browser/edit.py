@@ -304,7 +304,7 @@ class EditPodcast(zeit.edit.browser.form.InlineForm):
 class EditBox(zeit.edit.browser.form.InlineForm):
 
     legend = None
-    undo_description = _('edit profile block')
+    undo_description = _('edit box block')
     _form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IBox,
         zeit.content.image.interfaces.IImages)
