@@ -14,7 +14,7 @@ class JobboxTickerTest(zeit.cms.testing.BrowserTestCase):
                 article = zeit.content.article.testing.create_article()
                 self.repository['arbeit']['article'] = article
                 co = zeit.cms.checkout.interfaces.ICheckoutManager(
-                    article).checkout()
+                    self.repository['arbeit']['article']).checkout()
                 body = zeit.content.article.edit.interfaces.IEditableBody(co)
                 block = body.create_item('jobboxticker')
                 block.__name__ = 'blockname'
