@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2017-10-02 10:17+0200\n"
-"PO-Revision-Date: 2017-10-02 10:17+0200\n"
+"POT-Creation-Date: 2017-10-02 10:19+0200\n"
+"PO-Revision-Date: 2017-10-02 10:19+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -3043,116 +3043,6 @@ msgstr "Fläche bearbeiten"
 msgid "Edit Article Flow"
 msgstr "Artikelflow benutzen"
 
-#: zeit/content/cp/interfaces.py:1012
-msgid "Autopilot"
-msgstr "Autopilot"
-
-#: zeit/content/cp/interfaces.py:1013
-msgid "Parquet"
-msgstr "Parkett"
-
-#: zeit/content/cp/interfaces.py:1014
-msgid "Display image at these positions"
-msgstr "Bild anzeigen bei"
-
-#: zeit/content/cp/interfaces.py:1015
-msgid "Get teasers from (autopilot)"
-msgstr "Autopilot-Teaser beziehen von"
-
-#: zeit/content/cp/interfaces.py:1016
-msgid "Autopilot active"
-msgstr "Autopilot aktiviert"
-
-#: zeit/content/cp/interfaces.py:1017
-msgid "Amount of teasers to display"
-msgstr "Anzahl Teaser"
-
-#: zeit/content/cp/interfaces.py:1018
-msgid "Cannot activate autopilot without referenced centerpage"
-msgstr ""
-"Der Autopilot kann nicht aktiviert werden, wenn kein anderes Objekt "
-"referenziert wurde."
-
-#: zeit/content/cp/interfaces.py:1019
-msgid "Edit teaser layouts"
-msgstr "Teaser-Layouts"
-
-#: zeit/content/cp/interfaces.py:1020
-msgid "Remaining teaser layout"
-msgstr "Layout weitere Teaser"
-
-#: zeit/content/cp/interfaces.py:1021
-msgid "Cannot enable automatic without count"
-msgstr "Anzahl Teaser erforderlich für automatische Bestückung"
-
-#: zeit/content/cp/interfaces.py:1022
-msgid "Automatic contents"
-msgstr "Automatische Bestückung"
-
-#: zeit/content/cp/interfaces.py:1023
-msgid "Publisher URL"
-msgstr "Verlags-URL"
-
-#: zeit/content/cp/interfaces.py:1024
-msgid "Supertitle URL"
-msgstr "Spitzmarken-URL"
-
-#: zeit/content/cp/interfaces.py:1025
-msgid "Create teaser group"
-msgstr "Teasergruppe anlegen"
-
-#: zeit/content/cp/interfaces.py:1026
-msgid "Display teaser group"
-msgstr "Teasergruppe anzeigen"
-
-#: zeit/content/cp/interfaces.py:1027
-msgid "Save teasers as group"
-msgstr "Teaser als Teasergruppe speichern"
-
-#: zeit/content/cp/interfaces.py:1028
-msgid "Name of teaser group"
-msgstr "Name der Teasergruppe"
-
-#: zeit/content/cp/interfaces.py:1029
-msgid "Linked teasers"
-msgstr "Verlinkte Teaser"
-
-#: zeit/content/cp/interfaces.py:1030
-msgid "Automatically remove"
-msgstr "Automatisch löschen (nach 7 Tagen)?"
-
-#: zeit/content/cp/interfaces.py:1031
-msgid "Teasergroup"
-msgstr "Teasergruppe"
-
-#: zeit/content/cp/interfaces.py:1032
-msgid "Common"
-msgstr "Allgemein"
-
-#: zeit/content/cp/interfaces.py:1033
-msgid "No changes"
-msgstr "Keine Änderungen"
-
-#: zeit/content/cp/interfaces.py:1034
-msgid "Landing Zone"
-msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
-
-#: zeit/content/cp/interfaces.py:1035
-msgid "Variants"
-msgstr "Bearbeiten (beta)"
-
-#: zeit/content/cp/interfaces.py:1036
-msgid "Edit in place"
-msgstr "Im CPE bearbeiten"
-
-#: zeit/content/cp/interfaces.py:1037
-msgid "Apply for article"
-msgstr "Im Artikel speichern"
-
-#: zeit/content/cp/interfaces.py:1038
-msgid "Apply only for this page"
-msgstr "Als freien Teaser speichern"
-
 #: zeit/content/cp/interfaces.py:166 zeit/content/cp/interfaces.py:190
 #: zeit/content/cp/interfaces.py:326
 msgid "Visible in frontend"
@@ -4986,8 +4876,3 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
-
-#~ msgid "A publish/retract job is already active. Aborting"
-#~ msgstr ""
-#~ "Abgebrochen: Veröffentlichen oder Zurückziehen für dieses Objekt bereits "
-#~ "aktiv."
