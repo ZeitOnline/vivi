@@ -213,7 +213,7 @@ What is the peferred time zone? Register an adapter from request to ITZInfo:
 ...     zope.interface.common.idatetime.ITZInfo)
 
 >>> zope.interface.common.idatetime.ITZInfo(request)
-<DstTzInfo 'Europe/Berlin' CET+1:00:00 STD>
+<DstTzInfo 'Europe/Berlin'...>
 
 When we get the title'well have the "corrected" date:
 
