@@ -1006,33 +1006,3 @@ class IPodcastBlock(IBlock):
 
     episode_id = zope.schema.TextLine(
         title=_("Podcast id"))
-
-
-# BBB Strings still used by z.c.cp-2.x, so i18nextract does not lose them.
-_("Autopilot")
-_("Parquet")
-_("Display image at these positions")
-_("Get teasers from (autopilot)")
-_("Autopilot active")
-_("Amount of teasers to display")
-_("Cannot activate autopilot without referenced centerpage")
-_("Edit teaser layouts")
-_("Remaining teaser layout")
-_("Cannot enable automatic without count")
-_("Automatic contents")
-_("Publisher URL")
-_("Supertitle URL")
-_("Create teaser group")
-_("Display teaser group")
-_("Save teasers as group")
-_("Name of teaser group")
-_("Linked teasers")
-_("Automatically remove")
-_("Teasergroup")
-_("Common")
-_("No changes")
-_("Landing Zone")
-_("Variants")
-_("Edit in place")
-_("Apply for article")
-_("Apply only for this page")
