@@ -1,6 +1,12 @@
 zeit.wysiwyg changes
 ====================
 
+3.0.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 3.0.0 (2017-10-04)
 ------------------
 
