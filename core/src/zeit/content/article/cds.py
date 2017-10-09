@@ -156,10 +156,7 @@ def import_file(path):
     now = datetime.datetime.now(pytz.UTC)
     remove_at = now + DELETE_TIMEOUT + datetime.timedelta(days=1)
     remove_at = remove_at.replace(hour=1)
-    remove_in = remove_at - datetime.datetime.now(pytz.UTC)
-    delay = 60 * 60 * 24 * remove_in.days + remove_in.seconds
-    remove_if_not_published.apply_async(
-        (article.uniqueId,), countdown=delay)
+    remove_if_not_published.apply_async((article.uniqueId,), eta=remove_at)
 
 
 def import_one():
