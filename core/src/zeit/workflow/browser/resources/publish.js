@@ -89,9 +89,9 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
             context + '/@@job-status', {'job': job});
-        // status is defined in lovely.remotetask.interfaces
+        // status is defined in celery.result.AsyncResult.state
         d.addCallback(function(status) {
-            if (status == 'completed') {
+            if (status == 'SUCCESS' || status == 'FAILURE') {
                 return self.check_job_error(context, job, objectlog);
             }
             // XXX check for error cases as well.

@@ -1,12 +1,22 @@
 zeit.cms changes
 ================
 
-3.0 (unreleased)
-----------------
+3.0.1 (unreleased)
+------------------
+
+- ZON-4210: Add fallback_image flag to serie source
+
+
+3.0.0 (2017-10-04)
+------------------
 
 - ZON-3409: Move from remotetask to celery
 
-- ZON-4210: Add fallback_image flag to serie source
+
+2.108.0 (2017-08-09)
+--------------------
+
+- BUG-757: Allow storing publish_multiple errors in objectlog
 
 
 2.109.2 (2017-09-28)
@@ -3089,7 +3099,7 @@ Technische Änderungen
 - Änderungsdatum in Dateilisten in CET statt GMT (bug #4354).
 - Extra-BU bei Bildergallerien.
 - Begrenzung des Veröffentlichungszeitruams auf Daten bis 2030, weil sonst der
-  lovely.remotetask mist baut.
+  lovely.remotetask Mist baut.
 - Konzept von temporären Checkouts um parallel veröffentlichen zu können.
 
 

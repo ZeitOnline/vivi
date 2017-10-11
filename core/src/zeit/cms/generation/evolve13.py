@@ -3,8 +3,7 @@ import zeit.cms.generation.install
 
 
 def update(root):
-    zeit.cms.generation.install.installHighPriorityTaskService()
-    zeit.cms.generation.install.installHomepageTaskService()
+    pass
 
 
 def evolve(context):

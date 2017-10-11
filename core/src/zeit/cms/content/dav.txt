@@ -388,8 +388,8 @@ Converting datetimes takes timezone info into account:
 
 >>> import datetime
 >>> import pytz
->>> converter.toProperty(datetime.datetime(
-...     2004, 1, 4, 10, 32, tzinfo=pytz.timezone('Europe/Berlin')))
+>>> converter.toProperty(pytz.timezone('Europe/Berlin').localize(
+...     datetime.datetime(2004, 1, 4, 10, 32)))
 '2004-01-04T10:32:00+01:00'
 
 

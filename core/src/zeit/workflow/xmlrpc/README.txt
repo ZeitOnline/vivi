@@ -21,8 +21,6 @@ Right. Let's set the urgent flag via python[#functionaltest]_:
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(
 ...     repository['online']['2007']['01']['Somalia'])
 >>> workflow.urgent = True
->>> import transaction
->>> transaction.commit()
 >>> zope.security.management.endInteraction()
 
 Let's see now:
@@ -35,9 +33,7 @@ False
 Good. Let's publish:
 
 >>> job_id = publish('http://xml.zeit.de/online/2007/01/Somalia')
->>> new_interaction()
->>> tasks.process()
->>> zope.security.management.endInteraction()
+>>> run_tasks()
 >>> workflow.published
 True
 
@@ -53,9 +49,7 @@ False
 Retract:
 
 >>> job_id = retract('http://xml.zeit.de/online/2007/01/Somalia')
->>> new_interaction()
->>> tasks.process()
->>> zope.security.management.endInteraction()
+>>> run_tasks()
 >>> workflow.published
 False
 
@@ -67,24 +61,18 @@ Clean up:
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
+    >>> _ = zeit.cms.testing.create_interaction()
 
     Do some imports and get the repository
 
     >>> import zope.component
     >>> import zeit.cms.repository.interfaces
-    >>> import zeit.cms.workflow.interfaces
     >>> repository = zope.component.getUtility(
     ...     zeit.cms.repository.interfaces.IRepository)
 
-    >>> import lovely.remotetask.interfaces
-    >>> tasks = zope.component.getUtility(
-    ...     lovely.remotetask.interfaces.ITaskService, 'general')
-
-    Setup interaction:
-
-    >>> import zope.publisher.browser
-    >>> import zope.security.testing
-    >>> import zope.security.management
-    >>> def new_interaction():
-    ...     principal = zeit.cms.testing.create_interaction()
-    >>> new_interaction()
+    >>> import transaction
+    >>> def run_tasks():
+    ...     """Wait for already enqueued publish job, by running another job;
+    ...     since we only have on worker, this works out fine."""
+    ...     zeit.cms.testing.celery_ping.delay().get()
+    ...     transaction.abort()

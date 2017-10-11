@@ -1,10 +1,11 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
+import celery_longterm_scheduler
 import datetime
 import grokcore.component as grok
-import lovely.remotetask.interfaces
 import pytz
+import zeit.cms.celery
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -32,10 +33,10 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         WORKFLOW_NS, 'released_to', writeable=WRITEABLE_ALWAYS)
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
+        zope.schema.Text(), WORKFLOW_NS, 'publish_job_id',
         writeable=WRITEABLE_ALWAYS)
     retract_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'retract_job_id',
+        zope.schema.Text(), WORKFLOW_NS, 'retract_job_id',
         writeable=WRITEABLE_ALWAYS)
 
     def __init__(self, context):
@@ -58,64 +59,50 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
             self.setup_job('retract', released_to)
         self.released_from, self.released_to = value
 
-    def setup_job(self, taskname, timestamp):
+    def setup_job(self, task, timestamp):
         _msg = _  # Avoid i18nextract picking up constructed messageids.
-        jobid = lambda: getattr(self, '%s_job_id' % taskname)  # NOQA
+        jobid = lambda: getattr(self, '%s_job_id' % task)  # NOQA
         cancelled = self.cancel_job(jobid())
         if cancelled:
             self.log(_msg(
-                'timebased-%s-cancel' % taskname,
-                default='Scheduled %s cancelled (job #${job}).' % taskname,
+                'timebased-%s-cancel' % task,
+                default='Scheduled %s cancelled (job #${job}).' % task,
                 mapping={'job': jobid()}))
-            setattr(self, '%s_job_id' % taskname, None)
+            setattr(self, '%s_job_id' % task, None)
         if timestamp is not None:
-            setattr(self, '%s_job_id' % taskname, self.add_job(
-                'zeit.workflow.%s' % taskname, timestamp))
+            setattr(
+                self, '%s_job_id' % task, self.add_job(
+                    getattr(zeit.workflow.publish, '%s_TASK' % task.upper()),
+                    timestamp))
             self.log(_msg(
-                'timebased-%s-add' % taskname,
-                default='To %s on ${date} (job #${job})' % taskname,
+                'timebased-%s-add' % task,
+                default='To %s on ${date} (job #${job})' % task,
                 mapping={
                     'date': self.format_datetime(timestamp), 'job': jobid()}))
 
-    def add_job(self, task_name, when):
-        task_description = zeit.workflow.publish.SingleInput(self.context)
-
+    def add_job(self, task, when):
         # Special cases that keep piling up, sigh.
         renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             self.context)
         if renameable.renameable and renameable.rename_to:
             parent = zeit.cms.interfaces.ICMSContent(
                 self.context.uniqueId).__parent__
-            task_description.uniqueId = parent.uniqueId + renameable.rename_to
-
-        delay = when - datetime.datetime.now(pytz.UTC)
-        delay = 60 * 60 * 24 * delay.days + delay.seconds  # Ignore microsecond
-        if delay > 0:
-            job_id = self.tasks.addCronJob(
-                unicode(task_name), task_description, delay=delay)
+            uniqueId = parent.uniqueId + renameable.rename_to
         else:
-            job_id = self.tasks.add(unicode(task_name), task_description)
+            uniqueId = self.context.uniqueId
+
+        if when > datetime.datetime.now(pytz.UTC):
+            job_id = task.apply_async(
+                ([uniqueId],), eta=when, queuename=PRIORITY_TIMEBASED).id
+        else:
+            job_id = task.delay([uniqueId]).id
         return job_id
 
     def cancel_job(self, job_id):
         if not job_id:
             return False
-        try:
-            status = self.tasks.getStatus(job_id)
-        except KeyError:
-            return False
-        if status != lovely.remotetask.interfaces.DELAYED:
-            return False
-        self.tasks.cancel(job_id)
-        return True
-
-    @property
-    def tasks(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
-        return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
+        return celery_longterm_scheduler.get_scheduler(
+            zeit.cms.celery.CELERY).revoke(job_id)
 
     def log(self, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -128,12 +115,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         tzinfo = zope.interface.common.idatetime.ITZInfo(request, None)
         if tzinfo is not None:
             dt = dt.astimezone(tzinfo)
-        if isinstance(request, lovely.remotetask.processor.ProcessorRequest):
-            # Happens when triggered from schedule_imported_retract_jobs()
-            locale = zope.i18n.locales.locales.getLocale('de')
-        else:
-            locale = request.locale
-        formatter = locale.dates.getFormatter('dateTime', 'medium')
+        formatter = request.locale.dates.getFormatter('dateTime', 'medium')
         return formatter.format(dt)
 
 

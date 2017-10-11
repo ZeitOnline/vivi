@@ -2,9 +2,8 @@ from zeit.cms.repository.interfaces import IRepositoryContent
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import lovely.remotetask.interfaces
+import celery
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
 import zope.browserpage
@@ -51,17 +50,9 @@ class Publish(object):
 class FlashPublishErrors(zeit.cms.browser.view.Base):
 
     def __call__(self, job, objectlog=False):
-        job = int(job)
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        priority = zeit.cms.workflow.interfaces.IPublishPriority(self.context)
-        queue = config['task-queue-%s' % priority]
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name=queue)
-        if tasks.getStatus(job) != lovely.remotetask.interfaces.COMPLETED:
-            return
-        error = tasks.getResult(job)
-        if error is not None:
+        async_result = celery.result.AsyncResult(job)
+        if async_result.failed():
+            error = unicode(async_result.result)
             self.send_message(error, type='error')
             if objectlog:
                 zeit.objectlog.interfaces.ILog(self.context).log(error)

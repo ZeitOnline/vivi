@@ -8,7 +8,6 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'indicator.txt',
-        'nagios.txt',
         package='zeit.workflow.browser',
-        layer=zeit.workflow.testing.LAYER))
+        layer=zeit.workflow.testing.CELERY_LAYER))
     return suite

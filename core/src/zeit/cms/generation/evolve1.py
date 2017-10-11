@@ -3,7 +3,7 @@ import zeit.cms.generation.install
 
 
 def update(root):
-    zeit.cms.generation.install.installGeneralTaskService()
+    pass
 
 
 def evolve(context):

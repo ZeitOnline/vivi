@@ -189,8 +189,6 @@ Checkout content, change a teaser and check back in:
 >>> checked_out.teaserTitle = u'nice Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>
->>> import gocept.async.tests
->>> gocept.async.tests.process('events')
 
 Now, the channel metadata has changed:
 

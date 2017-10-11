@@ -5,7 +5,7 @@
 
   <grok:grok package="."/>
 
-  <adapter factory=".workflow.ContentWorkflow" 
+  <adapter factory=".workflow.ContentWorkflow"
     provides="zeit.workflow.interfaces.IContentWorkflow"
     trusted="yes"
     />
@@ -59,11 +59,6 @@
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
-  <utility factory=".publish.PublishTask" name="zeit.workflow.publish" />
-  <utility factory=".publish.RetractTask" name="zeit.workflow.retract" />
-  <utility
-    factory=".publish.MultiPublishTask"
-    name="zeit.workflow.publish-multiple" />
 
   <!-- Old status -->
   <adapter factory=".oldstatus.OldStatus" />

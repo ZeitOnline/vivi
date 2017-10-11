@@ -86,6 +86,11 @@ class CheckoutManager(object):
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckoutEvent(
                     self.context, workingcopy, self.principal, publishing))
+        assert not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
+            self.context), (
+            "Either you have to re-fetch %r from the repository or you have "
+            "to use transaction.commit() to avoid poisoning the "
+            "caches with objects providing ILocalContent." % self.context)
         content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
         namechooser = zope.app.container.interfaces.INameChooser(workingcopy)
         name = namechooser.chooseName(content.__name__, content)
