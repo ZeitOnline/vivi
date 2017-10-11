@@ -47,7 +47,7 @@ Coverbildern. Beispiel::
 
 Sie definiert welche Cover für jedes der Pordukte (sowohl für das Haupt- als
 auch für die beiligende Produkte) definiert werden können. Für jedes Produkt
- kann ein entsprechendes Cover angegeben und dann direkt im XML
+kann ein entsprechendes Cover angegeben und dann direkt im XML
 des Produkts gespeichert werden.
 
 In der Produktion wird `diese Konfigurationsdatei`_ verwendet.
