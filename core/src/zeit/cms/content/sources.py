@@ -326,7 +326,7 @@ def unicode_or_none(value):
 class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
-                 column=False, video=False):
+                 column=False, video=False, fallback_image=False):
         super(Serie, self).__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -335,6 +335,7 @@ class Serie(AllowedBase):
         self.encoded = encoded
         self.column = column
         self.video = video
+        self.fallback_image = fallback_image
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -361,7 +362,8 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('url')),
                 unicode_or_none(node.get('encoded')),
                 node.get('format-label') == u'Kolumne',
-                node.get('video') == u'yes')
+                node.get('video') == u'yes',
+                node.get('fallback_image') == u'yes')
         return result
 
     def getTitle(self, context, value):
