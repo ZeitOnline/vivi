@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.0.1 (unreleased)
+3.1.0 (2017-10-12)
 ------------------
 
 - ZON-4210: Add fallback_image flag to serie source
