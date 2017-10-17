@@ -38,7 +38,7 @@ def index_after_add(event):
 def index_after_checkin(context, event):
     if event.publishing:
         return
-    index_async.delay(context.uniqueId)
+    index_async.apply_async((context.uniqueId,), countdown=5)
 
 
 @grok.subscribe(
