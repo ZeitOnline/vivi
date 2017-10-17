@@ -4,7 +4,7 @@ zeit.cms changes
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Remove remotetask from ZODB
 
 
 3.1.0 (2017-10-12)
