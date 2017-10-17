@@ -56,7 +56,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         with mock.patch('zeit.retresco.update.index_async') as index:
             with zeit.cms.checkout.helper.checked_out(content):
                 pass
-            self.assertTrue(index.delay.called)
+            self.assertTrue(index.apply_async.called)
 
     def test_folders_should_be_indexed_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
