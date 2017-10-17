@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.13.1 (unreleased)
+1.13.1 (2017-10-17)
 -------------------
 
 - BUG-796: Work around celery vs. DAV-cache race condition
