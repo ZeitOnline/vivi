@@ -15,7 +15,7 @@ import zeit.cms.tagging.interfaces
 import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
-import zeit.content.text.interfaces
+import zeit.content.modules.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.app.appsetup.appsetup
@@ -764,18 +764,8 @@ class IRenderedXML(zope.interface.Interface):
     """Recursively converts a CenterPage to an lxml tree."""
 
 
-class IRawTextBlock(IBlock):
-
-    text_reference = zope.schema.Choice(
-        title=_('Raw text reference'),
-        required=False,
-        source=zeit.content.text.interfaces.textSource)
-
-    text = zope.schema.Text(
-        title=_('Raw text'),
-        required=False)
-
-    raw_code = zope.interface.Attribute('Raw code from text or text_reference')
+class IRawTextBlock(zeit.content.modules.interfaces.IRawText, IBlock):
+    pass
 
 
 class IHeaderImageBlock(IBlock):

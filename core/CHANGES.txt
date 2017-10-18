@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.17.1 (unreleased)
 -------------------
 
+- MAINT: Extract common modules to z.c.modules: rawtext
+
 - MAINT: Remove free teaser model classes, they've been unused since 3.1.0
 
 - MAINT: Remove obsolete modules: fullgraphical, audio, video, frame
