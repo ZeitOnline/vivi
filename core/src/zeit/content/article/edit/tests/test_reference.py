@@ -100,14 +100,6 @@ class TestInfobox(ReferenceTest):
         self.assertEquals('debatte', ref.xml.get('layout'))
 
 
-class TestTimeline(ReferenceTest):
-
-    @property
-    def test_class(self):
-        from zeit.content.article.edit.reference import Timeline
-        return Timeline
-
-
 class TestPortraitbox(ReferenceTest):
 
     @property

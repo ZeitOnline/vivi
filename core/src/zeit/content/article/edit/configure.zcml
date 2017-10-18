@@ -162,17 +162,6 @@
       />
   </class>
 
-  <class class=".reference.Timeline">
-    <require
-      interface=".interfaces.ITimeline"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ITimeline"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <class class=".reference.Portraitbox">
     <require
       interface=".interfaces.IPortraitbox"

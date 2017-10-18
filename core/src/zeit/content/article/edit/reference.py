@@ -122,29 +122,6 @@ def factor_block_from_infobox(body, context, position):
     return block
 
 
-class Timeline(Reference):
-
-    grok.implements(
-        zeit.content.article.edit.interfaces.ITimeline)
-    type = 'timeline'
-
-
-class TimelineFactory(ReferenceFactory):
-
-    produces = Timeline
-    title = _('Timeline')
-
-
-@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-              zeit.content.article.edit.interfaces.ITimeline,
-              int)
-@grok.implementer(zeit.edit.interfaces.IElement)
-def factor_block_from_timeline(body, context, position):
-    block = TimelineFactory(body)(position)
-    block.references = context
-    return block
-
-
 class Portraitbox(Reference):
 
     grok.implements(

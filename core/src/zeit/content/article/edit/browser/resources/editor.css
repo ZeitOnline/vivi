@@ -944,7 +944,6 @@
 .type-article #edit-form-article-content .block.type-gallery .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
-.type-article #edit-form-article-content .block.type-timeline .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-author .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-video .field.fieldname-video .label,
 .type-article #edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
@@ -1159,10 +1158,6 @@
 }
 
 .type-article .editable-area .module-icon-infobox {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
-}
-
-.type-article .editable-area .module-icon-timeline {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
