@@ -150,8 +150,6 @@ zeit.edit.block.register_element_factory(
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
-        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(teaser):
-            yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
@@ -271,13 +269,4 @@ def rendered_xml_cmscontent(context):
         uniqueId=context.uniqueId, href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(block, suppress_errors=True)
-    return block
-
-
-@grok.adapter(zeit.content.cp.interfaces.IXMLTeaser, name="content")
-@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
-def rendered_xml_free_teaser(context):
-    block = rendered_xml_cmscontent(context)
-    if context.free_teaser:
-        block.set('href', context.original_uniqueId)
     return block

@@ -9,6 +9,5 @@ def test_suite():
         'README.txt',
         'cmscontentiterable.txt',
         'rule.txt',
-        'teaser.txt',
         package=zeit.content.cp))
     return suite

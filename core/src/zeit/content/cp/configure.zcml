@@ -120,34 +120,6 @@
     factory=".area.Area"
     />
 
-  <class class=".teaser.Teaser">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.ITeaser"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.ITeaser"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <class class=".teaser.XMLTeaser">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IXMLTeaser"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.IXMLTeaser"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter factory=".teaser.XMLTeaserLinkUpdater" name="xmlteaserlink" />
-
-  <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
-  <adapter factory=".teaser.images_for_teaser" />
-  <adapter factory=".teaser.teaser_references" name="zeit.content.cp.teaser" />
-
   <!-- Blocks -->
   <include package=".blocks" />
 

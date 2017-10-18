@@ -192,13 +192,7 @@ Now we need some test objects we can edit later on:
 >>> factory = zope.component.getAdapter(
 ...     cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
->>> import zeit.cms.repository.interfaces
->>> teaser = zeit.content.cp.teaser.Teaser()
->>> teaser.original_content = repository['testcontent']
->>> repository['testcontent-1'] = teaser
->>> teaser = repository['testcontent-1']
 >>> teasers.insert(0, repository['testcontent'])
->>> teasers.insert(1, teaser)
 
 Edit the referenced article while the centerpage is checked out:
 
@@ -208,7 +202,6 @@ Edit the referenced article while the centerpage is checked out:
 >>> dummy = zeit.cms.checkout.interfaces.ICheckinManager(testcontent).checkin()
 
 When we now check in the centerpage, the changes in our article are propagated.
-We also check that the teaser object contains a link to its original article:
 
 >>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
 >>> cp = repository['cp']
@@ -216,8 +209,6 @@ We also check that the teaser object contains a link to its original article:
 <centerpage ...
 <block href="http://xml.zeit.de/testcontent"...
   <title py:pytype="str">Foo</title>...
-<block href="http://xml.zeit.de/testcontent"...
-       uniqueId="http://xml.zeit.de/testcontent-1"...>...
 
 
 Content referenced in a centerpage has additional dates on the node:
