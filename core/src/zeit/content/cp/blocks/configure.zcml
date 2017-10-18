@@ -143,21 +143,6 @@
     factory=".cpextra.CPExtraBlock"
     />
 
-  <!-- Frame block -->
-  <class class=".frame.FrameBlock">
-    <require
-      interface="..interfaces.IFrameBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IFrameBlock"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="frame"
-    factory=".frame.FrameBlock"
-    />
-
   <!-- Raw block -->
   <class class=".rawtext.RawTextBlock">
     <require

@@ -1,7 +1,6 @@
 <modules>
   <module id="cardstack" title="Kartenstapel"/>
   <module id="cpextra" title="CPExtra"/>
-  <module id="frame" title="iframe"/>
   <module id="headerimage" title="Headerbild"/>
   <module id="markup" title="HTML-Block"/>
   <module id="playlist" title="Video-Riegel"/>

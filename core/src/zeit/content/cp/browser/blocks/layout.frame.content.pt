@@ -1,4 +1,0 @@
-<tal:block i18n:domain="zeit.cms">
-  <div class="block-title" i18n:translate="">Frame</div>
-  <div class="block-item" tal:content="context/url"/>
-</tal:block>

@@ -778,13 +778,6 @@ class IRawTextBlock(IBlock):
     raw_code = zope.interface.Attribute('Raw code from text or text_reference')
 
 
-class IFrameBlock(IBlock):
-
-    url = zope.schema.URI(
-        title=_("URL to include (http://...)"),
-        constraint=valid_feed_url)
-
-
 class IHeaderImageBlock(IBlock):
 
     image = zope.schema.Choice(
