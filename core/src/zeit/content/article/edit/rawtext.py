@@ -1,32 +1,17 @@
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.reference
-import grokcore.component
+import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.modules.rawtext
 import zeit.edit.block
 
 
-class RawText(zeit.edit.block.SimpleElement):
+class RawText(zeit.content.modules.rawtext.RawText,
+              zeit.edit.block.SimpleElement):
 
     area = zeit.content.article.edit.interfaces.IArticleArea
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IRawText)
+    grok.implements(zeit.content.article.edit.interfaces.IRawText)
     type = 'rawtext'
-    text_reference = zeit.cms.content.reference.SingleResource(
-        '.text_reference', 'related')
-    text = zeit.cms.content.property.ObjectPathProperty(
-        '.text',
-        zeit.content.article.edit.interfaces.IRawText['text'])
-
-    @property
-    def raw_code(self):
-        if self.text_reference:
-            return self.text_reference.text
-
-        if self.text:
-            return self.text
-
-        return ''
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
@@ -35,10 +20,10 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     title = _('Raw text block')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.text.interfaces.IText,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.text.interfaces.IText,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_text(body, context, position):
     block = Factory(body)(position)
     block.text_reference = context

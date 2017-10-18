@@ -50,6 +50,7 @@ setup(
         'zeit.content.image>=2.13.6.dev0',
         'zeit.content.infobox',
         'zeit.content.gallery',
+        'zeit.content.modules',
         'zeit.content.portraitbox',
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video',

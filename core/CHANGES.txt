@@ -4,6 +4,8 @@ zeit.content.article changes
 3.30.2 (unreleased)
 -------------------
 
+- MAINT: Extract common modules to z.c.modules: rawtext
+
 - MAINT: Remove obsolete modules: audio, timeline, htmlblock
 
 - MAINT: Remove obsolete video_2 setting
