@@ -871,36 +871,6 @@ class IQuizBlock(IBlock):
         title=_("Quiz id"))
 
 
-class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'scales-fullgraphical-url'
-    attribute = 'name'
-
-    def getToken(self, context, value):
-        return value
-
-
-fullgraphical_scale_source = FullgraphicalScaleSource()
-
-
-class IFullGraphicalBlock(IBlock):
-    """The Fullgraphical block with a reference to an object and an image."""
-
-    referenced_object = zope.schema.Choice(
-        title=_("Link to"),
-        source=zeit.cms.content.contentsource.CMSContentSource())
-
-    image = zope.schema.Choice(
-        title=_("Image"),
-        source=zeit.content.image.interfaces.imageSource,
-        required=False)
-
-    layout = zope.schema.Choice(
-        title=_('Layout'),
-        source=fullgraphical_scale_source)
-
-
 class ILeadTime(zope.interface.Interface):
 
     start = zope.schema.Datetime(title=_('From'))

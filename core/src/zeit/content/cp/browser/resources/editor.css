@@ -435,28 +435,6 @@ margin-top: 4px;
   overflow: hidden;
 }
 
-/* Fullgraphical block */
-
-.fullgraphical-image,
-.fullgraphical-no-image {
-  margin: 0.5em;
-}
-
-.fullgraphical-image img {
-  width: 50%;
-}
-
-.fullgraphical-no-image {
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.block.type-fullgraphical .teaserTitle {
-  display: block;
-  font-weight: bold;
-  margin: 0.5em;
-}
-
 .object-reference-widget .object-reference {
   width:30em;
 }

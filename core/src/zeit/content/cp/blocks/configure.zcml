@@ -158,21 +158,6 @@
     factory=".podcast.PodcastBlock"
     />
 
-  <!-- Fullgraphical block -->
-  <class class=".fullgraphical.FullGraphicalBlock">
-    <require
-      interface="..interfaces.IFullGraphicalBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IFullGraphicalBlock"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="fullgraphical"
-    factory=".fullgraphical.FullGraphicalBlock"
-    />
-
   <!-- CPExtra block -->
   <class class=".cpextra.CPExtraBlock">
     <require

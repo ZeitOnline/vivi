@@ -23,7 +23,6 @@ def test_suite():
     suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
         'av.txt',
         'cpextra.txt',
-        'fullgraphical.txt',
         'teaser.txt',
         'teaser-countings.txt',
         'teaser-two-column-layout.txt',

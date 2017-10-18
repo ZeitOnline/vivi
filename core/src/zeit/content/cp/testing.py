@@ -25,7 +25,6 @@ product_config = """
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-types-url file://{fixtures}/cp-types.xml
     feed-update-minimum-age 30
-    scales-fullgraphical-url file://{fixtures}/scales-fullgraphical.xml
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
 </product-config>

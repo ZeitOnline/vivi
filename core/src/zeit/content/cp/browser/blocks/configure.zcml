@@ -99,7 +99,6 @@
   <include file="playlist.zcml" />
   <include file="podcast.zcml" />
   <include file="quiz.zcml" />
-  <include file="fullgraphical.zcml" />
   <include file="frame.zcml" />
   <include file="headerimage.zcml" />
   <include file="rawtext.zcml" />

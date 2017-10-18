@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove obsolete modules: fullgraphical
 
 
 3.17.0 (2017-10-04)
