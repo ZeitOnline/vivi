@@ -97,7 +97,7 @@ class EditInfobox(EditBase):
 class EditVideo(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IVideo
-    fields = ('video', 'video_2', 'layout')
+    fields = ('video', 'layout')
     undo_description = _('edit video block')
 
 

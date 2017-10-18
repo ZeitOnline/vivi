@@ -45,15 +45,6 @@ class Video(zeit.edit.block.SimpleElement):
         self._validate('video', value)
         self._set_video('href', value)
 
-    @property
-    def video_2(self):
-        return zeit.cms.interfaces.ICMSContent(self.xml.get('href2'), None)
-
-    @video_2.setter
-    def video_2(self, value):
-        self._validate('video_2', value)
-        self._set_video('href2', value)
-
     def _set_video(self, attribute, video):
         if video is None:
             self.xml.attrib.pop(attribute, None)
@@ -62,8 +53,7 @@ class Video(zeit.edit.block.SimpleElement):
             self.xml.set(attribute, video.uniqueId)
             self.is_empty = False
         self.xml.set(
-            'expires', zeit.content.video.asset.get_expires(self.video,
-                                                            self.video_2))
+            'expires', zeit.content.video.asset.get_expires(self.video))
 
     def _validate(self, field_name, value):
         zeit.content.article.edit.interfaces.IVideo[field_name].bind(
@@ -90,7 +80,7 @@ def create_video_block_from_video(body, context, position):
     zeit.content.article.edit.interfaces.IVideo,
     zope.lifecycleevent.IObjectModifiedEvent)
 def update_empty(context, event):
-    context.is_empty = context.video is None and context.video_2 is None
+    context.is_empty = context.video is None
 
 
 @grokcore.component.subscribe(
@@ -102,4 +92,3 @@ def update_video_metadata(article, event):
         if video is not None:
             # Re-assigning the old value updates xml metadata
             video.video = video.video
-            video.video_2 = video.video_2

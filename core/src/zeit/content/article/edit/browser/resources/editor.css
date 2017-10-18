@@ -887,16 +887,8 @@
   display: none;
 }
 
-.type-article .block.type-video .video_2 img {
-  opacity: 0.5;
-}
-
 .type-article .block.type-video .large .video-image {
   width: 50%;
-}
-
-.type-article .block.type-video .double .video_2 img {
-  opacity: 1;
 }
 
 .type-article .block.type-video .with-links .video-title {
@@ -945,8 +937,7 @@
 .type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-author .field.fieldname-references .label,
-.type-article #edit-form-article-content .block.type-video .field.fieldname-video .label,
-.type-article #edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
+.type-article #edit-form-article-content .block.type-video .field.fieldname-video .label {
   display:none;
 }
 
@@ -1456,11 +1447,6 @@
 
 .type-article #edit-form-leadteaser .field .widget {
   border-bottom: 1px solid #e4e4e4;
-}
-
-.type-article #edit-form-leadteaser .fieldname-video_2 .widget {
-  border-bottom: 0 none;
-  margin-bottom: 1px;
 }
 
 .type-article #edit-form-leadteaser .field .label {

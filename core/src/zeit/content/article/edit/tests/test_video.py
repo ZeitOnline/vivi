@@ -47,46 +47,15 @@ class VideoTest(unittest.TestCase):
         video = self.get_video()
         self.assertEqual(None, video.video)
 
-    def test_setting_video_2_should_set_href(self):
-        video = self.get_video()
-        video_obj = mock.Mock()
-        video_obj.uniqueId = 'mock-video-id'
-        video.video_2 = video_obj
-        self.assertEqual(video_obj.uniqueId, video.xml.get('href2'))
-
-    def test_setting_none_video_2_should_remove_href(self):
-        video = self.get_video()
-        video.xml.set('href2', 'testid')
-        video.video_2 = None
-        self.assertFalse('href2' in video.xml.attrib)
-        # Removing again doesn't fail
-        video.video_2 = None
-
-    def test_set_video_2_should_be_returned(self):
-        video = self.get_video()
-        video.xml.set('href2', 'testid')
-        with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
-            video_ob = video.video_2
-            self.assertEquals(icc.return_value, video_ob)
-            icc.assert_called_with('testid', None)
-
-    def test_unset_video_2_should_return_none(self):
-        video = self.get_video()
-        self.assertEqual(None, video.video_2)
-
     def test_expires_should_be_set(self):
         import datetime
         import pytz
         video_obj = mock.Mock()
         video_obj.uniqueId = 'vid1'
-        video2_obj = mock.Mock()
-        video2_obj.uniqueId = 'vid2'
 
         def cmscontent(id, default=None):
             if id == 'vid1':
                 return video_obj
-            if id == 'vid2':
-                return video2_obj
             return default
         icc = mock.Mock(side_effect=cmscontent)
         video = self.get_video()
@@ -94,19 +63,6 @@ class VideoTest(unittest.TestCase):
             video_obj.expires = datetime.datetime(
                 2001, 4, 1, 3, 6, tzinfo=pytz.UTC)
             video.video = video_obj
-            self.assertEqual('2001-04-01T03:06:00+00:00',
-                             video.xml.get('expires'))
-            video2_obj.expires = datetime.datetime(
-                2002, 4, 1, 3, 6, tzinfo=pytz.UTC)
-            video.video_2 = video2_obj
-            self.assertEqual('2001-04-01T03:06:00+00:00',
-                             video.xml.get('expires'))
-            video2_obj.expires = datetime.datetime(
-                2000, 4, 1, 3, 6, tzinfo=pytz.UTC)
-            video.video_2 = video2_obj
-            self.assertEqual('2000-04-01T03:06:00+00:00',
-                             video.xml.get('expires'))
-            video.video_2 = None
             self.assertEqual('2001-04-01T03:06:00+00:00',
                              video.xml.get('expires'))
 

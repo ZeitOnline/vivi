@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - MAINT: Remove obsolete modules: audio, timeline, htmlblock
 
+- MAINT: Remove obsolete video_2 setting
+
 
 3.30.1 (2017-10-09)
 -------------------

@@ -17,7 +17,7 @@ def content(context):
 
 @glob(zeit.content.article.edit.interfaces.IVideo)
 def content(context):
-    return filter(None, [context.video, context.video_2])
+    return filter(None, [context.video])
 
 
 @glob(zeit.content.article.edit.interfaces.IReference)
