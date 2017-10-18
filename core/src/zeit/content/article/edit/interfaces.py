@@ -465,16 +465,6 @@ class IRawText(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class IAudio(zeit.edit.interfaces.IBlock):
-
-    audio_id = zope.schema.TextLine(
-        title=_('Audio id'))
-
-    expires = zope.schema.Datetime(
-        title=_('Expires'),
-        required=False)
-
-
 class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
     """
     Superclass for articleblocklayouts, which can be defined via XML

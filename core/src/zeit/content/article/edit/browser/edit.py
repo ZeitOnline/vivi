@@ -223,19 +223,6 @@ class EditRawText(zeit.edit.browser.form.InlineForm):
         return 'rawtext.{0}'.format(self.context.__name__)
 
 
-class EditAudio(zeit.edit.browser.form.InlineForm):
-
-    legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IAudio).omit(
-            '__name__', '__parent__', 'xml')
-    undo_description = _('edit audio block')
-
-    @property
-    def prefix(self):
-        return 'audio.{0}'.format(self.context.__name__)
-
-
 class EditCitation(zeit.edit.browser.form.InlineForm):
 
     legend = None
