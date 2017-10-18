@@ -1,0 +1,8 @@
+zeit.content.modules changes
+============================
+
+
+1.0.0 (unreleased)
+------------------
+
+- Initial release, extracted from zeit.content.article and zeit.content.cp
