@@ -25,18 +25,3 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
         for_ = zope.dottedname.resolve.resolve(node.get('for'))
         return (super(CPExtraSource, self).isAvailable(node, cp) and
                 for_.providedBy(context.__parent__))
-
-
-class RSSTimeFormatSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    values = collections.OrderedDict([
-        ('none', _('None')),  # default
-        ('date', _('Date')),
-        ('time', _('Time')),
-    ])
-
-    def getValues(self):
-        return self.values.keys()
-
-    def getTitle(self, value):
-        return self.values[value]

@@ -140,7 +140,7 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_valid_rules_file_should_be_loaded(self):
         self._set_rules('example_rules.py')
-        self.assertEqual(3, len(self.rm.rules))
+        self.assertEqual(2, len(self.rm.rules))
 
     def test_invalid_rules_file_should_yield_empty_ruleset(self):
         self._set_rules('syntax_error')

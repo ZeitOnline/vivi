@@ -161,12 +161,6 @@
   </class>
 
 
-  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
-    provides="zeit.cms.workflow.interfaces.IPublishInfo"
-    for=".interfaces.IFeed"
-    trusted="yes"
-    />
-
   <class class=".automatic.AutomaticArea">
     <require
       interface="zeit.content.cp.interfaces.IRenderedArea"
