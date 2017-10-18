@@ -7,7 +7,7 @@ zeit.content.cp changes
 
 - MAINT: Remove free teaser model classes, they've been unused since 3.1.0
 
-- MAINT: Remove obsolete modules: fullgraphical
+- MAINT: Remove obsolete modules: fullgraphical, audio, video
 
 
 3.17.0 (2017-10-04)

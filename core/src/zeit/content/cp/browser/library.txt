@@ -10,10 +10,10 @@ are transmitted in JSON[#setup]_ and can be added on the CP in general:
 >>> factories = json.loads(browser.contents)
 >>> pprint.pprint(sorted(factories['factories'], key=lambda x: x['title']))
 [{u'css': u'module represents-content-object cp-module',
-  u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-audio.png',
+  u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-cpextra.png',
   u'params': u'{}',
-  u'title': u'Audioblock',
-  u'type': u'audio'},
+  u'title': u'CPExtra',
+  u'type': u'cpextra'},
 ...]
 >>> factories['template_url']
 u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'
@@ -70,11 +70,11 @@ it, is rendered too:
   </div>
   ...
 
-Add an audio block after the just created cpextra block now:
+Add another block after the just created block now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'informatives/%s/@@landing-zone-drop-module?block_type=audio' %
+...     'informatives/%s/@@landing-zone-drop-module?block_type=teaser' %
 ...     created_block_id)
 
 >>> browser.open(contents_url)
@@ -90,7 +90,7 @@ Add an audio block after the just created cpextra block now:
        cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
   </div>
-  ...<div...class="...block type-audio...
+  ...<div...class="...block type-teaser...
 
 
 .. [#setup]

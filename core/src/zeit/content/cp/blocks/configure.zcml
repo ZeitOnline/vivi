@@ -68,36 +68,6 @@
     factory=".xml.XMLBlock"
     />
 
-  <!-- Video block -->
-  <class class=".av.VideoBlock">
-    <require
-      interface="..interfaces.IVideoBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IVideoBlock"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="video"
-    factory=".av.VideoBlock"
-    />
-
-  <!-- Audio block -->
-  <class class=".av.AudioBlock">
-    <require
-      interface="..interfaces.IAVBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IAVBlock"
-      permission="zeit.EditContent"/>
-  </class>
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="audio"
-    factory=".av.AudioBlock"
-    />
-
   <!-- Playlist block -->
   <class class=".playlist.PlaylistBlock">
     <require

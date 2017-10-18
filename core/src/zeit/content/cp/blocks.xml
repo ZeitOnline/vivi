@@ -1,5 +1,4 @@
 <modules>
-  <module id="audio" title="Audioblock"/>
   <module id="cardstack" title="Kartenstapel"/>
   <module id="cpextra" title="CPExtra"/>
   <module id="frame" title="iframe"/>
@@ -10,6 +9,5 @@
   <module id="quiz" title="Quiz-Block"/>
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>
-  <module id="video" title="Videoblock"/>
   <module id="xml" title="Rohes XML"/>
 </modules>

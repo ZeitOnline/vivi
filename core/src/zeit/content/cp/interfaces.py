@@ -10,10 +10,8 @@ import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.content.cp.blocks.avsource
 import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
@@ -701,34 +699,6 @@ class IXMLBlock(IBlock):
         title=_("XML Source"),
         constraint=validate_xml_block,
         tidy_input=True)
-
-
-class IAVBlock(IBlock):
-    """ An audio/video block."""
-
-    media_type = zope.schema.Choice(
-        title=_("Media type"),
-        readonly=True,
-        source=zeit.content.cp.blocks.avsource.MediaTypeSource())
-
-    id = zope.schema.TextLine(
-        title=_("Media Id"))
-
-    expires = zope.schema.Datetime(
-        title=_("Expiration date"),
-        required=False)
-
-    format = zope.schema.Choice(
-        title=_("Format"),
-        source=zeit.content.cp.blocks.avsource.FormatSource())
-
-
-class IVideoBlock(IAVBlock):
-
-    player = zope.schema.Choice(
-        title=_('Player'),
-        source=zeit.content.cp.blocks.avsource.PlayerSource(),
-        default='vid')
 
 
 class IPlaylistBlock(IBlock):
