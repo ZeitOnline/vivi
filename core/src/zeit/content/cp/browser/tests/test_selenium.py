@@ -356,36 +356,6 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('css=.block.type-teaser')
 
 
-class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
-
-    def create_videoblock(self):
-        s = self.selenium
-        s.click('link=Struktur')
-        module = self.get_module('cp', 'Videoblock')
-        s.waitForElementPresent(module)
-        s.dragAndDropToObject(
-            module,
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
-        s.waitForElementPresent('css=div.type-video')
-
-    def test_lightbox_should_stay_open_after_editing(self):
-        self.open_centerpage()
-        self.create_videoblock()
-        s = self.selenium
-
-        edit_link = 'css=div.block.type-video > * > div.edit > a.edit-link'
-        s.waitForElementPresent(edit_link)
-        s.click(edit_link)
-        s.waitForElementPresent('id=lightbox.form')
-        s.pause(300)
-        s.type('form.id', '12345')
-        s.click('//input[@value="1W"]')
-        s.select('form.format', 'small')
-        s.click('form.actions.apply')
-        s.pause(300)
-        s.assertElementPresent('css=.lightbox')
-
-
 class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_add_quiz(self):
