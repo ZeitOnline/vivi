@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<image-layouts>
-  <layout id="zutaten" allowed_tags="ul li">Zutaten</layout>
-  <layout id="technischedaten" allowed_tags="dl dd dt">Technische Daten</layout>
-</image-layouts>
