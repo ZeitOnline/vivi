@@ -657,9 +657,6 @@ class TestFolding(
         s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
         s.waitForElementNotPresent('css=.block.type-{0}.folded'.format(block))
 
-    def test_audio_should_be_foldable(self):
-        self.assert_foldable('audio')
-
     @unittest.skip(
         'We would need to bypass the first hidden image block (main image), '
         'but writing that down is not worth the hassle')
