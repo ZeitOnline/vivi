@@ -11,6 +11,8 @@ import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
+import zeit.content.gallery.interfaces
+import zeit.content.volume.interfaces
 import zeit.retresco.interfaces
 import zope.component
 import zope.interface
