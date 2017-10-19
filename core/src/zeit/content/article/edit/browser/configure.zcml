@@ -516,6 +516,27 @@
     weight="10"
     />
 
+  <!-- mail -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IMail"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-mail"
+    class=".edit.EditMail"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IMail"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-mail"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- division -->
 
   <browser:viewlet
@@ -594,6 +615,10 @@
   </class>
 
   <class class="..box.Box">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..mail.Mail">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

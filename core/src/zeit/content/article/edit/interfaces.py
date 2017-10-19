@@ -402,6 +402,10 @@ class IJobTicker(zeit.content.modules.interfaces.IJobTicker):
         source=JOBTICKER_SOURCE)
 
 
+class IMail(zeit.content.modules.interfaces.IMail):
+    pass
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(

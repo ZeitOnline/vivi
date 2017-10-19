@@ -255,6 +255,17 @@
       />
   </class>
 
+  <class class=".mail.Mail">
+    <require
+      interface=".interfaces.IMail"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IMail"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".box.Box">
     <require
       interface=".interfaces.IBox"
