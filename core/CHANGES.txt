@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.13.2 (unreleased)
+1.13.2 (2017-10-19)
 -------------------
 
 - MAINT: Add missing import
