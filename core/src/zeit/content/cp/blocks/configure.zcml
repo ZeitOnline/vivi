@@ -98,19 +98,19 @@
     factory=".quiz.QuizBlock"
     />
 
-  <!-- Jobbox Ticker block -->
-  <class class=".jobbox_ticker.JobboxTickerBlock">
+  <!-- Jobticker block -->
+  <class class=".jobticker.JobTickerBlock">
     <require
-      interface="..interfaces.IJobboxTickerBlock"
+      interface="..interfaces.IJobTickerBlock"
       permission="zope.View" />
     <require
-      set_schema="..interfaces.IJobboxTickerBlock"
+      set_schema="..interfaces.IJobTickerBlock"
       permission="zeit.EditContent"/>
   </class>
   <adapter
     provides="zeit.edit.interfaces.IElement"
     name="jobbox_ticker"
-    factory=".jobbox_ticker.JobboxTickerBlock"
+    factory=".jobticker.JobTickerBlock"
     />
 
   <!-- Podcast block -->

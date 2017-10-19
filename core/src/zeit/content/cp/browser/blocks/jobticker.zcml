@@ -3,21 +3,21 @@
   xmlns:browser="http://namespaces.zope.org/browser">
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IJobboxTickerBlock"
+    for="zeit.content.cp.interfaces.IJobTickerBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
-    template="layout.jobbox_ticker.content.pt"
+    template="layout.jobticker.content.pt"
     permission="zeit.EditContent"
     weight="0"
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.IJobboxTickerBlock"
+    for="zeit.content.cp.interfaces.IJobTickerBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
-    class=".jobbox_ticker.EditProperties"
+    class=".jobticker.EditProperties"
     permission="zeit.EditContent"
     />
 

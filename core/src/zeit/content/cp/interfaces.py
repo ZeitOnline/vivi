@@ -16,6 +16,7 @@ import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.modules.interfaces
+import zeit.content.modules.jobticker
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.app.appsetup.appsetup
@@ -811,18 +812,17 @@ class ICardstackBlock(IBlock):
         default=False)
 
 
-JOBBOX_TICKER_SOURCE = zeit.cms.content.sources.JobboxTickerSource(ICenterPage)
+JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
+    ICenterPage)
 
 
-class IJobboxTickerBlock(IBlock):
-    """The Jobbox block with a specific feed specified in source."""
+class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker):
+    """The Jobticker block with a specific feed specified in source."""
 
-    jobbox_ticker = zope.schema.Choice(
+    feed = zope.schema.Choice(
         title=_('Jobbox Ticker'),
-        source=JOBBOX_TICKER_SOURCE)
-
-    jobbox_ticker_title = zope.interface.Attribute("Title of the chosen "
-                                                   "Jobbox Ticker")
+        required=True,
+        source=JOBTICKER_SOURCE)
 
 
 class IPodcastBlock(IBlock):

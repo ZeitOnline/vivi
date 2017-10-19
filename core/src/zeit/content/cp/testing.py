@@ -10,6 +10,7 @@ import zeit.cms.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.testing
+import zeit.content.modules.testing
 import zeit.retresco.interfaces
 import zeit.workflow.testing
 import zope.testing.doctest
@@ -40,6 +41,7 @@ CP_LAYER = zeit.cms.testing.ZCMLLayer(
     product_config=zeit.cms.testing.cms_product_config +
     zeit.workflow.testing.product_config +
     zeit.content.image.testing.product_config +
+    zeit.content.modules.testing.product_config +
     product_config)
 
 
