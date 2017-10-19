@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.17.1 (unreleased)
 -------------------
 
-- MAINT: Extract common modules to z.c.modules: rawtext, jobticker
+- MAINT: Extract common modules to z.c.modules: rawtext, jobticker, quiz
 
 - MAINT: Remove free teaser model classes, they've been unused since 3.1.0
 

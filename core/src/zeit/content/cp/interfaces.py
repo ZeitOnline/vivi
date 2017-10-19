@@ -736,11 +736,8 @@ class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 
-class IQuizBlock(IBlock):
-    """The Quiz block with a reference to a quiz."""
-
-    quiz_id = zope.schema.TextLine(
-        title=_("Quiz id"))
+class IQuizBlock(zeit.content.modules.interfaces.IQuiz, IBlock):
+    pass
 
 
 class ILeadTime(zope.interface.Interface):
