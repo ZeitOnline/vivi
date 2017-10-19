@@ -4,7 +4,7 @@ zeit.content.article changes
 3.30.2 (unreleased)
 -------------------
 
-- MAINT: Extract common modules to z.c.modules: rawtext, jobticker
+- MAINT: Extract common modules to z.c.modules: rawtext, jobticker, quiz
 
 - MAINT: Remove obsolete modules: audio, timeline, htmlblock
 

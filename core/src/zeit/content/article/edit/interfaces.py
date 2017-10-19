@@ -349,13 +349,9 @@ class ICardstack(zeit.edit.interfaces.IBlock):
         default=False)
 
 
-class IQuiz(zeit.edit.interfaces.IBlock):
-
-    quiz_id = zope.schema.TextLine(
-        title=_('Quiz id'))
-    adreload_enabled = zope.schema.Bool(
-        title=_('Enable adreload'),
-        default=True)
+class IQuiz(zeit.content.modules.interfaces.IQuiz):
+    # XXX Need to inerit our own interface, otherwise our UI bleeds into z.c.cp
+    pass
 
 
 class IPodcast(zeit.edit.interfaces.IBlock):
