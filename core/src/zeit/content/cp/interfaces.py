@@ -827,3 +827,7 @@ class IPodcastBlock(IBlock):
 
     episode_id = zope.schema.TextLine(
         title=_("Podcast id"))
+
+
+class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):
+    pass

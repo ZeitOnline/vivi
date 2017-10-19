@@ -35,7 +35,7 @@ setup(
         'zeit.cms>=2.109.0.dev0',
         'zeit.content.article>=3.26.dev0',
         'zeit.content.image>=2.5.1.dev0',
-        'zeit.content.modules',
+        'zeit.content.modules>=1.1.0.dev0',
         'zeit.content.quiz>=0.4.2',
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video>=2.4.1.dev0',

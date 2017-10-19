@@ -1,0 +1,5 @@
+<div class="block-item"
+     tal:condition="context/subject" i18n:domain="zeit.cms">
+  <span i18n:translate="">Subject:</span> <span tal:content="context/subject_display">Subject</span>
+</div>
+

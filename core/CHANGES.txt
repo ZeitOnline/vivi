@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.18.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4227: Implement mail module
 
 
 3.18.1 (2017-10-19)
