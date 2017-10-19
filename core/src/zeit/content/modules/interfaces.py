@@ -20,3 +20,13 @@ class IRawText(zeit.edit.interfaces.IBlock):
 
 # XXX Both article and cp use a "raw xml" module, but their XML serialization
 # is so different that they don't really share any code.
+
+
+class IJobTicker(zeit.edit.interfaces.IBlock):
+
+    feed = zope.schema.Choice(
+        title=_('Jobbox Ticker'),
+        required=True,
+        values=())  # actual source must be set in concrete subclass
+
+    title = zope.interface.Attribute('Title of the chosen feed')

@@ -1,0 +1,10 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <class class=".jobticker.Feed">
+    <require
+      attributes="id title teaser landing_url feed_url"
+      permission="zope.View"
+      />
+  </class>
+
+</configure>
