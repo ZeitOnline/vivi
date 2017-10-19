@@ -233,6 +233,17 @@
       />
   </class>
 
+  <class class=".jobticker.JobTicker">
+    <require
+      interface=".interfaces.IJobTicker"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IJobTicker"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".podcast.Podcast">
     <require
       interface=".interfaces.IPodcast"

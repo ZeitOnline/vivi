@@ -474,6 +474,27 @@
     weight="10"
     />
 
+  <!-- jobticker -->
+
+   <browser:viewlet
+    for="..interfaces.IJobTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-jobticker"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="..interfaces.IJobTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-jobticker"
+    class=".edit.EditJobTicker"
+    permission="zope.View"
+    />
+
    <!-- box -->
 
   <browser:page
@@ -565,6 +586,10 @@
   </class>
 
   <class class="..podcast.Podcast">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..jobticker.JobTicker">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

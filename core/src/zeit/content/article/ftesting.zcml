@@ -11,6 +11,8 @@
   <include package="zeit.edit" />
   <include package="zeit.edit.browser" />
 
+  <include package="zeit.content.modules" />
+
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
   <include package="zeit.content.article.edit.browser" />

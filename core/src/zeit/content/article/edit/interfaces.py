@@ -402,6 +402,18 @@ class IBox(zeit.edit.interfaces.IBlock):
     )
 
 
+JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
+    zeit.content.article.interfaces.IArticle)
+
+
+class IJobTicker(zeit.content.modules.interfaces.IJobTicker):
+
+    feed = zope.schema.Choice(
+        title=_('Jobbox ticker'),
+        required=True,
+        source=JOBTICKER_SOURCE)
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(

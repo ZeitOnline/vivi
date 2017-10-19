@@ -327,3 +327,16 @@ class DoubleQuotes(object):
     def __call__(self):
         return json.dumps(
             zeit.content.article.article.DOUBLE_QUOTE_CHARACTERS.pattern)
+
+
+class EditJobTicker(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    undo_description = _('edit jobbox ticker')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IJobTicker).select(
+            'feed')
+
+    @property
+    def prefix(self):
+        return 'jobticker.{0}'.format(self.context.__name__)
