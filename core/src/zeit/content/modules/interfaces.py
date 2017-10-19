@@ -39,3 +39,50 @@ class IQuiz(zeit.edit.interfaces.IBlock):
     adreload_enabled = zope.schema.Bool(
         title=_('Enable adreload'),
         default=True)
+
+
+def validate_email(string):
+    if not string:
+        return True
+    if '@' not in string:
+        raise zeit.cms.interfaces.ValidationError(
+            _('Email address must contain @.'))
+    return True
+
+
+class SubjectSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.modules'
+    config_url = 'subject-source'
+    attribute = 'id'
+
+SUBJECT_SOURCE = SubjectSource()
+
+
+class IMail(zeit.edit.interfaces.IBlock):
+
+    title = zope.schema.TextLine(
+        title=_('Title'),
+        required=False)
+
+    subtitle = zope.schema.Text(
+        title=_('Subtitle'),
+        required=False)
+
+    to = zope.schema.TextLine(
+        title=_('Recipient'),
+        constraint=validate_email)
+
+    subject = zope.schema.Choice(
+        title=_('Subject'),
+        source=SUBJECT_SOURCE,
+        required=False)
+
+    subject_display = zope.schema.TextLine(
+        title=_('Subject'),
+        readonly=True)
+
+    body = zope.interface.Attribute('Email body')
+
+    success_message = zope.schema.TextLine(
+        title=_('Success message'))
