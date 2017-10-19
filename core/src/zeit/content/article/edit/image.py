@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.interfaces import LEGACY_DISPLAY_MODE_SOURCE
-from zeit.content.article.edit.interfaces import LEGACY_VARIANT_NAME_SOURCE
+from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE
+from zeit.content.article.source import LEGACY_VARIANT_NAME_SOURCE
 import grokcore.component
 import lxml.objectify
 import zeit.cms.checkout.interfaces

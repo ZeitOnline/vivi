@@ -328,9 +328,8 @@ def set_template_and_header_defaults(context, event):
     if (context.main_image_block and
             not context.main_image_block._variant_name and
             (context.template or context.header_layout)):
-        iface = zeit.content.article.edit.interfaces
-        source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
-        context.main_image_variant_name = source.get_default(context)
+        source = zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE
+        context.main_image_variant_name = source.factory.get_default(context)
 
 
 @grok.subscribe(

@@ -2,11 +2,8 @@ from zeit.content.article.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
-import zeit.cms.workflow.interfaces
-import zeit.content.article.edit.interfaces
 import zeit.content.article.source
 import zeit.content.cp.interfaces
-import zeit.workflow.interfaces
 import zope.schema
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
@@ -62,8 +59,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     main_image_variant_name = zope.schema.Choice(
         title=_('Variant Name'),
-        source=zeit.content.article.edit.interfaces.
-        MAIN_IMAGE_VARIANT_NAME_SOURCE,
+        source=zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE,
         required=False)
 
     main_image_block = zope.interface.Attribute(
