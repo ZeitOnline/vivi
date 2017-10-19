@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: quiz serialization is historically different on CPs and articles
 
 
 3.18.0 (2017-10-19)
