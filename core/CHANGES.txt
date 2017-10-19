@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.0.0 (unreleased)
+1.0.0 (2017-10-19)
 ------------------
 
 - Initial release, extracted from zeit.content.article and zeit.content.cp
