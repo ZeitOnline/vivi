@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='zeit.edit',
-    version='2.16.1',
+    version='2.16.2.dev0',
     description="Vivi Editor",
     long_description='',
     keywords='',
