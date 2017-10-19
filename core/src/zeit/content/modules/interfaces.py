@@ -30,3 +30,12 @@ class IJobTicker(zeit.edit.interfaces.IBlock):
         values=())  # actual source must be set in concrete subclass
 
     title = zope.interface.Attribute('Title of the chosen feed')
+
+
+class IQuiz(zeit.edit.interfaces.IBlock):
+
+    quiz_id = zope.schema.TextLine(
+        title=_('Quiz id'))
+    adreload_enabled = zope.schema.Bool(
+        title=_('Enable adreload'),
+        default=True)
