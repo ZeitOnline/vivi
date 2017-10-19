@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from zeit.content.cp.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.interfaces

@@ -1,5 +1,4 @@
-
-from zeit.content.cp.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces

@@ -1,4 +1,4 @@
-from zeit.content.cp.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
