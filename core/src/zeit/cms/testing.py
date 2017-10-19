@@ -289,7 +289,6 @@ cms_product_config = """\
   source-channels file://{base}/content/ressorts.xml
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
-  source-jobbox-ticker file://{base}/content/jobboxticker.xml
 
   checkout-lock-timeout 3600
   checkout-lock-timeout-temporary 30
