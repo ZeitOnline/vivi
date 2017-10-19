@@ -2,7 +2,7 @@ zeit.arbeit changes
 ====================
 
 
-1.2.3 (unreleased)
+1.2.3 (2017-10-19)
 ------------------
 
 - MAINT: Move jobbox module to z.c.modules and z.c.article
