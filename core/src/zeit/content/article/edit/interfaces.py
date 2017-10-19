@@ -7,9 +7,9 @@ import zeit.content.article.source
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
+import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
 import zeit.content.portraitbox.interfaces
-import zeit.content.text.interfaces
 import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
@@ -279,16 +279,8 @@ class IRawXML(zeit.edit.interfaces.IBlock):
         constraint=validate_rawxml)
 
 
-class IRawText(zeit.edit.interfaces.IBlock):
-
-    text_reference = zope.schema.Choice(
-        title=_("Raw text reference"),
-        source=zeit.content.text.interfaces.textSource,
-        required=False)
-
-    text = zope.schema.Text(
-        title=_('Raw text'),
-        required=False)
+class IRawText(zeit.content.modules.interfaces.IRawText):
+    pass
 
 
 class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
