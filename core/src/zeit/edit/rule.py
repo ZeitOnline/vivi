@@ -3,7 +3,7 @@ from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zeit.content.cp.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 from zeit.workflow.interfaces import ITimeBasedPublishing
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException

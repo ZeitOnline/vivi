@@ -4,7 +4,7 @@ Changes
 2.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove superfluous i18n reimport
 
 
 2.16.0 (2017-09-07)
