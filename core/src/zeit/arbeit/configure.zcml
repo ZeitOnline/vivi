@@ -46,15 +46,4 @@
     name="Arbeit"
     />
 
-  <class class=".jobbox_ticker.JobboxTicker">
-    <require
-      interface=".interfaces.IJobboxTicker"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IJobboxTicker"
-      permission="zeit.EditContent"
-      />
-  </class>
-
 </configure>
