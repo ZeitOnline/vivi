@@ -4,7 +4,7 @@ Changes
 2.16.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Enable sending no-cache headers for the article/cp main edit view
 
 
 2.16.1 (2017-10-19)
