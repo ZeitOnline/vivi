@@ -19,5 +19,3 @@ class RawText(zeit.edit.block.Element):
         if self.text:
             return self.text
         return ''
-
-
