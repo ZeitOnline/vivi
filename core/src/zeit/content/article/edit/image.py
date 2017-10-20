@@ -8,6 +8,7 @@ import zeit.cms.content.reference
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.reference
 import zeit.content.article.interfaces
+import zeit.content.article.source
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.lifecycleevent
@@ -157,8 +158,7 @@ def change_variant_name_on_template_change(context, event):
     else:
         return
 
-    iface = zeit.content.article.edit.interfaces
-    source = iface.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
+    source = zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
     context.main_image_variant_name = source.get_default(context)
 
 
