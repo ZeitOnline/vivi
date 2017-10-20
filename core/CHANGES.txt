@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.31.1 (unreleased)
+3.32.0 (2017-10-20)
 -------------------
 
 - ZON-4227: Implement mail module
