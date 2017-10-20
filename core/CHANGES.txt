@@ -4,7 +4,8 @@ zeit.cms changes
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Send no-cache headers at least for our full pages,
+  so browsers don't cache e.g. a directory listing
 
 
 3.1.2 (2017-10-19)

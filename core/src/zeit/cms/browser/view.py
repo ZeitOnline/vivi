@@ -6,6 +6,10 @@ import zope.component
 
 class Base(object):
 
+    def __call__(self):
+        self.request.response.setHeader('Cache-Control', 'no-cache')
+        return super(Base, self).__call__()
+
     def url(self, obj=None, name=None):
         # if the first argument is a string, that's the name. There should
         # be no second argument
