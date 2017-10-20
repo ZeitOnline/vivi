@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.1.3 (unreleased)
+3.1.3 (2017-10-20)
 ------------------
 
 - FIX: Send no-cache headers at least for our full pages,
