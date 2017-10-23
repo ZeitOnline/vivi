@@ -87,6 +87,7 @@ After calling POSTing, a new image has been added to the folder:
 {}
 >>> print browser.headers
 Status: 201 Created
+Cache-Control: no-cache
 Content-Length: 2
 Content-Type: text/json
 Location: http://localhost/++skin++cms/repository/image-folder/a-new-file.jpg/@@view.html
