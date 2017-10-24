@@ -9,14 +9,12 @@ import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
-import zeit.edit.block
 import zeit.edit.interfaces
 import zope.schema
 
 
-class Reference(zeit.edit.block.SimpleElement):
+class Reference(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.baseclass()
 
     is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(

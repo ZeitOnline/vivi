@@ -3,13 +3,11 @@ import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.modules.rawtext
-import zeit.edit.block
 
 
 class RawText(zeit.content.modules.rawtext.RawText,
-              zeit.edit.block.SimpleElement):
+              zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(zeit.content.article.edit.interfaces.IRawText)
     type = 'rawtext'
 

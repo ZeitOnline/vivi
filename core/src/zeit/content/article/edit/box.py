@@ -1,21 +1,18 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import IBox
-
 import grokcore.component as grok
-import zeit.cms.related.related
 import zeit.cms.content.property
 import zeit.cms.content.reference
+import zeit.cms.related.related
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
-import zeit.edit.block
 import zope.component
 import zope.interface
 
 
-class Box(zeit.edit.block.SimpleElement):
+class Box(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(IBox)
     type = 'box'
 

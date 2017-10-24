@@ -24,7 +24,7 @@ def keep_allowed_tags(tree, allowed_tags):
 inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
 
 
-class ParagraphBase(zeit.edit.block.SimpleElement):
+class ParagraphBase(zeit.content.article.edit.block.Block):
 
     grok.baseclass()
 

@@ -12,6 +12,12 @@ def article_for_element(context):
     return zeit.content.article.interfaces.IArticle(context.__parent__, None)
 
 
+class Block(zeit.edit.block.SimpleElement):
+
+    area = zeit.content.article.edit.interfaces.IArticleArea
+    grok.baseclass()
+
+
 class BlockFactory(zeit.edit.block.ElementFactory):
 
     grok.baseclass()

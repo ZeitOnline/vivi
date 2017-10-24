@@ -1,14 +1,11 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import zeit.cms.content.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 
 
-class Liveblog(zeit.edit.block.SimpleElement):
+class Liveblog(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(zeit.content.article.edit.interfaces.ILiveblog)
     type = 'liveblog'
 

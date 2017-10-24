@@ -2,12 +2,10 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 
 
-class Citation(zeit.edit.block.SimpleElement):
+class Citation(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.ICitation)
     type = 'citation'
