@@ -11,8 +11,7 @@ import zope.interface
 
 class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zope.container.interfaces.IContained,
-                              zeit.content.cp.interfaces.ICPExtraBlock)
+    zope.interface.implements(zeit.content.cp.interfaces.ICPExtraBlock)
 
     @property
     def cpextra(self):

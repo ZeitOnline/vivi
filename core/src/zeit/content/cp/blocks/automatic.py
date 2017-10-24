@@ -11,13 +11,7 @@ import zope.interface
 # XXX Should we inherit from TeaserBlock?
 class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(
-        zeit.content.cp.interfaces.IAutomaticTeaserBlock,
-        zope.container.interfaces.IContained)
-
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IArea,
-        gocept.lxml.interfaces.IObjectified)
+    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
 
     # XXX copy&paste from TeaserBlock
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(

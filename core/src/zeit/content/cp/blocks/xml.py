@@ -9,9 +9,7 @@ import zope.interface
 
 class XMLBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(
-        zeit.content.cp.interfaces.IXMLBlock,
-        zope.container.interfaces.IContained)
+    zope.interface.implements(zeit.content.cp.interfaces.IXMLBlock)
 
 
 class XMLBlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
