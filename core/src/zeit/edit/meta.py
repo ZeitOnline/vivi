@@ -1,4 +1,5 @@
 import gocept.lxml.interfaces
+import grokcore.component
 import martian
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -51,5 +52,21 @@ class SimpleElementGrokker(martian.ClassGrokker):
             discriminator=('adapter', for_, provides, context.type),
             callable=zope.component.provideAdapter,
             args=(context, for_, provides, context.type),
+        )
+        return True
+
+
+class ElementFactoryGrokker(martian.ClassGrokker):
+
+    martian.component(zeit.edit.block.ElementFactory)
+    martian.directive(grokcore.component.context)
+
+    def execute(self, factory, config, context, **kw):
+        name = factory.element_type = factory.produces.type
+        provides = list(zope.interface.implementedBy(factory))[0]
+        config.action(
+            discriminator=('adapter', context, provides, name),
+            callable=zope.component.provideAdapter,
+            args=(factory, (context,), provides, name),
         )
         return True
