@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -6,17 +6,16 @@ import zeit.edit.block
 import zeit.edit.interfaces
 
 
-@grokcore.component.adapter(zeit.edit.interfaces.IElement)
-@grokcore.component.implementer(zeit.content.article.interfaces.IArticle)
+@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.implementer(zeit.content.article.interfaces.IArticle)
 def article_for_element(context):
     return zeit.content.article.interfaces.IArticle(context.__parent__, None)
 
 
 class BlockFactory(zeit.edit.block.ElementFactory):
 
-    grokcore.component.baseclass()
-    grokcore.component.context(
-        zeit.content.article.edit.interfaces.IArticleArea)
+    grok.baseclass()
+    grok.context(zeit.content.article.edit.interfaces.IArticleArea)
     # No title so we are excluded from @@block-factories -- our blocks are
     # created via the toolbar, and should not appear in the module library.
     title = None

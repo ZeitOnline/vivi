@@ -4,7 +4,7 @@ zeit.content.article changes
 3.32.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Extract grok-based element factory to zeit.edit
 
 
 3.32.0 (2017-10-20)

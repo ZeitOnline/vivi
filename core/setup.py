@@ -55,7 +55,7 @@ setup(
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video',
         'zeit.content.volume>=1.4.0.dev0',
-        'zeit.edit>=2.15.0.dev0',
+        'zeit.edit>=2.17.0.dev0',
         'zeit.objectlog>=0.2',
         'zeit.push>=1.21.1.dev0',
         'zeit.wysiwyg>=1.41.0dev',
