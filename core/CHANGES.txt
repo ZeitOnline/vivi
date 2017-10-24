@@ -4,7 +4,7 @@ zeit.newsletter changes
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Update to simplified module registration API
 
 
 1.5.0 (2017-10-04)
