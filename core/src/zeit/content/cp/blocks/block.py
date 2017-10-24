@@ -40,7 +40,10 @@ class VisibleMixin(object):
                 'visible_mobile'].default
 
 
-class Block(VisibleMixin, zeit.edit.block.Element):
+class Block(VisibleMixin, zeit.edit.block.SimpleElement):
+
+    grok.baseclass()
+    area = zeit.content.cp.interfaces.IArea
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
