@@ -39,7 +39,7 @@ setup(
         'zeit.content.quiz>=0.4.2',
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video>=2.4.1.dev0',
-        'zeit.edit >= 2.16.0.dev0',
+        'zeit.edit >= 2.17.0.dev0',
         'zeit.find >= 2.7.0.dev0',
         'zeit.retresco >= 1.6.0.dev0',
         'zeit.solr',

@@ -61,7 +61,6 @@
       set_schema="..interfaces.IXMLBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".xml.XMLBlockFactory" name="xml" />
   <adapter
     provides="zeit.edit.interfaces.IElement"
     name="xml"

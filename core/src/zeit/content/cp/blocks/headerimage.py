@@ -1,14 +1,14 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.edit.block
-import zope.interface
 
 
 class HeaderImageBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IHeaderImageBlock)
+    grok.implements(zeit.content.cp.interfaces.IHeaderImageBlock)
+    type = 'headerimage'
 
     image = zeit.cms.content.property.SingleResource('.image')
     animate = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -16,6 +16,7 @@ class HeaderImageBlock(zeit.content.cp.blocks.block.Block):
         zeit.content.cp.interfaces.IHeaderImageBlock['animate'])
 
 
-zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IArea],
-    'headerimage', _('Header image block'))
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = HeaderImageBlock
+    title = _('Header image block')

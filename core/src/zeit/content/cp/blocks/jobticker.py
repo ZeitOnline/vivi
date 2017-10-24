@@ -1,21 +1,22 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.modules.jobticker
-import zeit.edit.block
-import zope.interface
 
 
 class JobTickerBlock(
         zeit.content.modules.jobticker.JobTicker,
         zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IJobTickerBlock)
+    grok.implements(zeit.content.cp.interfaces.IJobTickerBlock)
+    type = 'jobbox_ticker'
 
     source = zeit.content.cp.interfaces.IJobTickerBlock['feed'].source
 
 
-zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IArea],
-    'jobbox_ticker', _('Jobbox Ticker Block'))
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = JobTickerBlock
+    title = _('Jobbox Ticker Block')

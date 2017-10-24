@@ -78,6 +78,12 @@ class Block(VisibleMixin, zeit.edit.block.Element):
             return module_config.title
 
 
+class BlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.baseclass()
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+
 @grok.adapter(zeit.content.cp.interfaces.IBlock)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):

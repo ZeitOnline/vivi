@@ -1,17 +1,14 @@
-import gocept.lxml.interfaces
 import grokcore.component as grok
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component
-import zope.interface
 
 
 # XXX Should we inherit from TeaserBlock?
 class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
+    grok.implements(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
+    type = 'auto-teaser'
 
     # XXX copy&paste from TeaserBlock
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -99,8 +96,10 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         area.updateOrder(order)
 
 
-zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.IArea, 'auto-teaser')
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = AutomaticTeaserBlock
+    title = None
 
 
 @grok.adapter(zeit.content.cp.interfaces.IAutomaticTeaserBlock)

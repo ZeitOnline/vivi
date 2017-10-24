@@ -61,9 +61,10 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
 
 class RegionFactory(zeit.edit.block.ElementFactory):
 
+    grok.context(zeit.content.cp.interfaces.IBody)
+    produces = Region
     # XML tags are named "cluster", thus do not change.
     tag_name = 'cluster'
-    element_type = 'region'
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()
@@ -447,9 +448,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
 class AreaFactory(zeit.edit.block.ElementFactory):
 
+    grok.context(zeit.content.cp.interfaces.IRegion)
+    produces = Area
     # XML tags are named "region", thus do not change.
     tag_name = 'region'
-    element_type = 'area'
     title = _('Area')
 
     def get_xml(self):
