@@ -119,7 +119,8 @@ class Group(zeit.edit.container.TypeOnAttributeContainer,
     grok.adapts(
         zeit.newsletter.interfaces.IBody,
         gocept.lxml.interfaces.IObjectified)
-    grok.name('group')
+    type = 'group'
+    grok.name(type)
 
     title = zeit.cms.content.property.ObjectPathProperty(
         '.head.title', zeit.newsletter.interfaces.IGroup['title'])
@@ -134,9 +135,12 @@ class Group(zeit.edit.container.TypeOnAttributeContainer,
         return result
 
 
-zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'group', _('Group'),
-    tag_name='region')
+class GroupFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(zeit.newsletter.interfaces.IBody)
+    produces = Group
+    tag_name = 'region'
+    title = _('Group')
 
 
 class Teaser(zeit.edit.block.SimpleElement):
@@ -149,8 +153,11 @@ class Teaser(zeit.edit.block.SimpleElement):
         '.block', xml_reference_name='related', attributes=('href',))
 
 
-zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IGroup, 'teaser', _('Teaser'))
+class TeaserFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(zeit.newsletter.interfaces.IGroup)
+    produces = Teaser
+    title = _('Teaser')
 
 
 class AdvertisementBase(object):
@@ -204,15 +211,28 @@ class BottomAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
     type = 'advertisement-bottom'
 
 
-zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'advertisement-middle',
-    _('Advertisement'))
-zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'advertisement-thisweeks',
-    _('Advertisement'))
-zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'advertisement-bottom',
-    _('Advertisement'))
+class MiddleAdvertisementFactory(
+        zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(zeit.newsletter.interfaces.IBody)
+    produces = MiddleAdvertisement
+    title = _('Advertisement')
+
+
+class ThisWeeksAdvertisementFactory(
+        zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(zeit.newsletter.interfaces.IBody)
+    produces = ThisWeeksAdvertisement
+    title = _('Advertisement')
+
+
+class BottomAdvertisementFactory(
+        zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(zeit.newsletter.interfaces.IBody)
+    produces = BottomAdvertisement
+    title = _('Advertisement')
 
 
 @grok.adapter(zeit.edit.interfaces.IElement)
