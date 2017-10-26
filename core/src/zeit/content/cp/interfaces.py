@@ -388,11 +388,17 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     automatic = zope.schema.Bool(
         title=_('automatic'),
         default=False)
+    automatic.__doc__ = """If True, IRenderedArea.values() will populate
+    any IAutomaticTeaserBlock with content, as specified by automatic_type.
+    """
 
     automatic_type = zope.schema.Choice(
         title=_('automatic-area-type'),
         source=AutomaticTypeSource(),
         required=True)
+    automatic_type.__doc__ = """Determines from where IRenderedArea retrieves
+    content objects. Will look up a utility of that name for IContentQuery.
+    """
 
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
