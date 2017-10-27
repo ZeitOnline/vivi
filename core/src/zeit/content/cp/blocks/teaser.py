@@ -72,10 +72,7 @@ class TeaserBlock(
         zeit.content.cp.interfaces.ITeaserBlock,
         zeit.cms.syndication.interfaces.IFeed,
         zope.container.interfaces.IContained)
-
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IArea,
-        gocept.lxml.interfaces.IObjectified)
+    type = 'teaser'
 
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
@@ -141,8 +138,10 @@ class TeaserBlock(
             setattr(self, name, getattr(other, name))
 
 
-zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.IArea, 'teaser', _('List of teasers'))
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = TeaserBlock
+    title = _('List of teasers')
 
 
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)

@@ -1,23 +1,19 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import lxml.objectify
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.edit.block
-import zope.container.interfaces
-import zope.interface
 
 
 class XMLBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(
-        zeit.content.cp.interfaces.IXMLBlock,
-        zope.container.interfaces.IContained)
+    grok.implements(zeit.content.cp.interfaces.IXMLBlock)
+    type = 'xml'
 
 
-class XMLBlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+class XMLBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
 
-    zope.component.adapts(zeit.content.cp.interfaces.IArea)
-    element_type = module = 'xml'
+    produces = XMLBlock
     title = _('Raw XML block')
 
     def get_xml(self):

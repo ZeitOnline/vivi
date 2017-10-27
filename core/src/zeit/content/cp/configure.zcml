@@ -75,15 +75,6 @@
     handler=".centerpage.modified_propagator" />
 
   <!-- Areas -->
-  <adapter
-    factory=".area.RegionFactory"
-    for="zeit.content.cp.interfaces.IBody"
-    name="region" />
-  <adapter
-    factory=".area.AreaFactory"
-    for="zeit.content.cp.interfaces.IRegion"
-    name="area" />
-
   <class class=".area.Region">
     <require
       interface="zeit.content.cp.interfaces.IReadRegion"

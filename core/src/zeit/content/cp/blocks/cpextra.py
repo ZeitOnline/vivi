@@ -1,18 +1,16 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.checkout.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
-import zope.container.interfaces
-import zope.interface
 
 
 class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zope.container.interfaces.IContained,
-                              zeit.content.cp.interfaces.ICPExtraBlock)
+    grok.implements(zeit.content.cp.interfaces.ICPExtraBlock)
+    type = 'cpextra'
 
     @property
     def cpextra(self):
@@ -24,12 +22,15 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
         self.xml['cp_extra'] = lxml.objectify.E.cp_extra(id=value)
 
 
-zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.IArea, 'cpextra', _('CP extra'), module='')
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = CPExtraBlock
+    title = _('CP extra')
+    module = ''
 
 
 # This method only applies to "old" (lead/informatives/mosaic) centerpages
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
 def add_blocks_to_newly_created_cp(context, event):
@@ -51,7 +52,7 @@ def add_blocks_to_newly_created_cp(context, event):
     mostcommented.cpextra = 'mostcommented'
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def update_old_cpextras(context, event):

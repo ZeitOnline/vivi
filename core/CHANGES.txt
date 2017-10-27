@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.19.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Update to simplified module registration API
 
 
 3.19.1 (2017-10-27)

@@ -4,21 +4,21 @@ import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.interfaces
-import zeit.edit.block
-import zope.interface
 
 
 class PlaylistBlock(zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IPlaylistBlock)
+    grok.implements(zeit.content.cp.interfaces.IPlaylistBlock)
+    type = 'playlist'
 
     referenced_playlist = zeit.cms.content.property.SingleResource(
         '.block', xml_reference_name='related', attributes=('href',))
 
 
-zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IArea],
-    'playlist', _('Video Bar'))
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = PlaylistBlock
+    title = _('Video Bar')
 
 
 @grok.adapter(zeit.content.cp.interfaces.IPlaylistBlock)

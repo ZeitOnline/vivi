@@ -1,16 +1,16 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.modules.quiz
-import zeit.edit.block
-import zope.interface
 
 
 class QuizBlock(
         zeit.content.modules.quiz.Quiz,
         zeit.content.cp.blocks.block.Block):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IQuizBlock)
+    grok.implements(zeit.content.cp.interfaces.IQuizBlock)
+    type = 'quiz'
 
     # XXX somehow we use a PathProperty here, but an AttributeProperty on
     # articles, sigh.
@@ -18,6 +18,7 @@ class QuizBlock(
         '.quiz_id', zeit.content.cp.interfaces.IQuizBlock['quiz_id'])
 
 
-zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IArea],
-    'quiz', _('Quiz block'))
+class Factory(zeit.content.cp.blocks.block.BlockFactory):
+
+    produces = QuizBlock
+    title = _('Quiz block')

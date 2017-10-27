@@ -40,7 +40,10 @@ class VisibleMixin(object):
                 'visible_mobile'].default
 
 
-class Block(VisibleMixin, zeit.edit.block.Element):
+class Block(VisibleMixin, zeit.edit.block.SimpleElement):
+
+    grok.baseclass()
+    area = zeit.content.cp.interfaces.IArea
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
@@ -76,6 +79,12 @@ class Block(VisibleMixin, zeit.edit.block.Element):
             self.type)
         if module_config:
             return module_config.title
+
+
+class BlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.baseclass()
+    grok.context(zeit.content.cp.interfaces.IArea)
 
 
 @grok.adapter(zeit.content.cp.interfaces.IBlock)
