@@ -1,10 +1,14 @@
 Changes
 =======
 
-2.16.3 (unreleased)
+2.17.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Replace complicated register_element_factory with simpler
+  grokked baseclass.
+  The former could register one element for multiple containers in one go,
+  but we don't use this anymore since the 2015 relaunch (all areas in
+  z.c.cp are now the same).
 
 
 2.16.2 (2017-10-20)

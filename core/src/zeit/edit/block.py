@@ -109,9 +109,11 @@ def area_for_element(context):
 class ElementFactory(object):
     """Base class for element factories."""
 
+    grok.baseclass()
     zope.interface.implements(zeit.edit.interfaces.IElementFactory)
 
-    element_type = NotImplemented
+    produces = NotImplemented
+    element_type = NotImplemented  # Deduced from produces by grokker
 
     def __init__(self, context):
         self.context = context
@@ -148,6 +150,7 @@ class ElementFactory(object):
 
 class TypeOnAttributeElementFactory(ElementFactory):
 
+    grok.baseclass()
     tag_name = 'container'
 
     def get_xml(self):
@@ -157,39 +160,9 @@ class TypeOnAttributeElementFactory(ElementFactory):
         container.set('module', self.module)  # XXX Why? Who needs this?
         return container
 
-
-def register_element_factory(
-    adapts, element_type, title=None, module=None, frame=None,
-        class_=TypeOnAttributeElementFactory,
-        tag_name=TypeOnAttributeElementFactory.tag_name):
-    if isinstance(adapts, zope.interface.interface.InterfaceClass):
-        adapts = [adapts]
-    if module is None:
-        module = element_type
-    if frame is None:
-        frame = sys._getframe(1)
-
-    for interface in adapts:
-        name = '%s%sFactory' % (interface.__name__, element_type.capitalize())
-        frame.f_locals[name] = create_factory_class(
-            element_type, interface, name, frame.f_locals['__name__'],
-            title, module, class_, tag_name)
-
-
-def create_factory_class(element_type, adapts, name, module, title, cp_module,
-                         class_, tag_name):
-    class factory(grok.Adapter, class_):
-        grok.context(adapts)
-        grok.name(element_type)
-    factory.title = title
-    factory.element_type = element_type
-    factory.module = cp_module
-    factory.tag_name = tag_name
-    factory.__name__ = name
-    # so that the grokkers will pick it up
-    factory.__module__ = module
-
-    return factory
+    @property
+    def module(self):
+        return self.element_type
 
 
 class UnknownBlock(SimpleElement):

@@ -31,9 +31,15 @@ class Container(zeit.edit.container.TypeOnAttributeContainer,
     grok.adapts(
         IContainer,
         gocept.lxml.interfaces.IObjectified)
-    grok.name('container')
+    type = 'container'
+    grok.name(type)
 
-zeit.edit.block.register_element_factory(IContainer, 'container', 'Container')
+
+class ContainerFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(IContainer)
+    produces = Container
+    title = 'Container'
 
 
 class Block(zeit.edit.block.SimpleElement, grok.MultiAdapter):
@@ -43,4 +49,9 @@ class Block(zeit.edit.block.SimpleElement, grok.MultiAdapter):
     grok.provides(IBlock)
     type = 'block'
 
-zeit.edit.block.register_element_factory(IContainer, 'block', 'Block')
+
+class BlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
+
+    grok.context(IContainer)
+    produces = Block
+    title = 'Block'
