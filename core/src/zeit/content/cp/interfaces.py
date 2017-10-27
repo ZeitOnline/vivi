@@ -819,7 +819,7 @@ JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
     ICenterPage)
 
 
-class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker):
+class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker, IBlock):
     """The Jobticker block with a specific feed specified in source."""
 
     feed = zope.schema.Choice(

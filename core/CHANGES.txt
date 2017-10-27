@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.19.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Add CP IBlock interface back to jobticker module
 
 
 3.19.0 (2017-10-20)
