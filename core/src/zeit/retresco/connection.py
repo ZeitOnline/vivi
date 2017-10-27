@@ -269,6 +269,8 @@ def _update_topiclist():
         co.xml = _build_topic_xml(topicpages)
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
 
+    # Refresh iterator
+    topicpages = tms.get_all_topicpages()
     with checked_out(redirects) as co:
         co.text = _build_topic_redirects(topicpages)
     zeit.cms.workflow.interfaces.IPublish(redirects).publish(async=False)

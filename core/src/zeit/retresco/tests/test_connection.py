@@ -264,14 +264,19 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         config['topic-redirect-id'] = 'http://xml.zeit.de/redirects'
 
         with mock.patch(
-                'zeit.retresco.connection.TMS.get_all_topicpages') as pages:
-            pages.return_value = []
+                'zeit.retresco.connection.TMS.get_all_topicpages',
+                new=lambda x: iter([{
+                    'id': 'berlin',
+                    'title': 'Berlin',
+                    'topic_type': 'location',
+                    'redirect': '/thema/hamburg'}])):
             zeit.retresco.connection._update_topiclist()
 
         topics = self.repository['topics']
         self.assertEqual(True, IPublishInfo(topics).published)
         redirects = self.repository['redirects']
         self.assertEqual(True, IPublishInfo(redirects).published)
+        self.assertIn('hamburg', redirects.text)
 
     def test_topiclist_produces_xml(self):
         pages = [{
