@@ -4,12 +4,10 @@ from zeit.content.article.edit.interfaces import IPodcast
 import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 
 
-class Podcast(zeit.edit.block.SimpleElement):
+class Podcast(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
     grok.implements(IPodcast)
     type = 'podcast'
 

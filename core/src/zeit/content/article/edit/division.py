@@ -3,12 +3,10 @@ import grokcore.component
 import lxml.objectify
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 
 
-class Division(zeit.edit.block.SimpleElement):
+class Division(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IEditableBody
     type = 'division'
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IDivision)

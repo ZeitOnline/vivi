@@ -1,16 +1,13 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 
 
-class RawXML(zeit.edit.block.SimpleElement):
+class RawXML(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IRawXML)
+    grok.implements(zeit.content.article.edit.interfaces.IRawXML)
     type = 'raw'
 
 

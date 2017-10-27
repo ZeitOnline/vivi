@@ -1,20 +1,17 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import zeit.content.video.asset
 import zeit.content.video.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.edit.block
 import zeit.edit.interfaces
 import zope.schema
 
 
-class Video(zeit.edit.block.SimpleElement):
+class Video(zeit.content.article.edit.block.Block):
 
-    area = zeit.content.article.edit.interfaces.IArticleArea
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IVideo)
+    grok.implements(zeit.content.article.edit.interfaces.IVideo)
     type = 'video'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -66,24 +63,24 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
     title = _('Video')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.video.interfaces.IVideoContent,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
+              zeit.content.video.interfaces.IVideoContent,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def create_video_block_from_video(body, context, position):
     block = Factory(body)(position)
     block.video = context
     return block
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.edit.interfaces.IVideo,
     zope.lifecycleevent.IObjectModifiedEvent)
 def update_empty(context, event):
     context.is_empty = context.video is None
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_video_metadata(article, event):
