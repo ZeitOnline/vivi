@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.17.0 (unreleased)
+2.17.0 (2017-11-01)
 -------------------
 
 - MAINT: Replace complicated register_element_factory with simpler
