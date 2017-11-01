@@ -4,7 +4,10 @@ CHANGES
 2.10.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-791: listCollection() no longer ignores childname entries that
+  don't exist in the property cache, since we cannot decide whether
+  they're actually gone at that point, only when they are actually
+  accessed (so zeit.cms.repository values() takes over that duty).
 
 
 2.10.2 (2017-08-18)

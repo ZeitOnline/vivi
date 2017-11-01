@@ -272,24 +272,6 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
             self.connector.property_cache['id'].keys()[0],
             zeit.connector.cache.WebDAVPropertyKey))
 
-    def test_inconsistent_child_names_do_not_yields_non_existing_objects(self):
-        self.assertEquals(
-            [(u'cache_test',
-              u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder)],
-            list(self.connector.listCollection(
-                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
-        cache = self.connector.child_name_cache[
-            'http://xml.zeit.de/%s/' % self.layer.testfolder]
-        self.assertEquals(
-            [u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder],
-            list(cache))
-        cache.add('http://xml.zeit.de/%s/cache_test_2' % self.layer.testfolder)
-        self.assertEquals(
-            [(u'cache_test',
-              u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder)],
-            list(self.connector.listCollection(
-                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
-
     @unittest.expectedFailure
     def test_no_changes_should_not_cause_write(self):
         # Assign caches to DB to be able to detect changes.
