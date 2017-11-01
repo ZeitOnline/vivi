@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.connector',
-    version='2.10.3',
+    version='2.10.4.dev0',
     author='Tomas Zerolo, gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
