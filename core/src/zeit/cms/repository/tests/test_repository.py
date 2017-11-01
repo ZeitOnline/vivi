@@ -1,7 +1,9 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
 from zeit.cms.repository.repository import vivi_url_to_content
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.mock
+import mock
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -99,7 +101,6 @@ class ViviURLToContent(unittest.TestCase):
 class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_xml_zeit_de_is_translated_to_content_object(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         self.assertIsInstance(
             ICMSContent('http://xml.zeit.de/testcontent'), ExampleContentType)
 
@@ -125,3 +126,19 @@ class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
             ICMSContent('http://xml.zeit.de/testcontent'),
             zeit.cms.cmscontent.resolve_wc_or_repository(
                 'http://xml.zeit.de/testcontent'))
+
+
+class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_inconsistent_child_names_do_not_yields_non_existing_objects(self):
+        self.repository['cache'] = zeit.cms.repository.folder.Folder()
+        folder = self.repository['cache']
+        folder['one'] = ExampleContentType()
+        with mock.patch('zeit.connector.mock.Connector.listCollection') as lst:
+            lst.return_value = [
+                ('one', 'http://xml.zeit.de/cache/one'),
+                ('two', 'http://xml.zeit.de/cache/two')]
+            self.assertEquals(['one', 'two'], list(folder.keys()))
+            self.assertEquals(
+                ['http://xml.zeit.de/cache/one'],
+                [x.uniqueId for x in folder.values()])

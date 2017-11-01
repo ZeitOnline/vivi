@@ -61,7 +61,12 @@ class Container(zope.container.contained.Contained):
     def values(self):
         '''See interface `IReadContainer`'''
         for key in self.keys():
-            yield self[key]
+            try:
+                yield self[key]
+            except KeyError:
+                # The connector childname cache has been seen to contain
+                # entries that don't actually exist in DAV (anymore?), #5993.
+                continue
 
     def __len__(self):
         '''See interface `IReadContainer`'''
