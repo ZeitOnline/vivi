@@ -95,3 +95,36 @@ wie man ein Modul damit implementiert::
 (Typischerweise macht sich jeder Content-Typ eigene Basisklassen für Element
 und ElementFactory, die schonmal die Content-Typ-spezifischen Dinge abhandeln,
 wie z.B. welche Area gemeint ist.)
+
+
+UI-Aufbau
+=========
+
+Die Baum-Struktur findet sich auch im vivi-UI wieder, dort wird sie mit Hilfe
+von rekursiven Views sowie Viewlets umgesetzt (siehe :doc:`../zope/views`).
+
+Einstieg ist der View ``@@edit.html`` für das jeweilige Content-Objekt. Dieser
+View rendert nur ein div-Skelett und aktiviert dadurch Javascript, das per XHR
+den View ``@@contents`` auf dem Content-Objekt aufruft, und das Ergebnis in den
+passenden div einfügt.
+
+Die Default-Implementierung von ``@@contents`` sammelt alle Viewlets für
+``zeit.edit.interfaces.IContentViewletManager`` (``name="zeit.edit.contents"``)
+ein und gibt diese aus.
+
+Für ``IContainer`` gibt es ein Viewlet (das zu ``IContentViewletManager``
+gehört, also für ``container/@@contents`` gerendert wird, und zu allem
+Überfluss aber selbst auch ``contents`` heißt), dort wird ``for item in
+context.values()`` der ``@@contents`` View gerendert. Sprich: Der
+``@@contents`` eines Containers sind nacheinander die ``@@contents`` seiner
+Kinder.
+
+Für ``IBlock`` gibt es ein Viewlet, das eine Kopfleiste rendert; darin wird ein
+weiterer Viewlet-Manager ausgespielt
+(``zeit.edit.interfaces.IEditBarViewletManager``), sodass man flexibel Knöpfe
+etc. für verschiedene Module anzeigen kann.
+
+Durch den rekursiven Aufbau können dann per XHR gezielt Teile vom Server neu
+geladen werden, wenn sie bearbeitet wurden, z.B. nur das eine Modul, wenn sein
+Inhalt editiert wurde, oder nur die eine Fläche, wenn ein neues Modul
+hinzugefügt wurde.
