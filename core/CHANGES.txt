@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.19.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-802: Introduce marker interface ``ISearchpage``
 
 
 3.19.2 (2017-11-01)

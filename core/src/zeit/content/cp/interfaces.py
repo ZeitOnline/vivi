@@ -145,6 +145,13 @@ class ISitemap(ICP2015):
     """
 
 
+class ISearchpage(ICP2015):
+    """CP with ``type``=='search'.
+
+    This interface is applied manually.
+    """
+
+
 class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.cp'
