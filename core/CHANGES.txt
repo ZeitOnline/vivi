@@ -4,7 +4,7 @@ zeit.content.image changes
 2.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Restrict image upload to supported mime types
 
 
 2.21.0 (2017-10-04)

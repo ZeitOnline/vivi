@@ -16,6 +16,7 @@ import zope.schema
 
 
 IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'
+AVAILABLE_MIME_TYPES = ['image/jpeg', 'image/png']
 
 
 class ImageProcessingError(TypeError):

@@ -33,6 +33,11 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             zeit.cms.repository.browser.file.BlobWidget)
         super(ImageFormBase, self).__init__(*args, **kw)
 
+    def setUpWidgets(self, *args, **kw):
+        super(ImageFormBase, self).setUpWidgets(*args, **kw)
+        self.widgets['blob'].extra = 'accept="%s"' % (
+            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
+
 
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 

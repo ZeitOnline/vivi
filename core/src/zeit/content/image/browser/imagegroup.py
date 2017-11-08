@@ -105,6 +105,8 @@ class AddForm(FormBase,
     def setUpWidgets(self, *args, **kw):
         super(AddForm, self).setUpWidgets(*args, **kw)
         self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
+        self.widgets['master_image_blobs'].subwidget.extra = 'accept="%s"' % (
+            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
