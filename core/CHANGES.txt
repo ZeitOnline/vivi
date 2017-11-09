@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.22.1 (unreleased)
+1.22.1 (2017-11-09)
 -------------------
 
 - MAINT: Increase twitter message limit to 280 characters
