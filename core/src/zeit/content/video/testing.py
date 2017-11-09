@@ -1,4 +1,5 @@
 import doctest
+import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.repository.folder
@@ -6,6 +7,8 @@ import zeit.cms.testing
 import zeit.push.testing
 import zeit.solr.testing
 import zeit.workflow.testing
+import zope.component
+import zope.interface
 
 
 product_config = """\
@@ -29,8 +32,30 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
 
 
+class PlayerMockLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['player'] = mock.Mock()
+        zope.interface.alsoProvides(
+            self['player'], zeit.content.video.interfaces.IPlayer)
+        zope.component.getSiteManager().registerUtility(self['player'])
+
+    def tearDown(self):
+        zope.component.getSiteManager().unregisterUtility(self['player'])
+
+    def testSetUp(self):
+        self['player'].reset_mock()
+        self['player'].get_video.return_value = {
+            'renditions': (),
+            'thumbnail': None,
+            'video_still': None,
+        }
+
+PLAYER_MOCK_LAYER = PlayerMockLayer()
+
+
 LAYER = plone.testing.Layer(
-    bases=(PUSH_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER),
+    bases=(PUSH_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER, PLAYER_MOCK_LAYER),
     name='Layer', module=__name__)
 
 

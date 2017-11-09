@@ -143,3 +143,16 @@ class IVideoAsset(zope.interface.Interface):
         description=_("Drag a video here"),
         required=False,
         source=videoOrPlaylistSource)
+
+
+class IPlayer(zope.interface.Interface):
+    """Extension point to access media information, e.g. still image or
+    video source URLs, since those may be volatile.
+    """
+
+    def get_video(id):
+        """Must return a dict with at least the following keys:
+        * thumbnail: str
+        * video_still: str
+        * renditions: list of IVideoRendition
+        """

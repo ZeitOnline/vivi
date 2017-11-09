@@ -1,11 +1,11 @@
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
-import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -13,27 +13,6 @@ import zeit.content.video.interfaces
 import zeit.push.interfaces
 import zeit.workflow.dependency
 import zope.interface
-
-
-class RenditionsProperty(zeit.cms.content.property.MultiPropertyBase):
-
-    def _element_factory(self, node, tree):
-        result = VideoRendition()
-        result.url = node.get('url')
-        if node.get('frame_width'):
-            result.frame_width = int(node.get('frame_width'))
-        if node.get('video_duration'):
-            result.video_duration = int(node.get('video_duration'))
-        return result
-
-    def _node_factory(self, entry, tree):
-        node = lxml.objectify.E.rendition()
-        node.set('url', entry.url)
-        if getattr(entry, 'frame_width', None):
-            node.set('frame_width', str(entry.frame_width))
-        if getattr(entry, 'video_duration', None):
-            node.set('video_duration', str(entry.video_duration))
-        return node
 
 
 class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
@@ -72,8 +51,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'expires', 'video_still', 'thumbnail',
-         'video_still_copyright'))
+        ('has_recensions', 'expires', 'video_still_copyright'))
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
@@ -88,6 +66,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         'http://namespaces.zeit.de/CMS/brightcove', 'id')
 
     @property
+    def renditions(self):
+        return self._player_data['renditions']
+
+    @property
     def highest_rendition_url(self):
         if not self.renditions:
             return None
@@ -95,10 +77,23 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return getattr(high, 'url', '')
 
     @property
+    def thumbnail(self):
+        return self._player_data['thumbnail']
+
+    @property
+    def video_still(self):
+        return self._player_data['video_still']
+
+    @cachedproperty
+    def _player_data(self):
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        return player.get_video(self.external_id)
+
+    @property
     def teaserTitle(self):
         return self.title
 
-    renditions = RenditionsProperty('.head.renditions.rendition')
     authorships = AuthorshipsProperty(
         str(zeit.cms.content.metadata.CommonMetadata.authorships.path),
         zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name

@@ -1,11 +1,14 @@
 import plone.testing
-import zeit.push.interfaces
+import urllib2
+import zeit.cms.browser.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
+import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
-import zope.security.management
+import zope.component
+import zope.publisher.browser
 
 
 class TestThumbnail(zeit.cms.testing.BrowserTestCase):
@@ -13,10 +16,15 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.video.testing.LAYER
 
     def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
-        import urllib2
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': 'http://thumbnailurl',
+            'video_still': None,
+        }
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.thumbnail = 'http://thumbnailurl'
+        factory.next()
         factory.next()
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.mech_browser.set_handle_redirect(False)
@@ -27,12 +35,15 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
                          e.exception.hdrs.get('location'))
 
     def test_url_of_view_on_video_should_return_thumbnail_url(self):
-        import zope.publisher.browser
-        import zope.component
-        import zeit.cms.browser.interfaces
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': 'http://thumbnailurl',
+            'video_still': None,
+        }
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.thumbnail = 'http://thumbnailurl'
+        factory.next()
         video = factory.next()
 
         request = zope.publisher.browser.TestRequest(
@@ -46,7 +57,6 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(url, 'http://thumbnailurl')
 
     def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
-        import urllib2
         factory = zeit.content.video.testing.playlist_factory(self)
         playlist = factory.next()
         playlist.thumbnail = 'http://thumbnailurl'
@@ -60,9 +70,6 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
                          e.exception.hdrs.get('location'))
 
     def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
-        import zope.publisher.browser
-        import zope.component
-        import zeit.cms.browser.interfaces
         factory = zeit.content.video.testing.playlist_factory(self)
         playlist = factory.next()
         playlist.thumbnail = 'http://thumbnailurl'
@@ -84,10 +91,15 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.video.testing.LAYER
 
     def test_preview_view_on_video_should_redirect_to_still_url(self):
-        import urllib2
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.video_still = 'http://stillurl'
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': None,
+            'video_still': 'http://stillurl',
+        }
+        factory.next()
         factory.next()
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.mech_browser.set_handle_redirect(False)
@@ -98,12 +110,15 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
                          e.exception.hdrs.get('location'))
 
     def test_url_of_preview_view_on_video_should_return_still_url(self):
-        import zope.publisher.browser
-        import zope.component
-        import zeit.cms.browser.interfaces
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': None,
+            'video_still': 'http://stillurl',
+        }
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.video_still = 'http://stillurl'
+        factory.next()
         video = factory.next()
 
         request = zope.publisher.browser.TestRequest(

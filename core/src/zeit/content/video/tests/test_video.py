@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import lxml.objectify
 import pytest
-import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.content.video.interfaces
 import zeit.content.video.testing
 import zeit.content.video.video
+import zope.component
 
 
 class TestVideo(zeit.content.video.testing.TestCase):
@@ -69,10 +70,11 @@ class TestReference(zeit.content.video.testing.TestCase):
 
     def create_video(self, **kw):
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        for key, value in kw.items():
-            setattr(video, key, value)
-        video = factory.next()  # video is now in repository['video']
+        factory.next()
+        factory.next()  # video is now in repository['video']
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value.update(kw)
 
     def update(self, node):
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
@@ -95,73 +97,10 @@ class TestReference(zeit.content.video.testing.TestCase):
         self.create_video(
             video_still='http://stillurl', thumbnail='http://thumbnailurl')
         self.update(self.node)
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['video']) as co:
-            co.video_still = None
-            co.thumbnail = None
+        self.create_video(video_still=None, thumbnail=None)
         self.update(self.node)
         self.assertRaises(AttributeError, lambda: self.node['video-still'])
         self.assertRaises(AttributeError, lambda: self.node['thumbnail'])
-
-
-class TestRenditionsProperty(unittest.TestCase):
-
-    def test_element_factory_should_return_rendition(self):
-        import mock
-        from zeit.content.video.video import RenditionsProperty
-        prop = RenditionsProperty(".foo")
-
-        node = lxml.objectify.XML(
-            "<rendition url='foo' frame_width='100' video_duration='93000'/>")
-        rendition = prop._element_factory(node, mock.sentinel.tree)
-        self.assertEqual(node.get('url'), rendition.url)
-        self.assertEqual(int(node.get('frame_width')), rendition.frame_width)
-        self.assertEqual(
-            int(node.get('video_duration')), rendition.video_duration)
-
-    def test_node_factory_should_return_node(self):
-        from zeit.content.video.video import RenditionsProperty
-        import mock
-        prop = RenditionsProperty(".foo")
-        rendition = mock.Mock()
-        rendition.url = 'foo'
-        rendition.frame_width = 100
-        rendition.video_duration = 920
-        node = prop._node_factory(rendition, mock.sentinel.tree)
-        self.assertEqual('rendition', node.tag)
-        self.assertEqual('foo', node.get('url'))
-        self.assertEqual(100, int(node.get('frame_width')))
-        self.assertEqual(920, int(node.get('video_duration')))
-
-    def test_video_should_store_renditions(self):
-        from zeit.content.video.video import Video
-        from zeit.content.video.video import VideoRendition
-
-        video = Video()
-        rendition = VideoRendition()
-        rendition.url = 'foo'
-        rendition.frame_width = 100
-        rendition.video_duration = 910
-        rendition2 = VideoRendition()
-        rendition2.url = 'baa'
-        rendition2.frame_width = 200
-        rendition2.video_duration = 920
-        video.renditions = (rendition, rendition2)
-
-        xmlstr = lxml.etree.tostring(
-            video.xml.head.renditions, pretty_print=True)
-        self.assertEqual('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100" video_duration="910"/>\n  <rendition url="baa" frame_width="200" video_duration="920"/>\n</renditions>\n', xmlstr)
-
-    def test_video_should_load_renditions(self):
-        from zeit.content.video.video import Video
-
-        node = lxml.objectify.XML('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100" video_duration="910"/>\n  <rendition url="baa" frame_width="200"  video_duration="920"/>\n</renditions>\n')
-
-        video = Video()
-        video.xml.head.renditions = node
-        self.assertEqual('foo', video.renditions[0].url)
-        self.assertEqual(100, video.renditions[0].frame_width)
-        self.assertEqual(910, video.renditions[0].video_duration)
 
 
 class TestAuthorshipsProperty(zeit.content.video.testing.TestCase):
