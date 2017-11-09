@@ -69,6 +69,9 @@ class IVideo(IVideoContent):
         )
     )
 
+    highest_rendition_url = zope.interface.Attribute(
+        'URL of the rendition with the highest resolution')
+
     serie = zope.schema.Choice(
         title=_("Serie"),
         source=SerieSource(),

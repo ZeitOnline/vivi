@@ -87,6 +87,13 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     # a particular external video service.
 
     @property
+    def highest_rendition_url(self):
+        if not self.renditions:
+            return None
+        high = sorted(self.renditions, key=lambda r: r.frame_width).pop()
+        return getattr(high, 'url', '')
+
+    @property
     def teaserTitle(self):
         return self.title
 
