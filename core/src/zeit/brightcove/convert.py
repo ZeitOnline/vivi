@@ -170,10 +170,6 @@ class Video(Converter):
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')
         cmsobj.video_still_copyright = custom.get('credit')
-        cmsobj.thumbnail = data.get(
-            'images', {}).get('thumbnail', {}).get('src')
-        cmsobj.video_still = data.get(
-            'images', {}).get('poster', {}).get('src')
 
         product_source = IVideo['product'].source(cmsobj)
         if not custom.get('produkt-id') and data.get('reference_id'):
@@ -223,17 +219,6 @@ class Video(Converter):
         zeit.cms.content.interfaces.ISemanticChange(
             cmsobj).last_semantic_change = self.cms_date(
                 data.get('updated_at'))
-
-        renditions = []
-        for item in data.get('sources', ()):
-            vr = zeit.content.video.video.VideoRendition()
-            vr.url = item.get('src')
-            if not vr.url:
-                continue
-            vr.frame_width = item.get('width')
-            vr.video_duration = item.get('duration')
-            renditions.append(vr)
-        cmsobj.renditions = renditions
 
     def _default_if_missing(self, data, key, field, convert=None):
         if key not in data:

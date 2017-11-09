@@ -16,6 +16,11 @@ product_config = """\
     client-id none
     client-secret none
     timeout 300
+
+    playback-url none
+    playback-policy-key none
+    playback-timeout 3
+
     video-folder video
     playlist-folder video/playlist
     index-principal zope.user
@@ -50,8 +55,12 @@ class BrightcoveLayer(plone.testing.Layer):
         self.cmsapi_patch = mock.patch(
             'zeit.brightcove.connection.CMSAPI._request')
         self.cmsapi_patch.start()
+        self.playbackapi_patch = mock.patch(
+            'zeit.brightcove.connection.PlaybackAPI._request')
+        self.playbackapi_patch.start()
 
     def tearDown(self):
         self.cmsapi_patch.stop()
+        self.playbackapi_patch.stop()
 
 LAYER = BrightcoveLayer()

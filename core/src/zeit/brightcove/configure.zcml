@@ -19,7 +19,12 @@
 
   <utility
     provides="zeit.brightcove.interfaces.ICMSAPI"
-    factory=".connection.from_product_config"
+    factory=".connection.cms_from_product_config"
+    />
+
+  <utility
+    provides="zeit.content.video.interfaces.IPlayer"
+    factory=".connection.playback_from_product_config"
     />
 
   <subscriber

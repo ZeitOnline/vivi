@@ -109,30 +109,6 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         bc = BCVideo.from_cms(cms)
         self.assertEqual('FREE', bc.data['economics'])
 
-    def test_converts_sources(self):
-        bc = BCVideo()
-        bc.data['sources'] = [{
-            'asset_id': '83006421001',
-            'codec': 'H264',
-            'container': 'MP4',
-            'duration': 85163,
-            'encoding_rate': 1264000,
-            'height': 720,
-            'remote': False,
-            'size': 13453446,
-            'src': 'https://brightcove.hs.llnwd.net/e1/pd/...',
-            'uploaded_at': '2010-05-05T08:26:48.704Z',
-            'width': 1280,
-        }]
-        cms = CMSVideo()
-        bc.apply_to_cms(cms)
-        sources = cms.renditions
-        self.assertEqual(1, len(sources))
-        src = sources[0]
-        self.assertEqual(1280, src.frame_width)
-        self.assertEqual('https://brightcove.hs.llnwd.net/e1/pd/...', src.url)
-        self.assertEqual(85163, src.video_duration)
-
     def test_converts_timestamps(self):
         bc = BCVideo()
         bc.data['created_at'] = '2017-05-15T08:24:55.916Z'
@@ -197,9 +173,6 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
                 'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
             zeit.cms.related.interfaces.IRelatedContent(cms).related)
         self.assertEqual('erde/umwelt', cms.serie.serienname)
-        self.assertEqual('http://example.com/thumbnail', cms.thumbnail)
-        self.assertEqual('http://example.com/still', cms.video_still)
-        self.assertEqual('http://example.com/rendition', cms.renditions[0].url)
 
     def test_creates_deleted_video_on_notfound(self):
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:
