@@ -254,16 +254,16 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         input = 'form.short_text'
         s = self.selenium
         s.waitForElementPresent(input)
-        original = 'a' * 105 + ' This is too long'
+        original = 'a' * 245 + ' This is too long'
         s.type(input, original + '\n')
         text = s.getValue(input)
-        self.assertEqual(116, len(text))
+        self.assertEqual(256, len(text))
         self.assertTrue(text.endswith('This is...'))
 
     def test_short_text_is_left_alone_if_below_limit(self):
         input = 'form.short_text'
         s = self.selenium
         s.waitForElementPresent(input)
-        original = 'a' * 99 + ' This is not long'
+        original = 'a' * 239 + ' This is not long'
         s.type(input, original + '\n')
         self.assertEqual(original, s.getValue(input))
