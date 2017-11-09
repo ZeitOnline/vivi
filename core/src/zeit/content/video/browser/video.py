@@ -29,7 +29,7 @@ class Base(zeit.push.browser.form.SocialBase,
         # remaining:
         '__name__',
         'created', 'date_first_released', 'modified', 'expires',
-        'thumbnail', 'video_still', 'flv_url', 'authorships')
+        'thumbnail', 'video_still', 'authorships')
 
     field_groups = (
         gocept.form.grouped.Fields(
