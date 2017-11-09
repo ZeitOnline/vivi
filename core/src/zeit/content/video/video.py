@@ -82,9 +82,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     id_prefix = 'vid'
 
-    # Note: zeit.brightcove will inject a brightcove_id property here in order
-    # to avoid a package dependency of zeit.content.video on the interface to
-    # a particular external video service.
+    external_id = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['external_id'],
+        # BBB This field used to be injected into here from zeit.brightcove
+        'http://namespaces.zeit.de/CMS/brightcove', 'id')
 
     @property
     def highest_rendition_url(self):

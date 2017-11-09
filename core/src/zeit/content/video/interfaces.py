@@ -43,6 +43,10 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
 
 class IVideo(IVideoContent):
 
+    external_id = zope.schema.TextLine(
+        title=_('External ID'),
+        readonly=True)
+
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
