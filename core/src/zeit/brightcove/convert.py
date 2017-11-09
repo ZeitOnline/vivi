@@ -146,7 +146,7 @@ class Video(Converter):
         data = self.data
         custom = data.get('custom_fields', {})
 
-        cmsobj.brightcove_id = data.get('id')
+        cmsobj.external_id = data.get('id')
         cmsobj.title = data.get('name')
         cmsobj.teaserText = data.get('description')
         cmsobj.subtitle = data.get('long_description')

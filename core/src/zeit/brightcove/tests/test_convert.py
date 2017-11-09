@@ -181,7 +181,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             }],
         }
         bc.apply_to_cms(cms)
-        self.assertEqual('myvid', cms.brightcove_id)
+        self.assertEqual('myvid', cms.external_id)
         self.assertEqual('title', cms.title)
         self.assertEqual(True, cms.commentsAllowed)
         self.assertEqual(['http://xml.zeit.de/a1'],

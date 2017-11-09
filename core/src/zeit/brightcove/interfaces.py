@@ -1,9 +1,6 @@
 import zope.interface
 
 
-DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/brightcove'
-
-
 class ICMSAPI(zope.interface.Interface):
     """Brightcove CMS-API connection."""
 
