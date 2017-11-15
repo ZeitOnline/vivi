@@ -91,6 +91,18 @@ inkompatible UUID, die von ``zeit.intrafind`` als ``code`` verwendet wird, wird
 dabei schlicht ignoriert.
 
 
+Rückkanal
+---------
+
+Das TMS kann bei vivi eine Neuverschlagwortung von (Mengen von)
+Content-Objekten auslösen (``vivi.zeit.de/@@update_keywords`` ->
+``zeit.retresco.json.update``), wenn dort Einstellungen geändert wurden, die
+entsprechende Auswirkungen haben (z.B. Änderung an Schlagworten oder Regeln für
+In-Text-Links). Das muss durchs vivi geführt werden, damit entfernte/gepinnte
+Schlagworte erhalten bleiben, weil dieses Feature rein vivi-seitig
+implementiert ist.
+
+
 Themenseiten
 ============
 
