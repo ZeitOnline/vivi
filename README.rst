@@ -18,6 +18,26 @@ folgende Funktionen:
 * Artikel aus div. Kriterien zu Themenseiten zusammenstellen
 * Text mit Links zu Themenseiten anreichern
 
+Das TMS speichert ("indiziert") Informationen über Content-Objekte, sodass man
+dann in Themenseiten darüber Queries formulieren kann. Als Identifier
+(``doc_id``) verwenden wir die ``zeit.cms.content.interfaces.IUUID``, *nicht*
+die ``uniqueId``, damit es robust gegen Umbenennungen ist. Zu einem Dokument
+im TMS gehören Metadaten wie Titel/Ressort/etc., die erkannten Schlagworte, der
+Body (siehe dazu auch unten `In-Text-Links`_), und ein Feld ``payload``, ein
+dict dessen Inhalt vivi bestimmt, wo wir div. Metadaten ablegen, um sie auf
+Autoflächen für Queries nutzen zu können.
+
+vivi übergibt beim Einchecken den Content zum Indizieren ans TMS (``PUT
+/content/<id>``). Das ist eine reines "speichere den folgenden Datensatz";
+evtl. Schlagworterkennung etc. hat vorher separat stattgefunden. Das TMS
+speichert diese Dokumente zunächst in einem "nicht-veröffentlicht" Index
+(``zeit_pool``). Beim Veröffentlichen gibt der `Publisher`_ dem TMS Bescheid
+(``POST /content/<id>/publish``), wodurch das Dokument in den
+"veröffentlichten" Index (``zeit_publish``) kopiert wird -- erst dann ist es
+auf Themenseiten verfügbar.
+
+.. _`Publisher`: https://github.com/zeitonline/zeit.publisher
+
 
 Verschlagwortung
 ================
@@ -114,16 +134,6 @@ allen Themenseiten; diese werden per Cronjob
 ausgelesen (``GET /topic-pages?q=*:*``).
 
 .. _`zeit.content.dynamicfolder`: https://github.com/zeitonline/zeit.content.dynamicfolder
-
-Um im TMS Themenseiten anlegen zu können, muss der Content dort verfügbar sein.
-Dazu übergibt vivi ihn beim Einchecken zum Indizieren ans TMS (``PUT
-/content/<id>``). Das TMS speichert diese Dokumente zunächst in einem
-"nicht-veröffentlicht" Index (``zeit_pool``). Beim Veröffentlichen gibt der
-`Publisher`_ dem TMS Bescheid (``POST /content/<id>/publish``), wodurch das
-Dokument in den "veröffentlichten" Index (``zeit_publish``) kopiert wird --
-erst dann ist es auf Themenseiten verfügbar.
-
-.. _`Publisher`: https://github.com/zeitonline/zeit.publisher
 
 
 In-Text-Links
