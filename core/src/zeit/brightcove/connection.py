@@ -172,7 +172,7 @@ class CMSAPI(object):
         return response.json()['access_token']
 
 
-def from_product_config():
+def cms_from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.brightcove')
     return CMSAPI(
@@ -181,6 +181,67 @@ def from_product_config():
         config['client-id'],
         config['client-secret'],
         float(config['timeout'])
+    )
+
+
+class PlaybackAPI(object):
+    """Connection to the Brightcove "CMS API".
+
+    * Overview: <https://support.brightcove.com/overview-playback-api>
+    * API Reference: <https://brightcovelearning.github.io
+        /Brightcove-API-References/playback-api/v1/doc/index.html>
+    """
+
+    zope.interface.implements(zeit.content.video.interfaces.IPlayer)
+
+    def __init__(self, base_url, policy_key, timeout):
+        self.base_url = base_url
+        self.policy_key = policy_key
+        self.timeout = timeout
+
+    def get_video(self, id):
+        data = {
+            'renditions': (),
+            'thumbnail': None,
+            'video_still': None,
+        }
+        try:
+            data.update(self._request('GET /videos/%s' % id))
+        except requests.exceptions.RequestException:
+            log.warning('Error while retrieving video %s', id, exc_info=True)
+            return data
+
+        data['video_still'] = data.get('poster')
+        data['renditions'] = []
+        for item in data.get('sources', ()):
+            vr = zeit.content.video.video.VideoRendition()
+            vr.url = item.get('src')
+            if not vr.url:
+                continue
+            vr.frame_width = item.get('width')
+            vr.video_duration = item.get('duration')
+            data['renditions'].append(vr)
+        return data
+
+    def _request(self, request, body=None, params=None, _retries=0):
+        verb, path = request.split(' ')
+        log.info(request)
+        response = requests.request(
+            verb.lower(), self.base_url + path, json=body, params=params,
+            headers={'Authorization': 'BCOV-Policy %s' % self.policy_key},
+            timeout=self.timeout)
+        log.debug(dump_request(response))
+        response.raise_for_status()
+        return response.json()
+
+
+def playback_from_product_config():
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    return PlaybackAPI(
+        config['playback-url'],
+        config['playback-policy-key'],
+        float(config['playback-timeout'])
     )
 
 

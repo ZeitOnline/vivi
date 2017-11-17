@@ -10,6 +10,7 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
+# Defined in zeit.content.video.video.Video.external_id
 BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
     'id', 'http://namespaces.zeit.de/CMS/brightcove')
 

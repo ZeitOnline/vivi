@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.brightcove',
-    version='2.11.1.dev0',
+    version='2.12.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -22,7 +22,7 @@ setup(
         'setuptools',
         'zeit.addcentral',
         'zeit.cms >= 3.0.dev0',
-        'zeit.content.video>=2.8.0.dev0',
+        'zeit.content.video>=3.0.0.dev0',
         'zeit.solr>=2.2.0.dev0',
         'zope.cachedescriptors',
         'zope.component',
