@@ -1,6 +1,7 @@
 import zeit.solr.interfaces
 import zope.component
 import zeit.content.video.testing
+import mock
 
 
 class TestSolrIndexing(zeit.content.video.testing.TestCase):
@@ -39,3 +40,14 @@ class TestSolrIndexing(zeit.content.video.testing.TestCase):
         video = test.next()
         video.banner_id = '32kcdc'
         test.send('32kcdc')
+
+    def test_thumbnail_url_should_be_indexed(self):
+        test = self.get_test('thumbnail')
+        test.next()
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': 'http://thumbnailurl',
+            'video_still': None}
+        test.send('http://thumbnailurl')
