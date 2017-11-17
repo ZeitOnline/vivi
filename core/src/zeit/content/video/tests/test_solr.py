@@ -26,13 +26,7 @@ class TestSolrIndexing(zeit.content.video.testing.TestCase):
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
             [expected],
-            element_add.xpath("/add/doc/field[@name='%s']"% name))
-
-    def test_flv_url_should_be_indexed(self):
-        test = self.get_test('h264_url')
-        video = test.next()  # get prepared test object
-        video.flv_url = u'http://flvurl'
-        test.send(u'http://flvurl')  # Send expected result
+            element_add.xpath("/add/doc/field[@name='%s']" % name))
 
     def test_banner_should_be_indexed(self):
         test = self.get_test('banner')
