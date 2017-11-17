@@ -1,6 +1,7 @@
 import zeit.solr.interfaces
 import zope.component
 import zeit.content.video.testing
+import mock
 
 
 class TestSolrIndexing(zeit.content.video.testing.TestCase):
@@ -26,13 +27,7 @@ class TestSolrIndexing(zeit.content.video.testing.TestCase):
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
             [expected],
-            element_add.xpath("/add/doc/field[@name='%s']"% name))
-
-    def test_flv_url_should_be_indexed(self):
-        test = self.get_test('h264_url')
-        video = test.next()  # get prepared test object
-        video.flv_url = u'http://flvurl'
-        test.send(u'http://flvurl')  # Send expected result
+            element_add.xpath("/add/doc/field[@name='%s']" % name))
 
     def test_banner_should_be_indexed(self):
         test = self.get_test('banner')
@@ -45,3 +40,14 @@ class TestSolrIndexing(zeit.content.video.testing.TestCase):
         video = test.next()
         video.banner_id = '32kcdc'
         test.send('32kcdc')
+
+    def test_thumbnail_url_should_be_indexed(self):
+        test = self.get_test('thumbnail')
+        test.next()
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value = {
+            'renditions': (),
+            'thumbnail': 'http://thumbnailurl',
+            'video_still': None}
+        test.send('http://thumbnailurl')

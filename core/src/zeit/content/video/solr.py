@@ -20,12 +20,6 @@ class Index(object):
         return getattr(self.__class__, 'grokcore.component.directive.name')
 
 
-class FLVURLIndex(Index, grokcore.component.GlobalUtility):
-
-    grokcore.component.name('h264_url')
-    attribute = 'flv_url'
-
-
 class BannerIndex(Index, grokcore.component.GlobalUtility):
 
     grokcore.component.name('banner')

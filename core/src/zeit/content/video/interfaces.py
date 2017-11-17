@@ -43,6 +43,10 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
 
 class IVideo(IVideoContent):
 
+    external_id = zope.schema.TextLine(
+        title=_('External ID'),
+        readonly=True)
+
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
@@ -58,11 +62,6 @@ class IVideo(IVideoContent):
         required=False,
         readonly=True)
 
-    flv_url = zope.schema.URI(
-        title=_('URI of the video file'),
-        required=False,
-        readonly=True)
-
     renditions = zope.schema.Tuple(
         title=_("Renditions of the Video"),
         required=False,
@@ -73,6 +72,9 @@ class IVideo(IVideoContent):
             schema=IVideoRendition
         )
     )
+
+    highest_rendition_url = zope.interface.Attribute(
+        'URL of the rendition with the highest resolution')
 
     serie = zope.schema.Choice(
         title=_("Serie"),
@@ -141,3 +143,16 @@ class IVideoAsset(zope.interface.Interface):
         description=_("Drag a video here"),
         required=False,
         source=videoOrPlaylistSource)
+
+
+class IPlayer(zope.interface.Interface):
+    """Extension point to access media information, e.g. still image or
+    video source URLs, since those may be volatile.
+    """
+
+    def get_video(id):
+        """Must return a dict with at least the following keys:
+        * thumbnail: str
+        * video_still: str
+        * renditions: list of IVideoRendition
+        """
