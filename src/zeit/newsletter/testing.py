@@ -1,4 +1,5 @@
 from zeit.newsletter.newsletter import Newsletter
+from zeit.content.video.testing import PLAYER_MOCK_LAYER
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import plone.testing
@@ -22,6 +23,13 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
     zeit.workflow.testing.product_config +
     zeit.content.video.testing.product_config +
     product_config))
+
+
+class TestLayer(plone.testing.Layer):
+
+    defaultBases = (ZCML_LAYER, PLAYER_MOCK_LAYER)
+
+TEST_LAYER = TestLayer()
 
 
 class TestBrowserLayer(plone.testing.Layer):
@@ -48,7 +56,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = TEST_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
