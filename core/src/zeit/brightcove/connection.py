@@ -185,7 +185,7 @@ def cms_from_product_config():
 
 
 class PlaybackAPI(object):
-    """Connection to the Brightcove "CMS API".
+    """Connection to the Brightcove "Playback API".
 
     * Overview: <https://support.brightcove.com/overview-playback-api>
     * API Reference: <https://brightcovelearning.github.io
