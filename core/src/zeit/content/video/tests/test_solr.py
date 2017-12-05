@@ -1,7 +1,6 @@
 import zeit.solr.interfaces
 import zope.component
 import zeit.content.video.testing
-import mock
 
 
 class TestSolrIndexing(zeit.content.video.testing.TestCase):
@@ -28,21 +27,27 @@ class TestSolrIndexing(zeit.content.video.testing.TestCase):
         self.assertEquals(
             [expected],
             element_add.xpath("/add/doc/field[@name='%s']" % name))
+        # Extra yield statement so we can reach the code above
+        # with a send-call and not raise StopIteration
+        yield
 
     def test_banner_should_be_indexed(self):
         test = self.get_test('banner')
         video = test.next()
         video.banner = True
+        test.next()
         test.send(True)
 
     def test_banner_id_should_be_indexed(self):
-        test = self.get_test('banner_id')
+        test = self.get_test('banner-id')
         video = test.next()
         video.banner_id = '32kcdc'
+        test.next()
         test.send('32kcdc')
 
     def test_thumbnail_url_should_be_indexed(self):
-        test = self.get_test('thumbnail')
+        test = self.get_test('graphical-preview-url')
+        test.next()
         test.next()
         player = zope.component.getUtility(
             zeit.content.video.interfaces.IPlayer)
