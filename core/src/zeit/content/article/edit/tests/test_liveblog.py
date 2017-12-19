@@ -15,7 +15,7 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
             co.body.create_item('liveblog')
             self.assertFalse(ISemanticChange(co).has_semantic_change)
 
-    def test_article_with_liveblog_has_lsc_on_checkout(self):
+    def test_article_with_liveblog_old_has_lsc_on_checkout(self):
         with checked_out(self.repository['article']) as co:
             self.assertTrue(ISemanticChange(co).has_semantic_change)
 

@@ -333,11 +333,22 @@ class ICitation(zeit.edit.interfaces.IBlock):
         default=u'default',
         required=False)
 
+class LiveblogVersions(LayoutSourceBase):
+
+    values = collections.OrderedDict([
+        (u'3', '3'),
+    ])
+
 
 class ILiveblog(zeit.edit.interfaces.IBlock):
 
     blog_id = zope.schema.TextLine(
         title=_('Liveblog id'))
+    version = zope.schema.Choice(
+        title=_('Liveblog version'),
+        source=LiveblogVersions(),
+        default=None,
+        required=False)
 
 
 class ICardstack(zeit.edit.interfaces.IBlock):
