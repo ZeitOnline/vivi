@@ -2,6 +2,7 @@ import argparse
 import gocept.runner
 import grokcore.component as grok
 import logging
+import time
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -133,7 +134,10 @@ def index_parallel(unique_id, enrich=False, publish=False):
                 item.uniqueId,
                 enrich=enrich, update_keywords=enrich, publish=publish)
         else:
+            start = time.time()
             index(item, enrich=enrich, update_keywords=enrich, publish=publish)
+            stop = time.time()
+            log.info('Processed %s in %s', item.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
