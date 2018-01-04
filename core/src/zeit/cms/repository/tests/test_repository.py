@@ -142,3 +142,23 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEquals(
                 ['http://xml.zeit.de/cache/one'],
                 [x.uniqueId for x in folder.values()])
+
+
+class RepositoryContentTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_result_implements_IRepositoryContent(self):
+        self.assertTrue(
+            zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+                self.repository.getContent('http://xml.zeit.de/testcontent')))
+
+    def test_result_has_parent(self):
+        self.assertEqual(
+            self.repository,
+            self.repository.getContent(
+                'http://xml.zeit.de/testcontent').__parent__)
+
+    def test_result_has_name(self):
+        self.assertEqual(
+            'testcontent',
+            self.repository.getContent(
+                'http://xml.zeit.de/testcontent').__name__)
