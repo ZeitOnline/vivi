@@ -12,7 +12,7 @@ import zope.component
 
 
 NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
-KEYWORD_PROPERTY = ('rankedTags', NAMESPACE)
+KEYWORD_PROPERTY = ('keywords', NAMESPACE)
 DISABLED_PROPERTY = ('disabled', NAMESPACE)
 DISABLED_SEPARATOR = '\x09'
 PINNED_PROPERTY = ('pinned', NAMESPACE)
@@ -32,7 +32,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     The serialization format (including pinned and disabled keywords) is
     backwards compatible with zeit.intrafind, since e.g. zeit.publisher relies
-    on it.
+    on it, but we use a different DAV property to store the keywords
+    (`keywords` instead of `rankedTags`).
 
     We need to read/write all tags from/to xml for every operation, since
     adapting to ``ITagger`` returns a *different* Tagger each time, so we
@@ -150,7 +151,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             tags = lxml.objectify.fromstring(dav.get(KEYWORD_PROPERTY, ''))
         except lxml.etree.XMLSyntaxError:
             return None
-        if tags.tag != '{{{1}}}{0}'.format(*KEYWORD_PROPERTY):
+        if tags.tag != '{%s}rankedTags' % KEYWORD_PROPERTY[1]:
             return None
         return tags.getchildren()[0]
 

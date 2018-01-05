@@ -107,8 +107,8 @@ class TagTestHelpers(object):
     def set_tags(self, content, xml):
         """Prefill DAV-Property for keywords of `content` with `xml`.
 
-        It inserts `xml` into a newly created DAV-property 'rankedTags' under
-        the tagging-namespace key. `xml` is a string containing XML
+        It inserts `xml` into a newly created DAV-property in the
+        the 'tagging' namespace. `xml` is a string containing XML
         representing `Tag` objects, which requires `type` and `text`::
 
             <tag type="Person">Karen Duve</tag>
@@ -117,10 +117,9 @@ class TagTestHelpers(object):
         """
 
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
-        name, ns = dav_key = (
-            'rankedTags', 'http://namespaces.zeit.de/CMS/tagging')
-        dav[dav_key] = """<ns:{tag} xmlns:ns="{ns}">
-        <rankedTags>{0}</rankedTags></ns:{tag}>""".format(
+        name, ns = dav_key = zeit.retresco.tagger.KEYWORD_PROPERTY
+        dav[dav_key] = """<ns:rankedTags xmlns:ns="{ns}">
+        <rankedTags>{0}</rankedTags></ns:rankedTags>""".format(
             xml, ns=ns, tag=name)
 
 
