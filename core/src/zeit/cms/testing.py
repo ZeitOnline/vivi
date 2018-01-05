@@ -384,7 +384,7 @@ class RepositoryHelper(object):
         self.__dict__['repository'] = value
 
 
-class FunctionalTestCaseCommon(
+class FunctionalTestCase(
         unittest.TestCase,
         gocept.testing.assertion.Ellipsis,
         gocept.testing.assertion.Exceptions,
@@ -401,14 +401,8 @@ class FunctionalTestCaseCommon(
         return self.layer['functional_setup'].zca
 
     def setUp(self):
-        super(FunctionalTestCaseCommon, self).setUp()
-        setup_product_config(self.product_config)
-
-
-class FunctionalTestCase(FunctionalTestCaseCommon):
-
-    def setUp(self):
         super(FunctionalTestCase, self).setUp()
+        setup_product_config(self.product_config)
         zope.site.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction(u'zope.user')
 
@@ -469,11 +463,10 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
 
         if self.log_errors:
-            with site(self.getRootFolder()):
-                error_log = zope.component.getUtility(
-                    zope.error.interfaces.IErrorReportingUtility)
-                error_log.copy_to_zlog = True
-                error_log._ignored_exceptions = self.log_errors_ignore
+            error_log = zope.component.getUtility(
+                zope.error.interfaces.IErrorReportingUtility)
+            error_log.copy_to_zlog = True
+            error_log._ignored_exceptions = self.log_errors_ignore
             self.log_handler = logging.StreamHandler(sys.stdout)
             logging.root.addHandler(self.log_handler)
             self.old_log_level = logging.root.level
@@ -655,13 +648,39 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
         return data
 
 
-class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
+class ContextIsolatingMechanizeBrowser(
+        zope.app.testing.testbrowser.PublisherMechanizeBrowser):
+
+    def _mech_open(self, *args, **kw):
+        old_site = zope.component.hooks.getSite()
+        zope.component.hooks.setSite(None)
+        old_interaction = zope.security.management.queryInteraction()
+        zope.security.management.endInteraction()
+        try:
+            # old-style class, so no super(), sigh.
+            return self.__class__.__bases__[0]._mech_open(self, *args, **kw)
+        finally:
+            zope.component.hooks.setSite(old_site)
+            if old_interaction:
+                zope.security.management.thread_local.interaction = (
+                    old_interaction)
+
+
+class Browser(zope.testbrowser.browser.Browser):
+
+    def __init__(self, url=None):
+        # copy&paste from zope.app.testing.testbrowser.Browser
+        super(Browser, self).__init__(
+            url=url, mech_browser=ContextIsolatingMechanizeBrowser())
+
+
+class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
 
     login_as = 'user:userpw'
 
     def setUp(self):
         super(BrowserTestCase, self).setUp()
-        self.browser = zope.testbrowser.testing.Browser()
+        self.browser = Browser()
         self.browser.addHeader('Authorization', 'Basic %s' % self.login_as)
 
 

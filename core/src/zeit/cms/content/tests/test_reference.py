@@ -321,7 +321,7 @@ class ReferenceTraversalBase(object):
         with checked_out(self.repository['content']) as co:
             self.set_reference(co, co.references.create(
                 self.repository['target']))
-        b = zope.testbrowser.testing.Browser()
+        b = zeit.cms.testing.Browser()
         zope.security.management.endInteraction()
         b.addHeader('Authorization', 'Basic user:userpw')
         content = self.repository['content']

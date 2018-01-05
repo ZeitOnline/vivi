@@ -54,7 +54,7 @@ class LoginFormTest(zeit.cms.testing.BrowserTestCase,
 
     def setUp(self):
         super(LoginFormTest, self).setUp()
-        self.browser = zope.testbrowser.testing.Browser()
+        self.browser = zeit.cms.testing.Browser()
 
     def test_unauthenticated_redirects_to_loginform(self):
         b = self.browser
