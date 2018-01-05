@@ -31,11 +31,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     """Serializes keywords to an XML structure and stores it in a DAV-Property.
 
     The serialization format (including pinned and disabled keywords) is
-    actually backwards compatible with zeit.intrafind, but since the TMS uses
-    different IDs for keywords, switching to retresco means that
-    pinned+disabled keywords will effectively be reset. (Keywords that are
-    assigned to content already will remain usable, though, since the label is
-    pretty much the only interesting property.)
+    backwards compatible with zeit.intrafind, since e.g. zeit.publisher relies
+    on it.
 
     We need to read/write all tags from/to xml for every operation, since
     adapting to ``ITagger`` returns a *different* Tagger each time, so we
