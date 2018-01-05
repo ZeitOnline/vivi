@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.14.0 (unreleased)
+1.14.0 (2018-01-05)
 -------------------
 
 - TMS-133: Store TMS keywords in a different DAV property than Intrafind,
