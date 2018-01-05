@@ -24,7 +24,7 @@ required:
 >>> f = zeit.cms.repository.file.RepositoryFile(
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
 >>> f
-<zeit.cms.repository.file.RepositoryFile object at 0x...>
+<zeit.cms.repository.file.RepositoryFile...>
 
 It provides the IFile and IAsset interfaces:
 
@@ -76,7 +76,7 @@ The LocalFile actually stores data.
 >>> local = zeit.cms.repository.file.LocalFile(
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
 >>> local
-<zeit.cms.repository.file.LocalFile object at 0x...>
+<zeit.cms.repository.file.LocalFile...>
 
 
 The LocalFile also provides the IFile interface:
@@ -122,7 +122,7 @@ The file has stored the new data now:
 We have a local blob now:
 
 >>> local.local_data
-<ZODB.blob.Blob object at 0x...>
+<ZODB.blob.Blob...>
 
 
 Local files can also be created w/o an existing file in the repository:
@@ -174,7 +174,7 @@ False
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> f = repository['2006']['DSC00109_2.JPG']
 >>> f
-<zeit.cms.repository.file.RepositoryFile object at 0x...>
+<zeit.cms.repository.file.RepositoryFile...>
 >>> f.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> f.mimeType
@@ -185,7 +185,7 @@ When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 >>> import zeit.cms.workingcopy.interfaces
 >>> local = zeit.cms.workingcopy.interfaces.ILocalContent(f)
 >>> local
-<zeit.cms.repository.file.LocalFile object at 0x...>
+<zeit.cms.repository.file.LocalFile...>
 >>> local.__name__
 u'DSC00109_2.JPG'
 
@@ -202,7 +202,7 @@ repository:
 >>> import zeit.cms.checkout.interfaces
 >>> repository_file = zeit.cms.checkout.interfaces.IRepositoryContent(local)
 >>> repository_file
-<zeit.cms.repository.file.RepositoryFile object at 0x...>
+<zeit.cms.repository.file.RepositoryFile...>
 >>> repository_file.open().read()
 'new data'
 >>> repository_file.mimeType
