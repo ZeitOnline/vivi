@@ -2,8 +2,11 @@ zeit.retresco changes
 =====================
 
 
-1.13.4 (unreleased)
+1.14.0 (unreleased)
 -------------------
+
+- TMS-133: Store TMS keywords in a different DAV property than Intrafind,
+  so we can reindex while still using Intrafind.
 
 - TMS-7: Log task duration, since celery only logs total wait time
 
