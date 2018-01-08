@@ -2,13 +2,13 @@ from zeit.cms.i18n import MessageFactory as _
 import persistent
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.util
-import zope.app.container.contained
 import zope.interface
 
 
-class UnknownResource(zope.app.container.contained.Contained):
+class UnknownResource(zeit.cms.repository.repository.ContentBase):
     """Represent an unknown resource"""
 
     zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,
@@ -21,11 +21,6 @@ class UnknownResource(zope.app.container.contained.Contained):
             raise TypeError('data must be unicode.')
         self.data = data
         self.type = type_info
-
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.uniqueId or '(unknown)')
 
 
 class PersistentUnknownResource(UnknownResource,

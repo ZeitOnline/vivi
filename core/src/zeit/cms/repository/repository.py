@@ -22,12 +22,35 @@ import zope.securitypolicy.interfaces
 log = logging.getLogger('zeit.cms.repository')
 
 
-class Container(zope.container.contained.Contained):
+class ContentBase(zope.container.contained.Contained):
+    """Base class for repository content."""
+
+    zope.interface.implements(zeit.cms.repository.interfaces.IDAVContent)
+
+    uniqueId = None
+    __name__ = None
+
+    def __cmp__(self, other):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
+            return -1
+        self_key = (self.uniqueId, self.__name__)
+        other_key = (other.uniqueId, other.__name__)
+        return cmp(self_key, other_key)
+
+    def __hash__(self):
+        return hash((self.uniqueId, self.__name__))
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.uniqueId or '(unknown)')
+
+
+class Container(ContentBase):
     """The container represents webdav collections."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
-    uniqueId = None
     _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
         '_v_local_unique_map', dict)
 
@@ -125,11 +148,6 @@ class Container(zope.container.contained.Contained):
         id = self._get_id_for_name(name)
         del self.connector[id]
         self._local_unique_map_data.clear()
-
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.uniqueId or '(unknown)')
 
     # Internal helper methods and properties:
 
