@@ -1,5 +1,4 @@
 import zeit.content.article.edit.browser.testing
-import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.arbeit.interfaces
 import zope.interface
@@ -10,14 +9,13 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     block_type = 'box'
 
     def test_inline_form_saves_values_for_box(self):
+        group = zeit.content.image.testing.create_image_group()
         article = self.get_article(with_empty_block=True)
         zope.interface.alsoProvides(article,
                                     zeit.arbeit.interfaces.IZARContent)
         b = self.browser
         b.open('editable-body/blockname/@@edit-%s?show_form=1'
                % self.block_type)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = zeit.content.image.testing.create_image_group()
         b.getControl(name='form.supertitle').value = 'super'
         b.getControl(name='form.title').value = 'title'
         b.getControl(name='form.subtitle').value = 'text'

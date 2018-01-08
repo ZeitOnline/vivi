@@ -8,9 +8,7 @@ class BadgeWidget(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.LAYER
 
     def test_shows_labels_in_display_mode(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
+        self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/article/@@edit.form.asset-badges?show_form=1')
@@ -19,9 +17,7 @@ class BadgeWidget(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...<label cms:tooltip="Video"...', b.contents)
 
     def test_labels_have_tooltip_in_input_mode(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
+        self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/article/@@checkout')
@@ -29,9 +25,7 @@ class BadgeWidget(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...<label cms:tooltip="Video"...', b.contents)
 
     def test_renders_selected_items(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
+        self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/article/@@checkout')

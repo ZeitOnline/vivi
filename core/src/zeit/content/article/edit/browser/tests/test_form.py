@@ -16,9 +16,7 @@ class MemoTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.LAYER
 
     def test_memo_is_editable_while_checked_in(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
+        self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/article/@@edit.form.memo?show_form=1')
@@ -59,12 +57,9 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.LAYER
 
     def test_displays_status_fields_as_checkboxes(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                somalia = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                IContentWorkflow(somalia).corrected = True
-
+        somalia = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        IContentWorkflow(somalia).corrected = True
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
@@ -73,16 +68,14 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
         self.assertTrue(b.getControl('Corrected').selected)
 
     def test_displays_last_published_information(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                IContentWorkflow(article).urgent = True
-                # silence annoying error message
-                ICDSWorkflow(article).export_cds = False
-                IPublish(article).publish()
-                IPublishInfo(article).date_last_published = datetime.datetime(
-                    2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc)
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        IContentWorkflow(article).urgent = True
+        # silence annoying error message
+        ICDSWorkflow(article).export_cds = False
+        IPublish(article).publish()
+        IPublishInfo(article).date_last_published = datetime.datetime(
+            2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc)
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
@@ -104,12 +97,10 @@ class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Page...n/a...', b.contents)
 
     def test_existing_page_number_is_displayed(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                with zeit.cms.checkout.helper.checked_out(article) as co:
-                    co.page = '4711'
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.page = '4711'
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
@@ -171,11 +162,9 @@ class FilenameTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.LAYER
 
     def test_existing_filename_yields_error_message(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = Article()
-                IAutomaticallyRenameable(article).renameable = True
-                self.repository['online']['2007']['01']['article'] = article
+        article = Article()
+        IAutomaticallyRenameable(article).renameable = True
+        self.repository['online']['2007']['01']['article'] = article
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/article/@@checkout')

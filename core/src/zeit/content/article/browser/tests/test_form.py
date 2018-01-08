@@ -17,10 +17,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
     def get_article(self):
         import zeit.cms.workingcopy.interfaces
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
-                return list(wc.values())[0]
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+        return list(wc.values())[0]
 
     def test_ressort_should_be_set_from_url(self):
         request = zope.publisher.browser.TestRequest()

@@ -36,12 +36,10 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
             ['Square 1:1'], b.getControl('Variant Name').displayValue)
 
     def get_image_block(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                article = list(wc.values())[0]
-                image_block = article.body['blockname']
-                return image_block
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        article = list(wc.values())[0]
+        image_block = article.body['blockname']
+        return image_block
 
     def test_setting_image_reference_also_sets_manual_flag(self):
         # so that the copying mechanism from IImages knows to leave the block
@@ -65,13 +63,11 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_png_teaser_images_should_enable_colorpicker(self):
         from zeit.content.image.testing import (
             create_image_group_with_master_image)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                group = create_image_group_with_master_image(
-                    file_name='http://xml.zeit.de/2016/DSC00109_2.PNG')
-                zeit.content.image.interfaces.IImages(article).image = group
-                self.repository['article'] = article
+        article = zeit.content.article.testing.create_article()
+        group = create_image_group_with_master_image(
+            file_name='http://xml.zeit.de/2016/DSC00109_2.PNG')
+        zeit.content.image.interfaces.IImages(article).image = group
+        self.repository['article'] = article
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/article/@@checkout')
@@ -81,12 +77,10 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_non_png_teaser_images_should_not_enable_colorpicker(self):
         from zeit.content.image.testing import (
             create_image_group_with_master_image)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                group = create_image_group_with_master_image()
-                zeit.content.image.interfaces.IImages(article).image = group
-                self.repository['article'] = article
+        article = zeit.content.article.testing.create_article()
+        group = create_image_group_with_master_image()
+        zeit.content.image.interfaces.IImages(article).image = group
+        self.repository['article'] = article
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/article/@@checkout')
@@ -148,17 +142,14 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementPresent('css=.block.type-image .add_view.button')
 
     def add_image_to_clipboard(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            add_to_clipboard(
-                self.repository['2006']['DSC00109_2.JPG'], 'my_image')
+        add_to_clipboard(self.repository['2006']['DSC00109_2.JPG'], 'my_image')
         self.add_article()
         s = self.selenium
         s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def add_group_to_clipboard(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = zeit.content.image.testing.create_image_group()
+        group = zeit.content.image.testing.create_image_group()
         add_to_clipboard(group, 'my_group')
         self.add_article()
         s = self.selenium
@@ -359,16 +350,15 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def add_volume_to_clipboard(self):
         from zeit.content.image.testing import create_image_group
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['imagegroup'] = create_image_group()
-            volume = zeit.content.volume.volume.Volume()
-            volume.year = 2006
-            volume.volume = 23
-            volume.product = zeit.cms.content.sources.Product(u'ZEI')
-            volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
-            self.repository['2006']['23'] = volume
-            add_to_clipboard(
-                self.repository['2006']['23'], 'my_volume')
+        self.repository['imagegroup'] = create_image_group()
+        volume = zeit.content.volume.volume.Volume()
+        volume.year = 2006
+        volume.volume = 23
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
+        self.repository['2006']['23'] = volume
+        add_to_clipboard(
+            self.repository['2006']['23'], 'my_volume')
         self.add_article()
         s = self.selenium
         s.clickAt('//li[@uniqueid="Clip"]', '10,10')
@@ -395,11 +385,9 @@ class PortraitboxForm(
     block_type = 'portraitbox'
 
     def test_setting_reference_clears_local_values(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                box = zeit.content.portraitbox.portraitbox.Portraitbox()
-                box.name = u'My Name'
-                self.repository['portrait'] = box
+        box = zeit.content.portraitbox.portraitbox.Portraitbox()
+        box.name = u'My Name'
+        self.repository['portrait'] = box
         self.get_article(with_empty_block=True)
         b = self.browser
         b.open('editable-body/blockname/@@edit-portraitbox?show_form=1')

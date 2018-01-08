@@ -14,10 +14,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             'online/2007/01/Somalia/@@checkout')
 
     def get_article(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                return zeit.cms.interfaces.ICMSWCContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
+        return zeit.cms.interfaces.ICMSWCContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
@@ -49,10 +47,8 @@ class MobileFormTest(zeit.cms.testing.BrowserTestCase):
             'online/2007/01/Somalia/@@checkout')
 
     def get_article(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                return zeit.cms.interfaces.ICMSWCContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
+        return zeit.cms.interfaces.ICMSWCContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?

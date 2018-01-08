@@ -108,9 +108,8 @@ class CheckinSelenium(
         s.waitForElementNotPresent(disabled_checkin_button)
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            sc = zeit.cms.content.interfaces.ISemanticChange(
-                self.repository['online']['2007']['01']['Somalia'])
+        sc = zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['online']['2007']['01']['Somalia'])
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
@@ -120,9 +119,8 @@ class CheckinSelenium(
         self.assertEqual(before, sc.last_semantic_change)
 
     def test_checkin_sets_last_semantic_change_if_checked(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            sc = zeit.cms.content.interfaces.ISemanticChange(
-                self.repository['online']['2007']['01']['Somalia'])
+        sc = zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['online']['2007']['01']['Somalia'])
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
@@ -250,13 +248,11 @@ class Publish(zeit.cms.testing.BrowserTestCase):
     def test_validation_errors_are_displayed_during_publish(self):
         # Create article with divisions, otherwise the recursive validator has
         # no children to validate
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                article.body.create_item('image')
-                self.repository['article_with_division'] = article
-                zeit.cms.workflow.interfaces.IPublishInfo(
-                    self.repository['article_with_division']).urgent = True
+        article = zeit.content.article.testing.create_article()
+        article.body.create_item('image')
+        self.repository['article_with_division'] = article
+        zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['article_with_division']).urgent = True
 
         rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
