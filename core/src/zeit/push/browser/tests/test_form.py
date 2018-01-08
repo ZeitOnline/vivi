@@ -15,10 +15,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             'testcontent/@@checkout')
 
     def get_article(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                return zeit.cms.interfaces.ICMSWCContent(
-                    'http://xml.zeit.de/testcontent')
+        return zeit.cms.interfaces.ICMSWCContent(
+            'http://xml.zeit.de/testcontent')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
@@ -231,13 +229,11 @@ class SocialAddFormTest(SocialFormTest):
         b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl(name='form.actions.add').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            content = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/social')
-            push = zeit.push.interfaces.IPushMessages(content)
-            self.assertIn(
-                {'type': 'twitter', 'enabled': True,
-                 'account': 'twitter-test'}, push.message_config)
+        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/social')
+        push = zeit.push.interfaces.IPushMessages(content)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': True,
+             'account': 'twitter-test'}, push.message_config)
 
 
 class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
