@@ -1,4 +1,4 @@
-from zeit.cms.testing import FunctionalTestCaseCommon
+from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
 import unittest
@@ -46,7 +46,7 @@ def make_xls_test(*args):
     # FunctionalTestCaseCommon.
     case = type(
         'SecurityPolicyXLSSheetCase',
-        (SecurityPolicyXLSSheetCase, FunctionalTestCaseCommon), {})
+        (SecurityPolicyXLSSheetCase, FunctionalTestCase), {})
     return case(*args)
 
 
@@ -60,7 +60,7 @@ class SecurityPolicyXLSSheetCase(object):
         self.cases = cases
         self.description = description
 
-        self.browser = zope.testbrowser.testing.Browser()
+        self.browser = zeit.cms.testing.Browser()
         self.browser.raiseHttpErrors = False
         if username != 'anonymous':
             password = self.username + 'pw'
