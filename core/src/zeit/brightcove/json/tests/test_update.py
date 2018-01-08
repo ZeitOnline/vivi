@@ -2,7 +2,6 @@ import mock
 import zeit.brightcove.convert
 import zeit.brightcove.testing
 import zeit.cms.testing
-import zope.testbrowser.testing
 
 
 class NotificationTest(zeit.cms.testing.BrowserTestCase):
@@ -11,7 +10,7 @@ class NotificationTest(zeit.cms.testing.BrowserTestCase):
 
     def test_runs_import_as_system_user(self):
         # View is available without authentication
-        b = zope.testbrowser.testing.Browser()
+        b = zeit.cms.testing.Browser()
         with mock.patch.object(
                 zeit.brightcove.update.import_video_async,
                 '__call__') as import_video:
