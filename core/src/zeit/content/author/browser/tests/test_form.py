@@ -114,9 +114,7 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
             ...An author with the given name already exists...
             """, b.contents)
         # No new author has been created in DAV so far.
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.assertEqual(
-                1, len(self.repository['foo']['bar']['authors']['S']))
+        self.assertEqual(1, len(self.repository['foo']['bar']['authors']['S']))
 
         b.getControl(u'Add duplicate author').selected = True
         b.getControl(name='form.actions.add').click()
