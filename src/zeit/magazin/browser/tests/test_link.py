@@ -38,25 +38,21 @@ class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
         super(ZMOFacebookFields, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                link = zeit.content.link.link.Link()
-                link.title = 'title'
-                link.ressort = u'Leben'
-                link.teaserTitle = 'teaser'
-                link.year = 2010
-                link.url = 'http://example.com'
-                self.repository['magazin']['mylink'] = link
+        link = zeit.content.link.link.Link()
+        link.title = 'title'
+        link.ressort = u'Leben'
+        link.teaserTitle = 'teaser'
+        link.year = 2010
+        link.url = 'http://example.com'
+        self.repository['magazin']['mylink'] = link
         self.browser.handleErrors = False
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'magazin/mylink/@@checkout')
 
     def get_content(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                return zeit.cms.interfaces.ICMSWCContent(
-                    'http://xml.zeit.de/magazin/mylink')
+        return zeit.cms.interfaces.ICMSWCContent(
+            'http://xml.zeit.de/magazin/mylink')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
