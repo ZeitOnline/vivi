@@ -21,8 +21,7 @@ class StoryStreamAddTest(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.authors.0.').value = 'Hans Sachs'
         b.getControl(name="form.actions.add").click()
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            cp = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/island')
-            self.assertTrue(
-                zeit.content.cp.interfaces.IStoryStream.providedBy(cp))
-            self.assertEqual('storystream', cp.type)
+        cp = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/island')
+        self.assertTrue(
+            zeit.content.cp.interfaces.IStoryStream.providedBy(cp))
+        self.assertEqual('storystream', cp.type)

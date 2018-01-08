@@ -5,7 +5,6 @@ import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zope.component
-import zope.testbrowser.testing
 
 
 class PublishTest(zeit.cms.testing.BrowserTestCase):
@@ -19,10 +18,7 @@ class PublishTest(zeit.cms.testing.BrowserTestCase):
 
     def test_validation_errors_are_displayed_during_publish(self):
         from zeit.content.cp.centerpage import CenterPage
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['centerpage'] = CenterPage()
-
+        self.repository['centerpage'] = CenterPage()
         rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
         with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
@@ -41,7 +37,7 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.getLink('Checkin').click()
 
-        self.producing = zope.testbrowser.testing.Browser()
+        self.producing = zeit.cms.testing.Browser()
         self.producing.addHeader('Authorization', 'Basic producer:producerpw')
 
     def test_normal_user_may_not_delete(self):

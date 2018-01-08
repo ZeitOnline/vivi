@@ -3,19 +3,21 @@ import transaction
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.solr.interfaces
-import zope.testbrowser.testing
+import zope.component
+import zope.security.management
 
 
 class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.cp.testing.ZCML_LAYER
+    # XXX As long as the "automatic" properties require a special
+    # permission, we can't perform the test as the normal user.
+    login_as = 'zmgr:mgrpw'
 
     def setUp(self):
         super(AutomaticEditForm, self).setUp()
-        # XXX As long as the "automatic" properties require a special
-        # permission, we can't perform the test as the normal user.
-        self.browser = zope.testbrowser.testing.Browser()
-        self.browser.addHeader('Authorization', 'Basic zmgr:mgrpw')
+        zope.security.management.endInteraction()
+        zeit.cms.testing.create_interaction('zope.mgr')
 
     def test_stores_solr_query_properties_in_xml(self):
         b = self.browser
@@ -34,16 +36,14 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction('zope.mgr'):
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                cp = list(wc.values())[0]
-                self.assertEllipsis(
-                    """\
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
 <region...count="5" automatic="True" automatic_type="query"...>...
 <raw_query>foo</raw_query>...
 <raw_order>bar</raw_order>...""",
-                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_elasticsearch_query_properties_in_xml(self):
         b = self.browser
@@ -60,22 +60,18 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction('zope.mgr'):
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                cp = list(wc.values())[0]
-                self.assertEllipsis(
-                    """\
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
 <region...count="5" automatic="True" automatic_type="elasticsearch-query"...>...
 <elasticsearch_raw_query>foo</elasticsearch_raw_query>...
 <elasticsearch_raw_order>bar</elasticsearch_raw_order>...""",  # noqa
-                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_centerpage_properties_in_xml(self):
         # Create centerpage to reference later on
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction('zope.mgr'):
-                self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
         b = self.browser
         zeit.content.cp.browser.testing.create_cp(b)
@@ -90,15 +86,13 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction('zope.mgr'):
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                cp = list(wc.values())[0]
-                self.assertEllipsis(
-                    """\
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
 <region...count="3" automatic="True" automatic_type="centerpage"...>...
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
-                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_topicpage_properties_in_xml(self):
         b = self.browser
@@ -114,15 +108,13 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction('zope.mgr'):
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                cp = list(wc.values())[0]
-                self.assertEllipsis(
-                    """\
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
-                    lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
 
 class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):

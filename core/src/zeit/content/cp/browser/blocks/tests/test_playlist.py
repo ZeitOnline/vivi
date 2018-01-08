@@ -1,7 +1,6 @@
 from zeit.content.video.playlist import Playlist
 import urllib2
 import zeit.cms.testing
-import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 
@@ -13,11 +12,10 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
     def setUp(self):
         super(TestPlaylist, self).setUp()
         from zeit.content.cp.centerpage import CenterPage
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.centerpage = CenterPage()
-            self.playlist = self.centerpage['lead'].create_item('playlist')
-            self.repository['centerpage'] = self.centerpage
-            self.repository['my-playlist'] = Playlist()
+        self.centerpage = CenterPage()
+        self.playlist = self.centerpage['lead'].create_item('playlist')
+        self.repository['centerpage'] = self.centerpage
+        self.repository['my-playlist'] = Playlist()
 
         self.browser.open(
             'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
@@ -53,8 +51,7 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
 
     def test_cannot_drop_video(self):
         from zeit.content.video.video import Video
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['my-video'] = Video()
+        self.repository['my-video'] = Video()
 
         [playlist_block] = self.repository['centerpage']['lead'].values()
         drop_url = 'lead/{}/@@drop?uniqueId={}'.format(
@@ -70,11 +67,10 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
     def test_can_reference_a_playlist_by_editing_common_properties(self):
         self.set_referenced_playlist()
         self.browser.open('@@checkin')
-        with zeit.cms.testing.site(self.getRootFolder()):
-            [playlist_block] = self.repository['centerpage']['lead'].values()
-            self.assertEqual(
-                self.repository['my-playlist'],
-                playlist_block.referenced_playlist)
+        [playlist_block] = self.repository['centerpage']['lead'].values()
+        self.assertEqual(
+            self.repository['my-playlist'],
+            playlist_block.referenced_playlist)
 
     def test_playlist_is_stored_in_xml(self):
         self.set_referenced_playlist()
@@ -93,8 +89,7 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
     def test_playlist_is_part_of_cp_content(self):
         self.set_referenced_playlist()
         self.browser.open('@@checkin')
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.assertEqual(
-                [self.repository['my-playlist']],
-                list(zeit.edit.interfaces.IElementReferences(
-                    self.repository['centerpage'])))
+        self.assertEqual(
+            [self.repository['my-playlist']],
+            list(zeit.edit.interfaces.IElementReferences(
+                self.repository['centerpage'])))

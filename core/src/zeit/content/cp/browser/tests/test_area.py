@@ -2,7 +2,6 @@
 import json
 import lxml.cssselect
 import unittest
-import z3c.etestbrowser.testing
 import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
@@ -91,18 +90,18 @@ class ElementBrowserTestHelper(object):
 
     def setUp(self):
         super(ElementBrowserTestHelper, self).setUp()
-        self.browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+        self.browser = zeit.cms.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
-        self.browser.xml_strict = True
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.open('contents')
         self.content_url = self.browser.url
 
     def get_edit_link(self, index=0):
         self.browser.open(self.content_url)
+        document = lxml.etree.XML(self.browser.contents)
         return lxml.cssselect.CSSSelector(
-            '.type-{} .edit-bar > .common-link'.format(
-                self.name))(self.browser.etree)[index].get('href')
+            '.type-{} .edit-bar > .common-link'.format(self.name)
+        )(document)[index].get('href')
 
     def test_can_set_title(self):
         b = self.browser
@@ -146,21 +145,20 @@ class TooltipFixture(object):
 
     def setUp(self):
         super(TooltipFixture, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-            self.repository['data'] = zeit.cms.repository.folder.Folder()
-            self.repository['data']['cp-area-schemas'] = \
-                zeit.cms.repository.folder.Folder()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.repository['data'] = zeit.cms.repository.folder.Folder()
+        self.repository['data']['cp-area-schemas'] = \
+            zeit.cms.repository.folder.Folder()
 
-            first = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
-            with first.open('w') as file_:
-                file_.write('minor')
-            self.repository['data']['cp-area-schemas']['minor.svg'] = first
+        first = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
+        with first.open('w') as file_:
+            file_.write('minor')
+        self.repository['data']['cp-area-schemas']['minor.svg'] = first
 
-            second = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
-            with second.open('w') as file_:
-                file_.write('major')
-            self.repository['data']['cp-area-schemas']['major.svg'] = second
+        second = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
+        with second.open('w') as file_:
+            file_.write('major')
+        self.repository['data']['cp-area-schemas']['major.svg'] = second
 
 
 class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
@@ -255,11 +253,9 @@ class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
         self.browser.open(
             'body/landing-zone-drop-module?order=top&block_type=region'
             '&block_params=%s' % json.dumps(params))
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                cp = zeit.cms.interfaces.ICMSWCContent(
-                    'http://xml.zeit.de/online/2007/01/island')
-                area = cp.body.values()[0].values()[0]
-                self.assertEqual(True, area.apply_teaser_layouts_automatically)
-                self.assertEqual(
-                    'leader-two-columns', area.first_teaser_layout.id)
+        cp = zeit.cms.interfaces.ICMSWCContent(
+            'http://xml.zeit.de/online/2007/01/island')
+        area = cp.body.values()[0].values()[0]
+        self.assertEqual(True, area.apply_teaser_layouts_automatically)
+        self.assertEqual(
+            'leader-two-columns', area.first_teaser_layout.id)

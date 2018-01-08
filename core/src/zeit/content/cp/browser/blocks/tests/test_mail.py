@@ -9,10 +9,9 @@ class TestMail(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestMail, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.centerpage = zeit.content.cp.centerpage.CenterPage()
-            self.centerpage['lead'].create_item('mail')
-            self.repository['centerpage'] = self.centerpage
+        self.centerpage = zeit.content.cp.centerpage.CenterPage()
+        self.centerpage['lead'].create_item('mail')
+        self.repository['centerpage'] = self.centerpage
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/centerpage/@@checkout')

@@ -10,14 +10,13 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestRawText, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.centerpage = zeit.content.cp.centerpage.CenterPage()
-            self.centerpage['lead'].create_item('rawtext')
-            self.repository['centerpage'] = self.centerpage
+        self.centerpage = zeit.content.cp.centerpage.CenterPage()
+        self.centerpage['lead'].create_item('rawtext')
+        self.repository['centerpage'] = self.centerpage
 
-            self.plaintext = zeit.content.text.text.Text()
-            self.plaintext.text = '<rawcode_reference />'
-            self.repository['plaintext'] = self.plaintext
+        self.plaintext = zeit.content.text.text.Text()
+        self.plaintext.text = '<rawcode_reference />'
+        self.repository['plaintext'] = self.plaintext
 
         b = self.browser
         b.open(
