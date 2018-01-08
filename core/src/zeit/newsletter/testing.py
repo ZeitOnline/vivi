@@ -71,8 +71,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['newsletter'] = Newsletter()
+        self.repository['newsletter'] = Newsletter()
         transaction.commit()
 
     def create_content_and_fill_clipboard(self):

@@ -11,18 +11,17 @@ class RuleTest(zeit.newsletter.testing.TestCase):
         super(RuleTest, self).setUp()
         from zeit.newsletter.newsletter import Newsletter
         from zeit.newsletter.category import NewsletterCategory
-        with zeit.cms.testing.site(self.getRootFolder()):
-            category = NewsletterCategory()
-            category.ad_middle_groups_above = 42
-            category.ad_thisweeks_groups_above = 63
-            self.repository['category'] = category
-            self.category = self.repository['category']
-            self.category['newsletter'] = Newsletter()
-            self.newsletter = self.category['newsletter']
-            factory = zope.component.getAdapter(
-                self.newsletter.body, zeit.edit.interfaces.IElementFactory,
-                name='group')
-            group = factory()
+        category = NewsletterCategory()
+        category.ad_middle_groups_above = 42
+        category.ad_thisweeks_groups_above = 63
+        self.repository['category'] = category
+        self.category = self.repository['category']
+        self.category['newsletter'] = Newsletter()
+        self.newsletter = self.category['newsletter']
+        factory = zope.component.getAdapter(
+            self.newsletter.body, zeit.edit.interfaces.IElementFactory,
+            name='group')
+        group = factory()
         self.globs = IRuleGlobs(group)
 
     def test_newsletter_can_be_determined_from_body_element(self):
