@@ -341,6 +341,8 @@ Let's clean that up again:
 True
 >>> del repository['online']['01']
 >>> del repository['online']['01-2']
+>>> import transaction
+>>> transaction.commit()
 
 Getting content by unique_id
 ============================
