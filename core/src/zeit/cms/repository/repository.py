@@ -1,7 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IRepositoryContent
 import gocept.cache.property
 import grokcore.component
 import logging
+import os.path
 import persistent
 import re
 import zeit.cms.interfaces
@@ -22,12 +24,70 @@ import zope.securitypolicy.interfaces
 log = logging.getLogger('zeit.cms.repository')
 
 
-class Container(zope.container.contained.Contained):
+class ContentBase(zope.container.contained.Contained):
+    """Base class for repository content."""
+
+    zope.interface.implements(zeit.cms.repository.interfaces.IDAVContent)
+
+    uniqueId = None
+    __name__ = None
+
+    def __cmp__(self, other):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
+            return -1
+        return cmp(self.uniqueId, other.uniqueId)
+
+    def __hash__(self):
+        return hash(self.uniqueId)
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.uniqueId or '(unknown)')
+
+    # Support the performance optimization in Repository.getContent()
+    # by optionally resolving our parent ourselves.
+    @property
+    def __parent__(self):
+        if hasattr(self, '__explicit_parent__'):
+            return self.__explicit_parent__
+        if not IRepositoryContent.providedBy(self):
+            # This most likely means we're somewhere inside a workingcopy. The
+            # default value in zope.container.Contained is None, and we also
+            # need to handle bw-compat for ILocalContent objects that existed
+            # before __explicit_parent__ was introduced.
+            return self.__dict__.get('__parent__')
+
+        unique_id = self.uniqueId
+        trailing_slash = unique_id.endswith('/')
+        if trailing_slash:
+            unique_id = unique_id[:-1]
+        parent_id = os.path.dirname(unique_id)
+        parent_id = parent_id.rstrip('/') + '/'
+
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        # "root" edge case part 1a: We use the repository itself as the '/'
+        # folder, it serves as the traversal root for DAV content
+        if parent_id == repository.uniqueId:
+            return repository
+        return repository.getContent(parent_id)
+
+    @__parent__.setter
+    def __parent__(self, value):
+        self.__explicit_parent__ = value
+
+    @__parent__.deleter
+    def __parent__(self):
+        if hasattr(self, '__explicit_parent__'):
+            del self.__explicit_parent__
+
+
+class Container(ContentBase):
     """The container represents webdav collections."""
 
     zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
-    uniqueId = None
     _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
         '_v_local_unique_map', dict)
 
@@ -126,11 +186,6 @@ class Container(zope.container.contained.Contained):
         del self.connector[id]
         self._local_unique_map_data.clear()
 
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.uniqueId or '(unknown)')
-
     # Internal helper methods and properties:
 
     @property
@@ -168,7 +223,12 @@ class Repository(persistent.Persistent, Container):
         zeit.cms.section.interfaces.IZONSection,
         zope.annotation.interfaces.IAttributeAnnotatable)
 
+    # "root" edge case part 2, allow the ZODB folder to set itself as the
+    # parent when installing the Repository object, since the DAV hierarchy
+    # ends there and changes over to the ZODB hierarchy.
+    __parent__ = None
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE
+
     uncontained_content = gocept.cache.property.TransactionBoundCache(
         '_v_uncontained_content', dict)
 
@@ -187,14 +247,32 @@ class Repository(persistent.Persistent, Container):
         unique_id = self._get_normalized_unique_id(unique_id)
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             raise ValueError("The id %r is invalid." % unique_id)
-        path = unique_id.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
-        if path.startswith('/'):
-            path = path[1:]
+        if unique_id == self.uniqueId:  # "root" edge case part 1b
+            return self
+
         try:
-            content = zope.traversing.interfaces.ITraverser(
-                self).traverse(path)
-        except zope.traversing.interfaces.TraversalError:
-            raise KeyError(unique_id)
+            # Performance optimization: Most content can be resolved directly
+            # via the connector, which is much faster than using traversal.
+            # To support this, content objects (via ContentBase above) are
+            # location-aware and can resolve their __parent__ themselves
+            # if it is needed (instead of the usual Zope paradigm that the
+            # container writes it on its children from the outside).
+            content = self.getUncontainedContent(unique_id)
+            # During traversal, IRepositoryContent happens in
+            # Container.__getitem__.
+            zope.interface.alsoProvides(
+                content, zeit.cms.repository.interfaces.IRepositoryContent)
+        except KeyError:
+            # Some content cannot be resolved directly, the most prominent
+            # example being zeit.content.dynamicfolder.
+            path = unique_id.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
+            if path.startswith('/'):
+                path = path[1:]
+            try:
+                content = zope.traversing.interfaces.ITraverser(
+                    self).traverse(path)
+            except zope.traversing.interfaces.TraversalError:
+                raise KeyError(unique_id)
         return content
 
     def getCopyOf(self, unique_id):

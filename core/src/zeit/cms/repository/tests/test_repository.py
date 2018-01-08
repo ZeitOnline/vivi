@@ -142,3 +142,39 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEquals(
                 ['http://xml.zeit.de/cache/one'],
                 [x.uniqueId for x in folder.values()])
+
+
+class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_implements_IRepositoryContent(self):
+        self.assertTrue(
+            zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
+                self.repository.getContent('http://xml.zeit.de/testcontent')))
+
+    def test_has_parent(self):
+        self.assertEqual(
+            self.repository['online']['2007']['01'],
+            self.repository.getContent(
+                'http://xml.zeit.de/online/2007/01/Somalia').__parent__)
+
+    def test_root_folder_is_repository(self):
+        self.assertEqual(
+            self.repository,
+            self.repository.getContent(
+                'http://xml.zeit.de/testcontent').__parent__)
+
+    def test_result_has_name(self):
+        self.assertEqual(
+            'testcontent',
+            self.repository.getContent(
+                'http://xml.zeit.de/testcontent').__name__)
+
+    def test_can_write_explicit_parent(self):
+        one = zeit.cms.repository.repository.ContentBase()
+        one.__parent__ = 'foo'
+        self.assertEqual(one.__parent__, 'foo')
+
+    def test_can_write_none_to_parent(self):
+        one = zeit.cms.repository.repository.ContentBase()
+        one.__parent__ = None
+        self.assertIsNone(one.__parent__)

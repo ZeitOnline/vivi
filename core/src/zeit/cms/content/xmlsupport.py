@@ -11,8 +11,8 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
 import zeit.cms.interfaces
+import zeit.cms.repository.repository
 import zeit.connector.interfaces
-import zope.container.contained
 import zope.interface
 import zope.security.interfaces
 import zope.security.proxy
@@ -33,30 +33,13 @@ class XMLRepresentationBase(object):
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
 
 
-class XMLContentBase(XMLRepresentationBase,
-                     persistent.Persistent,
-                     zope.container.contained.Contained):
+class XMLContentBase(zeit.cms.repository.repository.ContentBase,
+                     XMLRepresentationBase,
+                     persistent.Persistent):
     """Base class for xml content."""
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
 
-    uniqueId = None
-    __name__ = None
-
-    def __cmp__(self, other):
-        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
-            return -1
-        self_key = (self.uniqueId, self.__name__)
-        other_key = (other.uniqueId, other.__name__)
-        return cmp(self_key, other_key)
-
-    def __hash__(self):
-        return hash((self.uniqueId, self.__name__))
-
-    def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.uniqueId or '(unknown)')
 
 _default_marker = object()
 
