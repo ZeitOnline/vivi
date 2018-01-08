@@ -35,12 +35,10 @@ class ContentBase(zope.container.contained.Contained):
     def __cmp__(self, other):
         if not zeit.cms.interfaces.ICMSContent.providedBy(other):
             return -1
-        self_key = (self.uniqueId, self.__name__)
-        other_key = (other.uniqueId, other.__name__)
-        return cmp(self_key, other_key)
+        return cmp(self.uniqueId, other.uniqueId)
 
     def __hash__(self):
-        return hash((self.uniqueId, self.__name__))
+        return hash(self.uniqueId)
 
     def __repr__(self):
         return '<%s.%s %s>' % (
