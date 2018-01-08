@@ -17,8 +17,7 @@ class EditDynamicFolder(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Updated on...', b.contents)
         b.getLink('Checkin').click()
         self.assertIn('repository', b.url)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            folder = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/dynamicfolder')
-            self.assertEqual(
-                'http://xml.zeit.de/testcontent', folder.config_file.uniqueId)
+        folder = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/dynamicfolder')
+        self.assertEqual(
+            'http://xml.zeit.de/testcontent', folder.config_file.uniqueId)
