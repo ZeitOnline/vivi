@@ -11,11 +11,10 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
 
     def setUp(self):
         super(AddTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
-            category = NewsletterCategory()
-            category.subject = 'nosubject'
-            self.repository['newsletter']['taeglich'] = category
+        self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
+        category = NewsletterCategory()
+        category.subject = 'nosubject'
+        self.repository['newsletter']['taeglich'] = category
         transaction.commit()
         self.open('/')
 
@@ -37,9 +36,8 @@ class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
         super(CategoryMetadata, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
-            self.repository['newsletter']['taeglich'] = NewsletterCategory()
+        self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
+        self.repository['newsletter']['taeglich'] = NewsletterCategory()
         transaction.commit()
 
     def test_metadata_of_category_is_editable(self):

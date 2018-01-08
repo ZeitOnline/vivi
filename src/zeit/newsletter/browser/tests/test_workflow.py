@@ -9,10 +9,9 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
         super(WorkflowTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['newsletter'] = Newsletter()
-            zeit.cms.workflow.interfaces.IPublishInfo(
-                self.repository['newsletter']).published = False
+        self.repository['newsletter'] = Newsletter()
+        zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['newsletter']).published = False
         transaction.commit()
 
     def test_send_button_should_perform_both_normal_publish_and_send(self):
