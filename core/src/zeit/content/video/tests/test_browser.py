@@ -48,12 +48,11 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            thumbnail_view = zope.component.getMultiAdapter(
-                (video, request), name='thumbnail')
-            url = zope.component.getMultiAdapter(
-                (thumbnail_view, request),
-                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        thumbnail_view = zope.component.getMultiAdapter(
+            (video, request), name='thumbnail')
+        url = zope.component.getMultiAdapter(
+            (thumbnail_view, request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)()
         self.assertEqual(url, 'http://thumbnailurl')
 
     def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
@@ -77,12 +76,11 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            thumbnail_view = zope.component.getMultiAdapter(
-                (playlist, request), name='thumbnail')
-            url = zope.component.getMultiAdapter(
-                (thumbnail_view, request),
-                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        thumbnail_view = zope.component.getMultiAdapter(
+            (playlist, request), name='thumbnail')
+        url = zope.component.getMultiAdapter(
+            (thumbnail_view, request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)()
         self.assertEqual(url, 'http://thumbnailurl')
 
 
@@ -123,12 +121,11 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            view = zope.component.getMultiAdapter(
-                (video, request), name='preview')
-            url = zope.component.getMultiAdapter(
-                (view, request),
-                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        view = zope.component.getMultiAdapter(
+            (video, request), name='preview')
+        url = zope.component.getMultiAdapter(
+            (view, request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)()
         self.assertEqual(url, 'http://stillurl')
 
 
@@ -138,10 +135,7 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
 
     def test_playlist_should_be_viewable(self):
         from zeit.content.video.playlist import Playlist
-        pls = Playlist()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['453'] = pls
+        self.repository['453'] = Playlist()
         self.browser.open('http://localhost/++skin++vivi/repository/453')
         self.assert_ellipsis("""...
 <...
@@ -178,10 +172,7 @@ class TestVideoEdit(zeit.cms.testing.BrowserTestCase):
         self.assertIn('Updated on', browser.contents)
         browser.getLink('Checkin').click()
         self.assertIn('"video" has been checked in.', browser.contents)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                zeit.cms.workflow.interfaces.IPublish(video).publish(
-                    async=False)
+        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(
