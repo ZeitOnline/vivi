@@ -55,8 +55,7 @@ class ImageGroupHelperMixin(object):
             'image/jpeg', filename)
 
     def _upload_cms_content(self, field, uniqueId):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            file = zeit.cms.interfaces.ICMSContent(uniqueId)
+        file = zeit.cms.interfaces.ICMSContent(uniqueId)
         self.browser.getControl(name='form.{}'.format(field)).add_file(
             file.open(), 'image/jpeg', uniqueId.split('/')[-1])
 
@@ -84,11 +83,8 @@ class ImageGroupGhostTest(
         self.set_title('New Hampshire')
         self.upload_primary_image('new-hampshire-artikel.jpg')
         self.save_imagegroup()
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                self.assertEqual(1, len(wc))
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        self.assertEqual(1, len(wc))
 
 
 class ImageGroupPublishTest(zeit.cms.testing.BrowserTestCase):
@@ -118,9 +114,7 @@ class ImageGroupBrowserTest(
     layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_traversing_thumbnail_yields_images(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                create_image_group_with_master_image()
+        create_image_group_with_master_image()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/group/thumbnails/square/@@raw')
@@ -131,8 +125,7 @@ class ImageGroupBrowserTest(
         self.upload_primary_image('opernball.jpg')
         self.save_imagegroup()
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
+        group = self.repository['imagegroup']
         self.assertEqual(1, len(group.master_images))
         self.assertEqual('desktop', group.master_images[0][0])
         self.assertEqual('opernball.jpg', group.master_images[0][1])
@@ -144,8 +137,7 @@ class ImageGroupBrowserTest(
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.save_imagegroup()
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
+        group = self.repository['imagegroup']
         self.assertEqual(2, len(group.master_images))
         self.assertEqual('mobile', group.master_images[1][0])
         self.assertEqual(
@@ -159,9 +151,7 @@ class ImageGroupBrowserTest(
         self.upload_secondary_image('new-hampshire-artikel.jpg')
         self.upload_tertiary_image('obama-clinton-120x120.jpg')
         self.save_imagegroup()
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
+        group = self.repository['imagegroup']
         self.assertEqual(2, len(group.master_images))
         self.assertEqual(3, len(group.keys()))
         self.assertIn('obama-clinton-120x120.jpg', group.keys())
@@ -207,8 +197,7 @@ class ImageGroupBrowserTest(
                 'testdata/opernball.jpg'),
             'image/jpeg', 'dpa Picture-Alliance-90999280-HighRes.jpg')
         self.save_imagegroup()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
+        group = self.repository['imagegroup']
         self.assertEqual(
             '90999280',
             zeit.content.image.interfaces.IImageMetadata(group).external_id)
@@ -221,9 +210,8 @@ class ImageGroupBrowserTest(
                 'testdata/new-hampshire-artikel.jpg'),
             'image/jpeg', u'föö.jpg'.encode('utf-8'))
         self.save_imagegroup()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
-            self.assertEqual(['foeoe.jpg'], group.keys())
+        group = self.repository['imagegroup']
+        self.assertEqual(['foeoe.jpg'], group.keys())
 
 
 class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
@@ -285,21 +273,16 @@ class ThumbnailBrowserTest(
         self.add_imagegroup()
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
         self.save_imagegroup()
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = self.repository['imagegroup']
+        group = self.repository['imagegroup']
         self.assertIn('thumbnail-source-dsc00109-2.jpg', group)
 
     def test_thumbnail_images_are_hidden_in_content_listing(self):
         self.add_imagegroup()
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
         self.save_imagegroup()
-
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/imagegroup/view.html')
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.assertEqual(
-                ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
-                [x.__name__ for x in self.repository['imagegroup'].values()])
-            self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)
+        self.assertEqual(
+            ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
+            [x.__name__ for x in self.repository['imagegroup'].values()])
+        self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)
