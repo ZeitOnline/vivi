@@ -11,12 +11,11 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
         super(RetractBannerTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            content = ExampleContentType()
-            self.repository['homepage'] = content
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name='homepage')
-            notifier.uniqueId = content.uniqueId
+        content = ExampleContentType()
+        self.repository['homepage'] = content
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='homepage')
+        notifier.uniqueId = content.uniqueId
 
     def tearDown(self):
         notifier = zope.component.getUtility(
