@@ -185,9 +185,8 @@ class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
         self.article_title = 'Ein Test Titel'
         self.ressort_names = ['dossier', 'politik']
         self.article_page = 1
-        with zeit.cms.testing.site(self.getRootFolder()):
-            zeit.cms.content.add.find_or_create_folder('2015', '01')
-            self.repository['2015']['01']['ausgabe'] = volume
+        zeit.cms.content.add.find_or_create_folder('2015', '01')
+        self.repository['2015']['01']['ausgabe'] = volume
         # Now use the mock ITocConnector to mock the archive folders and the
         # article
         toc_connector = zope.component.getUtility(

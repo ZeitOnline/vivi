@@ -44,8 +44,7 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
             """...Portrait...Landscape...iPad...""", b.contents)
 
     def test_saves_imagegroup_reference_via_dynamic_form_field(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['imagegroup'] = create_image_group()
+        self.repository['imagegroup'] = create_image_group()
         self.open_add_form()
         b = self.browser
         b.getControl('Add').click()
@@ -58,8 +57,7 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
             b.contents)
 
     def test_saves_imagegroup_for_dependent_project_in_xml(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['imagegroup'] = create_image_group()
+        self.repository['imagegroup'] = create_image_group()
         self.open_add_form()
         b = self.browser
         b.getControl('Year').value = '2010'
@@ -69,12 +67,11 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
                                                    'imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            volume = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/2010/02/ausgabe')
-            cover_string = '<cover href="http://xml.zeit.de/imagegroup/" ' \
-                           'id="landscape" product_id="ZMLB"/>'
-            self.assertIn(cover_string, lxml.etree.tostring(volume.xml))
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2010/02/ausgabe')
+        cover_string = '<cover href="http://xml.zeit.de/imagegroup/" ' \
+                       'id="landscape" product_id="ZMLB"/>'
+        self.assertIn(cover_string, lxml.etree.tostring(volume.xml))
 
     def test_displays_warning_if_volume_with_same_name_already_exists(self):
         b = self.browser
@@ -101,34 +98,32 @@ class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
         content.year = 2010
         content.volume = 2
         content.product = zeit.cms.content.sources.Product(u'ZEI')
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['testcontent'] = content
-            volume = zeit.content.volume.interfaces.IVolume(content)
+        self.repository['testcontent'] = content
+        volume = zeit.content.volume.interfaces.IVolume(content)
         self.assertEqual(
             u'http://xml.zeit.de/2010/02/ausgabe',
             volume.uniqueId)
 
     def test_adds_centerpage_in_addition_to_volume(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            template = zeit.content.text.python.PythonScript()
-            template.text = """import zeit.content.cp.centerpage
+        template = zeit.content.text.python.PythonScript()
+        template.text = """import zeit.content.cp.centerpage
 cp = zeit.content.cp.centerpage.CenterPage()
 cp.year = context['volume'].year
 cp.volume = context['volume'].volume
 __return(cp)"""
-            self.repository['ausgabe-cp-template'] = template
+        self.repository['ausgabe-cp-template'] = template
+
         self.open_add_form()
         b = self.browser
         b.getControl('Year').value = '2010'
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            cp = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/2010/02/index')
-            self.assertTrue(
-                zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
-            self.assertEqual(2010, cp.year)
-            self.assertEqual(2, cp.volume)
+        cp = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2010/02/index')
+        self.assertTrue(
+            zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
+        self.assertEqual(2010, cp.year)
+        self.assertEqual(2, cp.volume)
 
 
 class TestVolumeCoverWidget(zeit.cms.testing.SeleniumTestCase):
@@ -137,13 +132,12 @@ class TestVolumeCoverWidget(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestVolumeCoverWidget, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            volume = Volume()
-            volume.year = 2015
-            volume.volume = 1
-            volume.product = zeit.cms.content.sources.Product(u'ZEI')
-            zeit.cms.content.add.find_or_create_folder('2015', '01')
-            self.repository['2015']['01']['ausgabe'] = volume
+        volume = Volume()
+        volume.year = 2015
+        volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        zeit.cms.content.add.find_or_create_folder('2015', '01')
+        self.repository['2015']['01']['ausgabe'] = volume
 
     def test_only_one_cover_add_form_is_visible_at_the_time(self):
             s = self.selenium
