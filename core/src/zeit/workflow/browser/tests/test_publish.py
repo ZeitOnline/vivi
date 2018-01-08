@@ -114,10 +114,9 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase):
 
     @property
     def publish_info(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            content = zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/testcontent')
-            return zeit.cms.workflow.interfaces.IPublishInfo(content)
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+        return zeit.cms.workflow.interfaces.IPublishInfo(content)
 
     def test_action_should_not_be_available_on_unpublished_content(self):
         self.publish_info.published = False

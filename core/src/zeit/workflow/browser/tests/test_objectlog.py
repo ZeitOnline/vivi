@@ -12,14 +12,12 @@ class ObjectLog(zeit.cms.testing.BrowserTestCase):
     def test_log_entries_are_grouped_by_date(self):
         testcontent = self.repository['testcontent']
         object_log = zeit.objectlog.interfaces.ILog(testcontent)
-        with zeit.cms.testing.interaction():
-            with zeit.cms.testing.site(self.getRootFolder()):
-                object_log.log('one', timestamp=datetime(
-                    2012, 6, 12, 9, 14, tzinfo=pytz.UTC))
-                object_log.log('two', timestamp=datetime(
-                    2012, 6, 12, 10, 25, tzinfo=pytz.UTC))
-                object_log.log('three', timestamp=datetime(
-                    2012, 6, 13, 12, 8, tzinfo=pytz.UTC))
+        object_log.log('one', timestamp=datetime(
+            2012, 6, 12, 9, 14, tzinfo=pytz.UTC))
+        object_log.log('two', timestamp=datetime(
+            2012, 6, 12, 10, 25, tzinfo=pytz.UTC))
+        object_log.log('three', timestamp=datetime(
+            2012, 6, 13, 12, 8, tzinfo=pytz.UTC))
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@objectlog')
         self.assertEllipsis("""...

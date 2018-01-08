@@ -24,9 +24,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
             self.browser.getLink(url='@@delete.html')
 
     def test_delete_button_is_displayed_for_folder_without_published_objects(self):
-        with testing.site(self.getRootFolder()):
-            folder = self.repository['testing']
-            folder['foo'] = ExampleContentType()
+        folder = self.repository['testing']
+        folder['foo'] = ExampleContentType()
         self.assertFalse(IPublishInfo(folder).published)
         browser = testing.Browser()
         browser.addHeader('Authorization', 'Basic producer:producerpw')
@@ -38,9 +37,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.getControl('Delete')        # 'Delete' button exists
 
     def test_delete_button_is_not_displayed_for_folder_with_published_objects(self):
-        with testing.site(self.getRootFolder()):
-            folder = self.repository['testing']
-            folder['foo'] = content = ExampleContentType()
+        folder = self.repository['testing']
+        folder['foo'] = content = ExampleContentType()
         self.assertFalse(IPublishInfo(folder).published)
         IPublishInfo(content).set_can_publish(CAN_PUBLISH_SUCCESS)
         IPublish(content).publish()
@@ -55,9 +53,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
             browser.getControl('Delete')    # 'Delete' button is missing
 
     def test_delete_button_is_not_displayed_for_folder_with_subfolder(self):
-        with testing.site(self.getRootFolder()):
-            folder = self.repository['online']
-            subfolder = folder['2005']
+        folder = self.repository['online']
+        subfolder = folder['2005']
         self.assertFalse(IPublishInfo(folder).published)
         self.assertFalse(IPublishInfo(subfolder).published)
         browser = testing.Browser()

@@ -19,12 +19,10 @@ class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
         return json.loads(self.browser.contents)
 
     def enable_publish(self, unique_id):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                somalia = zeit.cms.interfaces.ICMSContent(unique_id)
-                workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
-                workflow.urgent = True
-                transaction.commit()
+        somalia = zeit.cms.interfaces.ICMSContent(unique_id)
+        workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
+        workflow.urgent = True
+        transaction.commit()
 
     def test_negative_can_publish_should_return_false(self):
         result = self.call_json(

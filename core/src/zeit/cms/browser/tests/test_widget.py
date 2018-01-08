@@ -31,12 +31,10 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def get_content(self):
         from zeit.cms.checkout.helper import checked_out
         import zeit.cms.interfaces
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                content = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/testcontent')
-                with checked_out(content) as co:
-                    yield co
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+        with checked_out(content) as co:
+            yield co
 
     def test_should_contain_teaser_title(self):
         with self.get_content() as co:

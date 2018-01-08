@@ -2,6 +2,7 @@ from zeit.cms.checkout.helper import checked_out
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.workflow.testing
+import zope.component.hooks
 
 
 class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
@@ -17,24 +18,21 @@ class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Publication scheduled...', b.contents)
 
     def test_updates_last_semantic_change_via_checkbox(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                with checked_out(self.repository['testcontent'],
-                                 semantic_change=True):
-                    pass
-                lsc = zeit.cms.content.interfaces.ISemanticChange(
-                    self.repository['testcontent'])
-                last_change = lsc.last_semantic_change
+        with checked_out(self.repository['testcontent'], semantic_change=True):
+            pass
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['testcontent'])
+        last_change = lsc.last_semantic_change
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent'
                '/@@workflow.html')
         b.getControl('Update last semantic change').selected = True
         b.getControl('Save state only').click()
         self.assertEllipsis('...Updated on...', b.contents)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            lsc = zeit.cms.content.interfaces.ISemanticChange(
-                self.repository['testcontent'])
-            self.assertGreater(lsc.last_semantic_change, last_change)
+        zope.component.hooks.setSite(self.getRootFolder())
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
+            self.repository['testcontent'])
+        self.assertGreater(lsc.last_semantic_change, last_change)
 
     # XXX we don't have a test content which is an asset available (#12013),
     # and using an ImageGroup is too much ZCML hassle

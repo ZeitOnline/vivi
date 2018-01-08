@@ -2,6 +2,7 @@ from datetime import datetime
 import pytz
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zope.component.hooks
 
 
 class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
@@ -37,12 +38,12 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.getControl('Adjust last published').value = '2001-01-07 11:22:33'
         b.getControl('Adjust first released').value = '2001-01-08 11:22:33'
         b.getControl('Apply').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            content = self.repository['testcontent']
-            publish = zeit.cms.workflow.interfaces.IPublishInfo(content)
-            self.assertEqual(
-                datetime(2001, 1, 7, 10, 22, 33, tzinfo=pytz.UTC),
-                publish.date_last_published_semantic)
-            self.assertEqual(
-                datetime(2001, 1, 8, 10, 22, 33, tzinfo=pytz.UTC),
-                publish.date_first_released)
+        zope.component.hooks.setSite(self.getRootFolder())
+        content = self.repository['testcontent']
+        publish = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        self.assertEqual(
+            datetime(2001, 1, 7, 10, 22, 33, tzinfo=pytz.UTC),
+            publish.date_last_published_semantic)
+        self.assertEqual(
+            datetime(2001, 1, 8, 10, 22, 33, tzinfo=pytz.UTC),
+            publish.date_first_released)
