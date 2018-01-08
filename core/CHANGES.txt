@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.2.0 (unreleased)
+3.2.0 (2018-01-08)
 ------------------
 
 - TMS-134: Resolve content without traversal if possible
