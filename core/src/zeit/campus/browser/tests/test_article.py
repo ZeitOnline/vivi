@@ -8,15 +8,13 @@ class StudyCourseTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.campus.testing.LAYER
 
     def test_study_course_can_be_edited(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['campus']['article'] = (
-                    zeit.content.article.testing.create_article())
-                co = zeit.cms.checkout.interfaces.ICheckoutManager(
-                    self.repository['campus']['article']).checkout()
-                body = zeit.content.article.edit.interfaces.IEditableBody(co)
-                block = body.create_item('studycourse')
-                block.__name__ = 'blockname'
+        self.repository['campus']['article'] = (
+            zeit.content.article.testing.create_article())
+        co = zeit.cms.checkout.interfaces.ICheckoutManager(
+            self.repository['campus']['article']).checkout()
+        body = zeit.content.article.edit.interfaces.IEditableBody(co)
+        block = body.create_item('studycourse')
+        block.__name__ = 'blockname'
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/workingcopy/zope.user/article'
@@ -35,20 +33,16 @@ class FacebookTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.campus.testing.LAYER
 
     def get_article(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                return list(wc.values())[0]
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        return list(wc.values())[0]
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
         self.browser
 
     def test_smoke_form_submit_stores_values(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.content.article.testing.create_article()
-                self.repository['campus']['article'] = article
+        article = zeit.content.article.testing.create_article()
+        self.repository['campus']['article'] = article
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository'
