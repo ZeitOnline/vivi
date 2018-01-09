@@ -2,7 +2,6 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import lxml.etree
 import lxml.objectify
-import rwproperty
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
@@ -53,7 +52,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def xml_source(self):
         return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)
 
-    @rwproperty.getproperty
+    @property
     def image_folder(self):
         folder = self._image_folder
         if folder is None:
@@ -62,9 +61,9 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 self.image_folder = folder
         return folder
 
-    @rwproperty.setproperty
-    def image_folder(self, image_folder):
-        self._image_folder = image_folder
+    @image_folder.setter
+    def image_folder(self, value):
+        self._image_folder = value
         self.reload_image_folder()
 
     def reload_image_folder(self):
