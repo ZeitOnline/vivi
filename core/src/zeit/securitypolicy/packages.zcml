@@ -34,9 +34,6 @@
   <include package="zeit.seo" />
   <include package="zeit.seo.browser" />
 
-  <include package="zeit.imp" />
-  <include package="zeit.imp.browser" />
-
   <include package="zeit.brightcove" />
   <include package="zeit.brightcove.json" />
 
