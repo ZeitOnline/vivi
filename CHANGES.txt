@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-134: Be diligent about not creating duplicate slashes
 
 
 3.0.0 (2017-10-04)
