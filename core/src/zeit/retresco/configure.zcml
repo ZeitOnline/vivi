@@ -4,8 +4,20 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
-  <configure zcml:condition="have zeit.retresco.tms">
-    <grok:grok package="." />
+    <grok:grok package=".connection" />
+    <grok:grok package=".convert" />
+    <grok:grok package=".search" />
+
+    <configure zcml:condition="have zeit.retresco.tms">
+      <grok:grok package=".tagger" />
+      <grok:grok package=".whitelist" />
+      <grok:grok package=".browser" />
+      <grok:grok package=".update" />
+    </configure>
+
+    <configure zcml:condition="have zeit.retresco.index_on_checkin">
+      <grok:grok package=".update" />
+    </configure>
 
     <utility factory=".connection.from_product_config" />
     <utility factory=".search.from_product_config" />
@@ -37,7 +49,6 @@
         permission="zope.View"
         />
     </class>
-  </configure>
 
   <permission
     id="zeit.retresco.UpdateIndex"

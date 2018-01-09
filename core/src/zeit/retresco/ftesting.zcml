@@ -5,6 +5,7 @@
    >
 
   <meta:provides feature="zeit.retresco.tms" />
+  <meta:provides feature="zeit.retresco.index_on_checkin" />
 
   <include package="zeit.cms" file="ftesting.zcml" />
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
