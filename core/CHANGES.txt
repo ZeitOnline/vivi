@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.2.2 (unreleased)
+2.2.2 (2018-01-09)
 ------------------
 
 - MAINT: Remove zeit.imp, we've been on zeit.content.image.variants
