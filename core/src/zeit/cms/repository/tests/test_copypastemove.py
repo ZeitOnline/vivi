@@ -31,3 +31,18 @@ class TestDeleteObjectlog(zeit.cms.testing.ZeitCmsTestCase):
     def test_does_not_delete_on_add(self):
         self.repository['second'] = ExampleContentType()
         self.assertFalse(self.delete.called)
+
+
+class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_move_event_has_correct_oldparent(self):
+        move = mock.Mock()
+        self.zca.patch_handler(
+            move, (zope.lifecycleevent.interfaces.IObjectMovedEvent,))
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        zope.copypastemove.interfaces.IObjectMover(content).moveTo(
+            self.repository, 'changed')
+        event = move.call_args[0][0]
+        self.assertEqual(
+            self.repository['online']['2007']['01'], event.oldParent)

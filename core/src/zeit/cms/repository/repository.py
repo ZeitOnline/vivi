@@ -144,6 +144,11 @@ class Container(ContentBase):
 
     def __setitem__(self, name, object):
         '''See interface `IWriteContainer`'''
+        # We need to store oldparent before changing object.uniqueId, since
+        # ContentBase otherwise may start calculating a wrong value.
+        oldparent = object.__parent__
+        oldname = object.__name__
+
         new_id = self._get_id_for_name(name)
         if object.uniqueId is None:
             # This is a new object as it didn't have a uniqueId, yet.
@@ -156,7 +161,7 @@ class Container(ContentBase):
         if new_id == object.uniqueId:
             # Object only needs updating.
             self.repository.addContent(object)
-        elif object.__parent__:
+        elif oldparent:
             # As the object has a parent we assume that it should be moved.
             log.info("Moving %s to %s" % (object.uniqueId, new_id))
             self.connector.move(object.uniqueId, new_id)
@@ -170,8 +175,16 @@ class Container(ContentBase):
 
         self._local_unique_map_data.clear()
         if event:
-            object, event = zope.container.contained.containedEvent(
-                object, self, name)
+            # Just the salient part of zope.container.contained.containedEvent,
+            # since we have to handle oldparent ourselves.
+            object.__parent__ = self
+            object.__name__ = name
+            if oldparent is None or oldname is None:
+                event = zope.lifecycleevent.ObjectAddedEvent(
+                    object, self, name)
+            else:
+                event = zope.lifecycleevent.ObjectMovedEvent(
+                    object, oldparent, oldname, self, name)
             zope.event.notify(event)
 
     def __delitem__(self, name):

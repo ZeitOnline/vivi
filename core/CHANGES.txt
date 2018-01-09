@@ -4,7 +4,7 @@ zeit.cms changes
 3.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-134: Fix ObjectMovedEvent after introducing dynamic parents
 
 
 3.2.0 (2018-01-08)
