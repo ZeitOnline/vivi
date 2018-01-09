@@ -3,13 +3,14 @@ import StringIO
 import persistent
 import zeit.cms.content.dav
 import zeit.cms.interfaces
+import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.content.text.interfaces
-import zope.app.container.contained
+import zope.interface
 
 
-class Text(persistent.Persistent,
-           zope.app.container.contained.Contained):
+class Text(zeit.cms.repository.repository.ContentBase,
+           persistent.Persistent):
 
     zope.interface.implements(zeit.content.text.interfaces.IText,
                               zeit.cms.interfaces.IAsset)

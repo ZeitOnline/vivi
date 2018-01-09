@@ -4,7 +4,7 @@ zeit.content.text changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-134: Update content base class after zeit.cms API change
 
 
 2.2.0 (2017-08-07)

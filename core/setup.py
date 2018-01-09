@@ -19,7 +19,7 @@ setup(
         'mock',
         'persistent',
         'setuptools',
-        'zeit.cms>=2.15.0.dev0',
+        'zeit.cms>=3.2.0.dev0',
         'zeit.connector',
         'zope.app.container',
         'zope.app.form',
