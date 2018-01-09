@@ -501,8 +501,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         IRenderedArea(self.area).values()
         self.assertEqual(
-            'NOT (uniqueId:"http://xml.zeit.de/t2"'
-            ' OR uniqueId:"http://xml.zeit.de/t1")',
+            'NOT (uniqueId:"http://xml.zeit.de/t1"'
+            ' OR uniqueId:"http://xml.zeit.de/t2")',
             self.solr.search.call_args[1]['fq'])
 
     def test_elasticsearch_content_query_filters_duplicates(self):
@@ -517,8 +517,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         IRenderedArea(self.area).values()
         self.assertEqual(
-            {'query': {'bool': {'must_not': [{'match': {'url': u'/t2'}},
-                                             {'match': {'url': u'/t1'}}],
+            {'query': {'bool': {'must_not': [{'match': {'url': u'/t1'}},
+                                             {'match': {'url': u'/t2'}}],
                                 'must': {'query_string': {'query': u'raw'}}}}},
             elasticsearch.search.call_args[0][0])
 
