@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.8.1 (unreleased)
+2.8.1 (2018-01-09)
 ------------------
 
 - MAINT: Remove dependency on zeit.imp permissions, so we can stop
