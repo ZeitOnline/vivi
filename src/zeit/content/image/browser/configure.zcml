@@ -309,7 +309,6 @@
     />
 
   <gocept:pagelet
-    zcml:condition="have zeit.content.image.variants"
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="variant.html"
@@ -319,7 +318,6 @@
     />
 
   <browser:menuItem
-    zcml:condition="have zeit.content.image.variants"
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     action="@@variant.html"
