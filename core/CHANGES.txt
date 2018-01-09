@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.12.1 (unreleased)
+2.12.1 (2018-01-09)
 -------------------
 
 - MAINT: Remove feature toggle ``zeit.brightcove.write_on_checkin``,
