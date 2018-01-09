@@ -7,8 +7,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
-  <meta:provides feature="zeit.brightcove.write_on_checkin" />
-
   <include package="zeit.brightcove" />
   <include package="zeit.brightcove.json" />
 

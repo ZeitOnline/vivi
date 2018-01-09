@@ -28,7 +28,6 @@
     />
 
   <subscriber
-    zcml:condition="have zeit.brightcove.write_on_checkin"
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
     handler=".update.export_video" />
