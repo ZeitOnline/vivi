@@ -235,9 +235,9 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         image_sources = self._entries_container.xpath('block/image/@src')
         unique_id = None
         for path in image_sources:
-            if path.startswith('/cms/work'):
-                unique_id = 'http://xml.zeit.de/%s' % path[9:]
-            elif path.startswith('http://xml.zeit.de'):
+            if path.startswith(u'/cms/work/'):
+                unique_id = zeit.cms.interfaces.ID_NAMESPACE + path[10:]
+            elif path.startswith(zeit.cms.interfaces.ID_NAMESPACE):
                 unique_id = path
             if unique_id is not None:
                 break
