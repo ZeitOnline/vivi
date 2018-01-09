@@ -96,11 +96,7 @@ class AddForm(FormBase,
     def next_view(self):
         if self._created_object.display_type == INFOGRAPHIC_DISPLAY_TYPE:
             return 'view.html'
-        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.image.variants'):
-            return 'variant.html'
-        else:
-            return 'view.html'
+        return 'variant.html'
 
     def setUpWidgets(self, *args, **kw):
         super(AddForm, self).setUpWidgets(*args, **kw)
@@ -247,9 +243,6 @@ class DefaultView(zeit.cms.browser.view.Base):
 
     def __call__(self):
         view = '@@variant.html'
-        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.image.variants'):
-            view = '@@view.html'
         if self.context.display_type == INFOGRAPHIC_DISPLAY_TYPE:
             view = '@@view.html'
         self.request.response.redirect(self.url(self.context, view))
