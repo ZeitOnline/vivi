@@ -32,14 +32,14 @@ thumbnails a bounding box is defined in which the image is placed into.
 ...     zeit.content.image.interfaces.ITransform, transform)
 True
 >>> transform
-<zeit.content.image.transform.ImageTransform object at 0x...>
+<zeit.content.image.transform.ImageTransform...>
 
 The transform's `thumbnail` method creates thumbnails and returns a new IImage
 object:
 
 >>> thumb = transform.thumbnail(100, 100)
 >>> thumb
-<zeit.content.image.image.TemporaryImage object at 0x...>
+<zeit.content.image.image.TemporaryImage...>
 
 Note that the thumbnail method doesn't exactly sacle to the given width/height
 but uses this as a bounding box:
@@ -51,7 +51,7 @@ It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
 >>> transform.thumbnail(100, 100, PIL.Image.NEAREST)
-<zeit.content.image.image.TemporaryImage object at 0x...>
+<zeit.content.image.image.TemporaryImage...>
 
 Simple resize
 +++++++++++++
@@ -84,7 +84,7 @@ It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
 >>> transform.resize(100, 100, PIL.Image.NEAREST)
-<zeit.content.image.image.TemporaryImage object at 0x...>
+<zeit.content.image.image.TemporaryImage...>
 
 
 Persistent Thumbnails
@@ -99,7 +99,7 @@ be adapted to IPersistentThumbnail:
 The persistent thumbnail is an image itself:
 
 >>> persistent_thumbnail
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 
 It always has 50x50 as bounding box so far:
 
