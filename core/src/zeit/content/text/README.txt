@@ -9,7 +9,7 @@ Implementation
 >>> import zeit.content.text.text
 >>> text = zeit.content.text.text.Text()
 >>> text
-<zeit.content.text.text.Text object at 0x...>
+<zeit.content.text.text.Text...>
 >>> text.text = u'Mary had a little lamb.'
 >>> text.text
 u'Mary had a little lamb.'
@@ -92,7 +92,7 @@ Let's get the text from the repository:
 
 >>> text = repository['atext']
 >>> text
-<zeit.content.text.text.Text object at 0x...>
+<zeit.content.text.text.Text...>
 >>> text.text
 u'Mary had a little lamb \u2014 and is happy.'
 >>> text.encoding
