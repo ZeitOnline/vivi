@@ -452,7 +452,7 @@ class ImageStep(ConversionStep):
         return new_node
 
     def to_xml(self, node):
-        repository_url = self.url(self.repository)
+        repository_url = self.url(self.repository) + '/'
         url = node.get('src')
 
         new_node = None
