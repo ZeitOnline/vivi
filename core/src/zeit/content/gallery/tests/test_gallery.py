@@ -1,3 +1,4 @@
+import transaction
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.gallery
@@ -34,6 +35,7 @@ class TestEntryMetadata(zeit.cms.testing.FunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         gallery.image_folder = repository['2007']
         zeit.content.gallery.testing.add_image('2007', '01.jpg')
+        transaction.commit()
         gallery.reload_image_folder()
         self.gallery = gallery
 
@@ -81,6 +83,7 @@ class TestVisibleEntryCount(zeit.cms.testing.FunctionalTestCase):
         entries = {'01.jpg': None, '02.jpg': 'image-only', '03.jpg': 'hidden'}
         for key in entries:
             zeit.content.gallery.testing.add_image('2007', key)
+        transaction.commit()
         gallery.reload_image_folder()
         for key, layout in entries.items():
             entry = gallery[key]

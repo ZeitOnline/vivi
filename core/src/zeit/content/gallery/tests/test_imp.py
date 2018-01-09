@@ -1,9 +1,9 @@
 import PIL
+import transaction
 import zeit.cms.testing
 import zeit.content.gallery.gallery
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
-import zope.component
 
 
 class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
@@ -13,11 +13,10 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(TestGalleryStorer, self).setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        gallery.image_folder = repository['2007']
+        gallery.image_folder = self.repository['2007']
         zeit.content.gallery.testing.add_image('2007', '01.jpg')
         zeit.content.gallery.testing.add_image('2007', '02.jpg')
+        transaction.commit()
         gallery.reload_image_folder()
         self.gallery = gallery
 
