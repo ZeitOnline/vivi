@@ -2,10 +2,11 @@ zeit.retresco changes
 =====================
 
 
-1.14.1 (unreleased)
+1.15.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-136: Add feature toggle ``zeit.retresco.index_on_checkin`` so we
+  can selectively start to index on checkin while still using intrafind
 
 
 1.14.0 (2018-01-05)
