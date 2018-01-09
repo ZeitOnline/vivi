@@ -178,7 +178,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
     class=".imp.Imp"
-    permission="zeit.imp.Use"
+    permission="zope.View"
     menu="zeit-context-views" title="Transform"
     />
 
@@ -187,7 +187,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-scaled"
     class=".imp.ScaledImage"
-    permission="zeit.imp.Use"
+    permission="zope.View"
     />
 
   <browser:page
@@ -203,7 +203,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-image-bar"
     class=".imp.ImageBar"
-    permission="zeit.imp.Use"
+    permission="zope.View"
     />
 
   <!-- ticket -->

@@ -4,7 +4,9 @@ zeit.content.gallery changes
 2.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Remove dependency on zeit.imp permissions, so we can stop
+  loading its ZCML completely in production (we've been on
+  zeit.content.image.variants for quite some time now)
 
 
 2.8.0 (2017-10-04)
