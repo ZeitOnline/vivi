@@ -29,7 +29,6 @@ setup(
         'zeit.content.rawxml',
         'zeit.content.text',
         'zeit.content.video',
-        'zeit.imp',
         'zeit.invalidate',
         'zeit.seo>=1.6.0.dev0',
         'zope.app.zcmlfiles',
