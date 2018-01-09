@@ -9,7 +9,7 @@ adapted to IMasterImage to get the master image:
 >>> group = zeit.content.image.testing.create_image_group_with_master_image()
 >>> image = zeit.content.image.interfaces.IMasterImage(group)
 >>> image
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 >>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
 True
 
@@ -25,7 +25,7 @@ An image group w/o master image should promote its largest image to master:
 
 >>> group = zeit.content.image.testing.create_image_group()
 >>> zeit.content.image.interfaces.IMasterImage(group)
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 
 .. [#functional]
 

@@ -31,13 +31,13 @@ Test the image xml reference:
 When the image is adapted to ILocalContent we'll get a LocalImage:
 
 >>> image
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 >>> image.mimeType
 'image/jpeg'
 >>> import zeit.cms.workingcopy.interfaces
 >>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
 >>> local
-<zeit.content.image.image.LocalImage object at 0x...>
+<zeit.content.image.image.LocalImage...>
 >>> local.__name__
 u'DSC00109_2.JPG'
 >>> local.mimeType
