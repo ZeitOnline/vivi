@@ -322,7 +322,7 @@ class Repository(persistent.Persistent, Container):
         return self
 
     def _get_uncontained_copy(self, unique_id):
-        log.debug("Getting resource %r" % unique_id)
+        log.debug('Getting resource %s' % unique_id)
         resource = self.connector[unique_id]
         content = zeit.cms.interfaces.ICMSContent(resource)
         content.__name__ = resource.__name__
