@@ -4,7 +4,8 @@ zeit.brightcove changes
 2.12.2 (unreleased)
 -------------------
 
-- BUG-829: Log BC error sub-code for playback API
+- BUG-829: Log BC error sub-code for playback API,
+  log whole response if it contains no poster image
 
 
 2.12.1 (2018-01-09)

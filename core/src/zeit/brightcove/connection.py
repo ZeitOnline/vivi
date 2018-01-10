@@ -233,7 +233,11 @@ class PlaybackAPI(object):
             timeout=self.timeout)
         log.debug(dump_request(response))
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        if not data.get('poster'):
+            log.warning(
+                'No poster found for %s: %s', path, dump_request(response))
+        return data
 
 
 def playback_from_product_config():
