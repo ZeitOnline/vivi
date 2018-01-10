@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.12.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-829: Log BC error sub-code for playback API
 
 
 2.12.1 (2018-01-09)
