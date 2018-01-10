@@ -43,7 +43,7 @@
         />
     </class>
 
-    <class class=".connection.Topicpages">
+    <class class=".whitelist.Topicpages">
       <require
         interface="zeit.cms.tagging.interfaces.ITopicpages"
         permission="zope.View"

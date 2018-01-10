@@ -321,15 +321,6 @@ def _build_topic_redirects(topicpages):
     return output.getvalue()
 
 
-class Topicpages(grok.GlobalUtility):
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITopicpages)
-
-    def get_topics(self, start=0, rows=25):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        return tms.get_topicpages(start, rows)
-
-
 class JSONTypeConverter(object):
     """Since `requests` does not allow plugging in a different JSON encoder,
     we perform custom type conversion on the python structure _before_ we pass

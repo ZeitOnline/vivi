@@ -23,3 +23,12 @@ class Whitelist(grok.GlobalUtility):
     @property
     def _tms(self):
         return zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+
+
+class Topicpages(grok.GlobalUtility):
+
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITopicpages)
+
+    def get_topics(self, start=0, rows=25):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        return tms.get_topicpages(start, rows)
