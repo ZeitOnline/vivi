@@ -59,7 +59,10 @@ def index_async(uniqueId):
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
-        index(context, enrich=True)
+        conf = zope.app.appsetup.appsetup.getConfigContext()
+        index(
+            context, enrich=True,
+            update_keywords=conf.hasFeature('zeit.retresco.index_on_checkin'))
 
 
 def index(content, enrich=False, update_keywords=False, publish=False):

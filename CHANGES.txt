@@ -5,7 +5,8 @@ zeit.retresco changes
 1.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-136: While ``index_on_checkin`` toggle is enabled, store the
+  analyzed TMS keywords in vivi on checkin (like we would do in bulk indexing)
 
 
 1.15.0 (2018-01-10)
