@@ -140,11 +140,16 @@ class CommonMetadata(Converter):
     entity_types.update({x: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
 
     def __call__(self):
+        section = None
+        if self.context.ressort:
+            section = u'/' + self.context.ressort
+            if self.context.sub_ressort:
+                section += u'/' + self.context.sub_ressort
         result = {
             'title': self.context.title,
             'supertitle': self.context.supertitle,
             'teaser': self.context.teaserText or self.context.title,
-            'section': self.context.ressort,
+            'section': section,
             # Only for display in TMS UI.
             'author': u', '.join(
                 [x.target.display_name for x in self.context.authorships] or
