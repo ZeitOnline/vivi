@@ -104,8 +104,7 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                         log.info(
                             'Skip publish for %s, missing required fields',
                             content.uniqueId)
-        except (zeit.retresco.interfaces.TMSError,
-                zeit.retresco.interfaces.TechnicalError):
+        except Exception:
             log.warning('Error indexing %s', content.uniqueId, exc_info=True)
             continue
 
