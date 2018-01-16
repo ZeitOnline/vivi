@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.15.4 (unreleased)
+1.15.4 (2018-01-16)
 -------------------
 
 - TMS-136: Fix recursive descent through folders
