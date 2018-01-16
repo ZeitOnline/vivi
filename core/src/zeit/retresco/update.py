@@ -132,9 +132,7 @@ def index_parallel(unique_id, enrich=False, publish=False):
                 'Skip indexing %s, it is an image/group', item.uniqueId)
             continue
         if zeit.cms.repository.interfaces.ICollection.providedBy(item):
-            index_parallel.delay(
-                item.uniqueId,
-                enrich=enrich, update_keywords=enrich, publish=publish)
+            index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
         else:
             start = time.time()
             index(item, enrich=enrich, update_keywords=enrich, publish=publish)
