@@ -1,4 +1,5 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.retresco.interfaces import TechnicalError
 import mock
 import transaction
 import zeit.cms.checkout.helper
@@ -156,3 +157,39 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             dict(enrich=True, update_keywords=True, publish=True),
             self.index.call_args[1])
+
+
+class RetryTest(zeit.retresco.testing.FunctionalTestCase):
+
+    layer = zeit.retresco.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(RetryTest, self).setUp()
+
+        self.tms = mock.Mock()
+        self.tms.enrich.return_value = {}
+        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+
+        self.retry_patch = mock.patch(
+            'zeit.cms.celery.Task.default_retry_delay', new=None)
+        self.retry_patch.start()
+
+    def tearDown(self):
+        self.retry_patch.stop()
+        super(RetryTest, self).tearDown()
+
+    def test_retries_on_technical_error(self):
+        self.tms.enrich.side_effect = [TechnicalError('internal'), None]
+        result = zeit.retresco.update.index_async.delay(
+            'http://xml.zeit.de/testcontent')
+        transaction.commit()
+        result.get()
+        self.assertEqual(2, self.tms.enrich.call_count)
+
+    def test_no_retry_on_other_errors(self):
+        self.tms.enrich.side_effect = RuntimeError('provoked')
+        result = zeit.retresco.update.index_async.delay(
+            'http://xml.zeit.de/testcontent')
+        transaction.commit()
+        result.get()
+        self.assertEqual(1, self.tms.enrich.call_count)
