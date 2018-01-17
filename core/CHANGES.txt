@@ -4,7 +4,9 @@ zeit.cms changes
 3.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Put repository tree viewlet behind feature toggle
+  ``zeit.cms.repository.tree``, which we leave disabled everywhere,
+  since it's unused and can be very slow due to lots of DAV traversal
 
 
 3.2.1 (2018-01-09)

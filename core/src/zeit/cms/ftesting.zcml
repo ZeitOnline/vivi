@@ -9,6 +9,7 @@
 
   <!-- Enable all feature toggles in tests. -->
   <meta:provides feature="zeit.cms.decentral-syndication" />
+  <meta:provides feature="zeit.cms.repository.tree" />
 
 
   <include package="zeit.cms" file="application.zcml" />

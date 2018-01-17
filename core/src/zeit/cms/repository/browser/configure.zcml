@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
   <browser:resourceDirectory name="zeit.cms.repository" directory="resources"/>
@@ -26,6 +27,7 @@
   <!-- Sidebar/Navigation tree -->
 
   <browser:viewlet
+    zcml:condition="have zeit.cms.repository.tree"
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="10_navtree"
