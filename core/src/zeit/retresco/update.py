@@ -52,17 +52,20 @@ def unindex_on_remove(context, event):
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
-@zeit.cms.celery.task(queuename='search')
-def index_async(uniqueId):
+@zeit.cms.celery.task(bind=True, queuename='search')
+def index_async(self, uniqueId):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
     else:
         conf = zope.app.appsetup.appsetup.getConfigContext()
-        index(
-            context, enrich=True,
-            update_keywords=conf.hasFeature('zeit.retresco.index_on_checkin'))
+        try:
+            index(
+                context, enrich=True, update_keywords=conf.hasFeature(
+                    'zeit.retresco.index_on_checkin'))
+        except zeit.retresco.interfaces.TechnicalError:
+            self.retry()
 
 
 def index(content, enrich=False, update_keywords=False, publish=False):
@@ -106,19 +109,26 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                         log.info(
                             'Skip publish for %s, missing required fields',
                             content.uniqueId)
+        except zeit.retresco.interfaces.TechnicalError, e:
+            log.info('Retrying %s due to %r', content.uniqueId, e)
+            raise
         except Exception:
-            log.warning('Error indexing %s', content.uniqueId, exc_info=True)
+            log.warning('Error indexing %s, giving up',
+                        content.uniqueId, exc_info=True)
             continue
 
 
-@zeit.cms.celery.task(queuename='search')
-def unindex_async(uuid):
+@zeit.cms.celery.task(bind=True, queuename='search')
+def unindex_async(self, uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    conn.delete_id(uuid)
+    try:
+        conn.delete_id(uuid)
+    except zeit.retresco.interfaces.TechnicalError:
+        self.retry()
 
 
-@zeit.cms.celery.task(queuename='manual')
-def index_parallel(unique_id, enrich=False, publish=False):
+@zeit.cms.celery.task(bind=True, queuename='manual')
+def index_parallel(self, unique_id, enrich=False, publish=False):
     content = zeit.cms.interfaces.ICMSContent(unique_id)
     if zeit.cms.repository.interfaces.ICollection.providedBy(content):
         children = content.values()
@@ -131,9 +141,14 @@ def index_parallel(unique_id, enrich=False, publish=False):
             index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
     else:
         start = time.time()
-        index(content, enrich=enrich, update_keywords=enrich, publish=publish)
-        stop = time.time()
-        log.info('Processed %s in %s', content.uniqueId, stop - start)
+        try:
+            index(item, enrich=enrich, update_keywords=enrich,
+                  publish=publish)
+        except zeit.retresco.interfaces.TechnicalError:
+            self.retry()
+        else:
+            stop = time.time()
+            log.info('Processed %s in %s', item.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
