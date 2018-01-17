@@ -208,8 +208,9 @@ class PlaybackAPI(object):
         try:
             data.update(self._request('GET /videos/%s' % id))
         except requests.exceptions.RequestException as e:
-            log.warning('Error while retrieving video %s: %s', id,
-                        getattr(e.response, 'text'), exc_info=True)
+            log.warning(
+                'Error while retrieving video %s: %s', id,
+                getattr(e.response, 'text', '<no message>'), exc_info=True)
             return data
 
         data['video_still'] = data.get('poster')

@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.12.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Fix error response logging
 
 
 2.12.2 (2018-01-10)
