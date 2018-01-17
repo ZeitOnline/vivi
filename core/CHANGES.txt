@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.2.2 (unreleased)
+3.2.2 (2018-01-17)
 ------------------
 
 - MAINT: Put repository tree viewlet behind feature toggle
