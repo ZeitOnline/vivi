@@ -2,7 +2,6 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import mock
 import transaction
 import zeit.cms.checkout.helper
-import zeit.cms.repository
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.testing
@@ -10,7 +9,6 @@ import zeit.retresco.update
 import zope.component
 import zope.event
 import zope.lifecycleevent
-import zope.security.management
 
 
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
@@ -23,11 +21,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_creating_content_should_index(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['t1'] = ExampleContentType()
-        self.tms.enrich.assert_called_with(repository['t1'])
-        self.tms.index.assert_called_with(repository['t1'], None)
+        self.repository['t1'] = ExampleContentType()
+        self.tms.enrich.assert_called_with(self.repository['t1'])
+        self.tms.index.assert_called_with(self.repository['t1'], None)
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
