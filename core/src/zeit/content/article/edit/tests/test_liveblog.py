@@ -25,3 +25,27 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
         zeit.cms.workflow.interfaces.IPublish(article).publish()
         self.assertEqual(lsc, ISemanticChange(article).last_semantic_change)
+
+class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def get_liveblog(self):
+        from zeit.content.article.edit.liveblog import Liveblog
+        import lxml.objectify
+        liveblog = Liveblog(None, lxml.objectify.E.liveblog())
+        return liveblog
+
+    def test_liveblog_should_be_set(self):
+        liveblog = self.get_liveblog()
+        liveblog.blog_id = u'290'
+        liveblog.invalid_attribute = 'this should not be set'
+        self.assertEqual(u'290', liveblog.xml.xpath('.')[0].get('blogID'))
+        self.assertIsNone(liveblog.xml.xpath('.')[0].get('version'))
+        self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
+
+    def test_liveblog3_should_be_set(self):
+        liveblog = self.get_liveblog()
+        liveblog.blog_id = u'290'
+        liveblog.version = u'3'
+        self.assertEqual(u'290', liveblog.xml.xpath('.')[0].get('blogID'))
+        self.assertEqual(u'3', liveblog.xml.xpath('.')[0].get('version'))
+        self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
