@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.10.4 (unreleased)
+2.10.4 (2018-01-19)
 -------------------
 
 - TMS-28: Support zeit.web tests by parsing `/head/rankedTags` into the
