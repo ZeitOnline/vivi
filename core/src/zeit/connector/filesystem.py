@@ -299,6 +299,10 @@ class Connector(object):
             value += lxml.etree.tostring(tags[0])
             value += '</tag:rankedTags>'
             properties[(
+                'keywords',
+                'http://namespaces.zeit.de/CMS/tagging')] = value
+            # BBB remove when zeit.intrafind is retired
+            properties[(
                 'rankedTags',
                 'http://namespaces.zeit.de/CMS/tagging')] = value
 

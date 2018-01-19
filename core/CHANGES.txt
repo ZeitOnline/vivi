@@ -4,7 +4,8 @@ CHANGES
 2.10.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-28: Support zeit.web tests by parsing `/head/rankedTags` into the
+  TMS `keyword` property
 
 
 2.10.3 (2017-11-01)
