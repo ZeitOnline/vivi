@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <box-layouts>
   <layout id="zar-profile" available="zeit.arbeit.interfaces.IZARContent">Zeit Arbeit Profilbox</layout>
+  <layout id="news-table" available="zeit.cms.section.interfaces.IZONContent">News-Artikel Tabelle</layout>
 </box-layouts>
