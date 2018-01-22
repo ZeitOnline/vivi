@@ -131,7 +131,7 @@ def index_parallel(unique_id, enrich=False, publish=False):
             index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
     else:
         start = time.time()
-        index(item, enrich=enrich, update_keywords=enrich, publish=publish)
+        index(content, enrich=enrich, update_keywords=enrich, publish=publish)
         stop = time.time()
         log.info('Processed %s in %s', item.uniqueId, stop - start)
 
