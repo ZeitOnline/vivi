@@ -120,26 +120,20 @@ def unindex_async(uuid):
 @zeit.cms.celery.task(queuename='manual')
 def index_parallel(unique_id, enrich=False, publish=False):
     content = zeit.cms.interfaces.ICMSContent(unique_id)
-
     if zeit.cms.repository.interfaces.ICollection.providedBy(content):
         children = content.values()
-    else:
-        children = [content]
-
-    for item in children:
-        log.debug('Looking at %s', item.uniqueId)
-        if (zeit.content.image.interfaces.IImageGroup.providedBy(item) or
-                zeit.content.image.interfaces.IImage.providedBy(item)):
-            log.debug(
-                'Skip indexing %s, it is an image/group', item.uniqueId)
-            continue
-        if zeit.cms.repository.interfaces.ICollection.providedBy(item):
+        for item in children:
+            if (zeit.content.image.interfaces.IImageGroup.providedBy(item) or
+                    zeit.content.image.interfaces.IImage.providedBy(item)):
+                log.debug(
+                    'Skip indexing %s, it is an image/group', item.uniqueId)
+                continue
             index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
-        else:
-            start = time.time()
-            index(item, enrich=enrich, update_keywords=enrich, publish=publish)
-            stop = time.time()
-            log.info('Processed %s in %s', item.uniqueId, stop - start)
+    else:
+        start = time.time()
+        index(item, enrich=enrich, update_keywords=enrich, publish=publish)
+        stop = time.time()
+        log.info('Processed %s in %s', item.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
