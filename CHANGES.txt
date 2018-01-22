@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.15.5 (unreleased)
+1.15.5 (2018-01-22)
 -------------------
 
 - TMS-136: Create separate job for each entry instead of processing
