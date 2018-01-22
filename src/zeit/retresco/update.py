@@ -74,8 +74,10 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        log.info('Updating: %s, enrich: %s, keywords: %s, publish: %s',
-                 content.uniqueId, enrich, update_keywords, publish)
+        uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id',
+                       '<no-uuid>')
+        log.info('Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
+                 content.uniqueId, uuid, enrich, update_keywords, publish)
         try:
             if enrich:
                 log.debug('Enriching: %s', content.uniqueId)
