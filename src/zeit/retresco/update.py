@@ -133,7 +133,7 @@ def index_parallel(unique_id, enrich=False, publish=False):
         start = time.time()
         index(content, enrich=enrich, update_keywords=enrich, publish=publish)
         stop = time.time()
-        log.info('Processed %s in %s', item.uniqueId, stop - start)
+        log.info('Processed %s in %s', content.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
