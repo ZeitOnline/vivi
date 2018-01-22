@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.15.6 (unreleased)
+1.15.6 (2018-01-22)
 -------------------
 
 - Fix typo
