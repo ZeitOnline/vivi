@@ -1,8 +1,8 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.retresco.interfaces import TechnicalError
 import mock
 import transaction
 import zeit.cms.checkout.helper
-import zeit.cms.repository
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.testing
@@ -10,7 +10,6 @@ import zeit.retresco.update
 import zope.component
 import zope.event
 import zope.lifecycleevent
-import zope.security.management
 
 
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
@@ -23,11 +22,9 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_creating_content_should_index(self):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['t1'] = ExampleContentType()
-        self.tms.enrich.assert_called_with(repository['t1'])
-        self.tms.index.assert_called_with(repository['t1'], None)
+        self.repository['t1'] = ExampleContentType()
+        self.tms.enrich.assert_called_with(self.repository['t1'])
+        self.tms.index.assert_called_with(self.repository['t1'], None)
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -160,3 +157,39 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             dict(enrich=True, update_keywords=True, publish=True),
             self.index.call_args[1])
+
+
+class RetryTest(zeit.retresco.testing.FunctionalTestCase):
+
+    layer = zeit.retresco.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(RetryTest, self).setUp()
+
+        self.tms = mock.Mock()
+        self.tms.enrich.return_value = {}
+        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+
+        self.retry_patch = mock.patch(
+            'zeit.cms.celery.Task.default_retry_delay', new=None)
+        self.retry_patch.start()
+
+    def tearDown(self):
+        self.retry_patch.stop()
+        super(RetryTest, self).tearDown()
+
+    def test_retries_on_technical_error(self):
+        self.tms.enrich.side_effect = [TechnicalError('internal'), None]
+        result = zeit.retresco.update.index_async.delay(
+            'http://xml.zeit.de/testcontent')
+        transaction.commit()
+        result.get()
+        self.assertEqual(2, self.tms.enrich.call_count)
+
+    def test_no_retry_on_other_errors(self):
+        self.tms.enrich.side_effect = RuntimeError('provoked')
+        result = zeit.retresco.update.index_async.delay(
+            'http://xml.zeit.de/testcontent')
+        transaction.commit()
+        result.get()
+        self.assertEqual(1, self.tms.enrich.call_count)
