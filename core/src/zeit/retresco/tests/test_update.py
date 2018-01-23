@@ -134,3 +134,29 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish()
+
+
+class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(IndexParallelTest, self).setUp()
+        self.index_patch = mock.patch('zeit.retresco.update.index')
+        self.index = self.index_patch.start()
+
+    def tearDown(self):
+        self.index_patch.stop()
+        super(IndexParallelTest, self).tearDown()
+
+    def test_should_create_job_per_folder_entry(self):
+        zeit.retresco.update.index_parallel.delay(
+            'http://xml.zeit.de/online/2007/')
+        self.assertEqual(54, self.index.call_count)
+
+    def test_should_pass_parameters_through_recursion(self):
+        self.repository['testing']['foo'] = ExampleContentType()
+        zeit.retresco.update.index_parallel.delay(
+            'http://xml.zeit.de/testing/',
+            enrich=True, publish=True)
+        self.assertEqual(
+            dict(enrich=True, update_keywords=True, publish=True),
+            self.index.call_args[1])
