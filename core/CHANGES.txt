@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.15.8 (unreleased)
+1.15.8 (2018-01-23)
 -------------------
 
 - TMS-149: Retry indexing on technical errors
