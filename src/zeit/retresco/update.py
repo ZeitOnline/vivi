@@ -142,13 +142,13 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
     else:
         start = time.time()
         try:
-            index(item, enrich=enrich, update_keywords=enrich,
+            index(content, enrich=enrich, update_keywords=enrich,
                   publish=publish)
         except zeit.retresco.interfaces.TechnicalError:
             self.retry()
         else:
             stop = time.time()
-            log.info('Processed %s in %s', item.uniqueId, stop - start)
+            log.info('Processed %s in %s', content.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
