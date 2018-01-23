@@ -91,6 +91,11 @@ ZCML_LAYER = ZCMLLayer(
     zeit.content.image.testing.product_config)
 
 
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
+    name='CeleryLayer', bases=(ZCML_LAYER,))
+CELERY_LAYER.queues += ('search',)
+
+
 MOCK_ZCML_LAYER = plone.testing.Layer(
     bases=(ZCML_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockZCMLLayer',
     module=__name__)
