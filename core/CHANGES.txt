@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.15.10 (unreleased)
+1.15.10 (2018-01-24)
 --------------------
 
 - FIX: Handle missing DAV property without breaking
