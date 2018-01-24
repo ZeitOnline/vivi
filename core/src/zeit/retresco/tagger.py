@@ -50,8 +50,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __iter__(self):
         tags = self.to_xml()
-        if tags is None:
-            return iter(())
         return (Tag(x.text, x.get('type', '')).code
                 for x in tags.iterchildren())
 
@@ -65,7 +63,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __setitem__(self, key, value):
         tags = self.to_xml()
-        if tags is None:
+        if tags is self.EMPTY_NODE:
             # XXX the handling of namespaces here seems chaotic
             E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
             root = E.rankedTags()
@@ -77,8 +75,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def values(self):
         tags = self.to_xml()
-        if tags is None:
-            return iter(())
         return (self._create_tag(unicode(node), node.get('type', ''))
                 for node in tags.iterchildren())
 
@@ -145,20 +141,22 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         disabled = self.disabled + (key,)
         dav[DISABLED_PROPERTY] = DISABLED_SEPARATOR.join(disabled)
 
+    EMPTY_NODE = lxml.objectify.XML('<empty/>')
+
     def to_xml(self):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         try:
             tags = lxml.objectify.fromstring(dav.get(KEYWORD_PROPERTY, ''))
         except lxml.etree.XMLSyntaxError:
-            return None
+            return self.EMPTY_NODE
         if tags.tag != '{%s}rankedTags' % KEYWORD_PROPERTY[1]:
-            return None
+            return self.EMPTY_NODE
         return tags.getchildren()[0]
 
     def _find_tag_node(self, key, tags=None):
         if tags is None:
             tags = self.to_xml()
-        if tags is None:
+        if tags is self.EMPTY_NODE:
             raise KeyError(key)
 
         node = [x for x in tags.iterchildren()
