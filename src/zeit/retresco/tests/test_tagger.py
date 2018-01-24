@@ -373,18 +373,18 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         tagger.set_pinned([u'☃Berlin'])
         self.assertEqual(True, next(tagger.values()).pinned)
 
-    def test_to_xml_returns_None_when_no_rankedTags_tag_was_found(self):
+    def test_to_xml_returns_empty_when_no_rankedTags_tag_was_found(self):
         content = create_testcontent()
         tagger = Tagger(content)
-        self.assertEqual(None, tagger.to_xml())
+        self.assertEqual(Tagger.EMPTY_NODE, tagger.to_xml())
 
-    def test_to_xml_returns_None_when_keyword_DAV_property_is_malformed(self):
+    def test_to_xml_returns_empty_when_keyword_DAV_property_is_malformed(self):
         content = create_testcontent()
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         dav[('rankedTags',
              'http://namespaces.zeit.de/CMS/tagging')] = "<foobar/>"
         tagger = Tagger(content)
-        self.assertEqual(None, tagger.to_xml())
+        self.assertEqual(Tagger.EMPTY_NODE, tagger.to_xml())
 
     def test_getitem_raises_key_error_when_no_keywords_are_present(self):
         content = create_testcontent()
