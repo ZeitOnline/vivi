@@ -12,6 +12,9 @@ class Liveblog(zeit.content.article.edit.block.Block):
     blog_id = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'blogID',
         zeit.content.article.edit.interfaces.ILiveblog['blog_id'])
+    version = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'version',
+        zeit.content.article.edit.interfaces.ILiveblog['version'])
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
