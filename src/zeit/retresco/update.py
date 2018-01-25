@@ -73,6 +73,7 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         raise ValueError('enrich is required for update_keywords')
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     stack = [content]
+    errors = []
     while stack:
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
@@ -112,10 +113,12 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         except zeit.retresco.interfaces.TechnicalError, e:
             log.info('Retrying %s due to %r', content.uniqueId, e)
             raise
-        except Exception:
+        except Exception, e:
+            errors.append(e)
             log.warning('Error indexing %s, giving up',
                         content.uniqueId, exc_info=True)
             continue
+    return errors
 
 
 @zeit.cms.celery.task(bind=True, queuename='search')
@@ -142,13 +145,14 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
     else:
         start = time.time()
         try:
-            index(content, enrich=enrich, update_keywords=enrich,
-                  publish=publish)
+            errors = index(content, enrich=enrich, update_keywords=enrich,
+                           publish=publish)
         except zeit.retresco.interfaces.TechnicalError:
             self.retry()
         else:
             stop = time.time()
-            log.info('Processed %s in %s', content.uniqueId, stop - start)
+            if not errors:
+                log.info('Processed %s in %s', content.uniqueId, stop - start)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
