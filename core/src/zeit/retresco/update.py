@@ -132,7 +132,13 @@ def unindex_async(self, uuid):
 
 @zeit.cms.celery.task(bind=True, queuename='manual')
 def index_parallel(self, unique_id, enrich=False, publish=False):
-    content = zeit.cms.interfaces.ICMSContent(unique_id)
+    try:
+        content = zeit.cms.interfaces.ICMSContent(unique_id)
+    except TypeError:
+        log.warning('Could not resolve %s, giving up', unique_id)
+        return
+    except Exception:
+        self.retry()
     if zeit.cms.repository.interfaces.ICollection.providedBy(content):
         children = content.values()
         for item in children:
