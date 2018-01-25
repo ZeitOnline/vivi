@@ -4,7 +4,7 @@ zeit.content.article changes
 3.32.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4296: Add version attribute to liveblog.
 
 
 3.32.1 (2017-11-01)
