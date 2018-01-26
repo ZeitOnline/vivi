@@ -132,8 +132,6 @@ def update_freetext_on_change(context, event):
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectCreatedEvent)
 def update_freetext_on_add(context, event):
-    if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
-        return
     update_author_freetext(context)
 
 

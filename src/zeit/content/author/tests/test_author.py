@@ -1,8 +1,8 @@
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.content.author.author import update_freetext_on_add
-from zeit.content.author.author import update_freetext_on_change
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zope.lifecycleevent import Attributes
-from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
+from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
 import lxml.etree
 import mock
 import pysolr
@@ -10,7 +10,7 @@ import unittest
 import zeit.cms.testing
 import zeit.content.author.author
 import zeit.content.author.testing
-import zope.interface
+import zope.event
 
 
 NONZERO = 3
@@ -35,67 +35,46 @@ class AuthorTest(unittest.TestCase):
                     fulltext=u'William Shakespeare', types=('author',)))
 
 
-class FreetextCopyTest(unittest.TestCase):
+class FreetextCopyTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(FreetextCopyTest, self).setUp()
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
 
     def test_authorships_should_be_copied_to_freetext_on_change(self):
-        content = mock.Mock()
-        author1, author2 = mock.Mock(), mock.Mock()
-        author1.target.display_name = mock.sentinel.author1
-        author2.target.display_name = mock.sentinel.author2
-        content.authorships = (author1, author2)
-        event = ObjectModifiedEvent(
-            content, Attributes(ICommonMetadata, 'authorships'))
-        update_freetext_on_change(content, event)
-        self.assertEqual([mock.sentinel.author1, mock.sentinel.author2],
-                         content.authors)
+        with checked_out(self.repository['testcontent']) as co:
+            co.authorships = [co.authorships.create(self.repository['author'])]
+            zope.event.notify(ObjectModifiedEvent(
+                co, Attributes(ICommonMetadata, 'authorships')))
+            self.assertEqual(('William Shakespeare',), co.authors)
 
     def test_authorships_should_not_be_copied_for_other_field_change(
             self):
-        content = mock.Mock()
-        content.authors = mock.sentinel.unchanged
-        author1, author2 = mock.Mock(), mock.Mock()
-        content.authorships = (author1, author2)
-        event = ObjectModifiedEvent(
-            content, Attributes(ICommonMetadata, 'some-field'))
-        update_freetext_on_change(content, event)
-        self.assertEqual(mock.sentinel.unchanged, content.authors)
+        with checked_out(self.repository['testcontent']) as co:
+            zope.event.notify(ObjectModifiedEvent(
+                co, Attributes(ICommonMetadata, 'title')))
+            self.assertEqual(('',), co.authors)
 
     def test_authorships_should_clear_authors_when_empty(self):
-        content = mock.Mock()
-        content.authors = mock.sentinel.unchanged
-        content.authorships = ()
-        event = ObjectModifiedEvent(
-            content, Attributes(ICommonMetadata, 'authorships'))
-        update_freetext_on_change(content, event)
-        self.assertEqual([], content.authors)
-
-    def test_authorships_should_be_copied_to_freetext_for_subclasses(self):
-        class IArticle(ICommonMetadata):
-            pass
-
-        content = mock.Mock()
-        author1, author2 = mock.Mock(), mock.Mock()
-        author1.target.display_name = mock.sentinel.author1
-        author2.target.display_name = mock.sentinel.author2
-        content.authorships = (author1, author2)
-        event = ObjectModifiedEvent(
-            content, Attributes(IArticle, 'authorships'))
-        update_freetext_on_change(content, event)
-        self.assertEqual([mock.sentinel.author1, mock.sentinel.author2],
-                         content.authors)
+        with checked_out(self.repository['testcontent']) as co:
+            co.authorships = ()
+            zope.event.notify(ObjectModifiedEvent(
+                co, Attributes(ICommonMetadata, 'authorships')))
+            self.assertEqual((), co.authors)
 
     def test_authorships_should_be_copied_to_freetext_on_create(self):
-        content = mock.Mock()
-        zope.interface.alsoProvides(
-            content, zeit.cms.checkout.interfaces.ILocalContent)
-        author1, author2 = mock.Mock(), mock.Mock()
-        author1.target.display_name = mock.sentinel.author1
-        author2.target.display_name = mock.sentinel.author2
-        content.authorships = (author1, author2)
-        event = ObjectCreatedEvent(content)
-        update_freetext_on_add(content, event)
-        self.assertEqual([mock.sentinel.author1, mock.sentinel.author2],
-                         content.authors)
+        content = ExampleContentType()
+        content.authorships = [
+            content.authorships.create(self.repository['author'])]
+        zope.event.notify(ObjectCreatedEvent(content))
+        self.repository['foo'] = content
+        self.assertEqual(
+            ('William Shakespeare',), self.repository['foo'].authors)
 
 
 class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
