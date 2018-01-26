@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Fix object details "edit" link after removing zeit.imp
 
 
 2.8.1 (2018-01-09)
