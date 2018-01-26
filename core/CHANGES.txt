@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.8.1 (unreleased)
+2.8.1 (2018-01-26)
 ------------------
 
 - BUG-834: Fix copying to freetext author property on create
