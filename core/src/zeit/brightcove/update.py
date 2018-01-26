@@ -1,13 +1,16 @@
 from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.content.video.interfaces import IVideo
 import gocept.runner
 import logging
-import zeit.cms.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
+import zeit.cms.celery
 import zeit.cms.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
+import zope.event
+import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)
@@ -58,6 +61,9 @@ class import_video(object):
         folder = self.bcobj.__parent__
         cmsobj = self.cms_class()
         self.bcobj.apply_to_cms(cmsobj)
+        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
+        # preserved.
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         folder[self.bcobj.id] = cmsobj
         self.cmsobj = folder[self.bcobj.id]
 
@@ -84,6 +90,13 @@ class import_video(object):
                 log.warning('Could not checkout %s', self.cmsobj)
             else:
                 self.bcobj.apply_to_cms(co)
+                # This is a bit coarse, but it would be quite fiddly to
+                # determine which attributes really have changed, and probably
+                # not worth the effort anyway.
+                zope.event.notify(
+                    zope.lifecycleevent.ObjectModifiedEvent(
+                        co, zope.lifecycleevent.Attributes(
+                            IVideo, *list(IVideo))))
 
 
 # Triggered by BC notification webhook, which we receive in

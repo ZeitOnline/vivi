@@ -128,6 +128,29 @@ class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
             import_video(deleted)
             self.assertEqual(True, retract.called)
 
+    def test_new_video_should_bbb_copy_authors(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        bc = self.create_video()
+        bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual(('William Shakespeare',), video.authors)
+
+    def test_changed_video_should_bbb_copy_authors(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        bc = self.create_video()
+        import_video(bc)
+        bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        self.assertEqual(('William Shakespeare',), video.authors)
+
 
 class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
 
