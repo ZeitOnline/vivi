@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.12.4 (unreleased)
+2.12.4 (2018-01-26)
 -------------------
 
 - BUG-834: Send created+modified events so handlers like author
