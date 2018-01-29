@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-38: Implement configuring a filter for topicpage auto areas
 
 
 3.20.0 (2017-11-08)

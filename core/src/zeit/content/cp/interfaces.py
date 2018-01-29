@@ -301,6 +301,13 @@ class QuerySortOrderSource(SimpleDictSource):
     ))
 
 
+class TopicpageFilterSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    attribute = 'id'
+
+
 def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'centerpage' and data.referenced_cp:
         return True
@@ -443,6 +450,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     referenced_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage'),
+        required=False)
+
+    topicpage_filter = zope.schema.Choice(
+        title=_('Topicpage filter'),
+        source=TopicpageFilterSource(),
         required=False)
 
     raw_query = zope.schema.Text(title=_('Raw query'), required=False)

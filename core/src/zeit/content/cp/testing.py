@@ -25,6 +25,7 @@ product_config = """
     module-config-source file://{fixtures}/blocks.xml
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-types-url file://{fixtures}/cp-types.xml
+    topicpage-filter-source file://{fixtures}/cp-types.xml
     feed-update-minimum-age 30
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
