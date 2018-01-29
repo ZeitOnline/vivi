@@ -87,10 +87,13 @@ class TMS(object):
             result.append(row)
         return result
 
-    def get_topicpage_documents(self, id, start=0, rows=25):
+    def get_topicpage_documents(self, id, start=0, rows=25, filter=None):
+        params = {'page': int(start / rows) + 1, 'rows': rows}
+        if filter is not None:
+            params['filter'] = filter
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
-            params={'page': int(start / rows) + 1, 'rows': rows})
+            params=params)
         result = zeit.cms.interfaces.Result()
         result.hits = response['num_found']
         for row in response['docs']:
