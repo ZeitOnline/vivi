@@ -4,7 +4,7 @@ zeit.content.author changes
 2.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- HOTFIX: Don't try to copy authors during repository->repository copying
 
 
 2.8.1 (2018-01-26)
