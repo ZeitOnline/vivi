@@ -132,6 +132,9 @@ def update_freetext_on_change(context, event):
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectCreatedEvent)
 def update_freetext_on_add(context, event):
+    # ObjectCopied inherits from ObjectCreated
+    if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
+        return
     update_author_freetext(context)
 
 
