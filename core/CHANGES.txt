@@ -4,13 +4,13 @@ zeit.content.article changes
 3.33.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix brown-bag release
 
 
 3.33.1 (2018-01-26)
 -------------------
 
-- ZON-4296: Add version attribute to liveblog.
+- ZON-4296: Add version attribute to liveblog
 
 
 3.33.0 (2018-01-19)
