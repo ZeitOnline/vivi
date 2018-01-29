@@ -5,7 +5,7 @@ zeit.retresco changes
 1.15.12 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- TMS-38: Add `filter` parameter to `get_topicpage_documents`
 
 
 1.15.11 (2018-01-25)
