@@ -76,6 +76,14 @@ class FreetextCopyTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             ('William Shakespeare',), self.repository['foo'].authors)
 
+    def test_authorships_should_not_be_copied_on_copy(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.authorships = [co.authorships.create(self.repository['author'])]
+        zope.copypastemove.interfaces.IObjectCopier(
+            self.repository['testcontent']).copyTo(self.repository['online'])
+        self.assertEqual(
+            ('',), self.repository['online']['testcontent'].authors)
+
 
 class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
 
