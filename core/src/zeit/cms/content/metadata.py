@@ -188,6 +188,8 @@ def log_access_change(context, event):
         if 'access' in description.attributes:
             access_old = zeit.cms.interfaces.ICMSContent(
                 context.uniqueId).access
+            if access_old == context.access:
+                return
             access_old_translation = ICommonMetadata[
                 'access'].source.factory.getTitle(context, access_old)
             access_new_translation = ICommonMetadata[

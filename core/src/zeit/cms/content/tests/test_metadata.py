@@ -65,3 +65,14 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
             assert (
                 entries[-1].message ==
                 'Access changed from "${old}" to "${new}"')
+
+    def test_spurious_non_change_of_access_is_not_logged(self):
+        article = self.repository['testcontent']
+        log = zeit.objectlog.interfaces.ILog(article)
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.access = u'free'
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(
+                    zeit.cms.content.interfaces.ICommonMetadata,
+                    'access'))
+            self.assertEqual([], list(log.get_log()))
