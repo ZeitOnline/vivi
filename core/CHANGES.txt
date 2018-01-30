@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.3.0 (unreleased)
+3.3.0 (2018-01-30)
 ------------------
 
 - BUG-834: Don't log access changes when the value didn't actually change
