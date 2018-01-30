@@ -4,7 +4,8 @@ import zope.schema
 
 
 class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
-                    zeit.cms.content.interfaces.IXMLContent):
+                    zeit.cms.content.interfaces.IXMLContent,
+                    zeit.cms.content.interfaces.ISkipDefaultChannel):
     """Video like content.
 
     This could be a video or a playlist.
