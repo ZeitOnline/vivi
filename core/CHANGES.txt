@@ -4,7 +4,7 @@ zeit.content.video changes
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-841: Disable setting channel from ressort for videos/playlists
 
 
 3.0.1 (2017-12-05)
