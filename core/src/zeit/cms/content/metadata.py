@@ -171,6 +171,8 @@ def set_default_channel_to_ressort(context, event):
             break
     if not relevant_change:
         return
+    if zeit.cms.content.interfaces.ISkipDefaultChannel.providedBy(context):
+        return
     if not context.ressort:
         return
     if context.product and not context.product.autochannel:
@@ -188,6 +190,8 @@ def log_access_change(context, event):
         if 'access' in description.attributes:
             access_old = zeit.cms.interfaces.ICMSContent(
                 context.uniqueId).access
+            if access_old == context.access:
+                return
             access_old_translation = ICommonMetadata[
                 'access'].source.factory.getTitle(context, access_old)
             access_new_translation = ICommonMetadata[

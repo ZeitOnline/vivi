@@ -1,10 +1,13 @@
 zeit.cms changes
 ================
 
-3.2.3 (unreleased)
+3.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-834: Don't log access changes when the value didn't actually change
+
+- BUG-841: Provide ``ISkipDefaultChannel`` interface so content types can
+  opt out of setting default channel from ressort.
 
 
 3.2.2 (2018-01-17)

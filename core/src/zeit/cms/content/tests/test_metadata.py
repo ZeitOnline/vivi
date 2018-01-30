@@ -49,6 +49,19 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
                     'ressort'))
             self.assertEqual((), co.channels)
 
+    def test_channels_are_not_set_if_content_forbids_it(self):
+        article = ExampleContentType()
+        zope.interface.alsoProvides(
+            article, zeit.cms.content.interfaces.ISkipDefaultChannel)
+        self.repository['testcontent'] = article
+        with checked_out(self.repository['testcontent']) as co:
+            co.ressort = u'Deutschland'
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
+                    'ressort'))
+            self.assertEqual((), co.channels)
+
 
 class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
 
@@ -65,3 +78,14 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
             assert (
                 entries[-1].message ==
                 'Access changed from "${old}" to "${new}"')
+
+    def test_spurious_non_change_of_access_is_not_logged(self):
+        article = self.repository['testcontent']
+        log = zeit.objectlog.interfaces.ILog(article)
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.access = u'free'
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(
+                    zeit.cms.content.interfaces.ICommonMetadata,
+                    'access'))
+            self.assertEqual([], list(log.get_log()))
