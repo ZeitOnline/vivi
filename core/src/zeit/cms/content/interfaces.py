@@ -718,3 +718,8 @@ class IAddableContent(zope.interface.interfaces.IInterface):
     """Interface type to register additional addable entries
     that are *not* ICMSContentTypes.
     """
+
+
+class ISkipDefaultChannel(zope.interface.Interface):
+    """Marker interface to opt out of setting default
+    ICommonMetadata.channels according to ressort/sub_ressort."""

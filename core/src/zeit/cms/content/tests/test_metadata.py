@@ -49,6 +49,19 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
                     'ressort'))
             self.assertEqual((), co.channels)
 
+    def test_channels_are_not_set_if_content_forbids_it(self):
+        article = ExampleContentType()
+        zope.interface.alsoProvides(
+            article, zeit.cms.content.interfaces.ISkipDefaultChannel)
+        self.repository['testcontent'] = article
+        with checked_out(self.repository['testcontent']) as co:
+            co.ressort = u'Deutschland'
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
+                    'ressort'))
+            self.assertEqual((), co.channels)
+
 
 class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
 

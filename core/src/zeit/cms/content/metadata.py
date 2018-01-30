@@ -171,6 +171,8 @@ def set_default_channel_to_ressort(context, event):
             break
     if not relevant_change:
         return
+    if zeit.cms.content.interfaces.ISkipDefaultChannel.providedBy(context):
+        return
     if not context.ressort:
         return
     if context.product and not context.product.autochannel:
