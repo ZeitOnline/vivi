@@ -13,6 +13,7 @@ product_config = """
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
     dav-archive-url test
     toc-product-ids ZEI BAD
+    toc-num-empty-columns 3
     default-teaser-text Teäser {{name}}/{{year}}
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))

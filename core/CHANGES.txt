@@ -5,7 +5,7 @@ zeit.content.volume changes
 1.9.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Make number of empty columns for toc configurable
 
 
 1.9.0 (2017-10-04)

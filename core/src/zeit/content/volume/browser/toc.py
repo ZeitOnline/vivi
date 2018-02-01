@@ -334,7 +334,12 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        return [str(page), title_teaser, '', '', '', toc_entry.get('access')]
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.volume')
+        number_of_empty_columns = int(config.get('toc-num-empty-columns', 2))
+        return [str(page), title_teaser] + \
+               [''] * number_of_empty_columns +  \
+               [toc_entry.get('access')]
 
 
 class Excluder(object):
@@ -342,7 +347,7 @@ class Excluder(object):
     Checks if an article should be excluded from the table of contents.
     """
     # Rules should be as strict as possible,
-    # otherwise the wrong article might get  excluded
+    # otherwise the wrong article might get excluded
     TITLE_XPATH = "body/title/text()"
     SUPERTITLE_XPATH = "body/supertitle/text()"
     JOBNAME_XPATH = "//attribute[@name='jobname']/text()"
