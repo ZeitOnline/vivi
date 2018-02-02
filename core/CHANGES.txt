@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.34.1 (unreleased)
+3.34.1 (2018-02-02)
 -------------------
 
 - MAINT: Remove Google News keyword suggestions, it's not used anymore
