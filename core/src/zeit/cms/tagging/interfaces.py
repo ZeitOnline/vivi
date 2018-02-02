@@ -114,17 +114,6 @@ class Keywords(zope.schema.Tuple):
             raise TooFewKeywords()
 
 
-class ICurrentTopics(zope.interface.Interface):
-    """Utility that knows about topical keywords.
-    """
-
-    def __call__(ressort=None):
-        """Returns list of keywords for the given ressort (or all keywords
-        if no ressort is given)"""
-
-    headlines = zope.interface.Attribute('List of headline keywords')
-
-
 class ITopicpages(zope.interface.Interface):
     """Utility to retrieve (paginated) information about topic pages."""
 
