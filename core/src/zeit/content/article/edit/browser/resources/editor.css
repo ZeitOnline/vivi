@@ -837,18 +837,6 @@
   padding: 2px 0px !important;
 }
 
-.type-article #article-content-suggest-keywords .toggle_infos,
-.type-article #article-content-suggest-keywords .toggle_infos:hover {
-  background-position: 10px -2720px, 0 0;
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
-.type-article #article-content-suggest-keywords .toggle_infos.folded,
-.type-article #article-content-suggest-keywords .toggle_infos.folded:hover {
-  background-position: 10px -113px, 0 0;
-}
-
 .type-article .object-details .folded_information {
   background-color: #f1f4f9;
   margin-top: 10px;
@@ -1076,14 +1064,6 @@
   top: 0px;
 }
 
-
-.type-article fieldset#article-content-suggest-keywords legend {
-  margin-top: 15px;
-  padding-left: 0px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid #E4E4E4;
-  font-size: 9px;  /* supposed to look like a div.label */
-}
 
 .type-article form[action$="asset-badges"] {
   padding-left: 177px;
