@@ -119,7 +119,7 @@ def publish_priority_default(context):
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 
-    def publish(priority=None, async=True):
+    def publish(priority=None, async=True, **kw):
         """Publish object.
 
         Before the object is published a BeforePublishEvent is issued.
@@ -130,9 +130,10 @@ class IPublish(zope.interface.Interface):
         the publish task in a separate, single-threaded Queue.
         Pass async=False if you want to execute publishing synchronously.
 
+        `kw` is passed through to the underlying celery task.
         """
 
-    def retract(priority=None, async=True):
+    def retract(priority=None, async=True, **kw):
         """Retract an object.
 
         Before the object is published a BeforeRetractEvent is issued.

@@ -36,7 +36,7 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=None, async=True):
+    def publish(self, priority=None, async=True, **kw):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -45,15 +45,16 @@ class Publish(object):
 
         return self._execute_task(
             PUBLISH_TASK, [self.context.uniqueId], priority, async,
-            _('Publication scheduled'))
+            _('Publication scheduled'), **kw)
 
-    def retract(self, priority=None, async=True):
+    def retract(self, priority=None, async=True, **kw):
         """Retract object."""
         return self._execute_task(
             RETRACT_TASK, [self.context.uniqueId], priority, async,
-            _('Retracting scheduled'))
+            _('Retracting scheduled'), **kw)
 
-    def publish_multiple(self, objects, priority=PRIORITY_LOW, async=True):
+    def publish_multiple(
+            self, objects, priority=PRIORITY_LOW, async=True, **kw):
         """Publish multiple objects."""
         if not objects:
             logger.warning('Not starting a publishing task, because no objects'
@@ -64,14 +65,15 @@ class Publish(object):
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(obj, _('Collective Publication'))
             ids.append(obj.uniqueId)
-        return self._execute_task(MULTI_PUBLISH_TASK, ids, priority, async)
+        return self._execute_task(
+            MULTI_PUBLISH_TASK, ids, priority, async, **kw)
 
-    def _execute_task(self, task, ids, priority, async, message=None):
+    def _execute_task(self, task, ids, priority, async, message=None, **kw):
         if async:
             if message:
                 self.log(self.context, message)
             return task.apply_async(
-                (ids,), queuename=self.get_priority(priority))
+                (ids,), queuename=self.get_priority(priority), **kw)
         else:
             task(ids)
 

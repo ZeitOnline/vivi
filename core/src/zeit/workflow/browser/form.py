@@ -30,7 +30,11 @@ class WorkflowActions(object):
 
     def do_publish(self):
         if self.info.can_publish() == CAN_PUBLISH_SUCCESS:
-            self.publish.publish()
+            # XXX Work around race condition between celery/redis (applies
+            # already in tpc_vote) and DAV-cache in ZODB (applies only in
+            # tpc_finish, so the celery job *may* start executing before that
+            # happend), see BUG-796.
+            self.publish.publish(countdown=5)
             self.send_message(
                 _('scheduled-for-immediate-publishing',
                   default=u"${id} has been scheduled for publishing.",
@@ -39,7 +43,7 @@ class WorkflowActions(object):
             self.send_validation_messages()
 
     def do_retract(self):
-        self.publish.retract()
+        self.publish.retract(countdown=5)
         self.send_message(
             _('scheduled-for-immediate-retracting',
               default=u"${id} has been scheduled for retracting.",

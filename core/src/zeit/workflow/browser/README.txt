@@ -443,8 +443,10 @@ other information
 
     >>> def run_tasks():
     ...     """Wait for already enqueued publish job, by running another job;
-    ...     since we only have on worker, this works out fine."""
-    ...     zeit.cms.testing.celery_ping.delay().get()
+    ...     since we only have on worker, this works out fine.
+    ...     Unfortunately we have to mimic the DAV-cache race condition
+    ...     workaround here too and wait an additional 5 seconds, sigh."""
+    ...     zeit.cms.testing.celery_ping.apply_async(countdown=5).get()
 
 .. [#needs-repository]
 
