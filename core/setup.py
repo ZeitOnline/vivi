@@ -60,7 +60,7 @@ setup(
         'tblib',
         'transaction',
         'werkzeug',
-        'z3c.celery',
+        'z3c.celery >= 1.2.0.dev0',
         'z3c.conditionalviews>=1.0b2.dev-r91510',
         'z3c.etestbrowser',
         'z3c.flashmessage',

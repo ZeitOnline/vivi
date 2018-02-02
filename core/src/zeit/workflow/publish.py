@@ -399,7 +399,7 @@ class PublishTask(PublishRetractTask):
 
 @zeit.cms.celery.task(bind=True)
 def PUBLISH_TASK(self, ids):
-    return PublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
+    return PublishTask(self.request.id).run(ids)
 
 
 class RetractTask(PublishRetractTask):
@@ -455,7 +455,7 @@ class RetractTask(PublishRetractTask):
 
 @zeit.cms.celery.task(bind=True)
 def RETRACT_TASK(self, ids):
-    return RetractTask(getattr(self, 'task_id', 'sync-task')).run(ids)
+    return RetractTask(self.request.id).run(ids)
 
 
 class MultiPublishTask(PublishTask):
@@ -483,7 +483,7 @@ class MultiPublishTask(PublishTask):
 
 @zeit.cms.celery.task(bind=True)
 def MULTI_PUBLISH_TASK(self, ids):
-    return MultiPublishTask(getattr(self, 'task_id', 'sync-task')).run(ids)
+    return MultiPublishTask(self.request.id).run(ids)
 
 
 class Timer(threading.local):
