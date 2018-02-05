@@ -279,6 +279,10 @@ class TMSContentQuery(ContentQuery):
 
     grok.name('topicpage')
 
+    def __init__(self, context):
+        super(TMSContentQuery, self).__init__(context)
+        self.filter_id = self.context.topicpage_filter
+
     def __call__(self):
         self.total_hits = 0
         result = []
@@ -286,7 +290,7 @@ class TMSContentQuery(ContentQuery):
         try:
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
             response = tms.get_topicpage_documents(
-                topicpage, self.start, self.rows)
+                topicpage, self.start, self.rows, filter=self.filter_id)
             self.total_hits = response.hits
             for item in response:
                 content = self._resolve(item)

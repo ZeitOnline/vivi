@@ -357,6 +357,20 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(0, len(auto.values()))
         self.assertEqual(0, auto._content_query.total_hits)
 
+    def test_filter_can_be_set(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.referenced_topicpage = 'tms-id'
+        lead.automatic_type = 'topicpage'
+        lead.topicpage_filter = 'has_image'
+        self.tms.get_topicpage_documents.return_value = (
+            zeit.cms.interfaces.Result())
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            'has_image',
+            self.tms.get_topicpage_documents.call_args[1]['filter'])
+
 
 class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
