@@ -5,7 +5,7 @@ zeit.retresco changes
 1.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Skip obsolete `quiz` content in bulk indexing
 
 
 1.16.0 (2018-01-29)
