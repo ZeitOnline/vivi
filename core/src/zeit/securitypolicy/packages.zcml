@@ -28,9 +28,6 @@
   <include package="zeit.calendar" />
   <include package="zeit.calendar.browser" />
 
-  <include package="zeit.content.quiz" />
-  <include package="zeit.content.quiz.browser" />
-
   <include package="zeit.seo" />
   <include package="zeit.seo.browser" />
 
