@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Remove obsolete zeit.content.quiz
 
 
 2.2.2 (2018-01-09)
