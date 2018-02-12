@@ -142,10 +142,10 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
     if zeit.cms.repository.interfaces.ICollection.providedBy(content):
         children = content.values()
         for item in children:
-            if (zeit.content.image.interfaces.IImageGroup.providedBy(item) or
-                    zeit.content.image.interfaces.IImage.providedBy(item)):
+            content_type = zeit.cms.type.get_type(item)
+            if content_type in ['image', 'imagegroup', 'quiz']:
                 log.debug(
-                    'Skip indexing %s, it is an image/group', item.uniqueId)
+                    'Skip %s, it is a %s', item.uniqueId, content_type)
                 continue
             index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
     else:
