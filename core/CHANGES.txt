@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.3.1 (unreleased)
+3.3.1 (2018-02-13)
 ------------------
 
 - BUG-846: Work around celery vs. DAV-cache race condition for "save+publish"
