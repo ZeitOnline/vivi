@@ -4,6 +4,8 @@ zeit.cms changes
 3.3.1 (unreleased)
 ------------------
 
+- BUG-846: Work around celery vs. DAV-cache race condition for "save+publish"
+
 - MAINT: Remove trisolute current topics service, it's not used anymore
 
 
