@@ -204,12 +204,17 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.log = StringIO()
         self.handler = logging.StreamHandler(self.log)
         logging.root.addHandler(self.handler)
-        self.oldlevel = logging.root.level
-        logging.root.setLevel(logging.INFO)
+        self.loggers = [None, 'zeit']
+        self.oldlevels = {}
+        for name in self.loggers:
+            log = logging.getLogger(name)
+            self.oldlevels[name] = log.level
+            log.setLevel(logging.INFO)
 
     def tearDown(self):
         logging.root.removeHandler(self.handler)
-        logging.root.setLevel(self.oldlevel)
+        for name in self.loggers:
+            logging.getLogger(name).setLevel(self.oldlevels[name])
         super(PublishEndToEndTest, self).tearDown()
 
     def test_publish_via_celery_end_to_end(self):

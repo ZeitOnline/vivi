@@ -763,7 +763,8 @@ True
 
     >>> zope.security.management.endInteraction()
     >>> logging.root.removeHandler(log_handler)
-    >>> logging.root.setLevel(old_log_level)
+    >>> for name in loggers:
+    ...     logging.getLogger(name).setLevel(oldlevels[name])
 
 .. [#needsinteraction] For publising we need an interacion, i.e. a request
 
@@ -777,6 +778,9 @@ True
     >>> logfile = StringIO.StringIO()
     >>> log_handler = logging.StreamHandler(logfile)
     >>> logging.root.addHandler(log_handler)
-    >>> old_log_level = logging.root.level
-    >>> logging.root.setLevel(logging.INFO)
-
+    >>> loggers = [None, 'zeit']
+    >>> oldlevels = {}
+    >>> for name in loggers:
+    ...     logger = logging.getLogger(name)
+    ...     oldlevels[name] = logger.level
+    ...     logger.setLevel(logging.INFO)

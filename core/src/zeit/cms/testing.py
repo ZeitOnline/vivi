@@ -47,7 +47,19 @@ import zope.testbrowser.browser
 import zope.testing.renormalizing
 
 
+class LoggingLayer(plone.testing.Layer):
+
+    def setUp(self):
+        logging.getLogger().setLevel(logging.INFO)
+        logging.getLogger('zeit').setLevel(logging.DEBUG)
+        logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
+
+LOGGING_LAYER = LoggingLayer()
+
+
 class CeleryEagerLayer(plone.testing.Layer):
+
+    defaultBases = (LOGGING_LAYER,)
 
     def setUp(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = True

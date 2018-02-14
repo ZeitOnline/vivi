@@ -112,12 +112,17 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.log = StringIO()
         self.handler = logging.StreamHandler(self.log)
         logging.root.addHandler(self.handler)
-        self.oldlevel = logging.root.level
-        logging.root.setLevel(logging.INFO)
+        self.loggers = [None, 'zeit']
+        self.oldlevels = {}
+        for name in self.loggers:
+            log = logging.getLogger(name)
+            self.oldlevels[name] = log.level
+            log.setLevel(logging.INFO)
 
     def tearDown(self):
         logging.root.removeHandler(self.handler)
-        logging.root.setLevel(self.oldlevel)
+        for name in self.loggers:
+            logging.getLogger(name).setLevel(self.oldlevels[name])
         super(TimeBasedCeleryEndToEndTest, self).tearDown()
 
     def test_time_based_workflow_basic_assumptions(self):
