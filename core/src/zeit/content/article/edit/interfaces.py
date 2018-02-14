@@ -333,6 +333,7 @@ class ICitation(zeit.edit.interfaces.IBlock):
         default=u'default',
         required=False)
 
+
 class LiveblogVersions(LayoutSourceBase):
 
     values = collections.OrderedDict([
