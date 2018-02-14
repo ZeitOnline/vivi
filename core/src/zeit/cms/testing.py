@@ -165,16 +165,20 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
             'ZODB': self['functional_setup'].db,
         })
-        self.update_celery_config()
+        self.reset_celery_app()
 
         self['celery_worker'] = celery.contrib.testing.worker.start_worker(
             self['celery_app'])
         self['celery_worker'].__enter__()
 
-    def update_celery_config(self):
-        # XXX Work around cached_property usage in celery.app.base.
-        # This may be rather incomplete, but so far the tests work. :)
-        self['celery_app'].__dict__.pop('backend', None)
+    def reset_celery_app(self):
+        # Reset cached_property values that depend on app.conf values, after
+        # config has been changed.
+        cls = type(self['celery_app'])
+        for name in dir(cls):
+            prop = getattr(cls, name)
+            if isinstance(prop, kombu.utils.objects.cached_property):
+                self['celery_app'].__dict__.pop(name, None)
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage,
@@ -192,7 +196,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
         self['celery_app'].conf.clear()
         self['celery_app'].conf.update(self['celery_previous_config'])
         del self['celery_previous_config']
-        self.update_celery_config()
+        self.reset_celery_app()
 
         del self['celery_app']
 
