@@ -35,6 +35,7 @@ import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
+import zope.app.testing.testbrowser
 import zope.app.wsgi
 import zope.component
 import zope.i18n.interfaces
@@ -42,7 +43,7 @@ import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
 import zope.site.hooks
-import zope.testbrowser.testing
+import zope.testbrowser.browser
 import zope.testing.renormalizing
 
 
