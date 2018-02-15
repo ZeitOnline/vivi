@@ -39,6 +39,7 @@ setup(
         'zeit.content.rawxml',
         'zeit.content.text',
         'zeit.content.volume',
+        'zeit.intrafind',  # Only for transitional period
         'zope.component',
         'zope.interface',
         'zope.publisher',

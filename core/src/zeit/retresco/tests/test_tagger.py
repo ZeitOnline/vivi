@@ -6,6 +6,7 @@ from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
 import lxml.objectify
 import mock
+import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
@@ -14,6 +15,13 @@ import zeit.retresco.testing
 import zope.component
 import zope.interface
 import zope.lifecycleevent
+
+try:
+    import zeit.intrafind.tag
+    import zeit.intrafind.tagger
+    HAVE_INTRAFIND = True
+except ImportError:  # Soft dependency, only needed for transitional period
+    HAVE_INTRAFIND = False
 
 
 class TestTagger(zeit.retresco.testing.FunctionalTestCase,
@@ -488,3 +496,18 @@ class TaggerUpdateTest(
             data = request.call_args[1]['json']
             self.assertEqual(['Karen Duve'], data['rtr_keywords'])
             self.assertEqual(['Berlin'], data['rtr_locations'])
+
+    @unittest.skipUnless(HAVE_INTRAFIND, 'zeit.intrafind not available')
+    def test_update_should_keep_intrafind_pinned_tags(self):
+        content = create_testcontent()
+        intra = zeit.intrafind.tagger.Tagger(content)
+        intra['uid-intra'] = zeit.intrafind.tag.Tag(
+            'uid-intra', 'Berlin', entity_type='free')
+        intra.set_pinned(['uid-intra'])
+        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
+        with mock.patch(extract_keywords) as extract_keywords:
+            extract_keywords.return_value = []
+            tagger = Tagger(content)
+            tagger.update()
+        self.assertEqual([u'keyword☃Berlin'], list(tagger))
+        self.assertEqual((u'keyword☃Berlin',), tagger.pinned)
