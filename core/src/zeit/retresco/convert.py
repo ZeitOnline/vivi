@@ -1,23 +1,25 @@
 from datetime import datetime
 from zeit.cms.interfaces import ITypeDeclaration
-from zeit.cms.workflow.interfaces import IModified, IPublicationStatus
+from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.content.image.interfaces import IImageMetadata
 import grokcore.component as grok
+import logging
 import lxml.builder
 import lxml.etree
 import pytz
 import zeit.cms.browser.interfaces
+import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
-import zeit.content.gallery.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
 
+log = logging.getLogger(__name__)
 MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)
 
 
@@ -76,16 +78,8 @@ class Converter(grok.Adapter):
     def __init__(self, context):
         pass  # self.context has been set by __new__() already.
 
-    # Maps CMS name -> TMS name. If no TMS name is given, the CMS name is used.
-    properties = {}
-
     def __call__(self):
-        return self._copy_properties({'payload': {}})
-
-    def _copy_properties(self, result):
-        for src, dst in self.properties.items():
-            result['payload'][dst or src] = getattr(self.context, src)
-        return result
+        return {'payload': {}}
 
 
 class CMSContent(Converter):
@@ -93,8 +87,10 @@ class CMSContent(Converter):
     interface = zeit.cms.interfaces.ICMSContent
     grok.name(interface.__name__)
 
+    DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/'
+
     def __call__(self):
-        return {
+        result = {
             'doc_id': zeit.cms.content.interfaces.IUUID(self.context).id,
             'url': self.context.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
@@ -103,32 +99,50 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(
                 zeit.retresco.interfaces.IBody(self.context)),
         }
+        result['payload'] = self.collect_dav_properties()
+        return result
+
+    def collect_dav_properties(self):
+        result = {}
+        properties = zeit.cms.interfaces.IWebDAVReadProperties(self.context)
+        for (name, ns), value in properties.items():
+            if ns is None:
+                ns = ''
+            if not ns.startswith(self.DAV_NAMESPACE):
+                continue
+
+            field = None
+            prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get((name, ns))
+            if prop is not None:
+                field = prop.field
+                field = field.bind(self.context)
+
+            # Only perform type conversion if we a json-specific one.
+            converter = zeit.retresco.interfaces.IDAVPropertyConverter(
+                field, None)
+            if converter is not None:
+                try:
+                    pyval = zeit.cms.content.interfaces.IDAVPropertyConverter(
+                        field).fromProperty(value)
+                    value = converter.toProperty(pyval)
+                except Exception, e:
+                    log.warning(
+                        'Could not parse DAV property value %r for '
+                        '%s.%s at %s [%s: %r]. Using default %r instead.' % (
+                            value, ns, name, self.context.uniqueId,
+                            e.__class__.__name__, e.args, field.default))
+                    value = field.default
+            if value is None:  # DAVProperty.__set__ has None -> DeleteProperty
+                continue
+            ns = ns.replace(self.DAV_NAMESPACE, '', 1)
+            result.setdefault(ns, {})[name] = value
+        return result
 
 
 class CommonMetadata(Converter):
 
     interface = zeit.cms.content.interfaces.ICommonMetadata
     grok.name(interface.__name__)
-
-    properties = {
-        'access': '',
-        'commentsAllowed': 'allow_comments',
-        'commentSectionEnable': 'show_comments',
-        'lead_candidate': '',
-        'page': '',
-        'printRessort': 'print_ressort',
-        'ressort': '',
-        'sub_ressort': '',
-        'subtitle': '',
-        'supertitle': '',
-        'teaserText': 'teaser_text',
-        'teaserTitle': 'teaser_title',
-        'teaserSupertitle': 'teaser_supertitle',
-        'title': '',
-        'tldr_date': '',
-        'volume': '',
-        'year': '',
-    }
 
     entity_types = {
         # BBB map zeit.intrafind entity_type to retresco.
@@ -169,22 +183,30 @@ class CommonMetadata(Converter):
                 kw.entity_type, 'keyword'))
             result[key].append(kw.label)
 
-        result['payload'] = {
+        result['payload'] = {}
+        result['payload']['head'] = {
             'authors': [x.target.uniqueId for x in self.context.authorships],
-            'author_names': [
-                x.target.display_name for x in self.context.authorships] or [
-                    # BBB for content without author object references.
-                    x for x in self.context.authors if x],
-            'channels': [' '.join([x for x in channel if x])
-                         for channel in self.context.channels],
-            'keywords': [{'label': x.label, 'entity_type': x.entity_type,
-                          'pinned': x.pinned} for x in keywords],
-            'product_id': self.context.product and self.context.product.id,
-            'serie': self.context.serie and self.context.serie.serienname,
-            'storystreams': [x.centerpage_id
-                             for x in self.context.storystreams],
         }
-        return self._copy_properties(result)
+        result['payload']['body'] = {
+            'supertitle': self.context.supertitle,
+            'title': self.context.title,
+            'subtitle': self.context.subtitle,
+            'byline': self.context.byline,
+        }
+        result['payload']['teaser'] = {
+            'supertitle': self.context.teaserSupertitle,
+            'title': self.context.teaserTitle,
+            'text': self.context.teaserText,
+        }
+        for ns in ['head', 'body', 'teaser']:
+            data = result['payload'][ns]
+            remove_none = []
+            for key, value in data.items():
+                if value is None:
+                    remove_none.append(key)
+            for key in remove_none:
+                del data[key]
+        return result
 
 
 class PublishInfo(Converter):
@@ -192,30 +214,19 @@ class PublishInfo(Converter):
     interface = zeit.cms.workflow.interfaces.IPublishInfo
     grok.name(interface.__name__)
 
-    properties = {
-        'date_first_released': '',
-        'date_last_published': '',
-        'date_last_published_semantic': '',
-        'published': '',
-        'date_print_published': '',
-    }
-
     def __call__(self):
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.content).last_semantic_change
         tms_date = self.context.date_last_published_semantic
         if not tms_date:
             tms_date = self.context.date_first_released
-        result = {
-            # Required field
-            'date': tms_date or MIN_DATE,
-            'payload': {
-                'date_last_modified': IModified(
-                    self.content).date_last_modified,
-                'date_last_semantic_change': lsc,
-            }
+        # This field is required by TMS, so always fill with *something*.
+        if not tms_date:
+            tms_date = MIN_DATE
+        return {
+            # TMS insists on this precise date format, instead of supporting
+            # general ISO8601, sigh.
+            'date': tms_date.astimezone(pytz.UTC).strftime(
+                '%Y-%m-%dT%H:%M:%SZ'),
         }
-        return self._copy_properties(result)
 
 
 class ImageReference(Converter):
@@ -231,25 +242,11 @@ class ImageReference(Converter):
             'teaser_img_url': image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'teaser_img_subline': IImageMetadata(image).caption,
-            'payload': {
+            'payload': {'head': {
                 'teaser_image': image.uniqueId,
                 'teaser_image_fill_color': self.context.fill_color,
-            }
+            }}
         }
-
-
-class Article(Converter):
-
-    interface = zeit.content.article.interfaces.IArticle
-    grok.name(interface.__name__)
-
-    properties = {
-        'genre': 'article_genre',
-        'header_layout': 'article_header',
-        'is_amp': '',
-        'is_instant_article': '',
-        'template': 'article_template',
-    }
 
 
 class Author(Converter):
@@ -257,41 +254,12 @@ class Author(Converter):
     interface = zeit.content.author.interfaces.IAuthor
     grok.name(interface.__name__)
 
-    properties = {
-        'firstname': '',
-        'display_name': '',
-        'lastname': '',
-    }
-
-
-class BreakingNews(Converter):
-
-    interface = zeit.content.article.interfaces.IBreakingNews
-    grok.name(interface.__name__)
-
-    properties = {
-        'is_breaking': '',
-    }
-
-
-class CenterPage(Converter):
-
-    interface = zeit.content.cp.interfaces.ICenterPage
-    grok.name(interface.__name__)
-
-    properties = {
-        'type': 'cp_type',
-    }
-
-
-class Gallery(Converter):
-
-    interface = zeit.content.gallery.interfaces.IGallery
-    grok.name(interface.__name__)
-
-    properties = {
-        'type': 'gallery_type',
-    }
+    def __call__(self):
+        return {'payload': {'body': {
+            'firstname': self.context.firstname,
+            'display_name': self.context.display_name,
+            'lastname': self.context.lastname,
+        }}}
 
 
 class Volume(Converter):
@@ -303,12 +271,6 @@ class Volume(Converter):
     interface = zeit.content.volume.interfaces.IVolume
     grok.name(interface.__name__)
 
-    properties = {
-        'date_digital_published': '',
-        'volume': '',
-        'year': '',
-    }
-
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
@@ -318,14 +280,10 @@ class Volume(Converter):
         return instance
 
     def __call__(self):
-        result = {
+        return {
             'title': self.context.teaserText or 'Ausgabe',
             'teaser': self.context.teaserText or 'Ausgabe',
-            'payload': {
-                'product_id': self.context.product and self.context.product.id,
-            }
         }
-        return self._copy_properties(result)
 
 
 class CMSSearch(Converter):
@@ -354,11 +312,11 @@ class CMSSearch(Converter):
         except TypeError:
             preview_url = None
 
-        return {'payload': {
+        return {'payload': {'vivi': {
             'cms_icon': icon_url,
             'cms_preview_url': preview_url,
             'publish_status': IPublicationStatus(self.content).published,
-        }}
+        }}}
 
 
 class AccessCounter(Converter):
@@ -371,10 +329,10 @@ class AccessCounter(Converter):
         hits = self.context.total_hits
         if hits and self.context.hits:
             hits -= self.context.hits
-        return {'payload': {
+        return {'payload': {'vivi': {
             'range': hits,
             'range_details': self.context.detail_url,
-        }}
+        }}}
 
 
 @grok.adapter(zope.interface.Interface)

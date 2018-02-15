@@ -5,6 +5,7 @@
   i18n_domain="zeit.cms">
 
     <grok:grok package=".connection" />
+    <grok:grok package=".content" />
     <grok:grok package=".convert" />
     <grok:grok package=".search" />
 

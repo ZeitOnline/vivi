@@ -123,6 +123,12 @@ class IBody(zope.interface.Interface):
     """
 
 
+class IDAVPropertyConverter(zope.interface.Interface):
+    """Like zeit.cms.content.interfaces.IDAVPropertyConverter, but with JSON as
+    the serialization target.
+    """
+
+
 class IElasticsearch(zope.interface.Interface):
     """Search using the Elasticsearch service."""
 
