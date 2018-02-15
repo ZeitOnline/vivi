@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.16.3 (unreleased)
+1.16.3 (2018-02-15)
 -------------------
 
 - FIX: Don't break on rows=0 in get_topicpage_documents, which can
