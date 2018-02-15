@@ -7,6 +7,7 @@ import lxml.objectify
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
+import zeit.intrafind.tagger
 import zeit.retresco.interfaces
 import zope.component
 
@@ -193,10 +194,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
                     self._create_tag(unicode(node), node.get('type', '')))
             except KeyError:
                 # BBB for zeit.intrafind
-                node = xml.find(u"tag[@uuid='{}']".format(code))
-                if node:
+                intrafind = zeit.intrafind.tagger.Tagger(self.context)
+                tag = intrafind.get(code)
+                if tag:
                     result.append(self._create_tag(
-                        node.text, type_map.get(node.get('type', ''), '')))
+                        tag.label, type_map.get(tag.entity_type, '')))
         return result
 
     def update(self, keywords=None):
