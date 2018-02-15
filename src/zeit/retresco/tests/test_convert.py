@@ -14,6 +14,8 @@ import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
+import zope.interface
+import zope.xmlpickle
 
 
 class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
@@ -42,19 +44,109 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+
         # Extract fields for which we cannot easily/sensibly use assertEqual().
         self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
+        self.assertStartsWith(
+            '{urn:uuid:', data['payload']['document'].pop('uuid'))
+        self.assertStartsWith(
+            str(datetime.date.today().year),
+            data['payload']['document'].pop('date_last_checkout'))
+        self.assertStartsWith(
+            str(datetime.date.today().year),
+            data['payload']['document'].pop('date-last-modified'))
+        self.assertStartsWith(
+            '<pickle', data['payload']['meta'].pop('provides'))
+        self.assertStartsWith(
+            '<ns0:rankedTags', data['payload']['tagging'].pop('keywords'))
         self.assertStartsWith('<body', data.pop('body'))
-        self.assertIsInstance(
-            data['payload'].pop('date_last_modified'), datetime.datetime)
 
         teaser = (
             u'Im Zuge des äthiopischen Vormarsches auf Mogadischu kriechen '
             u'in Somalia auch die alten Miliz-Chefs wieder hervor.')
         self.assertEqual({
             'author': u'Hans Meiser',
-            'date': datetime.datetime(1970, 1, 1, 0, 0, tzinfo=pytz.UTC),
+            'date': '1970-01-01T00:00:00Z',
             'doc_type': 'article',
+            'payload': {
+                'body': {
+                    'byline': u'Von Jochen Stahnke',
+                    'subtitle': teaser,
+                    'supertitle': u'Somalia',
+                    'title': u'Rückkehr der Warlords'
+                },
+                'document': {
+                    'DailyNL': False,
+                    'artbox_thema': False,
+                    'author': ['Hans Meiser'],
+                    'banner': True,
+                    'banner_content': True,
+                    'breaking_news': True,
+                    'color_scheme': u'Redaktion',
+                    'comments': False,
+                    'comments_premoderate': False,
+                    'copyrights': 'ZEIT online',
+                    'countings': True,
+                    'erscheint': '',
+                    'foldable': True,
+                    'has_recensions': False,
+                    'header_layout': u'default',
+                    'imagecount': '0',
+                    'in_rankings': 'yes',
+                    'is_amp': False,
+                    'is_content': 'yes',
+                    'is_instant_article': False,
+                    'keywords': '',
+                    'last_modified_by': u'zope.user',
+                    'lead_candidate': True,
+                    'minimal_header': False,
+                    'mostread': 'yes',
+                    'new_comments': '1',
+                    'overscrolling': True,
+                    'pagelabel': 'Online',
+                    'paragraphsperpage': '6',
+                    'rebrush_website_content': False,
+                    'ressort': u'International',
+                    'revision': '11',
+                    'serie': u'-',
+                    'show_commentthread': False,
+                    'supertitle': 'Spitzmarke hierher',
+                    'template': u'article',
+                    'text-length': 1036,
+                    'title': u'R\xfcckkehr der Warlords',
+                    'tldr_milestone': False,
+                    'topic': 'Politik',
+                    'volume': 1,
+                    'year': 2007
+                },
+                'head': {
+                    'authors': [],
+                    'teaser_image': u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                    'teaser_image_fill_color': None
+                },
+                'meta': {
+                    'type': 'article',
+                },
+                'tagging': {
+                    'disabled': '',
+                    'pinned': '',
+                },
+                'teaser': {
+                    'text': teaser,
+                    'title': u'Rückkehr der Warlords'
+                },
+                'vivi': {
+                    'cms_icon': '/@@/zeit-content-article-interfaces-IArticle'
+                                '-zmi_icon.png',
+                    'cms_preview_url': '',
+                    'publish_status': 'not-published'
+                },
+                'workflow': {
+                    'last-modified-by': 'hegenscheidt',
+                    'product-id': u'KINZ',
+                    'status': u'OK'
+                }
+            },
             'rtr_events': [],
             'rtr_keywords': ['Code1', 'Code2'],
             'rtr_locations': [],
@@ -67,63 +159,15 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'teaser_img_subline': None,
             'teaser_img_url': u'/2006/DSC00109_2.JPG',
             'title': u'Rückkehr der Warlords',
-            'url': u'/online/2007/01/Somalia',
-
-            'payload': {
-                'access': u'free',
-                'allow_comments': False,
-                'article_genre': None,
-                'article_header': u'default',
-                'article_template': u'article',
-                'authors': [],
-                'author_names': [u'Hans Meiser'],
-                'channels': [],
-                'cms_icon': '/@@/zeit-content-article-interfaces-'
-                            'IArticle-zmi_icon.png',
-                'cms_preview_url': '',
-                'date_first_released': None,
-                'date_last_published': None,
-                'date_last_published_semantic': None,
-                'date_last_semantic_change': None,
-                'date_print_published': None,
-                'is_amp': False,
-                'is_breaking': None,
-                'is_instant_article': False,
-                'keywords': [
-                    {'label': 'Code1', 'entity_type': 'keyword',
-                     'pinned': False},
-                    {'label': 'Code2', 'entity_type': 'keyword',
-                     'pinned': False}],
-                'lead_candidate': True,
-                'page': None,
-                'print_ressort': None,
-                'product_id': u'KINZ',
-                'publish_status': 'not-published',
-                'published': False,
-                'ressort': u'International',
-                'serie': u'-',
-                'show_comments': False,
-                'storystreams': [],
-                'sub_ressort': None,
-                'subtitle': teaser,
-                'supertitle': u'Somalia',
-                'teaser_image': u'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                'teaser_image_fill_color': None,
-                'teaser_supertitle': None,
-                'teaser_text': teaser,
-                'teaser_title': u'Rückkehr der Warlords',
-                'title': u'Rückkehr der Warlords',
-                'tldr_date': None,
-                'volume': 1,
-                'year': 2007,
-            },
+            'url': u'/online/2007/01/Somalia'
         }, data)
 
     def test_converts_channels_correctly(self):
         content = create_testcontent()
         content.channels = (('Mainchannel', None),)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
-        self.assertEqual(['Mainchannel'], data['payload']['channels'])
+        self.assertEqual(
+            ['Mainchannel'], data['payload']['document']['channels'])
 
     def test_converts_storystreams_correctly(self):
         content = create_testcontent()
@@ -131,8 +175,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'storystreams'].value_type.source(None)
         content.storystreams = (source.find('test'),)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
-        self.assertEqual(['http://xml.zeit.de/storystream'],
-                         data['payload']['storystreams'])
+        self.assertEqual(['test'],
+                         data['payload']['document']['storystreams'])
 
     def test_synthesizes_tms_teaser_if_none_present(self):
         content = create_testcontent()
@@ -151,7 +195,9 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
         self.assertEqual(u'Teäser 01/2015', data['title'])
         self.assertEqual(u'Teäser 01/2015', data['teaser'])
-        self.assertEqual(published, data['payload']['date_digital_published'])
+        self.assertEqual(
+            published.isoformat(),
+            data['payload']['document']['date_digital_published'])
 
     def test_does_not_index_volume_properties_for_articles(self):
         content = create_testcontent()
