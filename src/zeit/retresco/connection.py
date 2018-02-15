@@ -79,7 +79,9 @@ class TMS(object):
     def get_topicpages(self, start=0, rows=25):
         response = self._request(
             'GET /topic-pages',
-            params={'q': '*', 'page': int(start / rows) + 1, 'rows': rows})
+            params={'q': '*',
+                    'page': int(start / max(rows, 1)) + 1,
+                    'rows': rows})
         result = zeit.cms.interfaces.Result()
         result.hits = response['num_found']
         for row in response['docs']:
@@ -88,7 +90,7 @@ class TMS(object):
         return result
 
     def get_topicpage_documents(self, id, start=0, rows=25, filter=None):
-        params = {'page': int(start / rows) + 1, 'rows': rows}
+        params = {'page': int(start / max(rows, 1)) + 1, 'rows': rows}
         if filter is not None:
             params['filter'] = filter
         response = self._request(

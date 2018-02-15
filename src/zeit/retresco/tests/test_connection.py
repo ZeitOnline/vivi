@@ -120,6 +120,9 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual(2, request.call_args[1]['params']['page'])
             tms.get_topicpage_documents('tms-id', 10, 5)
             self.assertEqual(3, request.call_args[1]['params']['page'])
+            # Does not break on rows=0
+            tms.get_topicpage_documents('tms-id', 0, 0)
+            self.assertEqual(1, request.call_args[1]['params']['page'])
 
     def test_get_topicpage_pulls_up_payload_keys(self):
         self.layer['request_handler'].response_body = json.dumps({
