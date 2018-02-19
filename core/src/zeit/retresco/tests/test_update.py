@@ -1,5 +1,6 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.interfaces import TechnicalError
+from zeit.retresco.tag import Tag
 import mock
 import transaction
 import zeit.cms.checkout.helper
@@ -45,7 +46,17 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             pass
         self.tms.enrich.assert_called_with(content)
         self.tms.index.assert_called_with(content, None)
-        # Checkin should not change keywords on content
+
+    def test_checkin_should_update_keywords_if_none_exist(self):
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content):
+            pass
+        self.assertEqual(True, self.tms.generate_keyword_list.called)
+
+    def test_checkin_should_not_update_keywords_if_already_present(self):
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.keywords = (Tag('Berlin', 'location'),)
         self.assertEqual(False, self.tms.generate_keyword_list.called)
 
     def test_checkin_should_index_asynchronously(self):
