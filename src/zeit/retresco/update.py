@@ -130,6 +130,9 @@ def unindex_async(self, uuid):
         self.retry()
 
 
+SKIP_TYPES = ['image', 'imagegroup', 'quiz', 'centerpage-2009']
+
+
 @zeit.cms.celery.task(bind=True, queuename='manual')
 def index_parallel(self, unique_id, enrich=False, publish=False):
     try:
@@ -143,7 +146,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         children = content.values()
         for item in children:
             content_type = zeit.cms.type.get_type(item)
-            if content_type in ['image', 'imagegroup', 'quiz']:
+            if content_type in SKIP_TYPES:
                 log.debug(
                     'Skip %s, it is a %s', item.uniqueId, content_type)
                 continue
