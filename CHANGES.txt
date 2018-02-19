@@ -5,7 +5,7 @@ zeit.retresco changes
 1.16.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-156: Update keywords on checkin automatically if no keywords exist yet
 
 
 1.16.3 (2018-02-15)
