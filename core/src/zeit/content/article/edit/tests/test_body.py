@@ -196,7 +196,6 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
     def test_validation_errors_should_veto_checkin(self):
         from zeit.cms.checkout.interfaces import ICheckinManager
         from zeit.cms.checkout.interfaces import ICheckoutManager
-        from zeit.content.article.interfaces import IArticle
         import zeit.content.article.article
 
         self.repository['article'] = zeit.content.article.article.Article()
@@ -207,7 +206,7 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertFalse(manager.canCheckin)
         errors = dict(manager.last_validation_error)
         self.assertIsInstance(
-            errors[IArticle['title']], zope.schema.ValidationError)
+            errors['title'], zope.schema.ValidationError)
 
     def test_security_proxied_fields_should_be_validated_correctly(self):
         from zeit.cms.checkout.interfaces import ICheckinManager

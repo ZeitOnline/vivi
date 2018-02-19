@@ -12,10 +12,9 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=True,
-        missing_value=(),
-        default=())
+    # bind(None) amounts to "clone".
+    keywords = zeit.cms.content.interfaces.ICommonMetadata['keywords'].bind(
+        None)
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
     body = zope.interface.Attribute('Convenience access to IEditableBody')
@@ -96,14 +95,6 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         the Content-Drehscheibe, where the only property information we have
         is in the XML and there is no head section.
         """
-
-
-class IArticleWithOptionalKeywords(IArticle):
-    """Temporary interface to toggle the requiredness of keywords."""
-
-    keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=False,
-        default=())
 
 
 class IZONArticle(IArticle, zeit.cms.section.interfaces.ISectionMarker):
@@ -234,10 +225,6 @@ class IBreakingNews(IArticle):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
     """
-
-    keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=False,
-        default=())
 
     title = zope.schema.Text(
         title=_("Title"), missing_value=u'')
