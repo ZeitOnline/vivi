@@ -504,10 +504,13 @@ class TaggerUpdateTest(
         intra['uid-intra'] = zeit.intrafind.tag.Tag(
             'uid-intra', 'Berlin', entity_type='free')
         intra.set_pinned(['uid-intra'])
-        extract_keywords = 'zeit.retresco.connection.TMS.extract_keywords'
-        with mock.patch(extract_keywords) as extract_keywords:
-            extract_keywords.return_value = []
-            tagger = Tagger(content)
-            tagger.update()
+        tagger = Tagger(content)
+        tagger.update()
+        self.assertEqual([u'keyword☃Berlin'], list(tagger))
+        self.assertEqual((u'keyword☃Berlin',), tagger.pinned)
+
+        # Pinned are converted to TMS ids, so intrafind is no longer relevant.
+        del intra['uid-intra']
+        tagger.update()
         self.assertEqual([u'keyword☃Berlin'], list(tagger))
         self.assertEqual((u'keyword☃Berlin',), tagger.pinned)
