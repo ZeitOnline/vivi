@@ -81,9 +81,10 @@ class ChoicePropertyWithCMSContentSource(object):
 
     zope.component.adapts(
         zope.schema.interfaces.IChoice,
-        ICMSContentSource)
+        ICMSContentSource,
+        zope.interface.Interface)
 
-    def __init__(self, context, source):
+    def __init__(self, context, source, content):
         self.context = context
         self.source = source
 
