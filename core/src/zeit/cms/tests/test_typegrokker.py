@@ -2,6 +2,7 @@ import grokcore.component.testing
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.cms.type
+import zope.component
 import zope.configuration.config
 import zope.interface
 
@@ -22,6 +23,13 @@ class TestTypeDeclaration(zeit.cms.testing.ZeitCmsTestCase):
             'http://xml.zeit.de/politik.feed')
         type_decl = zeit.cms.interfaces.ITypeDeclaration(content)
         self.assertEquals('channel', type_decl.type)
+
+    def test_lookup_by_type(self):
+        type_decl = zope.component.getUtility(
+            zeit.cms.interfaces.ITypeDeclaration, name='testcontenttype')
+        self.assertEqual(
+            zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
+            type_decl.factory)
 
 
 class TestTypeIdentifier(zeit.cms.testing.ZeitCmsTestCase):
