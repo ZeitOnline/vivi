@@ -25,6 +25,7 @@ import zope.xmlpickle
 
 
 logger = logging.getLogger(__name__)
+PROPERTY_REGISTRY = {}
 
 
 class DAVProperty(object):
@@ -43,6 +44,7 @@ class DAVProperty(object):
         # time. We haven't got CA then.
         (zeit.cms.content.liveproperty.LiveProperties
          .register_live_property(name, namespace, writeable))
+        PROPERTY_REGISTRY[(name, namespace)] = self
 
     def __get__(self, instance, class_, properties=None):
         __traceback_info = (instance, )
