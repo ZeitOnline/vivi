@@ -351,9 +351,10 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
     type = 'image-group'
     title = _('Image Group')
     addform = 'zeit.content.image.imagegroup.Add'
+    factory = ImageGroup
 
     def content(self, resource):
-        ig = ImageGroup()
+        ig = self.factory()
         ig.uniqueId = resource.id
         return ig
 
