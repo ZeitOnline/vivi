@@ -144,26 +144,12 @@ class UnicodeProperty(object):
         return unicode(value)
 
 
-class ChoiceProperty(object):
-
-    zope.interface.implements(
+@zope.component.adapter(zope.schema.interfaces.IChoice)
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
+def ChoiceProperty(context):
+    return zope.component.getMultiAdapter(
+        (context, context.vocabulary),
         zeit.cms.content.interfaces.IDAVPropertyConverter)
-    zope.component.adapts(zope.schema.interfaces.IChoice)
-
-    def __init__(self, context):
-        self.context = context
-
-    def fromProperty(self, value):
-        return zope.component.getMultiAdapter(
-            (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IDAVPropertyConverter).fromProperty(
-                value)
-
-    def toProperty(self, value):
-        return zope.component.getMultiAdapter(
-            (self.context, self.context.vocabulary),
-            zeit.cms.content.interfaces.IDAVPropertyConverter).toProperty(
-                value)
 
 
 class ChoicePropertyWithIterableSource(object):
