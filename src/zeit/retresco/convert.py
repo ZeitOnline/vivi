@@ -14,6 +14,7 @@ import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
 import zeit.content.volume.interfaces
+import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
 import zope.interface
@@ -87,8 +88,6 @@ class CMSContent(Converter):
     interface = zeit.cms.interfaces.ICMSContent
     grok.name(interface.__name__)
 
-    DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/'
-
     def __call__(self):
         result = {
             'doc_id': zeit.cms.content.interfaces.IUUID(self.context).id,
@@ -102,13 +101,15 @@ class CMSContent(Converter):
         result['payload'] = self.collect_dav_properties()
         return result
 
+    DUMMY_TMS_CONTENT = zeit.retresco.content.Content({'url': ''})
+
     def collect_dav_properties(self):
         result = {}
         properties = zeit.cms.interfaces.IWebDAVReadProperties(self.context)
         for (name, ns), value in properties.items():
             if ns is None:
                 ns = ''
-            if not ns.startswith(self.DAV_NAMESPACE):
+            if not ns.startswith(zeit.retresco.interfaces.DAV_NAMESPACE_BASE):
                 continue
 
             field = None
@@ -117,13 +118,16 @@ class CMSContent(Converter):
                 field = prop.field
                 field = field.bind(self.context)
 
-            # Only perform type conversion if we a json-specific one.
-            converter = zeit.retresco.interfaces.IDAVPropertyConverter(
-                field, None)
-            if converter is not None:
+            converter = zope.component.queryMultiAdapter(
+                (field, self.DUMMY_TMS_CONTENT),
+                zeit.cms.content.interfaces.IDAVPropertyConverter)
+            # Only perform type conversion if we have a json-specific one.
+            if converter.__class__.__module__ == 'zeit.retresco.content':
                 try:
-                    pyval = zeit.cms.content.interfaces.IDAVPropertyConverter(
-                        field).fromProperty(value)
+                    davconverter = zope.component.getMultiAdapter(
+                        (field, self.context),
+                        zeit.cms.content.interfaces.IDAVPropertyConverter)
+                    pyval = davconverter.fromProperty(value)
                     value = converter.toProperty(pyval)
                 except Exception, e:
                     log.warning(
@@ -134,7 +138,7 @@ class CMSContent(Converter):
                     value = field.default
             if value is None:  # DAVProperty.__set__ has None -> DeleteProperty
                 continue
-            ns = ns.replace(self.DAV_NAMESPACE, '', 1)
+            ns = ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
             result.setdefault(ns, {})[name] = value
         return result
 

@@ -1,5 +1,5 @@
+import zeit.cms.interfaces
 import zope.interface
-import zope.interface.common.sequence
 
 
 ENTITY_TYPES = (
@@ -10,6 +10,8 @@ ENTITY_TYPES = (
     'event',
     'keyword',
 )
+
+DAV_NAMESPACE_BASE = 'http://namespaces.zeit.de/CMS/'
 
 
 class ITMS(zope.interface.Interface):
@@ -123,10 +125,9 @@ class IBody(zope.interface.Interface):
     """
 
 
-class IDAVPropertyConverter(zope.interface.Interface):
-    """Like zeit.cms.content.interfaces.IDAVPropertyConverter, but with JSON as
-    the serialization target.
-    """
+class ITMSContent(zeit.cms.interfaces.ICMSContent):
+    """Marker interface for content that was resolved from a TMS or
+    Elasticsearch query result."""
 
 
 class IElasticsearch(zope.interface.Interface):

@@ -4,11 +4,26 @@ import zope.component
 import zope.schema.interfaces
 
 
-class JSONType(grok.Adapter):
+class Content(object):
+
+    zope.interface.implements(zeit.retresco.interfaces.ITMSContent)
+
+    xml = lxml.objectify.XML('<empty/>')
+
+    def __init__(self, data):
+        self._tms_payload = data.get('payload', {})
+        self.uniqueId = zeit.cms.interfaces.ID_NAMESPACE + data['url'][1:]
+        self.__name__ = os.path.basename(self.uniqueId)
+
+
+class JSONType(grok.MultiAdapter):
     """Type converter for a json-native datatype."""
 
-    grok.implements(zeit.retresco.interfaces.IDAVPropertyConverter)
+    grok.implements(zeit.cms.content.interfaces.IDAVPropertyConverter)
     grok.baseclass()
+
+    def __init__(self, context, content):
+        pass
 
     def fromProperty(self, value):
         return value
@@ -19,46 +34,46 @@ class JSONType(grok.Adapter):
 
 class Bool(JSONType):
 
-    grok.context(zope.schema.interfaces.IBool)
+    grok.adapts(
+        zope.schema.interfaces.IBool,
+        zeit.retresco.interfaces.ITMSContent)
 
 
 class Int(JSONType):
 
-    grok.context(zope.schema.interfaces.IInt)
-
-
-@grok.adapter(zope.schema.interfaces.ICollection)
-@grok.implementer(zeit.retresco.interfaces.IDAVPropertyConverter)
-def Collection(context):
-    return zope.component.queryMultiAdapter(
-        (context, context.value_type),
-        zeit.retresco.interfaces.IDAVPropertyConverter)
+    grok.adapts(
+        zope.schema.Int,  # IFromUnicode is parallel to IInt
+        zeit.retresco.interfaces.ITMSContent)
 
 
 class CollectionTextLine(grok.MultiAdapter):
 
     grok.adapts(
         zope.schema.interfaces.ICollection,
-        zope.schema.interfaces.ITextLine)
-    grok.implements(zeit.retresco.interfaces.IDAVPropertyConverter)
+        zope.schema.interfaces.ITextLine,
+        zeit.retresco.interfaces.ITMSContent)
+    grok.implements(zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     # Taken from zeit.cms.content.dav.CollectionTextLineProperty
-    def __init__(self, context, value_type):
+    def __init__(self, context, value_type, content):
         self.context = context
         self.value_type = value_type
+        self.content = content
         self._type = context._type
         if isinstance(self._type, tuple):
             # XXX this is way hacky
             self._type = self._type[0]
 
     def fromProperty(self, value):
-        typ = zeit.cms.content.interfaces.IDAVPropertyConverter(
-            self.value_type)
+        typ = zope.component.getMultiAdapter(
+            (self.value_type, self.content),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
         return self._type([typ.fromProperty(x) for x in value])
 
     def toProperty(self, value):
-        typ = zeit.cms.content.interfaces.IDAVPropertyConverter(
-            self.value_type)
+        typ = zope.component.getMultiAdapter(
+            (self.value_type, self.content),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
         return [typ.toProperty(x) for x in value]
 
 
@@ -66,4 +81,5 @@ class CollectionChoice(CollectionTextLine):
 
     grok.adapts(
         zope.schema.interfaces.ICollection,
-        zope.schema.interfaces.IChoice)
+        zope.schema.interfaces.IChoice,
+        zeit.retresco.interfaces.ITMSContent)
