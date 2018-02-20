@@ -10,7 +10,7 @@ import zeit.cms.related.interfaces
 import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
-import zeit.edit.interfaces
+import zope.component
 
 
 class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
@@ -33,8 +33,10 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
                 field = zeit.content.cp.interfaces.IArea[name].bind(area)
                 # We (ab)use the DAV type conversion for a `fromUnicode` that
                 # supports Sources, because the mechanics are all there already
-                value = zeit.cms.content.interfaces.IDAVPropertyConverter(
-                    field).fromProperty(value)
+                converter = zope.component.getMultiAdapter(
+                    (field, None),
+                    zeit.cms.content.interfaces.IDAVPropertyConverter)
+                value = converter.fromProperty(value)
                 field.set(area, value)
 
 
