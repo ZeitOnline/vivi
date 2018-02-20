@@ -119,17 +119,18 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     interface_type = zeit.content.image.interfaces.IImageType
     type = 'image'
     title = _('Image')
+    factory = RepositoryImage
 
     def content(self, resource):
         if resource.contentType:
-            return RepositoryImage(resource.id, resource.contentType)
+            return self.factory(resource.id, resource.contentType)
         head = resource.data.read(200)
         resource.data.close()
         with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
             file_type = m.id_buffer(head)
         if not file_type.startswith('image/'):
             return None
-        return RepositoryImage(resource.id, file_type)
+        return self.factory(resource.id, file_type)
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))

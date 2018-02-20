@@ -4,7 +4,7 @@ zeit.content.image changes
 2.21.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-162: Make `factory` available on TypeDeclaration
 
 
 2.21.2 (2018-01-09)
