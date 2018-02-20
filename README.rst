@@ -159,4 +159,4 @@ Suche
 
 Wir nutzen den TMS-Index (Elasticsearch) gleich mit als Such-Index, sowohl für
 vivi als auch www.zeit.de (jeweils gegen den passenden Index, unveröffentlicht
-``zeit_pool``, veröffentlicht ``zeit_publish``).
+``zeit_pool_content``, veröffentlicht ``zeit_content``).
