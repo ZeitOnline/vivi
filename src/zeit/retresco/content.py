@@ -66,6 +66,13 @@ class Content(object):
                 image.set('fill_color', fill_color)
             head.append(image)
 
+        if 'covers' in data:
+            # See zeit.content.volume.volume.Volume.set_cover
+            covers = E.covers()
+            self.xml.append(covers)
+            for cover in data['covers']:
+                covers.append(E.cover(**cover))
+
 
 @grok.adapter(dict)
 @grok.implementer(zeit.retresco.interfaces.ITMSContent)

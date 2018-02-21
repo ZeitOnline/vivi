@@ -1,10 +1,12 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
+import zeit.cms.content.sources
 import zeit.content.article.article
 import zeit.content.author.author
 import zeit.content.image.interfaces
 import zeit.content.link.interfaces
+import zeit.content.volume.volume
 import zeit.retresco.tag
 import zeit.retresco.testing
 import zope.schema
@@ -129,3 +131,17 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIsInstance(content, zeit.content.link.link.Link)
         self.compare(
             zeit.content.link.interfaces.ILink, link, content, ['xml'])
+
+    def test_volume_finds_its_properties(self):
+        volume = zeit.content.volume.volume.Volume()
+        volume.year = 2018
+        volume.volume = 2
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.set_cover('portrait', 'ZEI', self.repository['testcontent'])
+        self.repository['volume'] = volume
+        volume = self.repository['volume']
+        data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertIsInstance(content, zeit.content.volume.volume.Volume)
+        self.compare(
+            zeit.content.volume.interfaces.IVolume, volume, content, ['xml'])
