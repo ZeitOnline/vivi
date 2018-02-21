@@ -230,12 +230,13 @@ class ElasticsearchContentQuery(ContentQuery):
     def filter_query(self):
         """Perform de-duplication of results.
 
-        Create a list of match query for teasers that already exist on the CP.
+        Create an id query for teasers that already exist on the CP.
         """
         if not self.context.hide_dupes:
-            return []
-        return [{'match': {'url': x.uniqueId.replace(ID_NAMESPACE, '/')}}
-                for x in self.existing_teasers]
+            return {}
+        return {'ids': {
+                    'values': [zeit.cms.content.interfaces.IUUID(x).id for x
+                               in self.existing_teasers]}}
 
 
 class ChannelContentQuery(SolrContentQuery):
