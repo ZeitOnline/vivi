@@ -58,14 +58,14 @@ def index_async(self, uniqueId):
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
-    else:
-        meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
-        has_keywords = meta is not None and meta.keywords
-        try:
-            index(
-                context, enrich=True, update_keywords=not has_keywords)
-        except zeit.retresco.interfaces.TechnicalError:
-            self.retry()
+        return
+    meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
+    has_keywords = meta is not None and meta.keywords
+    try:
+        index(
+            context, enrich=True, update_keywords=not has_keywords)
+    except zeit.retresco.interfaces.TechnicalError:
+        self.retry()
 
 
 def index(content, enrich=False, update_keywords=False, publish=False):
