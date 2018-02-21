@@ -202,21 +202,13 @@ class ElasticsearchContentQuery(ContentQuery):
     def __call__(self):
         self.total_hits = 0
         result = []
+        query = {
+            'query': self.query or {},
+            'filter': self.filter_query
+        }
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
-            query = {
-                "query": {
-                    "bool": {
-                        "must": {
-                            "query_string": {
-                                "query": self.query_string
-                            }
-                        },
-                        "must_not": self.filter_query
-                    }
-                }
-            }
             response = elasticsearch.search(
                 query, self.order, start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
