@@ -2,6 +2,7 @@ from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import json
 import logging
 import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
@@ -202,10 +203,11 @@ class ElasticsearchContentQuery(ContentQuery):
     def __call__(self):
         self.total_hits = 0
         result = []
-        query = {
-            'query': self.query or {},
-            'filter': self.filter_query
-        }
+        query = {}
+        if self.query:
+            query['query'] = json.loads(self.query)
+        if self.filter_query:
+            query['filter'] = self.filter_query
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
