@@ -1,6 +1,7 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ITeaserBlock
+import json
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
@@ -149,7 +150,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
         use_default=True)
 
-    elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
+    _elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
         zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
@@ -182,6 +183,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def is_teaserbar(self):
         # backward compatibility for teaser bar
         return self.xml.get('area') == 'teaser-row-full'
+
+    @property
+    def elasticsearch_raw_query(self):
+        return json.loads(self._elasticsearch_raw_query)
+
+    @elasticsearch_raw_query.setter
+    def elasticsearch_raw_query(self, value):
+        self._elasticsearch_raw_query = json.dumps(value)
 
     @property
     def apply_teaser_layouts_automatically(self):
