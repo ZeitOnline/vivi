@@ -228,17 +228,24 @@ class ElasticsearchContentQuery(ContentQuery):
     def _resolve(self, item):
         return zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
 
-    @property
+    @cachedproperty
     def filter_query(self):
         """Perform de-duplication of results.
 
         Create an id query for teasers that already exist on the CP.
         """
-        if not self.context.hide_dupes:
-            return {}
-        return {'ids': {
-                    'values': [zeit.cms.content.interfaces.IUUID(x).id for x
-                               in self.existing_teasers]}}
+        if not self.context.hide_dupes or not self.existing_teasers:
+            return
+        return {
+            'bool': {
+                'must_not': {
+                    'ids': {
+                        'values': [zeit.cms.content.interfaces.IUUID(x).id
+                                   for x in self.existing_teasers]
+                    }
+                }
+            }
+        }
 
 
 class ChannelContentQuery(SolrContentQuery):
