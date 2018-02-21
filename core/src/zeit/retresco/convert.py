@@ -317,10 +317,18 @@ class Volume(Converter):
         return instance
 
     def __call__(self):
-        return {
+        result = {
             'title': self.context.teaserText or 'Ausgabe',
             'teaser': self.context.teaserText or 'Ausgabe',
         }
+        covers = [{
+            'id': x.get('id'),
+            'product_id': x.get('product_id'),
+            'href': x.get('href')} for x in self.context.xml.xpath(
+                '//covers/cover')]
+        if covers:
+            result['head'] = {'covers': covers}
+        return result
 
 
 class CMSSearch(Converter):
