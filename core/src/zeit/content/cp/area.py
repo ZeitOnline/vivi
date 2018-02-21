@@ -186,11 +186,19 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @property
     def elasticsearch_raw_query(self):
-        return json.loads(self._elasticsearch_raw_query)
+        return self._elasticsearch_raw_query
 
     @elasticsearch_raw_query.setter
     def elasticsearch_raw_query(self, value):
-        self._elasticsearch_raw_query = json.dumps(value)
+        if value is None:
+            self._elasticsearch_raw_query = value
+            return
+        try:
+            self._elasticsearch_raw_query = json.dumps(
+                json.loads(value),
+                allow_nan=False, indent=2, ensure_ascii=False)
+        except (TypeError, ValueError):
+            raise ValueError('Invalid JSON: %s' % value)
 
     @property
     def apply_teaser_layouts_automatically(self):
