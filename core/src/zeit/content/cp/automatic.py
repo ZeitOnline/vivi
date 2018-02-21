@@ -3,6 +3,7 @@ from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging
+import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
 import zeit.find.search
 import zeit.solr.interfaces
