@@ -82,3 +82,15 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         images = zeit.content.image.interfaces.IImages(content)
         self.assertEqual(image, images.image)
         self.assertEqual(None, images.fill_color)
+
+    def test_quotes_dot_for_elasticsearch_field_names(self):
+        data = {
+            'doc_type': 'article',  # fake-out for tests
+            'payload': {'zeit.content.gallery': {'type': 'standalone'}}}
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        props = zeit.connector.interfaces.IWebDAVProperties(content)
+        self.assertEqual('standalone', props[(
+            'type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')])
+        self.assertEqual(
+            [('type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')],
+            list(props.keys()))
