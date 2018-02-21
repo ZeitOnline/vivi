@@ -464,10 +464,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         required=False)
 
     elasticsearch_raw_query = zope.schema.Text(
-        title=_('Elasticsearch raw query'), required=False)
+        title=_('Elasticsearch raw query'),
+        required=False)
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
-        default=u'date_first_released:desc',
+        default=u'payload.date_first_released:desc',
         required=False)
 
     # XXX really ugly styling hack
