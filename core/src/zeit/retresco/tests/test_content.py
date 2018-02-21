@@ -11,6 +11,21 @@ import zope.schema
 
 class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
+    def compare(self, interface, original, new, exclude):
+        errors = []
+        for name in zope.schema.getFieldNames(interface):
+            if name in exclude:
+                continue
+            expected = getattr(original, name)
+            try:
+                actual = getattr(new, name)
+            except Exception, e:
+                actual = str(e)
+            if expected != actual:
+                errors.append('%s: %s != %s' % (name, expected, actual))
+        if errors:
+            self.fail('\n'.join(errors))
+
     def test_convert_tms_result_to_cmscontent(self):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
@@ -28,20 +43,9 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         content = zeit.retresco.interfaces.ITMSContent(data)
         self.assertIsInstance(content, zeit.content.article.article.Article)
         self.assertTrue(IArticle.providedBy(content))
-        errors = []
-        for name in zope.schema.getFieldNames(IArticle):
-            if name in ['xml', 'main_image', 'main_image_variant_name',
-                        'paragraphs']:
-                continue
-            expected = getattr(article, name)
-            try:
-                actual = getattr(content, name)
-            except Exception, e:
-                actual = str(e)
-            if expected != actual:
-                errors.append('%s: %s != %s' % (name, expected, actual))
-        if errors:
-            self.fail('\n'.join(errors))
+        self.compare(
+            IArticle, article, content,
+            ['xml', 'main_image', 'main_image_variant_name', 'paragraphs'])
 
     def test_dav_adapter_work_with_ITMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
@@ -101,3 +105,15 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertTrue(
             zeit.cms.repository.interfaces.IUnknownResource.providedBy(
                 content))
+
+    def test_author_finds_its_properties(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['shake'] = author
+        author = self.repository['shake']
+        data = zeit.retresco.interfaces.ITMSRepresentation(author)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertIsInstance(content, zeit.content.author.author.Author)
+        self.compare(
+            zeit.content.author.interfaces.IAuthor, author, content, ['xml'])
