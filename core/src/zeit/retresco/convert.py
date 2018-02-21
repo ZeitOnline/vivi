@@ -139,6 +139,8 @@ class CMSContent(Converter):
             if value is None:  # DAVProperty.__set__ has None -> DeleteProperty
                 continue
             ns = ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
+            ns = zeit.retresco.content.quote_es_field_name(ns)
+            name = zeit.retresco.content.quote_es_field_name(name)
             result.setdefault(ns, {})[name] = value
         return result
 

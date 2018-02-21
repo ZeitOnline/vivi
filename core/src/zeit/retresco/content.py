@@ -87,7 +87,7 @@ class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
     grok.implements(zeit.connector.interfaces.IWebDAVProperties)
 
     def __getitem__(self, key):
-        name, ns = key
+        name, ns = map(unquote_es_field_name, key)
         namespace = ns.replace(
             zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
         return self.context._tms_payload[namespace][name]
@@ -96,13 +96,23 @@ class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
         for ns, values in self.context._tms_payload.items():
             namespace = zeit.retresco.interfaces.DAV_NAMESPACE_BASE + ns
             for name in values:
-                yield (name, namespace)
+                yield (unquote_es_field_name(name),
+                       unquote_es_field_name(namespace))
 
     def __delitem__(self, key):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
 
     def __setitem__(self, key, value):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+
+
+def quote_es_field_name(name):
+    """Elasticsearch does not allow `.` in field names."""
+    return name.replace('.', '__DOT__')
+
+
+def unquote_es_field_name(name):
+    return name.replace('__DOT__', '.')
 
 
 # DAVPropertyConverter below here ------------------------------
