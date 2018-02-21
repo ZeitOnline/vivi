@@ -4,6 +4,7 @@ from zeit.content.article.interfaces import IArticle
 import zeit.content.article.article
 import zeit.content.author.author
 import zeit.content.image.interfaces
+import zeit.content.link.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
 import zope.schema
@@ -100,7 +101,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
             list(props.keys()))
 
     def test_unknown_type_creates_UnknownResource(self):
-        data = {'doc_type': 'link'}  # whose ZCML we don't have loaded here
+        data = {'doc_type': 'nonexistent'}
         content = zeit.retresco.interfaces.ITMSContent(data)
         self.assertTrue(
             zeit.cms.repository.interfaces.IUnknownResource.providedBy(
@@ -117,3 +118,14 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIsInstance(content, zeit.content.author.author.Author)
         self.compare(
             zeit.content.author.interfaces.IAuthor, author, content, ['xml'])
+
+    def test_link_finds_its_properties(self):
+        link = zeit.content.link.link.Link()
+        link.url = u'http://example.com/'
+        self.repository['link'] = link
+        link = self.repository['link']
+        data = zeit.retresco.interfaces.ITMSRepresentation(link)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertIsInstance(content, zeit.content.link.link.Link)
+        self.compare(
+            zeit.content.link.interfaces.ILink, link, content, ['xml'])

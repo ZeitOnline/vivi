@@ -13,6 +13,8 @@ import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
+import zeit.content.image.interfaces
+import zeit.content.link.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
@@ -277,6 +279,23 @@ class Author(Converter):
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
             'payload': {'xml': xml}
+        }
+
+
+class Link(Converter):
+
+    interface = zeit.content.link.interfaces.ILink
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.url,
+            'teaser': self.context.url,
+            'payload': {'body': {
+                'url': self.context.url,
+                'target': self.context.target,
+                'nofollow': self.context.nofollow,
+            }}
         }
 
 
