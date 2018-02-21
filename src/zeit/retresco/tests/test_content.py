@@ -85,7 +85,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_quotes_dot_for_elasticsearch_field_names(self):
         data = {
-            'doc_type': 'article',  # fake-out for tests
+            'doc_type': 'gallery',
             'payload': {'zeit.content.gallery': {'type': 'standalone'}}}
         content = zeit.retresco.interfaces.ITMSContent(data)
         props = zeit.connector.interfaces.IWebDAVProperties(content)
@@ -94,3 +94,10 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             [('type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')],
             list(props.keys()))
+
+    def test_unknown_type_creates_UnknownResource(self):
+        data = {'doc_type': 'link'}  # whose ZCML we don't have loaded here
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertTrue(
+            zeit.cms.repository.interfaces.IUnknownResource.providedBy(
+                content))
