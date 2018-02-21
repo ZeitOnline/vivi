@@ -81,6 +81,12 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                     'http://xml.zeit.de/testcontent')
                 self.assertFalse(index.called)
 
+    def test_index_async_should_skip_configured_content_types(self):
+        with mock.patch('zeit.retresco.update.index') as index:
+            zeit.retresco.update.index_async(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            self.assertFalse(index.called)
+
     def test_publish_should_not_be_called_on_index_if_res_not_published(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
             content = self.repository['testcontent']
