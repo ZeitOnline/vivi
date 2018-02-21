@@ -87,7 +87,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                     'comments_premoderate': False,
                     'copyrights': 'ZEIT online',
                     'countings': True,
-                    'erscheint': '',
                     'foldable': True,
                     'has_recensions': False,
                     'header_layout': u'default',
@@ -96,7 +95,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                     'is_amp': False,
                     'is_content': 'yes',
                     'is_instant_article': False,
-                    'keywords': '',
                     'last_modified_by': u'zope.user',
                     'lead_candidate': True,
                     'minimal_header': False,
@@ -126,10 +124,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 'meta': {
                     'type': 'article',
                 },
-                'tagging': {
-                    'disabled': '',
-                    'pinned': '',
-                },
+                'tagging': {},
                 'teaser': {
                     'text': teaser,
                     'title': u'Rückkehr der Warlords'
@@ -217,3 +212,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
 
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual(content_teaser, data['teaser'])
+
+    def test_drops_empty_properties(self):
+        content = create_testcontent()
+        props = zeit.connector.interfaces.IWebDAVProperties(content)
+        props[('page', 'http://namespaces.zeit.de/CMS/document')] = None
+        props[('reported_on', 'http://namespaces.zeit.de/CMS/vgwort')] = ''
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertNotIn('page', data['payload']['document'])
+        self.assertNotIn('vgwort', data['payload'])

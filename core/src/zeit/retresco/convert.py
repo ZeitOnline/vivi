@@ -136,7 +136,9 @@ class CMSContent(Converter):
                             value, ns, name, self.context.uniqueId,
                             e.__class__.__name__, e.args, field.default))
                     value = field.default
-            if value is None:  # DAVProperty.__set__ has None -> DeleteProperty
+            if value is None or value == '':
+                # DAVProperty.__set__ has None -> DeleteProperty.
+                # Also, elasticsearch rejects '' in date fields.
                 continue
             ns = ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
             ns = zeit.retresco.content.quote_es_field_name(ns)
