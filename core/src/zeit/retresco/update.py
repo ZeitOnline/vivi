@@ -59,9 +59,6 @@ def index_async(self, uniqueId):
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
         return
-    if should_skip(context):
-        log.debug('Skipping %s due to its content type', context)
-        return
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = meta is not None and meta.keywords
     try:
@@ -133,7 +130,7 @@ def unindex_async(self, uuid):
         self.retry()
 
 
-SKIP_TYPES = ['image', 'imagegroup', 'quiz', 'centerpage-2009']
+SKIP_TYPES = ['image', 'imagegroup', 'quiz']
 
 
 def should_skip(content):
