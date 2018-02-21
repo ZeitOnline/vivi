@@ -266,11 +266,18 @@ class Author(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        return {'payload': {'body': {
-            'firstname': self.context.firstname,
-            'display_name': self.context.display_name,
-            'lastname': self.context.lastname,
-        }}}
+        xml = {}
+        for name in dir(zeit.content.author.author.Author):
+            prop = getattr(zeit.content.author.author.Author, name)
+            if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
+                value = getattr(self.context, name)
+                if value:
+                    xml[name] = value
+        return {
+            'title': self.context.display_name,
+            'teaser': self.context.summary or self.context.display_name,
+            'payload': {'xml': xml}
+        }
 
 
 class Volume(Converter):

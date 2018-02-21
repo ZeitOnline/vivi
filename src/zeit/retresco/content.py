@@ -27,6 +27,8 @@ class Content(object):
     def _build_xml_body(self):
         E = lxml.objectify.E
         self.xml = E.content()
+        for key, value in self._tms_payload.get('xml', {}).items():
+            self.xml.append(getattr(E, key)(value))
         for container in ['body', 'teaser']:
             if container not in self._tms_payload:
                 continue
