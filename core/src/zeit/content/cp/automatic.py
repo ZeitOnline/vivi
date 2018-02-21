@@ -144,7 +144,7 @@ class SolrContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
-        self.query_string = self.context.raw_query
+        self.query = self.context.raw_query
         self.order = self.context.raw_order
 
     def __call__(self):
@@ -153,7 +153,8 @@ class SolrContentQuery(ContentQuery):
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
             response = solr.search(
-                self.query_string, sort=self.order,
+                self.query,
+                sort=self.order,
                 start=self.start,
                 rows=self.rows,
                 fl=self.FIELDS,
@@ -166,7 +167,7 @@ class SolrContentQuery(ContentQuery):
         except:
             log.warning(
                 'Error during solr query %r for %s',
-                self.query_string, self.context.uniqueId, exc_info=True)
+                self.query, self.context.uniqueId, exc_info=True)
         return result
 
     def _resolve(self, solr_result):
@@ -194,7 +195,7 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.query_string = self.context.elasticsearch_raw_query
+        self.query = self.context.elasticsearch_raw_query
         self.order = self.context.elasticsearch_raw_order
 
     def __call__(self):
@@ -226,7 +227,7 @@ class ElasticsearchContentQuery(ContentQuery):
         except:
             log.warning(
                 'Error during elasticsearch query %r for %s',
-                self.query_string, self.context.uniqueId, exc_info=True)
+                self.query, self.context.uniqueId, exc_info=True)
         return result
 
     def _resolve(self, item):
@@ -255,7 +256,7 @@ class ChannelContentQuery(SolrContentQuery):
 
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
-        self.query_string = self._build_query()
+        self.query = self._build_query()
         self.order = self.context.query_order
 
     def _build_query(self):
