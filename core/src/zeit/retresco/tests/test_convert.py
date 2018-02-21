@@ -122,7 +122,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 'head': {
                     'authors': [],
                     'teaser_image': u'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                    'teaser_image_fill_color': None
                 },
                 'meta': {
                     'type': 'article',
