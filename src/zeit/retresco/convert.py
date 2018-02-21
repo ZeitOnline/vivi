@@ -202,7 +202,7 @@ class CommonMetadata(Converter):
             'title': self.context.teaserTitle,
             'text': self.context.teaserText,
         }
-        for ns in ['head', 'body', 'teaser']:
+        for ns in ['body', 'teaser']:
             data = result['payload'][ns]
             remove_none = []
             for key, value in data.items():
@@ -242,15 +242,18 @@ class ImageReference(Converter):
         image = self.context.image
         if image is None:
             return {}
-        return {
+        result = {
             'teaser_img_url': image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'teaser_img_subline': IImageMetadata(image).caption,
             'payload': {'head': {
                 'teaser_image': image.uniqueId,
-                'teaser_image_fill_color': self.context.fill_color,
             }}
         }
+        if self.context.fill_color:
+            result['payload']['head'][
+                'teaser_image_fill_color'] = self.context.fill_color
+        return result
 
 
 class Author(Converter):
