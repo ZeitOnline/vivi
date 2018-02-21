@@ -96,20 +96,8 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params=params)
-        result = zeit.cms.interfaces.Result()
+        result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = response['num_found']
-        for row in response['docs']:
-            page = row['payload']
-            page[u'uniqueId'] = (
-                zeit.cms.interfaces.ID_NAMESPACE + row['url'][1:])
-            page[u'doc_type'] = row['doc_type']
-            page[u'doc_id'] = row['doc_id']
-            page[u'keywords'] = []
-            for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
-                for keyword in row.get('rtr_{}s'.format(entity_type), ()):
-                    page[u'keywords'].append(zeit.retresco.tag.Tag(
-                        label=keyword, entity_type=entity_type))
-            result.append(page)
         return result
 
     def get_article_data(self, content):
