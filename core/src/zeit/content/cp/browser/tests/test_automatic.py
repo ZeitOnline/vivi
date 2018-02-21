@@ -55,8 +55,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = [
             'elasticsearch-query']
-        b.getControl('Elasticsearch raw query').value = 'foo'
-        b.getControl('Sort order', index=2).value = 'bar'
+        b.getControl('Elasticsearch raw query').value = '{"match_all": {}}'
+        b.getControl('Sort order', index=2).value = 'date:desc'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
@@ -65,8 +65,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis(
             """\
 <region...count="5" automatic="True" automatic_type="elasticsearch-query"...>...
-<elasticsearch_raw_query>foo</elasticsearch_raw_query>...
-<elasticsearch_raw_order>bar</elasticsearch_raw_order>...""",  # noqa
+<elasticsearch_raw_query>{..."match_all": {}...}</elasticsearch_raw_query>...
+<elasticsearch_raw_order>date:desc</elasticsearch_raw_order>...""",  # noqa
             lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_centerpage_properties_in_xml(self):

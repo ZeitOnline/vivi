@@ -1,8 +1,10 @@
+# coding: utf-8
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import lxml.etree
 import mock
 import pysolr
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
@@ -296,7 +298,7 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
-        lead.elasticsearch_raw_query = 'raw'
+        lead.elasticsearch_raw_query = '{}'
         lead.automatic_type = 'elasticsearch-query'
         self.elasticsearch.search.side_effect = RuntimeError('provoked')
         auto = IRenderedArea(lead)
@@ -307,7 +309,7 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
-        lead.elasticsearch_raw_query = 'raw'
+        lead.elasticsearch_raw_query = u'{"match": {"title": "üüü"}}'
         lead.automatic_type = 'elasticsearch-query'
         result = zeit.cms.interfaces.Result(
             [{'uniqueId': self.repository['cp'].uniqueId},
@@ -317,11 +319,10 @@ class AutomaticAreaElasticsearchTest(
         auto = IRenderedArea(lead)
         self.assertEqual(1, len(auto.values()))
         self.assertEqual(4711, auto._content_query.total_hits)
+
         self.assertEqual(
-            (({'query': {'bool': {'must_not': [],
-                                  'must': {'query_string': {'query': u'raw'}}
-                                  }}},
-              u'date_first_released:desc'),
+            (({'query': {u'match': {u'title': u'üüü'}}},
+              u'payload.date_first_released:desc'),
              dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
@@ -521,7 +522,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
-        self.area.elasticsearch_raw_query = 'raw'
+        self.area.elasticsearch_raw_query = u'{"match": {"foo": "äää"}}'
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
@@ -530,16 +531,19 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.append(self.repository['t2'])
 
         IRenderedArea(self.area).values()
+
+        id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).id
+        id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).id
+
         self.assertEqual(
-            {'query': {'bool': {'must_not': [{'match': {'url': u'/t1'}},
-                                             {'match': {'url': u'/t2'}}],
-                                'must': {'query_string': {'query': u'raw'}}}}},
+            {'filter': {
+                'bool': {'must_not': {'ids': {'values': [id1, id2]}}}},
+             'query': {u'match': {u'foo': u'äää'}}},
             elasticsearch.search.call_args[0][0])
 
         # Do not filter, if switched off.
         self.area.hide_dupes = False
         IRenderedArea(self.area).values()
         self.assertEqual(
-            {'query': {'bool': {'must_not': [],
-                                'must': {'query_string': {'query': u'raw'}}}}},
+            {'query': {u'match': {u'foo': u'äää'}}},
             elasticsearch.search.call_args[0][0])
