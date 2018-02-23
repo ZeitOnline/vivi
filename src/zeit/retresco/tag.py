@@ -62,3 +62,7 @@ class Tag(object):
     def uniqueId(self):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
                 self.code.encode('unicode_escape'))
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__, self.uniqueId)
