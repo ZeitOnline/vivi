@@ -37,7 +37,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article) as co:
             co.breaking_news = True
-            co.title = "Strip <em>the</em> &amp; please"
             co.product = zeit.cms.content.sources.Product(u'KINZ')
 
         tag_1 = zeit.retresco.tag.Tag('Code1', entity_type='keyword')
