@@ -310,8 +310,8 @@ class AutomaticAreaElasticsearchTest(
         lead.elasticsearch_raw_query = 'raw'
         lead.automatic_type = 'elasticsearch-query'
         result = zeit.cms.interfaces.Result(
-            [{'uniqueId': self.repository['cp'].uniqueId},
-             {'uniqueId': 'http://xml.zeit.de/i-do-not-exist'}])
+            [{'url': '/cp'},
+             {'uniqueId': '/i-do-not-exist'}])
         result.hits = 4711
         self.elasticsearch.search.return_value = result
         auto = IRenderedArea(lead)
@@ -321,7 +321,7 @@ class AutomaticAreaElasticsearchTest(
             (({'query': {'bool': {'must_not': [],
                                   'must': {'query_string': {'query': u'raw'}}
                                   }}},
-              u'date_first_released:desc'),
+              u'payload.document.date_first_released:desc'),
              dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
