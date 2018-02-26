@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.17.1 (unreleased)
+1.17.1 (2018-02-26)
 -------------------
 
 - TMS-170: Fix pre-launch production should already index to TMS
