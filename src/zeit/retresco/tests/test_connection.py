@@ -124,32 +124,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             tms.get_topicpage_documents('tms-id', 0, 0)
             self.assertEqual(1, request.call_args[1]['params']['page'])
 
-    def test_get_topicpage_pulls_up_payload_keys(self):
-        self.layer['request_handler'].response_body = json.dumps({
-            'num_found': 1,
-            'docs': [{
-                'url': '/testcontent',
-                'doc_type': 'testcontenttype',
-                'doc_id': 'uuid',
-                'rtr_keywords': ['Berlin', 'Washington'],
-                'payload': {
-                    'supertitle': 'supertitle',
-                    'title': 'title',
-                }
-            }],
-        })
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_topicpage_documents('tms-id')
-        self.assertEqual({
-            'uniqueId': 'http://xml.zeit.de/testcontent',
-            'doc_type': 'testcontenttype',
-            'doc_id': 'uuid',
-            'keywords': [
-                Tag('Berlin', 'keyword'), Tag('Washington', 'keyword')],
-            'supertitle': 'supertitle',
-            'title': 'title',
-        }, result[0])
-
     def test_get_topicpages_pagination(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, '_request') as request:

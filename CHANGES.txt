@@ -2,10 +2,11 @@ zeit.retresco changes
 =====================
 
 
-1.17.2 (unreleased)
+1.18.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-162: Collect all DAV properties as payload, implement a CMS
+  content base class that retrieves data from there instead of DAV
 
 
 1.17.1 (2018-02-26)
