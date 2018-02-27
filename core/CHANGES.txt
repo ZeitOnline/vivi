@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.21.1 (unreleased)
+3.21.1 (2018-02-27)
 -------------------
 
 - TMS-162: Update to API changes in zeit.cms, zeit.retresco
