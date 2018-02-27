@@ -1,10 +1,12 @@
 zeit.cms changes
 ================
 
-3.3.2 (unreleased)
+3.4.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-162: Register DAVProperty descriptors
+- TMS-162: Add the content object as a descriptor for IDAVPropertyConverter
+- TMS-162: Provide lookup of TypeDeclaration by type name
 
 
 3.3.1 (2018-02-13)

@@ -31,6 +31,11 @@ class TypeGrokker(martian.ClassGrokker):
                 (context.resource,), zeit.connector.interfaces.IResource,
                 (context.interface,))
 
+            # To lookup the TypeDeclaration object by type name
+            zope.component.zcml.utility(
+                config, zeit.cms.interfaces.ITypeDeclaration, context,
+                name=context.type)
+
         # Annotate interface
         register_as_type = context.register_as_type
         if callable(register_as_type):

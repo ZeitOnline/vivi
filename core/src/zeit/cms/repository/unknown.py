@@ -45,9 +45,10 @@ class UnknownResourceType(zeit.cms.type.TypeDeclaration):
     title = _('Unknown Resource')
     interface = zeit.cms.repository.interfaces.IUnknownResource
     addform = zeit.cms.type.SKIP_ADD
+    factory = PersistentUnknownResource
 
     def content(self, resource):
-        return PersistentUnknownResource(
+        return self.factory(
             unicode(resource.data.read(), 'latin1'), resource.type)
 
     def resource_body(self, content):

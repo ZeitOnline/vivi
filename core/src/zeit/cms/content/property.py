@@ -296,4 +296,6 @@ class DAVConverterWrapper(object):
 
     def get_converter(self, instance):
         field = self.field.bind(instance)
-        return zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+        return zope.component.getMultiAdapter(
+            (field, instance),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)

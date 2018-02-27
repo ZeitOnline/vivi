@@ -87,9 +87,10 @@ class FileType(zeit.cms.type.TypeDeclaration):
     type = 'file'
     title = _('File')
     addform = 'zeit.cms.repository.file.Add'
+    factory = RepositoryFile
 
     def content(self, resource):
-        return RepositoryFile(resource.id, resource.contentType)
+        return self.factory(resource.id, resource.contentType)
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))

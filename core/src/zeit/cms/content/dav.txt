@@ -15,9 +15,12 @@ A plain text field:
 
 >>> import zeit.cms.content.interfaces
 >>> import zope.schema
+>>> def get_converter(field):
+...     return zope.component.getMultiAdapter(
+...         (field, None), zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 >>> text_field = zope.schema.Text()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(text_field)
+>>> converter = get_converter(text_field)
 >>> converter
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('a text')
@@ -35,7 +38,7 @@ u'Foo'
 Try this for some fields. Integer goes first:
 
 >>> int_field = zope.schema.Int()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(int_field)
+>>> converter = get_converter(int_field)
 >>> converter
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('5')
@@ -58,7 +61,7 @@ Floats are also supported:
 
 
 >>> float_field = zope.schema.Float()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(float_field)
+>>> converter = get_converter(float_field)
 >>> converter
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty(5)
@@ -86,7 +89,7 @@ Booleans
 The default representation of booleans is yes/no:
 
 >>> field = zope.schema.Bool()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('yes')
 True
 >>> converter.fromProperty('no')
@@ -135,7 +138,7 @@ True and False:
 >>> class BoolSource(list):
 ...     zope.interface.implements(zope.schema.interfaces.IIterableSource)
 >>> field = zope.schema.Choice(source=BoolSource([True, False]))
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('yes')
 True
 >>> converter.fromProperty('no')
@@ -222,7 +225,7 @@ source[#functional]_:
 
 >>> field = zope.schema.Choice(
 ...     source=zeit.cms.content.contentsource.FolderSource())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> folder = converter.fromProperty(u'http://xml.zeit.de/online')
 >>> folder
 <zeit.cms.repository.folder.Folder...>
@@ -275,7 +278,7 @@ good and stable token, as well as the actual value:
 >>> import zope.app.security.vocabulary
 >>> field = zope.schema.Choice(
 ...     source=zope.app.security.vocabulary.PrincipalSource())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty(u'zope.user')
 u'zope.user'
 
@@ -320,7 +323,7 @@ Object sources are used mostly by configuration files (e.g. centerpage layouts)
 ...             'two': Thing('two', 'T2'),
 ...         }
 >>> field = zope.schema.Choice(source=ThingSource()).bind(None)
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('one')
 Thing <id=one>
 
@@ -332,7 +335,7 @@ Vocabularies work like sources:
 
 >>> field = zope.schema.Choice(
 ...     values=('A', 'B', 'C', 1))
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.toProperty(1)
 '1'
 
@@ -364,7 +367,7 @@ Datetime
 Datetimes are stored in iso 8601 format:
 
 >>> field = zope.schema.Datetime()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('2007-05-25T13:24:59Z')
 datetime.datetime(2007, 5, 25, 13, 24, 59, tzinfo=<UTC>)
 
@@ -419,7 +422,7 @@ Date
 Dates are also supported:
 
 >>> field = zope.schema.Date()
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('2007-05-25')
 datetime.date(2007, 5, 25)
 
@@ -451,7 +454,7 @@ Collections of TextLine are serialised with a semicolon as separator.
 >>> field = zope.schema.Tuple(
 ...     value_type=zope.schema.TextLine(),
 ...     default=())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('Peter Buhr;Klaus Kleber')
 (u'Peter Buhr', u'Klaus Kleber')
 
@@ -483,14 +486,14 @@ List, Set and FrozenSet as field:
 >>> field = zope.schema.List(
 ...     value_type=zope.schema.TextLine(),
 ...     default=[])
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> converter.fromProperty('Peter Buhr;Klaus Kleber')
 [u'Peter Buhr', u'Klaus Kleber']
 
 >>> field = zope.schema.Set(
 ...     value_type=zope.schema.TextLine(),
 ...     default=set())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
 >>> result
 set([..., ...])
@@ -500,7 +503,7 @@ set([..., ...])
 >>> field = zope.schema.FrozenSet(
 ...     value_type=zope.schema.TextLine(),
 ...     default=frozenset())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
 >>> result
 frozenset([..., ...])
@@ -516,7 +519,7 @@ There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 
 >>> field = zope.schema.Tuple(
 ...     value_type=zope.schema.Dict())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
 >>> type(value)
 <type 'unicode'>
@@ -560,7 +563,7 @@ As it is generic it basically works for all other fields as well:
 
 >>> field = zope.schema.List(
 ...     value_type=zope.schema.Int())
->>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
+>>> converter = get_converter(field)
 >>> print converter.toProperty([4, 2, 55, 2])
 <pickle>
   <list>

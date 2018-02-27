@@ -30,6 +30,7 @@ class TypeDeclaration(object):
 
     # The "type" in DAV. If given the class will also implement IDAVContent
     type = None
+    factory = NotImplemented
     title = None
     addform = None
     register_as_type = True
@@ -127,8 +128,6 @@ def restore_provided_interfaces_from_dav(obj, event):
 
 
 class XMLContentTypeDeclaration(TypeDeclaration):
-
-    factory = None
 
     def content(self, resource):
         try:
