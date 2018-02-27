@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.4.0 (unreleased)
+3.4.0 (2018-02-27)
 ------------------
 
 - TMS-162: Register DAVProperty descriptors
