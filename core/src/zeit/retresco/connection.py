@@ -96,20 +96,8 @@ class TMS(object):
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params=params)
-        result = zeit.cms.interfaces.Result()
+        result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = response['num_found']
-        for row in response['docs']:
-            page = row['payload']
-            page[u'uniqueId'] = (
-                zeit.cms.interfaces.ID_NAMESPACE + row['url'][1:])
-            page[u'doc_type'] = row['doc_type']
-            page[u'doc_id'] = row['doc_id']
-            page[u'keywords'] = []
-            for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
-                for keyword in row.get('rtr_{}s'.format(entity_type), ()):
-                    page[u'keywords'].append(zeit.retresco.tag.Tag(
-                        label=keyword, entity_type=entity_type))
-            result.append(page)
         return result
 
     def get_article_data(self, content):
@@ -215,8 +203,6 @@ class TMS(object):
         method = getattr(requests, verb.lower())
         if self.username:
             kw['auth'] = (self.username, self.password)
-        if 'json' in kw:
-            kw['json'] = encode_json(kw['json'])
         try:
             url = self.url + path
             if 'in-text-linked' in kw.get('params', {}).keys():
@@ -324,32 +310,6 @@ def _build_topic_redirects(topicpages):
         output.write('location = %s { return 301 %s; }\n' % (source, target))
 
     return output.getvalue()
-
-
-class JSONTypeConverter(object):
-    """Since `requests` does not allow plugging in a different JSON encoder,
-    we perform custom type conversion on the python structure _before_ we pass
-    it to `requests`.
-    """
-
-    def __call__(self, o):
-        encoder = getattr(self, type(o).__name__, None)
-        if encoder is None:  # Optimize common case: no extra function call.
-            return o
-        return encoder(o)
-
-    def datetime(self, o):
-        return o.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    date = datetime
-
-    def dict(self, o):
-        return {key: self(value) for key, value in o.items()}
-
-    def list(self, o):
-        return [self(x) for x in o]
-
-encode_json = JSONTypeConverter()
 
 
 def signal_timeout_request(self, method, url, **kw):

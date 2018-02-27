@@ -26,27 +26,10 @@ class Elasticsearch(object):
         response = self.client.search(
             index=self.index, body=json.dumps(query),
             sort=sort_order, from_=start, size=rows, doc_type='documents')
-        results = []
-        for hit in response['hits']['hits']:
-            source = hit['_source']
-            result = {'uniqueId': self._path_to_url(source['url']),
-                      'doc_id': source['doc_id'],
-                      'doc_type': source['doc_type']}
-            if include_payload:
-                result.update(source['payload'])
-                result['keywords'] = []
-                for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
-                    for tag in source.get('rtr_{}s'.format(entity_type), ()):
-                        result['keywords'].append(zeit.retresco.tag.Tag(
-                            label=tag, entity_type=entity_type))
-
-            results.append(result)
-        search_result = zeit.cms.interfaces.Result(results)
-        search_result.hits = response['hits']['total']
-        return search_result
-
-    def _path_to_url(self, path):
-        return path.replace('/', zeit.cms.interfaces.ID_NAMESPACE, 1)
+        result = zeit.cms.interfaces.Result(
+            [x['_source'] for x in response['hits']['hits']])
+        result.hits = response['hits']['total']
+        return result
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
