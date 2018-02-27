@@ -40,7 +40,7 @@ setup(
         'zeit.content.video>=2.4.1.dev0',
         'zeit.edit >= 2.17.0.dev0',
         'zeit.find >= 2.7.0.dev0',
-        'zeit.retresco >= 1.16.0.dev0',
+        'zeit.retresco >= 1.18.0.dev0',
         'zeit.solr',
         'zope.app.appsetup',
         'zope.app.generations',
