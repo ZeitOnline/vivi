@@ -116,10 +116,6 @@ class Keywords(zeit.edit.browser.form.InlineForm):
     css_class = 'keywords'
     form_fields = FormFields(IArticle).select('keywords')
 
-    def setUpWidgets(self, *args, **kw):
-        super(Keywords, self).setUpWidgets(*args, **kw)
-        self.widgets['keywords'].show_helptext = True
-
 
 class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 

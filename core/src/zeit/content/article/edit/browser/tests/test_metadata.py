@@ -125,23 +125,6 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
             ['t2', 't1', 't3'],
             list(self.tagger().updateOrder.call_args[0][0]))
 
-    def test_helptext_should_be_shown_for_new_article(self):
-        self.add_article()
-        s = self.selenium
-        s.waitForElementPresent('id=keywords.keywords')
-        s.click('css=#edit-form-keywords .fold-link')
-        s.assertText(
-            'id=edit-form-keywords',
-            '*Only the first 6 keywords are shown*')
-
-    def test_helptext_should_not_be_shown_for_existing_article(self):
-        self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s = self.selenium
-        s.waitForElementPresent('id=keywords.keywords')
-        s.click('css=#edit-form-metadata .fold-link')
-        s.assertNotText(
-            'id=edit-form-metadata', '*Only the first 6 keywords are shown*')
-
 
 class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
