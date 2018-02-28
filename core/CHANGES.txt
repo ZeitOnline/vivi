@@ -8,6 +8,12 @@ zeit.content.cp changes
 - TMS-165: Support complex elasticsearch json queries
 
 
+3.21.1 (2018-02-27)
+-------------------
+
+- TMS-162: Update to API changes in zeit.cms, zeit.retresco
+
+
 3.21.0 (2018-02-05)
 -------------------
 

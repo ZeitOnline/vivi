@@ -225,8 +225,9 @@ class ElasticsearchContentQuery(ContentQuery):
                 self.query, self.context.uniqueId, exc_info=True)
         return result
 
-    def _resolve(self, item):
-        return zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+    def _resolve(self, doc):
+        return zeit.cms.interfaces.ICMSContent(
+            zeit.cms.interfaces.ID_NAMESPACE + doc['url'], None)
 
     @cachedproperty
     def filter_query(self):
@@ -306,7 +307,8 @@ class TMSContentQuery(ContentQuery):
         return result
 
     def _resolve(self, doc):
-        return zeit.cms.interfaces.ICMSContent(doc['uniqueId'], None)
+        return zeit.cms.interfaces.ICMSContent(
+            zeit.cms.interfaces.ID_NAMESPACE + doc['url'], None)
 
 
 class CenterpageContentQuery(ContentQuery):
