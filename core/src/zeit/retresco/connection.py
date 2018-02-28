@@ -138,10 +138,10 @@ class TMS(object):
 
         # Keywords pinned in vivi come first.
         result = []
-        for kw in response['payload'].get('keywords', ()):
-            if not kw['pinned']:
+        content = zeit.retresco.interfaces.ITMSContent(response)
+        for keyword in zeit.retresco.tagger.Tagger(content).values():
+            if not keyword.pinned:
                 continue
-            keyword = zeit.retresco.tag.Tag(kw['label'], kw['entity_type'])
             tms = entity_links.pop((keyword.label, keyword.entity_type), None)
             if not tms:
                 continue
