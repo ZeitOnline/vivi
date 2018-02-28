@@ -12,10 +12,12 @@ import requests.models
 import requests.sessions
 import time
 import zeit.cms.tagging.interfaces
+import zeit.connector.interfaces
 import zeit.content.rawxml.rawxml
 import zeit.content.text.text
 import zeit.retresco.connection
 import zeit.retresco.interfaces
+import zeit.retresco.tagger
 import zeit.retresco.testing
 import zope.component
 
@@ -185,6 +187,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual('Mytopic', result[0]['title'])
 
     def test_get_article_keywords_order_is_given_by_cms_payload(self):
+        def add_tag(label, typ, pinned):
+            tag = zeit.retresco.tag.Tag(label, typ)
+            tagger[tag.code] = tag
+            if pinned:
+                tagger.set_pinned(tagger.pinned + (tag.code,))
+        tagger = zeit.retresco.tagger.Tagger(self.repository['testcontent'])
+        add_tag('New York', 'location', True)
+        add_tag('Obama', 'person', True)
+        add_tag('Merkel', 'person', True)
+        add_tag('Clinton', 'person', False)
+        dav_tagger = zeit.connector.interfaces.IWebDAVProperties(tagger)
+
         self.layer['request_handler'].response_body = json.dumps({
             'entity_links': [
                 # already linked: ignored
@@ -206,17 +220,12 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 {'key': 'New York', 'key_type': 'location', 'score': "1.0",
                  'status': 'not_linked', 'link': '/thema/newyork'},
             ],
+            'doc_type': 'article',
             'payload': {
-                'keywords': [
-                    {'label': 'New York', 'entity_type': 'location',
-                     'pinned': True},
-                    {'label': 'Obama', 'entity_type': 'person',
-                     'pinned': True},
-                    {'label': 'Merkel', 'entity_type': 'person',
-                     'pinned': True},
-                    {'label': 'Clinton', 'entity_type': 'person',
-                     'pinned': False},
-                ],
+                'tagging': {
+                    name: value for (name, ns), value in dav_tagger.items()
+                    if ns == 'http://namespaces.zeit.de/CMS/tagging'
+                }
             },
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
