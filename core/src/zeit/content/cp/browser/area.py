@@ -75,7 +75,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'count', 'query', 'query_order', 'raw_query', 'raw_order',
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
-            'referenced_topicpage')
+            'referenced_topicpage', 'topicpage_filter')
     form_fields['raw_query'].custom_widget = SolrQueryWidget
 
     field_groups = (
@@ -89,7 +89,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         gocept.form.grouped.Fields(
             _('automatic-area-type-channel'), ('query', 'query_order')),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-topicpage'), ('referenced_topicpage',)),
+            _('automatic-area-type-topicpage'), (
+                'referenced_topicpage', 'topicpage_filter')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-query'), ('raw_query', 'raw_order')),
         gocept.form.grouped.Fields(
