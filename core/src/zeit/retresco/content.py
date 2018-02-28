@@ -76,7 +76,7 @@ class Content(object):
 
 @grok.adapter(dict)
 @grok.implementer(zeit.retresco.interfaces.ITMSContent)
-def from_tms_result(context):
+def from_tms_representation(context):
     doc_type = context.get('doc_type', 'unknown')
     typ = zope.component.queryUtility(
         zeit.cms.interfaces.ITypeDeclaration, name=doc_type)

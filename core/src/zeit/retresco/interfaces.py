@@ -109,8 +109,14 @@ class TechnicalError(Exception):
 class ITMSRepresentation(zope.interface.Interface):
     """Adapts an ICMSContent to a (possibly nested) dict with the TMS fields.
 
-    The toplevel keys are defined by the TMS, while everyting below `payload`
+    The toplevel keys are defined by the TMS, while everything below `payload`
     is defined by us.
+
+    We transform the DAV properties mechanically, i.e.
+      (http://namespaces.zeit.de/CMS/document, ressort) ->
+        payload/document/ressort
+    and then add explicitly picked parts of the XML body, e.g.
+    payload/body/title or payload/head/teaser_image.
     """
 
     def __call__():
@@ -126,8 +132,14 @@ class IBody(zope.interface.Interface):
 
 
 class ITMSContent(zeit.cms.interfaces.ICMSContent):
-    """Marker interface for content that was resolved from a TMS or
-    Elasticsearch query result."""
+    """Adapts a TMS or Elasticsearch result dict to an ICMSContent object.
+
+    This is the inverse of ITMSRepresentation. We instantiate the normal
+    content type class (Article, CenterPage, etc), and augment it with a
+    mixin base class that provides custom IWebDAVProperties (backed by the
+    nested payload dict) and reconstructs a minimal XML body from those parts
+    explicitly converted by ITMSRepresentation.
+    """
 
 
 class IElasticsearch(zope.interface.Interface):
