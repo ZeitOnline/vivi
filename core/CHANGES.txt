@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.18.1 (unreleased)
+1.18.1 (2018-02-28)
 -------------------
 
 - FIX: Adjust `get_article_keywords` to the changed payload structure
