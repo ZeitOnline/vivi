@@ -69,11 +69,11 @@ class ITMS(zope.interface.Interface):
         with metadata of the content contained in the given TMS topic page.
         The dicts have the following keys:
 
-        uniqueId: zeit.cms.interfaces.ICMSContent.uniqueId
+        url: zeit.cms.interfaces.ICMSContent.uniqueId (only the path)
         doc_type: zeit.cms.interfaces.ITypeDeclaration.type_identifier
         doc_id: zeit.cms.content.interfaces.IUUID.id
         rtr_keywords, rtr_locations etc.
-        plus all keys that ITMSRepresentation puts into `payload`
+        payload: see ITMSRepresentation
 
         Parameters for pagination are:
         `start`: offset the result by this many entries
@@ -151,8 +151,9 @@ class IElasticsearch(zope.interface.Interface):
         query ... dictionary according to Elasticsearch Query DSL
         start ... offset in the search result.
         rows ... limit number of results.
-        include_payload ... mix the `payload` dict into the results
+        include_payload ... add the ITMSRepresentation `payload` dict to
+            the results.
 
         Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
-        with the keys `uniqueId`, `doc_id` and `doc_type`.
+        with the keys `url`, `doc_id` and `doc_type`.
         """
