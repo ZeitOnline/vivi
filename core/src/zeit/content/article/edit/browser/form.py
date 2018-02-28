@@ -119,15 +119,6 @@ class Keywords(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super(Keywords, self).setUpWidgets(*args, **kw)
         self.widgets['keywords'].show_helptext = True
-        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.retresco.tms'):
-            self._set_widget_required('keywords', False)
-
-    def _set_widget_required(self, name, required):
-        field = self.widgets[name].context
-        cloned = field.bind(field.context)
-        cloned.required = required
-        self.widgets[name].context = cloned
 
 
 class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
