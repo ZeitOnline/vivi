@@ -1,5 +1,3 @@
-from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
-from zeit.cms.tagging.interfaces import ID_NAMESPACE as TAG_NAMESPACE
 import grokcore.component
 import json
 import xml.sax.saxutils
@@ -42,18 +40,12 @@ class Widget(grokcore.component.MultiAdapter,
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
-    show_helptext = False
-
     def __init__(self, context, source, request):
         super(Widget, self).__init__(context, request)
         self.source = source
 
     def __call__(self):
         return self.template()
-
-    @property
-    def keywords_shown(self):
-        return KEYWORD_CONFIGURATION.keywords_shown
 
     @property
     def autocomplete_source_url(self):
@@ -136,11 +128,8 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         cssClass = self.cssClass or ''
         if cssClass:
             cssClass += "-item"
-        cssClass += ' shown'
         tag = self.itemTag
         for index, item in enumerate(value):
-            if index >= KEYWORD_CONFIGURATION.keywords_shown:
-                break
             term = self.vocabulary.getTerm(item)
             items.append(zope.formlib.widget.renderElement(
                 tag,

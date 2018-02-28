@@ -7,11 +7,10 @@ zeit.cms.declare_namespace('zeit.cms.tagging');
 
 zeit.cms.tagging.Widget = gocept.Class.extend({
 
-    construct: function(id, keywords_shown) {
+    construct: function(id) {
         var self = this;
         self.id = id;
         self.element = document.getElementById(id + '.wrapper');
-        self.keywords_shown = keywords_shown;
         self.list = document.getElementById(id + '.list');
         self.data = document.getElementById(id);
         self.autocomplete = document.getElementById(id + '.add');
@@ -152,15 +151,6 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
 
     _sync_json_widget_value: function() {
         var self = this;
-        $('li', self.list).each(function (i, item) {
-            if (i < self.keywords_shown) {
-                $(item).addClass('shown');
-                $(item).removeClass('not-shown');
-            } else {
-                $(item).removeClass('shown');
-                $(item).addClass('not-shown');
-            }
-        });
         $(self.data).val(JSON.stringify(self.to_json()));
         $(self.list).css('width', $(self.list).width() + 'px');
     }

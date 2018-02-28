@@ -694,14 +694,6 @@ a.button.configure_search:hover {
   color: #fff;
 }
 
-.keyword-widget .not-shown {
-    color: #7d7d7d;
-}
-
-.keyword-widget .shown {
-    border-right: 3px solid #999999;
-}
-
 .keyword-widget input[name="add_tag"] {
     margin-top: 1em;
     margin-bottom: 1em;

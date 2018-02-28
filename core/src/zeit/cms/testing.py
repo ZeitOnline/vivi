@@ -317,7 +317,6 @@ cms_product_config = """\
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
   whitelist-url file://{base}/tagging/tests/fixtures/whitelist.xml
-  keyword-configuration file://{base}/tagging/tests/fixtures/kw_config.xml
   trisolute-url file://{base}/tagging/tests/fixtures/googleNewsTopics.json
   trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true

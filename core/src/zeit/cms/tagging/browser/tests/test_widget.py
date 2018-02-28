@@ -10,28 +10,11 @@ import zeit.cms.testing
 class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                     zeit.cms.tagging.testing.TaggingHelper):
 
-    def test_customised_widget_renders_a_list_with_shown_items(self):
-        self.setup_tags('t1', 't2', 't3')
-        with mock.patch(
-            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
-            gocept.testing.mock.Property()) as keywords_shown:
-            keywords_shown.return_value = 2
-            self.browser.open(
-                'http://localhost/++skin++vivi/repository/testcontent')
-            self.assertEllipsis(
-                '...<li class=" shown">...'
-                '<li class=" shown">...',
-                self.browser.contents)
-            self.assertNotIn('t3', self.browser.contents)
-
     def test_renders_keyword_labels(self):
         self.setup_tags('t1', 't2', 't3')
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
-        self.assertEllipsis(
-            '...<li class=" shown">t1...'
-            '<li class=" shown">t2...',
-            self.browser.contents)
+        self.assertEllipsis('...<li>t1...<li>t2...', self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -144,19 +127,6 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s.clickAndWait('name=form.actions.apply')
         s.waitForTextPresent('t1')
 
-    def test_configured_number_of_items_is_marked(self):
-        with mock.patch(
-            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
-            gocept.testing.mock.Property()) as keywords_shown:
-            keywords_shown.return_value = 2
-
-            self.setup_tags('t1', 't2', 't3')
-            self.open_content()
-            s = self.selenium
-            s.click('update_tags')
-            s.waitForCssCount('css=.fieldname-keywords li.not-shown', 1)
-            s.waitForCssCount('css=.fieldname-keywords li.shown', 2)
-
     def test_can_add_tags_via_autocomplete_field(self):
         self.setup_tags()
         self.whitelist_tags['Kohle'] = 'Kohle'
@@ -175,23 +145,3 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s.clickAndWait('name=form.actions.apply')
         s.waitForElementPresent('jquery=li:contains(t1) .pinned')
         s.assertNotTextPresent('Wrong contained type')
-
-    def test_after_autocomplete_add_shown_markings_are_updated(self):
-        with mock.patch(
-            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
-            gocept.testing.mock.Property()) as keywords_shown:
-            keywords_shown.return_value = 1
-            self.setup_tags()
-            # The order in which the keywords are added to the whitelist is
-            # also the order in which they are shown in the rendered list in
-            # the form. We, therefore, change the order in the second step.
-            for tag in ('Kohle', 'Polarkreis'):
-                self.whitelist_tags[tag] = tag
-            self.open_content()
-            s = self.selenium
-            self.add_keyword_by_autocomplete('Polarkreis')
-            self.add_keyword_by_autocomplete('Kohle')
-            s.clickAndWait('name=form.actions.apply')
-            s.waitForElementPresent('jquery=li.shown:contains(Kohle)')
-            s.assertCssCount('css=.fieldname-keywords li.not-shown', 1)
-            s.assertCssCount('css=.fieldname-keywords li.shown', 1)
