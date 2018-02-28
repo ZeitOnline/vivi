@@ -1,3 +1,16 @@
+"""zeit.retresco provides the following key features:
+
+* An implementation of ``zeit.cms.tagging.interfaces.ITagger`` and ``ITag``
+  (in .tagger and .tag respectively), and thus a backend for
+  ``zeit.cms.content.interfaces.ICommonMetadata.keywords``
+* ``ITMS``: Python interface to the Retresco TMS REST API, used by
+  ``.tagger.Tagger`` and ``zeit.content.cp.automatic`` to populate
+  ``IAutomaticArea`` contents
+* ``IElasticsearch``: Python interface for querying elasticsearch, used for
+  ``IAutomaticArea`` as well
+* Converting ``ICMSContent`` objects to a nested dict structure and back again
+  with ``ITMSRepresentation`` and ``ITMSContent``
+"""
 import zeit.cms.interfaces
 import zope.interface
 
