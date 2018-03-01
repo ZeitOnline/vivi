@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
+import json
 import urlparse
 import zc.form.field
 import zc.sourcefactory.contextual
@@ -464,7 +465,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         required=False)
 
     elasticsearch_raw_query = zope.schema.Text(
-        title=_('Elasticsearch raw query'), required=False)
+        title=_('Elasticsearch raw query'),
+        required=False)
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
         default=u'payload.document.date_first_released:desc',
@@ -499,6 +501,19 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                     'Automatic area with teaser from elasticsearch query '
                     'requires a raw query.')
             raise zeit.cms.interfaces.ValidationError(error_message)
+        return True
+
+    @zope.interface.invariant
+    def elasticsearch_valid_json_query(data):
+        """Check the es raw query is plausible elasticsearch DSL"""
+        if data.automatic_type == 'elasticsearch-query' and (
+                data.elasticsearch_raw_query):
+            try:
+                json.loads(data.elasticsearch_raw_query)
+            except (TypeError, ValueError), err:
+                raise zeit.cms.interfaces.ValidationError(
+                    _('Elasticsearch raw query is malformed: {error}'
+                      ).format(error=err.message))
         return True
 
     def adjust_auto_blocks_to_count():

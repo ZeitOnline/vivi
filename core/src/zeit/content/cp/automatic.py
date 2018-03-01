@@ -2,7 +2,9 @@ from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import json
 import logging
+import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
 import zeit.find.search
 import zeit.solr.interfaces
@@ -144,7 +146,7 @@ class SolrContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
-        self.query_string = self.context.raw_query
+        self.query = self.context.raw_query
         self.order = self.context.raw_order
 
     def __call__(self):
@@ -153,7 +155,8 @@ class SolrContentQuery(ContentQuery):
         try:
             solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
             response = solr.search(
-                self.query_string, sort=self.order,
+                self.query,
+                sort=self.order,
                 start=self.start,
                 rows=self.rows,
                 fl=self.FIELDS,
@@ -166,7 +169,7 @@ class SolrContentQuery(ContentQuery):
         except:
             log.warning(
                 'Error during solr query %r for %s',
-                self.query_string, self.context.uniqueId, exc_info=True)
+                self.query, self.context.uniqueId, exc_info=True)
         return result
 
     def _resolve(self, solr_result):
@@ -194,27 +197,20 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.query_string = self.context.elasticsearch_raw_query
+        self.query = self.context.elasticsearch_raw_query
         self.order = self.context.elasticsearch_raw_order
 
     def __call__(self):
         self.total_hits = 0
         result = []
+        query = {}
+        if self.query:
+            query['query'] = json.loads(self.query)
+        if self.filter_query:
+            query['filter'] = self.filter_query
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
-            query = {
-                "query": {
-                    "bool": {
-                        "must": {
-                            "query_string": {
-                                "query": self.query_string
-                            }
-                        },
-                        "must_not": self.filter_query
-                    }
-                }
-            }
             response = elasticsearch.search(
                 query, self.order, start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
@@ -226,23 +222,31 @@ class ElasticsearchContentQuery(ContentQuery):
         except:
             log.warning(
                 'Error during elasticsearch query %r for %s',
-                self.query_string, self.context.uniqueId, exc_info=True)
+                self.query, self.context.uniqueId, exc_info=True)
         return result
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE + doc['url'], None)
 
-    @property
+    @cachedproperty
     def filter_query(self):
         """Perform de-duplication of results.
 
-        Create a list of match query for teasers that already exist on the CP.
+        Create an id query for teasers that already exist on the CP.
         """
-        if not self.context.hide_dupes:
-            return []
-        return [{'match': {'url': x.uniqueId.replace(ID_NAMESPACE, '/')}}
-                for x in self.existing_teasers]
+        if not self.context.hide_dupes or not self.existing_teasers:
+            return
+        return {
+            'bool': {
+                'must_not': {
+                    'ids': {
+                        'values': [zeit.cms.content.interfaces.IUUID(x).id
+                                   for x in self.existing_teasers]
+                    }
+                }
+            }
+        }
 
 
 class ChannelContentQuery(SolrContentQuery):
@@ -256,7 +260,7 @@ class ChannelContentQuery(SolrContentQuery):
 
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
-        self.query_string = self._build_query()
+        self.query = self._build_query()
         self.order = self.context.query_order
 
     def _build_query(self):
