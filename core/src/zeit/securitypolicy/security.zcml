@@ -167,6 +167,10 @@
     role="zeit.Producer"
     permission="zeit.cms.admin.EditSemantic"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.tagging.ViewInTMS"
+    />
 
 
   <!-- CvD grants -->
@@ -191,6 +195,10 @@
   <grant
     role="zeit.SEO"
     permission="zeit.seo.Edit"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.cms.tagging.ViewInTMS"
     />
 
 </configure>
