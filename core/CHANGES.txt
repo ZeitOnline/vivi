@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.4.2 (unreleased)
+3.5.0 (2018-03-01)
 ------------------
 
 - TMS-156: Don't show "update keywords" for new articles
