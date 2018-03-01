@@ -28,7 +28,7 @@
                  id string:${view/name}.add"
  />
 
-<div tal:condition="view/tms_host">
+<div tal:condition="view/display_tms_link">
   <a i18n:translate=""
      target="_blank"
      tal:attributes="href string:http://${view/tms_host}/documents/show/${view/uuid}">Show in TMS</a>

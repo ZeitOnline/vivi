@@ -13,4 +13,9 @@
       name="absolute_url"
       />
 
+  <permission
+    id="zeit.cms.tagging.ViewInTMS"
+    title="View article in TMS"
+    />
+
 </configure>

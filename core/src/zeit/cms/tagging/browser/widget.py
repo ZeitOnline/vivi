@@ -83,6 +83,10 @@ class Widget(grokcore.component.MultiAdapter,
 
     tms_host = None
 
+    def display_tms_link(self):
+        return self.tms_host and self.request.interaction.checkPermission(
+            'zeit.cms.tagging.ViewInTMS', self.context)
+
     @property
     def uuid(self):
         return zeit.cms.content.interfaces.IUUID(self.context.context).id
