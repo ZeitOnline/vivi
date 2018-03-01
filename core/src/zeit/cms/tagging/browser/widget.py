@@ -54,7 +54,10 @@ class Widget(grokcore.component.MultiAdapter,
 
     @property
     def display_update_button(self):
-        return self.context.queryTaggedValue('zeit.cms.tagging.updateable')
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context.context)
+        return (self.context.queryTaggedValue(
+            'zeit.cms.tagging.updateable') and not renameable.renameable)
 
     def _toFormValue(self, value):
         # Re #12478: When iterating over keywords, fall back to an empty
