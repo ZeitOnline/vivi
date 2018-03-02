@@ -48,6 +48,7 @@ class Application(object):
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
                     'evalex': True}))
+            self.pipeline.insert(0, (ClearFanstaticOnError, 'factory', '', {}))
         return self.setup_pipeline(app, global_conf)
 
     def setup_pipeline(self, app, global_conf=None):
@@ -61,6 +62,22 @@ class Application(object):
 
 
 APPLICATION = Application()
+
+
+class ClearFanstaticOnError(object):
+    """In debug mode, removes any application CSS on error, so as not to clash
+    with the CSS of werkzeug debugger.
+    """
+
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        try:
+            return self.app(environ, start_response)
+        except Exception:
+            fanstatic.clear_needed()
+            raise
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
