@@ -23,8 +23,7 @@ import zope.interface
 import zope.security.proxy
 
 
-class DynamicFolderBase(persistent.Persistent,
-                        zope.container.contained.Contained):
+class DynamicFolderBase(object):
     """Base class for the dynamic folder that holds all attributes.
 
     A base class is used to differentiate between repository and workingcopy.
@@ -201,7 +200,9 @@ class RepositoryDynamicFolder(
         return result
 
 
-class LocalDynamicFolder(DynamicFolderBase):
+class LocalDynamicFolder(DynamicFolderBase,
+                         persistent.Persistent,
+                         zope.container.contained.Contained):
     """Inside the workingcopy the folder only holds attributes, no children."""
 
     zope.interface.implements(
