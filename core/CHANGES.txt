@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.2.5 (unreleased)
+1.2.5 (2018-03-02)
 ------------------
 
 - FIX: Make publishing dynamic folders work
