@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.5.1 (unreleased)
+3.5.1 (2018-03-06)
 ------------------
 
 - FIX: Put "update keywords" button rule behind feature toggle
