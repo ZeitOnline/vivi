@@ -4,7 +4,8 @@ zeit.cms changes
 3.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Put "update keywords" button rule behind feature toggle
+  `zeit.retresco.tms`
 
 
 3.5.0 (2018-03-01)

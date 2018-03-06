@@ -5,6 +5,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
+import zope.app.appsetup.appsetup
 import zope.app.pagetemplate
 import zope.component.hooks
 import zope.formlib.itemswidgets
@@ -56,8 +57,12 @@ class Widget(grokcore.component.MultiAdapter,
     def display_update_button(self):
         renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             self.context.context)
-        return (self.context.queryTaggedValue(
-            'zeit.cms.tagging.updateable') and not renameable.renameable)
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.retresco.tms'):
+            return (self.context.queryTaggedValue(
+                'zeit.cms.tagging.updateable') and not renameable.renameable)
+        else:
+            return self.context.queryTaggedValue('zeit.cms.tagging.updateable')
 
     def _toFormValue(self, value):
         # Re #12478: When iterating over keywords, fall back to an empty
