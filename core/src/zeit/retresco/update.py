@@ -101,9 +101,6 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                     tagger.update(conn.generate_keyword_list(response))
             else:
                 # For reindex-only, preserve the previously enriched body.
-                # Note: This only works when content is already published in
-                # TMS, but for a large-scale reindex where we don't want to
-                # have to enrich again that's probably fine.
                 body = conn.get_article_data(content).get('body')
 
             conn.index(content, body)
