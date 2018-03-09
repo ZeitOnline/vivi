@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.18.2 (unreleased)
+1.18.2 (2018-03-09)
 -------------------
 
 - FIX: Actually make re-enrich hook use async jobs (see 1.10.5)
