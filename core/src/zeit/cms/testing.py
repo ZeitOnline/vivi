@@ -322,6 +322,9 @@ cms_product_config = """\
   breadcrumbs-use-common-metadata true
 
   cache-expiration-config 600
+
+  sso-cookie-name-prefix my_sso_
+  sso-cookie-domain
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
