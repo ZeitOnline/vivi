@@ -322,7 +322,6 @@ cms_product_config = """\
   breadcrumbs-use-common-metadata true
 
   cache-expiration-config 600
-  celery-config /dev/null
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
