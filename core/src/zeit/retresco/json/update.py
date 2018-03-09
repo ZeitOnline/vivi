@@ -25,7 +25,7 @@ class UpdateKeywords(object):
             body = self.request.bodyStream.read(
                 int(self.request['CONTENT_LENGTH']))
             doc_ids = json.loads(body)['doc_ids']
-        except:
+        except Exception:
             message = (
                 'JSON body with parameter doc_ids (list of uuids) required')
             return 400, message
@@ -40,7 +40,7 @@ def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(
             zeit.cms.content.interfaces.IUUID(uuid))
-    except:
+    except Exception:
         log.warning('TMS wants to update invalid id %s, ignored', uuid)
     else:
         zeit.retresco.update.index(content, enrich=True, publish=True)
