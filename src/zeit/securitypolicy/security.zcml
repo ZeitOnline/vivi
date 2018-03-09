@@ -171,6 +171,10 @@
     role="zeit.Producer"
     permission="zeit.cms.tagging.ViewInTMS"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.retresco.UseTMS"
+    />
 
 
   <!-- CvD grants -->
@@ -199,6 +203,10 @@
   <grant
     role="zeit.SEO"
     permission="zeit.cms.tagging.ViewInTMS"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.retresco.UseTMS"
     />
 
 </configure>
