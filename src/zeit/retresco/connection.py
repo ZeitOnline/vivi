@@ -104,7 +104,7 @@ class TMS(object):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
             return self._request('GET /content/%s' % uuid)
-        except:
+        except Exception:
             return {}
 
     def get_article_body(self, uuid, timeout=None):
