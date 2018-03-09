@@ -30,7 +30,7 @@ class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
             b.post('http://localhost/@@update_keywords',
                    '{"foo" : "bar"}', 'application/x-javascript')
 
-    def test_endpoint_creates_async_job(self):
+    def test_endpoint_calls_enrich_and_publish(self):
         b = self.browser
         with mock.patch('zeit.retresco.update.index') as index:
             b.post('http://localhost/@@update_keywords',
