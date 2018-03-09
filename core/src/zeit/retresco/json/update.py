@@ -31,7 +31,7 @@ class UpdateKeywords(object):
             return 400, message
 
         for doc_id in doc_ids:
-            update_async(doc_id)
+            update_async.delay(doc_id)
         return 200, 'OK'
 
 
