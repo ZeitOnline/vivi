@@ -102,7 +102,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.layer['request_handler'].response_body = json.dumps({
             'body': '<body>lorem ipsum</body>'})
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_body('{urn:uuid:88a99fcc-0c52-4665}')
+        result = tms.get_article_body(self.repository['testcontent'])
         self.assertEqual('<body>lorem ipsum</body>', result)
 
     def test_get_topicpage_documents_pagination(self):
@@ -229,7 +229,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             },
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_keywords('myid')
+        result = tms.get_article_keywords(self.repository['testcontent'])
         self.assertEqual(
             ['New York', 'Obama', 'Clinton', 'Berlin'],
             [x.label for x in result])
