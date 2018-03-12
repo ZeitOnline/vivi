@@ -2,10 +2,10 @@ zeit.retresco changes
 =====================
 
 
-1.18.3 (unreleased)
+1.19.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-186: Declare ``zeit.retresco.UseTMS`` permission.
 
 
 1.18.2 (2018-03-09)

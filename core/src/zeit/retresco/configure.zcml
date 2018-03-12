@@ -56,4 +56,9 @@
     title="Update TMS index"
     />
 
+  <permission
+    id="zeit.retresco.UseTMS"
+    title="Use TMS GUI"
+    />
+
 </configure>
