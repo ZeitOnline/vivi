@@ -2,17 +2,13 @@ from cStringIO import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner
-import grokcore.component as grok
 import logging
 import lxml.builder
-import pytz
 import requests
 import requests.exceptions
 import requests.sessions
 import signal
-import urllib
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
@@ -111,8 +107,7 @@ class TMS(object):
         __traceback_info__ = (uuid,)
         try:
             response = self._request(
-                'GET /in-text-linked-documents/{}'.format(
-                    urllib.quote(uuid)), timeout=timeout)
+                'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
             return response['body']
         except (KeyError, requests.Timeout):
             return None
@@ -121,8 +116,7 @@ class TMS(object):
         __traceback_info__ = (uuid,)
         try:
             response = self._request(
-                'GET /in-text-linked-documents/{}'.format(
-                    urllib.quote(uuid)), timeout=timeout)
+                'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
             data = response['entity_links']
         except (KeyError, requests.Timeout):
             return ()
