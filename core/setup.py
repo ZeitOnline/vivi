@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='3.5.2.dev0',
+    version='3.6.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -59,6 +59,7 @@ setup(
         'sprout',
         'tblib',
         'transaction',
+        'webob',
         'werkzeug',
         'z3c.celery >= 1.2.0.dev0',
         'z3c.conditionalviews>=1.0b2.dev-r91510',

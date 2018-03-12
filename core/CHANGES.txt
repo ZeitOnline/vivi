@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-3.5.2 (unreleased)
+3.6.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-186: Implement SSO-style cookie generating login view
 
 
 3.5.1 (2018-03-06)

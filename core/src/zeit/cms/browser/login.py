@@ -1,4 +1,5 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
+import webob.cookies
 import zeit.cms.browser.resources
 import zope.authentication.interfaces
 import zope.traversing.browser
@@ -47,6 +48,87 @@ class Logout(object):
             auth = zope.component.getUtility(
                 zope.authentication.interfaces.IAuthentication)
             zope.authentication.interfaces.ILogout(auth).logout(self.request)
+            self._delete_sso_cookies()
 
         return self.request.response.redirect(
             zope.traversing.browser.absoluteURL(self.context, self.request))
+
+    def _delete_sso_cookies(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        for cookie in self.request.cookies:
+            if cookie.startswith(config['sso-cookie-name-prefix']):
+                for key, value in set_cookie_headers(cookie, None):
+                    self.request.response.setHeader(key, value)
+
+
+class SSOLogin(object):
+    """Provide a vivi-powered, cookie-based single-sign-on functionality.
+
+    This is the same basic concept as the "big SSO", meine.zeit.de:
+
+    * The client application checks for SSO cookie, if not present, it
+      redirects to this view.
+    * We authenticate the user with the usual vivi mechanism (login form). If
+      successful (or if they were already logged into vivi), we set the SSO
+      cookie and redirect back to the url passed in by the client via the `url`
+      query parameter.
+    * The client can request the permission that the user must have via the
+      `permission` query parameter (defaults to zope.View, which is the "is a
+      logged in user" permission). The SSO cookie is named like the permission,
+      e.g. `vivi_sso_ticket_zope.View`, and set for all of zeit.de. It expires
+      on browser close, so there is no need for any explicit logout.
+    * Note that the cookie currently does not contain any meaningful value, so
+      clients need only be concerned with its presence. (We don't need to worry
+      about spoofing, since this is strictly a company-interal mechanism.)
+    """
+
+    def __call__(self):
+        permission = self.request.form.get('permission', 'zope.View')
+        if not self.request.interaction.checkPermission(
+                permission, self.context):
+            raise zope.security.interfaces.Unauthorized(permission)
+        # XXX We'd want to use a signed JWT as the value, just like
+        # zeit.accounts does, but our currently only client (haproxy of TMS)
+        # cannot evaluate that, so there's not much point right now.
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        headers = set_cookie_headers(
+            config['sso-cookie-name-prefix'] + permission, 'dummy')
+        for key, value in headers:
+            self.request.response.setHeader(key, value)
+        url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
+            self.context, self.request))
+        return self.request.response.redirect(url, trusted=True)
+
+
+def set_cookie_headers(name, value):
+    # Inspired by zeit.web.member.security._set_cookie_headers()
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    cookie_helper = webob.cookies.CookieProfile(
+        name, serializer=SIMPLE_SERIALIZER)
+    if config['sso-cookie-domain']:
+        domains = config['sso-cookie-domain']
+    else:
+        # Applies only in tests and localhost environment; since at least
+        # zope.testbrowser does not understand "Domain=localhost", sigh.
+        domains = [None]
+    return cookie_helper.get_headers(
+        value, domains=domains, max_age=EXPIRE_ON_BROSWER_CLOSE)
+
+
+class SimpleSerializer(object):
+    """Copied from pyramid.authentication._SimpleSerializer."""
+
+    def loads(self, bstruct):
+        if isinstance(bstruct, unicode):
+            return bstruct.encode('latin-1')
+        return str(bstruct)
+
+    def dumps(self, appstruct):
+        if isinstance(appstruct, unicode):
+            return appstruct.encode('latin-1')
+        return appstruct
+
+
+SIMPLE_SERIALIZER = SimpleSerializer()
+EXPIRE_ON_BROSWER_CLOSE = None

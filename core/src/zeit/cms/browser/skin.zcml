@@ -95,5 +95,13 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <browser:page
+    for="zope.traversing.interfaces.IContainmentRoot"
+    class=".login.SSOLogin"
+    permission="zope.Public"
+    name="sso-login"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
 </configure>
 
