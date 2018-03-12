@@ -104,7 +104,10 @@ def zope_shell():
     globs = {
         '__name__': '__main__',
         # Not really worth using zope.app.publication.ZopePublication.root_name
-        'root': db.open().root()['Application']
+        'root': db.open().root()['Application'],
+        'zeit': sys.modules['zeit'],
+        'zope': sys.modules['zope'],
+        'transaction': sys.modules['transaction'],
     }
     if len(sys.argv) > 2:
         sys.argv[:] = sys.argv[2:]
@@ -121,6 +124,7 @@ Type "help" for more information.
 
 Environment:
   root         ZODB application root folder (already set as ZCA site)
+Modules that were pre-imported for convenience: zope, zeit, transaction
 """ % (sys.version, sys.platform))
 
 
