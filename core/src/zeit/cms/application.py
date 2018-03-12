@@ -10,6 +10,7 @@ import webob
 import werkzeug.debug
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
+import zope.app.wsgi
 import zope.app.wsgi.paste
 
 
@@ -42,8 +43,8 @@ class Application(object):
 
     def __call__(self, global_conf, **local_conf):
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
-        app = zope.app.wsgi.paste.ZopeApplication(
-            global_conf, local_conf['zope_conf'], handle_errors=not debug)
+        app = zope.app.wsgi.getWSGIApplication(
+            local_conf['zope_conf'], handle_errors=not debug)
         if debug:
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
