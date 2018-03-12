@@ -104,25 +104,21 @@ class TMS(object):
             return {}
 
     def get_article_body(self, content, timeout=None):
+        return self._get_intextlink_data(content, timeout).get('body')
+
+    def _get_intextlink_data(self, content, timeout):
         __traceback_info__ = (content.uniqueId,)
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
             response = self._request(
                 'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
-            return response['body']
+            return response
         except (KeyError, requests.Timeout):
-            return None
+            return {}
 
     def get_article_keywords(self, content, timeout=None):
-        __traceback_info__ = (content.uniqueId,)
-        uuid = zeit.cms.content.interfaces.IUUID(content).id
-        try:
-            response = self._request(
-                'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
-            data = response['entity_links']
-        except (KeyError, requests.Timeout):
-            return ()
-
+        response = self._get_intextlink_data(content, timeout)
+        data = response.get('entity_links', ())
         entity_links = collections.OrderedDict()
         for item in data:
             if not item['link'] or item['status'] == 'linked':
