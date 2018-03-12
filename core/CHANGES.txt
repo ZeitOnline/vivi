@@ -6,6 +6,8 @@ zeit.cms changes
 
 - TMS-186: Implement SSO-style cookie generating login view
 
+- MAINT: Add `zopeshell` entrypoint that sets up logging from paste.ini
+
 
 3.5.1 (2018-03-06)
 ------------------

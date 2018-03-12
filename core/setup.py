@@ -116,6 +116,7 @@ setup(
         'console_scripts': [
             'dump_references = zeit.cms.relation.migrate:dump_references',
             'load_references = zeit.cms.relation.migrate:load_references',
+            'zopeshell = zeit.cms.application:zope_shell',
         ],
         'paste.app_factory': [
             'main=zeit.cms.application:APPLICATION',

@@ -1,16 +1,21 @@
+from ConfigParser import ConfigParser
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
 import grokcore.component as grok
+import logging.config
 import os
 import pkg_resources
 import pyramid_dogpile_cache2
+import sys
 import webob
 import werkzeug.debug
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
+import zope.app.wsgi
 import zope.app.wsgi.paste
+import zope.component.hooks
 
 
 FANSTATIC_PATH = fanstatic.DEFAULT_SIGNATURE
@@ -42,8 +47,8 @@ class Application(object):
 
     def __call__(self, global_conf, **local_conf):
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
-        app = zope.app.wsgi.paste.ZopeApplication(
-            global_conf, local_conf['zope_conf'], handle_errors=not debug)
+        app = zope.app.wsgi.getWSGIApplication(
+            local_conf['zope_conf'], handle_errors=not debug)
         if debug:
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
@@ -81,6 +86,46 @@ class ClearFanstaticOnError(object):
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
+
+
+def zope_shell():
+    if len(sys.argv) < 2:
+        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
+        sys.exit(1)
+    paste_ini = sys.argv[1]
+    logging.config.fileConfig(
+        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
+            os.path.dirname(paste_ini))})
+    config = ConfigParser()
+    config.read(paste_ini)
+    # XXX How to get to zope.conf is the only-application specific part.
+    db = zope.app.wsgi.config(config.get('application:cms', 'zope_conf'))
+    # Adapted from zc.zope3recipes.debugzope.debug()
+    globs = {
+        '__name__': '__main__',
+        # Not really worth using zope.app.publication.ZopePublication.root_name
+        'root': db.open().root()['Application'],
+        'zeit': sys.modules['zeit'],
+        'zope': sys.modules['zope'],
+        'transaction': sys.modules['transaction'],
+    }
+    if len(sys.argv) > 2:
+        sys.argv[:] = sys.argv[2:]
+        globs['__file__'] = sys.argv[0]
+        execfile(sys.argv[0], globs)
+        sys.exit()
+    else:
+        zope.component.hooks.setSite(globs['root'])
+        import code
+        # Modeled after pyramid.scripts.pshell
+        code.interact(local=globs, banner="""\
+Python %s on %s
+Type "help" for more information.
+
+Environment:
+  root         ZODB application root folder (already set as ZCA site)
+Modules that were pre-imported for convenience: zope, zeit, transaction
+""" % (sys.version, sys.platform))
 
 
 @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
