@@ -11,9 +11,9 @@ import zeit.connector.interfaces
 import zeit.content.article.testing
 import zeit.content.image.testing
 import zeit.imp.tests
+import zeit.retresco.testing
 import zope.component
 import zope.component.hooks
-import zope.testbrowser.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -23,6 +23,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         zeit.content.article.testing.product_config +
         zeit.content.image.testing.product_config +
         zeit.imp.tests.product_config +
+        zeit.retresco.testing.product_config +
         zeit.brightcove.testing.product_config))
 
 
