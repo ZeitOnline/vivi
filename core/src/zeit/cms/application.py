@@ -15,6 +15,7 @@ import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.wsgi
 import zope.app.wsgi.paste
+import zope.component.hooks
 
 
 FANSTATIC_PATH = fanstatic.DEFAULT_SIGNATURE
@@ -111,6 +112,7 @@ def zope_shell():
         execfile(sys.argv[0], globs)
         sys.exit()
     else:
+        zope.component.hooks.setSite(globs['root'])
         import code
         # Modeled after pyramid.scripts.pshell
         code.interact(local=globs, banner="""\
@@ -118,7 +120,7 @@ Python %s on %s
 Type "help" for more information.
 
 Environment:
-  root         ZODB application root folder
+  root         ZODB application root folder (already set as ZCA site)
 """ % (sys.version, sys.platform))
 
 
