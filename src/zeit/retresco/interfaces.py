@@ -93,10 +93,10 @@ class ITMS(zope.interface.Interface):
         `rows`: return this many entries (i.e. items per page)
         """
 
-    def get_article_body(uuid, timeout=None):
+    def get_article_body(content, timeout=None):
         """Returns the (in-text-link annotated) article body XML."""
 
-    def get_article_keywords(uuid, timeout=None):
+    def get_article_keywords(content, timeout=None):
         """Returns a list of ITag objects with an additional property `link`,
         containing a path (without leading slash) to the corresponding
         topicpage. Only keywords that have not already been in-text-linked in

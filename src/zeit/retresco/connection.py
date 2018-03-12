@@ -103,8 +103,9 @@ class TMS(object):
         except Exception:
             return {}
 
-    def get_article_body(self, uuid, timeout=None):
-        __traceback_info__ = (uuid,)
+    def get_article_body(self, content, timeout=None):
+        __traceback_info__ = (content.uniqueId,)
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
             response = self._request(
                 'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
@@ -112,8 +113,9 @@ class TMS(object):
         except (KeyError, requests.Timeout):
             return None
 
-    def get_article_keywords(self, uuid, timeout=None):
-        __traceback_info__ = (uuid,)
+    def get_article_keywords(self, content, timeout=None):
+        __traceback_info__ = (content.uniqueId,)
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
             response = self._request(
                 'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
