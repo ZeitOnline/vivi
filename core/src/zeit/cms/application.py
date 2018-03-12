@@ -1,11 +1,14 @@
+from ConfigParser import ConfigParser
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
 import grokcore.component as grok
+import logging.config
 import os
 import pkg_resources
 import pyramid_dogpile_cache2
+import sys
 import webob
 import werkzeug.debug
 import zope.app.appsetup.interfaces
@@ -82,6 +85,41 @@ class ClearFanstaticOnError(object):
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
+
+
+def zope_shell():
+    if len(sys.argv) < 2:
+        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
+        sys.exit(1)
+    paste_ini = sys.argv[1]
+    logging.config.fileConfig(
+        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
+            os.path.dirname(paste_ini))})
+    config = ConfigParser()
+    config.read(paste_ini)
+    # XXX How to get to zope.conf is the only-application specific part.
+    db = zope.app.wsgi.config(config.get('application:cms', 'zope_conf'))
+    # Adapted from zc.zope3recipes.debugzope.debug()
+    globs = {
+        '__name__': '__main__',
+        # Not really worth using zope.app.publication.ZopePublication.root_name
+        'root': db.open().root()['Application']
+    }
+    if len(sys.argv) > 2:
+        sys.argv[:] = sys.argv[2:]
+        globs['__file__'] = sys.argv[0]
+        execfile(sys.argv[0], globs)
+        sys.exit()
+    else:
+        import code
+        # Modeled after pyramid.scripts.pshell
+        code.interact(local=globs, banner="""\
+Python %s on %s
+Type "help" for more information.
+
+Environment:
+  root         ZODB application root folder
+""" % (sys.version, sys.platform))
 
 
 @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
