@@ -121,8 +121,7 @@ class TMS(object):
         data = response.get('entity_links', ())
         entity_links = collections.OrderedDict()
         for item in data:
-            if not item['link'] or item['status'] == 'linked':
-                # Don't duplicate keyword if in-text-link is already present.
+            if not item['link']:
                 continue
             # zeit.web expects the path without a leading slash
             item['link'] = item['link'][1:]

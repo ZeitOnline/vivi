@@ -201,7 +201,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
         self.layer['request_handler'].response_body = json.dumps({
             'entity_links': [
-                # already linked: ignored
+                # already linked: still shown
                 {'key': 'Merkel', 'key_type': 'person', 'score': "10.0",
                  'status': 'linked', 'link': '/thema/merkel'},
                 # pinned: comes first
@@ -231,7 +231,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.get_article_keywords(self.repository['testcontent'])
         self.assertEqual(
-            ['New York', 'Obama', 'Clinton', 'Berlin'],
+            ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'],
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
 
