@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.2.5 (unreleased)
+2.2.5 (2018-03-13)
 ------------------
 
 - TMS-186: Grant UseTMS to Producer and SEO
