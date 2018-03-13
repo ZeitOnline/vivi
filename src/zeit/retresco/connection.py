@@ -2,17 +2,13 @@ from cStringIO import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner
-import grokcore.component as grok
 import logging
 import lxml.builder
-import pytz
 import requests
 import requests.exceptions
 import requests.sessions
 import signal
-import urllib
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
@@ -107,26 +103,22 @@ class TMS(object):
         except Exception:
             return {}
 
-    def get_article_body(self, uuid, timeout=None):
-        __traceback_info__ = (uuid,)
+    def get_article_body(self, content, timeout=None):
+        return self._get_intextlink_data(content, timeout).get('body')
+
+    def _get_intextlink_data(self, content, timeout):
+        __traceback_info__ = (content.uniqueId,)
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
             response = self._request(
-                'GET /in-text-linked-documents/{}'.format(
-                    urllib.quote(uuid)), timeout=timeout)
-            return response['body']
+                'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
+            return response
         except (KeyError, requests.Timeout):
-            return None
+            return {}
 
-    def get_article_keywords(self, uuid, timeout=None):
-        __traceback_info__ = (uuid,)
-        try:
-            response = self._request(
-                'GET /in-text-linked-documents/{}'.format(
-                    urllib.quote(uuid)), timeout=timeout)
-            data = response['entity_links']
-        except (KeyError, requests.Timeout):
-            return ()
-
+    def get_article_keywords(self, content, timeout=None):
+        response = self._get_intextlink_data(content, timeout)
+        data = response.get('entity_links', ())
         entity_links = collections.OrderedDict()
         for item in data:
             if not item['link'] or item['status'] == 'linked':
