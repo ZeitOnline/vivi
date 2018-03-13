@@ -4,7 +4,7 @@ zeit.cms changes
 3.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-186: Fix cookie domain configuration handling
 
 
 3.6.0 (2018-03-13)

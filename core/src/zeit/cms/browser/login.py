@@ -107,7 +107,7 @@ def set_cookie_headers(name, value):
     cookie_helper = webob.cookies.CookieProfile(
         name, serializer=SIMPLE_SERIALIZER)
     if config['sso-cookie-domain']:
-        domains = config['sso-cookie-domain']
+        domains = [config['sso-cookie-domain']]
     else:
         # Applies only in tests and localhost environment; since at least
         # zope.testbrowser does not understand "Domain=localhost", sigh.
