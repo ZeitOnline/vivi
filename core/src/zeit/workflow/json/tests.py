@@ -1,3 +1,4 @@
+import celery.result
 import json
 import transaction
 import uuid
@@ -46,6 +47,9 @@ class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
             uuid.UUID(result)
         except ValueError:
             self.fail('a UUID should be returned as job id')
+        finally:
+            # test isolation, don't potentially leave jobs in the queue
+            celery.result.AsyncResult(result).get()
 
     def test_retract_should_return_job_id(self):
         result = self.call_json(
@@ -55,3 +59,6 @@ class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
             uuid.UUID(result)
         except ValueError:
             self.fail('a UUID should be returned as job id')
+        finally:
+            # test isolation, don't potentially leave jobs in the queue
+            celery.result.AsyncResult(result).get()
