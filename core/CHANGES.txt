@@ -4,7 +4,8 @@ zeit.content.article changes
 3.34.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Use generic, parameterized `checkin` worklist item instead of
+  specialized `checkin_auto_lsc`
 
 
 3.34.2 (2018-02-19)
