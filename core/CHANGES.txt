@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.34.3 (unreleased)
+3.34.3 (2018-03-15)
 -------------------
 
 - MAINT: Use generic, parameterized `checkin` worklist item instead of
