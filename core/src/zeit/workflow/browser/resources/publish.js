@@ -53,12 +53,6 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             context + '/@@checkin?redirect=False' + params);
     },
 
-    // XXX kludgy. Generalize with arguments declared on the <li>?
-    checkin_auto_lsc: function(context) {
-        var self = this;
-        return self.checkin(context, '&semantic_change=None');
-    },
-
     start_job: function(context, action, objectlog) {
         var self = this;
         if (isNull(context)) {
