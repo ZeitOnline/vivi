@@ -50,7 +50,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             context = window.context_url;
         }
         return self._redirect_step(
-            context + '/@@checkin?redirect=False&event:boolean=' + params);
+            context + '/@@checkin?redirect=False' + params);
     },
 
     // XXX kludgy. Generalize with arguments declared on the <li>?

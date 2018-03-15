@@ -4,7 +4,7 @@ zeit.cms changes
 3.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-190: Don't suppress events on checkin via "quick publish"
 
 
 3.6.2 (2018-03-15)
