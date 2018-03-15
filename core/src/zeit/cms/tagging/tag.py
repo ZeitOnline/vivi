@@ -63,7 +63,7 @@ def veto_tagging_properties(event):
 def add_ranked_tags_to_head(content):
     tagger = zeit.cms.tagging.interfaces.ITagger(content, None)
     xml = zope.security.proxy.removeSecurityProxy(content.xml)
-    if tagger:
+    if tagger and xml.find('head') is not None:
         xml.head.rankedTags = zope.security.proxy.removeSecurityProxy(
             tagger).to_xml()
     else:

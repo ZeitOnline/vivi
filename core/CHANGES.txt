@@ -4,7 +4,7 @@ zeit.cms changes
 3.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-188: Only sync tags to XML if a <head> node exists
 
 
 3.6.1 (2018-03-13)

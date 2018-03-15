@@ -1,4 +1,5 @@
 import collections
+import lxml.objectify
 import mock
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
@@ -132,7 +133,9 @@ class FakeTags(collections.OrderedDict):
         return [x.code for x in self.values() if x.pinned]
 
     def to_xml(self):
-        return None
+        node = lxml.objectify.E.tags(*[
+            lxml.objectify.E.tag(x.label) for x in self.values()])
+        return node
 
 
 class FakeTag(object):

@@ -1,4 +1,6 @@
 # encoding: utf-8
+from zeit.cms.checkout.helper import checked_out
+import lxml.etree
 import mock
 import unittest
 import zeit.cms.tagging.interfaces
@@ -113,3 +115,23 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
             zeit.cms.tagging.interfaces.IWhitelist)
         tag = ICMSContent(whitelist.get(u'Bärlin').uniqueId)
         self.assertEqual(u'Bärlin', tag.label)
+
+
+class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
+                    zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_copies_tags_to_head(self):
+        self.setup_tags('foo')
+        with checked_out(self.repository['testcontent']):
+            pass
+        self.assertEllipsis(
+            '...<tag...>foo</tag>...',
+            lxml.etree.tostring(self.repository['testcontent'].xml.head))
+
+    def test_leaves_xml_without_head_alone(self):
+        content = self.repository['testcontent']
+        content.xml.remove(content.xml.head)
+        self.setup_tags('foo')
+        with self.assertNothingRaised():
+            # Need to fake checkin, since other handlers re-create the <head>.
+            zeit.cms.tagging.tag.add_ranked_tags_to_head(content)
