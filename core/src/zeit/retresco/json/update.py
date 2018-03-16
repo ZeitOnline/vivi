@@ -4,6 +4,7 @@ import zeit.cms.celery
 import zeit.cms.content.contentuuid
 import zeit.cms.content.interfaces
 import zeit.retresco.update
+import zope.app.appsetup.product
 
 log = logging.getLogger(__name__)
 
@@ -30,8 +31,11 @@ class UpdateKeywords(object):
                 'JSON body with parameter doc_ids (list of uuids) required')
             return 400, message
 
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.retresco')
         for doc_id in doc_ids:
-            update_async.delay(doc_id)
+            update_async.delay(
+                doc_id, _principal_id_=config['index-principal'])
         return 200, 'OK'
 
 

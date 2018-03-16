@@ -49,6 +49,7 @@ product_config = """
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index zeit_pool
     topic-redirect-prefix http://www.zeit.de
+    index-principal zope.user
 </product-config>
 """
 
