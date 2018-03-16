@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Mar 16 14:56:32 2018\n"
-"PO-Revision-Date: 2018-03-16 14:57+0100\n"
+"PO-Revision-Date: 2018-03-16 15:21+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1646,10 +1646,8 @@ msgid "Show in TMS"
 msgstr "TMS-Ansicht"
 
 #: zeit/cms/tagging/configure.zcml:16
-#, fuzzy
-#| msgid "View article metadata"
 msgid "View article in TMS"
-msgstr "Metadaten"
+msgstr ""
 
 #: zeit/cms/tagging/interfaces.py:79
 msgid "Too few keywords given."
@@ -2370,10 +2368,8 @@ msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
 #: zeit/content/article/edit/interfaces.py:349
-#, fuzzy
-#| msgid "Liveblog id"
 msgid "Liveblog version"
-msgstr "Liveblog-ID"
+msgstr "Liveblog Version"
 
 #: zeit/content/article/edit/interfaces.py:358
 #: zeit/content/cp/interfaces.py:846
@@ -2750,10 +2746,8 @@ msgid "automatic-area-type-elasticsearch-query"
 msgstr "ES-Query"
 
 #: zeit/content/cp/browser/blocks/layout.mail.content.pt:3
-#, fuzzy
-#| msgid "Subject"
 msgid "Subject:"
-msgstr "Betreff"
+msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.placeholder.content.pt:1
 msgid "Click here to choose the block type."
@@ -3056,10 +3050,8 @@ msgid "Referenced Topicpage"
 msgstr "ID"
 
 #: zeit/content/cp/interfaces.py:457
-#, fuzzy
-#| msgid "Topic page"
 msgid "Topicpage filter"
-msgstr "Link zur Themenseite"
+msgstr "Filter"
 
 #: zeit/content/cp/interfaces.py:46
 msgid "Header image"
@@ -3100,10 +3092,8 @@ msgid "Name for topiclinks"
 msgstr "Navi-Teaser"
 
 #: zeit/content/cp/interfaces.py:515
-#, fuzzy
-#| msgid "Elasticsearch raw query"
 msgid "Elasticsearch raw query is malformed: {error}"
-msgstr "ES-Query"
+msgstr ""
 
 #: zeit/content/cp/interfaces.py:55
 msgid "Label for topiclink #1"
@@ -3788,10 +3778,8 @@ msgid "Duration of the rendition"
 msgstr "Spieldauer"
 
 #: zeit/content/video/interfaces.py:48
-#, fuzzy
-#| msgid "External?"
 msgid "External ID"
-msgstr "externer Autor"
+msgstr "externe ID"
 
 #: zeit/content/video/interfaces.py:56
 msgid "Video expires on"
