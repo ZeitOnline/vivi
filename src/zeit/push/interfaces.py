@@ -301,6 +301,10 @@ class IAccountData(zope.interface.Interface):
         title=_('Facebook Campus Text'), required=False)
 
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
+    twitter_ressort_text = zope.schema.TextLine(
+        title=_('Ressort Tweet'),
+        required=False,
+        max_length=256)
     twitter_ressort_enabled = zope.schema.Bool(
         title=_('Enable Twitter Ressort'))
     twitter_ressort = zope.schema.Choice(
