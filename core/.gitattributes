@@ -1,0 +1,4 @@
+*.po diff=po
+# put this into your ~/.gitconfig (msgcat is part of the `gettext` package)
+# [diff "po"]
+# textconv=msgcat --no-location
