@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.22.0 (unreleased)
+3.22.0 (2018-03-19)
 -------------------
 
 - TMS-165: Support complex elasticsearch json queries
