@@ -1896,6 +1896,7 @@
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
 .type-article #form-social .field.fieldname-short_text .label,
+.type-article #form-social .field.fieldname-twitter_ressort_text .label,
 .type-article #form-mobile .field.fieldname-mobile_text .label,
 .type-article #form-mobile .field.fieldname-mobile_image .label {
    display: none;
@@ -1908,6 +1909,7 @@
 }
 
 .type-article #social\.short_text,
+.type-article #social\.twitter_ressort_text,
 .type-article #mobile\.mobile_text {
   width: 100%;
 }
@@ -1922,16 +1924,12 @@
   margin-right: 10px;
 }
 
-.type-article #form-social .field.fieldname-short_text {
-    margin-top: 10em; /* XXX margin against previous non-float? */
-}
-
 .type-article #form-social .field.fieldname-twitter_ressort_enabled {
     margin-right: 0;
 }
 
 .type-article #form-social .field.fieldname-twitter_ressort {
-   padding-top: 0.5em; /* XXX revert to default */
+   padding-top: 0; /* XXX revert to default */
 }
 
 .type-article #form-social .field.fieldname-twitter_ressort .label span {
@@ -1956,16 +1954,28 @@
 /* XXX We should use <fieldset>, but we'd have to combine the templates of
    zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
 .type-article #form-social .field.fieldname-short_text,
+.type-article #form-social .field.fieldname-twitter_ressort_text,
 .type-article #form-social .field.fieldname-is_amp {
-    padding-top: 1em;
     border-top: 1px solid #d5dee7;
+    clear: both;
+    display: flow-root;
+    margin-top: 1em;
+    margin-bottom: 0;
+    padding-top: 1em;
+    padding-bottom: 0;
 }
 
 .type-article #form-social .field.fieldname-facebook_main_text:before ,
 .type-article #form-social .field.fieldname-short_text:before ,
+.type-article #form-social .field.fieldname-twitter_ressort_text:before ,
 .type-article #form-social .field.fieldname-is_amp:before {
     font-variant: small-caps;
     font-weight: bold;
+}
+
+.type-article #form-social .field.fieldname-facebook_main_enabled,
+.type-article #form-social .field.fieldname-twitter_main_enabled {
+    display: flow-root;
 }
 
 .type-article #form-social .field.fieldname-facebook_main_text:before {
@@ -1973,6 +1983,9 @@
 }
 .type-article #form-social .field.fieldname-short_text:before {
     content: "Twitter";
+}
+.type-article #form-social .field.fieldname-twitter_ressort_text:before {
+    content: "Twitter Ressort";
 }
 .type-article #form-social .field.fieldname-is_amp:before {
     content: "Mobile Plattformen";
