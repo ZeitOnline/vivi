@@ -109,6 +109,9 @@ class TMS(object):
     def _get_intextlink_data(self, content, timeout):
         __traceback_info__ = (content.uniqueId,)
         uuid = zeit.cms.content.interfaces.IUUID(content).id
+        if uuid is None:
+            log.warning('%s has no UUID, intextlinks request skipped', content)
+            return {}
         try:
             response = self._request(
                 'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)

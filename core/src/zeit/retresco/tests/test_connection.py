@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.retresco.tag import Tag
 import json
-import lxml.builder
 import mock
 import pytest
 import requests.adapters
 import requests.exceptions
-import requests.models
-import requests.sessions
 import time
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
@@ -99,6 +96,8 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms.delete_id('any')
 
     def test_tms_returns_enriched_article_body(self):
+        with checked_out(self.repository['testcontent']):
+            pass  # Trigger mock connector uuid creation
         self.layer['request_handler'].response_body = json.dumps({
             'body': '<body>lorem ipsum</body>'})
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -187,6 +186,9 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual('Mytopic', result[0]['title'])
 
     def test_get_article_keywords_order_is_given_by_cms_payload(self):
+        with checked_out(self.repository['testcontent']):
+            pass  # Trigger mock connector uuid creation
+
         def add_tag(label, typ, pinned):
             tag = zeit.retresco.tag.Tag(label, typ)
             tagger[tag.code] = tag
