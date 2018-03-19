@@ -207,7 +207,7 @@ class TMS(object):
             response.raise_for_status()
         except requests.exceptions.RequestException, e:
             status = getattr(e.response, 'status_code', 500)
-            body = getattr(e.response, 'text', '<body/>')
+            body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(
                 verb=verb, path=path, error=e, body=body)
             if status < 500:
