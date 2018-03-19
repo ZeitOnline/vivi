@@ -210,6 +210,15 @@ class AccountData(grok.Adapter):
             enabled=value)
 
     @property
+    def twitter_ressort_text(self):
+        return self._nonmain_twitter_service.get('override_text')
+
+    @twitter_ressort_text.setter
+    def twitter_ressort_text(self, value):
+        self.push.set(
+            dict(type='twitter', variant='ressort'), override_text=value)
+
+    @property
     def twitter_ressort(self):
         return self._nonmain_twitter_service.get('account')
 
