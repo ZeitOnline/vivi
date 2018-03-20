@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.22.2 (unreleased)
+3.22.2 (2018-03-20)
 -------------------
 
 - TMS-205: Specify filter.json as URL instead of uniqueId
