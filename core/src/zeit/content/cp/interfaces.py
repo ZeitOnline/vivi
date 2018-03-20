@@ -1,9 +1,11 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
 import json
 import logging
+import urllib2
 import urlparse
 import zc.form.field
 import zc.sourcefactory.contextual
@@ -308,20 +310,19 @@ class QuerySortOrderSource(SimpleDictSource):
 
 class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    @property
+    @CONFIG_CACHE.cache_on_arguments()
     def json_data(self):
-        id = zope.app.appsetup.product.getProductConfiguration(
+        url = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp').get('topicpage-filter-source')
-        file = zeit.cms.interfaces.ICMSContent(id, None)
         try:
-            return json.loads(file.text)
+            return json.load(urllib2.urlopen(url))
         except Exception:
             log.warning(
-                'TopicpageFilterSource could not parse %s', id, exc_info=True)
+                'TopicpageFilterSource could not parse %s', url, exc_info=True)
             return []
 
     def getValues(self):
-        return [x.keys()[0] for x in self.json_data]
+        return [x.keys()[0] for x in self.json_data()]
 
     def getTitle(self, value):
         return value

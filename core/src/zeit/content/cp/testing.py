@@ -2,7 +2,6 @@ import __future__
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
-import os.path
 import pkg_resources
 import plone.testing
 import re
@@ -12,7 +11,6 @@ import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.modules.testing
-import zeit.content.text.text
 import zeit.retresco.interfaces
 import zeit.workflow.testing
 import zope.testing.doctest
@@ -27,7 +25,7 @@ product_config = """
     module-config-source file://{fixtures}/blocks.xml
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-types-url file://{fixtures}/cp-types.xml
-    topicpage-filter-source http://xml.zeit.de/filter.json
+    topicpage-filter-source file://{fixtures}/tests/fixtures/filter.json
     feed-update-minimum-age 30
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
@@ -85,28 +83,8 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
-class TopicfilterLayer(plone.testing.Layer):
-
-    defaultBases = (CP_LAYER,)
-
-    def setUp(self):
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
-            with zeit.cms.testing.interaction():
-                cfg = zope.app.appsetup.product.getProductConfiguration(
-                    'zeit.content.cp')
-                file = zeit.content.text.text.Text()
-                file.text = '[{"videos": {"term": {"doc_type": "video"}}}]'
-                id = cfg['topicpage-filter-source']
-                folder = os.path.dirname(id) + '/'
-                name = os.path.basename(id)
-                folder = zeit.cms.interfaces.ICMSContent(folder)
-                folder[name] = file
-
-TOPICFILTER_LAYER = TopicfilterLayer()
-
-
 ZCML_LAYER = plone.testing.Layer(
-    bases=(TOPICFILTER_LAYER, SOLR_MOCK_LAYER, ELASTICSEARCH_MOCK_LAYER),
+    bases=(CP_LAYER, SOLR_MOCK_LAYER, ELASTICSEARCH_MOCK_LAYER),
     name='ZCMLLayer', module=__name__)
 
 
