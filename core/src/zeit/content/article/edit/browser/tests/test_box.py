@@ -40,4 +40,5 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl(name='form.subtitle').value = '#h1 text'
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
-        self.assertEllipsis('h1 text\n=======', b.getControl(name="form.subtitle").value)
+        self.assertEllipsis(
+            'h1 text\n=======', b.getControl(name="form.subtitle").value)

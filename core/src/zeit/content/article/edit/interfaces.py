@@ -1,5 +1,7 @@
 from zeit.content.article.i18n import MessageFactory as _
+from zeit.cms.application import CONFIG_CACHE
 import collections
+import datetime
 import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.article.interfaces
@@ -14,6 +16,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
+import zope.security.proxy
 
 
 class IArticleArea(zeit.edit.interfaces.IArea):
@@ -427,3 +430,53 @@ class IBreakingNewsBody(zope.interface.Interface):
 
     article_id = zope.interface.Attribute(
         'The uniqueID of the breaking news article')
+
+
+class Puzzle(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, multiple):
+        super(Puzzle, self).__init__(id, title, None)
+        self.multiple = multiple
+
+    def __eq__(self, other):
+        return super(Puzzle, self).__eq__(
+            zope.security.proxy.removeSecurityProxy(other))
+
+
+class PuzzleSource(zeit.cms.content.sources.ObjectSource,
+                   zeit.cms.content.sources.SimpleContextualXMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'puzzleform-source'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
+            puzzle = Puzzle(
+                unicode(node.get('id')),
+                unicode(node.text.strip()),
+                node.get('multiple') == u'true'
+            )
+            result[puzzle.id] = puzzle
+        return result
+
+    def getTitle(self, context, value):
+        return value.title
+
+
+PUZZLE_SOURCE = PuzzleSource()
+
+
+class IPuzzleForm(zeit.edit.interfaces.IBlock):
+
+    puzzle_type = zope.schema.Choice(
+        title=_('Puzzle'),
+        required=True,
+        source=PUZZLE_SOURCE)
+
+    year = zope.schema.Int(
+        title=_('Year'),
+        min=datetime.date.today().year,
+        default=datetime.date.today().year,
+    )

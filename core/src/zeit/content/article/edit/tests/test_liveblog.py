@@ -2,7 +2,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
 import zeit.content.article.testing
 import zeit.edit.interfaces
-import zope.component
 
 
 class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
@@ -25,6 +24,7 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
         zeit.cms.workflow.interfaces.IPublish(article).publish()
         self.assertEqual(lsc, ISemanticChange(article).last_semantic_change)
+
 
 class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
 

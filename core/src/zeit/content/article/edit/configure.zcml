@@ -200,6 +200,17 @@
       />
   </class>
 
+  <class class=".puzzleform.PuzzleForm">
+    <require
+      interface=".interfaces.IPuzzleForm"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPuzzleForm"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".liveblog.Liveblog">
     <require
       interface=".interfaces.ILiveblog"
