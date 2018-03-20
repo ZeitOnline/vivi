@@ -37,7 +37,10 @@ def index_after_add(event):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    index_async.apply_async((context.uniqueId,), countdown=5)
+    if event.publishing:
+        index(context)
+    else:
+        index_async.apply_async((context.uniqueId,), countdown=5)
 
 
 @grok.subscribe(
