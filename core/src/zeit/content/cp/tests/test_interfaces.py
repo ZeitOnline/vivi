@@ -61,3 +61,13 @@ class AreaValidationTest(
         with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
             self.interface.validateInvariants(self.area)
         self.assertIn('No JSON object could be decoded', str(err.exception))
+
+
+class TopicpageFilterSourceTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.cp.testing.ZCML_LAYER
+
+    def test_parses_filter_json(self):
+        self.assertEqual(
+            ['videos'],
+            list(zeit.content.cp.interfaces.TopicpageFilterSource()))

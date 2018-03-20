@@ -3,6 +3,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
 import json
+import logging
 import urlparse
 import zc.form.field
 import zc.sourcefactory.contextual
@@ -23,6 +24,9 @@ import zeit.edit.interfaces
 import zope.app.appsetup.appsetup
 import zope.i18n
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
@@ -302,11 +306,28 @@ class QuerySortOrderSource(SimpleDictSource):
     ))
 
 
-class TopicpageFilterSource(zeit.cms.content.sources.XMLSource):
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    product_configuration = 'zeit.content.cp'
-    config_url = 'topicpage-filter-source'
-    attribute = 'id'
+    @property
+    def json_data(self):
+        id = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp').get('topicpage-filter-source')
+        file = zeit.cms.interfaces.ICMSContent(id, None)
+        try:
+            return json.loads(file.text)
+        except Exception:
+            log.warning(
+                'TopicpageFilterSource could not parse %s', id, exc_info=True)
+            return []
+
+    def getValues(self):
+        return [x.keys()[0] for x in self.json_data]
+
+    def getTitle(self, value):
+        return value
+
+    def getToken(self, value):
+        return value
 
 
 def automatic_area_can_read_teasers_automatically(data):

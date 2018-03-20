@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.22.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-205: Parse filter.json directly instead of using an additional XML config file
 
 
 3.22.0 (2018-03-19)
