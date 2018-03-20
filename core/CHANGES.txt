@@ -5,7 +5,8 @@ zeit.retresco changes
 1.20.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-200: Index TMS synchronously during publishing; otherwise the
+  publisher marking an object as published can happen before the TMS job ran
 
 
 1.20.4 (2018-03-19)
