@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.assertion
 import os
 import time
@@ -6,6 +7,7 @@ import tweepy
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.twitter
+import zope.component
 
 
 class TwitterTest(zeit.push.testing.TestCase,
@@ -61,3 +63,20 @@ class TwitterAccountsTest(zeit.push.testing.TestCase):
         self.assertEqual(
             ['twitter_ressort_wissen', 'twitter_ressort_politik'],
             list(zeit.push.interfaces.twitterAccountSource(None)))
+
+
+class TwitterMessageTest(zeit.push.testing.TestCase):
+
+    def test_uses_twitter_ressort_override_text(self):
+        content = ExampleContentType()
+        self.repository['foo'] = content
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'twitter', 'account': 'twitter_ressort_wissen',
+            'variant': 'ressort', 'enabled': True, 'override_text': 'foobar'}]
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name='twitter')
+        # XXX This API is a bit unwieldy
+        # (see zeit.push.workflow.PushMessages._create_message)
+        message.config = push.message_config[0]
+        self.assertEqual('foobar', message.text)
