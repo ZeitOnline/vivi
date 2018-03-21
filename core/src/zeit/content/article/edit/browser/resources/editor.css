@@ -1969,12 +1969,14 @@
 .type-article #form-social .field.fieldname-short_text:before ,
 .type-article #form-social .field.fieldname-twitter_ressort_text:before ,
 .type-article #form-social .field.fieldname-is_amp:before {
+    display: block;
     font-variant: small-caps;
     font-weight: bold;
 }
 
 .type-article #form-social .field.fieldname-facebook_main_enabled,
 .type-article #form-social .field.fieldname-twitter_main_enabled {
+    clear: both;
     display: flow-root;
 }
 
