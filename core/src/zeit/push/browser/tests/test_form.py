@@ -40,6 +40,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Enable Twitter Ressort').selected = True
         b.getControl('Additional Twitter').displayValue = ['Wissen']
+        b.getControl('Ressort Tweet').value = 'additional ressort tweet'
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Enable mobile push').selected = True
@@ -56,7 +57,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen'},
+             'account': 'twitter_ressort_wissen',
+             'override_text': 'additional ressort tweet'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': True, 'account': 'fb-test',
@@ -87,7 +89,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen'},
+             'account': 'twitter_ressort_wissen',
+             'override_text': 'additional ressort tweet'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': False, 'account': 'fb-test',
@@ -110,12 +113,14 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.getControl('Enable Twitter Ressort').selected = True
         b.getControl('Additional Twitter').displayValue = ['Wissen']
+        b.getControl('Ressort Tweet').value = 'additional ressort tweet'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
             {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen'},
+             'account': 'twitter_ressort_wissen',
+             'override_text': 'additional ressort tweet'},
             push.message_config)
 
         self.open_form()
