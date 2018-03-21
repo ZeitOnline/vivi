@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.6.4 (unreleased)
+3.6.4 (2018-03-21)
 ------------------
 
 - MAINT: Put "show/hide in tree" views behind feature toggle
