@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <!-- Collection / Folder -->
 
@@ -44,6 +45,7 @@
     />
 
   <browser:page
+    zcml:condition="have zeit.cms.repository.tree"
     for="zeit.cms.repository.interfaces.ICollection"
     name="hide-from-tree.html"
     permission="zeit.cms.repository.ViewNavigationTree"
@@ -53,6 +55,7 @@
     />
 
   <browser:menuItem
+    zcml:condition="have zeit.cms.repository.tree"
     menu="zeit-context-actions"
     title="Hide"
     action="@@hide-from-tree.html"
@@ -63,6 +66,7 @@
     />
 
   <browser:page
+    zcml:condition="have zeit.cms.repository.tree"
     for="zeit.cms.repository.interfaces.ICollection"
     name="show-in-tree.html"
     class=".repository.HiddenCollections"
@@ -72,6 +76,7 @@
     />
 
   <browser:menuItem
+    zcml:condition="have zeit.cms.repository.tree"
     menu="zeit-context-actions"
     title="Show"
     action="@@show-in-tree.html"
