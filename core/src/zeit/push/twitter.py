@@ -51,7 +51,14 @@ def from_product_config():
 class Message(zeit.push.message.Message):
 
     grok.name('twitter')
-    get_text_from = 'short_text'
+
+    @property
+    def text(self):
+        text = self.config.get('override_text')
+        if not text:  # BBB
+            self.get_text_from = 'short_text'
+            text = super(Message, self).text
+        return text
 
     @property
     def log_message_details(self):
