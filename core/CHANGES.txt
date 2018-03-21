@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.34.4 (unreleased)
+3.34.4 (2018-03-21)
 -------------------
 
 - ZON-4494: Style form field for twitter ressort tweet
