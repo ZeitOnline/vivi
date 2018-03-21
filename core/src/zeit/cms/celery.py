@@ -24,6 +24,10 @@ CELERY = celery.Celery(
     # Disable argument type checking, it seems broken. Tasks complain about
     # celery-internal kwargs passed to them, etc.
     strict_typing=False)
+# XXX The whole "default app" concept seems a bit murky. However, when using
+# waitress this is necessary, otherwise the polling publish dialog tries
+# talking to an unconfigured Celery app. (With gunicorn it works ootb.)
+CELERY.set_default()
 
 # Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
 task = CELERY.task
