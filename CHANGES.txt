@@ -1,10 +1,10 @@
 zeit.push changes
 =================
 
-1.22.2 (unreleased)
+1.23.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4494: Add separate tweet text for twitter cross-posting
 
 
 1.22.1 (2017-11-09)
