@@ -390,6 +390,26 @@
     permission="zope.View"
     />
 
+  <!-- puzzle form -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IPuzzleForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-puzzleform"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IPuzzleForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-puzzleform"
+    class=".edit.EditPuzzleForm"
+    permission="zope.View"
+    />
+
   <!-- liveblog -->
 
   <browser:page
@@ -591,6 +611,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..puzzleform.PuzzleForm">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

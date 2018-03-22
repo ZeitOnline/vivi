@@ -236,6 +236,19 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
         return 'citation.{0}'.format(self.context.__name__)
 
 
+class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IPuzzleForm).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit puzzle form block')
+
+    @property
+    def prefix(self):
+        return 'puzzleform.{0}'.format(self.context.__name__)
+
+
 class EditLiveblog(zeit.edit.browser.form.InlineForm):
 
     legend = None
