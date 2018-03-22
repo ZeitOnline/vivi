@@ -432,15 +432,19 @@ class IBreakingNewsBody(zope.interface.Interface):
         'The uniqueID of the breaking news article')
 
 
+class IPuzzle(zope.interface.Interface):
+    """A puzzle type"""
+
+    id = zope.interface.Attribute('id')
+    title = zope.interface.Attribute('title')
+    multiple = zope.interface.Attribute('Has multiple episodes')
+
+
 class Puzzle(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, multiple):
         super(Puzzle, self).__init__(id, title, None)
         self.multiple = multiple
-
-    def __eq__(self, other):
-        return super(Puzzle, self).__eq__(
-            zope.security.proxy.removeSecurityProxy(other))
 
 
 class PuzzleSource(zeit.cms.content.sources.ObjectSource,

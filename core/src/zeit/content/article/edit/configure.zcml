@@ -211,6 +211,13 @@
       />
   </class>
 
+  <class class=".interfaces.Puzzle">
+    <require
+      interface=".interfaces.IPuzzle"
+      permission="zope.View"
+      />
+  </class>
+
   <class class=".liveblog.Liveblog">
     <require
       interface=".interfaces.ILiveblog"
