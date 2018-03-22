@@ -451,7 +451,7 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
                    zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.article'
-    config_url = 'puzzleform-source'
+    config_url = 'puzzleforms-source'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
