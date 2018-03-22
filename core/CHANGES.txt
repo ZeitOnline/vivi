@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.6.5 (unreleased)
+3.6.5 (2018-03-22)
 ------------------
 
 - BUG-717: Ignore any errors in listing columns
