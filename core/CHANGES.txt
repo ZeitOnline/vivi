@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.6.6 (unreleased)
+3.6.6 (2018-03-22)
 ------------------
 
 - BUG-717: Fix column overriding inheritance
