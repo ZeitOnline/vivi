@@ -84,6 +84,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         default=False,
         required=False)
 
+    hide_ligatus_recommendations = zope.schema.Bool(
+        title=_('Hide Ligatus recommendations'),
+        default=False,
+        required=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
