@@ -126,7 +126,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 
     def __init__(self, *args, **kw):
         self._getter = kw.pop('getter', None)
-        cell_formatter = kw.get('cell_formatter')
+        cell_formatter = kw.pop('cell_formatter', None)
         if cell_formatter is not None:
             self.cell_formatter = cell_formatter
         # Skip immediate superclass and its assignments
