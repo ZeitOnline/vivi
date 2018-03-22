@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.35.1 (unreleased)
+3.36.0 (2018-03-22)
 -------------------
 
 - ZON-4541: Add new checkbox to hide ligatus recommendations
