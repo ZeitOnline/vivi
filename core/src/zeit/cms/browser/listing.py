@@ -103,16 +103,14 @@ class CommonListRepresentation(BaseListRepresentation):
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):
-        return u' '.join(unicode(v) for v in (
-            self.author,
-            self.title,
-            self.subtitle,
-            self.byline,
-            self.ressort,
-            self.volume,
-            self.page,
-            self.year,
-            self.__name__))
+        items = []
+        for name in ('author', 'title', 'subtitle', 'byline',
+                     'ressort', 'volume', 'page', 'year', '__name__'):
+            try:
+                items.append(unicode(getattr(self, name)))
+            except Exception:
+                continue
+        return u' '.join(items)
 
 
 @zope.component.adapter(
@@ -125,6 +123,22 @@ def listRepresentation_to_Lockable(obj):
 class GetterColumn(zc.table.column.GetterColumn):
 
     zope.interface.implements(zc.table.interfaces.ISortableColumn)
+
+    def __init__(self, *args, **kw):
+        self._getter = kw.pop('getter', None)
+        cell_formatter = kw.get('cell_formatter')
+        if cell_formatter is not None:
+            self.cell_formatter = cell_formatter
+        # Skip immediate superclass and its assignments
+        super(zc.table.column.GetterColumn, self).__init__(*args, **kw)
+
+    def getter(self, item, formatter):
+        if self._getter is None:
+            return super(GetterColumn, self).getter(item, formatter)
+        try:
+            return self._getter(item, formatter)
+        except Exception:
+            return None
 
     def cell_formatter(self, value, item, formatter):
         if value is None:
