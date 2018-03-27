@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2018-03-22 12:46+0100\n"
-"PO-Revision-Date: 2018-03-22 12:47+0100\n"
+"POT-Creation-Date: Tue Mar 27 17:04:13 2018\n"
+"PO-Revision-Date: 2018-03-27 17:12+0200\n"
 "Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -2371,6 +2371,10 @@ msgstr "Liveblog-ID"
 #: zeit/content/article/edit/interfaces.py:352
 msgid "Liveblog version"
 msgstr "Liveblog Version"
+
+#: zeit/content/article/edit/interfaces.py:359
+msgid "Collapse preceding content"
+msgstr "Vorherigen Inhalt einklappen"
 
 #: zeit/content/article/edit/interfaces.py:361
 #: zeit/content/cp/interfaces.py:868
