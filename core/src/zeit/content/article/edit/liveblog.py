@@ -19,14 +19,7 @@ class Liveblog(zeit.content.article.edit.block.Block):
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'collapse-preceding-content',
             zeit.content.article.edit.interfaces.ILiveblog[
-                'collapse_preceding_content']))
-
-    def __init__(self, *args, **kw):
-        super(Liveblog, self).__init__(*args, **kw)
-        if self.collapse_preceding_content is None:
-            self.collapse_preceding_content = (
-                zeit.content.article.edit.interfaces.ILiveblog[
-                    'collapse_preceding_content'].default)
+                'collapse_preceding_content'], use_default=True))
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

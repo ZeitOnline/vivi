@@ -50,10 +50,3 @@ class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
     def test_liveblog_collapse_preceding_content_should_be_set(self):
         liveblog = self.get_liveblog()
         self.assertTrue(liveblog.collapse_preceding_content)
-        self.assertEqual(
-            u'True',
-            liveblog.xml.xpath('.')[0].get('collapse-preceding-content'))
-        liveblog.collapse_preceding_content = False
-        self.assertEqual(
-            u'False',
-            liveblog.xml.xpath('.')[0].get('collapse-preceding-content'))
