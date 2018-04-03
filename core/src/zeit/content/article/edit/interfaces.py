@@ -348,10 +348,16 @@ class ILiveblog(zeit.edit.interfaces.IBlock):
 
     blog_id = zope.schema.TextLine(
         title=_('Liveblog id'))
+
     version = zope.schema.Choice(
         title=_('Liveblog version'),
         source=LiveblogVersions(),
         default=None,
+        required=False)
+
+    collapse_preceding_content = zope.schema.Bool(
+        title=_('Collapse preceding content'),
+        default=True,
         required=False)
 
 
