@@ -130,18 +130,24 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         zope.event.notify(event)
         self.assertFalse(self.tms.delete.called)
 
+
+class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
+
+    layer = zeit.retresco.testing.CELERY_LAYER
+
+    def setUp(self):
+        super(UpdatePublishTest, self).setUp()
+        self.tms = mock.Mock()
+        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+
     def test_publish_should_index_with_published_true(self):
-        # Right now this works without us having to anything special, since at
-        # BeforePublishEvent time, zeit.workflow first sets published=True
-        # and related properties, and then triggers a checkout/checkin cycle
-        # -- which on checkin triggers the indexing.
         def index(content):
             self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
                 content).published)
         self.tms.index = index
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(content).publish()
+        zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
 
 
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
