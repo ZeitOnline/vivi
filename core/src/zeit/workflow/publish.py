@@ -378,7 +378,7 @@ class PublishTask(PublishRetractTask):
         timer.mark('Set date_last_published')
         if not info.date_first_released:
             info.date_first_released = info.date_last_published
-            timer.mark('Set date_first_releaesd')
+            timer.mark('Set date_first_released')
 
         new_obj = self.cycle(obj)
         return new_obj
