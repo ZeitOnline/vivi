@@ -74,6 +74,26 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
+class TMSMockLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['tms_mock'] = mock.Mock()
+        self['tms_zca'] = gocept.zcapatch.Patches()
+        self['tms_zca'].patch_utility(
+            self['tms_mock'], zeit.retresco.interfaces.ITMS)
+
+    def tearDown(self):
+        self['tms_zca'].reset()
+        del self['tms_zca']
+        del self['tms_mock']
+
+    def testTearDown(self):
+        self['tms_mock'].reset_mock()
+
+
+TMS_MOCK_LAYER = TMSMockLayer()
+
+
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
     defaultBases = zeit.cms.testing.ZCMLLayer.defaultBases + (HTTP_LAYER,)
