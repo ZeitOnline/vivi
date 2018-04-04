@@ -201,15 +201,13 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
                         tag.label, type_map.get(tag.entity_type, '')))
         return result
 
-    def update(self, keywords=None):
+    def update(self, keywords=None, clear_disabled=True):
         """Update the keywords with generated keywords from retresco.
 
         A number of reasonable keywords are retrieved from retresco. This set
         is reduced by the disabled keywords and enriched by the pinned
         keywords. The resulting set is finally written to the DAV property.
-
         """
-
         log.info('Updating tags for %s', self.context.uniqueId)
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
@@ -236,6 +234,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
-        dav[DISABLED_PROPERTY] = u''
+        if clear_disabled:
+            dav[DISABLED_PROPERTY] = u''
         # BBB to maybe convert intrafind pins to retresco pins.
         self.set_pinned(pinned_codes)

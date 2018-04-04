@@ -485,6 +485,17 @@ class TaggerUpdateTest(
         dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
         self.assertEqual('', dav[dav_key])
 
+    def test_update_with_option_should_not_clear_disabled_tags(self):
+        content = create_testcontent()
+        self.set_tags(content, """
+<tag uuid="uid-karenduve">Karen Duve</tag>""")
+        tagger = Tagger(content)
+        del tagger[u'☃Karen Duve']
+        tagger.update(clear_disabled=False)
+        dav = zeit.connector.interfaces.IWebDAVProperties(content)
+        dav_key = ('disabled', 'http://namespaces.zeit.de/CMS/tagging')
+        self.assertEqual(u'☃Karen Duve', dav[dav_key])
+
     def test_update_should_pass_existing_tags_to_tms(self):
         content = create_testcontent()
         self.set_tags(content, """
