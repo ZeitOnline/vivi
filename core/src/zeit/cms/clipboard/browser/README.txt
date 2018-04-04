@@ -488,8 +488,7 @@ Let's have a look at the sidebar:
   <ul>
       <li class="NotRoot..." uniqueid="wirtschaft.feed">
         <p>
-        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Broken
-            reference to http://xml.zeit.de/wirtschaft.feed</a>
+        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
         ...
 
 
@@ -542,7 +541,7 @@ Reload the whole page and verify the title change:
       <ul>
         <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
-          <a href="...wirtschaft.feed">Broken reference ...</a>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -603,7 +602,7 @@ Open "New clip", we have a delete link there:
       <ul>
         <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
-          <a href="...wirtschaft.feed">Broken reference ...</a>
+          <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
       </ul>

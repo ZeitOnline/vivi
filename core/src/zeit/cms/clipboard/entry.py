@@ -1,10 +1,12 @@
 import persistent
+import zeit.cms.browser.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
 import zope.app.container.contained
 import zope.app.container.ordered
 import zope.component
 import zope.interface
+import zope.publisher.browser
 
 
 class Entry(zope.app.container.contained.Contained,
@@ -12,6 +14,9 @@ class Entry(zope.app.container.contained.Contained,
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.cms.clipboard.interfaces.IObjectReference)
+
+    title = None
+    content_type = None
 
     def __init__(self, references):
         self.references = references
@@ -29,9 +34,19 @@ class Entry(zope.app.container.contained.Contained,
             raise ValueError("Referenced object must have a uniqueid.")
         self._value = uid
 
+        list_repr = zope.component.queryMultiAdapter(
+            (references, self._request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+        if list_repr is not None and list_repr.title:
+            self.title = list_repr.title
+        self.content_type = zeit.cms.type.get_type(references) or ''
+
     @property
     def referenced_unique_id(self):
         return self._value
+
+    _request = zope.publisher.browser.TestRequest(
+        skin=zeit.cms.browser.interfaces.ICMSLayer)
 
 
 @zope.component.adapter(zeit.cms.clipboard.interfaces.IClipboardEntry)

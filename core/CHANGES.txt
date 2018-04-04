@@ -4,7 +4,8 @@ zeit.cms changes
 3.6.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-890: Store title and type in clipboard entries, so we don't have
+  to resolve the content to render the clipboard
 
 
 3.6.6 (2018-03-22)
