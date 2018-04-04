@@ -5,7 +5,7 @@ zeit.retresco changes
 1.20.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4561: Update keywords in re-enrich hook
 
 
 1.20.5 (2018-03-20)
