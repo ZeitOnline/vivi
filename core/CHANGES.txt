@@ -4,7 +4,7 @@ zeit.content.article changes
 3.37.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4581: Remove banner from product management form
 
 
 3.37.0 (2018-04-03)
