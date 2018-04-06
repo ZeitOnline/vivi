@@ -38,13 +38,28 @@ class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
                    '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}", '
                    '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
                    'application/x-javascript')
-            self.assertEquals({'message': 'OK'}, json.loads(b.contents))
-            self.assertEquals('200 Ok', b.headers.getheader('status'))
+            self.assertEqual({'message': 'OK'}, json.loads(b.contents))
+            self.assertEqual('200 Ok', b.headers.getheader('status'))
             self.assertEqual(2, index.call_count)
             self.assertEqual(
                 zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia'),
                 index.call_args[0][0])
             self.assertEqual(
-                {'enrich': True, 'publish': True},
+                {'enrich': True, 'update_keywords': True, 'publish': True},
                 index.call_args[1])
+
+    def test_should_preserve_disabled_keywords(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        tagger = zeit.cms.tagging.interfaces.ITagger(article)
+        tag = zeit.retresco.tag.Tag('Berlin', 'location')
+        tagger[tag.code] = tag
+        del tagger[tag.code]
+        b = self.browser
+        b.post('http://localhost/@@update_keywords',
+               '{"doc_ids" : ['
+               '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"]}',
+               'application/x-javascript')
+        self.assertEqual('200 Ok', b.headers.getheader('status'))
+        self.assertEqual((tag.code,), tagger.disabled)
