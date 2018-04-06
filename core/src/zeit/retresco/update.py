@@ -99,7 +99,8 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                 body = response.get('body')
                 if update_keywords:
                     tagger = zeit.retresco.tagger.Tagger(content)
-                    tagger.update(conn.generate_keyword_list(response))
+                    tagger.update(conn.generate_keyword_list(response),
+                                  clear_disabled=False)
             else:
                 # For reindex-only, preserve the previously enriched body.
                 body = conn.get_article_data(content).get('body')
