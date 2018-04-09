@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.6.7 (unreleased)
+3.6.7 (2018-04-09)
 ------------------
 
 - ZON-4581: Move banner checkbox from option to admin tab
