@@ -165,6 +165,17 @@ zeit.content.article.Editable = gocept.Class.extend({
                 var probably_targeted_input_field = isNull(e.rangeParent);
                 var is_in_block = (clicked_on_block == self.block) &&
                     !probably_targeted_input_field;
+                // BUG-837: At some point FF decided to trigger a blur event
+                // when FindDialog.on_close() restores the selection back to
+                // the editable text node. In that case, the <a>"SEA"</a> is
+                // the explicitOriginalTarget, but rangeParent is null,
+                // breaking the above heuristic.
+                if (!is_in_block) {
+                    var is_in_toolbar = !isNull(
+                        MochiKit.DOM.getFirstParentByTagAndClassName(
+                           e.explicitOriginalTarget, 'div', 'rte-toolbar'));
+                    if (is_in_toolbar) is_in_block = true;
+                }
                 log("Blur while editing:", is_in_block, self.block.id);
                 if (!self.unconditional_save_on_blur && (
                         is_in_block || self.locked)) {
