@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.37.2 (unreleased)
+3.37.2 (2018-04-10)
 -------------------
 
 - BUG-837: Fix yet another browser edge case about whether the user
