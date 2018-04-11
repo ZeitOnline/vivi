@@ -121,6 +121,7 @@ Use the urgent flag to override:
         ...
         <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
         ...
+>>> run_tasks()
 
 
 Automatic workflow properties
@@ -253,6 +254,7 @@ The retract action is protected by javascript (which doesn't matter here):
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
+>>> run_tasks()
 
 Check out:
 
