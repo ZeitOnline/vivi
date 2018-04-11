@@ -19,12 +19,6 @@
                 tal:attributes="href entry/url">
                 <span class="action-title">Edit image</span>
             </a>
-             <a href="#" class="cut-image" title="Cut image"
-                i18n:attributes="title"
-                tal:attributes="href string:${entry/url}/@@imp.html">
-                  
-                  <span class="action-title">Cut Image</span>
-            </a>
             <a title="Show image" class="show-image"
                   tal:attributes="href string:${entry/image/@@absolute_url}/@@view.html"
                   i18n:attributes="title"
