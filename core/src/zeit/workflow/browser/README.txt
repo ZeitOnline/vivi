@@ -121,6 +121,7 @@ Use the urgent flag to override:
         ...
         <div class="widget"><FORMATTED DATE>  [User]: Publication scheduled<br />
         ...
+>>> from zeit.workflow.testing import run_tasks
 >>> run_tasks()
 
 
@@ -442,13 +443,6 @@ other information
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
-
-    >>> def run_tasks():
-    ...     """Wait for already enqueued publish job, by running another job;
-    ...     since we only have on worker, this works out fine.
-    ...     Unfortunately we have to mimic the DAV-cache race condition
-    ...     workaround here too and wait an additional 5 seconds, sigh."""
-    ...     zeit.cms.testing.celery_ping.apply_async(countdown=5).get()
 
 .. [#needs-repository]
 

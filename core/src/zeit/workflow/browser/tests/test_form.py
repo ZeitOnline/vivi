@@ -16,6 +16,7 @@ class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Urgent').click()
         b.getControl('Save state and publish now').click()
         self.assertEllipsis('...Publication scheduled...', b.contents)
+        zeit.workflow.testing.run_tasks()
 
     def test_updates_last_semantic_change_via_checkbox(self):
         with checked_out(self.repository['testcontent'], semantic_change=True):
@@ -67,3 +68,4 @@ class ValidatingWorkflowFormTest(
                '/@@workflow.html')
         b.getControl('Save state and publish now').click()
         self.assertEllipsis('...Validation Warning Message...', b.contents)
+        zeit.workflow.testing.run_tasks()
