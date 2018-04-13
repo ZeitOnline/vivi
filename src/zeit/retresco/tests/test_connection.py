@@ -282,13 +282,13 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertIn('title', page)
 
     def test_can_retrieve_data_after_index(self):
-        self.tms.index(self.article)
+        self.assertIn('doc_id', self.tms.index(self.article))
         data = self.tms.get_article_data(self.article)
         self.assertEqual(self.article.title, data['title'])
 
     def test_can_retrieve_body_after_publish(self):
         response = self.tms.enrich(self.article)
-        self.tms.index(self.article, response['body'])
+        self.assertIn('doc_id', self.tms.index(self.article, response['body']))
         self.tms.publish(self.article)
         body = self.tms.get_article_body(self.article)
         self.assertStartsWith('<body', body)
