@@ -45,9 +45,13 @@ class Add(zeit.cms.browser.form.AddForm,
 
     field_groups = (
         gocept.form.grouped.Fields('', (
-            'ressort', 'sub_ressort', 'title', '__name__', 'text',
+            'title', '__name__', 'text',
             'commentsAllowed', 'commentsPremoderate',
-            'homepage', 'mobile', 'social')),
+            'homepage', 'mobile', 'social'),
+            css_class='wide-widgets column-left'),
+        gocept.form.grouped.Fields('', (
+            'ressort', 'sub_ressort', 'channels'),
+            css_class='column-right'),
     )
 
     def setUpWidgets(self, *args, **kw):
