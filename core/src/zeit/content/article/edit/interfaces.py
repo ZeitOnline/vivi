@@ -98,7 +98,7 @@ class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
 class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 
-    teaser = zope.schema.TextLine(
+    teaser = zope.schema.Text(
         title=_('Page teaser'),
         required=False)
 
