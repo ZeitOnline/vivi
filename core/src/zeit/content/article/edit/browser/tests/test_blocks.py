@@ -13,4 +13,4 @@ class DivisionBlockTest(
         s = self.selenium
         self.add_article()
         block_id = self.create_block('division')
-        s.waitForElementPresent('css=#' + block_id + ' input.textType:focus')
+        s.waitForElementPresent('css=#' + block_id + ' textarea:focus')

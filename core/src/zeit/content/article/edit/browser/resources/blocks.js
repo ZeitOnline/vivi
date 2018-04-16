@@ -10,7 +10,7 @@
             if (!current.hasClass('type-division')) {
                 return;
             }
-            $('input.textType', current).focus();
+            $('textarea', current).focus();
         });
 
     });
