@@ -33,14 +33,12 @@ class Add(zeit.cms.browser.form.AddForm,
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
-                'ressort', 'sub_ressort', '__name__') +
+                '__name__', 'ressort', 'sub_ressort',
+                'commentsAllowed', 'commentsPremoderate') +
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IBreakingNews).select('title') +
         zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.IBreakingNewsBody) +
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.IArticle).select(
-                'commentsAllowed', 'commentsPremoderate') +
         zope.formlib.form.FormFields(
             IPushServices)
     )
