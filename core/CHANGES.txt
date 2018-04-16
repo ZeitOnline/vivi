@@ -4,7 +4,8 @@ zeit.push changes
 1.23.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4546: Use textarea for twitter texts (like for facebook) to
+  unify their styling
 
 
 1.23.0 (2018-03-21)

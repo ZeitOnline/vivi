@@ -90,7 +90,7 @@ class IPushMessages(zope.interface.Interface):
 
     """
 
-    short_text = zope.schema.TextLine(
+    short_text = zope.schema.Text(
         title=_('Short push text'),
         required=False,
         # 256 + 1 Space + 23 characters t.co-URL = 140
@@ -301,7 +301,7 @@ class IAccountData(zope.interface.Interface):
         title=_('Facebook Campus Text'), required=False)
 
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
-    twitter_ressort_text = zope.schema.TextLine(
+    twitter_ressort_text = zope.schema.Text(
         title=_('Ressort Tweet'),
         required=False,
         max_length=256)
