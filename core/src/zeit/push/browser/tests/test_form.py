@@ -256,7 +256,7 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent(input)
         original = 'a' * 245 + ' This is too long'
-        s.type(input, original + '\n')
+        s.type(input, original + '\t')
         text = s.getValue(input)
         self.assertEqual(256, len(text))
         self.assertTrue(text.endswith('This is...'))
@@ -266,5 +266,5 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent(input)
         original = 'a' * 239 + ' This is not long'
-        s.type(input, original + '\n')
+        s.type(input, original + '\t')
         self.assertEqual(original, s.getValue(input))
