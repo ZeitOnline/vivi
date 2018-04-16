@@ -11,14 +11,14 @@ var truncate_text = function(event) {
 
 
 $(document).bind('fragment-ready', function(event) {
-    $('input#social\\.short_text', event.__target).unbind(
+    $('#social\\.short_text', event.__target).unbind(
     'change.zeit.article.social.short_text').bind(
         'change.zeit.article.social.short_text', truncate_text);
 
 });
 
 $(document).ready(function() {
-    $('input#form\\.short_text').bind('change', truncate_text);
+    $('#form\\.short_text').bind('change', truncate_text);
 });
 
 }(jQuery));
