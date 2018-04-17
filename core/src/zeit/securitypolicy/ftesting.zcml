@@ -5,7 +5,6 @@
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" />
   <include package="zeit.connector" file="mock-connector.zcml" />
-  <include package="zeit.cms.tagging" file="mock.zcml" />
   <include package="zeit.push" />
   <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
 
