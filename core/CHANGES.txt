@@ -5,7 +5,8 @@ zeit.retresco changes
 1.21.0 (unreleased)
 -------------------
 
-- ZON-4532: Remove feature toggle `zeit.retresco.tms`, it's in production now
+- ZON-4532: Remove feature toggle `zeit.retresco.tms`, it's in production now.
+  Also remove transitional/bw-compat code regarding zeit.intrafind.
 
 
 1.20.6 (2018-04-09)
