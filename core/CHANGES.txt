@@ -2,10 +2,10 @@ zeit.retresco changes
 =====================
 
 
-1.20.7 (unreleased)
+1.21.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4532: Remove feature toggle `zeit.retresco.tms`, it's in production now
 
 
 1.20.6 (2018-04-09)
