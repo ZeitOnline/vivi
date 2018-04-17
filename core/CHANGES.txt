@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.7.1 (unreleased)
+3.7.1 (2018-04-17)
 ------------------
 
 - ZON-4532: Remove feature toggle `zeit.retresco.tms`
