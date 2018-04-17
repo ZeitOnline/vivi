@@ -29,7 +29,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 
 class SecurityPolicyLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER)
 
     def testSetUp(self):
         connector = zope.component.getUtility(
