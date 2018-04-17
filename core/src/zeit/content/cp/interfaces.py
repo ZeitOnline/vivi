@@ -259,21 +259,12 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     prefix = 'automatic-area-type-{}'
 
+    values = (
+        u'centerpage', u'channel', u'topicpage', u'query',
+        u'elasticsearch-query')
+
     def __init__(self):
-        pass  # Don't init self.titles too early
-
-    @cachedproperty
-    def values(self):
-        config = zope.app.appsetup.appsetup.getConfigContext()
-        if not config or config.hasFeature('zeit.retresco.tms'):
-            return (u'centerpage', u'channel', u'topicpage', u'query',
-                    u'elasticsearch-query')
-        else:
-            return (u'centerpage', u'channel', u'query')
-
-    @cachedproperty
-    def titles(self):
-        return dict((x, _(self.prefix.format(x))) for x in self.values)
+        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
