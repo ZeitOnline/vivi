@@ -78,6 +78,7 @@ class TMSMockLayer(plone.testing.Layer):
 
     def setUp(self):
         self['tms_mock'] = mock.Mock()
+        self['tms_mock'].url = 'http://tms.example.com'
         self['tms_zca'] = gocept.zcapatch.Patches()
         self['tms_zca'].patch_utility(
             self['tms_mock'], zeit.retresco.interfaces.ITMS)
