@@ -179,16 +179,9 @@ class CommonMetadata(Converter):
                 [x.target.display_name for x in self.context.authorships] or
                 [x for x in self.context.authors if x])
         }
-        # XXX should simply be self.context.keywords, but for transitional
-        # period we explicitly need to get the Retresco ones, otherwise
-        # production will index the Intrafind ones to TMS.
-        try:
-            keywords = list(zeit.retresco.tagger.Tagger(self.context).values())
-        except Exception:
-            keywords = ()
         for typ in zeit.retresco.interfaces.ENTITY_TYPES:
             result['rtr_{}s'.format(typ)] = []
-        for kw in keywords:
+        for kw in self.context.keywords:
             key = 'rtr_{}s'.format(self.entity_types.get(
                 kw.entity_type, 'keyword'))
             result[key].append(kw.label)

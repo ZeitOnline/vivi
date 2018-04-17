@@ -63,14 +63,7 @@ def index_async(self, uniqueId):
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = True
     if meta is not None:
-        # XXX Transitional period only, so we can index to TMS in production
-        # in parallel while Intrafind is still active. Once TMS is in
-        # production, reduce to simply
-        # `has_keywords = meta is not None and meta.keywords`
-        try:
-            has_keywords = len(zeit.retresco.tagger.Tagger(meta))
-        except Exception:
-            pass
+        has_keywords = meta is not None and meta.keywords
     try:
         index(
             context, enrich=True, update_keywords=not has_keywords)

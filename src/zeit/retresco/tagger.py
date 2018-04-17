@@ -7,7 +7,6 @@ import lxml.objectify
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
-import zeit.intrafind.tagger
 import zeit.retresco.interfaces
 import zope.component
 
@@ -163,9 +162,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         node = [x for x in tags.iterchildren()
                 if Tag(x.text, x.get('type', '')).code == key]
         if not node:
-            # BBB for zeit.intrafind
-            node = [x for x in tags.iterchildren() if x.get('uuid') == key]
-        if not node:
             raise KeyError(key)
         return node[0]
 
@@ -184,21 +180,14 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def _find_pinned_tags(self):
         xml = self.to_xml()
-        type_map = zeit.retresco.convert.CommonMetadata.entity_types
         result = []
-
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
                 result.append(
                     self._create_tag(unicode(node), node.get('type', '')))
             except KeyError:
-                # BBB for zeit.intrafind
-                intrafind = zeit.intrafind.tagger.Tagger(self.context)
-                tag = intrafind.get(code)
-                if tag:
-                    result.append(self._create_tag(
-                        tag.label, type_map.get(tag.entity_type, '')))
+                pass
         return result
 
     def update(self, keywords=None, clear_disabled=True):
@@ -226,15 +215,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             new_codes.add(tag.code)
             new_tags.append(self._serialize_tag(tag))
 
-        pinned_codes = set()
         for tag in self._find_pinned_tags():
             if tag.code not in new_codes:
-                pinned_codes.add(tag.code)
                 new_tags.append(self._serialize_tag(tag))
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         if clear_disabled:
             dav[DISABLED_PROPERTY] = u''
-        # BBB to maybe convert intrafind pins to retresco pins.
-        self.set_pinned(pinned_codes)
