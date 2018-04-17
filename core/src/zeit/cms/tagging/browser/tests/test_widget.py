@@ -1,7 +1,6 @@
 # coding: utf-8
 import gocept.testing.mock
 import json
-import mock
 import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing

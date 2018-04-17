@@ -4,7 +4,7 @@ zeit.cms changes
 3.6.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4532: Remove intrafind/retresco abstraction from tagging widget
 
 
 3.6.7 (2018-04-09)

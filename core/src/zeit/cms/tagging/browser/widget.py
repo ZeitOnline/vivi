@@ -1,5 +1,6 @@
 import grokcore.component
 import json
+import urlparse
 import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -31,13 +32,6 @@ class Widget(grokcore.component.MultiAdapter,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
-
-    # We declare a baseclass here, as we have different functionality for
-    # `zeit.intrafind` and `zeit.retresco`, see subclasses there. Additionally
-    # for testing with `zeit.cms`, a manual registration is done in
-    # `mock.zcml`. When `zeit.retresco` is the only keyword engine, we can
-    # make this the only implementation again and save us the complexity.
-    grokcore.component.baseclass()
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
@@ -86,11 +80,20 @@ class Widget(grokcore.component.MultiAdapter,
             result.append(tag)
         return tuple(result)
 
-    tms_host = None
-
     def display_tms_link(self):
         return self.tms_host and self.request.interaction.checkPermission(
             'zeit.cms.tagging.ViewInTMS', self.context)
+
+    @property
+    def tms_host(self):
+        try:
+            # XXX This dependency is the wrong way around, but creating
+            # an abstraction instead doesn't really seem worthwile either.
+            import zeit.retresco.interfaces
+            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+            return urlparse.urlparse(tms.url).netloc
+        except (ImportError, LookupError):
+            return None
 
     @property
     def uuid(self):
