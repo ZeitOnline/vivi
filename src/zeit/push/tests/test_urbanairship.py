@@ -49,27 +49,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
         }
         self.create_payload_template()
 
-    def test_sets_expiration_time_in_payload(self):
-        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
-            mock_datetime.now.return_value = (
-                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
-            with mock.patch.object(self.api, 'push') as push:
-                self.api.send('any', 'any', message=self.message)
-                self.assertEqual(
-                    '2014-07-01T11:15:07',
-                    push.call_args_list[0][0][0].options['expiry'])
-                self.assertEqual(
-                    '2014-07-01T11:15:07',
-                    push.call_args_list[1][0][0].options['expiry'])
-
-    def test_calculates_expiration_datetime_based_on_expire_interval(self):
-        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
-            mock_datetime.now.return_value = (
-                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
-            self.assertEqual(
-                datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
-                self.api.expiration_datetime)
-
     def test_template_content_is_transformed_to_ua_payload(self):
         with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
             mock_datetime.now.return_value = (
@@ -80,7 +59,8 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 android = push.call_args_list[0][0][0]
                 self.assertEqual(['android'], android.device_types)
                 self.assertEqual(
-                    '2014-07-01T11:15:07', android.options['expiry'])
+                    # Given in template
+                    '2014-07-01T10:45:07', android.options['expiry'])
                 self.assertEqual(
                     {u'group': u'subscriptions', u'tag': u'Eilmeldung'},
                     android.audience['OR'][0])
@@ -92,6 +72,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 ios = push.call_args_list[1][0][0]
                 self.assertEqual(['ios'], ios.device_types)
                 self.assertEqual(
+                    # Defaults to configured expiration_interval
                     '2014-07-01T11:15:07', ios.options['expiry'])
                 self.assertEqual(
                     {u'group': u'subscriptions', u'tag': u'Eilmeldung'},

@@ -2,6 +2,9 @@
   "default_title": "Default title",
   "messages": [
   {
+    "options": {
+        "expiry": 1800
+    },
     "audience": {
       "OR": [
         {

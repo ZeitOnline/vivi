@@ -40,31 +40,34 @@ class Connection(object):
         }
         self.expire_interval = expire_interval
 
-    @property
-    def expiration_datetime(self):
-        return (datetime.now(pytz.UTC).replace(microsecond=0) +
-                timedelta(seconds=self.expire_interval))
-
     def send(self, text, link, **kw):
         # Since the UA payloads we need contain much more data than just text
         # and link, we talk to the IMessage object instead.
         message = kw['message']
 
-        # The expiration datetime must not contain microseconds, therefore we
-        # cannot use `isoformat`.
-        expiry = self.expiration_datetime.strftime('%Y-%m-%dT%H:%M:%S')
-
+        now = datetime.now(pytz.UTC)
         to_push = []
         for push_message in message.render():
             # Check out
             # https://docs.urbanairship.com/api/ua/#push-object
             for device in push_message.get('device_types', []):
-                application_credentials = self.credentials.get(device,
-                                                               [None, None])
+                application_credentials = self.credentials.get(
+                    device, [None, None])
+
+                push_message.setdefault('options', {}).setdefault(
+                    'expiry', self.expire_interval)
+                # We transmit an absolute timestamp, not relative seconds, as a
+                # safetybelt against (very) delayed pushes. The format must not
+                # contain microseconds, so no `isoformat`.
+                push_message['options']['expiry'] = (
+                    now + timedelta(seconds=push_message['options']['expiry']))
+                push_message['options']['expiry'] = push_message[
+                    'options']['expiry'].strftime('%Y-%m-%dT%H:%M:%S')
+
                 ua_push_object = urbanairship.Airship(
                     *application_credentials
                 ).create_push()
-                ua_push_object.options = {'expiry': expiry}
+                ua_push_object.options = push_message['options']
                 ua_push_object.audience = push_message['audience']
                 ua_push_object.device_types = urbanairship.device_types(device)
                 ua_push_object.notification = push_message['notification']
