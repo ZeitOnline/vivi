@@ -64,7 +64,7 @@ class Connection(object):
                 ua_push_object = urbanairship.Airship(
                     *application_credentials
                 ).create_push()
-                ua_push_object.expiry = expiry
+                ua_push_object.options = {'expiry': expiry}
                 ua_push_object.audience = push_message['audience']
                 ua_push_object.device_types = urbanairship.device_types(device)
                 ua_push_object.notification = push_message['notification']

@@ -58,10 +58,10 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.api.send('any', 'any', message=self.message)
                 self.assertEqual(
                     '2014-07-01T11:15:07',
-                    push.call_args_list[0][0][0].expiry)
+                    push.call_args_list[0][0][0].options['expiry'])
                 self.assertEqual(
                     '2014-07-01T11:15:07',
-                    push.call_args_list[1][0][0].expiry)
+                    push.call_args_list[1][0][0].options['expiry'])
 
     def test_calculates_expiration_datetime_based_on_expire_interval(self):
         self.api.expire_interval = 3600
