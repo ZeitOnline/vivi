@@ -33,26 +33,32 @@ class Add(zeit.cms.browser.form.AddForm,
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
-                'ressort', 'sub_ressort', '__name__') +
+                '__name__', 'ressort', 'sub_ressort', 'channels',
+                'commentsAllowed', 'commentsPremoderate') +
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IBreakingNews).select('title') +
         zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.IBreakingNewsBody) +
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.IArticle).select(
-                'commentsAllowed', 'commentsPremoderate') +
         zope.formlib.form.FormFields(
             IPushServices)
     )
 
     field_groups = (
         gocept.form.grouped.Fields('', (
-            'ressort', 'sub_ressort', 'title', '__name__', 'text',
+            'title', '__name__', 'text',
             'commentsAllowed', 'commentsPremoderate',
-            'homepage', 'mobile', 'social')),
+            'homepage', 'mobile', 'social'),
+            css_class='wide-widgets column-left'),
+        gocept.form.grouped.Fields('', (
+            'ressort', 'sub_ressort', 'channels'),
+            css_class='column-right'),
     )
 
     def setUpWidgets(self, *args, **kw):
+        GET = self.request.form
+        GET['form.channels.0..combination_00'] = GET.get('form.ressort')
+        GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
+        GET['form.channels.count'] = '1'
         super(Add, self).setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.widgets['title'].cssClass = 'breakingnews-title'

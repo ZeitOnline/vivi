@@ -142,6 +142,29 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.create_breakingnews()
         self.assertEqual('foo', b.getControl('Article body').value)
 
+    def test_channel_is_populated_from_ressort(self):
+        # zeit.addcentral is not loaded, and also mostly JS-driven, so we use
+        # model code for setup instead of the browser.
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin,
+            # XXX Why do we have to duplicate the skin information?
+            environ={'SERVER_URL': 'http://localhost/++skin++vivi'})
+        adder = zeit.cms.content.add.ContentAdder(
+            request,
+            type_=zeit.content.article.interfaces.IBreakingNews,
+            ressort='Deutschland', sub_ressort='Meinung',
+            year='2018', month='01')
+        b = self.browser
+        b.open(adder())
+        self.assertEqual(['Deutschland'], b.getControl('Channel').displayValue)
+        self.assertEqual(['Meinung'], b.getControl('Subchannel').displayValue)
+        b.getControl('Title').value = 'Mytitle'
+        b.getControl('File name').value = 'foo'
+        self.browser.getControl('Publish and push').click()
+        article = ICMSContent(
+            'http://xml.zeit.de/deutschland/meinung/2018-01/foo')
+        self.assertEqual((('Deutschland', 'Meinung'),), article.channels)
+
 
 class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
 

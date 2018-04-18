@@ -4,7 +4,7 @@ zeit.content.article changes
 3.37.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4421: Add channels field to breaking news form
 
 
 3.37.2 (2018-04-10)
