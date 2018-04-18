@@ -37,7 +37,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def setUp(self):
         super(ConnectionTest, self).setUp()
         self.api = zeit.push.urbanairship.Connection(
-            None, None, None, None, None, None, 1)
+            None, None, None, None, None, None, 3600)
         self.message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         self.message.config = {
@@ -50,7 +50,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
         self.create_payload_template()
 
     def test_sets_expiration_time_in_payload(self):
-        self.api.expire_interval = 3600
         with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
@@ -64,13 +63,42 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     push.call_args_list[1][0][0].options['expiry'])
 
     def test_calculates_expiration_datetime_based_on_expire_interval(self):
-        self.api.expire_interval = 3600
         with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
             mock_datetime.now.return_value = (
                 datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             self.assertEqual(
                 datetime(2014, 07, 1, 11, 15, 7, 0, tzinfo=pytz.UTC),
                 self.api.expiration_datetime)
+
+    def test_template_content_is_transformed_to_ua_payload(self):
+        with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
+            mock_datetime.now.return_value = (
+                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
+            with mock.patch.object(self.api, 'push') as push:
+                self.api.send('any', 'any', message=self.message)
+                self.assertEqual(2, push.call_count)
+                android = push.call_args_list[0][0][0]
+                self.assertEqual(['android'], android.device_types)
+                self.assertEqual(
+                    '2014-07-01T11:15:07', android.options['expiry'])
+                self.assertEqual(
+                    {u'group': u'subscriptions', u'tag': u'Eilmeldung'},
+                    android.audience['OR'][0])
+                self.assertEqual('foo', android.notification['alert'])
+                self.assertEqual(
+                    u'Rückkehr der Warlords',
+                    android.notification['android']['extra']['headline'])
+
+                ios = push.call_args_list[1][0][0]
+                self.assertEqual(['ios'], ios.device_types)
+                self.assertEqual(
+                    '2014-07-01T11:15:07', ios.options['expiry'])
+                self.assertEqual(
+                    {u'group': u'subscriptions', u'tag': u'Eilmeldung'},
+                    ios.audience['OR'][0])
+                self.assertEqual('foo', ios.notification['alert'])
+                self.assertEqual(
+                    u'Rückkehr der Warlords', ios.notification['ios']['title'])
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
