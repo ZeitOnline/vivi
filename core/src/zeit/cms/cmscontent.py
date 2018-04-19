@@ -24,6 +24,17 @@ def http_scheme_unique_id_to_cms_content(unique_id):
         unique_id, zeit.cms.interfaces.ICMSContent, name=name)
 
 
+# Sigh, more copy&paste
+@grok.adapter(basestring, name='https://')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def https_scheme_unique_id_to_cms_content(unique_id):
+    parsed = urlparse.urlparse(unique_id)
+    assert parsed.scheme == 'https'
+    name = 'https://%s/' % parsed.netloc
+    return zope.component.queryAdapter(
+        unique_id, zeit.cms.interfaces.ICMSContent, name=name)
+
+
 @grok.adapter(basestring, name='<no-scheme>://')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
@@ -50,6 +61,16 @@ def http_scheme_unique_id_to_cmswc_content(unique_id):
     parsed = urlparse.urlparse(unique_id)
     assert parsed.scheme == 'http'
     name = 'http://%s/' % parsed.netloc
+    return zope.component.queryAdapter(
+        unique_id, zeit.cms.interfaces.ICMSWCContent, name=name)
+
+
+@grok.adapter(basestring, name='https://')
+@grok.implementer(zeit.cms.interfaces.ICMSWCContent)
+def https_scheme_unique_id_to_cmswc_content(unique_id):
+    parsed = urlparse.urlparse(unique_id)
+    assert parsed.scheme == 'https'
+    name = 'https://%s/' % parsed.netloc
     return zope.component.queryAdapter(
         unique_id, zeit.cms.interfaces.ICMSWCContent, name=name)
 

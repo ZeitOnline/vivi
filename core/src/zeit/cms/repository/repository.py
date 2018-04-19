@@ -457,6 +457,15 @@ def live_url_to_content(uniqueId):
 
 
 @grokcore.component.adapter(
+    basestring, name='https://www.zeit.de/')
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
+def live_https_url_to_content(uniqueId):
+    uniqueId = uniqueId.replace('https://www', 'http://xml', 1)
+    uniqueId = IGNORED_LIVE_PAGE_SUFFIXES.sub('', uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
+@grokcore.component.adapter(
     basestring, name='http://vivi.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_url_to_content(uniqueId):

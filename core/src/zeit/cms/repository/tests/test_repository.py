@@ -1,5 +1,6 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
+from zeit.cms.repository.repository import live_https_url_to_content
 from zeit.cms.repository.repository import vivi_url_to_content
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.mock
@@ -70,6 +71,10 @@ class LiveURLToContent(unittest.TestCase):
         self.cmscontent.assert_called_with(
             'http://xml.zeit.de/online/2007/01/Somalia', None)
 
+    def test_ssl_is_replaced_by_xml(self):
+        live_https_url_to_content('https://www.foo.bar/test')
+        self.cmscontent.assert_called_with('http://xml.foo.bar/test', None)
+
 
 class ViviURLToContent(unittest.TestCase):
 
@@ -108,6 +113,11 @@ class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(
             ICMSContent('http://xml.zeit.de/testcontent'),
             ICMSContent('http://www.zeit.de/testcontent'))
+
+    def test_ssl_www_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
+        self.assertEqual(
+            ICMSContent('http://xml.zeit.de/testcontent'),
+            ICMSContent('https://www.zeit.de/testcontent'))
 
     def test_www_zeit_de_does_not_raise_if_content_not_exists(self):
         live_url_to_content('http://www.zeit.de/foo/bar/foobaz')
