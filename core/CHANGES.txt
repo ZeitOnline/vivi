@@ -5,7 +5,7 @@ zeit.retresco changes
 1.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-874: Do not traverse folders that are marked accordingly
 
 
 1.21.0 (2018-04-17)

@@ -1,3 +1,4 @@
+from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
 import argparse
 import gocept.runner
 import grokcore.component as grok
@@ -79,7 +80,8 @@ def index(content, enrich=False, update_keywords=False, publish=False):
     errors = []
     while stack:
         content = stack.pop(0)
-        if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+        if (ICollection.providedBy(content) and
+                not INonRecursiveCollection.providedBy(content)):
             stack.extend(content.values())
         uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id',
                        '<no-uuid>')
@@ -148,7 +150,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         return
     except Exception:
         self.retry()
-    if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+    if ICollection.providedBy(content):
         children = content.values()
         for item in children:
             if should_skip(item):

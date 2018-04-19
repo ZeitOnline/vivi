@@ -72,6 +72,17 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         # 1 Folder + 40 objects contained in it
         self.assertEquals(41, self.tms.index.call_count)
 
+    def test_non_recursive_folders_should_not_be_indexed_recursively(self):
+        folder = zeit.cms.repository.folder.Folder()
+        zope.interface.alsoProvides(
+            folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
+        self.repository['nonrecursive'] = folder
+        self.repository['nonrecursive']['test'] = ExampleContentType()
+
+        self.tms.index.reset_mock()
+        zeit.retresco.update.index(folder)
+        self.assertEquals(1, self.tms.index.call_count)
+
     def test_index_async_should_not_raise_when_object_vanished(self):
         with mock.patch('zeit.cms.interfaces.ICMSContent') as cmscontent:
             with mock.patch('zeit.retresco.update.index') as index:
