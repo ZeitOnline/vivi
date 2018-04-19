@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.8.1 (unreleased)
+3.8.1 (2018-04-19)
 ------------------
 
 - MAINT: Support `https` live `www.zeit.de` URLs in ICMSContent resolution
