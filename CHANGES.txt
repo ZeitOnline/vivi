@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.23.1 (unreleased)
+1.23.1 (2018-04-19)
 -------------------
 
 - ZON-4412: Transmit expiry information to UA, make configurable from template
