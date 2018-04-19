@@ -1,7 +1,7 @@
 zeit.newsletter changes
 =======================
 
-1.5.3 (unreleased)
+1.5.3 (2018-04-19)
 ------------------
 
 - OPS-874: Don't traverse newsletter category for indexing in tms/solr
