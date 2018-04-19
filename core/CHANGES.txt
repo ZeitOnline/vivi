@@ -4,6 +4,8 @@ zeit.push changes
 1.23.1 (unreleased)
 -------------------
 
+- ZON-4412: Transmit expiry information to UA, make configurable from template
+
 - ZON-4546: Use textarea for twitter texts (like for facebook) to
   unify their styling
 
