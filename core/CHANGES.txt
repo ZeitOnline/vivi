@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.7.2 (unreleased)
+3.8.0 (2018-04-19)
 ------------------
 
 - OPS-874: Introduce ``INonRecursiveCollection`` marker interface
