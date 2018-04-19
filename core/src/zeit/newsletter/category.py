@@ -64,7 +64,9 @@ class NewsletterCategoryBase(object):
 class NewsletterCategory(NewsletterCategoryBase,
                          zeit.cms.repository.folder.Folder):
 
-    zope.interface.implements(zeit.newsletter.interfaces.IRepositoryCategory)
+    zope.interface.implements(
+        zeit.newsletter.interfaces.IRepositoryCategory,
+        zeit.cms.repository.interfaces.INonRecursiveCollection)
 
     def create(self):
         now = datetime.datetime.now(pytz.UTC)
