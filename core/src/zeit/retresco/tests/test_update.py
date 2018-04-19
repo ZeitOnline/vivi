@@ -69,9 +69,8 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def test_folders_should_be_indexed_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
         zeit.retresco.update.index(folder)
-        self.assertTrue(self.tms.index.called)
         # 1 Folder + 40 objects contained in it
-        self.assertEquals(41, len(self.tms.index.call_args_list))
+        self.assertEquals(41, self.tms.index.call_count)
 
     def test_index_async_should_not_raise_when_object_vanished(self):
         with mock.patch('zeit.cms.interfaces.ICMSContent') as cmscontent:
