@@ -141,6 +141,16 @@ class IFolder(ICollection, IDAVContent):
     """A normal folder in the cms."""
 
 
+class INonRecursiveCollection(ICollection):
+    """A collection that should not be recursively iterated, e.g. for indexing.
+    This is a semantic marker, i.e. we probably have children etc. as normal,
+    but it just doesn't make sense to traverse them.
+
+    Typical (and currently only) example:
+    zeit.newsletter.interfaces.INewsletterCategory
+    """
+
+
 class IUserPreferences(zope.interface.Interface):
     """User preferences regarding the repository."""
 
