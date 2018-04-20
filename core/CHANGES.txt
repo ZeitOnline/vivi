@@ -4,7 +4,9 @@ zeit.content.article changes
 3.37.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4478: Add `findByline()` to genre source, adjusting the XML
+  config format (remove display-frontend, change prose to byline)
+  which is no problem as XSLT has been shutdown.
 
 
 3.37.3 (2018-04-19)

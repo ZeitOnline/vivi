@@ -1,3 +1,5 @@
+import xml.sax.saxutils
+import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.dottedname.resolve
 
@@ -13,6 +15,20 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.article'
     config_url = 'genre-url'
     attribute = 'name'
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        def byline(self, name):
+            return self.factory.findByline(name)
+
+    def findByline(self, value):
+        tree = self._get_tree()
+        nodes = tree.xpath('%s[@%s=%s]' % (
+                           self.title_xpath,
+                           self.attribute,
+                           xml.sax.saxutils.quoteattr(value)))
+        if not nodes:
+            return None
+        return nodes[0].get('byline')
 
 
 class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
