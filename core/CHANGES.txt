@@ -4,7 +4,7 @@ zeit.content.article changes
 3.38.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4546: Add charlimit counter to division teaser
 
 
 3.38.0 (2018-04-20)

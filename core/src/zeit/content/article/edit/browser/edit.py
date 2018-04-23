@@ -323,7 +323,8 @@ class EditBox(zeit.edit.browser.form.InlineForm):
         return form_fields
 
 
-class EditDivision(zeit.edit.browser.form.InlineForm):
+class EditDivision(zeit.edit.browser.form.InlineForm,
+                   zeit.cms.browser.form.CharlimitMixin):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
@@ -333,6 +334,10 @@ class EditDivision(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'division.{0}'.format(self.context.__name__)
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditDivision, self).setUpWidgets(*args, **kw)
+        self.set_charlimit('teaser')
 
 
 class DoubleQuotes(object):

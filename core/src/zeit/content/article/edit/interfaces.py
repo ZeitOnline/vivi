@@ -101,6 +101,7 @@ class IDivision(zeit.edit.interfaces.IBlock):
     teaser = zope.schema.Text(
         title=_('Page teaser'),
         required=False)
+    teaser.setTaggedValue('zeit.cms.charlimit', 70)
 
     number = zope.interface.Attribute(
         'The position of this division in the article body (1-based)')
