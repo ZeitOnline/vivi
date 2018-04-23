@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - ZON-4546: Add charlimit counter to division teaser
 
+- ZON-4421: Put behind feature toggle `zeit.content.article.breakingnews-with-channel`
+
 
 3.38.0 (2018-04-20)
 -------------------
