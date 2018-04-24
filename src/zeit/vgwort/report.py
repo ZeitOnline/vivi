@@ -18,6 +18,9 @@ import zope.app.appsetup.product
 import zope.interface
 
 
+log = logging.getLogger(__name__)
+
+
 class ReportableContentSource(grokcore.component.GlobalUtility):
 
     zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
@@ -78,13 +81,16 @@ def report_new_documents():
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)
         for content in source:
-            report(content)
+            try:
+                report(content)
+            except Exception:
+                log.warning(
+                    'Error reporting %s, ignoring', content, exc_info=True)
     finally:
         lock.close()
 
 
 def report(context):
-    log = logging.getLogger(__name__)
     source = zope.component.getUtility(
         zeit.vgwort.interfaces.IReportableContentSource)
     vgwort = zope.component.getUtility(
