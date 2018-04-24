@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.2.9 (unreleased)
+2.3.0 (2018-04-24)
 ------------------
 
 - ZON-4455: Ignore errors during report and continue, instead of crashing
