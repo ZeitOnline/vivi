@@ -77,6 +77,16 @@ def report_new_documents():
         print("VGWort report alredy running? Could not lock {}".format(
               lock_file_name), file=sys.stderr)
         sys.exit(1)
+
+    now = datetime.datetime.now()
+    today = datetime.datetime(now.year, now.month, now.day)
+    four = today.replace(hour=3, minute=50)
+    six = today.replace(hour=6, minute=10)
+    if four <= now <= six:
+        print('VGWort API maintenance window between 04:00-06:00, exiting',
+              file=sys.stderr)
+        sys.exit(2)
+
     try:
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)

@@ -5,6 +5,8 @@ zeit.vgwort changes
 ------------------
 
 - ZON-4455: Ignore errors during report and continue, instead of crashing
+  
+- ZON-4455: Don't try to report during API maintenance windows
 
 
 2.2.8 (2017-10-06)
