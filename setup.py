@@ -24,7 +24,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
-        'elasticsearch < 2.0.0',
+        'elasticsearch >=2.0.0, <3.0.0',
         'gocept.runner',
         'grokcore.component',
         'lxml',
