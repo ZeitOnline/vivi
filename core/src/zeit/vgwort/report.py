@@ -87,15 +87,19 @@ def report_new_documents():
               file=sys.stderr)
         sys.exit(2)
 
+    vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
     try:
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)
-        for content in source:
+        for i, content in enumerate(source):
             try:
                 report(content)
             except Exception:
                 log.warning(
                     'Error reporting %s, ignoring', content, exc_info=True)
+            # XXX vgwort returns 401 after some requests for unknown reasons.
+            if i % 6 == 0:
+                del vgwort.client
     finally:
         lock.close()
 
