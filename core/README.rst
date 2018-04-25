@@ -31,9 +31,9 @@ vivi übergibt beim Einchecken den Content zum Indizieren ans TMS (``PUT
 /content/<id>``). Das ist eine reines "speichere den folgenden Datensatz";
 evtl. Schlagworterkennung etc. hat vorher separat stattgefunden. Das TMS
 speichert diese Dokumente zunächst in einem "nicht-veröffentlicht" Index
-(``zeit_pool``). Beim Veröffentlichen gibt der `Publisher`_ dem TMS Bescheid
-(``POST /content/<id>/publish``), wodurch das Dokument in den
-"veröffentlichten" Index (``zeit_publish``) kopiert wird -- erst dann ist es
+(``zeit_pool_content``). Beim Veröffentlichen gibt der `Publisher`_ dem TMS
+Bescheid (``POST /content/<id>/publish``), wodurch das Dokument in den
+"veröffentlichten" Index (``zeit_content``) kopiert wird -- erst dann ist es
 auf Themenseiten verfügbar.
 
 .. _`Publisher`: https://github.com/zeitonline/zeit.publisher
