@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.3.1 (unreleased)
+2.3.1 (2018-04-26)
 ------------------
 
 - ZON-4455: Work around strange 401 errors
