@@ -94,7 +94,12 @@ def report_new_documents():
         for i, content in enumerate(source):
             try:
                 report(content)
-            except Exception:
+            except Exception as e:
+                try:
+                    if e.args[0][0] == 401:
+                        raise
+                except IndexError:
+                    pass
                 log.warning(
                     'Error reporting %s, ignoring', content, exc_info=True)
             # XXX vgwort returns 401 after some requests for unknown reasons.
