@@ -153,6 +153,8 @@ diesen Body vom TMS geben anstatt dem aus dem veröffentlichten Content
 Metadaten auch noch Links zu Themenseiten zurück, die unterhalb des
 Artikelbodys ausgespielt werden können.
 
+Da dieses Feature recht invasiv ist, wurde es mit einem Feature-Toggle belegt, dass via ```vivi.zeit.de/repository/data/feature-toggle.xml`` mit dem toggle ```<enable_intext_links>true</enable_intext_links>``` gesteuert werden kann.
+
 
 Suche
 =====
