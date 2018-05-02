@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.8.3 (unreleased)
+3.8.3 (2018-05-02)
 ------------------
 
 - ZON-2855: No longer update related content objects on checkin
