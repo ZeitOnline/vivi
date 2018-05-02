@@ -35,21 +35,6 @@ def update_index_on_add(context, event):
     relations.index(context)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def update_referencing_objects_handler(context, event):
-    """Update metadata in objects which reference the checked-in object."""
-    if event.publishing:
-        return
-    # prevent recursion
-    for entry in inspect.stack():
-        if entry[3] == 'update_referencing_objects':
-            return
-
-    update_referencing_objects.delay(context.uniqueId)
-
-
 class Dummy(object):
 
     uniqueId = None
@@ -72,7 +57,7 @@ def update_referencing_objects(uniqueId):
     relating_objects = relations.get_relations(context)
     for related_object in list(relating_objects):
         log.info(
-            'Cycling %s to update referenced metadata (after checkin of %s)',
+            'Cycling %s to update referenced metadata (caused by %s)',
             related_object.uniqueId, context.uniqueId)
         # the actual work is done by IBeforeCheckin-handlers
         zeit.cms.checkout.helper.with_checked_out(
