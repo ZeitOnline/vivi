@@ -145,6 +145,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.cms.repository.ViewProperties"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.content.cp.Retract"
     />
   <grant
