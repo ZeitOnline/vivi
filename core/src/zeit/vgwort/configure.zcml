@@ -10,5 +10,12 @@
     component=".generation.manager"
     />
 
+  <class class=".report.ReportInfo">
+    <require
+      interface=".interfaces.IReportInfo"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>
 

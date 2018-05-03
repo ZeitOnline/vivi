@@ -1,7 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+  i18n_domain="zeit.cms">
 
   <browser:page
     for="zope.location.interfaces.ISite"
@@ -15,6 +17,25 @@
     class=".token.TokenStorage"
     methods="claim"
     permission="zope.Public"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="vgwort.html"
+    class=".status.Status"
+    template="status.pt"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="VGWort Status"
+    action="@@vgwort.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
 </configure>
