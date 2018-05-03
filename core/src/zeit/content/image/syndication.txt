@@ -95,10 +95,7 @@ When we have no image referenced it is also removed from the channel:
 </channel>
 
 
-When we change the metadata of the imagegroup the content is updated on
-checkin of the imagegroup. Change the metadata of the group.
-
-Before:
+When a referenfced image group looses its type, the updater doesn't puke:
 
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
@@ -106,49 +103,8 @@ Before:
 >>> images.image = group
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
->>> import lxml.etree
->>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
-<testtype>
-  <head>
-    <image ...base-id="http://xml.zeit.de/image-group/"
-        type="jpg"...>
-      <bu xsi:nil="true"/>
-      <copyright py:pytype="str">&#169;</copyright>
-    </image>
-    ...
-  </head>
-  <body/>
-</testtype>
-
-Now check out, change title and check in:
-
->>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
-...     group).checkout()
->>> metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
->>> metadata.title = u"Image title"
->>> group = zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
 >>> import transaction
 >>> transaction.commit()
-
-The content has changed automatically:
-
->>> print lxml.etree.tostring(
-...     repository['testcontent'].xml, pretty_print=True),
-<testtype>
-  <head>
-    <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-        title="Image title"...>
-      <bu xsi:nil="true"/>
-      <copyright py:pytype="str">&#169;</copyright>
-    </image>
-    ...
-  </head>
-  <body/>
-</testtype>
-
-
-When a referenfced image group looses its type, the updater doesn't puke:
-
 >>> import zeit.connector.interfaces
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> connector.changeProperties(
