@@ -59,6 +59,11 @@
     />
 
   <permission
+    id="zeit.cms.repository.ViewProperties"
+    title="View DAV properties"
+    />
+
+  <permission
     id="zeit.cms.Syndicate"
     title="Syndicate content"
     />

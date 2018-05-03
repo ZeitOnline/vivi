@@ -143,6 +143,10 @@
     />
   <grant
     principal="zope.producer"
+    permission="zeit.cms.repository.ViewProperties"
+    />
+  <grant
+    principal="zope.producer"
     permission="zeit.content.cp.Delete"
     />
   <grant

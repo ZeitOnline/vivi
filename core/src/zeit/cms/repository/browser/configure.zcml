@@ -201,7 +201,7 @@
     name="properties.html"
     class=".property.Listing"
     template="property.pt"
-    permission="zope.View"
+    permission="zeit.cms.repository.ViewProperties"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views" title="DAV Properties"
     />

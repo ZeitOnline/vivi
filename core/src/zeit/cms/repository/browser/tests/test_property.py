@@ -4,6 +4,8 @@ import zeit.cms.testing
 
 class DAVPropertiesListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
+    login_as = 'producer:producerpw'
+
     def test_not_shown_in_workingcopy(self):
         b = self.browser
         b.open(
