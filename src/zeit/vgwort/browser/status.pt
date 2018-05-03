@@ -1,0 +1,15 @@
+<tal:block condition="python: not (view.reported_on or view.reported_error)">
+  <h3>Nicht gemeldet</h3>
+  <p>Der Artikel wurde noch nicht an die VG-Wort gemeldet.</p>
+</tal:block>
+<tal:block condition="python: not view.reported_error and view.reported_on">
+  <h3>Meldung erfolgreich</h3>
+  <p>
+    Der Artikel wurde am <tal:x replace="view/reported_on"/> erfolgreich
+    an die VG-Wort gemeldet.
+  </p>
+</tal:block>
+<tal:block condition="python: view.reported_error and not view.reported_on">
+  <h3>Bei der Meldung ist ein Fehler aufgetreten</h3>
+  <p tal:content="view/reported_error" />
+</tal:block>
