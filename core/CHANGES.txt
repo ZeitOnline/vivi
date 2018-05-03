@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.3.2 (unreleased)
+2.3.2 (2018-05-03)
 ------------------
 
 - ZON-4455: Add tab to inspect vgwort status
