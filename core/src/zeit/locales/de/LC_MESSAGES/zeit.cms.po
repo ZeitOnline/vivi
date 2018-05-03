@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2018-04-27 15:09+0200\n"
-"PO-Revision-Date: 2018-04-27 15:10+0200\n"
+"POT-Creation-Date: 2018-05-03 11:48+0200\n"
+"PO-Revision-Date: 2018-05-03 11:48+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1374,23 +1374,23 @@ msgstr "Löschen"
 msgid "There are no selectable objects in this folder."
 msgstr "Es gibt keine auswählbaren Objekte in diesem Ordner."
 
-#: zeit/cms/repository/browser/properties.py:15
+#: zeit/cms/repository/browser/property.py:25
 #: zeit/cms/repository/browser/configure.zcml:199
 msgid "DAV Properties"
 msgstr "DAV-Properties"
 
-#: zeit/cms/repository/browser/properties.py:21
+#: zeit/cms/repository/browser/property.py:31
 #: zeit/cms/content/browser/template-properties.pt:8
 msgid "Namespace"
 msgstr "Namespace"
 
-#: zeit/cms/repository/browser/properties.py:24
+#: zeit/cms/repository/browser/property.py:34
 #: zeit/cms/content/browser/template-properties.pt:9
 #: zeit/content/cp/interfaces.py:198
 msgid "Name"
 msgstr "Name"
 
-#: zeit/cms/repository/browser/properties.py:27
+#: zeit/cms/repository/browser/property.py:37
 #: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
 msgstr "Wert"
@@ -4368,6 +4368,10 @@ msgstr "Schlagwort Entitätstyp"
 #: zeit/solr/configure.zcml:22
 msgid "Update Solr index"
 msgstr "Update Solr index"
+
+#: zeit/vgwort/browser/configure.zcml:31
+msgid "VGWort Status"
+msgstr "VG-Wort"
 
 #: zeit/vgwort/interfaces.py:49
 msgid "Public VGWort token"

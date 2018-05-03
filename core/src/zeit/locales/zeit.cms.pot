@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Apr 27 15:04:07 2018\n"
+"POT-Creation-Date: Thu May  3 11:48:08 2018\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1412,23 +1412,23 @@ msgstr ""
 msgid "There are no selectable objects in this folder."
 msgstr ""
 
-#: zeit/cms/repository/browser/properties.py:15
+#: zeit/cms/repository/browser/property.py:25
 #: zeit/cms/repository/browser/configure.zcml:199
 msgid "DAV Properties"
 msgstr ""
 
-#: zeit/cms/repository/browser/properties.py:21
+#: zeit/cms/repository/browser/property.py:31
 #: zeit/cms/content/browser/template-properties.pt:8
 msgid "Namespace"
 msgstr ""
 
-#: zeit/cms/repository/browser/properties.py:24
+#: zeit/cms/repository/browser/property.py:34
 #: zeit/cms/content/browser/template-properties.pt:9
 #: zeit/content/cp/interfaces.py:198
 msgid "Name"
 msgstr ""
 
-#: zeit/cms/repository/browser/properties.py:27
+#: zeit/cms/repository/browser/property.py:37
 #: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
 msgstr ""
@@ -4425,6 +4425,10 @@ msgstr ""
 
 #: zeit/solr/configure.zcml:22
 msgid "Update Solr index"
+msgstr ""
+
+#: zeit/vgwort/browser/configure.zcml:31
+msgid "VGWort Status"
 msgstr ""
 
 #: zeit/vgwort/interfaces.py:49
