@@ -132,7 +132,7 @@ class MessageService(VGWortWebService):
             content, None)
         if content is None:
             raise zeit.vgwort.interfaces.WebServiceError(
-                'Does not seem to be an article -- stale cache?')
+                'Artikel existiert nicht mehr.')
         parties = self.create('Parties')
         parties.authors = self.create('Authors')
         if content.authorships:
@@ -174,7 +174,7 @@ class MessageService(VGWortWebService):
             parties.authors.author.append(involved)
         if not parties.authors.author:
             raise zeit.vgwort.interfaces.WebServiceError(
-                'No author or product with code.')
+                'Kein Autor mit VG-Wort-Code gefunden.')
 
         text = self.create('MessageText')
         text.text = self.create('Text')

@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4455: Translate vivi-generated report error messages
 
 
 2.3.2 (2018-05-03)
