@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.8.4 (unreleased)
+3.9.0 (2018-05-03)
 ------------------
 
 - MAINT: Put DAV properties tab behind zeit.cms.repository.ViewProperties permission
