@@ -8,7 +8,7 @@
     Die Meldung ist geplant für den <tal:x replace="view/to_report_on"/>.
   </p>
 </tal:block>
-<tal:block condition="python: not view.reported_error and view.reported_on">
+<tal:block condition="view/reported_on">
   <h3>Meldung erfolgreich</h3>
   <p>
     Der Artikel wurde am <tal:x replace="view/reported_on"/> erfolgreich
