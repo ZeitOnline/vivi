@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4455: Add projected report date to status tab
 
 
 2.3.3 (2018-05-03)
