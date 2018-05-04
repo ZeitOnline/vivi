@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4455: Handle "was already reported" error in status tab display
 
 
 2.3.4 (2018-05-04)
