@@ -16,8 +16,8 @@ class MetadataColumn(GetterColumn):
         super(MetadataColumn, self).__init__(title=u'')
 
     def cell_formatter(self, value, item, formatter):
-        return '<span class="SearchableText">%s</span>' % ' '.join(map(str, [
-            item[0][0], item[0][1], item[1]]))
+        return u'<span class="SearchableText">%s</span>' % u' '.join(
+            map(unicode, [item[0][0], item[0][1], item[1]]))
 
 
 class Listing(zeit.cms.browser.listing.Listing):

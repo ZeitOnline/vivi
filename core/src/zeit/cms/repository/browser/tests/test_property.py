@@ -1,3 +1,5 @@
+# coding: utf-8
+from zeit.cms.checkout.helper import checked_out
 from mechanize import LinkNotFoundError
 import zeit.cms.testing
 
@@ -22,3 +24,11 @@ class DAVPropertiesListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
             <td> type </td> <td> testcontenttype </td>
             <td> <span class="SearchableText">type...testcontenttype</span>
             </td>...""", b.contents)
+
+    def test_handles_non_ascii(self):
+        with checked_out(self.repository['testcontent']) as co:
+            co.ressort = u'Zeit für die Schule'
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent')
+        b.getLink('DAV Properties').click()
+        self.assertEllipsis('...Zeit für die Schule...', b.contents)
