@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.9.1 (unreleased)
+3.9.1 (2018-05-04)
 ------------------
 
 - FIX: Handle non-ascii in DAV properties tab
