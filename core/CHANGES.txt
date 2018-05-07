@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4455: Grant zeit.vgwort.RetryReport to Producer
 
 
 2.2.6 (2018-05-03)

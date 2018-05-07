@@ -179,6 +179,10 @@
     role="zeit.Producer"
     permission="zeit.retresco.UseTMS"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.vgwort.RetryReport"
+    />
 
 
   <!-- CvD grants -->
