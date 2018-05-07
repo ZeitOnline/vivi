@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.3.5 (unreleased)
+2.4.0 (2018-05-07)
 ------------------
 
 - ZON-4455: Add "report again" button
