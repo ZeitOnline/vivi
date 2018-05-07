@@ -17,11 +17,28 @@ class Elasticsearch(object):
 
     def search(
             self, query, sort_order, start=0, rows=25, include_payload=False):
-        """Search using `query` and sort by `sort_order`."""
+        """Search using `query` and sort by `sort_order`. Pagination is
+        available through the `start` and `rows` parameter.
+
+        The search results include the entire payload node (as specified by
+        our schema), if the `include_playload` flag is set.
+
+        To select specific fields, the `query` may include a `_source` node.
+        Hint: A custom `_source` definition is mutually exclusive with the
+        `include_payload` flag.
+        """
+
         query = query.copy()
-        query['_source'] = ['url', 'doc_type', 'doc_id']
-        if include_payload:
-            query['_source'].append('payload')
+        if '_source' in query:
+            if include_payload:
+                raise ValueError(
+                    'Cannot include payload with specified source: %s' %
+                    query['_source'])
+        else:
+            query['_source'] = ['url', 'doc_type', 'doc_id']
+            if include_payload:
+                query['_source'].append('payload')
+
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
