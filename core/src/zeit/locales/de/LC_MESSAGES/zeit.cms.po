@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2018-05-03 11:48+0200\n"
-"PO-Revision-Date: 2018-05-03 11:48+0200\n"
+"POT-Creation-Date: 2018-05-07 09:25+0200\n"
+"PO-Revision-Date: 2018-05-07 09:25+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1178,18 +1178,22 @@ msgid "Manage lock"
 msgstr "Sperre verwalten"
 
 #: zeit/cms/permissions.zcml:102
-msgid "Delete centerpages"
-msgstr "Centerpage löschen"
+msgid "Retract centerpages"
+msgstr "Centerpage depublizieren"
 
 #: zeit/cms/permissions.zcml:107
-msgid "View admin tab"
-msgstr "Admin Menü anzeigen"
+msgid "Delete centerpages"
+msgstr "Centerpage löschen"
 
 #: zeit/cms/permissions.zcml:11
 msgid "Rename folders"
 msgstr "Ordner umbenennen"
 
 #: zeit/cms/permissions.zcml:112
+msgid "View admin tab"
+msgstr "Admin Menü anzeigen"
+
+#: zeit/cms/permissions.zcml:117
 msgid "Edit semantic change and date of last semantic publish"
 msgstr "Datum der letzten semantischen Änderungen anpassen"
 
@@ -1234,36 +1238,36 @@ msgid "Rename content"
 msgstr "Inhalt umbenennen"
 
 #: zeit/cms/permissions.zcml:61
+msgid "View DAV properties"
+msgstr "DAV-Properties-Reiter"
+
+#: zeit/cms/permissions.zcml:66
 msgid "Syndicate content"
 msgstr "Syndizieren"
 
-#: zeit/cms/permissions.zcml:66
+#: zeit/cms/permissions.zcml:71
 msgid "Publish objects"
 msgstr "Veröffentlichen"
 
-#: zeit/cms/permissions.zcml:71
+#: zeit/cms/permissions.zcml:76
 msgid "Lock and unlock objects"
 msgstr "Objekte sperren und entsperren"
 
-#: zeit/cms/permissions.zcml:76
+#: zeit/cms/permissions.zcml:81
 msgid "Manage WebDAV locks"
 msgstr "WebDAV-Locks verwalten"
 
-#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:87
 msgid "View global settings"
 msgstr "Globale Einstellungen ansehen"
 
-#: zeit/cms/permissions.zcml:87
+#: zeit/cms/permissions.zcml:92
 msgid "Change global settings"
 msgstr "Globale Einstellungen ändern"
 
-#: zeit/cms/permissions.zcml:92
+#: zeit/cms/permissions.zcml:97
 msgid "Edit templates"
 msgstr "Vorlage bearbeiten"
-
-#: zeit/cms/permissions.zcml:97
-msgid "Retract centerpages"
-msgstr "Centerpage depublizieren"
 
 #: zeit/cms/redirect/interfaces.py:22
 msgid "previous uniqueIds of this ICMSContent"
@@ -4372,6 +4376,10 @@ msgstr "Update Solr index"
 #: zeit/vgwort/browser/configure.zcml:31
 msgid "VGWort Status"
 msgstr "VG-Wort"
+
+#: zeit/vgwort/configure.zcml:25
+msgid "Retry VGWort Report"
+msgstr "VG-Wort neu melden"
 
 #: zeit/vgwort/interfaces.py:49
 msgid "Public VGWort token"

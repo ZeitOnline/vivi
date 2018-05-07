@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu May  3 11:48:08 2018\n"
+"POT-Creation-Date: Mon May  7 09:24:45 2018\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1219,11 +1219,11 @@ msgid "Manage lock"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:102
-msgid "Delete centerpages"
+msgid "Retract centerpages"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:107
-msgid "View admin tab"
+msgid "Delete centerpages"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:11
@@ -1231,6 +1231,10 @@ msgid "Rename folders"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:112
+msgid "View admin tab"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:117
 msgid "Edit semantic change and date of last semantic publish"
 msgstr ""
 
@@ -1275,35 +1279,35 @@ msgid "Rename content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:61
-msgid "Syndicate content"
+msgid "View DAV properties"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:66
-msgid "Publish objects"
+msgid "Syndicate content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:71
-msgid "Lock and unlock objects"
+msgid "Publish objects"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:76
+msgid "Lock and unlock objects"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:81
 msgid "Manage WebDAV locks"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:82
+#: zeit/cms/permissions.zcml:87
 msgid "View global settings"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:87
+#: zeit/cms/permissions.zcml:92
 msgid "Change global settings"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:92
-msgid "Edit templates"
-msgstr ""
-
 #: zeit/cms/permissions.zcml:97
-msgid "Retract centerpages"
+msgid "Edit templates"
 msgstr ""
 
 #: zeit/cms/redirect/interfaces.py:22
@@ -4429,6 +4433,10 @@ msgstr ""
 
 #: zeit/vgwort/browser/configure.zcml:31
 msgid "VGWort Status"
+msgstr ""
+
+#: zeit/vgwort/configure.zcml:25
+msgid "Retry VGWort Report"
 msgstr ""
 
 #: zeit/vgwort/interfaces.py:49
