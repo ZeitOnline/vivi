@@ -5,7 +5,8 @@ zeit.retresco changes
 1.21.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Allow explicit source field selection while maintaining compat with
+  `include_payload` search flag.
 
 
 1.21.3 (2018-04-27)
