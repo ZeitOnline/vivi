@@ -35,5 +35,6 @@
   <include package="zeit.brightcove.json" />
 
   <include package="zeit.retresco" />
+  <include package="zeit.vgwort" />
 
 </configure>
