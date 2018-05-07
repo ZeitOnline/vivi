@@ -34,6 +34,9 @@ class Status(object):
     def to_report_on(self):
         dfr = self.date_first_released
         result = datetime(dfr.year, dfr.month, dfr.day) + timedelta(days=8)
+        now = datetime.now()
+        if result < now:
+            result = datetime(now.year, now.month, now.day)
         return result.strftime('%d.%m.%Y')
 
     def _format_date(self, date):
@@ -44,3 +47,18 @@ class Status(object):
     @cachedproperty
     def _date_formatter(self):
         return self.request.locale.dates.getFormatter('dateTime', 'medium')
+
+    def has_permission(self, permission):
+        return self.request.interaction.checkPermission(
+            permission, self.context)
+
+
+class Retry(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        if self.request.method != 'POST':
+            return 405, 'Only POST supported'
+        info = zeit.vgwort.interfaces.IReportInfo(self.context)
+        info.reported_on = None
+        info.reported_error = None
+        return self.redirect(self.url('vgwort.html'))

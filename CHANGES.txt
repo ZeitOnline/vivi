@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.3.5 (unreleased)
 ------------------
 
-- ZON-4455: Handle "was already reported" error in status tab display
+- ZON-4455: Add "report again" button
 
 
 2.3.4 (2018-05-04)

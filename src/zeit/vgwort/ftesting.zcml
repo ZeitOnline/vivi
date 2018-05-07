@@ -12,4 +12,9 @@
   <include package="zeit.content.author" />
 
   <adapter factory=".testing.SearchableText" />
+
+  <grant
+    principal="zope.producer"
+    permission="zeit.vgwort.RetryReport"
+    />
 </configure>

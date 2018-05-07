@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok">
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
 
   <grok:grok package="." />
 
@@ -15,7 +16,15 @@
       interface=".interfaces.IReportInfo"
       permission="zope.View"
       />
+    <require
+      set_schema=".interfaces.IReportInfo"
+      permission="zeit.vgwort.RetryReport"
+      />
   </class>
 
-</configure>
+  <permission
+    id="zeit.vgwort.RetryReport"
+    title="Retry VGWort Report"
+    />
 
+</configure>
