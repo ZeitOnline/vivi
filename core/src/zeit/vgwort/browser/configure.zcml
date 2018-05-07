@@ -38,4 +38,12 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="vgwort-retry"
+    class=".status.Retry"
+    permission="zeit.vgwort.RetryReport"
+    />
+
 </configure>
