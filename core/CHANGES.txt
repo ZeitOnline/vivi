@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.12.5 (unreleased)
+2.12.5 (2018-05-08)
 -------------------
 
 - BUG-919: Import `expires`, which was lost in 2.10.0
