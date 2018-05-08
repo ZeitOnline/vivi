@@ -4,7 +4,8 @@ zeit.content.image changes
 2.21.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Be defensive about broken/missing metatdata in image listing,
+  e.g. when the parent image group has been deleted in the meantime
 
 
 2.21.3 (2018-03-13)
