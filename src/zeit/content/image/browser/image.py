@@ -159,7 +159,11 @@ class ImageListRepresentation(
 
     @property
     def title(self):
-        title = self.image_metadata.title
+        try:
+            title = zeit.content.image.interfaces.IImageMetadata(
+                self.context).title
+        except Exception:
+            title = None
         if not title:
             title = self.context.__name__
         return title
@@ -176,10 +180,6 @@ class ImageListRepresentation(
     def searchableText(self):
         # XXX
         return ''
-
-    @cachedproperty
-    def image_metadata(self):
-        return zeit.content.image.interfaces.IImageMetadata(self.context)
 
 
 @zope.component.adapter(
