@@ -137,6 +137,8 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             'id': 'myvid',
             'name': 'title',
             'created_at': '2017-05-15T08:24:55.916Z',
+            'schedule': {'ends_at': '2018-03-13T23:00:00.000Z',
+                         'starts_at': None},
             'state': 'ACTIVE',
             'economics': 'AD_SUPPORTED',
             'custom_fields': {
@@ -173,6 +175,8 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
                 'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
             zeit.cms.related.interfaces.IRelatedContent(cms).related)
         self.assertEqual('erde/umwelt', cms.serie.serienname)
+        self.assertEqual(
+            datetime(2018, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
 
     def test_creates_deleted_video_on_notfound(self):
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:

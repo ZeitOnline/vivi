@@ -163,6 +163,7 @@ class Video(Converter):
         cmsobj.banner_id = custom.get('banner_id')
         cmsobj.dailyNewsletter = self._default_if_missing(
             custom, 'newsletter', IVideo['dailyNewsletter'], self.cms_bool)
+        cmsobj.expires = self.cms_date(data.get('schedule', {}).get('ends_at'))
         cmsobj.has_recensions = self._default_if_missing(
             custom, 'recensions', IVideo['has_recensions'], self.cms_bool)
         cmsobj.has_advertisement = data.get('economics') == 'AD_SUPPORTED'
