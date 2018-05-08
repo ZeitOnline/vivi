@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.12.6 (unreleased)
+2.12.6 (2018-05-08)
 -------------------
 
 - HOTFIX: Handle `schedule: None` case (we previously expected empty
