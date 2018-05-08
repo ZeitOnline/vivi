@@ -4,7 +4,8 @@ zeit.brightcove changes
 2.12.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- HOTFIX: Handle `schedule: None` case (we previously expected empty
+  dict, but BC doesn't use that)
 
 
 2.12.5 (2018-05-08)
