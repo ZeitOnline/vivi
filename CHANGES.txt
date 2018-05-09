@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.21.4 (unreleased)
+1.21.4 (2018-05-09)
 -------------------
 
 - TMS-200/BUG-911: Enrich during publish as well, so the body goes to TMS
