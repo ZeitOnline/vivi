@@ -40,7 +40,11 @@ def index_after_add(event):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
     if event.publishing:
-        index(context)
+        # Unfortunately we have to enrich here too, even though strictly
+        # speaking that "already happened" on checkin, to support the "checkin
+        # and publish immediately" use case -- since there publish likely
+        # happens *before* the index_async job created by checkin ran.
+        index(context, enrich=True)
     else:
         index_async.apply_async((context.uniqueId,), countdown=5)
 

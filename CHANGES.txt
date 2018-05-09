@@ -5,6 +5,9 @@ zeit.retresco changes
 1.21.4 (unreleased)
 -------------------
 
+- TMS-200/BUG-911: Enrich during publish as well, so the body goes to TMS
+  before publish (as the celery jobs may run later, see 1.20.5)
+
 - MAINT: Allow explicit source field selection while maintaining compat with
   `include_payload` search flag.
 
