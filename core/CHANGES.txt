@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.21.4 (unreleased)
+2.21.4 (2018-05-09)
 -------------------
 
 - MAINT: Be defensive about broken/missing metatdata in image listing,
