@@ -4,6 +4,7 @@ import gocept.runner
 import grokcore.component as grok
 import logging
 import time
+import transaction
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -200,9 +201,11 @@ def reindex():
         with open(args.ids[0], 'r') as f:
             ids = f.read().splitlines()
 
-    for id in ids:
+    for i, id in enumerate(ids):
         if args.parallel:
             index_parallel.delay(id, args.enrich, args.publish)
+            if i % 10000 == 0:
+                transaction.commit()
         else:
             index(
                 zeit.cms.interfaces.ICMSContent(id),
