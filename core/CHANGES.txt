@@ -4,7 +4,7 @@ zeit.cms changes
 3.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4639: Add `kind` property to `Serie` objects
 
 
 3.9.1 (2018-05-04)

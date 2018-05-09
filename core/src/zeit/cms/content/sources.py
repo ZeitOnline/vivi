@@ -326,7 +326,7 @@ def unicode_or_none(value):
 class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
-                 column=False, video=False, fallback_image=False):
+                 column=False, kind=None, video=False, fallback_image=False):
         super(Serie, self).__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -334,6 +334,7 @@ class Serie(AllowedBase):
         self.url = url
         self.encoded = encoded
         self.column = column
+        self.kind = kind
         self.video = video
         self.fallback_image = fallback_image
 
@@ -362,6 +363,7 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('url')),
                 unicode_or_none(node.get('encoded')),
                 node.get('format-label') == u'Kolumne',
+                unicode_or_none(node.get('kind')),
                 node.get('video') == u'yes',
                 node.get('fallback_image') == u'yes')
         return result
