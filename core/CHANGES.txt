@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-3.9.2 (unreleased)
-------------------
+3.10.0 (2018-05-09)
+-------------------
 
 - ZON-4639: Add `kind` property to `Serie` objects
 
