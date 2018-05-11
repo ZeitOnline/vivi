@@ -20,6 +20,14 @@ class IObjectReference(IClipboardEntry):
         title=u"Unique Id o the referenced object.",
         readonly=True)
 
+    title = zope.schema.TextLine(
+        title=u'Title of the referenced object',
+        readonly=True)
+
+    content_type = zope.schema.TextLine(
+        title=u'Content type of the referenced object',
+        readonly=True)
+
 
 class IClipSchema(zope.interface.Interface):
     """Clip schema."""
