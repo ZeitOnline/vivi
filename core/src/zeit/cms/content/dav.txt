@@ -13,11 +13,13 @@ mapping from the internal value to unicode just uses `unicode()`.
 
 A plain text field:
 
+>>> import zeit.connector.resource
 >>> import zeit.cms.content.interfaces
 >>> import zope.schema
+>>> props = zeit.connector.resource.WebDAVProperties()
 >>> def get_converter(field):
 ...     return zope.component.getMultiAdapter(
-...         (field, None), zeit.cms.content.interfaces.IDAVPropertyConverter)
+...         (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 >>> text_field = zope.schema.Text()
 >>> converter = get_converter(text_field)
@@ -611,7 +613,7 @@ Let's create a little content class:
 >>> from zeit.cms.content.dav import DAVProperty
 >>> class Content(object):
 ...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
-...     properties = {}
+...     properties = zeit.connector.resource.WebDAVProperties()
 ...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
 ...
 >>> def contentDavProps(context):
@@ -658,7 +660,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     NS: myns
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
->>> content.properties
+>>> dict(content.properties)
 {('title', 'myns'): u'Mary had a little lamb.'}
 
 
@@ -672,7 +674,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     NS: myns
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
->>> content.properties
+>>> dict(content.properties)
 {('title', 'myns'): DeleteProperty}
 >>> content.title is None
 True
@@ -692,7 +694,9 @@ Create an adapter from Foo to ICMSContent:
 >>> def foo_properties_to_cms(context):
 ...     return content
 >>> site_manager.registerAdapter(
-...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+...     foo_properties_to_cms,
+...     (zeit.connector.resource.WebDAVProperties,),
+...     zeit.cms.interfaces.ICMSContent)
 
 We also need to make Foo adaptable to IWebDAVProperties:
 
@@ -733,7 +737,9 @@ True
 ...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
 True
 >>> site_manager.unregisterAdapter(
-...     foo_properties_to_cms, (dict, ), zeit.cms.interfaces.ICMSContent)
+...     foo_properties_to_cms,
+...     (zeit.connector.resource.WebDAVProperties,),
+...     zeit.cms.interfaces.ICMSContent)
 True
 
 

@@ -1,11 +1,11 @@
 zeit.cms changes
 ================
 
-3.10.2 (unreleased)
+3.11.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- FIX: Use the DAV properties as additional descriptor for
+  IDAVPropertyConverter instead of the content object (see 3.4.0)
 
 3.10.1 (2018-05-14)
 -------------------
