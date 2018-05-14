@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.21.5 (unreleased)
+1.21.5 (2018-05-14)
 -------------------
 
 - FIX: Make DAVPropertyConverter work with ITMSContent/DAVPropertiesAdapter
