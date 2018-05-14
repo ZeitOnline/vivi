@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.11.0 (unreleased)
+3.11.0 (2018-05-14)
 -------------------
 
 - FIX: Use the DAV properties as additional descriptor for
