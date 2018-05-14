@@ -155,6 +155,12 @@ class ITMSContent(zeit.cms.interfaces.ICMSContent):
     """
 
 
+class IElasticDAVProperties(zeit.connector.interfaces.IWebDAVProperties):
+    """Marker interface so we can register special IDAVPropertyConverter
+    variants for ITMSContent objects.
+    """
+
+
 class IElasticsearch(zope.interface.Interface):
     """Search using the Elasticsearch service."""
 
