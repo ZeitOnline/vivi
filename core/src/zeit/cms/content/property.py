@@ -4,6 +4,7 @@ import sys
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.connector.resource
 import zope.component
 import zope.schema.interfaces
 
@@ -280,6 +281,8 @@ def mapAttributes(*names):
 class DAVConverterWrapper(object):
     """Wraps a property and converts data using dav convert."""
 
+    DUMMY_PROPERTIES = zeit.connector.resource.WebDAVProperties()
+
     def __init__(self, wrapped_property, field):
         self.wrapped_property = wrapped_property
         self.field = field
@@ -297,5 +300,5 @@ class DAVConverterWrapper(object):
     def get_converter(self, instance):
         field = self.field.bind(instance)
         return zope.component.getMultiAdapter(
-            (field, instance),
+            (field, self.DUMMY_PROPERTIES),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
