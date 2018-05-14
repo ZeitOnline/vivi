@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.23.1 (unreleased)
+3.23.1 (2018-05-14)
 -------------------
 
 - TMS-162: Update to API changes in zeit.cms
