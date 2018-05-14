@@ -7,6 +7,7 @@ For TeaserBlockLandingZone see: http://cmsdev.zeit.de/content/aufmacher-fläche-
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
+import zeit.connector.resource
 import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
@@ -19,6 +20,7 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
     """
 
     block_type = zeit.edit.browser.view.Form('block_type')
+    DUMMY_PROPS = zeit.connector.resource.WebDAVProperties()
 
     def update(self):
         self.areas = self.block_params.pop('areas', [])
@@ -34,7 +36,7 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
                 # We (ab)use the DAV type conversion for a `fromUnicode` that
                 # supports Sources, because the mechanics are all there already
                 converter = zope.component.getMultiAdapter(
-                    (field, None),
+                    (field, self.DUMMY_PROPS),
                     zeit.cms.content.interfaces.IDAVPropertyConverter)
                 value = converter.fromProperty(value)
                 field.set(area, value)
