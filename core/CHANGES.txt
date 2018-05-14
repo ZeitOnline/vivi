@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.10.1 (unreleased)
+3.10.1 (2018-05-14)
 -------------------
 
 - BUG-890: Store title and type in clipboard entries, so we don't have
