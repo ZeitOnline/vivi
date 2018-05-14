@@ -96,7 +96,8 @@ def from_tms_representation(context):
 class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)
-    grok.implements(zeit.connector.interfaces.IWebDAVProperties)
+    grok.provides(zeit.connector.interfaces.IWebDAVProperties)
+    grok.implements(zeit.retresco.interfaces.IElasticDAVProperties)
 
     def __getitem__(self, key):
         name, ns = map(unquote_es_field_name, key)
@@ -150,14 +151,14 @@ class Bool(JSONType):
 
     grok.adapts(
         zope.schema.interfaces.IBool,
-        zeit.retresco.interfaces.ITMSContent)
+        zeit.retresco.interfaces.IElasticDAVProperties)
 
 
 class Int(JSONType):
 
     grok.adapts(
         zope.schema.Int,  # IFromUnicode is parallel to IInt
-        zeit.retresco.interfaces.ITMSContent)
+        zeit.retresco.interfaces.IElasticDAVProperties)
 
 
 class CollectionTextLine(grok.MultiAdapter):
@@ -165,7 +166,7 @@ class CollectionTextLine(grok.MultiAdapter):
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.ITextLine,
-        zeit.retresco.interfaces.ITMSContent)
+        zeit.retresco.interfaces.IElasticDAVProperties)
     grok.implements(zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     # Taken from zeit.cms.content.dav.CollectionTextLineProperty
@@ -196,4 +197,4 @@ class CollectionChoice(CollectionTextLine):
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.IChoice,
-        zeit.retresco.interfaces.ITMSContent)
+        zeit.retresco.interfaces.IElasticDAVProperties)

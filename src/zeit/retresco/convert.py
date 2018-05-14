@@ -103,7 +103,7 @@ class CMSContent(Converter):
         result['payload'] = self.collect_dav_properties()
         return result
 
-    DUMMY_TMS_CONTENT = zeit.retresco.content.Content({'url': ''})
+    DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
 
     def collect_dav_properties(self):
         result = {}
@@ -121,13 +121,13 @@ class CMSContent(Converter):
                 field = field.bind(self.context)
 
             converter = zope.component.queryMultiAdapter(
-                (field, self.DUMMY_TMS_CONTENT),
+                (field, self.DUMMY_ES_PROPERTIES),
                 zeit.cms.content.interfaces.IDAVPropertyConverter)
             # Only perform type conversion if we have a json-specific one.
             if converter.__class__.__module__ == 'zeit.retresco.content':
                 try:
                     davconverter = zope.component.getMultiAdapter(
-                        (field, self.context),
+                        (field, properties),
                         zeit.cms.content.interfaces.IDAVPropertyConverter)
                     pyval = davconverter.fromProperty(value)
                     value = converter.toProperty(pyval)

@@ -55,9 +55,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/Somalia')
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
         zeit.cms.workflow.interfaces.IPublish(article).publish(async=False)
-        published = zeit.cms.workflow.interfaces.IPublishInfo(
-            article).date_last_published
-        self.assertIsInstance(published, datetime)
+        self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
+            article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
 
@@ -68,11 +67,11 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         # in stride and return "no such property" for any request, which then
         # is translated to the field's default or missing value.
         self.assertEqual(
-            None, zeit.cms.workflow.interfaces.IPublishInfo(
-                article).date_last_published)
+            False, zeit.cms.workflow.interfaces.IPublishInfo(
+                article).published)
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        self.assertEqual(published, info.date_last_published)
+        self.assertIs(True, info.published)
 
     def test_IImages_work_with_TMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
