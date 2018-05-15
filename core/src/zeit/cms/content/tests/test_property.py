@@ -31,7 +31,7 @@ class TestDAVConverterWrapper(unittest.TestCase):
         # Field is being bound
         field.bind.assert_called_with(mock.sentinel.instance)
         bound_field = field.bind.return_value
-        idpc.assert_called_with(bound_field, mock.sentinel.instance)
+        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES)
         converter = idpc.return_value
         converter.fromProperty.assert_called_with(
             prop.__get__.return_value)
@@ -54,7 +54,7 @@ class TestDAVConverterWrapper(unittest.TestCase):
         # Field is being bound
         field.bind.assert_called_with(mock.sentinel.instance)
         bound_field = field.bind.return_value
-        idpc.assert_called_with(bound_field, mock.sentinel.instance)
+        idpc.assert_called_with(bound_field, wrap.DUMMY_PROPERTIES)
         converter = idpc.return_value
         converter.toProperty.assert_called_with(mock.sentinel.value)
         prop.__set__.assert_called_with(
