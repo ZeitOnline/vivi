@@ -213,14 +213,14 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
         for i in range(1, 4):
             content = (zeit.cms.testcontenttype.testcontenttype.
                        ExampleContentType())
-            content.teaserTitle = content.shortTeaserTitle = (
+            content.teaserTitle = content.title = (
                 u'c%s teaser' % i)
             name = 'c%s' % i
             repository[name] = content
             clipboard.addContent(
                 clip, repository[name], name, insert=True)
         quiz = zeit.content.quiz.quiz.Quiz()
-        quiz.teaserTitle = quiz.shortTeaserTitle = u'MyQuiz'
+        quiz.teaserTitle = quiz.title = u'MyQuiz'
         repository['my_quiz'] = quiz
         transaction.commit()
 
