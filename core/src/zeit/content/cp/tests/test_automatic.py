@@ -167,46 +167,6 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         IRenderedArea(lead).values()
         self.assertEqual('raw', self.solr.search.call_args[0][0])
 
-    def test_builds_query_from_conditions(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.query = (
-            ('International', 'Nahost'),
-            ('Wissen', None))
-        lead.automatic = True
-        lead.automatic_type = 'channel'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        query = self.solr.search.call_args[0][0]
-        self.assertIn('published:(published*)', query)
-        self.assertIn(
-            '(channels:(International*Nahost)'
-            ' OR channels:(Wissen*))',
-            query)
-
-    def test_query_order_defaults_to_semantic_publish(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.query = (('International', 'Nahost'),)
-        lead.automatic = True
-        lead.automatic_type = 'channel'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            'date-last-published-semantic desc',
-            self.solr.search.call_args[1]['sort'])
-
-    def test_query_order_can_be_set(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.query = (('International', 'Nahost'),)
-        lead.query_order = 'order'
-        lead.automatic = True
-        lead.automatic_type = 'channel'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        self.assertEqual('order', self.solr.search.call_args[1]['sort'])
-
     def test_raw_query_order_defaults_to_first_released(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
@@ -326,6 +286,45 @@ class AutomaticAreaElasticsearchTest(
               u'payload.document.date_first_released:desc'),
              dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
+
+    def test_builds_query_from_conditions(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.query = (
+            ('International', 'Nahost'),
+            ('Wissen', None))
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'must': [
+            {'terms': {'payload.document.channels.hierarchy': [
+                'International Nahost', 'Wissen']}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_query_order_defaults_to_semantic_publish(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.query = (('International', 'Nahost'),)
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            'payload.workflow.date_last_published_semantic:desc',
+            self.elasticsearch.search.call_args[0][1])
+
+    def test_query_order_can_be_set(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.query = (('International', 'Nahost'),)
+        lead.query_order = 'order'
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual('order', self.elasticsearch.search.call_args[0][1])
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):

@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - TMS-226: Add `published: true` condition to all ES queries
 
+- TMS-219: Switch "channel" queries to ES
+
 
 3.23.3 (2018-05-22)
 -------------------

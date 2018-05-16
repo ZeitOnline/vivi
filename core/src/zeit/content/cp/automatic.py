@@ -204,9 +204,12 @@ class ElasticsearchContentQuery(ContentQuery):
         self.total_hits = 0
         result = []
         query = {}
-        if self.query:
+        _query = self.query
+        if _query:
+            if isinstance(_query, basestring):
+                _query = json.loads(_query)
             query['query'] = {'bool': {'must': [
-                json.loads(self.query),
+                _query,
                 {'term': {'payload.workflow.published': True}},
             ]}}
         if self.filter_query:
@@ -252,29 +255,34 @@ class ElasticsearchContentQuery(ContentQuery):
         }
 
 
-class ChannelContentQuery(SolrContentQuery):
+class ChannelContentQuery(ElasticsearchContentQuery):
 
     grok.name('channel')
 
+    SOLR_TO_ES_SORT = {
+        'date-last-published-semantic desc': (
+            'payload.workflow.date_last_published_semantic:desc'),
+        'last-semantic-change desc': (
+            'payload.document.last-semantic-change:desc'),
+        'date-first-released desc': (
+            'payload.document.date_first_released:desc'),
+    }
+
     def __init__(self, context):
-        super(SolrContentQuery, self).__init__(context)
+        super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._build_query()
         self.order = self.context.query_order
+        if ' ' in self.order:  # BBB
+            self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _build_query(self):
-        Q = zeit.solr.query
-        query = zeit.find.search.query(filter_terms=[
-            Q.field_raw('published', 'published*')])
-        conditions = []
+        channels = []
         for channel, subchannel in self.context.query:
+            value = channel
             if subchannel:
-                value = '%s*%s' % (channel, subchannel)
-            else:
-                value = '%s*' % channel
-            conditions.append(Q.field_raw('channels', value))
-        if conditions:
-            query = Q.and_(query, Q.or_(*conditions))
-        return query
+                value += ' ' + subchannel
+            channels.append(value)
+        return {'terms': {'payload.document.channels.hierarchy': channels}}
 
 
 class TMSContentQuery(ContentQuery):
