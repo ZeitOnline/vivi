@@ -148,8 +148,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         self.assertEqual((), lead.query)
         lead.query = (
-            ('Channel', 'International', 'Nahost'),
-            ('Channel', 'Wissen', None))
+            ('International', 'Nahost'),
+            ('Wissen', None))
         self.assertEllipsis(
             """<...
             <query>
@@ -171,9 +171,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (
-            ('Channel', 'International', 'Nahost'),
-            ('Channel', 'Wissen', None),
-            ('Keyword', 'Berlin', None))
+            ('International', 'Nahost'),
+            ('Wissen', None))
         lead.automatic = True
         lead.automatic_type = 'channel'
         self.solr.search.return_value = pysolr.Results([], 0)
@@ -182,14 +181,13 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertIn('published:(published*)', query)
         self.assertIn(
             '(channels:(International*Nahost)'
-            ' OR channels:(Wissen*)'
-            ' OR keywords:(Berlin*))',
+            ' OR channels:(Wissen*))',
             query)
 
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('Channel', 'International', 'Nahost'),)
+        lead.query = (('International', 'Nahost'),)
         lead.automatic = True
         lead.automatic_type = 'channel'
         self.solr.search.return_value = pysolr.Results([], 0)
@@ -201,7 +199,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('Channel', 'International', 'Nahost'),)
+        lead.query = (('International', 'Nahost'),)
         lead.query_order = 'order'
         lead.automatic = True
         lead.automatic_type = 'channel'

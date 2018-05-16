@@ -271,11 +271,6 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         return value
 
 
-class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = ['Channel']  # XXX or 'Keyword', see VIV-471
-
-
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = collections.OrderedDict()
@@ -440,14 +435,12 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Hide duplicate teasers'),
         default=True)
 
+    # XXX Rename more specifically (TMS-227)
     query = zope.schema.Tuple(
         title=_('Channel Query'),
         value_type=zc.form.field.Combination(
             (zope.schema.Choice(
-                title=_('Channel Query Type'),
-                source=QueryTypeSource(), default='Channel'),
-             zope.schema.Choice(
-                title=_('Channel equals'),
+                title=_('Channel'),
                 source=zeit.cms.content.sources.ChannelSource()),
              zope.schema.Choice(
                  title=_('Subchannel'),

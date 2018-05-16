@@ -256,11 +256,6 @@ class ChannelContentQuery(SolrContentQuery):
 
     grok.name('channel')
 
-    SOLR_FIELD = {
-        'Channel': 'channels',
-        'Keyword': 'keywords',
-    }
-
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
         self.query = self._build_query()
@@ -271,13 +266,12 @@ class ChannelContentQuery(SolrContentQuery):
         query = zeit.find.search.query(filter_terms=[
             Q.field_raw('published', 'published*')])
         conditions = []
-        for type_, channel, subchannel in self.context.query:
+        for channel, subchannel in self.context.query:
             if subchannel:
                 value = '%s*%s' % (channel, subchannel)
             else:
-                # XXX Unclear whether this will work as desired for keywords.
                 value = '%s*' % channel
-            conditions.append(Q.field_raw(self.SOLR_FIELD[type_], value))
+            conditions.append(Q.field_raw('channels', value))
         if conditions:
             query = Q.and_(query, Q.or_(*conditions))
         return query
