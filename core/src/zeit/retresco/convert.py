@@ -320,7 +320,7 @@ class Volume(Converter):
             'href': x.get('href')} for x in self.context.xml.xpath(
                 '//covers/cover')]
         if covers:
-            result['head'] = {'covers': covers}
+            result['payload'] = {'head': {'covers': covers}}
         return result
 
 

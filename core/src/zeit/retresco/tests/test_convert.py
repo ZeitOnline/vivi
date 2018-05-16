@@ -185,6 +185,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         zeit.cms.content.interfaces.IUUID(volume).id = 'myid'
         volume.year = 2015
         volume.volume = 1
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.set_cover('ipad', 'ZEI', self.repository['testcontent'])
         published = datetime.datetime(2015, 1, 1, 0, 0, tzinfo=pytz.UTC)
         volume.date_digital_published = published
         data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
@@ -193,6 +195,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual(
             published.isoformat(),
             data['payload']['document']['date_digital_published'])
+        self.assertEqual([{
+            'id': 'ipad', 'product_id': 'ZEI',
+            'href': 'http://xml.zeit.de/testcontent'}],
+            data['payload']['head']['covers'])
 
     def test_does_not_index_volume_properties_for_articles(self):
         content = create_testcontent()
