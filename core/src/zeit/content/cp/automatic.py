@@ -1,9 +1,9 @@
-from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
 import zeit.find.search
@@ -166,7 +166,7 @@ class SolrContentQuery(ContentQuery):
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning(
                 'Error during solr query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
@@ -222,7 +222,7 @@ class ElasticsearchContentQuery(ContentQuery):
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning(
                 'Error during elasticsearch query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
@@ -304,7 +304,7 @@ class TMSContentQuery(ContentQuery):
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning('Error during TMS query %r for %s',
                         topicpage, self.context.uniqueId, exc_info=True)
 
