@@ -205,7 +205,10 @@ class ElasticsearchContentQuery(ContentQuery):
         result = []
         query = {}
         if self.query:
-            query['query'] = json.loads(self.query)
+            query['query'] = {'bool': {'must': [
+                json.loads(self.query),
+                {'term': {'payload.workflow.published': True}},
+            ]}}
         if self.filter_query:
             query['filter'] = self.filter_query
         try:

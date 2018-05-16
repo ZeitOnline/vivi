@@ -322,7 +322,9 @@ class AutomaticAreaElasticsearchTest(
         self.assertEqual(4711, auto._content_query.total_hits)
 
         self.assertEqual(
-            (({'query': {u'match': {u'title': u'üüü'}}},
+            (({'query': {'bool': {'must': [
+                {u'match': {u'title': u'üüü'}},
+                {'term': {'payload.workflow.published': True}}]}}},
               u'payload.document.date_first_released:desc'),
              dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
@@ -579,12 +581,16 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             {'filter': {
                 'bool': {'must_not': {'ids': {'values': [id1, id2]}}}},
-             'query': {u'match': {u'foo': u'äää'}}},
+             'query': {'bool': {'must': [
+                 {u'match': {u'foo': u'äää'}},
+                 {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
 
         # Do not filter, if switched off.
         self.area.hide_dupes = False
         IRenderedArea(self.area).values()
         self.assertEqual(
-            {'query': {u'match': {u'foo': u'äää'}}},
+            {'query': {'bool': {'must': [
+                {u'match': {u'foo': u'äää'}},
+                {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
