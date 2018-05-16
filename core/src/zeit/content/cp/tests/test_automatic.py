@@ -157,7 +157,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
               <condition...type="Channel"...>Wissen</condition>
             </query>...""", lxml.etree.tostring(lead.xml, pretty_print=True))
 
-    def test_prefers_raw_query_if_present(self):
+    def test_which_query_data_is_used_depends_on_automatic_type(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
