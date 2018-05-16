@@ -474,6 +474,6 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
             '//li[@uniqueid="Clip"]')
-        s.waitForText('//li[@uniqueid="Clip"]', '*c1-2*')
+        s.waitForText('//li[@uniqueid="Clip"]', '*c1*c1*')
         # Verify text still in the drag source:
         s.verifyText('css=.teaser-list > .teaser', '*c1 teaser*')
