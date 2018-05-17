@@ -1,9 +1,32 @@
 from __future__ import absolute_import
 import elasticsearch
+import elasticsearch.connection
+import elasticsearch.transport
 import json
+import pkg_resources
+import urllib3
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
 import zope.interface
+
+
+class Transport(elasticsearch.transport.Transport):
+
+    def __init__(self, *args, **kw):
+        kw['connection_class'] = Connection
+        super(Transport, self).__init__(*args, **kw)
+
+
+class Connection(elasticsearch.connection.Urllib3HttpConnection):
+
+    def __init__(self, *args, **kw):
+        super(Connection, self).__init__(*args, **kw)
+        self.headers['User-Agent'] = self._user_agent()
+
+    def _user_agent(self):
+        return 'zeit.retresco-%s/python-urllib3-%s' % (
+            pkg_resources.get_distribution('zeit.retresco').version,
+            urllib3.__version__)
 
 
 class Elasticsearch(object):
@@ -12,7 +35,8 @@ class Elasticsearch(object):
     zope.interface.implements(zeit.retresco.interfaces.IElasticsearch)
 
     def __init__(self, url, index):
-        self.client = elasticsearch.Elasticsearch([url])
+        self.client = elasticsearch.Elasticsearch(
+            [url], transport_class=Transport)
         self.index = index
 
     def search(
