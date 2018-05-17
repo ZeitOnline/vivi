@@ -99,6 +99,10 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
     def test_delete(self):
         s = self.selenium
         self.create_filled_teaserlist()
+        teaser_block_with_c2 = (
+            '//div[contains(@class, "type-teaser")]'
+            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
+        s.waitForElementPresent(teaser_block_with_c2)
 
         s.click('link=Edit teaser list')
         s.waitForElementPresent('css=div.teaser-list-edit-box')
@@ -113,7 +117,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         # When closing the lightbox the c2 teaser goes away
         s.click('css=a.CloseButton')
-        s.waitForTextNotPresent('c2 teaser')
+        s.waitForElementNotPresent(teaser_block_with_c2)
 
     def test_sort_teaser_contents(self):
         s = self.selenium
