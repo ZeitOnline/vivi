@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.22.1 (unreleased)
+1.22.1 (2018-05-17)
 -------------------
 
 - MAINT: Make `sort_order` optional in elasticsearch.search()
