@@ -2,6 +2,12 @@ zeit.magazin changes
 ====================
 
 
+1.4.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.4.5 (2018-05-17)
 ------------------
 
