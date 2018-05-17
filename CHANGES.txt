@@ -5,7 +5,7 @@ zeit.magazin changes
 1.4.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Remove separate preview URL, has been obsolete since the 2015 relaunch
 
 
 1.4.4 (2017-08-07)
