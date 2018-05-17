@@ -49,6 +49,7 @@ class IAuthor(zope.interface.Interface):
         required=False,
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
+
     vgwortcode = zope.schema.TextLine(
         title=_('VG-Wort Code'), required=False,
         constraint=valid_vgwortcode)
@@ -57,6 +58,7 @@ class IAuthor(zope.interface.Interface):
         title=u'The computed display name. Default is "firstname lastname",'
               u' a user entered value takes precedence.',
         required=False)
+
     entered_display_name = zope.schema.TextLine(
         title=_('Display name'),
         required=False,
@@ -64,11 +66,16 @@ class IAuthor(zope.interface.Interface):
 
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
+
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
+
     external = zope.schema.Bool(
         title=_(u'External?'))
+
+    enable_followpush = zope.schema.Bool(
+        title=_(u'Enable followpush?'))
 
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
