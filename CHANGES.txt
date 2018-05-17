@@ -5,7 +5,7 @@ zeit.retresco changes
 1.21.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Send user-agent on elasticsearch requests
 
 
 1.21.6 (2018-05-16)
