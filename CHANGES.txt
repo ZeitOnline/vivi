@@ -1,10 +1,10 @@
 zeit.content.author changes
 ===========================
 
-2.8.3 (unreleased)
+2.9.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4699: Add enable_followpush field
 
 
 2.8.2 (2018-01-29)
