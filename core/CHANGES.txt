@@ -2,7 +2,7 @@ zeit.magazin changes
 ====================
 
 
-1.4.5 (unreleased)
+1.4.5 (2018-05-17)
 ------------------
 
 - MAINT: Remove separate preview URL, has been obsolete since the 2015 relaunch
