@@ -197,28 +197,18 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.query = self.context.elasticsearch_raw_query
+        self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
         self.order = self.context.elasticsearch_raw_order
 
     def __call__(self):
         self.total_hits = 0
         result = []
-        query = {}
-        _query = self.query
-        if _query:
-            if isinstance(_query, basestring):
-                _query = json.loads(_query)
-            query['query'] = {'bool': {'must': [
-                _query,
-                {'term': {'payload.workflow.published': True}},
-            ]}}
-        if self.filter_query:
-            query['filter'] = self.filter_query
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
             response = elasticsearch.search(
-                query, self.order, start=self.start, rows=self.rows,
+                self._build_query(), self.order,
+                start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
             self.total_hits = response.hits
             for item in response:
@@ -231,12 +221,30 @@ class ElasticsearchContentQuery(ContentQuery):
                 self.query, self.context.uniqueId, exc_info=True)
         return result
 
+    def _build_query(self):
+        if self.context.is_complete_query:
+            query = self.query
+        else:
+            query = {'query': {'bool': {'must': [
+                self.query] + self._additional_must_clauses}}}
+        if self.hide_dupes_query:
+            if 'filter' not in query:
+                query['filter'] = self.hide_dupes_query
+            else:
+                query['filter'] = {'bool': {'must': [
+                    query['filter'], self.hide_dupes_query]}}
+        return query
+
+    _additional_must_clauses = [
+        {'term': {'payload.workflow.published': True}}
+    ]
+
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
-    def filter_query(self):
+    def hide_dupes_query(self):
         """Perform de-duplication of results.
 
         Create an id query for teasers that already exist on the CP.
@@ -270,12 +278,12 @@ class ChannelContentQuery(ElasticsearchContentQuery):
 
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.query = self._build_query()
+        self.query = self._make_channel_query()
         self.order = self.context.query_order
         if ' ' in self.order:  # BBB
             self.order = self.SOLR_TO_ES_SORT[self.order]
 
-    def _build_query(self):
+    def _make_channel_query(self):
         channels = []
         for channel, subchannel in self.context.query:
             value = channel

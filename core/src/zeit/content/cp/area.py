@@ -157,6 +157,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.elasticsearch_raw_order',
         zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
         use_default=True)
+    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_complete_query',
+        zeit.content.cp.interfaces.IArea['is_complete_query'],
+        use_default=True)
 
     def __init__(self, context, xml):
         super(Area, self).__init__(context, xml)

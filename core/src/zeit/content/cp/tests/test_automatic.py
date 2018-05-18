@@ -1,6 +1,7 @@
 # coding: utf-8
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
+import json
 import lxml.etree
 import mock
 import pysolr
@@ -301,6 +302,20 @@ class AutomaticAreaElasticsearchTest(
             {'terms': {'payload.document.channels.hierarchy': [
                 'International Nahost', 'Wissen']}},
             {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_can_take_over_whole_query_body(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = (
+            '{"query": {"match": {"title": "foo"}}}')
+        lead.is_complete_query = True
+        lead.automatic_type = 'elasticsearch-query'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual(
+            json.loads(lead.elasticsearch_raw_query),
             self.elasticsearch.search.call_args[0][0])
 
     def test_query_order_defaults_to_semantic_publish(self):

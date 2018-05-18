@@ -477,6 +477,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Sort order'),
         default=u'payload.document.date_first_released:desc',
         required=False)
+    is_complete_query = zope.schema.Bool(
+        title=_('Take over complete query body'),
+        description=_('Remember to add payload.workflow.published:true'),
+        default=False,
+        required=False)
 
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')

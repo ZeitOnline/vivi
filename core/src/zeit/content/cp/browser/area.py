@@ -74,6 +74,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         zeit.content.cp.interfaces.IArea).select(
             'count', 'query', 'query_order', 'raw_query', 'raw_order',
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
+            'is_complete_query',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
             'referenced_topicpage', 'topicpage_filter')
     form_fields['raw_query'].custom_widget = SolrQueryWidget
@@ -95,7 +96,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             _('automatic-area-type-query'), ('raw_query', 'raw_order')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-elasticsearch-query'),
-             ('elasticsearch_raw_query', 'elasticsearch_raw_order')),
+             ('elasticsearch_raw_query', 'is_complete_query',
+              'elasticsearch_raw_order')),
     )
 
     template = zope.browserpage.ViewPageTemplateFile(
