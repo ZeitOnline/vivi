@@ -227,7 +227,7 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE + doc['url'], None)
+            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
     def filter_query(self):
@@ -308,7 +308,7 @@ class TMSContentQuery(ContentQuery):
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE + doc['url'], None)
+            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
 
 class CenterpageContentQuery(ContentQuery):

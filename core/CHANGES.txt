@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.23.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Resolve TMS/ES results properly
 
 
 3.23.1 (2018-05-14)
