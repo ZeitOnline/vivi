@@ -18,11 +18,13 @@ class Content(object):
 
     def __init__(self, data):
         self._tms_payload = data.get('payload', {})
+        self._tms_payload_head = self._tms_payload.get('head', {})
         if 'url' in data:
             self.uniqueId = zeit.cms.interfaces.ID_NAMESPACE + data['url'][1:]
             self.__name__ = os.path.basename(self.uniqueId)
         self._build_xml_body()
         self._build_xml_head()
+        self._build_xml_image()
 
     def _build_xml_body(self):
         E = lxml.objectify.E
@@ -45,33 +47,45 @@ class Content(object):
         reasons. If we wanted to use vivi APIs we first would have to resolve
         any referenced ICMSContent; instead we can create XML nodes directly.
         """
-        if 'head' not in self._tms_payload:
+        if not self._tms_payload_head:
             return
-        data = self._tms_payload['head']
 
         E = lxml.objectify.E
         head = E.head()
         self.xml.append(head)
 
-        for id in data.get('authors', ()):
+        for id in self._tms_payload_head.get('authors', ()):
             # See zeit.content.author.reference.XMLReference
             head.append(E.author(href=id))
 
-        image = data.get('teaser_image')
-        if image:
-            # See zeit.content.image.imagegroup.XMLReference
-            image = E.image(**{'base-id': image})
-            fill_color = data.get('teaser_image_fill_color')
-            if fill_color:
-                image.set('fill_color', fill_color)
-            head.append(image)
-
-        if 'covers' in data:
+        if 'covers' in self._tms_payload_head:
             # See zeit.content.volume.volume.Volume.set_cover
             covers = E.covers()
             self.xml.append(covers)
-            for cover in data['covers']:
+            for cover in self._tms_payload_head['covers']:
                 covers.append(E.cover(**cover))
+
+    def _build_xml_image(self):
+        """Teaser images are usually contained in the document head and
+        reference an image group.
+
+        We allow ITMSContent factories to override this default behaviour.
+        """
+        image = self._tms_payload_head.get('teaser_image')
+        if not image:
+            return
+
+        E = lxml.objectify.E
+
+        # See zeit.content.image.imagegroup.XMLReference
+        image = E.image(**{'base-id': image})
+        fill_color = self._tms_payload_head.get('teaser_image_fill_color')
+        if fill_color:
+            image.set('fill_color', fill_color)
+
+        head = self.xml.find('head')
+        if head is not None:
+            head.append(image)
 
 
 @grok.adapter(dict)
