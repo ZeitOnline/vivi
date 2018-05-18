@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - TMS-224: Refactor TMS content building to allow overrides for images
 
+- TMS-224: Override image building for TMS authors
+
 
 1.22.1 (2018-05-17)
 -------------------

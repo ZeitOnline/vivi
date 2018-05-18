@@ -4,6 +4,7 @@ import lxml.objectify
 import os.path
 import zeit.cms.interfaces
 import zeit.connector.interfaces
+import zeit.content.author.author
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -86,6 +87,23 @@ class Content(object):
         head = self.xml.find('head')
         if head is not None:
             head.append(image)
+
+
+class TMSAuthor(Content, Author):
+
+    def _build_xml_image(self):
+        image = self._tms_payload_head.get('teaser_image')
+
+        if not image:
+            return
+
+        E = lxml.objectify.E
+
+        image = E.image_group(**{'base-id': image})
+        fill_color = self._tms_payload_head.get('teaser_image_fill_color')
+        if fill_color:
+            image.set('fill_color', fill_color)
+        self.xml.append(image)
 
 
 @grok.adapter(dict)
