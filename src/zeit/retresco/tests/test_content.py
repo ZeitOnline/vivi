@@ -89,6 +89,23 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(image, images.image)
         self.assertEqual(None, images.fill_color)
 
+    def test_IImages_work_with_TMSAuthor(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['shake'] = author
+        author = self.repository['shake']
+
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        zeit.content.image.interfaces.IImages(author).image = image
+
+        data = zeit.retresco.interfaces.ITMSRepresentation(author)()
+        tms_author = zeit.retresco.interfaces.ITMSContent(data)
+        images = zeit.content.image.interfaces.IImages(tms_author)
+        self.assertEqual(image, images.image)
+        self.assertEqual(None, images.fill_color)
+
     def test_quotes_dot_for_elasticsearch_field_names(self):
         data = {
             'doc_type': 'gallery',
