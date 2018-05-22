@@ -135,6 +135,7 @@ class Message(zeit.push.message.Message):
             'zon_link': self.url,
             'app_link': self.app_link,
             'image': self.image_url,
+            'author_uuids': self.author_uuids
         })
         return result
 
@@ -156,6 +157,17 @@ class Message(zeit.push.message.Message):
     @property
     def text(self):
         return self.config.get('override_text', self.context.title)
+
+    @property
+    def author_uuids(self):
+        author_uuids = []
+        for author_reference in self.context.authorships:
+            uuid = zeit.cms.content.interfaces.IUUID(author_reference.target,
+                                                     None)
+            # Use shortened id. Friedbert adds them to UA
+            if uuid.shortened:
+                author_uuids.append(uuid.shortened)
+        return author_uuids
 
     @property
     def image_url(self):

@@ -26,7 +26,7 @@ setup(
         'tweepy',
         'urbanairship >= 1.0',
         'zc.sourcefactory',
-        'zeit.cms >= 3.0.dev0',
+        'zeit.cms >= 3.11.2.dev0',
         'zeit.content.article',
         'zeit.content.image',
         'zeit.content.text>=2.2.0.dev0',
