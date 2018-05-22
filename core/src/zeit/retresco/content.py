@@ -72,6 +72,12 @@ class Content(object):
 
         We allow ITMSContent factories to override this default behaviour.
         """
+        image = self._get_teaser_image_xml()
+        head = self.xml.find('head')
+        if head is not None and image is not None:
+            head.append(image)
+
+    def _get_teaser_image_xml(self):
         image = self._tms_payload_head.get('teaser_image')
         if not image:
             return
@@ -83,26 +89,16 @@ class Content(object):
         fill_color = self._tms_payload_head.get('teaser_image_fill_color')
         if fill_color:
             image.set('fill_color', fill_color)
-
-        head = self.xml.find('head')
-        if head is not None:
-            head.append(image)
+        return image
 
 
 class TMSAuthor(Content, zeit.content.author.author.Author):
 
     def _build_xml_image(self):
-        image = self._tms_payload_head.get('teaser_image')
-
-        if not image:
+        image = self._get_teaser_image_xml()
+        if image is None:
             return
-
-        E = lxml.objectify.E
-
-        image = E.image_group(**{'base-id': image})
-        fill_color = self._tms_payload_head.get('teaser_image_fill_color')
-        if fill_color:
-            image.set('fill_color', fill_color)
+        image.tag = 'image_group'
         self.xml.append(image)
 
 
