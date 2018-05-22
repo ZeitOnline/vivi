@@ -1,12 +1,13 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 
+
 class TestBannerContentDisplayCheckbox(
-    zeit.cms.testing.ZeitCmsBrowserTestCase):
+        zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     login_as = 'zmgr:mgrpw'
+
     def test_banner_content_has_checkbox(self):
         self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent')
@@ -24,7 +25,7 @@ class TestBannerContentDisplay(zeit.cms.testing.ZeitCmsTestCase):
             self):
         self.assertFalse(
             zeit.cms.content.interfaces.ICommonMetadata(
-            self.content).banner_content)
+                self.content).banner_content)
 
     def test_banner_contents_correct_stored_value(
             self):
@@ -32,9 +33,9 @@ class TestBannerContentDisplay(zeit.cms.testing.ZeitCmsTestCase):
             self.content).banner_content = False
         self.assertFalse(
             zeit.cms.content.interfaces.ICommonMetadata(
-            self.content).banner_content)
+                self.content).banner_content)
         zeit.cms.content.interfaces.ICommonMetadata(
             self.content).banner_content = True
         self.assertTrue(
             zeit.cms.content.interfaces.ICommonMetadata(
-            self.content).banner_content)
+                self.content).banner_content)

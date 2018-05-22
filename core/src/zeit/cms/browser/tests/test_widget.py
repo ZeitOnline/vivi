@@ -745,8 +745,8 @@ class TestObjectSequenceDisplayWidget(unittest.TestCase):
 
 
 class TestObjectSequenceDisplayWidgetIntegration(
-    zeit.cms.testing.ZeitCmsTestCase,
-    zeit.cms.testing.BrowserAssertions):
+        zeit.cms.testing.ZeitCmsTestCase,
+        zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
         import zope.security.management
@@ -805,8 +805,8 @@ class TestObjectSequenceDisplayWidgetIntegration(
 
 
 class TestDropObjectDisplayWidgetIntegration(
-    zeit.cms.testing.ZeitCmsTestCase,
-    zeit.cms.testing.BrowserAssertions):
+        zeit.cms.testing.ZeitCmsTestCase,
+        zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
         import zope.security.management
