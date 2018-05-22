@@ -89,7 +89,7 @@ class Content(object):
             head.append(image)
 
 
-class TMSAuthor(Content, Author):
+class TMSAuthor(Content, zeit.content.author.author.Author):
 
     def _build_xml_image(self):
         image = self._tms_payload_head.get('teaser_image')
