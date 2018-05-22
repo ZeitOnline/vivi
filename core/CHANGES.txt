@@ -4,7 +4,7 @@ zeit.cms changes
 3.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4699: Add shortened UUID
 
 
 3.11.1 (2018-05-14)
