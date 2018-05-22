@@ -304,7 +304,12 @@ class TMSContentQuery(ContentQuery):
         except:
             log.warning('Error during TMS query %r for %s',
                         topicpage, self.context.uniqueId, exc_info=True)
-        return result
+
+        if not self.context.hide_dupes:
+            return result
+        # Since TMS does not allow extending a topicpage request with arbitrary
+        # ES query parameters, we have to filter duplicates in-memory.
+        return [x for x in result if x not in self.existing_teasers]
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(

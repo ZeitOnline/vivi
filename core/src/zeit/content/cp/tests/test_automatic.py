@@ -9,6 +9,7 @@ import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
+import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.solr.interfaces
 import zope.component
@@ -506,6 +507,46 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             'http://xml.zeit.de/t3',
             list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+
+    def test_tms_content_query_filters_duplicates(self):
+        self.area.automatic_type = 'topicpage'
+        self.area.referenced_topicpage = 'mytopic'
+        tms = mock.Mock()
+        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS)
+        tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result([
+            {'url': '/t1', 'doc_type': 'testcontenttype'},
+            {'url': '/t2', 'doc_type': 'testcontenttype'},
+        ])
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        self.assertEqual(
+            'http://xml.zeit.de/t2',
+            list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+
+    def test_tms_content_query_filters_duplicates_tmscontent(self):
+        # zeit.web uses a different `_resolve` than vivi, so make sure this
+        # still works
+        self.area.automatic_type = 'topicpage'
+        self.area.referenced_topicpage = 'mytopic'
+        tms = mock.Mock()
+        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS)
+        tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result([
+            {'url': '/t1', 'doc_type': 'testcontenttype'},
+            {'url': '/t2', 'doc_type': 'testcontenttype'},
+        ])
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+
+        def resolve_tmscontent(self, doc):
+            return zeit.retresco.content.from_tms_representation(doc)
+
+        with mock.patch('zeit.content.cp.automatic.TMSContentQuery._resolve',
+                        new=resolve_tmscontent):
+            self.assertEqual(
+                'http://xml.zeit.de/t2',
+                list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
     def test_solr_content_query_filters_duplicates(self):
         self.area.automatic_type = 'query'
