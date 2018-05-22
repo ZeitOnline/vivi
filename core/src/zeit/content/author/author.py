@@ -32,6 +32,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'biography',
         'display_name',
         'email',
+        'enable_followpush',
         'entered_display_name',
         'external',
         'facebook',
