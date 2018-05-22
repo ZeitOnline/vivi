@@ -55,7 +55,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = [
             'elasticsearch-query']
-        b.getControl('Elasticsearch raw query').value = '{"match_all": {}}'
+        b.getControl('Elasticsearch raw query').value = (
+            '{"query": {"match_all": {}}}')
         b.getControl('Sort order', index=2).value = 'date:desc'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)

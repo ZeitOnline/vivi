@@ -197,6 +197,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # Ensure a consistent indentation for raw query
         if value is not None:
             value = json.dumps(json.loads(value), indent=2, ensure_ascii=False)
+            if 'query' not in value:
+                raise ValueError('Top-level key "query" is required.')
         self._elasticsearch_raw_query = value
 
     @property

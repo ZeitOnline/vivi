@@ -225,8 +225,9 @@ class ElasticsearchContentQuery(ContentQuery):
         if self.context.is_complete_query:
             query = self.query
         else:
-            query = {'query': {'bool': {'must': [
-                self.query] + self._additional_must_clauses}}}
+            query = {'query': {'bool': {
+                'must': [self.query.get('query', {})] +
+                self._additional_must_clauses}}}
         if self.hide_dupes_query:
             if 'filter' not in query:
                 query['filter'] = self.hide_dupes_query
@@ -290,7 +291,8 @@ class ChannelContentQuery(ElasticsearchContentQuery):
             if subchannel:
                 value += ' ' + subchannel
             channels.append(value)
-        return {'terms': {'payload.document.channels.hierarchy': channels}}
+        return {'query': {'terms': {
+            'payload.document.channels.hierarchy': channels}}}
 
 
 class TMSContentQuery(ContentQuery):

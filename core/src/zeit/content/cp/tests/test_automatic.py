@@ -258,7 +258,7 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
-        lead.elasticsearch_raw_query = '{}'
+        lead.elasticsearch_raw_query = '{"query": {}}'
         lead.automatic_type = 'elasticsearch-query'
         self.elasticsearch.search.side_effect = RuntimeError('provoked')
         auto = IRenderedArea(lead)
@@ -269,7 +269,8 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
-        lead.elasticsearch_raw_query = u'{"match": {"title": "üüü"}}'
+        lead.elasticsearch_raw_query = (
+            u'{"query": {"match": {"title": "üüü"}}}')
         lead.automatic_type = 'elasticsearch-query'
         result = zeit.cms.interfaces.Result(
             [{'url': '/cp'},
@@ -577,7 +578,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
-        self.area.elasticsearch_raw_query = u'{"match": {"foo": "äää"}}'
+        self.area.elasticsearch_raw_query = (
+            u'{"query": {"match": {"foo": "äää"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
