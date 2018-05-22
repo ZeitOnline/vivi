@@ -230,8 +230,8 @@ class ElasticsearchContentQuery(ContentQuery):
                     'must_not': self.hide_dupes_clause}}}
         else:
             query = {'query': {'bool': {
-                'must': ([self.query.get('query', {})] +
-                         self._additional_clauses)}}}
+                'filter': ([self.query.get('query', {})] +
+                           self._additional_clauses)}}}
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'] = self.hide_dupes_clause
         return query
