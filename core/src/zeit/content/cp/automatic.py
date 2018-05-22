@@ -224,19 +224,19 @@ class ElasticsearchContentQuery(ContentQuery):
     def _build_query(self):
         if self.context.is_complete_query:
             query = self.query
+            if self.hide_dupes_clause:
+                query = {'query': {'bool': {
+                    'must': query,
+                    'must_not': self.hide_dupes_clause}}}
         else:
             query = {'query': {'bool': {
-                'must': [self.query.get('query', {})] +
-                self._additional_must_clauses}}}
-        if self.hide_dupes_query:
-            if 'filter' not in query:
-                query['filter'] = self.hide_dupes_query
-            else:
-                query['filter'] = {'bool': {'must': [
-                    query['filter'], self.hide_dupes_query]}}
+                'must': ([self.query.get('query', {})] +
+                         self._additional_clauses)}}}
+            if self.hide_dupes_clause:
+                query['query']['bool']['must_not'] = self.hide_dupes_clause
         return query
 
-    _additional_must_clauses = [
+    _additional_clauses = [
         {'term': {'payload.workflow.published': True}}
     ]
 
@@ -245,23 +245,15 @@ class ElasticsearchContentQuery(ContentQuery):
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
-    def hide_dupes_query(self):
+    def hide_dupes_clause(self):
         """Perform de-duplication of results.
 
         Create an id query for teasers that already exist on the CP.
         """
         if not self.context.hide_dupes or not self.existing_teasers:
             return
-        return {
-            'bool': {
-                'must_not': {
-                    'ids': {
-                        'values': [zeit.cms.content.interfaces.IUUID(x).id
-                                   for x in self.existing_teasers]
-                    }
-                }
-            }
-        }
+        return {'ids': {'values': [zeit.cms.content.interfaces.IUUID(x).id
+                                   for x in self.existing_teasers]}}
 
 
 class ChannelContentQuery(ElasticsearchContentQuery):

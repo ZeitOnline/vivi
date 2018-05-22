@@ -319,6 +319,24 @@ class AutomaticAreaElasticsearchTest(
             json.loads(lead.elasticsearch_raw_query),
             self.elasticsearch.search.call_args[0][0])
 
+    def test_adds_hide_dupes_clause_to_whole_query_body(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.elasticsearch_raw_query = (
+            '{"query": {"match": {"title": "foo"}}}')
+        lead.is_complete_query = True
+        lead.automatic_type = 'elasticsearch-query'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        auto = IRenderedArea(lead)
+        auto._content_query.hide_dupes_clause = {'ids': {'values': ['id1']}}
+        auto.values()
+        self.assertEqual(
+            {"query": {"bool": {
+                "must": {"query": {"match": {"title": "foo"}}},
+                "must_not": {"ids": {"values": ["id1"]}}}}},
+            self.elasticsearch.search.call_args[0][0])
+
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
@@ -593,11 +611,11 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).id
 
         self.assertEqual(
-            {'filter': {
-                'bool': {'must_not': {'ids': {'values': [id1, id2]}}}},
-             'query': {'bool': {'must': [
-                 {u'match': {u'foo': u'äää'}},
-                 {'term': {'payload.workflow.published': True}}]}}},
+            {'query': {'bool': {
+                'must': [
+                    {u'match': {u'foo': u'äää'}},
+                    {'term': {'payload.workflow.published': True}}],
+                'must_not': {'ids': {'values': [id1, id2]}}}}},
             elasticsearch.search.call_args[0][0])
 
         # Do not filter, if switched off.
