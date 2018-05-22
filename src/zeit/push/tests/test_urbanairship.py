@@ -8,6 +8,7 @@ import os
 import pytz
 import unittest
 import urbanairship.push.core
+import zeit.cms.checkout.helper
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
@@ -117,12 +118,19 @@ class MessageTest(zeit.push.testing.TestCase,
 
     name = 'mobile'
 
-    def create_content(self, **kw):
+    def create_content(self, with_author=False, **kw):
         """Create content with values given in arguments."""
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         content = ExampleContentType()
         for key, value in kw.items():
             setattr(content, key, value)
+        if with_author:
+            shakespeare = zeit.content.author.author.Author()
+            shakespeare.firstname = 'William'
+            shakespeare.lastname = 'Shakespeare'
+            self.repository['shakespeare'] = shakespeare
+            content.authorships = [
+                content.authorships.create(self.repository['shakespeare'])]
         self.repository['content'] = content
         return self.repository['content']
 
@@ -130,6 +138,12 @@ class MessageTest(zeit.push.testing.TestCase,
         push_notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=service_name)
         return push_notifier.calls
+
+    def test_message_has_authors_uuids(self):
+        content = self.create_content(with_author=True)
+        message = zeit.push.urbanairship.Message(
+            content)
+        self.assertEqual(1, len(message.author_uuids))
 
     def test_sends_push_via_urbanairship(self):
         message = zope.component.getAdapter(
@@ -165,6 +179,8 @@ class MessageTest(zeit.push.testing.TestCase,
         message.send()
         self.assertEqual('yay', message.text)
         self.assertEqual('yay', self.get_calls('urbanairship')[0][0])
+
+
 
     def test_changes_to_template_are_applied_immediately(self):
         message = zeit.push.urbanairship.Message(
