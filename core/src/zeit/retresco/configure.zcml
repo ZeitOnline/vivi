@@ -9,6 +9,12 @@
     <utility factory=".connection.from_product_config" />
     <utility factory=".search.from_product_config" />
 
+    <utility
+      component=".content.TMSAuthor"
+      provides=".interfaces.ITMSContent"
+      name="author"
+      />
+
     <class class=".tagger.Tagger">
       <require
         interface="zeit.cms.tagging.interfaces.ITagger"
