@@ -93,7 +93,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
-        author.uniqueId = 'http://xml.zeit.de/william-shakespeare'
+        self.repository['shake'] = author
+        author = self.repository['shake']
 
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
