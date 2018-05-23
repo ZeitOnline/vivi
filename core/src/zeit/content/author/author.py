@@ -33,6 +33,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'display_name',
         'email',
         'enable_followpush',
+        'enable_feedback',
         'entered_display_name',
         'external',
         'facebook',
