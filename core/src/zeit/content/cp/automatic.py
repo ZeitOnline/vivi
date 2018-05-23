@@ -304,9 +304,9 @@ class ElasticsearchContentQuery(ContentQuery):
                                    for x in self.existing_teasers]}}
 
 
-class ChannelContentQuery(ElasticsearchContentQuery):
+class CustomContentQuery(ElasticsearchContentQuery):
 
-    grok.name('channel')
+    grok.name('channel')  # XXX rename?
 
     SOLR_TO_ES_SORT = {
         'date-last-published-semantic desc': (
@@ -327,7 +327,7 @@ class ChannelContentQuery(ElasticsearchContentQuery):
 
     def _make_channel_query(self):
         channels = []
-        for channel, subchannel in self.context.query:
+        for typ, channel, subchannel in self.context.query:
             value = channel
             if subchannel:
                 value += ' ' + subchannel

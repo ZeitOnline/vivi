@@ -140,6 +140,42 @@ class AreaBrowserTest(
         self.browser.open(
             'feature/@@landing-zone-drop-module?block_type=area&order=top')
 
+    def get_edit_area_link(self, index=0):
+        self.browser.open(self.content_url)
+        document = lxml.etree.XML(self.browser.contents)
+        return lxml.cssselect.CSSSelector(
+            '.type-{} .edit-bar > .edit-link'.format(self.name)
+        )(document)[index].get('href')
+
+    def test_edit_form_stores_custom_query(self):
+        b = self.browser
+        b.handleErrors = False
+        b.open(self.get_edit_area_link())
+        edit_url = b.url
+        b.getControl(name='form.automatic_type').displayValue = [
+            'automatic-area-type-query']
+        b.getControl('Amount of teasers').value = '1'
+        b.getControl('Add Custom Query').click()
+        b.getControl('Custom Query Type').displayValue = ['query-type-serie']
+        b.getControl('Add Custom Query').click()
+        b.getControl('Serie').displayValue = ['Autotest']
+        b.getControl('Channel').displayValue = ['International']
+        b.getControl('Subchannel').displayValue = ['Meinung']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        b.open(edit_url)
+        self.assertEqual(
+            ['query-type-serie'],
+            b.getControl('Custom Query Type', index=0).displayValue)
+        self.assertEqual(
+            ['query-type-channel'],
+            b.getControl('Custom Query Type', index=1).displayValue)
+        self.assertEqual(['Autotest'], b.getControl('Serie').displayValue)
+        self.assertEqual(
+            ['International'], b.getControl('Channel').displayValue)
+        self.assertEqual(['Meinung'], b.getControl('Subchannel').displayValue)
+
 
 class TooltipFixture(object):
 

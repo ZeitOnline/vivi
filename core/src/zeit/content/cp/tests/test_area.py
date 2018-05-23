@@ -377,3 +377,18 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_read_more_url_is_generated_from_cp(self):
         self.assertEqual('http://www.zeit.de/other', self.area.read_more_url)
+
+
+class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(CustomQueryTest, self).setUp()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+
+    def test_serializes_via_dav_converter(self):
+        area = self.repository['cp']['lead']
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
+            None)
+        autotest = source.find('Autotest')
+        area.query = (('serie', autotest),)
+        self.assertEqual((('serie', autotest),), area.query)

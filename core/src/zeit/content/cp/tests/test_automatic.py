@@ -151,13 +151,13 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         self.assertEqual((), lead.query)
         lead.query = (
-            ('International', 'Nahost'),
-            ('Wissen', None))
+            ('channels', 'International', 'Nahost'),
+            ('channels', 'Wissen', None))
         self.assertEllipsis(
             """<...
             <query>
-              <condition...type="Channel"...>International Nahost</condition>
-              <condition...type="Channel"...>Wissen</condition>
+              <condition...type="channels"...>International Nahost</condition>
+              <condition...type="channels"...>Wissen</condition>
             </query>...""", lxml.etree.tostring(lead.xml, pretty_print=True))
 
     def test_which_query_data_is_used_depends_on_automatic_type(self):
@@ -295,8 +295,8 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (
-            ('International', 'Nahost'),
-            ('Wissen', None))
+            ('channels', 'International', 'Nahost'),
+            ('channels', 'Wissen', None))
         lead.automatic = True
         lead.automatic_type = 'channel'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -342,7 +342,7 @@ class AutomaticAreaElasticsearchTest(
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('International', 'Nahost'),)
+        lead.query = (('channels', 'International', 'Nahost'),)
         lead.automatic = True
         lead.automatic_type = 'channel'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -354,7 +354,7 @@ class AutomaticAreaElasticsearchTest(
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('International', 'Nahost'),)
+        lead.query = (('channels', 'International', 'Nahost'),)
         lead.query_order = 'order'
         lead.automatic = True
         lead.automatic_type = 'channel'

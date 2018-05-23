@@ -1,6 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import pysolr
+import zeit.cms.content.browser.widget
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.view
@@ -66,6 +68,71 @@ class SolrQueryWidget(zope.formlib.widgets.TextAreaWidget):
             raise zope.formlib.interfaces.ConversionError(
                 _('Invalid solr query'), value)
         return value
+
+
+class DynamicCombinationWidget(
+        zeit.cms.content.browser.widget.CombinationWidget):
+    """Determines which further subwidgets to render according to the value of
+    the first subwidget.
+    """
+
+    @cachedproperty
+    def widgets(self):
+        type_field = self.context.type_field.bind(self.context.context)
+        selector = type_field.default
+        result = [self._create_widget(type_field)]
+        if self.hasInput():
+            try:
+                selector = result[0].getInputValue()
+            except zope.formlib.interfaces.WidgetInputError:
+                pass
+        elif self._renderedValueSet():
+            selector = self._data[0]
+        for field in self.context.generate_fields(selector):
+            result.append(self._create_widget(field))
+        return result
+
+    def _create_widget(self, field):
+        widget = zope.component.getMultiAdapter(
+            (field, self.request,), self.widget_interface)
+        widget.setPrefix(self.name + ".")
+        return widget
+
+    def setRenderedValue(self, value):
+        super(DynamicCombinationWidget, self).setRenderedValue(value)
+        # SequenceWidget calls setPrefix first and setRenderedValue later, so
+        # when self.widgets is called the first time, self._data has not been
+        # set yet. Thus we have to recreate the widgets, now that we know the
+        # correct type. Also, SequenceWidget calls setRenderedValue(None) as
+        # a default (which is kind of invalid), so we have to ignore that.
+        if value is not None:
+            self.__dict__.pop('widgets', None)
+
+    def render(self, value):
+        """copy&paste from superclass to remove check that value matches
+        the configured subfields -- as our subfields are dynamic.
+        """
+        field = self.context
+        missing_value = field.missing_value
+        if value is not missing_value:
+            try:
+                len_value = len(value)
+            except (TypeError, AttributeError):
+                value = missing_value
+            # else:
+            #     if len_value != len(field.fields):
+            #         value = missing_value
+        if value is not missing_value:
+            hasInput = self.hasInput()
+            for w, v in map(None, self.widgets, value):
+                if not hasInput or v != w.context.missing_value:
+                    w.setRenderedValue(v)
+        for w in self.widgets:
+            if zope.schema.interfaces.IBool.providedBy(w.context):
+                w.invert_label = True
+            else:
+                w.invert_label = False
+        return self.template()
 
 
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):

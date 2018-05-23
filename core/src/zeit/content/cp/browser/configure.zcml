@@ -264,4 +264,13 @@
     permission="zeit.EditContent"
     />
 
+  <adapter
+    for="
+    zeit.content.cp.field.DynamicCombination
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory=".area.DynamicCombinationWidget"
+    permission="zope.Public"
+    />
+
 </configure>

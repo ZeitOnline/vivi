@@ -30,6 +30,7 @@ setup(
         'requests',
         'setuptools',
         'xml-compare',
+        'zc.form',
         'zc.sourcefactory',
         'zeit.cms>=3.11.0.dev0',
         'zeit.content.article>=3.26.dev0',

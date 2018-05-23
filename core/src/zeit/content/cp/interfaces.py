@@ -15,6 +15,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.content.cp.field
 import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
@@ -269,6 +270,14 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values.get(value, value)
 
 
+class QueryTypeSource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        ('channels', _('query-type-channel')),
+        ('serie', _('query-type-serie')),
+    ))
+
+
 class QuerySortOrderSource(SimpleDictSource):
 
     values = collections.OrderedDict((
@@ -431,17 +440,12 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Hide duplicate teasers'),
         default=True)
 
-    # XXX Rename more specifically (TMS-227)
     query = zope.schema.Tuple(
-        title=_('Channel Query'),
-        value_type=zc.form.field.Combination(
-            (zope.schema.Choice(
-                title=_('Channel'),
-                source=zeit.cms.content.sources.ChannelSource()),
-             zope.schema.Choice(
-                 title=_('Subchannel'),
-                 source=zeit.cms.content.sources.SubChannelSource(),
-                 required=False))
+        title=_('Custom Query'),
+        value_type=zeit.content.cp.field.DynamicCombination(
+            zope.schema.Choice(
+                title=_('Custom Query Type'),
+                source=QueryTypeSource(), default='channels')
         ),
         default=(),
         required=False)
