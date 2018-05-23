@@ -94,6 +94,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
 
+    channels = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['channels'], DOCUMENT_SCHEMA_NS, 'channels',
+        use_default=True)
+
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
         'http://namespaces.zeit.de/CMS/workflow', 'product-id')
@@ -124,10 +128,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def product_text(self):
         return self._product_text
 
-    _channels = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Tuple(value_type=zope.schema.TextLine()),
-        DOCUMENT_SCHEMA_NS, 'channels')
-
     @property
     def serie(self):
         source = ICommonMetadata['serie'].source(self)
@@ -140,19 +140,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
                 self._serie = value.serienname
         else:
             self._serie = None
-
-    @property
-    def channels(self):
-        if self._channels:
-            return tuple(tuple(x.split(' ') if ' ' in x else (x, None))
-                         for x in self._channels)
-        else:
-            return ()
-
-    @channels.setter
-    def channels(self, value):
-        self._channels = tuple(' '.join([x for x in channel if x])
-                               for channel in value)
 
     storystreams = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,

@@ -4,6 +4,8 @@ zeit.cms changes
 3.11.2 (unreleased)
 -------------------
 
+- TMS-227: Change channels serialization to DAVPropertyConverter for reusability
+
 - MAINT: Move autocomplete source query view here from zeit.find,
   generalize using ISourceQueryURL lookup mechanism
 

@@ -1,12 +1,12 @@
 from zeit.cms.i18n import MessageFactory as _
 import zc.form.field
+import zc.form.interfaces
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component.interfaces
-import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence
 import zope.interface.interfaces
@@ -40,6 +40,11 @@ authorSource = AuthorSource()
 
 
 class IMobileAlternative(zope.schema.interfaces.IURI):
+    """Marker interface so we can register a specialized widget
+    for this field."""
+
+
+class IChannelField(zc.form.interfaces.ICombinationField):
     """Marker interface so we can register a specialized widget
     for this field."""
 
@@ -95,6 +100,7 @@ class ICommonMetadata(zope.interface.Interface):
         ),
         default=(),
         required=False)
+    zope.interface.alsoProvides(channels.value_type, IChannelField)
 
     lead_candidate = zope.schema.Bool(
         title=_('Lead candidate'),
