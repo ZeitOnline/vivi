@@ -77,6 +77,9 @@ class IAuthor(zope.interface.Interface):
     enable_followpush = zope.schema.Bool(
         title=_(u'Enable followpush?'))
 
+    enable_feedback = zope.schema.Bool(
+        title=_(u'Enable feedback?'), default=True)
+
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
 

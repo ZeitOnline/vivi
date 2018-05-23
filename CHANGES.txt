@@ -6,6 +6,8 @@ zeit.content.author changes
 
 - ZON-4699: Add enable_followpush field
 
+- ZON-4258: Add enable_feedback field
+
 
 2.8.2 (2018-01-29)
 ------------------
