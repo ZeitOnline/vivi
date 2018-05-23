@@ -57,6 +57,11 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     community_profile = zeit.cms.content.property.ObjectPathProperty(
         '.communityprofile')
 
+    enable_feedback = zeit.cms.content.property.ObjectPathProperty(
+        '.enable_feedback',
+        IAuthor['enable_feedback'],
+        use_default=True)
+
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
