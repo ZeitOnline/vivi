@@ -17,6 +17,7 @@ import zope.app.security.interfaces
 import zope.component
 import zope.event
 import zope.proxy
+import zope.publisher.browser
 import zope.schema.interfaces
 import zope.security.adapter
 import zope.security.proxy

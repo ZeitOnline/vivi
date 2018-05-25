@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-4699: Add shortened UUID
 
+- FIX: Allow to delete object path properties by setting them to `None`.
+
 
 3.11.1 (2018-05-14)
 -------------------
