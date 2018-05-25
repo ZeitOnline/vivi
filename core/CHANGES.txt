@@ -7,6 +7,8 @@ zeit.retresco changes
 
 - TMS-224: Override image building for TMS authors
 
+- TMS-227: Extract ``davproperty_to_es`` helper function
+
 
 1.22.1 (2018-05-17)
 -------------------
