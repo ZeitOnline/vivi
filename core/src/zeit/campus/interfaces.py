@@ -5,6 +5,7 @@ import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
+import zeit.content.cp.source
 import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
@@ -62,7 +63,7 @@ class ITopic(zope.interface.Interface):
     page = zope.schema.Choice(
         title=_("Topic page"),
         required=False,
-        source=zeit.content.cp.interfaces.centerPageSource)
+        source=zeit.content.cp.source.centerPageSource)
 
     label = zope.schema.TextLine(
         title=_("Topic label"),

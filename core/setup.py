@@ -23,7 +23,7 @@ setup(
         'setuptools',
         'zeit.cms >= 3.0.dev0',
         'zeit.content.article>=3.25.0.dev0',
-        'zeit.content.cp',
+        'zeit.content.cp>=3.24.0.dev0',
         'zeit.content.gallery',
         'zeit.content.infobox>=1.25.0.dev0',
         'zeit.content.link',
