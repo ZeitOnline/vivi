@@ -22,6 +22,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'page',
         'ressort',
         'sub_ressort',
+        'serie',
         'vg_wort_id',
         'volume',
         'year',
@@ -105,9 +106,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zope.schema.TextLine(),
         'http://namespaces.zeit.de/CMS/workflow', 'product-name')
 
-    _serie = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(), DOCUMENT_SCHEMA_NS, 'serie')
-
     @property
     def product(self):
         source = ICommonMetadata['product'].source(self)
@@ -127,19 +125,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def product_text(self):
         return self._product_text
-
-    @property
-    def serie(self):
-        source = ICommonMetadata['serie'].source(self)
-        return source.find(self._serie)
-
-    @serie.setter
-    def serie(self, value):
-        if value is not None:
-            if self._serie != value.serienname:
-                self._serie = value.serienname
-        else:
-            self._serie = None
 
     storystreams = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,
