@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 import lxml.builder
 import lxml.objectify
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -22,9 +23,8 @@ class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
 
     name = zeit.cms.content.property.ObjectPathProperty('.block.title')
     text = zeit.cms.content.property.Structure('.block.text')
-    image = zeit.cms.content.property.SingleResource(
-        '.block.image', xml_reference_name='image',
-        attributes=('base_id', 'src'))
+    image = zeit.cms.content.reference.SingleResource(
+        '.block.image', xml_reference_name='image')
 
 
 class PortraiboxType(zeit.cms.type.XMLContentTypeDeclaration):
