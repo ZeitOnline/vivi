@@ -434,7 +434,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             if typ == 'Channel':  # BBB
                 typ = 'channels'
             value = self._converter(typ).fromProperty(unicode(condition))
-            field = zeit.cms.content.interfaces.ICommonMetadata[typ]
+            field = zeit.content.cp.interfaces.IArea[
+                'query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):
                 value = value[0]
             # CombinationWidget needs items to be flattened
@@ -461,7 +462,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 arg = item[1:]
             else:
                 arg = item[1]
-            field = zeit.cms.content.interfaces.ICommonMetadata[typ]
+            field = zeit.content.cp.interfaces.IArea[
+                'query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):
                 arg = field._type((arg,))  # tuple(already_tuple) is a no-op
             query.append(E.condition(
@@ -469,7 +471,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self.xml.append(query)
 
     def _converter(self, selector):
-        field = zeit.cms.content.interfaces.ICommonMetadata[selector]
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[selector]
         field = field.bind(zeit.content.cp.interfaces.ICenterPage(self))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
         return zope.component.getMultiAdapter(

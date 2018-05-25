@@ -1,21 +1,19 @@
 import zc.form.field
-import zeit.cms.content.interfaces
 import zope.schema.interfaces
 
 
 class DynamicCombination(zc.form.field.Combination):
 
-    def __init__(self, type_field, **kw):
+    def __init__(self, type_field, type_interface, **kw):
         self.type_field = type_field
         self.type_field.__name__ = "combination_00"
         self.fields = (type_field,)
+        self.type_interface = type_interface
         super(zc.form.field.Combination, self).__init__(**kw)
 
     def generate_fields(self, selector):
         fields = []
-        # XXX generalize, but how? Is single interface source helpful, or
-        # would we need a wholesale mapping function?
-        field = zeit.cms.content.interfaces.ICommonMetadata[selector]
+        field = self.type_interface[selector]
         if zope.schema.interfaces.ICollection.providedBy(field):
             fields.extend(field.value_type.fields)
         else:

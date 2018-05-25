@@ -15,6 +15,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.content.article.interfaces
 import zeit.content.cp.field
 import zeit.content.cp.layout
 import zeit.content.cp.source
@@ -445,7 +446,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         value_type=zeit.content.cp.field.DynamicCombination(
             zope.schema.Choice(
                 title=_('Custom Query Type'),
-                source=QueryTypeSource(), default='channels')
+                source=QueryTypeSource(), default='channels'),
+            zeit.content.article.interfaces.IArticle,
         ),
         default=(),
         required=False)
