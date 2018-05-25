@@ -156,6 +156,13 @@ def unquote_es_field_name(name):
     return name.replace('__DOT__', '.')
 
 
+def davproperty_to_es(ns, name):
+    ns = quote_es_field_name(
+        ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1))
+    name = quote_es_field_name(name)
+    return ns, name
+
+
 # DAVPropertyConverter below here ------------------------------
 
 

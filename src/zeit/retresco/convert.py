@@ -142,9 +142,7 @@ class CMSContent(Converter):
                 # DAVProperty.__set__ has None -> DeleteProperty.
                 # Also, elasticsearch rejects '' in date fields.
                 continue
-            ns = ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
-            ns = zeit.retresco.content.quote_es_field_name(ns)
-            name = zeit.retresco.content.quote_es_field_name(name)
+            ns, name = zeit.retresco.content.davproperty_to_es(ns, name)
             result.setdefault(ns, {})[name] = value
         return result
 
