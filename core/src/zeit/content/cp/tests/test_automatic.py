@@ -294,6 +294,24 @@ class AutomaticAreaElasticsearchTest(
     def test_builds_query_from_conditions(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
+            None)
+        autotest = source.find('Autotest')
+        lead.query = (('serie', autotest),)
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'filter': [
+            {'bool': {'should': [
+                {'term': {'payload.document.serie': 'Autotest'}},
+            ]}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_builds_query_with_elasticsearch_fieldname_exceptions(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
         lead.query = (
             ('channels', 'International', 'Nahost'),
             ('channels', 'Wissen', None))
@@ -302,8 +320,12 @@ class AutomaticAreaElasticsearchTest(
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'terms': {'payload.document.channels.hierarchy': [
-                'International Nahost', 'Wissen']}},
+            {'bool': {'should': [
+                {'term': {'payload.document.channels.hierarchy':
+                          'International Nahost'}},
+                {'term': {'payload.document.channels.hierarchy':
+                          'Wissen'}},
+            ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 

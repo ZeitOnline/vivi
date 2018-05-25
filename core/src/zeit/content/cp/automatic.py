@@ -10,6 +10,8 @@ import zeit.cms.content.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.find.search
+import zeit.retresco.content
+import zeit.retresco.interfaces
 import zeit.solr.interfaces
 import zeit.solr.query
 import zope.component
@@ -317,6 +319,10 @@ class CustomContentQuery(ElasticsearchContentQuery):
             'payload.document.date_first_released:desc'),
     }
 
+    ES_FIELD_NAMES = {
+        'channels': 'payload.document.channels.hierarchy',
+    }
+
     def __init__(self, context):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
@@ -326,14 +332,20 @@ class CustomContentQuery(ElasticsearchContentQuery):
             self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _make_channel_query(self):
-        channels = []
-        for typ, channel, subchannel in self.context.query:
-            value = channel
-            if subchannel:
-                value += ' ' + subchannel
-            channels.append(value)
-        return {'query': {'terms': {
-            'payload.document.channels.hierarchy': channels}}}
+        conditions = []
+        for item in self.context.query:
+            typ, value = self.context.context._serialize_query_item(item)
+            fieldname = self.ES_FIELD_NAMES.get(typ)
+            if not fieldname:
+                # XXX generalize IArticle
+                prop = getattr(zeit.content.article.article.Article, typ)
+                if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+                    raise ValueError('Cannot determine field name for %s', typ)
+                fieldname = 'payload.%s.%s' % (
+                    zeit.retresco.content.davproperty_to_es(
+                        prop.namespace, prop.name))
+            conditions.append({'term': {fieldname: value}})
+        return {'query': {'bool': {'should': conditions}}}
 
 
 class TMSContentQuery(ContentQuery):

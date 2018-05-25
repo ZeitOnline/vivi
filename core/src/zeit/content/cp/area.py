@@ -457,18 +457,24 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         E = lxml.objectify.E
         query = E.query()
         for item in value:
-            typ = item[0]
-            if len(item) > 2:
-                arg = item[1:]
-            else:
-                arg = item[1]
-            field = zeit.content.cp.interfaces.IArea[
-                'query'].value_type.type_interface[typ]
-            if zope.schema.interfaces.ICollection.providedBy(field):
-                arg = field._type((arg,))  # tuple(already_tuple) is a no-op
-            query.append(E.condition(
-                self._converter(typ).toProperty(arg), type=typ))
+            typ, val = self._serialize_query_item(item)
+            query.append(E.condition(val, type=typ))
         self.xml.append(query)
+
+    def _serialize_query_item(self, item):
+        typ = item[0]
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[typ]
+
+        if len(item) > 2:
+            value = item[1:]
+        else:
+            value = item[1]
+        if zope.schema.interfaces.ICollection.providedBy(field):
+            value = field._type((value,))  # tuple(already_tuple) is a no-op
+        value = self._converter(typ).toProperty(value)
+
+        return typ, value
 
     def _converter(self, selector):
         field = zeit.content.cp.interfaces.IArea[
