@@ -1,25 +1,9 @@
-from zeit.cms.testing import copy_inherited_functions
 import gocept.testing.assertion
 import mock
 import unittest
-import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
-
-
-class CPSourceTest(
-        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
-
-    source = zeit.content.cp.interfaces.centerPageSource
-    expected_types = ['centerpage-2009']
-
-    copy_inherited_functions(
-        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        locals())
 
 
 class AreaValidationTest(

@@ -1,13 +1,11 @@
 from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import fractions
 import json
 import logging
 import urllib2
 import urlparse
-import zc.form.field
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -23,7 +21,6 @@ import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
-import zope.app.appsetup.appsetup
 import zope.i18n
 import zope.interface
 
@@ -157,15 +154,6 @@ class ISearchpage(ICP2015):
 
     This interface is applied manually.
     """
-
-
-class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    name = 'zeit.content.cp'
-    check_interfaces = (ICenterPage,)
-
-
-centerPageSource = CenterPageSource()
 
 
 class IBody(zeit.edit.interfaces.IArea):
@@ -433,7 +421,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     referenced_cp = zope.schema.Choice(
         title=_('Get teasers from CenterPage'),
-        source=centerPageSource,
+        source=zeit.content.cp.source.centerPageSource,
         required=False)
 
     hide_dupes = zope.schema.Bool(
