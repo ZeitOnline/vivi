@@ -64,7 +64,11 @@ class ObjectPathProperty(object):
             parent.replace(node, new_node)
             instance.xml = new_node
         else:
-            self.path.setattr(instance.xml, value)
+            if value is not None:
+                self.path.setattr(instance.xml, value)
+            else:
+                node = self.path.find(instance.xml)
+                node.getparent().remove(node)
             node = self.getNode(instance)
             if node is not None:
                 lxml.objectify.deannotate(node)

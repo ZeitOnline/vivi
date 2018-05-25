@@ -4,7 +4,7 @@ zeit.cms changes
 3.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Allow to delete object path properties by setting them to `None`.
 
 
 3.11.1 (2018-05-14)

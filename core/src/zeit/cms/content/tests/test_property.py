@@ -76,3 +76,20 @@ class TestStructure(unittest.TestCase,
         self.assertEllipsis(
             '<foo...xsi:nil="true"/>',
             lxml.etree.tostring(content.xml.head.foo))
+
+
+class TestObjectPathProperty(unittest.TestCase,
+                             gocept.testing.assertion.Ellipsis):
+
+    def test_setting_none_value_deletes_xml_content(self):
+        from zeit.cms.content.property import ObjectPathProperty
+        content = ExampleContentType()
+        prop = ObjectPathProperty(
+            '.raw_query', zope.schema.Text(missing_value='missing'))
+        prop.__set__(content, 'solr!')
+        self.assertEqual(content.xml.findall('raw_query'), ['solr!'])
+        self.assertEllipsis(
+            '<raw_query...>solr!</raw_query>',
+            lxml.etree.tostring(content.xml.raw_query))
+        prop.__set__(content, None)
+        self.assertEqual(content.xml.findall('raw_query'), [])
