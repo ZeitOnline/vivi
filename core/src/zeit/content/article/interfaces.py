@@ -3,7 +3,8 @@ import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
-import zeit.content.cp.interfaces
+import zeit.content.cp.source
+import zeit.content.image.interfaces
 import zope.schema
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
@@ -42,7 +43,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
-        source=zeit.content.cp.interfaces.CenterPageSource(),
+        source=zeit.content.cp.source.centerPageSource,
         required=False)
 
     genre = zope.schema.Choice(

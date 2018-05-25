@@ -46,7 +46,7 @@ setup(
         'zeit.cms >= 3.0.dev0',
         'zeit.connector>=2.3.1.dev0',
         'zeit.content.author>=2.7.1.dev0',
-        'zeit.content.cp>=0.33.0',
+        'zeit.content.cp>=3.24.0.dev0',
         'zeit.content.image>=2.13.6.dev0',
         'zeit.content.infobox',
         'zeit.content.gallery',
