@@ -4,6 +4,7 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.type
 import zeit.edit.container
@@ -149,8 +150,8 @@ class Teaser(zeit.edit.block.SimpleElement):
     grok.implements(zeit.newsletter.interfaces.ITeaser)
     type = 'teaser'
 
-    reference = zeit.cms.content.property.SingleResource(
-        '.block', xml_reference_name='related', attributes=('href',))
+    reference = zeit.cms.content.reference.SingleResource(
+        '.block', xml_reference_name='related')
 
 
 class TeaserFactory(zeit.edit.block.TypeOnAttributeElementFactory):
