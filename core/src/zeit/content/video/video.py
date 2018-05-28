@@ -99,23 +99,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name
     )
 
-    # XXX ``serie`` is copy&paste from CommonMetadata since we need to change
-    # the source (thus the interface), and once we override the property
-    # getter, we don't seem to be able to access the setter in the superclass
-    # anymore.
-
-    @property
-    def serie(self):
-        source = zeit.content.video.interfaces.IVideo['serie'].source(self)
-        return source.find(self._serie)
-
-    @serie.setter
-    def serie(self, value):
-        if value is not None:
-            if self._serie != value.serienname:
-                self._serie = value.serienname
-        else:
-            self._serie = None
+    # Override from CommonMetadata to change the source
+    serie = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['serie'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'serie')
 
     @property
     def seo_slug(self):
