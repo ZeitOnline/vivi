@@ -75,7 +75,14 @@ class ITMS(zope.interface.Interface):
         """Return an IResult containing dicts with topicpage metadata"""
 
     def get_all_topicpages():
-        """Returns an iterable of all available topicpage dicts"""
+        """Returns an iterable of all available topicpage dicts.
+
+        Note: This is pretty slow, production has >10k topicpages, and we have
+        to paginate through all of them. So this is less of a general API you
+        should call, its main use case is updating /data/topicpages.xml in a
+        cronjob. You should parse that file instead of calling this function in
+        almost all cases.
+        """
 
     def get_topicpage_documents(id, start=0, rows=25):
         """Returns an zeit.cms.interfaces.IResult that contains dicts
