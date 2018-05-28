@@ -277,9 +277,21 @@ class QueryTypeSource(SimpleDictSource):
         'channels',
         'serie',
         'product',
+        'ressort',
         'genre',
         'authorships',
     ])
+
+
+class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
+
+    def _get_master_value(self, context):
+        # `context` is the IArea, which is adaptable to `master_value_iface`
+        # ICommonMetadata, since it is adaptable to ICenterPage -- but of
+        # course we don't want to restrict the query subressort according to
+        # the CP's ressort. So we disable this validation here and rely on the
+        # fact that the widget will only offer matching subressorts anyway.
+        return None
 
 
 class IQueryConditions(zeit.content.article.interfaces.IArticle):
@@ -289,6 +301,22 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
         title=_("Authors"),
         source=zeit.cms.content.interfaces.authorSource,
         required=False)
+
+    # ICommonMetadata has ressort and sub_ressort in separate fields, but we
+    # need them combined. And so that whitespace-separated serializing works,
+    # we wrap it in a tuple to reuse the DAVPropertyConverter for `channels`.
+    ressort = zope.schema.Tuple(value_type=zc.form.field.Combination(
+        (zope.schema.Choice(
+            title=_('Ressort'),
+            source=zeit.cms.content.sources.RessortSource()),
+         zope.schema.Choice(
+             title=_('Sub ressort'),
+             source=QuerySubRessortSource(),
+             required=False)),
+        default=(),
+        required=False))
+    zope.interface.alsoProvides(
+        ressort.value_type, zeit.cms.content.interfaces.IChannelField)
 
 
 class QuerySortOrderSource(SimpleDictSource):

@@ -335,18 +335,41 @@ class CustomContentQuery(ElasticsearchContentQuery):
     def _make_channel_query(self):
         conditions = []
         for item in self.context.query:
-            typ, value = self.context.context._serialize_query_item(item)
-            fieldname = self.ES_FIELD_NAMES.get(typ)
-            if not fieldname:
-                # XXX generalize IArticle
-                prop = getattr(zeit.content.article.article.Article, typ)
-                if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
-                    raise ValueError('Cannot determine field name for %s', typ)
-                fieldname = 'payload.%s.%s' % (
-                    zeit.retresco.content.davproperty_to_es(
-                        prop.namespace, prop.name))
-            conditions.append({'term': {fieldname: value}})
+            typ = item[0]
+            if typ == 'ressort':  # XXX Generalize to lookup instead of if?
+                condition = self._make_ressort_condition(item)
+            else:
+                condition = self._make_condition(item)
+            conditions.append(condition)
         return {'query': {'bool': {'should': conditions}}}
+
+    def _make_condition(self, item):
+        typ, value = self.context.context._serialize_query_item(item)
+        fieldname = self.ES_FIELD_NAMES.get(typ)
+        if not fieldname:
+            fieldname = self._fieldname_from_property(typ)
+        return {'term': {fieldname: value}}
+
+    def _fieldname_from_property(self, typ):
+        # XXX Generalize the class?
+        prop = getattr(zeit.content.article.article.Article, typ)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            raise ValueError('Cannot determine field name for %s', typ)
+        return 'payload.%s.%s' % (
+            zeit.retresco.content.davproperty_to_es(
+                prop.namespace, prop.name))
+
+    def _make_ressort_condition(self, item):
+        if item[2]:
+            return {'bool': {'must': [
+                {'term': {
+                    self._fieldname_from_property('ressort'): item[1]}},
+                {'term': {
+                    self._fieldname_from_property('sub_ressort'): item[2]}},
+            ]}}
+        else:
+            return {'term': {
+                self._fieldname_from_property('ressort'): item[1]}}
 
 
 class TMSContentQuery(ContentQuery):

@@ -329,6 +329,28 @@ class AutomaticAreaElasticsearchTest(
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 
+    def test_builds_query_with_condition_exception(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.query = (
+            ('ressort', 'International', 'Nahost'),
+            ('ressort', 'Wissen', None))
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'filter': [
+            {'bool': {'should': [
+                {'bool': {'must': [
+                    {'term': {'payload.document.ressort': 'International'}},
+                    {'term': {'payload.document.sub_ressort': 'Nahost'}},
+                ]}},
+                {'term': {'payload.document.ressort':
+                          'Wissen'}},
+            ]}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
     def test_can_take_over_whole_query_body(self):
         lead = self.repository['cp']['lead']
         lead.count = 1

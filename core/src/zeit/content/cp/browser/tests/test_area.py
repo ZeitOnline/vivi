@@ -158,7 +158,12 @@ class AreaBrowserTest(
         b.getControl('Add Custom Query').click()
         b.getControl('Custom Query Type').displayValue = ['query-type-serie']
         b.getControl('Add Custom Query').click()
+        b.getControl('Custom Query Type', index=1).displayValue = [
+            'query-type-ressort']
+        b.getControl('Add Custom Query').click()
         b.getControl('Serie').displayValue = ['Autotest']
+        b.getControl('Ressort').displayValue = ['Deutschland']
+        b.getControl('Sub ressort').displayValue = ['Integration']
         b.getControl('Channel').displayValue = ['International']
         b.getControl('Subchannel').displayValue = ['Meinung']
         b.getControl('Apply').click()
@@ -169,9 +174,16 @@ class AreaBrowserTest(
             ['query-type-serie'],
             b.getControl('Custom Query Type', index=0).displayValue)
         self.assertEqual(
-            ['query-type-channel'],
+            ['query-type-ressort'],
             b.getControl('Custom Query Type', index=1).displayValue)
+        self.assertEqual(
+            ['query-type-channels'],
+            b.getControl('Custom Query Type', index=2).displayValue)
         self.assertEqual(['Autotest'], b.getControl('Serie').displayValue)
+        self.assertEqual(
+            ['Deutschland'], b.getControl('Ressort').displayValue)
+        self.assertEqual(
+            ['Integration'], b.getControl('Sub ressort').displayValue)
         self.assertEqual(
             ['International'], b.getControl('Channel').displayValue)
         self.assertEqual(['Meinung'], b.getControl('Subchannel').displayValue)
