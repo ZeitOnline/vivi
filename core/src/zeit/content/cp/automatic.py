@@ -320,6 +320,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
     }
 
     ES_FIELD_NAMES = {
+        'authorships': 'payload.head.authors',
         'channels': 'payload.document.channels.hierarchy',
     }
 

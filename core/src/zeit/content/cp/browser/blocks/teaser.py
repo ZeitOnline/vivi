@@ -78,6 +78,11 @@ class EditCommon(
     def form(self):
         return ''  # our template uses the grouped-form macros instead
 
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(EditCommon, self).__call__()
+
 
 class Display(zeit.cms.browser.view.Base):
 

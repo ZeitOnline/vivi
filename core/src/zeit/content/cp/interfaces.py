@@ -277,7 +277,17 @@ class QueryTypeSource(SimpleDictSource):
         'channels',
         'serie',
         'product',
+        'authorships',
     ])
+
+
+class IQueryConditions(zeit.content.article.interfaces.IArticle):
+
+    # ICommonMetadata uses a ReferenceField, which makes no sense for `query`.
+    authorships = zope.schema.Choice(
+        title=_("Authors"),
+        source=zeit.cms.content.interfaces.authorSource,
+        required=False)
 
 
 class QuerySortOrderSource(SimpleDictSource):
@@ -448,7 +458,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
             zope.schema.Choice(
                 title=_('Custom Query Type'),
                 source=QueryTypeSource(), default='channels'),
-            zeit.content.article.interfaces.IArticle,
+            IQueryConditions,
         ),
         default=(),
         required=False)
