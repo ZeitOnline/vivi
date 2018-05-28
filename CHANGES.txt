@@ -1,6 +1,12 @@
 zeit.newsletter changes
 =======================
 
+1.5.5 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.5.4 (2018-05-28)
 ------------------
 
