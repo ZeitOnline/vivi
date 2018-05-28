@@ -1,39 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import urllib
-import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
-import zope.formlib.interfaces
-import zope.i18n
-
-
-class AutocompleteSourceQuery(grok.MultiAdapter,
-                              zeit.cms.browser.view.Base):
-
-    grok.adapts(
-        zeit.cms.content.interfaces.IAutocompleteSource,
-        zeit.cms.browser.interfaces.ICMSLayer)
-    grok.provides(zope.formlib.interfaces.ISourceQueryView)
-
-    def __init__(self, source, request):
-        self.source = source
-        self.request = request
-
-    def __call__(self):
-        return (
-            u'<input type="text" class="autocomplete" '
-            u'placeholder={placeholder} '
-            u'cms:autocomplete-source="{url}?{query}" />').format(
-            # XXX make use of ISourceQueryURL mechanism
-            url=self.url(zope.site.hooks.getSite(), '@@simple_find'),
-            query=urllib.urlencode(
-                [('types:list', self.source.get_check_types())],
-                doseq=True),
-            placeholder=xml.sax.saxutils.quoteattr(
-                zope.i18n.translate(
-                    _('Type to find entries ...'), context=self.request)))
+import zope.component.hooks
+import zope.traversing.browser
 
 
 class SimpleFind(zeit.cms.browser.view.JSON):
@@ -53,3 +24,15 @@ class SimpleFind(zeit.cms.browser.view.JSON):
                         result['uniqueId']),
                  value=result['uniqueId'])
             for result in results]
+
+
+@grok.adapter(
+    zeit.cms.content.interfaces.IAutocompleteSource,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
+def SimpleFindURL(context, request):
+    base = zope.traversing.browser.absoluteURL(
+        zope.component.hooks.getSite(), request)
+    query = urllib.urlencode(
+        [('types:list', context.get_check_types())], doseq=True)
+    return ('%s/@@simple_find?%s' % (base, query))
