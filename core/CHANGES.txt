@@ -4,6 +4,9 @@ zeit.cms changes
 3.11.2 (unreleased)
 -------------------
 
+- MAINT: Move autocomplete source query view here from zeit.find,
+  generalize using ISourceQueryURL lookup mechanism
+
 - FIX: Allow to delete object path properties by setting them to `None`.
 
 
