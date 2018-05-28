@@ -99,32 +99,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['channels'], DOCUMENT_SCHEMA_NS, 'channels',
         use_default=True)
 
-    _product_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(),
-        'http://namespaces.zeit.de/CMS/workflow', 'product-id')
-    _product_text = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(),
-        'http://namespaces.zeit.de/CMS/workflow', 'product-name')
-
-    @property
-    def product(self):
-        source = ICommonMetadata['product'].source(self)
-        return source.find(self._product_id)
-
-    @product.setter
-    def product(self, value):
-        if value is not None:
-            if self._product_id == value.id:
-                return
-            self._product_id = value.id
-            self._product_text = value.title
-        else:
-            self._product_id = None
-            self._product_text = None
-
-    @property
-    def product_text(self):
-        return self._product_text
+    product = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
+        'product-id')
 
     storystreams = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,

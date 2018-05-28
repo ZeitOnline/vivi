@@ -4,7 +4,10 @@ zeit.cms changes
 3.11.2 (unreleased)
 -------------------
 
-- TMS-227: Change channels serialization to DAVPropertyConverter for reusability
+- TMS-227: Change serialization to DAVPropertyConverter for
+  reusability, for `channels`, `product`, `serie`.
+
+- TMS-227: Remove obsolete `product_text` field (and `workflow:product-name` DAV property)
 
 - MAINT: Move autocomplete source query view here from zeit.find,
   generalize using ISourceQueryURL lookup mechanism
