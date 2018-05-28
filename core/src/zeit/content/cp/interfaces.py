@@ -277,6 +277,7 @@ class QueryTypeSource(SimpleDictSource):
         'channels',
         'serie',
         'product',
+        'genre',
         'authorships',
     ])
 
