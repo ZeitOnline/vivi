@@ -94,7 +94,7 @@ class DynamicCombinationWidget(
 
     def _create_widget(self, field):
         widget = zope.component.getMultiAdapter(
-            (field, self.request,), self.widget_interface)
+            (field, self.request), self.widget_interface)
         widget.setPrefix(self.name + ".")
         return widget
 
