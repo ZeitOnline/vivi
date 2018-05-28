@@ -32,7 +32,7 @@ setup(
         'xml-compare',
         'zc.form',
         'zc.sourcefactory',
-        'zeit.cms>=3.11.0.dev0',
+        'zeit.cms>=3.12.0.dev0',
         'zeit.content.article>=3.26.dev0',
         'zeit.content.image>=2.5.1.dev0',
         'zeit.content.modules>=1.1.0.dev0',
