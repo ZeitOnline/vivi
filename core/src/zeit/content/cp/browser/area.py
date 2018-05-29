@@ -155,7 +155,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         gocept.form.grouped.Fields(
             _('automatic-area-type-centerpage'), ('referenced_cp',)),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-channel'), ('query', 'query_order')),
+            _('automatic-area-type-custom'), ('query', 'query_order')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-topicpage'), (
                 'referenced_topicpage', 'topicpage_filter')),

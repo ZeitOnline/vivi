@@ -244,22 +244,6 @@ class BelowAreaSource(
         return value.__name__
 
 
-class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    prefix = 'automatic-area-type-{}'
-
-    values = (
-        u'centerpage', u'custom', u'topicpage', u'query',
-        u'elasticsearch-query')
-
-    def __init__(self):
-        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
-
-    def getToken(self, value):
-        # JS needs to use these values, don't MD5 them.
-        return value
-
-
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = collections.OrderedDict()
@@ -269,6 +253,21 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, value):
         return self.values.get(value, value)
+
+
+class AutomaticTypeSource(SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('custom', _('automatic-area-type-custom')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('query', _('automatic-area-type-query')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+    ])
+
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
 
 
 class QueryTypeSource(SimpleDictSource):
