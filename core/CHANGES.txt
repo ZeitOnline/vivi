@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.38.2 (unreleased)
+3.38.2 (2018-05-29)
 -------------------
 
 - MAINT: Update to changed CP API
