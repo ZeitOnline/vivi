@@ -11,15 +11,6 @@ import zope.component
 
 class TestVideo(zeit.content.video.testing.TestCase):
 
-    def test_videos_should_contain_subtitle_node_in_xml_even_if_none(self):
-        factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.subtitle = None  # set explicitly
-        video = factory.next()  # in repository
-        self.assertIn(
-            'subtitle',
-            [x.tag for x in video.xml.body.getchildren()])
-
     def test_security_should_allow_access_to_id_prefix(self):
         import zeit.cms.testing
         import zope.security.management
