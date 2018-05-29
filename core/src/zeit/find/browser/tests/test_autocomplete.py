@@ -1,46 +1,10 @@
+from zeit.cms.browser.widget import AutocompleteSourceQuery
 import mock
 import unittest
 import zeit.cms.testing
 import zeit.find.tests
-
-
-class TestSourceQueryView(unittest.TestCase):
-
-    def test_view_should_render_input(self):
-        from zeit.find.browser.autocomplete import AutocompleteSourceQuery
-        source = mock.Mock()
-        source.get_check_types.return_value = ('t1', 't2', 't3')
-        source.autocomplete = True
-        view = AutocompleteSourceQuery(source, mock.sentinel.request)
-        view.url = mock.Mock(return_value='/mock/url')
-        with mock.patch('zope.site.hooks.getSite') as gs:
-            result = view()
-        gs.assert_called_with()
-        self.assertEqual(
-            ('<input type="text" class="autocomplete" '
-             'placeholder="Type to find entries ..." '
-             'cms:autocomplete-source="'
-             '/mock/url?types%3Alist=t1&types%3Alist=t2&types%3Alist=t3" />'),
-            result)
-
-
-class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.find.tests.LAYER
-
-    def test_query_view_should_be_registered(self):
-        import zeit.cms.content.interfaces
-        import zope.component
-        import zope.formlib.interfaces
-        import zope.interface
-        source = mock.Mock()
-        zope.interface.alsoProvides(
-            source, zeit.cms.content.interfaces.IAutocompleteSource)
-        request = mock.Mock()
-        zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.ICMSSkin)
-        view = zope.component.getMultiAdapter(
-            (source, request), zope.formlib.interfaces.ISourceQueryView)
+import zope.interface
+import zope.publisher.browser
 
 
 class TestSimpleFind(unittest.TestCase,
@@ -93,3 +57,18 @@ class TestSimpleFind(unittest.TestCase,
         self.search.return_value = [dict(uniqueId='A', title='Title')]
         self.browser.open('@@simple_find?term=search-term')
         self.assert_json([{'label': 'Title', 'value': 'A'}])
+
+    def test_query_view_should_render_input(self):
+        source = mock.Mock()
+        source.get_check_types.return_value = ('t1', 't2', 't3')
+        zope.interface.alsoProvides(
+            source, zeit.cms.content.interfaces.IAutocompleteSource)
+        view = AutocompleteSourceQuery(
+            source, zope.publisher.browser.TestRequest(
+                skin=zeit.cms.browser.interfaces.ICMSLayer))
+        self.assertEllipsis(
+            ('<input type="text" class="autocomplete" '
+             'placeholder="Type to find entries ..." '
+             'cms:autocomplete-source="'
+             '...?types%3Alist=t1&types%3Alist=t2&types%3Alist=t3" />'),
+            view())
