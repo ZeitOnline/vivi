@@ -1,7 +1,7 @@
 zeit.campus changes
 ====================
 
-1.6.8 (unreleased)
+1.6.8 (2018-05-29)
 ------------------
 
 - MAINT: Update to changed CP API
