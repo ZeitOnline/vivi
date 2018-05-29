@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.7.3 (unreleased)
+2.7.3 (2018-05-29)
 ------------------
 
 - FIX: Replace obsolete filter `product_text:News` with `product_id` (dpa/afp/etc)
