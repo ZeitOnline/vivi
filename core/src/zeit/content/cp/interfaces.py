@@ -273,13 +273,13 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 class QueryTypeSource(SimpleDictSource):
 
-    values = collections.OrderedDict((x, _('query-type-' + x)) for x in [
-        'channels',
-        'serie',
-        'product',
-        'ressort',
-        'genre',
-        'authorships',
+    values = collections.OrderedDict([
+        ('channels', _('query-type-channels')),
+        ('serie', _('query-type-serie')),
+        ('product', _('query-type-product')),
+        ('ressort', _('query-type-ressort')),
+        ('genre', _('query-type-genre')),
+        ('authorships', _('query-type-authorships')),
     ])
 
 
