@@ -32,4 +32,11 @@ $(document).bind('fragment-ready', function(event) {
     });
 });
 
+$(document).bind('fragment-ready', function(event) {
+    $('.fieldname-query select[id$="combination_00"]', event.__target).on(
+        'change', function() {
+            $(this).closest('form').trigger('submit');
+    });
+});
+
 }(jQuery));
