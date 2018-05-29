@@ -1049,3 +1049,17 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_respects_missing_value(self):
         self.request.form[self.widget.name] = ''
         self.assertEqual(None, self.widget.getInputValue())
+
+
+class TestSourceQueryViewIntegration(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_query_view_should_be_registered(self):
+        source = mock.Mock()
+        zope.interface.alsoProvides(
+            source, zeit.cms.content.interfaces.IAutocompleteSource)
+        request = mock.Mock()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.ICMSSkin)
+        with self.assertNothingRaised():
+            zope.component.getMultiAdapter(
+                (source, request), zope.formlib.interfaces.ISourceQueryView)

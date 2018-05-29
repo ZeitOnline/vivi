@@ -9,6 +9,7 @@ import urlparse
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
