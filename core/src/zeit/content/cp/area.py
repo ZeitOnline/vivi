@@ -157,6 +157,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.elasticsearch_raw_order',
         zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
         use_default=True)
+    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_complete_query',
+        zeit.content.cp.interfaces.IArea['is_complete_query'],
+        use_default=True)
 
     def __init__(self, context, xml):
         super(Area, self).__init__(context, xml)
@@ -193,6 +197,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # Ensure a consistent indentation for raw query
         if value is not None:
             value = json.dumps(json.loads(value), indent=2, ensure_ascii=False)
+            if 'query' not in value:
+                raise ValueError('Top-level key "query" is required.')
         self._elasticsearch_raw_query = value
 
     @property
@@ -433,11 +439,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
         result = []
         for condition in self.xml.query.getchildren():
+            if condition.get('type') != 'Channel':
+                continue
             channel = unicode(condition)
             subchannel = None
             if ' ' in channel:
                 channel, subchannel = channel.split(' ')
-            result.append((condition.get('type'), channel, subchannel))
+            result.append((channel, subchannel))
         return tuple(result)
 
     @query.setter
@@ -453,8 +461,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         E = lxml.objectify.E
         self.xml.append(E.query(*[E.condition(
             '%s %s' % (channel, subchannel) if subchannel else channel,
-            type=type_)
-            for type_, channel, subchannel in value]))
+            type='Channel')
+            for channel, subchannel in value]))
 
     def filter_values(self, *interfaces):
         return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(

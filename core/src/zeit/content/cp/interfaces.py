@@ -259,11 +259,6 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
         return value
 
 
-class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = ['Channel']  # XXX or 'Keyword', see VIV-471
-
-
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = collections.OrderedDict()
@@ -278,11 +273,11 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 class QuerySortOrderSource(SimpleDictSource):
 
     values = collections.OrderedDict((
-        ('date-last-published-semantic desc',
+        ('payload.workflow.date_last_published_semantic:desc',
          _('query-sort-order-last-published-semantic')),
-        ('last-semantic-change desc',
+        ('payload.document.last-semantic-change:desc',
          _('query-sort-order-last-semantic-change')),
-        ('date-first-released desc',
+        ('payload.document.date_first_released:desc',
          _('query-sort-order-first-released')),
     ))
 
@@ -428,14 +423,12 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Hide duplicate teasers'),
         default=True)
 
+    # XXX Rename more specifically (TMS-227)
     query = zope.schema.Tuple(
         title=_('Channel Query'),
         value_type=zc.form.field.Combination(
             (zope.schema.Choice(
-                title=_('Channel Query Type'),
-                source=QueryTypeSource(), default='Channel'),
-             zope.schema.Choice(
-                title=_('Channel equals'),
+                title=_('Channel'),
                 source=zeit.cms.content.sources.ChannelSource()),
              zope.schema.Choice(
                  title=_('Subchannel'),
@@ -447,7 +440,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=QuerySortOrderSource(),
-        default=u'date-last-published-semantic desc',
+        default=u'payload.workflow.date_last_published_semantic:desc',
         required=True)
 
     referenced_topicpage = zope.schema.TextLine(
@@ -471,6 +464,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
         default=u'payload.document.date_first_released:desc',
+        required=False)
+    is_complete_query = zope.schema.Bool(
+        title=_('Take over complete query body'),
+        description=_('Remember to add payload.workflow.published:true'),
+        default=False,
         required=False)
 
     # XXX really ugly styling hack

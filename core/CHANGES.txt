@@ -5,6 +5,10 @@ zeit.content.cp changes
 3.24.0 (unreleased)
 -------------------
 
+- TMS-226: Add `published: true` condition to all ES queries
+
+- TMS-219: Switch "channel" queries to ES
+
 - MAINT: Move source out of interfaces to prevent circular import with z.c.article.interfaces
 
 

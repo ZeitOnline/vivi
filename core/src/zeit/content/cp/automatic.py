@@ -1,9 +1,9 @@
-from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
 import zeit.find.search
@@ -166,7 +166,7 @@ class SolrContentQuery(ContentQuery):
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning(
                 'Error during solr query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
@@ -197,87 +197,95 @@ class ElasticsearchContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.query = self.context.elasticsearch_raw_query
+        self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
         self.order = self.context.elasticsearch_raw_order
 
     def __call__(self):
         self.total_hits = 0
         result = []
-        query = {}
-        if self.query:
-            query['query'] = json.loads(self.query)
-        if self.filter_query:
-            query['filter'] = self.filter_query
         try:
             elasticsearch = zope.component.getUtility(
                 zeit.retresco.interfaces.IElasticsearch)
             response = elasticsearch.search(
-                query, self.order, start=self.start, rows=self.rows,
+                self._build_query(), self.order,
+                start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
             self.total_hits = response.hits
             for item in response:
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning(
                 'Error during elasticsearch query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
         return result
+
+    def _build_query(self):
+        if self.context.is_complete_query:
+            query = self.query
+            if self.hide_dupes_clause:
+                query = {'query': {'bool': {
+                    'must': query,
+                    'must_not': self.hide_dupes_clause}}}
+        else:
+            query = {'query': {'bool': {
+                'filter': ([self.query.get('query', {})] +
+                           self._additional_clauses)}}}
+            if self.hide_dupes_clause:
+                query['query']['bool']['must_not'] = self.hide_dupes_clause
+        return query
+
+    _additional_clauses = [
+        {'term': {'payload.workflow.published': True}}
+    ]
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @cachedproperty
-    def filter_query(self):
+    def hide_dupes_clause(self):
         """Perform de-duplication of results.
 
         Create an id query for teasers that already exist on the CP.
         """
         if not self.context.hide_dupes or not self.existing_teasers:
             return
-        return {
-            'bool': {
-                'must_not': {
-                    'ids': {
-                        'values': [zeit.cms.content.interfaces.IUUID(x).id
-                                   for x in self.existing_teasers]
-                    }
-                }
-            }
-        }
+        return {'ids': {'values': [zeit.cms.content.interfaces.IUUID(x).id
+                                   for x in self.existing_teasers]}}
 
 
-class ChannelContentQuery(SolrContentQuery):
+class ChannelContentQuery(ElasticsearchContentQuery):
 
     grok.name('channel')
 
-    SOLR_FIELD = {
-        'Channel': 'channels',
-        'Keyword': 'keywords',
+    SOLR_TO_ES_SORT = {
+        'date-last-published-semantic desc': (
+            'payload.workflow.date_last_published_semantic:desc'),
+        'last-semantic-change desc': (
+            'payload.document.last-semantic-change:desc'),
+        'date-first-released desc': (
+            'payload.document.date_first_released:desc'),
     }
 
     def __init__(self, context):
-        super(SolrContentQuery, self).__init__(context)
-        self.query = self._build_query()
+        # Skip direct superclass, as we set `query` and `order` differently.
+        super(ElasticsearchContentQuery, self).__init__(context)
+        self.query = self._make_channel_query()
         self.order = self.context.query_order
+        if self.order in self.SOLR_TO_ES_SORT:  # BBB
+            self.order = self.SOLR_TO_ES_SORT[self.order]
 
-    def _build_query(self):
-        Q = zeit.solr.query
-        query = zeit.find.search.query(filter_terms=[
-            Q.field_raw('published', 'published*')])
-        conditions = []
-        for type_, channel, subchannel in self.context.query:
+    def _make_channel_query(self):
+        channels = []
+        for channel, subchannel in self.context.query:
+            value = channel
             if subchannel:
-                value = '%s*%s' % (channel, subchannel)
-            else:
-                # XXX Unclear whether this will work as desired for keywords.
-                value = '%s*' % channel
-            conditions.append(Q.field_raw(self.SOLR_FIELD[type_], value))
-        if conditions:
-            query = Q.and_(query, Q.or_(*conditions))
-        return query
+                value += ' ' + subchannel
+            channels.append(value)
+        return {'query': {'terms': {
+            'payload.document.channels.hierarchy': channels}}}
 
 
 class TMSContentQuery(ContentQuery):
@@ -301,7 +309,7 @@ class TMSContentQuery(ContentQuery):
                 content = self._resolve(item)
                 if content is not None:
                     result.append(content)
-        except:
+        except Exception:
             log.warning('Error during TMS query %r for %s',
                         topicpage, self.context.uniqueId, exc_info=True)
 
