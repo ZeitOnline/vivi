@@ -1,6 +1,4 @@
-from zeit.cms.i18n import MessageFactory as _
-import collections
-import zc.sourcefactory.basic
+import zeit.cms.content.contentsource
 import zeit.cms.content.sources
 import zope.dottedname.resolve
 
@@ -25,3 +23,17 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
         for_ = zope.dottedname.resolve.resolve(node.get('for'))
         return (super(CPExtraSource, self).isAvailable(node, cp) and
                 for_.providedBy(context.__parent__))
+
+
+class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.cp'
+
+    @property
+    def check_interfaces(self):
+        # Prevent circular import
+        import zeit.content.cp.interfaces
+        return (zeit.content.cp.interfaces.ICenterPage,)
+
+
+centerPageSource = CenterPageSource()

@@ -71,9 +71,9 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.cp.interfaces.ICenterPage['type'],
         zeit.content.cp.interfaces.DAV_NAMESPACE, 'type')
 
-    header_image = zeit.cms.content.property.SingleResource(
+    header_image = zeit.cms.content.reference.SingleResource(
         '.head.header_image',
-        xml_reference_name='image', attributes=('base-id', 'src'))
+        xml_reference_name='image')
 
     topiclink_title = zeit.cms.content.property.ObjectPathProperty(
         '.head.topiclinks.topiclink_title',

@@ -30,7 +30,7 @@
   </class>
 
   <utility
-    component=".interfaces.centerPageSource"
+    component=".source.centerPageSource"
     name="zeit.content.cp"
     />
 
