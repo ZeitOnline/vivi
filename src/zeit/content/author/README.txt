@@ -56,8 +56,6 @@ takes precedence:
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
   <display_name>William Shakespeare</display_name>
-  <entered_display_name xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:nil="true"/>
 </author>
 
 The author image group is stored using the IImages interface.
