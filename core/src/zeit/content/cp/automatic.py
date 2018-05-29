@@ -270,10 +270,11 @@ class ChannelContentQuery(ElasticsearchContentQuery):
     }
 
     def __init__(self, context):
+        # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_channel_query()
         self.order = self.context.query_order
-        if ' ' in self.order:  # BBB
+        if self.order in self.SOLR_TO_ES_SORT:  # BBB
             self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _make_channel_query(self):
