@@ -279,9 +279,11 @@ class ElasticsearchContentQuery(ContentQuery):
                     'must': query,
                     'must_not': self.hide_dupes_clause}}}
         else:
+            _query = self.query.get('query', {})
+            if not isinstance(_query, list):
+                _query = [_query]
             query = {'query': {'bool': {
-                'filter': ([self.query.get('query', {})] +
-                           self._additional_clauses)}}}
+                'filter': _query + self._additional_clauses}}}
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'] = self.hide_dupes_clause
         return query
@@ -333,15 +335,27 @@ class CustomContentQuery(ElasticsearchContentQuery):
             self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _make_channel_query(self):
-        conditions = []
+        fields = {}
         for item in self.context.query:
             typ = item[0]
-            if typ == 'ressort':  # XXX Generalize to lookup instead of if?
-                condition = self._make_ressort_condition(item)
+            fields.setdefault(typ, []).append(item)
+
+        clauses = []
+        for typ in sorted(fields):  # Provide stable sorting for tests
+            items = fields[typ]
+            if len(items) > 1:
+                clauses.append({'bool': {'should': [
+                    self._make_clause(typ, x) for x in items]}})
             else:
-                condition = self._make_condition(item)
-            conditions.append(condition)
-        return {'query': {'bool': {'should': conditions}}}
+                clauses.append(self._make_clause(typ, items[0]))
+        # We rely on _build_query() putting this inside a bool/filter context
+        return {'query': clauses}
+
+    def _make_clause(self, typ, item):
+        if typ == 'ressort':  # XXX Generalize to lookup instead of if?
+            return self._make_ressort_condition(item)
+        else:
+            return self._make_condition(item)
 
     def _make_condition(self, item):
         typ, value = self.context.context._serialize_query_item(item)

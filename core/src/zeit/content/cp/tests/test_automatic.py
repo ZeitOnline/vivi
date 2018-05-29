@@ -303,9 +303,7 @@ class AutomaticAreaElasticsearchTest(
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'should': [
-                {'term': {'payload.document.serie': 'Autotest'}},
-            ]}},
+            {'term': {'payload.document.serie': 'Autotest'}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 
@@ -348,6 +346,33 @@ class AutomaticAreaElasticsearchTest(
                 {'term': {'payload.document.ressort':
                           'Wissen'}},
             ]}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
+            None)
+        autotest = source.find('Autotest')
+        lead.query = (
+            ('channels', 'International', 'Nahost'),
+            ('channels', 'Wissen', None),
+            ('serie', autotest),
+            ('ressort', 'Wissen', None))
+        lead.automatic = True
+        lead.automatic_type = 'channel'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'filter': [
+            {'bool': {'should': [
+                {'term': {'payload.document.channels.hierarchy':
+                          'International Nahost'}},
+                {'term': {'payload.document.channels.hierarchy':
+                          'Wissen'}},
+            ]}},
+            {'term': {'payload.document.ressort': 'Wissen'}},
+            {'term': {'payload.document.serie': 'Autotest'}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 
