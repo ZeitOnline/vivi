@@ -114,9 +114,20 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'automatic',
         zeit.content.cp.interfaces.IArea['automatic'])
 
-    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
         zeit.content.cp.interfaces.IArea['automatic_type'])
+
+    @property
+    def automatic_type(self):
+        result = self._automatic_type
+        if result == 'channel':  # BBB
+            result = 'custom'
+        return result
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IArea['count'])

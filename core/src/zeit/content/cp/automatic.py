@@ -310,7 +310,7 @@ class ElasticsearchContentQuery(ContentQuery):
 
 class CustomContentQuery(ElasticsearchContentQuery):
 
-    grok.name('channel')  # XXX rename?
+    grok.name('custom')
 
     SOLR_TO_ES_SORT = {
         'date-last-published-semantic desc': (

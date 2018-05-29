@@ -299,7 +299,7 @@ class AutomaticAreaElasticsearchTest(
         autotest = source.find('Autotest')
         lead.query = (('serie', autotest),)
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
@@ -314,7 +314,7 @@ class AutomaticAreaElasticsearchTest(
             ('channels', 'International', 'Nahost'),
             ('channels', 'Wissen', None))
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
@@ -334,7 +334,7 @@ class AutomaticAreaElasticsearchTest(
             ('ressort', 'International', 'Nahost'),
             ('ressort', 'Wissen', None))
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
@@ -361,7 +361,7 @@ class AutomaticAreaElasticsearchTest(
             ('serie', autotest),
             ('ressort', 'Wissen', None))
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
@@ -413,7 +413,7 @@ class AutomaticAreaElasticsearchTest(
         lead.count = 1
         lead.query = (('channels', 'International', 'Nahost'),)
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
@@ -426,10 +426,26 @@ class AutomaticAreaElasticsearchTest(
         lead.query = (('channels', 'International', 'Nahost'),)
         lead.query_order = 'order'
         lead.automatic = True
-        lead.automatic_type = 'channel'
+        lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual('order', self.elasticsearch.search.call_args[0][1])
+
+    def test_bbb_converts_automatic_type_channel_to_custom(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
+            None)
+        autotest = source.find('Autotest')
+        lead.query = (('serie', autotest),)
+        lead.automatic = True
+        lead.xml.set('automatic_type', 'channel')
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'filter': [
+            {'term': {'payload.document.serie': 'Autotest'}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):

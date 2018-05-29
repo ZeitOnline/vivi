@@ -249,7 +249,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     prefix = 'automatic-area-type-{}'
 
     values = (
-        u'centerpage', u'channel', u'topicpage', u'query',
+        u'centerpage', u'custom', u'topicpage', u'query',
         u'elasticsearch-query')
 
     def __init__(self):
@@ -367,7 +367,7 @@ def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'centerpage' and data.referenced_cp:
         return True
 
-    if data.automatic_type == 'channel' and data.query:
+    if data.automatic_type == 'custom' and data.query:
         return True
 
     if data.automatic_type == 'topicpage' and data.referenced_topicpage:
@@ -537,10 +537,10 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from centerpage '
                     'requires a referenced centerpage.')
-            if data.automatic_type == 'channel':
+            if data.automatic_type == 'custom':
                 error_message = _(
-                    'Automatic area with teaser from solr channel '
-                    'requires a channel query.')
+                    'Automatic area with teaser from custom query '
+                    'requires a query condition.')
             if data.automatic_type == 'topicpage':
                 error_message = _(
                     'Automatic area with teaser from TMS topicpage '

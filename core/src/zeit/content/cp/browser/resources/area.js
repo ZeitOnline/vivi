@@ -2,7 +2,7 @@
 
 var FIELDS = {
     'centerpage': 'referenced_cp',
-    'channel': 'query',
+    'custom': 'query',
     'topicpage': 'referenced_topicpage',
     'query': 'raw_query',
     'elasticsearch-query': 'elasticsearch_raw_query',
