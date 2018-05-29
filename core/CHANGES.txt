@@ -4,6 +4,8 @@ zeit.find changes
 2.7.3 (unreleased)
 ------------------
 
+- FIX: Replace obsolete filter `product_text:News` with `product_id` (dpa/afp/etc)
+
 - MAINT: Move autocomplete source query view to zeit.cms
 
 
