@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.24.0 (unreleased)
+3.24.0 (2018-05-29)
 -------------------
 
 - TMS-226: Add `published: true` condition to all ES queries
