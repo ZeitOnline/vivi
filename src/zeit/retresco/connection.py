@@ -127,7 +127,7 @@ class TMS(object):
             if not item['link']:
                 continue
             # zeit.web expects the path without a leading slash
-            item['link'] = item['link'][1:]
+            item['link'] = item['link'].lstrip('/')
             entity_links[(item['key'], item['key_type'])] = item
 
         # Keywords pinned in vivi come first.
@@ -339,6 +339,7 @@ def signal_timeout_request(self, method, url, **kw):
     finally:
         if sig_timeout:
             signal.setitimer(signal.ITIMER_REAL, 0)
+
 
 original_session_request = requests.sessions.Session.request
 requests.sessions.Session.request = signal_timeout_request
