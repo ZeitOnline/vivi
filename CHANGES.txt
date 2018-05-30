@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.23.2 (unreleased)
+1.23.2 (2018-05-30)
 -------------------
 
 - BUG-930: Fix bug, cutting off too many characters from keyword links
