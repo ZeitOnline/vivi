@@ -299,9 +299,15 @@ class TMSContentQuery(ContentQuery):
     def __call__(self):
         result = []
         topicpage = self.context.referenced_topicpage
-        response = self._get_documents(
-            topicpage, self.start, self.rows, filter=self.filter_id)
-        for item in response:
+        key = (topicpage, self.filter_id, self.start)
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        cache = cp._topic_queries
+        response = cache.get(key)
+        if response is None:
+            response = cache[key] = iter(self._get_documents(
+                topicpage, start=self.start, rows=20, filter=self.filter_id))
+        while len(result) < self.rows:
+            item = response.next()
             content = self._resolve(item)
             if content is not None:
                 result.append(content)
