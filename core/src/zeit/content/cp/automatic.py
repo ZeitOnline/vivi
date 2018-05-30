@@ -300,8 +300,9 @@ class TMSContentQuery(ContentQuery):
         result = []
         topicpage = self.context.referenced_topicpage
         key = (topicpage, self.filter_id, self.start)
-        kw = dict(topicpage=topicpage, rows=20, filter=self.filter_id)
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        rows = cp.total_teaser_count() + 5      # total teasers + some spares
+        kw = dict(topicpage=topicpage, rows=rows, filter=self.filter_id)
         cache = cp._topic_queries
         if key in cache:
             start, response = cache[key]

@@ -233,6 +233,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
             seen.update(self._area_manual_content[area])
         return seen
 
+    def total_teaser_count(self):
+        self._fill_area_cache()
+        return sum(a.count for a in self._cached_areas.values() if a.count)
+
     # cache storing tms query results so areas can share them (refs TMS-231)
     _topic_queries = gocept.cache.property.TransactionBoundCache(
         '_v_tms_topic_queries', dict)
