@@ -316,7 +316,10 @@ class TMSContentQuery(ContentQuery):
                 start = start + kw['rows']      # fetch next batch
                 response = iter(self._get_documents(start=start, **kw))
                 cache[key] = start, response
-                item = response.next()
+                try:
+                    item = response.next()
+                except StopIteration:
+                    break                       # results are exhausted
             content = self._resolve(item)
             if content is not None and (not self.context.hide_dupes or
                                         content not in self.existing_teasers):
