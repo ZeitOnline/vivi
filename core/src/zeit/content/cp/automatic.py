@@ -294,28 +294,27 @@ class TMSContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
+        self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
         result = []
-        topicpage = self.context.referenced_topicpage
-        key = (topicpage, self.filter_id, self.start)
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         rows = cp.total_teaser_count() + 5      # total teasers + some spares
-        kw = dict(topicpage=topicpage, rows=rows, filter=self.filter_id)
         cache = cp._topic_queries
+        key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             start, response = cache[key]
         else:
             start = self.start
-            response = iter(self._get_documents(start=start, **kw))
+            response = iter(self._get_documents(start=start, rows=rows))
             cache[key] = start, response
         while len(result) < self.rows:
             try:
                 item = response.next()
             except StopIteration:
-                start = start + kw['rows']      # fetch next batch
-                response = iter(self._get_documents(start=start, **kw))
+                start = start + rows            # fetch next batch
+                response = iter(self._get_documents(start=start, rows=rows))
                 cache[key] = start, response
                 try:
                     item = response.next()
@@ -327,14 +326,15 @@ class TMSContentQuery(ContentQuery):
                 result.append(content)
         return result
 
-    def _get_documents(self, topicpage, **kw):
+    def _get_documents(self, **kw):
         self.total_hits = 0
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            response = tms.get_topicpage_documents(topicpage, **kw)
+            response = tms.get_topicpage_documents(
+                id=self.topicpage, filter=self.filter_id, **kw)
         except Exception:
             log.warning('Error during TMS query %r for %s',
-                        topicpage, self.context.uniqueId, exc_info=True)
+                        self.topicpage, self.context.uniqueId, exc_info=True)
             return []
         else:
             self.total_hits = response.hits
