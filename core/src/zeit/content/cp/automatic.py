@@ -316,15 +316,16 @@ class TMSContentQuery(ContentQuery):
 
     def _get_documents(self, topicpage, **kw):
         self.total_hits = 0
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
             response = tms.get_topicpage_documents(topicpage, **kw)
-            self.total_hits = response.hits
-            return response
         except Exception:
             log.warning('Error during TMS query %r for %s',
                         topicpage, self.context.uniqueId, exc_info=True)
             return []
+        else:
+            self.total_hits = response.hits
+            return response
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
