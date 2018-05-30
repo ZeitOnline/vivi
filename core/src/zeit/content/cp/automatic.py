@@ -300,14 +300,23 @@ class TMSContentQuery(ContentQuery):
         result = []
         topicpage = self.context.referenced_topicpage
         key = (topicpage, self.filter_id, self.start)
+        kw = dict(topicpage=topicpage, rows=20, filter=self.filter_id)
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         cache = cp._topic_queries
-        response = cache.get(key)
-        if response is None:
-            response = cache[key] = iter(self._get_documents(
-                topicpage, start=self.start, rows=20, filter=self.filter_id))
+        if key in cache:
+            start, response = cache[key]
+        else:
+            start = self.start
+            response = iter(self._get_documents(start=start, **kw))
+            cache[key] = start, response
         while len(result) < self.rows:
-            item = response.next()
+            try:
+                item = response.next()
+            except StopIteration:
+                start = start + kw['rows']      # fetch next batch
+                response = iter(self._get_documents(start=start, **kw))
+                cache[key] = start, response
+                item = response.next()
             content = self._resolve(item)
             if content is not None and (not self.context.hide_dupes or
                                         content not in self.existing_teasers):
