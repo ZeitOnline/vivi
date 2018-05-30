@@ -233,3 +233,11 @@ class CollectionChoice(CollectionTextLine):
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.IChoice,
         zeit.retresco.interfaces.IElasticDAVProperties)
+
+
+class CollectionChannels(CollectionTextLine):
+
+    grok.adapts(
+        zope.schema.interfaces.ICollection,
+        zeit.cms.content.interfaces.IChannelField,
+        zeit.retresco.interfaces.IElasticDAVProperties)
