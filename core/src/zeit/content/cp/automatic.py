@@ -304,18 +304,18 @@ class TMSContentQuery(ContentQuery):
         cache = cp._topic_queries
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
-            start, response = cache[key]
+            response, start, _ = cache[key]
         else:
             start = self.start
-            response = iter(self._get_documents(start=start, rows=rows))
-            cache[key] = start, response
+            response, hits = self._get_documents(start=start, rows=rows)
+            cache[key] = response, start, hits
         while len(result) < self.rows:
             try:
                 item = response.next()
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response = iter(self._get_documents(start=start, rows=rows))
-                cache[key] = start, response
+                response, hits = self._get_documents(start=start, rows=rows)
+                cache[key] = response, start, hits
                 try:
                     item = response.next()
                 except StopIteration:
@@ -327,7 +327,6 @@ class TMSContentQuery(ContentQuery):
         return result
 
     def _get_documents(self, **kw):
-        self.total_hits = 0
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
@@ -335,14 +334,24 @@ class TMSContentQuery(ContentQuery):
         except Exception:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
-            return []
+            return iter([]), 0
         else:
-            self.total_hits = response.hits
-            return response
+            return iter(response), response.hits
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def total_hits(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        cache = cp._topic_queries
+        key = (self.topicpage, self.filter_id, self.start)
+        if key in cache:
+            _, _, hits = cache[key]
+        else:
+            _, hits = iself._get_documents(start=self.start, rows=0)
+        return hits
 
 
 class CenterpageContentQuery(ContentQuery):
