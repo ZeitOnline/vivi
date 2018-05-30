@@ -4,7 +4,7 @@ zeit.cms changes
 3.12.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-227: Refactor `channels` serialization so zeit.retresco can reuse it
 
 
 3.12.0 (2018-05-29)
