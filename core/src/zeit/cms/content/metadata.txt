@@ -57,19 +57,12 @@ Setting normal values:
 
 >>> product = zeit.cms.content.sources.Product(u'ZEDE', u'Zeit Online')
 >>> content.product = product
->>> content.product_text
+>>> content.product.id
+u'ZEDE'
+>>> content.product.title
 u'Zeit Online'
 >>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]
 u'ZEDE'
->>> properties[('product-name', 'http://namespaces.zeit.de/CMS/workflow')]
-u'Zeit Online'
-
-Setting the product text doesn't work:
-
->>> content.product_text = 'foo'
-Traceback (most recent call last):
-    ...
-AttributeError: can't set attribute
 
 Channels
 ++++++++

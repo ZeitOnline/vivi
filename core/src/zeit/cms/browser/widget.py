@@ -1,6 +1,7 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
+import grokcore.component as grok
 import json
 import pypandoc
 import time
@@ -8,6 +9,7 @@ import urlparse
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -22,6 +24,7 @@ import zope.component
 import zope.formlib.interfaces
 import zope.formlib.itemswidgets
 import zope.formlib.textwidgets
+import zope.i18n
 import zope.interface
 import zope.schema
 import zope.schema.interfaces
@@ -608,6 +611,31 @@ class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
 
     def __init__(self, context, source, request):
         super(AutocompleteDisplayWidget, self).__init__(context, request)
+
+
+class AutocompleteSourceQuery(grok.MultiAdapter,
+                              zeit.cms.browser.view.Base):
+
+    grok.adapts(
+        zeit.cms.content.interfaces.IAutocompleteSource,
+        zeit.cms.browser.interfaces.ICMSLayer)
+    grok.provides(zope.formlib.interfaces.ISourceQueryView)
+
+    def __init__(self, source, request):
+        self.source = source
+        self.request = request
+
+    def __call__(self):
+        return (
+            u'<input type="text" class="autocomplete" '
+            u'placeholder={placeholder} '
+            u'cms:autocomplete-source="{url}" />').format(
+            url=zope.component.queryMultiAdapter(
+                (self.source, self.request),
+                zeit.cms.browser.interfaces.ISourceQueryURL),
+            placeholder=xml.sax.saxutils.quoteattr(
+                zope.i18n.translate(
+                    _('Type to find entries ...'), context=self.request)))
 
 
 class ColorpickerWidget(zope.formlib.textwidgets.TextWidget):

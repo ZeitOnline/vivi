@@ -412,6 +412,34 @@ class CollectionTextLineProperty(object):
         return ';'.join(result)
 
 
+class ChannelProperty(UnicodeProperty):
+
+    zope.component.adapts(
+        zeit.cms.content.interfaces.IChannelField,
+        zeit.connector.interfaces.IWebDAVReadProperties)
+
+    def fromProperty(self, value):
+        # Cannot call super since CombinationField has no `fromUnicode`
+        value = unicode(value)
+        return tuple(value.split(' ')) if ' ' in value else (value, None)
+
+    def toProperty(self, value):
+        value = ' '.join([x for x in value if x])
+        return super(ChannelProperty, self).toProperty(value)
+
+
+# Since CollectionTextLineProperty only applies to value_type TextLine,
+# we have to register it again so it picks up value_type IChannelField.
+class CollectionChannelProperty(CollectionTextLineProperty):
+
+    zope.interface.implements(
+        zeit.cms.content.interfaces.IDAVPropertyConverter)
+    zope.component.adapts(
+        zope.schema.interfaces.ICollection,
+        zeit.cms.content.interfaces.IChannelField,
+        zeit.connector.interfaces.IWebDAVReadProperties)
+
+
 class GenericProperty(object):
     """Generic property converter.
 

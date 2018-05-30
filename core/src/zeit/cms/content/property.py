@@ -67,8 +67,9 @@ class ObjectPathProperty(object):
             if value is not None:
                 self.path.setattr(instance.xml, value)
             else:
-                node = self.path.find(instance.xml)
-                node.getparent().remove(node)
+                node = self.path.find(instance.xml, None)
+                if node is not None:
+                    node.getparent().remove(node)
             node = self.getNode(instance)
             if node is not None:
                 lxml.objectify.deannotate(node)

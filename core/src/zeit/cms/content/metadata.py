@@ -22,6 +22,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'page',
         'ressort',
         'sub_ressort',
+        'serie',
         'vg_wort_id',
         'volume',
         'year',
@@ -94,65 +95,13 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
 
-    _product_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(),
-        'http://namespaces.zeit.de/CMS/workflow', 'product-id')
-    _product_text = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(),
-        'http://namespaces.zeit.de/CMS/workflow', 'product-name')
+    channels = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['channels'], DOCUMENT_SCHEMA_NS, 'channels',
+        use_default=True)
 
-    _serie = zeit.cms.content.dav.DAVProperty(
-        zope.schema.TextLine(), DOCUMENT_SCHEMA_NS, 'serie')
-
-    @property
-    def product(self):
-        source = ICommonMetadata['product'].source(self)
-        return source.find(self._product_id)
-
-    @product.setter
-    def product(self, value):
-        if value is not None:
-            if self._product_id == value.id:
-                return
-            self._product_id = value.id
-            self._product_text = value.title
-        else:
-            self._product_id = None
-            self._product_text = None
-
-    @property
-    def product_text(self):
-        return self._product_text
-
-    _channels = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Tuple(value_type=zope.schema.TextLine()),
-        DOCUMENT_SCHEMA_NS, 'channels')
-
-    @property
-    def serie(self):
-        source = ICommonMetadata['serie'].source(self)
-        return source.find(self._serie)
-
-    @serie.setter
-    def serie(self, value):
-        if value is not None:
-            if self._serie != value.serienname:
-                self._serie = value.serienname
-        else:
-            self._serie = None
-
-    @property
-    def channels(self):
-        if self._channels:
-            return tuple(tuple(x.split(' ') if ' ' in x else (x, None))
-                         for x in self._channels)
-        else:
-            return ()
-
-    @channels.setter
-    def channels(self, value):
-        self._channels = tuple(' '.join([x for x in channel if x])
-                               for channel in value)
+    product = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
+        'product-id')
 
     storystreams = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,

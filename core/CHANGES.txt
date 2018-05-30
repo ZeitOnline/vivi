@@ -1,10 +1,29 @@
 zeit.cms changes
 ================
 
-3.11.2 (unreleased)
+3.12.2 (unreleased)
 -------------------
 
 - ZON-4699: Add shortened UUID
+
+
+3.12.1 (2018-05-30)
+-------------------
+
+- TMS-227: Refactor `channels` serialization so zeit.retresco can reuse it
+
+
+3.12.0 (2018-05-29)
+-------------------
+
+- TMS-227: Change serialization to DAVPropertyConverter for
+  reusability, for `channels`, `product`, `serie`.
+
+- TMS-227: Remove obsolete `product_text` field (and `workflow:product-name` DAV property)
+
+- MAINT: Move autocomplete source query view here from zeit.find,
+  generalize using ISourceQueryURL lookup mechanism
+>>>>>>> master
 
 - FIX: Allow to delete object path properties by setting them to `None`.
 
