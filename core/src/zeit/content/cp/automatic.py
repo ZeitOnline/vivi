@@ -297,27 +297,32 @@ class TMSContentQuery(ContentQuery):
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
-        self.total_hits = 0
         result = []
         topicpage = self.context.referenced_topicpage
-        try:
-            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            response = tms.get_topicpage_documents(
-                topicpage, self.start, self.rows, filter=self.filter_id)
-            self.total_hits = response.hits
-            for item in response:
-                content = self._resolve(item)
-                if content is not None:
-                    result.append(content)
-        except Exception:
-            log.warning('Error during TMS query %r for %s',
-                        topicpage, self.context.uniqueId, exc_info=True)
+        response = self._get_documents(
+            topicpage, self.start, self.rows, filter=self.filter_id)
+        for item in response:
+            content = self._resolve(item)
+            if content is not None:
+                result.append(content)
 
         if not self.context.hide_dupes:
             return result
         # Since TMS does not allow extending a topicpage request with arbitrary
         # ES query parameters, we have to filter duplicates in-memory.
         return [x for x in result if x not in self.existing_teasers]
+
+    def _get_documents(self, topicpage, **kw):
+        self.total_hits = 0
+        try:
+            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+            response = tms.get_topicpage_documents(topicpage, **kw)
+            self.total_hits = response.hits
+            return response
+        except Exception:
+            log.warning('Error during TMS query %r for %s',
+                        topicpage, self.context.uniqueId, exc_info=True)
+            return []
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
