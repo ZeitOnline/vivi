@@ -309,14 +309,10 @@ class TMSContentQuery(ContentQuery):
         while len(result) < self.rows:
             item = response.next()
             content = self._resolve(item)
-            if content is not None:
+            if content is not None and (not self.context.hide_dupes or
+                                        content not in self.existing_teasers):
                 result.append(content)
-
-        if not self.context.hide_dupes:
-            return result
-        # Since TMS does not allow extending a topicpage request with arbitrary
-        # ES query parameters, we have to filter duplicates in-memory.
-        return [x for x in result if x not in self.existing_teasers]
+        return result
 
     def _get_documents(self, topicpage, **kw):
         self.total_hits = 0
