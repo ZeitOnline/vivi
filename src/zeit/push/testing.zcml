@@ -12,6 +12,7 @@
   <include package="zeit.push.browser" />
 
   <include package="zeit.content.article" />
+
   <include package="zeit.content.author" />
 
   <include package="zeit.content.image" />

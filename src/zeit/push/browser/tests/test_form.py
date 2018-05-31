@@ -233,6 +233,7 @@ class SocialAddFormTest(SocialFormTest):
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
         b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Payload Template').displayValue = ['Foo']
+        b.getControl(name='form.mobile_enabled').value = False
         b.getControl(name='form.actions.add').click()
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/social')
         push = zeit.push.interfaces.IPushMessages(content)

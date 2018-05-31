@@ -12,6 +12,7 @@ import pytz
 import sys
 import urbanairship
 import urlparse
+import zeit.content.article.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
@@ -19,6 +20,7 @@ import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
 import zope.interface
+import zope.lifecycleevent.interfaces
 
 
 log = logging.getLogger(__name__)
@@ -135,7 +137,7 @@ class Message(zeit.push.message.Message):
             'zon_link': self.url,
             'app_link': self.app_link,
             'image': self.image_url,
-            'author_uuids': self.author_uuids
+            'author_push_uuids': self.author_push_uuids
         })
         return result
 
@@ -159,14 +161,15 @@ class Message(zeit.push.message.Message):
         return self.config.get('override_text', self.context.title)
 
     @property
-    def author_uuids(self):
+    def author_push_uuids(self):
         author_uuids = []
         for author_reference in self.context.authorships:
-            uuid = zeit.cms.content.interfaces.IUUID(author_reference.target,
-                                                     None)
-            # Use shortened id. Friedbert adds them to UA
-            if uuid.shortened:
-                author_uuids.append(uuid.shortened)
+            if author_reference.target.enable_followpush:
+                uuid = zeit.cms.content.interfaces.IUUID(author_reference.target,
+                                                         None)
+                # Use shortened id. Friedbert adds them to UA
+                if uuid:
+                    author_uuids.append(uuid.shortened)
         return author_uuids
 
     @property
@@ -289,3 +292,16 @@ Pushnachricht zugegriffen werden:"""
     template.text = template_text
     message.find_template = lambda x: template
     conn.send('any', 'any', message=message)
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+def set_author_as_default_push_template(context, event):
+    push = zeit.push.interfaces.IPushMessages(context)
+    template_name = zope.app.appsetup.product\
+        .getProductConfiguration('zeit.push')\
+        .get('urbanairship-author-push-template-name')
+    push.message_config = [{'type': 'mobile',
+                            'enabled': True,
+                            'payload_template': template_name}]
