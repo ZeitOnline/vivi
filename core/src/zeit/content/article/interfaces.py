@@ -90,6 +90,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         default=False,
         required=False)
 
+    recent_comments_first = zope.schema.Bool(
+        title=_('Recent comments first'),
+        default=False,
+        required=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
