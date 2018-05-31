@@ -4,7 +4,7 @@ zeit.cms changes
 3.12.2 (unreleased)
 -------------------
 
-- ZON-4699: Add shortened UUID
+- ZON-4709: Add shortened UUID property
 
 
 3.12.1 (2018-05-30)
@@ -23,7 +23,6 @@ zeit.cms changes
 
 - MAINT: Move autocomplete source query view here from zeit.find,
   generalize using ISourceQueryURL lookup mechanism
->>>>>>> master
 
 - FIX: Allow to delete object path properties by setting them to `None`.
 
