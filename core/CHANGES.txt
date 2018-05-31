@@ -4,7 +4,7 @@ zeit.content.article changes
 3.38.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4720: Add checkbox to be able to show recent article comments first
 
 
 3.38.2 (2018-05-29)

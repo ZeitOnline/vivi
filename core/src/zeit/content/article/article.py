@@ -64,7 +64,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'artbox_thema', 'layout', 'genre',
          'template', 'header_layout', 'is_instant_article', 'is_amp',
-         'hide_ligatus_recommendations'))
+         'hide_ligatus_recommendations', 'recent_comments_first'))
 
     @property
     def body(self):

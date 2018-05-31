@@ -453,7 +453,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     prefix = 'options-a'
     undo_description = _('edit options')
     form_fields = FormFields(IArticle).select(
-        'serie', 'breaking_news')
+        'serie', 'breaking_news', 'recent_comments_first')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
