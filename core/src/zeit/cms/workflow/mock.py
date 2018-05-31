@@ -18,7 +18,9 @@ class MockPublish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT, async=True, **kw):
+    def publish(self, priority=PRIORITY_DEFAULT, async=True, object=None,  **kw):
+        if object:
+            self.context = object
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish()
         if can_publish != CAN_PUBLISH_SUCCESS:
@@ -47,7 +49,7 @@ class MockPublish(object):
             self, objects, priority=PRIORITY_LOW, async=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.publish(obj, priority, async)
+            self.publish(priority, async, obj)
 
 
 class MockPublishInfo(object):
