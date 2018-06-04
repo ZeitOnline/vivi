@@ -40,7 +40,7 @@ class Elasticsearch(object):
         self.index = index
 
     def search(
-            self, query, sort_order=None,
+            self, query, sort_order='',
             start=0, rows=25, include_payload=False):
         """Search using `query` and sort by `sort_order`. Pagination is
         available through the `start` and `rows` parameter.
