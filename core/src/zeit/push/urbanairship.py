@@ -298,10 +298,13 @@ Pushnachricht zugegriffen werden:"""
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.interfaces.IObjectCreatedEvent)
 def set_author_as_default_push_template(context, event):
-    push = zeit.push.interfaces.IPushMessages(context)
-    template_name = zope.app.appsetup.product\
-        .getProductConfiguration('zeit.push')\
-        .get('urbanairship-author-push-template-name')
-    push.message_config = [{'type': 'mobile',
-                            'enabled': True,
-                            'payload_template': template_name}]
+    config = zope.app.appsetup.appsetup.getConfigContext()
+    import pdb; pdb.set_trace()
+    if config and config.hasFeature('zeit.push.set_author_push_default'):
+        push = zeit.push.interfaces.IPushMessages(context)
+        template_name = zope.app.appsetup.product\
+            .getProductConfiguration('zeit.push')\
+            .get('urbanairship-author-push-template-name')
+        push.message_config = [{'type': 'mobile',
+                                'enabled': True,
+                                'payload_template': template_name}]
