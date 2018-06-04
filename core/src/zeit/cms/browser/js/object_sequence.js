@@ -1,8 +1,35 @@
 // Copyright (c) 2011 gocept gmbh & co. kg
 // See also LICENSE.txt
 
+zeit.cms.AutocompleteWidgetMixin = gocept.Class.extend({
 
-zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
+    initialize_autocomplete: function() {
+        var self = this;
+        self.autocomplete = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'input', 'autocomplete', self.element);
+        if (isNull(self.autocomplete)) {
+            return;
+        }
+        jQuery(self.autocomplete).autocomplete({
+            source: self.autocomplete.getAttribute('cms:autocomplete-source'),
+            focus: function(event, ui) {
+                jQuery(self.autocomplete).val(ui.item.label);
+                return false;
+            },
+            select: function(event, ui) {
+                self.autocomplete_action(ui.item.value);
+                jQuery(self.autocomplete).val('');
+                return false;
+            },
+            appendTo: self.element.id
+        });
+    },
+
+    autocomplete_action: null  // to be implemented in subclass
+});
+
+
+zeit.cms.ObjectSequenceWidget = zeit.cms.AutocompleteWidgetMixin.extend({
 
     DEFAULT_HINT: 'Ziehen Sie Inhalte hierher um sie zu verknüpfen.',
 
@@ -36,28 +63,6 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             ondrop: function(element, last_active_element, event) {
                 self.handleDrop(element);
             }
-        });
-    },
-
-    initialize_autocomplete: function() {
-        var self = this;
-        self.autocomplete = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'input', 'autocomplete', self.element);
-        if (isNull(self.autocomplete)) {
-            return;
-        }
-        jQuery(self.autocomplete).autocomplete({
-            source: self.autocomplete.getAttribute('cms:autocomplete-source'),
-            focus: function(event, ui) {
-                jQuery(self.autocomplete).val(ui.item.label);
-                return false;
-            },
-            select: function(event, ui) {
-                self.add(ui.item.value);
-                jQuery(self.autocomplete).val('');
-                return false;
-            },
-            appendTo: self.element
         });
     },
 
@@ -165,6 +170,10 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         self.changed();
     },
 
+    autocomplete_action: function(value) {
+        this.add(value);
+    },
+
     remove: function(index) {
         var self = this;
 
@@ -268,7 +277,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 });
 
 
-zeit.cms.DropObjectWidget = gocept.Class.extend({
+zeit.cms.DropObjectWidget = zeit.cms.AutocompleteWidgetMixin.extend({
 
     construct: function(element, accept, detail_view_name, description,
                         cache_object_details) {
@@ -279,6 +288,8 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.description =
             description || zeit.cms.ObjectSequenceWidget.prototype.DEFAULT_HINT;
         self.cache_object_details = cache_object_details;
+
+        self.initialize_autocomplete();
 
         self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', null, self.element);
@@ -307,6 +318,10 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.input.value = value;
         self.changed();
         self.update_details();
+    },
+
+    autocomplete_action: function(value) {
+        this.set(value);
     },
 
     handleUrlChange: function(event) {

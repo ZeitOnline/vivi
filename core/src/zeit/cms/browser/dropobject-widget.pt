@@ -6,7 +6,9 @@
            value view/_getFormValue" />
     <div class="object-reference landing-zone-candidate"></div>
   <div>
-    <input tal:condition="view/display_url_field"
+    <tal:x condition="view/query_view" replace="structure view/query_view"/>
+    <input tal:condition="python:
+              view.display_url_field and not view.query_view"
         type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
            name string:${view/name}.url;" />

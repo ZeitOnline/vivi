@@ -425,6 +425,12 @@ class DropObjectWidget(
         return zope.i18n.translate(
             self.context.description, context=self.request)
 
+    @zope.cachedescriptors.property.Lazy
+    def query_view(self):
+        return zope.component.queryMultiAdapter(
+            (self.source, self.request),
+            zope.formlib.interfaces.ISourceQueryView)
+
 
 def ReferenceCollectionInputWidget(field, value_type, request):
     """Widget for Tuple(ReferenceField).

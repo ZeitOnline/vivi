@@ -4,7 +4,7 @@ zeit.cms changes
 3.12.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-227: Make autocomplete available on DropObjectWidget
 
 
 3.12.1 (2018-05-30)
