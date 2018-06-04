@@ -149,7 +149,6 @@ class AreaBrowserTest(
 
     def test_edit_form_stores_custom_query(self):
         b = self.browser
-        b.handleErrors = False
         b.open(self.get_edit_area_link())
         edit_url = b.url
         b.getControl(name='form.automatic_type').displayValue = [
@@ -187,6 +186,20 @@ class AreaBrowserTest(
         self.assertEqual(
             ['International'], b.getControl('Channel').displayValue)
         self.assertEqual(['Meinung'], b.getControl('Subchannel').displayValue)
+
+    def test_removes_mismatched_custom_query_value_on_type_change(self):
+        b = self.browser
+        b.open(self.get_edit_area_link())
+        b.getControl(name='form.automatic_type').displayValue = [
+            'automatic-area-type-query']
+        b.getControl('Amount of teasers').value = '1'
+        b.getControl('Add Custom Query').click()
+        b.getControl('Channel').displayValue = ['International']
+        b.getControl('Custom Query Type').displayValue = [
+            'query-type-authorships']
+        b.getControl('Add Custom Query').click()  # Force a submit
+        self.assertEqual(
+            '', b.getControl(name='form.query.0..combination_01').value)
 
 
 class TooltipFixture(object):

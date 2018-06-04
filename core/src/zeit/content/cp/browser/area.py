@@ -119,6 +119,7 @@ class DynamicCombinationWidget(
                 len_value = len(value)
             except (TypeError, AttributeError):
                 value = missing_value
+            # patched
             # else:
             #     if len_value != len(field.fields):
             #         value = missing_value
@@ -133,6 +134,54 @@ class DynamicCombinationWidget(
             else:
                 w.invert_label = False
         return self.template()
+
+    def loadValueFromRequest(self):
+        """copy&paste from superclass to catch ConversionError and
+        ValidationError (which most likely occur due to the subfield type being
+        changed), and replace the actual value with missing_value in that case.
+        """
+        field = self.context
+        missing_value = field.missing_value
+        widgets = self.widgets
+        required_errors = []
+        errors = []
+        values = []
+        any = False
+        for w in widgets:
+            try:
+                val = w.getInputValue()
+            except zope.formlib.interfaces.WidgetInputError, e:
+                if isinstance(getattr(e, 'errors'),
+                              zope.schema.interfaces.RequiredMissing):
+                    required_errors.append((w, e))
+                else:
+                    errors.append((w, e))
+                val = w.context.missing_value
+            except zope.formlib.interfaces.InputErrors:  # patched
+                val = w.context.missing_value
+                # sub-widgets render themselves independently, so we have to
+                # remove the erroneous value from the request entirely.
+                self.request.form.pop(w.name, None)
+            values.append(val)
+            any = any or val != w.context.missing_value
+        if field.required or any or errors:
+            errors.extend(required_errors)
+        else:  # remove the required errors in the sub widgets
+            for w, e in required_errors:
+                w.error = lambda: None
+        if errors:
+            if len(errors) == 1:
+                errors = errors[0][1]
+            else:
+                errors = [e for widget, e in errors]
+            self._error = zope.formlib.interfaces.WidgetInputError(
+                self.context.__name__, self.label, errors)
+            values = missing_value
+        elif not any:
+            values = missing_value
+        else:
+            values = tuple(values)
+        return values
 
 
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
