@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.24.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: No longer rewrite ES raw queries on save
 
 
 3.24.0 (2018-05-29)

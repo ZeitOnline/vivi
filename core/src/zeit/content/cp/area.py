@@ -150,7 +150,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
         use_default=True)
 
-    _elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
+    elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
         zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
@@ -187,19 +187,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def is_teaserbar(self):
         # backward compatibility for teaser bar
         return self.xml.get('area') == 'teaser-row-full'
-
-    @property
-    def elasticsearch_raw_query(self):
-        return self._elasticsearch_raw_query
-
-    @elasticsearch_raw_query.setter
-    def elasticsearch_raw_query(self, value):
-        # Ensure a consistent indentation for raw query
-        if value is not None:
-            value = json.dumps(json.loads(value), indent=2, ensure_ascii=False)
-            if 'query' not in value:
-                raise ValueError('Top-level key "query" is required.')
-        self._elasticsearch_raw_query = value
 
     @property
     def apply_teaser_layouts_automatically(self):

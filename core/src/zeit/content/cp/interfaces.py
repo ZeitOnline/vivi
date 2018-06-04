@@ -508,7 +508,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         if data.automatic_type == 'elasticsearch-query' and (
                 data.elasticsearch_raw_query):
             try:
-                json.loads(data.elasticsearch_raw_query)
+                query = json.loads(data.elasticsearch_raw_query)
+                if 'query' not in query:
+                    raise ValueError('Top-level key "query" is required.')
             except (TypeError, ValueError), err:
                 raise zeit.cms.interfaces.ValidationError(
                     _('Elasticsearch raw query is malformed: {error}'
