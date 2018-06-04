@@ -68,6 +68,7 @@ zeit.edit.Editor = gocept.Class.extend({
 
     reload: function(element_id, url) {
         var self = this;
+        self.busy_until_reload_of(self);
         if (isUndefinedOrNull(element_id)) {
             return self.load_editor();
         }

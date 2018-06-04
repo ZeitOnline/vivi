@@ -4,7 +4,7 @@ Changes
 2.17.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Start busy indicator for "simple" editor reloads as well
 
 
 2.17.0 (2017-11-01)
