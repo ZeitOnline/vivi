@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.24.1 (unreleased)
 -------------------
 
+- TMS-234: Support comments and adding a title to the filter.json file
+
 - MAINT: No longer rewrite ES raw queries on save
 
 

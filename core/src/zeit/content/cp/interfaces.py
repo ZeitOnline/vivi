@@ -4,6 +4,7 @@ import collections
 import fractions
 import json
 import logging
+import re
 import urllib2
 import urlparse
 import zc.sourcefactory.contextual
@@ -289,17 +290,26 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
         url = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp').get('topicpage-filter-source')
         try:
-            return json.load(urllib2.urlopen(url))
+            data = '\n'.join([x for x in urllib2.urlopen(url)
+                              if not re.search(r'\s*//', x)])
+            data = json.loads(data)
         except Exception:
             log.warning(
                 'TopicpageFilterSource could not parse %s', url, exc_info=True)
-            return []
+            return {}
+        result = collections.OrderedDict()
+        for row in data:
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
 
     def getValues(self):
-        return [x.keys()[0] for x in self.json_data()]
+        return self.json_data().keys()
 
     def getTitle(self, value):
-        return value
+        return self.json_data()[value].get('title', value)
 
     def getToken(self, value):
         return value
