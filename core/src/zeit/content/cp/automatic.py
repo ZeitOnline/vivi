@@ -300,8 +300,8 @@ class TMSContentQuery(ContentQuery):
     def __call__(self):
         result = []
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        rows = cp.total_teaser_count() + 5      # total teasers + some spares
         cache = cp._topic_queries
+        rows = self._teaser_count + 5           # total teasers + some spares
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             response, start, _ = cache[key]
@@ -341,6 +341,14 @@ class TMSContentQuery(ContentQuery):
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def _teaser_count(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        return sum(
+            a.count for a in cp.content_areas
+            if a.count and a.automatic_type == 'topicpage'
+            and a.referenced_topicpage == self.topicpage)
 
     @property
     def total_hits(self):

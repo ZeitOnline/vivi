@@ -7,6 +7,7 @@ import mock
 import pysolr
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.cp.automatic
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -626,3 +627,20 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 {u'match': {u'foo': u'äää'}},
                 {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
+
+    def test_teaser_count(self):
+        a1 = self.create_automatic_area(self.cp, count=0, type='topicpage')
+        a2 = self.create_automatic_area(self.cp, count=0, type='topicpage')
+        a3 = self.create_automatic_area(self.cp, count=2)
+        a1.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        tms_query = zeit.content.cp.automatic.TMSContentQuery(a1)
+        self.assertEqual(tms_query._teaser_count, 0)
+        a2.count = 3
+        self.assertEqual(tms_query._teaser_count, 0)
+        a2.referenced_topicpage = 'tms-id'
+        self.assertEqual(tms_query._teaser_count, 3)
+        a3.automatic_type = 'topicpage'
+        self.assertEqual(tms_query._teaser_count, 5)
+        a1.count = 7
+        self.assertEqual(tms_query._teaser_count, 12)
