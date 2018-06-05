@@ -358,7 +358,7 @@ class TMSContentQuery(ContentQuery):
         if key in cache:
             _, _, hits = cache[key]
         else:
-            _, hits = iself._get_documents(start=self.start, rows=0)
+            _, hits = self._get_documents(start=self.start, rows=0)
         return hits
 
 
