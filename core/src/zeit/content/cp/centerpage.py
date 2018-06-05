@@ -188,21 +188,22 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         self._type_dav = value
 
     _cached_areas = gocept.cache.property.TransactionBoundCache(
-        '_v_cached_areas', collections.OrderedDict)
+        '_v_cached_areas', list)
 
-    def _fill_area_cache(self):
+    @property
+    def content_areas(self):
         if not self._cached_areas:
             for region in self.body.values():
                 for area in region.values():
-                    self._cached_areas[area.__name__] = area
+                    self._cached_areas.append(area)
+        return self._cached_areas
 
     _area_teasered_content = gocept.cache.property.TransactionBoundCache(
         '_v_area_teasered_content', dict)
 
     def teasered_content_above(self, current_area):
-        self._fill_area_cache()
         seen = set()
-        for area in self._cached_areas.values():
+        for area in self.content_areas:
             if area == current_area:
                 return seen
             if area not in self._area_teasered_content:
@@ -215,10 +216,9 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '_v_area_manual_content', dict)
 
     def manual_content_below(self, current_area):
-        self._fill_area_cache()
         seen = set()
         below = False
-        for area in self._cached_areas.values():
+        for area in self.content_areas:
             if area == current_area:
                 below = True
             if not below:
@@ -234,8 +234,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         return seen
 
     def total_teaser_count(self):
-        self._fill_area_cache()
-        return sum(a.count for a in self._cached_areas.values() if a.count)
+        return sum(a.count for a in self.content_areas if a.count)
 
     # cache storing tms query results so areas can share them (refs TMS-231)
     _topic_queries = gocept.cache.property.TransactionBoundCache(
