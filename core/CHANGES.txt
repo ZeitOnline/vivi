@@ -1,10 +1,16 @@
 zeit.cms changes
 ================
 
-3.12.2 (unreleased)
+3.12.3 (unreleased)
 -------------------
 
 - ZON-4709: Add shortened UUID property
+
+
+3.12.2 (2018-06-06)
+-------------------
+
+- TMS-227: Make autocomplete available on DropObjectWidget
 
 
 3.12.1 (2018-05-30)

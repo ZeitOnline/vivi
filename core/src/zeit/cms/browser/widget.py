@@ -230,7 +230,6 @@ class ObjectSequenceWidget(
     add_type = None
     display_search_button = True
     display_url_field = True
-    display_list_below_buttons = False  # XXX kludge needed for authors only
 
     def __init__(self, context, source, request):
         super(ObjectSequenceWidget, self).__init__(context, request)
@@ -424,6 +423,12 @@ class DropObjectWidget(
     def description(self):
         return zope.i18n.translate(
             self.context.description, context=self.request)
+
+    @zope.cachedescriptors.property.Lazy
+    def query_view(self):
+        return zope.component.queryMultiAdapter(
+            (self.source, self.request),
+            zope.formlib.interfaces.ISourceQueryView)
 
 
 def ReferenceCollectionInputWidget(field, value_type, request):
