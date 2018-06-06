@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.24.0 (unreleased)
+1.24.0 (2018-06-06)
 -------------------
 
 - TMS-213: Index images and imagegroups, infoboxes and portraitboxes
