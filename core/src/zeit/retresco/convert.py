@@ -16,6 +16,7 @@ import zeit.content.author.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
+import zeit.content.portraitbox.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
@@ -316,6 +317,18 @@ class Infobox(Converter):
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
             'supertitle': None,
+        }
+
+
+class Portraitbox(Converter):
+
+    interface = zeit.content.portraitbox.interfaces.IPortraitbox
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.name,
+            'teaser': self.context.name,
         }
 
 

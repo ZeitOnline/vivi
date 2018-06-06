@@ -16,6 +16,7 @@
   <include package="zeit.content.image" file="ftesting.zcml" />
   <include package="zeit.content.infobox" file="ftesting.zcml" />
   <include package="zeit.content.link" file="ftesting.zcml" />
+  <include package="zeit.content.portraitbox" file="ftesting.zcml" />
   <include package="zeit.content.rawxml" file="ftesting.zcml" />
   <include package="zeit.content.text" file="ftesting.zcml" />
   <include package="zeit.content.volume" file="ftesting.zcml" />
