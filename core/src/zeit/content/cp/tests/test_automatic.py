@@ -482,6 +482,11 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         area.automatic = True
         return area
 
+    def assertUniqueIds(self, area, *uniqueIds):
+        self.assertEqual(
+            [list(b)[0].uniqueId for b in IRenderedArea(area).values()],
+            ['http://xml.zeit.de' + uid for uid in uniqueIds])
+
     def test_manual_teaser_already_above_current_area_is_not_shown_again(self):
         self.cp['feature']['lead'].create_item('teaser').append(
             self.repository['t1'])
@@ -581,6 +586,31 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             self.assertEqual(
                 'http://xml.zeit.de/t2',
                 list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+
+    def test_tms_content_query_filters_duplicate_tmscontent_across_areas(self):
+        a1 = self.create_automatic_area(self.cp, count=2, type='topicpage')
+        a2 = self.create_automatic_area(self.cp, count=3, type='topicpage')
+        a3 = self.create_automatic_area(self.cp, count=2, type='topicpage')
+        a1.referenced_topicpage = 'tms-id'
+        a2.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        tms = mock.Mock()
+        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS)
+        results = zeit.cms.interfaces.Result()
+        for n in range(30):
+            url = 'teaser-{}'.format(n)
+            self.create_content(url, url)
+            results.append(dict(url='/' + url, doc_type='testcontenttype'))
+        tms.get_topicpage_documents.return_value = results
+
+        def resolve_tmscontent(self, doc):
+            return zeit.retresco.content.from_tms_representation(doc)
+
+        with mock.patch('zeit.content.cp.automatic.TMSContentQuery._resolve',
+                        new=resolve_tmscontent):
+            self.assertUniqueIds(a1, '/teaser-0', '/teaser-1')
+            self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
+            self.assertUniqueIds(a3, '/teaser-5', '/teaser-6')
 
     def test_solr_content_query_filters_duplicates(self):
         self.area.automatic_type = 'query'

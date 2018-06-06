@@ -16,6 +16,11 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+def centerpage_cache(context, name, factory):
+    cp = zeit.content.cp.interfaces.ICenterPage(context)
+    return cp.cache.setdefault(name, factory())
+
+
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     zope.component.adapts(zeit.content.cp.interfaces.IArea)
@@ -39,6 +44,13 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         raise AttributeError(name)
 
     def values(self):
+        cache = centerpage_cache(self, 'area_values', dict)
+        key = self.__name__
+        if key not in cache:
+            cache[key] = self._values()
+        return cache[key]
+
+    def _values(self):
         if not self.automatic:
             return self.context.values()
 
