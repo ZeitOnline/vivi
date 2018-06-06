@@ -10,6 +10,7 @@ import zeit.cms.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zeit.content.infobox.infobox
+import zeit.content.portraitbox.portraitbox
 import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
@@ -304,4 +305,14 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['infobox'])()
         self.assertEqual('infobox', data['doc_type'])
+        self.assertEqual('mytitle', data['title'])
+
+    def test_converts_portraitbox(self):
+        self.repository[
+            'portraitbox'] = zeit.content.portraitbox.portraitbox.Portraitbox()
+        with checked_out(self.repository['portraitbox']) as co:
+            co.name = 'mytitle'
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['portraitbox'])()
+        self.assertEqual('portraitbox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])

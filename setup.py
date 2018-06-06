@@ -38,6 +38,7 @@ setup(
         'zeit.content.image',
         'zeit.content.infobox',
         'zeit.content.link',
+        'zeit.content.portraitbox',
         'zeit.content.rawxml',
         'zeit.content.text',
         'zeit.content.volume',
