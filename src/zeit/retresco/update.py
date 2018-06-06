@@ -138,7 +138,7 @@ def unindex_async(self, uuid):
         self.retry()
 
 
-SKIP_TYPES = ['image', 'imagegroup', 'quiz']
+SKIP_TYPES = ['quiz']
 
 
 def should_skip(content):

@@ -3,19 +3,16 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.retresco.testing import create_testcontent
 import datetime
 import gocept.testing.assertion
-import mock
 import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zeit.cms.tagging.testing
 import zeit.content.image.interfaces
+import zeit.content.image.testing
 import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
-import zope.interface
-import zope.xmlpickle
 
 
 class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
@@ -46,19 +43,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
 
         # Extract fields for which we cannot easily/sensibly use assertEqual().
-        self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
-        self.assertStartsWith(
-            '{urn:uuid:', data['payload']['document'].pop('uuid'))
-        self.assertStartsWith(
-            str(datetime.date.today().year),
-            data['payload']['document'].pop('date_last_checkout'))
-        self.assertStartsWith(
-            str(datetime.date.today().year),
-            data['payload']['document'].pop('date-last-modified'))
-        self.assertStartsWith(
-            '<pickle', data['payload']['meta'].pop('provides'))
-        self.assertStartsWith(
-            '<ns0:rankedTags', data['payload']['tagging'].pop('keywords'))
+        self.assert_editing_fields(data)
         self.assertStartsWith('<body', data.pop('body'))
 
         teaser = (
@@ -158,6 +143,25 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'url': u'/online/2007/01/Somalia'
         }, data)
 
+    def assert_editing_fields(self, data):
+        self.assertStartsWith('{urn:uuid:', data.pop('doc_id'))
+        self.assertStartsWith(
+            '{urn:uuid:', data['payload']['document'].pop('uuid'))
+        self.assertStartsWith(
+            str(datetime.date.today().year),
+            data['payload']['document'].pop('date_last_checkout'))
+        self.assertStartsWith(
+            str(datetime.date.today().year),
+            data['payload']['document'].pop(
+                'date-last-modified',
+                # Only IXMLContent has this
+                str(datetime.date.today().year)))
+        self.assertStartsWith(
+            '<pickle', data['payload']['meta'].pop('provides'))
+        self.assertStartsWith(
+            '<ns0:rankedTags', data['payload'].get('tagging', {}).pop(
+                'keywords', '<ns0:rankedTags'))
+
     def test_converts_channels_correctly(self):
         content = create_testcontent()
         content.channels = (('Mainchannel', None),)
@@ -180,7 +184,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual('title', data['teaser'])
 
-    def test_converts_volumes(self):
+    def test_converts_volume(self):
         volume = zeit.content.volume.volume.Volume()
         volume.uniqueId = 'http://xml.zeit.de/volume'
         zeit.cms.content.interfaces.IUUID(volume).id = 'myid'
@@ -229,3 +233,65 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertNotIn('page', data['payload']['document'])
         self.assertNotIn('vgwort', data['payload'])
+
+    def test_converts_image(self):
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        with checked_out(image):
+            pass  # trigger uuid creation
+        data = zeit.retresco.interfaces.ITMSRepresentation(image)()
+        self.assert_editing_fields(data)
+        self.assertEqual({
+            'body': '<body/>',
+            'date': '1970-01-01T00:00:00Z',
+            'doc_type': 'image',
+            'payload': {
+                'document': {
+                    'author': [u'Jochen Stahnke'],
+                    'banner': True,
+                    'last_modified_by': 'zope.user',
+                },
+                'meta': {'type': 'image'},
+                'vivi': {
+                    'cms_icon': ('/@@/zeit-content-image-interfaces'
+                                 '-IImage-zmi_icon.png'),
+                    'cms_preview_url': ('/repository/2006/'
+                                        'DSC00109_2.JPG/thumbnail'),
+                    'publish_status': 'not-published'
+                }
+            },
+            'url': '/2006/DSC00109_2.JPG',
+            'title': 'DSC00109_2.JPG',
+            'teaser': 'DSC00109_2.JPG',
+        }, data)
+
+    def test_converts_imagegroup(self):
+        group = zeit.content.image.testing.create_image_group()
+        with checked_out(group) as co:
+            meta = zeit.content.image.interfaces.IImageMetadata(co)
+            meta.title = u'mytitle'
+            meta.caption = u'mycaption'
+        data = zeit.retresco.interfaces.ITMSRepresentation(group)()
+        self.assert_editing_fields(data)
+        self.assertEqual({
+            'body': '<body/>',
+            'date': '1970-01-01T00:00:00Z',
+            'doc_type': 'image-group',
+            'payload': {
+                'document': {
+                    'last_modified_by': 'zope.user',
+                    'title': 'mytitle',
+                },
+                'image': {'caption': 'mycaption'},
+                'meta': {'type': 'image-group'},
+                'vivi': {
+                    'cms_icon': ('/@@/zeit-content-image-interfaces'
+                                 '-IImageGroup-zmi_icon.png'),
+                    'cms_preview_url': '/repository/image-group/thumbnail',
+                    'publish_status': 'not-published'
+                }
+            },
+            'url': '/image-group/',
+            'title': 'mytitle',
+            'teaser': 'mycaption',
+        }, data)
