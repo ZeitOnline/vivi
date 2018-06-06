@@ -14,6 +14,7 @@ import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
+import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
@@ -301,6 +302,20 @@ class Image(Converter):
             # Required fields, so make sure to always index (for zeit.find).
             'title': title,
             'teaser': self.context.caption or title,
+        }
+
+
+class Infobox(Converter):
+
+    interface = zeit.content.infobox.interfaces.IInfobox
+    # Sort after ICommonMetadata so we can override its results
+    grok.name('zzz_' + interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.supertitle,
+            'teaser': self.context.supertitle,
+            'supertitle': None,
         }
 
 

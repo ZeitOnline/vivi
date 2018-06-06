@@ -36,6 +36,7 @@ setup(
         'zeit.content.author',
         'zeit.content.article',
         'zeit.content.image',
+        'zeit.content.infobox',
         'zeit.content.link',
         'zeit.content.rawxml',
         'zeit.content.text',
