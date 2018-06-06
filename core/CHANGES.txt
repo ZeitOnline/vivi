@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.24.1 (unreleased)
+3.24.1 (2018-06-06)
 -------------------
 
 - TMS-234: Support comments and adding a title to the filter.json file
