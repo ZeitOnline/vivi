@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.17.1 (unreleased)
+2.17.1 (2018-06-06)
 -------------------
 
 - MAINT: Start busy indicator for "simple" editor reloads as well
