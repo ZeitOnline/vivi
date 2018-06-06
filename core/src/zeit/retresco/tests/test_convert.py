@@ -9,6 +9,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.testing
+import zeit.content.infobox.infobox
 import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
@@ -295,3 +296,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'title': 'mytitle',
             'teaser': 'mycaption',
         }, data)
+
+    def test_converts_infobox(self):
+        self.repository['infobox'] = zeit.content.infobox.infobox.Infobox()
+        with checked_out(self.repository['infobox']) as co:
+            co.supertitle = 'mytitle'
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['infobox'])()
+        self.assertEqual('infobox', data['doc_type'])
+        self.assertEqual('mytitle', data['title'])
