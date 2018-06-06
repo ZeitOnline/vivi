@@ -18,7 +18,8 @@ class MockPublish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT, async=True, object=None,  **kw):
+    def publish(self, priority=PRIORITY_DEFAULT, async=True,
+                object=None, **kw):
         if object:
             self.context = object
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
