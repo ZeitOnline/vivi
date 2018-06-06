@@ -290,6 +290,20 @@ class Link(Converter):
         }
 
 
+class Image(Converter):
+
+    interface = zeit.content.image.interfaces.IImageMetadata
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        title = self.context.title or self.content.__name__
+        return {
+            # Required fields, so make sure to always index (for zeit.find).
+            'title': title,
+            'teaser': self.context.caption or title,
+        }
+
+
 class Volume(Converter):
     """This adapter is for indexing actual IVolume objects. Since ICMSContent
     objects can be adapted to IVolume (finding the associated volume object),
