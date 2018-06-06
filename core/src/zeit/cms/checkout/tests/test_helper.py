@@ -32,7 +32,7 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
             zeit.connector.interfaces.IConnector)
         connector.lock('http://xml.zeit.de/testcontent', 'frodo', None)
         with zeit.cms.checkout.helper.checked_out(
-            self.repository['testcontent']) as co:
+                self.repository['testcontent']) as co:
             self.assertTrue(co is None)
 
     def test_semantic_change(self):

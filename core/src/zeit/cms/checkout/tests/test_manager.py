@@ -190,20 +190,20 @@ class SemanticChangeTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_checkin_with_semantic_change_sets_lsc_date(self):
         with zeit.cms.checkout.helper.checked_out(
-            self.content, semantic_change=True):
+                self.content, semantic_change=True):
             pass
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
 
     def test_checkin_without_semantic_change_does_not_change_lsc_date(self):
         old = self.sc.last_semantic_change
         with zeit.cms.checkout.helper.checked_out(
-            self.content, semantic_change=False):
+                self.content, semantic_change=False):
             pass
         self.assertEqual(old, self.sc.last_semantic_change)
 
     def test_checkin_without_explicit_sc_uses_sc_flag_on_content_object(self):
         with zeit.cms.checkout.helper.checked_out(
-            self.content, semantic_change=None) as co:
+                self.content, semantic_change=None) as co:
             sc = zeit.cms.content.interfaces.ISemanticChange(co)
             sc.has_semantic_change = True
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)

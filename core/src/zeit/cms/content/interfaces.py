@@ -670,6 +670,12 @@ class IUUID(zope.interface.Interface):
         default=None,
         required=False)
 
+    shortened = zope.schema.ASCIILine(
+        title=u"id without `{urn:uuid:}` prefix",
+        readonly=True,
+        required=False,
+        default=None)
+
 
 class IMemo(zope.interface.Interface):
     """Provide a memo for additional remarks on a content object."""

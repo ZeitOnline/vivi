@@ -26,6 +26,12 @@ class ContentUUID(object):
     def __init__(self, context):
         self.context = context
 
+    @property
+    def shortened(self):
+        # Cut off the rather useless 'urn:uuid:' prefix
+        if self.id:
+            return self.id.strip('{}').replace('urn:uuid:', '')
+
     def __str__(self):
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, self.id)

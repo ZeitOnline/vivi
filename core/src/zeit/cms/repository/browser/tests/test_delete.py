@@ -23,7 +23,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         with self.assertRaises(LinkNotFoundError):
             self.browser.getLink(url='@@delete.html')
 
-    def test_delete_button_is_displayed_for_folder_without_published_objects(self):
+    def test_delete_button_is_displayed_for_folder_without_published_objects(
+            self):
         folder = self.repository['testing']
         folder['foo'] = ExampleContentType()
         self.assertFalse(IPublishInfo(folder).published)
@@ -36,7 +37,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.open(url)
         browser.getControl('Delete')        # 'Delete' button exists
 
-    def test_delete_button_is_not_displayed_for_folder_with_published_objects(self):
+    def test_delete_button_is_not_displayed_for_folder_with_published_objects(
+            self):
         folder = self.repository['testing']
         folder['foo'] = content = ExampleContentType()
         self.assertFalse(IPublishInfo(folder).published)
