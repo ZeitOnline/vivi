@@ -23,13 +23,13 @@ def centerpage_cache(context, name, factory=securedict):
     return cp.cache.setdefault(name, factory())
 
 
-def cached_on_centerpage(keyfunc=operator.attrgetter('__name__')):
+def cached_on_centerpage(keyfunc=operator.attrgetter('__name__'), attr=None):
     """ Decorator to cache the results of the function in a dictionary
         on the centerpage.  The dictionary keys are built using the optional
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            cache = centerpage_cache(self, fn.__name__)
+            cache = centerpage_cache(self, attr or fn.__name__)
             key = keyfunc(self)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
@@ -60,7 +60,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_centerpage()
+    @cached_on_centerpage(attr='area_values')
     def values(self):
         if not self.automatic:
             return self.context.values()
