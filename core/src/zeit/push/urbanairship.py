@@ -164,12 +164,13 @@ class Message(zeit.push.message.Message):
     def author_push_uuids(self):
         author_uuids = []
         for author_reference in self.context.authorships:
-            if author_reference.target.enable_followpush:
-                uuid = zeit.cms.content.interfaces.IUUID(author_reference.target,
-                                                         None)
-                # Use shortened id. Friedbert adds them to UA
-                if uuid:
-                    author_uuids.append(uuid.shortened)
+            if author_reference.target and \
+                    author_reference.target.enable_followpush:
+                uuid = zeit.cms.content.interfaces.IUUID(
+                    author_reference.target)
+                # Use shortened id. Friedbert adds them to UA in
+                # zeit.web.site.view_author.Author.followpush_config
+                author_uuids.append(uuid.shortened)
         return author_uuids
 
     @property
@@ -299,7 +300,6 @@ Pushnachricht zugegriffen werden:"""
     zope.lifecycleevent.interfaces.IObjectCreatedEvent)
 def set_author_as_default_push_template(context, event):
     config = zope.app.appsetup.appsetup.getConfigContext()
-    import pdb; pdb.set_trace()
     if config and config.hasFeature('zeit.push.set_author_push_default'):
         push = zeit.push.interfaces.IPushMessages(context)
         template_name = zope.app.appsetup.product\
