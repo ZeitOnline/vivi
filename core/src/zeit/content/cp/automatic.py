@@ -322,8 +322,7 @@ class TMSContentQuery(ContentQuery):
 
     def __call__(self):
         result = []
-        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        cache = cp._topic_queries
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
         rows = self._teaser_count + 5           # total teasers + some spares
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
@@ -375,8 +374,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def total_hits(self):
-        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        cache = cp._topic_queries
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
