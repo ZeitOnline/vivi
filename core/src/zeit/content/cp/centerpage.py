@@ -41,6 +41,10 @@ def create_delegate(name):
     return delegate
 
 
+class securedict(dict):
+    """ dictionary with zope.interface.common.mapping.IFullMapping """
+
+
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
@@ -187,7 +191,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         self._type_xml = value
         self._type_dav = value
 
-    cache = gocept.cache.property.TransactionBoundCache('_v_cache', dict)
+    cache = gocept.cache.property.TransactionBoundCache('_v_cache', securedict)
 
     _cached_areas = gocept.cache.property.TransactionBoundCache(
         '_v_cached_areas', list)

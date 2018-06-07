@@ -1,3 +1,4 @@
+from zeit.content.cp.centerpage import securedict
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -16,7 +17,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-def centerpage_cache(context, name, factory):
+def centerpage_cache(context, name, factory=securedict):
     cp = zeit.content.cp.interfaces.ICenterPage(context)
     return cp.cache.setdefault(name, factory())
 
@@ -44,7 +45,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         raise AttributeError(name)
 
     def values(self):
-        cache = centerpage_cache(self, 'area_values', dict)
+        cache = centerpage_cache(self, 'area_values')
         key = self.__name__
         if key not in cache:
             cache[key] = self._values()

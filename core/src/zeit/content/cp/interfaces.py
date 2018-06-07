@@ -110,6 +110,10 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     def updateMetadata(content):
         """Update the metadata of the given content object."""
 
+    def cache():
+        """Returns a (transaction bound) cache, which can be used for various
+        things like rendered areas, teaser contents, query objects etc."""
+
     def content_areas():
         """Returns a (cached) list of content objects contained in any
         ITeaserBlock module on the page."""
