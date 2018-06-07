@@ -78,7 +78,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
     defaultBases = (ZCML_LAYER,)
 
-    def create_template(self, text=None, name='template.json', available=True):
+    def create_template(self, text=None, name='template.json'):
         if not text:
             text = pkg_resources.resource_string(
                 __name__, 'tests/fixtures/payloadtemplate.json')
@@ -92,7 +92,6 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
                 template = zeit.content.text.jinja.JinjaTemplate()
                 template.text = text
                 template.title = name.split('.')[0].capitalize()
-                template.available = available
                 folder[name] = template
 
     def setUp(self):
@@ -103,7 +102,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
         self.create_template('', 'eilmeldung.json')
         self.create_template(pkg_resources.resource_string(
             __name__, 'tests/fixtures/authors.json'),
-            'authors.json', False)
+            'authors.json')
 
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
