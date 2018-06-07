@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.21.5 (unreleased)
+2.21.5 (2018-06-07)
 -------------------
 
 - TMS-213: Don't index images inside of image groups in TMS
