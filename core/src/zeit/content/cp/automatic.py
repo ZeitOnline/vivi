@@ -4,6 +4,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import operator
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.interfaces
@@ -20,6 +21,21 @@ log = logging.getLogger(__name__)
 def centerpage_cache(context, name, factory=securedict):
     cp = zeit.content.cp.interfaces.ICenterPage(context)
     return cp.cache.setdefault(name, factory())
+
+
+def cached_on_centerpage(keyfunc=operator.attrgetter('__name__')):
+    """ Decorator to cache the results of the function in a dictionary
+        on the centerpage.  The dictionary keys are built using the optional
+        `keyfunc`, which is called with `self` as a single argument. """
+    def decorator(fn):
+        def wrapper(self, *args, **kw):
+            cache = centerpage_cache(self, fn.__name__)
+            key = keyfunc(self)
+            if key not in cache:
+                cache[key] = fn(self, *args, **kw)
+            return cache[key]
+        return wrapper
+    return decorator
 
 
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
@@ -44,14 +60,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
+    @cached_on_centerpage()
     def values(self):
-        cache = centerpage_cache(self, 'area_values')
-        key = self.__name__
-        if key not in cache:
-            cache[key] = self._values()
-        return cache[key]
-
-    def _values(self):
         if not self.automatic:
             return self.context.values()
 
