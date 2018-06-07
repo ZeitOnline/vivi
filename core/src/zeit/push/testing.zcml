@@ -13,6 +13,11 @@
   <include package="zeit.push.browser" />
 
   <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+
+  <include package="zeit.content.article.edit" />
+  <include package="zeit.content.article.edit.browser" />
+
 
   <include package="zeit.content.author" />
 
