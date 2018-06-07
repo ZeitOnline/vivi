@@ -192,16 +192,15 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 
     cache = gocept.cache.property.TransactionBoundCache('_v_cache', securedict)
 
-    _cached_areas = gocept.cache.property.TransactionBoundCache(
-        '_v_cached_areas', list)
-
     @property
     def content_areas(self):
-        if not self._cached_areas:
+        key = 'content_areas'
+        if key not in self.cache:
+            self.cache[key] = areas = []
             for region in self.body.values():
                 for area in region.values():
-                    self._cached_areas.append(area)
-        return self._cached_areas
+                    areas.append(area)
+        return self.cache[key]
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
