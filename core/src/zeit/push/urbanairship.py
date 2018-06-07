@@ -302,6 +302,10 @@ def set_author_as_default_push_template(context, event):
     config = zope.app.appsetup.appsetup.getConfigContext()
     if config and config.hasFeature('zeit.push.set_author_push_default'):
         push = zeit.push.interfaces.IPushMessages(context)
+        # Breaking News are also IArticle's and add messages
+        # we don't want to mess it up
+        if push.messages:
+            return
         template_name = zope.app.appsetup.product\
             .getProductConfiguration('zeit.push')\
             .get('urbanairship-author-push-template-name')
