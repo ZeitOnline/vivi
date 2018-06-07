@@ -164,31 +164,25 @@ class ContentQuery(grok.Adapter):
         area_manual_content = centerpage_cache(
             current_area, 'area_manual_content', dict)
 
-        # teasered_content_above
         seen = set()
-        for area in cp.content_areas:
-            if area == current_area:
-                break
-            if area not in area_teasered_content:
-                area_teasered_content[area] = set(
-                    zeit.content.cp.interfaces.ITeaseredContent(area))
-            seen.update(area_teasered_content[area])
-
-        # manual_content_below
         below = False
         for area in cp.content_areas:
             if area == current_area:
                 below = True
-            if not below:
-                continue
-            if area not in area_manual_content:
-                # Probably not worth a separate adapter (like
-                # ITeaseredContent), since the use case is pretty
-                # specialised.
-                area_manual_content[area] = set(
-                    zeit.content.cp.blocks.teaser.extract_manual_teasers(
-                        area))
-            seen.update(area_manual_content[area])
+            if not below:       # automatic teasers above current area
+                if area not in area_teasered_content:
+                    area_teasered_content[area] = set(
+                        zeit.content.cp.interfaces.ITeaseredContent(area))
+                seen.update(area_teasered_content[area])
+            else:               # manual teasers below (or in) current area
+                if area not in area_manual_content:
+                    # Probably not worth a separate adapter (like
+                    # ITeaseredContent), since the use case is pretty
+                    # specialised.
+                    area_manual_content[area] = set(
+                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
+                            area))
+                seen.update(area_manual_content[area])
         return seen
 
 
