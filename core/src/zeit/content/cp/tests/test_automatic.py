@@ -5,6 +5,7 @@ import json
 import lxml.etree
 import mock
 import pysolr
+import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.automatic
@@ -648,6 +649,10 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                     {'term': {'payload.workflow.published': True}}],
                 'must_not': {'ids': {'values': [id1, id2]}}}}},
             elasticsearch.search.call_args[0][0])
+
+        # since `AutomaticArea.values()` is cached on the transaction boundary
+        # now, we'll only see the change with the next request/transaction...
+        transaction.commit()
 
         # Do not filter, if switched off.
         self.area.hide_dupes = False
