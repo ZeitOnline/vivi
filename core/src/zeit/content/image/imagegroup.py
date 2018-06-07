@@ -42,7 +42,9 @@ def get_viewport_from_key(key):
 
 class ImageGroupBase(object):
 
-    zope.interface.implements(zeit.content.image.interfaces.IImageGroup)
+    zope.interface.implements(
+        zeit.content.image.interfaces.IImageGroup,
+        zeit.cms.repository.interfaces.INonRecursiveCollection)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
