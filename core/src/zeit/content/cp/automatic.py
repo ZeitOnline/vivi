@@ -7,6 +7,7 @@ import logging
 import operator
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.find.search
 import zeit.solr.interfaces
@@ -29,8 +30,9 @@ def cached_on_centerpage(keyfunc=operator.attrgetter('__name__'), attr=None):
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            cache = centerpage_cache(self, attr or fn.__name__)
-            key = keyfunc(self)
+            content = self.context
+            cache = centerpage_cache(content, attr or fn.__name__)
+            key = keyfunc(content)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
             return cache[key]
@@ -148,17 +150,46 @@ class ContentQuery(grok.Adapter):
         """Number of content objects per page"""
         return self.context.count
 
-    @cachedproperty
+    @property
+    @cached_on_centerpage()
     def existing_teasers(self):
         """Returns a set of ICMSContent objects that are already present on
         the CP in other areas. If IArea.hide_dupes is True, these should be
         not be repeated, and thus excluded from our query result.
         """
+        current_area = self.context
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        result = set()
-        result.update(cp.teasered_content_above(self.context))
-        result.update(cp.manual_content_below(self.context))
-        return result
+        area_teasered_content = centerpage_cache(
+            current_area, 'area_teasered_content', dict)
+        area_manual_content = centerpage_cache(
+            current_area, 'area_manual_content', dict)
+
+        # teasered_content_above
+        seen = set()
+        for area in cp.content_areas:
+            if area == current_area:
+                break
+            if area not in area_teasered_content:
+                area_teasered_content[area] = set(
+                    zeit.content.cp.interfaces.ITeaseredContent(area))
+            seen.update(area_teasered_content[area])
+
+        # manual_content_below
+        below = False
+        for area in cp.content_areas:
+            if area == current_area:
+                below = True
+            if not below:
+                continue
+            if area not in area_manual_content:
+                # Probably not worth a separate adapter (like
+                # ITeaseredContent), since the use case is pretty
+                # specialised.
+                area_manual_content[area] = set(
+                    zeit.content.cp.blocks.teaser.extract_manual_teasers(
+                        area))
+            seen.update(area_manual_content[area])
+        return seen
 
 
 class SolrContentQuery(ContentQuery):

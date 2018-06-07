@@ -118,16 +118,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         """Returns a (cached) list of content objects contained in any
         ITeaserBlock module on the page."""
 
-    def teasered_content_above(area):
-        """Returns set of content objects contained in any
-        ITeaserBlock module above the given area (IRenderedArea or manual)."""
-
-    def manual_content_below(area):
-        """Returns set of content objects contained in any
-        ITeaserBlock module below the given area (IRenderedArea is *not*
-        executed).
-        """
-
 
 class ICP2009(ICenterPage):
     """Marker interfaces for CPs edited by the old 2.x CP-Editor branch."""
