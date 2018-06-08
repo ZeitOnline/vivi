@@ -2,7 +2,7 @@ zeit.retresco changes
 =====================
 
 
-1.24.2 (unreleased)
+1.24.2 (2018-06-08)
 -------------------
 
 - TMS-213: Skip zeit.newsimport images
