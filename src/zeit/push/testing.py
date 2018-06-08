@@ -39,6 +39,7 @@ product_config = """\
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
   urbanairship-audience-group subscriptions
+  urbanairship-author-push-template-name authors.json
   mobile-buttons file://{fixtures}/mobile-buttons.xml
   push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
 </product-config>
@@ -99,6 +100,9 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
     def testSetUp(self):
         self.create_template('', 'foo.json')
         self.create_template('', 'eilmeldung.json')
+        self.create_template(pkg_resources.resource_string(
+            __name__, 'tests/fixtures/authors.json'),
+            'authors.json')
 
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
