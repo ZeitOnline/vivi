@@ -1,4 +1,4 @@
-from zeit.content.cp.centerpage import securedict
+from zeit.content.cp.centerpage import writeabledict
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -19,7 +19,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-def centerpage_cache(context, name, factory=securedict):
+def centerpage_cache(context, name, factory=writeabledict):
     cp = zeit.content.cp.interfaces.ICenterPage(context)
     return cp.cache.setdefault(name, factory())
 

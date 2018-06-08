@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
-from zeit.connector.search import SearchVar
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import collections
 import copy
@@ -18,7 +17,6 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.interfaces
-import zeit.cms.related.related
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
@@ -27,7 +25,6 @@ import zeit.edit.container
 import zeit.edit.interfaces
 import zope.interface
 import zope.lifecycleevent
-import zope.proxy
 import zope.security.proxy
 
 
@@ -40,8 +37,8 @@ def create_delegate(name):
     return delegate
 
 
-class securedict(dict):
-    """ dictionary with zope.interface.common.mapping.IFullMapping """
+class writeabledict(dict):
+    """dict with all (especially write) methods allowed by security"""
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
@@ -190,7 +187,8 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         self._type_xml = value
         self._type_dav = value
 
-    cache = gocept.cache.property.TransactionBoundCache('_v_cache', securedict)
+    cache = gocept.cache.property.TransactionBoundCache(
+        '_v_cache', writeabledict)
 
     @property
     def cached_areas(self):
