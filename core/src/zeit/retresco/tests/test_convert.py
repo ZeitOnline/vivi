@@ -298,6 +298,15 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'teaser': 'mycaption',
         }, data)
 
+    def test_skips_newsimport_images(self):
+        group = zeit.content.image.testing.create_image_group()
+        with checked_out(group):
+            pass  # trigger uuid creation
+        self.repository['news'] = zeit.cms.repository.folder.Folder()
+        self.repository['news']['group'] = group
+        data = zeit.retresco.interfaces.ITMSRepresentation(group)()
+        self.assertEqual(None, data)
+
     def test_converts_infobox(self):
         self.repository['infobox'] = zeit.content.infobox.infobox.Infobox()
         with checked_out(self.repository['infobox']) as co:
