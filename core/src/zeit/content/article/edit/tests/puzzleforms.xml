@@ -2,5 +2,5 @@
   <puzzle id="easter-puzzle">Osterrätsel</puzzle>
   <puzzle id="summer-puzzle" multiple="true">Sommerrätsel</puzzle>
   <puzzle id="winter-puzzle">Winterrätsel</puzzle>
-  <puzzle id="scrabble">Scrabble</puzzle>
+  <puzzle id="scrabble" multiple="true">Scrabble</puzzle>
 </puzzles>
