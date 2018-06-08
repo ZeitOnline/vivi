@@ -176,4 +176,11 @@
     interface=".interfaces.IStoryStream"
     type="zeit.cms.content.interfaces.IAddableContent"
     />
+
+  <class class=".centerpage.writeabledict">
+    <require
+      interface="zope.interface.common.mapping.IFullMapping"
+      permission="zope.View" />
+  </class>
+
 </configure>

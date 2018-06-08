@@ -5,8 +5,10 @@ import json
 import lxml.etree
 import mock
 import pysolr
+import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.cp.automatic
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -378,8 +380,8 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.tms.get_topicpage_documents.return_value = (
             zeit.cms.interfaces.Result())
         IRenderedArea(lead).values()
-        self.assertEqual(
-            'tms-id', self.tms.get_topicpage_documents.call_args[0][0])
+        args, kw = self.tms.get_topicpage_documents.call_args
+        self.assertEqual('tms-id', kw['id'])
 
     def test_returns_no_content_on_tms_error(self):
         lead = self.repository['cp']['lead']
@@ -481,6 +483,11 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         area.automatic = True
         return area
 
+    def assertUniqueIds(self, area, *uniqueIds):
+        self.assertEqual(
+            [list(b)[0].uniqueId for b in IRenderedArea(area).values()],
+            ['http://xml.zeit.de' + uid for uid in uniqueIds])
+
     def test_manual_teaser_already_above_current_area_is_not_shown_again(self):
         self.cp['feature']['lead'].create_item('teaser').append(
             self.repository['t1'])
@@ -581,6 +588,31 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 'http://xml.zeit.de/t2',
                 list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
+    def test_tms_content_query_filters_duplicate_tmscontent_across_areas(self):
+        a1 = self.create_automatic_area(self.cp, count=2, type='topicpage')
+        a2 = self.create_automatic_area(self.cp, count=3, type='topicpage')
+        a3 = self.create_automatic_area(self.cp, count=2, type='topicpage')
+        a1.referenced_topicpage = 'tms-id'
+        a2.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        tms = mock.Mock()
+        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS)
+        results = zeit.cms.interfaces.Result()
+        for n in range(30):
+            url = 'teaser-{}'.format(n)
+            self.create_content(url, url)
+            results.append(dict(url='/' + url, doc_type='testcontenttype'))
+        tms.get_topicpage_documents.return_value = results
+
+        def resolve_tmscontent(self, doc):
+            return zeit.retresco.content.from_tms_representation(doc)
+
+        with mock.patch('zeit.content.cp.automatic.TMSContentQuery._resolve',
+                        new=resolve_tmscontent):
+            self.assertUniqueIds(a1, '/teaser-0', '/teaser-1')
+            self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
+            self.assertUniqueIds(a3, '/teaser-5', '/teaser-6')
+
     def test_solr_content_query_filters_duplicates(self):
         self.area.automatic_type = 'query'
 
@@ -618,6 +650,10 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 'must_not': {'ids': {'values': [id1, id2]}}}}},
             elasticsearch.search.call_args[0][0])
 
+        # since `AutomaticArea.values()` is cached on the transaction boundary
+        # now, we'll only see the change with the next request/transaction...
+        transaction.commit()
+
         # Do not filter, if switched off.
         self.area.hide_dupes = False
         IRenderedArea(self.area).values()
@@ -626,3 +662,31 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 {u'match': {u'foo': u'äää'}},
                 {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
+
+    def test_teaser_count(self):
+        a1 = self.create_automatic_area(self.cp, count=0, type='topicpage')
+        a2 = self.create_automatic_area(self.cp, count=0, type='topicpage')
+        a3 = self.create_automatic_area(self.cp, count=2)
+        a1.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        tms_query = zeit.content.cp.automatic.TMSContentQuery(a1)
+        self.assertEqual(tms_query._teaser_count, 0)
+        a2.count = 3
+        self.assertEqual(tms_query._teaser_count, 0)
+        a2.referenced_topicpage = 'tms-id'
+        self.assertEqual(tms_query._teaser_count, 3)
+        a3.automatic_type = 'topicpage'
+        self.assertEqual(tms_query._teaser_count, 5)
+        a1.count = 7
+        self.assertEqual(tms_query._teaser_count, 12)
+
+    def test_total_hits_can_be_called_first(self):
+        area = self.create_automatic_area(self.cp)
+        area.start = 0          # TODO: are we sure this is _always_ set?
+        tms = mock.Mock()
+        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS)
+        results = zeit.cms.interfaces.Result([])
+        results.hits = 42
+        tms.get_topicpage_documents.return_value = results
+        tms_query = zeit.content.cp.automatic.TMSContentQuery(area)
+        self.assertEqual(tms_query.total_hits, 42)

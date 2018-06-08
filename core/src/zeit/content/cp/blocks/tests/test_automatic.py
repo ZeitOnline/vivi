@@ -1,6 +1,7 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import pysolr
+import transaction
 import zeit.content.cp.testing
 import zeit.solr.interfaces
 import zope.component
@@ -26,6 +27,10 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
             dict(uniqueId='http://xml.zeit.de/t1'),
             dict(uniqueId='http://xml.zeit.de/t2')], 2)
         lead.values()[0].materialize()
+
+        # since `AutomaticArea.values()` is cached on the transaction boundary
+        # now, we'll only see the change with the next request/transaction...
+        transaction.commit()
 
         result = IRenderedArea(lead).values()
         self.assertEqual(['teaser', 'auto-teaser'], [x.type for x in result])

@@ -1,10 +1,13 @@
+from zeit.content.cp.centerpage import writeabledict
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import operator
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.find.search
 import zeit.solr.interfaces
@@ -14,6 +17,27 @@ import zope.interface
 
 
 log = logging.getLogger(__name__)
+
+
+def centerpage_cache(context, name, factory=writeabledict):
+    cp = zeit.content.cp.interfaces.ICenterPage(context)
+    return cp.cache.setdefault(name, factory())
+
+
+def cached_on_centerpage(keyfunc=operator.attrgetter('__name__'), attr=None):
+    """ Decorator to cache the results of the function in a dictionary
+        on the centerpage.  The dictionary keys are built using the optional
+        `keyfunc`, which is called with `self` as a single argument. """
+    def decorator(fn):
+        def wrapper(self, *args, **kw):
+            content = self.context
+            cache = centerpage_cache(content, attr or fn.__name__)
+            key = keyfunc(content)
+            if key not in cache:
+                cache[key] = fn(self, *args, **kw)
+            return cache[key]
+        return wrapper
+    return decorator
 
 
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
@@ -38,6 +62,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
+    @cached_on_centerpage(attr='area_values')
     def values(self):
         if not self.automatic:
             return self.context.values()
@@ -125,17 +150,40 @@ class ContentQuery(grok.Adapter):
         """Number of content objects per page"""
         return self.context.count
 
-    @cachedproperty
+    @property
+    @cached_on_centerpage()
     def existing_teasers(self):
         """Returns a set of ICMSContent objects that are already present on
         the CP in other areas. If IArea.hide_dupes is True, these should be
         not be repeated, and thus excluded from our query result.
         """
+        current_area = self.context
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        result = set()
-        result.update(cp.teasered_content_above(self.context))
-        result.update(cp.manual_content_below(self.context))
-        return result
+        area_teasered_content = centerpage_cache(
+            current_area, 'area_teasered_content', dict)
+        area_manual_content = centerpage_cache(
+            current_area, 'area_manual_content', dict)
+
+        seen = set()
+        above = True
+        for area in cp.cached_areas:
+            if area == current_area:
+                above = False
+            if above:  # automatic teasers above current area
+                if area not in area_teasered_content:
+                    area_teasered_content[area] = set(
+                        zeit.content.cp.interfaces.ITeaseredContent(area))
+                seen.update(area_teasered_content[area])
+            else:  # manual teasers below (or in) current area
+                if area not in area_manual_content:
+                    # Probably not worth a separate adapter (like
+                    # ITeaseredContent), since the use case is pretty
+                    # specialised.
+                    area_manual_content[area] = set(
+                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
+                            area))
+                seen.update(area_manual_content[area])
+        return seen
 
 
 class SolrContentQuery(ContentQuery):
@@ -294,34 +342,70 @@ class TMSContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
+        self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
-        self.total_hits = 0
         result = []
-        topicpage = self.context.referenced_topicpage
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        rows = self._teaser_count + 5           # total teasers + some spares
+        key = (self.topicpage, self.filter_id, self.start)
+        if key in cache:
+            response, start, _ = cache[key]
+        else:
+            start = self.start
+            response, hits = self._get_documents(start=start, rows=rows)
+            cache[key] = response, start, hits
+        while len(result) < self.rows:
+            try:
+                item = response.next()
+            except StopIteration:
+                start = start + rows            # fetch next batch
+                response, hits = self._get_documents(start=start, rows=rows)
+                cache[key] = response, start, hits
+                try:
+                    item = response.next()
+                except StopIteration:
+                    break                       # results are exhausted
+            content = self._resolve(item)
+            if content is not None and (not self.context.hide_dupes or
+                                        content not in self.existing_teasers):
+                result.append(content)
+        return result
+
+    def _get_documents(self, **kw):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
             response = tms.get_topicpage_documents(
-                topicpage, self.start, self.rows, filter=self.filter_id)
-            self.total_hits = response.hits
-            for item in response:
-                content = self._resolve(item)
-                if content is not None:
-                    result.append(content)
+                id=self.topicpage, filter=self.filter_id, **kw)
         except Exception:
             log.warning('Error during TMS query %r for %s',
-                        topicpage, self.context.uniqueId, exc_info=True)
-
-        if not self.context.hide_dupes:
-            return result
-        # Since TMS does not allow extending a topicpage request with arbitrary
-        # ES query parameters, we have to filter duplicates in-memory.
-        return [x for x in result if x not in self.existing_teasers]
+                        self.topicpage, self.context.uniqueId, exc_info=True)
+            return iter([]), 0
+        else:
+            return iter(response), response.hits
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def _teaser_count(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        return sum(
+            a.count for a in cp.cached_areas
+            if a.automatic and a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
+
+    @property
+    def total_hits(self):
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        key = (self.topicpage, self.filter_id, self.start)
+        if key in cache:
+            _, _, hits = cache[key]
+        else:
+            _, hits = self._get_documents(start=self.start, rows=0)
+        return hits
 
 
 class CenterpageContentQuery(ContentQuery):

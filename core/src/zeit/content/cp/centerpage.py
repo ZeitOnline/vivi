@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
-from zeit.connector.search import SearchVar
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import collections
 import copy
@@ -18,17 +17,14 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.interfaces
-import zeit.cms.related.related
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
-import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.body
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.interface
 import zope.lifecycleevent
-import zope.proxy
 import zope.security.proxy
 
 
@@ -39,6 +35,10 @@ def create_delegate(name):
     def delegate(self, *args, **kw):
         return getattr(self.body, name)(*args, **kw)
     return delegate
+
+
+class writeabledict(dict):
+    """dict with all (especially write) methods allowed by security"""
 
 
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
@@ -187,51 +187,18 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         self._type_xml = value
         self._type_dav = value
 
-    _cached_areas = gocept.cache.property.TransactionBoundCache(
-        '_v_cached_areas', collections.OrderedDict)
+    cache = gocept.cache.property.TransactionBoundCache(
+        '_v_cache', writeabledict)
 
-    def _fill_area_cache(self):
-        if not self._cached_areas:
+    @property
+    def cached_areas(self):
+        key = 'cached_areas'
+        if key not in self.cache:
+            self.cache[key] = areas = []
             for region in self.body.values():
                 for area in region.values():
-                    self._cached_areas[area.__name__] = area
-
-    _area_teasered_content = gocept.cache.property.TransactionBoundCache(
-        '_v_area_teasered_content', dict)
-
-    def teasered_content_above(self, current_area):
-        self._fill_area_cache()
-        seen = set()
-        for area in self._cached_areas.values():
-            if area == current_area:
-                return seen
-            if area not in self._area_teasered_content:
-                self._area_teasered_content[area] = set(
-                    zeit.content.cp.interfaces.ITeaseredContent(area))
-            seen.update(self._area_teasered_content[area])
-        return seen
-
-    _area_manual_content = gocept.cache.property.TransactionBoundCache(
-        '_v_area_manual_content', dict)
-
-    def manual_content_below(self, current_area):
-        self._fill_area_cache()
-        seen = set()
-        below = False
-        for area in self._cached_areas.values():
-            if area == current_area:
-                below = True
-            if not below:
-                continue
-            if area not in self._area_manual_content:
-                # Probably not worth a separate adapter (like
-                # ITeaseredContent), since the use case is pretty
-                # specialised.
-                self._area_manual_content[area] = set(
-                    zeit.content.cp.blocks.teaser.extract_manual_teasers(
-                        area))
-            seen.update(self._area_manual_content[area])
-        return seen
+                    areas.append(area)
+        return self.cache[key]
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):

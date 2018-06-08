@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.24.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-231: Really filter duplicates in TMS content query
+  (we have to retrieve more results if too many were dropped as duplicate)
 
 
 3.24.1 (2018-06-06)
