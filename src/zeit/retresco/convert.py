@@ -297,6 +297,13 @@ class Image(Converter):
     interface = zeit.content.image.interfaces.IImageMetadata
     grok.name(interface.__name__)
 
+    def __new__(cls, context):
+        if u'/news/' in context.uniqueId:
+            # skip zeit.newsimport images. Unfortunately, image(groups) have no
+            # ressort or product-id with which we could filter this.
+            return None
+        return super(Image, cls).__new__(cls, context)
+
     def __call__(self):
         title = self.context.title or self.content.__name__
         return {
