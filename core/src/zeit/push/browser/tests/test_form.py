@@ -1,4 +1,5 @@
 import zeit.cms.testing
+import zeit.cms.workingcopy.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.workflow
@@ -233,6 +234,7 @@ class SocialAddFormTest(SocialFormTest):
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
         b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Payload Template').displayValue = ['Foo']
+        b.getControl(name='form.mobile_enabled').value = False
         b.getControl(name='form.actions.add').click()
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/social')
         push = zeit.push.interfaces.IPushMessages(content)
@@ -268,3 +270,27 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         original = 'a' * 239 + ' This is not long'
         s.type(input, original + '\t')
         self.assertEqual(original, s.getValue(input))
+
+
+class AuthorPushTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.push.testing.LAYER
+
+    def get_article(self):
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+        return list(wc.values())[0]
+
+    def test_author_push_is_enabled_on_article_creation(self):
+        self.browser.open(
+            'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        self.browser.open(url)
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        self.assertEqual(
+            {'type': 'mobile',
+             'payload_template': 'authors.json',
+             'enabled': True},
+            push.messages[0].config)

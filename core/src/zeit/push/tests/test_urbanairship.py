@@ -1,6 +1,7 @@
 # coding=utf-8
 from datetime import datetime
 from zeit.cms.interfaces import ICMSContent
+from zope.lifecycleevent import ObjectCreatedEvent
 import gocept.testing.assertion
 import json
 import mock
@@ -8,10 +9,13 @@ import os
 import pytz
 import unittest
 import urbanairship.push.core
+import zeit.cms.checkout.helper
+import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
 import zope.component
+import zope.event
 
 
 def send(self):
@@ -117,12 +121,27 @@ class MessageTest(zeit.push.testing.TestCase,
 
     name = 'mobile'
 
-    def create_content(self, **kw):
+    def create_content(self, with_authors=False, **kw):
         """Create content with values given in arguments."""
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         content = ExampleContentType()
         for key, value in kw.items():
             setattr(content, key, value)
+        if with_authors:
+            shakespeare = zeit.content.author.author.Author()
+            shakespeare.firstname = 'William'
+            shakespeare.lastname = 'Shakespeare'
+            shakespeare .enable_followpush = True
+            bacon = zeit.content.author.author.Author()
+            bacon.firstname = 'Francis'
+            bacon.lastname = 'Bacon'
+            self.repository['shakespeare'] = shakespeare
+            self.repository['bacon'] = bacon
+            shakespeare.enable_followpush = False
+            content.authorships = [
+                content.authorships.create(self.repository['shakespeare']),
+                content.authorships.create(self.repository['bacon'])
+            ]
         self.repository['content'] = content
         return self.repository['content']
 
@@ -130,6 +149,12 @@ class MessageTest(zeit.push.testing.TestCase,
         push_notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=service_name)
         return push_notifier.calls
+
+    def test_message_has_authors_push_uuids_of_enable_followpush_authors(self):
+        content = self.create_content(with_authors=True)
+        message = zeit.push.urbanairship.Message(
+            content)
+        self.assertEqual(1, len(message.author_push_uuids))
 
     def test_sends_push_via_urbanairship(self):
         message = zope.component.getAdapter(
@@ -212,6 +237,18 @@ class MessageTest(zeit.push.testing.TestCase,
         self.assertEqual('with "quotes"', payload['subtitle'])
         self.assertEqual('', payload['undefined'])
 
+    def test_author_template_is_rendered_with_author_uuids(self):
+        message = zope.component.getAdapter(
+            self.create_content(with_authors=True),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'authors.json'
+        payload = message.render()[0]
+        author_group = payload['notification']['android']['audience']['AND']
+        self.assertEqual(1, len(author_group))
+        shakespeare_uuid = zeit.cms.content.interfaces.IUUID(
+            self.repository['shakespeare']).shortened
+        self.assertEqual(str(shakespeare_uuid), author_group[0]["tag"])
+
 
 class IntegrationTest(zeit.push.testing.TestCase):
 
@@ -239,6 +276,61 @@ class IntegrationTest(zeit.push.testing.TestCase):
         self.assertEqual(calls[0][1], u'http://www.zeit.de/content')
         self.assertEqual(calls[0][2].get('enabled'), True)
         self.assertEqual(calls[0][2].get('type'), 'mobile')
+
+
+class AuthorpushTest(IntegrationTest):
+
+    def setUp(self):
+        super(AuthorpushTest, self).setUp()
+        from zeit.content.article.article import Article
+        content = Article()
+        content.title = 'foo'
+        shakespeare = zeit.content.author.author.Author()
+        shakespeare.firstname = 'William'
+        shakespeare.lastname = 'Shakespeare'
+        shakespeare .enable_followpush = True
+        bacon = zeit.content.author.author.Author()
+        bacon.firstname = 'Francis'
+        bacon.lastname = 'Bacon'
+        self.repository['shakespeare'] = shakespeare
+        self.repository['bacon'] = bacon
+        shakespeare .enable_followpush = False
+        content.authorships = [
+            content.authorships.create(self.repository['shakespeare']),
+            content.authorships.create(self.repository['bacon'])
+        ]
+        zope.event.notify(ObjectCreatedEvent(content))
+        self.repository['foo'] = content
+
+    def test_author_push_on_publish_for_created_article(self):
+        self.publish(self.repository['foo'])
+        calls = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
+        self.assertEqual(calls[0][2].get('enabled'), True)
+        self.assertEqual(calls[0][2].get('type'), 'mobile')
+        self.assertEqual(calls[0][2].get('payload_template'), 'authors.json')
+
+    def test_multiple_created_articles_push_with_auhtor_template(self):
+        from zeit.content.article.article import Article
+        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+        content = Article()
+        content.title = 'bar'
+        zope.event.notify(ObjectCreatedEvent(content))
+        self.repository['bar'] = content
+        IPublishInfo(self.repository['bar']).urgent = True
+        IPublishInfo(self.repository['foo']).urgent = True
+        IPublish(content).publish_multiple([self.repository['foo'],
+                                            self.repository['bar']])
+        calls = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
+        self.assertEqual(calls[0][1], 'http://www.zeit.de/foo')
+        self.assertEqual(calls[0][2].get('enabled'), True)
+        self.assertEqual(calls[0][2].get('type'), 'mobile')
+        self.assertEqual(calls[0][2].get('payload_template'), 'authors.json')
+        self.assertEqual(calls[1][1], 'http://www.zeit.de/bar')
+        self.assertEqual(calls[1][2].get('enabled'), True)
+        self.assertEqual(calls[1][2].get('type'), 'mobile')
+        self.assertEqual(calls[1][2].get('payload_template'), 'authors.json')
 
 
 class PushTest(zeit.push.testing.TestCase):
