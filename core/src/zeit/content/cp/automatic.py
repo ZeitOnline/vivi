@@ -165,16 +165,16 @@ class ContentQuery(grok.Adapter):
             current_area, 'area_manual_content', dict)
 
         seen = set()
-        below = False
+        above = True
         for area in cp.content_areas:
             if area == current_area:
-                below = True
-            if not below:       # automatic teasers above current area
+                above = False
+            if above:  # automatic teasers above current area
                 if area not in area_teasered_content:
                     area_teasered_content[area] = set(
                         zeit.content.cp.interfaces.ITeaseredContent(area))
                 seen.update(area_teasered_content[area])
-            else:               # manual teasers below (or in) current area
+            else:  # manual teasers below (or in) current area
                 if area not in area_manual_content:
                     # Probably not worth a separate adapter (like
                     # ITeaseredContent), since the use case is pretty
