@@ -166,7 +166,7 @@ class ContentQuery(grok.Adapter):
 
         seen = set()
         above = True
-        for area in cp.content_areas:
+        for area in cp.cached_areas:
             if area == current_area:
                 above = False
             if above:  # automatic teasers above current area
@@ -393,7 +393,7 @@ class TMSContentQuery(ContentQuery):
     def _teaser_count(self):
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         return sum(
-            a.count for a in cp.content_areas
+            a.count for a in cp.cached_areas
             if a.count and a.automatic_type == 'topicpage' and
             a.referenced_topicpage == self.topicpage)
 

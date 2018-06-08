@@ -110,13 +110,13 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     def updateMetadata(content):
         """Update the metadata of the given content object."""
 
-    def cache():
-        """Returns a (transaction bound) cache, which can be used for various
-        things like rendered areas, teaser contents, query objects etc."""
+    cache = zope.interface.Attribute("""\
+        Returns a (transaction bound) cache, which can be used for various
+        things like rendered areas, teaser contents, query objects etc.""")
 
-    def content_areas():
-        """Returns a (cached) list of content objects contained in any
-        ITeaserBlock module on the page."""
+    cached_areas = zope.interface.Attribute("""\
+        Cached list of all IArea objects; IContentQuery uses this instead of
+        iterating over body/regions/values, for performance reasons.""")
 
 
 class ICP2009(ICenterPage):
