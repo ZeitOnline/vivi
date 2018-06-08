@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.38.4 (unreleased)
+3.38.4 (2018-06-08)
 -------------------
 
 - SSL-160: Update test config for puzzleforms
