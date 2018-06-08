@@ -394,8 +394,8 @@ class TMSContentQuery(ContentQuery):
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         return sum(
             a.count for a in cp.content_areas
-            if a.count and a.automatic_type == 'topicpage'
-            and a.referenced_topicpage == self.topicpage)
+            if a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
 
     @property
     def total_hits(self):
