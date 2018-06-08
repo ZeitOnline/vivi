@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.13.0 (unreleased)
+3.13.0 (2018-06-08)
 -------------------
 
 - ZON-4709: Add `IUUID.shortened` property
