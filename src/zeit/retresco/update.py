@@ -155,7 +155,8 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         return
     except Exception:
         self.retry()
-    if ICollection.providedBy(content):
+    if (ICollection.providedBy(content) and
+            not INonRecursiveCollection.providedBy(content)):
         children = content.values()
         for item in children:
             if should_skip(item):
