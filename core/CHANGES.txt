@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.24.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-227: Implement dynamic input widget and ES query construction for
+  different query conditions
 
 
 3.24.2 (2018-06-08)
