@@ -519,12 +519,26 @@ margin-top: 4px;
 
 /* Since the title of the field 'query' is used by SequenceWidget for the
 buttons, we only can get a different label if we override it here. */
-label[for="form.query"] span {
+.fieldname-query label[for="form.query"] span {
   display: none;
 
 }
-label[for="form.query"]:after {
+.fieldname-query label[for="form.query"]:after {
   content: "Zeige alle Teaser wenn...";
+}
+
+.fieldname-query label[for$="..combination_01"] span {
+  display: none;
+
+}
+.fieldname-query label[for$="..combination_01"]:after {
+  content: "ist gleich";
+}
+
+/* specificity wars, yay */
+#cp-content .fieldname-query .widget .object-reference.landing-zone {
+    margin-left: 0px;
+    width: 100%;
 }
 
 .type-centerpage-2009 .fieldname-raw_query textarea {

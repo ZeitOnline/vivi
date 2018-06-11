@@ -114,9 +114,20 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'automatic',
         zeit.content.cp.interfaces.IArea['automatic'])
 
-    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
         zeit.content.cp.interfaces.IArea['automatic_type'])
+
+    @property
+    def automatic_type(self):
+        result = self._automatic_type
+        if result == 'channel':  # BBB
+            result = 'custom'
+        return result
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IArea['count'])
@@ -419,6 +430,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             if IAutomaticTeaserBlock.providedBy(block):
                 del self[block.__name__]
 
+    def filter_values(self, *interfaces):
+        return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
+            *interfaces)
+
     @property
     def query(self):
         if not hasattr(self.xml, 'query'):
@@ -426,13 +441,18 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
         result = []
         for condition in self.xml.query.getchildren():
-            if condition.get('type') != 'Channel':
-                continue
-            channel = unicode(condition)
-            subchannel = None
-            if ' ' in channel:
-                channel, subchannel = channel.split(' ')
-            result.append((channel, subchannel))
+            typ = condition.get('type')
+            if typ == 'Channel':  # BBB
+                typ = 'channels'
+            value = self._converter(typ).fromProperty(unicode(condition))
+            field = zeit.content.cp.interfaces.IArea[
+                'query'].value_type.type_interface[typ]
+            if zope.schema.interfaces.ICollection.providedBy(field):
+                value = value[0]
+            # CombinationWidget needs items to be flattened
+            if not isinstance(value, tuple):
+                value = (value,)
+            result.append((typ,) + value)
         return tuple(result)
 
     @query.setter
@@ -446,14 +466,35 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return
 
         E = lxml.objectify.E
-        self.xml.append(E.query(*[E.condition(
-            '%s %s' % (channel, subchannel) if subchannel else channel,
-            type='Channel')
-            for channel, subchannel in value]))
+        query = E.query()
+        for item in value:
+            typ, val = self._serialize_query_item(item)
+            query.append(E.condition(val, type=typ))
+        self.xml.append(query)
 
-    def filter_values(self, *interfaces):
-        return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
-            *interfaces)
+    def _serialize_query_item(self, item):
+        typ = item[0]
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[typ]
+
+        if len(item) > 2:
+            value = item[1:]
+        else:
+            value = item[1]
+        if zope.schema.interfaces.ICollection.providedBy(field):
+            value = field._type((value,))  # tuple(already_tuple) is a no-op
+        value = self._converter(typ).toProperty(value)
+
+        return typ, value
+
+    def _converter(self, selector):
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[selector]
+        field = field.bind(zeit.content.cp.interfaces.ICenterPage(self))
+        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        return zope.component.getMultiAdapter(
+            (field, props),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):

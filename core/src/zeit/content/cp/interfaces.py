@@ -15,6 +15,8 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.content.article.interfaces
+import zeit.content.cp.field
 import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
@@ -242,22 +244,6 @@ class BelowAreaSource(
         return value.__name__
 
 
-class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    prefix = 'automatic-area-type-{}'
-
-    values = (
-        u'centerpage', u'channel', u'topicpage', u'query',
-        u'elasticsearch-query')
-
-    def __init__(self):
-        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
-
-    def getToken(self, value):
-        # JS needs to use these values, don't MD5 them.
-        return value
-
-
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = collections.OrderedDict()
@@ -267,6 +253,69 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, value):
         return self.values.get(value, value)
+
+
+class AutomaticTypeSource(SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('custom', _('automatic-area-type-custom')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('query', _('automatic-area-type-query')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+    ])
+
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
+
+
+class QueryTypeSource(SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('channels', _('query-type-channels')),
+        ('serie', _('query-type-serie')),
+        ('product', _('query-type-product')),
+        ('ressort', _('query-type-ressort')),
+        ('genre', _('query-type-genre')),
+        ('authorships', _('query-type-authorships')),
+    ])
+
+
+class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
+
+    def _get_master_value(self, context):
+        # `context` is the IArea, which is adaptable to `master_value_iface`
+        # ICommonMetadata, since it is adaptable to ICenterPage -- but of
+        # course we don't want to restrict the query subressort according to
+        # the CP's ressort. So we disable this validation here and rely on the
+        # fact that the widget will only offer matching subressorts anyway.
+        return None
+
+
+class IQueryConditions(zeit.content.article.interfaces.IArticle):
+
+    # ICommonMetadata uses a ReferenceField, which makes no sense for `query`.
+    authorships = zope.schema.Choice(
+        title=_("Authors"),
+        source=zeit.cms.content.interfaces.authorSource,
+        required=False)
+
+    # ICommonMetadata has ressort and sub_ressort in separate fields, but we
+    # need them combined. And so that whitespace-separated serializing works,
+    # we wrap it in a tuple to reuse the DAVPropertyConverter for `channels`.
+    ressort = zope.schema.Tuple(value_type=zc.form.field.Combination(
+        (zope.schema.Choice(
+            title=_('Ressort'),
+            source=zeit.cms.content.sources.RessortSource()),
+         zope.schema.Choice(
+             title=_('Sub ressort'),
+             source=QuerySubRessortSource(),
+             required=False)),
+        default=(),
+        required=False))
+    zope.interface.alsoProvides(
+        ressort.value_type, zeit.cms.content.interfaces.IChannelField)
 
 
 class QuerySortOrderSource(SimpleDictSource):
@@ -317,7 +366,7 @@ def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'centerpage' and data.referenced_cp:
         return True
 
-    if data.automatic_type == 'channel' and data.query:
+    if data.automatic_type == 'custom' and data.query:
         return True
 
     if data.automatic_type == 'topicpage' and data.referenced_topicpage:
@@ -431,17 +480,13 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Hide duplicate teasers'),
         default=True)
 
-    # XXX Rename more specifically (TMS-227)
     query = zope.schema.Tuple(
-        title=_('Channel Query'),
-        value_type=zc.form.field.Combination(
-            (zope.schema.Choice(
-                title=_('Channel'),
-                source=zeit.cms.content.sources.ChannelSource()),
-             zope.schema.Choice(
-                 title=_('Subchannel'),
-                 source=zeit.cms.content.sources.SubChannelSource(),
-                 required=False))
+        title=_('Custom Query'),
+        value_type=zeit.content.cp.field.DynamicCombination(
+            zope.schema.Choice(
+                title=_('Custom Query Type'),
+                source=QueryTypeSource(), default='channels'),
+            IQueryConditions,
         ),
         default=(),
         required=False)
@@ -491,10 +536,10 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from centerpage '
                     'requires a referenced centerpage.')
-            if data.automatic_type == 'channel':
+            if data.automatic_type == 'custom':
                 error_message = _(
-                    'Automatic area with teaser from solr channel '
-                    'requires a channel query.')
+                    'Automatic area with teaser from custom query '
+                    'requires a query condition.')
             if data.automatic_type == 'topicpage':
                 error_message = _(
                     'Automatic area with teaser from TMS topicpage '

@@ -2,7 +2,7 @@
 
 var FIELDS = {
     'centerpage': 'referenced_cp',
-    'channel': 'query',
+    'custom': 'query',
     'topicpage': 'referenced_topicpage',
     'query': 'raw_query',
     'elasticsearch-query': 'elasticsearch_raw_query',
@@ -29,6 +29,13 @@ $(document).bind('fragment-ready', function(event) {
     type_select.on(
         'change', function() {
             show_matching_field(event.__target, $(this).val());
+    });
+});
+
+$(document).bind('fragment-ready', function(event) {
+    $('.fieldname-query select[id$="combination_00"]', event.__target).on(
+        'change', function() {
+            $(this).closest('form').trigger('submit');
     });
 });
 

@@ -10,6 +10,8 @@ import zeit.cms.content.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.find.search
+import zeit.retresco.content
+import zeit.retresco.interfaces
 import zeit.solr.interfaces
 import zeit.solr.query
 import zope.component
@@ -277,9 +279,11 @@ class ElasticsearchContentQuery(ContentQuery):
                     'must': query,
                     'must_not': self.hide_dupes_clause}}}
         else:
+            _query = self.query.get('query', {})
+            if not isinstance(_query, list):
+                _query = [_query]
             query = {'query': {'bool': {
-                'filter': ([self.query.get('query', {})] +
-                           self._additional_clauses)}}}
+                'filter': _query + self._additional_clauses}}}
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'] = self.hide_dupes_clause
         return query
@@ -304,9 +308,9 @@ class ElasticsearchContentQuery(ContentQuery):
                                    for x in self.existing_teasers]}}
 
 
-class ChannelContentQuery(ElasticsearchContentQuery):
+class CustomContentQuery(ElasticsearchContentQuery):
 
-    grok.name('channel')
+    grok.name('custom')
 
     SOLR_TO_ES_SORT = {
         'date-last-published-semantic desc': (
@@ -315,6 +319,11 @@ class ChannelContentQuery(ElasticsearchContentQuery):
             'payload.document.last-semantic-change:desc'),
         'date-first-released desc': (
             'payload.document.date_first_released:desc'),
+    }
+
+    ES_FIELD_NAMES = {
+        'authorships': 'payload.head.authors',
+        'channels': 'payload.document.channels.hierarchy',
     }
 
     def __init__(self, context):
@@ -326,14 +335,55 @@ class ChannelContentQuery(ElasticsearchContentQuery):
             self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _make_channel_query(self):
-        channels = []
-        for channel, subchannel in self.context.query:
-            value = channel
-            if subchannel:
-                value += ' ' + subchannel
-            channels.append(value)
-        return {'query': {'terms': {
-            'payload.document.channels.hierarchy': channels}}}
+        fields = {}
+        for item in self.context.query:
+            typ = item[0]
+            fields.setdefault(typ, []).append(item)
+
+        clauses = []
+        for typ in sorted(fields):  # Provide stable sorting for tests
+            items = fields[typ]
+            if len(items) > 1:
+                clauses.append({'bool': {'should': [
+                    self._make_clause(typ, x) for x in items]}})
+            else:
+                clauses.append(self._make_clause(typ, items[0]))
+        # We rely on _build_query() putting this inside a bool/filter context
+        return {'query': clauses}
+
+    def _make_clause(self, typ, item):
+        if typ == 'ressort':  # XXX Generalize to lookup instead of if?
+            return self._make_ressort_condition(item)
+        else:
+            return self._make_condition(item)
+
+    def _make_condition(self, item):
+        typ, value = self.context.context._serialize_query_item(item)
+        fieldname = self.ES_FIELD_NAMES.get(typ)
+        if not fieldname:
+            fieldname = self._fieldname_from_property(typ)
+        return {'term': {fieldname: value}}
+
+    def _fieldname_from_property(self, typ):
+        # XXX Generalize the class?
+        prop = getattr(zeit.content.article.article.Article, typ)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            raise ValueError('Cannot determine field name for %s', typ)
+        return 'payload.%s.%s' % (
+            zeit.retresco.content.davproperty_to_es(
+                prop.namespace, prop.name))
+
+    def _make_ressort_condition(self, item):
+        if item[2]:
+            return {'bool': {'must': [
+                {'term': {
+                    self._fieldname_from_property('ressort'): item[1]}},
+                {'term': {
+                    self._fieldname_from_property('sub_ressort'): item[2]}},
+            ]}}
+        else:
+            return {'term': {
+                self._fieldname_from_property('ressort'): item[1]}}
 
 
 class TMSContentQuery(ContentQuery):

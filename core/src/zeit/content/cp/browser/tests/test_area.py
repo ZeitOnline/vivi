@@ -140,6 +140,67 @@ class AreaBrowserTest(
         self.browser.open(
             'feature/@@landing-zone-drop-module?block_type=area&order=top')
 
+    def get_edit_area_link(self, index=0):
+        self.browser.open(self.content_url)
+        document = lxml.etree.XML(self.browser.contents)
+        return lxml.cssselect.CSSSelector(
+            '.type-{} .edit-bar > .edit-link'.format(self.name)
+        )(document)[index].get('href')
+
+    def test_edit_form_stores_custom_query(self):
+        b = self.browser
+        b.open(self.get_edit_area_link())
+        edit_url = b.url
+        b.getControl(name='form.automatic_type').displayValue = [
+            'automatic-area-type-query']
+        b.getControl('Amount of teasers').value = '1'
+        b.getControl('Add Custom Query').click()
+        b.getControl('Custom Query Type').displayValue = ['query-type-serie']
+        b.getControl('Add Custom Query').click()
+        b.getControl('Custom Query Type', index=1).displayValue = [
+            'query-type-ressort']
+        b.getControl('Add Custom Query').click()
+        b.getControl('Serie').displayValue = ['Autotest']
+        b.getControl('Ressort').displayValue = ['Deutschland']
+        b.getControl('Sub ressort').displayValue = ['Integration']
+        b.getControl('Channel').displayValue = ['International']
+        b.getControl('Subchannel').displayValue = ['Meinung']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        b.open(edit_url)
+        self.assertEqual(
+            ['query-type-serie'],
+            b.getControl('Custom Query Type', index=0).displayValue)
+        self.assertEqual(
+            ['query-type-ressort'],
+            b.getControl('Custom Query Type', index=1).displayValue)
+        self.assertEqual(
+            ['query-type-channels'],
+            b.getControl('Custom Query Type', index=2).displayValue)
+        self.assertEqual(['Autotest'], b.getControl('Serie').displayValue)
+        self.assertEqual(
+            ['Deutschland'], b.getControl('Ressort').displayValue)
+        self.assertEqual(
+            ['Integration'], b.getControl('Sub ressort').displayValue)
+        self.assertEqual(
+            ['International'], b.getControl('Channel').displayValue)
+        self.assertEqual(['Meinung'], b.getControl('Subchannel').displayValue)
+
+    def test_removes_mismatched_custom_query_value_on_type_change(self):
+        b = self.browser
+        b.open(self.get_edit_area_link())
+        b.getControl(name='form.automatic_type').displayValue = [
+            'automatic-area-type-query']
+        b.getControl('Amount of teasers').value = '1'
+        b.getControl('Add Custom Query').click()
+        b.getControl('Channel').displayValue = ['International']
+        b.getControl('Custom Query Type').displayValue = [
+            'query-type-authorships']
+        b.getControl('Add Custom Query').click()  # Force a submit
+        self.assertEqual(
+            '', b.getControl(name='form.query.0..combination_01').value)
+
 
 class TooltipFixture(object):
 
