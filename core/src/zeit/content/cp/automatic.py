@@ -162,9 +162,9 @@ class ContentQuery(grok.Adapter):
         current_area = self.context
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         area_teasered_content = centerpage_cache(
-            current_area, 'area_teasered_content', dict)
+            current_area, 'area_teasered_content')
         area_manual_content = centerpage_cache(
-            current_area, 'area_manual_content', dict)
+            current_area, 'area_manual_content')
 
         seen = set()
         above = True
