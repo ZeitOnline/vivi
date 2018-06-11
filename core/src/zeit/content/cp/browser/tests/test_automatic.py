@@ -145,7 +145,8 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.waitForElementPresent('css=.lightbox')
         sel.waitForElementPresent('id=form.automatic_type')
         sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
-        sel.type('id=form.referenced_cp', 'http://xml.zeit.de/cp_with_teaser')
+        sel.type('id=form.referenced_cp.url',
+                 'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
         sel.click(r'css=#tab-0 #form\.actions\.apply')
         sel.click('css=a.CloseButton')
