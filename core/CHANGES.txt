@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Remove None uuids from ES query
 
 
 3.25.0 (2018-06-11)

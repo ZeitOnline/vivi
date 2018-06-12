@@ -748,6 +748,30 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
 
+    def test_elasticsearch_removes_none_uuids(self):
+        # Otherwise this causes a 400 Bad Request "Illegal value for id,
+        # expecting string or number, got: VALUE_NULL"
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.elasticsearch_raw_query = (
+            u'{"query": {"match": {"foo": "bar"}}}')
+        elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+
+        with mock.patch('zeit.cms.content.interfaces.IUUID') as uuid:
+            uuid().id = None
+            IRenderedArea(self.area).values()
+
+        self.assertEqual(
+            {'query': {'bool': {
+                'filter': [
+                    {u'match': {u'foo': u'bar'}},
+                    {'term': {'payload.workflow.published': True}}],
+                'must_not': {'ids': {'values': []}}}}},
+            elasticsearch.search.call_args[0][0])
+
     def test_teaser_count(self):
         a1 = self.create_automatic_area(self.cp, count=0, type='topicpage')
         a2 = self.create_automatic_area(self.cp, count=0, type='topicpage')

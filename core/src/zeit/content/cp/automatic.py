@@ -303,9 +303,16 @@ class ElasticsearchContentQuery(ContentQuery):
         Create an id query for teasers that already exist on the CP.
         """
         if not self.context.hide_dupes or not self.existing_teasers:
-            return
-        return {'ids': {'values': [zeit.cms.content.interfaces.IUUID(x).id
-                                   for x in self.existing_teasers]}}
+            return None
+        ids = []
+        for content in self.existing_teasers:
+            id = getattr(zeit.cms.content.interfaces.IUUID(content, None),
+                         'id', None)
+            if id:
+                ids.append(id)
+        if not ids:
+            return None
+        return {'ids': {'values': ids}}
 
 
 class CustomContentQuery(ElasticsearchContentQuery):
