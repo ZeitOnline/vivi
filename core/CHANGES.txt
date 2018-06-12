@@ -11,6 +11,8 @@ zeit.content.cp changes
 3.25.0 (2018-06-11)
 -------------------
 
+- HOTFIX: Fix security declarations
+
 - TMS-227: Implement dynamic input widget and ES query construction for
   different query conditions
 
