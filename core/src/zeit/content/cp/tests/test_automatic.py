@@ -768,8 +768,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             {'query': {'bool': {
                 'filter': [
                     {u'match': {u'foo': u'bar'}},
-                    {'term': {'payload.workflow.published': True}}],
-                'must_not': {'ids': {'values': []}}}}},
+                    {'term': {'payload.workflow.published': True}}]}}},
             elasticsearch.search.call_args[0][0])
 
     def test_teaser_count(self):
