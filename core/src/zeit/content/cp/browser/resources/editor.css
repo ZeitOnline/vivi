@@ -536,9 +536,13 @@ buttons, we only can get a different label if we override it here. */
 }
 
 /* specificity wars, yay */
-#cp-content .fieldname-query .widget .object-reference.landing-zone {
+#cp-content .fieldname-query .widget .object-reference.landing-zone,
+#cp-content .fieldname-referenced_cp .widget .object-reference.landing-zone {
     margin-left: 0px;
     width: 100%;
+}
+#cp-content .fieldname-referenced_cp .widget .object-reference.landing-zone {
+    margin-bottom: 0.5em;
 }
 
 .type-centerpage-2009 .fieldname-raw_query textarea {
