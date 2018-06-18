@@ -23,12 +23,6 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         readonly=True)
 
 
-class SerieSource(zeit.cms.content.sources.SerieSource):
-
-    config_url = 'source-serie'
-    product_configuration = 'zeit.content.video'
-
-
 class IVideoRendition(zope.interface.interfaces.IInterface):
     url = zope.schema.URI(
         title=_('URI of the rendition'),
@@ -76,11 +70,6 @@ class IVideo(IVideoContent):
 
     highest_rendition_url = zope.interface.Attribute(
         'URL of the rendition with the highest resolution')
-
-    serie = zope.schema.Choice(
-        title=_("Serie"),
-        source=SerieSource(),
-        required=False)
 
     video_still_copyright = zope.schema.TextLine(
         title=_('Video still copyright'),

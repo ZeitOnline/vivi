@@ -1,6 +1,5 @@
 import doctest
 import mock
-import pkg_resources
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
@@ -11,22 +10,13 @@ import zope.component
 import zope.interface
 
 
-product_config = """\
-<product-config zeit.content.video>
-    source-serie file://{0}
-</product-config>
-""".format(
-    pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
-
-
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.push.testing.product_config +
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
-        zeit.workflow.testing.product_config +
-        product_config))
+        zeit.workflow.testing.product_config))
 
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))

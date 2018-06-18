@@ -45,11 +45,6 @@ Videos can be edited:
 >>> print browser.contents
 <...Updated on...
 
-Videos use a special series:
-
->>> browser.getControl('Serie').displayOptions
-['(nothing selected)', 'VIDEO', 'erde/energie', 'erde/klima', 'erde/nachhaltigkeit', 'erde/technologie', 'erde/umwelt']
-
 Videos can be checked in:
 
 >>> browser.getLink('Checkin').click()

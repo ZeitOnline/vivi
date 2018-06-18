@@ -23,13 +23,6 @@ class TestVideo(zeit.content.video.testing.TestCase):
             proxied = ProxyFactory(video)
             self.assertEqual('vid', proxied.id_prefix)
 
-    def test_videos_use_their_own_serie_source(self):
-        factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
-        video.serie = zeit.cms.content.sources.Serie('VIDEO')
-        video = factory.next()  # in repository
-        self.assertEqual('VIDEO', video.serie.serienname)
-
     def test_has_advertisement_defaults_to_true(self):
         # For bw-compat to videos imported before we recognized the field.
         factory = zeit.content.video.testing.video_factory(self)
