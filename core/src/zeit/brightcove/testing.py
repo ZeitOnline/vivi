@@ -4,6 +4,7 @@ import mock
 import plone.testing
 import transaction
 import zeit.cms.testing
+import zeit.content.video.testing
 import zeit.solr.testing
 import zeit.workflow.testing
 
@@ -36,6 +37,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
     cms_product_config +
     zeit.solr.testing.product_config +
     zeit.workflow.testing.product_config +
+    zeit.content.video.testing.product_config +
     product_config))
 
 
