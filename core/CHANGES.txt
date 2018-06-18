@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-3.1.0 (unreleased)
+3.1.0 (2018-06-18)
 ------------------
 
 - MAINT: No longer use separate config file for video series
