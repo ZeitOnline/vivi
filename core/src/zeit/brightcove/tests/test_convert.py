@@ -80,9 +80,9 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
     def test_converts_serie(self):
         cms = CMSVideo()
         cms.serie = zeit.content.video.interfaces.IVideo['serie'].source(
-            None).find('erde/umwelt')
+            None).find('Chefsache')
         bc = BCVideo.from_cms(cms)
-        self.assertEqual('erde/umwelt', bc.data['custom_fields']['serie'])
+        self.assertEqual('Chefsache', bc.data['custom_fields']['serie'])
 
     def test_converts_channels(self):
         cms = CMSVideo()
@@ -148,7 +148,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
                 'cmskeywords': 'testtag;testtag2',
                 'produkt-id': 'TEST',
                 'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
-                'serie': 'erde/umwelt',
+                'serie': 'Chefsache',
             },
             'images': {
                 'thumbnail': {'src': 'http://example.com/thumbnail'},
@@ -174,7 +174,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
             (zeit.cms.interfaces.ICMSContent(
                 'http://xml.zeit.de/online/2007/01/eta-zapatero'),),
             zeit.cms.related.interfaces.IRelatedContent(cms).related)
-        self.assertEqual('erde/umwelt', cms.serie.serienname)
+        self.assertEqual('Chefsache', cms.serie.serienname)
         self.assertEqual(
             datetime(2018, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
 
