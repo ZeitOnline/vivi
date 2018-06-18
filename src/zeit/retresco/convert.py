@@ -14,7 +14,9 @@ import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
+import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
+import zeit.content.portraitbox.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
@@ -287,6 +289,53 @@ class Link(Converter):
                 'target': self.context.target,
                 'nofollow': self.context.nofollow,
             }}
+        }
+
+
+class Image(Converter):
+
+    interface = zeit.content.image.interfaces.IImageMetadata
+    grok.name(interface.__name__)
+
+    def __new__(cls, context):
+        if u'/news/' in context.uniqueId:
+            # skip zeit.newsimport images. Unfortunately, image(groups) have no
+            # ressort or product-id with which we could filter this.
+            return None
+        return super(Image, cls).__new__(cls, context)
+
+    def __call__(self):
+        title = self.context.title or self.content.__name__
+        return {
+            # Required fields, so make sure to always index (for zeit.find).
+            'title': title,
+            'teaser': self.context.caption or title,
+        }
+
+
+class Infobox(Converter):
+
+    interface = zeit.content.infobox.interfaces.IInfobox
+    # Sort after ICommonMetadata so we can override its results
+    grok.name('zzz_' + interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.supertitle,
+            'teaser': self.context.supertitle,
+            'supertitle': None,
+        }
+
+
+class Portraitbox(Converter):
+
+    interface = zeit.content.portraitbox.interfaces.IPortraitbox
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.name,
+            'teaser': self.context.name,
         }
 
 

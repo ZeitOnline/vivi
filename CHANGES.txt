@@ -1,11 +1,28 @@
 zeit.retresco changes
 =====================
 
-
-1.24.0 (unreleased)
+1.24.3 (unreleased)
 -------------------
 
 - ZON-4571: Add get_article_keywords for preview retresco API
+
+
+1.24.2 (2018-06-08)
+-------------------
+
+- TMS-213: Skip zeit.newsimport images
+
+
+1.24.1 (2018-06-08)
+-------------------
+
+- TMS-213: Don't index images inside of image groups
+
+
+1.24.0 (2018-06-06)
+-------------------
+
+- TMS-213: Index images and imagegroups, infoboxes and portraitboxes
 
 
 1.23.3 (2018-06-04)

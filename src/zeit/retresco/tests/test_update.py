@@ -176,6 +176,17 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/')
         self.assertEqual(54, self.index.call_count)
 
+    def test_should_not_recurse_into_nonrecursive_collections(self):
+        folder = zeit.cms.repository.folder.Folder()
+        zope.interface.alsoProvides(
+            folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
+        self.repository['nonrecursive'] = folder
+        self.repository['nonrecursive']['test'] = ExampleContentType()
+        self.index.reset_mock()
+        zeit.retresco.update.index_parallel.delay(
+            'http://xml.zeit.de/nonrecursive/')
+        self.assertEqual(1, self.index.call_count)
+
     def test_should_pass_parameters_through_recursion(self):
         self.repository['testing']['foo'] = ExampleContentType()
         zeit.retresco.update.index_parallel.delay(
