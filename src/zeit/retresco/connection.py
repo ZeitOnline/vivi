@@ -136,11 +136,11 @@ class TMS(object):
                 content.uniqueId)
             return {}
 
-    def get_article_keywords(self, content, timeout=None, post_data=False):
-        if post_data:
-            response = self._get_intextlink_data_preview(content, timeout)
-        else:
+    def get_article_keywords(self, content, timeout=None, published=True):
+        if published:
             response = self._get_intextlink_data(content, timeout)
+        else:
+            response = self._get_intextlink_data_preview(content, timeout)
         data = response.get('entity_links', ())
         entity_links = collections.OrderedDict()
         for item in data:

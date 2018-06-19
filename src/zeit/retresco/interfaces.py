@@ -103,7 +103,7 @@ class ITMS(zope.interface.Interface):
     def get_article_body(content, timeout=None):
         """Returns the (in-text-link annotated) article body XML."""
 
-    def get_article_keywords(content, timeout=None):
+    def get_article_keywords(content, published=False, timeout=None):
         """Returns a list of ITag objects with an additional property `link`,
         containing a path (without leading slash) to the corresponding
         topicpage. Only keywords that have not already been in-text-linked in
@@ -111,6 +111,9 @@ class ITMS(zope.interface.Interface):
 
         The result is sorted as follows: first pinned keywords, in the order
         set in vivi, then remaining keywords sorted by descending TMS score.
+
+        The `published` flag determines, if the keyword lookup is done for
+        already published content.
         """
 
 
