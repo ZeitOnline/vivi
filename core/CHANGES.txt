@@ -1,7 +1,7 @@
 zeit.retresco changes
 =====================
 
-1.24.3 (unreleased)
+1.25.0 (unreleased)
 -------------------
 
 - ZON-4571: Add get_article_keywords for preview retresco API
