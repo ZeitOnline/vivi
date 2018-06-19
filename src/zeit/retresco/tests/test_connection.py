@@ -258,8 +258,8 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                 {'key': 'Berlin', 'key_type': 'location', 'score': "undefined",
                  'status': 'not_linked', 'link': '/thema/berlin'},
                 # no link: ignored
-                {'key': 'Washington', 'key_type': 'location', 'score': "undefined",
-                 'status': 'not_linked', 'link': None},
+                {'key': 'Washington', 'key_type': 'location',
+                 'score': "undefined", 'status': 'not_linked', 'link': None},
             ],
             'doc_type': 'article',
             'payload': {
@@ -279,7 +279,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             ['Merkel', 'Clinton', 'Berlin'],
             [x.label for x in result])
-
 
 
 @pytest.mark.slow
