@@ -123,6 +123,8 @@ class TMS(object):
         # In contrast to _get_intextlink_data, the tms computes the
         # the intext_links from the given content, and does not look it up
         tms_content = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        if not tms_content:
+            return {}
         try:
             return self._request(
                 'POST /in-text-linked-documents-preview',
