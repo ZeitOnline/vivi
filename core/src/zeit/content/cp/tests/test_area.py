@@ -1,4 +1,6 @@
 import StringIO
+import lxml.etree
+import lxml.objectify
 import mock
 import zeit.content.cp.area
 import zeit.content.cp.centerpage
@@ -391,4 +393,8 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
             None)
         autotest = source.find('Autotest')
         area.query = (('serie', autotest),)
+        lxml.objectify.deannotate(area.xml, cleanup_namespaces=True)
+        self.assertEllipsis(
+            '<query...><condition type="serie">Autotest</condition></query>',
+            lxml.etree.tostring(area.xml.query))
         self.assertEqual((('serie', autotest),), area.query)
