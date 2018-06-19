@@ -240,7 +240,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
 
-    def test_get_article_keywords_with_posted_data_is_ordered(self):
+    def test_get_article_keywords_for_unpublished_data_is_ordered(self):
         tagger = zeit.retresco.tagger.Tagger(self.repository['testcontent'])
         self.add_tag(tagger, 'Merkel', 'person', True)
         self.add_tag(tagger, 'Clinton', 'person', False)
@@ -271,7 +271,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.get_article_keywords(self.repository['testcontent'],
-                                          post_data=True)
+                                          published=False)
         self.assertEqual(
             '/in-text-linked-documents-preview',
             self.layer['request_handler'].requests[0].get('path'))
