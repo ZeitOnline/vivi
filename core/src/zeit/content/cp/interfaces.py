@@ -605,6 +605,12 @@ class IContentQuery(zope.interface.Interface):
     def __call__(self):
         """Returns list of content objects."""
 
+    existing_teasers = zope.interface.Attribute(
+        """Returns a set of ICMSContent objects that are already present on
+        the CP in other areas. If IArea.hide_dupes is True, these should be
+        not be repeated, and thus excluded from our query result.
+        """)
+
 
 class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """Returns an iterable content objects in a CenterPage, that are referenced

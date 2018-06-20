@@ -155,10 +155,6 @@ class ContentQuery(grok.Adapter):
     @property
     @cached_on_centerpage()
     def existing_teasers(self):
-        """Returns a set of ICMSContent objects that are already present on
-        the CP in other areas. If IArea.hide_dupes is True, these should be
-        not be repeated, and thus excluded from our query result.
-        """
         current_area = self.context
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         area_teasered_content = centerpage_cache(
