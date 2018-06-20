@@ -2,10 +2,10 @@ zeit.retresco changes
 =====================
 
 
-1.24.3 (unreleased)
+1.25.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-235: Instantiate a pseudo Link object for blogpost entries
 
 
 1.24.2 (2018-06-08)

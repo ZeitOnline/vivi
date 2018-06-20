@@ -14,6 +14,16 @@
       provides=".interfaces.ITMSContent"
       name="author"
       />
+    <utility
+      component=".content.TMSLink"
+      provides=".interfaces.ITMSContent"
+      name="link"
+      />
+    <utility
+      component=".content.TMSLink"
+      provides=".interfaces.ITMSContent"
+      name="blogpost"
+      />
 
     <class class=".tagger.Tagger">
       <require

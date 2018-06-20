@@ -5,6 +5,7 @@ import os.path
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
+import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -100,6 +101,10 @@ class TMSAuthor(Content, zeit.content.author.author.Author):
             return
         image.tag = 'image_group'
         self.xml.append(image)
+
+
+class TMSLink(Content, zeit.content.link.link.Link):
+    pass
 
 
 @grok.adapter(dict)
