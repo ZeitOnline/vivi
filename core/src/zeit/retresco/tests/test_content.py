@@ -161,3 +161,15 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIsInstance(content, zeit.content.volume.volume.Volume)
         self.compare(
             zeit.content.volume.interfaces.IVolume, volume, content, ['xml'])
+
+    def test_blogpost_is_treated_as_link(self):
+        link = zeit.content.link.link.Link()
+        link.url = u'http://example.com/'
+        self.repository['link'] = link
+        link = self.repository['link']
+        data = zeit.retresco.interfaces.ITMSRepresentation(link)()
+        data['doc_type'] = 'blogpost'
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertIsInstance(content, zeit.content.link.link.Link)
+        self.compare(
+            zeit.content.link.interfaces.ILink, link, content, ['xml'])

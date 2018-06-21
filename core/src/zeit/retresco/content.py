@@ -5,6 +5,7 @@ import os.path
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
+import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -102,18 +103,22 @@ class TMSAuthor(Content, zeit.content.author.author.Author):
         self.xml.append(image)
 
 
+class TMSLink(Content, zeit.content.link.link.Link):
+    pass
+
+
 @grok.adapter(dict)
 @grok.implementer(zeit.retresco.interfaces.ITMSContent)
 def from_tms_representation(context):
     doc_type = context.get('doc_type', 'unknown')
-    typ = zope.component.queryUtility(
-        zeit.cms.interfaces.ITypeDeclaration, name=doc_type)
-    if typ is None:
-        typ = zope.component.queryUtility(
-            zeit.cms.interfaces.ITypeDeclaration, name='unknown')
     tms_typ = zope.component.queryUtility(
         zeit.retresco.interfaces.ITMSContent, name=doc_type)
     if tms_typ is None:
+        typ = zope.component.queryUtility(
+            zeit.cms.interfaces.ITypeDeclaration, name=doc_type)
+        if typ is None:
+            typ = zope.component.queryUtility(
+                zeit.cms.interfaces.ITypeDeclaration, name='unknown')
         tms_typ = type(
             'TMS' + typ.factory.__name__, (Content, typ.factory), {})
         zope.component.provideUtility(
