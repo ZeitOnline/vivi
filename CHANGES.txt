@@ -1,10 +1,16 @@
 zeit.retresco changes
 =====================
 
-1.25.0 (unreleased)
+1.26.0 (unreleased)
 -------------------
 
 - ZON-4571: Add get_article_keywords for preview retresco API
+
+
+1.25.0 (2018-06-20)
+-------------------
+
+- TMS-235: Instantiate a pseudo Link object for blogpost entries
 
 
 1.24.2 (2018-06-08)
