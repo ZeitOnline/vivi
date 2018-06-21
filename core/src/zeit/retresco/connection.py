@@ -122,7 +122,7 @@ class TMS(object):
     def _get_intextlink_data_preview(self, content, timeout):
         # In contrast to _get_intextlink_data, the tms computes the
         # the intext_links from the given content, and does not look it up
-        tms_content = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        tms_content = self.get_article_data(content)
         if not tms_content:
             return {}
         try:
