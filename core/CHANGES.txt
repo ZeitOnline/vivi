@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.25.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add `access` as custom query condition
 
 
 3.25.2 (2018-06-13)

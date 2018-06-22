@@ -279,6 +279,7 @@ class QueryTypeSource(SimpleDictSource):
         ('ressort', _('query-type-ressort')),
         ('genre', _('query-type-genre')),
         ('authorships', _('query-type-authorships')),
+        ('access', _('query-type-access')),
     ])
 
 
