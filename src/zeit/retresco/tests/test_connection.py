@@ -240,48 +240,28 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
 
-    def test_get_article_keywords_for_unpublished_data_is_ordered(self):
-        tagger = zeit.retresco.tagger.Tagger(self.repository['testcontent'])
-        self.add_tag(tagger, 'Merkel', 'person', True)
-        self.add_tag(tagger, 'Clinton', 'person', False)
-        dav_tagger = zeit.connector.interfaces.IWebDAVProperties(tagger)
+    def test_get_article_keywords_uses_published_content_endpoint_as_default(
+            self):
+        with checked_out(self.repository['testcontent']):
+            pass  # Trigger mock connector uuid creation
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.get_article_keywords(self.repository['testcontent'])
+        # First requests will be enrich and index
+        self.assertTrue(
+            '/in-text-linked-documents/' in
+            self.layer['request_handler'].requests[2].get('path'))
 
-        self.layer['request_handler'].response_body = json.dumps({
-            'entity_links': [
-                # After pinned
-                {'key': 'Clinton', 'key_type': 'person', 'score': "undefined",
-                 'status': 'not_linked', 'link': '/thema/clinton'},
-                # First because pinned
-                {'key': 'Merkel', 'key_type': 'person', 'score': "undefined",
-                 'status': 'not_linked', 'link': '/thema/merkel'},
-                # not in CMS list: after vivi tags
-                {'key': 'Berlin', 'key_type': 'location', 'score': "undefined",
-                 'status': 'not_linked', 'link': '/thema/berlin'},
-                # no link: ignored
-                {'key': 'Washington', 'key_type': 'location',
-                 'score': "undefined", 'status': 'not_linked', 'link': None},
-            ],
-            'doc_type': 'article',
-            'payload': {
-                'tagging': {
-                    name: value for (name, ns), value in dav_tagger.items()
-                    if ns == 'http://namespaces.zeit.de/CMS/tagging'
-                }
-            },
-        })
+    def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch('zeit.retresco.connection.TMS.get_article_data') \
                 as get_data:
             get_data.return_value = {'some': 'doc'}
-            result = tms.get_article_keywords(self.repository['testcontent'],
-                                              published=False)
-        self.assertEqual(
-            '/in-text-linked-documents-preview',
-            self.layer['request_handler'].requests[0].get('path'))
-
-        self.assertEqual(
-            ['Merkel', 'Clinton', 'Berlin'],
-            [x.label for x in result])
+            tms.get_article_keywords(self.repository['testcontent'],
+                                     published=False)
+            self.assertTrue(get_data.called)
+            self.assertEqual(
+                '/in-text-linked-documents-preview',
+                self.layer['request_handler'].requests[0].get('path'))
 
 
 @pytest.mark.slow
