@@ -131,7 +131,7 @@ class TMS(object):
                 json=tms_content,
                 timeout=timeout)
         except requests.Timeout:
-            log.info(
+            log.warning(
                 '/in-text-linked-documents-preview request for %s timed out',
                 content.uniqueId)
             return {}
