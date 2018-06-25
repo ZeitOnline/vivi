@@ -1,4 +1,4 @@
-zeit.find = {};
+zeit.cms.declare_namespace('zeit.find');
 
 
 zeit.find.init_search_results = function(view) {
