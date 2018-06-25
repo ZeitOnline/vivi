@@ -89,7 +89,7 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
-class SearchResultBase(JSONView):
+class SearchResult(JSONView):
 
     template = 'search_result.jsont'
 
@@ -128,6 +128,31 @@ class SearchResultBase(JSONView):
         if not processed:
             return {'template': 'no_search_result.jsont'}
         return {'results': processed}
+
+    def json(self):
+        try:
+            q = form_query(self.request)
+        except InputError, e:
+            error = unicode(e)
+            return {'template': 'no_search_result.jsont', "error": error}
+        if q is None:
+            return {'template': 'no_search_result.jsont'}
+        self.store_session()
+        try:
+            results = zeit.find.search.search(q, self.sort_order())
+            return self.results(results)
+        except zeit.solr.interfaces.SolrError, e:
+            return {'template': 'no_search_result.jsont',
+                    'error': e.args[0]}
+
+    def sort_order(self):
+        return self.request.get('sort_order', 'relevance')
+
+    def store_session(self):
+        session = zope.session.interfaces.ISession(self.request)['zeit.find']
+        parameters = search_parameters(self.request)
+        if session.get('last-query') != parameters:
+            session['last-query'] = parameters
 
     # generic processors
 
@@ -190,34 +215,6 @@ class SearchResultBase(JSONView):
 
     def get_type(self, result):
         return result.get('type', '')
-
-
-class SearchResult(SearchResultBase):
-
-    def sort_order(self):
-        return self.request.get('sort_order', 'relevance')
-
-    def json(self):
-        try:
-            q = form_query(self.request)
-        except InputError, e:
-            error = unicode(e)
-            return {'template': 'no_search_result.jsont', "error": error}
-        if q is None:
-            return {'template': 'no_search_result.jsont'}
-        self.store_session()
-        try:
-            results = zeit.find.search.search(q, self.sort_order())
-            return self.results(results)
-        except zeit.solr.interfaces.SolrError, e:
-            return {'template': 'no_search_result.jsont',
-                    'error': e.args[0]}
-
-    def store_session(self):
-        session = zope.session.interfaces.ISession(self.request)['zeit.find']
-        parameters = search_parameters(self.request)
-        if session.get('last-query') != parameters:
-            session['last-query'] = parameters
 
     def get_authors(self, result):
         return result.get('authors', [])
