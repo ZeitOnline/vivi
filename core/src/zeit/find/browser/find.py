@@ -94,10 +94,8 @@ class SearchResult(JSONView):
 
     search_result_keys = (
         'application_url',
-        'arrow',
         'authors',
         'date',
-        'end_date',
         'favorite_url',
         'favorited',
         'favorited_css_class',
@@ -106,7 +104,6 @@ class SearchResult(JSONView):
         'product',
         'publication_status',
         'serie',
-        'start_date',
         'subtitle',
         'supertitle',
         'teaser_text',
@@ -158,18 +155,8 @@ class SearchResult(JSONView):
     def get_application_url(self, result=None):
         return self.request.getApplicationURL()
 
-    def get_arrow(self, result):
-        return self.resource_url('arrow_right.png')
-
     def get_date(self, result):
         return format_date(self._get_unformatted_date(result))
-
-    def get_end_date(self, result):
-        dt = self._get_unformatted_date(result)
-        end_date = None
-        if dt is not None:
-            end_date = dt.date() + datetime.timedelta(days=1)
-        return format_date(end_date)
 
     def get_favorite_url(self, result):
         return self.url('toggle_favorited', self.get_uniqueId(result))
@@ -193,13 +180,6 @@ class SearchResult(JSONView):
         else:
             publication_status = r('unpublished.png')
         return publication_status
-
-    def get_start_date(self, result):
-        dt = self._get_unformatted_date(result)
-        start_date = None
-        if dt is not None:
-            start_date = dt.date()
-        return format_date(start_date)
 
     def get_teaser_title(self, result):
         title = self._get_unformatted_teaser_title(result)
