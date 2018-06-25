@@ -3,30 +3,6 @@ import zeit.cms.testing
 import zeit.find.tests
 
 
-class TestTabs(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.find.tests.SELENIUM_LAYER
-
-    def setUp(self):
-        super(TestTabs, self).setUp()
-        self.open('/find')
-        self.selenium.waitForElementPresent('id=fulltext')
-        self.selenium.waitForVisible('id=fulltext')
-
-    def assertSelected(self, href):
-        self.selenium.verifyElementPresent(
-            '//li[@class="selected"]/a[@href="%s"]' % href)
-
-    def test_on_startup_search_should_be_active(self):
-        self.assertSelected('search_form')
-
-    def test_activate_favorites(self):
-        s = self.selenium
-        s.click('link=Favoriten')
-        s.waitForVisible('id=favorites')
-        self.assertSelected('favorites')
-
-
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.find.tests.SELENIUM_LAYER
@@ -41,17 +17,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     def set_result(self, filename):
         zeit.find.tests.LAYER.set_result(__name__, filename)
-
-    def test_favorites(self):
-        s = self.selenium
-        s.click('link=Favoriten')
-        s.waitForVisible('id=favorites')
-        s.verifyElementNotPresent('css=#favorites .related_links')
-        s.click('link=Suche')
-        s.click('css=.toggle_favorited')
-        s.waitForElementPresent('css=.toggle_favorited.favorited')
-        s.click('link=Favoriten')
-        s.waitForElementPresent('css=#favorites .related_links')
 
     def test_extended_search_display(self):
         s = self.selenium

@@ -1,4 +1,3 @@
-
 from zeit.find.daterange import DATE_RANGES
 import datetime
 import urlparse
@@ -13,7 +12,6 @@ import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
 import zope.session.interfaces
-import zope.traversing.browser.interfaces
 
 
 class JSONView(zeit.cms.browser.view.JSON):
@@ -394,113 +392,6 @@ class ToggleFavorited(JSONView):
         return {
             'favorited_css_class': get_favorited_css_class(favorited),
         }
-
-
-class Favorites(SearchResultBase):
-
-    def json(self):
-        favorites = get_favorites(self.request)
-        result = [
-            fav for fav in favorites.values()
-            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-                fav)]
-        result = [fav.references for fav in result
-                  if fav.references is not None]
-        return self.results(result)
-
-    def get_authors(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return []
-        if metadata.authors:
-            return list(metadata.authors)
-        return []
-
-    def get_favorited(self, result):
-        return True
-
-    def get_graphical_preview_url(self, result):
-        view_name = 'thumbnail'
-        thumbnail = zope.component.queryMultiAdapter(
-            (result, self.request), name=view_name)
-        if thumbnail is None:
-            return
-        url = zope.component.getMultiAdapter(
-            (result, self.request),
-            zope.traversing.browser.interfaces.IAbsoluteURL)
-        return '%s/@@thumbnail' % (url,)
-
-    def get_icon(self, result):
-        icon = zope.component.queryMultiAdapter(
-            (result, self.request), name='zmi_icon')
-        if icon is None:
-            icon = ''
-        else:
-            icon = icon.url()
-        return icon
-
-    def _get_unformatted_date(self, result):
-        return zeit.cms.content.interfaces.ISemanticChange(
-            result).last_semantic_change
-
-    def _get_unformatted_publication_status(self, result):
-        status = zeit.cms.workflow.interfaces.IPublicationStatus(result, None)
-        if status is not None:
-            return status.published
-
-    def get_subtitle(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.subtitle or ''
-
-    def get_supertitle(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.supertitle or ''
-
-    def get_teaser_text(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.teaserText or ''
-
-    def _get_unformatted_teaser_title(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.teaserTitle or ''
-
-    def _get_unformatted_title(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.title or ''
-
-    def get_serie(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.serie or ''
-
-    def get_topic(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return ''
-        return metadata.ressort
-
-    def get_type(self, result):
-        return zeit.cms.type.get_type(result) or ''
-
-    def get_uniqueId(self, result):
-        return result.uniqueId
-
-    def _get_unformatted_volume_year(self, result):
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)
-        if metadata is None:
-            return None, None
-        return metadata.volume, metadata.year
 
 
 class LastQuery(JSONView):

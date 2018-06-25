@@ -115,33 +115,6 @@ The clipboard now has a clip "Favoriten" with one entry:
 >>> clipboard["Favoriten"].keys()
 [u'Somalia', u'DSC00109_2.JPG']
 
-The favorites tab now lists the favorited object:
-
->>> browser.open('http://localhost:8080/++skin++cms/favorites')
->>> pprint.pprint(json.loads(browser.contents))
-{u'results': [{...
-    u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
-    u'favorited': True,
-    u'favorited_css_class': u'toggle_favorited favorited',
-    u'graphical_preview_url': None,
-    ...
-    u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
-    ...
- u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_result.jsont'}
-
-
-The view does not break when there is a clip in the favorites. The clip isn't
-shown though:
-
->>> import zeit.cms.clipboard.entry
->>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
->>> browser.open('http://localhost:8080/++skin++cms/favorites')
->>> result = json.loads(browser.contents)
->>> len(result['results'])
-2
->>> del clipboard['Favoriten']['Clip']
-
-
 
 Calling the toggle view again removes the object from the favorites:
 

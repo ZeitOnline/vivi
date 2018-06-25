@@ -4,18 +4,10 @@ zeit.cms.declare_namespace('zeit.find');
 zeit.find.init_search_results = function(view) {
     new zeit.find.SearchResultsDraggable(view);
     new zeit.find.ToggleFavorited(view);
-}
+};
 
-zeit.find.BaseView = gocept.Class.extend({
 
-    render: function() {
-        var self = this;
-        self.main_view.render();
-    },
-
-});
-
-zeit.find.Search = zeit.find.BaseView.extend({
+zeit.find.Search = gocept.Class.extend({
 
     construct: function(submit_on_pageload) {
         var self = this;
@@ -44,6 +36,11 @@ zeit.find.Search = zeit.find.BaseView.extend({
             self.main_view, 'load', self, self.init_search_form);
         MochiKit.Signal.connect(
             window, 'zeit.find.update-search', self, self.update_search_result);
+    },
+
+    render: function() {
+        var self = this;
+        self.main_view.render();
     },
 
     init_search_form: function() {
@@ -311,33 +308,18 @@ zeit.find.Search = zeit.find.BaseView.extend({
 
 });
 
-zeit.find.Favorites = zeit.find.BaseView.extend({
-    // Put favorites into a $('favorites')
-
-    construct: function() {
-        var self = this;
-        var base_url = zeit.cms.get_application_url() + '/@@';
-        self.main_view = new zeit.cms.JSONView(
-            base_url + 'favorites', 'favorites');
-        zeit.find.init_search_results(self.main_view);
-        MochiKit.Signal.connect(
-            window, 'zeit.find.update-favorites',
-            MochiKit.Base.bind(self.render, self));
-    },
-});
 
 zeit.find.init_full_search = function(submit_on_pageload) {
     if (isUndefined(submit_on_pageload)) {
         submit_on_pageload = true;
     }
 
+    // Make available for tests
     zeit.find._search = new zeit.find.Search(submit_on_pageload);
 
     zeit.find.tabs = new zeit.cms.Tabs('cp-search');
     zeit.find.tabs.add(new zeit.cms.ViewTab(
         'search_form', 'Suche', zeit.find._search));
-    zeit.find.tabs.add(new zeit.cms.ViewTab(
-        'favorites', 'Favoriten', new zeit.find.Favorites()));
 }
 
 
