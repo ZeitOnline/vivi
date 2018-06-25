@@ -31,6 +31,12 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         validate.return_value = True
         self.addCleanup(patcher.stop)
 
+    def add_tag(self, tagger, label, typ, pinned):
+        tag = zeit.retresco.tag.Tag(label, typ)
+        tagger[tag.code] = tag
+        if pinned:
+            tagger.set_pinned(tagger.pinned + (tag.code,))
+
     def test_extract_keywords_converts_response_to_tag_objects(self):
         self.layer['request_handler'].response_body = json.dumps({
             'rtr_persons': ['Merkel', 'Obama'],
@@ -191,16 +197,11 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
 
-        def add_tag(label, typ, pinned):
-            tag = zeit.retresco.tag.Tag(label, typ)
-            tagger[tag.code] = tag
-            if pinned:
-                tagger.set_pinned(tagger.pinned + (tag.code,))
         tagger = zeit.retresco.tagger.Tagger(self.repository['testcontent'])
-        add_tag('New York', 'location', True)
-        add_tag('Obama', 'person', True)
-        add_tag('Merkel', 'person', True)
-        add_tag('Clinton', 'person', False)
+        self.add_tag(tagger, 'New York', 'location', True)
+        self.add_tag(tagger, 'Obama', 'person', True)
+        self.add_tag(tagger, 'Merkel', 'person', True)
+        self.add_tag(tagger, 'Clinton', 'person', False)
         dav_tagger = zeit.connector.interfaces.IWebDAVProperties(tagger)
 
         self.layer['request_handler'].response_body = json.dumps({
@@ -238,6 +239,29 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'],
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
+
+    def test_get_article_keywords_uses_published_content_endpoint_as_default(
+            self):
+        with checked_out(self.repository['testcontent']):
+            pass  # Trigger mock connector uuid creation
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        tms.get_article_keywords(self.repository['testcontent'])
+        # First requests will be enrich and index
+        self.assertTrue(
+            '/in-text-linked-documents/' in
+            self.layer['request_handler'].requests[2].get('path'))
+
+    def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        with mock.patch('zeit.retresco.connection.TMS.get_article_data') \
+                as get_data:
+            get_data.return_value = {'some': 'doc'}
+            tms.get_article_keywords(self.repository['testcontent'],
+                                     published=False)
+            self.assertTrue(get_data.called)
+            self.assertEqual(
+                '/in-text-linked-documents-preview',
+                self.layer['request_handler'].requests[0].get('path'))
 
 
 @pytest.mark.slow

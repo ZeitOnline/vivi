@@ -119,8 +119,28 @@ class TMS(object):
         except (KeyError, requests.Timeout):
             return {}
 
-    def get_article_keywords(self, content, timeout=None):
-        response = self._get_intextlink_data(content, timeout)
+    def _get_intextlink_data_preview(self, content, timeout):
+        # In contrast to _get_intextlink_data, the tms computes the
+        # the intext_links from the given content, and does not look it up
+        tms_content = self.get_article_data(content)
+        if not tms_content:
+            return {}
+        try:
+            return self._request(
+                'POST /in-text-linked-documents-preview',
+                json=tms_content,
+                timeout=timeout)
+        except requests.Timeout:
+            log.warning(
+                '/in-text-linked-documents-preview request for %s timed out',
+                content.uniqueId)
+            return {}
+
+    def get_article_keywords(self, content, timeout=None, published=True):
+        if published:
+            response = self._get_intextlink_data(content, timeout)
+        else:
+            response = self._get_intextlink_data_preview(content, timeout)
         data = response.get('entity_links', ())
         entity_links = collections.OrderedDict()
         for item in data:
