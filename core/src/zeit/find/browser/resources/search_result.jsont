@@ -36,9 +36,6 @@
     <a class="author_filter">{@}</a>
     {.end}
   </div>
-  <a href="#" class="related_links">
-   Relateds
-  </a>
   <div class="goto-object object-link">
     <a target="_top" href="{application_url}/@@redirect_to?unique_id={uniqueId}">
       CMS
@@ -47,6 +44,5 @@
   <div class="preview object-link">
     <a target="_blank" href="{application_url}/@@redirect_to?unique_id={uniqueId}&view=show_preview">Vorschau</a>
   </div>
-  <div class="related_info"></div>
 </div>
 {.end}

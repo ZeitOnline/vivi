@@ -42,13 +42,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
     def set_result(self, filename):
         zeit.find.tests.LAYER.set_result(__name__, filename)
 
-    def test_relateds(self):
-        s = self.selenium
-        s.click('css=.related_links')
-        s.waitForTextPresent('No related entries could be found.')
-        s.click('css=.related_links')
-        s.waitForTextNotPresent('No related entries could be found.')
-
     def test_favorites(self):
         s = self.selenium
         s.click('link=Favoriten')

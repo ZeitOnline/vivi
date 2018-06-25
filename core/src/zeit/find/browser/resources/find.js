@@ -3,7 +3,6 @@ zeit.find = {};
 
 zeit.find.init_search_results = function(view) {
     new zeit.find.SearchResultsDraggable(view);
-    new zeit.find.Relateds(view);
     new zeit.find.ToggleFavorited(view);
 }
 
@@ -369,60 +368,6 @@ zeit.find.Component = gocept.Class.extend({
         }
     },
 
-});
-
-zeit.find.Relateds = zeit.find.Component.extend({
-    // Handles relateds of *one* search result entry.
-
-    construct: function(view) {
-        var self = this;
-        arguments.callee.$.construct.call(self, view);
-        self.expanded_search_result = new zeit.cms.JSONView(
-            zeit.cms.get_application_url() + '/@@expanded_search_result')
-    },
-
-    connect: function(element, data) {
-        var self = this;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', element);
-        forEach(results, function(entry) {
-            var related_url = jsontemplate.get_node_lookup(data, entry)(
-                'related_url');
-            var related_links = jQuery('.related_links', entry)[0];
-            var related_info = jQuery('.related_info', entry)[0];
-            self.events.push(
-                MochiKit.Signal.connect(related_links, 'onclick', function() {
-                    self.toggle(related_links, related_info, related_url);
-            }));
-        });
-    },
-
-    connect_draggables: function(related_info) {
-        var self = this;
-        var related_entries = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'related_entry', related_info);
-        forEach(related_entries, function(related) {
-            self.draggables.push(
-                zeit.cms.createDraggableContentObject(related));
-        });
-    },
-
-    toggle: function(related_links, related_info, related_url) {
-        var self = this;
-        if (MochiKit.DOM.hasElementClass(related_links, 'expanded')) {
-            MochiKit.DOM.removeElementClass(
-                related_links, 'expanded');
-            related_info.innerHTML = '';
-        } else {
-            MochiKit.DOM.addElementClass(related_links, 'expanded');
-            var d = self.expanded_search_result.render(
-                related_info, related_url);
-            d.addCallback(function(result) {
-                self.connect_draggables(related_info)
-                return result;
-            });
-        }
-    },
 });
 
 

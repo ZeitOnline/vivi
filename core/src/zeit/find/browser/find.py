@@ -14,7 +14,6 @@ import zope.component
 import zope.i18n
 import zope.session.interfaces
 import zope.traversing.browser.interfaces
-import zope.viewlet.interfaces
 
 
 class JSONView(zeit.cms.browser.view.JSON):
@@ -108,7 +107,6 @@ class SearchResultBase(JSONView):
         'graphical_preview_url',
         'icon',
         'publication_status',
-        'related_url',
         'serie',
         'start_date',
         'subtitle',
@@ -167,9 +165,6 @@ class SearchResultBase(JSONView):
         else:
             publication_status = r('unpublished.png')
         return publication_status
-
-    def get_related_url(self, result):
-        return self.url('expanded_search_result', self.get_uniqueId(result))
 
     def get_start_date(self, result):
         dt = self._get_unformatted_date(result)
@@ -379,55 +374,6 @@ class ResultFilters(JSONView):
             result.append(dict(title=name,
                                amount=format_amount(count)))
         return result
-
-
-class ExpandedSearchResult(JSONView):
-
-    template = 'expanded_search_result.jsont'
-
-    def json(self):
-        uniqueId = self.request.get('uniqueId')
-        if not uniqueId:
-            return {'template': 'no_expanded_search_result.jsont'}
-
-        content = zeit.cms.interfaces.ICMSContent(uniqueId)
-        related_content = zeit.cms.related.interfaces.IRelatedContent(content,
-                                                                      None)
-        if related_content is None:
-            return {'template': 'no_expanded_search_result.jsont'}
-
-        related = related_content.related
-
-        results = []
-        for content in related:
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                content, None)
-            if metadata is None:
-                continue
-
-            date = zeit.cms.content.interfaces.ISemanticChange(
-                content).last_semantic_change
-            publication_status = self.render_publication_status(content)
-            results.append({
-                'uniqueId': content.uniqueId,
-                'publication_status': publication_status,
-                'supertitle': metadata.supertitle or '',
-                'teaser_title': metadata.teaserTitle or '',
-                'teaser_text': metadata.teaserText or '',
-                'date': format_date(date),
-            })
-        if not results:
-            return {'template': 'no_expanded_search_result.jsont'}
-
-        return {'results': results}
-
-    def render_publication_status(self, content):
-        viewlet_manager = zope.component.getMultiAdapter(
-            (content, self.request, self),
-            zope.viewlet.interfaces.IViewletManager,
-            name='zeit.cms.workflow-indicator')
-        viewlet_manager.update()
-        return viewlet_manager.render()
 
 
 class ToggleFavorited(JSONView):

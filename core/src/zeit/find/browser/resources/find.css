@@ -289,21 +289,8 @@
   top: 3em;
 }
 
-.related_links {
-  background: url('arrow_right.png') no-repeat 0 50%;
-  clear: right;
-  cursor: pointer;
-  float:left;
-  padding-left: 16px;
-}
-
 .zeit-find-search .object-link {
   float: right;
-}
-
-.related_links.expanded {
-  background: url('arrow_down.png') no-repeat 0 50%;
-  cursor: pointer;
 }
 
 .toggle_favorited {
@@ -323,47 +310,10 @@
   background: transparent url('not_favorite.png') no-repeat center center;
 }
 
-.related_info {
-  margin-top: 3em;
-  margin-left: 0.7em;
-}
-
-.related_info.busy,
-#result_filters.busy {
-  min-height: 3em;
-}
-
 
 #cp-search #search_form {
   overflow-y: scroll;
 }
-
-.zeit-find-search .search_entry .related_entry {
-  padding: 0.5em;
-}
-
-.zeit-find-search .search_entry .related_entry:hover {
-  /* It needs to be clear that a related can be dragged. Making it yellow for
-   * now so someone who knows styling can make it look decent :) */
-  background-color: #dddddd;
-}
-
-.zeit-find-search .search_entry .related_entry > div {
-  clear: both;
-}
-
-.zeit-find-search .search_entry .related_entry .content-status,
-.zeit-find-search .search_entry .related_entry .taser_text {
-  display: none;
-}
-
-.zeit-find-search .search_entry .related_entry .supertitle,
-.zeit-find-search .search_entry .related_entry .teaser_title {
-  display: inline;
-  font-weight: normal;
-  font-size: 1em;
-}
-
 
 
 /* search in lightbox styles */
