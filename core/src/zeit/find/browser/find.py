@@ -108,9 +108,6 @@ class SearchResultBase(JSONView):
         'graphical_preview_url',
         'icon',
         'publication_status',
-        'range_today',
-        'range_total',
-        'range_url',
         'related_url',
         'serie',
         'start_date',
@@ -259,23 +256,6 @@ class SearchResult(SearchResultBase):
 
     def _get_unformatted_publication_status(self, result):
         return result.get('published', 'published')
-
-    def get_range_today(self, result):
-        counter = zeit.cms.content.interfaces.IAccessCounter(
-            self.get_uniqueId(result), None)
-        if counter is None:
-            return '0'
-        return str(counter.hits or 0)
-
-    def get_range_total(self, result):
-        total = result.get('range') or 0
-        today = self.get_range_today(result)
-        if today:
-            total += int(today)
-        return str(total)
-
-    def get_range_url(self, result):
-        return result.get('range_details', '#')
 
     def get_subtitle(self, result):
         return result.get('subtitle', '')
@@ -521,21 +501,6 @@ class Favorites(SearchResultBase):
         status = zeit.cms.workflow.interfaces.IPublicationStatus(result, None)
         if status is not None:
             return status.published
-
-    def get_range_today(self, result):
-        counter = zeit.cms.content.interfaces.IAccessCounter(result, None)
-        if counter is None:
-            return '0'
-        return str(counter.hits or 0)
-
-    def get_range_total(self, result):
-        counter = zeit.cms.content.interfaces.IAccessCounter(result, None)
-        if counter is None:
-            return '0'
-        return str(counter.total_hits or 0)
-
-    def get_range_url(self, result):
-        return '#'
 
     def get_subtitle(self, result):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(result, None)

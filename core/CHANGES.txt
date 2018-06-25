@@ -6,6 +6,8 @@ zeit.find changes
 
 - TMS-214: Add "reset form" button
 
+- TMS-214: Remove hit counter from search results
+
 
 2.7.3 (2018-05-29)
 ------------------

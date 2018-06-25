@@ -35,11 +35,6 @@
     {.repeated section authors}
     <a class="author_filter">{@}</a>
     {.end}
-    <a
-      class="range" target="_blank" href="{range_url}"
-      title="Reichweite Heute {range_today} / Gesamt {range_total}">
-      Rw: {range_today}/{range_total}
-    </a>
   </div>
   <a href="#" class="related_links">
    Relateds
