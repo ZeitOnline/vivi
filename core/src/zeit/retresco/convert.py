@@ -404,22 +404,6 @@ class CMSSearch(Converter):
         }}}
 
 
-class AccessCounter(Converter):
-    # For zeit.find
-
-    interface = zeit.cms.content.interfaces.IAccessCounter
-    grok.name(interface.__name__)
-
-    def __call__(self):
-        hits = self.context.total_hits
-        if hits and self.context.hits:
-            hits -= self.context.hits
-        return {'payload': {'vivi': {
-            'range': hits,
-            'range_details': self.context.detail_url,
-        }}}
-
-
 @grok.adapter(zope.interface.Interface)
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_default(context):

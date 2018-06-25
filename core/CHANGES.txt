@@ -4,7 +4,7 @@ zeit.retresco changes
 1.26.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TMS-214: Remove unused vivi-only access counter data
 
 
 1.26.0 (2018-06-25)
