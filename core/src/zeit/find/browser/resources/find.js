@@ -52,7 +52,7 @@ zeit.find.Search = gocept.Class.extend({
             if (e.key().string == 'KEY_ENTER') {
                 self.update_search_result();
                 e.stop();
-            };
+            }
         });
         MochiKit.Signal.connect('search_form', 'onchange', function(e) {
             self.update_search_result();
@@ -80,7 +80,7 @@ zeit.find.Search = gocept.Class.extend({
         d.addCallbacks(
             function(json) {
                 self.populate_query(json);
-                return json
+                return json;
             },
             function(error) {
                 zeit.cms.log_error(error);
@@ -91,11 +91,11 @@ zeit.find.Search = gocept.Class.extend({
             if (field.value) {
                 self.toggle_type_search(false);
             }
-            var field = $('zeit-find-search-form')['extended_search_expanded'];
+            field = $('zeit-find-search-form')['extended_search_expanded'];
             if (field.value) {
                 self.toggle_extended_search(false);
             }
-            var field = $('zeit-find-search-form')['result_filters_expanded'];
+            field = $('zeit-find-search-form')['result_filters_expanded'];
             if (field.value) {
                 self.toggle_result_filters(false);
             }
@@ -162,9 +162,9 @@ zeit.find.Search = gocept.Class.extend({
         for (name in query) {
             var element = form[name];
             if (isUndefinedOrNull(element)) {
-                continue
+                continue;
             }
-            var value = query[name]
+            var value = query[name];
             if (name == 'types:list') {
                 if (element.length != value.length) {
                     // Only act if not *everything* would be selected.
@@ -245,7 +245,7 @@ zeit.find.Search = gocept.Class.extend({
         info_node.innerHTML = '';
         forEach($('zeit-find-search-form').elements, function(element) {
             if (!MochiKit.DOM.isChildNode(element, form_node)) {
-                return
+                return;
             }
             var value = null;
             var title = null;
@@ -303,7 +303,7 @@ zeit.find.Search = gocept.Class.extend({
     search_form_parameters: function() {
         var self = this;
         var qs = MochiKit.Base.queryString($('search_form'));
-        return qs
+        return qs;
     },
 
 });
@@ -318,7 +318,7 @@ zeit.find.init_full_search = function(submit_on_pageload) {
     zeit.find._search = new zeit.find.Search(submit_on_pageload);
     jQuery('#cp-search').append('<div id="search_form"></div>');
     zeit.find._search.render();
-}
+};
 
 
 
@@ -328,7 +328,7 @@ zeit.find.Component = gocept.Class.extend({
         var self = this;
         self.view = view;
         MochiKit.Signal.connect(view, 'load', self, self.on_load);
-        self.events = []
+        self.events = [];
         self.draggables = [];
     },
 
@@ -341,7 +341,7 @@ zeit.find.Component = gocept.Class.extend({
     disconnect: function() {
         var self = this;
         while(self.events.length) {
-            MochiKit.Signal.disconnect(self.events.pop())
+            MochiKit.Signal.disconnect(self.events.pop());
         }
         while(self.draggables.length) {
             self.draggables.pop().destroy();
@@ -369,7 +369,7 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
 
     construct: function(view) {
         var self = this;
-        arguments.callee.$.construct.call(self, view)
+        arguments.callee.$.construct.call(self, view);
         var base_url = zeit.cms.get_application_url() + '/@@';
         self.favorited = new zeit.cms.JSONView(
             base_url + 'toggle_favorited');
@@ -390,7 +390,6 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
         });
     },
 
-
     toggle: function(toggle_favorited, favorite_url) {
         var self = this;
         var d = self.favorited.render(toggle_favorited, favorite_url);
@@ -398,7 +397,6 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
             MochiKit.DOM.setElementClass(
                 toggle_favorited, json['favorited_css_class']);
             MochiKit.Signal.signal(window, 'zeit.find.update-favorites');
-            return result;
         });
 
     },
@@ -501,7 +499,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
 
     connect: function(element, data) {
         var self = this;
-        var form = $('zeit-find-search-form')
+        var form = $('zeit-find-search-form');
         var from_field = form['from'];
         var until_field = form['until'];
         var volume_year_field = form['volume_year'];
@@ -583,20 +581,20 @@ zeit.find.Selector = gocept.Class.extend({
         var self = this;
         var target = event.target();
         if (target.nodeName == 'A') {
-            return
+            return;
 
         }
         var unique_id = null;
         var selected_element = null;
         while (isNull(unique_id) ||
                MochiKit.DOM.hasElementClass(target, 'search_entry')) {
-            var unique_id = MochiKit.DOM.getFirstElementByTagAndClassName(
+            unique_id = MochiKit.DOM.getFirstElementByTagAndClassName(
                 null, 'uniqueId', target);
             selected_element = target;
             target = target.parentNode;
         }
         if (isNull(unique_id)) {
-            return
+            return;
         }
         event.stop();
         unique_id = unique_id.textContent;
