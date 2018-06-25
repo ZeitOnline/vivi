@@ -39,7 +39,7 @@
   margin: 5px;
 }
 
-.search_entry .filters {
+.search_entry .metadata {
   display: none;
   font-size: 0.8em;
   margin-bottom: .8em;
@@ -63,27 +63,22 @@
 /*------*/
 
 
-#search_form .search_entry .filters {
+#search_form .search_entry .metadata {
   display: block;
   overflow: hidden;
 }
 
-.search_entry .filters > a {
+.search_entry .metadata > span {
   display: block;
   float: left;
+  color: #9BBBD3;
   border-left: 1px solid #bbb;
   padding: 0 .5em;
 }
 
-.search_entry .filters > a:first-child {
+.search_entry .metadata > span:first-child {
   border: none;
   padding: 0 .5em 0 0;
-}
-
-
-.search_entry .filters > a {
-  color: #9BBBD3;
-  cursor: pointer;
 }
 
 
