@@ -1,4 +1,3 @@
-from zeit.find.daterange import DATE_RANGES
 import datetime
 import urlparse
 import zc.iso8601.parse
@@ -288,80 +287,6 @@ class SearchResult(JSONView):
                 continue
             favorite_uniqueIds.add(uniqueId)
         return favorite_uniqueIds
-
-
-class ResultFilters(JSONView):
-
-    template = 'result_filters.jsont'
-
-    def json(self):
-        try:
-            q = form_query(self.request)
-        except InputError:
-            # the real input errors are handled by the main form; by itself
-            # this should never receive broken input
-            q = None
-
-        if q is None:
-            return {'template': 'no_result_filters.jsont'}
-
-        (time_counts, topic_counts,
-         author_counts, type_counts) = zeit.find.search.counts(q)
-
-        result = {
-            'topic_entries': self.entries(topic_counts),
-            'time_entries': self.time_entries(time_counts),
-            'type_entries': self.type_entries(type_counts),
-            'author_entries': self.entries(author_counts),
-        }
-        if not (result['topic_entries'] or result['time_entries'] or
-                result['type_entries'] or result['author_entries']):
-            return {'template': 'no_result_filters.jsont'}
-        return result
-
-    def time_entries(self, counts):
-        date_ranges = [(name, date_range())
-                       for name, date_range in DATE_RANGES]
-        result = []
-        for ((name, count),
-             (name2, (start_date, end_date))) in zip(counts, date_ranges):
-            if count == 0:
-                continue
-            result.append(dict(title=name,
-                               amount=format_amount(count),
-                               start_date=format_date(start_date),
-                               end_date=format_date(end_date)))
-        return result
-
-    def type_entries(self, counts):
-        types = {}
-        for name, interface in zope.component.getUtilitiesFor(
-                zeit.cms.interfaces.ICMSContentType):
-            type_ = interface.queryTaggedValue('zeit.cms.type')
-            if type_:
-                types[type_] = interface
-
-        result = []
-        for type_name, count in counts:
-            interface = types.get(type_name)
-            title = None
-            if interface:
-                title = interface.queryTaggedValue('zeit.cms.title')
-            if not title:
-                title = type_name
-            result.append(dict(
-                amount=format_amount(count),
-                title=zope.i18n.translate(title, context=self.request),
-                type=type_name,
-            ))
-        return result
-
-    def entries(self, counts):
-        result = []
-        for name, count in counts:
-            result.append(dict(title=name,
-                               amount=format_amount(count)))
-        return result
 
 
 class ToggleFavorited(JSONView):

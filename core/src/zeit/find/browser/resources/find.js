@@ -18,19 +18,11 @@ zeit.find.Search = gocept.Class.extend({
         self.search_result = new zeit.cms.JSONView(
             base_url + 'search_result', 'search_result',
             MochiKit.Base.bind(self.search_form_parameters, self));
-        self.result_filters = new zeit.cms.JSONView(
-            base_url + 'result_filters', 'result_filters',
-            MochiKit.Base.bind(self.search_form_parameters, self));
 
         self.submit_on_pageload = submit_on_pageload;
 
         // Connect handlers
         zeit.find.init_search_results(self.search_result);
-        new zeit.find.ResultsFilters(self.search_result);
-        new zeit.find.TimeFilters(self.result_filters);
-        new zeit.find.AuthorFilters(self.result_filters);
-        new zeit.find.TopicFilters(self.result_filters);
-        new zeit.find.TypeFilters(self.result_filters);
 
         MochiKit.Signal.connect(
             self.main_view, 'load', self, self.init_search_form);
@@ -70,10 +62,6 @@ zeit.find.Search = gocept.Class.extend({
             'extended_search_button', 'onclick', function() {
                 self.toggle_extended_search(true);
         });
-        MochiKit.Signal.connect(
-            'result_filters_button', 'onclick', function() {
-            self.toggle_result_filters(true);
-        });
 
         var d = MochiKit.Async.loadJSONDoc(
             zeit.cms.get_application_url() + '/@@zeit.find.last-query');
@@ -94,10 +82,6 @@ zeit.find.Search = gocept.Class.extend({
             field = $('zeit-find-search-form')['extended_search_expanded'];
             if (field.value) {
                 self.toggle_extended_search(false);
-            }
-            field = $('zeit-find-search-form')['result_filters_expanded'];
-            if (field.value) {
-                self.toggle_result_filters(false);
             }
             return json;
         });
@@ -197,9 +181,6 @@ zeit.find.Search = gocept.Class.extend({
         self.update_extended_search_info(
             $('extended_search'), $('extended_search_info'));
         self.search_result.render();
-        if ($('result_filters_data')) {
-            self.result_filters.render();
-        }
     },
 
     toggle_type_search: function(update_field) {
@@ -280,26 +261,6 @@ zeit.find.Search = gocept.Class.extend({
         });
     },
 
-    toggle_result_filters: function(update_field) {
-        var self = this;
-        MochiKit.DOM.toggleElementClass(
-            'unfolded', 'result_filters_button');
-        if (update_field) {
-            var field = $('zeit-find-search-form')['result_filters_expanded'];
-            if (field.value) {
-                field.value = '';
-            } else {
-                field.value = 'expanded';
-            }
-            self.search_result.render();
-        }
-
-        if ($('result_filters_data')) {
-            $('result_filters').innerHTML = '';
-        } else  {
-            self.result_filters.render();
-        }
-    },
     search_form_parameters: function() {
         var self = this;
         var qs = MochiKit.Base.queryString($('search_form'));
@@ -400,166 +361,6 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
         });
 
     },
-});
-
-
-zeit.find.TimeFilters = zeit.find.Component.extend({
-
-    connect: function(element, data) {
-        var self = this;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_time'));
-        var from_field = $('zeit-find-search-form')['from'];
-        var until_field = $('zeit-find-search-form')['until'];
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var start_date = lookup('start_date');
-            var end_date = lookup('end_date');
-            self.events.push(MochiKit.Signal.connect(
-                entry, 'onclick', function(e) {
-                    from_field.value = start_date;
-                    until_field.value = end_date;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-            }));
-        });
-    },
-
-});
-
-
-zeit.find.AuthorFilters = zeit.find.Component.extend({
-
-    connect: function(element, data) {
-        var self = this;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_author'));
-        var author_field = $('zeit-find-search-form')['author'];
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var author = lookup('title');
-            self.events.push( MochiKit.Signal.connect(
-                entry, 'onclick', function(e) {
-                    author_field.value = author;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-            }));
-        });
-    },
-
-});
-
-
-zeit.find.TopicFilters = zeit.find.Component.extend({
-
-    connect: function(element, data) {
-        var self = this;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_topic'));
-        var topic_field = $('zeit-find-search-form')['topic'];
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var topic = lookup('title');
-            self.events.push(MochiKit.Signal.connect(
-                entry, 'onclick', function(e) {
-                    topic_field.value = topic;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-            }));
-        });
-    },
-
-});
-
-
-zeit.find.TypeFilters = zeit.find.Component.extend({
-
-    connect: function(element, data) {
-        var self = this;
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'a', 'filter_link', $('filter_type'));
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-            var type = lookup('type');
-            self.events.push(MochiKit.Signal.connect(
-                entry, 'onclick', function(e) {
-                    forEach($('zeit-find-search-form')['types:list'],
-                            function(checkbox) {
-                        if (checkbox.value == type) {
-                            checkbox.checked = true;
-                        } else {
-                            checkbox.checked = false;
-                        }
-                    });
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-            }));
-        });
-    },
-
-});
-
-zeit.find.ResultsFilters = zeit.find.Component.extend({
-
-    connect: function(element, data) {
-        var self = this;
-        var form = $('zeit-find-search-form');
-        var from_field = form['from'];
-        var until_field = form['until'];
-        var volume_year_field = form['volume_year'];
-        var topic_field = form['topic'];
-        var author_field = form['author'];
-
-        var results = MochiKit.DOM.getElementsByTagAndClassName(
-            'div', 'search_entry', element);
-
-        forEach(results, function(entry) {
-            var lookup = jsontemplate.get_node_lookup(data, entry);
-
-            var start_date = lookup('start_date');
-            var end_date = lookup('end_date');
-            var date_filter = jQuery('.date_filter', entry)[0];
-            self.events.push(MochiKit.Signal.connect(
-                date_filter, 'onclick', function(e) {
-                    from_field.value = start_date;
-                    until_field.value = end_date;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-                }));
-
-            var volume_year = lookup('volume_year');
-            var volume_year_filter = jQuery('.volume_year_filter', entry)[0];
-            self.events.push(MochiKit.Signal.connect(
-                volume_year_filter, 'onclick', function(e) {
-                    volume_year_field.value = volume_year;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-                }));
-
-            var topic = lookup('topic');
-            var topic_filter = jQuery('.topic_filter', entry)[0];
-            self.events.push(MochiKit.Signal.connect(
-                topic_filter, 'onclick', function(e) {
-                    topic_field.value = topic;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-                }));
-
-            jQuery('.author_filter', entry).each(function(i, author_filter) {
-                var author_lookup = jsontemplate.get_node_lookup(
-                    data, author_filter);
-                var author = author_lookup('@');
-                self.events.push(MochiKit.Signal.connect(
-                    author_filter, 'onclick', function(e) {
-                        author_field.value = author;
-                    MochiKit.Signal.signal(window, 'zeit.find.update-search');
-                }));
-            });
-
-            jQuery('.range', entry).each(function(i, range) {
-                self.events.push(MochiKit.Signal.connect(
-                    range, 'onclick', function(e) {
-                    if (range.getAttribute('href') == '#') {
-                        e.stop();
-                    }
-                }));
-            });
-
-        });
-    }
 });
 
 

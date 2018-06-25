@@ -65,14 +65,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.verifySelectedLabel('name=sort_order', 'Datum')
         s.verifyChecked('id=search-type-testcontenttype')
 
-    def test_result_filters_expand_automatically(self):
-        s = self.selenium
-        s.click('id=result_filters_button')
-        s.waitForElementPresent('css=#result_filters_button.unfolded')
-        s.pause(500)
-        self.open('/find')
-        s.waitForElementPresent('css=#result_filters_button.unfolded')
-
     def test_type_search_expand_automatically(self):
         s = self.selenium
         s.click('id=type_search_button')
