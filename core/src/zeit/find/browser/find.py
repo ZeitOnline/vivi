@@ -104,6 +104,7 @@ class SearchResult(JSONView):
         'favorited_css_class',
         'graphical_preview_url',
         'icon',
+        'product',
         'publication_status',
         'serie',
         'start_date',
@@ -114,7 +115,6 @@ class SearchResult(JSONView):
         'topic',
         'type',
         'uniqueId',
-        'volume_year',
     )
 
     def results(self, results):
@@ -178,6 +178,12 @@ class SearchResult(JSONView):
     def get_favorited_css_class(self, result):
         return get_favorited_css_class(self.get_favorited(result))
 
+    def get_product(self, result):
+        source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(
+            None)
+        product = source.find(result.get('product_id'))
+        return product and product.title or ''
+
     def get_publication_status(self, result):
         r = self.resource_url
         published = self._get_unformatted_publication_status(result)
@@ -204,14 +210,6 @@ class SearchResult(JSONView):
             uniqueId = self.get_uniqueId(result)
             title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
         return title
-
-    def get_volume_year(self, result):
-        volume, year = self._get_unformatted_volume_year(result)
-        if volume and year:
-            volume_year = '%s/%s' % (volume, year)
-        else:
-            volume_year = ''
-        return volume_year
 
     def get_type(self, result):
         return result.get('type', '')
@@ -270,11 +268,6 @@ class SearchResult(JSONView):
 
     def get_uniqueId(self, result):
         return result.get('uniqueId', '')
-
-    def _get_unformatted_volume_year(self, result):
-        volume = result.get('volume')
-        year = result.get('year')
-        return volume, year
 
     @zope.cachedescriptors.property.Lazy
     def favorite_ids(self):
