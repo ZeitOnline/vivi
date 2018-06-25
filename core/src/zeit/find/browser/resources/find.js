@@ -316,10 +316,8 @@ zeit.find.init_full_search = function(submit_on_pageload) {
 
     // Make available for tests
     zeit.find._search = new zeit.find.Search(submit_on_pageload);
-
-    zeit.find.tabs = new zeit.cms.Tabs('cp-search');
-    zeit.find.tabs.add(new zeit.cms.ViewTab(
-        'search_form', 'Suche', zeit.find._search));
+    jQuery('#cp-search').append('<div id="search_form"></div>');
+    zeit.find._search.render();
 }
 
 
