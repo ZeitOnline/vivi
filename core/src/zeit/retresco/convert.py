@@ -17,6 +17,8 @@ import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
 import zeit.content.portraitbox.interfaces
+import zeit.content.rawxml.interfaces
+import zeit.content.text.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
@@ -336,6 +338,30 @@ class Portraitbox(Converter):
         return {
             'title': self.context.name,
             'teaser': self.context.name,
+        }
+
+
+class Text(Converter):
+
+    interface = zeit.content.text.interfaces.IText
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.__name__,
+            'teaser': self.context.__name__,
+        }
+
+
+class RawXML(Converter):
+
+    interface = zeit.content.rawxml.interfaces.IRawXML
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.title,
+            'teaser': self.context.title,
         }
 
 

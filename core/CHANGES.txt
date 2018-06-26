@@ -1,8 +1,10 @@
 zeit.retresco changes
 =====================
 
-1.26.1 (unreleased)
+1.27.0 (unreleased)
 -------------------
+
+- TMS-237: Index text and rawxml objects
 
 - TMS-214: Remove unused vivi-only access counter data
 
