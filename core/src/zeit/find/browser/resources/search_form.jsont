@@ -1,6 +1,7 @@
 <form method="GET" id="zeit-find-search-form" action="#">
   <input type="text" name="fulltext" id="fulltext" value="" />
   <input type="button" id="search_button" value=" OK " />
+  <a id="reset_search_button"></a>
 
   <div id="type_search_button" class="button">
     Typen

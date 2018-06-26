@@ -1,5 +1,5 @@
 #fulltext {
-  width: 80%;
+  width: 75%;
   margin-right: .4em;
 }
 
@@ -16,6 +16,14 @@
 	background-color: #F2F2F2;
 }
 
+#reset_search_button {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -420px transparent;
+  border: 0px solid #FFF;
+  cursor: pointer;
+  padding-left: 20px;
+  padding-bottom:10px;
+  margin-left: .6em;
+}
 
 .toggle_favorited.favorited,
 .toggle_favorited.not_favorited {

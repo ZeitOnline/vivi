@@ -4,7 +4,7 @@ zeit.find changes
 2.7.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-214: Add "reset form" button
 
 
 2.7.3 (2018-05-29)

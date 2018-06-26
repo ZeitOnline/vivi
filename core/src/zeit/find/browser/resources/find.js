@@ -62,6 +62,10 @@ zeit.find.Search = zeit.find.BaseView.extend({
             self.update_search_result();
         });
 
+        MochiKit.Signal.connect('reset_search_button', 'onclick', function(e) {
+            self.reset_search_form();
+        });
+
         MochiKit.Signal.connect(
             'type_search_button', 'onclick', function() {
                 self.toggle_type_search(true);
@@ -123,6 +127,26 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 }
             }
         });
+    },
+
+    reset_search_form: function() {
+        var self = this;
+        self.clear_search_params();
+
+        // If toggleElementClass had a "force state on/off" parameter, we could
+        // reuse the self.toggle_* functions here, sigh.
+        MochiKit.DOM.addElementClass('type_search', 'hidden');
+        MochiKit.DOM.addElementClass('type_search_info', 'hidden');
+        MochiKit.DOM.removeElementClass('type_search_button', 'unfolded');
+
+        MochiKit.DOM.addElementClass('extended_search', 'hidden');
+        MochiKit.DOM.addElementClass('extended_search_info', 'hidden');
+        MochiKit.DOM.removeElementClass('extended_search_button', 'unfolded');
+
+        $('zeit-find-search-form')['type_search_expanded'].value = '';
+        $('zeit-find-search-form')['extended_search_expanded'].value = '';
+
+        self.update_search_result();
     },
 
     set_types: function(types) {
