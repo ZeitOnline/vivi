@@ -29,5 +29,9 @@ setup(
         'fanstatic.libraries': [
             'zeit_find=zeit.find.browser.resources:lib',
         ],
+        'console_scripts': [
+            'search-solr=zeit.find.cli:search_solr',
+            'search-elastic=zeit.find.cli:search_elastic',
+        ],
     },
 )

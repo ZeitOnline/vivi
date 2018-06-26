@@ -1,6 +1,16 @@
+from zope.component import getUtility
+from zeit.retresco.interfaces import IElasticsearch
 
 
 builders = {}
+
+
+def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
+    """Search elasticsearch according to query."""
+    if query is None:
+        return []
+    elasticsearch = getUtility(IElasticsearch)
+    return elasticsearch.search(query, rows=rows)
 
 
 def builder(func):
@@ -55,7 +65,9 @@ def query(from_=None,
     """
     clauses = []
     for field, value in kw.items():
-        if field in builders:
+        if value is None:
+            continue
+        elif field in builders:
             clauses.append(builders[field](value))
         elif field in field_map:
             clauses.append(dict(match={field_map[field]: value}))
