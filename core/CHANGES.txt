@@ -1,7 +1,7 @@
 zeit.retresco changes
 =====================
 
-1.27.0 (unreleased)
+1.27.0 (2018-06-26)
 -------------------
 
 - TMS-237: Index text and rawxml objects
