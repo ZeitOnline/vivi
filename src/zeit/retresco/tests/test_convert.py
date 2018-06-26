@@ -325,3 +325,21 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['portraitbox'])()
         self.assertEqual('portraitbox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+
+    def test_converts_text(self):
+        text = zeit.content.text.text.Text()
+        text.text = ''
+        self.repository['mytext'] = text
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['mytext'])()
+        self.assertEqual('text', data['doc_type'])
+        self.assertEqual('mytext', data['title'])
+
+    def test_converts_rawxml(self):
+        self.repository['embed'] = zeit.content.rawxml.rawxml.RawXML()
+        with checked_out(self.repository['embed']) as co:
+            co.title = 'mytitle'
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['embed'])()
+        self.assertEqual('rawxml', data['doc_type'])
+        self.assertEqual('mytitle', data['title'])
