@@ -54,6 +54,13 @@
     />
 
   <adapter
+    factory=".interfaces.IZMOSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="zeit-magazin"
+    />
+
+  <adapter
     factory=".article.NextRead"
     provides=".interfaces.INextRead"
     trusted="yes" />

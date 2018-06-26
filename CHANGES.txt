@@ -5,7 +5,8 @@ zeit.magazin changes
 1.4.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4705: Also allow setting IZMOSection via ressort `zeit-magazin`,
+  in addition to "everywhere below /zeit-magazin".
 
 
 1.4.5 (2018-05-17)
