@@ -34,3 +34,5 @@ def test_erroneous_queries():
         assert query()
     with raises(ValueError):
         assert query(foo='bar')
+    with raises(ValueError):
+        assert query(filer_terms='foo')     # no longer supported

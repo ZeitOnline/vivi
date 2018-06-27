@@ -40,22 +40,26 @@ def until(conditions):
         return from_(conditions)
 
 
+@builder
+def show_news(conditions):
+    NotImplemented
+
+
 field_map = dict(
     authors='payload.document.author',
+    keywords='rtr_keywords',
+    product_id='payload.workflow.product-id',
+    published='payload.vivi.publish_status',
+    raw_tags='rtr_tags',
+    serie='payload.document.serie',
+    topic='payload.document.ressort',
+    type='payload.document.type',
+    volume='payload.document.volume',
+    year='payload.document.year',
 )
 
 
-def query(volume=None,
-          year=None,
-          topic=None,
-          keywords=None,
-          raw_tags=None,
-          published=None,
-          types=(),
-          product_id=None,
-          serie=None,
-          show_news=None,
-          filter_terms=None, **kw):
+def query(**kw):
     """ Create elasticsearch query for search. Supported field are:
 
     fulltext - fulltext to search for
@@ -88,6 +92,8 @@ def query(volume=None,
                 clauses.append(clause)
         elif field in field_map:
             clauses.append(dict(match={field_map[field]: value}))
+        else:
+            raise ValueError('unsupported search condition {}', field)
     if len(clauses) > 1:
         qry = dict(bool=dict(must=clauses))
     elif len(clauses) == 1:
