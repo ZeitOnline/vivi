@@ -115,12 +115,6 @@
     </div>
   </div>
 
-  <div id="result_filters_button" class="button">
-    Gefilterte Ergebnisse
-    <input type="hidden" name="result_filters_expanded" />
-  </div>
-  <div id="result_filters"></div>
-
 </form>
 
 <div id="search_result" class="search_result"></div>

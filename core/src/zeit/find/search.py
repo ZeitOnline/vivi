@@ -12,6 +12,7 @@ DEFAULT_RESULT_FIELDS = (
     'keywords',
     'raw-tags',
     'last-semantic-change',
+    'product_id',
     'published',
     'range',
     'range_details',
