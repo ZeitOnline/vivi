@@ -21,7 +21,7 @@ def builder(func):
 @builder
 def fulltext(conditions):
     value = conditions['fulltext']
-    return dict(query_string=dict(query=value))
+    return 'must', [dict(query_string=dict(query=value))]
 
 
 @builder
@@ -31,13 +31,15 @@ def from_(conditions):
         filters['gte'] = conditions['from_'].isoformat()
     if 'until' in conditions:
         filters['lte'] = conditions['until'].isoformat()
-    return dict(range={'payload.document.last-semantic-change': filters})
+    return 'must', [dict(range={
+        'payload.document.last-semantic-change': filters})]
 
 
 @builder
 def until(conditions):
     if 'from_' not in conditions:
         return from_(conditions)
+    return None, None
 
 
 @builder
@@ -82,22 +84,22 @@ def query(**kw):
 
     Returns elasticsearch query expression that can be passed to `search`.
     """
-    clauses = []
+    clauses = dict()
     for field, value in kw.items():
         if value is None:
             continue
         elif field in builders:
-            clause = builders[field](kw)
-            if clause is not None:
-                clauses.append(clause)
+            typ, clause = builders[field](kw)
         elif field in field_map:
-            clauses.append(dict(match={field_map[field]: value}))
+            typ, clause = 'must', [dict(match={field_map[field]: value})]
         else:
             raise ValueError('unsupported search condition {}', field)
-    if len(clauses) > 1:
-        qry = dict(bool=dict(must=clauses))
-    elif len(clauses) == 1:
-        qry = clauses[0]
+        if clause is not None:
+            clauses.setdefault(typ, []).extend(clause)
+    if len(clauses) == 1 and len(clauses.get('must', [])) == 1:
+        qry = clauses['must'][0]
+    elif clauses:
+        qry = dict(bool=clauses)
     else:
         raise ValueError('no search clauses given')
     return dict(query=qry)
