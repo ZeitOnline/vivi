@@ -14,6 +14,14 @@ def test_simple_queries():
     assert query(until=datetime(2009, 12, 19, 19, 9)) == {
         'query': {'range': {'payload.document.last-semantic-change': {
             'lte': '2009-12-19T19:09:00'}}}}
+    assert query(show_news=False) == {
+        'query': {'bool': {'must_not': [
+            {'payload.document.ressort': 'News'},
+            {'payload.workflow.product-id': 'News'},
+            {'payload.workflow.product-id': 'afp'},
+            {'payload.workflow.product-id': 'SID'},
+            {'payload.workflow.product-id': 'dpa-hamburg'},
+        ]}}}
 
 
 def test_combined_queries():

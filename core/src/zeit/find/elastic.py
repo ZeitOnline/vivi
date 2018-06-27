@@ -44,7 +44,9 @@ def until(conditions):
 
 @builder
 def show_news(conditions):
-    NotImplemented
+    return 'must_not', [{'payload.document.ressort': 'News'}] + [
+        {'payload.workflow.product-id': pid}
+        for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
 
 
 field_map = dict(
