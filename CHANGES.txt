@@ -4,7 +4,7 @@ zeit.content.author changes
 2.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Use False as enable_feedback default in property as well
 
 
 2.9.1 (2018-06-27)
