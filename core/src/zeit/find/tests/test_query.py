@@ -4,6 +4,8 @@ from zeit.find.elastic import query
 
 
 def test_simple_queries():
+    assert query() == {
+        'query': {'match_all': {}}}
     assert query(fulltext='Foo') == {
         'query': {'query_string': {'query': 'Foo'}}}
     assert query(authors='Foo Bar') == {
@@ -38,8 +40,6 @@ def test_combined_queries():
 
 
 def test_erroneous_queries():
-    with raises(ValueError):
-        assert query()
     with raises(ValueError):
         assert query(foo='bar')
     with raises(ValueError):

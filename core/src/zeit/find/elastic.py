@@ -103,5 +103,5 @@ def query(**kw):
     elif clauses:
         qry = dict(bool=clauses)
     else:
-        raise ValueError('no search clauses given')
+        qry = dict(match_all=dict())
     return dict(query=qry)
