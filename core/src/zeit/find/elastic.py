@@ -19,8 +19,25 @@ def builder(func):
 
 
 @builder
-def fulltext(value):
+def fulltext(conditions):
+    value = conditions['fulltext']
     return dict(query_string=dict(query=value))
+
+
+@builder
+def from_(conditions):
+    filters = dict()
+    if 'from_' in conditions:
+        filters['gte'] = conditions['from_'].isoformat()
+    if 'until' in conditions:
+        filters['lte'] = conditions['until'].isoformat()
+    return dict(range={'payload.document.last-semantic-change': filters})
+
+
+@builder
+def until(conditions):
+    if 'from_' not in conditions:
+        return from_(conditions)
 
 
 field_map = dict(
@@ -28,9 +45,7 @@ field_map = dict(
 )
 
 
-def query(from_=None,
-          until=None,
-          volume=None,
+def query(volume=None,
           year=None,
           topic=None,
           keywords=None,
@@ -68,7 +83,9 @@ def query(from_=None,
         if value is None:
             continue
         elif field in builders:
-            clauses.append(builders[field](value))
+            clause = builders[field](kw)
+            if clause is not None:
+                clauses.append(clause)
         elif field in field_map:
             clauses.append(dict(match={field_map[field]: value}))
     if len(clauses) > 1:

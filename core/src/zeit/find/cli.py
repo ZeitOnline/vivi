@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from datetime import datetime
 from gocept.runner import once
 from logging import getLogger
 from operator import itemgetter
@@ -9,14 +10,21 @@ from zeit.find import search, elastic
 log = getLogger(__name__)
 
 
+def convert(conditions):
+    for condition in conditions:
+        name, value = condition.split(':', 1)
+        if name in ('from_', 'until'):
+            value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+        yield name, value
+
+
 def parse():
     parser = ArgumentParser(description='Elasticsearch debug client')
     parser.add_argument('conditions', nargs='+', help='Search conditions')
     parser.add_argument(
         '-v', '--verbose', action='store_true', help='Report query & results')
     args = parser.parse_args()
-    conditions = dict([c.split(':', 1) for c in args.conditions])
-    return args, conditions
+    return args, dict(convert(args.conditions))
 
 
 def perform_search(module, get_id):
