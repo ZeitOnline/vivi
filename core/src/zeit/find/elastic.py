@@ -10,7 +10,7 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     if query is None:
         return []
     elasticsearch = getUtility(IElasticsearch)
-    return elasticsearch.search(query, rows=rows)
+    return elasticsearch.search(query, rows=rows, **kw)
 
 
 def builder(func):

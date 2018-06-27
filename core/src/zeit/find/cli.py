@@ -3,6 +3,7 @@ from datetime import datetime
 from gocept.runner import once
 from logging import getLogger
 from operator import itemgetter
+from pprint import pformat
 from zeit.cms.interfaces import ICMSContent
 from zeit.find import search, elastic
 
@@ -23,6 +24,8 @@ def parse():
     parser.add_argument('conditions', nargs='+', help='Search conditions')
     parser.add_argument(
         '-v', '--verbose', action='store_true', help='Report query & results')
+    parser.add_argument(
+        '-p', '--payload', action='store_true', help='Dump result payload')
     args = parser.parse_args()
     return args, dict(convert(args.conditions))
 
@@ -32,11 +35,14 @@ def perform_search(module, get_id):
     query = module.query(**conditions)
     if args.verbose:
         log.info('using query: {}'.format(query))
-    response = module.search(query)
+    response = module.search(query, include_payload=args.payload)
     log.info('got {} results'.format(response.hits))
     if args.verbose:
         for idx, item in enumerate(response):
-            log.info('#{}: {}'.format(idx, get_id(item)))
+            info = '#{}: {}'.format(idx, get_id(item))
+            if args.payload:
+                info += '\n' + pformat(item)
+            log.info(info)
 
 
 @once(principal='zope.manager')
