@@ -9,8 +9,9 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []
+    sort_order = '_score'
     elasticsearch = getUtility(IElasticsearch)
-    return elasticsearch.search(query, rows=rows, **kw)
+    return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
 
 
 def builder(func):
