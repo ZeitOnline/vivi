@@ -54,12 +54,14 @@ def query(fulltext=None, **conditions):
     if fulltext:
         must.append(dict(query_string=dict(query=fulltext)))
     # handle from_, until
-    if 'from_' in conditions or 'until' in conditions:
+    from_ = conditions.pop('from_', None)
+    until = conditions.pop('until', None)
+    if from_ is not None or until is not None:
         filters = dict()
-        if 'from_' in conditions:
-            filters['gte'] = conditions.pop('from_').isoformat()
-        if 'until' in conditions:
-            filters['lte'] = conditions.pop('until').isoformat()
+        if from_ is not None:
+            filters['gte'] = from_.isoformat()
+        if until is not None:
+            filters['lte'] = until.isoformat()
         must.append(dict(range={
             'payload.document.last-semantic-change': filters}))
     # handle show_news
