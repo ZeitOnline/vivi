@@ -20,11 +20,11 @@ def test_simple_queries():
             'lte': '2009-12-19T19:09:00'}}}}
     assert query(show_news=False) == {
         'query': {'bool': {'must_not': [
-            {'payload.document.ressort': 'News'},
-            {'payload.workflow.product-id': 'News'},
-            {'payload.workflow.product-id': 'afp'},
-            {'payload.workflow.product-id': 'SID'},
-            {'payload.workflow.product-id': 'dpa-hamburg'},
+            {'match': {'payload.document.ressort': 'News'}},
+            {'match': {'payload.workflow.product-id': 'News'}},
+            {'match': {'payload.workflow.product-id': 'afp'}},
+            {'match': {'payload.workflow.product-id': 'SID'}},
+            {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
         ]}}}
     assert query(show_news=True) == {
         'query': {'match_all': {}}}
@@ -43,6 +43,16 @@ def test_combined_queries():
         until=datetime(2017, 5, 27, 20, 0)) == {
             'query': {'range': {'payload.document.last-semantic-change': {
                 'gte': '2009-12-19T19:09:00', 'lte': '2017-05-27T20:00:00'}}}}
+    assert query(show_news=False, fulltext='Foo') == {
+        'query': {'bool': {
+            'must': [{'query_string': {'query': 'Foo'}}],
+            'must_not': [
+                {'match': {'payload.document.ressort': 'News'}},
+                {'match': {'payload.workflow.product-id': 'News'}},
+                {'match': {'payload.workflow.product-id': 'afp'}},
+                {'match': {'payload.workflow.product-id': 'SID'}},
+                {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
+            ]}}}
 
 
 def test_erroneous_queries():

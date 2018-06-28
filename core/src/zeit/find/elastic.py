@@ -66,9 +66,10 @@ def query(fulltext=None, **conditions):
             'payload.document.last-semantic-change': filters}))
     # handle show_news
     if not conditions.pop('show_news', True):
-        clauses['must_not'] = [{'payload.document.ressort': 'News'}] + [
-            {'payload.workflow.product-id': pid}
-            for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
+        clauses['must_not'] = [
+            dict(match={'payload.document.ressort': 'News'})] + [
+                dict(match={'payload.workflow.product-id': pid})
+                for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
