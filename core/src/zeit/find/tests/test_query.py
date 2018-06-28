@@ -24,6 +24,8 @@ def test_simple_queries():
             {'payload.workflow.product-id': 'SID'},
             {'payload.workflow.product-id': 'dpa-hamburg'},
         ]}}}
+    assert query(show_news=True) == {
+        'query': {'match_all': {}}}
 
 
 def test_combined_queries():
