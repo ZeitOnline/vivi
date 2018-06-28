@@ -5,7 +5,7 @@ from logging import getLogger
 from operator import itemgetter
 from pprint import pformat
 from zeit.cms.interfaces import ICMSContent
-from zeit.find import search, elastic
+from zeit.find import solr, elastic
 
 
 log = getLogger(__name__)
@@ -47,7 +47,7 @@ def perform_search(module, get_id):
 
 @once(principal='zope.manager')
 def search_solr():
-    perform_search(search, itemgetter('uniqueId'))
+    perform_search(solr, itemgetter('uniqueId'))
 
 
 @once(principal='zope.manager')
