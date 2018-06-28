@@ -8,6 +8,8 @@ def test_simple_queries():
         'query': {'match_all': {}}}
     assert query(fulltext='Foo') == {
         'query': {'query_string': {'query': 'Foo'}}}
+    assert query('Bar') == {
+        'query': {'query_string': {'query': 'Bar'}}}
     assert query(authors='Foo Bar') == {
         'query': {'match': {'payload.document.author': 'Foo Bar'}}}
     assert query(from_=datetime(2009, 12, 19, 19, 9)) == {

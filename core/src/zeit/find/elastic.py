@@ -25,7 +25,7 @@ field_map = dict(
 )
 
 
-def query(**conditions):
+def query(fulltext=None, **conditions):
     """ Create elasticsearch query for search. Supported field are:
 
     fulltext - fulltext to search for
@@ -51,9 +51,8 @@ def query(**conditions):
     must = []
     clauses = dict()
     # handle fulltext
-    if 'fulltext' in conditions:
-        value = conditions.pop('fulltext')
-        must.append(dict(query_string=dict(query=value)))
+    if fulltext:
+        must.append(dict(query_string=dict(query=fulltext)))
     # handle from_, until
     if 'from_' in conditions or 'until' in conditions:
         filters = dict()
