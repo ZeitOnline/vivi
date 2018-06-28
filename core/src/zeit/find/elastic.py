@@ -2,9 +2,6 @@ from zope.component import getUtility
 from zeit.retresco.interfaces import IElasticsearch
 
 
-builders = {}
-
-
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
@@ -12,44 +9,6 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     sort_order = '_score'
     elasticsearch = getUtility(IElasticsearch)
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
-
-
-def builder(func):
-    builders[func.__name__] = func
-    return func
-
-
-@builder
-def fulltext(conditions):
-    value = conditions['fulltext']
-    return 'must', [dict(query_string=dict(query=value))]
-
-
-@builder
-def from_(conditions):
-    filters = dict()
-    if 'from_' in conditions:
-        filters['gte'] = conditions['from_'].isoformat()
-    if 'until' in conditions:
-        filters['lte'] = conditions['until'].isoformat()
-    return 'must', [dict(range={
-        'payload.document.last-semantic-change': filters})]
-
-
-@builder
-def until(conditions):
-    if 'from_' not in conditions:
-        return from_(conditions)
-    return None, None
-
-
-@builder
-def show_news(conditions):
-    if not conditions['show_news']:
-        return 'must_not', [{'payload.document.ressort': 'News'}] + [
-            {'payload.workflow.product-id': pid}
-            for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
-    return None, None
 
 
 field_map = dict(
@@ -66,7 +25,7 @@ field_map = dict(
 )
 
 
-def query(**kw):
+def query(**conditions):
     """ Create elasticsearch query for search. Supported field are:
 
     fulltext - fulltext to search for
@@ -89,18 +48,37 @@ def query(**kw):
 
     Returns elasticsearch query expression that can be passed to `search`.
     """
+    must = []
     clauses = dict()
-    for field, value in kw.items():
+    # handle fulltext
+    if 'fulltext' in conditions:
+        value = conditions.pop('fulltext')
+        must.append(dict(query_string=dict(query=value)))
+    # handle from_, until
+    if 'from_' in conditions or 'until' in conditions:
+        filters = dict()
+        if 'from_' in conditions:
+            filters['gte'] = conditions.pop('from_').isoformat()
+        if 'until' in conditions:
+            filters['lte'] = conditions.pop('until').isoformat()
+        must.append(dict(range={
+            'payload.document.last-semantic-change': filters}))
+    # handle show_news
+    if not conditions.pop('show_news', True):
+        clauses['must_not'] = [{'payload.document.ressort': 'News'}] + [
+            {'payload.workflow.product-id': pid}
+            for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
+    # handle remaining fields
+    for field, value in conditions.items():
         if value in (None, [], ()):
             continue
-        elif field in builders:
-            typ, clause = builders[field](kw)
         elif field in field_map:
-            typ, clause = 'must', [dict(match={field_map[field]: value})]
+            must.append(dict(match={field_map[field]: value}))
         else:
             raise ValueError('unsupported search condition {}', field)
-        if clause is not None:
-            clauses.setdefault(typ, []).extend(clause)
+    # construct either bool or simple query
+    if must:
+        clauses['must'] = must
     if len(clauses) == 1 and len(clauses.get('must', [])) == 1:
         qry = clauses['must'][0]
     elif clauses:
