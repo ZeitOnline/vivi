@@ -91,7 +91,7 @@ def query(**kw):
     """
     clauses = dict()
     for field, value in kw.items():
-        if value is None:
+        if value in (None, [], ()):
             continue
         elif field in builders:
             typ, clause = builders[field](kw)

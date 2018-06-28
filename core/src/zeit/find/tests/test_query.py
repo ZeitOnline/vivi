@@ -26,6 +26,8 @@ def test_simple_queries():
         ]}}}
     assert query(show_news=True) == {
         'query': {'match_all': {}}}
+    assert query(keywords=[]) == {
+        'query': {'match_all': {}}}
 
 
 def test_combined_queries():
