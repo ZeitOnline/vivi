@@ -60,7 +60,7 @@ field_map = dict(
     raw_tags='rtr_tags',
     serie='payload.document.serie',
     topic='payload.document.ressort',
-    type='payload.document.type',
+    types='payload.document.type',
     volume='payload.document.volume',
     year='payload.document.year',
 )
