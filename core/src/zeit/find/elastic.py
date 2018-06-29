@@ -6,6 +6,7 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []
+    kw.setdefault('include_payload', True)
     sort_order = '_score'
     elasticsearch = getUtility(IElasticsearch)
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
