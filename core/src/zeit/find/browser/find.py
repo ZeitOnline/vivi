@@ -1,4 +1,5 @@
 import datetime
+import logging
 import urlparse
 import zc.iso8601.parse
 import zeit.cms.browser.view
@@ -11,6 +12,9 @@ import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
 import zope.session.interfaces
+
+
+log = logging.getLogger(__name__)
 
 
 class JSONView(zeit.cms.browser.view.JSON):
@@ -88,6 +92,23 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
+class Getter(object):
+
+    def __init__(self, dict_):
+        self.dict = dict_
+
+    def get(self, key, default=None):
+        dict_ = self.dict
+        while '.' in key:
+            prefix, _, rest = key.partition('.')
+            if prefix in dict_:
+                dict_ = dict_[prefix]
+                key = rest
+        if key not in dict_:
+            log.warn('key "%s" not found', key)
+        return dict_.get(key, default)
+
+
 class SearchResult(JSONView):
 
     template = 'search_result.jsont'
@@ -117,6 +138,7 @@ class SearchResult(JSONView):
         processed = []
         for result in results:
             entry = {}
+            result = Getter(result)
             for key in self.search_result_keys:
                 handler = getattr(self, 'get_%s' % key)
                 entry[key] = handler(result)
@@ -167,7 +189,7 @@ class SearchResult(JSONView):
     def get_product(self, result):
         source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(
             None)
-        product = source.find(result.get('product_id'))
+        product = source.find(result.get('payload.workflow.product-id'))
         return product and product.title or ''
 
     def get_publication_status(self, result):
@@ -191,16 +213,16 @@ class SearchResult(JSONView):
         return title
 
     def get_type(self, result):
-        return result.get('type', '')
+        return result.get('payload.document.type', '')
 
     def get_authors(self, result):
         return result.get('authors', [])
 
     def _get_unformatted_date(self, result):
-        last_semantic_change = result.get('last-semantic-change')
+        last_semantic_change = result.get('payload.document.last-semantic-change')
         dt = None
         if last_semantic_change is not None:
-            dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
+            dt = zc.iso8601.parse.datetimetz(last_semantic_change)
         return dt
 
     def get_favorited(self, result):
@@ -237,16 +259,16 @@ class SearchResult(JSONView):
         return result.get('teaser_title')
 
     def _get_unformatted_title(self, result):
-        return result.get('title')
+        return result.get('payload.document.title')
 
     def get_serie(self, result):
-        return result.get('serie', '')
+        return result.get('payload.document.serie', '')
 
     def get_topic(self, result):
-        return result.get('ressort', '')
+        return result.get('payload.document.ressort', '')
 
     def get_uniqueId(self, result):
-        return result.get('uniqueId', '')
+        return self.get_application_url() + result.get('url', '')
 
     @zope.cachedescriptors.property.Lazy
     def favorite_ids(self):
