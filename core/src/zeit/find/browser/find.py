@@ -215,7 +215,7 @@ class SearchResult(JSONView):
         return title
 
     def get_type(self, result):
-        return result.get('payload.meta.type', '')
+        return result.get('doc_type', '')
 
     def get_authors(self, result):
         return result.get('payload.document.author', [])
