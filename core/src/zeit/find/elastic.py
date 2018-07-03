@@ -75,10 +75,13 @@ def query(fulltext=None, **conditions):
     for field, value in conditions.items():
         if value in (None, [], ()):
             continue
-        elif field in field_map:
-            must.append(dict(match={field_map[field]: value}))
-        else:
+        elif field not in field_map:
             raise ValueError('unsupported search condition {}', field)
+        elif isinstance(value, (list, tuple)):
+            must.append(dict(bool=dict(should=[
+                dict(match={field_map[field]: v}) for v in value])))
+        else:
+            must.append(dict(match={field_map[field]: value}))
     # construct either bool or simple query
     if must:
         clauses['must'] = must

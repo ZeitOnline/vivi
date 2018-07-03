@@ -30,6 +30,11 @@ def test_simple_queries():
         'query': {'match_all': {}}}
     assert query(keywords=[]) == {
         'query': {'match_all': {}}}
+    assert query(keywords=['Foo', 'Bar']) == {
+        'query': {'bool': {'should': [
+            {'match': {'rtr_keywords': 'Foo'}},
+            {'match': {'rtr_keywords': 'Bar'}},
+        ]}}}
 
 
 def test_combined_queries():
@@ -53,6 +58,14 @@ def test_combined_queries():
                 {'match': {'payload.workflow.product-id': 'SID'}},
                 {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
             ]}}}
+    assert query(year=2017, keywords=['Foo', 'Bar']) == {
+        'query': {'bool': {'must': [
+            {'bool': {'should': [
+                {'match': {'rtr_keywords': 'Foo'}},
+                {'match': {'rtr_keywords': 'Bar'}},
+            ]}},
+            {'match': {'payload.document.year': 2017}},
+        ]}}}
 
 
 def test_erroneous_queries():
