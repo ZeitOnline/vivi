@@ -2,6 +2,7 @@ from json import dumps
 from logging import getLogger
 from zope.component import getUtility
 from zeit.retresco.interfaces import IElasticsearch
+from zeit.retresco.search import Elasticsearch
 
 
 log = getLogger(__name__)
@@ -24,13 +25,21 @@ sort_orders = dict(
 )
 
 
+class Search(Elasticsearch):
+
+    def __init__(self, searcher):
+        self.client = searcher.client
+        # TODO: this should be part of the product config
+        self.index = 'zeit_pool_content'
+
+
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []
     query.setdefault('_source', default_source)
     sort_order = sort_orders.get(sort_order)
-    elasticsearch = getUtility(IElasticsearch)
+    elasticsearch = Search(getUtility(IElasticsearch))
     log.debug('searching using query "%s"', dumps(query))
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
 
