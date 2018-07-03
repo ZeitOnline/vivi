@@ -270,7 +270,8 @@ class SearchResult(JSONView):
         return result.get('payload.document.ressort', '')
 
     def get_uniqueId(self, result):
-        return self.get_application_url() + result.get('url', '')
+        url = result.get('url', '')
+        return zeit.cms.interfaces.ID_NAMESPACE.rstrip('/') + url
 
     @zope.cachedescriptors.property.Lazy
     def favorite_ids(self):
