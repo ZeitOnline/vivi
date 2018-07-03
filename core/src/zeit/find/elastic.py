@@ -18,12 +18,18 @@ default_source = (
 )
 
 
+sort_orders = dict(
+    date='payload.document.last-semantic-change:desc',
+    relevance='_score',
+)
+
+
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []
     query.setdefault('_source', default_source)
-    sort_order = '_score'
+    sort_order = sort_orders.get(sort_order)
     elasticsearch = getUtility(IElasticsearch)
     log.debug('searching using query "%s"', dumps(query))
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
