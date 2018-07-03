@@ -107,7 +107,7 @@ class Getter(object):
             else:
                 break
         if key not in dict_:
-            log.warn('key "%s" not found', key)
+            log.debug('key "%s" not found', key)
         return dict_.get(key, default)
 
 
