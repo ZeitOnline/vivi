@@ -1,5 +1,10 @@
+from json import dumps
+from logging import getLogger
 from zope.component import getUtility
 from zeit.retresco.interfaces import IElasticsearch
+
+
+log = getLogger(__name__)
 
 
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
@@ -9,6 +14,7 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     kw.setdefault('include_payload', True)
     sort_order = '_score'
     elasticsearch = getUtility(IElasticsearch)
+    log.debug('searching using query "%s"', dumps(query))
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
 
 
