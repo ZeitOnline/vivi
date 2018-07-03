@@ -255,13 +255,13 @@ class SearchResult(JSONView):
         return result.get('payload.body.supertitle', '')
 
     def get_teaser_text(self, result):
-        return result.get('payload.teaser.text', '')
+        return result.get('teaser', '')
 
     def _get_unformatted_teaser_title(self, result):
         return result.get('payload.teaser.title')
 
     def _get_unformatted_title(self, result):
-        return result.get('payload.document.title')
+        return result.get('title')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')

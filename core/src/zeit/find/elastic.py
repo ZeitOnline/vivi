@@ -7,11 +7,22 @@ from zeit.retresco.interfaces import IElasticsearch
 log = getLogger(__name__)
 
 
+default_source = (
+    'url',
+    'doc_type',
+    'doc_id',
+    'payload',
+    'supertitle',
+    'teaser',
+    'title',
+)
+
+
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []
-    kw.setdefault('include_payload', True)
+    query.setdefault('_source', default_source)
     sort_order = '_score'
     elasticsearch = getUtility(IElasticsearch)
     log.debug('searching using query "%s"', dumps(query))
