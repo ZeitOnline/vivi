@@ -104,6 +104,8 @@ class Getter(object):
             if prefix in dict_:
                 dict_ = dict_[prefix]
                 key = rest
+            else:
+                break
         if key not in dict_:
             log.warn('key "%s" not found', key)
         return dict_.get(key, default)
@@ -213,10 +215,10 @@ class SearchResult(JSONView):
         return title
 
     def get_type(self, result):
-        return result.get('payload.document.type', '')
+        return result.get('payload.meta.type', '')
 
     def get_authors(self, result):
-        return result.get('authors', [])
+        return result.get('payload.document.author', [])
 
     def _get_unformatted_date(self, result):
         last_semantic_change = result.get('payload.document.last-semantic-change')
@@ -229,7 +231,7 @@ class SearchResult(JSONView):
         return self.get_uniqueId(result) in self.favorite_ids
 
     def get_graphical_preview_url(self, result):
-        url = result.get('graphical-preview-url')
+        url = result.get('payload.vivi.cms_preview_url')
         if url is None:
             return None
         url_p = urlparse.urlsplit(url)
@@ -238,25 +240,25 @@ class SearchResult(JSONView):
         return url
 
     def get_icon(self, result):
-        icon = result.get('icon')
+        icon = result.get('payload.vivi.cms_icon')
         if icon:
             icon = self.get_application_url() + icon
         return icon
 
     def _get_unformatted_publication_status(self, result):
-        return result.get('published', 'published')
+        return result.get('payload.vivi.publish_status', 'published')
 
     def get_subtitle(self, result):
-        return result.get('subtitle', '')
+        return result.get('payload.body.subtitle', '')
 
     def get_supertitle(self, result):
-        return result.get('supertitle', '')
+        return result.get('payload.body.supertitle', '')
 
     def get_teaser_text(self, result):
-        return result.get('teaser_text', '')
+        return result.get('payload.teaser.text', '')
 
     def _get_unformatted_teaser_title(self, result):
-        return result.get('teaser_title')
+        return result.get('payload.teaser.title')
 
     def _get_unformatted_title(self, result):
         return result.get('payload.document.title')
