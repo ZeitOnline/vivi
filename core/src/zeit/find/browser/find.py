@@ -225,7 +225,7 @@ class SearchResult(JSONView):
 
     def get_teaser_title(self, result):
         for key in ('payload.teaser.title', 'payload.teaser.supertitle',
-                    'title', 'url'):
+                    'payload.body.title', 'title', 'url'):
             title = result.get(key)
             if title:
                 break
@@ -272,7 +272,7 @@ class SearchResult(JSONView):
         return result.get('payload.body.supertitle', '')
 
     def get_teaser_text(self, result):
-        return result.get('teaser', '')
+        return result.get('payload.teaser.text', '')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')

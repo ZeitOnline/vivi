@@ -13,8 +13,6 @@ default_source = (
     'doc_type',
     'doc_id',
     'payload',
-    'supertitle',
-    'teaser',
     'title',
 )
 
