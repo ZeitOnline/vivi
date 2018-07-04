@@ -249,7 +249,7 @@ class SearchResult(JSONView):
 
     def get_graphical_preview_url(self, result):
         url = result.get('payload.vivi.cms_preview_url')
-        if url is None:
+        if not url:
             return None
         url_p = urlparse.urlsplit(url)
         if url_p.scheme == '':
