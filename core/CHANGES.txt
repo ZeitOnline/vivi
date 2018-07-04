@@ -4,7 +4,7 @@ zeit.cms changes
 3.13.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add user information to SSO cookie
 
 
 3.13.0 (2018-06-08)
