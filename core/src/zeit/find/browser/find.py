@@ -383,7 +383,7 @@ def search_form(request):
     authors = g('author', None)
     keywords = g('keywords', None)
     raw_tags = g('raw-tags', None)
-    product_id = g('product_id', None)
+    product_id = g('product', None)
     show_news = g('show_news', False)
     serie = g('serie', None)
     # four states: published, not-published, published-with-changes,
