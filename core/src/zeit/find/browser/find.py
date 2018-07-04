@@ -73,10 +73,28 @@ class SearchForm(JSONView):
 
     @property
     def types(self):
+        whitelist = {
+            # 'advertisement',      # TODO: enable once indexed, see TMS-239
+            'article',
+            'author',
+            'centerpage-2009',
+            'gallery',
+            'image-group',
+            'infobox',
+            'link',
+            'playlist',
+            'portraitbox',
+            'rawxml',
+            'text',
+            'video',
+            'volume'
+        }
         result = []
         for name, interface in zope.component.getUtilitiesFor(
                 zeit.cms.interfaces.ICMSContentType):
             type_ = interface.queryTaggedValue('zeit.cms.type') or name
+            if type_ not in whitelist:
+                continue
             title = zope.i18n.translate(
                 interface.queryTaggedValue('zeit.cms.title') or type_,
                 context=self.request)
