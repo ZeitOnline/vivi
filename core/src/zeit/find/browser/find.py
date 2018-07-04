@@ -224,12 +224,11 @@ class SearchResult(JSONView):
         return publication_status
 
     def get_teaser_title(self, result):
-        title = self._get_unformatted_teaser_title(result)
-        if not title:
-            title = self._get_unformatted_title(result)
-        if not title:
-            uniqueId = self.get_uniqueId(result)
-            title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
+        for key in ('payload.teaser.title', 'payload.teaser.supertitle',
+                    'title', 'url'):
+            title = result.get(key)
+            if title:
+                break
         return title
 
     def get_type(self, result):
@@ -274,12 +273,6 @@ class SearchResult(JSONView):
 
     def get_teaser_text(self, result):
         return result.get('teaser', '')
-
-    def _get_unformatted_teaser_title(self, result):
-        return result.get('payload.teaser.title')
-
-    def _get_unformatted_title(self, result):
-        return result.get('title')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')
