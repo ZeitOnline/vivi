@@ -28,12 +28,21 @@ def test_simple_queries():
         ]}}}
     assert query(show_news=True) == {
         'query': {'match_all': {}}}
-    assert query(keywords=[]) == {
+    assert query(types=[]) == {
         'query': {'match_all': {}}}
-    assert query(keywords=['Foo', 'Bar']) == {
+    assert query(types=['Foo', 'Bar']) == {
         'query': {'bool': {'should': [
+            {'match': {'doc_type': 'Foo'}},
+            {'match': {'doc_type': 'Bar'}},
+        ]}}}
+    assert query(keywords='Foo') == {
+        'query': {'bool': {'should': [
+            {'match': {'rtr_events': 'Foo'}},
             {'match': {'rtr_keywords': 'Foo'}},
-            {'match': {'rtr_keywords': 'Bar'}},
+            {'match': {'rtr_locations': 'Foo'}},
+            {'match': {'rtr_organisations': 'Foo'}},
+            {'match': {'rtr_persons': 'Foo'}},
+            {'match': {'rtr_products': 'Foo'}},
         ]}}}
 
 
@@ -58,11 +67,11 @@ def test_combined_queries():
                 {'match': {'payload.workflow.product-id': 'SID'}},
                 {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
             ]}}}
-    assert query(year=2017, keywords=['Foo', 'Bar']) == {
+    assert query(year=2017, types=['Foo', 'Bar']) == {
         'query': {'bool': {'must': [
             {'bool': {'should': [
-                {'match': {'rtr_keywords': 'Foo'}},
-                {'match': {'rtr_keywords': 'Bar'}},
+                {'match': {'doc_type': 'Foo'}},
+                {'match': {'doc_type': 'Bar'}},
             ]}},
             {'match': {'payload.document.year': 2017}},
         ]}}}

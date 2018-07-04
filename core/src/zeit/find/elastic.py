@@ -46,7 +46,6 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
 
 field_map = dict(
     authors='payload.document.author',
-    keywords='rtr_keywords',
     product_id='payload.workflow.product-id',
     published='payload.vivi.publish_status',
     raw_tags='rtr_tags',
@@ -55,6 +54,16 @@ field_map = dict(
     types='doc_type',
     volume='payload.document.volume',
     year='payload.document.year',
+)
+
+
+rtr_fields = (
+    'rtr_events',
+    'rtr_keywords',
+    'rtr_locations',
+    'rtr_organisations',
+    'rtr_persons',
+    'rtr_products',
 )
 
 
@@ -103,6 +112,11 @@ def query(fulltext=None, **conditions):
             dict(match={'payload.document.ressort': 'News'})] + [
                 dict(match={'payload.workflow.product-id': pid})
                 for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
+    # handle "keywords" (by querying all `rtr_*` fields)
+    keyword = conditions.pop('keywords', None)
+    if keyword is not None:
+        must.append(dict(bool=dict(should=[
+            dict(match={field: keyword}) for field in rtr_fields])))
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
