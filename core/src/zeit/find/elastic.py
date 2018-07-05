@@ -14,6 +14,7 @@ default_source = (
     'doc_id',
     'payload',
     'title',
+    'teaser',
 )
 
 

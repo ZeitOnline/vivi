@@ -192,6 +192,13 @@ class SearchResult(JSONView):
         if session.get('last-query') != parameters:
             session['last-query'] = parameters
 
+    def get_first_field(self, result, *fields):
+        for field in fields:
+            value = result.get(field)
+            if value:
+                return value
+        return ''
+
     # generic processors
 
     def get_application_url(self, result=None):
@@ -224,12 +231,9 @@ class SearchResult(JSONView):
         return publication_status
 
     def get_teaser_title(self, result):
-        for key in ('payload.teaser.title', 'payload.teaser.supertitle',
-                    'payload.body.title', 'title', 'url'):
-            title = result.get(key)
-            if title:
-                break
-        return title
+        return self.get_first_field(
+            result, 'payload.teaser.title', 'payload.teaser.supertitle',
+            'payload.body.title', 'title', 'url')
 
     def get_type(self, result):
         return result.get('doc_type', '')
@@ -272,7 +276,7 @@ class SearchResult(JSONView):
         return result.get('payload.body.supertitle', '')
 
     def get_teaser_text(self, result):
-        return result.get('payload.teaser.text', '')
+        return self.get_first_field(result, 'payload.teaser.text', 'teaser')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')
