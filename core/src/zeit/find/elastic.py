@@ -1,6 +1,8 @@
 from json import dumps
 from logging import getLogger
+from zope.app.appsetup.product import getProductConfiguration
 from zope.component import getUtility
+from zope.interface import implementer
 from zeit.retresco.interfaces import IElasticsearch
 from zeit.retresco.search import Elasticsearch
 
@@ -24,12 +26,16 @@ sort_orders = dict(
 )
 
 
-class Search(Elasticsearch):
+class ICMSSearch(IElasticsearch):
+    """CMS search using the Elasticsearch service."""
 
-    def __init__(self, searcher):
-        self.client = searcher.client
-        # TODO: this should be part of the product config
-        self.index = 'zeit_pool_content'
+
+@implementer(ICMSSearch)
+def from_product_config():
+    """Get the utility configured with data from the product config."""
+    config = getProductConfiguration('zeit.find')
+    return Elasticsearch(config['elasticsearch-url'],
+                         config['elasticsearch-index'])
 
 
 def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
@@ -38,7 +44,7 @@ def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
         return []
     query.setdefault('_source', default_source)
     sort_order = sort_orders.get(sort_order)
-    elasticsearch = Search(getUtility(IElasticsearch))
+    elasticsearch = getUtility(ICMSSearch)
     log.debug('searching using query "%s"', dumps(query))
     return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
 

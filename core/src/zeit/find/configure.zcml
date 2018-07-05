@@ -2,6 +2,8 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:grok="http://namespaces.zope.org/grok">
 
+  <utility factory=".elastic.from_product_config" />
+
   <include package="grokcore.component" file="meta.zcml" />
   <grok:grok package="." />
 
