@@ -310,8 +310,8 @@
   top: 1em;
 }
 
-.zeit-find-search .object-link {
-  float: right;
+.zeit-find-search .object-links {
+  float: left;
 }
 
 .toggle_favorited {
