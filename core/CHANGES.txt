@@ -4,7 +4,7 @@ CHANGES
 2.10.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Make cache sweep timeout configurable via parameter
 
 
 2.10.4 (2018-01-19)

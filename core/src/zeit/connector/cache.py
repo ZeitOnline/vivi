@@ -118,7 +118,6 @@ class Body(persistent.Persistent):
 
 class AccessTimes(object):
 
-    CACHE_TIMEOUT = NotImplemented
     UPDATE_INTERVAL = NotImplemented
 
     def __init__(self):
@@ -150,9 +149,9 @@ class AccessTimes(object):
             new_set.insert(key)
             self._last_access_time[key] = new_access_time
 
-    def sweep(self):
+    def sweep(self, cache_timeout=(7 * 24 * 3600)):
         start = 0
-        timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
+        timeout = self._get_time_key(time.time() - cache_timeout)
         while True:
             try:
                 access_time = iter(self._access_time_to_ids.keys(
@@ -213,7 +212,6 @@ class ResourceCache(AccessTimes, persistent.Persistent):
 
     zope.interface.implements(zeit.connector.interfaces.IResourceCache)
 
-    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def __init__(self):
@@ -423,7 +421,6 @@ class PropertyCache(PersistentCache):
 
     CACHE_VALUE_CLASS = Properties
 
-    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
@@ -460,8 +457,6 @@ class ChildNameCache(PersistentCache):
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
     CACHE_VALUE_CLASS = ChildNames
-
-    CACHE_TIMEOUT = 7 * 24 * 3600
     UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
