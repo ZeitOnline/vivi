@@ -242,7 +242,8 @@ class SearchResult(JSONView):
         return result.get('payload.document.author', [])
 
     def _get_unformatted_date(self, result):
-        last_semantic_change = result.get('payload.document.last-semantic-change')
+        last_semantic_change = result.get(
+            'payload.document.last-semantic-change')
         dt = None
         if last_semantic_change is not None:
             dt = zc.iso8601.parse.datetimetz(last_semantic_change)
