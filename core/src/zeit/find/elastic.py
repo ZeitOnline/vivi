@@ -143,3 +143,10 @@ def query(fulltext=None, **conditions):
     else:
         qry = dict(match_all=dict())
     return dict(query=qry)
+
+
+def suggest_query(term, field, types):
+    # the function is only used in `autocomplete` and should be
+    # replaced there and removed anyway...
+    assert field == 'title'
+    return query(term, types=types)

@@ -29,15 +29,20 @@ class TestSimpleFind(unittest.TestCase,
         self.search.return_value = []
         self.browser.open('@@simple_find?term=Search-Term')
         self.search.assert_called_with(
-            u'((title:(search-term*) OR title:(search-term)))')
+            dict(query=dict(query_string=dict(query='search-term'))))
 
     def test_given_types_should_be_passed_to_solr(self):
         self.search.return_value = []
         self.browser.open(
             '@@simple_find?term=search-term&types:list=t1&types:list=t2')
         self.search.assert_called_with(
-            u'((title:(search-term*) OR title:(search-term)) AND (type:(t1) '
-            'OR type:(t2)))')
+            dict(query=dict(bool=dict(must=[
+                dict(query_string=dict(query='search-term')),
+                dict(bool=dict(should=[
+                    dict(match=dict(doc_type='t1')),
+                    dict(match=dict(doc_type='t2')),
+                ])),
+            ]))))
 
     def test_query_result_should_be_returned(self):
         self.search.return_value = [
