@@ -38,7 +38,8 @@ def from_product_config():
                          config['elasticsearch-index'])
 
 
-def search(query, sort_order=None, additional_result_fields=(), rows=50, **kw):
+def search(query, sort_order='date',
+           additional_result_fields=(), rows=50, **kw):
     """Search elasticsearch according to query."""
     if query is None:
         return []

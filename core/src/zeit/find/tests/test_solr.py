@@ -7,10 +7,10 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.find.tests.LAYER
 
     def test_query(self):
-        import zeit.find.search
+        import zeit.find.solr
         self.layer.set_result(__name__, 'data/obama.json')
-        q = zeit.find.search.query('Obama')
-        result = zeit.find.search.search(q)
+        q = zeit.find.solr.query('Obama')
+        result = zeit.find.solr.search(q)
         self.assertEquals(606, result.hits)
         self.assertEquals(
             'http://xml.zeit.de/online/2007/01/Somalia',
@@ -25,12 +25,12 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue('range_details' in query)
 
     def test_suggest(self):
-        import zeit.find.search
+        import zeit.find.solr
         self.layer.set_result(__name__, 'data/obama.json')
-        q = zeit.find.search.suggest_query('Diet', 'title', ['author'])
+        q = zeit.find.solr.suggest_query('Diet', 'title', ['author'])
         self.assertEqual(
             u'((title:(diet*) OR title:(diet)) AND (type:(author)))', q)
-        zeit.find.search.search(q, sort_order='title')
+        zeit.find.solr.search(q, sort_order='title')
         req = self.layer.solr._send_request
         query = req.call_args[0][1]
         self.assertTrue(query.startswith(

@@ -1,5 +1,6 @@
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
+import json
 import mock
 import pkg_resources
 import plone.testing
@@ -32,16 +33,21 @@ class Layer(plone.testing.Layer):
     def setUp(self):
         import zeit.solr.interfaces
         self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        from zeit.find.elastic import ICMSSearch
+        self.search = zope.component.getUtility(ICMSSearch)
 
     def testSetUp(self):
         self.solr._send_request = mock.Mock()
+        self.search.client.search = mock.Mock()
 
     def testTearDown(self):
+        del self.search.client.search
         del self.solr._send_request
 
     def set_result(self, package, filename):
-        self.solr._send_request.return_value = pkg_resources.resource_string(
-            package, filename)
+        value = pkg_resources.resource_string(package, filename)
+        self.solr._send_request.return_value = value
+        self.search.client.search.return_value = json.loads(value)
 
 
 LAYER = Layer()
