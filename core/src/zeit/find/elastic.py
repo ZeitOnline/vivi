@@ -3,7 +3,7 @@ from logging import getLogger
 from zope.app.appsetup.product import getProductConfiguration
 from zope.component import getUtility
 from zope.interface import implementer
-from zeit.retresco.interfaces import IElasticsearch
+from zeit.find.interfaces import ICMSSearch
 from zeit.retresco.search import Elasticsearch
 
 
@@ -24,10 +24,6 @@ sort_orders = dict(
     date='payload.document.last-semantic-change:desc',
     relevance='_score',
 )
-
-
-class ICMSSearch(IElasticsearch):
-    """CMS search using the Elasticsearch service."""
 
 
 @implementer(ICMSSearch)

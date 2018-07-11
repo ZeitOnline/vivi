@@ -33,7 +33,7 @@ class Layer(plone.testing.Layer):
     def setUp(self):
         import zeit.solr.interfaces
         self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        from zeit.find.elastic import ICMSSearch
+        from zeit.find.interfaces import ICMSSearch
         self.search = zope.component.getUtility(ICMSSearch)
 
     def testSetUp(self):
