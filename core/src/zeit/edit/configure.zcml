@@ -5,8 +5,6 @@
   <grok:grok package=".meta" />
   <grok:grok package="." />
 
-  <include package="zeit.find" />
-
   <class class=".rule.ValidatingWorkflow">
     <require
       permission="zope.View"
