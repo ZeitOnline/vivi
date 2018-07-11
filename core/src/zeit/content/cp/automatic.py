@@ -9,7 +9,6 @@ import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
-import zeit.find.search
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.solr.interfaces
@@ -188,7 +187,29 @@ class SolrContentQuery(ContentQuery):
 
     grok.name('query')
 
-    FIELDS = ' '.join(zeit.find.search.DEFAULT_RESULT_FIELDS)
+    FIELDS = ' '.join([
+        'authors',
+        'graphical-preview-url',
+        'icon',
+        'keywords',
+        'raw-tags',
+        'last-semantic-change',
+        'product_id',
+        'published',
+        'range',
+        'range_details',
+        'ressort',
+        'serie',
+        'subtitle',
+        'supertitle',
+        'teaser_text',
+        'teaser_title',
+        'title',
+        'type',
+        'uniqueId',
+        'volume',
+        'year',
+    ])
 
     def __init__(self, context):
         super(SolrContentQuery, self).__init__(context)
