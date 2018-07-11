@@ -13,7 +13,7 @@ import zeit.cms.related.related
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
-import zeit.find.search
+import zeit.find.interfaces
 import zeit.workflow.dependency
 import zope.interface
 import zope.security.proxy
@@ -67,10 +67,12 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def exists(self):
-        query = zeit.find.search.query(
-            fulltext='%s %s' % (self.firstname, self.lastname),
-            types=('author',))
-        return bool(zeit.find.search.search(query).hits)
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        return bool(elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': 'author'}},
+            {'term': {'payload.xml.firstname': self.firstname}},
+            {'term': {'payload.xml.lastname': self.lastname}},
+        ]}}}).hits)
 
     @property
     def bio_questions(self):
