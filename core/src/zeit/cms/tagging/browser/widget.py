@@ -109,6 +109,25 @@ class UpdateTags(zeit.cms.browser.view.JSON):
             for tag in tagger.values()])
 
 
+class TagsWithTopicpages(zeit.cms.browser.view.JSON):
+
+    def json(self):
+        # don't want to add this dependency to zeit.cms
+        import zeit.retresco.interfaces
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config.get('live_prefix', 'https://www.zeit.de/')
+        keywords_with_link = tms.get_article_keywords(
+            self.context,
+            published=False)
+        return dict(tags=[
+            dict(
+                code=tag.uniqueId,
+                link=live_prefix + tag.link
+                 )
+            for tag in keywords_with_link])
+
+
 class DisplayWidget(grokcore.component.MultiAdapter,
                     zope.formlib.itemswidgets.ListDisplayWidget):
 
