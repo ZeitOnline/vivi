@@ -228,6 +228,11 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Banner id'),
         required=False)
 
+    hide_adblocker_notification = zope.schema.Bool(
+        title=_('Hide AdBlocker notification'),
+        default=False,
+        required=False)
+
     product = zope.schema.Choice(
         title=_('Product id'),
         # XXX kludgy, we expect a product with this ID to be present in the XML

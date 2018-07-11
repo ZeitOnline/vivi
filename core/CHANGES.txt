@@ -4,6 +4,8 @@ zeit.cms changes
 3.13.1 (unreleased)
 -------------------
 
+- ZON-4753: Add checkbox to hide adblocker notification
+
 - MAINT: Add user information to SSO cookie
 
 
