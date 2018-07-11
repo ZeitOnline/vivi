@@ -46,5 +46,5 @@ Resource('strftime.js')
 Resource('jsuri.js')
 
 
-# XXX zeit.content.article needs zeit.find and zeit.workflow to function,
+# XXX zeit.content.article needs zeit.workflow to function,
 # should we declare that?
