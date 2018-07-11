@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.13.1 (unreleased)
+3.13.1 (2018-07-11)
 -------------------
 
 - ZON-4753: Add checkbox to hide adblocker notification
