@@ -5,34 +5,37 @@ from zope.lifecycleevent import Attributes
 from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
 import lxml.etree
 import mock
-import pysolr
-import unittest
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.author.author
 import zeit.content.author.testing
+import zeit.find.interfaces
 import zope.event
 
 
 NONZERO = 3
 
 
-class AuthorTest(unittest.TestCase):
+class AuthorTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
 
     def test_author_exists(self):
         author = zeit.content.author.author.Author()
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
-        with mock.patch('zeit.find.search.query', lambda **kw: kw):
-            with mock.patch('zeit.find.search.search') as search:
-                search.return_value = pysolr.Results(None, hits=0)
-                self.assertFalse(author.exists)
-                search.assert_called_with(dict(
-                    fulltext=u'William Shakespeare', types=('author',)))
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        with mock.patch.object(elastic, 'search') as search:
+            search.return_value = zeit.cms.interfaces.Result([])
+            self.assertFalse(author.exists)
+            search.assert_called_with({'query': {'bool': {'filter': [
+                {'term': {'doc_type': 'author'}},
+                {'term': {'payload.xml.firstname': 'William'}},
+                {'term': {'payload.xml.lastname': 'Shakespeare'}}
+            ]}}})
 
-                search.return_value = pysolr.Results(None, hits=NONZERO)
-                self.assertTrue(author.exists)
-                search.assert_called_with(dict(
-                    fulltext=u'William Shakespeare', types=('author',)))
+            search.return_value.hits = NONZERO
+            self.assertTrue(author.exists)
 
 
 class FreetextCopyTest(zeit.cms.testing.FunctionalTestCase):
