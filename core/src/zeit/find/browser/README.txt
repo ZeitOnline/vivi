@@ -138,8 +138,8 @@ Search
 
 The search view returns all data for rendering the result:
 
->>> import zeit.find.tests
->>> zeit.find.tests.LAYER.set_result('zeit.find', 'tests/data/obama.json')
+>>> import zeit.find.testing
+>>> zeit.find.testing.LAYER.set_result('zeit.find', 'tests/data/obama.json')
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)

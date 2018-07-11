@@ -1,11 +1,11 @@
 # coding: utf8
 import zeit.cms.testing
-import zeit.find.tests
+import zeit.find.testing
 
 
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.find.tests.SELENIUM_LAYER
+    layer = zeit.find.testing.SELENIUM_LAYER
     skin = 'vivi'
 
     def setUp(self):

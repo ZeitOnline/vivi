@@ -1,10 +1,10 @@
 import zeit.cms.testing
-import zeit.find.tests
+import zeit.find.testing
 
 
 class QueryTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.find.tests.LAYER
+    layer = zeit.find.testing.LAYER
 
     def test_query(self):
         import zeit.find.solr

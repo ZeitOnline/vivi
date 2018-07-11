@@ -2,7 +2,7 @@ from zeit.cms.browser.widget import AutocompleteSourceQuery
 import mock
 import unittest
 import zeit.cms.testing
-import zeit.find.tests
+import zeit.find.testing
 import zope.interface
 import zope.publisher.browser
 
@@ -10,7 +10,7 @@ import zope.publisher.browser
 class TestSimpleFind(unittest.TestCase,
                      zeit.cms.testing.BrowserAssertions):
 
-    layer = zeit.find.tests.LAYER
+    layer = zeit.find.testing.LAYER
 
     def setUp(self):
         from zope.testbrowser.testing import Browser
