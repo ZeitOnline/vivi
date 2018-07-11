@@ -2,10 +2,9 @@ from argparse import ArgumentParser
 from datetime import datetime
 from gocept.runner import once
 from logging import getLogger
-from operator import itemgetter
 from pprint import pformat
 from zeit.cms.interfaces import ICMSContent
-from zeit.find import solr, elastic
+import zeit.find.search
 
 
 log = getLogger(__name__)
@@ -30,26 +29,17 @@ def parse():
     return args, dict(convert(args.conditions))
 
 
-def perform_search(module, get_id):
+@once(principal='zope.manager')
+def search_elastic():
     args, conditions = parse()
-    query = module.query(**conditions)
+    query = zeit.find.search.query(**conditions)
     if args.verbose:
         log.info('using query: {}'.format(query))
-    response = module.search(query, include_payload=args.payload)
+    response = zeit.find.search.search(query, include_payload=args.payload)
     log.info('got {} results'.format(response.hits))
     if args.verbose:
         for idx, item in enumerate(response):
-            info = '#{}: {}'.format(idx, get_id(item))
+            info = '#{}: {}'.format(idx, ICMSContent(item).uniqueId)
             if args.payload:
                 info += '\n' + pformat(item)
             log.info(info)
-
-
-@once(principal='zope.manager')
-def search_solr():
-    perform_search(solr, itemgetter('uniqueId'))
-
-
-@once(principal='zope.manager')
-def search_elastic():
-    perform_search(elastic, lambda item: ICMSContent(item).uniqueId)

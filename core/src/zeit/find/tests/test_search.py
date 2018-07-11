@@ -20,7 +20,7 @@ class QueryTest(FunctionalTestCase):
 
     def test_query(self):
         import zeit.find.search
-        self.layer.set_result(__name__, 'data/obamelastic.json')
+        self.layer.set_result(__name__, 'data/obama.json')
         q = zeit.find.search.query('Obama')
         result = zeit.find.search.search(q)
         self.assertEquals(37002, result.hits)

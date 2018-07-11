@@ -5,6 +5,7 @@ import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.testing
+import zeit.find.interfaces
 import zope.component
 
 product_config = """\
@@ -31,22 +32,17 @@ class Layer(plone.testing.Layer):
     defaultBases = (ZCML_LAYER,)
 
     def setUp(self):
-        import zeit.solr.interfaces
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        from zeit.find.interfaces import ICMSSearch
-        self.search = zope.component.getUtility(ICMSSearch)
+        self.search = zope.component.getUtility(
+            zeit.find.interfaces.ICMSSearch)
 
     def testSetUp(self):
-        self.solr._send_request = mock.Mock()
         self.search.client.search = mock.Mock()
 
     def testTearDown(self):
         del self.search.client.search
-        del self.solr._send_request
 
     def set_result(self, package, filename):
         value = pkg_resources.resource_string(package, filename)
-        self.solr._send_request.return_value = value
         self.search.client.search.return_value = json.loads(value)
 
 

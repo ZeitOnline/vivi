@@ -1,6 +1,6 @@
 from datetime import datetime
 from pytest import raises
-from zeit.find.elastic import query
+from zeit.find.search import query
 
 
 def test_simple_queries():
