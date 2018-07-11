@@ -191,10 +191,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         auto = lead.values()[0]
         auto.read_more = 'foo'
         auto.layout = zeit.content.cp.layout.get_layout('two-side-by-side')
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent')]
-            lead.automatic = False
+        lead.automatic = False
         self.assertEqual('foo', lead.values()[0].read_more)
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
 
@@ -202,10 +199,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/testcontent')]
-            lead.automatic = False
+        lead.automatic = False
         [teaser] = lead.values()
         self.assertEqual(True, teaser.volatile)
 
@@ -337,11 +331,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.count = 3
 
         order = lead.keys()
-        with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [
-                dict(uniqueId='http://xml.zeit.de/t1'),
-                dict(uniqueId='http://xml.zeit.de/t2')]
-            lead.automatic = False
+        lead.automatic = False
         self.assertEqual(order, lead.keys())
 
 
