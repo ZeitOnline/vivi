@@ -46,22 +46,24 @@ class TestSimpleFind(unittest.TestCase,
 
     def test_query_result_should_be_returned(self):
         self.search.return_value = [
-            dict(uniqueId='A'),
-            dict(uniqueId='B')]
+            dict(url='/A'),
+            dict(url='/B')]
         self.browser.open('@@simple_find?term=search-term')
         self.assert_json(
-            [{'value': 'A', 'label': 'A'}, {'value': 'B', 'label': 'B'}])
+            [{'label': '/A', 'value': 'http://xml.zeit.de/A'},
+             {'label': '/B', 'value': 'http://xml.zeit.de/B'}])
 
     def test_test_title_should_become_label(self):
         self.search.return_value = [
-            dict(uniqueId='A', teaser_title='Teaser Title', title='Title')]
+            dict(url='/A', teaser='Teaser Title', title='Title')]
         self.browser.open('@@simple_find?term=search-term')
-        self.assert_json([{'label': 'Teaser Title', 'value': 'A'}])
+        self.assert_json([{'label': 'Title',
+                           'value': 'http://xml.zeit.de/A'}])
 
     def test_title_should_become_label_if_no_teaser_title(self):
-        self.search.return_value = [dict(uniqueId='A', title='Title')]
+        self.search.return_value = [dict(url='/A', title='Title')]
         self.browser.open('@@simple_find?term=search-term')
-        self.assert_json([{'label': 'Title', 'value': 'A'}])
+        self.assert_json([{'label': 'Title', 'value': 'http://xml.zeit.de/A'}])
 
     def test_query_view_should_render_input(self):
         source = mock.Mock()
