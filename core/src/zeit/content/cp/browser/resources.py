@@ -8,8 +8,6 @@ import zeit.edit.browser.resources
 lib = Library('zeit.content.cp', 'resources')
 Resource('editor.css')
 
-# XXX zeit.content.cp needs zeit.find to function, should we declare that?
-
 Resource('editor.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.edit.browser.resources.context_js,
