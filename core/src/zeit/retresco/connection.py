@@ -321,7 +321,7 @@ def _build_topic_redirects(topicpages):
             target = url_prefix + target
         # XXX hard-coded path
         source = u'/thema/' + row['id']
-        output.write('location = %s { return 301 %s; }\n' % (source, target))
+        output.write('%s = %s\n' % (source, target))
 
     return output.getvalue()
 
