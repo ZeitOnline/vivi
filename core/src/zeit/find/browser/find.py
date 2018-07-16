@@ -93,7 +93,7 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
-class Getter(object):
+class DottedNestedDict(object):
 
     def __init__(self, dict_):
         self.dict = dict_
@@ -141,7 +141,7 @@ class SearchResult(JSONView):
         processed = []
         for result in results:
             entry = {}
-            result = Getter(result)
+            result = DottedNestedDict(result)
             for key in self.search_result_keys:
                 handler = getattr(self, 'get_%s' % key)
                 entry[key] = handler(result)
