@@ -21,8 +21,9 @@ class QueryTest(FunctionalTestCase):
     def test_query(self):
         import zeit.find.search
         self.layer.set_result(__name__, 'data/obama.json')
+        elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
-        result = zeit.find.search.search(q)
+        result = elastic.search(q)
         self.assertEquals(37002, result.hits)
         self.assertEquals(
             '/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik',

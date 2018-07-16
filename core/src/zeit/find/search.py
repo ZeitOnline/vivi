@@ -1,16 +1,11 @@
-from json import dumps
-from logging import getLogger
+from zeit.find.interfaces import ICMSSearch
 from zope.app.appsetup.product import getProductConfiguration
 from zope.component import getUtility
 from zope.interface import implementer
-from zeit.find.interfaces import ICMSSearch
-from zeit.retresco.search import Elasticsearch
+import zeit.retresco.search
 
 
-log = getLogger(__name__)
-
-
-default_source = (
+DEFAULT_FIELDS = (
     'url',
     'doc_type',
     'doc_id',
@@ -20,10 +15,12 @@ default_source = (
 )
 
 
-sort_orders = dict(
-    date='payload.document.last-semantic-change:desc',
-    relevance='_score',
-)
+class Elasticsearch(zeit.retresco.search.Elasticsearch):
+
+    def search(self, query, **kw):
+        query.setdefault('_source', DEFAULT_FIELDS)
+        kw.setdefault('rows', 50)
+        return super(Elasticsearch, self).search(query, **kw)
 
 
 @implementer(ICMSSearch)
@@ -32,18 +29,6 @@ def from_product_config():
     config = getProductConfiguration('zeit.find')
     return Elasticsearch(config['elasticsearch-url'],
                          config['elasticsearch-index'])
-
-
-def search(query, sort_order='date',
-           additional_result_fields=(), rows=50, **kw):
-    """Search elasticsearch according to query."""
-    if query is None:
-        return []
-    query.setdefault('_source', default_source)
-    sort_order = sort_orders.get(sort_order)
-    elasticsearch = getUtility(ICMSSearch)
-    log.debug('searching using query "%s"', dumps(query))
-    return elasticsearch.search(query, sort_order=sort_order, rows=rows, **kw)
 
 
 field_map = dict(

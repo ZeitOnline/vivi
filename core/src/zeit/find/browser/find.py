@@ -6,6 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.find.interfaces
 import zeit.find.search
 import zope.browser.interfaces
 import zope.cachedescriptors.property
@@ -158,15 +159,21 @@ class SearchResult(JSONView):
         if q is None:
             return {'template': 'no_search_result.jsont'}
         self.store_session()
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         try:
-            results = zeit.find.search.search(q, self.sort_order())
+            results = elastic.search(q, sort_order=self.sort_order())
             return self.results(results)
         except zeit.solr.interfaces.SolrError, e:
             return {'template': 'no_search_result.jsont',
                     'error': e.args[0]}
 
+    SORT_ORDERS = {
+        'date': 'payload.document.last-semantic-change:desc',
+        'relevance': '_score',
+    }
+
     def sort_order(self):
-        return self.request.get('sort_order', 'relevance')
+        return self.SORT_ORDERS[self.request.get('sort_order', 'relevance')]
 
     def store_session(self):
         session = zope.session.interfaces.ISession(self.request)['zeit.find']

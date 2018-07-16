@@ -17,7 +17,7 @@ class TestSimpleFind(unittest.TestCase,
         self.browser = Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
         self.browser.open('http://localhost/++skin++vivi/')
-        search_patch = mock.patch('zeit.find.search.search')
+        search_patch = mock.patch('zeit.find.search.Elasticsearch.search')
         self.addCleanup(search_patch.stop)
         self.search = search_patch.start()
 
