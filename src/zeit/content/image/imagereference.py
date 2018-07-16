@@ -132,9 +132,8 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 def update_image_reference_on_checkin(context, event):
     __traceback_info__ = (context.uniqueId,)
     images = zeit.content.image.interfaces.IImages(context, None)
-    if images is None:
-        return
-    ImagesAdapter.image.update_metadata(images)
+    if isinstance(images, ImagesAdapter):
+        ImagesAdapter.image.update_metadata(images)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
