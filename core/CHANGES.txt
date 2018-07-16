@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.21.6 (unreleased)
+2.21.6 (2018-07-16)
 -------------------
 
 - MAINT: Be more precise about when/how to update XML metadata
