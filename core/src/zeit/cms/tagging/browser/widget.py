@@ -1,7 +1,7 @@
+from collections import defaultdict, namedtuple
 import grokcore.component
 import json
 import urlparse
-import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -113,20 +113,8 @@ class TagsWithTopicpages(zeit.cms.browser.view.JSON):
 
     def json(self):
         # don't want to add this dependency to zeit.cms
-        import zeit.retresco.interfaces
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        live_prefix = config.get('live_prefix', 'https://www.zeit.de/')
-        keywords_with_link = tms.get_article_keywords(
-            self.context,
-            published=False)
-        return dict(tags=[
-            dict(
-                code=tag.uniqueId,
-                link=live_prefix + tag.link
-                 )
-            for tag in keywords_with_link])
-
+        keywords_with_link = get_tags_with_topicpages(self.context)
+        return keywords_with_link
 
 class DisplayWidget(grokcore.component.MultiAdapter,
                     zope.formlib.itemswidgets.ListDisplayWidget):
@@ -138,31 +126,41 @@ class DisplayWidget(grokcore.component.MultiAdapter,
     grokcore.component.provides(
         zope.formlib.interfaces.IDisplayWidget)
 
+    template = zope.app.pagetemplate.ViewPageTemplateFile('display-tag.pt')
+    tag_highling_css_class = 'with-topic-page'
+
     def __init__(self, field, source, request):
         super(DisplayWidget, self).__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)
+        self.tags_with_topicpages = defaultdict(
+            str, get_tags_with_topicpages(self.context.context))
 
     def __call__(self):
-        return zope.formlib.widget.renderElement(
-            'div',
-            cssClass='keyword-widget',
-            contents=super(DisplayWidget, self).__call__(),
-            id=self.name)
+        return self.template()
 
-    def renderItems(self, value):
-        """Render items of sequence."""
-        # XXX blame formlib for having to copy this method
+    def _text(self, item):
+        return self.textForValue(self.vocabulary.getTerm(item))
+
+    def items(self):
         items = []
-        cssClass = self.cssClass or ''
-        if cssClass:
-            cssClass += "-item"
-        tag = self.itemTag
-        for index, item in enumerate(value):
-            term = self.vocabulary.getTerm(item)
-            items.append(zope.formlib.widget.renderElement(
-                tag,
-                cssClass=cssClass,
-                contents=xml.sax.saxutils.escape(self.textForValue(term))))
+        Tag = namedtuple('Tag', ['text', 'link', 'css_class'])
+        for item in self._getFormValue():
+            text = self._text(item)
+            link = self.tags_with_topicpages[item.uniqueId]
+            css_class = self.tag_highling_css_class if link else ''
+            items.append(Tag(text, link, css_class))
         return items
+
+
+def get_tags_with_topicpages(article):
+    import zeit.retresco.interfaces
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    live_prefix = config.get('live_prefix', 'https://www.zeit.de/')
+    keywords_with_link = tms.get_article_keywords(
+        article,
+        published=False)
+    return {tag.uniqueId: live_prefix + tag.link
+            for tag in keywords_with_link}

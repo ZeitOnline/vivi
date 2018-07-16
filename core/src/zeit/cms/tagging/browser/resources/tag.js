@@ -19,6 +19,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             id + '.wrapper', 'onclick', self, self.handle_click);
         self._initialize_autocomplete();
         self._initialize_sortable();
+        self.get_tags_with_topicpages();
     },
 
 
@@ -101,7 +102,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             {'cms:uniqueId': code},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
-            label);
+            A({'href': ''}, label)
+        );
         if (position === 'end') {
             $(self.list).append(item);
         } else {
@@ -141,12 +143,36 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             self.list.innerHTML = '';
             self.populate_keywords(json.tags);
             self._initialize_sortable();
+            self.get_tags_with_topicpages();
             $(self.data).trigger('change');
             return result;
         });
         d.addBoth(function(result_or_error) {
             MochiKit.DOM.removeElementClass(self.list, 'busy');
         });
+    },
+
+    get_tags_with_topicpages: function() {
+        var self = this;
+        var d = MochiKit.Async.doXHR(
+            '@@tags_with_topicpages',
+            {method: 'POST'});
+        d.addCallback(function(result) {
+            var json_result = MochiKit.Async.evalJSONRequest(result);
+            self._highlight_tags_with_topic_pages(json_result);
+        });
+    },
+
+    _highlight_tags_with_topic_pages: function(tags_with_topic_page) {
+        var self = this;
+        $('li', self.list).each(function(index) {
+                if (tags_with_topic_page[this.getAttribute('cms:uniqueId')]){
+                    var el = $('a', this);
+                    el.css( 'font-weight', 'bold');
+                    el.attr('href',
+                        tags_with_topic_page[this.getAttribute('cms:uniqueId')]);
+                }
+            });
     },
 
     _sync_json_widget_value: function() {

@@ -12,6 +12,26 @@ NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
 KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 
+class DummyRetresco(object):
+
+    # XXX don't add explicit dependency
+    import zeit.retresco.interfaces
+    zope.interface.implements(zeit.retresco.interfaces.ITMS)
+
+    def __init__(self):
+        self.url = "http://www.foo.bar"
+        self._tags = []
+
+    def get_article_keywords(self, *args, **kwars):
+        return self._tags
+
+    def add(self, tags):
+        self._tags.append(tags)
+
+    def reset(self):
+        self._tags = []
+
+
 class DummyTagger(object):
 
     zope.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
@@ -154,6 +174,10 @@ class FakeTag(object):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
                 self.code.encode('unicode_escape'))
 
+    @property
+    def link(self):
+        return 'thema/%s' % self.label.lower()
+
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
@@ -186,9 +210,18 @@ class TaggingHelper(object):
             def restore_original_tags_on_whitelist():
                 whitelist.tags = original_tags
             self.addCleanup(restore_original_tags_on_whitelist)
-
         return tags
 
     def add_keyword_by_autocomplete(self, text, form_prefix='form'):
         self.add_by_autocomplete(
             text, 'id=%s.keywords.add' % form_prefix)
+
+    def add_keyword_to_retresco(self, tag):
+        retresco_mock = zope.component.queryUtility(
+            zeit.retresco.interfaces.ITMS)
+        if retresco_mock:
+            retresco_mock.add(tag)
+
+            def reset_retresco_tags():
+                retresco_mock.reset()
+            self.addCleanup(reset_retresco_tags)

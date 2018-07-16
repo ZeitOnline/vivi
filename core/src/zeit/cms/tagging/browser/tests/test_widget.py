@@ -1,6 +1,7 @@
 # coding: utf-8
 import gocept.testing.mock
 import json
+import mock
 import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing
@@ -13,7 +14,27 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.setup_tags('t1', 't2', 't3')
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
-        self.assertEllipsis('...<li>t1...<li>t2...', self.browser.contents)
+        self.assertEllipsis('...<li>...t1...<li>...t2...',
+                            self.browser.contents)
+
+    def test_highlights_keywords_with_topicpage(self):
+        tags = self.setup_tags('t1', 't2', 't3')
+        self.add_keyword_to_retresco(tags.get('t1'))
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/testcontent')
+        self.assertEllipsis('...<li>...<a...class="with-topic-page"...t1...',
+                            self.browser.contents)
+        self.assertTrue(1,
+                        self.browser.contents.count("with-topic-page"))
+
+    def test_keyword_links_to_topicpage(self):
+        tags = self.setup_tags('t1', 't2', 't3')
+        self.add_keyword_to_retresco(tags.get('t1'))
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/testcontent')
+        self.assertEllipsis('...<li>...<a href="https://www.zeit.de/thema/t1"'
+                            '...t1...',
+                            self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -115,6 +136,15 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s.waitForTextPresent('t1')
         self.assertTrue(self.tagger().update.called)
 
+    def test_update_should_trigger_highlight_tags_call(self):
+        with mock.patch(
+                'zeit.cms.tagging.browser.widget.UpdateTags.json') as mocked:
+            self.open_content()
+            s = self.selenium
+            s.click('update_tags')
+            s.pause(100)
+            self.assertTrue(mocked.called)
+
     def test_save_should_work_after_update_regardless_of_prior_state(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
@@ -144,3 +174,14 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s.clickAndWait('name=form.actions.apply')
         s.waitForElementPresent('jquery=li:contains(t1) .pinned')
         s.assertNotTextPresent('Wrong contained type')
+
+    def test_tags_with_topicpages_are_highlighted(self):
+        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.add_keyword_to_retresco(tags.get('t1'))
+        self.open_content()
+        sel = self.selenium
+        sel.assertXpathCount('//li/a[@href="https://www.zeit.de/thema/t1"]', 1)
+        self.assertEqual('font-weight: bold;',
+                         sel.selenium.find_element_by_link_text(
+                             "t1").get_attribute('style'))
+        sel.assertXpathCount('//li/a[@href="https://www.zeit.de/thema/t2"]', 0)

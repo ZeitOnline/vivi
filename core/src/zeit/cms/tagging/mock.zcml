@@ -3,6 +3,7 @@
    i18n_domain="zope">
 
   <adapter factory=".testing.DummyTagger"  trusted="true" />
+  <utility factory=".testing.DummyRetresco" />
   <utility factory=".testing.DummyWhitelist" />
 
   <class class=".testing.FakeTag">
