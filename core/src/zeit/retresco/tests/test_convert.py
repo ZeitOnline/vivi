@@ -7,6 +7,7 @@ import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
+import zeit.content.advertisement.advertisement
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zeit.content.infobox.infobox
@@ -15,6 +16,7 @@ import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
+import zeit.seo.interfaces
 
 
 class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
@@ -255,6 +257,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                     'last_modified_by': 'zope.user',
                 },
                 'meta': {'type': 'image'},
+                'teaser': {
+                    'title': 'DSC00109_2.JPG',
+                    'text': 'DSC00109_2.JPG',
+                },
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImage-zmi_icon.png'),
@@ -287,6 +293,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 },
                 'image': {'caption': 'mycaption'},
                 'meta': {'type': 'image-group'},
+                'teaser': {
+                    'title': 'mytitle',
+                    'text': 'mycaption',
+                },
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImageGroup-zmi_icon.png'),
@@ -344,3 +354,36 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['embed'])()
         self.assertEqual('rawxml', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+
+    def test_converts_advertistement(self):
+        adv = zeit.content.advertisement.advertisement.Advertisement()
+        adv.title = 'mytitle'
+        self.repository['adv'] = adv
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['adv'])()
+        self.assertEqual('advertisement', data['doc_type'])
+        self.assertEqual('mytitle', data['title'])
+
+    def test_converts_seo_properties(self):
+        content = create_testcontent()
+        seo = zeit.seo.interfaces.ISEO(content)
+        seo.meta_robots = 'noindex, follow,noarchive'
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(
+            ['noindex', 'follow', 'noarchive'],
+            data['payload']['seo']['robots'])
+
+    def test_converts_push_config(self):
+        content = create_testcontent()
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [
+            {'type': 'facebook', 'account': 'fb-test', 'enabled': False},
+            {'type': 'facebook', 'account': 'fb-magazin', 'enabled': False},
+            {'type': 'mobile', 'payload_template': 'mytemplate.json',
+             'enabled': True},
+        ]
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual({
+            'facebook': {'account': ['fb-test', 'fb-magazin']},
+            'mobile': {'payload_template': ['mytemplate.json']},
+        }, data['payload']['push'])
