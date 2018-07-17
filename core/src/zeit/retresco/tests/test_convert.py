@@ -15,6 +15,7 @@ import zeit.content.volume.volume
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zeit.retresco.testing
+import zeit.seo.interfaces
 
 
 class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
@@ -344,3 +345,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['embed'])()
         self.assertEqual('rawxml', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+
+    def test_converts_seo_properties(self):
+        content = create_testcontent()
+        seo = zeit.seo.interfaces.ISEO(content)
+        seo.meta_robots = 'noindex, follow,noarchive'
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(
+            ['noindex', 'follow', 'noarchive'],
+            data['payload']['seo']['robots'])

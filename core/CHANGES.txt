@@ -1,10 +1,10 @@
 zeit.retresco changes
 =====================
 
-1.27.1 (unreleased)
+1.28.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4788: Index SEO robots properties explicitly
 
 
 1.27.0 (2018-06-26)
