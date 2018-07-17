@@ -25,11 +25,11 @@ class TestSimpleFind(unittest.TestCase,
         self.browser.open('@@simple_find')
         self.assert_json([])
 
-    def test_given_term_should_query_solr(self):
+    def test_given_term_should_query(self):
         self.search.return_value = []
         self.browser.open('@@simple_find?term=Search-Term')
-        self.search.assert_called_with(
-            dict(query=dict(query_string=dict(query='search-term'))))
+        self.search.assert_called_with(dict(query=dict(match_phrase_prefix={
+            'payload.vivi.autocomplete': 'search-term'})))
 
     def test_given_types_should_be_passed_to_solr(self):
         self.search.return_value = []
@@ -37,7 +37,8 @@ class TestSimpleFind(unittest.TestCase,
             '@@simple_find?term=search-term&types:list=t1&types:list=t2')
         self.search.assert_called_with(
             dict(query=dict(bool=dict(must=[
-                dict(query_string=dict(query='search-term')),
+                dict(match_phrase_prefix={
+                    'payload.vivi.autocomplete': 'search-term'}),
                 dict(bool=dict(should=[
                     dict(match=dict(doc_type='t1')),
                     dict(match=dict(doc_type='t2')),

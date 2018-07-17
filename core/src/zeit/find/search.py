@@ -104,6 +104,15 @@ def query(fulltext=None, **conditions):
     if keyword is not None:
         must.append(dict(bool=dict(should=[
             dict(match={field: keyword}) for field in rtr_fields])))
+    # handle autocomplete queries as prefix matches
+    autocomplete = conditions.pop('autocomplete', None)
+    if autocomplete is not None:
+        # payload.teaser.title is copied and lowercased to
+        # payload.vivi.autocomplete by the ES mapping, so this hopefully should
+        # be somewhat generically applicable (even though we currently only use
+        # it for IAuthor objects).
+        must.append(dict(match_phrase_prefix={
+            'payload.vivi.autocomplete': autocomplete}))
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
@@ -125,10 +134,3 @@ def query(fulltext=None, **conditions):
     else:
         qry = dict(match_all=dict())
     return dict(query=qry)
-
-
-def suggest_query(term, field, types):
-    # the function is only used in `autocomplete` and should be
-    # replaced there and removed anyway...
-    assert field == 'title'
-    return query(term, types=types)

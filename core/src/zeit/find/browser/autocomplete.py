@@ -16,11 +16,10 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         term = self.request.form.get('term')
         types = self.request.form.get('types', ())
         if term:
-            term = term.lower().strip()
             elastic = zope.component.getUtility(
                 zeit.find.interfaces.ICMSSearch)
             results = elastic.search(
-                zeit.find.search.suggest_query(term, 'title', types))
+                zeit.find.search.query(autocomplete=term, types=types))
         else:
             results = []
         return [
