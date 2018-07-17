@@ -12,6 +12,7 @@
   <include package="zeit.retresco.json" />
   <include package="zeit.retresco.xmlrpc" />
 
+  <include package="zeit.content.advertisement" file="ftesting.zcml" />
   <include package="zeit.content.article" file="ftesting.zcml" />
   <include package="zeit.content.image" file="ftesting.zcml" />
   <include package="zeit.content.infobox" file="ftesting.zcml" />

@@ -7,6 +7,7 @@ import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
+import zeit.content.advertisement.advertisement
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zeit.content.infobox.infobox
@@ -352,6 +353,15 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['embed'])()
         self.assertEqual('rawxml', data['doc_type'])
+        self.assertEqual('mytitle', data['title'])
+
+    def test_converts_advertistement(self):
+        adv = zeit.content.advertisement.advertisement.Advertisement()
+        adv.title = 'mytitle'
+        self.repository['adv'] = adv
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['adv'])()
+        self.assertEqual('advertisement', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
 
     def test_converts_seo_properties(self):
