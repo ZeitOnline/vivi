@@ -12,6 +12,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
@@ -310,17 +311,10 @@ class Author(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        xml = {}
-        for name in dir(zeit.content.author.author.Author):
-            prop = getattr(zeit.content.author.author.Author, name)
-            if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
-                value = getattr(self.context, name)
-                if value:
-                    xml[name] = value
         result = {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
-            'payload': {'xml': xml, 'teaser': {
+            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
                 'title': self.context.display_name,
             }}
         }
@@ -328,6 +322,26 @@ class Author(Converter):
             result['payload']['teaser']['supertitle'] = self.context.summary
         if self.context.biography:
             result['payload']['teaser']['text'] = self.context.biography
+        return result
+
+
+class Advertisement(Converter):
+
+    interface = zeit.content.advertisement.interfaces.IAdvertisement
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        result = {
+            'title': self.context.title,
+            'teaser': self.context.text or self.context.title,
+            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+                'title': self.context.title,
+            }}
+        }
+        if self.context.supertitle:
+            result['payload']['teaser']['supertitle'] = self.context.supertitle
+        if self.context.text:
+            result['payload']['teaser']['text'] = self.context.text
         return result
 
 
@@ -519,6 +533,18 @@ def body_xml(context):
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_article(context):
     return context.xml.body
+
+
+def get_xml_properties(context):
+    cls = type(context)
+    result = {}
+    for name in dir(cls):
+        prop = getattr(cls, name)
+        if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
+            value = getattr(context, name)
+            if value:
+                result[name] = value
+    return result
 
 
 def merge(source, destination):
