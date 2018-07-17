@@ -7,10 +7,12 @@ import logging
 import lxml.builder
 import lxml.etree
 import pytz
+import re
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
@@ -20,8 +22,10 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.content.text.interfaces
 import zeit.content.volume.interfaces
+import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
+import zeit.seo.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
@@ -154,7 +158,8 @@ class CMSContent(Converter):
 class CommonMetadata(Converter):
 
     interface = zeit.cms.content.interfaces.ICommonMetadata
-    grok.name(interface.__name__)
+    # Sort ICommonMetadata first, so others can override its results
+    grok.name('AAA_' + interface.__name__)
 
     entity_types = {
         # BBB map zeit.intrafind entity_type to retresco.
@@ -257,24 +262,87 @@ class ImageReference(Converter):
         return result
 
 
+class SEO(Converter):
+
+    interface = zeit.seo.interfaces.ISEO
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if not self.context.meta_robots:
+            return {}
+        return {'payload': {'seo': {
+            'robots': re.split(', *', self.context.meta_robots)
+        }}}
+
+
+class Push(Converter):
+    """We have to index IPushMessages.message_config explicitly, since the DAV
+    property is serialized as xmlpickle, which is not queryable. Additionally,
+    we transpose its structure from
+    {type: typ1, key1: val1, ...}, {type: typ2, ...}, ...] to
+    {
+     typ1: {key1: [val1, val2, ...], ...},
+     typ2: {key1: [val3, ...], ...},
+    }
+    to create something that can be queried.
+    """
+
+    interface = zeit.push.interfaces.IPushMessages
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if not self.context.message_config:
+            return {}
+        result = {}
+        for config in self.context.message_config:
+            typ = config.pop('type', None)
+            if not typ:
+                continue
+            config.pop('enabled', None)
+            data = result.setdefault(typ, {})
+            for key, value in config.items():
+                data.setdefault(key, []).append(value)
+        return {'payload': {'push': result}}
+
+
 class Author(Converter):
 
     interface = zeit.content.author.interfaces.IAuthor
     grok.name(interface.__name__)
 
     def __call__(self):
-        xml = {}
-        for name in dir(zeit.content.author.author.Author):
-            prop = getattr(zeit.content.author.author.Author, name)
-            if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
-                value = getattr(self.context, name)
-                if value:
-                    xml[name] = value
-        return {
+        result = {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
-            'payload': {'xml': xml}
+            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+                'title': self.context.display_name,
+            }}
         }
+        if self.context.summary:
+            result['payload']['teaser']['supertitle'] = self.context.summary
+        if self.context.biography:
+            result['payload']['teaser']['text'] = self.context.biography
+        return result
+
+
+class Advertisement(Converter):
+
+    interface = zeit.content.advertisement.interfaces.IAdvertisement
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        result = {
+            'title': self.context.title,
+            'teaser': self.context.text or self.context.title,
+            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+                'title': self.context.title,
+            }}
+        }
+        if self.context.supertitle:
+            result['payload']['teaser']['supertitle'] = self.context.supertitle
+        if self.context.text:
+            result['payload']['teaser']['text'] = self.context.text
+        return result
 
 
 class Link(Converter):
@@ -312,21 +380,30 @@ class Image(Converter):
             # Required fields, so make sure to always index (for zeit.find).
             'title': title,
             'teaser': self.context.caption or title,
+            'payload': {'teaser': {
+                'title': title,
+                'text': self.context.caption or title,
+            }}
         }
 
 
 class Infobox(Converter):
 
     interface = zeit.content.infobox.interfaces.IInfobox
-    # Sort after ICommonMetadata so we can override its results
-    grok.name('zzz_' + interface.__name__)
+    grok.name(interface.__name__)
 
     def __call__(self):
-        return {
+        result = {
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
             'supertitle': None,
+            'payload': {'teaser': {
+                'supertitle': self.context.supertitle,
+            }}
         }
+        if self.context.contents and self.context.contents[0]:
+            result['payload']['teaser']['title'] = self.context.contents[0][0]
+        return result
 
 
 class Portraitbox(Converter):
@@ -338,6 +415,9 @@ class Portraitbox(Converter):
         return {
             'title': self.context.name,
             'teaser': self.context.name,
+            'payload': {'teaser': {
+                'title': self.context.name,
+            }}
         }
 
 
@@ -350,6 +430,9 @@ class Text(Converter):
         return {
             'title': self.context.__name__,
             'teaser': self.context.__name__,
+            'payload': {'teaser': {
+                'title': self.context.__name__,
+            }}
         }
 
 
@@ -362,6 +445,9 @@ class RawXML(Converter):
         return {
             'title': self.context.title,
             'teaser': self.context.title,
+            'payload': {'teaser': {
+                'title': self.context.__name__,
+            }}
         }
 
 
@@ -447,6 +533,18 @@ def body_xml(context):
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_article(context):
     return context.xml.body
+
+
+def get_xml_properties(context):
+    cls = type(context)
+    result = {}
+    for name in dir(cls):
+        prop = getattr(cls, name)
+        if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
+            value = getattr(context, name)
+            if value:
+                result[name] = value
+    return result
 
 
 def merge(source, destination):
