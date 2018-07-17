@@ -317,11 +317,18 @@ class Author(Converter):
                 value = getattr(self.context, name)
                 if value:
                     xml[name] = value
-        return {
+        result = {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
-            'payload': {'xml': xml}
+            'payload': {'xml': xml, 'teaser': {
+                'title': self.context.display_name,
+            }}
         }
+        if self.context.summary:
+            result['payload']['teaser']['supertitle'] = self.context.summary
+        if self.context.biography:
+            result['payload']['teaser']['text'] = self.context.biography
+        return result
 
 
 class Link(Converter):
@@ -359,6 +366,10 @@ class Image(Converter):
             # Required fields, so make sure to always index (for zeit.find).
             'title': title,
             'teaser': self.context.caption or title,
+            'payload': {'teaser': {
+                'title': title,
+                'text': self.context.caption or title,
+            }}
         }
 
 
@@ -368,11 +379,17 @@ class Infobox(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        return {
+        result = {
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
             'supertitle': None,
+            'payload': {'teaser': {
+                'supertitle': self.context.supertitle,
+            }}
         }
+        if self.context.contents and self.context.contents[0]:
+            result['payload']['teaser']['title'] = self.context.contents[0][0]
+        return result
 
 
 class Portraitbox(Converter):
@@ -384,6 +401,9 @@ class Portraitbox(Converter):
         return {
             'title': self.context.name,
             'teaser': self.context.name,
+            'payload': {'teaser': {
+                'title': self.context.name,
+            }}
         }
 
 
@@ -396,6 +416,9 @@ class Text(Converter):
         return {
             'title': self.context.__name__,
             'teaser': self.context.__name__,
+            'payload': {'teaser': {
+                'title': self.context.__name__,
+            }}
         }
 
 
@@ -408,6 +431,9 @@ class RawXML(Converter):
         return {
             'title': self.context.title,
             'teaser': self.context.title,
+            'payload': {'teaser': {
+                'title': self.context.__name__,
+            }}
         }
 
 
