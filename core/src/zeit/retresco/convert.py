@@ -157,7 +157,8 @@ class CMSContent(Converter):
 class CommonMetadata(Converter):
 
     interface = zeit.cms.content.interfaces.ICommonMetadata
-    grok.name(interface.__name__)
+    # Sort ICommonMetadata first, so others can override its results
+    grok.name('AAA_' + interface.__name__)
 
     entity_types = {
         # BBB map zeit.intrafind entity_type to retresco.
@@ -364,8 +365,7 @@ class Image(Converter):
 class Infobox(Converter):
 
     interface = zeit.content.infobox.interfaces.IInfobox
-    # Sort after ICommonMetadata so we can override its results
-    grok.name('zzz_' + interface.__name__)
+    grok.name(interface.__name__)
 
     def __call__(self):
         return {
