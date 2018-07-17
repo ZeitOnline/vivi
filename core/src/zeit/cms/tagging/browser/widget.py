@@ -116,6 +116,7 @@ class TagsWithTopicpages(zeit.cms.browser.view.JSON):
         keywords_with_link = get_tags_with_topicpages(self.context)
         return keywords_with_link
 
+
 class DisplayWidget(grokcore.component.MultiAdapter,
                     zope.formlib.itemswidgets.ListDisplayWidget):
 
