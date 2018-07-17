@@ -42,6 +42,7 @@ setup(
         'zeit.content.rawxml',
         'zeit.content.text',
         'zeit.content.volume',
+        'zeit.push',
         'zeit.seo',
         'zope.component',
         'zope.interface',

@@ -20,7 +20,9 @@
   <include package="zeit.content.rawxml" file="ftesting.zcml" />
   <include package="zeit.content.text" file="ftesting.zcml" />
   <include package="zeit.content.volume" file="ftesting.zcml" />
+
   <include package="zeit.seo" file="ftesting.zcml" />
+  <include package="zeit.push" file="testing.zcml" />
 
   <principal
     id="zope.index"

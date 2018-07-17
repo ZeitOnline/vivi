@@ -21,6 +21,7 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.content.text.interfaces
 import zeit.content.volume.interfaces
+import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
@@ -270,6 +271,36 @@ class SEO(Converter):
         return {'payload': {'seo': {
             'robots': re.split(', *', self.context.meta_robots)
         }}}
+
+
+class Push(Converter):
+    """We have to index IPushMessages.message_config explicitly, since the DAV
+    property is serialized as xmlpickle, which is not queryable. Additionally,
+    we transpose its structure from
+    {type: typ1, key1: val1, ...}, {type: typ2, ...}, ...] to
+    {
+     typ1: {key1: [val1, val2, ...], ...},
+     typ2: {key1: [val3, ...], ...},
+    }
+    to create something that can be queried.
+    """
+
+    interface = zeit.push.interfaces.IPushMessages
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if not self.context.message_config:
+            return {}
+        result = {}
+        for config in self.context.message_config:
+            typ = config.pop('type', None)
+            if not typ:
+                continue
+            config.pop('enabled', None)
+            data = result.setdefault(typ, {})
+            for key, value in config.items():
+                data.setdefault(key, []).append(value)
+        return {'payload': {'push': result}}
 
 
 class Author(Converter):

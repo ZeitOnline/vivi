@@ -354,3 +354,18 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual(
             ['noindex', 'follow', 'noarchive'],
             data['payload']['seo']['robots'])
+
+    def test_converts_push_config(self):
+        content = create_testcontent()
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [
+            {'type': 'facebook', 'account': 'fb-test', 'enabled': False},
+            {'type': 'facebook', 'account': 'fb-magazin', 'enabled': False},
+            {'type': 'mobile', 'payload_template': 'mytemplate.json',
+             'enabled': True},
+        ]
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual({
+            'facebook': {'account': ['fb-test', 'fb-magazin']},
+            'mobile': {'payload_template': ['mytemplate.json']},
+        }, data['payload']['push'])
