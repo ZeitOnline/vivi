@@ -6,6 +6,8 @@ zeit.retresco changes
 
 - ZON-4788: Index SEO robots properties and push config explicitly
 
+- ZON-4788: Add payload teaser fields for all content types
+
 
 1.27.0 (2018-06-26)
 -------------------

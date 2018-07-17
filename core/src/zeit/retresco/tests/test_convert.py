@@ -256,6 +256,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                     'last_modified_by': 'zope.user',
                 },
                 'meta': {'type': 'image'},
+                'teaser': {
+                    'title': 'DSC00109_2.JPG',
+                    'text': 'DSC00109_2.JPG',
+                },
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImage-zmi_icon.png'),
@@ -288,6 +292,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 },
                 'image': {'caption': 'mycaption'},
                 'meta': {'type': 'image-group'},
+                'teaser': {
+                    'title': 'mytitle',
+                    'text': 'mycaption',
+                },
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImageGroup-zmi_icon.png'),
