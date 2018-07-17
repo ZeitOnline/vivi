@@ -8,7 +8,7 @@ def project_path(*names):
 
 setup(
     name='zeit.retresco',
-    version='1.27.1.dev0',
+    version='1.28.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -42,6 +42,7 @@ setup(
         'zeit.content.rawxml',
         'zeit.content.text',
         'zeit.content.volume',
+        'zeit.seo',
         'zope.component',
         'zope.interface',
         'zope.publisher',

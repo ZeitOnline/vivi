@@ -7,6 +7,7 @@ import logging
 import lxml.builder
 import lxml.etree
 import pytz
+import re
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -22,6 +23,7 @@ import zeit.content.text.interfaces
 import zeit.content.volume.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
+import zeit.seo.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
@@ -255,6 +257,19 @@ class ImageReference(Converter):
             result['payload']['head'][
                 'teaser_image_fill_color'] = self.context.fill_color
         return result
+
+
+class SEO(Converter):
+
+    interface = zeit.seo.interfaces.ISEO
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        if not self.context.meta_robots:
+            return {}
+        return {'payload': {'seo': {
+            'robots': re.split(', *', self.context.meta_robots)
+        }}}
 
 
 class Author(Converter):
