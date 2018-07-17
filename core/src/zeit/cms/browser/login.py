@@ -1,4 +1,5 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
+import json
 import webob.cookies
 import zeit.cms.browser.resources
 import zope.authentication.interfaces
@@ -92,8 +93,12 @@ class SSOLogin(object):
         # zeit.accounts does, but our currently only client (haproxy of TMS)
         # cannot evaluate that, so there's not much point right now.
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        principal = self.request.principal
         headers = set_cookie_headers(
-            config['sso-cookie-name-prefix'] + permission, 'dummy')
+            config['sso-cookie-name-prefix'] + permission,
+            json.dumps({'id': principal.id, 'name': principal.title,
+                        'email': principal.description}).encode(
+                            'base64').strip())
         for key, value in headers:
             self.request.response.setHeader(key, value)
         url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
