@@ -46,16 +46,20 @@ class Base(zeit.push.browser.form.SocialBase,
         ('target', 'nofollow'),
         css_class='column-right')
 
+    # Make link specific field groups for other views
+    link_field_groups = (metadata_group,
+                         option_group,
+                         marketing_group,
+                         story_stream_group,
+                         teaser_group,
+                         link_group)
+
     form_fields = zope.formlib.form.FormFields(
         zeit.content.link.interfaces.ILink,
         zeit.content.image.interfaces.IImages).select(
             *list(itertools.chain.from_iterable(
-                [group.get_field_names() for group in (metadata_group,
-                                                       option_group,
-                                                       marketing_group,
-                                                       story_stream_group,
-                                                       teaser_group,
-                                                       link_group)])))
+                [group.get_field_names() for group in
+                 link_field_groups])))
 
     field_groups = (
         metadata_group,
@@ -65,7 +69,7 @@ class Base(zeit.push.browser.form.SocialBase,
         story_stream_group,
         zeit.push.browser.form.MobileBase.mobile_fields,
         link_group,
-        zeit.push.browser.form.SocialBase.social_fields,
+        zeit.push.browser.form.SocialBase.social_fields
     )
 
     def setUpWidgets(self, *args, **kw):
