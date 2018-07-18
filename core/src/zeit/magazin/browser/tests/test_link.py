@@ -18,7 +18,6 @@ class ZMOLinkCRUD(zeit.cms.testing.BrowserTestCase,
         b.getControl('File name').value = 'link'
         b.getControl('Title').value = 'title'
         b.getControl('Ressort', index=0).displayValue = ['Leben']
-        b.getControl('Teaser title').value = 'teaser'
         b.getControl('Link address').value = 'http://example.com'
 
         b.getControl('Facebook Magazin Text').value = 'mymagazin'
