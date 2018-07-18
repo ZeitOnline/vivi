@@ -118,7 +118,7 @@ class TagsWithTopicpages(zeit.cms.browser.view.JSON):
 
 
 class DisplayWidget(grokcore.component.MultiAdapter,
-                    zope.formlib.itemswidgets.ListDisplayWidget):
+                    zope.formlib.itemswidgets.ItemsWidgetBase):
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
