@@ -184,8 +184,8 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         sel.assertXpathCount(
             '//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
         self.assertEqual(
-            'font-weight: bold;',
+            'with-topic-page',
             sel.selenium.find_element_by_link_text('t1').get_attribute(
-                'style'))
+                'class'))
         sel.assertXpathCount(
             '//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)

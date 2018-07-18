@@ -161,7 +161,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
                 var href = json_result[this.getAttribute('cms:uniqueId')];
                 if (href){
                     var el = $('a', this);
-                    el.css( 'font-weight', 'bold');
+                    el.addClass('with-topic-page');
                     el.attr('href', href);
                 }
             });
