@@ -154,9 +154,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
 
     _highlight_tags_with_topicpages: function() {
         var self = this;
-        var d = MochiKit.Async.doXHR(
-            '@@tags_with_topicpages',
-            {method: 'POST'});
+        var d = MochiKit.Async.doXHR('@@tags_with_topicpages');
         d.addCallback(function(result) {
             var json_result = MochiKit.Async.evalJSONRequest(result);
             $('li', self.list).each(function(index) {
