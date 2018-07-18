@@ -45,6 +45,7 @@ class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+    # TODO Seems like this Docstring is plain wrong
     """Add the expire/publication time to feed entry."""
 
     zope.component.adapts(zeit.content.link.interfaces.ILink)

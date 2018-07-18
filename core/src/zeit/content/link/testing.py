@@ -21,3 +21,8 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
 
 LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='LinkLayer')
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = LAYER
