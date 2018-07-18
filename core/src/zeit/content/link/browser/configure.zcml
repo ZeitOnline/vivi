@@ -69,9 +69,5 @@
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
-  <class class="..link.Link">
-    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
-  </class>
-
 </configure>
 
