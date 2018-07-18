@@ -102,7 +102,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             {'cms:uniqueId': code},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
-            A({'href': ''}, label)
+            A({}, label)
         );
         if (position === 'end') {
             $(self.list).append(item);
