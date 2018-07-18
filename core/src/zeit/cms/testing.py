@@ -310,8 +310,8 @@ cms_product_config = """\
   checkout-lock-timeout 3600
   checkout-lock-timeout-temporary 30
 
-  preview-prefix http://localhost/preview-prefix
-  live-prefix http://localhost/live-prefix
+  preview-prefix http://localhost/preview-prefix/
+  live-prefix http://localhost/live-prefix/
   friebert-wc-preview-prefix /wcpreview
 
   suggest-keyword-email-address none@testing

@@ -32,9 +32,10 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.add_keyword_to_retresco(tags.get('t1'))
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
-        self.assertEllipsis('...<li>...<a href="https://www.zeit.de/thema/t1"'
-                            '...t1...',
-                            self.browser.contents)
+        self.assertEllipsis(
+            '...<li>...<a href="http://localhost/live-prefix/thema/t1"'
+            '...t1...',
+            self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -180,8 +181,11 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.add_keyword_to_retresco(tags.get('t1'))
         self.open_content()
         sel = self.selenium
-        sel.assertXpathCount('//li/a[@href="https://www.zeit.de/thema/t1"]', 1)
-        self.assertEqual('font-weight: bold;',
-                         sel.selenium.find_element_by_link_text(
-                             "t1").get_attribute('style'))
-        sel.assertXpathCount('//li/a[@href="https://www.zeit.de/thema/t2"]', 0)
+        sel.assertXpathCount(
+            '//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
+        self.assertEqual(
+            'font-weight: bold;',
+            sel.selenium.find_element_by_link_text('t1').get_attribute(
+                'style'))
+        sel.assertXpathCount(
+            '//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)

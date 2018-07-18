@@ -159,7 +159,7 @@ def get_tags_with_topicpages(article):
     import zeit.retresco.interfaces
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    live_prefix = config.get('live_prefix', 'https://www.zeit.de/')
+    live_prefix = config['live-prefix']
     keywords_with_link = tms.get_article_keywords(
         article,
         published=False)
