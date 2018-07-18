@@ -158,11 +158,11 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         d.addCallback(function(result) {
             var json_result = MochiKit.Async.evalJSONRequest(result);
             $('li', self.list).each(function(index) {
-                if (json_result[this.getAttribute('cms:uniqueId')]){
+                var href = json_result[this.getAttribute('cms:uniqueId')];
+                if (href){
                     var el = $('a', this);
                     el.css( 'font-weight', 'bold');
-                    el.attr('href',
-                            json_result[this.getAttribute('cms:uniqueId')]);
+                    el.attr('href', href);
                 }
             });
         });
