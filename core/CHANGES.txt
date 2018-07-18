@@ -1,7 +1,7 @@
 zeit.retresco changes
 =====================
 
-1.28.0 (unreleased)
+1.28.0 (2018-07-18)
 -------------------
 
 - ZON-4788: Index SEO robots properties and push config explicitly
