@@ -4,7 +4,7 @@ zeit.campus changes
 1.6.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4670: Restructrure link ui
 
 
 1.6.8 (2018-05-29)
