@@ -51,13 +51,7 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
         return 'area'
 
     def _get_keys(self, xml):
-        keys = []
-        for child in xml.getchildren():
-            key = child.get('area')
-            if key == 'teaser-row-full':
-                key = child.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-            keys.append(key)
-        return keys
+        return [x.get('area') for x in xml.getchildren()]
 
 
 class RegionFactory(zeit.edit.block.ElementFactory):
@@ -81,8 +75,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'area'
 
-    _kind = ObjectPathAttributeProperty(
-        '.', 'kind')
+    kind = ObjectPathAttributeProperty(
+        '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
+        use_default=True)
 
     _layout = ObjectPathAttributeProperty(
         '.', 'module')
@@ -104,7 +99,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _overflow_into = ObjectPathAttributeProperty(
         '.', 'overflow_into')
 
-    _apply_teaser_layouts = ObjectPathAttributeProperty(
+    apply_teaser_layouts_automatically = ObjectPathAttributeProperty(
         '.', 'apply_teaser_layouts',
         zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
     _first_teaser_layout = ObjectPathAttributeProperty(
@@ -135,8 +130,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
-            'hide_dupes'])
+        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea['hide_dupes'],
+        use_default=True)
 
     require_lead_candidates = (
         zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -167,12 +162,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['is_complete_query'],
         use_default=True)
 
-    def __init__(self, context, xml):
-        super(Area, self).__init__(context, xml)
-        if 'hide-dupes' not in self.xml.attrib:
-            self.hide_dupes = zeit.content.cp.interfaces.IArea[
-                'hide_dupes'].default
-
     @property
     def image(self):
         if self._image:
@@ -189,45 +178,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._image = value
 
     @property
-    def is_teaserbar(self):
-        # backward compatibility for teaser bar
-        return self.xml.get('area') == 'teaser-row-full'
-
-    @property
-    def apply_teaser_layouts_automatically(self):
-        """Check if the layout of teaser lists should be set automatically.
-
-        Is used by the event handlers apply_layout_for_added and apply_layout.
-
-        """
-
-        if self._apply_teaser_layouts is not None:
-            return self._apply_teaser_layouts
-
-        if self.__name__ != 'lead':
-            return False
-
-        cp_type = zeit.content.cp.interfaces.ICenterPage(self).type
-        if cp_type in ['archive-print-volume', 'archive-print-year']:
-            return False
-
-        if len(list(self.values())) == 0:
-            return False
-
-        return True
-
-    @apply_teaser_layouts_automatically.setter
-    def apply_teaser_layouts_automatically(self, value):
-        self._apply_teaser_layouts = value
-
-    @property
     def first_teaser_layout(self):
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
                 self):
             if layout.id == self._first_teaser_layout:
                 return layout
-        if self.__name__ == 'lead':  # BBB
-            return zeit.content.cp.layout.get_layout('leader')
         return None
 
     @first_teaser_layout.setter
@@ -261,37 +216,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         return None
 
     @property
-    def kind(self):
-        # XXX since we hard code the default values for backward compatibility,
-        # this also makes it mandatory to have according rules in the kind
-        # source definition
-        if self.is_teaserbar:
-            return 'parquet'
-        if self.__name__ == 'informatives':
-            return 'minor'
-        if self.__name__ == 'lead':
-            return 'major'
-        return self._kind or 'solo'
-
-    @kind.setter
-    def kind(self, value):
-        self._kind = value
-
-    @property
     def kind_title(self):
         """Retrieve title for this kind of Area from XML config."""
         area_config = zeit.content.cp.layout.AREA_CONFIGS(None).find(self.kind)
         if area_config:
             return area_config.title
-
-    @property
-    def layout(self):
-        # XXX Needed for compat reasons in zeit.web.magazin
-        return zeit.content.cp.layout.BlockLayout(self._layout, '', None, [])
-
-    @layout.setter
-    def layout(self, value):
-        raise NotImplementedError()
 
     @property
     def overflow_into(self):
@@ -314,18 +243,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @property
     def __name__(self):
-        name = self.xml.get('area')
-        if self.is_teaserbar:
-            return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        return name
+        return self.xml.get('area')
 
     @__name__.setter
     def __name__(self, name):
         if name != self.__name__:
             self._p_changed = True
-            if self.is_teaserbar:
-                self.xml.set(
-                    '{http://namespaces.zeit.de/CMS/cp}__name__', name)
             self.xml.set('area', name)
 
     @property

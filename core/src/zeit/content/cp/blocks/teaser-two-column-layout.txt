@@ -10,6 +10,7 @@ Create a teaser block to play with:
 >>> import zeit.content.cp.interfaces
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
+>>> lead.kind = u'major'
 >>> import zeit.edit.interfaces
 >>> import zeit.content.cp.interfaces
 >>> import zope.component

@@ -8,12 +8,22 @@ Create content, a teaser block and fill it with the created content:
 
 >>> import zeit.content.cp.browser.blocks.testing
 >>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> import transaction
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     repository = zope.component.getUtility(
+...         zeit.cms.repository.interfaces.IRepository)
+...     cp = zeit.content.cp.centerpage.CenterPage()
+...     cp['lead'].kind = u'major'
+...     repository['cp'] = cp
+...     transaction.commit()
 >>> import z3c.etestbrowser.testing
 >>> import zeit.content.cp.browser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.xml_strict = True
->>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('http://localhost/++skin++vivi/repository/cp/@@checkout')
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(

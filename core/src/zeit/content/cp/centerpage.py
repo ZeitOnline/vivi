@@ -305,18 +305,6 @@ def publish_priority_cp(context):
         return zeit.cms.workflow.interfaces.PRIORITY_HIGH
 
 
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
-def remove_xslt_rss_feed_support(context, event):
-    # BBB The <feed> node used to be needed to render newsfeed.zeit.de with
-    # XSLT, but is obsolete since zeit.web took over. Thus we perform an
-    # on-the-fly migration here and remove it from existing content.
-    feed = context.xml.find('feed')
-    if feed is not None:
-        feed.getparent().remove(feed)
-
-
 NSMAP = collections.OrderedDict((
     ('cp', 'http://namespaces.zeit.de/CMS/cp'),
     ('py', 'http://codespeak.net/lxml/objectify/pytype'),
@@ -330,22 +318,6 @@ ElementMaker = lxml.objectify.ElementMaker(nsmap=NSMAP)
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
-    # XXX This method duplicates the XML structure from cp-template.xml
-    root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
-    root.append(copy.copy(context.xml.head))
-    root.append(lxml.objectify.E.body(
-        lxml.objectify.E.cluster(
-            zeit.content.cp.interfaces.IRenderedXML(context['lead']),
-            zeit.content.cp.interfaces.IRenderedXML(context['informatives']),
-            **context.xml.body.cluster.attrib),
-        zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
-    ))
-    return root
-
-
-@grok.adapter(zeit.content.cp.interfaces.ICP2015)
-@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
-def rendered_xml(context):
     root = getattr(ElementMaker, context.xml.tag)(
         **context.xml.attrib)
     root.append(copy.copy(context.xml.head))
@@ -354,30 +326,3 @@ def rendered_xml(context):
     for region in context.body.values():
         body.append(zeit.content.cp.interfaces.IRenderedXML(region))
     return root
-
-
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
-def mark_cp_on_checkout(context, event):
-    if (zeit.content.cp.interfaces.ICP2009.providedBy(context) or
-            zeit.content.cp.interfaces.ICP2015.providedBy(context)):
-        return
-    zope.interface.alsoProvides(context, zeit.content.cp.interfaces.ICP2015)
-
-
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.checkout.interfaces.IBeforeCheckoutEvent)
-def prevent_mismatched_checkout(context, event):
-    other_iface = zeit.content.cp.interfaces.ICP2009
-    current_iface = zeit.content.cp.interfaces.ICP2015
-    if other_iface.providedBy(context):
-        raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-            context.uniqueId, _(
-                'The centerpage ${uniqueId} is of type ${content_type},'
-                ' but this vivi handles ${current_type}.', mapping={
-                    'uniqueId': context.uniqueId,
-                    'content_type': other_iface.__name__,
-                    'current_type': current_iface.__name__,
-                }))

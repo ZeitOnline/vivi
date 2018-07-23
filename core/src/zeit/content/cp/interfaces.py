@@ -124,15 +124,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         iterating over body/regions/values, for performance reasons.""")
 
 
-class ICP2009(ICenterPage):
-    """Marker interfaces for CPs edited by the old 2.x CP-Editor branch."""
-
-
-class ICP2015(ICenterPage):
-    """Marker interfaces for CPs edited by the current CP-Editor (master)."""
-
-
-class IStoryStream(ICP2015):
+class IStoryStream(ICenterPage):
     """CP with ``type``=='storystream'.
 
     We're pretending this is a separate content type by providing its own
@@ -145,14 +137,14 @@ IStoryStream.setTaggedValue(
     'zeit.cms.title', _('Add storystream'))
 
 
-class ISitemap(ICP2015):
+class ISitemap(ICenterPage):
     """CP with ``type``=='sitemap'.
 
     This interface is applied manually.
     """
 
 
-class ISearchpage(ICP2015):
+class ISearchpage(ICenterPage):
     """CP with ``type``=='search'.
 
     This interface is applied manually.
@@ -398,7 +390,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     kind = zope.schema.TextLine(
         title=_("Kind"),
-        description=_("Used internally for rendering on Friedbert"))
+        description=_("Used internally for rendering on Friedbert"),
+        default=u'solo')
 
     kind_title = zope.interface.Attribute(
         "Translation of kind to a human friendly information")

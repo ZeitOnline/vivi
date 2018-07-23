@@ -21,6 +21,9 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
         self.teaser_selector = 'xpath=' + xml_selector + '[{pos}]@id'
 
         self.cp = self.create_and_checkout_centerpage()
+        self.cp['lead'].kind = u'major'
+        self.cp['lead'].apply_teaser_layouts_automatically = True
+        self.cp['lead']._first_teaser_layout = u'leader'
         self.cp['lead'].create_item('teaser')
         self.cp['lead'].create_item('teaser')
         self.cp['lead'].create_item('teaser')
