@@ -402,7 +402,8 @@ class Infobox(Converter):
             }}
         }
         if self.context.contents and self.context.contents[0]:
-            result['payload']['teaser']['title'] = self.context.contents[0][0]
+            title, text = self.context.contents[0]
+            result['payload']['teaser'].update(title=title, text=text)
         return result
 
 
@@ -414,9 +415,10 @@ class Portraitbox(Converter):
     def __call__(self):
         return {
             'title': self.context.name,
-            'teaser': self.context.name,
+            'teaser': self.context.text,
             'payload': {'teaser': {
                 'title': self.context.name,
+                'text': self.context.text,
             }}
         }
 

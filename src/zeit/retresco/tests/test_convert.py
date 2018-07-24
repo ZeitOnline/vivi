@@ -8,6 +8,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.advertisement.advertisement
+import zeit.content.author.author
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zeit.content.infobox.infobox
@@ -322,20 +323,48 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.repository['infobox'] = zeit.content.infobox.infobox.Infobox()
         with checked_out(self.repository['infobox']) as co:
             co.supertitle = 'mytitle'
+            co.contents = (('foo!', '<p>bar!</p>'),)
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['infobox'])()
         self.assertEqual('infobox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+        self.assertEqual({
+            'supertitle': 'mytitle',
+            'title': 'foo!',
+            'text': '<p>bar!</p>\n',
+        }, data['payload']['teaser'])
 
     def test_converts_portraitbox(self):
         self.repository[
             'portraitbox'] = zeit.content.portraitbox.portraitbox.Portraitbox()
         with checked_out(self.repository['portraitbox']) as co:
             co.name = 'mytitle'
+            co.text = '<p>my text</p>'
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['portraitbox'])()
         self.assertEqual('portraitbox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+        self.assertEqual({
+            'title': 'mytitle',
+            'text': '<p>my text</p>',
+        }, data['payload']['teaser'])
+
+    def test_converts_author(self):
+        self.repository['willy'] = zeit.content.author.author.Author()
+        with checked_out(self.repository['willy']) as co:
+            co.firstname = u'William'
+            co.lastname = u'Shakespeare'
+            co.summary = u'To be...'
+            co.biography = '...or not to be!'
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['willy'])()
+        self.assertEqual('author', data['doc_type'])
+        self.assertEqual('William Shakespeare', data['title'])
+        self.assertEqual({
+            'supertitle': 'To be...',
+            'title': 'William Shakespeare',
+            'text': '...or not to be!',
+        }, data['payload']['teaser'])
 
     def test_converts_text(self):
         text = zeit.content.text.text.Text()
@@ -345,6 +374,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['mytext'])()
         self.assertEqual('text', data['doc_type'])
         self.assertEqual('mytext', data['title'])
+        self.assertEqual({'title': 'mytext'}, data['payload']['teaser'])
 
     def test_converts_rawxml(self):
         self.repository['embed'] = zeit.content.rawxml.rawxml.RawXML()
@@ -354,15 +384,23 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['embed'])()
         self.assertEqual('rawxml', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+        self.assertEqual({'title': 'embed'}, data['payload']['teaser'])
 
     def test_converts_advertistement(self):
         adv = zeit.content.advertisement.advertisement.Advertisement()
+        adv.supertitle = 'super title!'
         adv.title = 'mytitle'
+        adv.text = 'super text...'
         self.repository['adv'] = adv
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['adv'])()
         self.assertEqual('advertisement', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
+        self.assertEqual({
+            'supertitle': 'super title!',
+            'title': 'mytitle',
+            'text': 'super text...',
+        }, data['payload']['teaser'])
 
     def test_converts_seo_properties(self):
         content = create_testcontent()
