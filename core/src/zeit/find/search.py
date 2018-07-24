@@ -1,6 +1,5 @@
 from zeit.find.interfaces import ICMSSearch
 from zope.app.appsetup.product import getProductConfiguration
-from zope.component import getUtility
 from zope.interface import implementer
 import zeit.retresco.search
 
