@@ -31,7 +31,7 @@ class TestSimpleFind(unittest.TestCase,
         self.search.assert_called_with(dict(query=dict(match_phrase_prefix={
             'payload.vivi.autocomplete': 'search-term'})))
 
-    def test_given_types_should_be_passed_to_solr(self):
+    def test_given_types_should_be_passed_to_search(self):
         self.search.return_value = []
         self.browser.open(
             '@@simple_find?term=search-term&types:list=t1&types:list=t2')

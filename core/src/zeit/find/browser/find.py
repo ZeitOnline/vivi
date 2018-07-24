@@ -163,7 +163,7 @@ class SearchResult(JSONView):
         try:
             results = elastic.search(q, sort_order=self.sort_order())
             return self.results(results)
-        except zeit.solr.interfaces.SolrError, e:
+        except Exception as e:
             return {'template': 'no_search_result.jsont',
                     'error': e.args[0]}
 
@@ -375,8 +375,8 @@ def search_parameters(request):
 
 
 def search_form(request):
-    """extract the search parameters from the request in a format consumable by
-    solr"""
+    """extract the search parameters from the request in a format suitable
+    to build a search query"""
 
     def g(name, default=None):
         return _get(request, name, default)

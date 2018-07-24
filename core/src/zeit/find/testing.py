@@ -9,12 +9,6 @@ import zeit.find.interfaces
 import zope.component
 
 product_config = """\
-<product-config zeit.solr>
-    solr-url http://internal.invalid
-    public-solr-url http://public.invalid
-    second-solr-url http://public.invalid
-</product-config>
-
 <product-config zeit.find>
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index foo_pool

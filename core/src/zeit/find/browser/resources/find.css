@@ -71,7 +71,7 @@
   margin-bottom: .8em;
 }
 
-/* Some solr fields will not be shown in some areas */
+/* Some search results will not be shown in some areas */
 
 #cp-search .search_entry .teaser_text {
   display:none;

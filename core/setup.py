@@ -7,7 +7,7 @@ setup(
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
-    description="vivi UI for querying solr",
+    description="vivi UI for querying elastic search",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
