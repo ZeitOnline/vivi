@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.retresco.tag import Tag
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging
 import lxml.etree
@@ -223,3 +224,14 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
         if clear_disabled:
             dav[DISABLED_PROPERTY] = u''
+
+    @cachedproperty
+    def links(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config.get('live_prefix', 'https://www.zeit.de/')
+        keywords_with_link = tms.get_article_keywords(
+            self.context,
+            published=False)
+        return {tag.uniqueId: live_prefix + tag.link
+                for tag in keywords_with_link}
