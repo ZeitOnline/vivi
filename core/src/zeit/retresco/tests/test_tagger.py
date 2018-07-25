@@ -508,6 +508,17 @@ class TaggerUpdateTest(
             self.assertEqual(['Karen Duve'], data['rtr_keywords'])
             self.assertEqual(['Berlin'], data['rtr_locations'])
 
+    def test_links_to_topicpages_are_retrieved_from_tms(self):
+        content = create_testcontent()
+        tagger = Tagger(content)
+        article_keywords = 'zeit.retresco.connection.TMS.get_article_keywords'
+        with mock.patch(article_keywords) as article_keywords:
+            tag = Tag('Foo', '')
+            tag.link = 'thema/foo'
+            article_keywords.return_value = [tag, ]
+            self.assertEqual({tag.uniqueId: 'https://www.zeit.de/thema/foo'},
+                             tagger.links)
+
     @unittest.skipUnless(HAVE_INTRAFIND, 'zeit.intrafind not available')
     def test_update_should_keep_intrafind_pinned_tags(self):
         content = create_testcontent()
