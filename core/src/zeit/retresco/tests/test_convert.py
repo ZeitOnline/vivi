@@ -329,10 +329,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('infobox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({
-            'supertitle': 'mytitle',
             'title': 'foo!',
             'text': '<p>bar!</p>\n',
         }, data['payload']['teaser'])
+        self.assertEqual('mytitle', data['payload']['body']['supertitle'])
 
     def test_converts_portraitbox(self):
         self.repository[
@@ -361,10 +361,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('author', data['doc_type'])
         self.assertEqual('William Shakespeare', data['title'])
         self.assertEqual({
-            'supertitle': 'To be...',
             'title': 'William Shakespeare',
             'text': '...or not to be!',
         }, data['payload']['teaser'])
+        self.assertEqual('To be...', data['payload']['body']['supertitle'])
 
     def test_converts_text(self):
         text = zeit.content.text.text.Text()
@@ -397,10 +397,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('advertisement', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({
-            'supertitle': 'super title!',
             'title': 'mytitle',
             'text': 'super text...',
         }, data['payload']['teaser'])
+        self.assertEqual('super title!', data['payload']['body']['supertitle'])
 
     def test_converts_seo_properties(self):
         content = create_testcontent()
