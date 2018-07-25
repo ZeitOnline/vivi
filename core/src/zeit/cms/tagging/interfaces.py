@@ -13,6 +13,9 @@ class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
 
     pinned = zope.interface.Attribute('list of tag codes that are pinned.')
 
+    links = zope.interface.Attribute('dict from tag codes to topicpage URL,'
+                                     ' or None')
+
     def to_xml():
         pass
 

@@ -12,26 +12,6 @@ NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
 KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 
-class DummyRetresco(object):
-
-    # XXX don't add explicit dependency
-    import zeit.retresco.interfaces
-    zope.interface.implements(zeit.retresco.interfaces.ITMS)
-
-    def __init__(self):
-        self.url = "http://www.foo.bar"
-        self._tags = []
-
-    def get_article_keywords(self, *args, **kwars):
-        return self._tags
-
-    def add(self, tags):
-        self._tags.append(tags)
-
-    def reset(self):
-        self._tags = []
-
-
 class DummyTagger(object):
 
     zope.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
@@ -99,6 +79,10 @@ class DummyTagger(object):
     def pinned(self):
         pass
 
+    @property
+    def links(self):
+        pass
+
     def to_xml(self):
         return None
 
@@ -152,6 +136,11 @@ class FakeTags(collections.OrderedDict):
     def pinned(self):
         return [x.code for x in self.values() if x.pinned]
 
+    @property
+    def links(self):
+        return {x.uniqueId: 'https://www.zeit.de/%s' % x.link
+                for x in self.values() if x.link}
+
     def to_xml(self):
         node = lxml.objectify.E.tags(*[
             lxml.objectify.E.tag(x.label) for x in self.values()])
@@ -168,15 +157,12 @@ class FakeTag(object):
         self.code = code
         self.pinned = False
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
+        self.link = None
 
     @property
     def uniqueId(self):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
                 self.code.encode('unicode_escape'))
-
-    @property
-    def link(self):
-        return 'thema/%s' % self.label.lower()
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -216,12 +202,5 @@ class TaggingHelper(object):
         self.add_by_autocomplete(
             text, 'id=%s.keywords.add' % form_prefix)
 
-    def add_keyword_to_retresco(self, tag):
-        retresco_mock = zope.component.queryUtility(
-            zeit.retresco.interfaces.ITMS)
-        if retresco_mock:
-            retresco_mock.add(tag)
-
-            def reset_retresco_tags():
-                retresco_mock.reset()
-            self.addCleanup(reset_retresco_tags)
+    def add_topicpage_link(self, tag):
+        tag.link = 'thema/%s' % tag.label.lower()

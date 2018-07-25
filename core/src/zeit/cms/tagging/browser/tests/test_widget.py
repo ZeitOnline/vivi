@@ -19,7 +19,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_highlights_keywords_with_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
-        self.add_keyword_to_retresco(tags.get('t1'))
+        self.add_topicpage_link(tags.get('t1'))
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis('...<li>...<a...class="with-topic-page"...t1...',
@@ -29,7 +29,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_keyword_links_to_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
-        self.add_keyword_to_retresco(tags.get('t1'))
+        self.add_topicpage_link(tags.get('t1'))
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis(
@@ -178,7 +178,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     def test_tags_with_topicpages_are_highlighted(self):
         tags = self.setup_tags('t1', 't2', 't3', 't4')
-        self.add_keyword_to_retresco(tags.get('t1'))
+        self.add_topicpage_link(tags.get('t1'))
         self.open_content()
         sel = self.selenium
         sel.assertXpathCount(

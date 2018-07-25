@@ -112,9 +112,8 @@ class UpdateTags(zeit.cms.browser.view.JSON):
 class TagsWithTopicpages(zeit.cms.browser.view.JSON):
 
     def json(self):
-        # don't want to add this dependency to zeit.cms
-        keywords_with_link = get_tags_with_topicpages(self.context)
-        return keywords_with_link
+        tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
+        return dict(tagger.links)
 
 
 class DisplayWidget(grokcore.component.MultiAdapter,
@@ -135,8 +134,8 @@ class DisplayWidget(grokcore.component.MultiAdapter,
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)
-        self.tags_with_topicpages = defaultdict(
-            str, get_tags_with_topicpages(self.context.context))
+        tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
+        self.tags_with_topicpages = tagger.links
 
     def __call__(self):
         return self.template()
@@ -149,10 +148,11 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         Tag = namedtuple('Tag', ['text', 'link', 'css_class'])
         for item in self._getFormValue():
             text = self._text(item)
-            link = self.tags_with_topicpages[item.uniqueId]
+            link = self.tags_with_topicpages.get(item.uniqueId)
             css_class = self.tag_highling_css_class if link else ''
             items.append(Tag(text, link, css_class))
         return items
+<<<<<<< Updated upstream
 
 
 def get_tags_with_topicpages(article):
@@ -165,3 +165,5 @@ def get_tags_with_topicpages(article):
         published=False)
     return {tag.uniqueId: live_prefix + tag.link
             for tag in keywords_with_link}
+=======
+>>>>>>> Stashed changes
