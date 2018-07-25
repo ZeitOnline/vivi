@@ -319,7 +319,7 @@ class Author(Converter):
             }}
         }
         if self.context.summary:
-            result['payload']['teaser']['supertitle'] = self.context.summary
+            result['payload']['body'] = {'supertitle': self.context.summary}
         if self.context.biography:
             result['payload']['teaser']['text'] = self.context.biography
         return result
@@ -339,7 +339,7 @@ class Advertisement(Converter):
             }}
         }
         if self.context.supertitle:
-            result['payload']['teaser']['supertitle'] = self.context.supertitle
+            result['payload']['body'] = {'supertitle': self.context.supertitle}
         if self.context.text:
             result['payload']['teaser']['text'] = self.context.text
         return result
@@ -397,13 +397,13 @@ class Infobox(Converter):
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
             'supertitle': None,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'supertitle': self.context.supertitle,
             }}
         }
         if self.context.contents and self.context.contents[0]:
             title, text = self.context.contents[0]
-            result['payload']['teaser'].update(title=title, text=text)
+            result['payload']['teaser'] = dict(title=title, text=text)
         return result
 
 
