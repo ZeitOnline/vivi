@@ -516,8 +516,9 @@ class TaggerUpdateTest(
             tag = Tag('Foo', '')
             tag.link = 'thema/foo'
             article_keywords.return_value = [tag, ]
-            self.assertEqual({tag.uniqueId: 'https://www.zeit.de/thema/foo'},
-                             tagger.links)
+            self.assertEqual(
+                {tag.uniqueId: 'http://localhost/live-prefix/thema/foo'},
+                tagger.links)
 
     @unittest.skipUnless(HAVE_INTRAFIND, 'zeit.intrafind not available')
     def test_update_should_keep_intrafind_pinned_tags(self):
