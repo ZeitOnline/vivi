@@ -125,7 +125,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 'vivi': {
                     'cms_icon': '/@@/zeit-content-article-interfaces-IArticle'
                                 '-zmi_icon.png',
-                    'cms_preview_url': '',
                     'publish_status': 'not-published'
                 },
                 'workflow': {
@@ -143,7 +142,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'section': u'/International',
             'supertitle': u'Somalia',
             'teaser': teaser,
-            'teaser_img_subline': None,
             'teaser_img_url': u'/2006/DSC00109_2.JPG',
             'title': u'Rückkehr der Warlords',
             'url': u'/online/2007/01/Somalia'
