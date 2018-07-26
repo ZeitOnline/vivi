@@ -221,8 +221,7 @@ class SearchResult(JSONView):
 
     def get_teaser_title(self, result):
         return self.get_first_field(
-            result, 'payload.teaser.title', 'payload.teaser.supertitle',
-            'payload.body.title', 'title', 'url')
+            result, 'payload.teaser.title', 'payload.body.title', 'url')
 
     def get_type(self, result):
         return result.get('doc_type', '')
@@ -263,10 +262,12 @@ class SearchResult(JSONView):
         return result.get('payload.body.subtitle', '')
 
     def get_supertitle(self, result):
-        return result.get('payload.body.supertitle', '')
+        return self.get_first_field(
+            result, 'payload.teaser.supertitle', 'payload.body.supertitle')
 
     def get_teaser_text(self, result):
-        return self.get_first_field(result, 'payload.teaser.text', 'teaser')
+        return self.get_first_field(
+            result, 'payload.teaser.text', 'payload.body.text')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')
