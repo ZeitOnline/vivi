@@ -178,10 +178,11 @@ class CommonMetadata(Converter):
                 section += u'/' + self.context.sub_ressort
         result = {
             'title': self.context.title,
-            'supertitle': self.context.supertitle,
             'teaser': self.context.teaserText or self.context.title,
+            # The following (top-level keys) are not strictly required,
+            # but are used by TMS UI (for display and filtering).
+            'supertitle': self.context.supertitle,
             'section': section,
-            # Only for display in TMS UI.
             'author': u', '.join(
                 [x.target.display_name for x in self.context.authorships] or
                 [x for x in self.context.authors if x])
