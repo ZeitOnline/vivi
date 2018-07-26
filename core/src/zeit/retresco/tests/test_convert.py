@@ -258,7 +258,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                     'last_modified_by': 'zope.user',
                 },
                 'meta': {'type': 'image'},
-                'teaser': {
+                'body': {
                     'title': 'DSC00109_2.JPG',
                     'text': 'DSC00109_2.JPG',
                 },
@@ -294,7 +294,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
                 },
                 'image': {'caption': 'mycaption'},
                 'meta': {'type': 'image-group'},
-                'teaser': {
+                'body': {
                     'title': 'mytitle',
                     'text': 'mycaption',
                 },
@@ -329,10 +329,11 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('infobox', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({
+            'supertitle': 'mytitle',
+            'subtitle': '',     # `CommonMetadata` shines trough...
             'title': 'foo!',
             'text': '<p>bar!</p>\n',
-        }, data['payload']['teaser'])
-        self.assertEqual('mytitle', data['payload']['body']['supertitle'])
+        }, data['payload']['body'])
 
     def test_converts_portraitbox(self):
         self.repository[
@@ -347,7 +348,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual({
             'title': 'mytitle',
             'text': '<p>my text</p>',
-        }, data['payload']['teaser'])
+        }, data['payload']['body'])
 
     def test_converts_author(self):
         self.repository['willy'] = zeit.content.author.author.Author()
@@ -361,10 +362,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('author', data['doc_type'])
         self.assertEqual('William Shakespeare', data['title'])
         self.assertEqual({
+            'supertitle': 'To be...',
             'title': 'William Shakespeare',
             'text': '...or not to be!',
-        }, data['payload']['teaser'])
-        self.assertEqual('To be...', data['payload']['body']['supertitle'])
+        }, data['payload']['body'])
 
     def test_converts_text(self):
         text = zeit.content.text.text.Text()
@@ -374,7 +375,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['mytext'])()
         self.assertEqual('text', data['doc_type'])
         self.assertEqual('mytext', data['title'])
-        self.assertEqual({'title': 'mytext'}, data['payload']['teaser'])
+        self.assertEqual({'title': 'mytext'}, data['payload']['body'])
 
     def test_converts_rawxml(self):
         self.repository['embed'] = zeit.content.rawxml.rawxml.RawXML()
@@ -384,7 +385,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             self.repository['embed'])()
         self.assertEqual('rawxml', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
-        self.assertEqual({'title': 'embed'}, data['payload']['teaser'])
+        self.assertEqual({'title': 'embed'}, data['payload']['body'])
 
     def test_converts_advertistement(self):
         adv = zeit.content.advertisement.advertisement.Advertisement()
@@ -397,10 +398,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('advertisement', data['doc_type'])
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({
+            'supertitle': 'super title!',
             'title': 'mytitle',
             'text': 'super text...',
-        }, data['payload']['teaser'])
-        self.assertEqual('super title!', data['payload']['body']['supertitle'])
+        }, data['payload']['body'])
 
     def test_converts_seo_properties(self):
         content = create_testcontent()

@@ -314,14 +314,14 @@ class Author(Converter):
         result = {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
-            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+            'payload': {'xml': get_xml_properties(self.context), 'body': {
                 'title': self.context.display_name,
             }}
         }
         if self.context.summary:
-            result['payload']['body'] = {'supertitle': self.context.summary}
+            result['payload']['body']['supertitle'] = self.context.summary
         if self.context.biography:
-            result['payload']['teaser']['text'] = self.context.biography
+            result['payload']['body']['text'] = self.context.biography
         return result
 
 
@@ -334,14 +334,14 @@ class Advertisement(Converter):
         result = {
             'title': self.context.title,
             'teaser': self.context.text or self.context.title,
-            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+            'payload': {'xml': get_xml_properties(self.context), 'body': {
                 'title': self.context.title,
             }}
         }
         if self.context.supertitle:
-            result['payload']['body'] = {'supertitle': self.context.supertitle}
+            result['payload']['body']['supertitle'] = self.context.supertitle
         if self.context.text:
-            result['payload']['teaser']['text'] = self.context.text
+            result['payload']['body']['text'] = self.context.text
         return result
 
 
@@ -380,7 +380,7 @@ class Image(Converter):
             # Required fields, so make sure to always index (for zeit.find).
             'title': title,
             'teaser': self.context.caption or title,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': title,
                 'text': self.context.caption or title,
             }}
@@ -403,7 +403,7 @@ class Infobox(Converter):
         }
         if self.context.contents and self.context.contents[0]:
             title, text = self.context.contents[0]
-            result['payload']['teaser'] = dict(title=title, text=text)
+            result['payload']['body'].update(title=title, text=text)
         return result
 
 
@@ -416,7 +416,7 @@ class Portraitbox(Converter):
         return {
             'title': self.context.name,
             'teaser': self.context.text,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': self.context.name,
                 'text': self.context.text,
             }}
@@ -432,7 +432,7 @@ class Text(Converter):
         return {
             'title': self.context.__name__,
             'teaser': self.context.__name__,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': self.context.__name__,
             }}
         }
@@ -447,7 +447,7 @@ class RawXML(Converter):
         return {
             'title': self.context.title,
             'teaser': self.context.title,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': self.context.__name__,
             }}
         }
