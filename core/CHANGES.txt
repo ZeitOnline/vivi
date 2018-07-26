@@ -6,6 +6,8 @@ zeit.retresco changes
 
 - ZON-4742: Add topiclinks to retresco tagger implementation
 
+- ZON-4788: Prefer payload body to payload teaser regarding zeit.find
+
 
 1.28.0 (2018-07-18)
 -------------------
