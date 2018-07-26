@@ -152,18 +152,3 @@ class DisplayWidget(grokcore.component.MultiAdapter,
             css_class = self.tag_highling_css_class if link else ''
             items.append(Tag(text, link, css_class))
         return items
-<<<<<<< Updated upstream
-
-
-def get_tags_with_topicpages(article):
-    import zeit.retresco.interfaces
-    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    live_prefix = config['live-prefix']
-    keywords_with_link = tms.get_article_keywords(
-        article,
-        published=False)
-    return {tag.uniqueId: live_prefix + tag.link
-            for tag in keywords_with_link}
-=======
->>>>>>> Stashed changes
