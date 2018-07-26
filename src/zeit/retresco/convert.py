@@ -47,7 +47,7 @@ class TMSRepresentation(grok.Adapter):
                 # The unnamed adapter is the one which runs all the named
                 # adapters, i.e. this one.
                 continue
-            merge(converter(), result)
+            merge_and_skip_empty(converter(), result)
         if not self._validate(result):
             return None
         return result
@@ -532,11 +532,11 @@ def get_xml_properties(context):
     return result
 
 
-def merge(source, destination):
+def merge_and_skip_empty(source, destination):
     for key, value in source.items():
         if isinstance(value, dict):
             node = destination.setdefault(key, {})
-            merge(value, node)
+            merge_and_skip_empty(value, node)
         elif value is not None and value != '':     # skip empty values
             destination[key] = value
     return destination
