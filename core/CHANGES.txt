@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.8.4 (unreleased)
+2.8.4 (2018-07-26)
 ------------------
 
 - FIX: Be defensive about XML body structure expectations
