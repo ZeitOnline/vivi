@@ -1,7 +1,7 @@
+from collections import defaultdict, namedtuple
 import grokcore.component
 import json
 import urlparse
-import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -109,8 +109,15 @@ class UpdateTags(zeit.cms.browser.view.JSON):
             for tag in tagger.values()])
 
 
+class TagsWithTopicpages(zeit.cms.browser.view.JSON):
+
+    def json(self):
+        tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
+        return dict(tagger.links)
+
+
 class DisplayWidget(grokcore.component.MultiAdapter,
-                    zope.formlib.itemswidgets.ListDisplayWidget):
+                    zope.formlib.itemswidgets.ItemsWidgetBase):
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
@@ -119,31 +126,29 @@ class DisplayWidget(grokcore.component.MultiAdapter,
     grokcore.component.provides(
         zope.formlib.interfaces.IDisplayWidget)
 
+    template = zope.app.pagetemplate.ViewPageTemplateFile('display-tag.pt')
+    tag_highling_css_class = 'with-topic-page'
+
     def __init__(self, field, source, request):
         super(DisplayWidget, self).__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)
+        tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
+        self.tags_with_topicpages = tagger.links
 
     def __call__(self):
-        return zope.formlib.widget.renderElement(
-            'div',
-            cssClass='keyword-widget',
-            contents=super(DisplayWidget, self).__call__(),
-            id=self.name)
+        return self.template()
 
-    def renderItems(self, value):
-        """Render items of sequence."""
-        # XXX blame formlib for having to copy this method
+    def _text(self, item):
+        return self.textForValue(self.vocabulary.getTerm(item))
+
+    def items(self):
         items = []
-        cssClass = self.cssClass or ''
-        if cssClass:
-            cssClass += "-item"
-        tag = self.itemTag
-        for index, item in enumerate(value):
-            term = self.vocabulary.getTerm(item)
-            items.append(zope.formlib.widget.renderElement(
-                tag,
-                cssClass=cssClass,
-                contents=xml.sax.saxutils.escape(self.textForValue(term))))
+        Tag = namedtuple('Tag', ['text', 'link', 'css_class'])
+        for item in self._getFormValue():
+            text = self._text(item)
+            link = self.tags_with_topicpages.get(item.uniqueId)
+            css_class = self.tag_highling_css_class if link else ''
+            items.append(Tag(text, link, css_class))
         return items

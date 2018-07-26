@@ -19,6 +19,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             id + '.wrapper', 'onclick', self, self.handle_click);
         self._initialize_autocomplete();
         self._initialize_sortable();
+        self._highlight_tags_with_topicpages();
     },
 
 
@@ -101,7 +102,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             {'cms:uniqueId': code},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
-            label);
+            A({}, label)
+        );
         if (position === 'end') {
             $(self.list).append(item);
         } else {
@@ -141,11 +143,28 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             self.list.innerHTML = '';
             self.populate_keywords(json.tags);
             self._initialize_sortable();
+            self._highlight_tags_with_topicpages();
             $(self.data).trigger('change');
             return result;
         });
         d.addBoth(function(result_or_error) {
             MochiKit.DOM.removeElementClass(self.list, 'busy');
+        });
+    },
+
+    _highlight_tags_with_topicpages: function() {
+        var self = this;
+        var d = MochiKit.Async.doXHR('@@tags_with_topicpages');
+        d.addCallback(function(result) {
+            var json_result = MochiKit.Async.evalJSONRequest(result);
+            $('li', self.list).each(function(index) {
+                var href = json_result[this.getAttribute('cms:uniqueId')];
+                if (href){
+                    var el = $('a', this);
+                    el.addClass('with-topic-page');
+                    el.attr('href', href);
+                }
+            });
         });
     },
 

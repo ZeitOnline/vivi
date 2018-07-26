@@ -79,6 +79,10 @@ class DummyTagger(object):
     def pinned(self):
         pass
 
+    @property
+    def links(self):
+        pass
+
     def to_xml(self):
         return None
 
@@ -132,6 +136,13 @@ class FakeTags(collections.OrderedDict):
     def pinned(self):
         return [x.code for x in self.values() if x.pinned]
 
+    @property
+    def links(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config['live-prefix']
+        return {x.uniqueId: live_prefix + x.link
+                for x in self.values() if x.link}
+
     def to_xml(self):
         node = lxml.objectify.E.tags(*[
             lxml.objectify.E.tag(x.label) for x in self.values()])
@@ -148,6 +159,7 @@ class FakeTag(object):
         self.code = code
         self.pinned = False
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
+        self.link = None
 
     @property
     def uniqueId(self):
@@ -186,9 +198,11 @@ class TaggingHelper(object):
             def restore_original_tags_on_whitelist():
                 whitelist.tags = original_tags
             self.addCleanup(restore_original_tags_on_whitelist)
-
         return tags
 
     def add_keyword_by_autocomplete(self, text, form_prefix='form'):
         self.add_by_autocomplete(
             text, 'id=%s.keywords.add' % form_prefix)
+
+    def add_topicpage_link(self, tag):
+        tag.link = 'thema/%s' % tag.label.lower()

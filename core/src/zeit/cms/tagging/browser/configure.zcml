@@ -10,6 +10,14 @@
     permission="zeit.EditContent"
     />
 
+    <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="tags_with_topicpages"
+    class=".widget.TagsWithTopicpages"
+    permission="zope.View"
+    />
+
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

@@ -745,12 +745,15 @@ a.button.configure_search:hover {
     background-position: 1px -2665px;
 }
 
+.keyword-widget a.with-topic-page{
+    font-weight: bold;
+}
+
 .keyword-widget li.ui-menu-item {
   border-color: #e4e4e4;
   border-style: solid;
   border-width: 1px 0px 0px 0px;
 }
-
 
 .rst-preview {
     white-space: pre-wrap;
