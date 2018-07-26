@@ -47,7 +47,7 @@ class TMSRepresentation(grok.Adapter):
                 # The unnamed adapter is the one which runs all the named
                 # adapters, i.e. this one.
                 continue
-            merge(converter(), result)
+            merge_and_skip_empty(converter(), result)
         if not self._validate(result):
             return None
         return result
@@ -178,10 +178,11 @@ class CommonMetadata(Converter):
                 section += u'/' + self.context.sub_ressort
         result = {
             'title': self.context.title,
-            'supertitle': self.context.supertitle,
             'teaser': self.context.teaserText or self.context.title,
+            # The following (top-level keys) are not strictly required,
+            # but are used by TMS UI (for display and filtering).
+            'supertitle': self.context.supertitle,
             'section': section,
-            # Only for display in TMS UI.
             'author': u', '.join(
                 [x.target.display_name for x in self.context.authorships] or
                 [x for x in self.context.authors if x])
@@ -208,14 +209,6 @@ class CommonMetadata(Converter):
             'title': self.context.teaserTitle,
             'text': self.context.teaserText,
         }
-        for ns in ['body', 'teaser']:
-            data = result['payload'][ns]
-            remove_none = []
-            for key, value in data.items():
-                if value is None:
-                    remove_none.append(key)
-            for key in remove_none:
-                del data[key]
         return result
 
 
@@ -248,18 +241,15 @@ class ImageReference(Converter):
         image = self.context.image
         if image is None:
             return {}
-        result = {
+        return {
             'teaser_img_url': image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'teaser_img_subline': IImageMetadata(image).caption,
             'payload': {'head': {
                 'teaser_image': image.uniqueId,
+                'teaser_image_fill_color': self.context.fill_color,
             }}
         }
-        if self.context.fill_color:
-            result['payload']['head'][
-                'teaser_image_fill_color'] = self.context.fill_color
-        return result
 
 
 class SEO(Converter):
@@ -311,18 +301,15 @@ class Author(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        result = {
+        return {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
-            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+            'payload': {'xml': get_xml_properties(self.context), 'body': {
+                'supertitle': self.context.summary,
                 'title': self.context.display_name,
+                'text': self.context.biography,
             }}
         }
-        if self.context.summary:
-            result['payload']['teaser']['supertitle'] = self.context.summary
-        if self.context.biography:
-            result['payload']['teaser']['text'] = self.context.biography
-        return result
 
 
 class Advertisement(Converter):
@@ -331,18 +318,15 @@ class Advertisement(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        result = {
+        return {
             'title': self.context.title,
             'teaser': self.context.text or self.context.title,
-            'payload': {'xml': get_xml_properties(self.context), 'teaser': {
+            'payload': {'xml': get_xml_properties(self.context), 'body': {
+                'supertitle': self.context.supertitle,
                 'title': self.context.title,
+                'text': self.context.text,
             }}
         }
-        if self.context.supertitle:
-            result['payload']['teaser']['supertitle'] = self.context.supertitle
-        if self.context.text:
-            result['payload']['teaser']['text'] = self.context.text
-        return result
 
 
 class Link(Converter):
@@ -380,7 +364,7 @@ class Image(Converter):
             # Required fields, so make sure to always index (for zeit.find).
             'title': title,
             'teaser': self.context.caption or title,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': title,
                 'text': self.context.caption or title,
             }}
@@ -396,13 +380,13 @@ class Infobox(Converter):
         result = {
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
-            'supertitle': None,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'supertitle': self.context.supertitle,
             }}
         }
         if self.context.contents and self.context.contents[0]:
-            result['payload']['teaser']['title'] = self.context.contents[0][0]
+            title, text = self.context.contents[0]
+            result['payload']['body'].update(title=title, text=text)
         return result
 
 
@@ -414,9 +398,10 @@ class Portraitbox(Converter):
     def __call__(self):
         return {
             'title': self.context.name,
-            'teaser': self.context.name,
-            'payload': {'teaser': {
+            'teaser': self.context.text,
+            'payload': {'body': {
                 'title': self.context.name,
+                'text': self.context.text,
             }}
         }
 
@@ -430,7 +415,7 @@ class Text(Converter):
         return {
             'title': self.context.__name__,
             'teaser': self.context.__name__,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': self.context.__name__,
             }}
         }
@@ -445,7 +430,7 @@ class RawXML(Converter):
         return {
             'title': self.context.title,
             'teaser': self.context.title,
-            'payload': {'teaser': {
+            'payload': {'body': {
                 'title': self.context.__name__,
             }}
         }
@@ -547,11 +532,11 @@ def get_xml_properties(context):
     return result
 
 
-def merge(source, destination):
+def merge_and_skip_empty(source, destination):
     for key, value in source.items():
         if isinstance(value, dict):
             node = destination.setdefault(key, {})
-            merge(value, node)
-        else:
+            merge_and_skip_empty(value, node)
+        elif value is not None and value != '':     # skip empty values
             destination[key] = value
     return destination
