@@ -330,7 +330,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
         self.assertEqual('mytitle', data['title'])
         self.assertEqual({
             'supertitle': 'mytitle',
-            'subtitle': '',     # `CommonMetadata` shines trough...
             'title': 'foo!',
             'text': '<p>bar!</p>\n',
         }, data['payload']['body'])

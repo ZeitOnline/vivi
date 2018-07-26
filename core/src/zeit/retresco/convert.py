@@ -213,7 +213,7 @@ class CommonMetadata(Converter):
             data = result['payload'][ns]
             remove_none = []
             for key, value in data.items():
-                if value is None:
+                if value is None or value == '':
                     remove_none.append(key)
             for key in remove_none:
                 del data[key]
