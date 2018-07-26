@@ -4,7 +4,7 @@ zeit.cms changes
 3.14.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Fix mock setup for tagger
 
 
 3.14.0 (2018-07-26)

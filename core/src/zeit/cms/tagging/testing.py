@@ -75,16 +75,11 @@ class DummyTagger(object):
     def set_pinned(self, keys):
         pass
 
-    @property
-    def pinned(self):
-        pass
-
-    @property
-    def links(self):
-        pass
-
     def to_xml(self):
         return None
+
+    links = {}
+    pinned = {}
 
 
 class DummyWhitelist(object):
