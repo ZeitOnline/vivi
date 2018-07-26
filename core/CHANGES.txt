@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.14.0 (unreleased)
+3.14.0 (2018-07-26)
 -------------------
 
 - ZON-4742: Add highlighting to tags with topicpages
