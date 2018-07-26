@@ -230,8 +230,10 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         live_prefix = config['live-prefix']
-        keywords_with_link = tms.get_article_keywords(
-            self.context,
-            published=False)
-        return {tag.uniqueId: live_prefix + tag.link
-                for tag in keywords_with_link}
+        result = {}
+        for tag in tms.get_article_keywords(self.context, published=False):
+            if tag.link:
+                result[tag.uniqueId] = live_prefix + tag.link
+            else:
+                result[tag.uniqueId] = None
+        return result

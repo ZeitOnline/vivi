@@ -513,12 +513,14 @@ class TaggerUpdateTest(
         tagger = Tagger(content)
         article_keywords = 'zeit.retresco.connection.TMS.get_article_keywords'
         with mock.patch(article_keywords) as article_keywords:
-            tag = Tag('Foo', '')
-            tag.link = 'thema/foo'
-            article_keywords.return_value = [tag, ]
-            self.assertEqual(
-                {tag.uniqueId: 'http://localhost/live-prefix/thema/foo'},
-                tagger.links)
+            tag1 = Tag('Foo', '')
+            tag1.link = 'thema/foo'
+            tag2 = Tag('Bar', '')
+            article_keywords.return_value = [tag1, tag2]
+            self.assertEqual({
+                tag1.uniqueId: 'http://localhost/live-prefix/thema/foo',
+                tag2.uniqueId: None,
+            }, tagger.links)
 
     @unittest.skipUnless(HAVE_INTRAFIND, 'zeit.intrafind not available')
     def test_update_should_keep_intrafind_pinned_tags(self):
