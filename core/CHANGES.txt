@@ -4,7 +4,8 @@ zeit.content.gallery changes
 2.8.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Be defensive about XML body structure expectations
+  (mostly since ITMSContent doesn't have a whole body)
 
 
 2.8.3 (2018-04-11)

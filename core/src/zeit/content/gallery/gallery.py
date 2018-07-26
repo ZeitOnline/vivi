@@ -201,7 +201,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def _entries_container(self):
-        return self.xml['body']['column'][1]['container']
+        try:
+            return self.xml['body']['column'][1]['container']
+        except Exception:
+            # Probably means we're ITMSContent and don't have a whole body.
+            return lxml.objectify.XML('<container/>')
 
     def _get_block_for_key(self, key):
         matching_blocks = self._entries_container.xpath(
