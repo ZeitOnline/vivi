@@ -209,14 +209,6 @@ class CommonMetadata(Converter):
             'title': self.context.teaserTitle,
             'text': self.context.teaserText,
         }
-        for ns in ['body', 'teaser']:
-            data = result['payload'][ns]
-            remove_none = []
-            for key, value in data.items():
-                if value is None or value == '':
-                    remove_none.append(key)
-            for key in remove_none:
-                del data[key]
         return result
 
 
@@ -249,18 +241,15 @@ class ImageReference(Converter):
         image = self.context.image
         if image is None:
             return {}
-        result = {
+        return {
             'teaser_img_url': image.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'teaser_img_subline': IImageMetadata(image).caption,
             'payload': {'head': {
                 'teaser_image': image.uniqueId,
+                'teaser_image_fill_color': self.context.fill_color,
             }}
         }
-        if self.context.fill_color:
-            result['payload']['head'][
-                'teaser_image_fill_color'] = self.context.fill_color
-        return result
 
 
 class SEO(Converter):
@@ -312,18 +301,15 @@ class Author(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        result = {
+        return {
             'title': self.context.display_name,
             'teaser': self.context.summary or self.context.display_name,
             'payload': {'xml': get_xml_properties(self.context), 'body': {
+                'supertitle': self.context.summary,
                 'title': self.context.display_name,
+                'text': self.context.biography,
             }}
         }
-        if self.context.summary:
-            result['payload']['body']['supertitle'] = self.context.summary
-        if self.context.biography:
-            result['payload']['body']['text'] = self.context.biography
-        return result
 
 
 class Advertisement(Converter):
@@ -332,18 +318,15 @@ class Advertisement(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        result = {
+        return {
             'title': self.context.title,
             'teaser': self.context.text or self.context.title,
             'payload': {'xml': get_xml_properties(self.context), 'body': {
+                'supertitle': self.context.supertitle,
                 'title': self.context.title,
+                'text': self.context.text,
             }}
         }
-        if self.context.supertitle:
-            result['payload']['body']['supertitle'] = self.context.supertitle
-        if self.context.text:
-            result['payload']['body']['text'] = self.context.text
-        return result
 
 
 class Link(Converter):
@@ -554,6 +537,6 @@ def merge(source, destination):
         if isinstance(value, dict):
             node = destination.setdefault(key, {})
             merge(value, node)
-        else:
+        elif value is not None and value != '':     # skip empty values
             destination[key] = value
     return destination
