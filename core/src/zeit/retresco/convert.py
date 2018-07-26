@@ -397,7 +397,6 @@ class Infobox(Converter):
         result = {
             'title': self.context.supertitle,
             'teaser': self.context.supertitle,
-            'supertitle': None,
             'payload': {'body': {
                 'supertitle': self.context.supertitle,
             }}
