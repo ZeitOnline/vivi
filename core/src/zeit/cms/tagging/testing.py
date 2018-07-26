@@ -138,7 +138,9 @@ class FakeTags(collections.OrderedDict):
 
     @property
     def links(self):
-        return {x.uniqueId: 'https://www.zeit.de/%s' % x.link
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config['live-prefix']
+        return {x.uniqueId: live_prefix + x.link
                 for x in self.values() if x.link}
 
     def to_xml(self):
