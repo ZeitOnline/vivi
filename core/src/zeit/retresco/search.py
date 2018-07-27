@@ -4,23 +4,23 @@ import elasticsearch.connection
 import elasticsearch.transport
 import json
 import pkg_resources
-import urllib3
+import requests.utils
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
 import zope.dottedname.resolve
 import zope.interface
 
 
-class Connection(elasticsearch.connection.Urllib3HttpConnection):
+class Connection(elasticsearch.connection.RequestsHttpConnection):
 
     def __init__(self, *args, **kw):
         super(Connection, self).__init__(*args, **kw)
-        self.headers['User-Agent'] = self._user_agent()
+        self.session.headers['User-Agent'] = self._user_agent()
 
     def _user_agent(self):
-        return 'zeit.retresco-%s/python-urllib3-%s' % (
-            pkg_resources.get_distribution('zeit.retresco').version,
-            urllib3.__version__)
+        return requests.utils.default_user_agent(
+            'zeit.retresco-%s/python-requests' % (
+                pkg_resources.get_distribution('zeit.retresco').version))
 
 
 def TransportWithConnection(connection_class):
