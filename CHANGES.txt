@@ -4,7 +4,7 @@ zeit.retresco changes
 1.29.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Make elasticsearch connection class configurable via product config
 
 
 1.29.1 (2018-07-26)
