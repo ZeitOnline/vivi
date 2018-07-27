@@ -1,7 +1,7 @@
 zeit.retresco changes
 =====================
 
-1.30.2 (unreleased)
+1.30.2 (2018-07-27)
 -------------------
 
 - PERF: Don't use IAbsoluteURL so as not to resolve any __parent__ DAV objects
