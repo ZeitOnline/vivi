@@ -48,6 +48,7 @@ product_config = """
     base-url http://localhost:[PORT]
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index zeit_pool
+    elasticsearch-connection-class zeit.retresco.search.Connection
     topic-redirect-prefix http://www.zeit.de
     index-principal zope.user
 </product-config>

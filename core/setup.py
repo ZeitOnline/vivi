@@ -45,6 +45,7 @@ setup(
         'zeit.push',
         'zeit.seo',
         'zope.component',
+        'zope.dottedname',
         'zope.interface',
         'zope.publisher',
         'zope.testbrowser',

@@ -7,14 +7,8 @@ import pkg_resources
 import urllib3
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
+import zope.dottedname.resolve
 import zope.interface
-
-
-class Transport(elasticsearch.transport.Transport):
-
-    def __init__(self, *args, **kw):
-        kw['connection_class'] = Connection
-        super(Transport, self).__init__(*args, **kw)
 
 
 class Connection(elasticsearch.connection.Urllib3HttpConnection):
@@ -29,14 +23,21 @@ class Connection(elasticsearch.connection.Urllib3HttpConnection):
             urllib3.__version__)
 
 
+def TransportWithConnection(connection_class):
+    def factory(*args, **kw):
+        kw['connection_class'] = connection_class
+        return elasticsearch.transport.Transport(*args, **kw)
+    return factory
+
+
 class Elasticsearch(object):
     """Search via Elasticsearch."""
 
     zope.interface.implements(zeit.retresco.interfaces.IElasticsearch)
 
-    def __init__(self, url, index):
+    def __init__(self, url, index, connection_class=Connection):
         self.client = elasticsearch.Elasticsearch(
-            [url], transport_class=Transport)
+            [url], transport_class=TransportWithConnection(connection_class))
         self.index = index
 
     def search(
@@ -78,5 +79,7 @@ class Elasticsearch(object):
 def from_product_config():
     """Get the utility configured with data from the product config."""
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
-    return Elasticsearch(config['elasticsearch-url'],
-                         config['elasticsearch-index'])
+    return Elasticsearch(
+        config['elasticsearch-url'], config['elasticsearch-index'],
+        zope.dottedname.resolve.resolve(
+            config['elasticsearch-connection-class']))
