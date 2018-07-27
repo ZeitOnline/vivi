@@ -6,6 +6,7 @@ import grokcore.component as grok
 import logging
 import lxml.builder
 import lxml.etree
+import os.path
 import pytz
 import re
 import zeit.cms.browser.interfaces
@@ -485,13 +486,15 @@ class CMSSearch(Converter):
 
         preview = zope.component.queryMultiAdapter(
             (self.context, self.DUMMY_REQUEST), name='thumbnail')
-        try:
-            preview_url = zope.component.getMultiAdapter(
-                (preview, self.DUMMY_REQUEST),
-                zope.traversing.browser.interfaces.IAbsoluteURL)
-            preview_url = preview_url()
-            preview_url = preview_url.replace(self.SERVER_URL, '')
-        except TypeError:
+        if preview is not None:
+            # XXX Using IAbsoluteURL would have to resolve the __parent__
+            # chain, which is way too slow in bulk reindex situations (where
+            # we have no DAV cache to avoid conflict errors). So we cheat and
+            # duplicate URL structure knowledge instead.
+            preview_url = os.path.join(self.context.uniqueId, preview.__name__)
+            preview_url = preview_url.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, '/repository/')
+        else:
             preview_url = None
 
         return {'payload': {'vivi': {
