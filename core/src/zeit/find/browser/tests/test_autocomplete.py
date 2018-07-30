@@ -28,8 +28,10 @@ class TestSimpleFind(unittest.TestCase,
     def test_given_term_should_query(self):
         self.search.return_value = []
         self.browser.open('@@simple_find?term=Search-Term')
+        # ES applies the same analyzer (e.g. lowercase) to the search term
+        # as to the field value during indexing, so we don't need to lowercase.
         self.search.assert_called_with(dict(query=dict(match_phrase_prefix={
-            'payload.vivi.autocomplete': 'search-term'})))
+            'payload.vivi.autocomplete': 'Search-Term'})))
 
     def test_given_types_should_be_passed_to_search(self):
         self.search.return_value = []

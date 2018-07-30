@@ -111,7 +111,7 @@ def query(fulltext=None, **conditions):
         # be somewhat generically applicable (even though we currently only use
         # it for IAuthor objects).
         must.append(dict(match_phrase_prefix={
-            'payload.vivi.autocomplete': autocomplete.lower()}))
+            'payload.vivi.autocomplete': autocomplete}))
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
