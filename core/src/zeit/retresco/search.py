@@ -74,6 +74,18 @@ class Elasticsearch(object):
         result.hits = response['hits']['total']
         return result
 
+    def date_range(self, start, end):
+        return date_range(start, end)
+
+
+def date_range(start, end):
+    result = {}
+    if start is not None:
+        result['gte'] = start.isoformat()
+    if end is not None:
+        result['lte'] = end.isoformat()
+    return result
+
 
 @zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
 def from_product_config():
