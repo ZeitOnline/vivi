@@ -4,19 +4,19 @@ from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
-import zeit.content.cp.centerpage
 import lxml.etree
 import lxml.objectify
 import mock
-import pysolr
 import pytz
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
 import zeit.content.volume.volume
+import zeit.find.interfaces
 
 
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
@@ -193,17 +193,16 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
             self.repository['imagegroup']).published)
 
 
-class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
+class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolumeSolrQuerries, self).setUp()
+        super(TestVolumeQueries, self).setUp()
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
-        self.solr = mock.Mock()
-        self.zca.patch_utility(self.solr, zeit.solr.interfaces.ISolr)
         self.elastic = mock.Mock()
         self.zca.patch_utility(
             self.elastic, zeit.retresco.interfaces.IElasticsearch)
+        self.zca.patch_utility(self.elastic, zeit.find.interfaces.ICMSSearch)
 
     def create_volume(self, year, name):
         volume = Volume()
@@ -219,7 +218,8 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         self.repository[year][name]['ausgabe'] = volume
 
     def test_resolves_result(self):
-        self.elastic.search.return_value = [{'url': '/2015/02/ausgabe'}]
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/2015/02/ausgabe'}])
         vol1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         vol2 = zeit.cms.interfaces.ICMSContent(
@@ -227,7 +227,7 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(vol2, vol1.next)
 
     def test_no_result_returns_None(self):
-        self.elastic.search.return_value = []
+        self.elastic.search.return_value = zeit.cms.interfaces.Result()
         vol1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         self.assertEqual(None, vol1.next)
@@ -244,23 +244,22 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(None, volume.next)
         self.assertEqual(None, volume.previous)
 
-    def test_all_content_via_solr_returns_empty_list_if_no_content(self):
+    def test_all_content_via_search_returns_empty_list_if_no_content(self):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
-        self.solr.search.return_value = pysolr.Results(
-            [], 0)
-        self.assertEqual([], volume.all_content_via_solr(
-            additional_query_contstraints=['foo:bar']))
+        self.elastic.search.return_value = zeit.cms.interfaces.Result()
+        self.assertEqual([], volume.all_content_via_search(
+            additional_query_contstraints=[{'term': {'foo': 'bar'}}]))
 
-    def test_all_content_via_solr_returns_ICMS_content(self):
+    def test_all_content_via_search_returns_ICMS_content(self):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         content = ExampleContentType()
         self.repository['2015']['01']['article'] = content
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': 'http://xml.zeit.de/2015/01/article'}], 1)
-        self.assertListEqual([content], volume.all_content_via_solr(
-            additional_query_contstraints=['foo:bar']))
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/2015/01/article'}])
+        self.assertListEqual([content], volume.all_content_via_search(
+            additional_query_contstraints=[{'term': {'foo': 'bar'}}]))
 
     def test_all_volume_contents_should_change_access_value(self):
         volume = zeit.cms.interfaces.ICMSContent(
@@ -273,14 +272,14 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         repo['article02'] = content02
         repo['article03'] = content03
 
-        # XXX We rely quite a bit on solr queries here, but cannot test them.
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': 'http://xml.zeit.de/2015/01/article01'},
-             {'uniqueId': 'http://xml.zeit.de/2015/01/article02'},
-             {'uniqueId': 'http://xml.zeit.de/2015/01/article03'}],
-            2)
+        # XXX We rely quite a bit on query structure here, but cannot test it.
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([
+            {'url': '/2015/01/article01'},
+            {'url': '/2015/01/article02'},
+            {'url': '/2015/01/article03'},
+        ])
 
-        cnt = volume.all_content_via_solr()
+        cnt = volume.all_content_via_search()
         for c in cnt:
             self.assertEqual('free', c.access)
 

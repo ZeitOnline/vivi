@@ -26,6 +26,7 @@ setup(
         'zeit.content.cp',
         'zeit.content.image',
         'zeit.content.text>=2.1.0.dev0',
+        'zeit.find >= 3.0.0.dev0',
         'zeit.retresco >= 1.31.0.dev0',
         'zope.browserpage',
         'zope.component',

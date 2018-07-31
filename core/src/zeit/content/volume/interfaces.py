@@ -79,10 +79,10 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         Set an image as a cover of product.
         """
 
-    def all_content_via_solr(additional_query_contstraints):
+    def all_content_via_search(additional_query_contstraints):
         """
-        Get all Content for this volume with a Solr-Lookup.
-        :param additional_query_contstraints: [str] Additional Solr-Querries
+        Get all Content for this volume with a Elasticsearch-Lookup.
+        :param additional_query_contstraints: [str] Additional query clauses
         :return: [ICMSContent]
         """
 

@@ -170,40 +170,42 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_solr(self, additional_query_contstraints=None):
+    def all_content_via_search(self, additional_query_contstraints=None):
         """
-        Get all content for this volume via Solr.
-        If u pass a list of additional query strings, they will be added as
-        an AND-operand to the query field.
+        Get all content for this volume via ES.
+        If u pass a list of additional query clauses, they will be added as
+        an AND-operand to the query.
         """
         if not additional_query_contstraints:
             additional_query_contstraints = []
-        Q = zeit.solr.query
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        query = Q.and_(
-            Q.not_(Q.field('uniqueId', self.uniqueId)),
-            Q.or_(*[Q.field('product_id', p.id) for p in
-                    self._all_products]),
-            Q.field_raw('year', self.year),
-            Q.field_raw('volume', self.volume),
-            *additional_query_contstraints
-        )
-        result = solr.search(query, fl='uniqueId', rows=1000)
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        query = [
+            {'term': {'payload.document.year': self.year}},
+            {'term': {'payload.document.volume': self.volume}},
+            {'bool': {'should': [
+                {'term': {'payload.workflow.product-id': x.id}}
+                for x in self._all_products]}},
+        ]
+        result = elastic.search({'query': {'bool': {
+            'filter': query + additional_query_contstraints,
+            'must_not': [
+                {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
+            ]}}}, rows=1000)
         # We assume a maximum content amount per usual production print volume
         assert result.hits < 250
         content = []
         for item in result:
-            item = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+            item = zeit.cms.interfaces.ICMSContent(
+                UNIQUEID_PREFIX + item['url'], None)
             if item is not None:
                 content.append(item)
         return content
 
     def change_contents_access(self, access_from, access_to, published=True):
-        Q = zeit.solr.query
-        constraints = [Q.field('access', access_from)]
+        constraints = [{'term': {'payload.document.access': access_from}}]
         if published:
-            constraints.append(Q.field_raw('published', 'published*'))
-        cnts = self.all_content_via_solr(constraints)
+            constraints.append({'term': {'payload.workflow.published': True}})
+        cnts = self.all_content_via_search(constraints)
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:
@@ -213,22 +215,19 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                             zeit.cms.content.interfaces.ICommonMetadata,
                             'access')
                     )
-            except:
+            except Exception:
                 log.error("Couldn't change access for {}. Skipping "
                           "it.".format(cnt.uniqueId))
         return cnts
 
     def content_with_references_for_publishing(self):
-        Q = zeit.solr.query
         additional_constraints = [
-            Q.field('published', 'not-published'),
-            Q.and_(
-                Q.bool_field('urgent', True),
-                Q.field_raw(
-                    'type',
-                    zeit.content.article.article.ArticleType.type)),
+            {'term': {
+                'doc_type': zeit.content.article.article.ArticleType.type}},
+            {'term': {'payload.workflow.published': False}},
+            {'term': {'payload.workflow.urgent': True}},
         ]
-        articles_to_publish = self.all_content_via_solr(
+        articles_to_publish = self.all_content_via_search(
             additional_query_contstraints=additional_constraints)
         # Flatten the list of lists and remove duplicates
         articles_with_references = list(set(itertools.chain.from_iterable(

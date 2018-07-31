@@ -3,9 +3,10 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import mock
-import pysolr
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.volume.testing
+import zeit.find.interfaces
 
 
 class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
@@ -14,8 +15,8 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
-        self.solr = mock.Mock()
-        self.zca.patch_utility(self.solr, zeit.solr.interfaces.ISolr)
+        self.elastic = mock.Mock()
+        self.zca.patch_utility(self.elastic, zeit.find.interfaces.ICMSSearch)
         super(VolumeAdminBrowserTest, self).setUp()
         volume = Volume()
         volume.year = 2015
@@ -78,8 +79,8 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
                '2015/01/ausgabe/@@publish-all')
 
     def test_publish_button_publishes_volume_content(self):
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': 'http://xml.zeit.de/testcontent'}], 1)
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
         with mock.patch('zeit.workflow.publish.PublishTask'
                         '.call_publish_script') as script:
             self.publish_content()
@@ -90,9 +91,9 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
             IPublishInfo(self.repository['2015']['01']['ausgabe']).published)
 
     def test_referenced_boxes_of_articles_are_published_as_well(self):
-        article = self.create_article_with_references()
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': article.uniqueId}], 1)
+        self.create_article_with_references()
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/article_with_ref'}])
         self.publish_content()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['portraitbox']).published)
@@ -100,9 +101,9 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.repository['infobox']).published)
 
     def test_referenced_image_is_not_published(self):
-        article = self.create_article_with_references()
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': article.uniqueId}], 1)
+        self.create_article_with_references()
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/article_with_ref'}])
         self.publish_content()
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['image']).published)
@@ -117,9 +118,9 @@ class PublishAllContent(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(PublishAllContent, self).setUp()
-        solr = mock.Mock()
-        solr.search.return_value = pysolr.Results([], 0)
-        self.zca.patch_utility(solr, zeit.solr.interfaces.ISolr)
+        elastic = mock.Mock()
+        elastic.search.return_value = zeit.cms.interfaces.Result()
+        self.zca.patch_utility(elastic, zeit.find.interfaces.ICMSSearch)
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
