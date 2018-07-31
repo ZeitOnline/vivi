@@ -1,10 +1,10 @@
 zeit.retresco changes
 =====================
 
-1.30.3 (unreleased)
+1.31.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4806: Add `date_range` query helper
 
 
 1.30.2 (2018-07-27)
