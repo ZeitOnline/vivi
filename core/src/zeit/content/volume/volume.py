@@ -11,7 +11,7 @@ import zeit.content.volume.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
 import zeit.edit.interfaces
-import zeit.solr.query
+import zeit.retresco.interfaces
 import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
@@ -20,6 +20,7 @@ import logging
 
 
 log = logging.getLogger()
+UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -108,23 +109,22 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def _find_in_order(self, start, end, sort):
         if len(filter(None, [start, end])) != 1:
             return None
-        # Inspired by zeit.web.core.view.Content.lineage.
-        Q = zeit.solr.query
-        query = Q.and_(
-            Q.field_raw('type', VolumeType.type),
-            Q.field('product_id', self.product.id),
-            Q.datetime_range('date_digital_published', start, end),
-            Q.not_(Q.field('uniqueId', self.uniqueId))
-        )
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        result = solr.search(query, sort='date_digital_published ' + sort,
-                             fl='uniqueId', rows=1)
+        elastic = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+        result = elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': VolumeType.type}},
+            {'term': {'payload.workflow.product-id': self.product.id}},
+            {'range': {'payload.document.date_digital_published':
+                       elastic.date_range(start, end)}},
+        ], 'must_not': [
+            {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
+        ]}}}, 'payload.document.date_digital_published:' + sort, rows=1)
         if not result:
             return None
         # Since `sort` is passed in accordingly, and we exclude ourselves,
         # the first result (if any) is always the one we want.
         return zeit.cms.interfaces.ICMSContent(
-            iter(result).next()['uniqueId'], None)
+            UNIQUEID_PREFIX + iter(result).next()['url'], None)
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:

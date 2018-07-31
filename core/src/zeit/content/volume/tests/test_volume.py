@@ -201,6 +201,9 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         self.create_volume(2015, 2)
         self.solr = mock.Mock()
         self.zca.patch_utility(self.solr, zeit.solr.interfaces.ISolr)
+        self.elastic = mock.Mock()
+        self.zca.patch_utility(
+            self.elastic, zeit.retresco.interfaces.IElasticsearch)
 
     def create_volume(self, year, name):
         volume = Volume()
@@ -215,17 +218,16 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         self.repository[year][name] = Folder()
         self.repository[year][name]['ausgabe'] = volume
 
-    def test_resolves_solr_result(self):
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': 'http://xml.zeit.de/2015/02/ausgabe'}], 1)
+    def test_resolves_result(self):
+        self.elastic.search.return_value = [{'url': '/2015/02/ausgabe'}]
         vol1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         vol2 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/02/ausgabe')
         self.assertEqual(vol2, vol1.next)
 
-    def test_no_solr_result_returns_None(self):
-        self.solr.search.return_value = pysolr.Results([], 0)
+    def test_no_result_returns_None(self):
+        self.elastic.search.return_value = []
         vol1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         self.assertEqual(None, vol1.next)
@@ -238,8 +240,7 @@ class TestVolumeSolrQuerries(zeit.content.volume.testing.FunctionalTestCase):
         volume.year = year
         volume.volume = name
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
-        self.solr.search.return_value = pysolr.Results(
-            [{'uniqueId': 'http://xml.zeit.de/2015/02/ausgabe'}], 1)
+        self.elastic.search.return_value = [{'url': '/2015/02/ausgabe'}]
         self.assertEqual(None, volume.next)
         self.assertEqual(None, volume.previous)
 

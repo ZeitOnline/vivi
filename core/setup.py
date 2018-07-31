@@ -26,7 +26,7 @@ setup(
         'zeit.content.cp',
         'zeit.content.image',
         'zeit.content.text>=2.1.0.dev0',
-        'zeit.solr',
+        'zeit.retresco >= 1.31.0.dev0',
         'zope.browserpage',
         'zope.component',
         'zope.formlib',
