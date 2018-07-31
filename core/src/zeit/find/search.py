@@ -77,7 +77,7 @@ def query(fulltext=None, **conditions):
     Returns elasticsearch query expression that can be passed to `search`.
     """
     must = []
-    filter = []
+    filters = []
     clauses = dict()
     # handle fulltext
     if fulltext:
@@ -86,7 +86,7 @@ def query(fulltext=None, **conditions):
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        filter.append(dict(range={
+        filters.append(dict(range={
             'payload.document.last-semantic-change':
             zeit.retresco.search.date_range(from_, until)}))
     # handle show_news
@@ -98,7 +98,7 @@ def query(fulltext=None, **conditions):
     # handle "keywords" (by querying all `rtr_*` fields)
     keyword = conditions.pop('keywords', None)
     if keyword is not None:
-        filter.append(dict(bool=dict(should=[
+        filters.append(dict(bool=dict(should=[
             dict(match={field: keyword}) for field in rtr_fields])))
     # handle autocomplete queries as prefix matches
     autocomplete = conditions.pop('autocomplete', None)
@@ -116,15 +116,15 @@ def query(fulltext=None, **conditions):
         elif field not in field_map:
             raise ValueError('unsupported search condition {}', field)
         elif isinstance(value, (list, tuple)):
-            filter.append(dict(bool=dict(should=[
+            filters.append(dict(bool=dict(should=[
                 dict(match={field_map[field]: v}) for v in value])))
         else:
-            filter.append(dict(match={field_map[field]: value}))
+            filters.append(dict(match={field_map[field]: value}))
     # construct either bool or simple query
     if must:
         clauses['must'] = must
-    if filter:
-        clauses['filter'] = filter
+    if filters:
+        clauses['filter'] = filters
     if len(clauses) == 1 and len(clauses.values()[0]) == 1:
         qry = clauses.values()[0][0]
     elif clauses:
