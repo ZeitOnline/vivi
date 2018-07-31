@@ -23,6 +23,7 @@ setup(
         'zc.iso8601',
         'zeit.cms >= 3.12.0.dev0',
         'zeit.content.image',
+        'zeit.retresco >= 1.31.0.dev0',
     ],
     entry_points={
         'fanstatic.libraries': [

@@ -86,13 +86,9 @@ def query(fulltext=None, **conditions):
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        lsc = dict()
-        if from_ is not None:
-            lsc['gte'] = from_.isoformat()
-        if until is not None:
-            lsc['lte'] = until.isoformat()
         filter.append(dict(range={
-            'payload.document.last-semantic-change': lsc}))
+            'payload.document.last-semantic-change':
+            zeit.retresco.search.date_range(from_, until)}))
     # handle show_news
     if not conditions.pop('show_news', True):
         clauses['must_not'] = [
