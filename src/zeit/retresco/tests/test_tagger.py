@@ -28,10 +28,11 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
                  zeit.retresco.testing.TagTestHelpers):
 
     def test_tagger_should_provide_interface(self):
+        self.repository['content'] = ExampleContentType()
         self.assertTrue(
             zope.interface.verify.verifyObject(
                 zeit.cms.tagging.interfaces.ITagger,
-                Tagger(ExampleContentType())))
+                Tagger(self.repository['content'])))
 
     def test_tagger_should_be_empty_if_not_tagged(self):
         tagger = Tagger(ExampleContentType())

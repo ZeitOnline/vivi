@@ -6,6 +6,7 @@ zeit.retresco changes
 
 - ZON-4806: Add `date_range` query helper
 
+- FIX: Use ITMSRepresentation for keyword preview api
 
 1.30.2 (2018-07-27)
 -------------------

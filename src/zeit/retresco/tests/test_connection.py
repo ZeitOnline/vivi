@@ -253,15 +253,10 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch('zeit.retresco.connection.TMS.get_article_data') \
-                as get_data:
-            get_data.return_value = {'some': 'doc'}
-            tms.get_article_keywords(self.repository['testcontent'],
-                                     published=False)
-            self.assertTrue(get_data.called)
-            self.assertEqual(
-                '/in-text-linked-documents-preview',
-                self.layer['request_handler'].requests[0].get('path'))
+        tms.get_article_keywords(self.repository['testcontent'],
+                                 published=False)
+        self.assertEqual('/in-text-linked-documents-preview',
+                         self.layer['request_handler'].requests[0].get('path'))
 
 
 @pytest.mark.slow
