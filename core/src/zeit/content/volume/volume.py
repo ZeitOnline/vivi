@@ -170,14 +170,14 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_search(self, additional_query_contstraints=None):
+    def all_content_via_search(self, additional_query_constraints=None):
         """
         Get all content for this volume via ES.
         If u pass a list of additional query clauses, they will be added as
         an AND-operand to the query.
         """
-        if not additional_query_contstraints:
-            additional_query_contstraints = []
+        if not additional_query_constraints:
+            additional_query_constraints = []
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         query = [
             {'term': {'payload.document.year': self.year}},
@@ -187,7 +187,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 for x in self._all_products]}},
         ]
         result = elastic.search({'query': {'bool': {
-            'filter': query + additional_query_contstraints,
+            'filter': query + additional_query_constraints,
             'must_not': [
                 {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
             ]}}}, rows=1000)
@@ -228,7 +228,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             {'term': {'payload.workflow.urgent': True}},
         ]
         articles_to_publish = self.all_content_via_search(
-            additional_query_contstraints=additional_constraints)
+            additional_query_constraints=additional_constraints)
         # Flatten the list of lists and remove duplicates
         articles_with_references = list(set(itertools.chain.from_iterable(
             [self._with_references(article) for article in

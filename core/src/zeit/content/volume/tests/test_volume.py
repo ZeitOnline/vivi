@@ -249,7 +249,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
             'http://xml.zeit.de/2015/01/ausgabe')
         self.elastic.search.return_value = zeit.cms.interfaces.Result()
         self.assertEqual([], volume.all_content_via_search(
-            additional_query_contstraints=[{'term': {'foo': 'bar'}}]))
+            additional_query_constraints=[{'term': {'foo': 'bar'}}]))
 
     def test_all_content_via_search_returns_ICMS_content(self):
         volume = zeit.cms.interfaces.ICMSContent(
@@ -259,7 +259,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/2015/01/article'}])
         self.assertListEqual([content], volume.all_content_via_search(
-            additional_query_contstraints=[{'term': {'foo': 'bar'}}]))
+            additional_query_constraints=[{'term': {'foo': 'bar'}}]))
 
     def test_all_volume_contents_should_change_access_value(self):
         volume = zeit.cms.interfaces.ICMSContent(
