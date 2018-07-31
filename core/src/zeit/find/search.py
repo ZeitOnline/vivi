@@ -77,6 +77,7 @@ def query(fulltext=None, **conditions):
     Returns elasticsearch query expression that can be passed to `search`.
     """
     must = []
+    filter = []
     clauses = dict()
     # handle fulltext
     if fulltext:
@@ -85,13 +86,13 @@ def query(fulltext=None, **conditions):
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        filters = dict()
+        lsc = dict()
         if from_ is not None:
-            filters['gte'] = from_.isoformat()
+            lsc['gte'] = from_.isoformat()
         if until is not None:
-            filters['lte'] = until.isoformat()
-        must.append(dict(range={
-            'payload.document.last-semantic-change': filters}))
+            lsc['lte'] = until.isoformat()
+        filter.append(dict(range={
+            'payload.document.last-semantic-change': lsc}))
     # handle show_news
     if not conditions.pop('show_news', True):
         clauses['must_not'] = [
@@ -101,7 +102,7 @@ def query(fulltext=None, **conditions):
     # handle "keywords" (by querying all `rtr_*` fields)
     keyword = conditions.pop('keywords', None)
     if keyword is not None:
-        must.append(dict(bool=dict(should=[
+        filter.append(dict(bool=dict(should=[
             dict(match={field: keyword}) for field in rtr_fields])))
     # handle autocomplete queries as prefix matches
     autocomplete = conditions.pop('autocomplete', None)
@@ -119,15 +120,17 @@ def query(fulltext=None, **conditions):
         elif field not in field_map:
             raise ValueError('unsupported search condition {}', field)
         elif isinstance(value, (list, tuple)):
-            must.append(dict(bool=dict(should=[
+            filter.append(dict(bool=dict(should=[
                 dict(match={field_map[field]: v}) for v in value])))
         else:
-            must.append(dict(match={field_map[field]: value}))
+            filter.append(dict(match={field_map[field]: value}))
     # construct either bool or simple query
     if must:
         clauses['must'] = must
-    if len(clauses) == 1 and len(clauses.get('must', [])) == 1:
-        qry = clauses['must'][0]
+    if filter:
+        clauses['filter'] = filter
+    if len(clauses) == 1 and len(clauses.values()[0]) == 1:
+        qry = clauses.values()[0][0]
     elif clauses:
         qry = dict(bool=clauses)
     else:

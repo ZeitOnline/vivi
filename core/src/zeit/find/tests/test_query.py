@@ -48,10 +48,10 @@ def test_simple_queries():
 
 def test_combined_queries():
     assert query(fulltext='Foo', authors='Bar') == {
-        'query': {'bool': {'must': [
-            {'query_string': {'query': 'Foo'}},
-            {'match': {'payload.document.author': 'Bar'}},
-        ]}}}
+        'query': {'bool': {
+            'must': [{'query_string': {'query': 'Foo'}}],
+            'filter': [{'match': {'payload.document.author': 'Bar'}}],
+        }}}
     assert query(
         from_=datetime(2009, 12, 19, 19, 9),
         until=datetime(2017, 5, 27, 20, 0)) == {
@@ -68,7 +68,7 @@ def test_combined_queries():
                 {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
             ]}}}
     assert query(year=2017, types=['Foo', 'Bar']) == {
-        'query': {'bool': {'must': [
+        'query': {'bool': {'filter': [
             {'bool': {'should': [
                 {'match': {'doc_type': 'Foo'}},
                 {'match': {'doc_type': 'Bar'}},

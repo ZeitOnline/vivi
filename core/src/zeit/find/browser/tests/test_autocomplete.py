@@ -40,7 +40,8 @@ class TestSimpleFind(unittest.TestCase,
         self.search.assert_called_with(
             dict(query=dict(bool=dict(must=[
                 dict(match_phrase_prefix={
-                    'payload.vivi.autocomplete': 'search-term'}),
+                    'payload.vivi.autocomplete': 'search-term'})
+            ], filter=[
                 dict(bool=dict(should=[
                     dict(match=dict(doc_type='t1')),
                     dict(match=dict(doc_type='t2')),
