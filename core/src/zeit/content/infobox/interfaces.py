@@ -11,6 +11,7 @@ class IInfobox(zeit.cms.content.interfaces.IXMLContent,
 
     supertitle = zope.schema.TextLine(title=_('Supertitle'))
 
+    # BBB I don't think more than one entry is currently used
     contents = zope.schema.Tuple(
         title=_('Contents'),
         value_type=zc.form.field.Combination(
