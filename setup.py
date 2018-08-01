@@ -35,6 +35,7 @@ setup(
         'zeit.cms >= 3.11.0.dev0',
         'zeit.content.author',
         'zeit.content.article',
+        'zeit.content.gallery',
         'zeit.content.image',
         'zeit.content.infobox',
         'zeit.content.link',
