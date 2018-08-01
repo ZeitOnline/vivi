@@ -135,7 +135,10 @@ class DisplayWidget(grokcore.component.MultiAdapter,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
-        self.tags_with_topicpages = tagger.links
+        try:
+            self.tags_with_topicpages = tagger.links
+        except:
+            self.tags_with_topicpages = {}
 
     def __call__(self):
         return self.template()

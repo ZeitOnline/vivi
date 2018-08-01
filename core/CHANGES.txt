@@ -4,7 +4,7 @@ zeit.cms changes
 3.14.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Be defensive about tags to highlight
 
 
 3.14.2 (2018-08-01)
