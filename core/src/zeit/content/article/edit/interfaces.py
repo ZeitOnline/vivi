@@ -163,6 +163,7 @@ class IImage(IReference):
     references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image group here"),
+        # BBB allow single images
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
