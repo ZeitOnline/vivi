@@ -15,6 +15,11 @@
       name="author"
       />
     <utility
+      component=".content.TMSGallery"
+      provides=".interfaces.ITMSContent"
+      name="gallery"
+      />
+    <utility
       component=".content.TMSLink"
       provides=".interfaces.ITMSContent"
       name="link"

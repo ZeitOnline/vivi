@@ -9,6 +9,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.advertisement.advertisement
 import zeit.content.author.author
+import zeit.content.gallery.gallery
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zeit.content.infobox.infobox
@@ -423,3 +424,16 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'facebook': {'account': ['fb-test', 'fb-magazin']},
             'mobile': {'payload_template': ['mytemplate.json']},
         }, data['payload']['push'])
+
+    def test_converts_gallery_count(self):
+        gallery = zeit.content.gallery.gallery.Gallery()
+        gallery.title = 'title'
+        gallery.teaserText = 'teaser'
+        gallery.image_folder = self.repository['2006']
+        self.repository['gallery'] = gallery
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['gallery'])()
+        self.assertEqual(2, data['payload']['head']['visible_entry_count'])
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertEqual(2, zeit.content.gallery.interfaces.IVisibleEntryCount(
+            content))
