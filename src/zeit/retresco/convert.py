@@ -16,6 +16,7 @@ import zeit.cms.workflow.interfaces
 import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
+import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
@@ -343,6 +344,21 @@ class Link(Converter):
                 'url': self.context.url,
                 'target': self.context.target,
                 'nofollow': self.context.nofollow,
+            }}
+        }
+
+
+class Gallery(Converter):
+
+    interface = zeit.content.gallery.interfaces.IGallery
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'payload': {'head': {
+                'visible_entry_count': (
+                    zeit.content.gallery.interfaces.IVisibleEntryCount(
+                        self.context)),
             }}
         }
 

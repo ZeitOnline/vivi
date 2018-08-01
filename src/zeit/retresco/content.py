@@ -5,6 +5,8 @@ import os.path
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
+import zeit.content.gallery.gallery
+import zeit.content.gallery.interfaces
 import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
@@ -105,6 +107,16 @@ class TMSAuthor(Content, zeit.content.author.author.Author):
 
 class TMSLink(Content, zeit.content.link.link.Link):
     pass
+
+
+class TMSGallery(Content, zeit.content.gallery.gallery.Gallery):
+    pass
+
+
+@grok.adapter(TMSGallery)
+@grok.implementer(zeit.content.gallery.interfaces.IVisibleEntryCount)
+def gallery_entry_count(context):
+    return context._tms_payload_head.get('visible_entry_count', 0)
 
 
 @grok.adapter(dict)
