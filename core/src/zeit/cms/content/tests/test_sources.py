@@ -120,3 +120,12 @@ class PrintRessortTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_source_has_title(self):
         source = zeit.cms.content.sources.PRINT_RESSORT_SOURCE
         self.assertEqual("Chanson", source.factory.getTitle(None, 'Chancen'))
+
+
+class SerieSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_does_not_break_on_nonexistent_values(self):
+        source = zeit.cms.content.sources.SerieSource(None)
+        context = None
+        self.assertEqual(None, source.factory.getTitle(context, None))
+        self.assertEqual(None, source.factory.getToken(context, None))

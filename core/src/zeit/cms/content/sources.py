@@ -134,10 +134,10 @@ class ObjectSource(object):
         raise NotImplementedError()
 
     def getTitle(self, context, value):
-        return value.title
+        return getattr(value, 'title', value)
 
     def getToken(self, context, value):
-        return value.id
+        return getattr(value, 'id', value)
 
     def isAvailable(self, value, context):
         return value.is_allowed(context)
@@ -369,6 +369,8 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
         return result
 
     def getTitle(self, context, value):
+        if not isinstance(value, Serie):
+            return None
         return value.serienname
 
 
@@ -420,9 +422,6 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
             result[product.id] = product
         self._add_dependent_products(result)
         return result
-
-    def getTitle(self, context, value):
-        return value.title
 
     def _add_dependent_products(self, products):
         """
