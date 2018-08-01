@@ -11,7 +11,6 @@ zeit.retresco changes
 - FIX: Use ITMSRepresentation for keyword preview api
 
 
-
 1.30.2 (2018-07-27)
 -------------------
 
