@@ -123,6 +123,8 @@ class ICommonMetadata(zope.interface.Interface):
     authorships.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
+    # DEPRECATED, use authorships instead
+    # (still used by zeit.vgwort for querying)
     authors = zope.schema.Tuple(
         title=_("Authors (freetext)"),
         value_type=zope.schema.TextLine(),
@@ -241,21 +243,25 @@ class ICommonMetadata(zope.interface.Interface):
         default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.PRODUCT_SOURCE)
 
+    # DEPRECATED (xslt)
     foldable = zope.schema.Bool(
         title=_('Foldable'),
         required=False,
         default=True)
 
+    # DEPRECATED (xslt)
     minimal_header = zope.schema.Bool(
         title=_('Minimal header'),
         required=False,
         default=False)
 
+    # DEPRECATED (xslt)
     color_scheme = zope.schema.Choice(
         title=_('Color scheme'),
         values=(u'Redaktion', u'Verlag'),
         default=u'Redaktion')
 
+    # DEPRECATED (xslt)
     countings = zope.schema.Bool(
         title=_('Countings'),
         required=False,
@@ -266,7 +272,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
-    # probably obsolete, we have z.c.article.interfaces.IBreakingNews now
+    # DEPRECATED, use z.c.article.interfaces.IBreakingNews.is_breaking
     breaking_news = zope.schema.Bool(
         title=_('Breaking news'),
         required=False,
@@ -276,6 +282,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('CAP title'),
         required=False)
 
+    # DEPRECATED (there is no separate mobile site anymore)
     mobile_alternative = zope.schema.URI(
         title=_('Mobile URL'),
         required=False,
@@ -287,12 +294,14 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=None)
 
+    # DEPRECATED (xslt)
     breadcrumb_title = zope.schema.TextLine(
         title=_('Breadcrumb title'),
         required=False,
         max_length=55)
     breadcrumb_title.setTaggedValue('zeit.cms.charlimit', 55)
 
+    # DEPRECATED (xslt)
     rebrush_website_content = zope.schema.Bool(
         title=_('Rebrush website content'),
         required=False,
