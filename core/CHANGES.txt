@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.14.2 (unreleased)
+3.14.2 (2018-08-01)
 -------------------
 
 - FIX: Be defensive about nonexistent source values
