@@ -43,7 +43,6 @@
     name="view.html"
     />
 
-
   <browser:page
     for="zeit.content.link.interfaces.ILink"
     name="metadata_preview"

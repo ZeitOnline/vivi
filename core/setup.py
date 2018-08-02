@@ -31,4 +31,8 @@ setup(
         'zope.schema',
         'zope.testbrowser',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_content_link=zeit.content.link.browser.resources:lib',
+        ]}
 )
