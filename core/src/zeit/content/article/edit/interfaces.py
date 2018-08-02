@@ -304,6 +304,7 @@ class CitationLayoutSource(AvailableBlockLayoutSource):
 
     config_url = 'citation-layout-source'
 
+
 CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 
 
@@ -314,6 +315,7 @@ class BoxLayoutSource(AvailableBlockLayoutSource):
     # and maybe get rid of the superclass
 
     config_url = 'box-layout-source'
+
 
 BOX_LAYOUT_SOURCE = BoxLayoutSource()
 
