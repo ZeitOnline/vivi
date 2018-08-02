@@ -21,7 +21,7 @@ class Base(zeit.push.browser.form.SocialBase,
 
     teaser_group = gocept.form.grouped.Fields(
         _("Teaser"),
-        ('supertitle', 'title', 'subtitle', 'image'),
+        ('teaserSupertitle', 'teaserTitle', 'teaserText', 'image'),
         css_class='column-left wide-widgets')
 
     option_group = gocept.form.grouped.Fields(
@@ -74,9 +74,9 @@ class Base(zeit.push.browser.form.SocialBase,
 
     def setUpWidgets(self, *args, **kw):
         super(Base, self).setUpWidgets(*args, **kw)
-        self.set_charlimit('supertitle')
-        self.set_charlimit('subtitle')
-        self.set_charlimit('title')
+        self.set_charlimit('teaserSupertitle')
+        self.set_charlimit('teaserTitle')
+        self.set_charlimit('teaserText')
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):

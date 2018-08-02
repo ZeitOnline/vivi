@@ -19,7 +19,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         menu.displayValue = ['Link']
         b.open(menu.value[0])
         b.getControl('File name').value = 'gocept.link'
-        b.getControl('Title').value = 'gocept homepage'
+        b.getControl(name='form.teaserTitle').value = 'gocept homepage'
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
         b.getControl(name="form.image").value = \
