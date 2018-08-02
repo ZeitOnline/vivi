@@ -36,7 +36,6 @@ zeit.cms.normalize_filename = function(filename) {
 $(document).ready(function() {
     var excluded = [
         'zeit.cms.repository.file.Add',
-        'zeit.content.link.Add',
         'zeit.content.rawxml.Add',
         'zeit.content.text.Add'
     ];
