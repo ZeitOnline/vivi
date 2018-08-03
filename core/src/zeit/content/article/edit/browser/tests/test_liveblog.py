@@ -15,7 +15,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('@@edit-%s?show_form=1' % self.block_type)  # XXX
         self.assertEqual('bloggy', b.getControl('Liveblog id').value)
         self.assertEqual(
-            ['(nothing selected)'],
+            ['3'],
             b.getControl('Liveblog version').displayValue)
         self.assertTrue(b.getControl('Collapse preceding content').selected)
 
