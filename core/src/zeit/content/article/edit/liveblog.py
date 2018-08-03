@@ -14,7 +14,8 @@ class Liveblog(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ILiveblog['blog_id'])
     version = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'version',
-        zeit.content.article.edit.interfaces.ILiveblog['version'])
+        zeit.content.article.edit.interfaces.ILiveblog['version'],
+        use_default=True)
     collapse_preceding_content = (
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'collapse-preceding-content',
