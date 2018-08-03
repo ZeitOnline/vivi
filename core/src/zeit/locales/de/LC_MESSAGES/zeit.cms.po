@@ -15,15 +15,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2018-07-11 11:31+0200\n"
-"PO-Revision-Date: 2018-07-11 11:31+0200\n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
+"PO-Revision-Date: 2018-08-03 16:28+0200\n"
+"Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -1801,7 +1801,7 @@ msgstr "Auszeichnung"
 #: zeit/content/advertisement/interfaces.py:52
 #: zeit/content/link/interfaces.py:23
 msgid "Link address"
-msgstr "Link-Adresse (URL)"
+msgstr "Ziel-Link (URL)"
 
 #: zeit/content/article/article.py:168
 #: zeit/content/article/edit/browser/form.py:61
