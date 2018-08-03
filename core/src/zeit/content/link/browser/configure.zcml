@@ -43,7 +43,6 @@
     name="view.html"
     />
 
-
   <browser:page
     for="zeit.content.link.interfaces.ILink"
     name="metadata_preview"
@@ -68,10 +67,6 @@
     file="resources/vivi/linkResource.png"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
-
-  <class class="..link.Link">
-    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
-  </class>
 
 </configure>
 

@@ -1,0 +1,19 @@
+.objectsequencewidget li a[rel="remove"] {
+    margin-top: 10px;
+}
+
+.fieldname-ressort {
+    float: left;
+    margin-right: 20px;
+    clear: both;
+}
+
+.fieldname-product {
+    float: left;
+    margin-right: 20px;
+    clear: both;
+}
+
+.fieldname-authorships {
+    clear: left;
+}

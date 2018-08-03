@@ -45,7 +45,6 @@ class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Add the expire/publication time to feed entry."""
 
     zope.component.adapts(zeit.content.link.interfaces.ILink)
 

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.link',
-    version='2.1.9.dev0',
+    version='2.2.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de',
@@ -31,4 +31,8 @@ setup(
         'zope.schema',
         'zope.testbrowser',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_content_link=zeit.content.link.browser.resources:lib',
+        ]}
 )
