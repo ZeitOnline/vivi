@@ -18,9 +18,7 @@ class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase,
         b.getControl('File name').value = 'link'
         b.getControl('Title').value = 'title'
         b.getControl('Ressort', index=0).displayValue = ['Leben']
-        b.getControl('Teaser title').value = 'teaser'
         b.getControl('Link address').value = 'http://example.com'
-
         b.getControl('Facebook Campus Text').value = 'mycampus'
         b.getControl(name='form.actions.add').click()
 
