@@ -5,11 +5,7 @@ import zeit.magazin.browser.social
 
 base = zeit.content.link.browser.form.Base
 social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
-field_groups = (
-    base.field_groups[:4] +
-    (social_fields,) +
-    base.field_groups[5:]
-)
+field_groups = base.link_field_groups + (social_fields, )
 
 
 class Add(zeit.magazin.browser.social.SocialBase,
