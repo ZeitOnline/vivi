@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.2.0 (unreleased)
+2.2.0 (2018-08-06)
 ------------------
 
 - ZON-4670: Restructure link object ui
