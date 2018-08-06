@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.38.5 (unreleased)
+3.38.5 (2018-08-06)
 -------------------
 
 - ZON-4773: Change default Liveblog version to 3 
