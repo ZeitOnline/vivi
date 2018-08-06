@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.14.4 (unreleased)
+3.14.4 (2018-08-06)
 -------------------
 
 - ZON-4670: Use filename normalization for link objects as well
