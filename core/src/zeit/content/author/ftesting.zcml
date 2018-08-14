@@ -11,4 +11,6 @@
   <include package="zeit.content.author.browser" />
   <include package="zeit.content.image" file="ftesting.zcml" />
 
+  <include package="zeit.find" />
+
 </configure>
