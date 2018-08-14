@@ -1,5 +1,6 @@
 import pkg_resources
 import zeit.cms.testing
+import zeit.find.testing
 import zeit.workflow.testing
 import zope.testing.doctest
 
@@ -14,6 +15,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config +
     zeit.workflow.testing.product_config +
+    zeit.find.testing.product_config +
     product_config)
 
 

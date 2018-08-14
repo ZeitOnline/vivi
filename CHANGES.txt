@@ -4,7 +4,7 @@ zeit.content.author changes
 2.9.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-214: Switch to elasticsearch for duplicate author detection
 
 
 2.9.2 (2018-06-27)
