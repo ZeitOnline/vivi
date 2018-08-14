@@ -74,9 +74,7 @@ data for dropdowns/selects:
  u'ressorts': [{u'ressort': u'Deutschland', u'ressort_name': u'Deutschland'},...
  u'series': [{u'serie': u'-', u'serie_title': u'-'},...
  u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
- u'types': [...{u'title': u'File', u'type': u'file'},...
-           {u'title': u'Folder', u'type': u'collection'}...
-
+ u'types': [{u'title': u'Image Group', u'type': u'image-group'}]}
 
 
 Favorites
@@ -138,14 +136,14 @@ Search
 
 The search view returns all data for rendering the result:
 
->>> import zeit.find.tests
->>> zeit.find.tests.LAYER.set_result('zeit.find', 'testdata/obama.json')
->>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> import zeit.find.testing
+>>> zeit.find.testing.LAYER.set_result('zeit.find.tests', 'data/obama.json')
+>>> browser.open('/++skin++cms/search_result?title=Obama')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
 {u'results': [{u'application_url': u'http://localhost:8080/++skin++cms',
               ...
-              u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
+              u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/.../thumbnail',
              ...
  u'template_url': u'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
 

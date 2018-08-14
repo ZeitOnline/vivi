@@ -1,6 +1,7 @@
 #fulltext {
   width: 75%;
   margin-right: .4em;
+  padding: 4px;
 }
 
 #cp-search .search_result {
@@ -17,12 +18,37 @@
 }
 
 #reset_search_button {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -420px transparent;
   border: 0px solid #FFF;
   cursor: pointer;
-  padding-left: 20px;
-  padding-bottom:10px;
-  margin-left: .6em;
+  padding-bottom: 8px;
+  margin-left: 20px;
+  margin-right: -2em;
+  position: relative;
+  background-color: transparent;
+  display: inline-block;
+  outline: 0;
+}
+
+#reset_search_button:after {
+  content: "X";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background-color: #ccc;
+  z-index: 1;
+  right: 35px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 2px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: normal;
+  font-size: 12px;
+  box-shadow: 0 0 2px #333;
+  cursor: pointer;
 }
 
 .toggle_favorited.favorited,
@@ -45,7 +71,7 @@
   margin-bottom: .8em;
 }
 
-/* Some solr fields will not be shown in some areas */
+/* Some search results will not be shown in some areas */
 
 #cp-search .search_entry .teaser_text {
   display:none;
@@ -284,8 +310,8 @@
   top: 1em;
 }
 
-.zeit-find-search .object-link {
-  float: right;
+.zeit-find-search .object-links {
+  float: left;
 }
 
 .toggle_favorited {

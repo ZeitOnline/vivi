@@ -1,8 +1,10 @@
 zeit.find changes
 =================
 
-2.7.4 (unreleased)
+3.0.0 (unreleased)
 ------------------
+
+- TMS-214: Switch to elasticsearch
 
 - TMS-214: Add "reset form" button
 

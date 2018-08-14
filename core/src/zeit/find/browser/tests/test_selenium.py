@@ -1,22 +1,20 @@
 # coding: utf8
 import zeit.cms.testing
-import zeit.find.tests
+import zeit.find.testing
 
 
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.find.tests.SELENIUM_LAYER
+    layer = zeit.find.testing.SELENIUM_LAYER
     skin = 'vivi'
 
     def setUp(self):
         super(TestSearch, self).setUp()
-        self.set_result('defaultqueryresult.json')
+        zeit.find.testing.LAYER.set_result(
+            'zeit.find.tests', 'data/obama.json')
         self.open('/find')
         self.selenium.waitForElementPresent('css=div.teaser_title')
         self.selenium.waitForVisible('css=div.teaser_title')
-
-    def set_result(self, filename):
-        zeit.find.tests.LAYER.set_result(__name__, filename)
 
     def test_extended_search_display(self):
         s = self.selenium
@@ -43,7 +41,8 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.verifyText('css=#type_search_info span', 'Unknown Resource')
 
     def test_last_query_should_be_saved(self):
-        self.set_result('empty.json')
+        zeit.find.testing.LAYER.search.client.search.return_value = {
+            'hits': {'hits': [], 'total': 0}}
         s = self.selenium
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')

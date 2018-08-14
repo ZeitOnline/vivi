@@ -1,16 +1,21 @@
 import datetime
+import logging
 import urlparse
 import zc.iso8601.parse
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.find.interfaces
 import zeit.find.search
 import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
 import zope.session.interfaces
+
+
+log = logging.getLogger(__name__)
 
 
 class JSONView(zeit.cms.browser.view.JSON):
@@ -69,10 +74,28 @@ class SearchForm(JSONView):
 
     @property
     def types(self):
+        whitelist = {
+            # 'advertisement',      # TODO: enable once indexed, see TMS-239
+            'article',
+            'author',
+            'centerpage-2009',
+            'gallery',
+            'image-group',
+            'infobox',
+            'link',
+            'playlist',
+            'portraitbox',
+            'rawxml',
+            'text',
+            'video',
+            'volume'
+        }
         result = []
         for name, interface in zope.component.getUtilitiesFor(
                 zeit.cms.interfaces.ICMSContentType):
             type_ = interface.queryTaggedValue('zeit.cms.type') or name
+            if type_ not in whitelist:
+                continue
             title = zope.i18n.translate(
                 interface.queryTaggedValue('zeit.cms.title') or type_,
                 context=self.request)
@@ -86,6 +109,25 @@ class SearchForm(JSONView):
 def get_favorited_css_class(favorited):
     return 'toggle_favorited ' + (
         'favorited' if favorited else 'not_favorited')
+
+
+class DottedNestedDict(object):
+
+    def __init__(self, dict_):
+        self.dict = dict_
+
+    def get(self, key, default=None):
+        dict_ = self.dict
+        while '.' in key:
+            prefix, _, rest = key.partition('.')
+            if prefix in dict_:
+                dict_ = dict_[prefix]
+                key = rest
+            else:
+                break
+        if key not in dict_:
+            log.debug('key "%s" not found', key)
+        return dict_.get(key, default)
 
 
 class SearchResult(JSONView):
@@ -117,6 +159,7 @@ class SearchResult(JSONView):
         processed = []
         for result in results:
             entry = {}
+            result = DottedNestedDict(result)
             for key in self.search_result_keys:
                 handler = getattr(self, 'get_%s' % key)
                 entry[key] = handler(result)
@@ -134,21 +177,34 @@ class SearchResult(JSONView):
         if q is None:
             return {'template': 'no_search_result.jsont'}
         self.store_session()
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         try:
-            results = zeit.find.search.search(q, self.sort_order())
+            results = elastic.search(q, sort_order=self.sort_order())
             return self.results(results)
-        except zeit.solr.interfaces.SolrError, e:
+        except Exception as e:
             return {'template': 'no_search_result.jsont',
                     'error': e.args[0]}
 
+    SORT_ORDERS = {
+        'date': 'payload.document.last-semantic-change:desc',
+        'relevance': '_score',
+    }
+
     def sort_order(self):
-        return self.request.get('sort_order', 'relevance')
+        return self.SORT_ORDERS[self.request.get('sort_order', 'relevance')]
 
     def store_session(self):
         session = zope.session.interfaces.ISession(self.request)['zeit.find']
         parameters = search_parameters(self.request)
         if session.get('last-query') != parameters:
             session['last-query'] = parameters
+
+    def get_first_field(self, result, *fields):
+        for field in fields:
+            value = result.get(field)
+            if value:
+                return value
+        return ''
 
     # generic processors
 
@@ -167,7 +223,7 @@ class SearchResult(JSONView):
     def get_product(self, result):
         source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(
             None)
-        product = source.find(result.get('product_id'))
+        product = source.find(result.get('payload.workflow.product-id'))
         return product and product.title or ''
 
     def get_publication_status(self, result):
@@ -182,33 +238,29 @@ class SearchResult(JSONView):
         return publication_status
 
     def get_teaser_title(self, result):
-        title = self._get_unformatted_teaser_title(result)
-        if not title:
-            title = self._get_unformatted_title(result)
-        if not title:
-            uniqueId = self.get_uniqueId(result)
-            title = uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
-        return title
+        return self.get_first_field(
+            result, 'payload.teaser.title', 'payload.body.title', 'url')
 
     def get_type(self, result):
-        return result.get('type', '')
+        return result.get('doc_type', '')
 
     def get_authors(self, result):
-        return result.get('authors', [])
+        return result.get('payload.document.author', [])
 
     def _get_unformatted_date(self, result):
-        last_semantic_change = result.get('last-semantic-change')
+        last_semantic_change = result.get(
+            'payload.document.last-semantic-change')
         dt = None
         if last_semantic_change is not None:
-            dt = zc.iso8601.parse.datetimetz(result['last-semantic-change'])
+            dt = zc.iso8601.parse.datetimetz(last_semantic_change)
         return dt
 
     def get_favorited(self, result):
         return self.get_uniqueId(result) in self.favorite_ids
 
     def get_graphical_preview_url(self, result):
-        url = result.get('graphical-preview-url')
-        if url is None:
+        url = result.get('payload.vivi.cms_preview_url')
+        if not url:
             return None
         url_p = urlparse.urlsplit(url)
         if url_p.scheme == '':
@@ -216,37 +268,34 @@ class SearchResult(JSONView):
         return url
 
     def get_icon(self, result):
-        icon = result.get('icon')
+        icon = result.get('payload.vivi.cms_icon')
         if icon:
             icon = self.get_application_url() + icon
         return icon
 
     def _get_unformatted_publication_status(self, result):
-        return result.get('published', 'published')
+        return result.get('payload.vivi.publish_status', 'published')
 
     def get_subtitle(self, result):
-        return result.get('subtitle', '')
+        return result.get('payload.body.subtitle', '')
 
     def get_supertitle(self, result):
-        return result.get('supertitle', '')
+        return self.get_first_field(
+            result, 'payload.teaser.supertitle', 'payload.body.supertitle')
 
     def get_teaser_text(self, result):
-        return result.get('teaser_text', '')
-
-    def _get_unformatted_teaser_title(self, result):
-        return result.get('teaser_title')
-
-    def _get_unformatted_title(self, result):
-        return result.get('title')
+        return self.get_first_field(
+            result, 'payload.teaser.text', 'payload.body.text')
 
     def get_serie(self, result):
-        return result.get('serie', '')
+        return result.get('payload.document.serie', '')
 
     def get_topic(self, result):
-        return result.get('ressort', '')
+        return result.get('payload.document.ressort', '')
 
     def get_uniqueId(self, result):
-        return result.get('uniqueId', '')
+        url = result.get('url', '')
+        return zeit.cms.interfaces.ID_NAMESPACE.rstrip('/') + url
 
     @zope.cachedescriptors.property.Lazy
     def favorite_ids(self):
@@ -345,8 +394,8 @@ def search_parameters(request):
 
 
 def search_form(request):
-    """extract the search parameters from the request in a format consumable by
-    solr"""
+    """extract the search parameters from the request in a format suitable
+    to build a search query"""
 
     def g(name, default=None):
         return _get(request, name, default)
@@ -358,7 +407,7 @@ def search_form(request):
     authors = g('author', None)
     keywords = g('keywords', None)
     raw_tags = g('raw-tags', None)
-    product_id = g('product_id', None)
+    product_id = g('product', None)
     show_news = g('show_news', False)
     serie = g('serie', None)
     # four states: published, not-published, published-with-changes,

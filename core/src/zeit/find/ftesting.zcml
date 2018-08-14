@@ -12,6 +12,4 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
-  <include package="zeit.solr" />
-
 </configure>

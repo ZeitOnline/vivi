@@ -3,6 +3,9 @@ import urllib
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
+import zeit.find.interfaces
+import zeit.find.search
+import zope.component
 import zope.component.hooks
 import zope.traversing.browser
 
@@ -13,16 +16,17 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         term = self.request.form.get('term')
         types = self.request.form.get('types', ())
         if term:
-            term = term.lower().strip()
-            results = zeit.find.search.search(
-                zeit.find.search.suggest_query(term, 'title', types))
+            elastic = zope.component.getUtility(
+                zeit.find.interfaces.ICMSSearch)
+            results = elastic.search(
+                zeit.find.search.query(autocomplete=term, types=types))
         else:
             results = []
         return [
-            dict(label=(result.get('teaser_title') or
-                        result.get('title') or
-                        result['uniqueId']),
-                 value=result['uniqueId'])
+            dict(label=(result.get('title') or
+                        result.get('teaser') or
+                        result['url']),
+                 value=zeit.cms.interfaces.ID_NAMESPACE[:-1] + result['url'])
             for result in results]
 
 

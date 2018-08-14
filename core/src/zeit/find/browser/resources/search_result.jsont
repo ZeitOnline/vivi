@@ -36,13 +36,15 @@
     <span>{@}</span>
     {.end}
   </div>
-  <div class="goto-object object-link">
-    <a target="_top" href="{application_url}/@@redirect_to?unique_id={uniqueId}">
-      CMS
-    </a>
-  </div>
-  <div class="preview object-link">
-    <a target="_blank" href="{application_url}/@@redirect_to?unique_id={uniqueId}&view=show_preview">Vorschau</a>
+  <div class="object-links">
+    <div class="goto-object object-link">
+      <a target="_top" href="{application_url}/@@redirect_to?unique_id={uniqueId}">
+        CMS
+      </a>
+    </div>
+    <div class="preview object-link">
+      <a target="_blank" href="{application_url}/@@redirect_to?unique_id={uniqueId}&view=show_preview">Vorschau</a>
+    </div>
   </div>
 </div>
 {.end}

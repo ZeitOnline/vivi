@@ -1,7 +1,7 @@
 <div class="no_search_result">
 {.section error}
-<div>There was an error in the input: {@}</div>
+<div>Die Eingabe enthält Fehler: {@}</div>
 {.or}
-<div>Nothing could be found.</div>
+<div>Keine Suchergebnisse.</div>
 {.end}
 </div>

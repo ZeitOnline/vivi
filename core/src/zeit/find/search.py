@@ -1,120 +1,60 @@
-from zeit.solr import query as lq
-from zeit.find.daterange import DATE_FILTERS
-import itertools
-import zeit.solr.interfaces
-import zope.component
+from zeit.find.interfaces import ICMSSearch
+from zope.app.appsetup.product import getProductConfiguration
+from zope.interface import implementer
+import zeit.retresco.search
 
 
-DEFAULT_RESULT_FIELDS = (
-    'authors',
-    'graphical-preview-url',
-    'icon',
-    'keywords',
-    'raw-tags',
-    'last-semantic-change',
-    'product_id',
-    'published',
-    'range',
-    'range_details',
-    'ressort',
-    'serie',
-    'subtitle',
-    'supertitle',
-    'teaser_text',
-    'teaser_title',
+DEFAULT_FIELDS = (
+    'url',
+    'doc_type',
+    'doc_id',
+    'payload',
     'title',
-    'type',
-    'uniqueId',
-    'volume',
-    'year',
+    'teaser',
 )
 
 
-def search(q, sort_order=None, additional_result_fields=(), rows=50,
-           **kw):
-    """Search solr according to query.
+class Elasticsearch(zeit.retresco.search.Elasticsearch):
 
-    q - the lucene query
-    sort_order - sort by either either 'relevance' or 'date'.
-
-    Returns the pysolr Result object.
-    """
-    if q is None:
-        return []
-
-    if q == lq.any_value():
-        sort_order = 'date'
-    else:
-        sort_order = sort_order or 'relevance'
-    if sort_order == 'relevance':
-        sort_order = 'score desc'
-    elif sort_order == 'date':
-        sort_order = 'last-semantic-change desc'
-    elif sort_order == 'title':
-        sort_order = 'title asc'
-
-    result_fields = DEFAULT_RESULT_FIELDS + tuple(additional_result_fields)
-    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
-                       rows=rows, **kw)
+    def search(self, query, **kw):
+        query.setdefault('_source', DEFAULT_FIELDS)
+        kw.setdefault('rows', 50)
+        return super(Elasticsearch, self).search(query, **kw)
 
 
-def counts(q):
-    """Count in solr according to query.
-
-    q - the lucene query
-
-    Returns tuple of time counts, topic counts, author counts, type counts.
-
-    Each counts is a list of (name, count) tuples. Counts of zero are
-    not returned.
-    """
-    date_filters = DATE_FILTERS()
-    date_queries = [filter for (name, filter) in date_filters]
-
-    facets = {
-        'facet': 'true',
-        'facet.field': ['ressort', 'type', 'authors'],
-        'facet.mincount': 1,
-        'facet.query': date_queries,
-    }
-
-    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    facet_data = conn.search(q, rows=0, **facets).facets
-
-    facet_queries = facet_data['facet_queries']
-    time_counts = []
-    for name, filter in date_filters:
-        time_counts.append((name, facet_queries[filter]))
-
-    facet_fields = facet_data['facet_fields']
-
-    def _counts(counts):
-        return sorted(grouper(2, counts))
-
-    topic_counts = _counts(facet_fields['ressort'])
-    author_counts = _counts(facet_fields['authors'])
-    type_counts = _counts(facet_fields['type'])
-
-    return time_counts, topic_counts, author_counts, type_counts
+@implementer(ICMSSearch)
+def from_product_config():
+    """Get the utility configured with data from the product config."""
+    config = getProductConfiguration('zeit.find')
+    return Elasticsearch(config['elasticsearch-url'],
+                         config['elasticsearch-index'])
 
 
-def query(fulltext=None,
-          from_=None,
-          until=None,
-          volume=None,
-          year=None,
-          topic=None,
-          authors=None,
-          keywords=None,
-          raw_tags=None,
-          published=None,
-          types=(),
-          product_id=None,
-          serie=None,
-          show_news=None,
-          filter_terms=None):
-    """Create lucene query string for search.
+field_map = dict(
+    authors='payload.document.author',
+    product_id='payload.workflow.product-id',
+    published='payload.vivi.publish_status',
+    raw_tags='body',
+    serie='payload.document.serie',
+    topic='payload.document.ressort',
+    types='doc_type',
+    volume='payload.document.volume',
+    year='payload.document.year',
+)
+
+
+rtr_fields = (
+    'rtr_events',
+    'rtr_keywords',
+    'rtr_locations',
+    'rtr_organisations',
+    'rtr_persons',
+    'rtr_products',
+)
+
+
+def query(fulltext=None, **conditions):
+    """ Create elasticsearch query for search. Supported field are:
 
     fulltext - fulltext to search for
     from_ - search only after from_ datetime. If None, no start to range.
@@ -133,70 +73,62 @@ def query(fulltext=None,
     show_news - Display ticker messages or not (boolean)
     filter_terms - an optional list of extra terms to add to the filter.
                    If None, no extra terms.
-    Returns lucene query string that can be passed to solr.
+
+    Returns elasticsearch query expression that can be passed to `search`.
     """
-    filter_terms = filter_terms or []
-
-    terms = []
+    must = []
+    filters = []
+    clauses = dict()
+    # handle fulltext
     if fulltext:
-        terms.append(lq.field_raw('text', fulltext))
+        must.append(dict(query_string=dict(query=fulltext)))
+    # handle from_, until
+    from_ = conditions.pop('from_', None)
+    until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        terms.append(
-            lq.datetime_range('last-semantic-change', from_, until))
-    if volume is not None:
-        terms.append(
-            lq.field('volume', volume))
-    if year is not None:
-        terms.append(
-            lq.field('year', year))
-    if topic is not None:
-        terms.append(lq.field('ressort', topic))
-    if authors is not None:
-        terms.append(lq.multi_field('authors_fulltext', authors))
-    if keywords is not None:
-        terms.append(lq.multi_field('keywords', keywords))
-    if raw_tags is not None:
-        terms.append(lq.multi_field('raw-tags', raw_tags))
-    if published is not None:
-        terms.append(lq.field('published', published))
-    terms = _set_type_terms(types, terms=terms)
-    if product_id is not None:
-        terms.append(lq.field('product_id', product_id))
-    if serie is not None:
-        terms.append(lq.field('serie', serie))
-    if not show_news:
-        terms.append(lq.not_(lq.field('ressort', 'News')))
-        terms.append(lq.not_(lq.field('product_id', 'News')))
-        terms.append(lq.not_(lq.field('product_id', 'afp')))
-        terms.append(lq.not_(lq.field('product_id', 'SID')))
-        terms.append(lq.not_(lq.field('product_id', 'dpa-hamburg')))
-
-    terms.extend(filter_terms)
-    if terms:
-        return lq.and_(*terms)
-    return lq.any_value()
-
-
-def _set_type_terms(types, terms=None):
-    terms = terms or []
-    type_terms = []
-    for type in types:
-        type_terms.append(lq.field('type', type))
-    if type_terms:
-        terms.append(lq.or_(*type_terms))
-    return terms
-
-
-def suggest_query(query, field, types):
-    query = query.lower().strip()
-    terms = []
-    terms.append(lq.field_raw(field, query + '*'))
-    terms.append(lq.field_raw(field, query))
-    terms = [lq.or_(*terms)]
-    terms = _set_type_terms(types, terms=terms)
-    return lq.and_(*terms)
-
-
-def grouper(n, iterable, padvalue=None):
-    return itertools.izip(
-        *[itertools.chain(iterable, itertools.repeat(padvalue, n - 1))] * n)
+        filters.append(dict(range={
+            'payload.document.last-semantic-change':
+            zeit.retresco.search.date_range(from_, until)}))
+    # handle show_news
+    if not conditions.pop('show_news', True):
+        clauses['must_not'] = [
+            dict(match={'payload.document.ressort': 'News'})] + [
+                dict(match={'payload.workflow.product-id': pid})
+                for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
+    # handle "keywords" (by querying all `rtr_*` fields)
+    keyword = conditions.pop('keywords', None)
+    if keyword is not None:
+        filters.append(dict(bool=dict(should=[
+            dict(match={field: keyword}) for field in rtr_fields])))
+    # handle autocomplete queries as prefix matches
+    autocomplete = conditions.pop('autocomplete', None)
+    if autocomplete is not None:
+        # payload.teaser.title is copied and lowercased to
+        # payload.vivi.autocomplete by the ES mapping, so this hopefully should
+        # be somewhat generically applicable (even though we currently only use
+        # it for IAuthor objects).
+        must.append(dict(match_phrase_prefix={
+            'payload.vivi.autocomplete': autocomplete}))
+    # handle remaining fields
+    for field, value in conditions.items():
+        if value in (None, [], ()):
+            continue
+        elif field not in field_map:
+            raise ValueError('unsupported search condition {}', field)
+        elif isinstance(value, (list, tuple)):
+            filters.append(dict(bool=dict(should=[
+                dict(match={field_map[field]: v}) for v in value])))
+        else:
+            filters.append(dict(match={field_map[field]: value}))
+    # construct either bool or simple query
+    if must:
+        clauses['must'] = must
+    if filters:
+        clauses['filter'] = filters
+    if len(clauses) == 1 and len(clauses.values()[0]) == 1:
+        qry = clauses.values()[0][0]
+    elif clauses:
+        qry = dict(bool=clauses)
+    else:
+        qry = dict(match_all=dict())
+    return dict(query=qry)
