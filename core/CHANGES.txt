@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.25.4 (unreleased)
+3.25.4 (2018-08-14)
 -------------------
 
 - TMS-214: Move solr default result fields here from `zeit.find`
