@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-3.0.0 (unreleased)
+3.0.0 (2018-08-14)
 ------------------
 
 - TMS-214: Switch to elasticsearch
