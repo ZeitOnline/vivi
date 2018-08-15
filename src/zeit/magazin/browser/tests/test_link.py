@@ -38,7 +38,6 @@ class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
     def setUp(self):
         super(ZMOFacebookFields, self).setUp()
         link = zeit.content.link.link.Link()
-        link.title = 'title'
         link.ressort = u'Leben'
         link.teaserTitle = 'teaser'
         link.year = 2010
