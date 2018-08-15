@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.2.1 (unreleased)
+2.2.1 (2018-08-15)
 ------------------
 
 - FIX: Use teaserTitle for title
