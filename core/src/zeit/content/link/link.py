@@ -35,6 +35,10 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
             if blog.url in self.url:
                 return blog
 
+    @property
+    def title(self):
+        return self.teaserTitle
+
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 

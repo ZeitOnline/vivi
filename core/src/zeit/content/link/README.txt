@@ -31,9 +31,8 @@ True
   <body/>
 </link>
 
-Now that was pretty boring. Add title, URL and target:
+Now that was pretty boring. Add URL and target:
 
->>> link.title = 'gocept'
 >>> link.target = '_blank'
 >>> link.url = 'http://example.org'
 >>> link.blog
@@ -48,7 +47,6 @@ u'Testblog'
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
-    <title>gocept</title>
     <target>_blank</target>
     <url>http://gocept.com</url>
   </body>
