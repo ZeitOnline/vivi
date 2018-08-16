@@ -11,6 +11,7 @@ import zeit.content.article.testing
 import zeit.content.image.testing
 import zeit.content.link.testing
 import zeit.content.volume.testing
+import zeit.find.testing
 import zeit.workflow.testing
 
 
@@ -110,6 +111,7 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 ZCML_LAYER = ZCMLLayer(
     'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config +
     product_config +
+    zeit.find.testing.product_config +
     zeit.workflow.testing.product_config +
     zeit.content.article.testing.product_config +
     zeit.content.link.testing.product_config +
