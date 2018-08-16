@@ -4,7 +4,7 @@ zeit.find changes
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-214: Search for "all" given terms by default.
 
 
 3.0.0 (2018-08-14)

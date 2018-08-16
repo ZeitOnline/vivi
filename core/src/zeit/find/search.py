@@ -81,7 +81,8 @@ def query(fulltext=None, **conditions):
     clauses = dict()
     # handle fulltext
     if fulltext:
-        must.append(dict(query_string=dict(query=fulltext)))
+        must.append(dict(query_string=dict(
+            query=fulltext, default_operator='AND')))
     # handle from_, until
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)

@@ -7,9 +7,9 @@ def test_simple_queries():
     assert query() == {
         'query': {'match_all': {}}}
     assert query(fulltext='Foo') == {
-        'query': {'query_string': {'query': 'Foo'}}}
+        'query': {'query_string': {'query': 'Foo', 'default_operator': 'AND'}}}
     assert query('Bar') == {
-        'query': {'query_string': {'query': 'Bar'}}}
+        'query': {'query_string': {'query': 'Bar', 'default_operator': 'AND'}}}
     assert query(authors='Foo Bar') == {
         'query': {'match': {'payload.document.author': 'Foo Bar'}}}
     assert query(from_=datetime(2009, 12, 19, 19, 9)) == {
@@ -49,7 +49,8 @@ def test_simple_queries():
 def test_combined_queries():
     assert query(fulltext='Foo', authors='Bar') == {
         'query': {'bool': {
-            'must': [{'query_string': {'query': 'Foo'}}],
+            'must': [{'query_string': {
+                'query': 'Foo', 'default_operator': 'AND'}}],
             'filter': [{'match': {'payload.document.author': 'Bar'}}],
         }}}
     assert query(
@@ -59,7 +60,8 @@ def test_combined_queries():
                 'gte': '2009-12-19T19:09:00', 'lte': '2017-05-27T20:00:00'}}}}
     assert query(show_news=False, fulltext='Foo') == {
         'query': {'bool': {
-            'must': [{'query_string': {'query': 'Foo'}}],
+            'must': [{'query_string': {
+                'query': 'Foo', 'default_operator': 'AND'}}],
             'must_not': [
                 {'match': {'payload.document.ressort': 'News'}},
                 {'match': {'payload.workflow.product-id': 'News'}},
