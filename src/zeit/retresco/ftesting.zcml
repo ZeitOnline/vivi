@@ -24,6 +24,7 @@
   <include package="zeit.content.text" file="ftesting.zcml" />
   <include package="zeit.content.volume" file="ftesting.zcml" />
 
+  <include package="zeit.find" file="ftesting.zcml" />
   <include package="zeit.seo" file="ftesting.zcml" />
   <include package="zeit.push" file="testing.zcml" />
 
