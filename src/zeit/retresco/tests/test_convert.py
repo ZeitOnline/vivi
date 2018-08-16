@@ -364,6 +364,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
             'title': 'William Shakespeare',
             'text': '...or not to be!',
         }, data['payload']['body'])
+        # FIXME: p.teaser.title is required for the author auto-complete
+        # until https://github.com/ZeitOnline/tms-deployment/pull/16 has
+        # been deployed (by retresco)
+        self.assertEqual({
+            'title': 'William Shakespeare',
+        }, data['payload']['teaser'])
 
     def test_converts_text(self):
         text = zeit.content.text.text.Text()
