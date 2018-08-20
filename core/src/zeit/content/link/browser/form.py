@@ -16,7 +16,7 @@ class Base(zeit.push.browser.form.SocialBase,
     metadata_group = gocept.form.grouped.Fields(
         _("Metadaten"),
         ('__name__', 'url', 'ressort', 'sub_ressort',
-         'product', 'copyrights', 'authorships'),
+         'product', 'copyrights', 'year', 'volume', 'authorships'),
         css_class='wide-widgets column-left')
 
     teaser_group = gocept.form.grouped.Fields(
