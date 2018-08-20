@@ -3,6 +3,7 @@ import mock
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
+import zeit.find.testing
 import zeit.push.testing
 import zeit.solr.testing
 import zeit.workflow.testing
@@ -13,6 +14,7 @@ import zope.interface
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
+        zeit.find.testing.product_config +
         zeit.push.testing.product_config +
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
