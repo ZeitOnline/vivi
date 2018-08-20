@@ -4,7 +4,7 @@ zeit.cms changes
 3.14.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-978: Fix showing series title in display view
 
 
 3.14.4 (2018-08-06)

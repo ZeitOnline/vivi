@@ -369,7 +369,8 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
         return result
 
     def getTitle(self, context, value):
-        if not isinstance(value, Serie):
+        if not isinstance(zope.security.proxy.removeSecurityProxy(value),
+                          Serie):
             return None
         return value.serienname
 
