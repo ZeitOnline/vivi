@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.2.3 (unreleased)
+2.2.3 (2018-08-20)
 ------------------
 
 - FIX: Use default value for year und volume
