@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.9.2 (unreleased)
+1.10.0 (unreleased)
 ------------------
 
 - ZON-4806: Switch volume queries from solr to ES
