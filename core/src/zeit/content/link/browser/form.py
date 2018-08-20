@@ -4,6 +4,7 @@ import gocept.form.grouped
 import itertools
 import zeit.content.image.interfaces
 import zeit.cms.browser.form
+import zeit.cms.settings.interfaces
 import zeit.content.link.interfaces
 import zeit.content.link.link
 import zeit.push.browser.form
@@ -83,6 +84,14 @@ class Add(Base, zeit.cms.browser.form.AddForm):
 
     title = _('Add link')
     factory = zeit.content.link.link.Link
+
+    def setUpWidgets(self, *args, **kw):
+        super(Add, self).setUpWidgets(*args, **kw)
+        settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
+        if not self.widgets['year'].hasInput():
+            self.widgets['year'].setRenderedValue(settings.default_year)
+        if not self.widgets['volume'].hasInput():
+            self.widgets['volume'].setRenderedValue(settings.default_volume)
 
 
 class Edit(Base, zeit.cms.browser.form.EditForm):

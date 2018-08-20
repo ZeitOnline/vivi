@@ -4,13 +4,13 @@ zeit.content.link changes
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Use default value for year und volume
 
 
 2.2.2 (2018-08-20)
 ------------------
 
-- FIX: Add 'year' and 'volume' fields to form agagin
+- FIX: Add 'year' and 'volume' fields to form
 
 
 2.2.1 (2018-08-15)
