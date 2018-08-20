@@ -11,7 +11,7 @@ import zeit.content.volume.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
 import zeit.edit.interfaces
-import zeit.solr.query
+import zeit.retresco.interfaces
 import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
@@ -20,6 +20,7 @@ import logging
 
 
 log = logging.getLogger()
+UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -108,23 +109,22 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def _find_in_order(self, start, end, sort):
         if len(filter(None, [start, end])) != 1:
             return None
-        # Inspired by zeit.web.core.view.Content.lineage.
-        Q = zeit.solr.query
-        query = Q.and_(
-            Q.field_raw('type', VolumeType.type),
-            Q.field('product_id', self.product.id),
-            Q.datetime_range('date_digital_published', start, end),
-            Q.not_(Q.field('uniqueId', self.uniqueId))
-        )
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        result = solr.search(query, sort='date_digital_published ' + sort,
-                             fl='uniqueId', rows=1)
+        elastic = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+        result = elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': VolumeType.type}},
+            {'term': {'payload.workflow.product-id': self.product.id}},
+            {'range': {'payload.document.date_digital_published':
+                       elastic.date_range(start, end)}},
+        ], 'must_not': [
+            {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
+        ]}}}, 'payload.document.date_digital_published:' + sort, rows=1)
         if not result:
             return None
         # Since `sort` is passed in accordingly, and we exclude ourselves,
         # the first result (if any) is always the one we want.
         return zeit.cms.interfaces.ICMSContent(
-            iter(result).next()['uniqueId'], None)
+            UNIQUEID_PREFIX + iter(result).next()['url'], None)
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
@@ -170,40 +170,42 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def all_content_via_solr(self, additional_query_contstraints=None):
+    def all_content_via_search(self, additional_query_constraints=None):
         """
-        Get all content for this volume via Solr.
-        If u pass a list of additional query strings, they will be added as
-        an AND-operand to the query field.
+        Get all content for this volume via ES.
+        If u pass a list of additional query clauses, they will be added as
+        an AND-operand to the query.
         """
-        if not additional_query_contstraints:
-            additional_query_contstraints = []
-        Q = zeit.solr.query
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        query = Q.and_(
-            Q.not_(Q.field('uniqueId', self.uniqueId)),
-            Q.or_(*[Q.field('product_id', p.id) for p in
-                    self._all_products]),
-            Q.field_raw('year', self.year),
-            Q.field_raw('volume', self.volume),
-            *additional_query_contstraints
-        )
-        result = solr.search(query, fl='uniqueId', rows=1000)
+        if not additional_query_constraints:
+            additional_query_constraints = []
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        query = [
+            {'term': {'payload.document.year': self.year}},
+            {'term': {'payload.document.volume': self.volume}},
+            {'bool': {'should': [
+                {'term': {'payload.workflow.product-id': x.id}}
+                for x in self._all_products]}},
+        ]
+        result = elastic.search({'query': {'bool': {
+            'filter': query + additional_query_constraints,
+            'must_not': [
+                {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
+            ]}}}, rows=1000)
         # We assume a maximum content amount per usual production print volume
         assert result.hits < 250
         content = []
         for item in result:
-            item = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+            item = zeit.cms.interfaces.ICMSContent(
+                UNIQUEID_PREFIX + item['url'], None)
             if item is not None:
                 content.append(item)
         return content
 
     def change_contents_access(self, access_from, access_to, published=True):
-        Q = zeit.solr.query
-        constraints = [Q.field('access', access_from)]
+        constraints = [{'term': {'payload.document.access': access_from}}]
         if published:
-            constraints.append(Q.field_raw('published', 'published*'))
-        cnts = self.all_content_via_solr(constraints)
+            constraints.append({'term': {'payload.workflow.published': True}})
+        cnts = self.all_content_via_search(constraints)
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:
@@ -213,23 +215,20 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                             zeit.cms.content.interfaces.ICommonMetadata,
                             'access')
                     )
-            except:
+            except Exception:
                 log.error("Couldn't change access for {}. Skipping "
                           "it.".format(cnt.uniqueId))
         return cnts
 
     def content_with_references_for_publishing(self):
-        Q = zeit.solr.query
         additional_constraints = [
-            Q.field('published', 'not-published'),
-            Q.and_(
-                Q.bool_field('urgent', True),
-                Q.field_raw(
-                    'type',
-                    zeit.content.article.article.ArticleType.type)),
+            {'term': {
+                'doc_type': zeit.content.article.article.ArticleType.type}},
+            {'term': {'payload.workflow.published': False}},
+            {'term': {'payload.workflow.urgent': True}},
         ]
-        articles_to_publish = self.all_content_via_solr(
-            additional_query_contstraints=additional_constraints)
+        articles_to_publish = self.all_content_via_search(
+            additional_query_constraints=additional_constraints)
         # Flatten the list of lists and remove duplicates
         articles_with_references = list(set(itertools.chain.from_iterable(
             [self._with_references(article) for article in
