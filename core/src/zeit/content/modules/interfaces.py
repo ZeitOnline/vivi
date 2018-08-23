@@ -82,6 +82,10 @@ class IMail(zeit.edit.interfaces.IBlock):
         title=_('Subject'),
         readonly=True)
 
+    email_required = zope.schema.Bool(
+        title=_('Email required?'),
+        default=False)
+
     body = zope.interface.Attribute('Email body')
 
     success_message = zope.schema.TextLine(
