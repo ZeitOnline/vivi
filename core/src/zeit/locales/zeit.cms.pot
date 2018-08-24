@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Aug  3 16:22:45 2018\n"
+"POT-Creation-Date: Fri Aug 24 10:49:01 2018\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -489,7 +489,7 @@ msgstr ""
 #: zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:257
 #: zeit/content/article/interfaces.py:160
-#: zeit/content/author/author.py:90
+#: zeit/content/author/author.py:92
 msgid "Author"
 msgstr ""
 
@@ -802,7 +802,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:26
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/article/edit/browser/form.py:447
-#: zeit/content/link/browser/form.py:28
+#: zeit/content/link/browser/form.py:29
 #: zeit/content/video/browser/video.py:44
 msgid "Options"
 msgstr ""
@@ -1130,7 +1130,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:266
 #: zeit/content/volume/browser/form.py:34
 #: zeit/content/volume/interfaces.py:40
-#: zeit/content/volume/volume.py:268
+#: zeit/content/volume/volume.py:267
 msgid "Volume"
 msgstr ""
 
@@ -2038,7 +2038,7 @@ msgid "edit access"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:364
-#: zeit/content/link/browser/form.py:23
+#: zeit/content/link/browser/form.py:24
 #: zeit/newsletter/newsletter.py:161
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
@@ -2087,7 +2087,7 @@ msgid "select channel"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:570
-#: zeit/content/link/browser/form.py:39
+#: zeit/content/link/browser/form.py:40
 msgid "Storystream"
 msgstr ""
 
@@ -3702,8 +3702,8 @@ msgid "Overrides image company"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:77
-#: zeit/content/link/browser/form.py:45
-#: zeit/content/link/link.py:43
+#: zeit/content/link/browser/form.py:46
+#: zeit/content/link/link.py:47
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
@@ -3739,24 +3739,24 @@ msgstr ""
 msgid "debate-action-url-description"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:17
+#: zeit/content/link/browser/form.py:104
+msgid "View link metadata"
+msgstr ""
+
+#: zeit/content/link/browser/form.py:18
 msgid "Metadaten"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:34
+#: zeit/content/link/browser/form.py:35
 msgid "Marketing"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:84
+#: zeit/content/link/browser/form.py:85
 msgid "Add link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:90
+#: zeit/content/link/browser/form.py:99
 msgid "Edit link"
-msgstr ""
-
-#: zeit/content/link/browser/form.py:95
-msgid "View link metadata"
 msgstr ""
 
 #: zeit/content/link/interfaces.py:10
@@ -3802,8 +3802,12 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:88
+#: zeit/content/modules/interfaces.py:86
 msgid "Success message"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:89
+msgid "Email required?"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:23
