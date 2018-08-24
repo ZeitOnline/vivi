@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.1.1 (unreleased)
+1.1.1 (2018-08-24)
 ------------------
 
 - ZON-4843: Add mail_required to Mail module
