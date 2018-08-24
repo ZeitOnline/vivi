@@ -20,6 +20,9 @@ class Mail(zeit.edit.block.Element):
         '.title', zeit.content.modules.interfaces.IMail['title'])
     subtitle = zeit.cms.content.property.ObjectPathProperty(
         '.subtitle', zeit.content.modules.interfaces.IMail['subtitle'])
+    email_required = zeit.cms.content.property.ObjectPathProperty(
+        '.email_required', zeit.content.modules.interfaces.IMail[
+            'email_required'])
 
     @property
     def subject_display(self):
