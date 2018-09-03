@@ -1,4 +1,5 @@
 # coding: utf8
+import mock
 import zeit.cms.testing
 import zeit.find.testing
 
@@ -12,9 +13,17 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         super(TestSearch, self).setUp()
         zeit.find.testing.LAYER.set_result(
             'zeit.find.tests', 'data/obama.json')
+        self.types_patch = mock.patch(
+            'zeit.find.browser.find.SearchForm.CONTENT_TYPES',
+            new=['collection', 'file', 'image', 'testcontenttype', 'unknown'])
+        self.types_patch.start()
         self.open('/find')
         self.selenium.waitForElementPresent('css=div.teaser_title')
         self.selenium.waitForVisible('css=div.teaser_title')
+
+    def tearDown(self):
+        self.types_patch.stop()
+        super(TestSearch, self).tearDown()
 
     def test_extended_search_display(self):
         s = self.selenium
