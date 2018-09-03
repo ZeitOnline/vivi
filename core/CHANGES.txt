@@ -1,6 +1,12 @@
 zeit.content.infobox changes
 ============================
 
+1.25.2 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 1.25.1 (2018-09-03)
 -------------------
 
