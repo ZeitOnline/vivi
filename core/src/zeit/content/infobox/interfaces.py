@@ -7,7 +7,8 @@ import zope.schema
 
 
 class IInfobox(zeit.cms.content.interfaces.IXMLContent,
-               zeit.cms.content.interfaces.ICommonMetadata):
+               zeit.cms.content.interfaces.ICommonMetadata,
+               zeit.cms.content.interfaces.ISkipDefaultChannel):
 
     supertitle = zope.schema.TextLine(title=_('Supertitle'))
 

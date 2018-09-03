@@ -18,7 +18,7 @@ setup(
         'gocept.form',
         'mock',
         'setuptools',
-        'zeit.cms>=2.15.0.dev',
+        'zeit.cms>=3.3.0.dev',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',

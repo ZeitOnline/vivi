@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-953: Disable setting channel from ressort for infoboxes
 
 
 1.25.0 (2017-08-10)
