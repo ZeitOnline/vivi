@@ -4,7 +4,7 @@ zeit.find changes
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-239: Add z.c.advertisement to the list of filterable content types
 
 
 3.0.1 (2018-08-16)

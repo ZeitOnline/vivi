@@ -73,7 +73,7 @@ class SearchForm(JSONView):
         return result
 
     CONTENT_TYPES = [
-        # 'advertisement',      # TODO: enable once indexed, see TMS-239
+        'advertisement',
         'article',
         'author',
         'centerpage-2009',
