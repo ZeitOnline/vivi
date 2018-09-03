@@ -72,33 +72,37 @@ class SearchForm(JSONView):
             entry['serie'] = entry['serie'].serienname
         return result
 
+    CONTENT_TYPES = [
+        # 'advertisement',      # TODO: enable once indexed, see TMS-239
+        'article',
+        'author',
+        'centerpage-2009',
+        'gallery',
+        'image-group',
+        'infobox',
+        'link',
+        'playlist',
+        'portraitbox',
+        'rawxml',
+        'text',
+        'video',
+        'volume'
+    ]
+
     @property
     def types(self):
-        whitelist = {
-            # 'advertisement',      # TODO: enable once indexed, see TMS-239
-            'article',
-            'author',
-            'centerpage-2009',
-            'gallery',
-            'image-group',
-            'infobox',
-            'link',
-            'playlist',
-            'portraitbox',
-            'rawxml',
-            'text',
-            'video',
-            'volume'
-        }
         result = []
-        for name, interface in zope.component.getUtilitiesFor(
-                zeit.cms.interfaces.ICMSContentType):
-            type_ = interface.queryTaggedValue('zeit.cms.type') or name
-            if type_ not in whitelist:
+        for name in self.CONTENT_TYPES:
+            declaration = zope.component.queryUtility(
+                zeit.cms.interfaces.ITypeDeclaration, name=name)
+            if declaration is None:
+                # Should happen only in tests that don't have much ZCML loaded.
                 continue
+            type_ = declaration.interface.queryTaggedValue(
+                'zeit.cms.type') or name
             title = zope.i18n.translate(
-                interface.queryTaggedValue('zeit.cms.title') or type_,
-                context=self.request)
+                declaration.interface.queryTaggedValue(
+                    'zeit.cms.title') or type_, context=self.request)
             result.append(dict(
                 title=title,
                 type=type_,
