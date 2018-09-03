@@ -186,8 +186,6 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(None, view.header_image)
 
     def test_layout_with_image_pattern_shows_header_image(self):
-        # the header image is rendered above all columns, so it spans columns
-        # (which is needed for multi-column layouts)
         view = self.view(self.create_teaserblock(layout='large'))
         self.assertEqual(
             'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
@@ -197,7 +195,7 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         block = self.cp['lead'].create_item('teaser')
         block.insert(0, self.repository['2007'])
         view = self.view(block)
-        self.assertEqual('2007', view.columns[0][0]['texts'][0]['content'])
+        self.assertEqual('2007', view.teasers[0]['texts'][0]['content'])
 
     def test_quote_teaser_shows_citation_text_if_article_has_citation(self):
         article = self.create_article_with_citation()
@@ -205,9 +203,9 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
         quote_teaserblock.insert(0, article)
         view = self.view(quote_teaserblock)
-        self.assertEqual('Foo', view.columns[0][0]['texts'][2][
+        self.assertEqual('Foo', view.teasers[0]['texts'][2][
             'content'])
-        self.assertEqual('Zitat:', view.columns[0][0]['texts'][1][
+        self.assertEqual('Zitat:', view.teasers[0]['texts'][1][
             'content'])
 
     def test_teaser_with_non_quote_layout_shows_teaser_text(
@@ -219,9 +217,9 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         quote_teaserblock = self.create_teaserblock('large')
         quote_teaserblock.insert(0, article)
         view = self.view(quote_teaserblock)
-        self.assertEqual('Bar', view.columns[0][0]['texts'][1][
+        self.assertEqual('Bar', view.teasers[0]['texts'][1][
             'content'])
-        self.assertEqual('Baz', view.columns[0][0]['texts'][2][
+        self.assertEqual('Baz', view.teasers[0]['texts'][2][
             'content'])
 
     def test_quote_teaser_without_quote_in_article_shows_teaser_text(
@@ -233,7 +231,7 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
         quote_teaserblock.insert(0, article)
         view = self.view(quote_teaserblock)
-        self.assertEqual('Bar', view.columns[0][0]['texts'][1][
+        self.assertEqual('Bar', view.teasers[0]['texts'][1][
             'content'])
-        self.assertEqual('Baz', view.columns[0][0]['texts'][2][
+        self.assertEqual('Baz', view.teasers[0]['texts'][2][
             'content'])

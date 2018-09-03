@@ -45,11 +45,6 @@ class ITeaserBlockLayout(zope.interface.Interface):
     title = zope.schema.TextLine(title=u'Human readable title.')
     image_pattern = zope.schema.ASCIILine(
         title=u'A match for the image to use in this layout.')
-    columns = zope.schema.Int(
-        title=u'Columns',
-        min=1,
-        max=2,
-        default=1)
     areas = zope.schema.Set(
         title=u'Kinds of areas where this layout is allowed')
     default_in_areas = zope.schema.Set(
@@ -68,12 +63,11 @@ class BlockLayout(AllowedMixin):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1, default=False, available=None,
+                 areas=None, default=False, available=None,
                  types=None, is_leader=False):
         super(BlockLayout, self).__init__(id, title, available, types)
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
-        self.columns = columns
         self.default_in_areas = default
         self.is_leader = is_leader
 
@@ -142,13 +136,10 @@ class TeaserBlockLayoutSource(
             g = node.get
             areas = g('areas')
             areas = areas.split()
-            columns = g('columns', 1)
-            if columns:
-                columns = int(columns)
             id = node.get(self.attribute)
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
-                g('image_pattern'), areas, columns, g('default', ''),
+                g('image_pattern'), areas, g('default', ''),
                 g('available', None), g('types', None), g('is_leader', False))
         return result
 

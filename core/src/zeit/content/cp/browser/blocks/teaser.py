@@ -20,9 +20,6 @@ import zope.lifecycleevent
 import zope.interface
 
 
-COLUMN_ID = 'column://'
-
-
 class EditLayout(object):
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
@@ -97,7 +94,7 @@ class Display(zeit.cms.browser.view.Base):
         return ' '.join(css)
 
     def update(self):
-        teasers = []
+        self.teasers = []
         self.header_image = None
         for i, content in enumerate(self.context):
             try:
@@ -112,16 +109,9 @@ class Display(zeit.cms.browser.view.Base):
             if i == 0:
                 self.header_image = self.get_image(content)
 
-            teasers.append(dict(
+            self.teasers.append(dict(
                 texts=texts,
                 uniqueId=content.uniqueId))
-
-        columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
-        idx = 0
-        self.columns = []
-        for amount in columns:
-            self.columns.append(teasers[idx:idx + amount])
-            idx += amount
 
     def get_image(self, content, image_pattern=None):
         if image_pattern is None:
@@ -254,18 +244,6 @@ class EditContents(zeit.cms.browser.view.Base):
                 viewable=bool(url),
             ))
 
-        columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
-        if len(columns) == 2:
-            left = columns[0]
-            teasers.insert(left, dict(
-                css_class='edit-bar column-separator',
-                deletable=False,
-                editable=False,
-                teaserTitle=_('^ Left | Right v'),
-                uniqueId=COLUMN_ID,
-                viewable=False,
-            ))
-
         return teasers
 
 
@@ -299,16 +277,7 @@ class UpdateOrder(zeit.edit.browser.view.Action):
     keys = zeit.edit.browser.view.Form('keys', json=True)
 
     def update(self):
-        keys = self.keys
-        try:
-            left = keys.index(COLUMN_ID)
-        except ValueError:
-            left = None
-        else:
-            del keys[left]
-            cols = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
-            cols[0] = left
-        self.context.updateOrder(keys)
+        self.context.updateOrder(self.keys)
         zope.event.notify(
             zope.lifecycleevent.ObjectModifiedEvent(self.context))
 

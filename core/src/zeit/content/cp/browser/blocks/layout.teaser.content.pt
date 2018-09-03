@@ -6,11 +6,10 @@
   <img tal:condition="view/header_image"
        tal:attributes="src view/header_image" />
 
-  <div class="teaser-list"
-       tal:repeat="teasers view/columns">
+  <div class="teaser-list">
 
     <div class="teaser"
-         tal:repeat="teaser teasers">
+         tal:repeat="teaser view/teasers">
 
       <div tal:repeat="item teaser/texts"
            tal:attributes="class item/css_class"

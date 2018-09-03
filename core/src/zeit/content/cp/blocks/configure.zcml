@@ -16,16 +16,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <adapter factory=".teaser.ColumnSpec" trusted="yes" />
-  <class class=".teaser.ColumnSpec">
-    <require
-      interface="..interfaces.IReadTeaserBlockColumns"
-      permission="zope.View" />
-    <require
-      interface="..interfaces.IWriteTeaserBlockColumns"
-      permission="zeit.EditContent" />
-  </class>
-
   <class class=".automatic.AutomaticTeaserBlock">
     <require
       interface="..interfaces.IReadAutomaticTeaserBlock"

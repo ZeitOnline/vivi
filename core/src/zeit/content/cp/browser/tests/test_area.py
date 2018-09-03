@@ -312,7 +312,7 @@ class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
         params = {'kind': 'ranking', 'areas': [{
             'kind': 'ranking',
             'apply_teaser_layouts_automatically': 'true',
-            'first_teaser_layout': 'leader-two-columns',
+            'first_teaser_layout': 'leader-upright',
         }]}
         self.browser.open(
             'body/landing-zone-drop-module?order=top&block_type=region'
@@ -322,4 +322,4 @@ class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
         area = cp.body.values()[0].values()[0]
         self.assertEqual(True, area.apply_teaser_layouts_automatically)
         self.assertEqual(
-            'leader-two-columns', area.first_teaser_layout.id)
+            'leader-upright', area.first_teaser_layout.id)
