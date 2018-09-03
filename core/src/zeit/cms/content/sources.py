@@ -66,12 +66,15 @@ class XMLSource(
         # newly created objects do not have their marker interfaces yet when
         # they are assigned the default value, which would lead to
         # ConstraintNotSatisfied errors.
-        iface = node.get('available', 'zope.interface.Interface')
-        try:
-            iface = zope.dottedname.resolve.resolve(iface)
-        except ImportError:
-            return False
-        return iface.providedBy(context)
+        available = node.get('available', 'zope.interface.Interface')
+        for iface in available.split():
+            try:
+                iface = zope.dottedname.resolve.resolve(iface)
+            except ImportError:
+                continue
+            if iface.providedBy(context):
+                return True
+        return False
 
     def getTitle(self, context, value):
         __traceback_info__ = (value, )
@@ -160,18 +163,23 @@ class AllowedBase(object):
         self.id = id
         self.title = title
 
+        self.available_ifaces = []
         if available is None:
             available = 'zope.interface.Interface'
-        try:
-            available = zope.dottedname.resolve.resolve(available)
-        except ImportError:
-            available = None
-        self.available_iface = available
+        for iface in available.split():
+            try:
+                self.available_ifaces.append(
+                    zope.dottedname.resolve.resolve(available))
+            except ImportError:
+                continue
 
     def is_allowed(self, context):
-        if self.available_iface is None:
+        if not self.available_ifaces:
             return False
-        return self.available_iface.providedBy(context)
+        for iface in self.available_ifaces:
+            if iface.providedBy(context):
+                return True
+        return False
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(

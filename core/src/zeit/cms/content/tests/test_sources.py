@@ -17,6 +17,7 @@ class ExampleSource(zeit.cms.content.sources.XMLSource):
 <items>
   <item id="one">One</item>
   <item id="two" available="zeit.cms.interfaces.ICMSContent">Two</item>
+  <item id="three" available="zeit.cms.interfaces.IAsset">Three</item>
 </items>
 """)
 
@@ -52,6 +53,12 @@ class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         source = UnresolveableSource().factory
         context = Mock()
         self.assertEqual([], source.getValues(context))
+
+    def test_available_can_list_multiple_interfaces_separated_by_space(self):
+        source = ExampleSource().factory
+        context = Mock()
+        zope.interface.alsoProvides(context, zeit.cms.interfaces.IAsset)
+        self.assertEqual(['one', 'two', 'three'], source.getValues(context))
 
 
 class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
