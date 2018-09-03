@@ -66,12 +66,7 @@ class XMLSource(
         # newly created objects do not have their marker interfaces yet when
         # they are assigned the default value, which would lead to
         # ConstraintNotSatisfied errors.
-        available = node.get('available', 'zope.interface.Interface')
-        for iface in available.split():
-            try:
-                iface = zope.dottedname.resolve.resolve(iface)
-            except ImportError:
-                continue
+        for iface in parse_available_interface_list(node.get('available')):
             if iface.providedBy(context):
                 return True
         return False
@@ -89,6 +84,18 @@ class XMLSource(
 
     def _get_title_for(self, node):
         return unicode(node.text).strip()
+
+
+def parse_available_interface_list(text):
+    result = []
+    if text is None:
+        text = 'zope.interface.Interface'
+    for iface in text.split():
+        try:
+            result.append(zope.dottedname.resolve.resolve(iface))
+        except ImportError:
+            continue
+    return result
 
 
 class SimpleXMLSource(
@@ -162,16 +169,7 @@ class AllowedBase(object):
     def __init__(self, id, title, available):
         self.id = id
         self.title = title
-
-        self.available_ifaces = []
-        if available is None:
-            available = 'zope.interface.Interface'
-        for iface in available.split():
-            try:
-                self.available_ifaces.append(
-                    zope.dottedname.resolve.resolve(available))
-            except ImportError:
-                continue
+        self.available_ifaces = parse_available_interface_list(available)
 
     def is_allowed(self, context):
         if not self.available_ifaces:
