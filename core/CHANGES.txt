@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.15.0 (unreleased)
+3.15.0 (2018-09-03)
 -------------------
 
 - ZON-4846: Support multiple values for `available` in XMLSource
