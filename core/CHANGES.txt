@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.2.8 (unreleased)
+2.2.8 (2018-09-04)
 ------------------
 
 - ZON-4854: Grant zeit.cms.admin.View to CvD
