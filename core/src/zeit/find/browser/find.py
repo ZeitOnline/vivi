@@ -93,20 +93,16 @@ class SearchForm(JSONView):
     def types(self):
         result = []
         for name in self.CONTENT_TYPES:
-            declaration = zope.component.queryUtility(
+            typ = zope.component.queryUtility(
                 zeit.cms.interfaces.ITypeDeclaration, name=name)
-            if declaration is None:
+            if typ is None:
                 # Should happen only in tests that don't have much ZCML loaded.
                 continue
-            type_ = declaration.interface.queryTaggedValue(
-                'zeit.cms.type') or name
-            title = zope.i18n.translate(
-                declaration.interface.queryTaggedValue(
-                    'zeit.cms.title') or type_, context=self.request)
-            result.append(dict(
-                title=title,
-                type=type_,
-            ))
+            result.append({
+                'title': zope.i18n.translate(
+                    typ.title or typ.type, context=self.request),
+                'type': typ.type,
+            })
         return sorted(result, key=lambda r: r['title'])
 
 
