@@ -198,6 +198,10 @@
     role="zeit.CvD"
     permission="zeit.content.cp.Delete"
     />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.cms.admin.View"
+    />
 
   <!-- SEO grants -->
   <grant
