@@ -1,14 +1,12 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
-import pysolr
 import zeit.cms.content.browser.widget
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zeit.solr.interfaces
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -55,19 +53,6 @@ class EditOverflow(zeit.content.cp.browser.view.EditBox):
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
             'block_max', 'overflow_into')
-
-
-class SolrQueryWidget(zope.formlib.widgets.TextAreaWidget):
-
-    def _toFieldValue(self, value):
-        value = super(SolrQueryWidget, self)._toFieldValue(value)
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        try:
-            solr.search(value, rows=1)
-        except pysolr.SolrError:
-            raise zope.formlib.interfaces.ConversionError(
-                _('Invalid solr query'), value)
-        return value
 
 
 class DynamicCombinationWidget(
@@ -188,12 +173,11 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IArea).select(
-            'count', 'query', 'query_order', 'raw_query', 'raw_order',
+            'count', 'query', 'query_order',
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
             'is_complete_query',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
             'referenced_topicpage', 'topicpage_filter')
-    form_fields['raw_query'].custom_widget = SolrQueryWidget
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
@@ -208,8 +192,6 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         gocept.form.grouped.Fields(
             _('automatic-area-type-topicpage'), (
                 'referenced_topicpage', 'topicpage_filter')),
-        gocept.form.grouped.Fields(
-            _('automatic-area-type-query'), ('raw_query', 'raw_order')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-elasticsearch-query'),
              ('elasticsearch_raw_query', 'is_complete_query',

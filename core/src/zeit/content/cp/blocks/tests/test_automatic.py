@@ -1,9 +1,8 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
-import pysolr
 import transaction
 import zeit.content.cp.testing
-import zeit.solr.interfaces
+import zeit.retresco.interfaces
 import zope.component
 
 
@@ -12,7 +11,8 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super(AutomaticTeaserBlockTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        self.elastic = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
 
     def test_materialize_creates_normal_teaser_block(self):
         self.repository['t1'] = ExampleContentType()
@@ -23,9 +23,9 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         lead.automatic_type = 'query'
 
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/t1'),
-            dict(uniqueId='http://xml.zeit.de/t2')], 2)
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/t1'}, {'url': '/t2'}])
+        self.elastic.search.return_value.hits = 2
         lead.values()[0].materialize()
 
         # since `AutomaticArea.values()` is cached on the transaction boundary
@@ -46,7 +46,8 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         duo_region.automatic = True
         duo_region.automatic_type = 'query'
 
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/t1')], 1)
+        self.elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/t1'}])
+        self.elastic.search.return_value.hits = 1
         teaser = duo_region.values()[0]
         self.assertEqual('two-side-by-side', teaser.layout.id)

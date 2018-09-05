@@ -11,8 +11,6 @@ import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-import zeit.solr.interfaces
-import zeit.solr.query
 import zope.component
 import zope.interface
 
@@ -181,78 +179,6 @@ class ContentQuery(grok.Adapter):
                             area))
                 seen.update(area_manual_content[area])
         return seen
-
-
-class SolrContentQuery(ContentQuery):
-
-    grok.name('query')
-
-    FIELDS = ' '.join([
-        'authors',
-        'graphical-preview-url',
-        'icon',
-        'keywords',
-        'raw-tags',
-        'last-semantic-change',
-        'product_id',
-        'published',
-        'range',
-        'range_details',
-        'ressort',
-        'serie',
-        'subtitle',
-        'supertitle',
-        'teaser_text',
-        'teaser_title',
-        'title',
-        'type',
-        'uniqueId',
-        'volume',
-        'year',
-    ])
-
-    def __init__(self, context):
-        super(SolrContentQuery, self).__init__(context)
-        self.query = self.context.raw_query
-        self.order = self.context.raw_order
-
-    def __call__(self):
-        self.total_hits = 0
-        result = []
-        try:
-            solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-            response = solr.search(
-                self.query,
-                sort=self.order,
-                start=self.start,
-                rows=self.rows,
-                fl=self.FIELDS,
-                fq=self.filter_query)
-            self.total_hits = response.hits
-            for item in response:
-                content = self._resolve(item)
-                if content is not None:
-                    result.append(content)
-        except Exception:
-            log.warning(
-                'Error during solr query %r for %s',
-                self.query, self.context.uniqueId, exc_info=True)
-        return result
-
-    def _resolve(self, solr_result):
-        return zeit.cms.interfaces.ICMSContent(solr_result['uniqueId'], None)
-
-    @property
-    def filter_query(self):
-        """Performs deduplication of results. We basically add more conditions
-        to the query to say "not this one or that one or those..." for all
-        those teasers that already exist on the CP.
-        """
-        Q = zeit.solr.query
-        if not self.context.hide_dupes or not self.existing_teasers:
-            return Q.any_value()
-        return Q.not_(Q.or_(*[Q._field('uniqueId', '"%s"' % x.uniqueId)
-                              for x in self.existing_teasers]))
 
 
 class ElasticsearchContentQuery(ContentQuery):

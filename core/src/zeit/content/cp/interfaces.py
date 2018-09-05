@@ -506,12 +506,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         source=TopicpageFilterSource(),
         required=False)
 
-    raw_query = zope.schema.Text(title=_('Raw query'), required=False)
-    raw_order = zope.schema.TextLine(
-        title=_('Sort order'),
-        default=u'date-first-released desc',
-        required=False)
-
     elasticsearch_raw_query = zope.schema.Text(
         title=_('Elasticsearch raw query'),
         required=False)
@@ -527,7 +521,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
-    raw_query.setTaggedValue('placeholder', ' ')
 
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
@@ -545,10 +538,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from TMS topicpage '
                     'requires a topicpage ID.')
-            if data.automatic_type == 'query':
-                error_message = _(
-                    'Automatic area with teaser from solr query '
-                    'requires a raw query.')
             if data.automatic_type == 'elasticsearch-query':
                 error_message = _(
                     'Automatic area with teaser from elasticsearch query '

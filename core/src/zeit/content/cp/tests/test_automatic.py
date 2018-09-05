@@ -4,7 +4,6 @@ from zeit.content.cp.interfaces import IRenderedArea
 import json
 import lxml.etree
 import mock
-import pysolr
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -14,232 +13,7 @@ import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-import zeit.solr.interfaces
 import zope.component
-
-
-class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
-
-    def setUp(self):
-        super(AutomaticAreaSolrTest, self).setUp()
-        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-
-    def tests_values_contain_only_blocks_with_content(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 5
-        lead.automatic = True
-        lead.automatic_type = 'query'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        self.assertEqual(0, len(IRenderedArea(lead).values()))
-
-    def tests_ignores_items_with_errors(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 2
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        return_values = [pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/notfound'),
-            dict(uniqueId='http://xml.zeit.de/testcontent')], 2),
-            pysolr.Results([], 0)
-        ]
-        self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
-        self.assertEqual(1, len(IRenderedArea(lead).values()))
-
-    def test_only_marked_articles_are_put_into_leader_block(self):
-        self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
-
-        lead = self.repository['cp']['lead']
-        lead.count = 2
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/normal'),
-            dict(uniqueId='http://xml.zeit.de/leader')], 2)
-        result = IRenderedArea(lead).values()
-        self.assertEqual(
-            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
-
-    def test_no_marked_articles_available_leader_block_gets_normal_article(
-            self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
-        result = IRenderedArea(lead).values()
-        leader = result[0]
-        self.assertEqual(
-            'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
-
-    def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/testcontent')], 1)
-        result = IRenderedArea(lead).values()
-        leader = result[0]
-        self.assertEqual('buttons', leader.layout.id)
-        self.assertEqual('leader', lead.values()[0].layout.id)
-        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
-            zeit.content.cp.interfaces.IRenderedXML(leader),
-            pretty_print=True))
-
-    def test_leader_block_takes_everything_if_area_configured(self):
-        self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
-
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.require_lead_candidates = False
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/normal'),
-            dict(uniqueId='http://xml.zeit.de/leader')], 2)
-        result = IRenderedArea(lead).values()
-        self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
-
-    def test_renders_xml_with_filled_in_blocks(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)], 1)
-        xml = zeit.content.cp.interfaces.IRenderedXML(lead)
-        self.assertEllipsis(
-            """\
-<region...>
-  <container...type="teaser"...>
-    <block...href="http://xml.zeit.de/testcontent"...""",
-            lxml.etree.tostring(xml, pretty_print=True))
-
-    def test_cms_content_iter_returns_filled_in_blocks(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.automatic_type = 'query'
-
-        self.solr.search.return_value = pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/testcontent',
-                 lead_candidate=True)], 1)
-        content = zeit.edit.interfaces.IElementReferences(lead)
-        self.assertEqual(
-            ['http://xml.zeit.de/testcontent'],
-            [x.uniqueId for x in content])
-
-    def test_stores_query_in_xml(self):
-        lead = self.repository['cp']['lead']
-        self.assertEqual((), lead.query)
-        lead.query = (
-            ('channels', 'International', 'Nahost'),
-            ('channels', 'Wissen', None))
-        self.assertEllipsis(
-            """<...
-            <query>
-              <condition...type="channels"...>International Nahost</condition>
-              <condition...type="channels"...>Wissen</condition>
-            </query>...""", lxml.etree.tostring(lead.xml, pretty_print=True))
-
-    def test_which_query_data_is_used_depends_on_automatic_type(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.raw_query = 'raw'
-        lead.automatic_type = 'query'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        self.assertEqual('raw', self.solr.search.call_args[0][0])
-
-    def test_raw_query_order_defaults_to_first_released(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.raw_query = 'raw'
-        lead.automatic_type = 'query'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        self.assertEqual(
-            'date-first-released desc', self.solr.search.call_args[1]['sort'])
-
-    def test_raw_query_order_can_be_set(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.raw_query = 'raw'
-        lead.raw_order = 'order'
-        lead.automatic_type = 'query'
-        self.solr.search.return_value = pysolr.Results([], 0)
-        IRenderedArea(lead).values()
-        self.assertEqual('order', self.solr.search.call_args[1]['sort'])
-
-    def test_returns_no_content_on_solr_error(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.automatic = True
-        lead.raw_query = 'raw'
-        lead.automatic_type = 'query'
-        self.solr.search.side_effect = RuntimeError('provoked')
-        auto = IRenderedArea(lead)
-        self.assertEqual(0, len(auto.values()))
-        self.assertEqual(0, auto._content_query.total_hits)
-
-    def test_turning_automatic_off_materializes_filled_in_blocks(self):
-        self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
-
-        lead = self.repository['cp']['lead']
-        lead.count = 5
-        lead.automatic = True
-        lead.automatic_type = 'query'
-        zope.component.getAdapter(
-            lead, zeit.edit.interfaces.IElementFactory, name='xml')()
-
-        empty = pysolr.Results([], 0)
-        return_values = [pysolr.Results([
-            dict(uniqueId='http://xml.zeit.de/normal'),
-            dict(uniqueId='http://xml.zeit.de/leader')], 2),
-            empty, empty, empty
-        ]
-        self.solr.search.side_effect = lambda *args, **kw: return_values.pop(0)
-        lead.automatic = False
-
-        result = lead.values()
-        self.assertEqual(
-            ['teaser', 'teaser', 'xml'], [x.type for x in result])
-        self.assertEqual(
-            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
-
-    def test_checkin_smoke_test(self):
-        self.solr.search.return_value = pysolr.Results([], 0)
-        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
-            lead = cp['lead']
-            lead.count = 1
-            lead.automatic = True
-            lead.automatic_type = 'query'
 
 
 class AutomaticAreaElasticsearchTest(
@@ -255,6 +29,128 @@ class AutomaticAreaElasticsearchTest(
         self.repository['cp'] = self.cp
         self.elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
+
+    def tests_values_contain_only_blocks_with_content(self):
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        self.assertEqual(0, len(IRenderedArea(self.area).values()))
+
+    def tests_ignores_items_with_errors(self):
+        self.area.count = 2
+        partial = zeit.cms.interfaces.Result(
+            [{'url': '/notfound'}, {'url': '/testcontent'}])
+        partial.hits = 2
+        return_values = [partial, zeit.cms.interfaces.Result()]
+        self.elasticsearch.search.side_effect = (
+            lambda *args, **kw: return_values.pop(0))
+        self.assertEqual(1, len(IRenderedArea(self.area).values()))
+
+    def test_only_marked_articles_are_put_into_leader_block(self):
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
+
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/normal'}, {'url': '/leader'}])
+        self.elasticsearch.search.return_value.hits = 2
+        result = IRenderedArea(self.area).values()
+        self.assertEqual(
+            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
+
+    def test_no_marked_articles_available_leader_block_gets_normal_article(
+            self):
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
+        self.elasticsearch.search.return_value.hits = 1
+        result = IRenderedArea(self.area).values()
+        leader = result[0]
+        self.assertEqual(
+            'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
+
+    def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
+        self.area.kind = 'major'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
+        self.elasticsearch.search.return_value.hits = 1
+        result = IRenderedArea(self.area).values()
+        leader = result[0]
+        self.assertEqual('buttons', leader.layout.id)
+        self.assertEqual('leader', self.area.values()[0].layout.id)
+        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
+            zeit.content.cp.interfaces.IRenderedXML(self.area),
+            pretty_print=True))
+
+    def test_leader_block_takes_everything_if_area_configured(self):
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
+
+        self.area.require_lead_candidates = False
+
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/normal'}, {'url': '/leader'}])
+        self.elasticsearch.search.return_value.hits = 2
+        result = IRenderedArea(self.area).values()
+        self.assertEqual(
+            'http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
+
+    def test_renders_xml_with_filled_in_blocks(self):
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
+        self.elasticsearch.search.return_value.hits = 1
+        xml = zeit.content.cp.interfaces.IRenderedXML(self.area)
+        self.assertEllipsis(
+            """\
+<region...>
+  <container...type="teaser"...>
+    <block...href="http://xml.zeit.de/testcontent"...""",
+            lxml.etree.tostring(xml, pretty_print=True))
+
+    def test_cms_content_iter_returns_filled_in_blocks(self):
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
+        self.elasticsearch.search.return_value.hits = 1
+        content = zeit.edit.interfaces.IElementReferences(self.area)
+        self.assertEqual(
+            ['http://xml.zeit.de/testcontent'],
+            [x.uniqueId for x in content])
+
+    def test_turning_automatic_off_materializes_filled_in_blocks(self):
+        self.repository['normal'] = ExampleContentType()
+        leader = ExampleContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
+
+        zope.component.getAdapter(
+            self.area, zeit.edit.interfaces.IElementFactory, name='xml')()
+
+        full = zeit.cms.interfaces.Result(
+            [{'url': '/normal'}, {'url': '/leader'}])
+        full.hits = 2
+        empty = zeit.cms.interfaces.Result()
+        return_values = [full, empty, empty, empty]
+        self.elasticsearch.search.side_effect = (
+            lambda *args, **kw: return_values.pop(0))
+        self.area.automatic = False
+
+        result = self.area.values()
+        self.assertEqual(
+            ['teaser', 'teaser', 'xml'], [x.type for x in result])
+        self.assertEqual(
+            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
+
+    def test_checkin_smoke_test(self):
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
+            lead = cp['lead']
+            lead.count = 1
+            lead.automatic = True
+            lead.automatic_type = 'query'
 
     def test_it_returns_no_content_on_elasticsearch_error(self):
         lead = self.repository['cp']['lead']
@@ -514,8 +410,6 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic = True
         self.area.automatic_type = 'centerpage'
 
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-
     def test_returns_teasers_from_referenced_center_page(self):
         self.assertEqual([
             'http://xml.zeit.de/t1',
@@ -558,8 +452,6 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = self.create_and_checkout_centerpage()
         self.area = self.create_automatic_area(self.cp)
         self.area.referenced_cp = self.repository['cp_with_teaser']
-
-        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
 
     def create_automatic_area(self, cp, count=3, type='centerpage'):
         area = cp['feature'].create_item('area')
@@ -697,19 +589,6 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             self.assertUniqueIds(a1, '/teaser-0', '/teaser-1')
             self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
             self.assertUniqueIds(a3, '/teaser-5', '/teaser-6')
-
-    def test_solr_content_query_filters_duplicates(self):
-        self.area.automatic_type = 'query'
-
-        lead = self.cp['feature']['lead'].create_item('teaser')
-        lead.append(self.repository['t1'])
-        lead.append(self.repository['t2'])
-
-        IRenderedArea(self.area).values()
-        self.assertEqual(
-            'NOT (uniqueId:"http://xml.zeit.de/t1"'
-            ' OR uniqueId:"http://xml.zeit.de/t2")',
-            self.solr.search.call_args[1]['fq'])
 
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'

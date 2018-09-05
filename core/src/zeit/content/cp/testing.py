@@ -46,23 +46,6 @@ CP_LAYER = zeit.cms.testing.ZCMLLayer(
     product_config)
 
 
-# We cannot use a layer from zeit.solr.testing because importing that would
-# create an import cycle with zeit.content.article.testing, sigh.
-class SolrMockLayer(plone.testing.Layer):
-
-    def testSetUp(self):
-        self['solr'] = mock.Mock()
-        self['solr'].search.return_value = []
-        zope.interface.alsoProvides(self['solr'], zeit.solr.interfaces.ISolr)
-        zope.component.getSiteManager().registerUtility(self['solr'])
-
-    def testTearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self['solr'])
-        del self['solr']
-
-SOLR_MOCK_LAYER = SolrMockLayer()
-
-
 # We do not want to use a layer from zeit.retresco.testing because we want to
 # mock the whole utility and not only the connection to Elasticsearch.
 class ElasticsearchMockLayer(plone.testing.Layer):
@@ -84,7 +67,7 @@ ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
 ZCML_LAYER = plone.testing.Layer(
-    bases=(CP_LAYER, SOLR_MOCK_LAYER, ELASTICSEARCH_MOCK_LAYER),
+    bases=(CP_LAYER, ELASTICSEARCH_MOCK_LAYER),
     name='ZCMLLayer', module=__name__)
 
 

@@ -545,13 +545,6 @@ buttons, we only can get a different label if we override it here. */
     margin-bottom: 0.5em;
 }
 
-.type-centerpage-2009 .fieldname-raw_query textarea {
-  width: 95%;  /* XXX unclear why 100% produces more than 100% width. */
-}
-.type-centerpage-2009 .fieldname-raw_order input {
-  width: 95%;
-}
-
 
 /* Display SVGs of Schematic Previews side by side and mark the active area. */
 

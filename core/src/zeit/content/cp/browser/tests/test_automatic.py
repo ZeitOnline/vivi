@@ -2,8 +2,6 @@ import lxml.etree
 import transaction
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zeit.solr.interfaces
-import zope.component
 import zope.security.management
 
 
@@ -19,32 +17,6 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         zope.security.management.endInteraction()
         zeit.cms.testing.create_interaction('zope.mgr')
 
-    def test_stores_solr_query_properties_in_xml(self):
-        b = self.browser
-        zeit.content.cp.browser.testing.create_cp(b)
-        b.open('contents')
-        b.getLink('Edit block automatic').click()
-        b.getControl('Amount of teasers').value = '5'
-        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
-        b.getControl(name='form.automatic').displayValue = ['automatic']
-        b.getControl('automatic-area-type', index=0).displayValue = [
-            'automatic-area-type-query']
-        b.getControl('Raw query').value = 'foo'
-        b.getControl('Sort order', index=1).value = 'bar'
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        solr.search.return_value = []
-        b.getControl('Apply').click()
-        self.assertEllipsis('...Updated on...', b.contents)
-
-        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-        cp = list(wc.values())[0]
-        self.assertEllipsis(
-            """\
-<region...count="5" automatic="True" automatic_type="query"...>...
-<raw_query>foo</raw_query>...
-<raw_order>bar</raw_order>...""",
-            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
-
     def test_stores_elasticsearch_query_properties_in_xml(self):
         b = self.browser
         zeit.content.cp.browser.testing.create_cp(b)
@@ -57,7 +29,7 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
             'elasticsearch-query']
         b.getControl('Elasticsearch raw query').value = (
             '{"query": {"match_all": {}}}')
-        b.getControl('Sort order', index=2).value = 'date:desc'
+        b.getControl('Sort order', index=1).value = 'date:desc'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 

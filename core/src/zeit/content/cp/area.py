@@ -155,12 +155,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.query_order', zeit.content.cp.interfaces.IArea['query_order'],
         use_default=True)
 
-    raw_query = zeit.cms.content.property.ObjectPathProperty(
-        '.raw_query', zeit.content.cp.interfaces.IArea['raw_query'])
-    raw_order = zeit.cms.content.property.ObjectPathProperty(
-        '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
-        use_default=True)
-
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
         zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
@@ -404,7 +398,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         and same attributes (e.g. `layout`).
 
         (Make sure this method only runs when #automatic is enabled, otherwise
-        IRenderedArea will not retrieve results from SOLR / referenced CP.)
+        IRenderedArea will not retrieve results from the content query source.)
 
         """
         order = self.keys()

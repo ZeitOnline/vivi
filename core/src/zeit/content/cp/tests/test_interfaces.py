@@ -23,9 +23,9 @@ class AreaValidationTest(
         with self.assertRaises(zeit.cms.interfaces.ValidationError):
             self.interface.validateInvariants(self.area)
 
-    def test_automatic_using_solr_requires_no_referenced_centerpage(self):
-        self.area.automatic_type = 'query'
-        self.area.raw_query = 'foo'
+    def test_automatic_using_other_requires_no_referenced_centerpage(self):
+        self.area.automatic_type = 'elasticsearch-query'
+        self.area.elasticsearch_raw_query = '{"query": {}}'
         self.area.referenced_cp = None
         with self.assertNothingRaised():
             self.interface.validateInvariants(self.area)
