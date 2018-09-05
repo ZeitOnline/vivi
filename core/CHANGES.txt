@@ -4,7 +4,7 @@ zeit.content.author changes
 2.9.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- TMS-214: Remove dependency to zeit.solr (should have happened in 2.9.3)
 
 
 2.9.3 (2018-08-14)
