@@ -24,6 +24,7 @@ import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
+import zeit.retresco.interfaces
 import zope.i18n
 import zope.interface
 
@@ -41,7 +42,8 @@ zope.security.checker.BasicTypes[fractions.Fraction] = (
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
-                  zeit.edit.interfaces.IContainer):
+                  zeit.edit.interfaces.IContainer,
+                  zeit.retresco.interfaces.ISkipEnrich):
 
     type = zope.schema.Choice(
         title=_('CP type'),
