@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.26.0 (unreleased)
+3.26.0 (2018-09-05)
 -------------------
 
 - ZON-4894: Remove solr support
