@@ -17,7 +17,6 @@ setup(
     install_requires=[
         'grokcore.component',
         'mock',
-        'pysolr',
         'setuptools',
         'zeit.cms >= 3.0.dev0',
         'zeit.content.article >= 3.21.1.dev0',
