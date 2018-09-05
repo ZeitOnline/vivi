@@ -5,7 +5,6 @@ import plone.testing
 import transaction
 import zeit.cms.testing
 import zeit.content.video.testing
-import zeit.solr.testing
 import zeit.workflow.testing
 
 
@@ -35,7 +34,6 @@ cms_product_config = zeit.cms.testing.cms_product_config.replace(
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
     cms_product_config +
-    zeit.solr.testing.product_config +
     zeit.workflow.testing.product_config +
     product_config))
 
@@ -48,7 +46,7 @@ def update_repository(root):
 
 class BrightcoveLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER)
+    defaultBases = (ZCML_LAYER,)
 
     def setUp(self):
         self.cmsapi_patch = mock.patch(

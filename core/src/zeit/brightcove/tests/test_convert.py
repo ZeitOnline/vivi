@@ -4,6 +4,7 @@ from zeit.content.video.video import Video as CMSVideo
 import mock
 import pytz
 import zeit.brightcove.testing
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.video.playlist
 

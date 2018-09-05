@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.12.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4894: Remove unused solr dependency
 
 
 2.12.6 (2018-05-08)
