@@ -4,7 +4,7 @@ zeit.content.video changes
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4894: Remove solr support
 
 
 3.1.0 (2018-06-18)
