@@ -1,10 +1,10 @@
 zeit.retresco changes
 =====================
 
-1.31.2 (unreleased)
+1.32.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4820: Add `ISkipEnrich` marker interface that skips automatic enrich on checkin
 
 
 1.31.1 (2018-08-16)

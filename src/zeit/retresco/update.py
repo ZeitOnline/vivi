@@ -1,4 +1,5 @@
 from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
+from zeit.retresco.interfaces import ISkipEnrich
 import argparse
 import gocept.runner
 import grokcore.component as grok
@@ -93,7 +94,7 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         log.info('Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
                  content.uniqueId, uuid, enrich, update_keywords, publish)
         try:
-            if enrich:
+            if enrich and not ISkipEnrich.providedBy(content):
                 log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
                 body = response.get('body')
