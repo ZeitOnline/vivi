@@ -60,6 +60,13 @@ def index_on_publish(context, event):
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IRetractedEvent)
+def index_after_retract(context, event):
+    index_async.apply_async((context.uniqueId, False), countdown=5)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectRemovedEvent)
 def unindex_on_remove(context, event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
@@ -69,7 +76,7 @@ def unindex_on_remove(context, event):
 
 
 @zeit.cms.celery.task(bind=True, queuename='search')
-def index_async(self, uniqueId):
+def index_async(self, uniqueId, enrich=True):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
@@ -81,7 +88,9 @@ def index_async(self, uniqueId):
         has_keywords = meta is not None and meta.keywords
     try:
         index(
-            context, enrich=True, update_keywords=not has_keywords)
+            context,
+            enrich=enrich,
+            update_keywords=enrich and not has_keywords)
     except zeit.retresco.interfaces.TechnicalError:
         self.retry()
 
