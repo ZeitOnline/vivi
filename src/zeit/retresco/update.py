@@ -40,16 +40,22 @@ def index_after_add(event):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
     if event.publishing:
-        # Unfortunately we have to enrich here too, even though strictly
-        # speaking that "already happened" on checkin, to support the "checkin
-        # and publish immediately" use case -- since there publish likely
-        # happens *before* the index_async job created by checkin ran.
-        index(context, enrich=True)
-    else:
-        # XXX Work around race condition between celery/redis (applies already
-        # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
-        # the celery job *may* start executing before that happens), BUG-796.
-        index_async.apply_async((context.uniqueId,), countdown=5)
+        return
+    # XXX Work around race condition between celery/redis (applies already
+    # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
+    # the celery job *may* start executing before that happens), BUG-796.
+    index_async.apply_async((context.uniqueId,), countdown=5)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+def index_on_publish(context, event):
+    # Unfortunately we have to enrich here too, even though strictly
+    # speaking that "already happened" on checkin, to support the "checkin
+    # and publish immediately" use case -- since there publish likely
+    # happens *before* the index_async job created by checkin ran.
+    index(context, enrich=True)
 
 
 @grok.subscribe(
