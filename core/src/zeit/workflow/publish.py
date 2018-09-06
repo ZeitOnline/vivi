@@ -368,10 +368,6 @@ class PublishTask(PublishRetractTask):
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
 
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
-        timer.mark('Sent BeforePublishEvent for %s' % obj.uniqueId)
-
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
         info.date_last_published = datetime.now(pytz.UTC)
@@ -379,6 +375,14 @@ class PublishTask(PublishRetractTask):
         if not info.date_first_released:
             info.date_first_released = info.date_last_published
             timer.mark('Set date_first_released')
+
+        # XXX Yes this is not strictly _before_ publish. However, zeit.retresco
+        # needs this point in time to perform its indexing, and the other
+        # subscribers don't care either way, so it's probably not worth
+        # introducing two separate events.
+        zope.event.notify(
+            zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
+        timer.mark('Sent BeforePublishEvent for %s' % obj.uniqueId)
 
         new_obj = self.cycle(obj)
         return new_obj
