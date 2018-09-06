@@ -160,6 +160,11 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
         self.assertEqual([True], published)
 
+        content = self.repository['2006']['DSC00109_2.JPG']
+        zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
+        zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
+        self.assertEqual([True, True], published)
+
 
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
 
