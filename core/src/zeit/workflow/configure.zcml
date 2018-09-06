@@ -60,10 +60,4 @@
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
 
-  <!-- Old status -->
-  <adapter factory=".oldstatus.OldStatus" />
-  <adapter factory=".oldstatus.properties" />
-  <subscriber handler=".oldstatus.set_status" />
-  <subscriber handler=".oldstatus.remove_status" />
-
 </configure>
