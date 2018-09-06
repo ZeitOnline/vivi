@@ -46,6 +46,9 @@ def index_after_checkin(context, event):
         # happens *before* the index_async job created by checkin ran.
         index(context, enrich=True)
     else:
+        # XXX Work around race condition between celery/redis (applies already
+        # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
+        # the celery job *may* start executing before that happens), BUG-796.
         index_async.apply_async((context.uniqueId,), countdown=5)
 
 
