@@ -143,21 +143,22 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
 
-    layer = zeit.retresco.testing.CELERY_LAYER
-
     def setUp(self):
         super(UpdatePublishTest, self).setUp()
         self.tms = mock.Mock()
         self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_publish_should_index_with_published_true(self):
-        def index(content):
-            self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
+        published = []
+
+        def index(content, override_body=None):
+            published.append(zeit.cms.workflow.interfaces.IPublishInfo(
                 content).published)
         self.tms.index = index
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
+        self.assertEqual([True], published)
 
 
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
