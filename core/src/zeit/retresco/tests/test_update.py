@@ -165,6 +165,23 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
         self.assertEqual([True, True], published)
 
+    def test_retract_should_index_with_published_false(self):
+        published = []
+
+        def index(content, override_body=None):
+            published.append(zeit.cms.workflow.interfaces.IPublishInfo(
+                content).published)
+        self.tms.index = index
+        content = self.repository['testcontent']
+        zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
+        zeit.cms.workflow.interfaces.IPublish(content).retract(async=False)
+        self.assertEqual([False], published)
+
+        content = self.repository['2006']['DSC00109_2.JPG']
+        zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
+        zeit.cms.workflow.interfaces.IPublish(content).retract(async=False)
+        self.assertEqual([False, False], published)
+
 
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
 
