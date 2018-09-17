@@ -372,8 +372,7 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         }]
         text = zeit.retresco.connection._build_topic_redirects(pages)
         self.assertEllipsis(
-            '...location = /thema/berlin { return 301 '
-            'http://www.zeit.de/thema/hamburg; }...', text)
+            '.../thema/berlin = http://www.zeit.de/thema/hamburg\n', text)
 
 
 class SlowAdapter(requests.adapters.BaseAdapter):
