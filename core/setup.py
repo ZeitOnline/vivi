@@ -40,7 +40,7 @@ setup(
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video>=2.4.1.dev0',
         'zeit.edit >= 2.17.0.dev0',
-        'zeit.retresco >= 1.23.0.dev0',
+        'zeit.retresco >= 1.32.0.dev0',
         'zope.app.appsetup',
         'zope.app.generations',
         'zope.app.pagetemplate',

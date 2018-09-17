@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.26.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4820: Skip TMS enrich for CPs
 
 
 3.26.0 (2018-09-05)
