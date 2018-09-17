@@ -66,6 +66,15 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
                 pass
             self.assertTrue(index.apply_async.called)
 
+    def test_checkin_should_enrich_marked_content(self):
+        content = ExampleContentType()
+        zope.interface.alsoProvides(
+            content, zeit.retresco.interfaces.ISkipEnrich)
+        self.repository['t1'] = content
+        with zeit.cms.checkout.helper.checked_out(self.repository['t1']):
+            pass
+        self.assertFalse(self.tms.enrich.called)
+
     def test_folders_should_be_indexed_recursively(self):
         folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2007/01')
         zeit.retresco.update.index(folder)
