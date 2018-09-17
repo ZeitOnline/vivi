@@ -154,6 +154,16 @@ class IBody(zope.interface.Interface):
     """
 
 
+class ISkipEnrich(zope.interface.Interface):
+    """Marker interface to denote ICMSContent that should not be enriched
+    automatically.
+
+    Current example: centerpages provide this, because their body contains
+    no sensibly enricheable text (it's just control information), and thus
+    enriching them only wastes time.
+    """
+
+
 class ITMSContent(zeit.cms.interfaces.ICMSContent):
     """Adapts a TMS or Elasticsearch result dict to an ICMSContent object.
 
