@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.15.1 (unreleased)
+3.16.0 (2018-09-17)
 -------------------
 
 - ZON-4893: Move BeforePublishEvent after we update published and date_last_published,
