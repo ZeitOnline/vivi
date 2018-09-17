@@ -310,8 +310,6 @@ class Author(Converter):
                 'supertitle': self.context.summary,
                 'title': self.context.display_name,
                 'text': self.context.biography,
-            }, 'teaser': {
-                'title': self.context.display_name,
             }}
         }
 
