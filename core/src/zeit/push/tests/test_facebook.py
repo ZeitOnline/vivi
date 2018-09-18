@@ -27,11 +27,12 @@ class FacebookTest(zeit.push.testing.TestCase,
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
-    def tearDown(self):
-        for status in self.api.get_object(
-                cat='single', id='me', fields=['feed'])['feed']['data']:
-            if 'message' in status and self.nugget in status['message']:
-                self.api.delete(id=status['id'])
+    # Only relevant for the skipped test
+    # def tearDown(self):
+    #     for status in self.api.get_object(
+    #             cat='single', id='me', fields=['feed'])['feed']['data']:
+    #         if 'message' in status and self.nugget in status['message']:
+    #             self.api.delete(id=status['id'])
 
     @unittest.skip('Facebook says the content was reported as abusive')
     def test_send_posts_status(self):
