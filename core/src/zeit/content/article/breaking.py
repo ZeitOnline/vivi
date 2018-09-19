@@ -4,6 +4,7 @@ import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
+import zeit.push.banner
 
 
 class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
@@ -29,8 +30,8 @@ class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
     def title(self, value):
         self.context.title = value
 
-    def banner_matches(self, banner):
-        return IBreakingNewsBody(banner).article_id == self.context.uniqueId
+    def banner_matches(self):
+        return self.context == zeit.push.banner.get_breaking_news_article()
 
 
 @grok.adapter(BreakingNews)

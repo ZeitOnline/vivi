@@ -437,9 +437,6 @@ class IBreakingNewsBody(zope.interface.Interface):
         default=_('breaking-news-more-shortly'),
         required=False)
 
-    article_id = zope.interface.Attribute(
-        'The uniqueID of the breaking news article')
-
 
 class IPuzzle(zope.interface.Interface):
     """A puzzle type"""

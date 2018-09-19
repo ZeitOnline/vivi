@@ -215,14 +215,3 @@ class BreakingNewsBody(grok.Adapter):
             if zeit.content.article.edit.interfaces.IParagraph.providedBy(
                     block):
                 return block
-
-    @property
-    def article_id(self):
-        try:
-            anchor = lxml.objectify.fromstring(self.text)
-        except lxml.etree.XMLSyntaxError:
-            return False
-        else:
-            # XXX Duplicates knowlegde of zeit.push.message.Message.url
-            return anchor.get('href').replace(
-                'http://www.zeit.de/', zeit.cms.interfaces.ID_NAMESPACE)

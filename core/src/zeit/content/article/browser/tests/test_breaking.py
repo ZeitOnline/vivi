@@ -133,7 +133,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.browser.getControl('Article body').value = ''
         self.browser.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-        self.assertEqual(1, len(article.body))
+        self.assertEqual(1, len(article.btest_setting_body_text_creates_paragraphody))
 
     def test_body_text_default_value_is_translated(self):
         b = self.browser
@@ -177,18 +177,13 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
         mocker.start()
         self.addCleanup(mocker.stop)
         super(RetractBannerTest, self).setUp()
-        # Set up dummy banner articles.
-        content = zeit.content.article.testing.create_article()
-        IBreakingNewsBody(content).text = (
-            '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>')
-        self.repository['homepage'] = content
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='homepage')
-        notifier.uniqueId = content.uniqueId
-
-        # Publish homepage banner so the retract button is shown.
-        IPublishInfo(self.repository['homepage']).urgent = True
-        IPublish(self.repository['homepage']).publish(async=False)
+        banner_config = zeit.content.rawxml.rawxml.RawXML()
+        banner_config.xml = lxml.etree.fromstring(
+            '<xml><article_id>'
+            'http://xml.zeit.de/online/2007/01/Somalia'
+            '</article_id></xml>')
+        self.repository['banner'] = banner_config
+        IPublish(self.repository['banner']).publish(async=False)
 
         # Make Somalia breaking news, so the retract section is shown.
         article = ICMSContent(
