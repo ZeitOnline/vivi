@@ -1,4 +1,3 @@
-from zeit.cms.interfaces import ICMSContent
 import zeit.content.article.interfaces
 import zeit.push.interfaces
 import zope.component
@@ -7,10 +6,9 @@ import zope.component
 class Retract(object):
 
     @property
-    def homepage(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='homepage')
-        return ICMSContent(notifier.uniqueId)
+    def banner(self):
+        return zope.component.getUtility(
+            zeit.push.interfaces.IBanner).xml_banner
 
     @property
     def banner_matches(self):
@@ -18,4 +16,4 @@ class Retract(object):
             self.context, None)
         if breaking is None:
             return False
-        return breaking.banner_matches(self.homepage)
+        return breaking.banner_matches()

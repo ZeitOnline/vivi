@@ -1,13 +1,10 @@
-from datetime import datetime
+from lxml import objectify
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckinManager
-from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.content.article.edit.interfaces import IBreakingNewsBody
+from zeit.cms.workflow.interfaces import IPublish
 import grokcore.component as grok
 import logging
-import pytz
 import transaction
 import zeit.push.interfaces
 import zeit.push.message
@@ -18,51 +15,69 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class StaticArticlePublisher(object):
+class Banner(object):
 
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
+    zope.interface.implements(zeit.push.interfaces.IBanner)
 
-    def __init__(self, uniqueId):
-        self.uniqueId = uniqueId
+    def __init__(self, banner_unique_id):
+        self.banner_unique_id = banner_unique_id
 
-    def send(self, text, link, **kw):
-        article = ICMSContent(self.uniqueId)
-        log.debug('Setting %s, %s as body of %s', text, link, self.uniqueId)
-        self._ensure_unlocked(article)
-        with checked_out(article) as co:
-            IBreakingNewsBody(co).text = u'<a href="{link}">{text}</a>'.format(
-                link=link, text=text)
-            # XXX The checked_out helper is rather technical (it does not
-            # simulate a complete user interaction), thus specifying
-            # checked_out(semantic_change=True) doesn't help: Since the checked
-            # out object is newly created and we don't (can't?) call
-            # transaction.commit() here (and a temporary workingcopy does not
-            # really participate in the ZODB machinery anyway), the _p_mtime of
-            # the checked out object is not set, which means its modified date
-            # is not updated -- which means LSC would be set to the last
-            # modified date taken from the repository, which is not what we
-            # want.
-            ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
-        IPublishInfo(article).urgent = True
-        IPublish(article).publish()
+    @property
+    def article_id(self):
+        if not self.xml_banner.xml.article_id:
+            return
+        return self.xml_banner.xml.article_id.text
 
-    def _ensure_unlocked(self, content):
-        lockable = zope.app.locking.interfaces.ILockable(content, None)
+    @article_id.setter
+    def article_id(self, value):
+        self._ensure_unlocked()
+        with checked_out(self.xml_banner) as co:
+            co.xml.article_id = value
+
+    @property
+    def xml_banner(self):
+        return zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
+
+    def publish(self):
+        IPublish(self.xml_banner).publish()
+
+    def retract(self):
+        IPublish(self.xml_banner).retract()
+
+    def _ensure_unlocked(self):
+        banner = zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
+        lockable = zope.app.locking.interfaces.ILockable(banner, None)
         if not lockable:
             return
         if lockable.isLockedOut():
             lockable.breaklock()
         if lockable.ownLock():
             checked_out = zeit.cms.interfaces.ICMSWCContent(
-                content.uniqueId, None)
+                banner.uniqueId, None)
             if checked_out is not None:
                 ICheckinManager(checked_out).delete()
 
 
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
+@zope.interface.implementer(zeit.push.interfaces.IBanner)
 def homepage_banner():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-    return StaticArticlePublisher(config['homepage-banner-uniqueid'])
+    return Banner(config['homepage-banner-uniqueid'])
+
+
+def get_breaking_news_article():
+    banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
+    return zeit.cms.interfaces.ICMSContent(banner.article_id, None)
+
+
+class Push(object):
+
+    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
+
+    def send(self, text, article_unique_id, **kw):
+        log.debug('Publishing Homepage banner for %s', article_unique_id)
+        banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
+        banner.article_id = article_unique_id
+        banner.publish()
 
 
 class HomepageMessage(zeit.push.message.Message):
