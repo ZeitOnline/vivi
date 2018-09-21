@@ -159,10 +159,10 @@ class Retract(object):
 
     @property
     def banner_matches(self):
-        return self.breakingnews.banner_matches(self.banner)
+        return self.breakingnews.banner_matches()
 
     @property
     def banner(self):
-        notifier = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='homepage')
-        return zeit.cms.interfaces.ICMSContent(notifier.uniqueId)
+        banner = zope.component.getUtility(
+            zeit.push.interfaces.IBanner)
+        return banner.xml_banner

@@ -305,6 +305,7 @@ class CitationLayoutSource(AvailableBlockLayoutSource):
 
     config_url = 'citation-layout-source'
 
+
 CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 
 
@@ -315,6 +316,7 @@ class BoxLayoutSource(AvailableBlockLayoutSource):
     # and maybe get rid of the superclass
 
     config_url = 'box-layout-source'
+
 
 BOX_LAYOUT_SOURCE = BoxLayoutSource()
 
@@ -435,9 +437,6 @@ class IBreakingNewsBody(zope.interface.Interface):
         title=_('Article body'),
         default=_('breaking-news-more-shortly'),
         required=False)
-
-    article_id = zope.interface.Attribute(
-        'The uniqueID of the breaking news article')
 
 
 class IPuzzle(zope.interface.Interface):
