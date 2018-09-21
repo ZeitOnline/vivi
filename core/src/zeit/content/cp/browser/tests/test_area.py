@@ -199,7 +199,7 @@ class AreaBrowserTest(
             'query-type-authorships']
         b.getControl('Add Custom Query').click()  # Force a submit
         self.assertEqual(
-            '', b.getControl(name='form.query.0..combination_01').value)
+            '', b.getControl(name='form.query.0..combination_02').value)
 
 
 class TooltipFixture(object):

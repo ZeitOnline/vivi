@@ -285,6 +285,14 @@ class QueryTypeSource(SimpleDictSource):
     ])
 
 
+class QueryOperatorSource(SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('eq', _('query-operator-equal')),
+        ('neq', _('query-operator-notequal')),
+    ])
+
+
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
     def _get_master_value(self, context):
@@ -490,6 +498,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 title=_('Custom Query Type'),
                 source=QueryTypeSource(), default='channels'),
             IQueryConditions,
+            zope.schema.Choice(
+                title=_('Custom Query Operator'),
+                source=QueryOperatorSource(), default='eq'),
         ),
         default=(),
         required=False)

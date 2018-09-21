@@ -438,6 +438,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             typ = condition.get('type')
             if typ == 'Channel':  # BBB
                 typ = 'channels'
+            operator = condition.get('operator')
+            if not operator:  # BBB
+                operator = 'eq'
             value = self._converter(typ).fromProperty(unicode(condition))
             field = zeit.content.cp.interfaces.IArea[
                 'query'].value_type.type_interface[typ]
@@ -446,7 +449,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             # CombinationWidget needs items to be flattened
             if not isinstance(value, tuple):
                 value = (value,)
-            result.append((typ,) + value)
+            result.append((typ, operator) + value)
         return tuple(result)
 
     @query.setter
@@ -462,24 +465,25 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         E = lxml.objectify.E
         query = E.query()
         for item in value:
-            typ, val = self._serialize_query_item(item)
-            query.append(E.condition(val, type=typ))
+            typ, operator, val = self._serialize_query_item(item)
+            query.append(E.condition(val, type=typ, operator=operator))
         self.xml.append(query)
 
     def _serialize_query_item(self, item):
         typ = item[0]
+        operator = item[1]
         field = zeit.content.cp.interfaces.IArea[
             'query'].value_type.type_interface[typ]
 
-        if len(item) > 2:
-            value = item[1:]
+        if len(item) > 3:
+            value = item[2:]
         else:
-            value = item[1]
+            value = item[2]
         if zope.schema.interfaces.ICollection.providedBy(field):
             value = field._type((value,))  # tuple(already_tuple) is a no-op
         value = self._converter(typ).toProperty(value)
 
-        return typ, value
+        return typ, operator, value
 
     def _converter(self, selector):
         field = zeit.content.cp.interfaces.IArea[

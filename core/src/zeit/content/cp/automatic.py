@@ -290,16 +290,27 @@ class CustomContentQuery(ElasticsearchContentQuery):
             typ = item[0]
             fields.setdefault(typ, []).append(item)
 
-        clauses = []
+        must = []
+        must_not = []
         for typ in sorted(fields):  # Provide stable sorting for tests
-            items = fields[typ]
-            if len(items) > 1:
-                clauses.append({'bool': {'should': [
-                    self._make_clause(typ, x) for x in items]}})
-            else:
-                clauses.append(self._make_clause(typ, items[0]))
+            positive = []
+            for item in fields[typ]:
+                if item[1] == 'neq':
+                    must_not.append(self._make_clause(typ, item))
+                else:
+                    positive.append(item)
+            if len(positive) > 1:
+                must.append({'bool': {'should': [
+                    self._make_clause(typ, x) for x in positive]}})
+            elif len(positive) == 1:
+                must.append(self._make_clause(typ, positive[0]))
         # We rely on _build_query() putting this inside a bool/filter context
-        return {'query': clauses}
+        query = {'query': {'bool': {}}}
+        if must:
+            query['query']['bool']['filter'] = must
+        if must_not:
+            query['query']['bool']['must_not'] = must_not
+        return query
 
     def _make_clause(self, typ, item):
         if typ == 'ressort':  # XXX Generalize to lookup instead of if?
@@ -308,7 +319,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        typ, value = self.context.context._serialize_query_item(item)
+        typ, operator, value = self.context.context._serialize_query_item(item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
@@ -324,16 +335,16 @@ class CustomContentQuery(ElasticsearchContentQuery):
                 prop.namespace, prop.name))
 
     def _make_ressort_condition(self, item):
-        if item[2]:
+        if item[3]:
             return {'bool': {'must': [
                 {'term': {
-                    self._fieldname_from_property('ressort'): item[1]}},
+                    self._fieldname_from_property('ressort'): item[2]}},
                 {'term': {
-                    self._fieldname_from_property('sub_ressort'): item[2]}},
+                    self._fieldname_from_property('sub_ressort'): item[3]}},
             ]}}
         else:
             return {'term': {
-                self._fieldname_from_property('ressort'): item[1]}}
+                self._fieldname_from_property('ressort'): item[2]}}
 
 
 class TMSContentQuery(ContentQuery):
