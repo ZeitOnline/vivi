@@ -70,7 +70,8 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         self.zca.patch_utility(
             IFoo, zeit.cms.content.interfaces.IAddableContent, 'IFoo')
         self.assertIn(
-            IFoo, list(zeit.cms.content.sources.AddableCMSContentTypeSource()))
+            IFoo,
+            list(zeit.cms.content.sources.AddableCMSContentTypeSource()(None)))
 
 
 class StorystreamReferenceTest(zeit.cms.testing.ZeitCmsTestCase):

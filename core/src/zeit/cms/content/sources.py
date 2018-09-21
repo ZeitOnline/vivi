@@ -449,42 +449,49 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
 PRODUCT_SOURCE = ProductSource()
 
 
-class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
+class CMSContentTypeSource(
+        ObjectSource,
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
-    def getValues(self):
-        return (interface for name, interface in
-                zope.component.getUtilitiesFor(
-                    zeit.cms.interfaces.ICMSContentType))
+    def _values(self):
+        return {
+            name: interface for name, interface in
+            zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType)
+        }
 
-    def getTitle(self, value):
+    def getTitle(self, context, value):
         try:
             return value.getTaggedValue('zeit.cms.title')
         except KeyError:
             return unicode(value)
 
-    def find(self, type_id):
-        # XXX Should typegrokker register the interface with name=type_id
-        # instead of/in addition to the dotted name?
-        for iface in self.getValues():
-            if iface.getTaggedValue('zeit.cms.type') == type_id:
-                return iface
+    def getToken(self, context, value):
+        try:
+            return value.getTaggedValue('zeit.cms.type')
+        except KeyError:
+            return unicode(value)
+
+    def isAvailable(self, value, context):
+        return True
 
 
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
-    def getValues(self):
+    def getValues(self, context):
         import zeit.cms.content.interfaces  # break circular import
-        types = (list(super(AddableCMSContentTypeSource, self).getValues()) +
-                 list(interface for name, interface in
-                      zope.component.getUtilitiesFor(
-                          zeit.cms.content.interfaces.IAddableContent)))
+        types = (
+            list(super(AddableCMSContentTypeSource, self).getValues(context)) +
+            list(interface for name, interface in
+                 zope.component.getUtilitiesFor(
+                     zeit.cms.content.interfaces.IAddableContent)))
         by_title = {
             # XXX Hard-code language, since we don't have a request here.
-            zope.i18n.translate(self.getTitle(x), target_language='de'): x
+            zope.i18n.translate(
+                self.getTitle(context, x), target_language='de'): x
             for x in types}
         return [by_title[x] for x in sorted(by_title.keys())]
 
-    def filterValue(self, value):
+    def filterValue(self, context, value):
         import zeit.cms.type  # break circular import
         return (value.queryTaggedValue('zeit.cms.addform') !=
                 zeit.cms.type.SKIP_ADD)

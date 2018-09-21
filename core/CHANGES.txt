@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-3.16.1 (unreleased)
+3.17.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4801: Make CMSContentTypeSource DAV-serializable
 
 
 3.16.0 (2018-09-17)
