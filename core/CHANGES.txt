@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.39.0 (unreleased)
+3.39.0 (2018-09-21)
 -------------------
 
 -ZON-3482: Use xml config instead of article for breaking news banner
