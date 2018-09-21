@@ -142,6 +142,15 @@ class IPushURL(zope.interface.Interface):
     """
 
 
+class IBanner(zope.interface.Interface):
+    """
+    Utility to manage the homepage banner.
+    """
+
+    article_id = zope.interface.Attribute(
+        'UniqueId of the current article in the homepage banner')
+
+
 class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.push'

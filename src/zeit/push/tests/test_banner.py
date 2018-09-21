@@ -1,45 +1,44 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
-from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.article.edit.interfaces import IEditableBody
 import lxml.etree
 import transaction
 import zeit.content.article.testing
 import zeit.push.banner
 import zeit.push.testing
+import zope.component
 import zope.security.management
 
 
-class StaticArticlePublisherTest(zeit.push.testing.TestCase):
+class BannerPublisherTest(zeit.push.testing.TestCase):
 
     def setUp(self):
-        super(StaticArticlePublisherTest, self).setUp()
+        super(BannerPublisherTest, self).setUp()
         self.repository['foo'] = zeit.content.article.testing.create_article()
-        self.publisher = zeit.push.banner.StaticArticlePublisher(
-            'http://xml.zeit.de/foo')
+        self.publisher = zeit.push.banner.Push()
+        banner_config = zeit.content.rawxml.rawxml.RawXML()
+        banner_config.xml = lxml.etree.fromstring(
+            '<xml><article_id/></xml>')
+        self.repository['banner'] = banner_config
 
-    def test_sets_first_paragraph_and_publishes(self):
-        self.publisher.send('mytext', 'http://zeit.de/foo')
-        article = self.repository['foo']
-        self.assertEqual(True, IPublishInfo(article).published)
-        self.assertEllipsis(
-            '<p...><a href="http://zeit.de/foo">mytext</a></p>',
-            lxml.etree.tostring(IEditableBody(article).values()[0].xml))
+    def test_banner_xml_is_updated_on_push(self):
+        self.publisher.send('foo', 'http://xml.zeit.de/foo')
+        banner = self.repository['banner']
+        self.assertTrue('http://xml.zeit.de/foo' in
+                        lxml.etree.tostring(banner.xml))
 
-    def test_updates_last_semantic_change(self):
-        before = ISemanticChange(self.repository['foo']).last_semantic_change
-        self.publisher.send('mytext', 'http://zeit.de/foo')
-        after = ISemanticChange(self.repository['foo']).last_semantic_change
-        self.assertGreater(after, before)
+    def test_banner_utility_is_updated_on_push(self):
+        self.publisher.send('foo', 'http://xml.zeit.de/foo')
+        banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
+        self.assertEqual('http://xml.zeit.de/foo', banner.article_id)
+        self.assertEqual(self.repository['foo'],
+                         zeit.push.banner.get_breaking_news_article())
 
-    def test_regression_handles_unicode(self):
-        self.publisher.send(u'mütext', 'http://zeit.de/foo')
-        article = self.repository['foo']
-        self.assertEllipsis(
-            '...m&#252;text...',
-            lxml.etree.tostring(IEditableBody(article).values()[0].xml))
+    def test_banner_is_published_on_push(self):
+        self.publisher.send('foo', 'http://xml.zeit.de/foo')
+        publish = IPublishInfo(self.repository['banner'])
+        self.assertTrue(publish.published)
 
     def test_checked_out_already_deletes_from_workingcopy_first(self):
         ICheckoutManager(self.repository['foo']).checkout()

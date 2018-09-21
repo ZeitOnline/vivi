@@ -5,7 +5,7 @@
   <utility factory=".urbanairship.from_product_config" name="urbanairship" />
   <utility factory=".twitter.from_product_config" name="twitter" />
   <utility factory=".facebook.Connection" name="facebook" />
-  <utility factory=".banner.homepage_banner" name="homepage" />
+  <utility factory=".banner.Push" name="homepage" />
   <utility factory=".influxdb.from_product_config" name="influxdb" />
 
 </configure>
