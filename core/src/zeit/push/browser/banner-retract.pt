@@ -4,7 +4,7 @@
 
 <ol id="worklist">
   <li action="start_job" cms:param="retract"
-      tal:attributes="cms:context view/homepage/@@absolute_url"
+      tal:attributes="cms:context view/banner/@@absolute_url"
       i18n:translate="">Retract
     <span i18n:name="target" i18n:translate="">homepage banner</span></li>
   <li action="close" i18n:translate="">Done</li>

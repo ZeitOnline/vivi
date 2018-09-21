@@ -42,6 +42,7 @@ product_config = """\
   urbanairship-author-push-template-name authors.json
   mobile-buttons file://{fixtures}/mobile-buttons.xml
   push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
+  homepage-banner-uniqueid http://xml.zeit.de/banner
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
@@ -58,6 +59,7 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
             zeit.workflow.testing.product_config +
             zeit.content.article.testing.product_config)
         super(ZCMLLayer, self).setUp()
+
 
 ZCML_LAYER = ZCMLLayer('testing.zcml')
 
