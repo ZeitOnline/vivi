@@ -263,7 +263,6 @@ class Listing(object):
     """Object listing view"""
 
     title = _('Directory listing')
-    types_source = zeit.cms.content.sources.CMSContentTypeSource()
     css_class = 'contentListing hasMetadata'
     filter_interface = None
     no_content_message = _('There are no objects in this folder.')
