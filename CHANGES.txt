@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.25.0 (unreleased)
+1.25.0 (2018-09-21)
 -------------------
 
 - ZON-3482: Use xml config instead of article for breaking news banner
