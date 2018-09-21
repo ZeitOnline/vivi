@@ -133,7 +133,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.browser.getControl('Article body').value = ''
         self.browser.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-        self.assertEqual(1, len(article.btest_setting_body_text_creates_paragraphody))
+        self.assertEqual(1, len(article.body))
 
     def test_body_text_default_value_is_translated(self):
         b = self.browser
