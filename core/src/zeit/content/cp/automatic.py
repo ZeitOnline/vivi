@@ -274,6 +274,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
     ES_FIELD_NAMES = {
         'authorships': 'payload.head.authors',
         'channels': 'payload.document.channels.hierarchy',
+        'content_type': 'doc_type',
     }
 
     def __init__(self, context):

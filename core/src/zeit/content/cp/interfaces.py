@@ -282,6 +282,7 @@ class QueryTypeSource(SimpleDictSource):
         ('genre', _('query-type-genre')),
         ('authorships', _('query-type-authorships')),
         ('access', _('query-type-access')),
+        ('content_type', _('query-type-content-type')),
     ])
 
 
@@ -319,6 +320,11 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
         required=False))
     zope.interface.alsoProvides(
         ressort.value_type, zeit.cms.content.interfaces.IChannelField)
+
+    # non-ICommonMetadata field
+    content_type = zope.schema.Choice(
+        title=_("Content type"),
+        source=zeit.cms.content.sources.CMSContentTypeSource())
 
 
 class QuerySortOrderSource(SimpleDictSource):
