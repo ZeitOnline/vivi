@@ -7,6 +7,12 @@ zeit.content.article changes
 -ZON-3482: Use xml config instead of article for breaking news banner
 
 
+3.38.5 (2018-08-06)
+-------------------
+
+- ZON-4773: Change default Liveblog version to 3 
+
+
 3.38.4 (2018-06-08)
 -------------------
 

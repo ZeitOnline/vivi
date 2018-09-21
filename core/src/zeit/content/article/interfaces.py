@@ -31,11 +31,13 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Textlength'),
         required=False)
 
+    # DEPRECATED (xslt)
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False,
         required=False)
 
+    # DEPRECATED (xslt)
     artbox_thema = zope.schema.Bool(
         title=_('First related as box'),
         default=False,
@@ -54,6 +56,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image group here"),
+        # BBB allow single images
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 

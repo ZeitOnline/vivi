@@ -163,6 +163,7 @@ class IImage(IReference):
     references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image group here"),
+        # BBB allow single images
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
@@ -355,7 +356,7 @@ class ILiveblog(zeit.edit.interfaces.IBlock):
     version = zope.schema.Choice(
         title=_('Liveblog version'),
         source=LiveblogVersions(),
-        default=None,
+        default=u'3',
         required=False)
 
     collapse_preceding_content = zope.schema.Bool(
