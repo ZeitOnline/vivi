@@ -30,6 +30,7 @@ setup(
         'zeit.content.text',
         'zeit.content.video',
         'zeit.invalidate',
+        'zeit.push',
         'zeit.retresco>=1.19.0.dev0',
         'zeit.seo>=1.6.0.dev0',
         'zeit.vgwort>=2.4.0.dev0',
