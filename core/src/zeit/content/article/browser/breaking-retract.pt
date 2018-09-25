@@ -1,6 +1,6 @@
 <p id="breaking-retract"
-   tal:condition="python: view.is_breaking and view.banner_published and view.banner_matches"
    i18n:domain="zeit.cms">
+   <tal:block condition="python: view.is_breaking and view.banner_published and view.banner_matches">
   <span i18n:translate="">Breaking news banner</span>:
   <span tal:replace="structure view/banner/@@published-icon" />
   <a class="button"
@@ -10,4 +10,5 @@
      tal:attributes="href string:${context/@@absolute_url}/@@breaking-banner-retract;
                      cms:lightbox-reload-url request/getURL"
      i18n:translate="">Retract banner</a>
+  </tal:block>
 </p>

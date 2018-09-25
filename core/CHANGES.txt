@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - HOTFIX: Don't break in liveblog version comparison for new articles
 
+- FIX: Current FF throws JS exception when replacing a DOM node with an empty string
+
 
 3.39.1 (2018-09-25)
 -------------------
