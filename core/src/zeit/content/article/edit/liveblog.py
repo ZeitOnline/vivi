@@ -1,5 +1,7 @@
+from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import pytz
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
@@ -12,7 +14,7 @@ class Liveblog(zeit.content.article.edit.block.Block):
     blog_id = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'blogID',
         zeit.content.article.edit.interfaces.ILiveblog['blog_id'])
-    version = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _version = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'version',
         zeit.content.article.edit.interfaces.ILiveblog['version'],
         use_default=True)
@@ -21,6 +23,28 @@ class Liveblog(zeit.content.article.edit.block.Block):
             '.', 'collapse-preceding-content',
             zeit.content.article.edit.interfaces.ILiveblog[
                 'collapse_preceding_content'], use_default=True))
+
+    LIVEBLOG_VERSION_UPDATE = datetime(2018, 8, 6, tzinfo=pytz.UTC)
+
+    @property
+    def version(self):
+        # XXX Cannot use the version property, since we had `use_default=True`
+        # since 3.38.5, and thus we have old articles without a version in XML
+        # that mean "2", and newer with the same XML that mean "3". Sigh.
+        version = self.xml.get('version')
+        if version:
+            return version
+
+        article = zeit.content.article.interfaces.IArticle(self)
+        if zeit.cms.workflow.interfaces.IPublishInfo(
+                article).date_first_released > self.LIVEBLOG_VERSION_UPDATE:
+            return '3'
+        else:
+            return '2'
+
+    @version.setter
+    def version(self, value):
+        self._version = value
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

@@ -4,7 +4,8 @@ zeit.content.article changes
 3.39.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: We should not have changed the meaning of "no version in XML" from 2 to 3
+  in 3.38.5
 
 
 3.39.0 (2018-09-21)
