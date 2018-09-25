@@ -43,6 +43,7 @@ WORKFLOW_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         zeit.cms.testing.cms_product_config +
         zeit.imp.tests.product_config +
         zeit.workflow.testing.product_config +
+        zeit.push.testing.product_config +
         product_config))
 
 
