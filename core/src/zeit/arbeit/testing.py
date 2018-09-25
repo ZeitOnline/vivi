@@ -3,6 +3,7 @@ import zeit.cms.testing
 import zeit.cms.repository.interfaces
 import zeit.content.article.testing
 import zeit.content.cp.testing
+import zeit.push.testing
 import zope.component
 import pkg_resources
 
@@ -17,7 +18,8 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         product_config +
         zeit.cms.testing.cms_product_config +
         zeit.content.article.testing.product_config +
-        zeit.content.cp.testing.product_config
+        zeit.content.cp.testing.product_config +
+        zeit.push.testing.product_config
     ))
 
 
