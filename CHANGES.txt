@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.25.1 (unreleased)
+1.25.1 (2018-09-25)
 -------------------
 
 - MAINT: Add timeout to influx notifier
