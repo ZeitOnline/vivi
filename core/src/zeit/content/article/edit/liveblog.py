@@ -36,8 +36,11 @@ class Liveblog(zeit.content.article.edit.block.Block):
             return version
 
         article = zeit.content.article.interfaces.IArticle(self)
-        if zeit.cms.workflow.interfaces.IPublishInfo(
-                article).date_first_released > self.LIVEBLOG_VERSION_UPDATE:
+        dfr = zeit.cms.workflow.interfaces.IPublishInfo(
+            article).date_first_released
+        if not dfr:
+            return '3'
+        elif dfr > self.LIVEBLOG_VERSION_UPDATE:
             return '3'
         else:
             return '2'

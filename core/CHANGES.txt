@@ -4,7 +4,7 @@ zeit.content.article changes
 3.39.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- HOTFIX: Don't break in liveblog version comparison for new articles
 
 
 3.39.1 (2018-09-25)
