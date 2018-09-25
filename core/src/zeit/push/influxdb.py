@@ -1,6 +1,10 @@
+import logging
 import requests
 import zeit.push.interfaces
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class Connection(object):
@@ -25,10 +29,12 @@ class Connection(object):
         try:
             requests.post(
                 '{url}/db/{database}/series'.format(
-                    url=self.base_url, database=self.database),
+                    url=self.base_url, database=self.database,
+                    timeout=2),
                 params={'u': self.user, 'p': self.password}, json=data)
-        except:
-            pass
+        except Exception:
+            log.warning(
+                'Writing push for %s to influx failed.', link, exc_info=True)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
