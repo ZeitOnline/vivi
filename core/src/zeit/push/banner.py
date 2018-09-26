@@ -36,7 +36,7 @@ class Banner(object):
 
     @property
     def xml_banner(self):
-        return zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
+        return zeit.cms.interfaces.ICMSContent(self.banner_unique_id, None)
 
     def publish(self):
         IPublish(self.xml_banner).publish()
