@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.25.2 (unreleased)
+1.25.2 (2018-09-26)
 -------------------
 
 - FIX: Stop raising exception, if banner not published
