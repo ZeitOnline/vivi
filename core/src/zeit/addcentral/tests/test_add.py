@@ -44,16 +44,16 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.post('http://localhost/++skin++vivi/@@addcentral', urllib.urlencode({
             'sidebar.form.type_':
-            'zeit.content.article.interfaces.IBreakingNews',
+            '<zeit.content.article.interfaces.IBreakingNews>',
             'sidebar.form.ressort-empty-marker': '1',
             'sidebar.form.actions.add': 'Add'}))
         self.assertEllipsis('...Required input is missing...', b.contents)
 
-        # Test that this does not poison the requred status for other content
+        # Test that this does not poison the required status for other content
         # types.
         b.post('http://localhost/++skin++vivi/@@addcentral', urllib.urlencode({
             'sidebar.form.type_':
-            'zeit.cms.testcontenttype.interfaces.IExampleContentType',
+            'image',
             'sidebar.form.ressort-empty-marker': '1',
             'sidebar.form.actions.add': 'Add'}))
-        self.assertEllipsis('...@@zeit.cms.testcontenttype.Add...', b.contents)
+        self.assertEllipsis('...@@zeit.content.image.Add...', b.contents)

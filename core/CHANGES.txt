@@ -4,7 +4,7 @@ zeit.addcentral changes
 1.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4801: Adjust test setup
 
 
 1.1.6 (2016-09-26)

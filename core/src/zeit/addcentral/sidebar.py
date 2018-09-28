@@ -24,7 +24,7 @@ class Form(zope.formlib.form.SubPageForm):
         # XXX Actually, ressort should only be not required for INewsletter,
         # but we're leaving it this way around because users are used to it.
         if self.request.form.get('sidebar.form.type_') == (
-                'zeit.content.article.interfaces.IBreakingNews'):
+                '<zeit.content.article.interfaces.IBreakingNews>'):
             field = self.widgets['ressort'].context
             cloned = field.bind(field.context)
             cloned.required = True
