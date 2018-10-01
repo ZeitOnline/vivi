@@ -55,7 +55,7 @@ Configure the following settings in the batou environment:
     $ twurl authorize --consumer-key <API key> --consumer-secret <API SECRET>
 
 3. Open the generated URL in a web browser, and sign in with the Twitter account
-  you want to authorize (e.g. @zeitonline). Approve the request.
+   you want to authorize (e.g. @zeitonline). Approve the request.
 
 4. Repeat 2+3 for all accounts
 
@@ -108,7 +108,7 @@ Facebook
   * Click "Save Changes"
 - Go to Status & Review
   * Set application "public" (i.e. not longer developer mode, so posts made
-    through it actually appear publicly).
+  through it actually appear publicly).
 
 
 1. Authorize the vivi application with a Facebook account
