@@ -3,12 +3,12 @@ from __future__ import absolute_import
 from datetime import datetime, timedelta
 import bugsnag
 import grokcore.component as grok
-import jinja2.runtime
 import json
 import logging
 import mock
 import pkg_resources
 import pytz
+import re
 import sys
 import urbanairship
 import urlparse
@@ -228,7 +228,7 @@ def print_payload_documentation():
 
     class PayloadDocumentation(Connection):
         def push(self, data):
-            print json.dumps(data.payload, indent=2, sort_keys=True)
+            print json_dump_sphinx(data.payload)
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
         'ios_application_key', 'ios_master_secret', 'web_application_key',
@@ -271,28 +271,34 @@ def print_payload_documentation():
     print """\
 Um ein neues Pushtemplate zu erstellen muss unter
 http://vivi.zeit.de/repository/data/urbanairship-templates eine neue
-Textdatei angelegt werden. In dieser Textdatei kann dann mit der Jinja2
-Template Sprache (http://jinja.pocoo.org/docs/2.9/) das JSON definiert
+Textdatei angelegt werden. In dieser Textdatei kann dann mit der `Jinja2
+Template Sprache <http://jinja.pocoo.org/docs/2.9/>`_ das JSON definiert
 werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
 gesendet wird. Dafür muss das entsprechende Template in dem
 Artikeldialog ausgewählt werden. In dem Template können sowohl auf
 eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
-Pushnachricht zugegriffen werden:"""
+Pushnachricht zugegriffen werden::\n"""
     vars = message.template_variables
     vars['article'] = {x: '...' for x in zope.schema.getFieldNames(
         zeit.content.article.interfaces.IArticle)}
-    print json.dumps(vars, indent=2, sort_keys=True)
+    print json_dump_sphinx(vars)
 
     print ("\nIm Folgenden nun ein Beispiel wie ein solches Template"
-           " funktioniert. Nutzt man das Template")
-    print template_text
-    print "\nmit der push-Konfiguration"
-    print json.dumps(message.config, indent=2, sort_keys=True)
-    print "\nwerden folgende Payloads an Urbanairship versandt:"
+           " funktioniert. Nutzt man das Template::\n")
+    print re.sub('^', '    ', template_text, flags=re.MULTILINE)
+    print "\nmit der push-Konfiguration::\n"
+    print json_dump_sphinx(message.config)
+    print "\nwerden folgende Payloads an Urbanairship versandt::\n"
     template = zeit.content.text.jinja.JinjaTemplate()
     template.text = template_text
     message.find_template = lambda x: template
     conn.send('any', 'any', message=message)
+
+
+def json_dump_sphinx(obj):
+    return re.sub(
+        '^', '    ', json.dumps(obj, indent=2, sort_keys=True),
+        flags=re.MULTILINE)
 
 
 @grok.subscribe(

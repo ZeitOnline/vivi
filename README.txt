@@ -1,6 +1,6 @@
-=========
-zeit.push
-=========
+==================
+Push Notifications
+==================
 
 This packages provides Python bindings to various Social Media services.
 
