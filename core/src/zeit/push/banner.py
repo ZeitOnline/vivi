@@ -1,7 +1,5 @@
-from lxml import objectify
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckinManager
-from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish
 import grokcore.component as grok
 import logging
@@ -24,8 +22,10 @@ class Banner(object):
 
     @property
     def article_id(self):
+        if self.xml_banner is None:
+            return None
         if not self.xml_banner.xml.article_id:
-            return
+            return None
         return self.xml_banner.xml.article_id.text
 
     @article_id.setter
@@ -36,7 +36,10 @@ class Banner(object):
 
     @property
     def xml_banner(self):
-        return zeit.cms.interfaces.ICMSContent(self.banner_unique_id, None)
+        content = zeit.cms.interfaces.ICMSContent(self.banner_unique_id, None)
+        if not zeit.cms.content.interfaces.IXMLContent.providedBy(content):
+            return None
+        return content
 
     def publish(self):
         IPublish(self.xml_banner).publish()
