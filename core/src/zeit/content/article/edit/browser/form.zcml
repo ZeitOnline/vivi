@@ -444,38 +444,6 @@
     weight="10"
     />
 
-  <!-- lead teaser -->
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.edit.browser.form.Forms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="leadteaser"
-    class=".form.LeadTeaserForms"
-    permission="zope.View"
-    weight="25"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.LeadTeaserForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.leadteaser"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="20"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.leadteaser"
-    class=".form.LeadTeaser"
-    permission="zope.View"
-    />
-
   <!-- internal links -->
 
   <browser:viewlet

@@ -179,26 +179,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             'css=.action-article-body-content-droppable', '10,10')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
 
-    def test_changing_image_in_teaser_updates_lead_teaser(self):
-        self.add_group_to_clipboard()
-        s = self.selenium
-        landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
-        s.waitForElementPresent(landing_zone)
-        s.click('css=#edit-form-teaser .fold-link')
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
-        s.waitForElementPresent('css=#form-teaser-image .image_details')
-        s.waitForElementPresent('css=#form-leadteaser .image_details')
-
-    def test_changing_image_in_leadteaser_updates_teaser(self):
-        self.add_group_to_clipboard()
-        s = self.selenium
-        landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
-        s.waitForElementPresent(landing_zone)
-        s.click('css=#edit-form-leadteaser .fold-link')
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
-        s.waitForElementPresent('css=#form-leadteaser .image_details')
-        s.waitForElementPresent('css=#form-teaser-image .image_details')
-
     def test_changing_image_in_teaser_updates_body(self):
         self.add_group_to_clipboard()
         s = self.selenium
@@ -207,17 +187,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=#edit-form-teaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
-        s.waitForElementPresent(
-            'css=#form-article-content-main-image .image_details')
-
-    def test_changing_image_in_leadteaser_updates_body(self):
-        self.add_group_to_clipboard()
-        s = self.selenium
-        landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
-        s.waitForElementPresent(landing_zone)
-        s.click('css=#edit-form-leadteaser .fold-link')
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
-        s.waitForElementPresent('css=#form-leadteaser .image_details')
         s.waitForElementPresent(
             'css=#form-article-content-main-image .image_details')
 

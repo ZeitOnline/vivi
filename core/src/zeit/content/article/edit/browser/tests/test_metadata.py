@@ -84,11 +84,6 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(
             'xpath=//*[@id="internallinks.related"]//li[1]')
 
-    def test_galleries_should_use_drop_widget(self):
-        s = self.selenium
-        s.waitForElementPresent(
-            'css=.drop-object-widget input[name="leadteaser.gallery"]')
-
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
         s.waitForElementPresent('css=#edit-form-metadata.folded')

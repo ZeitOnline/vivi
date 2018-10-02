@@ -147,41 +147,6 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
         return form_fields
 
 
-class LeadTeaserForms(zeit.edit.browser.form.FoldableFormGroup):
-
-    title = _('Lead teaser')
-
-
-class LeadTeaser(zeit.edit.browser.form.InlineForm):
-
-    legend = ''
-    prefix = 'leadteaser'
-    undo_description = _('edit lead teaser')
-    form_fields = FormFields(
-        zeit.content.image.interfaces.IImages,
-        zeit.content.gallery.interfaces.IGalleryReference,
-        zeit.content.video.interfaces.IVideoAsset,
-    )
-    form_fields['fill_color'].custom_widget = (
-        zeit.cms.browser.widget.ColorpickerWidget)
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(LeadTeaser, self).__call__()
-
-    def setUpWidgets(self, *args, **kw):
-        super(LeadTeaser, self).setUpWidgets(*args, **kw)
-        self.widgets['image'].add_type = IImageGroup
-        self.widgets['gallery'].add_type = IGallery
-
-    def _success_handler(self):
-        self.signal('reload-inline-form', 'teaser-image')
-        self.signal('reload-inline-form', 'article-content-main-image')
-        self.signal(
-            'reload', 'editable-body', self.url(self.context.body, 'contents'))
-
-
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Internal links')
@@ -376,7 +341,6 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         self.widgets['image'].add_type = IImageGroup
 
     def _success_handler(self):
-        self.signal('reload-inline-form', 'leadteaser')
         self.signal('reload-inline-form', 'article-content-main-image')
         self.signal('reload-inline-form', 'mobile')
         # XXX it would be nicer if we didn't need to know the reload URL here
