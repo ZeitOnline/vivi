@@ -8,7 +8,6 @@ from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 from zeit.workflow.publishinfo import id_to_principal
-import zeit.cms.asset.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
@@ -151,19 +150,6 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
 class LeadTeaserForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Lead teaser')
-
-
-class AssetBadges(zeit.edit.browser.form.InlineForm):
-
-    legend = _('Badges')
-    prefix = 'asset-badges'
-    undo_description = _('edit asset badges')
-    form_fields = FormFields(
-        zeit.cms.asset.interfaces.IBadges).select('badges')
-
-    def setUpWidgets(self, *args, **kw):
-        super(AssetBadges, self).setUpWidgets(*args, **kw)
-        self.widgets['badges'].orientation = 'horizontal'
 
 
 class LeadTeaser(zeit.edit.browser.form.InlineForm):

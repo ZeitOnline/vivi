@@ -359,44 +359,6 @@
     permission="zope.View"
     />
 
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.TeaserForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.asset-badges"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="30"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.asset-badges"
-    class=".form.AssetBadges"
-    permission="zope.View"
-    />
-
-  <adapter
-    for="zope.schema.interfaces.IFrozenSet
-         zeit.cms.asset.interfaces.FactoredBadgeSource
-         zeit.cms.browser.interfaces.ICMSLayer"
-    provides="zope.formlib.interfaces.ISimpleInputWidget"
-    factory=".widget.BadgeInputWidget"
-    permission="zope.Public"
-    />
-
-   <adapter
-     for="zope.schema.interfaces.IFrozenSet
-          zeit.cms.asset.interfaces.FactoredBadgeSource
-          zeit.cms.browser.interfaces.ICMSLayer"
-     provides="zope.formlib.interfaces.IDisplayWidget"
-     factory=".widget.BadgeDisplayWidget"
-     permission="zope.Public"
-     />
-
-
   <!-- article content -->
 
   <browser:viewlet

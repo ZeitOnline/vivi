@@ -11,11 +11,6 @@
 
   <adapter factory=".article.articleFromTemplate" />
 
-  <interface
-    interface=".interfaces.IAggregatedComments"
-    type="zeit.cms.asset.interfaces.IAssetInterface"
-    />
-
   <class class=".article.Article">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
