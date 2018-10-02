@@ -268,7 +268,6 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
         entry['title'] = metadata.teaserTitle
         entry['text'] = entry['description'] = metadata.teaserText
         entry['byline'] = metadata.byline
-        entry['breadcrumb_title'] = metadata.breadcrumb_title
         if metadata.year:
             entry.set('year', unicode(metadata.year))
         if metadata.volume:

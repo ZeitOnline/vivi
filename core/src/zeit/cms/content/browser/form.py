@@ -19,15 +19,13 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         css_class='widgets-float column-left')
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
-        ('supertitle', 'byline', 'title', 'breadcrumb_title', 'subtitle',
+        ('supertitle', 'byline', 'title', 'subtitle',
          'teaserTitle', 'teaserText', 'teaserSupertitle'),
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
         ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable',
-         'foldable',
-         'minimal_header', 'countings', 'banner_id', 'breaking_news',
-         'mobile_alternative', 'rebrush_website_content', 'overscrolling'),
+         'banner_id', 'overscrolling'),
         css_class='column-right checkboxes')
     author_fields = gocept.form.grouped.Fields(
         _("Authors"),

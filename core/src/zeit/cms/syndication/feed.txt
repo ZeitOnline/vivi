@@ -388,7 +388,6 @@ included. Setup an article with ICommonMetadata:
 >>> art2.year = 2007
 >>> art2.volume = 4
 >>> art2.ressort = u'International'
->>> art2.breadcrumb_title = u'Streik'
 >>> art2.serie = ICommonMetadata['serie'].source(None).find('Autotest')
 
 Provide the interface:
@@ -410,7 +409,6 @@ Insert the article to the feed:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
-      <breadcrumb_title py:pytype="str">Streik</breadcrumb_title>
     </block>
     <block href="art1".../>
   </container>

@@ -17,7 +17,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(ICommonMetadata, DOCUMENT_SCHEMA_NS, (
         'banner_id',
         'cap_title',
-        'color_scheme',
         'copyrights',
         'page',
         'ressort',
@@ -26,19 +25,12 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'vg_wort_id',
         'volume',
         'year',
-        'mobile_alternative',
         'deeplink_url',
-        'breadcrumb_title',
 
         'banner',
         'banner_content',
-        'breaking_news',
-        'countings',
-        'foldable',
         'hide_adblocker_notification',
-        'minimal_header',
         'lead_candidate',
-        'rebrush_website_content',
         'overscrolling',
 
         'tldr_title',

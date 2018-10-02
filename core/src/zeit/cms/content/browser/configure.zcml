@@ -91,12 +91,4 @@
     sort="120"
     />
 
-  <adapter
-      for="zeit.cms.content.interfaces.IMobileAlternative
-           zeit.cms.browser.interfaces.ICMSLayer"
-      provides="zope.formlib.interfaces.ISimpleInputWidget"
-      factory=".widget.MobileAlternativeWidget"
-      permission="zope.Public"
-      />
-
 </configure>

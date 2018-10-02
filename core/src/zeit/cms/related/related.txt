@@ -66,7 +66,6 @@ Let's have a look at the source:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <breadcrumb_title xsi:nil="true"/>
       </reference>
     </references>
   </head>
@@ -99,7 +98,6 @@ Assigning the same content object again doesn't change the xml:
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
         <byline xsi:nil="true"/>
-        <breadcrumb_title xsi:nil="true"/>
       </reference>
     </references>
   </head>

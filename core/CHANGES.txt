@@ -6,6 +6,8 @@ zeit.cms changes
 
 - ZON-4801: Make CMSContentTypeSource DAV-serializable
 
+- ZON-3312: Remove deprecated fields from ICommonMetadata
+
 
 3.16.0 (2018-09-17)
 -------------------
