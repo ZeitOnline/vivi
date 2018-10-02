@@ -63,10 +63,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <class class="..gallery.Gallery">
-    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
-  </class>
-
   <!-- Add view -->
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"

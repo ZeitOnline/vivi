@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.8.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-3312: Remove obsolete asset badges
 
 
 2.8.4 (2018-07-26)
