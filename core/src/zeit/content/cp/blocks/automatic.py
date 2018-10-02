@@ -14,12 +14,6 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
             'force_mobile_image'])
-    text_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'text_color', zeit.content.cp.interfaces.ITeaserBlock[
-            'text_color'])
-    overlay_level = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'overlay_level', zeit.content.cp.interfaces.ITeaserBlock[
-            'overlay_level'])
 
     volatile = True  # Override to use default=True
 
@@ -31,12 +25,6 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if self.xml.get('module') == 'auto-teaser':
             self.layout = self.layout
         assert self.xml.get('module') != 'auto-teaser'
-        if 'text_color' not in self.xml.attrib:
-            self.text_color = zeit.content.cp.interfaces.ITeaserBlock[
-                'text_color'].default
-        if 'overlay_level' not in self.xml.attrib:
-            self.overlay_level = zeit.content.cp.interfaces.ITeaserBlock[
-                'overlay_level'].default
 
     def __len__(self):
         return len(self.entries)

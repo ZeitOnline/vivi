@@ -678,25 +678,6 @@ class IntChoice(zope.schema.Choice):
         return super(IntChoice, self).fromUnicode(value)
 
 
-class TextColorSource(SimpleDictSource):
-
-    values = collections.OrderedDict((
-        ('dark', _('Dark (white text)')),
-        ('light', _('Light (black text)')),
-    ))
-
-
-class OpacitySource(SimpleDictSource):
-
-    values = collections.OrderedDict((
-        ('1', _('opacity-1')),
-        ('2', _('opacity-2')),
-        ('3', _('opacity-3')),
-        ('4', _('opacity-4')),
-        ('5', _('opacity-5')),
-    ))
-
-
 class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     layout = zope.schema.Choice(
@@ -707,16 +688,6 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_('Force image on mobile'),
         required=False,
         default=False)
-
-    text_color = zope.schema.Choice(
-        title=_('Overlay color'),
-        source=TextColorSource(),
-        default='dark')
-
-    overlay_level = zope.schema.Choice(
-        title=_('Overlay opacity'),
-        source=OpacitySource(),
-        default='3')
 
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
