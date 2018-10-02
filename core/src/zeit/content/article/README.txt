@@ -305,30 +305,6 @@ And the image is referenced in the XML structure:
   ...
 
 
-Comment aggregation
-===================
-
-An article (actually all objects with IAssetView) can relate another object for
-combining the comments:
-
->>> comments = zeit.content.article.interfaces.IAggregatedComments(article)
->>> comments
-<zeit.content.article.comment.AggregatedComments...>
->>> comments.comment_id = repository.getContent(
-...     'http://xml.zeit.de/online/2007/01/Somalia')
-
-
-This is stored in a webdav property:
-
->>> properties = zeit.connector.interfaces.IWebDAVProperties(article)
->>> properties[('comment-id', 'http://namespaces.zeit.de/CMS/document')]
-u'http://xml.zeit.de/online/2007/01/Somalia'
->>> comments.comment_id
-<zeit.content.article.article.Article...>
->>> comments.comment_id.title
-u'R\xfcckkehr der Warlords'
-
-
 Searchable text
 ===============
 

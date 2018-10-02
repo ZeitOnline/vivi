@@ -192,10 +192,7 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'internallinks'
     undo_description = _('edit internal links')
-    form_fields = FormFields(
-        zeit.cms.related.interfaces.IRelatedContent,
-        zeit.content.article.interfaces.IAggregatedComments,
-    )
+    form_fields = FormFields(zeit.cms.related.interfaces.IRelatedContent)
     form_fields += FormFields(
         zeit.content.article.interfaces.IArticleMetadata
     ).select('hide_ligatus_recommendations')

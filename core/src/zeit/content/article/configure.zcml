@@ -127,21 +127,6 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
-  <!-- comments -->
-
-  <adapter factory=".comment.AggregatedComments" trusted="yes"/>
-  <class class=".comment.AggregatedComments">
-    <require
-      interface=".interfaces.IAggregatedComments"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IAggregatedComments"
-      permission="zeit.EditContent"
-      />
-  </class>
-  <adapter factory=".comment.webdav_properties" />
-
   <!-- cds -->
   <subscriber handler=".cds.export" />
 

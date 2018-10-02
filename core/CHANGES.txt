@@ -4,7 +4,8 @@ zeit.content.article changes
 3.39.3 (unreleased)
 -------------------
 
-- ZON-3312: Remove deprecated fields from ICommonMetadata, asset badges
+- ZON-3312: Remove deprecated fields from ICommonMetadata, asset badges,
+  aggregate comments
 
 
 3.39.2 (2018-09-25)

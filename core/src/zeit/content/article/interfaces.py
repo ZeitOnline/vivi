@@ -215,15 +215,6 @@ class IBookRecension(zope.interface.Interface):
         readonly=True)
 
 
-class IAggregatedComments(zope.interface.Interface):
-
-    comment_id = zope.schema.Choice(
-        title=_('Aggregate comments'),
-        description=_('aggregate-comments-description'),
-        required=False,
-        source=ArticleSource())
-
-
 class ITagesspiegelArticle(zope.interface.Interface):
     """Marker for articles imported from Tagesspiegel."""
 
