@@ -206,7 +206,10 @@ class TooltipFixture(object):
 
     def setUp(self):
         super(TooltipFixture, self).setUp()
-        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        cp = zeit.content.cp.centerpage.CenterPage()
+        cp['lead'].kind = u'major'
+        cp['informatives'].kind = u'minor'
+        self.repository['cp'] = cp
         self.repository['data'] = zeit.cms.repository.folder.Folder()
         self.repository['data']['cp-area-schemas'] = \
             zeit.cms.repository.folder.Folder()
@@ -259,7 +262,7 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//a[@href="tab-2"]')
         s.waitForElementPresent('id=form.block_max')
         s.type('form.block_max', '1')
-        s.select('form.overflow_into', 'minor area no title')
+        s.select('form.overflow_into', 'solo area no title')
         s.click(r'css=#tab-2 #form\.actions\.apply')
         s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=a.CloseButton')
@@ -309,7 +312,7 @@ class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
         params = {'kind': 'ranking', 'areas': [{
             'kind': 'ranking',
             'apply_teaser_layouts_automatically': 'true',
-            'first_teaser_layout': 'leader-two-columns',
+            'first_teaser_layout': 'leader-upright',
         }]}
         self.browser.open(
             'body/landing-zone-drop-module?order=top&block_type=region'
@@ -319,4 +322,4 @@ class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
         area = cp.body.values()[0].values()[0]
         self.assertEqual(True, area.apply_teaser_layouts_automatically)
         self.assertEqual(
-            'leader-two-columns', area.first_teaser_layout.id)
+            'leader-upright', area.first_teaser_layout.id)

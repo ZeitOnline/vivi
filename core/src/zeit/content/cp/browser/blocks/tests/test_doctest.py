@@ -24,7 +24,6 @@ def test_suite():
         'cpextra.txt',
         'teaser.txt',
         'teaser-countings.txt',
-        'teaser-two-column-layout.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
     ))

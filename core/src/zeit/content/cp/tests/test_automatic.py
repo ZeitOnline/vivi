@@ -70,7 +70,9 @@ class AutomaticAreaElasticsearchTest(
             'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
 
     def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
-        self.area.kind = 'major'
+        self.area.kind = u'major'
+        self.area.apply_teaser_layouts_automatically = True
+        self.area._first_teaser_layout = u'leader'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
         self.elasticsearch.search.return_value.hits = 1

@@ -6,6 +6,9 @@ The teaser block contains a list of teasers[#functional]_.
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
+>>> lead.apply_teaser_layouts_automatically = True
+>>> lead.kind = u'major'
+>>> lead.first_teaser_layout = zeit.content.cp.layout.get_layout('leader')
 >>> import zeit.content.cp.interfaces
 >>> import zeit.edit.interfaces
 >>> import zope.component

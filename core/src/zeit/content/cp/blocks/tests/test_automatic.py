@@ -41,7 +41,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['t1'] = ExampleContentType()
         cp = self.repository['cp']
         duo_region = cp['feature'].create_item('area')
-        duo_region.kind = 'duo'
+        duo_region.kind = u'duo'
         duo_region.count = 1
         duo_region.automatic = True
         duo_region.automatic_type = 'query'
