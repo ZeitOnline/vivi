@@ -19,7 +19,6 @@
   <include file="permissions.zcml" />
 
   <include package=".admin" />
-  <include package=".asset" />
   <include package=".content" />
   <include package=".related" />
   <include package=".checkout"  />

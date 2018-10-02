@@ -1,4 +1,3 @@
-from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.browser.form
