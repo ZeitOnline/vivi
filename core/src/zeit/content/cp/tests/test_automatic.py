@@ -193,13 +193,15 @@ class AutomaticAreaElasticsearchTest(
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
             None)
         autotest = source.find('Autotest')
-        lead.query = (('serie', autotest),)
+        lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'term': {'payload.document.serie': 'Autotest'}},
+            {'bool': {'filter': [
+                {'term': {'payload.document.serie': 'Autotest'}},
+            ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 
@@ -207,18 +209,20 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (
-            ('channels', 'International', 'Nahost'),
-            ('channels', 'Wissen', None))
+            ('channels', 'eq', 'International', 'Nahost'),
+            ('channels', 'eq', 'Wissen', None))
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'should': [
-                {'term': {'payload.document.channels.hierarchy':
-                          'International Nahost'}},
-                {'term': {'payload.document.channels.hierarchy':
-                          'Wissen'}},
+            {'bool': {'filter': [
+                {'bool': {'should': [
+                    {'term': {'payload.document.channels.hierarchy':
+                              'International Nahost'}},
+                    {'term': {'payload.document.channels.hierarchy':
+                              'Wissen'}},
+                ]}},
             ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
@@ -227,20 +231,23 @@ class AutomaticAreaElasticsearchTest(
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (
-            ('ressort', 'International', 'Nahost'),
-            ('ressort', 'Wissen', None))
+            ('ressort', 'eq', 'International', 'Nahost'),
+            ('ressort', 'eq', 'Wissen', None))
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'should': [
-                {'bool': {'must': [
-                    {'term': {'payload.document.ressort': 'International'}},
-                    {'term': {'payload.document.sub_ressort': 'Nahost'}},
+            {'bool': {'filter': [
+                {'bool': {'should': [
+                    {'bool': {'must': [
+                        {'term': {'payload.document.ressort':
+                                  'International'}},
+                        {'term': {'payload.document.sub_ressort': 'Nahost'}},
+                    ]}},
+                    {'term': {'payload.document.ressort':
+                              'Wissen'}},
                 ]}},
-                {'term': {'payload.document.ressort':
-                          'Wissen'}},
             ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
@@ -252,23 +259,55 @@ class AutomaticAreaElasticsearchTest(
             None)
         autotest = source.find('Autotest')
         lead.query = (
-            ('channels', 'International', 'Nahost'),
-            ('channels', 'Wissen', None),
-            ('serie', autotest),
-            ('ressort', 'Wissen', None))
+            ('channels', 'eq', 'International', 'Nahost'),
+            ('channels', 'eq', 'Wissen', None),
+            ('serie', 'eq', autotest),
+            ('ressort', 'eq', 'Wissen', None))
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'should': [
-                {'term': {'payload.document.channels.hierarchy':
-                          'International Nahost'}},
-                {'term': {'payload.document.channels.hierarchy':
-                          'Wissen'}},
+            {'bool': {'filter': [
+                {'bool': {'should': [
+                    {'term': {'payload.document.channels.hierarchy':
+                              'International Nahost'}},
+                    {'term': {'payload.document.channels.hierarchy':
+                              'Wissen'}},
+                ]}},
+                {'term': {'payload.document.ressort': 'Wissen'}},
+                {'term': {'payload.document.serie': 'Autotest'}},
             ]}},
-            {'term': {'payload.document.ressort': 'Wissen'}},
-            {'term': {'payload.document.serie': 'Autotest'}},
+            {'term': {'payload.workflow.published': True}}]}}},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_puts_fields_into_bool_according_to_operator(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
+            None)
+        autotest = source.find('Autotest')
+        lead.query = (
+            ('channels', 'eq', 'International', 'Nahost'),
+            ('channels', 'eq', 'Wissen', None),
+            ('serie', 'eq', autotest),
+            ('ressort', 'neq', 'Wissen', None))
+        lead.automatic = True
+        lead.automatic_type = 'custom'
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+        self.assertEqual({'query': {'bool': {'filter': [
+            {'bool': {'filter': [
+                {'bool': {'should': [
+                    {'term': {'payload.document.channels.hierarchy':
+                              'International Nahost'}},
+                    {'term': {'payload.document.channels.hierarchy':
+                              'Wissen'}},
+                ]}},
+                {'term': {'payload.document.serie': 'Autotest'}},
+            ], 'must_not': [
+                {'term': {'payload.document.ressort': 'Wissen'}},
+            ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 
@@ -307,7 +346,7 @@ class AutomaticAreaElasticsearchTest(
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('channels', 'International', 'Nahost'),)
+        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -319,7 +358,7 @@ class AutomaticAreaElasticsearchTest(
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
-        lead.query = (('channels', 'International', 'Nahost'),)
+        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
         lead.query_order = 'order'
         lead.automatic = True
         lead.automatic_type = 'custom'
@@ -333,13 +372,15 @@ class AutomaticAreaElasticsearchTest(
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
             None)
         autotest = source.find('Autotest')
-        lead.query = (('serie', autotest),)
+        lead.query = (('serie', 'eq', autotest),)
         lead.automatic = True
         lead.xml.set('automatic_type', 'channel')
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'term': {'payload.document.serie': 'Autotest'}},
+            {'bool': {'filter': [
+                {'term': {'payload.document.serie': 'Autotest'}},
+            ]}},
             {'term': {'payload.workflow.published': True}}]}}},
             self.elasticsearch.search.call_args[0][0])
 

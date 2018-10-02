@@ -5,15 +5,15 @@ import zope.schema.interfaces
 
 class DynamicCombination(zc.form.field.Combination):
 
-    def __init__(self, type_field, type_interface, **kw):
+    def __init__(self, type_field, type_interface, *fields, **kw):
         self.type_field = type_field
         self.type_field.__name__ = "combination_00"
-        self.fields = (type_field,)
+        self.fields = (type_field,) + fields
         self.type_interface = type_interface
         super(zc.form.field.Combination, self).__init__(**kw)
 
     def generate_fields(self, selector):
-        result = []
+        result = list(self.fields[1:])
         field = self.type_interface[selector]
         if zope.schema.interfaces.ICollection.providedBy(field):
             field = field.value_type

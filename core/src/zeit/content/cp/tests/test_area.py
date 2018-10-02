@@ -382,9 +382,9 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
             None)
         autotest = source.find('Autotest')
-        area.query = (('serie', autotest),)
+        area.query = (('serie', 'eq', autotest),)
         lxml.objectify.deannotate(area.xml, cleanup_namespaces=True)
         self.assertEllipsis(
-            '<query...><condition type="serie">Autotest</condition></query>',
+            '<query...><condition...type="serie">Autotest</condition></query>',
             lxml.etree.tostring(area.xml.query))
-        self.assertEqual((('serie', autotest),), area.query)
+        self.assertEqual((('serie', 'eq', autotest),), area.query)

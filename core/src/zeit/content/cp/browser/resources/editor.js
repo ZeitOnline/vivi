@@ -113,7 +113,7 @@ jQuery(document).bind('fragment-ready', function(event) {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
-    zeit.cms.configure_channel_dropdowns('form.', 'query', '01', '02');
+    zeit.cms.configure_channel_dropdowns('form.', 'query', '02', '03');
     zeit.cms.style_dropdowns(event.target);
 });
 

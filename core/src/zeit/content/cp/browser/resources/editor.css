@@ -531,9 +531,6 @@ buttons, we only can get a different label if we override it here. */
   display: none;
 
 }
-.fieldname-query label[for$="..combination_01"]:after {
-  content: "ist gleich";
-}
 
 /* specificity wars, yay */
 #cp-content .fieldname-query .widget .object-reference.landing-zone,
