@@ -23,7 +23,7 @@ class Base(zeit.push.browser.form.SocialBase,
         'supertitle', 'title', 'subtitle', 'teaserText',
         'product', 'ressort', 'keywords', 'serie',
         'dailyNewsletter', 'banner', 'banner_id',
-        'breaking_news', 'has_recensions', 'commentsAllowed',
+        'has_recensions', 'commentsAllowed',
         'commentsPremoderate', 'related', 'channels', 'lead_candidate',
         'video_still_copyright', 'has_advertisement',
         # remaining:
