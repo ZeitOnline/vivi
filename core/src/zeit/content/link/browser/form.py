@@ -33,7 +33,7 @@ class Base(zeit.push.browser.form.SocialBase,
 
     marketing_group = gocept.form.grouped.Fields(
         _("Marketing"),
-        ('color_scheme', 'cap_title', 'banner_id'),
+        ('cap_title', 'banner_id'),
         css_class='column-right')
 
     story_stream_group = gocept.form.grouped.Fields(
