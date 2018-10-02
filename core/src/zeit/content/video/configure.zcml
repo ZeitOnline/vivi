@@ -39,10 +39,6 @@
     name="video-or-playlist"
     />
 
-  <interface
-    interface=".interfaces.IVideoAsset"
-    type="zeit.cms.asset.interfaces.IAssetInterface"
-    />
   <class class=".asset.VideoAsset">
     <require
       interface=".interfaces.IVideoAsset"

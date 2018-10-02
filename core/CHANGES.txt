@@ -4,7 +4,7 @@ zeit.content.video changes
 3.1.2 (unreleased)
 ------------------
 
-- ZON-3312: Remove deprecated fields from ICommonMetadata
+- ZON-3312: Remove deprecated fields from ICommonMetadata, asset badges
 
 
 3.1.1 (2018-09-05)
