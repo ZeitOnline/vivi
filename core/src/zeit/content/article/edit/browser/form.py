@@ -69,13 +69,12 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
     prefix = 'article-content-head'
     undo_description = _('edit article content head')
     form_fields = FormFields(ICommonMetadata).select(
-        'supertitle', 'title', 'breadcrumb_title', 'subtitle')
+        'supertitle', 'title', 'subtitle')
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
         self.set_charlimit('supertitle')
         self.set_charlimit('title')
-        self.set_charlimit('breadcrumb_title')
         self.set_charlimit('subtitle')
 
     def _success_handler(self):
@@ -453,7 +452,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     prefix = 'options-a'
     undo_description = _('edit options')
     form_fields = FormFields(IArticle).select(
-        'serie', 'breaking_news', 'recent_comments_first')
+        'serie', 'recent_comments_first')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
@@ -479,8 +478,7 @@ class OptionsC(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-c'
     undo_description = _('edit options')
-    form_fields = FormFields(ICommonMetadata).select(
-        'mobile_alternative', 'deeplink_url')
+    form_fields = FormFields(ICommonMetadata).select('deeplink_url')
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
@@ -498,8 +496,7 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
-    form_fields = FormFields(ICommonMetadata).select(
-        'minimal_header', 'countings', 'overscrolling')
+    form_fields = FormFields(ICommonMetadata).select('overscrolling')
 
 
 class OptionsLayout(zeit.edit.browser.form.InlineForm):
@@ -508,7 +505,6 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
     prefix = 'options-layout'
     undo_description = _('edit options')
     form_fields = (
-        FormFields(ICommonMetadata).select('color_scheme') +
         FormFields(IArticle).select('layout'))
 
     def __call__(self):
