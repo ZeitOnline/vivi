@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - ZON-4801:  Add not-equal operator and content type to custom query
 
+- OPS-309: Remove obsolete CP2009 bw-compat code
+
 
 3.26.1 (2018-09-17)
 -------------------
