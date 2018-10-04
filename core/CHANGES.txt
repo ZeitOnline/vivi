@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.2.9 (unreleased)
+2.2.9 (2018-10-04)
 ------------------
 
 - ZON-3312: Remove obsolete calendar
