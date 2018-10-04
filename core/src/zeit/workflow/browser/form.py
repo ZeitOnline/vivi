@@ -126,8 +126,7 @@ class ContentWorkflow(WorkflowForm):
         gocept.form.grouped.Fields(
             _("Status"),
             WorkflowForm.modified_fields + (
-                'edited', 'corrected', 'refined',
-                'images_added', 'seo_optimized'),
+                'edited', 'corrected', 'seo_optimized'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),

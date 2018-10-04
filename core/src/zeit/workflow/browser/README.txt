@@ -42,30 +42,6 @@ Korrigiert states if the Korrektor is done. The state has the same values as
 ['no', 'yes', 'not necessary']
 
 
-Veredelt
-++++++++
-
-Veredelt states if Links etc. were added to the document. The state has the
-same values as **Bearbeitet**:
-
->>> browser.getControl('Refined').displayValue
-['no']
->>> browser.getControl('Refined').displayOptions
-['no', 'yes', 'not necessary']
-
-
-Bilder hinzugefügt
-++++++++++++++++++
-
-The graphics department added images. The state has the same values as
-**Bearbeitet**:
-
->>> browser.getControl('Images added').displayValue
-['no']
->>> browser.getControl('Images added').displayOptions
-['no', 'yes', 'not necessary']
-
-
 Eilmeldung
 ++++++++++
 
@@ -361,8 +337,6 @@ The workflow logs various changes in an objectlog. Verify this:
 <FORMATTED DATE>  [User]: Retracted<br />...
 <FORMATTED DATE>  [User]: Urgent: yes<br />
 <FORMATTED DATE>  [User]: status-seo-optimized: no<br />
-<FORMATTED DATE>  [User]: status-images-added: no<br />
-<FORMATTED DATE>  [User]: status-refined: no<br />
 <FORMATTED DATE>  [User]: status-corrected: no<br />
 <FORMATTED DATE>  [User]: status-edited: no</div>
 ...
@@ -389,7 +363,7 @@ still accessible[#needs-repository]_:
 >>> import zeit.objectlog.interfaces
 >>> log = zeit.objectlog.interfaces.ILog(content)
 >>> len(list(log.get_log()))
-68
+66
 >>> len(log.logs)
 20
 

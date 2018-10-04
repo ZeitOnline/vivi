@@ -40,8 +40,6 @@ The states are as follows (initially None)
 
 >>> workflow.edited
 >>> workflow.corrected
->>> workflow.refined
->>> workflow.images_added
 
 
 Currently the object cannot be published:
@@ -68,10 +66,8 @@ Let's try this with not necessary, too:
 >>> workflow.corrected = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
 'can-publish-success'
->>> workflow.refined = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
 'can-publish-success'
->>> workflow.images_added = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
 'can-publish-success'
 
@@ -168,10 +164,6 @@ http://xml.zeit.de/online/2007/01/Somalia
      status-edited: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
      status-corrected: notnecessary
-http://xml.zeit.de/online/2007/01/Somalia
-     status-refined: notnecessary
-http://xml.zeit.de/online/2007/01/Somalia
-     status-images-added: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
      status-edited: no
 http://xml.zeit.de/online/2007/01/Somalia
