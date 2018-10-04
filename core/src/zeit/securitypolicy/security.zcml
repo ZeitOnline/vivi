@@ -87,10 +87,6 @@
     />
   <grant
     role="zeit.Editor"
-    permission="zeit.calendar.Edit"
-    />
-  <grant
-    role="zeit.Editor"
     permission="zeit.cms.Syndicate"
     />
   <grant
