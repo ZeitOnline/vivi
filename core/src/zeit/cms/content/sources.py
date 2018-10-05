@@ -42,7 +42,7 @@ class SimpleXMLSourceBase(object):
 
     def getValues(self):
         xml = self._get_tree()
-        return [unicode(serie).strip() for serie in xml.iterchildren('*')]
+        return [unicode(x).strip() for x in xml.iterchildren('*')]
 
 
 class XMLSource(
@@ -332,7 +332,8 @@ def unicode_or_none(value):
 class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
-                 column=False, kind=None, video=False, fallback_image=False):
+                 column=False, kind=None, video=False, fallback_image=False,
+                 podigee_id=None):
         super(Serie, self).__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -343,6 +344,7 @@ class Serie(AllowedBase):
         self.kind = kind
         self.video = video
         self.fallback_image = fallback_image
+        self.podigee_id = podigee_id
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -371,7 +373,9 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 node.get('format-label') == u'Kolumne',
                 unicode_or_none(node.get('kind')),
                 node.get('video') == u'yes',
-                node.get('fallback_image') == u'yes')
+                node.get('fallback_image') == u'yes',
+                unicode_or_none(node.get('podigee-id'))
+            )
         return result
 
     def getTitle(self, context, value):
