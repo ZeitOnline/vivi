@@ -27,11 +27,6 @@
     for="zeit.cms.content.interfaces.ITemplate"
     />
 
-  <interface
-    interface=".interfaces.IPortraitboxReference"
-    type="zeit.cms.asset.interfaces.IAssetInterface"
-    />
-
   <class class=".reference.PortraitboxReference">
     <require
       interface=".interfaces.IPortraitboxReference"
