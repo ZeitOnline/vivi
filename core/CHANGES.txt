@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.0 (unreleased)
+3.27.0 (2018-10-05)
 -------------------
 
 - ZON-4801: Add not-equal operator and content type to custom query
