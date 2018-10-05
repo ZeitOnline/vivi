@@ -1,7 +1,7 @@
 zeit.content.infobox changes
 ============================
 
-1.25.2 (unreleased)
+1.25.2 (2018-10-05)
 -------------------
 
 - ZON-3312: Remove obsolete asset badges
