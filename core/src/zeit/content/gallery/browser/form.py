@@ -5,6 +5,7 @@ import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
 import zope.formlib.form
@@ -16,17 +17,16 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase,
                       zeit.push.browser.form.MobileBase):
 
     # XXX We should switch to explicit select.
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.cms.interfaces.ICMSContent,
-            zeit.content.gallery.interfaces.IGalleryMetadata) +
-        zope.formlib.form.FormFields(
-            zeit.content.gallery.interfaces.IMaxLengthHTMLContent))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.content.image.interfaces.IImages,
+        zeit.content.gallery.interfaces.IGalleryMetadata,
+        zeit.content.gallery.interfaces.IMaxLengthHTMLContent)
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
         ('supertitle', 'byline', 'title', 'subtitle',
-         'teaserTitle', 'teaserText', 'html',),
+         'teaserTitle', 'teaserText', 'image', 'fill_color', 'html',),
         css_class='wide-widgets column-left')
 
     field_groups = (

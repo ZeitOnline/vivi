@@ -166,15 +166,9 @@ So let's change the sorting:
     ...
 </table>...
 
-Galleries also have assets:
-
->>> bookmark = browser.url
->>> browser.getLink('Edit assets').click()
->>> browser.getControl('Add Related')
-<SubmitControl name='form.related.add' type='submit'>
-
 The default view while editing a gallery is the overview page:
 
+>>> bookmark = browser.url
 >>> browser.open('/++skin++cms/workingcopy/zope.user/island')
 >>> print browser.title.strip()
 Auf den Spuren der Elfen – Overview
