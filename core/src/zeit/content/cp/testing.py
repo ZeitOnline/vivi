@@ -202,9 +202,6 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
             repository[name] = content
             clipboard.addContent(
                 clip, repository[name], name, insert=True)
-        quiz = zeit.content.quiz.quiz.Quiz()
-        quiz.teaserTitle = quiz.title = u'MyQuiz'
-        repository['my_quiz'] = quiz
         transaction.commit()
 
         s = self.selenium

@@ -24,9 +24,6 @@
 
   <include package="zeit.content.modules" />
 
-  <include package="zeit.content.quiz" />
-  <include package="zeit.content.quiz.browser" />
-
   <include package="zeit.content.video" />
 
   <!-- Allow test user to create and move areas -->
