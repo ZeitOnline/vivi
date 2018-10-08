@@ -1,8 +1,9 @@
 # coding: utf8
 import lxml.cssselect
 import transaction
-import zeit.cms.repository.interfaces
-import zeit.content.quiz.quiz
+import zeit.content.cp.testing
+import zeit.edit.interfaces
+import zope.app.appsetup.product
 import zope.component
 
 
