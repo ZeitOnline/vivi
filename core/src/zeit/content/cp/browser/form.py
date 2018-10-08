@@ -5,6 +5,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
+import zeit.content.image.interfaces
 import zope.formlib.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -17,6 +18,8 @@ class FormBase(object):
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.content.interfaces.ICommonMetadata).omit('keywords') +
         zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImages) +
+        zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage).select(
             'type', 'header_image', 'topiclink_title',
             'topiclink_label_1', 'topiclink_url_1',
@@ -28,7 +31,7 @@ class FormBase(object):
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
         ('supertitle', 'byline', 'title', 'breadcrumb_title', 'subtitle',
-         'teaserTitle', 'teaserText', 'topiclink_title',
+         'teaserTitle', 'teaserText', 'image', 'fill_color', 'topiclink_title',
          'topiclink_label_1', 'topiclink_url_1',
          'topiclink_label_2', 'topiclink_url_2',
          'topiclink_label_3', 'topiclink_url_3',

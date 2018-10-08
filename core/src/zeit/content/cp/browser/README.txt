@@ -32,12 +32,6 @@ Centerpage
 ...CP type...Themenseite...
 ...Header image...DSC00109_2.JPG...
 
-There is an asset tab:
-
->>> browser.getLink('Edit assets').click()
->>> print browser.title.strip()
-Auf den Spuren der Elfen – Edit assets
-
 We can edit the metadata on the edit tab:
 
 >>> browser.getLink('Edit metadata').click()
