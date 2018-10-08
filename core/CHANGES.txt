@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.1 (unreleased)
+3.27.1 (2018-10-08)
 -------------------
 
 - ZON-3312: Move teaser image form field to metadata tab instead of separate asset tab
