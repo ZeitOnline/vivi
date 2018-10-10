@@ -6,10 +6,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
-    <cluster area="feature">
-      <region area="lead"/>
-      <region area="informatives"/>
+    <cluster area="feature" kind="duo">
+      <region area="lead" kind="major"/>
+      <region area="informatives" kind="minor"/>
     </cluster>
-    <cluster area="teaser-mosaic"/>
   </body>
 </centerpage>

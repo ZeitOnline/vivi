@@ -19,34 +19,6 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.teaser = self.cp['lead'].create_item('teaser')
 
-    def test_is_block_in_teasermosaic_should_apply_to_block(self):
-        bar = self.cp['teaser-mosaic'].create_item('area')
-        teaser = bar.create_item('teaser')
-        r = Rule("""
-applicable(is_block and region == 'teaser-mosaic')
-error_if(True, u'Block in teasermosaic.')
-""")
-        s = r.apply(teaser, IRuleGlobs(teaser))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
-
-    def test_is_area_in_teasermosaic_should_apply_to_teaserbar(self):
-        bar = self.cp['teaser-mosaic'].create_item('area')
-        r = Rule("""
-applicable(is_area and region == 'teaser-mosaic' and position)
-error_if(True, u'Area in teasermosaic.')
-""")
-        s = r.apply(bar, IRuleGlobs(bar))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
-
-    def test_teaserbar_is_no_block(self):
-        bar = self.cp['teaser-mosaic'].create_item('area')
-        r = Rule("""
-applicable(is_block and region == 'teaser-mosaic')
-error_if(True)
-""")
-        s = r.apply(bar, IRuleGlobs(bar))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
-
     def test_content_glob(self):
         r = Rule("""
 applicable(is_block and content)
@@ -88,7 +60,7 @@ error_if(True)
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_area_is_not_a_region(self):
-        area = self.cp['teaser-mosaic'].create_item('area')
+        area = self.cp['feature'].create_item('area')
         r = Rule("""
 applicable(is_region)
 error_if(True)

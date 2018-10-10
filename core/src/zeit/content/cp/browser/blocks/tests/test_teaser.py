@@ -147,16 +147,8 @@ class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
         view.update()
         return view
 
-    def create_teaserblock(self, layout, area='teaser-mosaic'):
-        if area == 'teaser-mosaic':
-            # Since the real layouts that support image positions are for the
-            # parquet, we've set up the test configurations for layouts the
-            # same way, but that means they only are allowed in teaser-mosaic.
-            container = zope.component.getAdapter(
-                self.cp['teaser-mosaic'],
-                zeit.edit.interfaces.IElementFactory, name='area')()
-        else:
-            container = self.cp[area]
+    def create_teaserblock(self, layout):
+        container = self.cp.body.create_item('region').create_item('area')
         block = zope.component.getAdapter(
             container, zeit.edit.interfaces.IElementFactory, name='teaser')()
         block.layout = zeit.content.cp.layout.get_layout(layout)

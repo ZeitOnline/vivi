@@ -83,9 +83,8 @@ archive-print-volume
         <container cp:type="teaser" module="archive-print-volume" .../>
         <container cp:type="teaser" module="archive-print-volume" .../>
       </region>
-      <region area="informatives"/>
+      <region area="informatives".../>
     </cluster>
-    <cluster area="teaser-mosaic"/>
   </body>
 </centerpage>
 <BLANKLINE>

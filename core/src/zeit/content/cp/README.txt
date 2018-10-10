@@ -19,11 +19,10 @@ The ancient XML representation looked as follows:
 <centerpage... type="homepage"...>
   <head>...
   <body>
-    <cluster area="feature">
-      <region area="lead"/>
-      <region area="informatives"/>
+    <cluster area="feature" kind="duo">
+      <region area="lead" kind="major"/>
+      <region area="informatives" kind="minor"/>
     </cluster>
-    <cluster area="teaser-mosaic"/>
   </body>
 </centerpage>
 >>> import zeit.connector.interfaces
@@ -113,7 +112,7 @@ After calling the factory a corresponding XML node has been created:
 
 >>> print lxml.etree.tostring(informatives.xml, pretty_print=True),
 <region ... area="informatives"...>
-  <container cp:type="teaser" module="leader" ... cp:__name__="..."/>
+  <container cp:type="teaser" module="buttons" ... cp:__name__="..."/>
 </region>
 
 

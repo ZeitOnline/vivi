@@ -6,7 +6,7 @@
         image_pattern="450x200"
         is_leader="true"
         areas="solo duo minor major"
-        default="solo minor"
+        default="solo"
         />
     <layout
         id="leader-upright"
@@ -29,7 +29,7 @@
         title="Kleiner Teaser mit kleinem Bild und Teaserliste"
         image_pattern="140x140"
         areas="solo duo minor major ranking"
-        default="major ranking"
+        default="major minor ranking"
         />
     <layout
         id="two-side-by-side"

@@ -94,7 +94,6 @@ The contents of cp-content is loaded via javascript:
 <...
   <div ...class="...editable-area..."...id="lead"...
   <div ...class="...editable-area..."...id="informatives"...
-  <div ...class="...editable-area..."...id="teaser-mosaic"...
 
 Blocks are added via drag and drop from the block library. The library is
 explained in detail in library.txt.
@@ -107,13 +106,13 @@ Blocks can be sorted. There is an ``updateOrder`` view doing this.
 
 >>> browser.open(contents_url)
 >>> browser.open(
-...     'teaser-mosaic/@@landing-zone-drop-module?block_type=area&order=top')
+...     'lead/@@landing-zone-drop-module?block_type=teaser&order=top')
 >>> browser.open(contents_url)
 >>> browser.open(
-...     'teaser-mosaic/@@landing-zone-drop-module?block_type=area&order=top')
+...     'lead/@@landing-zone-drop-module?block_type=teaser&order=top')
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
+...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
 ['id-92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
@@ -127,7 +126,7 @@ Reverse the bars:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'teaser-mosaic/updateOrder?keys=' + json.dumps(reversed_ids))
+...     'lead/updateOrder?keys=' + json.dumps(reversed_ids))
 
 The order has been updated now:
 
@@ -135,7 +134,7 @@ The order has been updated now:
 True
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
+...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
 True
@@ -144,10 +143,10 @@ Restore the original order again:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'teaser-mosaic/updateOrder?keys=' + json.dumps(original_ids))
+...     'lead/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
+...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
 True
@@ -161,9 +160,9 @@ Blocks and teaser bars can be removed using the delete link:
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
->>> browser.getLink('Delete', index=3).url
+>>> browser.getLink('Delete', index=5).url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@delete?key=id-<GUID>'
->>> browser.getLink('Delete', index=3).click()
+>>> browser.getLink('Delete', index=5).click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 1
