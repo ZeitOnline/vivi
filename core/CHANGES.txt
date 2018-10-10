@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.2.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-2694: Grant retractlog permission to seo
 
 
 2.2.9 (2018-10-04)

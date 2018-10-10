@@ -216,5 +216,9 @@
     role="zeit.SEO"
     permission="zeit.retresco.UseTMS"
     />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.EditRetractLog"
+    />
 
 </configure>
