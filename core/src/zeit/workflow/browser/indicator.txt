@@ -20,8 +20,6 @@ objects (note that the ``view`` argument is not really relevant)[#setup]_:
 >>> print viewlet.render()
 <span title="status-edited: no" class="content-status state-no">E</span>
 <span title="status-corrected: no" class="content-status state-no">C</span>
-<span title="status-refined: no" class="content-status state-no">R</span>
-<span title="status-images-added: no" class="content-status state-no">I</span>
 
 
 Change some states:
@@ -29,12 +27,9 @@ Change some states:
 >>> import zeit.workflow.interfaces
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(content)
 >>> workflow.edited = True
->>> workflow.refined = zeit.workflow.interfaces.NotNecessary
 >>> print viewlet.render()
 <span title="status-edited: yes" class="content-status state-yes">E</span>
 <span title="status-corrected: no" class="content-status state-no">C</span>
-<span title="status-refined: not necessary" class="content-status state-notnecessary">R</span>
-<span title="status-images-added: no" class="content-status state-no">I</span>
 
 
 Asset workflow

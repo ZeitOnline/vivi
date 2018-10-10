@@ -1,10 +1,21 @@
 zeit.cms changes
 ================
 
-3.16.1 (unreleased)
+3.17.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+3.17.0 (2018-10-05)
+-------------------
+
+- ZON-4801: Make CMSContentTypeSource DAV-serializable
+
+- ZON-4849: Add podigee ID to Serie objects
+
+- ZON-3312: Remove deprecated fields from ICommonMetadata, asset badges,
+  obsolete workflow states `refined` and `images_added`
 
 
 3.16.0 (2018-09-17)

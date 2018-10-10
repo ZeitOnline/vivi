@@ -57,16 +57,6 @@ class IContentWorkflow(ITimeBasedPublishing):
         default=False,
         source=zeit.workflow.source.TriState())
 
-    refined = zope.schema.Choice(
-        title=_('status-refined', default=u'Refined'),
-        default=False,
-        source=zeit.workflow.source.TriState())
-
-    images_added = zope.schema.Choice(
-        title=_('status-images-added', default=u'Images added'),
-        default=False,
-        source=zeit.workflow.source.TriState())
-
     seo_optimized = zope.schema.Choice(
         title=_('status-seo-optimized', default=u'SEO optimized'),
         default=False,

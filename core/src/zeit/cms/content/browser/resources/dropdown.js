@@ -115,7 +115,6 @@ zeit.cms.style_dropdowns = function(container) {
 MochiKit.Signal.connect(window, 'onload', function(event) {
     zeit.cms.configure_ressort_dropdown();
     zeit.cms.configure_channel_dropdowns('form.', 'channels', '00', '01');
-    zeit.cms.configure_channel_dropdowns('form.', 'query', '01', '02');
     zeit.cms.style_dropdowns();
 });
 

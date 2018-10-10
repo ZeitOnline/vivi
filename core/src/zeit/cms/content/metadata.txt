@@ -15,10 +15,6 @@ Set "show commentthread from common metadata:
 
 >>> content.show_commentthread = True
 
-Set content to be a rebrush_website_content
-
->>> content.rebrush_website_content = True
-
 The initial value for the copyright is None:
 
 >>> content.copyrights is None
@@ -39,8 +35,7 @@ Verify the data:
 >>> pprint.pprint(dict(properties))
 {('comments', u'http://namespaces.zeit.de/CMS/document'): 'yes',
  ('copyrights', u'http://namespaces.zeit.de/CMS/document'): u'ich',
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...',
- ('rebrush_website_content', u'http://namespaces.zeit.de/CMS/document'): 'yes'}
+ ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
 
 Products
 ++++++++

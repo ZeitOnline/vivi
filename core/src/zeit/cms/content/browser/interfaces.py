@@ -1,4 +1,3 @@
-from zeit.cms.asset.browser.interfaces import IAssetViews  # Legacy
 import zope.interface
 
 

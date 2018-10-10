@@ -42,7 +42,7 @@ class SimpleXMLSourceBase(object):
 
     def getValues(self):
         xml = self._get_tree()
-        return [unicode(serie).strip() for serie in xml.iterchildren('*')]
+        return [unicode(x).strip() for x in xml.iterchildren('*')]
 
 
 class XMLSource(
@@ -332,7 +332,8 @@ def unicode_or_none(value):
 class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
-                 column=False, kind=None, video=False, fallback_image=False):
+                 column=False, kind=None, video=False, fallback_image=False,
+                 podigee_id=None):
         super(Serie, self).__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -343,6 +344,7 @@ class Serie(AllowedBase):
         self.kind = kind
         self.video = video
         self.fallback_image = fallback_image
+        self.podigee_id = podigee_id
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -371,7 +373,9 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 node.get('format-label') == u'Kolumne',
                 unicode_or_none(node.get('kind')),
                 node.get('video') == u'yes',
-                node.get('fallback_image') == u'yes')
+                node.get('fallback_image') == u'yes',
+                unicode_or_none(node.get('podigee-id'))
+            )
         return result
 
     def getTitle(self, context, value):
@@ -449,42 +453,49 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
 PRODUCT_SOURCE = ProductSource()
 
 
-class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
+class CMSContentTypeSource(
+        ObjectSource,
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
-    def getValues(self):
-        return (interface for name, interface in
-                zope.component.getUtilitiesFor(
-                    zeit.cms.interfaces.ICMSContentType))
+    def _values(self):
+        return {
+            name: interface for name, interface in
+            zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType)
+        }
 
-    def getTitle(self, value):
+    def getTitle(self, context, value):
         try:
             return value.getTaggedValue('zeit.cms.title')
         except KeyError:
             return unicode(value)
 
-    def find(self, type_id):
-        # XXX Should typegrokker register the interface with name=type_id
-        # instead of/in addition to the dotted name?
-        for iface in self.getValues():
-            if iface.getTaggedValue('zeit.cms.type') == type_id:
-                return iface
+    def getToken(self, context, value):
+        try:
+            return value.getTaggedValue('zeit.cms.type')
+        except KeyError:
+            return unicode(value)
+
+    def isAvailable(self, value, context):
+        return True
 
 
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
-    def getValues(self):
+    def getValues(self, context):
         import zeit.cms.content.interfaces  # break circular import
-        types = (list(super(AddableCMSContentTypeSource, self).getValues()) +
-                 list(interface for name, interface in
-                      zope.component.getUtilitiesFor(
-                          zeit.cms.content.interfaces.IAddableContent)))
+        types = (
+            list(super(AddableCMSContentTypeSource, self).getValues(context)) +
+            list(interface for name, interface in
+                 zope.component.getUtilitiesFor(
+                     zeit.cms.content.interfaces.IAddableContent)))
         by_title = {
             # XXX Hard-code language, since we don't have a request here.
-            zope.i18n.translate(self.getTitle(x), target_language='de'): x
+            zope.i18n.translate(
+                self.getTitle(context, x), target_language='de'): x
             for x in types}
         return [by_title[x] for x in sorted(by_title.keys())]
 
-    def filterValue(self, value):
+    def filterValue(self, context, value):
         import zeit.cms.type  # break circular import
         return (value.queryTaggedValue('zeit.cms.addform') !=
                 zeit.cms.type.SKIP_ADD)

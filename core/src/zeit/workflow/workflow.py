@@ -28,10 +28,7 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IContentWorkflow,
-        WORKFLOW_NS,
-        ('edited', 'corrected', 'refined',
-         'images_added', 'seo_optimized',
-         'urgent'),
+        WORKFLOW_NS, ('edited', 'corrected', 'seo_optimized', 'urgent'),
         writeable=WRITEABLE_ALWAYS)
 
     def can_publish(self):
@@ -54,9 +51,7 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def log_workflow_changes(workflow, event):
     if event.field.__name__ not in (
-            'edited', 'corrected', 'refined',
-            'images_added', 'seo_optimized',
-            'urgent'):
+            'edited', 'corrected', 'seo_optimized', 'urgent'):
         # Only act on certain fields.
         return
 

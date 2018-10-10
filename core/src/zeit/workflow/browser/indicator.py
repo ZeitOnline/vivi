@@ -1,14 +1,10 @@
-
+from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
-
+import zeit.workflow
+import zope.app.form.browser.interfaces
 import zope.component
-import zope.dublincore.interfaces
 import zope.i18n
 import zope.viewlet.viewlet
-import zope.app.form.browser.interfaces
-
-import zeit.workflow
-from zeit.cms.i18n import MessageFactory as _
 
 
 class ContentStatus(zope.viewlet.viewlet.ViewletBase):
@@ -24,7 +20,7 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
 
         states = []
 
-        for name in ('edited', 'corrected', 'refined', 'images_added'):
+        for name in ('edited', 'corrected'):
             field = zeit.workflow.interfaces.IContentWorkflow[name]
             value = field.query(self.workflow)
             if value is None:

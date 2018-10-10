@@ -39,11 +39,6 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 authorSource = AuthorSource()
 
 
-class IMobileAlternative(zope.schema.interfaces.IURI):
-    """Marker interface so we can register a specialized widget
-    for this field."""
-
-
 class IChannelField(zc.form.interfaces.ICombinationField):
     """Marker interface so we can register a specialized widget
     for this field."""
@@ -243,69 +238,19 @@ class ICommonMetadata(zope.interface.Interface):
         default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.PRODUCT_SOURCE)
 
-    # DEPRECATED (xslt)
-    foldable = zope.schema.Bool(
-        title=_('Foldable'),
-        required=False,
-        default=True)
-
-    # DEPRECATED (xslt)
-    minimal_header = zope.schema.Bool(
-        title=_('Minimal header'),
-        required=False,
-        default=False)
-
-    # DEPRECATED (xslt)
-    color_scheme = zope.schema.Choice(
-        title=_('Color scheme'),
-        values=(u'Redaktion', u'Verlag'),
-        default=u'Redaktion')
-
-    # DEPRECATED (xslt)
-    countings = zope.schema.Bool(
-        title=_('Countings'),
-        required=False,
-        default=True)
-
     overscrolling = zope.schema.Bool(
         title=_('Overscrolling'),
         required=False,
         default=True)
 
-    # DEPRECATED, use z.c.article.interfaces.IBreakingNews.is_breaking
-    breaking_news = zope.schema.Bool(
-        title=_('Breaking news'),
-        required=False,
-        default=False)
-
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
-
-    # DEPRECATED (there is no separate mobile site anymore)
-    mobile_alternative = zope.schema.URI(
-        title=_('Mobile URL'),
-        required=False,
-        default=None)
-    zope.interface.alsoProvides(mobile_alternative, IMobileAlternative)
 
     deeplink_url = zope.schema.URI(
         title=_('Deeplink URL'),
         required=False,
         default=None)
-
-    # DEPRECATED (xslt)
-    breadcrumb_title = zope.schema.TextLine(
-        title=_('Breadcrumb title'),
-        required=False,
-        max_length=55)
-    breadcrumb_title.setTaggedValue('zeit.cms.charlimit', 55)
-
-    # DEPRECATED (xslt)
-    rebrush_website_content = zope.schema.Bool(
-        title=_('Rebrush website content'),
-        required=False,
-        default=False)
 
     tldr_title = zope.schema.TextLine(
         title=_("tldr title"),

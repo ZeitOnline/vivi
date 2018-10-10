@@ -33,8 +33,4 @@
       permission="zeit.EditContent" />
   </class>
 
-  <interface
-    interface=".interfaces.IRelatedContent"
-    type="zeit.cms.asset.interfaces.IAssetInterface"
-    />
 </configure>
