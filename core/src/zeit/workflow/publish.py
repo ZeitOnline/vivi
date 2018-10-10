@@ -68,6 +68,21 @@ class Publish(object):
         return self._execute_task(
             MULTI_PUBLISH_TASK, ids, priority, async, **kw)
 
+    def retract_multiple(
+            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+        """Retract multiple objects."""
+        if not objects:
+            logger.warning('Not starting a retract task, because no objects'
+                           ' to retract were given')
+            return
+        ids = []
+        for obj in objects:
+            obj = zeit.cms.interfaces.ICMSContent(obj)
+            self.log(obj, _('Collective Retraction'))
+            ids.append(obj.uniqueId)
+        return self._execute_task(
+            MULTI_RETRACT_TASK, ids, priority, async, **kw)
+
     def _execute_task(self, task, ids, priority, async, message=None, **kw):
         if async:
             if message:
@@ -415,16 +430,37 @@ class RetractTask(PublishRetractTask):
 
     def _run(self, objs):
         logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
+        errors = []
+        retracted = []
         for obj in objs:
             info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
             if not info.published:
                 logger.warning(
                     "Retracting object %s which is not published.",
                     obj.uniqueId)
+            try:
+                obj = self.recurse(self.before_retract, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+            else:
+                retracted.append(obj)
 
-            obj = self.recurse(self.before_retract, obj, obj)
-            self.call_retract_script(obj)
-            self.recurse(self.after_retract, obj, obj)
+        paths = []
+        for obj in retracted:
+            paths.extend(reversed(self.get_all_paths(obj)))
+
+        if paths:
+            self.call_retract_script(paths)
+
+        for obj in retracted:
+            try:
+                self.recurse(self.after_retract, obj, obj)
+            except Exception, e:
+                errors.append((obj, e))
+
+        if errors:
+            raise MultiPublishError(errors)
+
         return "Retracted."
 
     def before_retract(self, obj, master):
@@ -437,12 +473,11 @@ class RetractTask(PublishRetractTask):
         self.log(obj, _('Retracted'))
         return obj
 
-    def call_retract_script(self, obj):
+    def call_retract_script(self, paths):
         """Call the script. This does the actual retract."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         retract_script = config['retract-script']
-        paths = reversed(self.get_all_paths(obj))
         self.call_script(retract_script, '\n'.join(paths))
 
     def after_retract(self, obj, master):
@@ -490,6 +525,25 @@ class MultiPublishTask(PublishTask):
 @zeit.cms.celery.task(bind=True)
 def MULTI_PUBLISH_TASK(self, ids):
     return MultiPublishTask(self.request.id).run(ids)
+
+
+class MultiRetractTask(RetractTask):
+    """Retract multiple objects"""
+
+    def _run(self, objs):
+        self._to_log = []
+        result = super(MultiRetractTask, self)._run(objs)
+        # See MultiPublishTask for details.
+        raise z3c.celery.celery.Abort(
+            self._log_messages, self._to_log, message=result)
+
+    def log(self, obj, message):
+        self._to_log.append((obj, message))
+
+
+@zeit.cms.celery.task(bind=True)
+def MULTI_RETRACT_TASK(self, ids):
+    return MultiRetractTask(self.request.id).run(ids)
 
 
 class Timer(threading.local):
