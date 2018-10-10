@@ -1,0 +1,30 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- Templates -->
+  <class class=".retractlog.RetractLog">
+    <require
+      interface=".interfaces.IRetractLog"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.container.interfaces.IWriteContainer"
+      permission="zeit.EditRetractLog"
+      />
+  </class>
+
+  <class class=".retractlog.Job">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IJob"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IJob"
+      permission="zeit.EditRetractLog"
+      />
+  </class>
+</configure>

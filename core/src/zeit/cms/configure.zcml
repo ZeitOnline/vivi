@@ -34,6 +34,7 @@
   <include package=".tagging" />
   <include package=".section" />
   <include package=".redirect" />
+  <include package=".retractlog" />
 
 
   <!-- configuration -->

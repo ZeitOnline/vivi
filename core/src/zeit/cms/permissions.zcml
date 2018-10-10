@@ -105,6 +105,11 @@
     />
 
   <permission
+    id="zeit.EditRetractLog"
+    title="Edit retract log"
+    />
+
+  <permission
     id="zeit.content.cp.Delete"
     title="Delete centerpages"
     />
@@ -118,6 +123,5 @@
     id="zeit.cms.admin.EditSemantic"
     title="Edit semantic change and date of last semantic publish"
     />
-
 </configure>
 
