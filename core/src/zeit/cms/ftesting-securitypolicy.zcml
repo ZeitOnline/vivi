@@ -62,7 +62,12 @@
     login="producer"
     password="producerpw" />
 
-
+    <!-- A SEO -->
+  <principal
+    id="zope.seo"
+    title="Search engine optimiser"
+    login="seo"
+    password="seopw" />
 
   <!-- Grants -->
   <grantAll role="zope.Manager" />
@@ -152,6 +157,18 @@
   <grant
     principal="zope.producer"
     permission="zeit.content.cp.Retract"
+    />
+
+  <!-- SEO grants -->
+
+  <grant
+    principal="zope.seo"
+    permission="zeit.EditRetractLog"
+    />
+
+  <grant
+    principal="zope.seo"
+    permission="zeit.workflow.Publish"
     />
 
 </configure>
