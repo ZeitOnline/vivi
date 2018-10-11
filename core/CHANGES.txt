@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.18.0 (unreleased)
+3.18.0 (2018-10-11)
 -------------------
 
 - ZC-90: Add `commentsAPIv2` property to ICommonMetadata
