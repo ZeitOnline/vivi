@@ -18,9 +18,9 @@ class ElementTestHelper(object):
 
     def test_add_element_creates_new_element(self):
         s = self.selenium
-        s.assertCssCount('css=.type-{}'.format(self.name), 2)
+        s.assertCssCount('css=.type-{}'.format(self.name), 1)
         self.make_one()
-        s.waitForCssCount('css=.type-{}'.format(self.name), 3)
+        s.waitForCssCount('css=.type-{}'.format(self.name), 2)
 
     def test_add_element_creates_element_of_given_kind(self):
         s = self.selenium
@@ -30,11 +30,11 @@ class ElementTestHelper(object):
 
     def test_delete_element_removes_element(self):
         s = self.selenium
-        s.assertCssCount('css=.type-{}'.format(self.name), 2)
+        s.assertCssCount('css=.type-{}'.format(self.name), 1)
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
         s.waitForConfirmation(u'Wirklich löschen?')
-        s.waitForCssCount('css=.type-{}'.format(self.name), 1)
+        s.waitForCssCount('css=.type-{}'.format(self.name), 0)
 
     def test_toggle_visible(self):
         self.test_add_element_creates_new_element()
@@ -262,7 +262,7 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//a[@href="tab-2"]')
         s.waitForElementPresent('id=form.block_max')
         s.type('form.block_max', '1')
-        s.select('form.overflow_into', 'solo area no title')
+        s.select('form.overflow_into', 'minor area no title')
         s.click(r'css=#tab-2 #form\.actions\.apply')
         s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=a.CloseButton')
@@ -283,7 +283,7 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module, 'css=.action-cp-body-module-droppable', '10,10')
-        s.waitForCssCount('css=.type-region', 3)
+        s.waitForCssCount('css=.type-region', 2)
 
     def test_drop_configured_region_creates_nested_areas(self):
         s = self.selenium

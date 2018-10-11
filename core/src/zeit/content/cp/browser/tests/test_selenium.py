@@ -1,4 +1,5 @@
 # coding: utf8
+from gocept.selenium.wd_selenese import split_locator
 import lxml.cssselect
 import transaction
 import zeit.content.cp.testing
@@ -266,12 +267,22 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_move_area_between_regions(self):
         s = self.selenium
+        s.click(u'link=Struktur')
+        s.click(u'link=Regionen')
+        module = self.get_module('body', 'Solo')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module, 'css=.action-cp-body-module-droppable', '10,10')
+        s.waitForCssCount('css=.type-region', 2)
+        region = s.selenium.find_elements(*split_locator('css=.type-region'))
+        region = [x.get_attribute('id') for x in region]
+        region = [x for x in region if x != 'feature'][0]
         s.dragAndDropToObject(
             'css=#feature #informatives .dragger',
-            'css=#teaser-mosaic .landing-zone.action-cp-region-module-movable',
+            'css=#%s .landing-zone.action-cp-region-module-movable' % region,
             '10,10')
         s.waitForElementNotPresent('css=#feature #informatives')
-        s.waitForElementPresent('css=#teaser-mosaic #informatives')
+        s.waitForElementPresent('css=#%s #informatives' % region)
 
     def test_move_area_inside_region_to_change_order(self):
         selector = css_path('#feature > .block-inner > .type-area')
@@ -293,7 +304,7 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         # create new regions since browser view of Jenkins is too small to move
         # existing regions with areas and blocks inside
-        s.assertCssCount('css=.type-region', 2)
+        s.assertCssCount('css=.type-region', 1)
         selector = 'css=.action-cp-body-module-droppable'
         module = self.get_module('body', 'Empty')
         self.selenium.click(u'link=Struktur')
@@ -301,10 +312,10 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')
-        s.waitForCssCount('css=.type-region', 3)
+        s.waitForCssCount('css=.type-region', 2)
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')
-        s.waitForCssCount('css=.type-region', 4)
+        s.waitForCssCount('css=.type-region', 3)
 
         region1 = s.getAttribute(path.format(pos=1))
         region2 = s.getAttribute(path.format(pos=2))
