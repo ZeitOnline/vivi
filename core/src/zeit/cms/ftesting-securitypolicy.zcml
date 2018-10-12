@@ -62,7 +62,7 @@
     login="producer"
     password="producerpw" />
 
-    <!-- A SEO -->
+  <!-- A SEO -->
   <principal
     id="zope.seo"
     title="Search engine optimiser"
