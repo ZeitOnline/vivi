@@ -51,7 +51,7 @@ class View(object):
                 self.unknown.append(url)
 
     def config(self):
-        return "\n".join(["%s=410" % url.replace('http://xml.zeit.de', "")
+        return "\n".join(["%s = 410" % url.replace('http://xml.zeit.de', "")
                           for url in self.retracted])
 
     def produce_config(self):

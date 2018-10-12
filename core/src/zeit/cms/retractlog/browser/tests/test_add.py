@@ -134,8 +134,8 @@ class TestJobView(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_job_view_shows_config(self):
         b = self.open()
-        self.assertTrue("/test/foo=410\n"
-                        "/test/bar=410" in b.contents)
+        self.assertTrue("/test/foo = 410\n"
+                        "/test/bar = 410" in b.contents)
 
     def test_job_view_shows_unknown(self):
         b = self.open()
@@ -151,7 +151,7 @@ class TestJobView(zeit.cms.testing.ZeitCmsBrowserTestCase):
             '...<h4>Noch veröffentlicht...<ul>...'
             '<li>http://xml.zeit.de/test/foo</li>...',
             b.contents)
-        self.assertFalse("/test/foo=410" in b.contents)
+        self.assertFalse("/test/foo = 410" in b.contents)
 
     def test_job_view_shows_retracted(self):
         b = self.open()
