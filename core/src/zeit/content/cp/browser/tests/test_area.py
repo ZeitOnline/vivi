@@ -11,6 +11,7 @@ class ElementTestHelper(object):
     """Helper class to test creation and deletion of IRegion and IArea"""
 
     name = NotImplemented
+    starting_count = NotImplemented
 
     def setUp(self):
         super(ElementTestHelper, self).setUp()
@@ -18,9 +19,10 @@ class ElementTestHelper(object):
 
     def test_add_element_creates_new_element(self):
         s = self.selenium
-        s.assertCssCount('css=.type-{}'.format(self.name), 1)
+        s.assertCssCount('css=.type-{}'.format(self.name), self.starting_count)
         self.make_one()
-        s.waitForCssCount('css=.type-{}'.format(self.name), 2)
+        s.waitForCssCount('css=.type-{}'.format(self.name),
+                          self.starting_count + 1)
 
     def test_add_element_creates_element_of_given_kind(self):
         s = self.selenium
@@ -30,11 +32,12 @@ class ElementTestHelper(object):
 
     def test_delete_element_removes_element(self):
         s = self.selenium
-        s.assertCssCount('css=.type-{}'.format(self.name), 1)
+        s.assertCssCount('css=.type-{}'.format(self.name), self.starting_count)
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
         s.waitForConfirmation(u'Wirklich löschen?')
-        s.waitForCssCount('css=.type-{}'.format(self.name), 0)
+        s.waitForCssCount('css=.type-{}'.format(self.name),
+                          self.starting_count - 1)
 
     def test_toggle_visible(self):
         self.test_add_element_creates_new_element()
@@ -55,6 +58,7 @@ class RegionTest(
         zeit.content.cp.testing.SeleniumTestCase):
 
     name = 'region'
+    starting_count = 1
 
     def make_one(self, kind='Empty'):
         selector = 'css=.action-cp-body-module-droppable'
@@ -71,6 +75,7 @@ class AreaTest(
         zeit.content.cp.testing.SeleniumTestCase):
 
     name = 'area'
+    starting_count = 2
 
     def make_one(self, parent_selector='.type-region', kind='Solo'):
         selector = 'css={} .action-cp-region-module-droppable'.format(
