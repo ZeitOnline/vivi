@@ -43,7 +43,7 @@ class View(object):
             content = zeit.cms.interfaces.ICMSContent(url, None)
             if content:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-                if pub_info and pub_info.published:
+                if pub_info.published:
                     self.published.append(url)
                 else:
                     self.retracted.append(url)
