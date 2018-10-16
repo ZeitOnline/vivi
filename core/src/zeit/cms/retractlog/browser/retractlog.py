@@ -36,26 +36,10 @@ class View(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.published = []
-        self.retracted = []
-        self.unknown = []
-        for url in self.context.urls:
-            content = zeit.cms.interfaces.ICMSContent(url, None)
-            if content:
-                pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-                if pub_info.published:
-                    self.published.append(url)
-                else:
-                    self.retracted.append(url)
-            else:
-                self.unknown.append(url)
 
     def config(self):
         return "\n".join(["%s = 410" % url.replace('http://xml.zeit.de', "")
-                          for url in self.retracted])
-
-    def produce_config(self):
-        return not self.published and self.retracted
+                         for url in self.context.urls])
 
 
 class Add(zeit.cms.browser.form.AddForm):

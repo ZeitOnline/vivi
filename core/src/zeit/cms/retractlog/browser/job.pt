@@ -1,16 +1,9 @@
 <h3>Retract job log</h3>
-<tal:block tal:condition="view/retracted">
-    <h4>Zurückgezogen</h4>
+<tal:block tal:condition="context/urls">
+    <h4>Urls</h4>
     <ul>
-        <li tal:repeat="url view/retracted" tal:content="url" />
+        <li tal:repeat="url context/urls" tal:content="url" />
     </ul>
-</tal:block>
-
-<tal:block tal:condition="view/published">
-    <h4>Noch veröffentlicht</h4>
-    <ul>
-    <li tal:repeat="url view/published" tal:content="url" />
-  </ul>
 </tal:block>
 
 <tal:block tal:condition="context/invalid">
@@ -27,7 +20,7 @@
     </ul>
 </tal:block>
 
-<tal:block tal:condition="view/produce_config">
+<tal:block tal:condition="context/urls">
     <h4>Konfiguration für 410 Status Code</h4>
     <pre tal:content="view/config" />
 </tal:block>

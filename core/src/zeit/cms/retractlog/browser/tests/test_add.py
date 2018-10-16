@@ -144,19 +144,10 @@ class TestJobView(zeit.cms.testing.ZeitCmsBrowserTestCase):
             '<li>http://xml.zeit.de/test/baz</li>...</ul>...',
             b.contents)
 
-    def test_job_view_shows_published(self):
-        IPublishInfo(self.repository['test']['foo']).published = True
+    def test_job_view_shows_urls(self):
         b = self.open()
         self.assertEllipsis(
-            '...<h4>Noch veröffentlicht...<ul>...'
-            '<li>http://xml.zeit.de/test/foo</li>...',
-            b.contents)
-        self.assertFalse("/test/foo = 410" in b.contents)
-
-    def test_job_view_shows_retracted(self):
-        b = self.open()
-        self.assertEllipsis(
-            '...<h4>Zurückgezogen...<ul>...'
+            '...<h4>Urls...<ul>...'
             '<li>http://xml.zeit.de/test/foo</li>...'
             '<li>http://xml.zeit.de/test/bar</li>...</ul>...',
             b.contents)
