@@ -82,7 +82,7 @@ class Add(zeit.cms.browser.form.AddForm):
                 continue
             unique_id = re.sub(url_match, 'http://xml.zeit.de', url)
             custom_filter = re.compile(
-                zeit.cms.retractlog.interfaces.RETRACT_LOG_SOURCE.filter)
+                zeit.cms.retractlog.interfaces.RETRACT_LOG_CONFIG.filter)
             if custom_filter.match(unique_id):
                 if zeit.cms.interfaces.ICMSContent(unique_id, None):
                     job.urls.append(unique_id)

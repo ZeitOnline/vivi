@@ -15,7 +15,7 @@ class URLText(zope.schema.Text):
             raise zope.schema.interfaces.TooShort()
         super(URLText, self)._validate(value)
         url_limit = int(
-            RETRACT_LOG_SOURCE.limit)
+            RETRACT_LOG_CONFIG.limit)
         if value.count('\n') >= url_limit:
             raise zope.schema.interfaces.TooLong()
 
@@ -35,10 +35,10 @@ class IJob(zope.interface.Interface):
         """Start the retract job."""
 
 
-class RetractLogSource(zeit.cms.content.sources.XMLSource):
+class RetractLogConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.cms'
-    config_url = 'source-retractlog'
+    config_url = 'config-retractlog'
 
     @property
     def limit(self):
@@ -55,4 +55,4 @@ class RetractLogSource(zeit.cms.content.sources.XMLSource):
             return
 
 
-RETRACT_LOG_SOURCE = RetractLogSource()(None).factory
+RETRACT_LOG_CONFIG = RetractLogConfig()

@@ -306,7 +306,8 @@ cms_product_config = """\
   source-channels file://{base}/content/ressorts.xml
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
-  source-retractlog file://{base}/retractlog/retractlog.xml
+
+  config-retractlog file://{base}/retractlog/retractlog.xml
 
   checkout-lock-timeout 3600
   checkout-lock-timeout-temporary 30
