@@ -1,0 +1,4 @@
+<config>
+  <limit>5</limit>
+  <filter>(.)*/test</filter>
+</config>

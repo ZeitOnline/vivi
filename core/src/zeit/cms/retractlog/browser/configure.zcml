@@ -1,0 +1,43 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:viewlet
+    name="retractlog"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".retractlog.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.EditRetractLog"
+    sort="100"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.retractlog.interfaces.IRetractLog"
+    name="index.html"
+    class=".retractlog.Listing"
+    template="retractlog.pt"
+    permission="zeit.EditRetractLog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zeit.cms.retractlog.interfaces.IRetractLog"
+    name="add.html"
+    class=".retractlog.Add"
+    permission="zeit.EditRetractLog"
+    menu="zeit-add-menu" title="Job"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.retractlog.interfaces.IJob"
+    name="index.html"
+    template="job.pt"
+    class=".retractlog.View"
+    permission="zeit.EditRetractLog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+</configure>
+

@@ -1,0 +1,27 @@
+<h3>Retract job log</h3>
+<tal:block tal:condition="context/urls">
+    <h4>Urls</h4>
+    <ul>
+        <li tal:repeat="url context/urls" tal:content="url" />
+    </ul>
+</tal:block>
+
+<tal:block tal:condition="context/invalid">
+    <h4>Darf nicht zurückgezogen werden</h4>
+    <ul>
+        <li tal:repeat="url context/invalid" tal:content="url" />
+    </ul>
+</tal:block>
+
+<tal:block tal:condition="context/unknown">
+    <h4>Kein bekannter Inhalt</h4>
+    <ul>
+        <li tal:repeat="url context/unknown" tal:content="url" />
+    </ul>
+</tal:block>
+
+<tal:block tal:condition="context/urls">
+    <h4>Konfiguration für 410 Status Code</h4>
+    <pre tal:content="view/config" />
+</tal:block>
+

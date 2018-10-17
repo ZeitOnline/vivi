@@ -22,7 +22,7 @@ logger = logging.getLogger('zeit.cms.content.sources')
 zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 
 
-class SimpleXMLSourceBase(object):
+class CachedXMLBase(object):
 
     product_configuration = 'zeit.cms'
     config_url = NotImplemented
@@ -39,6 +39,9 @@ class SimpleXMLSourceBase(object):
         logger.debug('Getting %s' % url)
         request = urllib2.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
+
+
+class SimpleXMLSourceBase(CachedXMLBase):
 
     def getValues(self):
         xml = self._get_tree()

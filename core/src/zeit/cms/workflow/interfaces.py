@@ -149,6 +149,11 @@ class IPublish(zope.interface.Interface):
         but it doesn't make sense to introduce another extension point yet.)
         """
 
+    def retract_multiple(objects, priority=PRIORITY_LOW, async=True):
+        """Retract multiple objects in one transaction, given as a list of
+        either ICMSContent or uniqueIds.
+        """
+
 
 class IWithMasterObjectEvent(zope.component.interfaces.IObjectEvent):
     """Object with master image."""

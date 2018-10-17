@@ -297,7 +297,7 @@
   <include package="zeit.cms.locking.browser" />
   <include package="zeit.cms.settings.browser" />
   <include package="zeit.cms.workflow.browser" />
-
+  <include package="zeit.cms.retractlog.browser" />
 
 
   <!-- Generic tree expand and collapse actions -->

@@ -329,11 +329,12 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
-class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
+class MultiPublishRetractTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.LAYER
 
-    def test_publishes_multiple_objects_in_single_script_call(self):
+    def test_publishes_and_retracts_multiple_objects_in_single_script_call(
+            self):
         c1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         c2 = zeit.cms.interfaces.ICMSContent(
@@ -348,6 +349,15 @@ class MultiPublishTest(zeit.cms.testing.FunctionalTestCase):
                                        'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
+
+        with mock.patch(
+                'zeit.workflow.publish.RetractTask'
+                '.call_retract_script') as script:
+            IPublish(self.repository).retract_multiple([c1, c2], async=False)
+            script.assert_called_with(['work/online/2007/01/Somalia',
+                                       'work/online/2007/01/eta-zapatero'])
+        self.assertFalse(IPublishInfo(c1).published)
+        self.assertFalse(IPublishInfo(c2).published)
 
     def test_accepts_uniqueId_as_well_as_ICMSContent(self):
         with mock.patch('zeit.workflow.publish.MultiPublishTask.run') as run:

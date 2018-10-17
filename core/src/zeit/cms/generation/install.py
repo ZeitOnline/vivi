@@ -5,6 +5,7 @@ import zeit.cms.relation.relation
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.workingcopy.workingcopy
+import zeit.cms.retractlog.retractlog
 import zope.component
 import zope.error.interfaces
 
@@ -45,6 +46,7 @@ def install(root):
     installLocalUtility(
         root, zeit.cms.content.template.TemplateManagerContainer,
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
+    root['retractlog'] = zeit.cms.retractlog.retractlog.RetractLog()
     installRelations()
 
 
