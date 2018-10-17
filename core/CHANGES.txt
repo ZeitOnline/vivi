@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.19.0 (unreleased)
+3.19.0 (2018-10-17)
 -------------------
 
 - ZON-2694: Add retract log to retract multiple resources and view status
