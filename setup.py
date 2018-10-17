@@ -20,7 +20,7 @@ setup(
         'xlrd',
         'zeit.brightcove',
         'zeit.calendar',
-        'zeit.cms>=3.9.0.dev0',
+        'zeit.cms>=3.19.0.dev0',
         'zeit.content.article',
         'zeit.content.cp >= 2.10.0.dev0',
         'zeit.content.image>=2.6.0.dev0',
