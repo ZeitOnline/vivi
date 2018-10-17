@@ -2,6 +2,12 @@ zeit.securitypolicy changes
 ===========================
 
 
+2.2.11 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 2.2.10 (2018-10-17)
 -------------------
 
