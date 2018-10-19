@@ -27,21 +27,51 @@
         }
     };
 
+    var update_copyright_visibility = function() {
+        // Toggle copyright fields, depending on image company choice.
+        var copyrights = $('.fieldname-copyrights .combinationFieldWidget');
+        copyrights.each(function(index) {
+            // Image company is determinded by select widget.
+            var company = $('#form\\.copyrights\\.' + index + '\\.\\.combination_00 option:selected');
+            var photographer = '#form\\.copyrights\\.' + index + '\\.\\.combination_01';
+            var custom_company = '#form\\.copyrights\\.' + index + '\\.\\.combination_02';
+            if (company.text() == 'keine Agentur') {
+                // Hide photographer in case there is no company selected.
+                $(photographer).closest('tr').hide();
+                // Clear to prevent values in both fields.
+                $(photographer).val('');
+                $(custom_company).closest('tr').show();
+            } else {
+                // Hide custom company in case there is an company selected.
+                $(custom_company).closest('tr').hide();
+                // Clear first, to prevent values in both fields.
+                $(custom_company).val('');
+                $(photographer).closest('tr').show();
+            }
+        });
+    };
+
     $(document).ready(function() {
         if (!$('fieldset.image-form').length) {
             return;
         }
 
-        // set initial visibility on load
-        update_origin_visibility();
+        var dynamic_widgets = {
+            '.fieldname-display_type .widget': update_origin_visibility,
+            '.fieldname-copyrights .combinationFieldWidget': update_copyright_visibility,
+        };
 
         // update visibility on change, unless we are in read-only mode
-        var widget = $('.fieldname-display_type .widget');
-        if (widget.find('select').length) {
-            widget.find('select').on('change', function () {
-                update_origin_visibility();
-            });
-        }
+        for (var const widget in dynamic_widgets) {
+            // set initial visibility on load
+            dynamic_widgets[widget]();
+
+            if ($(widget).find('select').length) {
+                $(widget).find('select').on('change', function() {
+                    dynamic_widgets[widget]();
+                });
+            }
+        };
     });
 
 })();
