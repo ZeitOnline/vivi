@@ -58,7 +58,7 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=((u'©', None, None, None, False),),
+        default=((u'', None, None, None, False),),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(

@@ -79,7 +79,7 @@ We now see the form. The image did not have any metadata prefilled. The
 copyright is filled with the default value though:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value
-'\xc2\xa9'
+''
 
 Fill out some values:
 

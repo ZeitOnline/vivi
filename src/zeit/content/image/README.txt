@@ -24,7 +24,7 @@ Test the image xml reference:
 <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG"
   type="JPG"...>
   <bu xsi:nil="true"/>
-  <copyright py:pytype="str">&#169;</copyright>
+  <copyright py:pytype="str"></copyright>
 </image>
 
 
@@ -114,7 +114,7 @@ Reference the image via XML:
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu xsi:nil="true"/>
-  <copyright py:pytype="str">&#169;</copyright>
+  <copyright py:pytype="str"></copyright>
 </image>
 
 
@@ -140,7 +140,7 @@ Set metadata:
 The interface default for the copyright is:
 
 >>> zeit.content.image.interfaces.IImageMetadata['copyrights'].default
-((u'\xa9', None, None, None, False),)
+((u'', None, None, None, False),)
 
 
 Make sure we don't die when there is an invalid XML snippet stored:
