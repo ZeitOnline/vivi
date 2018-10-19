@@ -4,7 +4,7 @@
 
     var $ = window.jQuery;
 
-    var get_display_type = function () {
+    var get_display_type = function() {
         // In read-only mode the widget contains no select, but the selected
         // option as text.
         var type, widget;
@@ -17,7 +17,7 @@
         return type;
     };
 
-    var update_origin_visibility = function () {
+    var update_origin_visibility = function() {
         // Hide `origin` field unless `display_type` is `Infografik`.
         var type = get_display_type();
         if (type === 'Infografik') {
