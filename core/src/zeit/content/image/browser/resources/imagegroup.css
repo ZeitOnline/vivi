@@ -1,0 +1,63 @@
+.fieldname-copyrights {
+  width: 100%;
+}
+
+.fieldname-copyrights > label {
+  background-color: #f1f4f9;
+  position: relative;
+  top: 6px;
+}
+
+.fieldname-copyrights .combinationFieldWidget .field td:first-child {
+  width: 12em;
+}
+
+
+/* sequencewidget = checked out
+   sequenceWidget = checked in
+   ¯\_(ツ)_/¯   
+*/
+.fieldname-copyrights .sequencewidget tr,
+.fieldname-copyrights .sequenceWidget li {
+  border-top: 1px solid #d5dee7;
+}
+
+
+/* styles for checked out image groups only */
+.fieldname-copyrights .sequencewidget tr:last-of-type {
+  border: none;
+}
+
+.fieldname-copyrights .sequencewidget tr td:first-of-type {
+  padding: 0;
+}
+
+
+/* styles for checked in image groups only */
+.fieldname-copyrights .sequenceWidget {
+  list-style: none;
+  counter-reset: li;
+}
+
+.fieldname-copyrights .sequenceWidget li:before {
+  /* Try to make copyright numbering at least slightly visually appealing. */
+  border: 1px solid #d5dee7;
+  content: counter(li);
+  counter-increment: li;
+  left: -22px;
+  padding: 2px 6px;
+  position: relative;
+  top: 2px;
+}
+
+.fieldname-copyrights .sequenceWidget .field {
+  padding: 0;
+}
+
+.fieldname-copyrights .sequenceWidget tr td:first-child {
+  max-width: 4em;
+}
+
+.fieldname-copyrights .sequenceWidget li:last-of-type {
+  border-bottom: 1px solid #d5dee7;
+}
