@@ -8,6 +8,7 @@ import zeit.cms.browser.resources
 
 lib = Library('zeit.content.image', 'resources')
 Resource('drag-images.js', depends=[zeit.cms.browser.resources.base])
+Resource('imagegroup.css')
 Resource('variant.css')
 Resource('variant.js', depends=[
     variant_css, zeit.cms.browser.resources.base,
