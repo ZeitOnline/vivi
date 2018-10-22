@@ -66,8 +66,27 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
+class CPTemplateLayer(plone.testing.Layer):
+    # BBB We have too many tests that use lead/informatives. Rewriting them
+    # to create their own areas is too time-consuming to do at once.
+
+    defaultBases = (CP_LAYER,)
+
+    def setUp(self):
+        self['cp-template-patch'] = mock.patch(
+            'zeit.content.cp.centerpage.CenterPage.default_template',
+            new=pkg_resources.resource_string(__name__, 'cp-template.xml'))
+        self['cp-template-patch'].start()
+
+    def tearDown(self):
+        self['cp-template-patch'].stop()
+        del self['cp-template-patch']
+
+CP_TEMPLATE_LAYER = CPTemplateLayer()
+
+
 ZCML_LAYER = plone.testing.Layer(
-    bases=(CP_LAYER, ELASTICSEARCH_MOCK_LAYER),
+    bases=(CP_TEMPLATE_LAYER, ELASTICSEARCH_MOCK_LAYER),
     name='ZCMLLayer', module=__name__)
 
 

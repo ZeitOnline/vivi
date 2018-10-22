@@ -46,8 +46,17 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
                               zeit.cms.interfaces.IEditorialContent)
 
-    default_template = pkg_resources.resource_string(__name__,
-                                                     'cp-template.xml')
+    default_template = """\
+<centerpage
+  xmlns:cp="http://namespaces.zeit.de/CMS/cp"
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body/>
+</centerpage>
+"""
 
     # We want to delegate only IContainer itself, not any inherited interfaces;
     # due to the read/write interface split, we need to express this manually.
