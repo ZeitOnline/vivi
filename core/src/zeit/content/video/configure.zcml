@@ -39,16 +39,4 @@
     name="video-or-playlist"
     />
 
-  <class class=".asset.VideoAsset">
-    <require
-      interface=".interfaces.IVideoAsset"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IVideoAsset"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter factory=".asset.XMLReferenceUpdater" name="audio_video"/>
 </configure>

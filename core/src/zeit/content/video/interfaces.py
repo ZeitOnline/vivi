@@ -116,25 +116,6 @@ class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
 videoOrPlaylistSource = VideoOrPlaylistSource()
 
 
-class IVideoAsset(zope.interface.Interface):
-
-    audio_id = zope.schema.TextLine(
-        title=_('Audio id'),
-        required=False)
-
-    video = zope.schema.Choice(
-        title=_('Video'),
-        description=_("Drag a video here"),
-        required=False,
-        source=videoOrPlaylistSource)
-
-    video_2 = zope.schema.Choice(
-        title=_('Video 2'),
-        description=_("Drag a video here"),
-        required=False,
-        source=videoOrPlaylistSource)
-
-
 class IPlayer(zope.interface.Interface):
     """Extension point to access media information, e.g. still image or
     video source URLs, since those may be volatile.
