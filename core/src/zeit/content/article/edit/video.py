@@ -1,10 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import zeit.content.video.asset
 import zeit.content.video.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.article.edit.reference
 import zeit.edit.interfaces
 import zope.schema
 
@@ -49,8 +49,11 @@ class Video(zeit.content.article.edit.block.Block):
         else:
             self.xml.set(attribute, video.uniqueId)
             self.is_empty = False
-        self.xml.set(
-            'expires', zeit.content.video.asset.get_expires(self.video))
+        expires = getattr(self.video, 'expires', None)
+        if expires:
+            self.xml.set('expires', expires.isoformat())
+        else:
+            self.xml.attrib.pop('expires', None)
 
     def _validate(self, field_name, value):
         zeit.content.article.edit.interfaces.IVideo[field_name].bind(

@@ -4,7 +4,7 @@ zeit.content.article changes
 3.39.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Remove unneeded dependency on obsolete zeit.content.video.asset
 
 
 3.39.3 (2018-10-05)
