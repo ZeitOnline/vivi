@@ -39,6 +39,8 @@ class ImageGroupHelperMixin(object):
 
     def fill_copyright_information(self):
         b = self.browser
+        b.getControl(name='form.copyrights.0..combination_00').displayValue = (
+            ['dpa'])
         b.getControl(name='form.copyrights.0..combination_02').value = (
             'ZEIT ONLINE')
         b.getControl(name='form.copyrights.0..combination_03').value = (
