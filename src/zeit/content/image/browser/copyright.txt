@@ -24,7 +24,8 @@ Add an image group because one object is boring:
 
 Set a copyright which will be overwritten by the bulk change:
 
->>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = ['dpa']
+>>> browser.getControl(name='form.copyrights.0..combination_02').value = (
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
@@ -51,13 +52,14 @@ Open the lightbox:
     ...
 
 Fill in two copyrights:
-
->>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = ['dpa']
+>>> browser.getControl(name='form.copyrights.0..combination_02').value = (
 ...     'gocept')
 >>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.gocept.com/')
 >>> browser.getControl('Add Copyrights').click()
->>> browser.getControl(name='form.copyrights.1..combination_00').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = ['dpa']
+>>> browser.getControl(name='form.copyrights.1..combination_02').value = (
 ...     'Hans')
 >>> browser.getControl(name='form.copyrights.1..combination_03').value = (
 ...     'http://www.wurst.com/')

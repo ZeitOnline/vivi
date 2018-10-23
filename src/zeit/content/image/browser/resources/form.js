@@ -62,7 +62,7 @@
         };
 
         // update visibility on change, unless we are in read-only mode
-        for (var const widget in dynamic_widgets) {
+        for (var widget in dynamic_widgets) {
             // set initial visibility on load
             dynamic_widgets[widget]();
 
@@ -71,7 +71,7 @@
                     dynamic_widgets[widget]();
                 });
             }
-        };
+        }
     });
 
 })();
