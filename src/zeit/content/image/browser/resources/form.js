@@ -32,21 +32,21 @@
         var copyrights = $('.fieldname-copyrights .combinationFieldWidget');
         copyrights.each(function(index) {
             // Image company is determinded by select widget.
-            var company = $('#form\\.copyrights\\.' + index + '\\.\\.combination_00 option:selected');
-            var photographer = '#form\\.copyrights\\.' + index + '\\.\\.combination_01';
+            var photographer = '#form\\.copyrights\\.' + index + '\\.\\.combination_00';
+            var company = $('#form\\.copyrights\\.' + index + '\\.\\.combination_01 option:selected');
             var custom_company = '#form\\.copyrights\\.' + index + '\\.\\.combination_02';
             if (company.text() == 'keine Agentur') {
                 // Hide photographer in case there is no company selected.
-                $(photographer).closest('tr').hide();
+                $(photographer).closest('tr').css('visibility', 'hidden');
                 // Clear to prevent values in both fields.
                 $(photographer).val('');
-                $(custom_company).closest('tr').show();
+                $(custom_company).closest('tr').css('visibility', 'visible');
             } else {
                 // Hide custom company in case there is an company selected.
-                $(custom_company).closest('tr').hide();
+                $(custom_company).closest('tr').css('visibility', 'hidden');
                 // Clear first, to prevent values in both fields.
                 $(custom_company).val('');
-                $(photographer).closest('tr').show();
+                $(photographer).closest('tr').css('visibility', 'visible');
             }
         });
     };
