@@ -78,7 +78,7 @@ For editing an image, we need to check it out:
 We now see the form. The image did not have any metadata prefilled. The
 copyright is filled with the default value though:
 
->>> browser.getControl(name='form.copyrights.0..combination_00').value
+>>> browser.getControl(name='form.copyrights.0..combination_01').value
 ['']
 
 Fill out some values:
@@ -93,12 +93,12 @@ Fill out some values:
 >>> browser.getControl('Alternative').value = 'Zwei Taenzer'
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
->>> browser.getControl(name='form.copyrights.0..combination_02').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
+>>> browser.getControl(name='form.copyrights.0..combination_01').displayValue = (
+...     ['dpa'])
 >>> browser.getControl(name='form.copyrights.0..combination_03').value = (
 ...     'http://www.zeit.de/')
->>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = (
-...     ['dpa'])
 >>> browser.getControl('External company ID').value = 'externalid'
 >>> browser.getControl('Apply').click()
 >>> 'There where errors' in browser.contents
@@ -172,8 +172,8 @@ Make sure the image is not changed by looking at the image view:
   ...
   <ol class="image-copyrights">
     <li>
-      dpa /
-      ZEIT ONLINE
+      ZEIT ONLINE /
+      dpa
       (<a href="http://www.zeit.de/">http://www.zeit.de/</a>)
     </li>
   </ol>...
@@ -217,10 +217,10 @@ Let's add an image:
 
 The image file is required:
 
->>> browser.getControl(name='form.copyrights.0..combination_02').value = (
-...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = (
+>>> browser.getControl(name='form.copyrights.0..combination_01').displayValue = (
 ...     ['dpa'])
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
+...     'ZEIT ONLINE')
 
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
@@ -334,9 +334,9 @@ Lets create an image group:
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
->>> browser.getControl(name='form.copyrights.0..combination_02').value = (
+>>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.0..combination_00').displayValue = (
+>>> browser.getControl(name='form.copyrights.0..combination_01').displayValue = (
 ...     ['dpa'])
 
 >>> set_file_data('opernball.jpg', 'master_image_blobs.0.')

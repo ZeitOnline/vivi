@@ -30,10 +30,10 @@ class TestCopyrights(zeit.cms.testing.BrowserTestCase,
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/imagegroup/'
                '@@set-image-copyright')
-        b.getControl(name='form.copyrights.0..combination_00').displayValue = \
-            ['dpa']
-        b.getControl(name='form.copyrights.0..combination_02').value = (
+        b.getControl(name='form.copyrights.0..combination_00').value = (
             'gocept')
+        b.getControl(name='form.copyrights.0..combination_01').displayValue = \
+            ['dpa']
         b.getControl(name='form.copyrights.0..combination_03').value = (
             'http://www.gocept.com/')
         b.getControl('Add Copyrights').click()
