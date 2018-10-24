@@ -32,6 +32,16 @@
   padding: 0;
 }
 
+.fieldname-copyrights .sequencewidget .combinationFieldWidget tr {
+  position: relative;
+  top: -30px;
+}
+
+.fieldname-copyrights .sequencewidget .combinationFieldWidget tr:first-of-type {
+  position: relative;
+  top: 44px;
+}
+
 
 /* styles for checked in image groups only */
 .fieldname-copyrights .sequenceWidget {
@@ -52,6 +62,16 @@
 
 .fieldname-copyrights .sequenceWidget .field {
   padding: 0;
+}
+
+.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:first-of-type {
+  position: relative;
+  top: 36px;
+}
+
+.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:nth-of-type(2) {
+  position: relative;
+  top: -30px;
 }
 
 .fieldname-copyrights .sequenceWidget tr td:first-child {
