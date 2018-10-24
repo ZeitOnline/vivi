@@ -62,13 +62,13 @@ class IImageMetadata(zope.interface.Interface):
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(
-            (zope.schema.Choice(
-                title=_('Image company'),
-                source=COPYRIGHT_COMPANY_SOURCE,
-                required=True),
-             zope.schema.TextLine(
+            (zope.schema.TextLine(
                 title=_('Photographer'),
                 required=False),
+             zope.schema.Choice(
+                 title=_('Image company'),
+                 source=COPYRIGHT_COMPANY_SOURCE,
+                 required=True),
              zope.schema.TextLine(
                  title=_('Copyright freetext'),
                  description=_(
