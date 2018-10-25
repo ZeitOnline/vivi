@@ -13,14 +13,26 @@
 }
 
 .fieldname-copyrights .combinationFieldWidget .field td:first-child {
-  width: 12em;
+  width: 14em;
+}
+
+.fieldname-copyrights .combinationFieldWidget tr:first-of-type .label:after,
+.fieldname-copyrights .combinationFieldWidget tr:nth-of-type(3) .label:after {
+  color: #888;
+  content: '©';
+  float: right;
+  font-size: 17px;
+}
+
+.fieldname-copyrights .combinationFieldWidget label {
+  display: inline-flex;
 }
 
 
 /* sequencewidget = checked out
-   sequenceWidget = checked in
-   ¯\_(ツ)_/¯
-*/
+ * sequenceWidget = checked in
+ * ¯\_(ツ)_/¯
+ */
 .fieldname-copyrights .sequencewidget tr,
 .fieldname-copyrights .sequenceWidget li {
   border-top: 1px solid #d5dee7;
