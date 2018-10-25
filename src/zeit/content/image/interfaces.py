@@ -41,6 +41,7 @@ class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
     def getTitle(self, context, value):
         return value
 
+
 COPYRIGHT_COMPANY_SOURCE = CopyrightCompanySource()
 
 
@@ -194,6 +195,7 @@ class ViewportSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.image'
     config_url = 'viewport-source'
     attribute = 'id'
+
 
 VIEWPORT_SOURCE = ViewportSource()
 
@@ -370,6 +372,7 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = IImageType
     name = 'images'
 
+
 imageSource = ImageSource()
 
 
@@ -378,6 +381,7 @@ class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
     zope.interface.implements(IImageSource)
     check_interfaces = (IImage,)
     name = 'bare-images'
+
 
 bareImageSource = BareImageSource()
 
