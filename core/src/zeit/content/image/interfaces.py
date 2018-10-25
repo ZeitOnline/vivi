@@ -61,6 +61,8 @@ class IImageMetadata(zope.interface.Interface):
         title=_("Copyrights"),
         default=((u'', None, None, None, False),),
         missing_value=(),
+        min_length=1,
+        max_length=1,
         required=False,
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(
