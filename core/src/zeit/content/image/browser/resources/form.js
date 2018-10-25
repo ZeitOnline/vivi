@@ -62,7 +62,7 @@
         };
 
         // update visibility on change, unless we are in read-only mode
-        for (var widget in dynamic_widgets) {
+        for (const widget in dynamic_widgets) {
             // set initial visibility on load
             dynamic_widgets[widget]();
 
