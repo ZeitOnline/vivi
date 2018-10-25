@@ -1,4 +1,8 @@
 .fieldname-copyrights {
+  /* restrict height to get rid of a table row, reserved for buttons, that will
+   * never show up in our case...
+   */
+  height: 16em;
   width: 100%;
 }
 
@@ -47,17 +51,6 @@
 .fieldname-copyrights .sequenceWidget {
   list-style: none;
   counter-reset: li;
-}
-
-.fieldname-copyrights .sequenceWidget li:before {
-  /* Try to make copyright numbering at least slightly visually appealing. */
-  border: 1px solid #d5dee7;
-  content: counter(li);
-  counter-increment: li;
-  left: -22px;
-  padding: 2px 6px;
-  position: relative;
-  top: 2px;
 }
 
 .fieldname-copyrights .sequenceWidget .field {
