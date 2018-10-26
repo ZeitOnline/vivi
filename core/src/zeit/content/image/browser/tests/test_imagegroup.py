@@ -241,6 +241,33 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel.open('/repository/group/@@metadata.html')
         sel.assertNotVisible('css=.fieldname-origin')
 
+    def test_photographer_is_shown_if_company_is_chosen(self):
+        sel = self.selenium
+        photographer = 'css=#form\.copyrights\.0\.\.combination_00'
+        company = 'css=#form\.copyrights\.0\.\.combination_01'
+        sel.open('/repository/group/@@checkout')
+
+        sel.assertVisible(photographer)
+        sel.select(company, 'label=dpa')
+        sel.assertVisible(photographer)
+
+        sel.select(company, 'label=keine Agentur')
+        sel.assertNotVisible(photographer)
+
+    def test_freetext_is_only_shown_if_special_company_value_is_selected(self):
+        sel = self.selenium
+        freetext = 'css=#form\.copyrights\.0\.\.combination_02'
+        company = 'css=#form\.copyrights\.0\.\.combination_01'
+        sel.open('/repository/group/@@checkout')
+
+        sel.assertNotVisible(freetext)
+        sel.select(company, 'label=dpa')
+        sel.assertNotVisible(freetext)
+
+        sel.select(company, 'label=keine Agentur')
+        sel.assertVisible(freetext)
+
+
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 
