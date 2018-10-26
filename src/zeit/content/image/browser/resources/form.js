@@ -51,27 +51,24 @@
         });
     };
 
+    var bind_function_to_select_change  = function (selector, func) {
+        // set initial visibility on load
+        func();
+        // update visibility on change, unless we are in read-only mode
+        if ($(selector).find('select').length) {
+            $(selector).find('select').on('change', function() {
+                func();
+            });
+        }
+    };
+
     $(document).ready(function() {
         if (!$('fieldset.image-form').length) {
             return;
         }
-
-        var dynamic_widgets = {
-            '.fieldname-display_type .widget': update_origin_visibility,
-            '.fieldname-copyrights .combinationFieldWidget': update_copyright_visibility,
-        };
-
-        // update visibility on change, unless we are in read-only mode
-        for (const widget in dynamic_widgets) {
-            // set initial visibility on load
-            dynamic_widgets[widget]();
-
-            if ($(widget).find('select').length) {
-                $(widget).find('select').on('change', function() {
-                    dynamic_widgets[widget]();
-                });
-            }
-        }
+        bind_function_to_select_change('.fieldname-copyrights .combinationFieldWidget',
+            update_copyright_visibility);
+        bind_function_to_select_change('.fieldname-display_type .widget',
+            update_origin_visibility);
     });
-
 })();
