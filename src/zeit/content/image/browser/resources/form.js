@@ -35,7 +35,7 @@
             var photographer = '#form\\.copyrights\\.' + index + '\\.\\.combination_00';
             var company = $('#form\\.copyrights\\.' + index + '\\.\\.combination_01 option:selected');
             var custom_company = '#form\\.copyrights\\.' + index + '\\.\\.combination_02';
-            if (company.text() == 'keine Agentur') {
+            if (company.text() == 'Andere') {
                 // Hide photographer in case there is no company selected.
                 $(photographer).closest('tr').css('visibility', 'hidden');
                 // Clear to prevent values in both fields.
