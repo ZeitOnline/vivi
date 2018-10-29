@@ -251,7 +251,7 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel.select(company, 'label=dpa')
         sel.assertVisible(photographer)
 
-        sel.select(company, 'label=keine Agentur')
+        sel.select(company, 'label=Andere')
         sel.assertNotVisible(photographer)
 
     def test_freetext_is_only_shown_if_special_company_value_is_selected(self):
@@ -264,7 +264,7 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel.select(company, 'label=dpa')
         sel.assertNotVisible(freetext)
 
-        sel.select(company, 'label=keine Agentur')
+        sel.select(company, 'label=Andere')
         sel.assertVisible(freetext)
 
 
