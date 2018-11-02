@@ -18,9 +18,12 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
         def byline(self, name):
-            return self.factory.findByline(name)
+            return self.factory.findNode(name, 'byline')
 
-    def findByline(self, value):
+        def feedback(self, name):
+            return self.factory.findNode(name, 'feedback')
+
+    def findNode(self, value, type, use_default=False):
         tree = self._get_tree()
         nodes = tree.xpath('%s[@%s=%s]' % (
                            self.title_xpath,
@@ -28,7 +31,7 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
                            xml.sax.saxutils.quoteattr(value)))
         if not nodes:
             return None
-        return nodes[0].get('byline')
+        return nodes[0].get(type)
 
 
 class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
