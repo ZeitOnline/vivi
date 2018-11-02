@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - MAINT: Remove unneeded dependency on obsolete zeit.content.video.asset
 
+- ZON-4933: Add feedback question to genre source
+
 
 3.39.3 (2018-10-05)
 -------------------
