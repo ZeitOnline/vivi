@@ -23,7 +23,7 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
         def feedback(self, name):
             return self.factory.findNode(name, 'feedback')
 
-    def findNode(self, value, type, use_default=False):
+    def findNode(self, value, type):
         tree = self._get_tree()
         nodes = tree.xpath('%s[@%s=%s]' % (
                            self.title_xpath,
