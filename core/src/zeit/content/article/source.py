@@ -140,6 +140,7 @@ class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
         article = zeit.content.article.interfaces.IArticle(context, None)
         return super(ImageDisplayModeSource, self).isAvailable(node, article)
 
+
 IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
 
 
@@ -154,6 +155,7 @@ class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
         return [(node.get('layout'), node.get('display_mode'))
                 for node in tree.iterchildren('*')]
 
+
 LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
 
 
@@ -167,6 +169,7 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
     def isAvailable(self, node, context):
         article = zeit.content.article.interfaces.IArticle(context, None)
         return super(ImageVariantNameSource, self).isAvailable(node, article)
+
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 
@@ -223,5 +226,6 @@ class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
         tree = self._get_tree()
         return [(node.get('layout'), node.get('variant_name'))
                 for node in tree.iterchildren('*')]
+
 
 LEGACY_VARIANT_NAME_SOURCE = LegacyVariantNameSource()
