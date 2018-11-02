@@ -5,7 +5,7 @@
 <genre name="reportage">Reportage</genre>
 <genre name="interview" byline="Interview:">Interview</genre>
 <genre name="portrait">Porträt</genre>
-<genre name="glosse" byline="Eine Glosse von">Glosse</genre>
+<genre name="glosse" byline="Eine Glosse von" feedback="Hat Ihnen diese Glosse gefallen?">Glosse</genre>
 <genre name="kommentar">Kommentar</genre>
 <genre name="leserartikel">Leserartikel</genre>
 <genre name="gastbeitrag">Gastbeitrag</genre>
