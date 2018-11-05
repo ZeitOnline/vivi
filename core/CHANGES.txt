@@ -4,7 +4,7 @@ zeit.content.article changes
 3.40.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Treat empty CPs set as IArticle.layout as existing, not as missing
 
 
 3.40.0 (2018-11-02)

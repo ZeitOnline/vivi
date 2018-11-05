@@ -246,7 +246,7 @@ class LayoutDependency(zeit.workflow.dependency.DependencyBase):
 
     def get_dependencies(self):
         layout = self.context.layout
-        if layout and self.needs_publishing(layout):
+        if layout is not None and self.needs_publishing(layout):
             return [layout]
         else:
             return []
