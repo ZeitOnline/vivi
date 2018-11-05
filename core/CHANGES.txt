@@ -1,10 +1,10 @@
 zeit.content.image changes
 ==========================
 
-2.21.8 (unreleased)
+2.22.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4981: Be more strict when adding copyright information
 
 
 2.21.7 (2018-10-05)
