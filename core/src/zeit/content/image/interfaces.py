@@ -57,14 +57,7 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    copyrights = zope.schema.Tuple(
-        title=_("Copyrights"),
-        default=((u'', None, None, None, False),),
-        missing_value=(),
-        min_length=1,
-        max_length=1,
-        required=False,
-        value_type=zc.form.field.Combination(
+    copyrights = zc.form.field.Combination(
             (zope.schema.TextLine(
                 title=_('Photographer'),
                 required=False),
@@ -84,7 +77,7 @@ class IImageMetadata(zope.interface.Interface):
                  required=False),
              zope.schema.Bool(
                  title=_('set nofollow'),
-                required=False))))
+                required=False)))
 
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
