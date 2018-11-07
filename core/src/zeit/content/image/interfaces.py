@@ -57,27 +57,30 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    copyrights = zc.form.field.Combination(
-            (zope.schema.TextLine(
-                title=_('Photographer'),
-                required=False),
-             zope.schema.Choice(
-                 title=_('Image company'),
-                 source=COPYRIGHT_COMPANY_SOURCE,
-                 required=True),
-             zope.schema.TextLine(
-                 title=_('Copyright freetext'),
-                 description=_(
-                     'Copyright holder that is not part '
-                     'of image company list'),
-                 required=False),
-             zope.schema.URI(
-                 title=_('Link'),
-                 description=_('Link to copyright holder'),
-                 required=False),
-             zope.schema.Bool(
-                 title=_('set nofollow'),
-                required=False)))
+    copyrights = zc.form.field.Combination((
+        zope.schema.TextLine(
+           title=_('Photographer'),
+           required=False),
+        zope.schema.Choice(
+            title=_('Image company'),
+            source=COPYRIGHT_COMPANY_SOURCE,
+            required=True),
+        zope.schema.TextLine(
+            title=_('Copyright freetext'),
+            description=_(
+                'Copyright holder that is not part '
+                'of image company list'),
+            required=False),
+        zope.schema.URI(
+            title=_('Link'),
+            description=_('Link to copyright holder'),
+            required=False),
+        zope.schema.Bool(
+            title=_('set nofollow'),
+            required=False)),
+        default=('', None, '', '', False),
+        title=_("Copyrights"),
+        missing_value=())
 
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
