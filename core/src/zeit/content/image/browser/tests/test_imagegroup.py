@@ -268,7 +268,6 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel.assertVisible(freetext)
 
 
-
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.image.testing.ZCML_LAYER
