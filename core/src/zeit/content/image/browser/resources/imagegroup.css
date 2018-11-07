@@ -12,11 +12,11 @@
   top: 6px;
 }
 
-.fieldname-copyrights .combinationFieldWidget .field td:first-child {
+.fieldname-copyrights .field td:first-child {
   width: 14em;
 }
 
-.fieldname-copyrights .combinationFieldWidget tr:first-of-type .label:after,
+.fieldname-copyrights tr:first-of-type .label:after,
 .fieldname-copyrights .combinationFieldWidget tr:nth-of-type(3) .label:after {
   color: #888;
   content: '©';
@@ -24,75 +24,48 @@
   font-size: 17px;
 }
 
-.fieldname-copyrights .combinationFieldWidget label {
+.fieldname-copyrights label {
   display: inline-flex;
 }
 
 
-/* sequencewidget = checked out
- * sequenceWidget = checked in
+/* .location-workingcopy = checked out
+ * .location-repository = checked in
  * ¯\_(ツ)_/¯
  */
-.fieldname-copyrights .sequencewidget tr,
-.fieldname-copyrights .sequenceWidget li {
+.fieldname-copyrights > .widget,
+.fieldname-copyrights li {
   border-top: 1px solid #d5dee7;
 }
 
 
 /* styles for checked out image groups only */
-.fieldname-copyrights .sequencewidget tr:last-of-type {
-  border: none;
-}
-
-.fieldname-copyrights .sequencewidget tr td:first-of-type {
-  padding: 0;
-}
-
-.fieldname-copyrights .sequencewidget .combinationFieldWidget tr {
+.location-workingcopy .fieldname-copyrights tr.field {
   position: relative;
-  top: -30px;
+  top: -47px;
 }
 
-.fieldname-copyrights .sequencewidget .combinationFieldWidget tr:first-of-type {
+.location-workingcopy .fieldname-copyrights tr.field:first-of-type {
   position: relative;
   top: 44px;
 }
 
+.location-workingcopy .fieldname-copyrights tr.field:first-of-type .label {
+  padding-top: 1px;
+}
+
 
 /* styles for checked in image groups only */
-.fieldname-copyrights .sequenceWidget {
-  list-style: none;
-  counter-reset: li;
-}
-
-.fieldname-copyrights .sequenceWidget .field {
-  padding: 0;
-}
-
-.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:first-of-type {
+.location-repository .fieldname-copyrights tr:first-of-type {
   position: relative;
   top: 36px;
 }
 
-.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:nth-of-type(2) {
+.location-repository .fieldname-copyrights tr:nth-of-type(2) {
   position: relative;
-  top: -30px;
+  top: -40px;
 }
 
-.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:first-of-type {
-  position: relative;
-  top: 36px;
-}
-
-.fieldname-copyrights .sequenceWidget .combinationFieldWidget tr:nth-of-type(2) {
-  position: relative;
-  top: -30px;
-}
-
-.fieldname-copyrights .sequenceWidget tr td:first-child {
-  max-width: 4em;
-}
-
-.fieldname-copyrights .sequenceWidget li:last-of-type {
-  border-bottom: 1px solid #d5dee7;
+.location-repository .fieldname-copyrights .field .widget {
+  padding-top: 8px;
 }
