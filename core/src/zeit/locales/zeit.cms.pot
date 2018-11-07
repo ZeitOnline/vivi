@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Nov  7 12:39:49 2018\n"
+"POT-Creation-Date: Wed Nov  7 15:41:15 2018\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1810,7 +1810,7 @@ msgstr ""
 #: zeit/content/article/interfaces.py:58
 #: zeit/content/cp/interfaces.py:431
 #: zeit/content/cp/interfaces.py:818
-#: zeit/content/image/interfaces.py:415
+#: zeit/content/image/interfaces.py:418
 #: zeit/push/interfaces.py:333
 msgid "Drag an image group here"
 msgstr ""
@@ -3314,7 +3314,7 @@ msgid "Images"
 msgstr ""
 
 #: zeit/content/gallery/browser/details.pt:24
-#: zeit/content/image/interfaces.py:93
+#: zeit/content/image/interfaces.py:96
 #: zeit/content/image/browser/image-details.pt:21
 msgid "Image sub text"
 msgstr ""
@@ -3500,7 +3500,7 @@ msgid "Master image"
 msgstr ""
 
 #: zeit/content/image/browser/imagegroup.py:143
-#: zeit/content/image/interfaces.py:414
+#: zeit/content/image/interfaces.py:417
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr ""
@@ -3539,43 +3539,51 @@ msgstr ""
 msgid "Image Group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:199
+#: zeit/content/image/interfaces.py:101
+msgid "Links to"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:102
+msgid "Enter a URL this image should link to."
+msgstr ""
+
+#: zeit/content/image/interfaces.py:202
 msgid "Viewport was used multiple times"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:203
+#: zeit/content/image/interfaces.py:206
 msgid "Image was used multiple times"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:237
+#: zeit/content/image/interfaces.py:240
 msgid "File name of image group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:244
+#: zeit/content/image/interfaces.py:247
 msgid "Mapping of viewport to master image"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:251
+#: zeit/content/image/interfaces.py:254
 msgid "Viewport"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:254
+#: zeit/content/image/interfaces.py:257
 msgid "Image file"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:258
+#: zeit/content/image/interfaces.py:261
 msgid "Setting for variants"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:261
+#: zeit/content/image/interfaces.py:264
 msgid "Display Type"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:420
+#: zeit/content/image/interfaces.py:423
 msgid "Alpha channel fill color"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:428
+#: zeit/content/image/interfaces.py:431
 msgid "Objects using this image"
 msgstr ""
 
@@ -3616,29 +3624,25 @@ msgid "Link to copyright holder"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:79
-#: zeit/content/image/interfaces.py:103
+#: zeit/content/image/interfaces.py:106
 #: zeit/content/link/interfaces.py:31
 msgid "set nofollow"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:83
+#: zeit/content/image/interfaces.py:82
+msgid "Copyrights"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:86
 msgid "External company ID"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:87
+#: zeit/content/image/interfaces.py:90
 msgid "Alternative text"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:88
+#: zeit/content/image/interfaces.py:91
 msgid "Enter a textual description of the image"
-msgstr ""
-
-#: zeit/content/image/interfaces.py:98
-msgid "Links to"
-msgstr ""
-
-#: zeit/content/image/interfaces.py:99
-msgid "Enter a URL this image should link to."
 msgstr ""
 
 #: zeit/content/infobox/interfaces.py:49
