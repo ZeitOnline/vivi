@@ -35,6 +35,7 @@ class ImageMetadata(object):
     @property
     def copyrights(self):
         result = list(self._copyrights)
+        # result = self._copyrights
         for i, item in enumerate(result):
             # Migration for nofollow (VIV-104)
             if len(item) == 2:
