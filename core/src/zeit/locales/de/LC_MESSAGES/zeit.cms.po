@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2018-11-06 14:26+0100\n"
-"PO-Revision-Date: 2018-11-06 14:29+0100\n"
+"POT-Creation-Date: 2018-11-07 12:42+0100\n"
+"PO-Revision-Date: 2018-11-07 12:42+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -46,24 +46,24 @@ msgid "Complete event"
 msgstr "Termin erledigen"
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/main_template.pt:47 zeit/cms/browser/main_template.pt:180
-#: zeit/cms/browser/main_template.pt:203 zeit/cms/browser/main_template.pt:221
 #: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/globalmenuitem.pt:5
-#: zeit/cms/browser/menu-context-actions.pt:8
-#: zeit/cms/browser/menu-context-actions.pt:16
+#: zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/cms/browser/menu-context-actions.pt:8
+#: zeit/cms/browser/menu-context-actions.pt:16
+#: zeit/cms/browser/main_template.pt:47 zeit/cms/browser/main_template.pt:180
+#: zeit/cms/browser/main_template.pt:203 zeit/cms/browser/main_template.pt:221
+#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/globalmenuitem.pt:5
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
-#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
-#: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
+#: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -1775,7 +1775,7 @@ msgstr "Bild"
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:165
 #: zeit/content/article/interfaces.py:58 zeit/content/cp/interfaces.py:431
-#: zeit/content/cp/interfaces.py:818 zeit/content/image/interfaces.py:422
+#: zeit/content/cp/interfaces.py:818 zeit/content/image/interfaces.py:415
 #: zeit/push/interfaces.py:333
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -2346,10 +2346,10 @@ msgid "Attribution"
 msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:334
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
-#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 msgid "URL"
 msgstr "URL"
@@ -3251,14 +3251,14 @@ msgid "Images"
 msgstr "Bilder"
 
 #: zeit/content/gallery/browser/details.pt:24
-#: zeit/content/image/interfaces.py:100
+#: zeit/content/image/interfaces.py:93
 #: zeit/content/image/browser/image-details.pt:21
 msgid "Image sub text"
 msgstr "Bildunterschrift"
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/reference-details.pt:13
 #: zeit/content/image/browser/image-details.pt:8
+#: zeit/content/image/browser/reference-details.pt:13
 #: zeit/content/video/browser/object-details-body.pt:8
 #: zeit/content/volume/browser/reference-details.pt:6
 msgid "edit"
@@ -3442,7 +3442,7 @@ msgid "Master image"
 msgstr "Hauptbild"
 
 #: zeit/content/image/browser/imagegroup.py:143
-#: zeit/content/image/interfaces.py:421
+#: zeit/content/image/interfaces.py:414
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3485,51 +3485,43 @@ msgstr ""
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:105
-msgid "Links to"
-msgstr "Verlinkt nach"
-
-#: zeit/content/image/interfaces.py:106
-msgid "Enter a URL this image should link to."
-msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
-
-#: zeit/content/image/interfaces.py:206
+#: zeit/content/image/interfaces.py:199
 msgid "Viewport was used multiple times"
 msgstr "Dieselbe Anzeige wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:210
+#: zeit/content/image/interfaces.py:203
 msgid "Image was used multiple times"
 msgstr "Dasselbe Bild wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:244
+#: zeit/content/image/interfaces.py:237
 msgid "File name of image group"
 msgstr "Dateiname der Bildergruppe"
 
-#: zeit/content/image/interfaces.py:251
+#: zeit/content/image/interfaces.py:244
 msgid "Mapping of viewport to master image"
 msgstr "Motive"
 
-#: zeit/content/image/interfaces.py:258
+#: zeit/content/image/interfaces.py:251
 msgid "Viewport"
 msgstr "Anzeige"
 
-#: zeit/content/image/interfaces.py:261
+#: zeit/content/image/interfaces.py:254
 msgid "Image file"
 msgstr "Datei"
 
-#: zeit/content/image/interfaces.py:265
+#: zeit/content/image/interfaces.py:258
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:268
+#: zeit/content/image/interfaces.py:261
 msgid "Display Type"
 msgstr "Typ"
 
-#: zeit/content/image/interfaces.py:427
+#: zeit/content/image/interfaces.py:420
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/image/interfaces.py:435
+#: zeit/content/image/interfaces.py:428
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
@@ -3541,52 +3533,56 @@ msgstr "Bildtitel"
 msgid "Origin"
 msgstr "Quelle"
 
-#: zeit/content/image/interfaces.py:61
-msgid "Copyrights"
-msgstr "Copyrights"
-
-#: zeit/content/image/interfaces.py:69
+#: zeit/content/image/interfaces.py:62
 msgid "Photographer"
 msgstr "Fotograf"
 
-#: zeit/content/image/interfaces.py:72
+#: zeit/content/image/interfaces.py:65
 msgid "Image company"
 msgstr "Agentur"
 
-#: zeit/content/image/interfaces.py:76
+#: zeit/content/image/interfaces.py:69
 msgid "Copyright freetext"
-msgstr "Quelle"
+msgstr "Copyright (Freitext)"
 
-#: zeit/content/image/interfaces.py:77
+#: zeit/content/image/interfaces.py:70
 msgid "Copyright holder that is not part of image company list"
 msgstr "keine der bekannten Agenturen"
 
-#: zeit/content/image/interfaces.py:82 zeit/content/link/browser/form.py:46
+#: zeit/content/image/interfaces.py:75 zeit/content/link/browser/form.py:46
 #: zeit/content/link/link.py:47 zeit/content/link/browser/configure.zcml:8
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr "Link"
 
-#: zeit/content/image/interfaces.py:83
+#: zeit/content/image/interfaces.py:76
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: zeit/content/image/interfaces.py:86 zeit/content/image/interfaces.py:110
+#: zeit/content/image/interfaces.py:79 zeit/content/image/interfaces.py:103
 #: zeit/content/link/interfaces.py:31
 msgid "set nofollow"
 msgstr "rel=\"nofollow\" setzen"
 
-#: zeit/content/image/interfaces.py:90
+#: zeit/content/image/interfaces.py:83
 msgid "External company ID"
 msgstr "Bild-ID der Agentur"
 
-#: zeit/content/image/interfaces.py:94
+#: zeit/content/image/interfaces.py:87
 msgid "Alternative text"
 msgstr "ALT-Text"
 
-#: zeit/content/image/interfaces.py:95
+#: zeit/content/image/interfaces.py:88
 msgid "Enter a textual description of the image"
 msgstr "Geben Sie eine Beschreibung des Bildes ein."
+
+#: zeit/content/image/interfaces.py:98
+msgid "Links to"
+msgstr "Verlinkt nach"
+
+#: zeit/content/image/interfaces.py:99
+msgid "Enter a URL this image should link to."
+msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
 #: zeit/content/infobox/interfaces.py:49
 msgid "Debate action URL"
@@ -3858,8 +3854,8 @@ msgstr "Module umordnen"
 msgid "move '${type}' block"
 msgstr "'${type}'-Block verschieben"
 
-#: zeit/edit/browser/layout.fold.pt:2 zeit/edit/browser/layout.fold.pt:6
 #: zeit/edit/browser/layout.foldable-forms.pt:7
+#: zeit/edit/browser/layout.fold.pt:2 zeit/edit/browser/layout.fold.pt:6
 msgid "Fold"
 msgstr "Ausklappen"
 
@@ -4525,11 +4521,6 @@ msgstr "Unterschrift 2"
 msgid "URL 2"
 msgstr "URL 2"
 
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:55
-msgid "double"
-msgstr "doppelt"
-
 #: zeit/wysiwyg/browser/resources/raw/dialog.pt:14
 msgid "RAW HTML"
 msgstr "Rohes HTML"
@@ -4537,16 +4528,6 @@ msgstr "Rohes HTML"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:21
 msgid "from Article"
 msgstr "aus den Artikelassets"
-
-#: zeit/wysiwyg/browser/resources/reference/image.pt:31
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
-msgid "small"
-msgstr "schmal"
-
-#: zeit/wysiwyg/browser/resources/reference/image.pt:32
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
-msgid "large"
-msgstr "vollbreit"
 
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 msgid "Hochkant"
@@ -4568,9 +4549,27 @@ msgstr "Ablaufdatum"
 msgid "Format"
 msgstr "Format"
 
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
+#: zeit/wysiwyg/browser/resources/reference/image.pt:31
+msgid "small"
+msgstr "schmal"
+
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
+#: zeit/wysiwyg/browser/resources/reference/image.pt:32
+msgid "large"
+msgstr "vollbreit"
+
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:55
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
+msgid "double"
+msgstr "doppelt"
+
+#~ msgid "Copyrights"
+#~ msgstr "Copyrights"
 
 #~ msgid "Image company freetext"
 #~ msgstr "Agentur (Freitext)"
