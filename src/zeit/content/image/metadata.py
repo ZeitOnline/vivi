@@ -35,7 +35,7 @@ class ImageMetadata(object):
     @property
     def copyrights(self):
         value = self._copyrights
-        # Migration for exactly one copyright(ZON-4106)
+        # Migration for exactly one copyright (ZON-4106)
         if type(value[0]) is tuple:
             value = value[0]
         # Migration for nofollow (VIV-104)
@@ -131,10 +131,10 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for child in entry.iterchildren('copyright'):
             entry.remove(child)
 
-        for text, company, freetext, link, nofollow in context.copyrights:
-            node = lxml.objectify.E.copyright(text)
-            if link:
-                node.set('link', link)
-                if nofollow:
-                    node.set('rel', 'nofollow')
-            entry.append(node)
+        text, company, freetext, link, nofollow = context.copyrights
+        node = lxml.objectify.E.copyright(text)
+        if link:
+            node.set('link', link)
+            if nofollow:
+                node.set('rel', 'nofollow')
+        entry.append(node)

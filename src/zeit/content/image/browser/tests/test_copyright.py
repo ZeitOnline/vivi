@@ -19,11 +19,11 @@ class TestCopyrights(zeit.cms.testing.BrowserTestCase,
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/imagegroup/'
                '@@set-image-copyright')
-        b.getControl(name='form.copyrights.0..combination_00').value = (
+        b.getControl(name='form.copyrights.combination_00').value = (
             'gocept')
-        b.getControl(name='form.copyrights.0..combination_01').displayValue = \
+        b.getControl(name='form.copyrights.combination_01').displayValue = \
             ['dpa']
-        b.getControl(name='form.copyrights.0..combination_03').value = (
+        b.getControl(name='form.copyrights.combination_03').value = (
             'http://www.gocept.com/')
         b.getControl('Set copyrights').click()
 
@@ -52,5 +52,5 @@ class TestCopyrights(zeit.cms.testing.BrowserTestCase,
         metadata = zeit.content.image.interfaces.IImageMetadata(image)
         self.assertEqual(
             (u'gocept', u'dpa', None, 'http://www.gocept.com/', False),
-            metadata.copyrights[0]
+            metadata.copyrights
         )
