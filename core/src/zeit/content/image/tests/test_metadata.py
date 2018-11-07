@@ -15,7 +15,7 @@ class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             metadata = IImageMetadata(co)
-            metadata.copyrights = (('Foo', 'http://example.com', True),)
+            metadata.copyrights = ('Foo', 'http://example.com', True)
         ref = zope.component.getAdapter(image, IXMLReference, name='image')
         self.assertEllipsis("""\
 <image...>

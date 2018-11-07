@@ -59,8 +59,8 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zc.form.field.Combination((
         zope.schema.TextLine(
-           title=_('Photographer'),
-           required=False),
+            title=_('Photographer'),
+            required=False),
         zope.schema.Choice(
             title=_('Image company'),
             source=COPYRIGHT_COMPANY_SOURCE,
@@ -78,7 +78,7 @@ class IImageMetadata(zope.interface.Interface):
         zope.schema.Bool(
             title=_('set nofollow'),
             required=False)),
-        default=('', None, '', '', False),
+        default=(u'', None, None, None, False),
         title=_("Copyrights"),
         missing_value=())
 

@@ -123,7 +123,6 @@ Set metadata:
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
 >>> metadata.copyrights = (
-...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> metadata.caption = u'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
@@ -133,14 +132,13 @@ Set metadata:
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">Caption</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 The interface default for the copyright is:
 
 >>> zeit.content.image.interfaces.IImageMetadata['copyrights'].default
-((u'', None, None, None, False),)
+(u'', None, None, None, False)
 
 
 Make sure we don't die when there is an invalid XML snippet stored:
@@ -155,7 +153,6 @@ Make sure we don't die when there is an invalid XML snippet stored:
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
@@ -173,7 +170,6 @@ Set the link:
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com" rel="nofollow"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
@@ -196,7 +192,6 @@ in x140 is used:
 <image ...base-id="http://xml.zeit.de/image-group/" type="gif"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
@@ -216,7 +211,6 @@ one is used:
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 
@@ -235,7 +229,6 @@ Images whose names have no extension at all will be ignored:
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 <BLANKLINE>
@@ -251,7 +244,6 @@ If there is no image in the image group the ``type`` will be an empty string:
 <image ...base-id="http://xml.zeit.de/image-group/" type=""...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
 

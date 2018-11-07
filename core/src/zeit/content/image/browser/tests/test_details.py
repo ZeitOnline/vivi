@@ -3,7 +3,7 @@ import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
-
+from zeit.content.image.interfaces import IImageMetadata
 
 class ImageDetails(zeit.cms.testing.SeleniumTestCase):
 
@@ -31,6 +31,7 @@ class ImageDetailsErrorHandling(zeit.cms.testing.BrowserTestCase):
     def test_no_image_exists_still_renders(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
+        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository'
                '/group/@@object-details-body')
         self.assertEllipsis('...edit-button...', b.contents)
