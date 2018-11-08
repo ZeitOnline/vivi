@@ -80,7 +80,7 @@ class IImageMetadata(zope.interface.Interface):
             required=False)),
         default=(u'', None, None, None, False),
         title=_("Copyrights"),
-        missing_value=())
+        missing_value=(u'', None, None, None, False))
 
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
