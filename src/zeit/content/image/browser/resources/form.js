@@ -30,25 +30,33 @@
     var update_copyright_visibility = function() {
         // Toggle copyright fields, depending on image company choice.
         // Image company is determinded by select widget.
-        var photographer = '#form\\.copyrights\\.combination_00';
+        var photographer = $('#form\\.copyrights\\.combination_00');
+        var photographer_tr = photographer.closest('tr');
         var company = $('#form\\.copyrights\\.combination_01 option:selected');
-        var custom_company = '#form\\.copyrights\\.combination_02';
+        var company_tr = company.closest('tr');
+        var custom_company = $('#form\\.copyrights\\.combination_02');
+        var custom_company_tr = custom_company.closest('tr');
+
+        // We need to place company above photographer here, because it's not
+        // viable to do so in the model layer.
+        company_tr.insertBefore(photographer_tr);
+
         if (company.text() == 'Andere') {
             // Hide photographer in case there is no company selected.
-            $(photographer).closest('tr').css('visibility', 'hidden');
+            photographer_tr.hide();
             // Clear to prevent values in both fields.
-            $(photographer).val('');
-            $(custom_company).closest('tr').css('visibility', 'visible');
+            photographer.val('');
+            custom_company_tr.show();
         } else {
             // Hide custom company in case there is an company selected.
-            $(custom_company).closest('tr').css('visibility', 'hidden');
+            custom_company_tr.hide();
             // Clear first, to prevent values in both fields.
-            $(custom_company).val('');
-            $(photographer).closest('tr').css('visibility', 'visible');
+            custom_company.val('');
+            photographer_tr.show();
         }
     };
 
-    var bind_function_to_select_change  = function (selector, func) {
+    var bind_function_to_select_change = function (selector, func) {
         // set initial visibility on load
         func();
         // update visibility on change, unless we are in read-only mode
