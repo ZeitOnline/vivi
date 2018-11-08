@@ -1,71 +1,35 @@
 .fieldname-copyrights {
-  /* restrict height to get rid of a table row, reserved for buttons, that will
-   * never show up in our case...
-   */
-  height: 16em;
   width: 100%;
-}
-
-.fieldname-copyrights > label {
-  background-color: #f1f4f9;
-  position: relative;
-  top: 6px;
 }
 
 .fieldname-copyrights .field td:first-child {
   width: 14em;
 }
 
-.fieldname-copyrights tr:first-of-type .label:after,
-.fieldname-copyrights .combinationFieldWidget tr:nth-of-type(3) .label:after {
+.fieldname-copyrights label {
+  display: inline-flex;
+}
+
+/* Depending on the state of the ressource, the element order will differ. */
+.fieldname-copyrights--edit tr:nth-of-type(2) .label:after,
+.fieldname-copyrights--display tr:first-of-type .label:after,
+.fieldname-copyrights tr:nth-of-type(3) .label:after {
   color: #888;
   content: '©';
   float: right;
   font-size: 17px;
 }
 
-.fieldname-copyrights label {
-  display: inline-flex;
+.fieldname-copyrights--display td {
+  padding-bottom: 0;
 }
 
-
-/* .location-workingcopy = checked out
- * .location-repository = checked in
- * ¯\_(ツ)_/¯
- */
-.fieldname-copyrights > .widget,
-.fieldname-copyrights li {
-  border-top: 1px solid #d5dee7;
-}
-
-
-/* styles for checked out image groups only */
-.location-workingcopy .fieldname-copyrights tr.field {
+.fieldname-copyrights--display tr:nth-of-type(2) {
   position: relative;
-  top: -47px;
+  top: -33px;
 }
 
-.location-workingcopy .fieldname-copyrights tr.field:first-of-type {
+.fieldname-copyrights--display tr:first-of-type {
   position: relative;
-  top: 44px;
-}
-
-.location-workingcopy .fieldname-copyrights tr.field:first-of-type .label {
-  padding-top: 1px;
-}
-
-
-/* styles for checked in image groups only */
-.location-repository .fieldname-copyrights tr:first-of-type {
-  position: relative;
-  top: 36px;
-}
-
-.location-repository .fieldname-copyrights tr:nth-of-type(2) {
-  position: relative;
-  top: -40px;
-}
-
-.location-repository .fieldname-copyrights .field .widget {
-  padding-top: 8px;
+  top: 33px;
 }
