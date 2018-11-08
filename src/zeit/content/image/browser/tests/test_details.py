@@ -3,7 +3,7 @@ import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
-from zeit.content.image.interfaces import IImageMetadata
+
 
 class ImageDetails(zeit.cms.testing.SeleniumTestCase):
 
