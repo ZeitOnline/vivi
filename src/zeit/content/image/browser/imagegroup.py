@@ -103,6 +103,7 @@ class AddForm(FormBase,
         self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
         self.widgets['master_image_blobs'].subwidget.extra = 'accept="%s"' % (
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
+        self.widgets['copyrights'].vivi_css_class = 'fieldname-copyrights--add'
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
@@ -114,11 +115,18 @@ class EditForm(FormBase, zeit.cms.browser.form.EditForm):
         super(EditForm, self).setUpWidgets(*args, **kw)
         self.widgets['master_images'].addButtonLabel = _(
             'Add viewport to master image mapping')
+        self.widgets['copyrights'].vivi_css_class = (
+            'fieldname-copyrights--edit')
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('Image group metadata')
+
+    def setUpWidgets(self, *args, **kw):
+        super(DisplayForm, self).setUpWidgets(*args, **kw)
+        self.widgets['copyrights'].vivi_css_class = (
+            'fieldname-copyrights--display')
 
 
 class ImageColumn(zc.table.column.GetterColumn):
