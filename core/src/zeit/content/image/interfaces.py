@@ -78,9 +78,9 @@ class IImageMetadata(zope.interface.Interface):
         zope.schema.Bool(
             title=_('set nofollow'),
             required=False)),
-        default=(u'', None, None, None, False),
+        default=None,
         title=_("Copyrights"),
-        missing_value=(u'', None, None, None, False))
+        missing_value=None)
 
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
