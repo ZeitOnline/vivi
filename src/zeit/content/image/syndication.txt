@@ -66,7 +66,6 @@ Update the metadata of the feed. The image is now referenced:
      ...
       <image base-id="http://xml.zeit.de/image-group/" type="jpg"...>
         <bu xsi:nil="true"/>
-        <copyright py:pytype="str"></copyright>
       </image>
     </block>
   </container>

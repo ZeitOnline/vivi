@@ -64,6 +64,8 @@ class ImageView(zeit.cms.browser.view.Base):
 
     @property
     def copyrights(self):
+        if not self.metadata.copyrights:
+            return
         copyright, company, company_text, url, nofollow = (
             self.metadata.copyrights)
         return dict(
