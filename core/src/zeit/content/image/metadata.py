@@ -34,15 +34,19 @@ class ImageMetadata(object):
 
     @property
     def copyrights(self):
-        result = list(self._copyrights)
-        for i, item in enumerate(result):
-            # Migration for nofollow (VIV-104)
-            if len(item) == 2:
-                result[i] = (item[0], None, None, item[1], False)
-            # Migration for companies (ZON-3174)
-            if len(item) == 3:
-                result[i] = (item[0], None, None, item[1], item[2])
-        return tuple(result)
+        value = self._copyrights
+        if not value:
+            return
+        # Migration for exactly one copyright (ZON-4106)
+        if type(value[0]) is tuple:
+            value = value[0]
+        # Migration for nofollow (VIV-104)
+        if len(value) == 2:
+            value = (value[0], None, None, value[1], False)
+        # Migration for companies (ZON-3174)
+        if len(value) == 3:
+            value = (value[0], None, None, value[1], value[2])
+        return value
 
     @copyrights.setter
     def copyrights(self, value):
@@ -129,10 +133,12 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for child in entry.iterchildren('copyright'):
             entry.remove(child)
 
-        for text, company, freetext, link, nofollow in context.copyrights:
-            node = lxml.objectify.E.copyright(text)
-            if link:
-                node.set('link', link)
-                if nofollow:
-                    node.set('rel', 'nofollow')
-            entry.append(node)
+        if context.copyrights is None:
+            return
+        text, company, freetext, link, nofollow = context.copyrights
+        node = lxml.objectify.E.copyright(text)
+        if link:
+            node.set('link', link)
+            if nofollow:
+                node.set('rel', 'nofollow')
+        entry.append(node)
