@@ -39,9 +39,11 @@ class ImageGroupHelperMixin(object):
 
     def fill_copyright_information(self):
         b = self.browser
-        b.getControl(name='form.copyrights.0..combination_00').value = (
+        b.getControl(name='form.copyrights.combination_00').value = (
             'ZEIT ONLINE')
-        b.getControl(name='form.copyrights.0..combination_03').value = (
+        b.getControl(name='form.copyrights.combination_01').displayValue = (
+            ['dpa'])
+        b.getControl(name='form.copyrights.combination_03').value = (
             'http://www.zeit.de/')
 
     def _upload_image(self, field, filename):
@@ -238,6 +240,32 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel = self.selenium
         sel.open('/repository/group/@@metadata.html')
         sel.assertNotVisible('css=.fieldname-origin')
+
+    def test_photographer_is_shown_if_company_is_chosen(self):
+        sel = self.selenium
+        photographer = 'css=#form\.copyrights\.combination_00'
+        company = 'css=#form\.copyrights\.combination_01'
+        sel.open('/repository/group/@@checkout')
+
+        sel.assertVisible(photographer)
+        sel.select(company, 'label=dpa')
+        sel.assertVisible(photographer)
+
+        sel.select(company, 'label=Andere')
+        sel.assertNotVisible(photographer)
+
+    def test_freetext_is_only_shown_if_special_company_value_is_selected(self):
+        sel = self.selenium
+        freetext = 'css=#form\.copyrights\.combination_02'
+        company = 'css=#form\.copyrights\.combination_01'
+        sel.open('/repository/group/@@checkout')
+
+        sel.assertNotVisible(freetext)
+        sel.select(company, 'label=dpa')
+        sel.assertNotVisible(freetext)
+
+        sel.select(company, 'label=Andere')
+        sel.assertVisible(freetext)
 
 
 class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):

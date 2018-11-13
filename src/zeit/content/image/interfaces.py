@@ -41,6 +41,7 @@ class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
     def getTitle(self, context, value):
         return value
 
+
 COPYRIGHT_COMPANY_SOURCE = CopyrightCompanySource()
 
 
@@ -56,30 +57,30 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    copyrights = zope.schema.Tuple(
+    copyrights = zc.form.field.Combination((
+        zope.schema.TextLine(
+            title=_('Photographer'),
+            required=False),
+        zope.schema.Choice(
+            title=_('Image company'),
+            source=COPYRIGHT_COMPANY_SOURCE,
+            required=True),
+        zope.schema.TextLine(
+            title=_('Copyright freetext'),
+            description=_(
+                'Copyright holder that is not part '
+                'of image company list'),
+            required=False),
+        zope.schema.URI(
+            title=_('Link'),
+            description=_('Link to copyright holder'),
+            required=False),
+        zope.schema.Bool(
+            title=_('set nofollow'),
+            required=False)),
+        default=None,
         title=_("Copyrights"),
-        default=((u'©', None, None, None, False),),
-        missing_value=(),
-        required=False,
-        value_type=zc.form.field.Combination(
-            (zope.schema.TextLine(
-                title=_('Photographer'),
-                required=False),
-             zope.schema.Choice(
-                 title=_('Image company'),
-                 source=COPYRIGHT_COMPANY_SOURCE,
-                 required=False),
-             zope.schema.TextLine(
-                 title=_('Image company freetext'),
-                 description=_('Overrides image company'),
-                 required=False),
-             zope.schema.URI(
-                 title=_('Link'),
-                 description=_('Link to copyright holder'),
-                 required=False),
-             zope.schema.Bool(
-                 title=_('set nofollow'),
-                required=False))))
+        missing_value=None)
 
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
@@ -192,6 +193,7 @@ class ViewportSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.image'
     config_url = 'viewport-source'
     attribute = 'id'
+
 
 VIEWPORT_SOURCE = ViewportSource()
 
@@ -368,6 +370,7 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = IImageType
     name = 'images'
 
+
 imageSource = ImageSource()
 
 
@@ -376,6 +379,7 @@ class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
     zope.interface.implements(IImageSource)
     check_interfaces = (IImage,)
     name = 'bare-images'
+
 
 bareImageSource = BareImageSource()
 

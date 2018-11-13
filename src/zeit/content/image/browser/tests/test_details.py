@@ -31,6 +31,7 @@ class ImageDetailsErrorHandling(zeit.cms.testing.BrowserTestCase):
     def test_no_image_exists_still_renders(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
+        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository'
                '/group/@@object-details-body')
         self.assertEllipsis('...edit-button...', b.contents)

@@ -16,7 +16,6 @@ checker = zope.testing.renormalizing.RENormalizing([
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'copyright.txt',
         'imagefolder.txt',
         'master-image.txt',
         package='zeit.content.image.browser',
