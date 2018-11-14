@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.40.1 (unreleased)
+3.41.0 (2018-11-14)
 -------------------
 
 - ZON-4999: Add `has_audio` property
