@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.41.1 (unreleased)
+3.41.1 (2018-11-14)
 -------------------
 
 - FIX: brown-bag 3.41.0
