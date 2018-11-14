@@ -14,7 +14,7 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 class Form(zeit.cms.browser.lightbox.Form):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.interfaces.IImageMetadata).select('copyrights')
+        zeit.content.image.interfaces.IImageMetadata).select('copyright')
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'copyright.pt')
@@ -23,8 +23,8 @@ class Form(zeit.cms.browser.lightbox.Form):
         # We don't have any initial data.
         return {}
 
-    @zope.formlib.form.action(_('Set copyrights'))
-    def action_set_copyrights(self, action, data):
+    @zope.formlib.form.action(_('Set copyright'))
+    def action_set_copyright(self, action, data):
         changed = []
         for name in self.context:
             obj = self.context[name]
@@ -33,7 +33,7 @@ class Form(zeit.cms.browser.lightbox.Form):
             if metadata is None:
                 continue
             zeit.cms.checkout.helper.with_checked_out(
-                obj, lambda x: self.set_copyrights(x, data['copyrights']))
+                obj, lambda x: self.set_copyright(x, data['copyright']))
             changed.append(name)
 
         self.send_message(
@@ -41,7 +41,7 @@ class Form(zeit.cms.browser.lightbox.Form):
               mapping=dict(changes=', '.join(changed))))
 
     @staticmethod
-    def set_copyrights(obj, copyrights):
+    def set_copyright(obj, copyright):
         metadata = zeit.content.image.interfaces.IImageMetadata(obj)
-        metadata.copyrights = copyrights
+        metadata.copyright = copyright
         return obj

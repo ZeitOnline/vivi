@@ -41,11 +41,11 @@ class TestImage(zeit.cms.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyrights.combination_00').value = (
+        b.getControl(name='form.copyright.combination_00').value = (
             'ZEIT ONLINE')
-        b.getControl(name='form.copyrights.combination_01').displayValue = (
+        b.getControl(name='form.copyright.combination_01').displayValue = (
             ['dpa'])
-        b.getControl(name='form.copyrights.combination_03').value = (
+        b.getControl(name='form.copyright.combination_03').value = (
             'http://www.zeit.de/')
 
         b.getControl(name='form.blob').add_file(

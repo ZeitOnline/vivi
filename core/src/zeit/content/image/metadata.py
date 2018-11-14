@@ -27,13 +27,16 @@ class ImageMetadata(object):
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
         ('external_id',), writeable=WRITEABLE_ALWAYS)
 
+    # XXX Since ZON-4106 there should only be one copyright and the api has
+    # been adjusted to 'copyright'. For bw-compat reasons the DAV property is
+    # still called 'copyrights'
     _copyrights = zeit.cms.content.dav.DAVProperty(
-        zeit.content.image.interfaces.IImageMetadata['copyrights'],
+        zeit.content.image.interfaces.IImageMetadata['copyright'],
         'http://namespaces.zeit.de/CMS/document', 'copyrights',
         use_default=True)
 
     @property
-    def copyrights(self):
+    def copyright(self):
         value = self._copyrights
         if not value:
             return
@@ -48,8 +51,8 @@ class ImageMetadata(object):
             value = (value[0], None, None, value[1], value[2])
         return value
 
-    @copyrights.setter
-    def copyrights(self, value):
+    @copyright.setter
+    def copyright(self, value):
         self._copyrights = value
 
     zeit.cms.content.dav.mapProperties(
@@ -133,9 +136,9 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for child in entry.iterchildren('copyright'):
             entry.remove(child)
 
-        if context.copyrights is None:
+        if context.copyright is None:
             return
-        text, company, freetext, link, nofollow = context.copyrights
+        text, company, freetext, link, nofollow = context.copyright
         node = lxml.objectify.E.copyright(text)
         if link:
             node.set('link', link)
