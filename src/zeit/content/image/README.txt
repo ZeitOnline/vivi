@@ -120,7 +120,7 @@ Set metadata:
 
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
->>> metadata.copyrights = (
+>>> metadata.copyright = (
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> metadata.caption = u'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
@@ -135,7 +135,7 @@ Set metadata:
 
 The interface default for the copyright is None:
 
->>> zeit.content.image.interfaces.IImageMetadata['copyrights'].default
+>>> zeit.content.image.interfaces.IImageMetadata['copyright'].default
 
 
 Make sure we don't die when there is an invalid XML snippet stored:

@@ -18,8 +18,8 @@
     <img tal:replace="structure context/@@preview/tag" />
   </a>
   
-  <ol class="image-copyrights">
-    <li tal:define="copyright view/copyrights">
+  <ol class="image-copyright">
+    <li tal:define="copyright view/copyright">
       <span tal:replace="copyright/copyright">ZEIT</span> /
       <span tal:replace="python: copyright['company_text'] or copyright['company'] or '-'">dpa</span>
       (<a tal:attributes="href copyright/url"

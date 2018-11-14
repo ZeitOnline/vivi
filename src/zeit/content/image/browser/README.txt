@@ -78,7 +78,7 @@ For editing an image, we need to check it out:
 We now see the form. The image did not have any metadata prefilled. The
 copyright is filled with the default value though:
 
->>> browser.getControl(name='form.copyrights.combination_01').value
+>>> browser.getControl(name='form.copyright.combination_01').value
 ['']
 
 Fill out some values:
@@ -93,11 +93,11 @@ Fill out some values:
 >>> browser.getControl('Alternative').value = 'Zwei Taenzer'
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
 >>> browser.getControl('Links to').value = 'http://www.zeit.de'
->>> browser.getControl(name='form.copyrights.combination_00').value = (
+>>> browser.getControl(name='form.copyright.combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.combination_01').displayValue = (
+>>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
->>> browser.getControl(name='form.copyrights.combination_03').value = (
+>>> browser.getControl(name='form.copyright.combination_03').value = (
 ...     'http://www.zeit.de/')
 >>> browser.getControl('External company ID').value = 'externalid'
 >>> browser.getControl('Apply').click()
@@ -170,7 +170,7 @@ Make sure the image is not changed by looking at the image view:
       </td>
     </tr>
   ...
-  <ol class="image-copyrights">
+  <ol class="image-copyright">
     <li>
       ZEIT ONLINE /
       dpa
@@ -217,9 +217,9 @@ Let's add an image:
 
 The image file is required:
 
->>> browser.getControl(name='form.copyrights.combination_01').displayValue = (
+>>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
->>> browser.getControl(name='form.copyrights.combination_00').value = (
+>>> browser.getControl(name='form.copyright.combination_00').value = (
 ...     'ZEIT ONLINE')
 
 >>> browser.getControl(name='form.actions.add').click()
@@ -334,9 +334,9 @@ Lets create an image group:
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
->>> browser.getControl(name='form.copyrights.combination_00').value = (
+>>> browser.getControl(name='form.copyright.combination_00').value = (
 ...     'ZEIT ONLINE')
->>> browser.getControl(name='form.copyrights.combination_01').displayValue = (
+>>> browser.getControl(name='form.copyright.combination_01').displayValue = (
 ...     ['dpa'])
 
 >>> set_file_data('opernball.jpg', 'master_image_blobs.0.')
