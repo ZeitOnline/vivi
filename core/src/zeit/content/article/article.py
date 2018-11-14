@@ -67,8 +67,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
          'hide_ligatus_recommendations', 'recent_comments_first'))
 
     has_audio = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticledio['has_audio'],
-        zeit.cms.interfaces.PRINT_SCHEMA_NS, 'has_audio', use_default=True)
+        zeit.content.article.interfaces.IArticle['has_audio'],
+        zeit.cms.interfaces.PRINT_NAMESPACE, 'has_audio', use_default=True)
 
     @property
     def body(self):
