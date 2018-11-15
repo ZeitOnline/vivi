@@ -25,7 +25,7 @@
       </tal:no-infographic>
     </span>
 
-    <span class="copyright" tal:define="copyright view/copyrights">
+    <span class="copyright" tal:define="copyright view/copyright">
       <span tal:replace="copyright/copyright">ZEIT</span>
       (<a tal:attributes="href copyright/url"
         tal:content="copyright/url">

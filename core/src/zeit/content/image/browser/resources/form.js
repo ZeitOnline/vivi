@@ -30,11 +30,11 @@
     var update_copyright_visibility = function() {
         // Toggle copyright fields, depending on image company choice.
         // Image company is determinded by select widget.
-        var photographer = $('#form\\.copyrights\\.combination_00');
+        var photographer = $('#form\\.copyright\\.combination_00');
         var photographer_tr = photographer.closest('tr');
-        var company = $('#form\\.copyrights\\.combination_01 option:selected');
+        var company = $('#form\\.copyright\\.combination_01 option:selected');
         var company_tr = company.closest('tr');
-        var custom_company = $('#form\\.copyrights\\.combination_02');
+        var custom_company = $('#form\\.copyright\\.combination_02');
         var custom_company_tr = custom_company.closest('tr');
 
         // We need to place company above photographer here, because it's not
@@ -71,7 +71,7 @@
         if (!$('fieldset.image-form').length) {
             return;
         }
-        bind_function_to_select_change('.fieldname-copyrights .combinationFieldWidget',
+        bind_function_to_select_change('.fieldname-copyright .combinationFieldWidget',
             update_copyright_visibility);
         bind_function_to_select_change('.fieldname-display_type .widget',
             update_origin_visibility);

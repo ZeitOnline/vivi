@@ -12,15 +12,15 @@ class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.image.testing.ZCML_LAYER
 
-    def set_copyrights(self, value):
+    def set_copyright(self, value):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             metadata = IImageMetadata(co)
-            metadata.copyrights = value
+            metadata.copyright = value
         return image
 
     def test_nofollow_is_written_to_rel_attribute(self):
-        image = self.set_copyrights((('Foo', 'http://example.com', True),))
+        image = self.set_copyright((('Foo', 'http://example.com', True),))
         ref = zope.component.getAdapter(image, IXMLReference, name='image')
         self.assertEllipsis("""\
 <image...>
@@ -45,22 +45,22 @@ class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
             name='related')
         self.assertEqual(image.uniqueId, node.get('href'))
 
-    def test_bw_compat_copyrights(self):
+    def test_bw_compat_copyright(self):
         # Tuple of pairs
-        image = self.set_copyrights((('foo', 'bar'),))
+        image = self.set_copyright((('foo', 'bar'),))
         self.assertEqual(
             ('foo', None, None, 'bar', False),
-            IImageMetadata(image).copyrights
+            IImageMetadata(image).copyright
         )
         # Tuple of triples
-        image = self.set_copyrights((('foo', 'bar', True),))
+        image = self.set_copyright((('foo', 'bar', True),))
         self.assertEqual(
             ('foo', None, None, 'bar', True),
-            IImageMetadata(image).copyrights
+            IImageMetadata(image).copyright
         )
         # Tuple of quintuples
-        image = self.set_copyrights((('foo', 'bar', 'baz', 'qux', True),))
+        image = self.set_copyright((('foo', 'bar', 'baz', 'qux', True),))
         self.assertEqual(
             ('foo', 'bar', 'baz', 'qux', True),
-            IImageMetadata(image).copyrights
+            IImageMetadata(image).copyright
         )

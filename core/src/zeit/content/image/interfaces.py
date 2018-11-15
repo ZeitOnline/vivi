@@ -57,7 +57,7 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    copyrights = zc.form.field.Combination((
+    copyright = zc.form.field.Combination((
         zope.schema.TextLine(
             title=_('Photographer'),
             required=False),

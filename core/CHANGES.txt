@@ -4,7 +4,7 @@ zeit.content.image changes
 2.22.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Change image metadata api from 'copyrights' to 'copyright'
 
 
 2.22.0 (2018-11-13)

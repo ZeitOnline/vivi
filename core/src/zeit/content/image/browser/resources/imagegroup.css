@@ -1,35 +1,35 @@
-.fieldname-copyrights {
+.fieldname-copyright {
   width: 100%;
 }
 
-.fieldname-copyrights .field td:first-child {
+.fieldname-copyright .field td:first-child {
   width: 14em;
 }
 
-.fieldname-copyrights label {
+.fieldname-copyright label {
   display: inline-flex;
 }
 
 /* Depending on the state of the ressource, the element order will differ. */
-.fieldname-copyrights--edit tr:nth-of-type(2) .label:after,
-.fieldname-copyrights--display tr:first-of-type .label:after,
-.fieldname-copyrights tr:nth-of-type(3) .label:after {
+.fieldname-copyright--edit tr:nth-of-type(2) .label:after,
+.fieldname-copyright--display tr:first-of-type .label:after,
+.fieldname-copyright tr:nth-of-type(3) .label:after {
   color: #888;
   content: '©';
   float: right;
   font-size: 17px;
 }
 
-.fieldname-copyrights--display td {
+.fieldname-copyright--display td {
   padding-bottom: 0;
 }
 
-.fieldname-copyrights--display tr:nth-of-type(2) {
+.fieldname-copyright--display tr:nth-of-type(2) {
   position: relative;
   top: -33px;
 }
 
-.fieldname-copyrights--display tr:first-of-type {
+.fieldname-copyright--display tr:first-of-type {
   position: relative;
   top: 33px;
 }
