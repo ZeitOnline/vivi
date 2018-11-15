@@ -57,7 +57,6 @@ Verify the source:
     <title...>Hans Wurst</title>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
       <bu xsi:nil="true"/>
-      <copyright...
     </image>
     <text py:pytype="str">
       <p><strong>HW</strong> is in da house</p>
