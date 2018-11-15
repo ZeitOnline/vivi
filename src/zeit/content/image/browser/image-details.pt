@@ -10,7 +10,7 @@
     </div></div>
   </div>
 
-  <span class="copyright" tal:define="copyright view/copyrights">
+  <span class="copyright" tal:define="copyright view/copyright">
     <span tal:replace="copyright/copyright | nothing">ZEIT</span>
     (<a tal:attributes="href copyright/url | nothing"
       tal:content="copyright/url | nothing">
