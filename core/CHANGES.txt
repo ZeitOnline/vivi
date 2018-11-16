@@ -1,10 +1,10 @@
 zeit.content.image changes
 ==========================
 
-2.22.2 (unreleased)
+2.22.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Fix image references working with new default None for copyrights
 
 
 2.22.1 (2018-11-15)
