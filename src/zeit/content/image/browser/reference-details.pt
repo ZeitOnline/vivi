@@ -26,9 +26,9 @@
     </span>
 
     <span class="copyright" tal:define="copyright view/copyright">
-      <span tal:replace="copyright/copyright">ZEIT</span>
-      (<a tal:attributes="href copyright/url"
-        tal:content="copyright/url">
+      <span tal:replace="copyright/copyright | nothing">ZEIT</span>
+      (<a tal:attributes="href copyright/url | nothing"
+        tal:content="copyright/url | nothing">
         http://...
       </a>)
     </span>
