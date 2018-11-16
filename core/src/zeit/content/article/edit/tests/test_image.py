@@ -26,7 +26,6 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEllipsis("""\
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
-  <copyright py:pytype="str">&#169;</copyright>
 </image>
         """.format(image_uid=image_uid), lxml.etree.tostring(
             image.xml, pretty_print=True))
