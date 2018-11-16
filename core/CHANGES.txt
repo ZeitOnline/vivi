@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.8.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4106: Adjust code to new copyright api
 
 
 2.8.6 (2018-10-08)

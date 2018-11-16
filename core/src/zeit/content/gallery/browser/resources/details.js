@@ -24,16 +24,16 @@ zeit.cms.GalleryDetails = gocept.Class.extend({
         var img = $('img', self.element);
         img.attr('src', url);
 
-        self.update_copyrights();
+        self.update_copyright();
         self.update_caption();
 
         $('.gallery_details_pos', self.element).text(self.pos+1);
         $('.gallery_details_max', self.element).text(self.entries.length);
     },
 
-    update_copyrights: function() {
+    update_copyright: function() {
         var self = this;
-        var copy = self.entries[self.pos].copyrights;
+        var copy = self.entries[self.pos].copyright;
         var copyright = $('.gallery_details_copyright', self.element);
         copyright.children().remove();
         copy = $(copy).each(function(i, val){

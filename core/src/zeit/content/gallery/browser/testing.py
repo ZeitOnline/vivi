@@ -19,9 +19,11 @@ def add_image(browser, name):
     test_data = open(test_file, 'rb')
     file_control = browser.getControl(name='form.blob')
     file_control.add_file(test_data, 'image/jpeg', name)
-    browser.getControl(name='form.copyrights.0..combination_00').value = (
+    browser.getControl(name='form.copyright.combination_00').value = (
         'ZEIT ONLINE')
-    browser.getControl(name='form.copyrights.0..combination_03').value = (
+    browser.getControl(name='form.copyright.combination_01').displayValue = (
+        ['dpa'])
+    browser.getControl(name='form.copyright.combination_03').value = (
         'http://www.zeit.de/')
     browser.getControl(name='form.actions.add').click()
     browser.getLink('Checkin').click()

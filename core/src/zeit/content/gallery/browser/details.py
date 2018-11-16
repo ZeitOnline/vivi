@@ -7,10 +7,10 @@ class Details(zeit.cms.browser.view.Base):
         entries = []
         for entry in self.context.values():
             metadata = zeit.content.image.interfaces.IImageMetadata(entry)
-            copyrights = metadata.copyrights
+            copyright = metadata.copyright
             caption = entry.caption
             entries.append(dict(
                 url=self.url(entry.image, '/preview'),
-                copyrights=copyrights,
+                copyright=copyright,
                 caption=caption))
         return json.dumps(entries)
