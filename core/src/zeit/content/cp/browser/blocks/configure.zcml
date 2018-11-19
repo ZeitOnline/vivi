@@ -87,7 +87,7 @@
     for="zeit.edit.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop"
-    class="..landing.TeaserBlockLandingZone"
+    class="..landing.ContentLandingZone"
     permission="zeit.EditContent"
     />
 

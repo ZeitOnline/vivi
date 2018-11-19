@@ -82,6 +82,16 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
     title = _('List of teasers')
 
 
+@grok.adapter(zeit.content.cp.interfaces.IArea,
+              zeit.cms.interfaces.ICMSContent,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
+def make_block_from_content(container, content, position):
+    block = Factory(container)(position)
+    block.insert(0, content)
+    return block
+
+
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
