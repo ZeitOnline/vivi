@@ -267,6 +267,14 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         return [x for x in self.template_folder.values()
                 if zeit.content.text.interfaces.IJinjaTemplate.providedBy(x)]
 
+    def filterValue(self, value):
+        try:
+            result = json.loads(value(zeit.content.text.jinja.MockDict()))
+        except Exception:
+            return True
+        else:
+            return not result.get('hide_in_vivi')
+
     def getTitle(self, value):
         return value.title
 
@@ -274,6 +282,7 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         return value.__name__
 
     def find(self, id):
+        # NOTE: Must not use getValues() since those are filtered for display.
         if not id:
             return None
         return self.template_folder.get(id)
@@ -282,7 +291,7 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
         try:
             result = value(zeit.content.text.jinja.MockDict())
             return json.loads(result)['default_title']
-        except:
+        except Exception:
             log.debug(
                 'No default title for %s', getattr(value, '__name__'),
                 exc_info=True)
