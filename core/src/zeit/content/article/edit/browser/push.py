@@ -62,5 +62,4 @@ class Mobile(zeit.push.browser.form.MobileBase,
         super(Mobile, self).handle_edit_action.success(data)
         current = accountdata.mobile_image
         if current != previous:
-            push = zeit.push.interfaces.IPushMessages(self.context)
-            push.set({'type': 'mobile'}, image_set_manually=True)
+            accountdata._set_mobile_service(image_set_manually=True)

@@ -137,12 +137,14 @@ def copy_image_to_push(context, event):
     else:
         return
 
-    push = zeit.push.interfaces.IPushMessages(context)
-    service = push.get(type='mobile')
-    if service and service.get('image_set_manually'):
-        return
     image = zeit.content.image.interfaces.IImages(context).image
-    zeit.push.interfaces.IAccountData(context).mobile_image = image
+    push = zeit.push.interfaces.IPushMessages(context)
+    for service in push.message_config:
+        if service['type'] != 'mobile':
+            continue
+        if service.get('image_set_manually'):
+            continue
+        push.set(service, image=image.uniqueId if image is not None else None)
 
 
 @grokcore.component.subscribe(

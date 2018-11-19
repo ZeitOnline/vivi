@@ -65,7 +65,7 @@ class MobileFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        service = push.get(type='mobile')
+        service = push.get(type='mobile', variant='manual')
         self.assertEqual(
             'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
         self.assertEqual(True, service['image_set_manually'])

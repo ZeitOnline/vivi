@@ -220,6 +220,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
             push = zeit.push.interfaces.IPushMessages(co)
+            # This uses the author push message that's already present,
+            # which is more convenient/lazy than setting up our own.
             service = push.get(type='mobile')
             self.assertEqual(image_id, service['image'])
 
