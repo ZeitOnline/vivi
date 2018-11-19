@@ -315,6 +315,9 @@ def set_author_as_default_push_template(context, event):
         template_name = zope.app.appsetup.product\
             .getProductConfiguration('zeit.push')\
             .get('urbanairship-author-push-template-name')
-        push.message_config = [{'type': 'mobile',
-                                'enabled': True,
-                                'payload_template': template_name}]
+        push.message_config = [{
+            'type': 'mobile',
+            'enabled': True,
+            # No bw-compat needed, as it has not been enabled in production yet
+            'variant': 'automatic-author',
+            'payload_template': template_name}]
