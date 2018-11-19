@@ -111,12 +111,10 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
             text.removeFromBlock = teaser.id;
             self.dnd_objects.push(
                 zeit.cms.createDraggableContentObject(text, {
-                    drop_query_args: {relateds: false},
                     scroll: 'cp-content-inner'
                 }));
             self.dnd_objects.push(
                 zeit.cms.createDraggableContentObject(text, {
-                    drop_query_args: {relateds: false},
                     handle: image,
                     scroll: 'cp-content-inner'
                 }));
