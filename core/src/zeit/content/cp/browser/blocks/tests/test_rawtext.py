@@ -31,6 +31,14 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 
+    def test_can_create_rawtext_module_by_dropping_content(self):
+        b = self.browser
+        b.open(
+            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext'
+            '&order=top')
+        b.open(self.content_url)
+        self.assertEqual(2, b.contents.count('type-rawtext'))
+
     def test_rawtext_is_edited(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
