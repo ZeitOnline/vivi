@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.2 (unreleased)
+3.27.2 (2018-11-20)
 -------------------
 
 - ZON-4950: Create a rawtext module when a text object is dropped on an area
