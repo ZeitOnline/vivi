@@ -2020,3 +2020,15 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+
+
+.type-article #form-mobile .fieldname-author_enabled .widget .output {
+    background-color: #f1f4f9;
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.type-article #form-mobile .fieldname-author_enabled .label {
+    display: none;
+}

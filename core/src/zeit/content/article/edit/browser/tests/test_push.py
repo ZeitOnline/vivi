@@ -65,10 +65,23 @@ class MobileFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        service = push.get(type='mobile')
+        service = push.get(type='mobile', variant='manual')
         self.assertEqual(
             'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
         self.assertEqual(True, service['image_set_manually'])
+
+    def test_shows_notice_for_author_push(self):
+        self.open_form()
+        b = self.browser
+        self.assertNotEllipsis(
+            '...<div class="output">Author push enabled...', b.contents)
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        push.set(
+            dict(type='mobile', variant='automatic-author'), enabled=True)
+        self.open_form()
+        self.assertEllipsis(
+            '...<div class="output">Author push enabled...', b.contents)
 
 
 class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):

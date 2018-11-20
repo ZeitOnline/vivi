@@ -4,7 +4,7 @@ zeit.content.article changes
 3.41.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4957: Display separate read-only notice for author push
 
 
 3.41.1 (2018-11-14)

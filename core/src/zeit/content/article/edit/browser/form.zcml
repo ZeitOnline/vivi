@@ -999,5 +999,11 @@
     permission="zope.View"
     />
 
+  <class class=".push.AuthorPush">
+    <require
+      interface=".push.IAuthorPush"
+      permission="zope.View"
+      />
+  </class>
 
 </configure>

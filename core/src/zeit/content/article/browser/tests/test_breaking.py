@@ -113,7 +113,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'title': 'Default title',
-             'payload_template': 'eilmeldung.json'},
+             'variant': 'manual', 'payload_template': 'eilmeldung.json'},
             push.message_config)
         self.assertIn(
             {'type': 'homepage', 'enabled': False}, push.message_config)

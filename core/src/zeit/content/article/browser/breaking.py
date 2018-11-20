@@ -84,7 +84,7 @@ class Add(zeit.cms.browser.form.AddForm,
             # XXX hard-coded value
             template = source.find('eilmeldung.json')
             message_config.append({
-                'type': 'mobile', 'enabled': True,
+                'type': 'mobile', 'enabled': True, 'variant': 'manual',
                 'title': source.getDefaultTitle(template),
                 'payload_template': template.__name__,
             })
