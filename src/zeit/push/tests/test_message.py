@@ -72,3 +72,36 @@ class MessageTest(zeit.push.testing.TestCase):
             'type': 'twitter', 'variant': 'ressort',
             'account': 'twitter_ressort_politik', 'enabled': True}
         ], push.message_config)
+
+    def test_mobile_is_separate_from_author(self):
+        content = self.create_content('mytext')
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'mobile', 'enabled': True, 'variant': 'automatic-author',
+            'payload_template': 'authors.json'}]
+        data = zeit.push.interfaces.IAccountData(content)
+        self.assertFalse(data.mobile_enabled)
+
+    def test_mobile_bbb_compat_recognizes_without_variant(self):
+        content = self.create_content('mytext')
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
+            'payload_template': 'foo.json'}]
+        data = zeit.push.interfaces.IAccountData(content)
+        self.assertEqual('mobile', data.mobile_text)
+
+    def test_mobile_bbb_compat_adds_variant_on_write(self):
+        content = self.create_content('mytext')
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
+            'title': 'mobile title', 'uses_image': False,
+            'payload_template': 'foo.json'}]
+        data = zeit.push.interfaces.IAccountData(content)
+        data.mobile_payload_template = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/data/urbanairship-templates/eilmeldung.json')
+        self.assertEqual([{
+            'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
+            'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
+            'payload_template': 'eilmeldung.json'}], push.message_config)
