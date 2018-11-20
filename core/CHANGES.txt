@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.26.0 (unreleased)
+1.26.0 (2018-11-20)
 -------------------
 
 - ZON-4957: Separate UA message for authors from the vivi-editable message
