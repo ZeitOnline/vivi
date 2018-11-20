@@ -67,7 +67,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
-             'title': 'mobile title', 'uses_image': False,
+             'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
              'payload_template': 'foo.json'},
             push.message_config)
 
@@ -99,7 +99,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
-             'title': 'mobile title', 'uses_image': False,
+             'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
              'payload_template': 'foo.json'},
             push.message_config)
 
@@ -292,5 +292,6 @@ class AuthorPushTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(
             {'type': 'mobile',
              'payload_template': 'authors.json',
+             'variant': 'automatic-author',
              'enabled': True},
             push.messages[0].config)

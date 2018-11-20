@@ -267,43 +267,43 @@ class AccountData(grok.Adapter):
 
     @property
     def mobile_enabled(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and service.get('enabled')
 
     @mobile_enabled.setter
     def mobile_enabled(self, value):
-        self.push.set(dict(type='mobile'), enabled=value)
+        self._set_mobile_service(enabled=value)
 
     @property
     def mobile_title(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and service.get('title')
 
     @mobile_title.setter
     def mobile_title(self, value):
-        self.push.set(dict(type='mobile'), title=value)
+        self._set_mobile_service(title=value)
 
     @property
     def mobile_text(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and service.get('override_text')
 
     @mobile_text.setter
     def mobile_text(self, value):
-        self.push.set(dict(type='mobile'), override_text=value)
+        self._set_mobile_service(override_text=value)
 
     @property
     def mobile_uses_image(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and service.get('uses_image')
 
     @mobile_uses_image.setter
     def mobile_uses_image(self, value):
-        self.push.set(dict(type='mobile'), uses_image=value)
+        self._set_mobile_service(uses_image=value)
 
     @property
     def mobile_image(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         if not service:
             return None
         return zeit.cms.interfaces.ICMSContent(service.get('image'), None)
@@ -312,21 +312,20 @@ class AccountData(grok.Adapter):
     def mobile_image(self, value):
         if value is not None:
             value = value.uniqueId
-        self.push.set(dict(type='mobile'), image=value)
+        self._set_mobile_service(image=value)
 
     @property
     def mobile_buttons(self):
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and service.get('buttons')
 
     @mobile_buttons.setter
     def mobile_buttons(self, value):
-        self.push.set(dict(type='mobile'), buttons=value)
+        self._set_mobile_service(buttons=value)
 
     @property
     def mobile_payload_template(self):
-        # Convert the token back to the value
-        service = self.push.get(type='mobile')
+        service = self._mobile_service
         return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
             .factory.find(service.get('payload_template'))
 
@@ -337,5 +336,24 @@ class AccountData(grok.Adapter):
         else:
             token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
                 .factory.getToken(value)
-        # Use the token here instead of the value
-        self.push.set(dict(type='mobile'), payload_template=token)
+        self._set_mobile_service(payload_template=token)
+
+    @property
+    def _mobile_service(self):
+        service = self.push.get(type='mobile', variant='manual')
+        if service:
+            return service
+        # BBB `variant` was introduced in zeit.push-1.26.0
+        service = self.push.get(type='mobile')
+        if service and not service.get('variant'):
+            return service
+
+    def _set_mobile_service(self, **kw):
+        service = self._mobile_service
+        # BBB `variant` was introduced in zeit.push-1.26.0
+        if service and not service.get('variant'):
+            self.push.delete(service)
+            for key, value in service.items():
+                if key not in kw:
+                    kw[key] = value
+        self.push.set(dict(type='mobile', variant='manual'), **kw)
