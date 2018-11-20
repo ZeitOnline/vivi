@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.27.2 (unreleased)
 -------------------
 
+- ZON-4950: Create a rawtext module when a text object is dropped on an area
+
 - MAINT: Use completely empty template to create new CPs
 
 

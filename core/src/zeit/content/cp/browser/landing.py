@@ -42,23 +42,17 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
                 field.set(area, value)
 
 
-class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
+class ContentLandingZone(zeit.edit.browser.landing.LandingZone):
 
-    block_type = 'teaser'
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
-    relateds = zeit.edit.browser.view.Form(
-        'relateds', json=True, default=False)
 
-    def initialize_block(self):
+    def create_block(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
             raise ValueError(
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
-        self.block.insert(0, content)
-        if self.relateds:
-            related = zeit.cms.related.interfaces.IRelatedContent(
-                content, None)
-            if related is not None:
-                for i, related in enumerate(related.related):
-                    self.block.insert(i + 1, related)
+        position = self.get_position_from_order(self.container.keys())
+        self.block = zope.component.getMultiAdapter(
+            (self.container, content, position),
+            zeit.edit.interfaces.IElement)
