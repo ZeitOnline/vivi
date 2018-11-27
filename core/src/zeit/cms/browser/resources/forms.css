@@ -361,6 +361,10 @@ form .column-left.image-form input {
     width: inherit;
 }
 
+form .column-left.image-form .fieldname-__name__ input {
+  width: 80%;
+}
+
 form .column-right.image-form {
     width: 48%;
 }

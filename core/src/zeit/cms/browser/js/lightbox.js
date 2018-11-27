@@ -118,6 +118,7 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
         var d = self.lightbox.load_url(self.url);
         d.addCallback(function(result) {
             self.post_process_html();
+            jQuery(self).trigger_fragment_ready();
             return result;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
