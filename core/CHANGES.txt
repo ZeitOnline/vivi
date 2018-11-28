@@ -4,7 +4,7 @@ zeit.content.image changes
 2.22.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4106: Adjust UI for copyrights
 
 
 2.22.2 (2018-11-20)
