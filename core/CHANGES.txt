@@ -4,7 +4,7 @@ zeit.cms changes
 3.19.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4106: Adjust UI for copyrights
 
 
 3.19.0 (2018-10-17)
