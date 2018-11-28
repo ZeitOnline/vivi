@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.22.3 (unreleased)
+2.22.3 (2018-11-28)
 -------------------
 
 - ZON-4106: Adjust UI for copyrights
