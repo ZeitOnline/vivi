@@ -1,6 +1,12 @@
 zeit.content.image changes
 ==========================
 
+2.22.5 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 2.22.4 (2018-11-29)
 -------------------
 
