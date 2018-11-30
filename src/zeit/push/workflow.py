@@ -52,7 +52,7 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
                 return item
 
     def set(self, query, **values):
-        config = self.message_config[:]
+        config = list(self.message_config)
         for item in config:
             found = {key: item.get(key, self.MISSING) for key in query}
             if found == query:
@@ -60,13 +60,13 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
                 break
         else:
             values.update(query)
-            config += (values,)
-        self.message_config = config
+            config.append(values)
+        self.message_config = tuple(config)
 
     def delete(self, query):
-        config = self.message_config[:]
+        config = list(self.message_config)
         config.remove(query)
-        self.message_config = config
+        self.message_config = tuple(config)
 
 
 @grok.subscribe(
