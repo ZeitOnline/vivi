@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.26.1 (unreleased)
+1.26.1 (2018-11-30)
 -------------------
 
 - FIX: Repair bw/compat for urbanairship
