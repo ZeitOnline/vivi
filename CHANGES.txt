@@ -4,7 +4,7 @@ zeit.content.image changes
 2.22.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Be more defensive about copyrights in single image view
 
 
 2.22.4 (2018-11-29)
