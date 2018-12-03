@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.8.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Fix JS expecting mult value copyrights
 
 
 2.8.7 (2018-11-20)

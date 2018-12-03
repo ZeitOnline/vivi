@@ -36,15 +36,24 @@ zeit.cms.GalleryDetails = gocept.Class.extend({
         var copy = self.entries[self.pos].copyright;
         var copyright = $('.gallery_details_copyright', self.element);
         copyright.children().remove();
-        copy = $(copy).each(function(i, val){
-            var html = $('<span></span>');
-            if (val[1] != null){
-                html = $('<a></a>');
-                html.attr('href', val[1]);
+        var copyright_value = $(copy);
+        try {
+            if (copyright_value === null || copyright_value.length === 0) {
+            return;
             }
-            html.append(val[0]);
+            var html = $('<span></span>');
+            if (copyright_value[1] != null){
+                html = $('<a></a>');
+                html.attr('href', copyright_value[1]);
+            }
+            html.append(copyright_value[0]);
             copyright.append(html);
-        });
+        }
+        catch(err) {
+            console.log('Could not read copyright data for gallery');
+        }
+
+
     },
 
     update_caption: function() {
