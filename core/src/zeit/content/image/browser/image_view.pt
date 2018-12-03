@@ -19,7 +19,7 @@
   </a>
   
   <ol class="image-copyright">
-    <li tal:define="copyright view/copyright">
+    <li tal:define="copyright view/copyright" tal:condition="view/copyright">
       <span tal:replace="copyright/copyright">ZEIT</span> /
       <span tal:replace="python: copyright['company_text'] or copyright['company'] or '-'">dpa</span>
       (<a tal:attributes="href copyright/url"
