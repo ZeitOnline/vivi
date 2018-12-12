@@ -80,6 +80,7 @@ class LandingZone(ReloadContainerAction, OrderMixin):
 
     """
 
+    block_type = NotImplemented
     block_params = zeit.edit.browser.view.Form(
         'block_params', json=True, default={})
 
