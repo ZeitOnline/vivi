@@ -106,6 +106,15 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
         return self._get_generic_default()
 
+    def get_default_header(self, context):
+        tree = self._get_tree()
+        template = tree.xpath('template[@name="%s"]' % context.template)
+        if not template:
+            return None
+        default_header = self._get_default_header(context, template[0])
+        if default_header:
+            return default_header[1]
+
 
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
 

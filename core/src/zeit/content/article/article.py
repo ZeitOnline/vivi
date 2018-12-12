@@ -339,6 +339,22 @@ def set_template_and_header_defaults(context, event):
 
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def set_default_header_when_template_is_changed(context, event):
+    for desc in event.descriptions:
+        if (desc.interface is zeit.content.article.interfaces.IArticle and
+                'template' in desc.attributes):
+            break
+    else:
+        return
+
+    source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE(context)
+    header_layout = source.factory.get_default_header(context)
+    context.header_layout = header_layout if header_layout else None
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def ensure_block_ids(context, event):
     body = context.body
