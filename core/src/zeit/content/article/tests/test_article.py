@@ -289,6 +289,20 @@ class DefaultTemplateByContentType(
         self.assertEquals(
             'wide', self.repository['article'].main_image_variant_name)
 
+    def test_changing_template_should_set_default_header(self):
+        article = self.get_article()
+        article._create_image_block_in_front()
+        article.template = u'column'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['article']) as article:
+            self.assertEqual(None, article.header_layout)
+            article.template = u'article'
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+                article, zope.lifecycleevent.Attributes(
+                    zeit.content.article.interfaces.IArticle, 'template')))
+            self.assertEqual('default', article.header_layout)
+
 
 class AccessRestrictsAMPandFBIA(
         zeit.content.article.testing.FunctionalTestCase):
