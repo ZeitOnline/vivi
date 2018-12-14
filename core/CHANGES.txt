@@ -4,7 +4,7 @@ zeit.retresco changes
 1.32.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Add posibility to get unpublished data to get body from tms
 
 
 1.32.0 (2018-09-17)
