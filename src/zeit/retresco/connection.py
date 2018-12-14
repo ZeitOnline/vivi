@@ -103,8 +103,12 @@ class TMS(object):
         except Exception:
             return {}
 
-    def get_article_body(self, content, timeout=None):
-        return self._get_intextlink_data(content, timeout).get('body')
+    def get_article_body(self, content, timeout=None, published=True):
+        if published:
+            return self._get_intextlink_data(content, timeout).get('body')
+        else:
+            return self._get_intextlink_data_preview(content,
+                                                     timeout).get('body')
 
     def _get_intextlink_data(self, content, timeout):
         __traceback_info__ = (content.uniqueId,)
