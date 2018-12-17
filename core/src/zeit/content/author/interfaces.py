@@ -67,6 +67,9 @@ class IAuthor(zope.interface.Interface):
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
 
+    ssoid = zope.schema.TextLine(
+        title=_('SSO-Id'), required=False)
+
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
