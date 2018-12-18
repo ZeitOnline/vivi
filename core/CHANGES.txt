@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.41.3 (unreleased)
+3.42.0 (2018-12-18)
 -------------------
 
 - BUG-1010: Set default header_layout when template is changed
