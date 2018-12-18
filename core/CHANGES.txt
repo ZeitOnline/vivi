@@ -4,7 +4,7 @@ zeit.find changes
 3.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1001: Remove z-index from resetbutton 
 
 
 3.0.2 (2018-09-03)
