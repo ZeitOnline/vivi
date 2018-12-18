@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-3.0.3 (unreleased)
+3.0.3 (2018-12-18)
 ------------------
 
 - BUG-1001: Remove z-index from resetbutton 
