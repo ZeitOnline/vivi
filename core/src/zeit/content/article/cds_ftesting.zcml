@@ -16,11 +16,4 @@
   <include package="zeit.edit" />
   <include package="zeit.wysiwyg" />
 
-  <principal
-    id="zope.cds"
-    title="Content-Drehscheibe"
-    login="zope-cds"
-    password="zope-cdspw"
-    />
-
 </configure>

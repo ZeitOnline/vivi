@@ -1,7 +1,6 @@
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.article import Article
-from zeit.content.article.interfaces import ICDSWorkflow
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import pytz
@@ -71,8 +70,6 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         IContentWorkflow(article).urgent = True
-        # silence annoying error message
-        ICDSWorkflow(article).export_cds = False
         IPublish(article).publish()
         IPublishInfo(article).date_last_published = datetime.datetime(
             2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc)

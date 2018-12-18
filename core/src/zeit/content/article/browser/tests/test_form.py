@@ -94,7 +94,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.assertNotIn('filename', self.browser.contents)
 
     def test_default_values_from_interface_should_be_set(self):
-        from zeit.content.article.interfaces import ICDSWorkflow
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
@@ -102,7 +101,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         self.assertEqual(True, article.commentsAllowed)
         self.assertEqual(False, article.commentsPremoderate)
-        self.assertEqual(True, ICDSWorkflow(article).export_cds)
 
     def test_new_article_should_have_last_semantic_change(self):
         from zeit.cms.content.interfaces import ISemanticChange

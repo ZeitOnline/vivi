@@ -44,9 +44,8 @@ class Publish(zeit.edit.browser.form.InlineForm):
     @property
     def form_fields(self):
         fields = zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IContentWorkflow,
-            zeit.content.article.interfaces.ICDSWorkflow).select(
-            'edited', 'corrected', 'seo_optimized', 'urgent', 'export_cds')
+            zeit.workflow.interfaces.IContentWorkflow).select(
+            'edited', 'corrected', 'seo_optimized', 'urgent')
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
                 zeit.cms.content.interfaces.ISemanticChange).select(
@@ -58,8 +57,6 @@ class Publish(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)
-        self.widgets['export_cds'].vivi_css_class = 'visual-clear'
-
         items = list(self.widgets.__Widgets_widgets_items__)
         items.append(self._make_view_widget('edit.form.checkin-buttons'))
         if not self.can_checkout:

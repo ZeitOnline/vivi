@@ -70,9 +70,6 @@ setup(
         'zope.location>=3.4.0b2',
     ],
     entry_points={
-        'console_scripts': [
-            'run-cds-import=zeit.content.article.cds:import_main',
-        ],
         'fanstatic.libraries': [
             'zeit_content_article=zeit.content.article.edit'
             '.browser.resources:lib',

@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - BUG-1010: Set default header_layout when template is changed
 
+- OPS-955: Remove obsolete CDS functionality
+
 
 3.41.2 (2018-11-20)
 -------------------

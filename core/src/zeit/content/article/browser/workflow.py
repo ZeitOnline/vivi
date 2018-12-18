@@ -1,7 +1,7 @@
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
 import zeit.workflow.browser.form
-import zope.formlib.form
+import zope.component
 
 
 class ArticleWorkflowForm(zeit.workflow.browser.form.ContentWorkflow):
@@ -10,8 +10,4 @@ class ArticleWorkflowForm(zeit.workflow.browser.form.ContentWorkflow):
         zeit.content.article.interfaces.IArticle,
         zeit.cms.browser.interfaces.ICMSLayer)
 
-    form_fields = (
-        zeit.workflow.browser.form.ContentWorkflow.form_fields +
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.ICDSWorkflow)
-    )
+    form_fields = zeit.workflow.browser.form.ContentWorkflow.form_fields

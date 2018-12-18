@@ -127,20 +127,6 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
-  <!-- cds -->
-  <subscriber handler=".cds.export" />
-
-  <class class=".cds.CDSWorkflow">
-    <require
-      interface=".interfaces.ICDSWorkflow"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ICDSWorkflow"
-      permission="zeit.workflow.Publish"
-      />
-  </class>
-
   <adapter
     factory=".article.ArticleMetadataUpdater"
     name="zeit.content.article.interfaces.IArticleMetadata"/>

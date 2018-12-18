@@ -22,8 +22,6 @@ import zope.testing.renormalizing
 
 product_config = """
 <product-config zeit.content.article>
-  cds-import-valid-path $$ressort/$$year/$$volume
-  cds-import-invalid-path cds/invalid/$$year/$$volume
   book-recension-categories file://{base}/tests/recension_categories.xml
   genre-url file://{base}/tests/article-genres.xml
   image-display-mode-source file://{base}/edit/tests/image-display-modes.xml
@@ -80,44 +78,6 @@ class ArticleLayer(plone.testing.Layer):
 
 
 LAYER = ArticleLayer()
-
-
-CDS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'cds_ftesting.zcml',
-    product_config=(
-        product_config +
-        zeit.workflow.testing.product_config +
-        zeit.content.cp.testing.product_config +
-        zeit.cms.testing.cms_product_config))
-
-
-class CDSLayer(plone.testing.Layer):
-
-    defaultBases = (CDS_ZCML_LAYER,)
-
-    def testSetUp(self):
-        product_config = zope.app.appsetup.product._configs[
-            'zeit.content.article']
-        product_config['cds-export'] = tempfile.mkdtemp()
-        product_config['cds-import'] = tempfile.mkdtemp()
-
-    def testTearDown(self):
-        product_config = zope.app.appsetup.product._configs[
-            'zeit.content.article']
-        # I don't know why, but those directories get removed automatically
-        # somehow.
-        try:
-            shutil.rmtree(product_config['cds-export'])
-        except OSError:
-            pass
-        try:
-            shutil.rmtree(product_config['cds-import'])
-        except OSError:
-            pass
-        del product_config['cds-export']
-        del product_config['cds-import']
-
-CDS_LAYER = CDSLayer()
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,

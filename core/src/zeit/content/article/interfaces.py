@@ -224,13 +224,6 @@ class ITagesspiegelArticle(zope.interface.Interface):
     """Marker for articles imported from Tagesspiegel."""
 
 
-class ICDSWorkflow(zope.interface.Interface):
-    """Special workflow "extension" for CDS."""
-
-    export_cds = zope.schema.Bool(
-        title=_("Export to Tagesspiegel"))
-
-
 class IBreakingNews(IArticle):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
