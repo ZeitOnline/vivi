@@ -32,6 +32,7 @@ zeit.content.article.html.change_tag = function(element, new_name) {
     while (element.firstChild) {
         new_element.appendChild(element.firstChild);
     }
+    return new_element;
 };
 
 
