@@ -5,7 +5,11 @@ import lxml.objectify
 
 def treeFactory(state):
     """Un-Pickle factory."""
-    return lxml.objectify.fromstring(state)
+    try:
+        return lxml.objectify.fromstring(state)
+    except Exception as e:
+        return lxml.objectify.fromstring(
+            '<error><!-- XML-FEHLER: %s\n\n%s\n\n--></error>' % (e, state))
 copy_reg.constructor(treeFactory)
 
 

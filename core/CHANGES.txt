@@ -4,7 +4,8 @@ zeit.cms changes
 3.19.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-951: Suppress errors when unpickling XML objects, so we can
+  always load _something_
 
 
 3.19.1 (2018-11-28)
