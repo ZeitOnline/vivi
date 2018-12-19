@@ -4,6 +4,7 @@ from zeit.content.author.interfaces import IAuthor
 import UserDict
 import grokcore.component as grok
 import lxml.objectify
+import requests
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -32,6 +33,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'biography',
         'display_name',
         'email',
+        'ssoid',
         'enable_followpush',
         'entered_display_name',
         'external',
@@ -113,6 +115,21 @@ def update_display_name(obj, event):
         obj.display_name = obj.entered_display_name
     else:
         obj.display_name = u'%s %s' % (obj.firstname, obj.lastname)
+
+
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def update_ssoid(obj, event):
+    if obj.email:
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.author')
+        url = config['sso-api-url'] + '/users/' + obj.email
+        auth = (config['sso-user'], config['sso-password'])
+        r = requests.get(url, auth=auth)
+        ssoid = r.json().get('id', None)
+        if ssoid:
+            obj.ssoid = ssoid
 
 
 # Note: This is needed by the publisher and zeit.vgwort, among others.
