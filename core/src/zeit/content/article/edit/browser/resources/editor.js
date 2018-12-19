@@ -733,11 +733,15 @@ zeit.content.article.Editable = gocept.Class.extend({
                     element.removeAttribute('class');
                 }
                 element.removeAttribute('style');
+                var swapped = null;
                 // Yeah, I luv it!
                 if (element.nodeName === 'EM') {
-                    zeit.content.article.html.change_tag(element, 'I');
+                    swapped = zeit.content.article.html.change_tag(element, 'I');
                 } else if (element.nodeName === 'STRONG') {
-                    zeit.content.article.html.change_tag(element, 'B');
+                    swapped = zeit.content.article.html.change_tag(element, 'B');
+                }
+                if (element === self.initial_selection_node) {
+                    self.initial_selection_node = swapped;
                 }
         });
     },

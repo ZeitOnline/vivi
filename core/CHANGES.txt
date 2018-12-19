@@ -4,7 +4,8 @@ zeit.content.article changes
 3.42.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-977: Handle the edge case that the node the user clicked on is one
+  which we need to translate (em/i, strong/b).
 
 
 3.42.0 (2018-12-18)
