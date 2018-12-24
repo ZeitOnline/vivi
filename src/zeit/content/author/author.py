@@ -5,6 +5,7 @@ import UserDict
 import grokcore.component as grok
 import lxml.objectify
 import requests
+import urllib
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -124,7 +125,8 @@ def update_ssoid(obj, event):
     if obj.email:
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.author')
-        url = config['sso-api-url'] + '/users/' + obj.email
+        url = config['sso-api-url'] + '/users/' + urllib.quote(
+            obj.email.encode('utf8'))
         auth = (config['sso-user'], config['sso-password'])
         r = requests.get(url, auth=auth)
         ssoid = r.json().get('id', None)

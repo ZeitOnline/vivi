@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -5,6 +6,8 @@ from zope.lifecycleevent import Attributes
 from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
 import lxml.etree
 import mock
+import requests_mock
+import urllib
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.author.author
@@ -123,3 +126,36 @@ class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
         author = zeit.content.author.author.Author()
         self.assertEqual(
             'Das treibt mich an', author.bio_questions['drive'].title)
+
+
+class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(SSOIdConnectTest, self).setUp()
+        self.config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.author')
+        self.author = zeit.content.author.author.Author()
+        self.author.email = u'peter.schmidt@zeit.de'
+        self.author.sso_connect = True
+        self.url = self.config['sso-api-url'] + '/users/' + urllib.quote(
+            self.author.email.encode('utf8'))
+
+    def test_ssoid_is_set_based_on_email(self):
+        with requests_mock.Mocker() as m:
+            m.get(self.url, status_code=200, json={'id': '12345'})
+            self.repository['author'] = self.author
+            self.assertEqual('12345', self.author.ssoid)
+
+    def test_ssoid_is_updated_on_changing_email(self):
+        with requests_mock.Mocker() as m:
+            m.get(self.url, status_code=200, json={'id': '12345'})
+            self.repository['author'] = self.author
+
+            self.author.email = u'hans.müller@zeit.de'
+            url = self.config['sso-api-url'] + '/users/' + urllib.quote(
+                self.author.email.encode('utf8'))
+            m.get(url, status_code=201, json={'id': '67890'})
+            self.repository['author'] = self.author
+            self.assertEqual('67890', self.author.ssoid)
