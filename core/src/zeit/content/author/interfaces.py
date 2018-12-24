@@ -69,6 +69,10 @@ class IAuthor(zope.interface.Interface):
 
     ssoid = zope.schema.TextLine(title=_('SSO-Id'), required=False)
 
+    sso_connect = zope.schema.Bool(
+        title=_(u'Connect with SSO-Account'),
+        default=True)
+
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
