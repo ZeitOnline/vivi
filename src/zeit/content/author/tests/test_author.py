@@ -148,14 +148,42 @@ class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
             self.repository['author'] = self.author
             self.assertEqual('12345', self.author.ssoid)
 
+    def test_ssoid_is_not_set_when_sso_connect_is_disabled(self):
+        with requests_mock.Mocker() as m:
+            m.get(self.url, status_code=200, json={'id': '12345'})
+            self.author.sso_connect = False
+            self.repository['author'] = self.author
+            self.assertIsNone(self.author.ssoid)
+
     def test_ssoid_is_updated_on_changing_email(self):
         with requests_mock.Mocker() as m:
             m.get(self.url, status_code=200, json={'id': '12345'})
             self.repository['author'] = self.author
+            with checked_out(self.repository['author']) as co:
+                co.email = u'hans.müller@zeit.de'
+                url = self.config['sso-api-url'] + '/users/' + urllib.quote(
+                    co.email.encode('utf8'))
+                m.get(url, status_code=200, json={'id': '67890'})
+                zope.event.notify(ObjectModifiedEvent(
+                    co, Attributes(ICommonMetadata, 'email')))
+                self.assertEqual('67890', co.ssoid)
 
-            self.author.email = u'hans.müller@zeit.de'
-            url = self.config['sso-api-url'] + '/users/' + urllib.quote(
-                self.author.email.encode('utf8'))
-            m.get(url, status_code=201, json={'id': '67890'})
+    def test_ssoid_is_deleted_on_disable_sso_connect(self):
+        with requests_mock.Mocker() as m:
+            m.get(self.url, status_code=200, json={'id': '12345'})
             self.repository['author'] = self.author
-            self.assertEqual('67890', self.author.ssoid)
+            with checked_out(self.repository['author']) as co:
+                co.sso_connect = False
+                zope.event.notify(ObjectModifiedEvent(
+                    co, Attributes(ICommonMetadata, 'sso_connect')))
+                self.assertIsNone(co.ssoid)
+
+    def test_ssoid_is_deleted_on_delete_email(self):
+        with requests_mock.Mocker() as m:
+            m.get(self.url, status_code=200, json={'id': '12345'})
+            self.repository['author'] = self.author
+            with checked_out(self.repository['author']) as co:
+                co.email = None
+                zope.event.notify(ObjectModifiedEvent(
+                    co, Attributes(ICommonMetadata, 'email')))
+                self.assertIsNone(co.ssoid)

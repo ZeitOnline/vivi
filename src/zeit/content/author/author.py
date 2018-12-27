@@ -1,3 +1,5 @@
+from requests.exceptions import (
+    ReadTimeout, ConnectTimeout, HTTPError, Timeout, ConnectionError)
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
@@ -34,6 +36,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'biography',
         'display_name',
         'email',
+        'sso_connect',
         'ssoid',
         'enable_followpush',
         'entered_display_name',
@@ -121,17 +124,43 @@ def update_display_name(obj, event):
 @grok.subscribe(
     zeit.content.author.interfaces.IAuthor,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def update_ssoid(obj, event):
-    if obj.email:
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.author')
-        url = config['sso-api-url'] + '/users/' + urllib.quote(
-            obj.email.encode('utf8'))
-        auth = (config['sso-user'], config['sso-password'])
-        r = requests.get(url, auth=auth)
-        ssoid = r.json().get('id', None)
+def set_ssoid(obj, event):
+    if obj.email and obj.sso_connect:
+        ssoid = request_acs(obj.email)
         if ssoid:
             obj.ssoid = ssoid
+
+
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def update_ssoid(context, event):
+    for desc in event.descriptions:
+        if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
+                'sso_connect' or 'email' in desc.attributes):
+            if context.sso_connect and context.email:
+                ssoid = request_acs(context.email)
+                if ssoid:
+                    context.ssoid = ssoid
+            else:
+                context.ssoid = None
+            break
+
+
+def request_acs(email):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.author')
+    url = config['sso-api-url'] + '/users/' + urllib.quote(
+        email.encode('utf8'))
+    auth = (config['sso-user'], config['sso-password'])
+    try:
+        r = requests.get(url, auth=auth)
+        r.raise_for_status()
+        return r.json().get('id', None)
+    except (
+        ConnectTimeout, HTTPError, ReadTimeout, Timeout, ConnectionError,
+        KeyError):
+        return None
 
 
 # Note: This is needed by the publisher and zeit.vgwort, among others.
