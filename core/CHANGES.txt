@@ -4,7 +4,7 @@ zeit.content.article changes
 3.42.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-119: Fix error message positioning for teaser fields
 
 
 3.42.1 (2018-12-20)

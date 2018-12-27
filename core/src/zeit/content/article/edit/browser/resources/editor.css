@@ -962,8 +962,11 @@
   top: 20px;
 }
 
+.type-article .fieldname-teaserTitle.error div.empty,
+.type-article .fieldname-teaserSupertitle.error div.empty,
 .type-article .fieldname-teaserText.error div.empty {
   top: 86px;
+  position: inherit;
 }
 
 .type-article fieldset.table label {
