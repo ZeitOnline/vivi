@@ -159,6 +159,7 @@ class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
         with requests_mock.Mocker() as m:
             m.get(self.url, status_code=200, json={'id': '12345'})
             self.repository['author'] = self.author
+            self.assertEqual('12345', self.author.ssoid)
             with checked_out(self.repository['author']) as co:
                 co.email = u'hans.müller@zeit.de'
                 url = self.config['sso-api-url'] + '/users/' + urllib.quote(
