@@ -1,5 +1,4 @@
-from requests.exceptions import (
-    ReadTimeout, ConnectTimeout, HTTPError, Timeout, ConnectionError)
+from requests.exceptions import RequestException
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
@@ -157,9 +156,7 @@ def request_acs(email):
         r = requests.get(url, auth=auth)
         r.raise_for_status()
         return r.json().get('id', None)
-    except (
-        ConnectTimeout, HTTPError, ReadTimeout, Timeout, ConnectionError,
-        KeyError):
+    except RequestException:
         return None
 
 
