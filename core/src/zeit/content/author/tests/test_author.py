@@ -139,52 +139,57 @@ class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
         self.author = zeit.content.author.author.Author()
         self.author.email = u'peter.schmidt@zeit.de'
         self.author.sso_connect = True
-        self.url = self.config['sso-api-url'] + '/users/' + urllib.quote(
-            self.author.email.encode('utf8'))
+
+    def acs(self, email, **json):
+        base = self.config['sso-api-url']
+        url = '{}/users/{}'.format(base, urllib.quote(email.encode('utf8')))
+        m = requests_mock.Mocker()
+        m.get(url, status_code=200, json=json)
+        return m
 
     def test_ssoid_is_set_based_on_email(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.url, status_code=200, json={'id': '12345'})
+        with self.acs(self.author.email, id='12345'):
             self.repository['author'] = self.author
-            self.assertEqual('12345', self.author.ssoid)
+        self.assertEqual('12345', self.author.ssoid)
 
     def test_ssoid_is_not_set_when_sso_connect_is_disabled(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.url, status_code=200, json={'id': '12345'})
+        with self.acs(self.author.email, id='12345'):
             self.author.sso_connect = False
             self.repository['author'] = self.author
-            self.assertIsNone(self.author.ssoid)
+        self.assertIsNone(self.author.ssoid)
 
     def test_ssoid_is_updated_on_changing_email(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.url, status_code=200, json={'id': '12345'})
+        with self.acs(self.author.email, id='12345'):
             self.repository['author'] = self.author
-            self.assertEqual('12345', self.author.ssoid)
+        self.assertEqual('12345', self.author.ssoid)
+        with self.acs(u'hans.müller@zeit.de', id='67890'):
             with checked_out(self.repository['author']) as co:
                 co.email = u'hans.müller@zeit.de'
-                url = self.config['sso-api-url'] + '/users/' + urllib.quote(
-                    co.email.encode('utf8'))
-                m.get(url, status_code=200, json={'id': '67890'})
-                zope.event.notify(ObjectModifiedEvent(
-                    co, Attributes(ICommonMetadata, 'email')))
-                self.assertEqual('67890', co.ssoid)
+        self.assertEqual('67890', self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_disable_sso_connect(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.url, status_code=200, json={'id': '12345'})
+        with self.acs(self.author.email, id='12345'):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.sso_connect = False
-                zope.event.notify(ObjectModifiedEvent(
-                    co, Attributes(ICommonMetadata, 'sso_connect')))
-                self.assertIsNone(co.ssoid)
+        self.assertIsNone(self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_delete_email(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.url, status_code=200, json={'id': '12345'})
+        with self.acs(self.author.email, id='12345'):
             self.repository['author'] = self.author
             with checked_out(self.repository['author']) as co:
                 co.email = None
+        self.assertIsNone(self.repository['author'].ssoid)
+
+    def test_ssoid_is_updated_on_checked_out_item(self):
+        with self.acs(self.author.email, id='12345'):
+            self.repository['author'] = self.author
+        self.assertEqual('12345', self.author.ssoid)
+
+        with self.acs(u'hans.müller@zeit.de', id='67890'):
+            with checked_out(self.repository['author']) as co:
+                co.email = u'hans.müller@zeit.de'
                 zope.event.notify(ObjectModifiedEvent(
                     co, Attributes(ICommonMetadata, 'email')))
-                self.assertIsNone(co.ssoid)
+                self.assertEqual('67890', co.ssoid)
+                self.assertEqual('12345', self.repository['author'].ssoid)

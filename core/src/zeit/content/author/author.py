@@ -128,6 +128,8 @@ def set_ssoid(obj, event):
         ssoid = request_acs(obj.email)
         if ssoid:
             obj.ssoid = ssoid
+    else:
+        obj.ssoid = None
 
 
 @grok.subscribe(
