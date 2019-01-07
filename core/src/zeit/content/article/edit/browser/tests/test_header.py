@@ -9,7 +9,8 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
         # Select header that allows header module
         s.click('css=#edit-form-misc .edit-bar .fold-link')
         s.select('id=options-template.template', 'Kolumne')
-        s.waitForVisible('css=.fieldname-header_layout')
+        s.type('id=options-template.header_layout', '\t')
+        s.waitForSelectedValue('id=options-template.header_layout', '')
         s.select('id=options-template.header_layout', 'Standard')
         s.type('id=options-template.header_layout', '\t')
         s.pause(500)
