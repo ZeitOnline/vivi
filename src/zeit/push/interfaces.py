@@ -163,16 +163,27 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
         def MAIN_ACCOUNT(self):
             return self.factory.main_account()
 
+        @property
+        def PRINT_ACCOUNT(self):
+            return self.factory.print_account()
+
     @classmethod
     def main_account(cls):
         config = zope.app.appsetup.product.getProductConfiguration(
             cls.product_configuration)
         return config['twitter-main-account']
 
+    @classmethod
+    def print_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['twitter-print-account']
+
     def isAvailable(self, node, context):
         return (
             super(TwitterAccountSource, self).isAvailable(node, context) and
-            node.get('name') != self.main_account())
+            node.get('name') not in [
+                self.main_account(), self.print_account()])
 
     def access_token(self, value):
         tree = self._get_tree()
@@ -329,6 +340,11 @@ class IAccountData(zope.interface.Interface):
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False)
+    twitter_print_text = zope.schema.Text(
+        title=_('Print Tweet'),
+        required=False,
+        max_length=256)
+    twitter_print_enabled = zope.schema.Bool(title=_('Enable Twitter Print'))
 
     mobile_title = zope.schema.TextLine(
         title=_('Mobile title'), required=False)

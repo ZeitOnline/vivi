@@ -1,10 +1,10 @@
 zeit.push changes
 =================
 
-1.26.2 (unreleased)
+1.27.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5075: Add separate fields for print twitter account
 
 
 1.26.1 (2018-11-30)
