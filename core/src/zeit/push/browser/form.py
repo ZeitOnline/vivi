@@ -23,7 +23,8 @@ class SocialBase(Base):
         _("Social media"),
         ('facebook_main_text', 'facebook_main_enabled',
          'short_text', 'twitter_main_enabled',
-         'twitter_ressort_text', 'twitter_ressort_enabled', 'twitter_ressort'),
+         'twitter_ressort_text', 'twitter_ressort_enabled', 'twitter_ressort',
+         'twitter_print_text', 'twitter_print_enabled'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -42,11 +43,13 @@ class SocialBase(Base):
                 zeit.push.interfaces.IAccountData).select(
                     'twitter_main_enabled',
                     'twitter_ressort_text',
-                    'twitter_ressort_enabled', 'twitter_ressort'))
+                    'twitter_ressort_enabled', 'twitter_ressort',
+                    'twitter_print_text', 'twitter_print_enabled'))
 
     def setUpWidgets(self, *args, **kw):
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
+        self.set_charlimit('twitter_print_text')
         self.set_charlimit('twitter_ressort_text')
         if self.request.form.get('%s.facebook_main_enabled' % self.prefix):
             self._set_widget_required('facebook_main_text')
