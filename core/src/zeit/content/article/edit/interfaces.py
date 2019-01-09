@@ -439,6 +439,27 @@ class IBreakingNewsBody(zope.interface.Interface):
         required=False)
 
 
+class AdplaceLayoutSource(LayoutSourceBase):
+
+    values = collections.OrderedDict([
+        (u'Desktop: 3', 'desktop_3'),
+        (u'Desktop: 4', 'desktop_4'),
+        (u'Desktop: 5', 'desktop_5'),
+        (u'Desktop: 8', 'desktop_8'),
+        (u'Mobile: 3', 'mobile_3'),
+        (u'Mobile: 4', 'mobile_4'),
+        (u'Content Marketing Teaser', 'ctm')
+    ])
+
+
+class IAdplace(zeit.edit.interfaces.IBlock):
+
+    tile = zope.schema.Choice(
+        title=_('Adplace Tile'),
+        required=True,
+        source=AdplaceLayoutSource())
+
+
 class IPuzzle(zope.interface.Interface):
     """A puzzle type"""
 
