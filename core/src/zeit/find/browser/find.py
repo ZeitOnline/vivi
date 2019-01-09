@@ -162,7 +162,10 @@ class SearchResult(JSONView):
             result = DottedNestedDict(result)
             for key in self.search_result_keys:
                 handler = getattr(self, 'get_%s' % key)
-                entry[key] = handler(result)
+                value = handler(result)
+                if not isinstance(value, (basestring, bool)):
+                    value = unicode(value)
+                entry[key] = value
             processed.append(entry)
         if not processed:
             return {'template': 'no_search_result.jsont'}

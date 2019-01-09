@@ -4,7 +4,7 @@ zeit.find changes
 3.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1042: Convert all search result fields to string, since json-template breaks otherwise
 
 
 3.0.3 (2018-12-18)
