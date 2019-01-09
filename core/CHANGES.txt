@@ -4,7 +4,7 @@ zeit.cms changes
 3.19.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5025: Make SimpleFixedValueSource work with dicts
 
 
 3.19.2 (2018-12-20)

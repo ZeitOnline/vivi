@@ -121,13 +121,16 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
     values = NotImplemented
 
     def __init__(self):
-        self.titles = dict((x, _(x)) for x in self.values)
+        if not hasattr(self.values, 'keys'):
+            self.values = collections.OrderedDict([
+                (x, _(x)) for x in self.values
+            ])
 
     def getValues(self):
-        return self.values
+        return self.values.keys()
 
     def getTitle(self, value):
-        return self.titles.get(value, value)
+        return self.values[value]
 
 
 class IObjectSource(zope.schema.interfaces.IIterableSource):
