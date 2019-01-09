@@ -132,32 +132,5 @@ class ScaleSource(zeit.imp.source.ScaleSource):
     product_configuration = 'zeit.content.gallery'
 
 
-GALLERY_TEXT_MAX_LENGTH = 560
-
-
-class TextTooLongError(zope.schema.ValidationError):
-
-    def __init__(self, maximum, got):
-        self.maximum = maximum
-        self.got = got
-        super(TextTooLongError, self).__init__(self.doc())
-
-    def doc(self):
-        return _('Text is to long. Allowed: ${maximum}, got: ${got}',
-                 mapping=dict(maximum=self.maximum, got=self.got))
-
-
 class IVisibleEntryCount(zope.interface.Interface):
     """Count of gallery entries whose layout is not hidden"""
-
-
-class IMaxLengthHTMLContent(zeit.wysiwyg.interfaces.IHTMLContent):
-
-    @zope.interface.invariant
-    def max_length(obj):
-        if not obj.html:
-            return
-        html = lxml.html.soupparser.fromstring(obj.html)
-        text = html.xpath('string(.)')
-        if len(text) > GALLERY_TEXT_MAX_LENGTH:
-            raise TextTooLongError(GALLERY_TEXT_MAX_LENGTH, len(text))

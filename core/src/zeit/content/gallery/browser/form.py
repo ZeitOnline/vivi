@@ -21,7 +21,7 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase,
         zeit.cms.interfaces.ICMSContent,
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryMetadata,
-        zeit.content.gallery.interfaces.IMaxLengthHTMLContent)
+        zeit.wysiwyg.interfaces.IHTMLContent)
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
