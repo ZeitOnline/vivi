@@ -8,6 +8,9 @@ product_config = """
 <product-config zeit.content.author>
   author-folder /foo/bar/authors
   biography-questions file://{fixtures}/tests/biography-questions.xml
+  sso-api-url http://meine.fake/api/1
+  sso-user vivi@zeit.de
+  sso-password password
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -5,6 +6,8 @@ from zope.lifecycleevent import Attributes
 from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
 import lxml.etree
 import mock
+import requests_mock
+import urllib
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.author.author
@@ -123,3 +126,70 @@ class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
         author = zeit.content.author.author.Author()
         self.assertEqual(
             'Das treibt mich an', author.bio_questions['drive'].title)
+
+
+class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(SSOIdConnectTest, self).setUp()
+        self.config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.author')
+        self.author = zeit.content.author.author.Author()
+        self.author.email = u'peter.schmidt@zeit.de'
+        self.author.sso_connect = True
+
+    def acs(self, email, **json):
+        base = self.config['sso-api-url']
+        url = '{}/users/{}'.format(base, urllib.quote(email.encode('utf8')))
+        m = requests_mock.Mocker()
+        m.get(url, status_code=200, json=json)
+        return m
+
+    def test_ssoid_is_set_based_on_email(self):
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+        self.assertEqual(12345, self.author.ssoid)
+
+    def test_ssoid_is_not_set_when_sso_connect_is_disabled(self):
+        with self.acs(self.author.email, id=12345):
+            self.author.sso_connect = False
+            self.repository['author'] = self.author
+        self.assertIsNone(self.author.ssoid)
+
+    def test_ssoid_is_updated_on_changing_email(self):
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+        self.assertEqual(12345, self.author.ssoid)
+        with self.acs(u'hans.müller@zeit.de', id=67890):
+            with checked_out(self.repository['author']) as co:
+                co.email = u'hans.müller@zeit.de'
+        self.assertEqual(67890, self.repository['author'].ssoid)
+
+    def test_ssoid_is_deleted_on_disable_sso_connect(self):
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+            with checked_out(self.repository['author']) as co:
+                co.sso_connect = False
+        self.assertIsNone(self.repository['author'].ssoid)
+
+    def test_ssoid_is_deleted_on_delete_email(self):
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+            with checked_out(self.repository['author']) as co:
+                co.email = None
+        self.assertIsNone(self.repository['author'].ssoid)
+
+    def test_ssoid_is_updated_on_checked_out_item(self):
+        with self.acs(self.author.email, id=12345):
+            self.repository['author'] = self.author
+        self.assertEqual(12345, self.author.ssoid)
+
+        with self.acs(u'hans.müller@zeit.de', id=67890):
+            with checked_out(self.repository['author']) as co:
+                co.email = u'hans.müller@zeit.de'
+                zope.event.notify(ObjectModifiedEvent(
+                    co, Attributes(ICommonMetadata, 'email')))
+                self.assertEqual(67890, co.ssoid)
+                self.assertEqual(12345, self.repository['author'].ssoid)
