@@ -430,7 +430,7 @@ class IBreakingNewsBody(zope.interface.Interface):
         required=False)
 
 
-class AdplaceLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
+class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
         (u'Desktop: 3', 'desktop_3'),
@@ -449,7 +449,7 @@ class IAdplace(zeit.edit.interfaces.IBlock):
     tile = zope.schema.Choice(
         title=_('Adplace Tile'),
         required=True,
-        source=AdplaceLayoutSource())
+        source=AdplaceTileSource())
 
 
 class IPuzzle(zope.interface.Interface):
