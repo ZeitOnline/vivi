@@ -446,6 +446,7 @@ class AdplaceLayoutSource(LayoutSourceBase):
         (u'Desktop: 4', 'desktop_4'),
         (u'Desktop: 5', 'desktop_5'),
         (u'Desktop: 8', 'desktop_8'),
+        (u'Mobile: 1', 'mobile_1'),
         (u'Mobile: 3', 'mobile_3'),
         (u'Mobile: 4', 'mobile_4'),
         (u'Content Marketing Teaser', 'ctm')
