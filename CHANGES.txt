@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.9.5 (unreleased)
+2.9.5 (2019-01-09)
 ------------------
 
 - ZC-84: Add SSO-Id to author object
