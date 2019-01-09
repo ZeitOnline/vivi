@@ -7,6 +7,7 @@ import zeit.cms.content.sources
 import zeit.cms.related.interfaces
 import zeit.content.image.interfaces
 import zope.interface
+import zeit.retresco.interfaces
 import zope.schema
 
 
@@ -28,7 +29,8 @@ def valid_vgwortcode(value):
     return True
 
 
-class IAuthor(zope.interface.Interface):
+class IAuthor(zope.interface.Interface,
+              zeit.retresco.interfaces.ISkipEnrich):
     """An author writes CMS content."""
 
     title = zope.schema.TextLine(title=_('Title'), required=False)
@@ -66,6 +68,13 @@ class IAuthor(zope.interface.Interface):
 
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
+
+    ssoid = zope.schema.Int(
+        title=_('SSO-Id'), required=False, min=10, max=9999999)
+
+    sso_connect = zope.schema.Bool(
+        title=_(u'Connect with SSO-Account'),
+        default=True)
 
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
