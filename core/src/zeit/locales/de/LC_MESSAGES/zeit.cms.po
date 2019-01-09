@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2018-11-19 16:17+0100\n"
-"PO-Revision-Date: 2018-11-19 16:18+0100\n"
+"POT-Creation-Date: 2019-01-09 10:34+0100\n"
+"PO-Revision-Date: 2019-01-09 11:05+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -202,7 +202,7 @@ msgstr "Datum des Terminendes"
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:402
 #: zeit/content/article/interfaces.py:167
-#: zeit/content/article/interfaces.py:240 zeit/content/author/interfaces.py:34
+#: zeit/content/article/interfaces.py:233 zeit/content/author/interfaces.py:34
 #: zeit/content/cp/interfaces.py:177 zeit/content/cp/interfaces.py:418
 #: zeit/content/cp/interfaces.py:638 zeit/content/gallery/interfaces.py:91
 #: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:65
@@ -1776,7 +1776,7 @@ msgstr "Bild"
 #: zeit/content/article/edit/interfaces.py:165
 #: zeit/content/article/interfaces.py:58 zeit/content/cp/interfaces.py:431
 #: zeit/content/cp/interfaces.py:818 zeit/content/image/interfaces.py:418
-#: zeit/push/interfaces.py:342
+#: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
@@ -1853,7 +1853,7 @@ msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
 #: zeit/content/article/edit/browser/edit.py:100
-#: zeit/content/cp/browser/landing.py:56
+#: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
@@ -2041,7 +2041,7 @@ msgstr "Social Media und Apps"
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
-#: zeit/content/article/edit/browser/push.py:41 zeit/push/browser/form.py:61
+#: zeit/content/article/edit/browser/push.py:41 zeit/push/browser/form.py:64
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
@@ -2490,22 +2490,18 @@ msgstr "Seiten"
 msgid "Price (EUR)"
 msgstr "Preis in €"
 
-#: zeit/content/article/interfaces.py:231
-msgid "Export to Tagesspiegel"
-msgstr "Zum Tagesspiegel exportieren"
-
-#: zeit/content/article/interfaces.py:244
+#: zeit/content/article/interfaces.py:237
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
+
+#: zeit/content/article/interfaces.py:249
+#: zeit/content/article/browser/configure.zcml:92
+msgid "Add breaking news"
+msgstr "Eilmeldung"
 
 #: zeit/content/article/interfaces.py:25
 msgid "Paragraphsamount"
 msgstr "Absatzanzahl"
-
-#: zeit/content/article/interfaces.py:256
-#: zeit/content/article/browser/configure.zcml:92
-msgid "Add breaking news"
-msgstr "Eilmeldung"
 
 #: zeit/content/article/interfaces.py:26
 msgid "Amount of paragraphs in total."
@@ -4149,71 +4145,79 @@ msgstr "Name der FB-Seite (z.B. \"ZEIT ONLINE\")"
 msgid "Create"
 msgstr "Erzeugen"
 
-#: zeit/push/interfaces.py:307
+#: zeit/push/interfaces.py:318
 msgid "Enable Facebook"
 msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
 
-#: zeit/push/interfaces.py:309
+#: zeit/push/interfaces.py:320
 msgid "Facebook Main Text"
 msgstr "Facebook-Posting ZEIT ONLINE"
 
-#: zeit/push/interfaces.py:312
+#: zeit/push/interfaces.py:323
 msgid "Enable Facebook Magazin"
 msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
 
-#: zeit/push/interfaces.py:314
+#: zeit/push/interfaces.py:325
 msgid "Facebook Magazin Text"
 msgstr "Facebook-Posting ZEITmagazin"
 
-#: zeit/push/interfaces.py:317
+#: zeit/push/interfaces.py:328
 msgid "Enable Facebook Campus"
 msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
 
-#: zeit/push/interfaces.py:319
+#: zeit/push/interfaces.py:330
 msgid "Facebook Campus Text"
 msgstr "Facebook-Posting ZEITcampus"
 
-#: zeit/push/interfaces.py:321
+#: zeit/push/interfaces.py:332
 msgid "Enable Twitter"
 msgstr "Direkt auf Twitter @zeitonline veröffentlichen"
 
-#: zeit/push/interfaces.py:323
+#: zeit/push/interfaces.py:334
 msgid "Ressort Tweet"
 msgstr "Ressort Tweet"
 
-#: zeit/push/interfaces.py:327
+#: zeit/push/interfaces.py:338
 msgid "Enable Twitter Ressort"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:329
+#: zeit/push/interfaces.py:340
 msgid "Additional Twitter"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/push/interfaces.py:334
+#: zeit/push/interfaces.py:344
+msgid "Print Tweet"
+msgstr "DieZeit Tweet"
+
+#: zeit/push/interfaces.py:347
+msgid "Enable Twitter Print"
+msgstr "Direkt auf Twitter @DIEZEIT veröffentlichen"
+
+#: zeit/push/interfaces.py:350
 msgid "Mobile title"
 msgstr "Absender"
 
-#: zeit/push/interfaces.py:336
+#: zeit/push/interfaces.py:352
 msgid "Mobile text"
 msgstr "Push-Text"
 
-#: zeit/push/interfaces.py:337
+#: zeit/push/interfaces.py:353
 msgid "Enable mobile push"
 msgstr "Pushnachricht über mobile Apps versenden"
 
-#: zeit/push/interfaces.py:339
+#: zeit/push/interfaces.py:355
 msgid "Mobile push with image"
 msgstr "Mit Bild pushen"
 
-#: zeit/push/interfaces.py:341
+#: zeit/push/interfaces.py:357
 msgid "Mobile image"
 msgstr "Mobiles Bild"
 
-#: zeit/push/interfaces.py:346
+#: zeit/push/interfaces.py:362
 msgid "Mobile buttons"
 msgstr "Push mit Buttons"
 
-#: zeit/push/interfaces.py:350
+#: zeit/push/interfaces.py:366
 msgid "Payload Template"
 msgstr "Empfänger"
 
@@ -4579,6 +4583,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Export to Tagesspiegel"
+#~ msgstr "Zum Tagesspiegel exportieren"
 
 #~ msgid "Image company freetext"
 #~ msgstr "Agentur (Freitext)"

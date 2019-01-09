@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Nov 19 16:17:02 2018\n"
+"POT-Creation-Date: Wed Jan  9 10:31:08 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -215,7 +215,7 @@ msgstr ""
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:402
 #: zeit/content/article/interfaces.py:167
-#: zeit/content/article/interfaces.py:240
+#: zeit/content/article/interfaces.py:233
 #: zeit/content/author/interfaces.py:34
 #: zeit/content/cp/interfaces.py:177
 #: zeit/content/cp/interfaces.py:418
@@ -1811,7 +1811,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:431
 #: zeit/content/cp/interfaces.py:818
 #: zeit/content/image/interfaces.py:418
-#: zeit/push/interfaces.py:342
+#: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
 msgstr ""
 
@@ -1887,7 +1887,7 @@ msgid "last published at ${date} on ${time} by ${by}"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:100
-#: zeit/content/cp/browser/landing.py:56
+#: zeit/content/cp/browser/landing.py:53
 #. Default: ""
 msgid "The object \"${name}\" does not exist."
 msgstr ""
@@ -2081,7 +2081,7 @@ msgid "edit social media"
 msgstr ""
 
 #: zeit/content/article/edit/browser/push.py:41
-#: zeit/push/browser/form.py:61
+#: zeit/push/browser/form.py:64
 msgid "Mobile apps"
 msgstr ""
 
@@ -2545,21 +2545,17 @@ msgstr ""
 msgid "Price (EUR)"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:231
-msgid "Export to Tagesspiegel"
+#: zeit/content/article/interfaces.py:237
+msgid "Breaking news article"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:244
-msgid "Breaking news article"
+#: zeit/content/article/interfaces.py:249
+#: zeit/content/article/browser/configure.zcml:92
+msgid "Add breaking news"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:25
 msgid "Paragraphsamount"
-msgstr ""
-
-#: zeit/content/article/interfaces.py:256
-#: zeit/content/article/browser/configure.zcml:92
-msgid "Add breaking news"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:26
@@ -4213,71 +4209,79 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: zeit/push/interfaces.py:307
+#: zeit/push/interfaces.py:318
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/push/interfaces.py:309
+#: zeit/push/interfaces.py:320
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:312
+#: zeit/push/interfaces.py:323
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/interfaces.py:314
+#: zeit/push/interfaces.py:325
 msgid "Facebook Magazin Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:317
+#: zeit/push/interfaces.py:328
 msgid "Enable Facebook Campus"
 msgstr ""
 
-#: zeit/push/interfaces.py:319
+#: zeit/push/interfaces.py:330
 msgid "Facebook Campus Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:321
+#: zeit/push/interfaces.py:332
 msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:323
+#: zeit/push/interfaces.py:334
 msgid "Ressort Tweet"
 msgstr ""
 
-#: zeit/push/interfaces.py:327
+#: zeit/push/interfaces.py:338
 msgid "Enable Twitter Ressort"
 msgstr ""
 
-#: zeit/push/interfaces.py:329
+#: zeit/push/interfaces.py:340
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:334
-msgid "Mobile title"
+#: zeit/push/interfaces.py:344
+msgid "Print Tweet"
 msgstr ""
 
-#: zeit/push/interfaces.py:336
-msgid "Mobile text"
-msgstr ""
-
-#: zeit/push/interfaces.py:337
-msgid "Enable mobile push"
-msgstr ""
-
-#: zeit/push/interfaces.py:339
-msgid "Mobile push with image"
-msgstr ""
-
-#: zeit/push/interfaces.py:341
-msgid "Mobile image"
-msgstr ""
-
-#: zeit/push/interfaces.py:346
-msgid "Mobile buttons"
+#: zeit/push/interfaces.py:347
+msgid "Enable Twitter Print"
 msgstr ""
 
 #: zeit/push/interfaces.py:350
+msgid "Mobile title"
+msgstr ""
+
+#: zeit/push/interfaces.py:352
+msgid "Mobile text"
+msgstr ""
+
+#: zeit/push/interfaces.py:353
+msgid "Enable mobile push"
+msgstr ""
+
+#: zeit/push/interfaces.py:355
+msgid "Mobile push with image"
+msgstr ""
+
+#: zeit/push/interfaces.py:357
+msgid "Mobile image"
+msgstr ""
+
+#: zeit/push/interfaces.py:362
+msgid "Mobile buttons"
+msgstr ""
+
+#: zeit/push/interfaces.py:366
 msgid "Payload Template"
 msgstr ""
 
