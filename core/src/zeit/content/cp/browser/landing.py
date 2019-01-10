@@ -6,7 +6,7 @@ For TeaserBlockLandingZone see: http://cmsdev.zeit.de/content/aufmacher-fläche-
 """
 
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.related.interfaces
+from zeit.content.gallery.interfaces import IGallery
 import zeit.connector.resource
 import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
@@ -52,6 +52,12 @@ class ContentLandingZone(zeit.edit.browser.landing.LandingZone):
             raise ValueError(
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
+        # XXX Gnarly edge case. The JS-based drag/drop handlers can only
+        # differentiate by content-type, and don't have more details.
+        if IGallery.providedBy(content) and content.type == 'inline':
+            raise ValueError(
+                _('Gallery "${name}" with type inline is not allowed here.',
+                  mapping=dict(name=self.uniqueId)))
         position = self.get_position_from_order(self.container.keys())
         self.block = zope.component.getMultiAdapter(
             (self.container, content, position),
