@@ -433,14 +433,14 @@ class IBreakingNewsBody(zope.interface.Interface):
 class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
-        (u'Desktop: 3', 'desktop_3'),
-        (u'Desktop: 4', 'desktop_4'),
-        (u'Desktop: 5', 'desktop_5'),
-        (u'Desktop: 8', 'desktop_8'),
-        (u'Mobile: 1', 'mobile_1'),
-        (u'Mobile: 3', 'mobile_3'),
-        (u'Mobile: 4', 'mobile_4'),
-        (u'Content Marketing Teaser', 'ctm')
+        (u'desktop_3', 'Desktop: 3'),
+        (u'desktop_4', 'Desktop: 4'),
+        (u'desktop_5', 'Desktop: 5'),
+        (u'desktop_8', 'Desktop: 8'),
+        (u'mobile_1', 'Mobile: 1'),
+        (u'mobile_3', 'Mobile: 3'),
+        (u'mobile_4', 'Mobile: 4'),
+        (u'ctm', 'Content Marketing Teaser')
     ])
 
 
