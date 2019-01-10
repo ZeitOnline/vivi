@@ -107,15 +107,6 @@ class IDivision(zeit.edit.interfaces.IBlock):
         'The position of this division in the article body (1-based)')
 
 
-class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
-
-    def getValues(self):
-        return self.values.keys()
-
-    def getTitle(self, value):
-        return self.values[value]
-
-
 class VideoLayoutSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
@@ -219,7 +210,7 @@ class IInfobox(IReference, ILayoutable):
         default=u'default')
 
 
-class PortraitboxLayoutSource(LayoutSourceBase):
+class PortraitboxLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
         (u'short', _('short')),
@@ -341,7 +332,7 @@ class ICitation(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class LiveblogVersions(LayoutSourceBase):
+class LiveblogVersions(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
         (u'3', '3'),
@@ -439,7 +430,7 @@ class IBreakingNewsBody(zope.interface.Interface):
         required=False)
 
 
-class AdplaceLayoutSource(LayoutSourceBase):
+class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
         (u'Desktop: 3', 'desktop_3'),
@@ -458,7 +449,7 @@ class IAdplace(zeit.edit.interfaces.IBlock):
     tile = zope.schema.Choice(
         title=_('Adplace Tile'),
         required=True,
-        source=AdplaceLayoutSource())
+        source=AdplaceTileSource())
 
 
 class IPuzzle(zope.interface.Interface):
