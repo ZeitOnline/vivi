@@ -101,14 +101,6 @@ LinkNotFoundError
 >>> browser.getControl('Gallery type').displayValue
 ['inline']
 
-The 'text' field enforces a maximum length:
-
->>> browser.getControl('Text', index=0).value = 'a' * 600
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...class="error">Text is to long. Allowed: 560, got: 600...
-
-
 
 Editing a gallery
 =================
