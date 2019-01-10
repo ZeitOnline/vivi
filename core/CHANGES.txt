@@ -4,7 +4,8 @@ zeit.find changes
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1042: Apply string conversion only to numbers, otherwise it
+  destroys other useful types like lists
 
 
 3.0.4 (2019-01-09)

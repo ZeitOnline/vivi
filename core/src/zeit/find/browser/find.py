@@ -163,7 +163,7 @@ class SearchResult(JSONView):
             for key in self.search_result_keys:
                 handler = getattr(self, 'get_%s' % key)
                 value = handler(result)
-                if not isinstance(value, (basestring, bool)):
+                if isinstance(value, int):  # safetybelt
                     value = unicode(value)
                 entry[key] = value
             processed.append(entry)
