@@ -40,8 +40,10 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Enable Twitter Ressort').selected = True
+        b.getControl('Enable Twitter Print').selected = True
         b.getControl('Additional Twitter').displayValue = ['Wissen']
         b.getControl('Ressort Tweet').value = 'additional ressort tweet'
+        b.getControl('Print Tweet').value = 'additional print tweet'
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Enable mobile push').selected = True
@@ -50,9 +52,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        # No entries for Facebook Magazin and Campus are created, since we
-        # did not enable those.
-        self.assertEqual(4, len(push.message_config))
+        # No entries for Facebook Magazin and Campus are created, since they
+        # are not included in the base form.
+        self.assertEqual(5, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'},
             push.message_config)
@@ -60,6 +62,10 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
              'account': 'twitter_ressort_wissen',
              'override_text': 'additional ressort tweet'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': True, 'account': 'twitter-print',
+             'override_text': 'additional print tweet'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': True, 'account': 'fb-test',
@@ -74,17 +80,19 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter', index=0).selected)
         self.assertTrue(b.getControl('Enable Twitter Ressort').selected)
+        self.assertTrue(b.getControl('Enable Twitter Print').selected)
         self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
         self.assertTrue(b.getControl('Enable mobile push').selected)
 
         b.getControl('Enable Twitter', index=0).selected = False
         b.getControl('Enable Twitter Ressort').selected = False
+        b.getControl('Enable Twitter Print').selected = False
         b.getControl('Enable Facebook', index=0).selected = False
         b.getControl('Enable mobile push').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(4, len(push.message_config))
+        self.assertEqual(5, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
@@ -92,6 +100,10 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'twitter', 'enabled': False, 'variant': 'ressort',
              'account': 'twitter_ressort_wissen',
              'override_text': 'additional ressort tweet'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': False, 'account': 'twitter-print',
+             'override_text': 'additional print tweet'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': False, 'account': 'fb-test',
@@ -106,6 +118,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
         self.assertFalse(b.getControl('Enable Twitter Ressort').selected)
+        self.assertFalse(b.getControl('Enable Twitter Print').selected)
         self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
         self.assertFalse(b.getControl('Enable mobile push').selected)
 

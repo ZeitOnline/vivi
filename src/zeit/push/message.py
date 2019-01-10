@@ -266,6 +266,32 @@ class AccountData(grok.Adapter):
         return {}
 
     @property
+    def twitter_print_enabled(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        service = self.push.get(type='twitter', account=source.PRINT_ACCOUNT)
+        return service and service.get('enabled')
+
+    @twitter_print_enabled.setter
+    def twitter_print_enabled(self, value):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        self.push.set(dict(
+            type='twitter', account=source.PRINT_ACCOUNT),
+            enabled=value)
+
+    @property
+    def twitter_print_text(self):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        service = self.push.get(type='twitter', account=source.PRINT_ACCOUNT)
+        return service and service.get('override_text')
+
+    @twitter_print_text.setter
+    def twitter_print_text(self, value):
+        source = zeit.push.interfaces.twitterAccountSource(None)
+        self.push.set(
+            dict(type='twitter', account=source.PRINT_ACCOUNT),
+            override_text=value)
+
+    @property
     def mobile_enabled(self):
         service = self._mobile_service
         return service and service.get('enabled')
