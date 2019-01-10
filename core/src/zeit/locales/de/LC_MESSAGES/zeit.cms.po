@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2019-01-09 16:35+0100\n"
-"PO-Revision-Date: 2019-01-09 16:35+0100\n"
+"POT-Creation-Date: 2019-01-10 15:50+0100\n"
+"PO-Revision-Date: 2019-01-10 15:51+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2854,6 +2854,11 @@ msgstr "Centerpage bearbeiten"
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
+#. Default: ""
+#: zeit/content/cp/browser/landing.py:59
+msgid "Gallery \"${name}\" with type inline is not allowed here."
+msgstr "Fotostrecke »${name}« vom Typ »inline« ist nicht als Teaser erlaubt."
+
 #: zeit/content/cp/browser/layout.area.delete.pt:1
 #: zeit/edit/browser/layout.block.delete.pt:1
 msgid "Delete block"
@@ -3355,11 +3360,6 @@ msgstr "Bildergalerie"
 #: zeit/content/gallery/interfaces.py:125
 msgid "Drag a gallery here"
 msgstr "Ziehen Sie Bildergalerien hierher, um sie zu verknüpfen"
-
-#. Default: ""
-#: zeit/content/gallery/interfaces.py:146
-msgid "Text is to long. Allowed: ${maximum}, got: ${got}"
-msgstr "Der Text ist zu lang. ${got} Zeichen, erlaubt sind ${maximum}."
 
 #: zeit/content/gallery/interfaces.py:33
 msgid "Gallery type"
@@ -4603,6 +4603,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Text is to long. Allowed: ${maximum}, got: ${got}"
+#~ msgstr "Der Text ist zu lang. ${got} Zeichen, erlaubt sind ${maximum}."
 
 #~ msgid "Export to Tagesspiegel"
 #~ msgstr "Zum Tagesspiegel exportieren"

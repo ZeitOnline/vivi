@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jan  9 16:34:56 2019\n"
+"POT-Creation-Date: Thu Jan 10 15:09:24 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2908,6 +2908,11 @@ msgstr ""
 msgid "View centerpage metadata"
 msgstr ""
 
+#: zeit/content/cp/browser/landing.py:59
+#. Default: ""
+msgid "Gallery \"${name}\" with type inline is not allowed here."
+msgstr ""
+
 #: zeit/content/cp/browser/layout.area.delete.pt:1
 #: zeit/edit/browser/layout.block.delete.pt:1
 msgid "Delete block"
@@ -3414,11 +3419,6 @@ msgstr ""
 
 #: zeit/content/gallery/interfaces.py:125
 msgid "Drag a gallery here"
-msgstr ""
-
-#: zeit/content/gallery/interfaces.py:146
-#. Default: ""
-msgid "Text is to long. Allowed: ${maximum}, got: ${got}"
 msgstr ""
 
 #: zeit/content/gallery/interfaces.py:33
