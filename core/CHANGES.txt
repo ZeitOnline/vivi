@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-3.0.5 (unreleased)
+3.0.5 (2019-01-10)
 ------------------
 
 - BUG-1042: Apply string conversion only to numbers, otherwise it
