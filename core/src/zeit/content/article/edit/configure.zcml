@@ -273,6 +273,17 @@
       />
   </class>
 
+  <class class=".adplace.Adplace">
+    <require
+      interface=".interfaces.IAdplace"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAdplace"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".mail.Mail">
     <require
       interface=".interfaces.IMail"
