@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
 import gocept.testing.assertion
@@ -80,3 +81,17 @@ class FacebookMessageTest(zeit.push.testing.TestCase):
         # (see zeit.push.workflow.PushMessages._create_message)
         message.config = push.message_config[0]
         self.assertEqual('facebook', message.text)
+
+    def test_breaking_flag_is_removed_from_service_after_send(self):
+        content = ExampleContentType()
+        self.repository['foo'] = content
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = ({
+            'type': 'facebook', 'enabled': True, 'breaking_news': True,
+            'override_text': 'facebook'},)
+        IPublishInfo(content).urgent = True
+        IPublish(content).publish()
+        self.assertEqual(
+            ({'type': 'facebook', 'enabled': False, 'breaking_news': False,
+              'override_text': 'facebook'},),
+            push.message_config)

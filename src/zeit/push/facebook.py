@@ -25,8 +25,17 @@ class Connection(object):
 
         log.debug('Sending %s, %s to %s', text, link, account)
         fb_api = fb.graph.api(access_token)
+        params = {}
+        if kw.get('breaking_news'):
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.push')
+            params['breaking_news'] = True
+            params['breaking_news_expiration'] = int(
+                config['facebook-breaking-news-expiration'])
+
         result = fb_api.publish(
-            cat='feed', id='me', message=text.encode('utf-8'), link=link)
+            cat='feed', id='me', message=text.encode('utf-8'), link=link,
+            **params)
         if 'error' in result:
             # XXX Don't know how to differentiate technical and semantic errors
             raise zeit.push.interfaces.TechnicalError(str(result['error']))
@@ -47,6 +56,13 @@ class Message(zeit.push.message.Message):
     @property
     def log_message_details(self):
         return 'Account %s' % self.config.get('account', '-')
+
+    def _disable_message_config(self):
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        if self.config.get('breaking_news'):
+            push.set(self.config, enabled=False, breaking_news=False)
+        else:
+            push.set(self.config, enabled=False)
 
 
 def create_access_token(argv=None):
