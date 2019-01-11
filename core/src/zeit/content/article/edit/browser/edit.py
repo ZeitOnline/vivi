@@ -323,6 +323,19 @@ class EditBox(zeit.edit.browser.form.InlineForm):
         return form_fields
 
 
+class EditAdplace(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IAdplace).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit adplace block')
+
+    @property
+    def prefix(self):
+        return 'adplace.{0}'.format(self.context.__name__)
+
+
 class EditDivision(zeit.edit.browser.form.InlineForm,
                    zeit.cms.browser.form.CharlimitMixin):
 

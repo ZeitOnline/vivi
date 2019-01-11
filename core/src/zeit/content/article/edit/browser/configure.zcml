@@ -515,6 +515,27 @@
     permission="zope.View"
     />
 
+  <!-- adplace -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAdplace"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-adplace"
+    class=".edit.EditAdplace"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAdplace"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-adplace"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
    <!-- box -->
 
   <browser:page
@@ -635,6 +656,10 @@
   </class>
 
   <class class="..jobticker.JobTicker">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..adplace.Adplace">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
