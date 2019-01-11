@@ -4,7 +4,7 @@ zeit.content.article changes
 3.42.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5075: Styling for additional twitter print fields
 
 
 3.42.2 (2019-01-07)
