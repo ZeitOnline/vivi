@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-3.0.6 (unreleased)
+3.0.6 (2019-01-14)
 ------------------
 
 - BUG-1042: Don't treat bools like ints
