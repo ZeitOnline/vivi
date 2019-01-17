@@ -61,7 +61,7 @@ def create_access_token(argv=None):
     if not all([options.app_id, options.app_secret, options.page_name]):
         parser.print_help()
         raise SystemExit(1)
-    options.redirect_uri = 'http://vivi.zeit.de/@@ping'
+    options.redirect_uri = 'https://vivi.zeit.de/@@ping'
 
     # Step 1: Get user token. <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#login>
@@ -89,8 +89,7 @@ def create_access_token(argv=None):
     if 'error' in r.text:
         print r.text
         raise SystemExit(1)
-    result = urlparse.parse_qs(r.text)
-    short_lived_user_token = result['access_token'][0]
+    short_lived_user_token = r.json()['access_token'][0]
 
     # Step 2: Exchange for long-lived token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#extending>
@@ -104,8 +103,7 @@ def create_access_token(argv=None):
     if 'error' in r.text:
         print r.text
         raise SystemExit(1)
-    result = urlparse.parse_qs(r.text)
-    long_lived_user_token = result['access_token'][0]
+    long_lived_user_token = r.json()['access_token'][0]
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#pagetokens>
