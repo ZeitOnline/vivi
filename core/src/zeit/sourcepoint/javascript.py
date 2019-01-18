@@ -61,6 +61,14 @@ class JavaScript(object):
         obj.text = content
         self.folder[filename] = obj
 
+    def sweep(self, keep):
+        names = sorted(self.folder.keys())
+        if len(names) <= keep:
+            return
+        delete = names[:-keep]
+        for name in delete:
+            del self.folder[name]
+
 
 @zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
 def from_product_config():

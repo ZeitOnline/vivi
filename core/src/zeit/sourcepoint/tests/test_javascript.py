@@ -27,7 +27,6 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         folder['msg_20190117.js'] = Text()
         folder['msg_201901170815.js'] = Text()
         folder['msg_201901171230.js'] = Text()
-
         js = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
         self.assertEqual('http://xml.zeit.de/sourcepoint/msg_201901171230.js',
                          js.latest_version.uniqueId)
@@ -56,7 +55,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
             js.update()
         transaction.commit()
         self.assertEqual(['msg_20190101.js', 'msg_201903170833.js'],
-                         list(sorted(folder.keys())))
+                         sorted(folder.keys()))
 
     def test_download_error_is_ignored(self):
         folder = self.repository['sourcepoint']
@@ -68,4 +67,24 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
             request.side_effect = RuntimeError('provoked')
             js.update()
         transaction.commit()
+        self.assertEqual(1, len(folder))
+
+    def test_sweep_keeps_newest(self):
+        folder = self.repository['sourcepoint']
+        folder['msg_20190110.js'] = Text()
+        folder['msg_20190113.js'] = Text()
+        folder['msg_20190117.js'] = Text()
+        folder['msg_201901170815.js'] = Text()
+        folder['msg_201901171230.js'] = Text()
+        js = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+        js.sweep(keep=2)
+        self.assertEqual(['msg_201901170815.js', 'msg_201901171230.js'],
+                         sorted(folder.keys()))
+
+    def test_sweep_keep_less_than_available_does_nothing(self):
+        folder = self.repository['sourcepoint']
+        folder['msg_20190110.js'] = Text()
+        js = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+        self.assertEqual(1, len(folder))
+        js.sweep(keep=2)
         self.assertEqual(1, len(folder))
