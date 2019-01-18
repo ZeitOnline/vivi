@@ -1,3 +1,4 @@
+from zeit.cms.workflow.interfaces import IPublish
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import datetime
 import logging
@@ -60,6 +61,7 @@ class JavaScript(object):
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
         self.folder[filename] = obj
+        IPublish(self.folder[filename]).publish(async=False)
 
     def sweep(self, keep):
         names = sorted(self.folder.keys())
@@ -67,6 +69,7 @@ class JavaScript(object):
             return
         delete = names[:-keep]
         for name in delete:
+            IPublish(self.folder[name]).retract(async=False)
             del self.folder[name]
 
 

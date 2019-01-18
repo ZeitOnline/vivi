@@ -20,6 +20,15 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.sourcepoint.testing.LAYER
 
+    def setUp(self):
+        super(JavascriptDownload, self).setUp()
+        self.patcher = mock.patch('zeit.sourcepoint.javascript.IPublish')
+        self.publish = self.patcher.start()
+
+    def tearDown(self):
+        self.patcher.stop()
+        super(JavascriptDownload, self).tearDown()
+
     def test_latest_version_sorts_folder_items(self):
         folder = self.repository['sourcepoint']
         folder['msg_20190110.js'] = Text()
@@ -56,6 +65,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         self.assertEqual(['msg_20190101.js', 'msg_201903170833.js'],
                          sorted(folder.keys()))
+        self.assertEqual(True, self.publish().publish.called)
 
     def test_download_error_is_ignored(self):
         folder = self.repository['sourcepoint']
@@ -80,6 +90,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         js.sweep(keep=2)
         self.assertEqual(['msg_201901170815.js', 'msg_201901171230.js'],
                          sorted(folder.keys()))
+        self.assertEqual(3, self.publish().retract.call_count)
 
     def test_sweep_keep_less_than_available_does_nothing(self):
         folder = self.repository['sourcepoint']
