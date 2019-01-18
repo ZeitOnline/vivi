@@ -1,0 +1,7 @@
+zeit.sourcepoint changes
+========================
+
+1.0.0 (unreleased)
+------------------
+
+- Initial release.
