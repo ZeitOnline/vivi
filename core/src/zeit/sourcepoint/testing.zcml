@@ -7,4 +7,6 @@
 
   <include package="zeit.sourcepoint" />
 
+  <include package="zeit.content.text" />
+
 </configure>

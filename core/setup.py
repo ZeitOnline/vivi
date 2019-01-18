@@ -19,10 +19,13 @@ setup(
     license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
+        'mock',
         'plone.testing',
         'requests',
         'setuptools',
+        'transaction',
         'zeit.cms',
+        'zeit.content.text',
         'zope.component',
         'zope.interface',
     ],
