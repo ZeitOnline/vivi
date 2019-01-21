@@ -29,6 +29,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
         'banner',
         'banner_content',
+        'banner_outer',
         'hide_adblocker_notification',
         'lead_candidate',
         'overscrolling',
