@@ -227,7 +227,7 @@ class ICommonMetadata(zope.interface.Interface):
         default=True)
 
     banner_outer = zope.schema.Bool(
-        title=_("Banner out of Content"),
+        title=_("Banner Mainad"),
         required=False,
         default=True)
 
