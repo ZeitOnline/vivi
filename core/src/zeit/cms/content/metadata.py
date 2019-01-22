@@ -29,7 +29,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
         'banner',
         'banner_content',
-        'banner_outer',
         'hide_adblocker_notification',
         'lead_candidate',
         'overscrolling',
@@ -105,7 +104,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,
         'storystreams', use_default=True)
 
-    banner_outer = zeit.cms.content.DAVProperty(
+    banner_outer = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['banner_outer'], DOCUMENT_SCHEMA_NS, 'banner_outer',
         use_default=True)
 
