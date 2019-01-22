@@ -105,6 +105,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,
         'storystreams', use_default=True)
 
+    banner_outer = zeit.cms.content.DAVProperty(
+        ICommonMetadata['banner_outer'], DOCUMENT_SCHEMA_NS, 'banner_outer',
+        use_default=True)
+
 
 @grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
 def set_default_channel_to_ressort(context, event):
