@@ -4,7 +4,7 @@ zeit.cms changes
 3.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5026: Add `banner_outer` to admin tab
 
 
 3.20.0 (2019-01-09)
