@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Jan 10 15:09:24 2019\n"
+"POT-Creation-Date: Tue Jan 22 15:36:02 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -46,30 +46,30 @@ msgid "Complete event"
 msgstr ""
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/sourceedit.pt:16
-#: zeit/cms/browser/sourceedit.pt:39
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
 #: zeit/cms/browser/main_template.pt:47
 #: zeit/cms/browser/main_template.pt:180
 #: zeit/cms/browser/main_template.pt:203
 #: zeit/cms/browser/main_template.pt:221
-#: zeit/cms/browser/context-views-menu-item.pt:5
 #: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/browser/lightbox.pt:2
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
-#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
+#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/edit/browser/inlineform.pt:16
 #: zeit/edit/browser/inlineform.pt:38
-#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -104,7 +104,7 @@ msgid "Day"
 msgstr ""
 
 #: zeit/calendar/browser/configure.zcml:43
-#: zeit/cms/content/interfaces.py:674
+#: zeit/cms/content/interfaces.py:679
 msgid "Month"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:279
 #: zeit/cms/content/browser/template.py:43
 #: zeit/cms/content/interfaces.py:160
-#: zeit/cms/content/interfaces.py:529
+#: zeit/cms/content/interfaces.py:534
 #: zeit/cms/retractlog/browser/retractlog.py:25
 #: zeit/cms/retractlog/interfaces.py:26
 #: zeit/cms/syndication/browser/feed.py:154
@@ -255,7 +255,7 @@ msgstr ""
 #: zeit/calendar/interfaces.py:51
 #: zeit/cms/browser/listing.py:292
 #: zeit/cms/content/interfaces.py:77
-#: zeit/cms/content/interfaces.py:659
+#: zeit/cms/content/interfaces.py:664
 #: zeit/content/cp/interfaces.py:313
 msgid "Ressort"
 msgstr ""
@@ -336,7 +336,7 @@ msgid "Topic label"
 msgstr ""
 
 #: zeit/cms/admin/browser/admin.py:16
-#: zeit/cms/admin/browser/admin.py:27
+#: zeit/cms/admin/browser/admin.py:28
 msgid "admin-field-group"
 msgstr ""
 
@@ -421,11 +421,6 @@ msgstr ""
 
 #: zeit/cms/browser/configure.zcml:77
 msgid "folder specific actions"
-msgstr ""
-
-#: zeit/cms/browser/dropobject-widget.pt:19
-#: zeit/cms/browser/objectsequence-edit-widget.pt:30
-msgid "Add new..."
 msgstr ""
 
 #: zeit/cms/browser/form.py:287
@@ -565,6 +560,11 @@ msgstr ""
 
 #: zeit/cms/browser/object-reference-widget.pt:17
 msgid "Add object"
+msgstr ""
+
+#: zeit/cms/browser/objectsequence-edit-widget.pt:30
+#: zeit/cms/browser/dropobject-widget.pt:19
+msgid "Add new..."
 msgstr ""
 
 #: zeit/cms/browser/secondary_context_actions.pt:5
@@ -809,12 +809,6 @@ msgstr ""
 msgid "misc."
 msgstr ""
 
-#: zeit/cms/content/browser/template-properties.pt:48
-#: zeit/cms/syndication/browser/feed_sorting.pt:7
-#: zeit/content/article/edit/browser/workflow.pt:10
-msgid "Save"
-msgstr ""
-
 #: zeit/cms/content/browser/template.py:104
 msgid "Choose template"
 msgstr ""
@@ -975,110 +969,109 @@ msgid "Banner in Content"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:230
+msgid "Banner Mainad"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:235
 msgid "Banner id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:234
+#: zeit/cms/content/interfaces.py:239
 msgid "Hide AdBlocker notification"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:239
+#: zeit/cms/content/interfaces.py:244
 #: zeit/content/volume/interfaces.py:27
 msgid "Product id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:247
+#: zeit/cms/content/interfaces.py:252
 msgid "Overscrolling"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:252
+#: zeit/cms/content/interfaces.py:257
 msgid "CAP title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:256
+#: zeit/cms/content/interfaces.py:261
 msgid "Deeplink URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:261
+#: zeit/cms/content/interfaces.py:266
 msgid "tldr title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:266
+#: zeit/cms/content/interfaces.py:271
 msgid "tldr text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:271
+#: zeit/cms/content/interfaces.py:276
 msgid "tldr milestone"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:276
+#: zeit/cms/content/interfaces.py:281
 msgid "tldr date"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:280
+#: zeit/cms/content/interfaces.py:285
 msgid "Storystreams"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:287
+#: zeit/cms/content/interfaces.py:292
 msgid "Advertisement title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:291
+#: zeit/cms/content/interfaces.py:296
 msgid "Advertisement text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:345
+#: zeit/cms/content/interfaces.py:350
 msgid "Invalid hex literal"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:425
+#: zeit/cms/content/interfaces.py:430
 #: zeit/content/cp/interfaces.py:745
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:569
+#: zeit/cms/content/interfaces.py:574
 msgid "Hits today"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:570
+#: zeit/cms/content/interfaces.py:575
 msgid "Indicates how many times a page viewed today."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:575
+#: zeit/cms/content/interfaces.py:580
 msgid "Total hits"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:576
+#: zeit/cms/content/interfaces.py:581
 msgid "Indicates how many times a page was viewed in total, i.e. during its entire life time."
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:582
+#: zeit/cms/content/interfaces.py:587
 msgid "URI to the access counting details"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:61
-#: zeit/cms/content/interfaces.py:669
+#: zeit/cms/content/interfaces.py:674
 #: zeit/content/article/edit/interfaces.py:503
 #: zeit/content/article/interfaces.py:202
 #: zeit/content/volume/interfaces.py:35
 msgid "Year"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:615
+#: zeit/cms/content/interfaces.py:620
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:621
+#: zeit/cms/content/interfaces.py:626
 msgid "Update last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:648
+#: zeit/cms/content/interfaces.py:653
 msgid "Memo"
-msgstr ""
-
-#: zeit/cms/content/interfaces.py:655
-#: zeit/content/image/browser/image_view.pt:6
-msgid "Type"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:66
@@ -1089,8 +1082,13 @@ msgstr ""
 msgid "Volume"
 msgstr ""
 
+#: zeit/cms/content/interfaces.py:660
+#: zeit/content/image/browser/image_view.pt:6
+msgid "Type"
+msgstr ""
+
 #: zeit/cms/content/interfaces.py:81
-#: zeit/cms/content/interfaces.py:664
+#: zeit/cms/content/interfaces.py:669
 #: zeit/content/cp/interfaces.py:316
 msgid "Sub ressort"
 msgstr ""
@@ -1108,7 +1106,7 @@ msgstr ""
 msgid "Subchannel"
 msgstr ""
 
-#: zeit/cms/content/metadata.py:145
+#: zeit/cms/content/metadata.py:149
 #. Default: ""
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
@@ -1564,6 +1562,12 @@ msgstr ""
 msgid "Feed contents"
 msgstr ""
 
+#: zeit/cms/syndication/browser/feed_sorting.pt:7
+#: zeit/cms/content/browser/template-properties.pt:48
+#: zeit/content/article/edit/browser/workflow.pt:10
+msgid "Save"
+msgstr ""
+
 #: zeit/cms/syndication/browser/form.py:14
 msgid "Add Channel"
 msgstr ""
@@ -1942,19 +1946,19 @@ msgid "edit box block"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:332
+msgid "edit adplace block"
+msgstr ""
+
+#: zeit/content/article/edit/browser/edit.py:345
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:353
+#: zeit/content/article/edit/browser/edit.py:366
 msgid "edit jobbox ticker"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:369
-msgid "edit mail block"
-msgstr ""
-
 #: zeit/content/article/edit/browser/edit.py:382
-msgid "edit adplace block"
+msgid "edit mail block"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:66
@@ -2203,8 +2207,8 @@ msgstr ""
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
 #: zeit/content/volume/browser/publish-all.pt:7
-#: zeit/workflow/browser/publish.pt:9
 #: zeit/workflow/browser/retract.pt:8
+#: zeit/workflow/browser/publish.pt:9
 msgid "Reloading"
 msgstr ""
 
@@ -2298,9 +2302,9 @@ msgstr ""
 #: zeit/content/article/interfaces.py:47
 #: zeit/content/cp/interfaces.py:684
 #: zeit/content/gallery/interfaces.py:101
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 msgid "Layout"
 msgstr ""
 
@@ -2350,14 +2354,14 @@ msgid "Drag an infobox here"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:216
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 msgid "short"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:217
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 msgid "wide"
 msgstr ""
 
@@ -2408,11 +2412,11 @@ msgid "Attribution"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:325
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
-#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
-#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
+#: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
 msgid "URL"
 msgstr ""
 
@@ -2906,11 +2910,6 @@ msgstr ""
 
 #: zeit/content/cp/browser/form.py:75
 msgid "View centerpage metadata"
-msgstr ""
-
-#: zeit/content/cp/browser/landing.py:59
-#. Default: ""
-msgid "Gallery \"${name}\" with type inline is not allowed here."
 msgstr ""
 
 #: zeit/content/cp/browser/layout.area.delete.pt:1
@@ -3943,9 +3942,9 @@ msgstr ""
 msgid "move '${type}' block"
 msgstr ""
 
+#: zeit/edit/browser/layout.foldable-forms.pt:7
 #: zeit/edit/browser/layout.fold.pt:2
 #: zeit/edit/browser/layout.fold.pt:6
-#: zeit/edit/browser/layout.foldable-forms.pt:7
 msgid "Fold"
 msgstr ""
 
@@ -4619,16 +4618,6 @@ msgstr ""
 msgid "from Article"
 msgstr ""
 
-#: zeit/wysiwyg/browser/resources/reference/image.pt:31
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
-msgid "small"
-msgstr ""
-
-#: zeit/wysiwyg/browser/resources/reference/image.pt:32
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
-msgid "large"
-msgstr ""
-
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 msgid "Hochkant"
 msgstr ""
@@ -4649,7 +4638,17 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
+#: zeit/wysiwyg/browser/resources/reference/image.pt:31
+msgid "small"
+msgstr ""
+
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
+msgstr ""
+
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
+#: zeit/wysiwyg/browser/resources/reference/image.pt:32
+msgid "large"
 msgstr ""
 
