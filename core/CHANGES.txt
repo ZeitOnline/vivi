@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.27.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4896: Exclude inline gallery from elasticsearch area results,
+  prevent dragging them as teasers
 
 
 3.27.2 (2018-11-20)

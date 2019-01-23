@@ -226,13 +226,19 @@ class ElasticsearchContentQuery(ContentQuery):
             if not isinstance(_query, list):
                 _query = [_query]
             query = {'query': {'bool': {
-                'filter': _query + self._additional_clauses}}}
+                'filter': _query + self._additional_clauses,
+                'must_not': self._additional_not_clauses[:]}}}
             if self.hide_dupes_clause:
-                query['query']['bool']['must_not'] = self.hide_dupes_clause
+                query['query']['bool']['must_not'].append(
+                    self.hide_dupes_clause)
         return query
 
     _additional_clauses = [
         {'term': {'payload.workflow.published': True}}
+    ]
+
+    _additional_not_clauses = [
+        {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
     ]
 
     def _resolve(self, doc):
