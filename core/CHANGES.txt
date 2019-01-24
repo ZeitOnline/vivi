@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.3 (unreleased)
+3.27.3 (2019-01-24)
 -------------------
 
 - ZON-4896: Exclude inline gallery from elasticsearch area results,
