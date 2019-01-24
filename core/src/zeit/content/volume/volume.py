@@ -201,11 +201,16 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def change_contents_access(self, access_from, access_to, published=True):
+    def change_contents_access(self, access_from, access_to, published=True,
+                               additional_constraints=None, dry_run=False):
         constraints = [{'term': {'payload.document.access': access_from}}]
+        if additional_constraints:
+            constraints += additional_constraints
         if published:
             constraints.append({'term': {'payload.workflow.published': True}})
         cnts = self.all_content_via_search(constraints)
+        if dry_run:
+            return cnts
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:

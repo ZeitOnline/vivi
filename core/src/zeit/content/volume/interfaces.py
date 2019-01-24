@@ -163,3 +163,26 @@ class ProductNameMapper(object):
             return default
 
 PRODUCT_MAPPING = ProductNameMapper()
+
+
+class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
+
+    product_configuration = 'zeit.content.volume'
+    config_url = 'volume-access-control-config'
+
+    @property
+    def min_cr(self):
+        return float(self._find('min_cr') or 0)
+
+    @property
+    def min_orders(self):
+        return int(self._find('min_orders') or 0)
+
+    def _find(self, name):
+        try:
+            return getattr(self._get_tree(), name).text
+        except Exception:
+            return
+
+
+ACCESS_CONTROL_CONFIG = AccessControlConfig()
