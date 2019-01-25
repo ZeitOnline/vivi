@@ -4,7 +4,7 @@ zeit.content.author changes
 2.9.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Mark "duplicate" notification translatable
 
 
 2.9.5 (2019-01-09)

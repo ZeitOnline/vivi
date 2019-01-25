@@ -87,7 +87,7 @@ class DisplayForm(FormBase,
 
 class IDuplicateConfirmation(zope.interface.Interface):
 
-    confirmed_duplicate = zope.schema.Bool(title=u'Add duplicate author')
+    confirmed_duplicate = zope.schema.Bool(title=_('Add duplicate author'))
 
 
 class DuplicateAuthorWarning(Exception):
