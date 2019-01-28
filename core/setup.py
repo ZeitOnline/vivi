@@ -36,7 +36,7 @@ setup(
         'zeit.content.article>=3.26.dev0',
         'zeit.content.gallery',
         'zeit.content.image>=2.5.1.dev0',
-        'zeit.content.modules>=1.1.0.dev0',
+        'zeit.content.modules>=1.3.0.dev0',
         'zeit.content.text>=2.0.2.dev0',
         'zeit.content.video>=2.4.1.dev0',
         'zeit.edit >= 2.17.0.dev0',

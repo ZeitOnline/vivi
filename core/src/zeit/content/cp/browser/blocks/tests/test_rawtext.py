@@ -75,3 +75,21 @@ class TestRawText(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...&lt;code...', b.contents)
+
+    def test_rawtext_should_store_parameters(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = '{{module.params.one}}'
+        embed.parameter_definition = '{"one": zope.schema.TextLine()}'
+        self.repository['embed'] = embed
+
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Raw text reference').value = 'http://xml.zeit.de/embed'
+        b.getControl('Apply').click()
+        b.open(self.content_url)
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('One').value = 'p1'
+        b.getControl('Apply').click()
+        b.open(self.content_url)
+        b.getLink('Edit block properties', index=0).click()
+        self.assertEqual('p1', b.getControl('One').value)

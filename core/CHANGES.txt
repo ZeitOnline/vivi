@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.27.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-2932: Add parameters to embed module form
 
 
 3.27.3 (2019-01-24)
