@@ -22,6 +22,7 @@ setup(
         'setuptools',
         'zeit.cms',
         'zeit.edit',
+        'zeit.content.text >= 2.3.0.dev0',
         'zope.component',
         'zope.interface',
         'zope.schema',

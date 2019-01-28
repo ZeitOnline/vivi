@@ -9,7 +9,7 @@ class IRawText(zeit.edit.interfaces.IBlock):
     text_reference = zope.schema.Choice(
         title=_('Raw text reference'),
         required=False,
-        source=zeit.content.text.interfaces.textSource)
+        source=zeit.content.text.interfaces.embedSource)
 
     text = zope.schema.Text(
         title=_('Raw text'),
