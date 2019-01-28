@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.1.2 (unreleased)
+1.2.0 (2019-01-28)
 ------------------
 
 - ZON-5112: Allow referencing Embed objects from the rawtext module, not just Text
