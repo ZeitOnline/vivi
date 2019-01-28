@@ -30,6 +30,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
     type = 'text'
     title = _('Plain text')
     factory = Text
+    addform = zeit.cms.type.SKIP_ADD
 
     def content(self, resource):
         data = resource.data.read()

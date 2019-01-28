@@ -76,3 +76,17 @@ class IJinjaTemplate(IText):
 
         The keyword arguments are provided to the template.
         """
+
+
+class IEmbed(IText):
+
+    render_as_template = zope.schema.Bool(title=_("Render as template?"))
+
+
+class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.text.embed'
+    check_interfaces = (IText, IEmbed)
+
+
+embedSource = EmbedSource()

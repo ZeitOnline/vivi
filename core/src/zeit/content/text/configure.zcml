@@ -40,4 +40,16 @@
       />
   </class>
 
+  <class class=".embed.Embed">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IEmbed"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IEmbed"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

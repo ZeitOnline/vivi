@@ -65,5 +65,22 @@
 
   <adapter factory=".jinja.ListRepresentation" />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.text.embed.Add"
+    permission="zeit.AddContent"
+    class=".embed.Add"
+    menu="zeit-add-menu" title="Embed"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IEmbed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".embed.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+  
 </configure>
 
