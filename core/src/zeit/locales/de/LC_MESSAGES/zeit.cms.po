@@ -14,16 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jan 25 11:32:39 2019\n"
-"PO-Revision-Date: 2019-01-25 11:39+0100\n"
-"Last-Translator: Knut Goetz <knut.goetz@zeit.de>\n"
+"POT-Creation-Date: Mon Jan 28 14:10:07 2019\n"
+"PO-Revision-Date: 2019-01-28 14:10+0100\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -416,7 +416,8 @@ msgstr "Abbrechen"
 #: zeit/content/image/browser/configure.zcml:320
 #: zeit/content/rawxml/browser/configure.zcml:15
 #: zeit/content/text/browser/configure.zcml:14
-#: zeit/content/text/browser/configure.zcml:57 zeit/edit/browser/editor.py:9
+#: zeit/content/text/browser/configure.zcml:57
+#: zeit/content/text/browser/configure.zcml:76 zeit/edit/browser/editor.py:9
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -3730,6 +3731,14 @@ msgstr "XML-Datei bearbeiten"
 msgid "View Raw XML"
 msgstr "XML-Datei anzeigen"
 
+#: zeit/content/text/browser/embed.py:16
+msgid "Add embed"
+msgstr "Embed hinzufügen"
+
+#: zeit/content/text/browser/embed.py:22
+msgid "Edit embed"
+msgstr "Embed bearbeiten"
+
 #: zeit/content/text/browser/form.py:21
 msgid "Add plain text"
 msgstr "Text/HTML hinzufügen"
@@ -3741,6 +3750,10 @@ msgstr "Text/HTML bearbeiten"
 #: zeit/content/text/browser/form.py:36
 msgid "View plain text"
 msgstr "Text/HTML anzeigen"
+
+#: zeit/content/text/embed.py:22 zeit/content/text/browser/configure.zcml:68
+msgid "Embed"
+msgstr "Embed"
 
 #. Default: ""
 #: zeit/content/text/interfaces.py:13
@@ -3755,6 +3768,10 @@ msgstr ""
 msgid "Encoding"
 msgstr "Kodierung"
 
+#: zeit/content/text/interfaces.py:83
+msgid "Render as template?"
+msgstr "Als Friedbert-Template rendern"
+
 #: zeit/content/text/jinja.py:31
 msgid "Jinja template"
 msgstr "Jinja-Template"
@@ -3765,7 +3782,7 @@ msgstr "Pythonskript"
 
 #: zeit/content/text/text.py:31 zeit/content/text/browser/configure.zcml:6
 msgid "Plain text"
-msgstr "Embed"
+msgstr "Textdatei"
 
 #: zeit/content/video/browser/video.py:109
 msgid "View playlist"

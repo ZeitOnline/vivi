@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Jan 25 11:32:39 2019\n"
+"POT-Creation-Date: Mon Jan 28 14:10:07 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -443,6 +443,7 @@ msgstr ""
 #: zeit/content/rawxml/browser/configure.zcml:15
 #: zeit/content/text/browser/configure.zcml:14
 #: zeit/content/text/browser/configure.zcml:57
+#: zeit/content/text/browser/configure.zcml:76
 #: zeit/edit/browser/editor.py:9
 msgid "Edit"
 msgstr ""
@@ -3790,6 +3791,14 @@ msgstr ""
 msgid "View Raw XML"
 msgstr ""
 
+#: zeit/content/text/browser/embed.py:16
+msgid "Add embed"
+msgstr ""
+
+#: zeit/content/text/browser/embed.py:22
+msgid "Edit embed"
+msgstr ""
+
 #: zeit/content/text/browser/form.py:21
 msgid "Add plain text"
 msgstr ""
@@ -3803,6 +3812,11 @@ msgstr ""
 msgid "View plain text"
 msgstr ""
 
+#: zeit/content/text/embed.py:22
+#: zeit/content/text/browser/configure.zcml:68
+msgid "Embed"
+msgstr ""
+
 #: zeit/content/text/interfaces.py:13
 #. Default: ""
 msgid "Could not encode charachters ${start}-${end} to ${encoding} (${characters}): ${reason}"
@@ -3810,6 +3824,10 @@ msgstr ""
 
 #: zeit/content/text/interfaces.py:33
 msgid "Encoding"
+msgstr ""
+
+#: zeit/content/text/interfaces.py:83
+msgid "Render as template?"
 msgstr ""
 
 #: zeit/content/text/jinja.py:31
