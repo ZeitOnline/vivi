@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.3.0 (unreleased)
+2.3.0 (2019-01-28)
 ------------------
 
 - ZON-5112: Add own content type for embeds
