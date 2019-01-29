@@ -20,3 +20,8 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit embed')
+
+
+class Display(FormBase, zeit.cms.browser.form.DisplayForm):
+
+    title = _('View embed')

@@ -82,11 +82,16 @@ class IEmbed(IText):
 
     render_as_template = zope.schema.Bool(title=_("Render as template?"))
 
+    parameter_definition = zope.schema.Text(
+        title=_("Parameter definition"),
+        required=False)
+
+    parameter_fields = zope.interface.Attribute('dict of schema fields')
+
 
 class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.text.embed'
     check_interfaces = (IText, IEmbed)
-
 
 embedSource = EmbedSource()
