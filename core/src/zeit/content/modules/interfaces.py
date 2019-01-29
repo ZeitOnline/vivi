@@ -17,6 +17,12 @@ class IRawText(zeit.edit.interfaces.IBlock):
 
     raw_code = zope.interface.Attribute('Raw code from text or text_reference')
 
+    params = zope.interface.Attribute('Our IEmbedParameters dict')
+
+
+class IEmbedParameters(zope.interface.common.mapping.IMapping):
+    pass
+
 
 # XXX Both article and cp use a "raw xml" module, but their XML serialization
 # is so different that they don't really share any code.

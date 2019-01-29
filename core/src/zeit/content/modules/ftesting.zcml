@@ -1,0 +1,11 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <include package="zeit.content.modules" />
+
+</configure>
