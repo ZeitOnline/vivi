@@ -37,8 +37,8 @@ class EmbedParameters(
         grok.Adapter,
         UserDict.DictMixin,
         zeit.cms.content.xmlsupport.Persistent):
-    # XXX copy&paste from z.c.author.author.BiographyQuestions,
-    # except for the tag name `param` instead of `question`.
+    # 99% copy&paste from z.c.author.author.BiographyQuestions, changed the tag
+    # name to `param` from `question` and added type conversion.
 
     grok.context(zeit.content.modules.interfaces.IRawText)
     grok.implements(zeit.content.modules.interfaces.IEmbedParameters)
@@ -47,24 +47,41 @@ class EmbedParameters(
         object.__setattr__(self, 'context', context)
         object.__setattr__(self, 'xml', zope.security.proxy.getObject(
             context.xml))
+
+        embed = self.context.text_reference
+        fields = {}
+        if (zeit.content.text.interfaces.IEmbed.providedBy(embed) and
+                embed.parameter_definition):
+            for name, field in embed.parameter_fields.items():
+                fields[name] = field.bind(embed)
+        object.__setattr__(self, 'fields', fields)
+
+        # Set parent last so we don't accidentally trigger _p_changed.
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
         node = self.xml.xpath('//param[@id="%s"]' % key)
         if not node:
             return None
-        node = node[0]
-        return unicode(node)
+        return self._converter(key).fromProperty(unicode(node[0]))
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//param[@id="%s"]' % key)
         if node:
             self.xml.remove(node[0])
         if value:
+            value = self._converter(key).toProperty(value)
             node = lxml.objectify.E.param(value, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.append(node)
         super(EmbedParameters, self).__setattr__('_p_changed', True)
+
+    def _converter(self, name):
+        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        field = self.fields.get(name, zope.schema.TextLine())
+        return zope.component.queryMultiAdapter(
+            (field, props),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     def keys(self):
         return [x.get('id') for x in self.xml.xpath('//param')]

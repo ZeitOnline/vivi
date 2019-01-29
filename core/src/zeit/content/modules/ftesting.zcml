@@ -7,5 +7,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.content.modules" />
+  <include package="zeit.content.text" />
 
 </configure>

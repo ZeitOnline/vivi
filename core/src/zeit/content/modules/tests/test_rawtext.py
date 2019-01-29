@@ -1,9 +1,11 @@
+from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import lxml.objectify
 import mock
 import zeit.cms.testing
 import zeit.content.modules.rawtext
 import zeit.content.modules.testing
+import zeit.content.text.embed
 
 
 class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
@@ -12,10 +14,10 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(EmbedParameters, self).setUp()
-        context = mock.Mock()
-        context.__parent__ = None
+        self.context = mock.Mock()
+        self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
-            context, lxml.objectify.XML('<container/>'))
+            self.context, lxml.objectify.XML('<container/>'))
 
     def test_provides_dict_access_to_xml_nodes(self):
         self.module.params['p1'] = 'val'
@@ -40,3 +42,22 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
         self.module.params['p1'] = 'val1'
         self.module.params['p1'] = None
         self.assertFalse(self.module.xml.xpath('//param'))
+
+    def test_serializes_via_dav_converter(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = 'none'
+        self.repository['embed'] = embed
+        with checked_out(self.repository['embed']) as co:
+            co.parameter_definition = (
+                '{"ref": zope.schema.Choice('
+                'source=zeit.cms.content.contentsource.cmsContentSource)}')
+
+        module = zeit.content.modules.rawtext.RawText(
+            self.context, lxml.objectify.XML('<container/>'))
+        module.text_reference = self.repository['embed']
+        module.params['ref'] = self.repository['testcontent']
+        lxml.objectify.deannotate(module.xml, cleanup_namespaces=True)
+        self.assertEllipsis(
+            '<container>...<param id="ref">http://xml.zeit.de/testcontent'
+            '</param></container>', lxml.etree.tostring(module.xml))
+        self.assertEqual(self.repository['testcontent'], module.params['ref'])
