@@ -61,3 +61,15 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
             '<container>...<param id="ref">http://xml.zeit.de/testcontent'
             '</param></container>', lxml.etree.tostring(module.xml))
         self.assertEqual(self.repository['testcontent'], module.params['ref'])
+
+    def test_no_value_set_uses_field_default(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = 'none'
+        self.repository['embed'] = embed
+        with checked_out(self.repository['embed']) as co:
+            co.parameter_definition = '{"p": zope.schema.Bool(default=True)}'
+
+        module = zeit.content.modules.rawtext.RawText(
+            self.context, lxml.objectify.XML('<container/>'))
+        module.text_reference = self.repository['embed']
+        self.assertEqual(True, module.params['p'])
