@@ -77,6 +77,7 @@ class SearchForm(JSONView):
         'article',
         'author',
         'centerpage-2009',
+        'embed',
         'gallery',
         'image-group',
         'infobox',
@@ -84,7 +85,6 @@ class SearchForm(JSONView):
         'playlist',
         'portraitbox',
         'rawxml',
-        'text',
         'video',
         'volume'
     ]

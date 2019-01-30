@@ -4,7 +4,7 @@ zeit.find changes
 3.0.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1049: Replace type filter "text" with the new "embed" 
 
 
 3.0.6 (2019-01-14)
