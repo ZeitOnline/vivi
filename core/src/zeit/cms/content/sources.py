@@ -339,7 +339,7 @@ class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
                  column=False, kind=None, video=False, fallback_image=False,
-                 podigee_id=None):
+                 podigee_id=None, color=None):
         super(Serie, self).__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -351,6 +351,7 @@ class Serie(AllowedBase):
         self.video = video
         self.fallback_image = fallback_image
         self.podigee_id = podigee_id
+        self.color = color
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -380,7 +381,8 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('kind')),
                 node.get('video') == u'yes',
                 node.get('fallback_image') == u'yes',
-                unicode_or_none(node.get('podigee-id'))
+                unicode_or_none(node.get('podigee-id')),
+                unicode_or_none(node.get('color'))
             )
         return result
 
