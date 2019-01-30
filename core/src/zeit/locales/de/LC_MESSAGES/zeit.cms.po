@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 28 14:10:07 2019\n"
-"PO-Revision-Date: 2019-01-28 16:40+0100\n"
+"POT-Creation-Date: Wed Jan 30 15:59:56 2019\n"
+"PO-Revision-Date: 2019-01-30 16:01+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:48
@@ -205,7 +205,7 @@ msgstr "Datum des Terminendes"
 #: zeit/content/article/interfaces.py:233 zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:177 zeit/content/cp/interfaces.py:418
 #: zeit/content/cp/interfaces.py:638 zeit/content/gallery/interfaces.py:91
-#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:65
+#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:71
 #: zeit/content/rawxml/interfaces.py:14 zeit/content/text/interfaces.py:72
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
@@ -429,6 +429,7 @@ msgstr "Bearbeiten"
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
+#: zeit/content/text/browser/configure.zcml:85
 msgid "View"
 msgstr "Anzeigen"
 
@@ -450,7 +451,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 msgid "Author"
 msgstr "Autor"
 
-#: zeit/cms/browser/listing.py:283 zeit/cms/interfaces.py:61
+#: zeit/cms/browser/listing.py:283 zeit/cms/interfaces.py:60
 #: zeit/cms/repository/browser/file.py:37
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
@@ -891,7 +892,7 @@ msgstr "„Von“-Zeile"
 
 #: zeit/cms/content/interfaces.py:166
 #: zeit/content/article/edit/interfaces.py:398
-#: zeit/content/modules/interfaces.py:69
+#: zeit/content/modules/interfaces.py:75
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
@@ -1861,73 +1862,73 @@ msgid "last published at ${date} on ${time} by ${by}"
 msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
-#: zeit/content/article/edit/browser/edit.py:100
+#: zeit/content/article/edit/browser/edit.py:101
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
 #. Default: ""
-#: zeit/content/article/edit/browser/edit.py:108
+#: zeit/content/article/edit/browser/edit.py:109
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:206
+#: zeit/content/article/edit/browser/edit.py:207
 msgid "edit XML block"
 msgstr "XML bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:219
+#: zeit/content/article/edit/browser/edit.py:222
 msgid "edit raw text block"
 msgstr "Embed-Code bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:232
+#: zeit/content/article/edit/browser/edit.py:235
 msgid "edit citation block"
 msgstr "Zitat Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:245
+#: zeit/content/article/edit/browser/edit.py:248
 msgid "edit puzzle form block"
 msgstr "Rätselformular bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:25
+#: zeit/content/article/edit/browser/edit.py:26
 msgid "auto-save body text"
 msgstr "Artikeltext bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:258
+#: zeit/content/article/edit/browser/edit.py:261
 msgid "edit liveblog block"
 msgstr "Liveblog-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:271
+#: zeit/content/article/edit/browser/edit.py:274
 msgid "edit cardstack block"
 msgstr "Kartenstapel-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:284
+#: zeit/content/article/edit/browser/edit.py:287
 msgid "edit quiz block"
 msgstr "Quizblock bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:297
+#: zeit/content/article/edit/browser/edit.py:300
 msgid "edit podcast block"
 msgstr "Podcast-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:307
+#: zeit/content/article/edit/browser/edit.py:310
 msgid "edit box block"
 msgstr "Box-Modul bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:332
+#: zeit/content/article/edit/browser/edit.py:335
 msgid "edit adplace block"
 msgstr "Ad-Place-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:345
+#: zeit/content/article/edit/browser/edit.py:348
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:366
+#: zeit/content/article/edit/browser/edit.py:369
 msgid "edit jobbox ticker"
 msgstr "Jobticker bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:382
+#: zeit/content/article/edit/browser/edit.py:385
 msgid "edit mail block"
 msgstr "Mail-Formular bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:66
+#: zeit/content/article/edit/browser/edit.py:67
 msgid "edit body text"
 msgstr "Artikeltext bearbeiten"
 
@@ -2898,6 +2899,15 @@ msgstr "Darstellung"
 msgid "Switch visible"
 msgstr "Sichtbarkeit umschalten"
 
+#: zeit/content/cp/browser/prewarm.py:11
+#, fuzzy
+msgid "Prewarming, this might take some time"
+msgstr "Cache wird aufgewärmt, dieser Vorgang kann bis zu 5 Minuten dauern."
+
+#: zeit/content/cp/browser/prewarm.py:18
+msgid "Prewarm cache"
+msgstr "Cache aufwärmen"
+
 #: zeit/content/cp/browser/publish.pt:8
 msgid "Checking out"
 msgstr "Auschecken"
@@ -3261,7 +3271,7 @@ msgstr "Ausrichtung"
 msgid "Choose alignment"
 msgstr "Ausrichtung wählen"
 
-#: zeit/content/cp/interfaces.py:865 zeit/content/modules/interfaces.py:28
+#: zeit/content/cp/interfaces.py:865 zeit/content/modules/interfaces.py:34
 msgid "Jobbox Ticker"
 msgstr "Jobbox Ticker"
 
@@ -3665,32 +3675,32 @@ msgstr "Embed-Link"
 msgid "Raw text"
 msgstr "Embed-Code (optional)"
 
-#: zeit/content/modules/interfaces.py:38
+#: zeit/content/modules/interfaces.py:44
 msgid "Quiz id"
 msgstr "ID"
 
-#: zeit/content/modules/interfaces.py:40
+#: zeit/content/modules/interfaces.py:46
 msgid "Enable adreload"
 msgstr "Adreload aktivieren"
 
-#: zeit/content/modules/interfaces.py:49
+#: zeit/content/modules/interfaces.py:55
 msgid "Email address must contain @."
 msgstr "E-Mail-Adresse muss @ enthalten"
 
-#: zeit/content/modules/interfaces.py:73
+#: zeit/content/modules/interfaces.py:79
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: zeit/content/modules/interfaces.py:77 zeit/content/modules/interfaces.py:82
+#: zeit/content/modules/interfaces.py:83 zeit/content/modules/interfaces.py:88
 #: zeit/newsletter/interfaces.py:25 zeit/newsletter/interfaces.py:75
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/content/modules/interfaces.py:86
+#: zeit/content/modules/interfaces.py:92
 msgid "Success message"
 msgstr "Text Erfolgsmeldung"
 
-#: zeit/content/modules/interfaces.py:89
+#: zeit/content/modules/interfaces.py:95
 msgid "Email required?"
 msgstr "Emailadresse als Pflichtfeld?"
 
@@ -3739,6 +3749,10 @@ msgstr "Embed hinzufügen"
 msgid "Edit embed"
 msgstr "Embed bearbeiten"
 
+#: zeit/content/text/browser/embed.py:27
+msgid "View embed"
+msgstr "Embed anzeigen"
+
 #: zeit/content/text/browser/form.py:21
 msgid "Add plain text"
 msgstr "Text/HTML hinzufügen"
@@ -3751,7 +3765,7 @@ msgstr "Text/HTML bearbeiten"
 msgid "View plain text"
 msgstr "Text/HTML anzeigen"
 
-#: zeit/content/text/embed.py:22 zeit/content/text/browser/configure.zcml:68
+#: zeit/content/text/embed.py:69 zeit/content/text/browser/configure.zcml:68
 msgid "Embed"
 msgstr "Embed"
 
@@ -3771,6 +3785,10 @@ msgstr "Kodierung"
 #: zeit/content/text/interfaces.py:83
 msgid "Render as template?"
 msgstr "Als Friedbert-Template rendern"
+
+#: zeit/content/text/interfaces.py:86
+msgid "Parameter definition"
+msgstr "Parameter-Definition"
 
 #: zeit/content/text/jinja.py:31
 msgid "Jinja template"
