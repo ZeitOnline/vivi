@@ -273,4 +273,24 @@
     permission="zope.Public"
     />
 
+  <browser:viewlet
+    name="Prewarm"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    action="@@prewarm-cache"
+    icon="/@@/zeit.cms/icons/desktop.png"
+    sort="125"
+    />
+
+  <browser:page
+    name="prewarm-cache"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.Prewarm"
+    permission="zope.View"
+    />
+
 </configure>
