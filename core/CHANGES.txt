@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.21.0 (unreleased)
+3.21.0 (2019-01-30)
 -------------------
 
 - ZON-5091: Add color as an attribute of Serie
