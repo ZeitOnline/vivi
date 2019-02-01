@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.4 (unreleased)
+3.27.4 (2019-02-01)
 -------------------
 
 - BUG-1045: Add celery task to pre-warm DAV cache
