@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.21.1 (unreleased)
+3.22.0 (2019-02-01)
 -------------------
 
 - ZON-5110: Add podigee_url as an attribute of Serie
