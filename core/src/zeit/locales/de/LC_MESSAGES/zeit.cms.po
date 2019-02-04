@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jan 30 15:59:56 2019\n"
-"PO-Revision-Date: 2019-01-30 16:01+0100\n"
+"POT-Creation-Date: Mon Feb  4 14:29:14 2019\n"
+"PO-Revision-Date: 2019-02-04 14:29+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -698,8 +698,8 @@ msgstr "Neuer Name des Clips"
 
 #: zeit/cms/clipboard/browser/clip.py:80 zeit/cms/clipboard/browser/clip.py:89
 #: zeit/cms/repository/browser/menu.py:22
-#: zeit/cms/repository/browser/rename.py:30
-#: zeit/cms/repository/browser/rename.py:55
+#: zeit/cms/repository/browser/rename.py:32
+#: zeit/cms/repository/browser/rename.py:64
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -1052,7 +1052,7 @@ msgstr "Memo"
 #: zeit/cms/content/interfaces.py:66
 #: zeit/content/article/edit/interfaces.py:257
 #: zeit/content/volume/browser/form.py:34 zeit/content/volume/interfaces.py:40
-#: zeit/content/volume/volume.py:267
+#: zeit/content/volume/volume.py:272
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -1378,21 +1378,25 @@ msgstr "Wert"
 msgid "Reload folder"
 msgstr "Ordner neu laden"
 
-#: zeit/cms/repository/browser/rename-box.pt:26
+#: zeit/cms/repository/browser/rename-box.pt:27
 msgid "Only unpublished objects can be renamed."
 msgstr "Nur unveröffentlichte Inhalte können umbenannt werden."
+
+#: zeit/cms/repository/browser/rename-box.pt:30
+msgid "Folders with content cannot be renamed."
+msgstr "Der Ordner kann nicht umbenannt werden, da er bereits Inhalte enthält."
 
 #: zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr "${object-unique-id} umbenennen"
 
-#: zeit/cms/repository/browser/rename.py:16
+#: zeit/cms/repository/browser/rename.py:18
 #: zeit/cms/repository/interfaces.py:212
 msgid "New file name"
 msgstr "Dateiname"
 
 #. Default: ""
-#: zeit/cms/repository/browser/rename.py:42
+#: zeit/cms/repository/browser/rename.py:44
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
 
@@ -1862,73 +1866,73 @@ msgid "last published at ${date} on ${time} by ${by}"
 msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
-#: zeit/content/article/edit/browser/edit.py:101
+#: zeit/content/article/edit/browser/edit.py:100
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
 #. Default: ""
-#: zeit/content/article/edit/browser/edit.py:109
+#: zeit/content/article/edit/browser/edit.py:108
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:207
+#: zeit/content/article/edit/browser/edit.py:206
 msgid "edit XML block"
 msgstr "XML bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:222
+#: zeit/content/article/edit/browser/edit.py:219
 msgid "edit raw text block"
 msgstr "Embed-Code bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:235
+#: zeit/content/article/edit/browser/edit.py:232
 msgid "edit citation block"
 msgstr "Zitat Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:248
+#: zeit/content/article/edit/browser/edit.py:245
 msgid "edit puzzle form block"
 msgstr "Rätselformular bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:26
+#: zeit/content/article/edit/browser/edit.py:25
 msgid "auto-save body text"
 msgstr "Artikeltext bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:261
+#: zeit/content/article/edit/browser/edit.py:258
 msgid "edit liveblog block"
 msgstr "Liveblog-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:274
+#: zeit/content/article/edit/browser/edit.py:271
 msgid "edit cardstack block"
 msgstr "Kartenstapel-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:287
+#: zeit/content/article/edit/browser/edit.py:284
 msgid "edit quiz block"
 msgstr "Quizblock bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:300
+#: zeit/content/article/edit/browser/edit.py:297
 msgid "edit podcast block"
 msgstr "Podcast-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:310
+#: zeit/content/article/edit/browser/edit.py:307
 msgid "edit box block"
 msgstr "Box-Modul bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:335
+#: zeit/content/article/edit/browser/edit.py:332
 msgid "edit adplace block"
 msgstr "Ad-Place-Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:348
+#: zeit/content/article/edit/browser/edit.py:345
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:369
+#: zeit/content/article/edit/browser/edit.py:366
 msgid "edit jobbox ticker"
 msgstr "Jobticker bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:385
+#: zeit/content/article/edit/browser/edit.py:382
 msgid "edit mail block"
 msgstr "Mail-Formular bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:67
+#: zeit/content/article/edit/browser/edit.py:66
 msgid "edit body text"
 msgstr "Artikeltext bearbeiten"
 
@@ -2900,7 +2904,6 @@ msgid "Switch visible"
 msgstr "Sichtbarkeit umschalten"
 
 #: zeit/content/cp/browser/prewarm.py:11
-#, fuzzy
 msgid "Prewarming, this might take some time"
 msgstr "Cache wird aufgewärmt, dieser Vorgang kann bis zu 5 Minuten dauern."
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jan 30 15:59:56 2019\n"
+"POT-Creation-Date: Mon Feb  4 14:29:14 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -725,8 +725,8 @@ msgstr ""
 #: zeit/cms/clipboard/browser/clip.py:80
 #: zeit/cms/clipboard/browser/clip.py:89
 #: zeit/cms/repository/browser/menu.py:22
-#: zeit/cms/repository/browser/rename.py:30
-#: zeit/cms/repository/browser/rename.py:55
+#: zeit/cms/repository/browser/rename.py:32
+#: zeit/cms/repository/browser/rename.py:64
 msgid "Rename"
 msgstr ""
 
@@ -1086,7 +1086,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:257
 #: zeit/content/volume/browser/form.py:34
 #: zeit/content/volume/interfaces.py:40
-#: zeit/content/volume/volume.py:267
+#: zeit/content/volume/volume.py:272
 msgid "Volume"
 msgstr ""
 
@@ -1411,20 +1411,24 @@ msgstr ""
 msgid "Reload folder"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename-box.pt:26
+#: zeit/cms/repository/browser/rename-box.pt:27
 msgid "Only unpublished objects can be renamed."
+msgstr ""
+
+#: zeit/cms/repository/browser/rename-box.pt:30
+msgid "Folders with content cannot be renamed."
 msgstr ""
 
 #: zeit/cms/repository/browser/rename-box.pt:5
 msgid "Rename ${object-unique-id}"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename.py:16
+#: zeit/cms/repository/browser/rename.py:18
 #: zeit/cms/repository/interfaces.py:212
 msgid "New file name"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename.py:42
+#: zeit/cms/repository/browser/rename.py:44
 #. Default: ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
@@ -1896,74 +1900,74 @@ msgstr ""
 msgid "last published at ${date} on ${time} by ${by}"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:101
+#: zeit/content/article/edit/browser/edit.py:100
 #: zeit/content/cp/browser/landing.py:53
 #. Default: ""
 msgid "The object \"${name}\" does not exist."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:109
+#: zeit/content/article/edit/browser/edit.py:108
 #. Default: ""
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:207
+#: zeit/content/article/edit/browser/edit.py:206
 msgid "edit XML block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:222
+#: zeit/content/article/edit/browser/edit.py:219
 msgid "edit raw text block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:235
+#: zeit/content/article/edit/browser/edit.py:232
 msgid "edit citation block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:248
+#: zeit/content/article/edit/browser/edit.py:245
 msgid "edit puzzle form block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:26
+#: zeit/content/article/edit/browser/edit.py:25
 msgid "auto-save body text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:261
+#: zeit/content/article/edit/browser/edit.py:258
 msgid "edit liveblog block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:274
+#: zeit/content/article/edit/browser/edit.py:271
 msgid "edit cardstack block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:287
+#: zeit/content/article/edit/browser/edit.py:284
 msgid "edit quiz block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:300
+#: zeit/content/article/edit/browser/edit.py:297
 msgid "edit podcast block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:310
+#: zeit/content/article/edit/browser/edit.py:307
 msgid "edit box block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:335
+#: zeit/content/article/edit/browser/edit.py:332
 msgid "edit adplace block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:348
+#: zeit/content/article/edit/browser/edit.py:345
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:369
+#: zeit/content/article/edit/browser/edit.py:366
 msgid "edit jobbox ticker"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:385
+#: zeit/content/article/edit/browser/edit.py:382
 msgid "edit mail block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:67
+#: zeit/content/article/edit/browser/edit.py:66
 msgid "edit body text"
 msgstr ""
 
