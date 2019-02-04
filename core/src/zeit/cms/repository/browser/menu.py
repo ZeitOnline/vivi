@@ -16,12 +16,6 @@ class SortingMenu(zope.browsermenu.menu.BrowserMenu):
         return sorted(result, key=lambda x: x['title-translated'])
 
 
-class Rename(zeit.cms.browser.menu.LightboxActionMenuItem):
-    """Rename menu item."""
-
-    title = _('Rename')
-
-
 class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
     """Delete menu item."""
 
