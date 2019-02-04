@@ -12,6 +12,14 @@ class Notification(object):
     "subscription" in the Brightcove API, and _they_ will call it each time a
     video is added/changed/deleted.
 
+    >>> api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
+    >>> api._request('GET /subscriptions')
+    []
+    >>> api._request('POST /subscriptions', body={
+        'endpoint': 'https://vivi.zeit.de/@@update_video',
+        'events': ['video-change']
+    })
+
     See <https://support.brightcove.com/cms-api-notifications> for details.
     """
 
