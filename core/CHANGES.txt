@@ -4,7 +4,8 @@ zeit.find changes
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1049: Also include the previously used type "text" when type
+  "embed" is selected
 
 
 3.0.7 (2019-01-30)

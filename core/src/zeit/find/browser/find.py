@@ -419,6 +419,8 @@ def search_form(request):
     if not published:
         published = None
     types = request.get('types', [])
+    if 'embed' in types:
+        types.append('text')  # BBB ZON-2932
     return dict(
         authors=authors,
         from_=from_,
