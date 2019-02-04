@@ -281,7 +281,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zope.View"
     action="@@prewarm-cache"
-    icon="/@@/zeit.cms/icons/desktop.png"
+    icon="/@@/zeit.content.cp/prewarm-cache.png"
     sort="125"
     />
 
