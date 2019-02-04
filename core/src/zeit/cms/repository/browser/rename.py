@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import ITypeDeclaration
+from zeit.cms.repository.folder import FolderType
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.menu
@@ -17,7 +19,22 @@ class IRenameSchema(zope.interface.Interface):
         constraint=zeit.cms.repository.interfaces.valid_name)
 
 
-class Rename(zeit.cms.browser.lightbox.Form):
+class RenameGuards(object):
+
+    @cachedproperty
+    def is_published(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context).published
+
+    @cachedproperty
+    def is_folder_with_content(self):
+        # Cannot use IFolder.providedBy since that's also true for IImageGroup
+        typ = getattr(ITypeDeclaration(self.context, None),
+                      'type_identifier', 'unknown')
+        return typ == FolderType.type and len(self.context)
+
+
+class Rename(zeit.cms.browser.lightbox.Form, RenameGuards):
 
     form_fields = zope.formlib.form.FormFields(IRenameSchema)
 
@@ -43,13 +60,8 @@ class Rename(zeit.cms.browser.lightbox.Form):
                             mapping=dict(old_name=old_name,
                                          new_name=new_name)))
 
-    @cachedproperty
-    def can_rename(self):
-        return not zeit.cms.workflow.interfaces.IPublishInfo(
-            self.context).published
 
-
-class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem, RenameGuards):
     """Rename menu item."""
 
     title = _('Rename')
@@ -57,7 +69,6 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     def render(self):
         if (zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
                 self.context) and
-            not zeit.cms.workflow.interfaces.IPublishInfo(
-                self.context).published):
+                not self.is_published and not self.is_folder_with_content):
             return super(MenuItem, self).render()
         return ''
