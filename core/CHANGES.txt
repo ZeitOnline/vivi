@@ -4,7 +4,8 @@ zeit.content.text changes
 2.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-5113: Implement defining schema fields for embed parameters with
+  a Python snippet
 
 
 2.3.0 (2019-01-28)
