@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.27.5 (unreleased)
+3.27.5 (2019-02-04)
 -------------------
 
 - BUG-1045: Add icon for pre-warm cache menu item
