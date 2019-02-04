@@ -5,6 +5,7 @@ import zeit.cms.browser.widget
 import zeit.cms.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
+import zeit.content.modules.rawtext
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.library
@@ -210,12 +211,14 @@ class EditRawXML(zeit.edit.browser.form.InlineForm):
         return 'rawxml.{0}'.format(self.context.__name__)
 
 
-class EditRawText(zeit.edit.browser.form.InlineForm):
+class EditRawText(
+        zeit.content.modules.rawtext.EmbedParameterForm,
+        zeit.edit.browser.form.InlineForm):
 
     legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IRawText).omit(
-            '__name__', '__parent__', 'xml')
+    _form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IRawText)
+    _omit_fields = ('__name__', '__parent__', 'xml')
     undo_description = _('edit raw text block')
 
     @property
