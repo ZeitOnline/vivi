@@ -87,7 +87,7 @@ class EmbedParameters(
     def keys(self):
         return [x.get('id') for x in self.xml.xpath('//param')]
 
-    # Attribute-style access to answers is meant only for zope.formlib.
+    # Attribute-style access is meant only for zope.formlib.
     # XXX Why does this work without an explicit security declaration?
 
     def __getattr__(self, key):
