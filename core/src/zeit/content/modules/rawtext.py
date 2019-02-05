@@ -44,9 +44,13 @@ class EmbedParameters(
     grok.implements(zeit.content.modules.interfaces.IEmbedParameters)
 
     def __init__(self, context):
+        # The really correct way to do this would be the "trusted adapter"
+        # pattern, i.e. unwrap context but then wrap ourselves. But then we
+        # would need a security declaration that covers arbitrary attributes
+        # (since the parameters are user-defined), which is not feasible.
+        context = zope.security.proxy.getObject(context)
         object.__setattr__(self, 'context', context)
-        object.__setattr__(self, 'xml', zope.security.proxy.getObject(
-            context.xml))
+        object.__setattr__(self, 'xml', context.xml)
 
         embed = self.context.text_reference
         fields = {}
@@ -88,7 +92,6 @@ class EmbedParameters(
         return [x.get('id') for x in self.xml.xpath('//param')]
 
     # Attribute-style access is meant only for zope.formlib.
-    # XXX Why does this work without an explicit security declaration?
 
     def __getattr__(self, key):
         return self.get(key)
