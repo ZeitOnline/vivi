@@ -117,7 +117,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             {'term': {'doc_type': VolumeType.type}},
             {'term': {'payload.workflow.product-id': self.product.id}},
             {'range': {'payload.document.date_digital_published':
-                           zeit.retresco.search.date_range(start, end)}},
+                       zeit.retresco.search.date_range(start, end)}},
         ], 'must_not': [
             {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
         ]}}}
@@ -140,8 +140,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     @staticmethod
     def _find_via_elastic(query, sort_order):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-        result = es.search(
-           query, sort_order, rows=1)
+        result = es.search(query, sort_order, rows=1)
         if not result:
             return None
         return zeit.cms.interfaces.ICMSContent(
@@ -191,66 +190,6 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
-    def _find_performing_articles_via_webtrekk(self):
-        """
-        Check webtrekk-API for performing articles. Since the webtrekk api,
-        this should only be used when performance is no criteria.
-        """
-        # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
-        # metrics, so we got filter our results
-        WEBTREKK_API_CONF = {
-            'timeout': 60,
-            'url': 'https://report2.webtrekk.de/cgi-bin/wt/JSONRPC.cgi',
-            'username': 'diezeit.api_volume_access',
-            'password':  'hwAJ6ek56K',
-            'customerId': '981949533494636',
-            'date_format': '%Y-%m-%d %H:%M:%S',
-            'cr_metric_name': u'CR Bestellungen Abo (Artikelbasis)',
-            'order_metric_name': u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
-        }
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self)
-        start = info.date_first_released
-        stop = start + datetime.timedelta(weeks=3)
-        body = {'version': '1.1',
-                'method': 'getAnalysisData',
-                'params': {
-                    'login': WEBTREKK_API_CONF['username'],
-                    'pass': WEBTREKK_API_CONF['password'],
-                    'customerId': WEBTREKK_API_CONF['customerId'],
-                    'analysisConfig': {
-                        "analysisFilter": {'filterRules': [
-                            # Only paid articles
-                            {'objectTitle': 'Wall - Status', 'comparator': '=',
-                             'filter': 'paid', 'scope': 'page'},
-                        ]},
-                        'metrics': [
-                            {'sortOrder': 'desc',
-                            'title': WEBTREKK_API_CONF['order_metric_name']},
-                            {'sortOrder': 'desc',
-                             'title': WEBTREKK_API_CONF['cr_metric_name']}
-                        ],
-                        'analysisObjects': [{'title': 'Seiten'}],
-                        'startTime':
-                            start.strftime(WEBTREKK_API_CONF['date_format']),
-                        'stopTime':
-                            stop.strftime(WEBTREKK_API_CONF['date_format']),
-                        'rowLimit': 1000,
-                        "hideFooters": 1}}}
-
-        access_control_config = zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG
-        resp = requests.post(WEBTREKK_API_CONF['url'],
-                             timeout=WEBTREKK_API_CONF['timeout'],
-                             json=body)
-        urls = set()
-        data = resp.json()['result']['analysisData']
-        for page, order, cr in data:
-            url = page.split('zeit.de/')[1]
-            if url.startswith(self.fill_template('{year}/{name}')) and \
-                    (float(cr) >= access_control_config.min_cr
-                     or int(order) >= access_control_config.min_orders):
-                urls.add(url)
-        return list(urls)
-
     def all_content_via_search(self, additional_query_constraints=None):
         """
         Get all content for this volume via ES.
@@ -287,7 +226,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             exclude_performing_articles=True, dry_run=False):
         constraints = [{'term': {'payload.document.access': access_from}}]
         if exclude_performing_articles:
-            to_filter = self._find_performing_articles_via_webtrekk()
+            to_filter = _find_performing_articles_via_webtrekk(self)
             log.info("Not changing access for %s " % to_filter)
             filter_constraint = {
                 'bool': {'must_not': {'terms': {'url': to_filter}}}}
@@ -448,3 +387,58 @@ def retrieve_corresponding_centerpage(context):
     if not zeit.content.cp.interfaces.ICenterPage.providedBy(cp):
         return None
     return cp
+
+
+def _find_performing_articles_via_webtrekk(volume):
+    """
+    Check webtrekk-API for performing articles. Since the webtrekk api,
+    this should only be used when performance is no criteria.
+    """
+    api_date_format = '%Y-%m-%d %H:%M:%S'
+    cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)',
+    order_metric_name = u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.volume')
+    info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
+    start = info.date_first_released
+    stop = start + datetime.timedelta(weeks=3)
+    # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
+    # metrics, so we got filter our results here
+    body = {'version': '1.1',
+            'method': 'getAnalysisData',
+            'params': {
+                'login': config['access_control_webtrekk_username'],
+                'pass': config['access_control_webtrekk_password'],
+                'customerId': config['access_control_webtrekk_customerId'],
+                'analysisConfig': {
+                    "analysisFilter": {'filterRules': [
+                        # Only paid articles
+                        {'objectTitle': 'Wall - Status', 'comparator': '=',
+                         'filter': 'paid', 'scope': 'page'},
+                    ]},
+                    'metrics': [
+                        {'sortOrder': 'desc', 'title': order_metric_name},
+                        {'sortOrder': 'desc', 'title': cr_metric_name}
+                    ],
+                    'analysisObjects': [{'title': 'Seiten'}],
+                    'startTime':
+                        start.strftime(api_date_format),
+                    'stopTime':
+                        stop.strftime(api_date_format),
+                    'rowLimit': 1000,
+                    "hideFooters": 1}}}
+
+    access_control_config = (
+        zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG)
+    resp = requests.post(config['access_control_webtrekk_url'],
+                         timeout=config['access_control_webtrekk_timeout'],
+                         json=body)
+    urls = set()
+    data = resp.json()['result']['analysisData']
+    for page, order, cr in data:
+        url = page.split('zeit.de/')[1]
+        if url.startswith(volume.fill_template('{year}/{name}')) and \
+                (float(cr) >= access_control_config.min_cr or
+                 int(order) >= access_control_config.min_orders):
+            urls.add(url)
+    return list(urls)

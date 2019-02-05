@@ -171,7 +171,7 @@ PRODUCT_MAPPING = ProductNameMapper()
 class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.content.volume'
-    config_url = 'volume-access-control-config'
+    config_url = 'access-control-config'
 
     @property
     def min_cr(self):

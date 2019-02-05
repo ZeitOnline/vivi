@@ -283,7 +283,9 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         for c in cnt:
             self.assertEqual('free', c.access)
 
-        volume.change_contents_access('free', 'abo')
-
+        with mock.patch('zeit.content.volume.volume.'
+                        '_find_performing_articles_via_webtrekk') as pa:
+            pa.return_value = []
+            volume.change_contents_access('free', 'abo')
         for c in cnt:
             self.assertEqual('abo', c.access)
