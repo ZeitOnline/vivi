@@ -15,6 +15,7 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
+import zeit.retresco.search
 import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
@@ -96,6 +97,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             name=str(context.volume).rjust(2, '0'))
 
     @property
+    def _all_products(self):
+        return [self.product] + self.product.dependent_products
+
+    @property
     def previous(self):
         return self._find_in_order(None, self.date_digital_published, 'desc')
 
@@ -103,27 +108,42 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def next(self):
         return self._find_in_order(self.date_digital_published, None, 'asc')
 
-    @property
-    def _all_products(self):
-        return [self.product] + self.product.dependent_products
-
     def _find_in_order(self, start, end, sort):
         if len(filter(None, [start, end])) != 1:
             return None
-        elastic = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
-        result = elastic.search({'query': {'bool': {'filter': [
+        # Since `sort` is passed in accordingly, and we exclude ourselves,
+        # the first result (if any) is always the one we want.
+        query = {'query': {'bool': {'filter': [
             {'term': {'doc_type': VolumeType.type}},
             {'term': {'payload.workflow.product-id': self.product.id}},
             {'range': {'payload.document.date_digital_published':
-                       elastic.date_range(start, end)}},
+                           zeit.retresco.search.date_range(start, end)}},
         ], 'must_not': [
             {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
-        ]}}}, 'payload.document.date_digital_published:' + sort, rows=1)
+        ]}}}
+        return Volume._find_via_elastic(
+            query, 'payload.document.date_digital_published:' + sort)
+
+    @staticmethod
+    def published_days_ago(days_ago):
+        query = {'query': {'bool': {'filter': [
+            {'term': {'doc_type': VolumeType.type}},
+            {'term': {'payload.workflow.published': True}},
+            {'range': {'payload.document.date_digital_published': {
+                'gte': 'now-%dd/d' % (days_ago + 1),
+                'lt': 'now-%dd/d' % days_ago,
+            }}}
+        ]}}}
+        return Volume._find_via_elastic(
+            query, 'payload.workflow.date_last_published:desc')
+
+    @staticmethod
+    def _find_via_elastic(query, sort_order):
+        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        result = es.search(
+           query, sort_order, rows=1)
         if not result:
             return None
-        # Since `sort` is passed in accordingly, and we exclude ourselves,
-        # the first result (if any) is always the one we want.
         return zeit.cms.interfaces.ICMSContent(
             UNIQUEID_PREFIX + iter(result).next()['url'], None)
 
