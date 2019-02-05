@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-3.22.1 (unreleased)
+3.23.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5115: Prevent renaming a folder with content
 
 
 3.22.0 (2019-02-01)
