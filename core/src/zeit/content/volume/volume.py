@@ -1,4 +1,7 @@
+import datetime
 import itertools
+import logging
+import requests
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
@@ -16,8 +19,6 @@ import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
-import logging
-
 
 log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
@@ -170,6 +171,66 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         product_ids = [prod.id for prod in self._all_products]
         return cover_id in cover_ids and product_id in product_ids
 
+    def _find_performing_articles_via_webtrekk(self):
+        """
+        Check webtrekk-API for performing articles. Since the webtrekk api,
+        this should only be used when performance is no criteria.
+        """
+        # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
+        # metrics, so we got filter our results
+        WEBTREKK_API_CONF = {
+            'timeout': 60,
+            'url': 'https://report2.webtrekk.de/cgi-bin/wt/JSONRPC.cgi',
+            'username': 'diezeit.api_volume_access',
+            'password':  'hwAJ6ek56K',
+            'customerId': '981949533494636',
+            'date_format': '%Y-%m-%d %H:%M:%S',
+            'cr_metric_name': u'CR Bestellungen Abo (Artikelbasis)',
+            'order_metric_name': u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
+        }
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self)
+        start = info.date_first_released
+        stop = start + datetime.timedelta(weeks=3)
+        body = {'version': '1.1',
+                'method': 'getAnalysisData',
+                'params': {
+                    'login': WEBTREKK_API_CONF['username'],
+                    'pass': WEBTREKK_API_CONF['password'],
+                    'customerId': WEBTREKK_API_CONF['customerId'],
+                    'analysisConfig': {
+                        "analysisFilter": {'filterRules': [
+                            # Only paid articles
+                            {'objectTitle': 'Wall - Status', 'comparator': '=',
+                             'filter': 'paid', 'scope': 'page'},
+                        ]},
+                        'metrics': [
+                            {'sortOrder': 'desc',
+                            'title': WEBTREKK_API_CONF['order_metric_name']},
+                            {'sortOrder': 'desc',
+                             'title': WEBTREKK_API_CONF['cr_metric_name']}
+                        ],
+                        'analysisObjects': [{'title': 'Seiten'}],
+                        'startTime':
+                            start.strftime(WEBTREKK_API_CONF['date_format']),
+                        'stopTime':
+                            stop.strftime(WEBTREKK_API_CONF['date_format']),
+                        'rowLimit': 1000,
+                        "hideFooters": 1}}}
+
+        access_control_config = zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG
+        resp = requests.post(WEBTREKK_API_CONF['url'],
+                             timeout=WEBTREKK_API_CONF['timeout'],
+                             json=body)
+        urls = set()
+        data = resp.json()['result']['analysisData']
+        for page, order, cr in data:
+            url = page.split('zeit.de/')[1]
+            if url.startswith(self.fill_template('{year}/{name}')) and \
+                    (float(cr) >= access_control_config.min_cr
+                     or int(order) >= access_control_config.min_orders):
+                urls.add(url)
+        return list(urls)
+
     def all_content_via_search(self, additional_query_constraints=None):
         """
         Get all content for this volume via ES.
@@ -201,11 +262,16 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def change_contents_access(self, access_from, access_to, published=True,
-                               additional_constraints=None, dry_run=False):
+    def change_contents_access(
+            self, access_from, access_to, published=True,
+            exclude_performing_articles=True, dry_run=False):
         constraints = [{'term': {'payload.document.access': access_from}}]
-        if additional_constraints:
-            constraints += additional_constraints
+        if exclude_performing_articles:
+            to_filter = self._find_performing_articles_via_webtrekk()
+            log.info("Not changing access for %s " % to_filter)
+            filter_constraint = {
+                'bool': {'must_not': {'terms': {'url': to_filter}}}}
+            constraints += filter_constraint
         if published:
             constraints.append({'term': {'payload.workflow.published': True}})
         cnts = self.all_content_via_search(constraints)
