@@ -8,7 +8,8 @@
 
   <span class="nextURL" tal:content="view/nextURL" />
 
-  <tal:block condition="view/can_rename">
+  <tal:block
+    condition="python: not (view.is_published or view.is_folder_with_content)">
     <form id="lightbox.form" action="#"
           tal:attributes="action request/URL"
           tal:content="structure view/form">
@@ -23,7 +24,10 @@
     </script>
   </tal:block>
 
-  <p tal:condition="not: view/can_rename" class="warning" i18n:translate="">
+  <p tal:condition="view/is_published" class="warning" i18n:translate="">
     Only unpublished objects can be renamed.
+  </p>
+  <p tal:condition="view/is_folder_with_content" class="warning" i18n:translate="">
+      Folders with content cannot be renamed.
   </p>
 </div>

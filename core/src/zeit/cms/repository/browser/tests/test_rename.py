@@ -1,4 +1,5 @@
 from mechanize import LinkNotFoundError
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import zeit.cms.testing
@@ -29,3 +30,11 @@ class TestRenameMenuItem(zeit.cms.testing.ZeitCmsBrowserTestCase):
             '/@@rename-box')
         with self.assertRaises(LookupError):
             b.getControl('Rename')    # 'Rename' button is missing
+
+    def test_rename_menu_item_is_not_displayed_for_folder_with_content(self):
+        folder = self.repository['testing']
+        folder['foo'] = ExampleContentType()
+        b = self.browser
+        b.open('http://localhost:8080/++skin++vivi/repository/testing')
+        with self.assertRaises(LinkNotFoundError):
+            b.getLink(url='@@rename-box')
