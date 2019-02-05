@@ -265,7 +265,9 @@ class BiographyQuestions(
             self).title(key)
 
     # Attribute-style access to answers is meant only for zope.formlib.
-    # XXX Why does this work without an explicit security declaration?
+    # This works without an explicit security declaration, since we are not
+    # security-wrapped ourselves, only our context is, and we bypass that for
+    # XML access.
 
     def __getattr__(self, key):
         return self.get(key).answer
