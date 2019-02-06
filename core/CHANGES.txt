@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.23.1 (unreleased)
+3.23.1 (2019-02-06)
 -------------------
 
 - FIX: Support `https` CMS `vivi.zeit.de` URLs in ICMSContent resolution
