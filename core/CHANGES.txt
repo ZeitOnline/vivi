@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.28.1 (unreleased)
+3.28.1 (2019-02-06)
 -------------------
 
 - BUG-1045: Allow specifying a uniqueId for prewarming
