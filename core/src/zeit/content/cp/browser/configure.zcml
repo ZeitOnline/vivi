@@ -293,4 +293,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    name="prewarm-cache"
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.PrewarmManual"
+    permission="zope.View"
+    />
+
 </configure>
