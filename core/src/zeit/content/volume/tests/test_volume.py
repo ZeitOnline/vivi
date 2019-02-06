@@ -261,7 +261,9 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         self.assertListEqual([content], volume.all_content_via_search(
             additional_query_constraints=[{'term': {'foo': 'bar'}}]))
 
-    def test_all_volume_contents_should_change_access_value(self):
+    @mock.patch('zeit.content.volume.volume.'
+                '_find_performing_articles_via_webtrekk', return_value='[]')
+    def test_all_volume_contents_should_change_access_value(self, mock):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         repo = self.repository['2015']['01']
@@ -283,9 +285,26 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         for c in cnt:
             self.assertEqual('free', c.access)
 
-        with mock.patch('zeit.content.volume.volume.'
-                        '_find_performing_articles_via_webtrekk') as pa:
-            pa.return_value = []
-            volume.change_contents_access('free', 'abo')
+        volume.change_contents_access('free', 'abo')
         for c in cnt:
             self.assertEqual('abo', c.access)
+
+    @mock.patch('zeit.content.volume.volume.'
+                '_find_performing_articles_via_webtrekk', return_value='[]')
+    def test_volume_contents_access_dry_run_does_not_change_accces(
+            self, mock):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        repo = self.repository['2015']['01']
+        content01 = ExampleContentType()
+        repo['article01'] = content01
+
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([
+            {'url': '/2015/01/article01'},
+        ])
+
+        cnt = volume.change_contents_access('free', 'abo', dry_run=True)
+
+        self.assertEqual([content01], cnt)
+        for c in cnt:
+            self.assertEqual('free', c.access)
