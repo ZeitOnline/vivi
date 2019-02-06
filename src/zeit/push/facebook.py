@@ -104,6 +104,7 @@ def create_access_token(argv=None):
         print r.text
         raise SystemExit(1)
     long_lived_user_token = r.json()['access_token']
+    print u'Das User Token ist: %s' % long_lived_user_token
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#pagetokens>
