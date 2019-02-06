@@ -127,6 +127,11 @@ class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
             ICMSContent('http://xml.zeit.de/testcontent'),
             ICMSContent('http://vivi.zeit.de/repository/testcontent'))
 
+    def test_ssl_vivi_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
+        self.assertEqual(
+            ICMSContent('http://xml.zeit.de/testcontent'),
+            ICMSContent('https://vivi.zeit.de/repository/testcontent'))
+
     def test_vivi_zeit_de_does_not_raise_if_content_not_exists(self):
         vivi_url_to_content('http://vivi.zeit.de/repository/foo/bar/foobaz')
 

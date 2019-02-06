@@ -477,6 +477,18 @@ def vivi_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
+@grokcore.component.adapter(
+    basestring, name='https://vivi.zeit.de/')
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
+def vivi_https_url_to_content(uniqueId):
+    prefix = 'https://vivi.zeit.de/repository/'
+    if not uniqueId.startswith(prefix):
+        return None
+    uniqueId = uniqueId.replace(prefix, zeit.cms.interfaces.ID_NAMESPACE, 1)
+    uniqueId = IGNORED_VIVI_SUFFIXES.sub('', uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
 @grokcore.component.adapter(basestring, name='<no-scheme>://<no-netloc>/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
