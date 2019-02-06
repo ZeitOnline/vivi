@@ -89,7 +89,7 @@ def create_access_token(argv=None):
     if 'error' in r.text:
         print r.text
         raise SystemExit(1)
-    short_lived_user_token = r.json()['access_token'][0]
+    short_lived_user_token = r.json()['access_token']
 
     # Step 2: Exchange for long-lived token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#extending>
@@ -103,7 +103,7 @@ def create_access_token(argv=None):
     if 'error' in r.text:
         print r.text
         raise SystemExit(1)
-    long_lived_user_token = r.json()['access_token'][0]
+    long_lived_user_token = r.json()['access_token']
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#pagetokens>
