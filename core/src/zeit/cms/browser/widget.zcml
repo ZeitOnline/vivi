@@ -60,6 +60,14 @@
     permission="zope.Public"
     />
 
+  <adapter
+      for="zope.schema.interfaces.IText
+           .interfaces.ICMSLayer"
+      provides="zope.formlib.interfaces.IDisplayWidget"
+      factory="zope.app.form.browser.textwidgets.BytesDisplayWidget"
+      permission="zope.Public"
+      />
+
   <!-- DropObjectWidget -->
 
   <adapter
