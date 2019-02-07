@@ -254,4 +254,4 @@ class CheckinMenuItem(MenuItem):
     @property
     def action(self):
         action = super(CheckinMenuItem, self).action
-        return action + '&semantic_change='
+        return action + '&semantic_change=None'

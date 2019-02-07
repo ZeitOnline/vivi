@@ -58,7 +58,7 @@ LinkNotFoundError
 The checkin link also indicates the ``came_from`` view:
 
 >>> browser.getLink('Checkin').url
-'http://localhost/++skin++cms/workingcopy/zope.user/rauchen-verbessert-die-welt/@@checkin?came_from=view.html&semantic_change='
+'http://localhost/++skin++cms/workingcopy/zope.user/rauchen-verbessert-die-welt/@@checkin?came_from=view.html&semantic_change=None'
 
 >>> browser.getLink('Checkin').click()
 >>> browser.url
