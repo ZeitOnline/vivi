@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.4.1 (unreleased)
+2.4.1 (2019-02-07)
 ------------------
 
 - ZON-5113: Allow declaring schema fields as OrderedDict
