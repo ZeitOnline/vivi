@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import collections  # make available to eval()
 import logging
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -6,7 +7,7 @@ import zeit.content.modules.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.text
 import zope.interface
-import zope.schema  # ensure it's available inside parameter_fields eval()
+import zope.schema  # make available to eval()
 
 
 log = logging.getLogger(__name__)
