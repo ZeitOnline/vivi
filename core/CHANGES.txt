@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.23.3 (unreleased)
+3.23.3 (2019-02-07)
 -------------------
 
 - BUG-1054: Consider a workingcopy's `has_semantic_change` setting on
