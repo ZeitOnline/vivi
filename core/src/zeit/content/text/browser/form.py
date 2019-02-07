@@ -1,11 +1,9 @@
-
-import copy
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.content.text.interfaces
 import zeit.content.text.text
 import zope.app.form.browser.textwidgets
 import zope.formlib.form
-from zeit.cms.i18n import MessageFactory as _
 
 
 class FormBase(object):
@@ -14,26 +12,17 @@ class FormBase(object):
         zeit.content.text.interfaces.IText)
 
 
-class Add(FormBase,
-          zeit.cms.browser.form.AddForm):
-    """Add plain text."""
+class Add(FormBase, zeit.cms.browser.form.AddForm):
 
     title = _('Add plain text')
     factory = zeit.content.text.text.Text
 
 
-class Edit(FormBase,
-           zeit.cms.browser.form.EditForm):
-    """Edit plain text."""
+class Edit(FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit plain text')
 
 
-class Display(FormBase,
-              zeit.cms.browser.form.DisplayForm):
-    """View plain text."""
+class Display(FormBase, zeit.cms.browser.form.DisplayForm):
 
     title = _('View plain text')
-    form_fields = copy.deepcopy(FormBase.form_fields)
-    form_fields['text'].custom_widget = (
-        zope.app.form.browser.textwidgets.BytesDisplayWidget)
