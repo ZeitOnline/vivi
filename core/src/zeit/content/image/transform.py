@@ -169,10 +169,12 @@ class ImageTransform(object):
         return pil_image
 
     def _construct_image(self, pil_image, format=None):
+        image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.context.format
-        image = zeit.content.image.image.TemporaryImage()
-        image.mimeType = self.context.mimeType
+            image.mimeType = self.context.mimeType
+        else:
+            image.mimeType = 'image/' + format.lower()  # XXX crude heuristic.
         # XXX Maybe encoder setting should be made configurable.
         if format in ('JPG', 'JPEG'):
             options = {'progressive': True, 'quality': 85, 'optimize': True}
