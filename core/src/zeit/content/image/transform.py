@@ -178,7 +178,7 @@ class ImageTransform(object):
             options = {'optimize': True}
         else:
             options = {}
-        pil_image.save(image.open('w'), self.image.format, **options)
+        pil_image.save(image.open('w'), self.context.format, **options)
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)
         if image_times and image_times.modified:
