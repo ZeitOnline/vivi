@@ -238,6 +238,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         image = self.group.create_variant_image(
             zeit.content.image.interfaces.IVariants(self.group)['square'],
             format='WEBP')
+        self.assertEqual('image/webp', image.mimeType)
         image = PIL.Image.open(image.open())
         image.load()
         self.assertEqual('WEBP', image.format)
