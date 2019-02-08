@@ -23,7 +23,8 @@ class Connection(object):
         account = kw['account']
         access_token = facebookAccountSource.factory.access_token(account)
 
-        log.debug('Sending %s, %s to %s', text, link, account)
+        breaking = ' breaking_news=true' if kw.get('breaking_news') else ''
+        log.debug('Sending %s, %s to %s%s', text, link, account, breaking)
         fb_api = fb.graph.api(access_token)
         params = {}
         if kw.get('breaking_news'):
@@ -37,6 +38,12 @@ class Connection(object):
             cat='feed', id='me', message=text.encode('utf-8'), link=link,
             **params)
         if 'error' in result:
+            if result['error'].get('code') == 200 and kw.get('breaking_news'):
+                log.info(
+                    'Sending %s with breaking_news failed, retrying without',
+                    link)
+                kw.pop('breaking_news')
+                return self.send(text, link, **kw)
             # XXX Don't know how to differentiate technical and semantic errors
             raise zeit.push.interfaces.TechnicalError(str(result['error']))
 
