@@ -103,7 +103,7 @@ class ImageGroupBase(object):
 
     def create_variant_image(
             self, variant, url=None,
-            size=None, scale=None, fill=None, viewport=None,
+            size=None, scale=None, fill=None, viewport=None, format=None,
             source=None):
         """Retrieve Variant and create an image according to options in URL.
         See VariantTraverser for allowed URLs.
@@ -144,7 +144,7 @@ class ImageGroupBase(object):
         if transform is None:
             return None
 
-        image = transform.create_variant_image(variant, size, fill)
+        image = transform.create_variant_image(variant, size, fill, format)
         image.__name__ = url or variant.name
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, image.__name__)
