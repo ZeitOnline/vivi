@@ -1,7 +1,7 @@
 # coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
-import PIL
+from zope.publisher.interfaces import NotFound
 import mock
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -17,29 +17,39 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(ImageGroupTest, self).setUp()
         self.group = create_image_group_with_master_image()
+        self.request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSLayer)
+        self.full_traverser = zope.component.getMultiAdapter(
+            (self.group, self.request),
+            zope.publisher.interfaces.IPublishTraverse)
+        self.traverser = zeit.content.image.imagegroup.VariantTraverser(
+            self.group, self.request)
+
+    def traverse(self, name):
+        return self.full_traverser.publishTraverse(self.request, name)
 
     def test_getitem_returns_dav_content(self):
-        image = self.group['master-image.jpg']
+        image = self.traverse('master-image.jpg')
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
 
     def test_getitem_creates_image_from_variant_if_no_dav_content(self):
-        image = self.group['square']
+        image = self.traverse('square')
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEqual(self.group, image.__parent__)
         self.assertEqual('square', image.__name__)
         self.assertEqual('http://xml.zeit.de/group/square', image.uniqueId)
 
     def test_getitem_raises_keyerror_for_unmapped_legacy_names(self):
-        with self.assertRaises(KeyError):
-            self.group['master-image-111x222.jpg']
+        with self.assertRaises(NotFound):
+            self.traverse('master-image-111x222.jpg')
 
     def test_getitem_raises_keyerror_for_wrongly_mapped_legacy_names(self):
-        with self.assertRaises(KeyError):
-            self.group['master-image-148x84.jpg']
+        with self.assertRaises(NotFound):
+            self.traverse('master-image-148x84.jpg')
 
     def test_getitem_handles_viewport_modifier(self):
         with self.assertNothingRaised():
-            self.group['square__mobile']
+            self.traverse('square__mobile')
 
     def test_getitem_defines_no_variant_source_for_materialized_files(self):
         """It raises AttributeError when asked for `variant_source`.
@@ -49,18 +59,18 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         `ImageGroupBase.create_variant_image` should have this attribute.
 
         """
-        image = self.group['master-image.jpg']
+        image = self.traverse('master-image.jpg')
         with self.assertRaises(AttributeError):
             image.variant_source
 
     def test_getitem_uses_primary_master_image_if_no_viewport_was_given(self):
-        image = self.group['square']
+        image = self.traverse('square')
         self.assertEqual('master-image.jpg', image.variant_source)
 
     def test_getitem_uses_primary_master_image_if_viewport_not_configured(
             self):
         """Default configuration only includes `desktop`, but not `mobile`."""
-        image = self.group['square__mobile']
+        image = self.traverse('square__mobile')
         self.assertEqual('master-image.jpg', image.variant_source)
 
     def test_getitem_chooses_master_image_using_given_viewport(self):
@@ -75,10 +85,10 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 ('mobile', 'master-image-mobile.jpg'))
             self.assertEqual(
                 'master-image.jpg',
-                self.group['square__desktop'].variant_source)
+                self.traverse('square__desktop').variant_source)
             self.assertEqual(
                 'master-image-mobile.jpg',
-                self.group['square__mobile'].variant_source)
+                self.traverse('square__mobile').variant_source)
 
     def test_getitem_ignores_master_image_for_viewport_if_nonexistent(self):
         with mock.patch(
@@ -87,11 +97,11 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             master_images.return_value = (('desktop', 'nonexistent.jpg'),)
             self.assertEqual(
                 'master-image.jpg',
-                self.group['square__desktop'].variant_source)
+                self.traverse('square__desktop').variant_source)
 
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
-        with self.assertRaises(KeyError):
-            self.group['nonexistent']
+        with self.assertRaises(NotFound):
+            self.traverse('nonexistent')
 
     def test_variant_url_returns_path_with_size_if_given(self):
         self.assertEqual('/group/square__200x200', self.group.variant_url(
@@ -106,14 +116,14 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_returns_image_for_variant_with_size(self):
         self.assertEqual(
-            (200, 200), self.group['square__200x200'].getImageSize())
+            (200, 200), self.traverse('square__200x200').getImageSize())
 
     def test_invalid_size_raises_keyerror(self):
-        with self.assertRaises(KeyError):
-            self.group['square__0x200']
+        with self.assertRaises(NotFound):
+            self.traverse('square__0x200')
 
-        with self.assertRaises(KeyError):
-            self.group['square__-1x200']
+        with self.assertRaises(NotFound):
+            self.traverse('square__-1x200')
 
     def test_variant_url_returns_path_with_fill_color_if_given(self):
         self.assertEqual(
@@ -121,38 +131,38 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
                 'square', 200, 200, '0000ff'))
 
     def test_dav_content_with_same_name_is_preferred(self):
-        self.assertEqual((1536, 1536), self.group['square'].getImageSize())
+        self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
         self.group['square'] = zeit.content.image.testing.create_local_image(
             'new-hampshire-450x200.jpg')
-        self.assertEqual((450, 200), self.group['square'].getImageSize())
+        self.assertEqual((450, 200), self.traverse('square').getImageSize())
 
     def test_thumbnails_create_variants_from_smaller_master_image(self):
-        self.assertEqual((1536, 1536), self.group['square'].getImageSize())
+        self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
         thumbnails = zeit.content.image.interfaces.IThumbnails(self.group)
         self.assertEqual((750, 750), thumbnails['square'].getImageSize())
 
     def test_can_access_small_variant_via_name_and_size(self):
-        variant = self.group.get_variant_by_size('cinema__200x100')
+        variant = self.traverser._parse_variant_by_size('cinema__200x100')
         self.assertEqual('cinema-small', variant.id)
 
     def test_defaults_to_variant_without_size_limitation_if_size_too_big(self):
-        variant = self.group.get_variant_by_size('cinema__9999x9999')
+        variant = self.traverser._parse_variant_by_size('cinema__9999x9999')
         self.assertEqual('cinema-large', variant.id)
 
     def test_invalid_names_should_return_none(self):
         self.assertEqual(
-            None, self.group.get_variant_by_size('foobarbaz__9999x9999'))
+            None, self.traverser._parse_variant_by_size('foobarbaz__9999x9999'))
         self.assertEqual(
-            None, self.group.get_variant_by_size('cinema__200xfoo'))
+            None, self.traverser._parse_variant_by_size('cinema__200xfoo'))
         self.assertEqual(
-            None, self.group.get_variant_by_size('cinema__800x'))
+            None, self.traverser._parse_variant_by_size('cinema__800x'))
 
     def test_no_size_matches_returns_none(self):
         from zeit.content.image.variant import Variants, Variant
         with mock.patch.object(Variants, 'values', return_value=[
                 Variant(name='foo', id='small', max_size='100x100')]):
             self.assertEqual(
-                None, self.group.get_variant_by_size('foo__9999x9999'))
+                None, self.traverser._parse_variant_by_size('foo__9999x9999'))
 
     def test_master_image_is_None_if_no_master_images_defined(self):
         group = zeit.content.image.imagegroup.ImageGroup()
@@ -182,20 +192,21 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def test_device_pixel_ratio_affects_image_size(self):
         self.assertEqual(
             (600, 320),
-            self.group['cinema__300x160__scale_2.0'].getImageSize())
+            self.traverse('cinema__300x160__scale_2.0').getImageSize())
         self.assertEqual(
-            (180, 96), self.group['cinema__300x160__scale_0.6'].getImageSize())
+            (180, 96),
+            self.traverse('cinema__300x160__scale_0.6').getImageSize())
         self.assertEqual(
             (675, 360),
-            self.group['cinema__300x160__scale_2.25'].getImageSize())
+            self.traverse('cinema__300x160__scale_2.25').getImageSize())
 
     def test_unallowed_device_pixel_ratio_is_ignored(self):
         self.assertEqual(
             (300, 160),
-            self.group['cinema__300x160__scale_0.2'].getImageSize())
+            self.traverse('cinema__300x160__scale_0.2').getImageSize())
         self.assertEqual(
             (300, 160),
-            self.group['cinema__300x160__scale_99999'].getImageSize())
+            self.traverse('cinema__300x160__scale_99999').getImageSize())
 
     def test_scaled_image_get_zoom_from_non_scaled_size(self):
         self.group.variants = {
@@ -204,18 +215,18 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         }
         self.assertEqual(
             0.3,
-            self.group.get_variant_by_size('cinema__300x160__scale_2.0').zoom)
+            self.traverser._parse_variant_by_size('cinema__300x160__scale_2.0').zoom)
         self.assertEqual(
-            0.3, self.group.get_variant_by_size('cinema__300x160').zoom)
+            0.3, self.traverser._parse_variant_by_size('cinema__300x160').zoom)
         self.assertEqual(
-            1.0, self.group.get_variant_by_size('cinema__600x320').zoom)
+            1.0, self.traverser._parse_variant_by_size('cinema__600x320').zoom)
 
     def test_does_not_change_external_id_when_already_set(self):
         meta = zeit.content.image.interfaces.IImageMetadata(self.group)
         meta.external_id = u'12345'
         self.group['6789.jpg'] = create_local_image('opernball.jpg')
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
-            self.group['6789.jpg']))
+            self.traverse('6789.jpg')))
         self.assertEqual('12345', meta.external_id)
 
     def test_delete_group_does_not_try_to_recreate_deleted_children(self):

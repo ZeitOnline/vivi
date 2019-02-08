@@ -32,14 +32,6 @@ import zope.security.proxy
 INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 
-def get_viewport_from_key(key):
-    """If key contains `__mobile`, retrieve viewport `mobile` else None."""
-    for segment in key.split('__')[1:]:
-        if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(None):
-            return segment
-    return None
-
-
 class ImageGroupBase(object):
 
     zope.interface.implements(
@@ -109,30 +101,22 @@ class ImageGroupBase(object):
                     return repository[name]
         return zeit.content.image.interfaces.IMasterImage(self, None)
 
-    def create_variant_image(self, key, source=None):
+    def create_variant_image(
+            self, variant, url=None,
+            size=None, scale=None, fill=None, viewport=None,
+            source=None):
         """Retrieve Variant and create an image according to options in URL.
-
-        See ImageGroup.__getitem__ for allowed URLs.
-
+        See VariantTraverser for allowed URLs.
         """
-        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
-        variant = self.get_variant_by_key(key)
-        size = self.get_variant_size(key)
-        fill = self.get_variant_fill(key)
-        viewport = self.get_variant_viewport(key)
-        scale = self.get_scale(key)
+
         # The scale should not influence the variant selection, so we apply it
         # only _after_ the variant has been selected (otherwise we simply could
         # pass in a larger size and be done with it ;).
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
 
-        # Make sure no invalid or redundant modifiers were provided
-        values = [variant.name, size, fill, viewport, scale]
-        if len([x for x in values if x]) != len(key.split('__')):
-            raise KeyError(key)
-
         # Always prefer materialized images with matching name
+        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if source is None and variant.name in repository:
             source = repository[variant.name]
             if size is None:
@@ -146,7 +130,7 @@ class ImageGroupBase(object):
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
         if source is None:
-            raise KeyError(key)
+            raise KeyError(variant.name)
 
         # Set size to max_size if Variant has max_size defined in XML and size
         # was not given in URL.
@@ -161,102 +145,11 @@ class ImageGroupBase(object):
             return None
 
         image = transform.create_variant_image(variant, size, fill)
-        image.__name__ = key
+        image.__name__ = url or variant.name
         image.__parent__ = self
-        image.uniqueId = u'%s%s' % (self.uniqueId, key)
+        image.uniqueId = u'%s%s' % (self.uniqueId, image.__name__)
         image.variant_source = source.__name__
         return image
-
-    def get_variant_size(self, key):
-        """If key contains `__120x90`, retrieve size as [120, 90] else None"""
-        for segment in key.split('__')[1:]:
-            try:
-                width, height = [int(x) for x in segment.split('x')]
-            except (IndexError, ValueError):
-                continue
-            else:
-                if any(i <= 0 for i in [width, height]):
-                    return INVALID_SIZE
-                return [width, height]
-        return None
-
-    def get_variant_fill(self, key):
-        """If key contains `__blue`, retrieve fill as `0000ff` else None"""
-        for segment in key.split('__')[1:]:
-            for seg in set([segment, '#' + segment]):
-                try:
-                    fill = PIL.ImageColor.getrgb(seg)
-                    return ''.join(format(i, '02x') for i in fill)
-                except ValueError:
-                    continue
-        return None
-
-    def get_variant_viewport(self, key):
-        return get_viewport_from_key(key)
-
-    def get_scale(self, key):
-        """If key contains `scale_2.0` the function returns a scale of 2.0.
-        If it is not possible to evaluate a scale because the key does not
-        contain a scale, or the format is not valid, `None` is returned.
-        """
-        for segment in key.split('__')[1:]:
-            seg = segment.split('scale_')
-            try:
-                return float(seg[1])
-            except (IndexError, ValueError):
-                continue
-        return None
-
-    def get_variant_by_key(self, key):
-        """Retrieve Variant by using as much information as given in key."""
-        variant = self.get_variant_by_size(key)
-        if variant is not None:
-            return variant
-
-        variant = self.get_variant_by_name(key)
-        if variant is not None:
-            return variant
-
-        raise KeyError(key)
-
-    def get_variant_by_name(self, key):
-        """Select the biggest Variant among those with the given name.
-
-        The biggest Variant is the one that has no max-limit given or the
-        biggest max-limit, if all Variants have a max-limit set.
-
-        """
-        name = key.split('__')[0]
-        for variant in self.get_all_variants_with_name(name, reverse=True):
-            return variant
-        return None
-
-    def get_variant_by_size(self, key):
-        """Select the Variant that has a matching name and matching size.
-
-        The size does not need to be an exact fit. This method will try to find
-        a Variant whose max-size is as small as possible, but bigger or equal
-        than the size given in the key.
-
-        """
-        name = key.split('__')[0]
-        candidates = self.get_all_variants_with_name(name)
-        size = self.get_variant_size(key)
-        if size is None:
-            return None
-        if size is INVALID_SIZE:
-            return candidates[-1] if candidates else None
-        for variant in candidates:
-            if size[0] <= variant.max_width and size[1] <= variant.max_height:
-                return variant
-        return None
-
-    def get_all_variants_with_name(self, name, reverse=False):
-        """Return all Variants with a matching name, ordered by size."""
-        variants = zeit.content.image.interfaces.IVariants(self)
-        result = [v for v in variants.values() if name == v.name]
-        result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
-        return result
 
     def variant_url(self, name, width=None, height=None,
                     fill_color=None, thumbnail=False):
@@ -276,6 +169,162 @@ class ImageGroupBase(object):
         return url
 
 
+class VariantTraverser(object):
+    """The following URLs may render images:
+
+    Image is present on disk:
+    * /imagegroup/imagegroup-540x304.jpg
+    * /imagegroup/imagegroup-540x304__320x180
+    * /imagegroup/540x304
+    * /imagegroup/540x304__320x180
+    * /imagegroup/zon-large
+    * /imagegroup/zon-large__200x200
+
+    Virtual Image:
+    * /imagegroup/zon-large
+    * /imagegroup/zon-large__200x200
+    * /imagegroup/zon-large__200x200__0000ff
+    * /imagegroup/zon-large__200x200__0000ff__mobile
+
+    JSON API:
+    * /imagegroup/variants/zon-large
+
+    Backward compatibility:
+    * Asking an old image group for a new name: uses default focus point
+      to generate the new variant.
+
+    """
+
+    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
+
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        # z3c.traverser has no ordering, i.e. the (randomly) first plugin that
+        # returns something wins. So we need to explicitly guard against other
+        # plugins.
+        if name in self.context:
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, request)
+        try:
+            return self.context.create_variant_image(
+                **self.parse_url(name))
+        except KeyError:
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, request)
+
+    def parse_url(self, url):
+        result = {
+            'variant': self._parse_variant(url),
+            'size': self._parse_size(url),
+            'scale': self._parse_scale(url),
+            'fill': self._parse_fill(url),
+            'viewport': self._parse_viewport(url),
+        }
+        # Make sure no invalid or redundant modifiers were provided
+        if len([x for x in result.values() if x]) != len(url.split('__')):
+            raise KeyError(url)
+        result['url'] = url
+        return result
+
+    def _parse_variant(self, url):
+        """Retrieve Variant by using as much information as given in url."""
+        variant = self._parse_variant_by_size(url)
+        if variant is not None:
+            return variant
+
+        variant = self._parse_variant_by_name(url)
+        if variant is not None:
+            return variant
+
+        raise KeyError(url)
+
+    def _parse_variant_by_name(self, url):
+        """Select the biggest Variant among those with the given name.
+
+        The biggest Variant is the one that has no max-limit given or the
+        biggest max-limit, if all Variants have a max-limit set.
+
+        """
+        name = url.split('__')[0]
+        for variant in self.all_variants_with_name(name, reverse=True):
+            return variant
+        return None
+
+    def _parse_variant_by_size(self, url):
+        """Select the Variant that has a matching name and matching size.
+
+        The size does not need to be an exact fit. This method will try to find
+        a Variant whose max-size is as small as possible, but bigger or equal
+        than the size given in the url.
+
+        """
+        name = url.split('__')[0]
+        candidates = self.all_variants_with_name(name)
+        size = self._parse_size(url)
+        if size is None:
+            return None
+        if size is INVALID_SIZE:
+            return candidates[-1] if candidates else None
+        for variant in candidates:
+            if size[0] <= variant.max_width and size[1] <= variant.max_height:
+                return variant
+        return None
+
+    def all_variants_with_name(self, name, reverse=False):
+        """Return all Variants with a matching name, ordered by size."""
+        variants = zeit.content.image.interfaces.IVariants(self.context)
+        result = [v for v in variants.values() if name == v.name]
+        result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
+        return result
+
+    def _parse_size(self, url):
+        """If url contains `__120x90`, retrieve size as [120, 90] else None"""
+        for segment in url.split('__')[1:]:
+            try:
+                width, height = [int(x) for x in segment.split('x')]
+            except (IndexError, ValueError):
+                continue
+            else:
+                if any(i <= 0 for i in [width, height]):
+                    return INVALID_SIZE
+                return [width, height]
+        return None
+
+    def _parse_fill(self, url):
+        """If url contains `__blue`, retrieve fill as `0000ff` else None"""
+        for segment in url.split('__')[1:]:
+            for seg in set([segment, '#' + segment]):
+                try:
+                    fill = PIL.ImageColor.getrgb(seg)
+                    return ''.join(format(i, '02x') for i in fill)
+                except ValueError:
+                    continue
+        return None
+
+    def _parse_viewport(self, url):
+        """If url contains `__mobile`, retrieve viewport `mobile` else None."""
+        for segment in url.split('__')[1:]:
+            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(None):
+                return segment
+        return None
+
+    def _parse_scale(self, url):
+        """If url contains `scale_2.0` the function returns a scale of 2.0.
+        If it is not possible to evaluate a scale because the url does not
+        contain a scale, or the format is not valid, `None` is returned.
+        """
+        for segment in url.split('__')[1:]:
+            seg = segment.split('scale_')
+            try:
+                return float(seg[1])
+            except (IndexError, ValueError):
+                continue
+        return None
+
+
 class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
 
@@ -283,37 +332,7 @@ class ImageGroup(ImageGroupBase,
         zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def __getitem__(self, key):
-        """The following URLs may render images:
-
-        Image is present on disk:
-        * /imagegroup/imagegroup-540x304.jpg
-        * /imagegroup/imagegroup-540x304__320x180
-        * /imagegroup/540x304
-        * /imagegroup/540x304__320x180
-        * /imagegroup/zon-large
-        * /imagegroup/zon-large__200x200
-
-        Virtual Image:
-        * /imagegroup/zon-large
-        * /imagegroup/zon-large__200x200
-        * /imagegroup/zon-large__200x200__0000ff
-        * /imagegroup/zon-large__200x200__0000ff__mobile
-
-        JSON API:
-        * /imagegroup/variants/zon-large
-
-        Backward compatibility:
-        * Asking an old image group for a new name: uses default focus point
-          to generate the new variant.
-
-        """
-        __traceback_info__ = (self.uniqueId, key)
-        try:
-            item = super(ImageGroup, self).__getitem__(key)
-        except KeyError:
-            item = self.create_variant_image(key)
-            if item is None:
-                raise KeyError(key)
+        item = super(ImageGroup, self).__getitem__(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)
@@ -351,7 +370,8 @@ class LocalImageGroup(ImageGroupBase,
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if key in repository:
             return repository[key]
-        return self.create_variant_image(key)
+        return self.create_variant_image(
+            **VariantTraverser(self).parse_url(key))
 
     # XXX Inheriting from UserDict.DictMixin would be much more sensible,
     # but that breaks browser/copyright.txt for reasons unknown. :-(
@@ -500,7 +520,8 @@ class Thumbnails(grok.Adapter):
         if master_image is None:
             raise KeyError(key)
         return self.context.create_variant_image(
-            key, source=self.source_image(master_image))
+            source=self.source_image(master_image),
+            **VariantTraverser(self.context).parse_url(key))
 
     def source_image_name(self, master_image):
         return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, master_image.__name__)
@@ -530,7 +551,7 @@ class Thumbnails(grok.Adapter):
         return self.context[self.source_image_name(master_image)]
 
     def master_image(self, key):
-        viewport = get_viewport_from_key(key)
+        viewport = VariantTraverser(self.context)._parse_viewport(key)
         if viewport:
             for view, name in self.context.master_images:
                 if viewport == view:
