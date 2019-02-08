@@ -29,11 +29,6 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('square', image.__name__)
         self.assertEqual('http://xml.zeit.de/group/square', image.uniqueId)
 
-    def test_getitem_uses_mapping_for_legacy_names_and_adjusts_size(self):
-        image = self.group['master-image-540x304.jpg']
-        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
-        self.assertEqual((300, 200), image.getImageSize())
-
     def test_getitem_raises_keyerror_for_unmapped_legacy_names(self):
         with self.assertRaises(KeyError):
             self.group['master-image-111x222.jpg']
@@ -41,34 +36,6 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def test_getitem_raises_keyerror_for_wrongly_mapped_legacy_names(self):
         with self.assertRaises(KeyError):
             self.group['master-image-148x84.jpg']
-
-    def test_getitem_returns_materialized_files_for_new_syntax(self):
-        self.group['master-image-540x304.jpg'] = create_local_image(
-            'obama-clinton-120x120.jpg')
-        image = self.group['540x304']
-        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
-        self.assertEqual((120, 120), image.getImageSize())
-
-    def test_getitem_can_scale_materialized_files_for_new_syntax(self):
-        master = PIL.Image.open(self.group['540x304__80x80'].open())
-        master_sample = master.getpixel((40, 20))
-        self.group['master-image-540x304.jpg'] = create_local_image(
-            'obama-clinton-120x120.jpg')
-        materialized = PIL.Image.open(self.group['540x304__80x80'].open())
-        materialized_sample = materialized.getpixel((40, 20))
-        self.assertNotEqual(master_sample, materialized_sample)
-        self.assertEqual((80, 80), materialized.size)
-
-    def test_getitem_can_scale_materialized_files_with_legacy_name(self):
-        master = PIL.Image.open(self.group['540x304__80x80'].open())
-        master_sample = master.getpixel((40, 20))
-        self.group['master-image-540x304.jpg'] = create_local_image(
-            'obama-clinton-120x120.jpg')
-        materialized = PIL.Image.open(
-            self.group['master-image-540x304__80x80'].open())
-        materialized_sample = materialized.getpixel((40, 20))
-        self.assertNotEqual(master_sample, materialized_sample)
-        self.assertEqual((80, 80), materialized.size)
 
     def test_getitem_handles_viewport_modifier(self):
         with self.assertNothingRaised():

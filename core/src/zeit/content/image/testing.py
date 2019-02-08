@@ -17,7 +17,6 @@ product_config = """
     viewport-source file://{here}/tests/fixtures/viewports.xml
     display-type-source file://{here}/tests/fixtures/display-types.xml
     variant-source file://{here}/tests/fixtures/variants.xml
-    legacy-variant-source file://{here}/tests/fixtures/legacy-variants.xml
     copyright-company-source file://{here}/tests/fixtures/copyright-company.xml
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))

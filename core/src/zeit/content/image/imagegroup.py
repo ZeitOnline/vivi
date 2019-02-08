@@ -138,15 +138,6 @@ class ImageGroupBase(object):
             if size is None:
                 size = source.getImageSize()
 
-        # BBB Legacy ImageGroups should still return their materialized
-        # variants (for CP editor).
-        elif source is None and variant.legacy_name is not None:
-            for name in repository:
-                if variant.legacy_name in name:
-                    source = repository[name]
-                    if size is None:
-                        size = source.getImageSize()
-
         # Prefer a master image that was configured for given viewport.
         elif source is None and viewport is not None:
             source = self.master_image_for_viewport(viewport)
@@ -158,12 +149,10 @@ class ImageGroupBase(object):
             raise KeyError(key)
 
         # Set size to max_size if Variant has max_size defined in XML and size
-        # was neither given in URL nor implied by a legacy variant.
-        if size is None:
-            if variant.legacy_size is not None:
-                size = variant.legacy_size
-            elif variant.max_width < sys.maxint > variant.max_height:
-                size = [variant.max_width, variant.max_height]
+        # was not given in URL.
+        if (size is None and
+                variant.max_width < sys.maxint > variant.max_height):
+            size = [variant.max_width, variant.max_height]
 
         # Be defensive about missing meta files, so source could not be
         # recognized as an image (for zeit.web)
@@ -240,15 +229,6 @@ class ImageGroupBase(object):
         name = key.split('__')[0]
         for variant in self.get_all_variants_with_name(name, reverse=True):
             return variant
-        # BBB New ImageGroups must respond to the legacy names (for XSLT).
-        for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
-            if mapping['old'] in name:
-                variant = self.get_variant_by_name(mapping['new'])
-                if variant is None:
-                    continue
-                variant.legacy_name = mapping['old']
-                variant.legacy_size = mapping['size']
-                return variant
         return None
 
     def get_variant_by_size(self, key):
@@ -322,15 +302,9 @@ class ImageGroup(ImageGroupBase,
         JSON API:
         * /imagegroup/variants/zon-large
 
-        BBB compatibility:
-        * Asking a new image group (without on-disk variants) for an old name
-          (e.g. imagegroup-540x304.jpg, XSLT does this): maps old to new name
-          via legacy-variant-source settings.
+        Backward compatibility:
         * Asking an old image group for a new name: uses default focus point
           to generate the new variant.
-          XXX Should we map to old on-disk variants instead?
-        * Asking an old image group for an old name with the new syntax
-          (CP editor does this): returns on-disk image.
 
         """
         __traceback_info__ = (self.uniqueId, key)
