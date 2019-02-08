@@ -4,6 +4,8 @@ zeit.content.image changes
 2.23.0 (unreleased)
 -------------------
 
+- ZON-5136: Allow overriding output format when creating variant images, to support WEBP
+
 - ZON-5134: Extract URL parsing into separate Traverser instead of ImageGroup.getitem
 
 

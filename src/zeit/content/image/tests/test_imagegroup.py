@@ -2,6 +2,7 @@
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 from zope.publisher.interfaces import NotFound
+import PIL
 import mock
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -232,6 +233,14 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def test_delete_group_does_not_try_to_recreate_deleted_children(self):
         with self.assertNothingRaised():
             del self.group.__parent__[self.group.__name__]
+
+    def test_create_variant_image_allows_overriding_output_format(self):
+        image = self.group.create_variant_image(
+            zeit.content.image.interfaces.IVariants(self.group)['square'],
+            format='WEBP')
+        image = PIL.Image.open(image.open())
+        image.load()
+        self.assertEqual('WEBP', image.format)
 
 
 class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
