@@ -172,9 +172,9 @@ class ImageTransform(object):
         image = zeit.content.image.image.TemporaryImage()
         image.mimeType = self.context.mimeType
         # XXX Maybe encoder setting should be made configurable.
-        if self.context.format.upper() in ('JPG', 'JPEG'):
+        if self.context.format in ('JPG', 'JPEG'):
             options = {'progressive': True, 'quality': 85, 'optimize': True}
-        elif self.context.format.upper() in ('PNG',):
+        elif self.context.format in ('PNG',):
             options = {'optimize': True}
         else:
             options = {}
