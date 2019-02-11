@@ -4,7 +4,7 @@ zeit.cms changes
 3.23.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-2932: Don't apply <pre> to ITextLine (see 3.23.2)
 
 
 3.23.3 (2019-02-07)

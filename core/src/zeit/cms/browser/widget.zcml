@@ -67,6 +67,14 @@
       factory="zope.app.form.browser.textwidgets.BytesDisplayWidget"
       permission="zope.Public"
       />
+  <!-- Specificity wars -->
+  <adapter
+      for="zope.schema.interfaces.ITextLine
+           .interfaces.ICMSLayer"
+      provides="zope.formlib.interfaces.IDisplayWidget"
+      factory="zope.formlib.widget.DisplayWidget"
+      permission="zope.Public"
+      />
 
   <!-- DropObjectWidget -->
 
