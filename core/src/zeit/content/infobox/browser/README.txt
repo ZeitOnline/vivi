@@ -77,7 +77,8 @@ Let's check it in:
         </label>
       </td>
   <td class="field">
-    <div class="widget">&lt;p&gt;Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im&lt;/p&gt;
+    <div class="widget"><pre>&lt;p&gt;Nutzen Sie die Renteninformation, um Ihre Versorgungslücke im&lt;/p&gt;
+    </pre>
     ...
 
 
