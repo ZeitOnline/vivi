@@ -407,9 +407,9 @@ def _find_performing_articles_via_webtrekk(volume):
     body = {'version': '1.1',
             'method': 'getAnalysisData',
             'params': {
-                'login': config['access_control_webtrekk_username'],
-                'pass': config['access_control_webtrekk_password'],
-                'customerId': config['access_control_webtrekk_customerId'],
+                'login': config['access-control-webtrekk-username'],
+                'pass': config['access-control-webtrekk-password'],
+                'customerId': config['access-control-webtrekk-customerid'],
                 'analysisConfig': {
                     "analysisFilter": {'filterRules': [
                         # Only paid articles
@@ -430,8 +430,8 @@ def _find_performing_articles_via_webtrekk(volume):
 
     access_control_config = (
         zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG)
-    resp = requests.post(config['access_control_webtrekk_url'],
-                         timeout=config['access_control_webtrekk_timeout'],
+    resp = requests.post(config['access-control-webtrekk-url'],
+                         timeout=config['access-control-webtrekk-timeout'],
                          json=body)
     urls = set()
     data = resp.json()['result']['analysisData']

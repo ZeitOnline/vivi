@@ -15,12 +15,12 @@ product_config = """
     toc-product-ids ZEI BAD
     toc-num-empty-columns 3
     default-teaser-text Teäser {{name}}/{{year}}
-    access-control-config
-    access-control-webtrekk-url
-    access-control-webtrekk-timeout
-    access-control-webtrekk-username
-    access-control-webtrekk-password
-    access-control-webtrekk-customerId
+    access-control-config file://{here}/tests/fixtures/access-control.xml
+    access-control-webtrekk-url https://webtrekkapi.foo
+    access-control-webtrekk-timeout 10
+    access-control-webtrekk-username foo
+    access-control-webtrekk-password bar
+    access-control-webtrekk-customerId 123
 </product-config>
 """.format(here=pkg_resources.resource_filename(__name__, '.'))
 

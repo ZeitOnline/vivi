@@ -1,0 +1,4 @@
+<config>
+  <min_cr>0.1</min_cr>
+  <min_orders>5</min_orders>
+</config>
