@@ -4,7 +4,7 @@ zeit.content.article changes
 3.44.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5017: Add breaking news flag to facebook push
 
 
 3.44.0 (2019-02-05)
