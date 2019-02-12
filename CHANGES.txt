@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.28.0 (unreleased)
+1.28.0 (2019-02-12)
 -------------------
 
 - ZON-5017: Support transmitting breaking_news flag to facebook
