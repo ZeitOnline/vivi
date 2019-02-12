@@ -31,7 +31,7 @@ Open the lightbox. The object is currently not locked:
           <span>Locker</span>
         </label>
         ...
-        <div class="widget"><pre /></div>
+        <div class="widget"></div>
         ...
         <label for="form.locked_until">
           <span>Locked until</span>
@@ -61,7 +61,7 @@ When we lock we'll see the relevant information:
           <span>Locker</span>
         </label>
         ...
-        <div class="widget"><pre>zope.user</pre></div>
+        <div class="widget">zope.user</div>
       ...
     <input type="submit" id="form.actions.unlock" name="form.actions.unlock" value="Unlock" class="button" />
     ...
@@ -138,7 +138,7 @@ Login in as zmgr and steal the lock:
           <span>Locker</span>
         </label>
         ...
-        <div class="widget"><pre>zope.mgr</pre></div>
+        <div class="widget">zope.mgr</div>
         ...
 
 
