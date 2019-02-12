@@ -432,10 +432,15 @@ def _find_performing_articles_via_webtrekk(volume):
     access_control_config = (
         zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG)
     resp = requests.post(config['access-control-webtrekk-url'],
-                         timeout=config['access-control-webtrekk-timeout'],
+                         timeout=int(
+                             config['access-control-webtrekk-timeout']),
                          json=body)
+    result = resp.json()
+    if result.get('error'):
+        raise Exception('Webtrekk API reported an error %s' %
+                        result.get('error'))
+    data = result['result']['analysisData']
     urls = set()
-    data = resp.json()['result']['analysisData']
     for page, order, cr in data:
         url = page.split('zeit.de/')[1]
         if url.startswith(volume.fill_template('{year}/{name}')) and \
