@@ -395,7 +395,7 @@ def _find_performing_articles_via_webtrekk(volume):
     this should only be used when performance is no criteria.
     """
     api_date_format = '%Y-%m-%d %H:%M:%S'
-    cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)',
+    cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)'
     order_metric_name = u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.volume')
@@ -410,6 +410,7 @@ def _find_performing_articles_via_webtrekk(volume):
                 'login': config['access-control-webtrekk-username'],
                 'pass': config['access-control-webtrekk-password'],
                 'customerId': config['access-control-webtrekk-customerid'],
+                'language': 'de',
                 'analysisConfig': {
                     "analysisFilter": {'filterRules': [
                         # Only paid articles
