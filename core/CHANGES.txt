@@ -2,10 +2,10 @@ zeit.content.volume changes
 ===========================
 
 
-1.10.1 (unreleased)
+1.11.0 (unreleased)
 -------------------
 
-- ZON-4938:  Add option to pass extra constraint when changing access for volume
+- ZON-4938: Don't change access for performing articles
 
 
 1.10.0 (2018-08-20)
