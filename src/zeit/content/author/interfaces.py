@@ -102,6 +102,12 @@ class IAuthor(zope.interface.Interface,
         value_type=zope.schema.Choice(
             source=zeit.cms.related.interfaces.relatableContentSource))
 
+    occupation = zope.schema.TextLine(
+        title=_('Occupation'),
+        max_length=16,
+        required=False
+    )
+
     topiclink_label_1 = zope.schema.TextLine(
         title=_('Label for favourite topic #1'),
         required=False)
