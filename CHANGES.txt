@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.9.7 (unreleased)
+2.9.7 (2019-02-13)
 ------------------
 
 - ZON-5047: Add occupation text field
