@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.44.2 (unreleased)
+3.44.2 (2019-02-13)
 -------------------
 
 - MAINT: Add `interfaces.articleSource` convenience instance
