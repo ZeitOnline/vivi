@@ -44,6 +44,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'firstname',
         'instagram',
         'lastname',
+        'occupation',
         'status',
         'summary',
         'title',
