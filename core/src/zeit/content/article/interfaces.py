@@ -125,6 +125,8 @@ class ArticleSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'article'
     check_interfaces = (IArticle,)
 
+articleSource = ArticleSource()
+
 
 class IBookRecensionReadContainer(zope.interface.Interface):
     """Read interface for book recensions."""
