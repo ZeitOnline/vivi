@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.4.3 (unreleased)
+2.4.3 (2019-02-15)
 ------------------
 
 - ZON-5113: Use unicode_literals for parameter definitions, since
