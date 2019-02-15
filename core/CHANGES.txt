@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.23.5 (unreleased)
+3.23.5 (2019-02-15)
 -------------------
 
 - ZON-2932: Add convenience API to SimpleFixedValueSource
