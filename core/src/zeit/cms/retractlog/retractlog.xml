@@ -1,4 +1,5 @@
 <config>
   <limit>5</limit>
   <filter>(.)*/test</filter>
+  <filter>(.)*/other-valid</filter>
 </config>

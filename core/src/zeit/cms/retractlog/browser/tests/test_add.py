@@ -51,8 +51,11 @@ class TestJobAdd(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
         super(TestJobAdd, self).setUp()
-        test_folder = zeit.cms.content.add.find_or_create_folder('test')
-        test_folder['foo'] = ExampleContentType()
+        self.add_content('test', 'foo')
+
+    def add_content(self, foldername, contentname):
+        test_folder = zeit.cms.content.add.find_or_create_folder(foldername)
+        test_folder[contentname] = ExampleContentType()
 
     def get_jobs(self):
         root = self.getRootFolder()
@@ -82,13 +85,16 @@ class TestJobAdd(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assertEqual(0, len(self.get_jobs()))
 
     def test_adding_invalid_shows_warning_but_creates_job(self):
+        self.add_content('other-valid', 'bar')
         b = self.add_job('https://www.zeit.de/test/foo\n' +
+                         'https://www.zeit.de/other-valid/bar\n' +
                          'https://www.zeit.de/online/2007/01/Somalia')
         jobs = self.get_jobs()
         job = jobs[0][1]
         self.assertTrue('Job created but invalid urls where found'
                         in b.contents)
-        self.assertEqual(['http://xml.zeit.de/test/foo'], job.urls)
+        self.assertEqual(['http://xml.zeit.de/test/foo',
+                          'http://xml.zeit.de/other-valid/bar'], job.urls)
         self.assertEqual(['http://xml.zeit.de/online/2007/01/Somalia'],
                          job.invalid)
 

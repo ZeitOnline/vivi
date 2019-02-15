@@ -42,17 +42,11 @@ class RetractLogConfig(zeit.cms.content.sources.CachedXMLBase):
 
     @property
     def limit(self):
-        return self._find('limit')
+        return int(self._get_tree().limit.text)
 
     @property
     def filter(self):
-        return self._find('filter')
-
-    def _find(self, name):
-        try:
-            return getattr(self._get_tree(), name).text
-        except Exception:
-            return
+        return [node.text for node in self._get_tree().findall('filter')]
 
 
 RETRACT_LOG_CONFIG = RetractLogConfig()
