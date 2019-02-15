@@ -4,7 +4,8 @@ zeit.content.text changes
 2.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-5113: Use unicode_literals for parameter definitions, since
+  IDAVToken breaks on bytestrings (e.g. in Choice/source values)
 
 
 2.4.2 (2019-02-07)
