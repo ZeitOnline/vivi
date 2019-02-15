@@ -120,7 +120,9 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = NotImplemented
 
-    def __init__(self):
+    def __init__(self, values=None):
+        if values is not None:
+            self.values = values
         if not hasattr(self.values, 'keys'):
             self.values = collections.OrderedDict([
                 (x, _(x)) for x in self.values
