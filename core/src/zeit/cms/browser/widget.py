@@ -595,6 +595,14 @@ class ConvertingRestructuredTextWidget(RestructuredTextWidget):
         return html2rst(value)
 
 
+class RestructuredTextDisplayWidget(zope.formlib.widgets.DisplayWidget):
+
+    def __call__(self):
+        value = super(RestructuredTextDisplayWidget, self).__call__()
+        return (u'<div class="rst-display-widget">%s</div>' % rst2html(value)
+                if value else value)
+
+
 class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
 
     cssClass = 'autocomplete-widget'

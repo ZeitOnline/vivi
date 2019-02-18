@@ -774,3 +774,9 @@ body a.button.addbullet,
 a.button.addbullet:hover {
   background-position: 10px -1166px, 0 0 !important;
 }
+
+.rst-display-widget {
+    background-color: #f1f4f9;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
