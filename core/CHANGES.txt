@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.23.0 (unreleased)
+2.23.0 (2019-02-18)
 -------------------
 
 - ZON-5136: Allow overriding output format when creating variant images, to support WEBP
