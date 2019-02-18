@@ -52,4 +52,4 @@ der nur Lesen darf (z.B. für Staging), und einen für Lesen+Schreiben.
 .. _`Video-Objekts`: https://github.com/zeitonline/zeit.content.video
 .. _`Notification Subscription`: https://support.brightcove.com/cms-api-notifications
 .. _`nginx`: https://github.com/zeitonline/vivi-deployment/blob/master/components/nginx/vivi.conf
-.. `BC OAuth`: http://docs.brightcove.com/en/video-cloud/oauth-api/getting-started/oauth-api-overview.html
+.. _`BC OAuth`: http://docs.brightcove.com/en/video-cloud/oauth-api/getting-started/oauth-api-overview.html
