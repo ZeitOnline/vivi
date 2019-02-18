@@ -2038,3 +2038,10 @@
 .type-article #form-mobile .fieldname-author_enabled .label {
     display: none;
 }
+
+.type-article form[action$="@@edit-rawtext"] .fieldname-help .label {
+    display: none;
+}
+.type-article form[action$="@@edit-rawtext"] .fieldname-help .widget {
+    margin-bottom: 1em;
+}
