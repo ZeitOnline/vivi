@@ -46,7 +46,8 @@ class ImageTransform(object):
         image = self.image.resize((width, height), filter)
         return self._construct_image(image)
 
-    def create_variant_image(self, variant, size=None, fill_color=None):
+    def create_variant_image(
+            self, variant, size=None, fill_color=None, format=None):
         """Create variant image from source image.
 
         Will crop the image according to the zoom, focus point and size. In
@@ -56,7 +57,6 @@ class ImageTransform(object):
         The default variant skips cropping, but still applies image
         enhancements, so it can be used as a high quality preview of image
         enhancements in the frontend.
-
         """
         if not variant.is_default:
             image = self._crop_variant_image(variant, size=size)
@@ -86,7 +86,7 @@ class ImageTransform(object):
             opaque.paste(image, (0, 0), image)
             image = opaque
 
-        return self._construct_image(image)
+        return self._construct_image(image, format)
 
     def _crop_variant_image(self, variant, size=None):
         """Crop variant image from source image.
@@ -168,17 +168,23 @@ class ImageTransform(object):
             pil_image = pil_image.convert(self._color_mode)
         return pil_image
 
-    def _construct_image(self, pil_image):
+    def _construct_image(self, pil_image, format=None):
         image = zeit.content.image.image.TemporaryImage()
-        image.mimeType = self.context.mimeType
+        if not format:
+            format = self.context.format
+            image.mimeType = self.context.mimeType
+        else:
+            image.mimeType = 'image/' + format.lower()  # XXX crude heuristic.
         # XXX Maybe encoder setting should be made configurable.
-        if self.context.format.upper() in ('JPG', 'JPEG'):
+        if format in ('JPG', 'JPEG'):
             options = {'progressive': True, 'quality': 85, 'optimize': True}
-        elif self.context.format.upper() in ('PNG',):
+        elif format == 'PNG':
             options = {'optimize': True}
+        elif format == 'WEBP':
+            options = {'quality': 85}
         else:
             options = {}
-        pil_image.save(image.open('w'), self.image.format, **options)
+        pil_image.save(image.open('w'), format, **options)
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)
         if image_times and image_times.modified:
