@@ -65,9 +65,7 @@ class Add(zeit.cms.browser.form.AddForm):
             if not url:
                 continue
             unique_id = re.sub(url_match, 'http://xml.zeit.de', url)
-            custom_filter = re.compile(
-                zeit.cms.retractlog.interfaces.RETRACT_LOG_CONFIG.filter)
-            if custom_filter.match(unique_id):
+            if self._matches_filter(unique_id):
                 if zeit.cms.interfaces.ICMSContent(unique_id, None):
                     job.urls.append(unique_id)
                 else:
@@ -83,6 +81,12 @@ class Add(zeit.cms.browser.form.AddForm):
         changed = super(Add, self).applyChanges(job, data)
         job.start()
         return changed
+
+    def _matches_filter(self, unique_id):
+        for patt in zeit.cms.retractlog.interfaces.RETRACT_LOG_CONFIG.filter:
+            if re.match(patt, unique_id):
+                return True
+        return False
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
