@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.23.6 (unreleased)
+3.24.0 (2019-02-18)
 -------------------
 
 - FIX: Allow multiple filters for retractlog
