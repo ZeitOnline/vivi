@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.25.0 (unreleased)
+3.25.0 (2019-02-18)
 -------------------
 
 - ZON-2932: Add RestructuredTextDisplayWidget
