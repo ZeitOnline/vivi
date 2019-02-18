@@ -8,7 +8,8 @@ import zope.formlib.form
 class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.text.interfaces.IEmbed)
+        zeit.content.text.interfaces.IEmbed,
+        zeit.cms.content.interfaces.IMemo)
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
