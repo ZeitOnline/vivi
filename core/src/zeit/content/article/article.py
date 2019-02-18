@@ -299,6 +299,10 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 @grok.adapter(zeit.content.article.interfaces.IArticle)
 @grok.implementer(zeit.cms.workflow.interfaces.IPublishPriority)
 def publish_priority_article(context):
+    # Since breaking news should be published faster articles, we give them
+    # the same priority as the homepage
+    if zeit.content.article.interfaces.IBreakingNews(context).is_breaking:
+        return zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE
     return zeit.cms.workflow.interfaces.PRIORITY_HIGH
 
 

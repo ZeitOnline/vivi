@@ -1,6 +1,6 @@
 from lxml import etree
 from zeit.cms.checkout.helper import checked_out
-from zeit.content.article.edit.interfaces import IBreakingNewsBody
+import zeit.cms.workflow.interfaces
 from zeit.content.article.interfaces import IBreakingNews
 from zeit.content.article.testing import create_article
 import zeit.content.article.testing
@@ -9,13 +9,29 @@ import zeit.content.rawxml.rawxml
 
 class BreakingNewsTest(zeit.content.article.testing.FunctionalTestCase):
 
-    def test_keywords_are_not_required_for_breaking_news(self):
+    def create_breaking_news_article(self):
         article = zeit.content.article.testing.create_article()
         IBreakingNews(article).is_breaking = True
         self.repository['breaking'] = article
+        return self.repository['breaking']
+
+    def test_keywords_are_not_required_for_breaking_news(self):
+        breaking = self.create_breaking_news_article()
         with self.assertNothingRaised():
-            with checked_out(self.repository['breaking'], temporary=False):
+            with checked_out(breaking, temporary=False):
                 pass
+
+    def test_breaking_news_has_homepage_publish_priority(self):
+        breaking = self.create_breaking_news_article()
+        self.assertEqual(
+            zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
+            zeit.cms.workflow.interfaces.IPublishPriority(breaking)
+        )
+        article = zeit.content.article.testing.create_article()
+        self.assertNotEqual(
+            zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
+            zeit.cms.workflow.interfaces.IPublishPriority(article)
+        )
 
 
 class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
