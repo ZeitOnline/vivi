@@ -1,3 +1,4 @@
+from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import UserDict
 import grokcore.component as grok
@@ -107,7 +108,13 @@ class EmbedParameterForm(object):
 
     def __init__(self, context, request):
         super(EmbedParameterForm, self).__init__(context, request)
-        self.form_fields = self._form_fields.omit(*self._omit_fields)
+        self.form_fields = zope.formlib.form.FormFields(
+            zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
+                *self._omit_fields)
+
+        memo = self.form_fields['memo']
+        memo.custom_widget = RestructuredTextDisplayWidget
+        memo.for_display = True
 
         embed = self.context.text_reference
         if (zeit.content.text.interfaces.IEmbed.providedBy(embed) and
@@ -117,3 +124,19 @@ class EmbedParameterForm(object):
             parameters = zope.security.proxy.getObject(embed.parameter_fields)
             for field in parameters.values():
                 self.form_fields += zope.formlib.form.FormFields(field)
+
+
+@grok.adapter(zeit.content.modules.interfaces.IRawText)
+@grok.implementer(zeit.cms.content.interfaces.IMemo)
+def embed_memo(context):
+    embed = context.text_reference
+    if not zeit.content.text.interfaces.IEmbed.providedBy(embed):
+        return EMPTY_MEMO
+    return zeit.cms.content.interfaces.IMemo(embed)
+
+
+class EmptyMemo(object):
+
+    memo = u''
+
+EMPTY_MEMO = EmptyMemo()

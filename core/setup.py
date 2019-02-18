@@ -20,7 +20,7 @@ setup(
         'mock',
         'plone.testing',
         'setuptools',
-        'zeit.cms',
+        'zeit.cms >= 3.25.0.dev0',
         'zeit.edit',
         'zeit.content.text >= 2.4.0.dev0',
         'zope.component',
