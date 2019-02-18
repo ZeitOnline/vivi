@@ -77,6 +77,12 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
   <subscriber
+    factory=".imagegroup.VariantTraverser"
+    for=".interfaces.IRepositoryImageGroup
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+  <subscriber
     factory=".imagegroup.ThumbnailTraverser"
     for=".interfaces.IRepositoryImageGroup
          zeit.cms.browser.interfaces.ICMSLayer"
