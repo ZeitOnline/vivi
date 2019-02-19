@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.4.4 (unreleased)
+2.4.4 (2019-02-19)
 ------------------
 
 - ZON-2932: Add fields for helptext (IMemo) and vivi_css to embed
