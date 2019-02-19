@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.44.3 (unreleased)
+3.44.3 (2019-02-19)
 -------------------
 
 - ZON-2932: Style embed helptext field
