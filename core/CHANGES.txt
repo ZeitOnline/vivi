@@ -6,6 +6,9 @@ zeit.content.text changes
 
 - ZON-2932: Add fields for helptext (IMemo) and vivi_css to embed
 
+- ZON-2932: Move IText display widget back here; zeit.cms had too many
+  unwanted side effects
+
 
 2.4.3 (2019-02-15)
 ------------------

@@ -23,10 +23,14 @@ class CannotEncode(zope.schema.ValidationError):
         return '<%s %s>' % (self.__class__.__name__, self.args[2])
 
 
+class Code(zope.schema.Text):
+    pass
+
+
 class IText(zeit.cms.repository.interfaces.IDAVContent):
     """A simple object containing unparsed text."""
 
-    text = zope.schema.Text(
+    text = Code(
         title=_('Content'))
 
     encoding = zope.schema.Choice(
@@ -82,13 +86,13 @@ class IEmbed(IText):
 
     render_as_template = zope.schema.Bool(title=_("Render as template?"))
 
-    parameter_definition = zope.schema.Text(
+    parameter_definition = Code(
         title=_("Parameter definition"),
         required=False)
 
     parameter_fields = zope.interface.Attribute('dict of schema fields')
 
-    vivi_css = zope.schema.Text(
+    vivi_css = Code(
         title=_("Embed CSS"),
         required=False)
 
