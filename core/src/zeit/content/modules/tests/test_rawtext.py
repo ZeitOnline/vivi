@@ -73,3 +73,41 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
             self.context, lxml.objectify.XML('<container/>'))
         module.text_reference = self.repository['embed']
         self.assertEqual(True, module.params['p'])
+
+
+class EmbedCSS(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.modules.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(EmbedCSS, self).setUp()
+        self.context = mock.Mock()
+        self.context.__parent__ = None
+        self.module = zeit.content.modules.rawtext.RawText(
+            self.context, lxml.objectify.XML('<container/>'))
+        self.module.__name__ = 'mymodule'
+
+    def css(self, module):
+        return zeit.content.modules.rawtext.ICSS(module).vivi_css
+
+    def test_no_css_set_returns_none(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = 'none'
+        self.repository['embed'] = embed
+        self.module.text_reference = self.repository['embed']
+        self.assertEqual(None, self.css(self.module))
+
+    def test_selectors_are_prefixed_with_module_id(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = 'none'
+        embed.vivi_css = """\
+one { a: 1; b: 2; }
+two, three { c: 3; }
+"""
+        self.repository['embed'] = embed
+        self.module.text_reference = self.repository['embed']
+        self.assertEllipsis("""\
+<style>
+#mymodule one, .mymodule one { a: 1; b: 2 }
+#mymodule two, .mymodule two, #mymodule three, .mymodule three { c: 3 }
+</style>""", self.css(self.module))

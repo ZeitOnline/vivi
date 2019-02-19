@@ -1,6 +1,7 @@
 from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import UserDict
+import cssutils
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.property
@@ -101,6 +102,40 @@ class EmbedParameters(
         self[key] = value
 
 
+class ICSS(zope.interface.Interface):
+
+    vivi_css = zope.schema.Text(readonly=True)
+
+
+class CSSInjector(grok.Adapter):
+
+    grok.context(zeit.content.modules.interfaces.IRawText)
+    grok.implements(ICSS)
+
+    @cachedproperty
+    def vivi_css(self):
+        embed = self.context.text_reference
+        if not zeit.content.text.interfaces.IEmbed.providedBy(embed):
+            return None
+        if not embed.vivi_css:
+            return None
+
+        module = self.context.__name__
+        css = cssutils.parseString(embed.vivi_css)
+        for rule in css:
+            if not isinstance(rule, cssutils.css.CSSStyleRule):
+                continue
+            selectors = [x.selectorText for x in rule.selectorList]
+            while rule.selectorList:
+                del rule.selectorList[0]
+            for selector in selectors:
+                # zeit.content.article
+                rule.selectorList.append(u'#%s %s' % (module, selector))
+                # zeit.content.cp
+                rule.selectorList.append(u'.%s %s' % (module, selector))
+        return u'<style>\n%s\n</style>' % css.cssText
+
+
 class EmbedParameterForm(object):
 
     _form_fields = NotImplemented
@@ -109,12 +144,14 @@ class EmbedParameterForm(object):
     def __init__(self, context, request):
         super(EmbedParameterForm, self).__init__(context, request)
         self.form_fields = zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
+            ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
                 *self._omit_fields)
 
         memo = self.form_fields['memo']
         memo.custom_widget = RestructuredTextDisplayWidget
         memo.for_display = True
+
+        self.form_fields['vivi_css'].custom_widget = RawDisplayWidget
 
         embed = self.context.text_reference
         if (zeit.content.text.interfaces.IEmbed.providedBy(embed) and
@@ -140,3 +177,9 @@ class EmptyMemo(object):
     memo = u''
 
 EMPTY_MEMO = EmptyMemo()
+
+
+class RawDisplayWidget(zope.formlib.widget.DisplayWidget):
+
+    def __call__(self):
+        return self._data

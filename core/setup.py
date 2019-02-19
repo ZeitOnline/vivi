@@ -15,6 +15,7 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
+        'cssutils',
         'grokcore.component',
         'lxml',
         'mock',
@@ -22,7 +23,7 @@ setup(
         'setuptools',
         'zeit.cms >= 3.25.0.dev0',
         'zeit.edit',
-        'zeit.content.text >= 2.4.0.dev0',
+        'zeit.content.text >= 2.4.4.dev0',
         'zope.component',
         'zope.interface',
         'zope.formlib',
