@@ -178,7 +178,7 @@ False
 >>> f.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> f.mimeType
-''
+'image/jpeg'
 
 When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 

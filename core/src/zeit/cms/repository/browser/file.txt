@@ -27,7 +27,7 @@ Open the default metadata view of a file[#browser]_:
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
   <dt>Content type</dt>
-  <dd></dd>
+  <dd>image/jpeg</dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -44,7 +44,7 @@ Download the file:
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
-Content-Type: application/octet-stream
+Content-Type: image/jpeg
 ...
 >>> browser.contents
 '\xff\xd8\xff\xe1\x0c\xdaExif...'
@@ -64,7 +64,7 @@ Check the file out. The edit view also contains the metadata:
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
   <dt>Content type</dt>
-  <dd></dd>
+  <dd>image/jpeg</dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -80,7 +80,7 @@ We can also download the file here:
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
-Content-Type: application/octet-stream
+Content-Type: image/jpeg
 ...
 >>> browser.contents
 '\xff\xd8\xff\xe1\x0c\xdaExif...'
