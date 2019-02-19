@@ -1,6 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckinManager
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import IPublish, PRIORITY_HOMEPAGE
 import grokcore.component as grok
 import logging
 import transaction
@@ -42,10 +42,10 @@ class Banner(object):
         return content
 
     def publish(self):
-        IPublish(self.xml_banner).publish()
+        IPublish(self.xml_banner).publish(priority=PRIORITY_HOMEPAGE)
 
     def retract(self):
-        IPublish(self.xml_banner).retract()
+        IPublish(self.xml_banner).retract(priority=PRIORITY_HOMEPAGE)
 
     def _ensure_unlocked(self):
         banner = zeit.cms.interfaces.ICMSContent(self.banner_unique_id)

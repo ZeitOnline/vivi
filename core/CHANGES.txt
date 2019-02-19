@@ -4,7 +4,7 @@ zeit.push changes
 1.28.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Publish homepage banner with higher priority
 
 
 1.28.0 (2019-02-12)
