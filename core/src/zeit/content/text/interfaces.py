@@ -88,6 +88,10 @@ class IEmbed(IText):
 
     parameter_fields = zope.interface.Attribute('dict of schema fields')
 
+    vivi_css = zope.schema.Text(
+        title=_("Embed CSS"),
+        required=False)
+
 
 class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
 
