@@ -4,6 +4,8 @@ zeit.content.article changes
 3.44.3 (unreleased)
 -------------------
 
+- ZON-2932: Style embed helptext field
+
 - MAINT: Publish breaking news with the same priority as the homepage
 
 
