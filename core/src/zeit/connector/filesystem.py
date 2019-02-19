@@ -7,6 +7,7 @@ import email.utils
 import gocept.cache.property
 import logging
 import lxml.etree
+import magic
 import os
 import os.path
 import urlparse
@@ -127,7 +128,7 @@ class Connector(object):
             unicode(id), name, type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            content_type=self._get_content_type(id, type, properties))
+            content_type=self._get_content_type(id, type))
 
     def _get_body(self, id):
         try:
@@ -143,10 +144,17 @@ class Connector(object):
         self.body_cache[id] = data
         return StringIO(data)
 
-    def _get_content_type(self, id, type, properties):
+    def _get_content_type(self, id, type):
         if type == 'collection':
             return 'httpd/unix-directory'
-        return properties.get(('getcontenttype', 'DAV:'), '')
+        properties = self._get_properties(id)
+        davtype = ('getcontenttype', 'DAV:')
+        if davtype in properties:
+            return properties[davtype]
+        body = self._get_body(id)
+        head = body.read(200)
+        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+            return m.id_buffer(head) or ''
 
     def __setitem__(self, id, object):
         raise NotImplementedError()

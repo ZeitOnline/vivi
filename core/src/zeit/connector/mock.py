@@ -51,7 +51,6 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
-        self._content_types = {}
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
@@ -75,14 +74,6 @@ class Connector(zeit.connector.filesystem.Connector):
         if id in self._deleted:
             raise KeyError(unicode(id))
         return super(Connector, self).__getitem__(id)
-
-    def _get_content_type(self, id, type, properties):
-        content_type = self._content_types.get(id, '')
-        if content_type:
-            return content_type
-        else:
-            return super(Connector, self)._get_content_type(
-                id, type, properties)
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
@@ -144,7 +135,6 @@ class Connector(zeit.connector.filesystem.Connector):
             time.time()) + repr(random.random())
 
         self._set_properties(id, resource.properties)
-        self._content_types[id] = resource.contentType
 
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
@@ -249,10 +239,6 @@ class Connector(zeit.connector.filesystem.Connector):
         if self._properties.get(id + '/') is not None:
             return CannonicalId(id + '/')
         if self._properties.get(id) is not None:
-            return CannonicalId(id)
-        if self._content_types.get(id + '/') == 'httpd/unix-directory':
-            return CannonicalId(id + '/')
-        if self._content_types.get(id) == 'httpd/unix-directory':
             return CannonicalId(id)
         path = self._absolute_path(self._path(id))
         if os.path.isdir(path):

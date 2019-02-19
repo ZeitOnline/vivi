@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.connector',
-    version='2.11.1.dev0',
+    version='2.12.0.dev0',
     author='Tomas Zerolo, gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'ZConfig',
         'ZODB',
+        'filemagic',
         'gocept.cache>=0.2.2',
         'gocept.lxml',
         'lxml',

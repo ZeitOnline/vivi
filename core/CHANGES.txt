@@ -1,10 +1,10 @@
 CHANGES
 =======
 
-2.11.1 (unreleased)
+2.12.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Guess MIME type in filesystem connector just like Apache does for DAV connector
 
 
 2.11.0 (2018-07-06)
