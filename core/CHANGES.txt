@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+3.44.4 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 3.44.3 (2019-02-19)
 -------------------
 
