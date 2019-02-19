@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.25.1 (unreleased)
+3.25.1 (2019-02-19)
 -------------------
 
 - ZON-2932: Revert <pre> for IText, it's too far-ranging in effect (see 3.23.2)
