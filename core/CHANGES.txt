@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.3.2 (unreleased)
+1.3.2 (2019-02-19)
 ------------------
 
 - ZON-2932: Display helptext field of referenced embed object
