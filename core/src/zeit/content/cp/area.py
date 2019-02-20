@@ -162,6 +162,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['is_complete_query'],
         use_default=True)
 
+    rss_feed = zeit.cms.content.property.ObjectPathProperty(
+        '.rss_feed',
+        zeit.content.cp.interfaces.IArea['rss_feed'])
+
     @property
     def image(self):
         if self._image:

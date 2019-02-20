@@ -444,3 +444,11 @@ class CenterpageContentQuery(ContentQuery):
             if len(result) >= self.rows:
                 break
         return result
+
+
+class RSSFeedContentQuery(ContentQuery):
+
+    grok.name('rss-feed')
+
+    def __call__(self):
+        return []

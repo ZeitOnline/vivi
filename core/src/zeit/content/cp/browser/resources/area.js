@@ -4,7 +4,8 @@ var FIELDS = {
     'centerpage': 'referenced_cp',
     'custom': 'query',
     'topicpage': 'referenced_topicpage',
-    'elasticsearch-query': 'elasticsearch_raw_query'
+    'elasticsearch-query': 'elasticsearch_raw_query',
+    'rss-feed': 'rss_feed'
 };
 
 

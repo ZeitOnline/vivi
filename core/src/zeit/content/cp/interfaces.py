@@ -6,7 +6,6 @@ import json
 import logging
 import re
 import urllib2
-import urlparse
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -257,11 +256,45 @@ class AutomaticTypeSource(SimpleDictSource):
         ('topicpage', _('automatic-area-type-topicpage')),
         ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('rss-feed', _('automatic-area-type-rss-feed'))
     ])
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
         return value
+
+
+class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
+                          zeit.cms.content.sources.SimpleContextualXMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'automatic-feed-source'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
+            feed = AutomaticFeed(
+                unicode(node.get('id')),
+                unicode(node.text.strip()),
+                unicode(node.get('url'))
+            )
+            result[feed.id] = feed
+        return result
+
+    # TODO Refactor it?
+    def getTitle(self, context, value):
+        return value.title
+
+
+AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
+
+
+class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, url):
+        super(AutomaticFeed, self).__init__(id, title, None)
+        self.url = url
 
 
 class QueryTypeSource(SimpleDictSource):
@@ -387,7 +420,9 @@ def automatic_area_can_read_teasers_automatically(data):
     if (data.automatic_type == 'elasticsearch-query' and
             data.elasticsearch_raw_query):
         return True
-
+    if (data.automatic_type == 'rss-feed' and
+            data.rss_feed):
+        return True
     return False
 
 
@@ -531,6 +566,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=False,
         required=False)
 
+    rss_feed = zope.schema.Choice(
+        title=_('RSS-Feed'),
+        source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
 
@@ -554,6 +594,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from elasticsearch query '
                     'requires a raw query.')
+            if data.automatic_type == 'rss-feed':
+                error_message = _(
+                    'Automatic area with rss-feed requires a given feed')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
