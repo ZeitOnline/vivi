@@ -128,6 +128,13 @@ class Connector(zeit.connector.filesystem.Connector):
 
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
+        if resource.contentType == 'httpd/unix-directory':
+            # XXX kludgy. We need to be able to differentiate directories,
+            # so they get a trailing slash in their CanonicalId, but also
+            # don't want to store random content types, so the filemagic
+            # detetection e.g. for images takes over on the next read.
+            resource.properties[
+                ('getcontenttype', 'DAV:')] = resource.contentType
         resource.properties[('getlastmodified', 'DAV:')] = unicode(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
@@ -269,8 +276,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
-            if (name.startswith('get') and
-                    name not in ('getlastmodified', 'getetag')):
+            if (name.startswith('get') and name not in (
+                    'getlastmodified', 'getetag', 'getcontenttype')):
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:
