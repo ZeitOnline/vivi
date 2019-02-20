@@ -121,6 +121,8 @@ class Connector(object):
         id = self._get_cannonical_id(id)
         properties = self._get_properties(id)
         type = self.getResourceType(id)
+        # XXX kludgy: writing here modifies our cached properties value, so
+        # future accesses get this as well; some tests/fixtures rely on this.
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         path = self._path(id)
         name = path[-1] if path else ''
@@ -128,7 +130,7 @@ class Connector(object):
             unicode(id), name, type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            content_type=self._get_content_type(id, type))
+            content_type=self._get_content_type(id))
 
     def _get_body(self, id):
         try:
@@ -144,10 +146,11 @@ class Connector(object):
         self.body_cache[id] = data
         return StringIO(data)
 
-    def _get_content_type(self, id, type):
-        if type == 'collection':
-            return 'httpd/unix-directory'
+    def _get_content_type(self, id):
         properties = self._get_properties(id)
+        if (properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] ==
+                'collection'):
+            return 'httpd/unix-directory'
         davtype = ('getcontenttype', 'DAV:')
         if davtype in properties:
             return properties[davtype]
