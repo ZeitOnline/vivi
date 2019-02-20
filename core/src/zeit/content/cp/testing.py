@@ -26,7 +26,6 @@ product_config = """
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-types-url file://{fixtures}/cp-types.xml
     topicpage-filter-source file://{fixtures}/tests/fixtures/filter.json
-    feed-update-minimum-age 30
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
     header-image-variant cinema

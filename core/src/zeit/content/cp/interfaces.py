@@ -620,15 +620,6 @@ class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """
 
 
-class ICPFeed(zope.interface.Interface):
-    """Feed section of a CenterPage"""
-
-    items = zope.interface.Attribute("tuple of feed items")
-
-    def set_items_and_supress_errors(items):
-        pass
-
-
 class IBlock(IElement, zeit.edit.interfaces.IBlock):
 
     supertitle = zope.schema.TextLine(
@@ -753,15 +744,6 @@ class IPlaylistBlock(IBlock):
     referenced_playlist = zope.schema.Choice(
         title=_("Playlist"),
         source=zeit.content.video.interfaces.PlaylistSource())
-
-
-def valid_feed_url(uri):
-    zope.schema.URI().fromUnicode(uri)  # May raise InvalidURI
-    if urlparse.urlparse(uri).scheme in ('http', 'https', 'file'):
-        return True
-    # NOTE: we hide the fact that we support (some) file urls.
-    raise zeit.cms.interfaces.ValidationError(
-        _('Only http and https are supported.'))
 
 
 class ICPExtraBlock(IBlock):
