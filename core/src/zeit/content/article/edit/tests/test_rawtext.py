@@ -1,4 +1,8 @@
+import zeit.content.article.article
+import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.edit.interfaces
+import zope.component
 
 
 class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
@@ -14,14 +18,19 @@ class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
         rawtext.text = u'my_text'
         self.assertEqual(u'my_text', rawtext.xml.xpath('text')[0])
 
+    def test_each_module_should_use_its_own_parameters(self):
+        article = zeit.content.article.article.Article()
+        m1 = article.body.create_item('rawtext')
+        m2 = article.body.create_item('rawtext')
+        m1.params['foo'] = 'bar'
+        m2.params['foo'] = 'qux'
+        self.assertEqual('bar', m1.params['foo'])
+        self.assertEqual('qux', m2.params['foo'])
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 
     def test_factory_should_create_rawtext_node(self):
-        import zeit.content.article.article
-        import zeit.content.article.edit.interfaces
-        import zeit.edit.interfaces
-        import zope.component
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
