@@ -288,17 +288,11 @@ class Repository(persistent.Persistent, Container):
                 raise KeyError(unique_id)
         return content
 
-    def getCopyOf(self, unique_id):
-        contained_content = self.getContent(unique_id)
-        content = self._get_uncontained_copy(unique_id)
-        content.__parent__ = contained_content.__parent__
-        return content
-
     def getUncontainedContent(self, unique_id):
         try:
             content = self.uncontained_content[unique_id]
         except KeyError:
-            content = self._get_uncontained_copy(unique_id)
+            content = self.getCopyOf(unique_id)
             self.uncontained_content[unique_id] = content
         return content
 
@@ -321,7 +315,7 @@ class Repository(persistent.Persistent, Container):
     def repository(self):
         return self
 
-    def _get_uncontained_copy(self, unique_id):
+    def getCopyOf(self, unique_id):
         log.debug('Getting resource %s' % unique_id)
         resource = self.connector[unique_id]
         content = zeit.cms.interfaces.ICMSContent(resource)
