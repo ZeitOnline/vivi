@@ -66,14 +66,14 @@ class EmbedParameters(
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
-        node = self.xml.xpath('//param[@id="%s"]' % key)
+        node = self.xml.xpath('param[@id="%s"]' % key)
         if not node:
             field = self.fields.get(key, zope.schema.TextLine())
             return field.default
         return self._converter(key).fromProperty(unicode(node[0]))
 
     def __setitem__(self, key, value):
-        node = self.xml.xpath('//param[@id="%s"]' % key)
+        node = self.xml.xpath('param[@id="%s"]' % key)
         if node:
             self.xml.remove(node[0])
         if value:  # XXX Use field.missing_value?
@@ -91,7 +91,7 @@ class EmbedParameters(
             zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     def keys(self):
-        return [x.get('id') for x in self.xml.xpath('//param')]
+        return [x.get('id') for x in self.xml.xpath('param')]
 
     # Attribute-style access is meant only for zope.formlib.
 

@@ -5,7 +5,7 @@ zeit.content.modules changes
 1.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Properly separate parameter XML access between embed module instances
 
 
 1.3.2 (2019-02-19)
