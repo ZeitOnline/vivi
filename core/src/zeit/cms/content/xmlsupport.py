@@ -132,7 +132,7 @@ class PropertyToXMLAttribute(object):
         # Now get the current live-properties
         repository = zope.component.queryUtility(
             zeit.cms.repository.interfaces.IRepository)
-        if repository and context.uniqueId:
+        if repository is not None and context.uniqueId:
             try:
                 repository_content = repository.getContent(context.uniqueId)
             except KeyError:

@@ -4,7 +4,8 @@ zeit.cms changes
 3.25.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Don't unnecessarily evaluate the repository root folder,
+  when all we want is to check a getUtility result.
 
 
 3.25.2 (2019-02-21)
