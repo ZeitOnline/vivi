@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.25.2 (unreleased)
+3.25.2 (2019-02-21)
 -------------------
 
 - PERF: Don't unnecessarily resolve parent on checkout
