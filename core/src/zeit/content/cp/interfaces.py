@@ -264,6 +264,13 @@ class AutomaticTypeSource(SimpleDictSource):
         return value
 
 
+class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, url):
+        super(AutomaticFeed, self).__init__(id, title, None)
+        self.url = url
+
+
 class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
                           zeit.cms.content.sources.SimpleContextualXMLSource):
 
@@ -282,19 +289,8 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
             result[feed.id] = feed
         return result
 
-    # TODO Refactor it?
-    def getTitle(self, context, value):
-        return value.title
-
 
 AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
-
-
-class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, url):
-        super(AutomaticFeed, self).__init__(id, title, None)
-        self.url = url
 
 
 class QueryTypeSource(SimpleDictSource):

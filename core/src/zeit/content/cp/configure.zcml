@@ -134,6 +134,17 @@
       />
   </class>
 
+  <class class=".interfaces.AutomaticFeed">
+  <require
+      attributes="id"
+      permission="zope.View"
+      />
+  <require
+      set_attributes="id"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <adapter
     factory=".automatic.AutomaticArea"
     trusted="yes" />
