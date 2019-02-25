@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Feb 19 17:07:24 2019\n"
-"PO-Revision-Date: 2019-02-19 17:08+0100\n"
+"POT-Creation-Date: Mon Feb 25 15:41:18 2019\n"
+"PO-Revision-Date: 2019-02-25 15:46+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -429,7 +429,7 @@ msgstr "Bearbeiten"
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
-#: zeit/content/text/browser/configure.zcml:85
+#: zeit/content/text/browser/configure.zcml:94
 msgid "View"
 msgstr "Anzeigen"
 
@@ -618,7 +618,7 @@ msgstr ""
 
 #. Default: ""
 #: zeit/cms/checkout/browser/manager.py:107
-#: zeit/cms/repository/repository.py:317
+#: zeit/cms/repository/repository.py:311
 msgid "There was a conflict while adding ${name}"
 msgstr "Es gab einen Konflikt beim hinzufügen von ${name}"
 
@@ -3747,15 +3747,20 @@ msgstr "XML-Datei bearbeiten"
 msgid "View Raw XML"
 msgstr "XML-Datei anzeigen"
 
-#: zeit/content/text/browser/embed.py:17
+#: zeit/content/text/browser/embed.py:16
 msgid "Add embed"
 msgstr "Embed hinzufügen"
 
-#: zeit/content/text/browser/embed.py:23
+#: zeit/content/text/browser/embed.py:22
 msgid "Edit embed"
 msgstr "Embed bearbeiten"
 
-#: zeit/content/text/browser/embed.py:28
+#: zeit/content/text/browser/embed.py:27
+#: zeit/content/text/browser/configure.zcml:85
+msgid "Edit embed parameters"
+msgstr "Parameter"
+
+#: zeit/content/text/browser/embed.py:36
 msgid "View embed"
 msgstr "Embed anzeigen"
 

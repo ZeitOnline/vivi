@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Feb 19 17:07:24 2019\n"
+"POT-Creation-Date: Mon Feb 25 15:41:18 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -457,7 +457,7 @@ msgstr ""
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
-#: zeit/content/text/browser/configure.zcml:85
+#: zeit/content/text/browser/configure.zcml:94
 msgid "View"
 msgstr ""
 
@@ -642,7 +642,7 @@ msgid "There was an error while checking in your version of ${name}."
 msgstr ""
 
 #: zeit/cms/checkout/browser/manager.py:107
-#: zeit/cms/repository/repository.py:317
+#: zeit/cms/repository/repository.py:311
 #. Default: ""
 msgid "There was a conflict while adding ${name}"
 msgstr ""
@@ -3808,15 +3808,20 @@ msgstr ""
 msgid "View Raw XML"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:17
+#: zeit/content/text/browser/embed.py:16
 msgid "Add embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:23
+#: zeit/content/text/browser/embed.py:22
 msgid "Edit embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:28
+#: zeit/content/text/browser/embed.py:27
+#: zeit/content/text/browser/configure.zcml:85
+msgid "Edit embed parameters"
+msgstr ""
+
+#: zeit/content/text/browser/embed.py:36
 msgid "View embed"
 msgstr ""
 
