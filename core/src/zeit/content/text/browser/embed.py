@@ -8,8 +8,7 @@ import zope.formlib.form
 class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.text.interfaces.IEmbed,
-        zeit.cms.content.interfaces.IMemo)
+        zeit.content.text.interfaces.IEmbed).select('text')
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
@@ -23,6 +22,18 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
     title = _('Edit embed')
 
 
-class Display(FormBase, zeit.cms.browser.form.DisplayForm):
+class Parameters(FormBase, zeit.cms.browser.form.EditForm):
+
+    title = _('Edit embed parameters')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.text.interfaces.IEmbed,
+        zeit.cms.content.interfaces.IMemo).select(
+            'render_as_template', 'parameter_definition', 'vivi_css', 'memo')
+
+
+class Display(zeit.cms.browser.form.DisplayForm):
 
     title = _('View embed')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.text.interfaces.IEmbed,
+        zeit.cms.content.interfaces.IMemo)

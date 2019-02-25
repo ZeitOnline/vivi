@@ -85,6 +85,15 @@
   <browser:page
     for="zeit.content.text.interfaces.IEmbed"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="params.html"
+    class=".embed.Parameters"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit embed parameters"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IEmbed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     class=".embed.Display"
     permission="zope.View"
