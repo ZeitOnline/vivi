@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.1.27 (unreleased)
+2.1.27 (2019-02-25)
 +++++++++++++++++++
 
 - Übersetzungen aktualisiert
