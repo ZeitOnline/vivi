@@ -15,7 +15,7 @@ def is_image(value):
         try:
             PIL.Image.open(value)
         except IOError:
-            raise NotAnImageError
+            raise NotAnImageError()
     finally:
         value.seek(0)
     return True
