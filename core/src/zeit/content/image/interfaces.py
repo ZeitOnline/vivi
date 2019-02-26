@@ -17,6 +17,8 @@ import zope.schema
 
 IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'
 AVAILABLE_MIME_TYPES = ['image/jpeg', 'image/png']
+AVAILABLE_PILLOW_TYPES = [
+    x.replace('image/', '').upper() for x in AVAILABLE_MIME_TYPES]
 
 
 class ImageProcessingError(TypeError):
