@@ -4,7 +4,7 @@ zeit.content.text changes
 2.4.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-2932: Restore filename field after 2.4.5
 
 
 2.4.5 (2019-02-25)
