@@ -6,8 +6,7 @@ import zope.schema
 
 class NotAnImageError(zope.schema.ValidationError):
 
-    def doc(self):
-        return _('The uploaded image could not be identified.')
+    __doc__ = _('The uploaded image could not be identified.')
 
 
 def is_image(value):
