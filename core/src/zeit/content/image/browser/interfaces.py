@@ -1,20 +1,29 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import AVAILABLE_PILLOW_TYPES
 import PIL.Image
 import zope.interface
 import zope.schema
 
 
-class NotAnImageError(zope.schema.ValidationError):
+class NotAnImage(zope.schema.ValidationError):
 
     __doc__ = _('The uploaded image could not be identified.')
+
+
+class UnsupportedImageType(zope.schema.ValidationError):
+
+    __doc__ = _('Unsupported image type')
 
 
 def is_image(value):
     try:
         try:
-            PIL.Image.open(value)
+            image = PIL.Image.open(value)
         except IOError:
-            raise NotAnImageError()
+            raise NotAnImage()
+        else:
+            if image.format not in AVAILABLE_PILLOW_TYPES:
+                raise UnsupportedImageType()
     finally:
         value.seek(0)
     return True
