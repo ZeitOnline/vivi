@@ -122,12 +122,10 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     factory = RepositoryImage
 
     def content(self, resource):
-        file_type = resource.contentType
-        if not file_type:
-            head = resource.data.read(200)
-            resource.data.close()
-            with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
-                file_type = m.id_buffer(head)
+        head = resource.data.read(200)
+        resource.data.close()
+        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+            file_type = m.id_buffer(head)
         if not file_type.startswith('image/'):
             return None
         return self.factory(resource.id, file_type)

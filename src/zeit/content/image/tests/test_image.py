@@ -1,4 +1,5 @@
-from zeit.content.image.testing import create_image_group
+from zeit.cms.checkout.helper import checked_out
+from zeit.content.image.testing import create_image_group, create_local_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.testing
@@ -58,3 +59,15 @@ class TestImageXMLReference(zeit.cms.testing.FunctionalTestCase):
             self.repository['example-image'],
             zeit.cms.content.interfaces.IXMLReference, name='image')
         self.assertEqual('jpeg', ref.get('type'))
+
+
+class TestImageMIMEType(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_ignores_stored_dav_mime_type(self):
+        self.repository['image'] = create_local_image('opernball.jpg')
+        with checked_out(self.repository['image']) as co:
+            props = zeit.connector.interfaces.IWebDAVProperties(co)
+            props[('getcontenttype', 'DAV:')] = 'image/png'
+        self.assertEqual('image/jpeg', self.repository['image'].mimeType)
