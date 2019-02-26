@@ -4,7 +4,7 @@ zeit.content.image changes
 2.23.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1066: Ignore browser-sent MIME type, inspect uploaded data instead
 
 
 2.23.0 (2019-02-18)
