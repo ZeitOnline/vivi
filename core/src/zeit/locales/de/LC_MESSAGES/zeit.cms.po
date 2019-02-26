@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Feb 25 15:41:18 2019\n"
-"PO-Revision-Date: 2019-02-25 15:46+0100\n"
+"POT-Creation-Date: Tue Feb 26 12:55:01 2019\n"
+"PO-Revision-Date: 2019-02-26 12:56+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -36,243 +36,6 @@ msgstr "Inhalte hinzufügen…"
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
-
-#: zeit/calendar/browser/calendar_macros.pt:23
-msgid "Reactivate event"
-msgstr "Termin wiederherstellen"
-
-#: zeit/calendar/browser/calendar_macros.pt:30
-msgid "Complete event"
-msgstr "Termin erledigen"
-
-#: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/main_template.pt:47 zeit/cms/browser/main_template.pt:180
-#: zeit/cms/browser/main_template.pt:203 zeit/cms/browser/main_template.pt:221
-#: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/globalmenuitem.pt:5
-#: zeit/cms/browser/menu-context-actions.pt:8
-#: zeit/cms/browser/menu-context-actions.pt:16
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
-#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
-#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
-#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
-#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
-#: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
-#: zeit/edit/browser/view.editbox-action.pt:1
-#: zeit/workflow/browser/workflow-preview.pt:5
-#: zeit/workflow/browser/workflow-preview.pt:10
-msgid "${DYNAMIC_CONTENT}"
-msgstr "${DYNAMIC_CONTENT}"
-
-#: zeit/calendar/browser/calendar_macros.pt:84
-msgid "Today"
-msgstr "Heute"
-
-#. Default: ""
-#: zeit/calendar/browser/calendar_view.py:172
-msgid "Events for ${date}"
-msgstr "Termine für ${date}"
-
-#. Default: ""
-#: zeit/calendar/browser/calendar_view.py:207
-msgid "Events for ${month}/${year}"
-msgstr "Termine für ${month}/${year}"
-
-#. Default: ""
-#: zeit/calendar/browser/calendar_view.py:274
-msgid "Events for ${start} - ${end}"
-msgstr "Termine für ${start} – ${end}"
-
-#: zeit/calendar/browser/calendar_view.py:28
-#: zeit/calendar/browser/sidebar-link.pt:2
-msgid "Calendar"
-msgstr "Kalender"
-
-#: zeit/calendar/browser/configure.zcml:34
-msgid "Day"
-msgstr "Tag"
-
-#: zeit/calendar/browser/configure.zcml:43 zeit/cms/content/interfaces.py:679
-msgid "Month"
-msgstr "Monat"
-
-#: zeit/calendar/browser/configure.zcml:52
-msgid "Week"
-msgstr "Woche"
-
-#: zeit/calendar/browser/configure.zcml:61
-msgid "Next week"
-msgstr "Nächste Woche"
-
-#: zeit/calendar/browser/configure.zcml:70
-msgid "Next four weeks"
-msgstr "Nächste vier Wochen"
-
-#: zeit/calendar/browser/event.py:130
-msgid "Event completed."
-msgstr "Termin erledigt."
-
-#: zeit/calendar/browser/event.py:138
-msgid "Event reactivated."
-msgstr "Termin wiederhergestellt."
-
-#: zeit/calendar/browser/event.py:19
-msgid "Event"
-msgstr "Termin"
-
-#: zeit/calendar/browser/event.py:24 zeit/calendar/interfaces.py:34
-#: zeit/content/cp/interfaces.py:91
-msgid "Description"
-msgstr "Beschreibung"
-
-#: zeit/calendar/browser/event.py:28
-msgid "Related"
-msgstr "Links"
-
-#: zeit/calendar/browser/event.py:48 zeit/calendar/browser/calendar_macros.pt:9
-msgid "Add event"
-msgstr "Termin hinzufügen"
-
-#: zeit/calendar/browser/event.py:68
-msgid "Edit event"
-msgstr "Termin bearbeiten"
-
-#: zeit/calendar/browser/event.py:71 zeit/cms/browser/form.py:334
-#: zeit/cms/repository/browser/file.py:106
-#: zeit/content/article/edit/browser/form.py:505
-#: zeit/content/article/edit/browser/form.py:539
-#: zeit/content/article/edit/browser/push.py:67
-#: zeit/content/article/edit/browser/reference.py:54
-#: zeit/content/cp/browser/view.py:8
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
-#: zeit/content/image/browser/form.py:75 zeit/edit/browser/form.py:66
-#: zeit/edit/browser/view.py:136
-msgid "Apply"
-msgstr "Speichern"
-
-#: zeit/calendar/browser/event.py:79
-msgid "Delete event"
-msgstr "Termin löschen"
-
-#: zeit/calendar/browser/event.py:80
-msgid "Really delete event?"
-msgstr "Termin wirklich löschen?"
-
-#: zeit/calendar/browser/event.py:84
-msgid "Event deleted."
-msgstr "Termin gelöscht."
-
-#: zeit/calendar/configure.zcml:5
-msgid "Create and modify calendar entries"
-msgstr "Erstellen und Anzeigen von Kalendereinträgen"
-
-#: zeit/calendar/interfaces.py:14
-msgid "The event ends before it starts."
-msgstr "Der Termin endet bevor er beginnt."
-
-#: zeit/calendar/interfaces.py:21
-msgid "Start"
-msgstr "Beginn"
-
-#: zeit/calendar/interfaces.py:22
-msgid "Date when the event starts."
-msgstr "Datum des Terminbeginns"
-
-#: zeit/calendar/interfaces.py:25
-msgid "End"
-msgstr "Ende"
-
-#: zeit/calendar/interfaces.py:26
-msgid "Date when the event ends."
-msgstr "Datum des Terminendes"
-
-#: zeit/calendar/interfaces.py:30 zeit/cms/browser/listing.py:279
-#: zeit/cms/content/browser/template.py:43 zeit/cms/content/interfaces.py:160
-#: zeit/cms/content/interfaces.py:534
-#: zeit/cms/retractlog/browser/retractlog.py:25
-#: zeit/cms/retractlog/interfaces.py:26
-#: zeit/cms/syndication/browser/feed.py:154
-#: zeit/cms/syndication/browser/manager.py:94
-#: zeit/cms/syndication/interfaces.py:48
-#: zeit/content/advertisement/interfaces.py:26
-#: zeit/content/article/edit/interfaces.py:393
-#: zeit/content/article/interfaces.py:169
-#: zeit/content/article/interfaces.py:235 zeit/content/author/interfaces.py:36
-#: zeit/content/cp/interfaces.py:177 zeit/content/cp/interfaces.py:418
-#: zeit/content/cp/interfaces.py:638 zeit/content/gallery/interfaces.py:91
-#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:71
-#: zeit/content/rawxml/interfaces.py:14 zeit/content/text/interfaces.py:76
-#: zeit/content/video/browser/object-details-body.pt:24
-#: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
-msgid "Title"
-msgstr "Titel"
-
-#: zeit/calendar/interfaces.py:31
-msgid "Title will be shown in overview pages."
-msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
-
-#: zeit/calendar/interfaces.py:38 zeit/cms/related/interfaces.py:31
-msgid "Related content"
-msgstr "interne Links"
-
-#: zeit/calendar/interfaces.py:39
-msgid "Documents that are related to this object."
-msgstr "Dokumente, die verlinkt werden sollen."
-
-#: zeit/calendar/interfaces.py:46
-msgid "Location/Type"
-msgstr " Lokation/Typ"
-
-#: zeit/calendar/interfaces.py:47
-msgid "Where should the article be placed."
-msgstr "Wo soll der Artikel erscheinen?"
-
-#: zeit/calendar/interfaces.py:51 zeit/cms/browser/listing.py:292
-#: zeit/cms/content/interfaces.py:77 zeit/cms/content/interfaces.py:664
-#: zeit/content/cp/interfaces.py:313
-msgid "Ressort"
-msgstr "Ressort"
-
-#: zeit/calendar/interfaces.py:56
-msgid "Topic?"
-msgstr "Thema?"
-
-#: zeit/calendar/interfaces.py:57
-msgid "Is the article a topic for the next week?"
-msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
-
-#: zeit/calendar/interfaces.py:60
-msgid "Completed?"
-msgstr "Erledigt?"
-
-#: zeit/calendar/interfaces.py:61
-msgid "Check when the event has been completed."
-msgstr "Auswählen, wenn die Aufgabe erledigt ist."
-
-#: zeit/calendar/interfaces.py:65
-msgid "Added by"
-msgstr "Hinzugefügt von"
-
-#: zeit/calendar/interfaces.py:70
-msgid "Priority"
-msgstr "Priorität"
-
-#: zeit/calendar/source.py:10
-msgid "^ important"
-msgstr "↑ wichtig"
-
-#: zeit/calendar/source.py:11
-msgid "> suggestion"
-msgstr "↝ vorschlag"
-
-#: zeit/calendar/source.py:9
-msgid "^^ mandatory"
-msgstr "⇈ zwingend"
 
 #: zeit/campus/article.py:52
 msgid "Study Course block"
@@ -331,12 +94,12 @@ msgid "Adjust first released"
 msgstr "Zuerst veröffentlicht am"
 
 #: zeit/cms/application.zcml:38
-msgid "Views"
-msgstr "Views"
-
-#: zeit/cms/application.zcml:38
 msgid "Menu for displaying alternate representations of an object"
 msgstr "Menu for displaying alternate representations of an object"
+
+#: zeit/cms/application.zcml:38
+msgid "Views"
+msgstr "Views"
 
 #: zeit/cms/application.zcml:43
 msgid "Actions"
@@ -421,6 +184,18 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
+#: zeit/cms/browser/form.py:334 zeit/cms/repository/browser/file.py:106
+#: zeit/content/article/edit/browser/form.py:505
+#: zeit/content/article/edit/browser/form.py:539
+#: zeit/content/article/edit/browser/push.py:67
+#: zeit/content/article/edit/browser/reference.py:54
+#: zeit/content/cp/browser/view.py:8
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
+#: zeit/content/image/browser/form.py:75 zeit/edit/browser/form.py:66
+#: zeit/edit/browser/view.py:136
+msgid "Apply"
+msgstr "Speichern"
+
 #: zeit/cms/browser/form.py:343 zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/file.zcml:24
@@ -451,12 +226,32 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 msgid "Author"
 msgstr "Autor"
 
+#: zeit/cms/browser/listing.py:279 zeit/cms/content/browser/template.py:43
+#: zeit/cms/content/interfaces.py:160 zeit/cms/content/interfaces.py:534
+#: zeit/cms/retractlog/browser/retractlog.py:25
+#: zeit/cms/retractlog/interfaces.py:26
+#: zeit/cms/syndication/browser/feed.py:154
+#: zeit/cms/syndication/browser/manager.py:94
+#: zeit/cms/syndication/interfaces.py:48
+#: zeit/content/advertisement/interfaces.py:26
+#: zeit/content/article/edit/interfaces.py:393
+#: zeit/content/article/interfaces.py:169
+#: zeit/content/article/interfaces.py:235 zeit/content/author/interfaces.py:36
+#: zeit/content/cp/interfaces.py:177 zeit/content/cp/interfaces.py:418
+#: zeit/content/cp/interfaces.py:638 zeit/content/gallery/interfaces.py:91
+#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:71
+#: zeit/content/rawxml/interfaces.py:14 zeit/content/text/interfaces.py:76
+#: zeit/content/video/browser/object-details-body.pt:24
+#: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
+msgid "Title"
+msgstr "Titel"
+
 #: zeit/cms/browser/listing.py:283 zeit/cms/interfaces.py:60
 #: zeit/cms/repository/browser/file.py:37
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
 #: zeit/content/image/browser/imagegroup.py:157
-#: zeit/content/image/browser/interfaces.py:27
+#: zeit/content/image/browser/interfaces.py:35
 msgid "File name"
 msgstr "Dateiname"
 
@@ -467,6 +262,11 @@ msgstr "Verändert"
 #: zeit/cms/browser/listing.py:290 zeit/cms/syndication/browser/feed.py:157
 msgid "Hits"
 msgstr "Treffer"
+
+#: zeit/cms/browser/listing.py:292 zeit/cms/content/interfaces.py:77
+#: zeit/cms/content/interfaces.py:664 zeit/content/cp/interfaces.py:313
+msgid "Ressort"
+msgstr "Ressort"
 
 #: zeit/cms/browser/listing.py:296 zeit/cms/content/interfaces.py:72
 msgid "Page"
@@ -541,6 +341,29 @@ msgstr "Objekt hinzufügen"
 #: zeit/cms/browser/secondary_context_actions.pt:5
 msgid "Additional actions"
 msgstr "Weitere Aktionen"
+
+#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/main_template.pt:47 zeit/cms/browser/main_template.pt:180
+#: zeit/cms/browser/main_template.pt:203 zeit/cms/browser/main_template.pt:221
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5
+#: zeit/cms/browser/menu-context-actions.pt:8
+#: zeit/cms/browser/menu-context-actions.pt:16
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
+#: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
+#: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
+#: zeit/edit/browser/view.editbox-action.pt:1
+#: zeit/workflow/browser/workflow-preview.pt:5
+#: zeit/workflow/browser/workflow-preview.pt:10
+msgid "${DYNAMIC_CONTENT}"
+msgstr "${DYNAMIC_CONTENT}"
 
 #: zeit/cms/browser/sourceedit.py:34
 msgid "Edit source code"
@@ -1060,6 +883,10 @@ msgstr "Ausgabe"
 msgid "Type"
 msgstr "Typ"
 
+#: zeit/cms/content/interfaces.py:679
+msgid "Month"
+msgstr "Monat"
+
 #: zeit/cms/content/interfaces.py:81 zeit/cms/content/interfaces.py:669
 #: zeit/content/cp/interfaces.py:316
 msgid "Sub ressort"
@@ -1245,6 +1072,10 @@ msgstr "Vorlage bearbeiten"
 #: zeit/cms/redirect/interfaces.py:22
 msgid "previous uniqueIds of this ICMSContent"
 msgstr "Vorherige IDs"
+
+#: zeit/cms/related/interfaces.py:31
+msgid "Related content"
+msgstr "interne Links"
 
 #: zeit/cms/related/interfaces.py:32
 msgid "Objects that are related to this object."
@@ -1784,7 +1615,7 @@ msgstr "Bild"
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:156
 #: zeit/content/article/interfaces.py:58 zeit/content/cp/interfaces.py:431
-#: zeit/content/cp/interfaces.py:818 zeit/content/image/interfaces.py:418
+#: zeit/content/cp/interfaces.py:818 zeit/content/image/interfaces.py:420
 #: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -3285,6 +3116,10 @@ msgstr "Jobbox Ticker"
 msgid "Titel"
 msgstr "Überschrift"
 
+#: zeit/content/cp/interfaces.py:91
+msgid "Description"
+msgstr "Beschreibung"
+
 #: zeit/content/dynamicfolder/folder.py:218
 msgid "Dynamic Folder"
 msgstr "Dynamischer Ordner"
@@ -3305,7 +3140,7 @@ msgid "Images"
 msgstr "Bilder"
 
 #: zeit/content/gallery/browser/details.pt:24
-#: zeit/content/image/interfaces.py:96
+#: zeit/content/image/interfaces.py:98
 #: zeit/content/image/browser/image-details.pt:21
 msgid "Image sub text"
 msgstr "Bildunterschrift"
@@ -3491,7 +3326,7 @@ msgid "Master image"
 msgstr "Hauptbild"
 
 #: zeit/content/image/browser/imagegroup.py:151
-#: zeit/content/image/interfaces.py:417
+#: zeit/content/image/interfaces.py:419
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3509,12 +3344,16 @@ msgstr "Bildergruppe hinzufügen"
 msgid "The uploaded image could not be identified."
 msgstr "Das hochgeladene Bild konnte nicht identifiziert werden."
 
-#: zeit/content/image/browser/interfaces.py:32
-#: zeit/content/image/browser/interfaces.py:41
+#: zeit/content/image/browser/interfaces.py:15
+msgid "Unsupported image type"
+msgstr "Bild muss vom Typ JPG oder PNG sein"
+
+#: zeit/content/image/browser/interfaces.py:40
+#: zeit/content/image/browser/interfaces.py:49
 msgid "Upload new image"
 msgstr "Neues Bild hochladen"
 
-#: zeit/content/image/browser/interfaces.py:49
+#: zeit/content/image/browser/interfaces.py:57
 msgid "Upload master images"
 msgstr "Datei(en) hochladen"
 
@@ -3534,106 +3373,106 @@ msgstr ""
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:101
+#: zeit/content/image/interfaces.py:103
 msgid "Links to"
 msgstr "Verlinkt nach"
 
-#: zeit/content/image/interfaces.py:102
+#: zeit/content/image/interfaces.py:104
 msgid "Enter a URL this image should link to."
 msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 
-#: zeit/content/image/interfaces.py:202
+#: zeit/content/image/interfaces.py:204
 msgid "Viewport was used multiple times"
 msgstr "Dieselbe Anzeige wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:206
+#: zeit/content/image/interfaces.py:208
 msgid "Image was used multiple times"
 msgstr "Dasselbe Bild wurde mehrfach ausgewählt."
 
-#: zeit/content/image/interfaces.py:240
+#: zeit/content/image/interfaces.py:242
 msgid "File name of image group"
 msgstr "Dateiname der Bildergruppe"
 
-#: zeit/content/image/interfaces.py:247
+#: zeit/content/image/interfaces.py:249
 msgid "Mapping of viewport to master image"
 msgstr "Motive"
 
-#: zeit/content/image/interfaces.py:254
+#: zeit/content/image/interfaces.py:256
 msgid "Viewport"
 msgstr "Anzeige"
 
-#: zeit/content/image/interfaces.py:257
+#: zeit/content/image/interfaces.py:259
 msgid "Image file"
 msgstr "Datei"
 
-#: zeit/content/image/interfaces.py:261
+#: zeit/content/image/interfaces.py:263
 msgid "Setting for variants"
 msgstr "Einstellungen"
 
-#: zeit/content/image/interfaces.py:264
+#: zeit/content/image/interfaces.py:266
 msgid "Display Type"
 msgstr "Typ"
 
-#: zeit/content/image/interfaces.py:423
+#: zeit/content/image/interfaces.py:425
 msgid "Alpha channel fill color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/image/interfaces.py:431
+#: zeit/content/image/interfaces.py:433
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
-#: zeit/content/image/interfaces.py:51
+#: zeit/content/image/interfaces.py:53
 msgid "Image title"
 msgstr "Bildtitel"
 
-#: zeit/content/image/interfaces.py:56
+#: zeit/content/image/interfaces.py:58
 msgid "Origin"
 msgstr "Anmerkung"
 
-#: zeit/content/image/interfaces.py:62
+#: zeit/content/image/interfaces.py:64
 msgid "Photographer"
 msgstr "Fotograf"
 
-#: zeit/content/image/interfaces.py:65
+#: zeit/content/image/interfaces.py:67
 msgid "Image company"
 msgstr "Agentur"
 
-#: zeit/content/image/interfaces.py:69
+#: zeit/content/image/interfaces.py:71
 msgid "Copyright freetext"
 msgstr "Copyright (Freitext)"
 
-#: zeit/content/image/interfaces.py:70
+#: zeit/content/image/interfaces.py:72
 msgid "Copyright holder that is not part of image company list"
 msgstr "keine der bekannten Agenturen"
 
-#: zeit/content/image/interfaces.py:75 zeit/content/link/browser/form.py:46
+#: zeit/content/image/interfaces.py:77 zeit/content/link/browser/form.py:46
 #: zeit/content/link/link.py:47 zeit/content/link/browser/configure.zcml:8
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr "Link"
 
-#: zeit/content/image/interfaces.py:76
+#: zeit/content/image/interfaces.py:78
 msgid "Link to copyright holder"
 msgstr "Link zum Copyright-Inhaber"
 
-#: zeit/content/image/interfaces.py:79 zeit/content/image/interfaces.py:106
+#: zeit/content/image/interfaces.py:81 zeit/content/image/interfaces.py:108
 #: zeit/content/link/interfaces.py:31
 msgid "set nofollow"
 msgstr "rel=\"nofollow\" setzen"
 
-#: zeit/content/image/interfaces.py:82
+#: zeit/content/image/interfaces.py:84
 msgid "Copyrights"
 msgstr "Copyrights"
 
-#: zeit/content/image/interfaces.py:86
+#: zeit/content/image/interfaces.py:88
 msgid "External company ID"
 msgstr "Bild-ID der Agentur"
 
-#: zeit/content/image/interfaces.py:90
+#: zeit/content/image/interfaces.py:92
 msgid "Alternative text"
 msgstr "ALT-Text"
 
-#: zeit/content/image/interfaces.py:91
+#: zeit/content/image/interfaces.py:93
 msgid "Enter a textual description of the image"
 msgstr "Geben Sie eine Beschreibung des Bildes ein."
 
@@ -4661,6 +4500,123 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Reactivate event"
+#~ msgstr "Termin wiederherstellen"
+
+#~ msgid "Complete event"
+#~ msgstr "Termin erledigen"
+
+#~ msgid "Today"
+#~ msgstr "Heute"
+
+#~ msgid "Events for ${date}"
+#~ msgstr "Termine für ${date}"
+
+#~ msgid "Events for ${month}/${year}"
+#~ msgstr "Termine für ${month}/${year}"
+
+#~ msgid "Events for ${start} - ${end}"
+#~ msgstr "Termine für ${start} – ${end}"
+
+#~ msgid "Calendar"
+#~ msgstr "Kalender"
+
+#~ msgid "Day"
+#~ msgstr "Tag"
+
+#~ msgid "Week"
+#~ msgstr "Woche"
+
+#~ msgid "Next week"
+#~ msgstr "Nächste Woche"
+
+#~ msgid "Next four weeks"
+#~ msgstr "Nächste vier Wochen"
+
+#~ msgid "Event completed."
+#~ msgstr "Termin erledigt."
+
+#~ msgid "Event reactivated."
+#~ msgstr "Termin wiederhergestellt."
+
+#~ msgid "Event"
+#~ msgstr "Termin"
+
+#~ msgid "Related"
+#~ msgstr "Links"
+
+#~ msgid "Add event"
+#~ msgstr "Termin hinzufügen"
+
+#~ msgid "Edit event"
+#~ msgstr "Termin bearbeiten"
+
+#~ msgid "Delete event"
+#~ msgstr "Termin löschen"
+
+#~ msgid "Really delete event?"
+#~ msgstr "Termin wirklich löschen?"
+
+#~ msgid "Event deleted."
+#~ msgstr "Termin gelöscht."
+
+#~ msgid "Create and modify calendar entries"
+#~ msgstr "Erstellen und Anzeigen von Kalendereinträgen"
+
+#~ msgid "The event ends before it starts."
+#~ msgstr "Der Termin endet bevor er beginnt."
+
+#~ msgid "Start"
+#~ msgstr "Beginn"
+
+#~ msgid "Date when the event starts."
+#~ msgstr "Datum des Terminbeginns"
+
+#~ msgid "End"
+#~ msgstr "Ende"
+
+#~ msgid "Date when the event ends."
+#~ msgstr "Datum des Terminendes"
+
+#~ msgid "Title will be shown in overview pages."
+#~ msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
+
+#~ msgid "Documents that are related to this object."
+#~ msgstr "Dokumente, die verlinkt werden sollen."
+
+#~ msgid "Location/Type"
+#~ msgstr " Lokation/Typ"
+
+#~ msgid "Where should the article be placed."
+#~ msgstr "Wo soll der Artikel erscheinen?"
+
+#~ msgid "Topic?"
+#~ msgstr "Thema?"
+
+#~ msgid "Is the article a topic for the next week?"
+#~ msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
+
+#~ msgid "Completed?"
+#~ msgstr "Erledigt?"
+
+#~ msgid "Check when the event has been completed."
+#~ msgstr "Auswählen, wenn die Aufgabe erledigt ist."
+
+#~ msgid "Added by"
+#~ msgstr "Hinzugefügt von"
+
+#~ msgid "Priority"
+#~ msgstr "Priorität"
+
+#~ msgid "^ important"
+#~ msgstr "↑ wichtig"
+
+#~ msgid "> suggestion"
+#~ msgstr "↝ vorschlag"
+
+#~ msgid "^^ mandatory"
+#~ msgstr "⇈ zwingend"
 
 #~ msgid "Text is to long. Allowed: ${maximum}, got: ${got}"
 #~ msgstr "Der Text ist zu lang. ${got} Zeichen, erlaubt sind ${maximum}."
