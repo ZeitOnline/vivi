@@ -266,9 +266,10 @@ class AutomaticTypeSource(SimpleDictSource):
 
 class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
 
-    def __init__(self, id, title, url):
+    def __init__(self, id, title, url, timeout):
         super(AutomaticFeed, self).__init__(id, title, None)
         self.url = url
+        self.timeout = timeout
 
 
 class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
@@ -284,7 +285,8 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
             feed = AutomaticFeed(
                 unicode(node.get('id')),
                 unicode(node.text.strip()),
-                unicode(node.get('url'))
+                unicode(node.get('url')),
+                int(node.get('timeout', 2))
             )
             result[feed.id] = feed
         return result

@@ -446,9 +446,32 @@ class CenterpageContentQuery(ContentQuery):
         return result
 
 
+import requests
+import lxml
+
+
 class RSSFeedContentQuery(ContentQuery):
 
     grok.name('rss-feed')
 
     def __call__(self):
+        # Get the Feed and build ITeaseredContent stuff out of it
+        feed_data = self._parse_feed()
         return []
+
+    @property
+    def rss_feed(self):
+        return self.context.rss_feed
+
+    def _parse_feed(self):
+        try:
+            response = requests.get(self.rss_feed.url,
+                                    timeout=self.rss_feed.timeout)
+            xml = lxml.etree.fromstring(response.content)
+        except (requests.exceptions.RequestException,
+                lxml.etree.XMLSyntaxError), e:
+            log.debug('Could not fetch feed {}: {}'.format(
+                self.rss_feed.url, e))
+            return
+        for item in xml.xpath('/rss/channel/item'):
+            pass
