@@ -4,7 +4,8 @@ zeit.content.image changes
 2.23.1 (unreleased)
 -------------------
 
-- BUG-1066: Ignore browser-sent MIME type, inspect uploaded data instead
+- BUG-1066: Ignore browser-sent MIME type, inspect uploaded data instead;
+  reject unsupported MIME types (currently we handle only jpg and png)
 
 
 2.23.0 (2019-02-18)

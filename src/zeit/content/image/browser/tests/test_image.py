@@ -55,3 +55,24 @@ class TestImage(zeit.cms.testing.BrowserTestCase):
             'image/jpeg', u'föö.jpg'.encode('utf-8'))
         b.getControl(name='form.actions.add').click()
         self.assertIn('/foeoe.jpg/@@edit.html', b.url)
+
+    def test_rejects_unsupported_mime_types_on_upload(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/2006/')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Image (single)']
+        b.open(menu.value[0])
+        b.getControl(name='form.copyright.combination_00').value = (
+            'ZEIT ONLINE')
+        b.getControl(name='form.copyright.combination_01').displayValue = (
+            ['dpa'])
+        b.getControl(name='form.copyright.combination_03').value = (
+            'http://www.zeit.de/')
+
+        b.getControl(name='form.blob').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/berlin-polizei.webp'),
+            'image/webp', 'foo.webp')
+        b.getControl(name='form.actions.add').click()
+        self.assertEllipsis('...Unsupported image type...', b.contents)
