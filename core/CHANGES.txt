@@ -4,7 +4,7 @@ zeit.content.image changes
 2.23.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1066: Apply upload validation to image group as well
 
 
 2.23.1 (2019-02-26)

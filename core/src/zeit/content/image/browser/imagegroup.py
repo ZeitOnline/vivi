@@ -47,6 +47,33 @@ class AddForm(FormBase,
             zope.formlib.sequencewidget.SequenceWidget,
             zeit.cms.repository.browser.file.BlobWidget))
 
+    def validate(self, action, data):
+        # SequenceWidget._generateSequence() silently discards invalid entries,
+        # which seems... totally wrong. But to change that we'd have to copy
+        # the entire method (just to replace the call to hasValidInput with
+        # hasInput), so we sneak in from another angle instead. However, when
+        # e.g. later on rendering the form again, getInputValue() must not
+        # raise InputError, so we carefully have to scope our monkey patch to
+        # just the form's validate() phase. XXX Should we change SequenceWidget
+        # in vivi generally (in spite of annoying copy&paste), not just here?
+        def getWidgetAndValidate(self, i):
+            child = original_get(i)
+            child.original_input = child.hasValidInput
+            child.hasValidInput = child.hasInput
+            return child
+
+        widget = self.widgets['master_image_blobs']
+        original_get = widget._getWidget
+        widget._getWidget = getWidgetAndValidate.__get__(widget)
+
+        result = super(AddForm, self).validate(action, data)
+
+        widget._getWidget = original_get
+        for child in widget._widgets.values():
+            child.hasValidInput = child.original_input
+
+        return result
+
     def create(self, data):
         # Must remove master_image_blobs from data before creating the images,
         # since `zeit.cms.browser.form.apply_changes_with_setattr` breaks on
