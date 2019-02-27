@@ -94,7 +94,8 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         wont be published by this method.
         :param access_from: access value to replace
         :param access_to: new acces value
-        :param published: bool to specify if only published content should
+        :param published: bool to specify if only published content should be
+               changed
         :param exclude_performing_articles: exclude performing articles from
                change
         :param dry_run: don't actually change the access value
