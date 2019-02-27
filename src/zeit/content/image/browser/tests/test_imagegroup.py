@@ -215,6 +215,13 @@ class ImageGroupBrowserTest(
         group = self.repository['imagegroup']
         self.assertEqual(['foeoe.jpg'], group.keys())
 
+    def test_group_rejects_unsupported_mime_types_on_upload(self):
+        self.add_imagegroup()
+        self.upload_primary_image('berlin-polizei.webp')
+        self.save_imagegroup()
+        self.assertEllipsis(
+            '...Unsupported image type...', self.browser.contents)
+
 
 class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
 
