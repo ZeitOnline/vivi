@@ -226,7 +226,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             exclude_performing_articles=True, dry_run=False):
         constraints = [{'term': {'payload.document.access': access_from}}]
         if exclude_performing_articles:
-            to_filter = _find_performing_articles_via_webtrekk(self)
+            try:
+                to_filter = _find_performing_articles_via_webtrekk(self)
+            except Exception:
+                log.error("Error while retrieving data from webtrekk api",
+                          exc_info=True)
+                return []
             log.info("Not changing access for %s " % to_filter)
             filter_constraint = {
                 'bool': {'must_not': {'terms': {'url': to_filter}}}}
