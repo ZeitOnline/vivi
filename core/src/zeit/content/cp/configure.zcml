@@ -145,6 +145,17 @@
       />
   </class>
 
+  <class class=".automatic.RSSLink">
+    <require
+      interface="zeit.content.cp.automatic.IRSSLink"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.cp.automatic.IRSSLink"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <adapter
     factory=".automatic.AutomaticArea"
     trusted="yes" />

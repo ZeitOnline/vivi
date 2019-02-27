@@ -448,6 +448,7 @@ class CenterpageContentQuery(ContentQuery):
 
 import requests
 import lxml
+import zeit.content.link.interfaces
 
 
 class RSSFeedContentQuery(ContentQuery):
@@ -455,15 +456,22 @@ class RSSFeedContentQuery(ContentQuery):
     grok.name('rss-feed')
 
     def __call__(self):
-        # Get the Feed and build ITeaseredContent stuff out of it
+        self.total_hits = 0
         feed_data = self._parse_feed()
-        return []
+        # Get the Feed and build ITeaseredContent stuff out of it
+        # Das Ding ist doch, der Rest ist ja einfach CMSContent Stuff,
+        # und nicht echt externer Kram
+        self.total_hits = len(feed_data)
+        return feed_data
 
     @property
     def rss_feed(self):
         return self.context.rss_feed
 
     def _parse_feed(self):
+        if not self.rss_feed:
+            return []
+        items = []
         try:
             response = requests.get(self.rss_feed.url,
                                     timeout=self.rss_feed.timeout)
@@ -472,6 +480,68 @@ class RSSFeedContentQuery(ContentQuery):
                 lxml.etree.XMLSyntaxError), e:
             log.debug('Could not fetch feed {}: {}'.format(
                 self.rss_feed.url, e))
-            return
+            return []
         for item in xml.xpath('/rss/channel/item'):
-            pass
+            link = RSSLink(item)
+            items.append(link)
+        return items
+
+
+class IRSSLink(zeit.content.link.interfaces.ILink):
+
+    image_url = zope.interface.Attribute('image_url')
+
+
+class RSSLink(object):
+
+    zope.interface.implements(IRSSLink)
+
+    def __init__(self, xml):
+        self.xml = xml
+        self.__name__ = None
+        self.__parent__ = None
+        self.uniqueId = self.url
+
+    @property
+    def title(self):
+        title = self.xml.findtext('title')
+        if title is not None:
+            return title.strip()
+
+    @property
+    def teaserTitle(self):  # NOQA
+        return self.title
+
+    @property
+    def supertitle(self):
+        supertitle = self.xml.findtext('category')
+        if supertitle is not None:
+            return supertitle.strip()
+
+    @property
+    def teaserSupertitle(self):  # NOQA
+        return self.supertitle
+
+    @property
+    def text(self):
+        return self.xml.findtext('description')
+
+    @property
+    def teaserText(self):  # NOQA
+        return self.text
+
+    @property
+    def url(self):
+        return self.xml.findtext('link')
+
+    @property
+    def image_url(self):
+        enclosure = self.xml.find('enclosure')
+        if enclosure is not None:
+            return enclosure.get('url')
+
+
+@grok.adapter(IRSSLink)
+@grok.implementer(zeit.cms.content.interfaces.IAccessCounter)
+def no_counter(context):
+    return None
