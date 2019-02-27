@@ -3,8 +3,7 @@ from datetime import datetime
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
-from zeit.content.volume.volume import (
-    Volume, _find_performing_articles_via_webtrekk)
+from zeit.content.volume.volume import Volume
 import lxml.etree
 import lxml.objectify
 import mock
@@ -342,7 +341,8 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/2019/01/baz', 1, 0.01]     # None of above
         ]
         with self.webtrekk(webtrekk_data) as m:
-            res = _find_performing_articles_via_webtrekk(self.volume)
+            res = zeit.content.volume.volume.\
+                _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual(['2019/01/foo', '2019/01/bar', '2019/01/foobar'],
                              res)
 
@@ -352,6 +352,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
         ]
         with self.webtrekk(webtrekk_data) as m:
-            res = _find_performing_articles_via_webtrekk(self.volume)
+            res = zeit.content.volume.volume.\
+                _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual(['2019/01/foo', ],
                              res)
