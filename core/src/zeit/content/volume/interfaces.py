@@ -86,15 +86,19 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :return: [ICMSContent]
         """
 
-    def change_contents_access(access_from, access_to, published):
+    def change_contents_access(access_from, access_to, published,
+                               exclude_performing_articles, dry_run):
         """
         Change the access value, from access_from to access_to, for all
         content of this volume and returns the content. The changed content
         wont be published by this method.
         :param access_from: access value to replace
         :param access_to: new acces value
-        :param published: bool to specify if only published content should
-        be changed
+        :param published: bool to specify if only published content should be
+               changed
+        :param exclude_performing_articles: exclude performing articles from
+               change
+        :param dry_run: don't actually change the access value
         :return: [CMSContent, ...]
         """
 
@@ -168,7 +172,7 @@ PRODUCT_MAPPING = ProductNameMapper()
 class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.content.volume'
-    config_url = 'volume-access-control-config'
+    config_url = 'access-control-config'
 
     @property
     def min_cr(self):

@@ -1,4 +1,7 @@
+import datetime
 import itertools
+import logging
+import requests
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
@@ -12,12 +15,11 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
+import zeit.retresco.search
 import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
-import logging
-
 
 log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
@@ -95,6 +97,10 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             name=str(context.volume).rjust(2, '0'))
 
     @property
+    def _all_products(self):
+        return [self.product] + self.product.dependent_products
+
+    @property
     def previous(self):
         return self._find_in_order(None, self.date_digital_published, 'desc')
 
@@ -102,27 +108,41 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     def next(self):
         return self._find_in_order(self.date_digital_published, None, 'asc')
 
-    @property
-    def _all_products(self):
-        return [self.product] + self.product.dependent_products
-
     def _find_in_order(self, start, end, sort):
         if len(filter(None, [start, end])) != 1:
             return None
-        elastic = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
-        result = elastic.search({'query': {'bool': {'filter': [
+        # Since `sort` is passed in accordingly, and we exclude ourselves,
+        # the first result (if any) is always the one we want.
+        query = {'query': {'bool': {'filter': [
             {'term': {'doc_type': VolumeType.type}},
             {'term': {'payload.workflow.product-id': self.product.id}},
             {'range': {'payload.document.date_digital_published':
-                       elastic.date_range(start, end)}},
+                       zeit.retresco.search.date_range(start, end)}},
         ], 'must_not': [
             {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
-        ]}}}, 'payload.document.date_digital_published:' + sort, rows=1)
+        ]}}}
+        return Volume._find_via_elastic(
+            query, 'payload.document.date_digital_published:' + sort)
+
+    @staticmethod
+    def published_days_ago(days_ago):
+        query = {'query': {'bool': {'filter': [
+            {'term': {'doc_type': VolumeType.type}},
+            {'term': {'payload.workflow.published': True}},
+            {'range': {'payload.document.date_digital_published': {
+                'gte': 'now-%dd/d' % (days_ago + 1),
+                'lt': 'now-%dd/d' % days_ago,
+            }}}
+        ]}}}
+        return Volume._find_via_elastic(
+            query, 'payload.workflow.date_last_published:desc')
+
+    @staticmethod
+    def _find_via_elastic(query, sort_order):
+        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        result = es.search(query, sort_order, rows=1)
         if not result:
             return None
-        # Since `sort` is passed in accordingly, and we exclude ourselves,
-        # the first result (if any) is always the one we want.
         return zeit.cms.interfaces.ICMSContent(
             UNIQUEID_PREFIX + iter(result).next()['url'], None)
 
@@ -201,11 +221,21 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 content.append(item)
         return content
 
-    def change_contents_access(self, access_from, access_to, published=True,
-                               additional_constraints=None, dry_run=False):
+    def change_contents_access(
+            self, access_from, access_to, published=True,
+            exclude_performing_articles=True, dry_run=False):
         constraints = [{'term': {'payload.document.access': access_from}}]
-        if additional_constraints:
-            constraints += additional_constraints
+        if exclude_performing_articles:
+            try:
+                to_filter = _find_performing_articles_via_webtrekk(self)
+            except Exception:
+                log.error("Error while retrieving data from webtrekk api",
+                          exc_info=True)
+                return []
+            log.info("Not changing access for %s " % to_filter)
+            filter_constraint = {
+                'bool': {'must_not': {'terms': {'url': to_filter}}}}
+            constraints += filter_constraint
         if published:
             constraints.append({'term': {'payload.workflow.published': True}})
         cnts = self.all_content_via_search(constraints)
@@ -362,3 +392,64 @@ def retrieve_corresponding_centerpage(context):
     if not zeit.content.cp.interfaces.ICenterPage.providedBy(cp):
         return None
     return cp
+
+
+def _find_performing_articles_via_webtrekk(volume):
+    """
+    Check webtrekk-API for performing articles. Since the webtrekk api,
+    this should only be used when performance is no criteria.
+    """
+    api_date_format = '%Y-%m-%d %H:%M:%S'
+    cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)'
+    order_metric_name = u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.volume')
+    info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
+    start = info.date_first_released
+    stop = start + datetime.timedelta(weeks=3)
+    # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
+    # metrics, so we got filter our results here
+    body = {'version': '1.1',
+            'method': 'getAnalysisData',
+            'params': {
+                'login': config['access-control-webtrekk-username'],
+                'pass': config['access-control-webtrekk-password'],
+                'customerId': config['access-control-webtrekk-customerid'],
+                'language': 'de',
+                'analysisConfig': {
+                    "analysisFilter": {'filterRules': [
+                        # Only paid articles
+                        {'objectTitle': 'Wall - Status', 'comparator': '=',
+                         'filter': 'paid', 'scope': 'page'},
+                    ]},
+                    'metrics': [
+                        {'sortOrder': 'desc', 'title': order_metric_name},
+                        {'sortOrder': 'desc', 'title': cr_metric_name}
+                    ],
+                    'analysisObjects': [{'title': 'Seiten'}],
+                    'startTime':
+                        start.strftime(api_date_format),
+                    'stopTime':
+                        stop.strftime(api_date_format),
+                    'rowLimit': 1000,
+                    "hideFooters": 1}}}
+
+    access_control_config = (
+        zeit.content.volume.interfaces.ACCESS_CONTROL_CONFIG)
+    resp = requests.post(config['access-control-webtrekk-url'],
+                         timeout=int(
+                             config['access-control-webtrekk-timeout']),
+                         json=body)
+    result = resp.json()
+    if result.get('error'):
+        raise Exception('Webtrekk API reported an error %s' %
+                        result.get('error'))
+    data = result['result']['analysisData']
+    urls = set()
+    for page, order, cr in data:
+        url = page.split('zeit.de/')[1]
+        if url.startswith(volume.fill_template('{year}/{name}')) and \
+                (float(cr) >= access_control_config.min_cr or
+                 int(order) >= access_control_config.min_orders):
+            urls.add(url)
+    return list(urls)

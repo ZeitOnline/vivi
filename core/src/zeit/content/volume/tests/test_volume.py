@@ -8,6 +8,7 @@ import lxml.etree
 import lxml.objectify
 import mock
 import pytz
+import requests_mock
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -17,6 +18,7 @@ import zeit.content.volume.interfaces
 import zeit.content.volume.testing
 import zeit.content.volume.volume
 import zeit.find.interfaces
+import zope.app.appsetup.product
 
 
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
@@ -261,7 +263,9 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         self.assertListEqual([content], volume.all_content_via_search(
             additional_query_constraints=[{'term': {'foo': 'bar'}}]))
 
-    def test_all_volume_contents_should_change_access_value(self):
+    @mock.patch('zeit.content.volume.volume.'
+                '_find_performing_articles_via_webtrekk', return_value='[]')
+    def test_all_volume_contents_should_change_access_value(self, mock):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         repo = self.repository['2015']['01']
@@ -284,6 +288,71 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
             self.assertEqual('free', c.access)
 
         volume.change_contents_access('free', 'abo')
-
         for c in cnt:
             self.assertEqual('abo', c.access)
+
+    @mock.patch('zeit.content.volume.volume.'
+                '_find_performing_articles_via_webtrekk', return_value='[]')
+    def test_volume_contents_access_dry_run_does_not_change_accces(
+            self, mock):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        repo = self.repository['2015']['01']
+        content01 = ExampleContentType()
+        repo['article01'] = content01
+
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([
+            {'url': '/2015/01/article01'},
+        ])
+
+        cnt = volume.change_contents_access('free', 'abo', dry_run=True)
+
+        self.assertEqual([content01], cnt)
+        for c in cnt:
+            self.assertEqual('free', c.access)
+
+
+class TestWebtrekkQuery(TestVolumeQueries):
+
+    def setUp(self):
+        super(TestWebtrekkQuery, self).setUp()
+        volume = Volume()
+        volume.year = 2019
+        volume.volume = 1
+        info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
+        info.date_first_released = datetime(
+            2019, 1, 1, tzinfo=pytz.UTC)
+        self.volume = volume
+
+    def webtrekk(self, resp):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.volume')
+        response = {'result': {'analysisData': resp}}
+        m = requests_mock.Mocker()
+        m.post(config['access-control-webtrekk-url'],
+               status_code=200, json=response)
+        return m
+
+    def test_urls_are_filtered_according_to_config(self):
+        webtrekk_data = [
+            ['web..trekk|www.zeit.de/2019/01/foo', 1, 0.2],     # high cr
+            ['web..trekk|www.zeit.de/2019/01/bar', 5, 0.01],    # high order
+            ['web..trekk|www.zeit.de/2019/01/foobar', 5, 0.1],  # both
+            ['web..trekk|www.zeit.de/2019/01/baz', 1, 0.01]     # None of above
+        ]
+        with self.webtrekk(webtrekk_data) as m:
+            res = zeit.content.volume.volume.\
+                _find_performing_articles_via_webtrekk(self.volume)
+            self.assertEqual(['2019/01/foo', '2019/01/bar', '2019/01/foobar'],
+                             res)
+
+    def test_only_articles_of_given_volume_are_considered(self):
+        webtrekk_data = [
+            ['web..trekk|www.zeit.de/2019/02/foo', 10, 0.2],
+            ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
+        ]
+        with self.webtrekk(webtrekk_data) as m:
+            res = zeit.content.volume.volume.\
+                _find_performing_articles_via_webtrekk(self.volume)
+            self.assertEqual(['2019/01/foo', ],
+                             res)
