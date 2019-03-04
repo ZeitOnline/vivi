@@ -348,7 +348,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
 
     def test_only_articles_of_given_volume_are_considered(self):
         webtrekk_data = [
-            ['web..trekk|www.zeit.de/2019/02/foo', 10, 0.2],
+            ['web..trekk|www.zeit.de/2019/01/foo', 10, 0.2],
             ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
         ]
         with self.webtrekk(webtrekk_data) as m:
