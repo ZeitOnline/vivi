@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.11.0 (unreleased)
+1.11.0 (2019-03-04)
 -------------------
 
 - ZON-4938: Don't change access for performing articles
