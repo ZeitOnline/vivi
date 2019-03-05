@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.11.2 (unreleased)
+1.11.2 (2019-03-05)
 -------------------
 
 - FIX: Add additional filter constraint correctly
