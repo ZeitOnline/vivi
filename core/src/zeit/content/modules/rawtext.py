@@ -70,7 +70,7 @@ class EmbedParameters(
         if not node:
             field = self.fields.get(key, zope.schema.TextLine())
             return field.default
-        return self._converter(key).fromProperty(unicode(node[0]))
+        return self._converter(key).fromProperty(node[0].text)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('param[@id="%s"]' % key)

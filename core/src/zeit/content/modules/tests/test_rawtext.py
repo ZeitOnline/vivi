@@ -74,6 +74,10 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
         module.text_reference = self.repository['embed']
         self.assertEqual(True, module.params['p'])
 
+    def test_does_not_use_objectify_number_heuristics(self):
+        self.module.params['p1'] = '10.000'
+        self.assertEqual('10.000', self.module.params['p1'])
+
 
 class EmbedCSS(zeit.cms.testing.FunctionalTestCase):
 
