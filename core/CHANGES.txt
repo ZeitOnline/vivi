@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.11.1 (unreleased)
+1.11.1 (2019-03-05)
 -------------------
 
 - FIX: Fix elastic filter contstraint for volume access query
