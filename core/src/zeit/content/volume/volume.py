@@ -236,7 +236,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             log.info("Not changing access for %s " % to_filter)
             filter_constraint = {
                 'bool': {'must_not': {'terms': {'url': to_filter}}}}
-            constraints += filter_constraint
+            constraints.append(filter_constraint)
         if published:
             constraints.append({'term': {'payload.workflow.published': True}})
         cnts = self.all_content_via_search(constraints)
