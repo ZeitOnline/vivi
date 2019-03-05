@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.3.4 (unreleased)
+1.3.4 (2019-03-05)
 ------------------
 
 - FIX: Don't apply lxml.objectify number heuristics to parameter values
