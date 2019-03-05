@@ -19,6 +19,8 @@ class Display(zeit.cms.browser.view.Base):
             return
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
         return '%s%s/@@raw' % (
             self.url(repository), self.context.image.variant_url(
-                'zon-large', thumbnail=True))
+                config['header-image-variant'], thumbnail=True))

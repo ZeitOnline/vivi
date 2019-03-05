@@ -29,6 +29,7 @@ product_config = """
     feed-update-minimum-age 30
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
+    header-image-variant cinema
 </product-config>
 
 <product-config zeit.edit>

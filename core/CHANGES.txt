@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.28.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1065: Make header image variant for editor display configurable
 
 
 3.28.2 (2019-02-19)
