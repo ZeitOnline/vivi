@@ -232,6 +232,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 log.error("Error while retrieving data from webtrekk api",
                           exc_info=True)
                 return []
+
             log.info("Not changing access for %s " % to_filter)
             filter_constraint = {
                 'bool': {'must_not': {'terms': {'url': to_filter}}}}
@@ -451,5 +452,5 @@ def _find_performing_articles_via_webtrekk(volume):
         if url.startswith(volume.fill_template('{year}/{name}')) and \
                 (float(cr) >= access_control_config.min_cr or
                  int(order) >= access_control_config.min_orders):
-            urls.add(url)
+            urls.add('/' + url)
     return list(urls)
