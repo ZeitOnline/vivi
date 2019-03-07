@@ -4,7 +4,8 @@ zeit.cms changes
 3.25.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Display the actual publish error message instead of "500
+  Internal Server Error" in the quick publish dialog.
 
 
 3.25.3 (2019-02-22)

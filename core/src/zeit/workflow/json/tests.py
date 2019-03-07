@@ -25,14 +25,14 @@ class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
         workflow.urgent = True
         transaction.commit()
 
-    def test_negative_can_publish_should_return_false(self):
+    def test_negative_can_publish_should_return_error(self):
         result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@can-publish')
         self.assertEqual(False, result)
 
         result = self.call_json(
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
-        self.assertEqual(False, result)
+        self.assertEqual({'error': 'publish-preconditions-urgent'}, result)
 
     def test_publish_should_return_job_id(self):
         self.enable_publish('http://xml.zeit.de/online/2007/01/Somalia')
