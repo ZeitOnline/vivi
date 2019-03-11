@@ -162,8 +162,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['is_complete_query'],
         use_default=True)
 
-    _rss_feed = zeit.cms.content.property.ObjectPathProperty(
-        '.rss_feed',
+    rss_feed = zeit.cms.content.property.DAVConverterWrapper(
+        zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
         zeit.content.cp.interfaces.IArea['rss_feed'])
 
     @property
@@ -420,19 +420,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         return zope.component.getMultiAdapter(
             (field, props),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
-
-    @property
-    def rss_feed(self):
-        source = zeit.content.cp.interfaces.IArea['rss_feed'].source(self)
-        for value in source:
-            if value.id == self._rss_feed:
-                return value
-
-    @rss_feed.setter
-    def rss_feed(self, value):
-        if self._rss_feed == value.id:
-            return
-        self._rss_feed = value.id if value is not None else None
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):
