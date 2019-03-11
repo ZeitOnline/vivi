@@ -152,8 +152,12 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         max_length=70)
 
+    # DEPRECATED, use authorships instead (still used by
+    # k4import/exporter.zeit.de to transmit author information *into* vivi,
+    # so Producing can manually convert it to authorships)
     byline = zope.schema.TextLine(
         title=_("By line"),
+        readonly=True,
         required=False)
 
     title = zope.schema.Text(
