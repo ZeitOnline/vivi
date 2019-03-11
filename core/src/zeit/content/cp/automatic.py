@@ -468,8 +468,7 @@ class RSSFeedContentQuery(ContentQuery):
             return []
         items = []
         try:
-            response = requests.get(self.rss_feed.url,
-                                    timeout=self.rss_feed.timeout)
+            response = self._get_feed()
             xml = lxml.etree.fromstring(response.content)
         except (requests.exceptions.RequestException,
                 lxml.etree.XMLSyntaxError), e:
@@ -480,6 +479,9 @@ class RSSFeedContentQuery(ContentQuery):
             link = RSSLink(item)
             items.append(link)
         return items
+
+    def _get_feed(self):
+        return requests.get(self.rss_feed.url, timeout=self.rss_feed.timeout)
 
 
 class IRSSLink(zeit.content.link.interfaces.ILink):
