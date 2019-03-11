@@ -499,43 +499,53 @@ class RSSLink(object):
         self.__parent__ = None
         self.uniqueId = self.url
 
-    @property
+    @cachedproperty
     def title(self):
         title = self.xml.findtext('title')
         if title is not None:
             return title.strip()
 
-    @property
+    @cachedproperty
     def teaserTitle(self):  # NOQA
         return self.title
 
-    @property
+    @cachedproperty
     def supertitle(self):
         supertitle = self.xml.findtext('category')
         if supertitle is not None:
             return supertitle.strip()
 
-    @property
+    @cachedproperty
     def teaserSupertitle(self):  # NOQA
         return self.supertitle
 
-    @property
+    @cachedproperty
     def text(self):
         return self.xml.findtext('description')
 
-    @property
+    @cachedproperty
     def teaserText(self):  # NOQA
         return self.text
 
-    @property
+    @cachedproperty
     def url(self):
         return self.xml.findtext('link')
 
-    @property
+    @cachedproperty
     def image_url(self):
         enclosure = self.xml.find('enclosure')
         if enclosure is not None:
             return enclosure.get('url')
+
+    @cachedproperty
+    def is_ad(self):
+        nsmap = dict(
+            dc="http://purl.org/dc/elements/1.1/")
+        dc_type = self.xml.find('dc:type', namespaces=nsmap)
+
+        if dc_type is not None and getattr(dc_type, 'text') == 'native-ad':
+            return True
+        return False
 
 
 @grok.adapter(IRSSLink)
