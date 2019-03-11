@@ -29,6 +29,7 @@ product_config = """
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
     header-image-variant cinema
+    cp-automatic-feed-source file://{fixtures}/feeds.xml
 </product-config>
 
 <product-config zeit.edit>
@@ -76,7 +77,8 @@ class CPTemplateLayer(plone.testing.Layer):
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
-            new=pkg_resources.resource_string(__name__, 'cp-template.xml'))
+            new=pkg_resources.resource_string(
+                __name__, './tests/fixtures/cp-template.xml'))
         self['cp-template-patch'].start()
 
     def tearDown(self):
