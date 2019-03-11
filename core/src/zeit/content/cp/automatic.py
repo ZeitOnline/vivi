@@ -4,11 +4,14 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import lxml
 import operator
+import requests
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
+import zeit.content.link.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
@@ -446,11 +449,6 @@ class CenterpageContentQuery(ContentQuery):
         return result
 
 
-import requests
-import lxml
-import zeit.content.link.interfaces
-
-
 class RSSFeedContentQuery(ContentQuery):
 
     grok.name('rss-feed')
@@ -458,9 +456,6 @@ class RSSFeedContentQuery(ContentQuery):
     def __call__(self):
         self.total_hits = 0
         feed_data = self._parse_feed()
-        # Get the Feed and build ITeaseredContent stuff out of it
-        # Das Ding ist doch, der Rest ist ja einfach CMSContent Stuff,
-        # und nicht echt externer Kram
         self.total_hits = len(feed_data)
         return feed_data
 

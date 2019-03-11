@@ -276,7 +276,7 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
                           zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.cp'
-    config_url = 'automatic-feed-source'
+    config_url = 'cp-automatic-feed-source'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
