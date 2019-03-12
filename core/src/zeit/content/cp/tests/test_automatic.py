@@ -4,6 +4,7 @@ from zeit.content.cp.interfaces import IRenderedArea
 import json
 import lxml.etree
 import mock
+import pkg_resources
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -746,3 +747,49 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         tms.get_topicpage_documents.return_value = results
         tms_query = zeit.content.cp.automatic.TMSContentQuery(area)
         self.assertEqual(tms_query.total_hits, 42)
+
+
+class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def feed_xml(self):
+        url = pkg_resources.resource_filename(
+            'zeit.content.cp', './tests/fixtures/feed_data.xml')
+        return lxml.etree.parse(url)
+
+    def test_spektrum_teaser_object_should_have_expected_attributes(self):
+        feed_xml = self.feed_xml()
+        items = feed_xml.xpath('/rss/channel/item')
+        self.assertEqual(3, len(items))
+        item = zeit.content.cp.automatic.RSSLink(items[0])
+        assert item.teaserTitle == (
+            'Ein Dinosaurier mit einem Hals wie ein Baukran')
+        assert item.teaserSupertitle == 'Qijianglong'
+        assert item.teaserText == (
+            u'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
+            u'unbekannten, langhalsigen Dinosauriers.')
+        assert item.image_url.endswith('spektrum/images/img1.jpg')
+
+    def test_rss_link_object_with_empty_values_should_not_break(self):
+        xml_str = """
+            <item>
+                <title><![CDATA[]]></title>
+                <link><![CDATA[]]></link>
+                <description><![CDATA[]]></description>
+            </item>"""
+
+        xml = lxml.etree.fromstring(xml_str)
+        teaser = zeit.content.cp.automatic.RSSLink(xml)
+
+        assert teaser.teaserSupertitle is None
+        assert teaser.teaserTitle is ''
+        assert teaser.teaserText is ''
+        assert teaser.image_url is None
+
+    def test_supertitle_should_be_extracted_from_category(self):
+        xml_str = """
+            <item>
+                <category><![CDATA[Lorem ipsum]]></category>
+            </item>"""
+
+        teaser = zeit.content.cp.automatic.RSSLink(lxml.etree.fromstring(xml_str))
+        assert teaser.supertitle == 'Lorem ipsum'
