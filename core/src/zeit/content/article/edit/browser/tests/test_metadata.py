@@ -30,7 +30,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertValue('id=options-b.year', '2007')
         s._find('id=options-b.year').clear()
         s.type('id=options-b.year', '2010')
-        s.type('id=options-b.byline', '\t')  # Trigger blur for form.
+        s.type('id=options-b.volume', '\t')  # Trigger blur for form.
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
@@ -70,7 +70,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
         s.type('id=options-b.year', 'ASDF')
-        s.type('id=options-b.byline', '\t')  # Trigger blur for form.
+        s.type('id=options-b.volume', '\t')  # Trigger blur for form.
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
