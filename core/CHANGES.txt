@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.25.5 (unreleased)
+3.26.0 (2019-03-18)
 -------------------
 
 - MAINT: Set otherwise unused `byline` field readonly
