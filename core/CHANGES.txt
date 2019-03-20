@@ -4,7 +4,7 @@ zeit.cms changes
 3.26.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Use channel source for channel dropdowns, not the ressort source
 
 
 3.26.0 (2019-03-18)

@@ -136,5 +136,5 @@ class SubNavigationUpdater(MasterSlaveDropdownUpdater):
 
 class ChannelUpdater(MasterSlaveDropdownUpdater):
 
-    master_source = zeit.cms.content.sources.RessortSource()
-    slave_source = zeit.cms.content.sources.SubRessortSource()
+    master_source = zeit.cms.content.sources.ChannelSource()
+    slave_source = zeit.cms.content.sources.SubChannelSource()
