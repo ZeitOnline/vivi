@@ -351,10 +351,11 @@ class TestWebtrekkQuery(TestVolumeQueries):
     def test_only_articles_of_given_volume_are_considered(self):
         webtrekk_data = [
             ['web..trekk|www.zeit.de/2019/01/foo', 10, 0.2],
+            ['web..trekk|www.zeit.de/magazin/2019/01/bar', 10, 0.2],
             ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
         ]
         with self.webtrekk(webtrekk_data) as m:
             res = zeit.content.volume.volume.\
                 _find_performing_articles_via_webtrekk(self.volume)
-            self.assertEqual(['/2019/01/foo', ],
-                             res)
+            self.assertEqual({'/2019/01/foo', '/magazin/2019/01/bar'},
+                             set(res))

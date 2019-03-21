@@ -449,7 +449,7 @@ def _find_performing_articles_via_webtrekk(volume):
     urls = set()
     for page, order, cr in data:
         url = page.split('zeit.de/')[1]
-        if url.startswith(volume.fill_template('{year}/{name}')) and \
+        if (volume.fill_template('{year}/{name}') in url) and \
                 (float(cr) >= access_control_config.min_cr or
                  int(order) >= access_control_config.min_orders):
             urls.add('/' + url)
