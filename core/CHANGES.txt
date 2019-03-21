@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.11.3 (unreleased)
+1.11.3 (2019-03-21)
 -------------------
 
 - FIX: Don't be too strict with urls of performing articles
