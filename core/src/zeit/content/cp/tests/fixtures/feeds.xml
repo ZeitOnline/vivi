@@ -1,3 +1,4 @@
 <feeds>
   <feed id="zett" url="http://app-cache.zeit.de/zett-hp-feed" timeout="2">Ze.tt</feed>
+  <feed id="spektrum" url="http://app-cache.zeit.de/spektrum-hp-feed" timeout="2">Spektrum</feed>
 </feeds>
