@@ -506,12 +506,17 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
-class ITopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
+class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    check_interfaces = (zeit.content.article.interfaces.IArticle,)
+    def __init__(self, allow_cp=False):
+        self.allow_cp = allow_cp
 
-
-topic_reference_source = ITopicReferenceSource()
+    @property
+    def check_interfaces(self):
+        if not self.allow_cp:
+            return (zeit.content.article.interfaces.IArticle, )
+        return (zeit.content.article.interfaces.IArticle,
+                zeit.content.cp.interfaces.ICenterPage)
 
 
 class ITopicbox(zeit.edit.interfaces.IBlock):
@@ -527,29 +532,26 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     title = zope.schema.TextLine(
         title=_("Title"),
-        required=False,
+        required=True,
         max_length=70)
 
-    # related_content = zope.schema.Tuple(
-    #     title=_('Related Content'),
-    #     default=(),
-    #     max_length=3,
-    #     required=True,
-    #     value_type=zope.schema.Choice(
-    #         source=topic_reference_source))
+    first_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article or cp here"),
+        source=TopicReferenceSource(allow_cp=True),
+        required=True)
 
-    # first_reference = zope.schema.Choice(
-    #     title=_("Article or Centerpage"),
-    #     source=topic_reference_source,
-    #     required=True)
-    #
-    # second_reference = zope.schema.Choice(
-    #     title=_("Article or Centerpage"),
-    #     source=topic_reference_source)
-    #
-    # third_reference = zope.schema.Choice(
-    #     title=_("Article or Centerpage"),
-    #     source=topic_reference_source)
+    second_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    third_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article here"),
+        source=TopicReferenceSource(),
+        required=False)
 
     link = zope.schema.TextLine(
         title=_('Link'),
@@ -561,8 +563,10 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         required=False,
         max_length=70)
 
+    referenced_cp = zope.interface.Attribute(
+        'Referenced CP or None')
+
     def values():
         """
-        List of referenced content.
-        :return: List of IArticles
+        Iterable of IArticles
         """

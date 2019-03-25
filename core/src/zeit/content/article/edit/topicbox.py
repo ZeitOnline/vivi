@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import itertools
 
 
 class Topicbox(zeit.content.article.edit.block.Block):
@@ -11,7 +12,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
     type = 'topicbox'
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'supertitle', zeit.content.article.edit.interfaces.ITopicbox['supertitle'])
+        '.', 'supertitle',
+        zeit.content.article.edit.interfaces.ITopicbox['supertitle'])
 
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title', zeit.content.article.edit.interfaces.ITopicbox['title'])
@@ -23,23 +25,37 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.', 'link_text',
         zeit.content.article.edit.interfaces.ITopicbox['link_text'])
 
-    # first_reference = zeit.cms.content.reference.SingleResource(
-    #     '.first_reference', 'first_reference')
-    #
-    # second_reference = zeit.cms.content.reference.SingleResource(
-    #     '.second_reference', 'second_reference')
-    #
-    # third_reference = zeit.cms.content.reference.SingleResource(
-    #     '.third_reference', 'third_reference')
+    first_reference = zeit.cms.content.reference.SingleResource(
+        '.first_reference', 'related')
 
-    # related_content = zeit.cms.content.reference.MultiResource(
-    #     '.related_content.reference', 'related')
+    second_reference = zeit.cms.content.reference.SingleResource(
+        '.second_reference', 'related')
+
+    third_reference = zeit.cms.content.reference.SingleResource(
+        '.third_reference', 'related')
+
+    @property
+    def _reference_properties(self):
+        return (self.first_reference,
+                self.second_reference,
+                self.third_reference)
+
+    @property
+    def referenced_cp(self):
+        import zeit.content.cp.interfaces
+        if zeit.content.cp.interfaces.ICenterPage.providedBy(
+                self.first_reference):
+            return self.first_reference
 
     def values(self):
-        return []
+        if self.referenced_cp:
+            return itertools.islice(
+                zeit.edit.interfaces.IElementReferences(self.referenced_cp),
+                len(self._reference_properties))
+        return (content for content in self._reference_properties if content)
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Topicbox
-    title = _('Topic Box')
+    title = _('Topicbox')
