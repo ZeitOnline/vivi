@@ -504,3 +504,65 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
         min=datetime.date.today().year,
         default=datetime.date.today().year,
     )
+
+
+class ITopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    check_interfaces = (zeit.content.article.interfaces.IArticle,)
+
+
+topic_reference_source = ITopicReferenceSource()
+
+
+class ITopicbox(zeit.edit.interfaces.IBlock):
+    """
+    Element which references other Articles
+    """
+
+    supertitle = zope.schema.TextLine(
+        title=_('Supertitle'),
+        description=_('Please take care of capitalisation.'),
+        required=False,
+        max_length=70)
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        required=False,
+        max_length=70)
+
+    # related_content = zope.schema.Tuple(
+    #     title=_('Related Content'),
+    #     default=(),
+    #     max_length=3,
+    #     required=True,
+    #     value_type=zope.schema.Choice(
+    #         source=topic_reference_source))
+
+    # first_reference = zope.schema.Choice(
+    #     title=_("Article or Centerpage"),
+    #     source=topic_reference_source,
+    #     required=True)
+    #
+    # second_reference = zope.schema.Choice(
+    #     title=_("Article or Centerpage"),
+    #     source=topic_reference_source)
+    #
+    # third_reference = zope.schema.Choice(
+    #     title=_("Article or Centerpage"),
+    #     source=topic_reference_source)
+
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False,
+        max_length=70)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=70)
+
+    def values():
+        """
+        List of referenced content.
+        :return: List of IArticles
+        """

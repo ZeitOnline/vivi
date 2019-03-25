@@ -578,6 +578,28 @@
     weight="10"
     />
 
+  <!-- topicbox -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ITopicbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-topicbox"
+    class=".edit.EditTopicbox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ITopicbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-topicbox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+
   <!-- division -->
 
   <browser:viewlet
