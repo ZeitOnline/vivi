@@ -568,5 +568,5 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     def values():
         """
-        Iterable of IArticles
+        Iterable of ICMSContent
         """
