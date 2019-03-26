@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 from zope.testing import doctest
-import BaseHTTPServer
 import __future__
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import celery_longterm_scheduler
 import contextlib
 import copy
+import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.jslint
 import gocept.selenium
@@ -20,12 +20,8 @@ import os
 import pkg_resources
 import plone.testing
 import pytest
-import random
 import re
-import socket
 import sys
-import threading
-import time
 import transaction
 import unittest
 import urllib2
@@ -221,78 +217,31 @@ def celery_ping():
     return 'pong'
 
 
-class HTTPServer(BaseHTTPServer.HTTPServer):
-    # shutdown mechanism borrowed from gocept.selenium.static.HTTPServer
+class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
-    _continue = True
+    def do_GET(self):
+        length = int(self.headers.get('content-length', 0))
+        self.requests.append(dict(
+            verb=self.command,
+            path=self.path,
+            body=self.rfile.read(length) if length else None,
+        ))
+        self.send_response(self.response_code)
+        self.end_headers()
+        self.wfile.write(self.response_body)
 
-    def __init__(self, *args):
-        BaseHTTPServer.HTTPServer.__init__(self, *args)
-        self.errors = []
-
-    def handle_error(self, request, client_address):
-        self.errors.append((request, client_address))
-
-    def serve_until_shutdown(self):
-        while self._continue:
-            self.handle_request()
-
-    def shutdown(self):
-        self._continue = False
-        # We fire a last request at the server in order to take it out of the
-        # while loop in `self.serve_until_shutdown`.
-        try:
-            urllib2.urlopen(
-                'http://%s:%s/die' % (self.server_name, self.server_port),
-                timeout=1)
-        except (socket.timeout, urllib2.URLError):
-            # If the server is already shut down, we receive a socket error,
-            # which we ignore.
-            pass
-        self.server_close()
+    do_POST = do_GET
+    do_PUT = do_GET
+    do_DELETE = do_GET
 
 
-def HTTPServerLayer(request_handler):
-    """Factory for a layer which opens a HTTP port."""
-    module = inspect.stack()[1][0].f_globals['__name__']
-    port = random.randint(30000, 40000)
+class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 
-    def setUp(cls):
-        server_address = ('localhost', port)
-        cls.httpd = HTTPServer(server_address, request_handler)
-        cls.thread = threading.Thread(target=cls.httpd.serve_until_shutdown)
-        cls.thread.daemon = True
-        cls.thread.start()
-        # Wait as it sometimes takes a while to get the server started.
-        # XXX this is a little kludgy
-        time.sleep(0.001)
-
-    def tearDown(cls):
-        cls.httpd.shutdown()
-        cls.thread.join()
-
-    def testTearDown(cls):
-        cls.httpd.errors[:] = []
-        request_handler.tearDown()
-
-    layer = type('HTTPLayer(%s)' % port, (object,), dict(
-        __module__=module,
-        setUp=classmethod(setUp),
-        tearDown=classmethod(tearDown),
-        testTearDown=classmethod(testTearDown),
-    ))
-    return layer, port
-
-
-class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    """Handler for testing which does not log to STDOUT."""
-
-    def log_message(self, format, *args):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
+    def testSetUp(self):
+        super(HTTPLayer, self).testSetUp()
+        self['request_handler'].requests = []
+        self['request_handler'].response_body = '{}'
+        self['request_handler'].response_code = 200
 
 
 cms_product_config = """\
