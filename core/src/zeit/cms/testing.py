@@ -151,7 +151,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
     queues = (
         'default', 'publish_homepage', 'publish_highprio', 'publish_lowprio',
-        'publish_default', 'publish_timebased')
+        'publish_default', 'publish_timebased', 'webhook')
     default_queue = 'default'
 
     def setUp(self):
