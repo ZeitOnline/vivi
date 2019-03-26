@@ -528,12 +528,12 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_('Supertitle'),
         description=_('Please take care of capitalisation.'),
         required=False,
-        max_length=70)
+        max_length=30)
 
     title = zope.schema.TextLine(
         title=_("Title"),
         required=True,
-        max_length=70)
+        max_length=30)
 
     first_reference = zope.schema.Choice(
         title=_("Reference"),
@@ -555,13 +555,12 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     link = zope.schema.TextLine(
         title=_('Link'),
-        required=False,
-        max_length=70)
+        required=False)
 
     link_text = zope.schema.TextLine(
         title=_("Linktext"),
         required=False,
-        max_length=70)
+        max_length=30)
 
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
