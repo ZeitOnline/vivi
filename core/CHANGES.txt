@@ -5,7 +5,7 @@ zeit.arbeit changes
 1.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 1.2.3 (2017-10-19)
