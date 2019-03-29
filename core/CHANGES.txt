@@ -2,7 +2,7 @@ zeit.content.volume changes
 ===========================
 
 
-1.11.4 (unreleased)
+1.11.4 (2019-03-29)
 -------------------
 
 - PERF: Don't grok browser packages by default
