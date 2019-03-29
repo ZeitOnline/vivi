@@ -2,7 +2,7 @@ zeit.content.modules changes
 ============================
 
 
-1.3.5 (unreleased)
+1.3.5 (2019-03-29)
 ------------------
 
 - PERF: Perform vivi-only import only when needed, to improve zeit.web
