@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.campus',
-    version='1.6.10',
+    version='1.6.11.dev0',
     author='Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
