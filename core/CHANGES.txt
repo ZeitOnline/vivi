@@ -2,7 +2,7 @@ zeit.arbeit changes
 ====================
 
 
-1.2.4 (unreleased)
+1.2.4 (2019-03-29)
 ------------------
 
 - PERF: Don't grok browser packages by default
