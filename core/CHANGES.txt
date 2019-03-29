@@ -4,7 +4,7 @@ zeit.content.rawxml changes
 0.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 0.5.1 (2016-12-15)
