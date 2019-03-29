@@ -2,7 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:grok="http://namespaces.zope.org/grok">
 
-  <grok:grok package="." />
+  <grok:grok package="." exclude="browser" />
 
   <adapter factory=".gallery.galleryentry_factory" />
   <adapter factory=".gallery.get_visible_entry_count_for_gallery"

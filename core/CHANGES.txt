@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.9.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 2.9.0 (2019-01-09)
