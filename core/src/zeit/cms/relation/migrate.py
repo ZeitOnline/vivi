@@ -2,7 +2,6 @@ import sys
 import transaction
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
-import zeit.cms.testing
 import zope.component
 import zope.site.hooks
 
@@ -20,6 +19,7 @@ def dump_references(root):
 
 
 def load_references(root):
+    import zeit.cms.testing
     zeit.cms.testing.create_interaction(u'zope.manager')
     _index(root, [x.strip() for x in sys.stdin.readlines()])
 

@@ -11,7 +11,6 @@ import pkg_resources
 import pyramid_dogpile_cache2
 import sys
 import webob
-import werkzeug.debug
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.wsgi
@@ -51,6 +50,7 @@ class Application(object):
         app = zope.app.wsgi.getWSGIApplication(
             local_conf['zope_conf'], handle_errors=not debug)
         if debug:
+            import werkzeug.debug
             self.pipeline.insert(
                 0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
                     'evalex': True}))
