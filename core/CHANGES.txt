@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.28.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 3.28.3 (2019-03-05)
