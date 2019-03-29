@@ -4,7 +4,7 @@ zeit.push changes
 1.28.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 1.28.1 (2019-02-25)
