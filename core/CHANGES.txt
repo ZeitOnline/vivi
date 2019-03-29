@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.25.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 1.25.2 (2018-10-05)
