@@ -4,7 +4,7 @@ zeit.content.author changes
 2.9.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 2.9.7 (2019-02-13)
