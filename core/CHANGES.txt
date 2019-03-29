@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 2.4.0 (2018-05-07)
