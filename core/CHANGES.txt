@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.27.0 (unreleased)
+3.27.0 (2019-03-29)
 -------------------
 
 - PERF: Don't grok browser packages by default, since at least zeit.web does not
