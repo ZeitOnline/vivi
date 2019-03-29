@@ -1,6 +1,12 @@
 zeit.vgwort changes
 ===================
 
+2.4.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.4.1 (2019-03-29)
 ------------------
 
