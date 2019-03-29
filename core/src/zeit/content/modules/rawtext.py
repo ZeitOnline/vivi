@@ -1,7 +1,6 @@
 from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import UserDict
-import cssutils
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.property
@@ -114,6 +113,8 @@ class CSSInjector(grok.Adapter):
 
     @cachedproperty
     def vivi_css(self):
+        import cssutils
+
         embed = self.context.text_reference
         if not zeit.content.text.interfaces.IEmbed.providedBy(embed):
             return None
