@@ -1,7 +1,11 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml">
+
+  <include package="grokcore.component" file="meta.zcml" />
+  <grok:grok package="." />
 
   <browser:page
     for="zope.location.interfaces.ISite"
