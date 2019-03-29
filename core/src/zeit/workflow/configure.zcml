@@ -3,7 +3,7 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:grok="http://namespaces.zope.org/grok">
 
-  <grok:grok package="."/>
+  <grok:grok package="." exclude="browser json xmlrpc" />
 
   <adapter factory=".workflow.ContentWorkflow"
     provides="zeit.workflow.interfaces.IContentWorkflow"

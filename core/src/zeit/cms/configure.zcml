@@ -9,7 +9,7 @@
   <include package="grokcore.view"/>
   <include file="meta.zcml" />
 
-  <grok:grok package="." exclude="testcontenttype" />
+  <grok:grok package="." exclude="browser celery testcontenttype" />
 
   <!-- Include requirements -->
   <include package="zeit.cms" file="securitypolicy.zcml" />

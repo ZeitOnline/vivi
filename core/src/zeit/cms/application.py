@@ -4,8 +4,11 @@ import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
+import fnmatch
 import grokcore.component as grok
+import grokcore.component.zcml
 import logging.config
+import martian
 import os
 import pkg_resources
 import pyramid_dogpile_cache2
@@ -199,3 +202,35 @@ else:
             if isinstance(fmt, basestring) and fmt.strip().startswith('{'):
                 fmt = ast.literal_eval(fmt)
             super(FluentRecordFormatter, self).__init__(fmt, **kw)
+
+
+# Backport multiple exclude from grokcore.component-2.7, since updating breaks
+# (at least) lots of our tests, in totally unclear ways.
+grokcore.component.zcml.IGrokDirective._InterfaceClass__attrs['exclude'] = (
+    zope.configuration.fields.Tokens(
+        title=u"Exclude",
+        description=u"Names (which might contain unix shell-style wildcards) "
+                    u"to be excluded in the grokking process.",
+        required=False,
+        value_type=zope.schema.TextLine()))
+
+
+def do_grok(dotted_name, config, extra_exclude=None):
+    if extra_exclude is not None:
+
+        def exclude_filter(name):
+            if grokcore.component.zcml.skip_tests(name):
+                return True
+            for exclude in extra_exclude:
+                if fnmatch.fnmatch(name, exclude):
+                    return True
+            return False
+    else:
+        exclude_filter = grokcore.component.zcml.skip_tests
+
+    martian.grok_dotted_name(
+        dotted_name, grokcore.component.zcml.the_module_grokker,
+        exclude_filter=exclude_filter, config=config)
+
+
+grokcore.component.zcml.do_grok = do_grok
