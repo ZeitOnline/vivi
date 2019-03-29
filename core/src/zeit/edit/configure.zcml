@@ -3,7 +3,7 @@
   xmlns:grok="http://namespaces.zope.org/grok">
 
   <grok:grok package=".meta" />
-  <grok:grok package="." />
+  <grok:grok package="." exclude="browser" />
 
   <class class=".rule.ValidatingWorkflow">
     <require
