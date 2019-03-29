@@ -4,7 +4,7 @@ zeit.content.link changes
 2.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 2.2.4 (2018-10-05)
