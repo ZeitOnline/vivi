@@ -1,6 +1,12 @@
 zeit.content.author changes
 ===========================
 
+2.9.9 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.9.8 (2019-03-29)
 ------------------
 
