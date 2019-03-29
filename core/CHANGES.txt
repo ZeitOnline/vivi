@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.22.15 (unreleased)
+1.22.15 (2019-03-29)
 --------------------
 
 - PERF: Don't grok browser packages by default
