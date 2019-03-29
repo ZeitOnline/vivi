@@ -1,1 +1,1 @@
-import suds_ext
+# python package

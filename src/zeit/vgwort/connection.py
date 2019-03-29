@@ -1,4 +1,5 @@
 import suds
+import suds_ext  # activate monkeypatches
 import logging
 import suds.cache
 import suds.client
