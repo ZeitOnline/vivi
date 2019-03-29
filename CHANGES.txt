@@ -5,7 +5,7 @@ zeit.magazin changes
 1.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PERF: Don't grok browser packages by default
 
 
 1.5.1 (2018-08-06)
