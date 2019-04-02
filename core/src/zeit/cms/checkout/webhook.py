@@ -3,6 +3,7 @@ import requests
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zope.app.appsetup.product
+import zeit.cms.celery
 
 
 @grok.subscribe(
