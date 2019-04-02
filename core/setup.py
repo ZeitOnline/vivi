@@ -32,7 +32,7 @@ setup(
         'plone.testing',
         'requests',
         'setuptools',
-        'zeit.cms >= 3.27.0.dev0',
+        'zeit.cms >= 3.28.0.dev0',
         'zeit.content.author',
         'zeit.content.article',
         'zeit.content.gallery',
