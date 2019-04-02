@@ -2,7 +2,7 @@ zeit.cms changes
 ================
 
 
-3.28.0 (unreleased)
+3.28.0 (2019-04-02)
 -------------------
 
 - IR-36: If configured, POST content uniqueId to HTTP webhook after checkin
