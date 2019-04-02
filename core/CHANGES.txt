@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-3.27.1 (unreleased)
+3.27.1 (2019-04-02)
 -------------------
 
 - FIX: Add missing import
