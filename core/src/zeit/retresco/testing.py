@@ -16,33 +16,9 @@ import zeit.push.testing
 import zeit.workflow.testing
 
 
-class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
-
-    def do_GET(self):
-        length = int(self.headers.get('content-length', 0))
-        self.requests.append(dict(
-            verb=self.command,
-            path=self.path,
-            body=self.rfile.read(length) if length else None,
-        ))
-        self.send_response(self.response_code)
-        self.end_headers()
-        self.wfile.write(self.response_body)
-
-    do_POST = do_GET
-    do_PUT = do_GET
-    do_DELETE = do_GET
-
-
-class HTTPLayer(gocept.httpserverlayer.custom.Layer):
-
-    def testSetUp(self):
-        super(HTTPLayer, self).testSetUp()
-        self['request_handler'].requests = []
-        self['request_handler'].response_body = '{}'
-        self['request_handler'].response_code = 200
-
-HTTP_LAYER = HTTPLayer(RequestHandler, name='HTTPLayer', module=__name__)
+HTTP_LAYER = zeit.cms.testing.HTTPLayer(
+    zeit.cms.testing.RecordingRequestHandler,
+    name='HTTPLayer', module=__name__)
 
 
 product_config = """
