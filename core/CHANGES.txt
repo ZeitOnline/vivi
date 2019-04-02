@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.44.5 (unreleased)
+3.44.5 (2019-04-02)
 -------------------
 
 - ZON-5168: Add additional Adplaces for ad-modul
