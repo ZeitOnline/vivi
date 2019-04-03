@@ -7,6 +7,18 @@ zeit.content.article changes
 - ZON-5187: Add topic box article module
 
 
+3.44.5 (2019-04-02)
+-------------------
+
+- ZON-5168: Add additional Adplaces for ad-modul
+
+
+3.44.4 (2019-03-29)
+-------------------
+
+- PERF: Don't grok browser packages by default
+
+
 3.44.3 (2019-02-19)
 -------------------
 

@@ -437,10 +437,17 @@ class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
         (u'desktop_4', 'Desktop: 4'),
         (u'desktop_5', 'Desktop: 5'),
         (u'desktop_8', 'Desktop: 8'),
+        (u'desktop_41', 'Desktop: 41'),
+        (u'desktop_42', 'Desktop: 42'),
+        (u'desktop_43', 'Desktop: 43'),
         (u'mobile_1', 'Mobile: 1'),
         (u'mobile_3', 'Mobile: 3'),
         (u'mobile_4', 'Mobile: 4'),
-        (u'ctm', 'Content Marketing Teaser')
+        (u'mobile_41', 'Mobile: 41'),
+        (u'mobile_42', 'Mobile: 42'),
+        (u'mobile_43', 'Mobile: 43'),
+        (u'ctm', 'Content Marketing Teaser'),
+        (u'special', 'Desktop: 3 und Mobil: 1')
     ])
 
 
