@@ -511,3 +511,68 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
         min=datetime.date.today().year,
         default=datetime.date.today().year,
     )
+
+
+class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    def __init__(self, allow_cp=False):
+        self.allow_cp = allow_cp
+
+    @property
+    def check_interfaces(self):
+        if not self.allow_cp:
+            return (zeit.content.article.interfaces.IArticle, )
+        return (zeit.content.article.interfaces.IArticle,
+                zeit.content.cp.interfaces.ICenterPage)
+
+
+class ITopicbox(zeit.edit.interfaces.IBlock):
+    """
+    Element which references other Articles
+    """
+
+    supertitle = zope.schema.TextLine(
+        title=_('Supertitle'),
+        description=_('Please take care of capitalisation.'),
+        required=False,
+        max_length=30)
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        required=True,
+        max_length=30)
+
+    first_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article or cp here"),
+        source=TopicReferenceSource(allow_cp=True),
+        required=True)
+
+    second_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    third_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    referenced_cp = zope.interface.Attribute(
+        'Referenced CP or None')
+
+    def values():
+        """
+        Iterable of ICMSContent
+        """

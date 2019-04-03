@@ -1,10 +1,10 @@
 zeit.content.article changes
 ============================
 
-3.44.6 (unreleased)
+3.45.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5187: Add topic box article module
 
 
 3.44.5 (2019-04-02)

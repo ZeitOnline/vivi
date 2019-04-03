@@ -387,3 +387,16 @@ class EditMail(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'mail.{0}'.format(self.context.__name__)
+
+
+class EditTopicbox(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.ITopicbox).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit topic box')
+
+    @property
+    def prefix(self):
+        return 'topicbox.{0}'.format(self.context.__name__)

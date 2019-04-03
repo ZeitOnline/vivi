@@ -8,7 +8,6 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_puzzle_inline_form_saves_values(self):
         self.get_article(with_empty_block=True)
         b = self.browser
-        b.handleErrors = False
         b.open(
             'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
         b.getControl('Puzzle').displayValue = ['Scrabble']

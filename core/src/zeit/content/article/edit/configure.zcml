@@ -295,6 +295,17 @@
       />
   </class>
 
+  <class class=".topicbox.Topicbox">
+    <require
+      interface=".interfaces.ITopicbox"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITopicbox"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".box.Box">
     <require
       interface=".interfaces.IBox"

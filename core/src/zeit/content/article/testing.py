@@ -3,8 +3,6 @@ import gocept.selenium
 import pkg_resources
 import plone.testing
 import re
-import shutil
-import tempfile
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
