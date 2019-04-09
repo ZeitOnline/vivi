@@ -55,6 +55,13 @@ class SimpleUUID(object):
 @zope.component.adapter(zeit.cms.content.interfaces.IUUID)
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 def uuid_to_content(uuid):
+    unique_id = resolve_uuid(uuid)
+    if not unique_id:
+        return None
+    return zeit.cms.interfaces.ICMSContent(unique_id, None)
+
+
+def resolve_uuid(uuid):
     connector = zope.component.getUtility(
         zeit.connector.interfaces.IConnector)
     uuid_var = zeit.connector.search.SearchVar(
@@ -65,5 +72,4 @@ def uuid_to_content(uuid):
     if len(result) > 1:
         log.critical('There are %s objects for uuid %s. Using first one.' % (
             len(result), uuid))
-    unique_id = result[0][0]
-    return zeit.cms.interfaces.ICMSContent(unique_id, None)
+    return result[0][0]

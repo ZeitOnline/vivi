@@ -139,24 +139,25 @@ class API(object):
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
 
-        content = None
         if 'uuid' in self.request.form:
-            content = zeit.cms.interfaces.ICMSContent(
-                zeit.cms.content.interfaces.IUUID(self.request.form['uuid']),
-                None)
+            uniqueId = zeit.cms.content.contentuuid.resolve_uuid(
+                zeit.cms.content.interfaces.IUUID(self.request.form['uuid']))
         elif 'uniqueId' in self.request.form:  # mostly for convenience/tests
             uniqueId = self.request.form['uniqueId']
             content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+            if content is None:
+                uniqueId = None
         else:
             self.request.response.setStatus(400)
             return json.dumps(
                 {'message': 'GET parameter uuid or uniqueId is required'})
-
-        if content is None:
+        if not uniqueId:
             self.request.response.setStatus(404)
             return json.dumps({'message': 'Content not found'})
 
-        lock = zope.app.locking.interfaces.ILockable(content).getLockInfo()
+        storage = zope.component.getUtility(
+            zope.app.locking.interfaces.ILockStorage)
+        lock = storage.getLock(DummyContent(uniqueId))
         if lock is not None:
             self.request.response.setStatus(409)
             result = {
@@ -169,3 +170,15 @@ class API(object):
             result = {'locked': False, 'owner': None, 'until': None}
 
         return json.dumps(result)
+
+
+class DummyContent(object):
+    """Helper so we don't have to resolve ICMSContent, since ILockStorage uses a
+    ICMSContent-based API, even though it only uses the uniqueId (to pass it to
+    IConnector).
+    """
+
+    zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+
+    def __init__(self, uniqueId):
+        self.uniqueId = uniqueId

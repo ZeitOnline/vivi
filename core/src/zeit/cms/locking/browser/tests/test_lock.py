@@ -43,6 +43,13 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assert_json({'locked': True, 'owner': 'zope.user',
                           'until': '2019-04-15T18:20:00+00:00'})
 
+    def test_resolves_uuid(self):
+        b = self.browser
+        # mock connector search() always returns
+        # http://xml.zeit.de/online/2007/01/Somalia
+        b.open('http://localhost/@@lock_status?uuid=dummy')
+        self.assertEqual('200 Ok', b.headers['Status'])
+
     def test_status_404_for_nonexistent(self):
         b = self.browser
         with self.assertRaises(urllib2.HTTPError) as info:
@@ -50,9 +57,8 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
                    '?uniqueId=http://xml.zeit.de/nonexistent')
             self.assertEqual(404, info.exception.status)
 
-    def test_resolves_uuid(self):
-        b = self.browser
-        # mock connector search() always returns
-        # http://xml.zeit.de/online/2007/01/Somalia
-        b.open('http://localhost/@@lock_status?uuid=dummy')
-        self.assertEqual('200 Ok', b.headers['Status'])
+        with self.assertRaises(urllib2.HTTPError) as info:
+            with mock.patch('zeit.connector.mock.Connector.search') as search:
+                search.return_value = None
+                b.open('http://localhost/@@lock_status?uuid=dummy')
+            self.assertEqual(404, info.exception.status)
