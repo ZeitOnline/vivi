@@ -1,11 +1,12 @@
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import json
 import zeit.cms.locking.browser.interfaces
 import zeit.cms.locking.interfaces
 import zeit.connector.interfaces
 import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.i18n
-from zeit.cms.i18n import MessageFactory as _
 
 
 def _stealable(form, action):
@@ -131,3 +132,40 @@ def get_locking_indicator(context, request):
 def get_locking_indicator_for_listing(context, request):
     return zope.component.getMultiAdapter(
         (context.context, request), name='get_locking_indicator')
+
+
+class API(object):
+
+    def __call__(self):
+        self.request.response.setHeader('Content-Type', 'application/json')
+
+        content = None
+        if 'uuid' in self.request.form:
+            content = zeit.cms.interfaces.ICMSContent(
+                zeit.cms.content.interfaces.IUUID(self.request.form['uuid']),
+                None)
+        elif 'uniqueId' in self.request.form:  # mostly for convenience/tests
+            uniqueId = self.request.form['uniqueId']
+            content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+        else:
+            self.request.response.setStatus(400)
+            return json.dumps(
+                {'message': 'GET parameter uuid or uniqueId is required'})
+
+        if content is None:
+            self.request.response.setStatus(404)
+            return json.dumps({'message': 'Content not found'})
+
+        lock = zope.app.locking.interfaces.ILockable(content).getLockInfo()
+        if lock is not None:
+            self.request.response.setStatus(409)
+            result = {
+                'locked': True,
+                'owner': lock.principal_id,
+                'until': (lock.locked_until.isoformat()
+                          if lock.locked_until else None),
+            }
+        else:
+            result = {'locked': False, 'owner': None, 'until': None}
+
+        return json.dumps(result)

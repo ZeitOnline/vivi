@@ -35,4 +35,11 @@
     sort="80"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="lock_status"
+    class=".lock.API"
+    permission="zope.Public"
+    />
+
 </configure>
