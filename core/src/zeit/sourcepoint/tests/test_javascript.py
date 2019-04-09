@@ -1,5 +1,5 @@
 from datetime import datetime
-from zeit.sourcepoint.testing import clock
+from zeit.cms.testing import clock
 import mock
 import transaction
 import zeit.cms.testing

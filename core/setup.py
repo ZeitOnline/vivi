@@ -24,7 +24,7 @@ setup(
         'requests',
         'setuptools',
         'transaction',
-        'zeit.cms',
+        'zeit.cms >= 3.28.1.dev0',
         'zeit.content.text',
         'zope.component',
         'zope.interface',
