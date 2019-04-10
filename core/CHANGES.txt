@@ -2,7 +2,7 @@ zeit.cms changes
 ================
 
 
-3.29.0 (unreleased)
+3.29.0 (2019-04-10)
 -------------------
 
 - IR-54: Implement `/@@lock_status?uuid=` API
