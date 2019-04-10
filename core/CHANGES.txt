@@ -2,10 +2,10 @@ zeit.content.cp changes
 =======================
 
 
-3.28.4 (unreleased)
+3.29.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4655: Add RSS Automic Area
 
 
 3.28.3 (2019-03-05)

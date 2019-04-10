@@ -468,20 +468,21 @@ class RSSFeedContentQuery(ContentQuery):
             return []
         items = []
         try:
-            response = self._get_feed()
-            xml = lxml.etree.fromstring(response.content)
+            content = self._get_feed(self.rss_feed.url,
+                                     self.rss_feed.timeout)
+            xml = lxml.etree.fromstring(content)
         except (requests.exceptions.RequestException,
                 lxml.etree.XMLSyntaxError), e:
             log.debug('Could not fetch feed {}: {}'.format(
                 self.rss_feed.url, e))
             return []
         for item in xml.xpath('/rss/channel/item'):
-            link = RSSLink(item)
+            link = RSSLink(item, self.rss_feed)
             items.append(link)
         return items
 
-    def _get_feed(self):
-        return requests.get(self.rss_feed.url, timeout=self.rss_feed.timeout)
+    def _get_feed(self, url, timeout):
+        return requests.get(url, timeout=timeout).content
 
 
 class IRSSLink(zeit.content.link.interfaces.ILink):
@@ -493,10 +494,11 @@ class RSSLink(object):
 
     zope.interface.implements(IRSSLink)
 
-    def __init__(self, xml):
+    def __init__(self, xml, feed=None):
         self.xml = xml
         self.__name__ = None
         self.__parent__ = None
+        self.feed = feed
         self.uniqueId = self.url
 
     @cachedproperty

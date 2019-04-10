@@ -797,13 +797,13 @@ class AutomaticRSSTest(HideDupesTest):
         self.assertEqual('Lorem ipsum', teaser.supertitle)
 
     def test_rss_content_query_creates_teasers_from_feed(self):
-        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
-        url = source.factory.find(None, 'spektrum').url
         area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
-        area.rss_feed = 'spektrum'
+        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
+        spektrum_feed = source.factory.find(None, 'spektrum')
+        area.rss_feed = spektrum_feed.id
         rss_query = zeit.content.cp.automatic.RSSFeedContentQuery(area)
         m = requests_mock.Mocker()
-        m.get(url,
+        m.get(spektrum_feed.url,
               status_code=200,
               content=lxml.etree.tostring(self.feed_xml()))
         with m:
