@@ -1,11 +1,12 @@
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import json
 import zeit.cms.locking.browser.interfaces
 import zeit.cms.locking.interfaces
 import zeit.connector.interfaces
 import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.i18n
-from zeit.cms.i18n import MessageFactory as _
 
 
 def _stealable(form, action):
@@ -131,3 +132,53 @@ def get_locking_indicator(context, request):
 def get_locking_indicator_for_listing(context, request):
     return zope.component.getMultiAdapter(
         (context.context, request), name='get_locking_indicator')
+
+
+class API(object):
+
+    def __call__(self):
+        self.request.response.setHeader('Content-Type', 'application/json')
+
+        if 'uuid' in self.request.form:
+            uniqueId = zeit.cms.content.contentuuid.resolve_uuid(
+                zeit.cms.content.interfaces.IUUID(self.request.form['uuid']))
+        elif 'uniqueId' in self.request.form:  # mostly for convenience/tests
+            uniqueId = self.request.form['uniqueId']
+            content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+            if content is None:
+                uniqueId = None
+        else:
+            self.request.response.setStatus(400)
+            return json.dumps(
+                {'message': 'GET parameter uuid or uniqueId is required'})
+        if not uniqueId:
+            self.request.response.setStatus(404)
+            return json.dumps({'message': 'Content not found'})
+
+        storage = zope.component.getUtility(
+            zope.app.locking.interfaces.ILockStorage)
+        lock = storage.getLock(DummyContent(uniqueId))
+        if lock is not None:
+            self.request.response.setStatus(409)
+            result = {
+                'locked': True,
+                'owner': lock.principal_id,
+                'until': (lock.locked_until.isoformat()
+                          if lock.locked_until else None),
+            }
+        else:
+            result = {'locked': False, 'owner': None, 'until': None}
+
+        return json.dumps(result)
+
+
+class DummyContent(object):
+    """Helper so we don't have to resolve ICMSContent, since ILockStorage uses a
+    ICMSContent-based API, even though it only uses the uniqueId (to pass it to
+    IConnector).
+    """
+
+    zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+
+    def __init__(self, uniqueId):
+        self.uniqueId = uniqueId
