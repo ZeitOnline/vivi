@@ -2,6 +2,7 @@ import grokcore.component as grok
 import json
 import zc.sourcefactory.factories
 import zeit.cms.content.sources
+import zope.app.appsetup.product
 import zope.dottedname.resolve
 import zope.interface
 
@@ -13,12 +14,21 @@ class API(object):
 
         try:
             name = self.request.form['name']
+            name = self.map_short_name(name, default=name)
             source = zope.dottedname.resolve.resolve(name)
         except (KeyError, ImportError):
             raise zope.publisher.interfaces.NotFound(self.context, name)
 
         serialize = ISerializeSource(source().factory)
         return json.dumps(serialize())
+
+    def map_short_name(self, name, default=None):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        for item in config['source-api-mapping'].split(' '):
+            key, value = item.split('=')
+            if name == key:
+                return value
+        return default
 
 
 class ISerializeSource(zope.interface.Interface):

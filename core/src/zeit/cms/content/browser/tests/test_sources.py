@@ -49,3 +49,9 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
                '?name=zeit.cms.content.sources.ProductSource')
         data = json.loads(b.contents)
         self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+
+    def test_allows_configuring_short_names(self):
+        b = self.browser
+        b.open('http://localhost/@@source?name=product')
+        data = json.loads(b.contents)
+        self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
