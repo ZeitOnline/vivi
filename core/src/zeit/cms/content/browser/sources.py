@@ -75,3 +75,29 @@ class SerializeObjectSource(SerializeContextualSource):
 
     def getId(self, value):
         return self.context.getToken(None, value)
+
+
+class SerializeRessortSource(SerializeContextualSource):
+
+    grok.context(zeit.cms.content.sources.RessortSource)
+
+    def __call__(self):
+        # XXX 90% copy&paste from zeit.web.core.view_json.c1_channeltree()
+        result = []
+        for ressort in self.context._get_tree().xpath('/ressorts/ressort'):
+            item = {
+                'id': ressort.get('name').lower(),
+                'title': ressort.find('title').text
+            }
+            result.append(item)
+
+            children = []
+            for sub in ressort.xpath('subnavigation'):
+                subitem = {
+                    'id': sub.get('name').lower(),
+                    'title': sub.find('title').text
+                }
+                children.append(subitem)
+            if children:
+                item['children'] = children
+        return result

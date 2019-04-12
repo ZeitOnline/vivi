@@ -55,3 +55,14 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.open('http://localhost/@@source?name=product')
         data = json.loads(b.contents)
         self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+
+    def test_serializes_subressorts(self):
+        b = self.browser
+        b.open('http://localhost/@@source'
+               '?name=zeit.cms.content.sources.RessortSource')
+        data = json.loads(b.contents)
+        row = data[0]
+        self.assertEqual('deutschland', row['id'])
+        self.assertEqual('Deutschland', row['title'])
+        self.assertEqual(4, len(row['children']))
+        self.assertEqual('integration', row['children'][0]['id'])
