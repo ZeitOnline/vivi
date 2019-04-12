@@ -139,7 +139,7 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
     pass
 
 
-class ObjectSource(object):
+class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
 
