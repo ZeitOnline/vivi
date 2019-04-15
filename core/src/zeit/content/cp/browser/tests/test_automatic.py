@@ -17,14 +17,17 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         zope.security.management.endInteraction()
         zeit.cms.testing.create_interaction('zope.mgr')
 
+    def create_automatic_cp(self, browser):
+        zeit.content.cp.browser.testing.create_cp(browser)
+        browser.open('contents')
+        browser.getLink('Edit block automatic').click()
+        browser.getControl('Amount of teasers').value = '3'
+        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
+        browser.getControl(name='form.automatic').displayValue = ['automatic']
+
     def test_stores_elasticsearch_query_properties_in_xml(self):
         b = self.browser
-        zeit.content.cp.browser.testing.create_cp(b)
-        b.open('contents')
-        b.getLink('Edit block automatic').click()
-        b.getControl('Amount of teasers').value = '5'
-        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
-        b.getControl(name='form.automatic').displayValue = ['automatic']
+        self.create_automatic_cp(b)
         b.getControl('automatic-area-type', index=0).displayValue = [
             'elasticsearch-query']
         b.getControl('Elasticsearch raw query').value = (
@@ -37,7 +40,7 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         cp = list(wc.values())[0]
         self.assertEllipsis(
             """\
-<region...count="5" automatic="True" automatic_type="elasticsearch-query"...>...
+<region...count="3" automatic="True" automatic_type="elasticsearch-query"...>...
 <elasticsearch_raw_query>{..."match_all": {}...}</elasticsearch_raw_query>...
 <elasticsearch_raw_order>date:desc</elasticsearch_raw_order>...""",  # noqa
             lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
@@ -45,14 +48,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
     def test_stores_centerpage_properties_in_xml(self):
         # Create centerpage to reference later on
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-
         b = self.browser
-        zeit.content.cp.browser.testing.create_cp(b)
-        b.open('contents')
-        b.getLink('Edit block automatic').click()
-        b.getControl('Amount of teasers').value = '3'
-        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
-        b.getControl(name='form.automatic').displayValue = ['automatic']
+        self.create_automatic_cp(b)
         b.getControl('automatic-area-type', index=0).displayValue = [
             'centerpage']
         b.getControl(name='form.referenced_cp').value = 'http://xml.zeit.de/cp'
@@ -69,12 +66,7 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 
     def test_stores_topicpage_properties_in_xml(self):
         b = self.browser
-        zeit.content.cp.browser.testing.create_cp(b)
-        b.open('contents')
-        b.getLink('Edit block automatic').click()
-        b.getControl('Amount of teasers').value = '3'
-        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
-        b.getControl(name='form.automatic').displayValue = ['automatic']
+        self.create_automatic_cp(b)
         b.getControl('automatic-area-type', index=0).displayValue = [
             'topicpage']
         b.getControl(name='form.referenced_topicpage').value = 'tms-id'
@@ -87,6 +79,21 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
+            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+
+    def test_stores_rss_feed_in_xml(self):
+        b = self.browser
+        self.create_automatic_cp(b)
+        b.getControl('automatic-area-type', index=0).displayValue = [
+            'rss-feed']
+        b.getControl(name='form.rss_feed').value = ['zett']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
+<region...count="3" automatic="True" automatic_type="rss-feed" rss_feed="zett">...""",
             lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
 

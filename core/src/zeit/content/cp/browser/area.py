@@ -177,7 +177,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
             'is_complete_query',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
-            'referenced_topicpage', 'topicpage_filter')
+            'referenced_topicpage', 'topicpage_filter', 'rss_feed')
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
@@ -187,6 +187,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             '', ('automatic_type', 'automatic', 'count', 'hide_dupes')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-centerpage'), ('referenced_cp',)),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-rss-feed'), ('rss_feed',)),
         gocept.form.grouped.Fields(
             _('automatic-area-type-custom'), ('query', 'query_order')),
         gocept.form.grouped.Fields(

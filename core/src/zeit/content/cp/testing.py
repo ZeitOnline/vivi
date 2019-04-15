@@ -25,17 +25,18 @@ product_config = """
     module-config-source file://{fixtures}/blocks.xml
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-types-url file://{fixtures}/cp-types.xml
-    topicpage-filter-source file://{fixtures}/tests/fixtures/filter.json
-    feed-update-minimum-age 30
+    topicpage-filter-source file://{fixtures}/filter.json
     layout-image-path /data/cp-layouts
     layout-css-path /data/cp-layouts/layouts.css
     header-image-variant cinema
+    cp-automatic-feed-source file://{fixtures}/feeds.xml
 </product-config>
 
 <product-config zeit.edit>
-    rules-url file://{fixtures}/tests/fixtures/example_rules.py
+    rules-url file://{fixtures}/example_rules.py
 </product-config>
-""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
+""".format(fixtures=pkg_resources.resource_filename(
+    __name__, './tests/fixtures'))
 
 
 CP_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -76,7 +77,8 @@ class CPTemplateLayer(plone.testing.Layer):
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
-            new=pkg_resources.resource_string(__name__, 'cp-template.xml'))
+            new=pkg_resources.resource_string(
+                __name__, './tests/fixtures/cp-template.xml'))
         self['cp-template-patch'].start()
 
     def tearDown(self):

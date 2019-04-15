@@ -4,11 +4,14 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
+import lxml
 import operator
+import requests
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
+import zeit.content.link.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
@@ -444,3 +447,110 @@ class CenterpageContentQuery(ContentQuery):
             if len(result) >= self.rows:
                 break
         return result
+
+
+class RSSFeedContentQuery(ContentQuery):
+
+    grok.name('rss-feed')
+
+    def __call__(self):
+        self.total_hits = 0
+        feed_data = self._parse_feed()
+        self.total_hits = len(feed_data)
+        return feed_data
+
+    @property
+    def rss_feed(self):
+        return self.context.rss_feed
+
+    def _parse_feed(self):
+        if not self.rss_feed:
+            return []
+        items = []
+        try:
+            content = self._get_feed(self.rss_feed.url,
+                                     self.rss_feed.timeout)
+            xml = lxml.etree.fromstring(content)
+        except (requests.exceptions.RequestException,
+                lxml.etree.XMLSyntaxError), e:
+            log.debug('Could not fetch feed {}: {}'.format(
+                self.rss_feed.url, e))
+            return []
+        for item in xml.xpath('/rss/channel/item'):
+            link = RSSLink(item, self.rss_feed)
+            items.append(link)
+        return items
+
+    def _get_feed(self, url, timeout):
+        return requests.get(url, timeout=timeout).content
+
+
+class IRSSLink(zeit.content.link.interfaces.ILink):
+
+    image_url = zope.interface.Attribute('image_url')
+
+
+class RSSLink(object):
+
+    zope.interface.implements(IRSSLink)
+
+    def __init__(self, xml, feed=None):
+        self.xml = xml
+        self.__name__ = None
+        self.__parent__ = None
+        self.feed = feed
+        self.uniqueId = self.url
+
+    @cachedproperty
+    def title(self):
+        title = self.xml.findtext('title')
+        if title is not None:
+            return title.strip()
+
+    @cachedproperty
+    def teaserTitle(self):  # NOQA
+        return self.title
+
+    @cachedproperty
+    def supertitle(self):
+        supertitle = self.xml.findtext('category')
+        if supertitle is not None:
+            return supertitle.strip()
+
+    @cachedproperty
+    def teaserSupertitle(self):  # NOQA
+        return self.supertitle
+
+    @cachedproperty
+    def text(self):
+        return self.xml.findtext('description')
+
+    @cachedproperty
+    def teaserText(self):  # NOQA
+        return self.text
+
+    @cachedproperty
+    def url(self):
+        return self.xml.findtext('link')
+
+    @cachedproperty
+    def image_url(self):
+        enclosure = self.xml.find('enclosure')
+        if enclosure is not None:
+            return enclosure.get('url')
+
+    @cachedproperty
+    def is_ad(self):
+        nsmap = dict(
+            dc="http://purl.org/dc/elements/1.1/")
+        dc_type = self.xml.find('dc:type', namespaces=nsmap)
+
+        if dc_type is not None and getattr(dc_type, 'text') == 'native-ad':
+            return True
+        return False
+
+
+@grok.adapter(IRSSLink)
+@grok.implementer(zeit.cms.content.interfaces.IAccessCounter)
+def no_counter(context):
+    return None

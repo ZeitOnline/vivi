@@ -6,7 +6,6 @@ import json
 import logging
 import re
 import urllib2
-import urlparse
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -257,11 +256,43 @@ class AutomaticTypeSource(SimpleDictSource):
         ('topicpage', _('automatic-area-type-topicpage')),
         ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('rss-feed', _('automatic-area-type-rss-feed'))
     ])
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
         return value
+
+
+class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, url, timeout):
+        super(AutomaticFeed, self).__init__(id, title, None)
+        self.url = url
+        self.timeout = timeout
+
+
+class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
+                          zeit.cms.content.sources.SimpleContextualXMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'cp-automatic-feed-source'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
+            feed = AutomaticFeed(
+                unicode(node.get('id')),
+                unicode(node.text.strip()),
+                unicode(node.get('url')),
+                int(node.get('timeout', 2))
+            )
+            result[feed.id] = feed
+        return result
+
+
+AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 
 
 class QueryTypeSource(SimpleDictSource):
@@ -387,7 +418,9 @@ def automatic_area_can_read_teasers_automatically(data):
     if (data.automatic_type == 'elasticsearch-query' and
             data.elasticsearch_raw_query):
         return True
-
+    if (data.automatic_type == 'rss-feed' and
+            data.rss_feed):
+        return True
     return False
 
 
@@ -531,6 +564,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=False,
         required=False)
 
+    rss_feed = zope.schema.Choice(
+        title=_('RSS-Feed'),
+        source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
 
@@ -554,6 +592,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 error_message = _(
                     'Automatic area with teaser from elasticsearch query '
                     'requires a raw query.')
+            if data.automatic_type == 'rss-feed':
+                error_message = _(
+                    'Automatic area with rss-feed requires a given feed')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
@@ -618,15 +659,6 @@ class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """Returns an iterable content objects in a CenterPage, that are referenced
     by ITeaserBlocks, in the same order they appear in the CenterPage.
     """
-
-
-class ICPFeed(zope.interface.Interface):
-    """Feed section of a CenterPage"""
-
-    items = zope.interface.Attribute("tuple of feed items")
-
-    def set_items_and_supress_errors(items):
-        pass
 
 
 class IBlock(IElement, zeit.edit.interfaces.IBlock):
@@ -753,15 +785,6 @@ class IPlaylistBlock(IBlock):
     referenced_playlist = zope.schema.Choice(
         title=_("Playlist"),
         source=zeit.content.video.interfaces.PlaylistSource())
-
-
-def valid_feed_url(uri):
-    zope.schema.URI().fromUnicode(uri)  # May raise InvalidURI
-    if urlparse.urlparse(uri).scheme in ('http', 'https', 'file'):
-        return True
-    # NOTE: we hide the fact that we support (some) file urls.
-    raise zeit.cms.interfaces.ValidationError(
-        _('Only http and https are supported.'))
 
 
 class ICPExtraBlock(IBlock):

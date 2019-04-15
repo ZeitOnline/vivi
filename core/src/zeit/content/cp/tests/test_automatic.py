@@ -4,6 +4,8 @@ from zeit.content.cp.interfaces import IRenderedArea
 import json
 import lxml.etree
 import mock
+import pkg_resources
+import requests_mock
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -746,3 +748,64 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         tms.get_topicpage_documents.return_value = results
         tms_query = zeit.content.cp.automatic.TMSContentQuery(area)
         self.assertEqual(tms_query.total_hits, 42)
+
+
+class AutomaticRSSTest(HideDupesTest):
+
+    def feed_xml(self):
+        url = pkg_resources.resource_filename(
+            'zeit.content.cp', './tests/fixtures/feed_data.xml')
+        return lxml.etree.parse(url)
+
+    def test_spektrum_teaser_object_should_have_expected_attributes(self):
+        feed_xml = self.feed_xml()
+        items = feed_xml.xpath('/rss/channel/item')
+        item = zeit.content.cp.automatic.RSSLink(items[0])
+        self.assertEqual(
+            'Ein Dinosaurier mit einem Hals wie ein Baukran',
+            item.teaserTitle)
+        self.assertEqual('Qijianglong', item.teaserSupertitle)
+        self.assertEqual(
+            u'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
+            u'unbekannten, langhalsigen Dinosauriers.', item.teaserText)
+        self.assertTrue(item.image_url.endswith('spektrum/images/img1.jpg'))
+
+    def test_rss_link_object_with_empty_values_should_not_break(self):
+        xml_str = """
+            <item>
+                <title><![CDATA[]]></title>
+                <link><![CDATA[]]></link>
+                <description><![CDATA[]]></description>
+            </item>"""
+
+        xml = lxml.etree.fromstring(xml_str)
+        teaser = zeit.content.cp.automatic.RSSLink(xml)
+
+        self.assertEqual(None, teaser.teaserSupertitle)
+        self.assertEqual('', teaser.teaserTitle)
+        self.assertEqual('', teaser.teaserText)
+        self.assertEqual(None, teaser.image_url)
+
+    def test_supertitle_should_be_extracted_from_category(self):
+        xml_str = """
+            <item>
+                <category><![CDATA[Lorem ipsum]]></category>
+            </item>"""
+
+        teaser = zeit.content.cp.automatic.RSSLink(
+            lxml.etree.fromstring(xml_str))
+        self.assertEqual('Lorem ipsum', teaser.supertitle)
+
+    def test_rss_content_query_creates_teasers_from_feed(self):
+        area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
+        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
+        spektrum_feed = source.factory.find(None, 'spektrum')
+        area.rss_feed = spektrum_feed.id
+        rss_query = zeit.content.cp.automatic.RSSFeedContentQuery(area)
+        m = requests_mock.Mocker()
+        m.get(spektrum_feed.url,
+              status_code=200,
+              content=lxml.etree.tostring(self.feed_xml()))
+        with m:
+            result = rss_query()
+        self.assertEqual(3, len(result))
