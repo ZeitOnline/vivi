@@ -2,6 +2,7 @@ zeit.content.cp changes
 =======================
 
 3.29.0 (unreleased)
+-------------------
 
 - ZON-4655: Add RSS Automic Area
 
