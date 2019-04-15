@@ -7,7 +7,7 @@
   <!-- include zeit.edit early to make sure the grokkers are grokked. -->
   <include package="zeit.edit" />
 
-  <grok:grok package="." />
+  <grok:grok package="." exclude="browser" />
 
   <!-- CenterPage -->
 
