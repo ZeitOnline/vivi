@@ -2,8 +2,11 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:z3c="http://namespaces.zope.org/z3c"
   i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
 
   <include file="template.zcml" />
 
@@ -89,6 +92,13 @@
     lightbox="@@typechange-box"
     icon="/@@/zeit.cms/icons/workflow.png"
     sort="120"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="source"
+    class=".sources.API"
+    permission="zope.Public"
     />
 
 </configure>

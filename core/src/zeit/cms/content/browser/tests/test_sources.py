@@ -1,9 +1,9 @@
+# coding: utf-8
+import json
 import zeit.cms.testing
 
 
-class SourceSecurityTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.cms.testing.ZCML_LAYER
+class SourceSecurityTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
         super(SourceSecurityTest, self).setUp()
@@ -30,3 +30,39 @@ class SourceSecurityTest(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Updated on...', b.contents)
         self.assertEqual(
             ['Autotest'], b.getControl('Serie').displayValue)
+
+
+class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
+
+    def test_serializes_source_to_json(self):
+        self.browser.open('http://localhost/@@source'
+                          '?name=zeit.cms.content.sources.AccessSource')
+        self.assert_json([
+            {'id': 'free', 'title': u'frei verfügbar'},
+            {'id': 'registration', 'title': 'registrierungspflichtig'},
+            {'id': 'abo', 'title': 'abopflichtig'},
+        ])
+
+    def test_uses_id_for_object_source(self):
+        b = self.browser
+        b.open('http://localhost/@@source'
+               '?name=zeit.cms.content.sources.ProductSource')
+        data = json.loads(b.contents)
+        self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+
+    def test_allows_configuring_short_names(self):
+        b = self.browser
+        b.open('http://localhost/@@source?name=product')
+        data = json.loads(b.contents)
+        self.assertIn({'id': 'ZEDE', 'title': 'Zeit Online'}, data)
+
+    def test_serializes_subressorts(self):
+        b = self.browser
+        b.open('http://localhost/@@source'
+               '?name=zeit.cms.content.sources.RessortSource')
+        data = json.loads(b.contents)
+        row = data[0]
+        self.assertEqual('deutschland', row['id'])
+        self.assertEqual('Deutschland', row['title'])
+        self.assertEqual(4, len(row['children']))
+        self.assertEqual('integration', row['children'][0]['id'])
