@@ -2,7 +2,7 @@ zeit.cms changes
 ================
 
 
-3.30.0 (unreleased)
+3.30.0 (2019-04-23)
 -------------------
 
 - IR-80: Implement `/@@source?name=` API
