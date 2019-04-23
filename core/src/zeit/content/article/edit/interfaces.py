@@ -2,13 +2,13 @@ from zeit.content.article.i18n import MessageFactory as _
 from zeit.cms.application import CONFIG_CACHE
 import collections
 import datetime
-import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.article.interfaces
 import zeit.content.article.source
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
+import zeit.content.link.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
 import zeit.content.portraitbox.interfaces
@@ -517,13 +517,16 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
     def __init__(self, allow_cp=False):
         self.allow_cp = allow_cp
+        self._allowed_interfaces = (
+            zeit.content.article.interfaces.IArticle,
+            zeit.content.link.interfaces.ILink)
 
     @property
     def check_interfaces(self):
         if not self.allow_cp:
-            return (zeit.content.article.interfaces.IArticle, )
-        return (zeit.content.article.interfaces.IArticle,
-                zeit.content.cp.interfaces.ICenterPage)
+            return self._allowed_interfaces
+        return self._allowed_interfaces + (
+            zeit.content.cp.interfaces.ICenterPage, )
 
 
 class ITopicbox(zeit.edit.interfaces.IBlock):
@@ -544,19 +547,19 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     first_reference = zope.schema.Choice(
         title=_("Reference"),
-        description=_("Drag article or cp here"),
+        description=_("Drag article/cp/link here"),
         source=TopicReferenceSource(allow_cp=True),
         required=True)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
-        description=_("Drag article here"),
+        description=_("Drag article/link here"),
         source=TopicReferenceSource(),
         required=False)
 
     third_reference = zope.schema.Choice(
         title=_("Reference"),
-        description=_("Drag article here"),
+        description=_("Drag article/link here"),
         source=TopicReferenceSource(),
         required=False)
 

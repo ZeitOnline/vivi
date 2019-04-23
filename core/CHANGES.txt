@@ -4,7 +4,7 @@ zeit.content.article changes
 3.45.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5187: Add link object support for topicbox
 
 
 3.45.0 (2019-04-03)
