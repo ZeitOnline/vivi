@@ -15,7 +15,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     # bind(None) amounts to "clone".
     keywords = zeit.cms.content.interfaces.ICommonMetadata['keywords'].bind(
-        None)
+        object())
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
     body = zope.interface.Attribute('Convenience access to IEditableBody')
