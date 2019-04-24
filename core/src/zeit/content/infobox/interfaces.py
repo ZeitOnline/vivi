@@ -21,7 +21,8 @@ class IInfobox(zeit.cms.content.interfaces.IXMLContent,
              zc.form.field.HTMLSnippet(title=_("Text")))
         ))
 
-    ressort = zeit.cms.content.interfaces.ICommonMetadata['ressort'].bind(None)
+    ressort = zeit.cms.content.interfaces.ICommonMetadata['ressort'].bind(
+        object())
     ressort.context = None
     ressort.required = False
 
