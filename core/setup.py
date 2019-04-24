@@ -86,6 +86,7 @@ setup(
         'zope.app.form>=3.6.0',
         'zope.app.locking',
         'zope.app.preference',
+        'zope.app.renderer',
         'zope.app.securitypolicy',
         'zope.app.server',
         'zope.app.wsgi',
