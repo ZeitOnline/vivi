@@ -1,0 +1,77 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
+  i18n_domain="zeit.cms">
+
+  <!-- for testing only, not used in actual UI -->
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    name="edit-social.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.SocialEditForm"
+    permission="zeit.EditContent"
+    />
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.SocialAddForm"
+    name="zeit.cms.testcontenttype.AddSocial"
+    permission="zeit.AddContent"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="facebook-token.html"
+    class=".facebook.TokenForm"
+    permission="zeit.ChangeGlobalSettings"
+    />
+
+  <browser:viewlet
+    name="facebook-token"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".facebook.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.ChangeGlobalSettings"
+    sort="200"
+    />
+
+  <gocept:pagelet
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="generate-facebook-token"
+    class=".facebook.GenerateToken"
+    template="facebook-token.pt"
+    permission="zeit.ChangeGlobalSettings"
+    />
+
+  <browser:page
+    for="*"
+    name="breaking-banner-retract"
+    class=".banner.Retract"
+    template="banner-retract.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="zeit.push.payload_template_title"
+    class=".mobile.FindTitle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    name="payload-template"
+    class=".mobile.PreviewPayload"
+    template="preview-payload.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+</configure>

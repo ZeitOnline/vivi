@@ -1,0 +1,34 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <class class=".workflow.PushMessages">
+    <require
+      interface=".interfaces.IPushMessages"
+      permission="zeit.workflow.Publish"
+      />
+    <require
+      set_attributes="enabled date_last_pushed message_config"
+      permission="zeit.workflow.Publish"
+      />
+    <require
+      set_attributes="short_text"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <utility factory=".banner.homepage_banner"/>
+  <class class=".message.AccountData">
+    <require
+      interface=".interfaces.IAccountData"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAccountData"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>

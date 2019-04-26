@@ -1,0 +1,14 @@
+<tal:wrap i18n:domain="zeit.cms">
+<tal:block condition="view/error">
+<h3>Error</h3>
+
+<b tal:content="view/error" />
+
+<pre tal:content="view/error/traceback"/>
+</tal:block>
+
+<h3 tal:content="view/message/config/payload_template"/>
+
+<pre tal:content="view/rendered_linenumbers"/>
+
+</tal:wrap>

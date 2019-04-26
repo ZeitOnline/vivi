@@ -1,0 +1,69 @@
+{
+  "default_title": "Default title",
+  "messages": [
+  {
+    "options": {
+        "expiry": 1800
+    },
+    "audience": {
+      "OR": [
+        {
+          "group": "subscriptions",
+          "tag": "Eilmeldung"
+        }
+      ]
+    },
+    "device_types": [
+      "android"
+    ],
+    "notification": {
+      "actions": {
+        "open": {
+          "content": "{{zon_link}}?mytracking",
+          "type": "deep_link"
+        }
+      },
+      "alert": "{{text}}",
+      "android": {
+        "extra": {
+          "headline": "{{article.title}}",
+          "tag": "{{mobile_buttons}}",
+          "url": "{{zon_link}}?utm_campaign=eilmeldung&utm_content=zeitde_andpush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.andpush.link.x"
+        },
+        "priority": 2,
+        "title": "ZEIT ONLINE {{title}}"
+      }
+    }
+  },
+  {
+    "audience": {
+      "OR": [
+        {
+          "group": "subscriptions",
+          "tag": "Eilmeldung"
+        }
+      ]
+    },
+    "device_types": [
+      "ios"
+    ],
+    "notification": {
+      "actions": {
+        "open": {
+          "content": "{{app_link}}?utm_campaign=eilmeldung&utm_content=zeitde_iospush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.iospush.link.x",
+          "type": "deep_link"
+        }
+      },
+      "alert": "{{text}}",
+      "ios": {
+        "extra": {
+          "headline": "{{title}}",
+          "tag": "Eilmeldung",
+          "url": "{{zon_link}}?utm_campaign=eilmeldung&utm_content=zeitde_iospush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.iospush.link.x"
+        },
+        "sound": "chime.aiff",
+        "title": "{{article.title}}"
+      }
+    }
+  }
+]}
