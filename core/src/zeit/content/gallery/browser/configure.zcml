@@ -1,0 +1,215 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <adapter
+    factory="zeit.cms.browser.listing.CommonListRepresentation"
+    for="zeit.content.gallery.interfaces.IGallery
+    zope.publisher.interfaces.IPublicationRequest"
+    provides="zeit.cms.browser.interfaces.IListRepresentation"
+    />
+
+  <adapter factory=".gallery.gallery_browse_location" />
+  <adapter factory=".gallery.gallery_folder_browse_location" />
+
+  <browser:page
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".gallery.Index"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    />
+
+  <browser:page
+    for="..interfaces.IGallery"
+    permission="zope.View"
+    template="metadata.pt"
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.EditGallery"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DisplayGallery"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <!-- Add view -->
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.gallery.Add"
+    class=".form.AddGallery"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Gallery"
+  />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGallery"
+    name="object-details-body"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".details.Details"
+    template="details.pt"
+    permission="zope.View"
+  />
+
+  <gocept:pagelet
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="overview.html"
+    class=".overview.Overview"
+    template="overview.pt"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Images"
+    />
+
+  <browser:page
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".overview.Synchronise"
+    name="synchronise-with-image-folder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    name="synchronise-with-image-folder"
+    for="..interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".overview.SynchroniseMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.EditContent"
+    />
+
+
+  <!-- upload -->
+
+  <browser:viewlet
+    name="Upload"
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="upload.pt"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.EditContent"
+    sort="0"
+    selected="0"
+    />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="upload-image"
+    class=".overview.UploadImage"
+    permission="zeit.EditContent"
+    />
+
+
+  <!-- Gallery entries -->
+  <browser:page
+    for="..interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".form.EditEntry"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+
+  <browser:icon
+    for="zeit.content.gallery.interfaces.IGallery"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/galleryResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />
+
+  <browser:icon
+    for="zeit.content.gallery.interfaces.IGallery"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/galleryResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    />
+
+  <browser:page
+    name="metadata-preview"
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    permission="zope.View"
+    class=".gallery.MetadataPreview"
+    />
+
+  <!-- IMP -->
+
+  <gocept:pagelet
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp.html"
+    class=".imp.Imp"
+    permission="zope.View"
+    menu="zeit-context-views" title="Transform"
+    />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-scaled"
+    class=".imp.ScaledImage"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-crop"
+    class="zeit.imp.browser.scale.CropImage"
+    permission="zeit.AddContent"
+    />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGalleryEntry"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="imp-image-bar"
+    class=".imp.ImageBar"
+    permission="zope.View"
+    />
+
+  <!-- ticket -->
+
+  <adapter factory=".ticket.TicketTraverser" name="ticket" />
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="get-ticket"
+    class=".ticket.TicketIssuer"
+    permission="zope.Public"
+    />
+
+</configure>

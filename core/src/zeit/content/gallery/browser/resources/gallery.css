@@ -1,0 +1,178 @@
+.layout-hidden {
+  opacity: 0.3;
+}
+
+.layout-hidden:hover {
+  opacity: 1;
+}
+
+.wysiwyg-header .swfupload {
+  float: right;
+}
+
+.gallery {
+  clear: both;
+}
+
+
+.lightbox > .upload {
+  margin: 1em;
+  padding-left: 2em;
+  position: static;
+}
+
+.upload > .filename {
+  display: inline;
+}
+
+.upload.busy {
+  background-position: left center;
+  opacity: 1;
+}
+
+.upload > .progress {
+  float: left;
+  margin-right: 1em;
+  text-align: right;
+  width: 3em;
+}
+
+.upload > .progress:after {
+  content: "%";
+  padding-left: 0.25em;
+}
+
+
+table.gallery .image-column {
+  text-align: center;
+  width: 10em;
+  vertical-align: top;
+}
+
+table.gallery td {
+  padding-bottom: 1.5em;
+}
+
+table.gallery tr.layout-hidden {
+  display:none;
+}  
+
+table.gallery td div.handle {
+  background-color: #F2F2F2;
+  border: 1px solid #BBBBBB;
+  padding: 0.3em;
+  padding-left: 0.5em;
+  overflow:hidden;
+}  
+
+table.gallery td div.box {
+  border: 1px solid #BBBBBB;
+  border-top: 0px solid black;
+  padding:1em;
+  overflow:hidden;
+}  
+
+table.gallery td div.box div.image {
+  width:150px;
+  float:left;
+}
+
+table.gallery td div.box div.content {
+} 
+
+table.gallery .caption {
+  padding-bottom: 1em;
+}
+
+.gallery-show-image-link:before {
+  content: "[";
+}
+
+.gallery-show-image-link:after {
+  content: "]";
+}
+
+.handle a {
+  display:block;
+  background-repeat:no-repeat;
+  width:14px;
+  height: 14px;
+  float:left;
+  margin-right:5px;
+}
+
+table.gallery a.edit-image {
+  background-image: url("editimage.png");
+ }
+
+table.gallery a.cut-image {
+  background-image: url("cropimage.png");
+ }
+
+table.gallery a.show-image {
+  background-image: url("showimage.png");
+ }
+
+
+/* gallery object details */
+
+.object-details .gallery_details {
+	cursor: default;
+}
+
+.object-details .gallery_details .gallery_details_display img {
+	width: 540px;
+	height: auto;
+	display: block;
+	margin: auto;
+}
+
+.object-details .gallery_details .gallery_details_controls {
+  display: inline;
+  float: right;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.object-details .gallery_details .gallery_details_controls .button {
+	width: 20px;
+	height: 19px;
+	padding: 0;
+	display: inline-block;
+	background-position: -1px -481px, 0 0;
+	position: relative;
+	top: 5px;
+}
+
+.object-details .gallery_details .gallery_details_controls .button:hover {
+	background-position: -1px -511px, 0 0;
+}
+
+.object-details .image_details a[rel="remove"] {
+  float: right;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  margin-top: 0;
+  position: relative;
+}
+
+/* Some exception for teaser section */
+
+#edit-form-teaser .overlay-position {
+  float: right;
+}
+
+#edit-form-teaser .object-details .image_details a.edit-button {
+  margin-right: 8px;
+}
+
+
+/* following two rules should be replaced, once sprite is ready*/
+
+.object-details .gallery_details .gallery_details_controls .gallery_details_prev {
+	-moz-transform: rotate(90deg);
+}
+
+.object-details .gallery_details .gallery_details_controls .gallery_details_next {
+	-moz-transform: rotate(270deg);
+}

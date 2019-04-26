@@ -1,0 +1,83 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <adapter factory=".gallery.galleryentry_factory" />
+  <adapter factory=".gallery.get_visible_entry_count_for_gallery"
+           provides=".interfaces.IVisibleEntryCount" />
+  <adapter factory=".gallery.EntryXMLRepresentation" />
+  <subscriber handler=".gallery.update_gallery_on_entry_change" />
+
+  <utility
+    component=".interfaces.galleryFolderSource"
+    name="gallery-folders"
+    />
+
+  <class class=".gallery.Gallery">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <require
+      interface=".interfaces.IReadGallery"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IReadGallery"
+      permission="zeit.EditContent" />
+    <require
+      interface=".interfaces.IWriteGallery"
+      permission="zeit.EditContent" />
+  </class>
+
+  <interface
+    interface=".interfaces.IGallery"
+    type="zeit.cms.interfaces.ICMSContentType"
+    />
+
+  <!-- Entry -->
+  <class class=".gallery.GalleryEntry">
+    <require
+      interface=".interfaces.IGalleryEntry"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IGalleryEntry"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter factory=".gallery.HTMLContent" />
+
+  <!-- XXX deprecated, only kept around so that existing text can still be
+       accessed (see #8858) -->
+  <adapter factory=".gallery.EntryHTMLContent" />
+
+  <!-- References -->
+  <class class=".reference.GalleryReference" >
+    <require interface=".interfaces.IGalleryReference"
+             permission="zope.View" />
+    <require set_schema=".interfaces.IGalleryReference"
+             permission="zeit.EditContent" />
+  </class>
+  <adapter factory=".reference.gallery_reference_browse_location" />
+  <utility
+    component=".interfaces.gallerySource"
+    name="zeit.content.gallery"
+    />
+  <adapter factory=".reference.XMLReferenceUpdater" name="gallery" />
+
+  <!-- Metadata -->
+  <adapter factory=".gallery.EntryMetadata" />
+  <view
+    for=".interfaces.IGalleryEntry"
+    type="*"
+    name="metadata"
+    factory="zeit.content.image.interfaces.IImageMetadata"
+    />
+
+  <!-- IMP -->
+
+  <adapter factory=".imp.cropper_for_gallery" />
+  <adapter factory=".imp.GalleryStorer" />
+
+</configure>
