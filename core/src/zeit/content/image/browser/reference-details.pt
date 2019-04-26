@@ -1,0 +1,43 @@
+<div class="image_details" i18n:domain="zeit.cms">
+
+  <tal:infographic tal:condition="view/is_infographic">
+    <h3 class="title" tal:content="view/metadata/title"/>
+    <h4 class="subtitle" tal:content="view/metadata/caption"/>
+  </tal:infographic>
+
+  <div class="overlay-anchor">
+    <tal:block on-error="nothing">
+      <img tal:replace="structure context/target/@@preview/tag" />
+    </tal:block>
+    <div class="overlay"><div class="overlay-position">
+      <a class="button edit-button" i18n:translate="" target="_blank"
+         tal:attributes="href string:${context/target/@@absolute_url}">edit</a>
+    </div></div>
+  </div>
+
+  <p class="footer">
+    <span class="caption">
+      <tal:infographic tal:condition="view/is_infographic">
+        Quelle: <span tal:replace="view/metadata/origin">ZEIT</span>
+      </tal:infographic>
+      <tal:no-infographic tal:condition="not: view/is_infographic">
+        <span tal:replace="view/metadata/caption"/>
+      </tal:no-infographic>
+    </span>
+
+    <span class="copyright" tal:define="copyright view/copyright">
+      <span tal:replace="copyright/copyright | nothing">ZEIT</span>
+      (<a tal:attributes="href copyright/url | nothing"
+        tal:content="copyright/url | nothing">
+        http://...
+      </a>)
+    </span>
+  </p>
+
+  <div
+    class="inline-form"
+    tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
+    tal:content="structure context/@@edit.html">
+  </div>
+
+</div>

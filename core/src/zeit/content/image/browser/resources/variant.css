@@ -1,0 +1,207 @@
+#variant-content {
+    bottom: 1em;
+    position: absolute;
+    right: 42%;
+    width: 58%;
+    top: 0;
+}
+
+/* Container leaves 15px padding to fit in zoom bar, which has width of 15px */
+#variant-inner {
+    padding-right: 15px;
+}
+
+/* WARNING: Do not add border, padding or margin to child elements nor set
+   box-sizing to border-box, since any of those changes will screw up the
+   calculation of the focuspoint. */
+#variant-inner > .image-container {
+    width: 100%;
+    float: left;
+    position: relative;
+    margin-bottom: 0.5em;
+}
+
+/* Define default display value for input, so jQuery toggle will set the
+   initial value again rather setting display=block. */
+#variant-inner > input {
+    display: inline;
+}
+
+/* To float zoom bar aside image-container, we define it with effective width
+   of 0px = 15px (width) + -15px (margin-right). Thus it can always fit beside
+   another content. Since parent leaves padding of 15px, this is where the zoom
+   bar fits in. */
+.zoom-bar {
+    margin-top: 2%;
+    margin-right: -20px;
+    width: 8px;
+    height: 300px;
+    float: right;
+
+    background-image: url("slider-bar.gif");
+    background-repeat: repeat-y;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.zoom-bar .ui-slider-handle {
+    background-image: url("slider-handle.gif");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    left: 0;
+}
+
+/* Sliders for image enhancements should look like the slider from the old UI*/
+.image-enhancement-widget {
+    width: 19em;
+    margin-top: 1em;
+}
+
+/* Make CSS Selector more specific, to override `div.filter > input` */
+div.filter > input.image-enhancement-input {
+    left: 22em;
+    width: 2.5em;
+    right: auto;
+}
+
+.image-enhancement-bar {
+    background-image: url("slider-bar-horizontal.gif");
+    background-repeat: repeat-x;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.image-enhancement-bar .ui-slider-handle {
+    background-image: url("slider-handle-horizontal.gif");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    top: 0;
+}
+
+#variant-preview {
+    bottom: 1em;
+    left: 61%;
+    position: absolute;
+    overflow: auto;
+    right: 0;
+    top: 0;
+}
+
+.preview-container {
+    padding-bottom: 1.5em;
+}
+
+img.preview {
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.preview-title {
+    margin-left: 0.5em;
+}
+
+/* display=block is required to calculate the focuspoint right, since image is
+   an inline element and would be placed at the baseline of text, which leaves
+   ~2px below the image, which leads to miscalculations of the focuspoint */
+img.editor {
+    width: 100%;
+    display: block;
+}
+
+.circle {
+    width: 75px;
+    height: 75px;
+    margin-top: -37.5px;
+    margin-left: -37.5px;
+    background-image: url("crosshair.png");
+}
+
+.focuspoint {
+    position: absolute;
+    cursor: -moz-grab;
+}
+
+.focuspoint.ui-draggable-dragging {
+    cursor: -moz-grabbing;
+}
+
+.preview-container.active > .preview {
+    border: solid 6px rgba(130, 190, 255, 0.7);
+}
+
+.preview-container.active > .preview-title {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Only apply transparency if a variant preview was selected */
+.active-selection > .preview-container:not(.active) > .preview {
+    border: solid 1px rgba(0, 0, 0, 0.5);
+}
+.active-selection > .preview-container:not(.active) > .preview,
+.active-selection > .preview-container:not(.active) > .preview-title {
+    opacity: 0.5;
+}
+
+/* Cropper has a default background image, which is shown when the *image* is
+   moved rather the crop box. However we only allow to move the box. Sadly, the
+   Canvas is slightly smaller than the Container, thus the background is
+   visible as a "border". So we need to remove it ourselves. */
+.cropper-bg {
+    background-image: none !important;
+}
+
+/* Increase the size of the handles of the Cropper canvas. */
+.cropper-point {
+    height: 10px !important;
+    width: 10px !important;
+}
+
+.cropper-point.point-n {
+    top: -5px !important;
+    margin-left: -5px !important;
+}
+
+.cropper-point.point-e {
+    right: -5px !important;
+    margin-top: -5px !important;
+}
+
+.cropper-point.point-s {
+    bottom: -5px !important;
+    margin-left: -5px !important;
+}
+
+.cropper-point.point-w {
+    left: -5px !important;
+    margin-top: -5px !important;
+}
+
+.cropper-point.point-nw {
+    left: -5px !important;
+    top: -5px !important;
+}
+
+.cropper-point.point-ne {
+    right: -5px !important;
+    top: -5px !important;
+}
+
+.cropper-point.point-se {
+    bottom: -5px !important;
+    right: -5px !important;
+}
+
+.cropper-point.point-sw {
+    bottom: -5px !important;
+    left: -5px !important;
+}

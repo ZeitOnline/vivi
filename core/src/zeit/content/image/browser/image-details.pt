@@ -1,0 +1,25 @@
+<div class="image_details" i18n:domain="zeit.cms">
+
+  <div class="overlay-anchor">
+    <tal:block on-error="nothing">
+      <img tal:replace="structure context/@@preview/tag" />
+    </tal:block>
+    <div class="overlay"><div class="overlay-position">
+      <a class="button edit-button" i18n:translate="" target="_blank"
+         tal:attributes="href string:${context/@@absolute_url}">edit</a>
+    </div></div>
+  </div>
+
+  <span class="copyright" tal:define="copyright view/copyright">
+    <span tal:replace="copyright/copyright | nothing">ZEIT</span>
+    (<a tal:attributes="href copyright/url | nothing"
+      tal:content="copyright/url | nothing">
+      http://...
+    </a>)
+  </span>
+
+  <button i18n:translate="" tal:condition="view/metadata/caption" class="toggle_infos folded">
+  Image sub text</button>
+  <p style="display:none" class="folded_information picture_information"><span tal:content="structure view/metadata/caption"></span></p>
+
+</div>

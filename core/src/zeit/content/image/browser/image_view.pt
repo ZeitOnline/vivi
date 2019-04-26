@@ -1,0 +1,49 @@
+<div id="edit-form"
+  tal:define="image nocall:context/@@view.html"
+  i18n:domain="zeit.cms">
+  <table class="image-view-metadata">
+    <tr>
+      <td i18n:translate="">Type</td>
+      <td tal:content="context/mimeType">image/jpeg</td>
+    </tr>
+    <tr>
+      <td i18n:translate="">Dimensions</td>
+      <td>
+        <span tal:replace="image/width" />x<span tal:replace="image/height" />
+      </td>
+    </tr>
+  </table>
+  <a href="#" target="_new"
+    tal:attributes="href string:${context/@@absolute_url}/@@raw">
+    <img tal:replace="structure context/@@preview/tag" />
+  </a>
+  
+  <ol class="image-copyright">
+    <li tal:define="copyright view/copyright" tal:condition="view/copyright">
+      <span tal:replace="copyright/copyright">ZEIT</span> /
+      <span tal:replace="python: copyright['company_text'] or copyright['company'] or '-'">dpa</span>
+      (<a tal:attributes="href copyright/url"
+        tal:content="copyright/url">
+        http://...
+      </a><span tal:omit-tag="python:True" tal:condition="copyright/nofollow"> rel="nofollow"</span>)
+    </li>
+  </ol>
+  <div i18n:translate="">
+    Image title: <span tal:replace="view/metadata/title" i18n:name="caption" />
+  </div>
+  <div i18n:translate="">
+    ALT: <span tal:replace="view/metadata/alt" i18n:name="alt" />
+  </div>
+  <div i18n:translate="">
+    Image sub text: <span tal:replace="view/metadata/caption" i18n:name="caption" />
+  </div>
+  <div i18n:translate="">
+    Links to:
+    <a
+      tal:attributes="href view/metadata/links_to"
+      tal:content="view/metadata/links_to"
+      i18n:name="link">
+      http://...
+    </a><span tal:omit-tag="python:True" tal:condition="view/metadata/nofollow"> rel="nofollow"</span>
+  </div>
+</div>

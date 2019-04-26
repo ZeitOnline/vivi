@@ -1,0 +1,11 @@
+<tal:block i18n:domain="zeit.cms">
+
+<div id="variant-content">
+  <div id="variant-inner">
+  </div>
+</div>
+
+<div id="variant-preview">
+</div>
+
+</tal:block>

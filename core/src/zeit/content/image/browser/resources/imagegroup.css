@@ -1,0 +1,43 @@
+#copyright-box,
+.fieldname-copyright {
+  width: 100%;
+}
+
+#copyright-box td:first-child,
+.fieldname-copyright .field td:first-child {
+  width: 14em;
+}
+
+.fieldname-copyright label {
+  display: inline-flex;
+}
+
+/* Depending on the state of the ressource, the element order will differ. */
+#copyright-box .combinationFieldWidget tr:nth-of-type(3) .label:after, /* Bulk copyright lightbox */
+#copyright-box .combinationFieldWidget tr:nth-of-type(2) .label:after,
+.fieldname-copyright--edit tr:nth-of-type(2) .label:after,
+.fieldname-copyright--edit tr:nth-of-type(3) .label:after,
+/* First instead of second, because no JS resorting in display view.  */
+.fieldname-copyright--display tr:first-of-type .label:after,
+.fieldname-copyright--display tr:nth-of-type(3) .label:after,
+.fieldname-copyright--add tr:nth-of-type(2) .label:after,
+.fieldname-copyright--add tr:nth-of-type(3) .label:after {
+  color: #888;
+  content: '©';
+  float: right;
+  font-size: 17px;
+}
+
+.fieldname-copyright--display td {
+  padding-bottom: 0;
+}
+
+.fieldname-copyright--display tr:nth-of-type(2) {
+  position: relative;
+  top: -33px;
+}
+
+.fieldname-copyright--display tr:first-of-type {
+  position: relative;
+  top: 33px;
+}
