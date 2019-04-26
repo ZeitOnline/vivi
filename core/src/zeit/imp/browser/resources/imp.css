@@ -1,0 +1,172 @@
+/* CSS */
+
+.image-area {
+  overflow: hidden;
+  position: absolute;
+  right: 20em;
+  left: 0;
+  top: 0;
+  bottom: 14em;
+  cursor: -moz-grab;
+}
+
+#imp-image-area {
+  border: 1px solid black;
+}
+
+#imp-mask {
+  z-index: 1;
+}
+
+.dragging {
+    cursor: -moz-grabbing;
+}
+
+#imp-image-drag {
+  position: absolute;
+}
+
+#imp-image {
+  border: none;
+}
+
+#imp-loading-image {
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 20em;
+  left: 0;
+  bottom: 14em;
+  width: 220px;
+  height: 19px;
+  margin: auto;
+  z-index: 2;
+}
+
+#imp-loading-image > img {
+}
+
+#imp-zoom {
+    position: absolute;
+    bottom: 13em;
+    height: 1em;
+    left: 0;
+    right: 20em;
+}
+
+.uislidertip {
+    visibility: hidden;
+}
+
+#imp-metadata {
+  display: none;
+}
+
+#imp-configuration {
+  background-color: white;
+  bottom: 0;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top:0;
+  width: 19em;
+  z-index: 1;
+}
+
+#imp-image-bar {
+    position: absolute;
+    height: 12em;
+    bottom: 0;
+    left: 0;
+    right: 20em;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: 1px solid black;
+    padding-top: 0.5em;
+}
+
+#imp-image-bar div.image {
+    display: table-cell;
+    padding-right: 0.5em;
+    min-width: 6em;
+}
+
+#imp-image-bar div.image > img {
+    display: block;
+}
+
+#imp-image-bar div.image > span {
+    display: block;
+}
+
+#imp-configuration .widget.radio-group > label {
+    display: block;
+}
+
+#imp-configuration .widget.radio-group > label.cropped:after {
+  color: green;
+  content: "✔";
+}
+
+#imp-configuration .widget {
+  margin-bottom: 1em;
+}
+
+input.mask-size {
+    width: 3em;
+}
+
+input.mask-size[disabled="disabled"] {
+    background-color: #ddd;
+    background-image: none;
+    cursor: default;
+}
+
+#imp-configuration .widget.mask-size {
+    padding-left: 2.25em;
+    margin-bottom: 1em;
+}
+
+div.filter > input {
+    width: 4em;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+
+div.filter > label {
+    height: 2em;
+}
+
+#imp-prevnext {
+    margin-top: 2em;
+}
+
+/* full zoom of edit area */
+
+#imp-content-zoom-toggle {
+  display: block;
+  margin-top: 1em;
+}
+
+#content.imp-zoomed-content {
+  background-color: white;
+  bottom: 0;
+  left: 0;
+  margin 1em;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+#content.imp-zoomed-content .image-area {
+  bottom: 2em;
+}
+
+#content.imp-zoomed-content #imp-zoom {
+  bottom: 1em;
+}
+
+#content.imp-zoomed-content #imp-image-bar {
+  display: none;
+}

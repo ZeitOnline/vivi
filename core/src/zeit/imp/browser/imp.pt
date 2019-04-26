@@ -1,0 +1,111 @@
+<tal:block 
+  i18n:domain="zeit.cms"
+  tal:define="metadata context/@@metadata">
+
+  <div id="imp-image-area" class="image-area">
+    <div id="imp-image-drag">
+    </div>
+  </div>
+
+  <div id="imp-mask" class="image-area">
+  </div>
+
+  <div id="imp-loading-image">
+    <img tal:attributes="src string:${request/getApplicationURL}/fanstatic/zeit.cms/loading.gif" />
+  </div>
+
+  <div id="imp-metadata">
+    <div id="imp-width" tal:content="view/width" />
+    <div id="imp-height" tal:content="view/height" />
+    <div id="imp-image-url" tal:content="view/image/@@absolute_url" />
+  </div>
+
+  <div id="imp-zoom">
+    <div id="imp-zoom-slider" class="uislider"></div>
+  </div>
+
+  <div id="imp-configuration">
+    <form id="imp-configuration-form">
+      <div class="widget radio-group">
+        <label tal:repeat="scale view/scales">
+          <input type="radio" name="mask"
+            tal:attributes="value string:${scale/name}/${scale/width}/${scale/height}"
+            />
+          <span tal:replace="scale/title">
+            Aufmacher groß (450×200)
+          </span>
+        </label>
+      </div>
+
+      <div class="widget mask-size">
+        <input 
+          disabled="disabled" class="mask-size" type="text"
+          name="mask-w" value="" /> × 
+        <input 
+          disabled="disabled" class="mask-size" type="text"
+          name="mask-h" value="" />
+      </div>
+
+      <div class="widget radio-group">
+        <label tal:repeat="color view/colors">
+          <input type="radio" name="border"
+                 tal:attributes="
+                  value color/color;
+                  checked repeat/color/start" />
+          <span tal:replace="color/title" />
+        </label>
+
+      </div>
+
+      <div id="filter.brightness" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Brightness</span>
+        </label>
+      </div>
+
+      <div id="filter.contrast" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Contrast</span>
+        </label>
+      </div>
+
+      <div id="filter.sharpness" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Sharpness</span>
+        </label>
+      </div>
+
+      <div id="filter.color" class="widget filter">
+        <label>
+          <span i18n:translate="" tal:omit-tag="">Color</span>
+        </label>
+      </div>
+
+      <input type="button" id="imp-action-crop" name="crop" value="Crop"
+        i18n:attributes="value" />
+      <input type="button" id="imp-action-reset" name="reset"
+        value="Reset sliders" i18n:attributes="value" />
+
+    </form>
+
+    <div id="imp-prevnext"
+         tal:define="previous view/previous|nothing;
+                     next view/next|nothing">
+      <a tal:condition="previous"
+         tal:attributes="href string:${previous/@@absolute_url}/@@imp.html">
+        &laquo; previous image</a> <span tal:condition="python:previous and
+        next">|</span>
+      <a tal:condition="next"
+         tal:attributes="href string:${next/@@absolute_url}/@@imp.html">
+        next image &raquo;</a>
+    </div>
+
+    <a href="#"
+       id="imp-content-zoom-toggle"
+       i18n:translate="">&plusmn; Zoom image area</a>
+
+  </div>
+
+  <div id="imp-image-bar"></div>
+
+</tal:block>
