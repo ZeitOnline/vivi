@@ -1,0 +1,42 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <class class=".portraitbox.Portraitbox">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+
+    <require
+      interface=".interfaces.IPortraitbox"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IPortraitbox"
+      permission="zeit.EditContent" />
+  </class>
+
+  <adapter factory=".portraitbox.PortraitboxHTMLContent" />
+
+  <!-- reference -->
+  <utility 
+    component=".interfaces.portraitboxSource"
+    name="zeit.content.portraitbox"
+    />
+  <adapter
+    factory=".reference.PortraitboxReference"
+    for="zeit.cms.content.interfaces.ITemplate"
+    />
+
+  <class class=".reference.PortraitboxReference">
+    <require
+      interface=".interfaces.IPortraitboxReference"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPortraitboxReference"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
