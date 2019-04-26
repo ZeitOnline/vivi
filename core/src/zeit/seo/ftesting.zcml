@@ -1,0 +1,20 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <include package="zeit.seo" />
+  <include package="zeit.seo.browser" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.seo.View"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.seo.Edit"
+    />
+
+</configure>
