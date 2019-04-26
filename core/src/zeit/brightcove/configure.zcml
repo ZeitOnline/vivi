@@ -1,0 +1,45 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <permission
+    id="zeit.brightcove.video.Edit"
+    title="Edit brightcove videos"
+    />
+
+  <utility
+    name="zeit.cms/brightcove"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <utility
+    provides="zeit.brightcove.interfaces.ICMSAPI"
+    factory=".connection.cms_from_product_config"
+    />
+
+  <utility
+    provides="zeit.content.video.interfaces.IPlayer"
+    factory=".connection.playback_from_product_config"
+    />
+
+  <subscriber
+    for="zeit.content.video.interfaces.IVideo
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".update.export_video" />
+
+  <subscriber
+    for="zeit.content.video.interfaces.IVideo
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".update.publish_on_checkin" />
+
+  <subscriber
+    for="zeit.content.video.interfaces.IPlaylist
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".update.publish_on_checkin" />
+
+</configure>
