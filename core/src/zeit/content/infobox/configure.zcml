@@ -1,0 +1,50 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <class class=".infobox.Infobox">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+
+    <require
+      interface=".interfaces.IInfobox"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IInfobox"
+      permission="zeit.EditContent" />
+  </class>
+
+  <!-- reference -->
+  <utility 
+    component=".interfaces.infoboxSource"
+    name="zeit.content.infobox"
+    />
+  <adapter
+    factory=".reference.InfoboxReference"
+    for="zeit.cms.content.interfaces.ITemplate"
+    />
+  <class class=".reference.InfoboxReference">
+    <require
+      interface=".interfaces.IInfoboxReference"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IInfoboxReference"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".infobox.Debate">
+    <require
+      interface=".interfaces.IDebate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IDebate"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
