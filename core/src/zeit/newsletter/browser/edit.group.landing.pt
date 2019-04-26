@@ -1,0 +1,9 @@
+<div>
+  <div class="landing-zone visible action-content-droppable"
+       tal:attributes="
+      cms:drop-url string:${context/@@absolute_url}/@@landing-zone-drop;"
+       i18n:domain="zeit.cms"
+       i18n:translate="">
+    Landing zone
+  </div>
+</div>
