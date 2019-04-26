@@ -1,0 +1,37 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zeit.cms" file="integration.zcml" />
+  <include package="zeit.invalidate" />
+
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
+  <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+  <include package="zeit.content.article.edit.browser" />
+
+  <include package="zeit.content.cp" />
+  <include package="zeit.content.cp.browser" />
+
+  <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
+
+  <include package="zeit.content.link" />
+  <include package="zeit.content.link.browser" />
+
+  <include package="zeit.content.rawxml" />
+  <include package="zeit.content.rawxml.browser" />
+
+  <include package="zeit.content.text" />
+  <include package="zeit.content.text.browser" />
+
+  <include package="zeit.seo" />
+  <include package="zeit.seo.browser" />
+
+  <include package="zeit.brightcove" />
+  <include package="zeit.brightcove.json" />
+
+  <include package="zeit.retresco" />
+  <include package="zeit.vgwort" />
+
+</configure>

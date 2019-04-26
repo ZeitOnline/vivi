@@ -1,0 +1,224 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  i18n_domain="zeit.cms">
+
+  <include package="zope.securitypolicy" />
+  <securityPolicy
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <!-- Roles -->
+  <role id="zope.Anonymous" title="Everybody"
+    description="All users have this role implicitly" />
+  <role id="zope.Manager" title="Site Manager" />
+  <role id="zope.Member" title="Site Member" />
+
+  <role id="zeit.Editor" title="Editor" />
+  <role id="zeit.Producer" title="Producer" />
+  <role id="zeit.CvD" title="Chef vom Dienst" />
+  <role id="zeit.SEO" title="Search engine optimiser" />
+  <role id="zeit.Betatester" title="Beta tester" />
+
+  <!-- Groups and other principals -->
+  <unauthenticatedPrincipal
+    id="zope.anybody"
+    title="Unauthenticated User"
+    />
+  <unauthenticatedGroup
+    id="zope.Anybody"
+    title="Unauthenticated Users" 
+    />
+  <authenticatedGroup
+    id="zope.Authenticated"
+    title="Authenticated Users" 
+    />
+  <everybodyGroup
+    id="zope.Everybody"
+    title="All Users" 
+    />
+
+  <!-- Principal grants -->
+  <grantAll role="zope.Manager" />
+
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.dublincore.view"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zope.View"
+    />
+
+  <grant
+    principal="zope.Everybody"
+    permission="zeit.ViewGlobalSettings"
+    />
+
+  <!-- Currently every authenticated user is an editor. -->
+  <grant
+    principal="zope.Authenticated"
+    role="zeit.Editor"
+    />
+
+  <!-- Editor grants -->
+  <grant
+    role="zeit.Editor"
+    permission="zeit.RenameContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.CopyContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.Checkout"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.Checkin"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.AddContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.DeleteContent"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.cms.Syndicate"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.workflow.Publish"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.Lock"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.ChangeRepository"
+    />
+  <grant
+    role="zeit.Editor"
+    permission="zeit.brightcove.video.Edit"
+    />
+
+  <!-- Producer grants -->
+  <grant
+    role="zeit.Producer"
+    permission="zeit.RenameFolder"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.DeleteFolder"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.EditTemplates"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.ChangeGlobalSettings"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.seo.View"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.seo.Edit"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.ManageLocks"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.repository.ViewProperties"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.Retract"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.Delete"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.EditArea"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.EditOverflow"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.admin.View"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.admin.EditSemantic"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.tagging.ViewInTMS"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.retresco.UseTMS"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.vgwort.RetryReport"
+    />
+
+
+  <!-- CvD grants -->
+  <grant
+    role="zeit.CvD"
+    permission="zeit.ManageLocks"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.content.cp.Retract"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.content.cp.Delete"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.cms.admin.View"
+    />
+
+  <!-- SEO grants -->
+  <grant
+    role="zeit.SEO"
+    permission="zeit.seo.View"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.seo.Edit"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.cms.tagging.ViewInTMS"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.retresco.UseTMS"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.EditRetractLog"
+    />
+
+</configure>
