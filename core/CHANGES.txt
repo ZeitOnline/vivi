@@ -2,7 +2,7 @@ zeit.cms changes
 ================
 
 
-3.30.1 (unreleased)
+3.30.1 (2019-04-26)
 -------------------
 
 - Nothing changed yet.
