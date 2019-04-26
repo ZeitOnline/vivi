@@ -1,0 +1,30 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." exclude="browser connection suds_ext" />
+
+  <utility
+    name="zeit.cms/vgwort"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <class class=".report.ReportInfo">
+    <require
+      interface=".interfaces.IReportInfo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IReportInfo"
+      permission="zeit.vgwort.RetryReport"
+      />
+  </class>
+
+  <permission
+    id="zeit.vgwort.RetryReport"
+    title="Retry VGWort Report"
+    />
+
+</configure>

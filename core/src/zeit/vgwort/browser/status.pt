@@ -1,0 +1,29 @@
+<tal:block condition="python: not (view.reported_on or view.reported_error)">
+  <h3>Nicht gemeldet</h3>
+  <p tal:condition="not: view/date_first_released">
+    Der Artikel ist unveröffentlicht.
+  </p>
+  <p tal:condition="view/date_first_released">
+    Der Artikel wurde noch nicht an die VG-Wort gemeldet.
+    Die Meldung ist geplant für den <tal:x replace="view/to_report_on"/>.
+  </p>
+</tal:block>
+<tal:block condition="view/reported_on">
+  <h3>Meldung erfolgreich</h3>
+  <p>
+    Der Artikel wurde am <tal:x replace="view/reported_on"/> erfolgreich
+    an die VG-Wort gemeldet.
+  </p>
+</tal:block>
+<tal:block condition="python: view.reported_error and not view.reported_on">
+  <h3>Bei der Meldung ist ein Fehler aufgetreten</h3>
+  <p tal:content="view/reported_error" />
+</tal:block>
+
+<tal:block condition="python: view.has_permission('zeit.vgwort.RetryReport')">
+<p>
+<form method="POST" action="@@vgwort-retry">
+  <input type="submit" value="Erneut melden" />
+</form>
+</p>
+</tal:block>
