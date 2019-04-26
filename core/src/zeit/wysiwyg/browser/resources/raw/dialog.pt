@@ -1,0 +1,18 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html i18n:domain="zeit.cms">
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources" />
+    <tal:block replace="python:modules['zeit.wysiwyg.browser.resources'].wysiwyg.need()" />
+    <link href="dialog.css" type="text/css" rel="stylesheet" />
+  </head>
+  <body id="body">
+    <script type="text/javascript">setSkinCSS();</script>
+    <script src="dialog.js" type="text/javascript"></script>
+    <div class="widget">
+      <label for="raw" i18n:translate="">RAW HTML</label>
+      <textarea id="raw"></textarea>
+    </div>
+  </body>
+</html>

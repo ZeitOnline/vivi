@@ -1,0 +1,211 @@
+body
+{
+	background-color: #ffffff;
+	padding: 5px 5px 5px 5px;
+	margin: 0px;
+}
+
+body, td
+{
+	font-family: Arial, Verdana, Sans-Serif;
+	font-size: 12px;
+}
+
+a[href]
+{
+	color: #0000FF !important;	/* For Firefox... mark as important, otherwise it becomes black */
+}
+
+/*
+	Just uncomment the following block if you want to avoid spaces between
+	paragraphs. Remember to apply the same style in your output front end page.
+*/
+
+/*
+p, ul, li
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+*/
+
+/*
+    The following are some sample styles used in the "Styles" toolbar command.
+    You should instead remove them, and include the styles used by the site
+    you are using the editor in.
+*/
+
+.Bold
+{
+	font-weight: bold;
+}
+
+.Title
+{
+	font-weight: bold;
+	font-size: 18px;
+	color: #cc3300;
+}
+
+.Code
+{
+	border: #8b4513 1px solid;
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #000066;
+	font-family: 'Courier New' , Monospace;
+	background-color: #ff9933;
+}
+
+
+intertitle {
+  font-weight: bold;
+  display: block;
+}
+
+
+.inline-element {
+    -moz-border-radius: 10px;
+    background-color: #d5dee7;
+    border: 1px solid black;
+    padding: 0.5em;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.inline-element:after {
+    -moz-border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    display: block;
+    padding: 0.25em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.inline-element > div:before {
+    padding-right: 0.5em;
+}
+
+.inline-element > div {
+    padding: 0.5em;
+}
+
+.audio:after {
+    content: "Audio";
+}
+
+.video:after {
+    content: "Video";
+}
+
+.page-break {
+    width: auto;
+    margin: 0;
+}
+
+.page-break:after {
+    content: "Seitenumbruch";
+}
+
+.infobox:after {
+    content: "Infobox";
+}
+
+.timeline:after {
+    content: "Zeitstrahl";
+}
+
+.portraitbox:after {
+    content: "Porträtbox";
+}
+
+.gallery:after {
+    content: "Bildergalerie";
+}
+
+.citation:after {
+    content: "Zitat";
+}
+
+.audio > .audioId:before {
+    content: "Audio-Id:";
+}
+
+.video > .videoId:before {
+    content: "Video-Id:";
+}
+
+
+.video > .videoId2:before {
+    content: "2. Video-Id:";
+}
+
+.audio > .expires:before,
+.video > .expires:before {
+    content: "Expires:";
+}
+
+.audio > .format:before,
+.video > .format:before {
+    content: "Format:";
+}
+
+.video > .player:before,
+.video > .player2:before {
+  content: "Player";
+}
+
+.page-break > .teaser:before {
+    content: "Teaser:";
+}
+
+.infobox > .href:before,
+.timeline > .href:before,
+.portraitbox > .href:before,
+.gallery > .href:before {
+    content: "URL:";
+}
+
+.portraitbox > .layout:before {
+    content: "Format:";
+}
+
+.citation > .text,
+.citation > .attribution,
+.citation > .url {
+  clear: left;
+  float: left;
+  text-align: center;
+  width: 33%;
+}
+.citation > .text2,
+.citation > .attribution2,
+.citation > .url2  {
+  clear: right;
+  float: right;
+  text-align: center;
+  width: 33%;
+}
+
+.citation > .text,
+.citation > .text2 {
+  font-style: italic;
+}
+
+.citation > .layout {
+  clear: both;
+}
+
+.citation > .url:before,
+.citation > .url2:before {
+    content: "URL:";
+}
+
+.citation > .layout:before {
+    content: "Format:";
+}
+
+.related:after {
+  content: "Related-Liste";
+}

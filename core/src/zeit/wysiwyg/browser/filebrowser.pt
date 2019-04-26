@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector 
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  tal:attributes="
+    command request/Command;
+    resourceType request/Type">
+  <CurrentFolder path="" url=""
+    tal:attributes="
+      path request/CurrentFolder;
+      url context/@@absolute_url"
+    />
+  <Folders
+    tal:define="folders view/folders"
+    tal:condition="folders">
+    <Folder
+      tal:repeat="folder folders"
+      tal:attributes="
+      name folder/id;
+      title folder/title
+      "/>
+  
+  </Folders>
+
+  <Files
+    tal:define="files view/files"
+    tal:condition="files">
+
+    <File size="0"
+      tal:repeat="file files"
+      tal:attributes="
+        name file/id_and_title;
+        url file/uniqueId"
+      />
+  </Files>
+
+</Connector>

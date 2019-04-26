@@ -1,0 +1,19 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html i18n:domain="zeit.cms">
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources" />
+    <tal:block replace="python:modules['zeit.wysiwyg.browser.resources'].wysiwyg.need()" />
+  </head>
+  <body>
+    <script type="text/javascript">setSkinCSS();</script>
+    <script src="dialog.js" type="text/javascript"></script>
+    <form>
+      <div class="widget">
+        <label for="teaser" i18n:translate="">Teaser</label>
+        <input id="teaser" type="text" />
+      </div>
+    </form>
+  </body>
+</html>
