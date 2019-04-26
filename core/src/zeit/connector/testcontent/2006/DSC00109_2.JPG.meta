@@ -1,0 +1,5 @@
+<head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Jochen Stahnke</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights"></attribute>
+</head>

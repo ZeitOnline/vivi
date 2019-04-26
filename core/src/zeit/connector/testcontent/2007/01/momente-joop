@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">momente_joop</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">flamm</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Reisen</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Reisen</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">28.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 28.12.2006 Nr. 01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">63</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">63</attribute>
+    <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">1</attribute>
+  </head>
+  <body>
+    <p>Ich halte nichts von Leuten, die vier Wochen lang auf Bali nach einem Stück Batikstoff suchen. Es gibt in meiner Firma auch keine Informationsreisen nach Ägypten, nach denen Kleopatra dann das Stilvorbild ist. Seitdem ich wieder in meinen Beruf zurückgekehrt bin, brauche ich das nicht mehr. Ich lasse mich aus Prinzip nur noch von der Heimatscholle inspirieren. Doch letzten Juni, als ich völlig gestresst an der Winterkollektion saß, weil ich einfach vergessen hatte, wie früh man damit anfangen muss, beschloss mein Anwalt, der auch ein guter Freund ist, dass ich mal hier rausmuss. Er fragte, ob wir nicht nach Hiddensee fahren sollten. Ich kannte die Insel nicht, ich wusste nur, dass es dort keine Autos gibt. Eine Schulfreundin aus DDR-Zeiten hatte, als meine Familie schon im Westen war, mir immer geschrieben, wie gnadenlos langweilig es dort sei. </p>
+    <p>Wir sind dann mit dem Wassertaxi von Rügen aus übergesetzt, und, das klingt jetzt kitschig, ich war von einer auf die andere Sekunde ein neuer Mensch. Ich spürte, wie der Alltag, der ganze Stress, der Ärger, die Hektik langsam hinter mir zurückblieben. Hiddensee bedeutete schon Freiheit, bevor ich überhaupt dort war. Ich hatte außer meinem Hund nur zwei Handtücher, eine Zahnbürste und eine Jogginghose dabei. Am Hafen bekamen wir eine Karre für die Tasche, mit der wir dann zu Fuß zu unserem Häuschen gegangen sind. Es ist faszinierend, wie schnell die Bedürfnisse sich reduzieren. Das kann einem wahrscheinlich jeder Buddhist erklären. Aber man muss es erleben: Es gibt Orte, an denen man nichts braucht. Und Hiddensee ist so ein Ort. Intakt und scheinbar unberührt. Man fährt mit dem Rad über Sandwege, über denen sich die Bäume biegen, rechts liegt das Moor, links der Wald, und dann steht man plötzlich vor der Steilküste. </p>
+    <p>Es ist eine Instant-Bonsai-Landschaft, in der alles auf engem Raum zusammenrückt: Meer, Moor, Strand und Wiesen, wie man sie nur aus Kindheitsträumen kennt. Das Gras wächst einem bis unters Kinn, und alle Farben der Wiesenblumen sind vorhanden. Hier eine Gruppe von Kühen, meistens beigebraun, dort ein paar Pferdchen, dann ein kleiner Tümpel, und drei Schritte weiter blüht die Heide. Ich habe mich ja sehr lange als Kosmopolit verstanden und gedacht, ich sei überall zu Hause. Auf Hiddensee habe ich begriffen, warum das nicht stimmte. In diesen verwilderten Wiesen, im meterhohen Gras, an der glasklaren Luft konnte ich endlich frei atmen. </p>
+    <p>Wolfgang Joop, 62, ist Designer</p>
+    <p>Wolfgang Joop auf Hiddensee </p>
+    <p>
+      <strong>Endlich frei atmen!</strong>
+    </p>
+    <title>Tiemann ganz leicht</title>
+    <subtitle>58/54 Überschrift und Thesis plain 13/17 Hamburger läuft im Regen und wartet auf Sonne.  Der Hamburger läuft im Regen und wartet auf die sonnige Sonne und er wartet Von thesis Extra bold 9,5</subtitle>
+  </body>
+</article>

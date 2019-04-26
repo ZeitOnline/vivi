@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Titelei Illustration S. 3</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Politik</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">20.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 20.12.2006 Nr. 52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">3</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">3</attribute>
+  </head>
+  <body>
+    <title>Oh, Ihr Fröhlichen </title>
+    <subtitle>2006 war ein Jahr der Kinder &#8211; selten haben Politiker so viel über sie gesprochen. Die Berliner Künstlerin <strong>Sybille Hein</strong> skizziert in ihrer  Bildergeschichte auf dieser Seite den Weg eines Kindes von der Geburt an &#8211; und das Ende der Freiheit seiner Eltern. </subtitle>
+    <subtitle><strong>Auf den folgenden Seiten: </strong>Warum wir Kinder oft nur als Problem sehen. Wie die zwölfjährige Julia aus Tel Aviv das Jahr erlebt hat.  Und warum Lewis und Annabel von einer Großfamilie träumen  <strong>Seite 4&#8211;6</strong> </subtitle>
+  </body>
+</article>

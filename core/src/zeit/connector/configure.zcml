@@ -1,0 +1,20 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <!-- security -->
+  <class class=".resource.WebDAVProperties">
+    <require
+      interface=".interfaces.IWebDAVReadProperties"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWebDAVWriteProperties"
+      permission="zope.ManageContent" />
+  </class>
+
+
+  <utility 
+    name="zeit.connector"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+</configure>

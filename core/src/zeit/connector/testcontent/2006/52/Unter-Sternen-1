@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Unter Sternen 1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Literatur</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Literatur</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">20.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 20.12.2006 Nr. 52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">54</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">54</attribute>
+  </head>
+  <body>
+    <p>
+      <strong>Unter Sternen (1)</strong>
+    </p>
+    <p>Wende dich, du kleiner Stern,</p>
+    <p>Erde! wo ich lebe,</p>
+    <p>Daß mein Aug, der Sonne fern,</p>
+    <p>Sternenwärts sich hebe!</p>
+    <p>Heilig ist die Sternenzeit,</p>
+    <p>Öffnet alle Grüfte; </p>
+    <p>Strahlende Unsterblichkeit</p>
+    <p>Wandelt durch die Lüfte. </p>
+    <p>Mag die Sonne nun bislang</p>
+    <p>Andern Zonen scheinen,</p>
+    <p>Hier fühl ich Zusammenhang</p>
+    <p>Mit dem All und Einen!</p>
+    <p>Hohe Lust, im dunklen Tal,</p>
+    <p>Selber ungesehen,</p>
+    <p>Durch den majestätschen Saal</p>
+    <p>Atmend mitzugehen!</p>
+    <p>Schwinge dich, o grünes Rund,</p>
+    <p>In die Morgenröte!</p>
+    <p>Scheidend rückwärts singt mein Mund</p>
+    <p>Jubelnde Gebete!</p>
+  </body>
+</article>

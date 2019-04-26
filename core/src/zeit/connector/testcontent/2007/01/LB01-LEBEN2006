@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">LB01-LEBEN2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Leserbriefe</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Leserbriefe</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">28.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 28.12.2006 Nr. 01</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">18</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">18</attribute>
+  </head>
+  <body>		<title>Ach, meine große deutsche Liebe&#8230;</title><subtitle>LEBEN 2006: »Wie war das noch?«, ZEIT Nr. 51</subtitle>
+		<p>»25 Gespräche über Ereignisse des Jahres 2006 &#8211; bevor sie in Vergessenheit geraten« ist der Artikel überschrieben. 25 Fotos prangen auf der ersten Seite. Als Blickfang rechts oben Alice Schwarzer. Also machen wir den Test: In der ersten Reihe 3 Männer, 2 Frauen, nicht schlecht, das kann sich ja noch ausgleichen. </p>
+		<p>Aber dann&#8230; Von den 25 Interviewten sind genau 7 Frauen. Das macht 28 Prozent. Die Frauen sind wohl schon »in Vergessenheit geraten«? Und von den 7 sind auch noch 2 in ihrer Funktion als »Mutter von« oder (Ex-)»Frau von« dabei. </p>
+		<p>Ist es wirklich nicht möglich, mehr als 5 Frauen zu finden, die einen eigenständigen Beitrag zu 2006 geleistet haben? Das ist kein vorzeigbares Ergebnis für meine große deutsche Zeitungsliebe&#8230;</p><p>Claudia Appenzeller, Fraisse sur Agout  Frankreich</p></body>
+</article>

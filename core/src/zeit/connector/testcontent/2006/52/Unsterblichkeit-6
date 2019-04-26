@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Unsterblichkeit 6</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Literatur</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Literatur</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">20.12.2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 20.12.2006 Nr. 52</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">54</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">54</attribute>
+  </head>
+  <body>
+    <p>
+      <strong>Unsterblichkeit (6)</strong>
+    </p>
+    <p>Viel ist es, schon weil Tod ist</p>
+    <p>Mensch zu sein!</p>
+    <p>Doch aller süßen Worte</p>
+    <p>Süßestes</p>
+    <p>Ist die Unsterblichkeit!</p>
+    <p>Daß erschüttert sind</p>
+    <p>Die rasenden Himmel oben</p>
+    <p>Und ewig die Sterne all&#8217;</p>
+    <p>Von einem Kindertag,</p>
+    <p>Und den Fahnen im Sand</p>
+    <p>Und den Burgen&#8230;</p>
+    <p>Daß späteste Tränen knospen,</p>
+    <p>Weil einst vor einem</p>
+    <p>Unendlichen Antlitz</p>
+    <p>Ein Herz</p>
+    <p>Zusammenstürzte vom Lied!!..</p>
+  </body>
+</article>

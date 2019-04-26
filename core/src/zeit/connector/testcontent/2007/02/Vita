@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<article>
+  <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="new_comments">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">import</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="jobname">Vita</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"></attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Feuilleton</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="ressort">Feuilleton</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">04.01.2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 04.01.2007 Nr. 02</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="page">32</attribute>
+    <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">32</attribute>
+  </head>
+  <body>		<title>Maren Kroymann</title>
+		<p>war die erste Frau mit eigener Satiresendung im öffentlich-rechtlichen Fernsehen. Von 1993 bis 1997 trat sie als »Nachtschwester Kroymann« auf, nachdem sie zuvor als »Mascha aus der Maske« und in »Holgers Waschsalon« durch intelligent-lakonischen Humor bestochen hatte. Kroymann, geboren 1949 in Niedersachsen, arbeitete als Theaterschauspielerin, Diseuse, Entertainerin. Sie spielte Hauptrollen in den ARD-Serien »Oh Gott, Herr Pfarrer!« und »Vera Wesskamp«, war in Kinofilmen wie Hape Kerkelings »Kein Pardon« und Sönke Wortmanns »Das Superweib« zu sehen.</p></body>
+</article>
