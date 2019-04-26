@@ -1,0 +1,40 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zope">
+
+  <browser:page
+    name="metadata.html"
+    for="..interfaces.IDynamicFolder"
+    class=".folder.DisplayForm"
+    permission="zope.View"
+    menu="zeit-context-views" title="View metadata"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IDynamicFolder"
+    class=".folder.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <configure package="zeit.cms.repository.browser">
+  <browser:page
+    name="view.html"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    class="zeit.content.dynamicfolder.browser.folder.View"
+    template="content_listing.pt"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+  </configure>
+
+  <adapter
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    factory="zeit.workflow.browser.form.AssetWorkflow"
+    />
+
+</configure>

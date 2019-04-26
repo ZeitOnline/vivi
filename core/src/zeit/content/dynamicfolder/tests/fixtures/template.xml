@@ -1,0 +1,38 @@
+<centerpage xmlns:cp="http://namespaces.zeit.de/CMS/cp" type="centerpage">
+  <head>
+     <attribute name="ressort" ns="http://namespaces.zeit.de/CMS/document">Deutschland</attribute>
+     <attribute name="html-meta-title" ns="http://namespaces.zeit.de/CMS/document">seo-title</attribute>
+     <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}</attribute>
+     <attribute name="provides" ns="http://namespaces.zeit.de/CMS/meta">&lt;pickle&gt;
+ &lt;initialized_object&gt;
+ &lt;klass&gt;
+   &lt;global name=&quot;Provides&quot; module=&quot;zope.interface.declarations&quot;/&gt;
+ &lt;/klass&gt;
+ &lt;arguments&gt;
+   &lt;tuple&gt;
+     &lt;global name=&quot;CenterPage&quot; module=&quot;zeit.content.cp.centerpage&quot;/&gt;
+     &lt;global name=&quot;Interface&quot; module=&quot;zope.interface&quot;/&gt;
+     &lt;global name=&quot;ICP2015&quot; module=&quot;zeit.content.cp.interfaces&quot;/&gt;
+     &lt;global name=&quot;IZONContent&quot; module=&quot;zeit.cms.section.interfaces&quot;/&gt;
+   &lt;/tuple&gt;
+ &lt;/arguments&gt;
+ &lt;/initialized_object&gt;
+ &lt;/pickle&gt;</attribute>
+  </head>
+  <body>
+    <title>{{lexical_value}}</title>
+    <cluster area="feature" kind="solo" visible="True">
+      <region area="lead" kind="single"
+              count="2" automatic="True" automatic_type="query"
+              visible="True" hide-dupes="True">
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-1"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-2"/>
+        <raw_query>
+          published:"published" AND keywords: {{url_value}}
+        </raw_query>
+      </region>
+    </cluster>
+  </body>
+</centerpage>

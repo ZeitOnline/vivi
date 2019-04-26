@@ -1,0 +1,18 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
+
+  <include package="zeit.content.cp" />
+  <include package="zeit.content.rawxml" />
+
+  <include package="zeit.seo" file="ftesting.zcml" />
+
+  <include package="zeit.content.dynamicfolder" />
+  <include package="zeit.content.dynamicfolder.browser" />
+
+</configure>
