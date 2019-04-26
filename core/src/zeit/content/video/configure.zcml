@@ -1,0 +1,42 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <class class=".video.Video">
+    <implements
+       interface="zope.annotation.interfaces.IAttributeAnnotatable"
+       />
+    <implements
+       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
+       />
+    <require
+      interface=".interfaces.IVideo"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IVideo"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".playlist.Playlist">
+    <implements
+       interface="zope.annotation.interfaces.IAttributeAnnotatable"
+       />
+    <implements
+       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
+       />
+    <require
+      interface=".interfaces.IPlaylist"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IPlaylist"
+      permission="zeit.EditContent" />
+  </class>
+
+  <utility
+    component=".interfaces.videoOrPlaylistSource"
+    name="video-or-playlist"
+    />
+
+</configure>

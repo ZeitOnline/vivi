@@ -1,0 +1,32 @@
+<div class="video_details" i18n:domain="zeit.cms">
+  <div class="graphical_preview"
+       tal:condition="view/graphical_preview_url">
+    <div class="overlay-anchor">
+      <img tal:attributes="src view/graphical_preview_url"/>
+
+      <div class="overlay"><div class="overlay-position">
+        <a class="button edit-button" i18n:translate="" target="_blank"
+           tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
+        <a class="button preview-button" i18n:translate="" target="_blank"
+           tal:attributes="href view/preview_url">Preview</a>
+      </div></div>
+    </div>
+  </div>
+
+  <button class="toggle_infos folded">
+  Video Information</button>
+  <div class="folded_information" style="display:none">
+    <dl>
+      <dt i18n:domain="zeit.cms" i18n:translate="">Supertitle</dt>
+      <dd tal:content="structure view/common_metadata/supertitle" />
+    </dl>
+    <dl>
+      <dt i18n:domain="zeit.cms" i18n:translate="">Title</dt>
+      <dd tal:content="structure view/common_metadata/title" />
+    </dl>
+    <dl>
+      <dt i18n:domain="zeit.cms" i18n:translate="">Teaser text</dt>
+      <dd tal:content="structure view/teaser_text" />
+    </dl>
+  </div>
+</div>

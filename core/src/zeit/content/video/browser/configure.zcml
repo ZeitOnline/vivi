@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zeit.cms">
+
+  <!-- video -->
+  <browser:page
+     for="..interfaces.IVideo"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     name="edit.html"
+     class=".video.Edit"
+     permission="zope.View"
+     />
+
+  <browser:page
+     for="..interfaces.IVideo"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     name="view.html"
+     class=".video.Display"
+     permission="zope.View"
+     />
+
+  <browser:defaultView
+    for="..interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+ <browser:icon
+    for="..interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    file="../resources/video_icon.gif"
+    />
+
+ <browser:page
+   for="..interfaces.IVideo"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="preview"
+   class=".video.Still"
+   permission="zope.View"
+   />
+
+ <adapter
+   for=".video.Still
+   zeit.cms.browser.interfaces.ICMSLayer"
+   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+   factory=".video.StillURL"
+   />
+
+  <!-- playlist -->
+
+  <browser:page
+    for="..interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".video.PlaylistDisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:icon
+    for="..interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    file="../resources/playlist_icon.gif"
+    />
+
+
+  <!-- common views -->
+
+ <browser:page
+   for="..interfaces.IVideoContent"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="thumbnail"
+   class=".video.Thumbnail"
+   permission="zope.View"
+   />
+
+ <adapter
+   for=".video.Thumbnail
+   zeit.cms.browser.interfaces.ICMSLayer"
+   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+   factory=".video.ThumbnailURL"
+   />
+
+  <browser:page
+    for="..interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".details.Details"
+    permission="zope.View"
+    />
+
+</configure>
