@@ -1,0 +1,12 @@
+<div class="object-details type-author" i18n:domain="zeit.cms">
+<strong tal:content="context/target/display_name" />
+<a tal:condition="context/target/community_profile" tal:attributes=" href context/target/community_profile" target="_blank" class="communitylink">Profilseite Community</a>
+<a tal:attributes="href context/target/@@absolute_url" target="_blank" class="goto-object object-link"><span class="actionX-title"> CMS </span></a>
+
+<div
+  class="inline-form"
+  tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
+  tal:content="structure context/@@edit.html">
+</div>
+
+</div>

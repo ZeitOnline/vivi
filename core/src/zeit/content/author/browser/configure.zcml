@@ -1,0 +1,108 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AddForm"
+    name="zeit.content.author.Add"
+    menu="zeit-add-menu" title="Author"
+    permission="zeit.AddContent"
+    />
+
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AddContextfree"
+    name="zeit.content.author.add_contextfree"
+    permission="zeit.AddContent"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Edit"
+    action="@@edit.html"
+    permission="zeit.EditContent"
+    icon="metadata-edit"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+
+  <browser:icon
+    for="..interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="author.png"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorReference"
+    name="object-details"
+    template="reference-details.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorReference"
+    name="edit.html"
+    class=".form.EditReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-heading"
+    class=".reference.ReferenceDetailsHeading"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    template="bio-reference-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".reference.Edit"
+    permission="zope.View"
+    />
+
+</configure>

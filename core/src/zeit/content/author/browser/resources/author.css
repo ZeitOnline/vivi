@@ -1,0 +1,31 @@
+.object-details.type-author label,
+.object-details.type-authorbio label {
+    display: none;
+}
+
+.object-details.type-author .goto-object.object-link {
+    float: left;
+}
+
+.object-details.type-author .field {
+    padding: 0 1em;
+    margin: 0;
+}
+
+.object-details.type-author .fieldtype-text .widget {
+    margin-top: -5px;
+    margin-bottom: 0;
+}
+
+.object-details.type-author > strong {
+    width: 120px;
+}
+
+.object-details.type-authorbio .goto-object.object-link {
+    float: none;
+}
+
+.object-details.type-authorbio fieldset {
+    padding: 0;
+    margin-left: 0;
+}

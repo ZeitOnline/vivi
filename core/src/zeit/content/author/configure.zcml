@@ -1,0 +1,90 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser" />
+
+  <interface
+    interface=".interfaces.IAuthor"
+    type="zeit.cms.content.interfaces.IAuthorType"
+    />
+
+  <class class=".author.Author">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+
+    <require
+      interface=".interfaces.IAuthor"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IAuthor"
+      permission="zeit.EditContent" />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLContent"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLContent"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".author.BiographyQuestions">
+    <require
+      interface="zope.interface.common.mapping.IEnumerableMapping"
+      permission="zope.View" />
+    <require
+      interface="zope.interface.common.mapping.IWriteMapping"
+      permission="zeit.EditContent" />
+  </class>
+
+  <adapter
+    factory=".reference.XMLReferenceUpdater"
+    name="zeit.content.author"
+    />
+  <adapter
+    factory=".reference.AuthorshipXMLReferenceUpdater"
+    name="zeit.cms.content.interfaces.ICommonMetadata.authorships"
+    />
+
+  <adapter
+    factory=".author.AuthorImages"
+    provides="zeit.content.image.interfaces.IImages"
+    trusted="yes"
+    />
+  <class class=".author.AuthorImages">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.image.interfaces.IImages"
+      permission="zeit.EditContent" />
+    <require
+      interface="zope.location.interfaces.ILocation"
+      permission="zope.View" />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".reference.Reference">
+    <require
+      interface=".interfaces.IAuthorReference"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IAuthorReference"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".reference.RelatedReference">
+    <require
+      interface=".interfaces.IAuthorBioReference"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IAuthorBioReference"
+      permission="zeit.EditContent" />
+  </class>
+
+</configure>
+
