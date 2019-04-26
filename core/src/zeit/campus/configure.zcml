@@ -1,0 +1,98 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." exclude="browser" />
+
+  <adapter
+    factory=".interfaces.IZCOContent"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOFolder"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="collection"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOArticle"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="article"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOCenterPage"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="centerpage"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOGallery"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="gallery"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOLink"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="link"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOInfobox"
+    for=".interfaces.IZCOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="infobox"
+    />
+
+  <adapter
+    factory=".interfaces.IZCOSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="Campus"
+    />
+
+  <adapter
+    factory=".article.Topic"
+    provides=".interfaces.ITopic"
+    trusted="yes" />
+
+  <class class=".article.Topic">
+    <require
+      interface=".interfaces.ITopic"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITopic"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".article.StudyCourse">
+    <require
+      interface=".interfaces.IStudyCourse"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IStudyCourse"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".interfaces.StudyCourse">
+    <!-- Declaring a separate interface feels like overkill -->
+    <require
+      attributes="id title available text href button_text"
+      permission="zope.View"
+      />
+  </class>
+  
+</configure>

@@ -1,0 +1,16 @@
+.type-article #topic\.page a[rel="remove"] {
+  right: 0;
+  top: -28px;
+}
+
+#topic\.page .landing-zone-candidate {
+  margin-bottom: 1em
+}
+
+label[for="form.action_url"] + .hint {
+  display: block;
+}
+
+.type-article #edit-form-article-content .block.type-studycourse .field.fieldname-course .label {
+    display: none;
+}
