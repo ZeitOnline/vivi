@@ -1,0 +1,4 @@
+<display-modes>
+  <display-mode id="large">Large</display-mode>
+  <display-mode id="float">Float</display-mode>
+</display-modes>

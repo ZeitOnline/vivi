@@ -1,0 +1,4 @@
+<div class="objectlog" tal:condition="view/repository_content">
+  <legend>Chronik</legend>
+  <div tal:content="structure view/repository_content/@@objectlog" />
+</div>

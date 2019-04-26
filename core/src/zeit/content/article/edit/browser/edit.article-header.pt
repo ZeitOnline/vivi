@@ -1,0 +1,2 @@
+<div id="article-editor-header" tal:content="structure context/editable-header/@@contents">
+</div>

@@ -1,0 +1,4 @@
+<div class="editable"
+     tal:attributes="cms:cp-module view/cms_module">
+  <p tal:replace="structure view/text">Paragraph</p>
+</div>

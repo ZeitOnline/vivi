@@ -1,0 +1,117 @@
+Landing zones
+=============
+
+Mock UUID to generate known Ids.
+
+>>> import gocept.testing.mock
+>>> import mock
+>>> patches = gocept.testing.mock.Patches()
+>>> fake_uuid = mock.Mock(side_effect=lambda: 'id-%s' % fake_uuid.call_count)
+>>> _ = patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
+
+
+Module landing zones
+--------------------
+
+Open an article's editable body. It contains landing zones:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('@@edit.html')
+>>> browser.open('editable-body/@@contents')
+>>> contents_url = browser.url
+
+
+XXX This check has an isolation/ordering problem. If it runs *after* tests
+from zeit.content.article.browser, it fails. If run before or stand-alone, it
+works fine.
+
+#>>> print browser.contents
+<div id="editable-body"
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body"
+     class="editable-area action-block-sorter">
+  <div cms:tooltip="" class="block type-image...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     id="id-2">
+  <div class="block-inner">
+    ...
+  </div>
+</div>
+  <div class="landing-zone action-editable-body-module-droppable..."
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2/@@landing-zone-drop-module">
+  </div>
+  <div cms:tooltip="" class="block type-p...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+     id="id-3">
+     ...
+</div>
+  <div class="landing-zone action-editable-body-module-droppable..."
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3/@@landing-zone-drop-module">
+  </div>
+  ...
+
+
+A module can be created:
+
+>>> browser.open('id-2/@@landing-zone-drop-module?block_type=p')
+>>> import pprint
+>>> import json
+>>> pprint.pprint(json.loads(browser.contents)['signals'])
+[{u'args': [u'editable-body',
+            u'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+  u'name': u'reload',
+  u'when': None},
+ {u'args': [u'id-15'], u'name': u'added', u'when': u'after-reload'}]
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div id="editable-body"
+...
+  <div cms:tooltip="" class="block type-image...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     id="id-2">
+     ...
+  <div cms:tooltip="" class="block type-p...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-15"
+     id="id-15">
+     ...
+  <div cms:tooltip="" class="block type-p...
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+     id="id-3">
+     ...
+
+
+Content landing zones
+---------------------
+
+There are also landing zones for content. The following only illustrates error
+cases. The working cases are tested with their respective content types.
+
+Drop of an uniqueId which doesn't resolve to an object returns an error:
+
+>>> browser.open('@@article-landing-zone-drop?uniqueId=nada')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+<...The object "nada" does not exist...
+
+
+Drop of an object which cannot be converted to a block returns an error:
+
+>>> browser.open(
+...     '@@article-landing-zone-drop?uniqueId='
+...     'http://xml.zeit.de/testcontent')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+<...Could not create block for "http://xml.zeit.de/testcontent",
+because I don't know which one...
+
+
+Clean up:
+
+>>> patches.reset()

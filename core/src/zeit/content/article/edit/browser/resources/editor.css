@@ -1,0 +1,2047 @@
+.type-article #cp-content {
+  bottom:0;
+  left:0;
+  margin-top:25px;
+  right:34%;
+  background-color: #f1f4f9;
+}
+
+.type-article #cp-forms {
+  bottom:0;
+}
+
+.type-article #visualContentWrapper {
+  right:0
+}
+
+.type-article #busy-indicator {
+  right:34%
+}
+
+.type-article #editor-forms-heading {
+  position: fixed;
+  margin-top: -27px;
+  width: 100%;
+  background-color: #83a1ba;
+}
+
+.type-article #editor-forms-heading ul {
+  color:white
+}
+
+.type-article .object-details-heading span.publish-state {
+  background-position: 15px auto;
+  padding-left:25px;
+}
+
+.type-article .content-icon.type-article img {
+  display: none;
+}
+
+.type-article .content-icon.type-article {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 12px -1735px;
+  border-right:1px solid white;
+  display: block;
+  float:left;
+  height: 25px;
+  text-align: center;
+  width: 34px;
+  margin-top:0.5px;
+  margin-left:-1px;
+  color: transparent;
+}
+
+.type-article #cp-content > .cp-content-inner {
+  border: 1px solid #E4E4E4;
+}
+
+.type-article #cp-content .editable-area {
+  margin: 1em 0 0;
+  padding: 0;
+}
+
+.type-article .editable {
+  color: #444 !important;
+}
+
+.type-article .editable[contenteditable='true'] {
+  color: #000 !important;
+}
+
+.type-article #cp-content {
+  background: none repeat scroll 0 0 #F1F4F9;
+}
+
+.type-article #cp-content > .cp-content-inner {
+  border: 1px solid #E4E4E4;
+}
+
+.type-article #cp-content .editable-area {
+  margin: 1em 0 0;
+  padding: 0;
+}
+
+.type-article #editor-forms-heading {
+   padding:0
+
+}
+
+.article-editor-inner .field span.required {
+  display:block;
+  float:right;
+  margin-top:2px;
+}
+
+/* Textareas not inline */
+
+.type-article #edit-form-article-content .field {
+  display: block;
+  clear: both;
+}
+
+.type-article #edit-form-teaser .inline-form.wired .field,
+.type-article #edit-form-teaser .inline-form.wired .widget,
+.type-article #edit-form-article-content .inline-form.wired .field,
+.type-article #edit-form-article-content .inline-form.wired .widget {
+  width: 100%;
+}
+
+.type-article #edit-form-teaser .inline-form.wired textarea,
+.type-article #edit-form-teaser .inline-form.wired input.textType,
+.type-article #edit-form-article-content .inline-form.wired textarea,
+.type-article #edit-form-article-content .inline-form.wired input.textType {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 98%;
+  border:1px solid #DDD !important;
+  background: url('bginput.png') repeat-x;
+  border-top:1px solid #999 !important;
+}
+
+.type-article #article-editor-text #editable-body {
+  margin-left:8px;
+  border:1px solid #DDD !important;
+  background: url('bginput.png') repeat-x;
+  border-top:1px solid #999 !important;
+  margin-top: 3px;
+}
+
+.type-article #article-editor-text:before {
+  content: "Artikeltext";
+  font-size: 10px;
+  margin-left: 10px;
+}
+
+/* editor heading */
+
+.type-article #editor-forms-title,
+.type-article #editor-forms-actions {
+  padding: 5px 1em 0;
+}
+
+.type-article #editor-forms-title,
+.type-article #editor-forms-actions {
+  background-color: white;
+  color: #000;
+}
+
+.type-article #editor-forms #editor-forms-title .supertitle {
+  font-family: Arial, Verdana, Sans-Serif;
+  font-weight: 200;
+  font-size: 0.9em;
+}
+
+.type-article #editor-forms #editor-forms-title .title {
+  font-family: Arial, Verdana, Sans-Serif;
+  font-weight: 800;
+  font-size: 1.25em;
+  padding: 0.2em 0 0;
+}
+
+/* editor blocks */
+
+.type-article #editable-body .editable {
+  color: #222;
+  font-family: Georgia,Palatino,Palatino Linotype,FreeSerif,serif;
+  font-size: 16px;
+  line-height: 1.5em;
+}
+
+.type-article #editor-forms div.editable-area > div.edit-bar {
+  background: none repeat scroll 0 0 #83a1ba;
+  border-radius: 5px 5px 0px 0px;
+  font-size: 12px;
+  margin: 0 10px;
+  padding: 0px 10px;
+  position: relative;
+  border-bottom: 1px solid #DDD;
+  height: 26px;
+  line-height: 26px;
+}
+
+.location-workingcopy.type-article #editor-forms div.editable-area > div.edit-bar {
+  background: none repeat scroll 0 0 #8e8d85;
+}
+
+.type-article #editor-forms div.editable-area > div.edit-bar:hover {
+  background: -moz-linear-gradient(top, #83a1ba, #658298);
+}
+
+.location-workingcopy.type-article #editor-forms div.editable-area > div.edit-bar:hover {
+  background: -moz-linear-gradient(top, #8e8d85, #6e6d67);
+}
+
+.type-article #editor-forms div div.edit-bar > .edit-link {
+  background-size: 80%;
+  position:absolute;
+  right:20px;
+}
+
+.type-article #article-form-workflow.folded,
+.type-article #article-form-assets.folded,
+.type-article #article-form-metadata.folded {
+  border-bottom: 0;
+}
+
+/* folding */
+
+.article-editor-inner .folded > .block-inner {
+  display: none;
+}
+
+/* .article-editor-inner .type-portraitbox.folded > .block-inner { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded > .block-inner {
+  display: block;
+  border-color: white;
+}
+
+/* .article-editor-inner .type-portraitbox.folded .edit-bar { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded .edit-bar {
+  border: 1px solid #dddddd !important;
+}
+
+.article-editor-inner .type-portraitbox.folded .block-inner > * {
+  display: none;
+}
+
+.article-editor-inner .folded > .block-inner > .edit-bar {
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0;
+}
+
+.type-article .cp-content-inner .block-inner .fold-link {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
+}
+
+.type-article .cp-content-inner .block-inner .folded .fold-link {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
+}
+
+/* Article content main image */
+.type-article #edit-form-article-content .inline-form.wired .fieldname-main_image {
+  width: auto;
+}
+
+/* Teaser: Knopf und Artikel */
+
+.type-article #form-article-content-head .label label,
+.type-article #edit-form-teaser.editable-area .label label {
+  display: none;
+}
+
+.type-article #edit-form-article-content.editable-area #article-content-head\.supertitle,
+.type-article #edit-form-teaser #teaser-supertitle\.teaserSupertitle {
+  font-size: 11px;
+  font-family: arial;
+  color: #990000;
+}
+
+.type-article #edit-form-teaser #teaser-title\.teaserTitle {
+  font-family: arial;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.type-article #edit-form-teaser #teaser-text\.teaserText {
+  font-family: georgia;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.type-article #edit-form-article-content.editable-area #article-content-head\.subtitle {
+  font-size: 22px;
+}
+
+.type-article #edit-form-article-content.editable-area #article-content-head\.title {
+  font-size: 30px;
+  font-family: arial;
+  font-weight: bold;
+  height: 2em;
+}
+
+.type-article #edit-form-article-content.editable-area #article-content-head\.title::-moz-placeholder {
+  color: #FF0000;
+}
+
+.type-article #edit-form-article-content #article-content-head.title,
+.type-article #edit-form-article-content #article-content-head.subtitle {
+  font-size: 16px;
+}
+
+.type-article .block > .block-inner {
+  padding: 5px 0;
+}
+
+.type-article #edit-form-status > .block-inner,
+.type-article #edit-form-teaser > .block-inner {
+  padding-top: 9px;
+}
+
+.type-article #edit-form-teaser > .block-inner {
+  padding-bottom: 15px;
+}
+
+.type-article #edit-form-metadata > .block-inner,
+.type-article #edit-form-misc > .block-inner,
+.type-article #edit-form-article-content > .block-inner,
+.type-article #edit-form-recensions > .block-inner,
+.type-article #edit-form-keywords-new > .block-inner,
+.type-article #edit-form-workflow > .block-inner {
+  padding-bottom: 19px;
+  padding-top: 10px;
+}
+
+.type-article #edit-form-article-content > .block-inner {
+  padding-bottom: 8px;
+  padding-left: 17px;
+  padding-right: 25px;
+}
+
+.type-article #edit-form-filename > .block-inner {
+  padding-bottom: 19px;
+  padding-top: 22px;
+}
+
+.type-article #edit-form-internallinks > .block-inner {
+  padding-bottom: 1px;
+  padding-top: 6px;
+}
+
+.type-article #edit-form-workflow-time > .block-inner {
+  padding-bottom: 6px;
+  padding-top: 10px;
+}
+
+.type-article #edit-form-workflow > .block-inner {
+  padding-bottom: 22px;
+  padding-top: 10px;
+}
+
+.type-article #edit-form-filename .field,
+.type-article #edit-form-filename .widget {
+  margin: 0;
+}
+
+.type-article .article-editor-inner .block:hover .edit-bar,
+.type-article .article-editor-inner .block.editing .edit-bar {
+  visibility: visible;
+}
+
+.type-article .article-editor-inner .block:hover .block-inner,
+.type-article .article-editor-inner .block.editing .block-inner {
+  border-color: #bbbbbb;
+}
+
+.type-article .edit-bar {
+  margin: 0;
+}
+
+.type-article .article-editor-inner .dragger .center {
+  height: 25px;
+}
+
+.type-article .editable-area .block {
+  margin-left: 0em;
+}
+
+.type-article .editable-area .landing-zone a {
+  color: #333;
+  vertical-align: baseline;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font: Arial, Helvetica, sans-serif;
+  line-height: 1.5em;
+  -moz-appearance: button;
+}
+
+.type-article .editable-area .landing-zone a:before {
+  content: "|";
+  color: rgba(255, 255, 255, 0);
+}
+
+.type-article .editable-area .landing-zone a:after {
+  content: "|";
+  color: rgba(255, 255, 255, 0);
+}
+
+.type-article .editable-area .block-inner{
+  padding-top: 0px !important;
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #DDD;
+}
+
+.type-article #article-editor-header .block-inner .object-details,
+.type-article #article-editor-text .block-inner .object-details {
+  border: 0px solid white;
+  margin-top: 2px;
+}
+
+.type-article .editable-area .block-inner .edit-bar {
+  height:25px;
+}
+
+.type-article .editable-area .block-inner .edit-bar {
+  background: none repeat scroll 0 0 #F8F9FD;
+  border-radius: 5px 5px 0 0px;
+  border: 0px solid #DDD;
+}
+
+.type-article #article-editor-text #editable-body .zeit-content-article-edit-interfaces-IParagraph .block-inner {
+  border-color: transparent;
+}
+
+.type-article #storystream\.tldr_title {
+  width: 100%;
+}
+
+.type-article .article-editor-inner .fieldname-tldr_date input[type="button"],
+.type-article .article-editor-inner .fieldname-tldr_date input[type="button"]:hover {
+  background: -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
+  padding-left: 8px;
+}
+
+.type-article .fieldname-tldr_date input.week,
+.type-article .fieldname-tldr_date input.month,
+.type-article .fieldname-tldr_date input.infinity {
+  display: none;
+}
+
+.type-article #edit-form-storystream .fieldname-tldr_date {
+  clear: both;
+}
+
+.type-article #edit-form-storystream .fieldname-tldr_date .label,
+.type-article #edit-form-storystream .fieldname-storystreams .label {
+  margin-top: 2em;
+}
+
+.type-article .article-editor-inner .fieldname-storystreams input[name="storystream.storystreams.remove"],
+.type-article .article-editor-inner .fieldname-storystreams input[name="storystream.storystreams.remove"]:hover {
+  background-position: 10px -2720px, 0 0;
+}
+
+/* Uppercase and some other properties for some labels */
+
+.type-article .article-editor-inner .edit-bar a,
+.type-article .article-editor-inner .block-inner .label span,
+.type-article .article-editor-inner .block-inner legend,
+.type-article #article-editor-text:before {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #4C4C4C;
+  border: none;
+}
+
+/* Checkboxes should not be uppercase */
+
+.type-article .article-editor-inner .block-inner .fieldtype-checkbox .label span {
+  text-transform: none;
+}
+
+.type-article .article-text {
+  margin: 10px;
+}
+
+.type-article .editable-area > .landing-zone {
+  height: 4px;
+}
+
+.type-article .charcount.charalert {
+  color: #FF0000;
+}
+
+
+/* Editable blocks */
+
+.type-article .block-inner{
+  background: none repeat scroll 0 0 #FFFFFF;
+  border-radius: 0px 0px 5px 5px;
+  font-size: 12px;
+  margin: 0 10px;
+  padding: 5px 15px;
+  position: relative;
+}
+
+.type-article .block-inner .totop {
+  border-radius: 0 0 5px 0;
+  bottom: 0;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  height: 15px;
+  line-height: 20px;
+  right: 0;
+  width: 100%;
+  background: -moz-linear-gradient(center top , #CCC 0%, #CCC 94%) no-repeat scroll 0 0 transparent;
+  background-position: right;
+  background-size: 20px 20px;
+  text-align: right;
+  position: relative;
+  clear: both;
+  display: block;
+  padding-right: 5px;
+}
+
+.type-article .block-inner .totop .totopclick {
+  cursor: pointer;
+}
+
+.type-article .block-inner .totop:hover {
+  background: -moz-linear-gradient(center top , #666 0%, #666 94%) no-repeat scroll 0 0 transparent;
+  background-position: right;
+  background-size: 20px 20px;
+}
+
+.type-article .type-article.location-unknown #edit-form-article-content .block-inner {
+   padding:0;
+}
+
+
+/*
+#article-editor-text .editing p:last-child,
+#article-editor-text .editing ol:last-child,
+#article-editor-text .editing ul:last-child,
+#article-editor-text .editing h3:last-child {
+  min-height: 141px;
+  margin-bottom: 0px;
+} */
+
+.type-article #article-editor-text .editable a {
+  text-decoration: underline;
+  color: blue;
+}
+
+.type-article #article-editor-text .editable a.link-edit {
+  background-color: yellow;
+}
+
+.type-article #editable-body .block-inner {
+  overflow: visible;
+}
+
+.type-article .article-editor-inner .block-inner #new-filename\.rename_to {
+  width: 350px;
+}
+
+.type-article .article-editor-inner .block-inner #new-filename\.rename_to:-moz-placeholder {
+  color: #FF0000;
+}
+
+.type-article .block-inner > form:first-of-type {
+  padding-top: 5px;
+}
+
+.type-article .block-inner > *:last-child {
+  padding-bottom: 5px;
+}
+
+.type-article .block-inner h3 {
+  font-size: 1.5em;
+}
+
+.type-article .block-inner p,
+.type-article .block-inner h3 {
+ padding-left: 10px;
+ margin: 0;
+}
+
+.type-article .editing .block-inner p,
+.type-article .editing .block-inner h3{
+  margin-top: 24px;
+}
+
+.type-article #editor-forms-title .supertitle {
+  display:block;
+}
+
+.type-article #editor-forms-title .title {
+  display:block;
+}
+
+.type-article .editing .block-inner ul {
+  margin-top: 41px;
+  margin-bottom: 57px;
+}
+
+.type-article .editing .editable > * {
+}
+
+.type-article .editing .editable > *:first-child {
+  margin-top: 0em;
+}
+
+.type-article .rte-toolbar {
+  background-color: #f0f0ee;
+  border : 1px solid #cccccc;
+  left: -35px;
+  position: absolute;
+  z-index: 50;
+}
+
+.type-article .rte-toolbar > a {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px 0px;
+  display: block;
+  height: 20px;
+  text-align: center;
+  width: 20px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='bold'] {
+  background-position: 3px -357px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='bold']:hover,
+.type-article .rte-toolbar > a.active[href='bold'] {
+  background-position: 3px -387px;
+}
+
+.type-article .rte-toolbar > a[href='italic'] {
+  background-position: 4px -1016px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='italic']:hover,
+.type-article .rte-toolbar > a.active[href='italic'] {
+  background-position: 4px -1046px;
+}
+
+.type-article .rte-toolbar > a[href='insertunorderedlist'] {
+  background-position: 3px -1136px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='insertunorderedlist']:hover,
+.type-article .rte-toolbar > a.active[href='insertunorderedlist'] {
+  background-position: 3px -1166px;
+}
+
+.type-article .rte-toolbar > a[href='formatBlock/h3'] {
+  background-position: 2px -1076px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='formatBlock/h3']:hover,
+.type-article .rte-toolbar > a.active[href='formatBlock/h3'] {
+  background-position: 2px -1106px;
+}
+
+.type-article .rte-toolbar > a[href='formatBlock/p'] {
+  background-position: -2px -1106px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='formatBlock/p']:hover,
+.type-article .rte-toolbar > a.active[href='formatBlock/p'] {
+  background-position: 2px -1106px;
+}
+
+.type-article .rte-toolbar > a[href='insert_link'] {
+  background-position: 3px -1194px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='insert_link']:hover,
+.type-article .rte-toolbar > a.active[href='insert_link'] {
+  background-position: 3px -1224px;
+}
+
+.type-article .rte-toolbar > a[href='unlink'] {
+  background-position: 3px -1255px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='unlink']:hover,
+.rte-toolbar > a.active[href='unlink'] {
+  background-position: 3px -1285px;
+}
+
+.type-article .rte-toolbar > a[href='removeFormat'] {
+  background-position: 3px -178px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='removeFormat']:hover {
+  background-position: 3px -208px;
+}
+
+.type-article .rte-toolbar > a[href='show_find_dialog'] {
+  background-position: 3px -55px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='show_find_dialog']:hover,
+.type-article .rte-toolbar > a.active[href='show_find_dialog'] {
+  background-position: 3px -85px;
+}
+
+.type-article .link_input {
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  box-shadow: 5px 5px 10px #666;
+  left: 8%;
+  padding: 1em;
+  position: absolute;
+  width: 80%;
+  z-index: 50;
+}
+
+.type-article .link_input input[type="text"] {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.type-article fieldset {
+   margin: 0 10px 0 10px;
+}
+
+.type-article .link_input button[name=insert_link_ok] {
+  margin-left: 25px;
+}
+
+.type-article .create-paragraph p:empty:before,
+.editable *:empty:before {
+  color: #ccc;
+}
+
+.type-article .create-paragraph p:empty:before {
+  color: #999;
+  content: "Geben Sie hier Text ein. (CMD/Strg+Shift+V formatfrei einfügen)";
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  padding-left: 0px;
+}
+
+.type-article .editable ul:empty:before,
+.type-article .editable ol:empty:before {
+  content: "Geben Sie hier eine Liste ein.";
+}
+
+.type-article .editing .editable *:empty:before {
+  content: "";
+  background: none;
+}
+
+.type-article #editable-body .block.type-image:first-child {
+  display: none;
+}
+
+/* Gallery block layouts*/
+
+.type-article #edit-form-article-content .type-image ~ a[rel="remove"],
+.type-article #edit-form-article-content .type-image-group ~ a[rel="remove"],
+.type-article #edit-form-article-content .type-gallery ~ a[rel="remove"] {
+  top: 11px;
+}
+
+.type-article #edit-form-article-content .type-video ~ a[rel="remove"] {
+  top: -9px;
+}
+
+.type-article .object-details .gallery_details_copyright {
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+/* Image block layouts */
+
+.type-article .object-details .image_details h3.title {
+  padding-left: 0;
+}
+
+.type-article .object-details .image_details h4.subtitle {
+  margin: 0;
+}
+
+.type-article .object-details .image_details p.footer {
+  padding-left: 0;
+  margin-bottom: 10px;
+}
+
+.type-article .object-details .image_details span.caption {
+  font-size: 11px;
+}
+
+.type-article .object-details .image_details span.copyright {
+  font-size: 11px;
+  margin-bottom: 2px;
+  float: right;
+}
+
+.type-article .image_details .overlay-anchor {
+   display:block;
+   text-align:center;
+   background-color:#8E8D85;
+   line-height:0;
+}
+
+.type-article .image_details .overlay-anchor:hover .overlay{
+   text-align:left;
+}
+
+.type-article .image_details .overlay-anchor:hover .overlay .button{
+   line-height:1.4em;
+   margin-top:3px;
+   margin-left:22px;
+}
+
+.type-article .object-details .toggle_infos {
+  background-image: none;
+  background-position: 15px 8px !important;
+  margin-top: 10px;
+  padding: 2px 0px !important;
+}
+
+.type-article .object-details .toggle_infos:hover {
+  background-image: none;
+  background-position: 15px 8px !important;
+  margin-top: 10px;
+  padding: 2px 0px !important;
+}
+
+.type-article .object-details .folded_information {
+  background-color: #f1f4f9;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.type-article .object-details .folded_information dl,
+.type-article .object-details .folded_information dl {
+  margin: 0;
+}
+
+.type-article .object-details .folded_information dt,
+.type-article .object-details .folded_information dt {
+  color: #4c4c4c;
+  font-size: 9px;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+  margin-top: 0.8em;
+  text-transform: uppercase;
+}
+
+.type-article .object-details .folded_information dd,
+.type-article .object-details .folded_information dd {
+  margin-bottom: 0.8em;
+  margin-left: 0;
+}
+
+/* Video block layouts */
+
+.type-article .block.type-video .video-image {
+  float: left;
+  width: 25%;
+}
+
+.type-article .block.type-video .video-title {
+  display: none;
+}
+
+.type-article .block.type-video .large .video-image {
+  width: 50%;
+}
+
+.type-article .block.type-video .with-links .video-title {
+  clear: both;
+  display: block;
+}
+
+.type-article .zeit-content-article-edit-interfaces-IVideo .object-details .supertitle img[alt="Video"] {
+  width:11px; height:8px;
+}
+
+.type-article .zeit-content-article-edit-interfaces-IVideo .object-details .object-link {
+  background-position: -4px center;
+  display:block;
+  float:none;
+  float:none;
+  padding-left: 2em;
+  padding:0px;
+}
+
+.type-article .editable-area .zeit-content-article-edit-interfaces-IVideo .object-details .object-link a {
+  -moz-appearance: none;
+}
+
+.type-article .editable-area .object-details.type-video .graphical_preview {
+  float: none;
+}
+
+
+/* display landing zones of the two videos side by side */
+
+.type-article #edit-form-article-content .block.type-video .field.fieldname-layout {
+  clear:both;
+}
+
+.type-article .fieldname-references {
+  margin: 0;
+  padding: 0;
+}
+
+.type-article #article-content-main-image\.main_image .label,
+.type-article #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
+.type-article #edit-form-article-content .block.type-image .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-gallery .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-author .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-video .field.fieldname-video .label {
+  display:none;
+}
+
+/* imitate table design */
+
+.type-article fieldset.table .field {
+  clear: both;
+}
+
+
+
+/* Error styling in general and for different places */
+
+.type-article .error span.error {
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #990000;
+  box-shadow: 1px 1px 2px #aaa;
+  color: #990000;
+  display: block;
+  padding: 8px;
+}
+
+.type-article .error div.empty {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -2221px transparent;
+  height: 10px;
+  left: 12px;
+  position: absolute;
+  width: 25px;
+}
+
+/* Positioning for different places */
+
+.type-article .fieldname-teaserText.error .label div.error {
+  position: absolute;
+  top: 95px;
+}
+
+.type-article #edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
+  margin-top: 23px;
+}
+
+.type-article #edit-form-filename fieldset.table .fieldname-rename_to.error .label label {
+  display: none;
+}
+
+.type-article .fieldname-rename_to.error div.empty {
+  top: 20px;
+}
+
+.type-article .fieldname-teaserTitle.error div.empty,
+.type-article .fieldname-teaserSupertitle.error div.empty,
+.type-article .fieldname-teaserText.error div.empty {
+  top: 86px;
+  position: inherit;
+}
+
+.type-article fieldset.table label {
+  font-weight: bold;
+}
+
+.type-article fieldset.table .widget {
+  clear: none;
+  margin: 0;
+}
+
+.type-article dl.errors dt {
+  clear: left;
+  float: left;
+  margin-right: 0.5em;
+}
+
+
+/* Log Expander */
+
+.type-article button.log-expander {
+  clear: both;
+  float: left;
+}
+
+
+/* Pageteaser division in article */
+
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner .field {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner input,
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner label {
+  margin-left: 12px;
+  width: 95% !important;
+}
+
+
+/* METADATA AREA */
+
+.type-article #edit-form-metadata .inline-form div.widget > div > div > select {
+  padding-left:0px;
+}
+
+.type-article #edit-form-metadata #metadata-b\.copyrights {
+  padding-left:1px;
+}
+
+.type-article #edit-form-metadata .inline-form fieldset.keywords {
+  border-left: 1px solid #E4E4E4;
+  float: right;
+  margin: 0;
+  padding-left: 2em;
+  width: 30em;
+}
+
+.type-article #edit-form-metadata .inline-form fieldset.keywords .fieldname-keywords {
+  width: 30em;
+}
+
+.type-article #keywords\.keywords\.list {
+  width: 30em !important;
+}
+
+.type-article #keywords\.keywords\.update {
+  margin-bottom: 15px;
+}
+
+.type-article .fieldname-keywords .update {
+  margin-top: 0.5em;
+}
+
+/* Until the legend-markup is not removed... */
+.type-article form[action$="asset-badges"] fieldset legend {
+  display:none;
+}
+
+/*...except of some special checkboxes....*/
+.type-article input#form\.confirmed_duplicate,
+.fieldname-keywords .checkboxType {
+  position:relative;
+  top: 0px;
+}
+
+
+.type-article form[action$="asset-badges"] {
+  padding-left: 177px;
+}
+
+.type-article form[action$="asset-badges"] div.value {
+  margin-top:-5px;
+}
+
+.type-article form[action$="asset-badges"] label {
+  position:relative;
+}
+
+.type-article form[action$="asset-badges"] .value label {
+  color: transparent;
+  display: block;
+  float: left;
+  height: 21px;
+  overflow: hidden !important;
+  position: relative;
+  position:relative;
+  width: 42px;
+}
+
+.type-article .module-icon {
+  padding-left: 60px;
+  vertical-align: middle;
+}
+
+.type-article .module-icon-video,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -654px transparent;
+}
+
+.type-article .module-icon-image,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
+}
+
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparen;t
+}
+
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
+}
+
+.type-article .module-icon-podcast,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
+}
+
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
+}
+
+.type-article .editable-area .module-icon-image {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
+}
+
+.type-article .editable-area .module-icon-video {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2189px transparent;
+}
+
+.type-article .editable-area .module-icon-infobox {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
+}
+
+.type-article .editable-area .module-icon-portraitbox,
+.type-article .editable-area .module-icon-author {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
+}
+
+.type-article .editable-area .module-icon-gallery {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
+}
+
+
+.type-article label[for^="asset-badges"] .checkboxType {
+  margin-left:3px;
+}
+
+.type-article #form-asset-badges .field {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.type-article #form-asset-badges .widget {
+  margin-left: -4px;
+  margin-top: 1px;
+}
+
+.type-article #form-asset-badges .value label {
+  padding-top: 0;
+}
+
+/* Decrease distance between two product-management-formas a and b  */
+.type-article form[action$="misc-product-management-a"],
+.type-article form[action$="misc-product-management-a"] .field {
+  margin-bottom:0px;
+}
+
+.type-article form[action$="misc-product-management-a"] fieldset {
+  margin-top:30px;
+}
+
+.type-article form[action$="misc-product-management-b"] {
+  margin-bottom:30px;
+  margin-top:0px;
+}
+
+.type-article #form-misc-product-management-b {
+  margin-left: 7px;
+}
+
+.type-article #form-misc-product-management-b .field {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.inline-form .fieldname-authorships li div.object-details {
+	border-style: solid none;
+	border-radius: 0;
+	min-width: 0;
+	padding: 7px 5px 5px 5px;
+}
+
+.inline-form .fieldname-authorships .widget .objectsequencewidget > div:last-child {
+	padding: 13px 0 0 5px;
+}
+
+.inline-form .fieldname-authorships li {
+	margin: 0 0 -1px !important;
+}
+
+.inline-form .fieldname-authorships input.autocomplete,
+.inline-form .fieldname-authorships a.button {
+	margin: 0px 0 21px;
+}
+
+.inline-form .fieldname-authorships a.button {
+	margin-left: 25px;
+}
+
+.inline-form .fieldname-authorships > div.widget {
+  width: 445px;
+}
+
+.inline-form .field .fieldname-authorships {
+  float: auto;
+}
+
+.inline-form .field input.autocomplete {
+  width: 202px;
+}
+
+.type-article #metadata-c\.authorships > ul > li {
+  border-color: #e4e4e4;
+  border-style: solid;
+  border-width: 1px 0px;
+}
+
+.type-article #metadata-c\.authorships > ul > li.busy {
+	background: none !important;
+}
+
+.type-article #metadata-c\.authorships .object-details {
+  border-style: none;
+}
+
+.type-article #metadata-c\.authorships {
+  margin-bottom: 0;
+}
+
+.type-article #metadata-c\.authorships .add_view {
+  background-position: 10px -113px, 0% 0%;
+}
+
+/* worflow publication period area */
+
+/* until it's not removed from markup  */
+.type-article label[for="workflow-publication-period.release_period"] {
+  display:none;
+}
+
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget {
+  border-collapse: collapse;
+}
+
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget td {
+  height:12px;
+  margin-bottom:12px !important;
+  padding:0px;
+}
+
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
+  width:20em;
+}
+
+.type-article form[action$="workflow-publication-period"] label {
+  font-weight:bold;
+  padding:0px;
+}
+
+/* workflow log area  */
+
+/* until it's not removed from markup  */
+.type-article form[action$="edit.form.workflow-log"] div.label {
+  display:none;
+}
+
+.type-article form[action$="edit.form.workflow-log"] div.widget {
+  padding-left:3px !important;
+}
+
+/* no left-padding for some labels... */
+.type-article .article-editor-inner .inline-form label {
+  padding-left:0px;
+}
+
+/* ...and exceptions for the others respectively related elements */
+.type-article form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
+  margin-left:0px;
+}
+
+/*
+.article-editor-inner .inline-form label[for^="assets"],
+.article-editor-inner .inline-form label[for^="misc"],
+.article-editor-inner #edit-form-workflow .inline-form label {
+  padding-left:5px;
+}
+*/
+
+/* MISC / OPTIONS STUFF */
+
+.type-article .inline-form.wired legend {
+  padding-left:0px;
+}
+
+.type-article div[id^="assets"] {
+  width:97% !important;
+}
+
+.type-article .object-details {
+  margin:auto 0px;
+}
+
+.type-article .inline-form div.widget > input {
+  margin-left:0px;
+}
+
+.type-article .inline-form div.widget > input.textType {
+  width: 202px;
+}
+
+.type-article form[action$="edit-division"] div.widget input {
+  margin-left:12px;
+}
+
+.type-article form[action$="edit.form.workflow-status"] {
+  margin-bottom:30px;
+}
+
+.type-article #urgent\.urgent {
+  margin-left:0px;
+}
+
+.type-article form[action$="edit.form.misc-layout"] div.label {
+  margin-bottom:3px;
+}
+
+.type-article form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
+  padding:0em;
+}
+
+.type-article label[for^="workflow-quality-assurance"] ~ span.required {
+  left: 430px;
+  position:absolute;
+  top: 3px;
+}
+
+.type-article #edit-form-misc .inline-form .fieldtype-label {
+  float:left;
+  min-width: none;
+}
+
+.type-article #edit-form-misc form[action$="edit.form.options-a"] .fieldtype-checkbox {
+  float: left;
+  padding-top: 25px;
+}
+
+.type-article #options-layout\.layout {
+  margin-bottom: 0;
+  width: 432px;
+}
+
+.type-article #options-layout\.layout > ul {
+  margin-top: 0
+}
+
+.type-article #options-layout\.layout .landing-zone.visible {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.type-article #options-layout\.layout .object-details {
+  padding-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.type-article #options-layout\.layout a[rel="remove"] {
+  right: 0;
+  top: -10px;
+}
+
+.type-article #edit-form-status .fieldtype-checkbox,
+.type-article #edit-form-metadata .fieldtype-checkbox,
+.type-article #edit-form-misc .fieldtype-checkbox,
+.type-article #edit-form-workflow .fieldtype-checkbox {
+  float: left;
+  margin-bottom: 3px;
+  padding-bottom: 0;
+}
+
+.type-article #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
+  border-top: 1px solid #EDEDED !important;
+  padding-top: 15px;
+}
+
+.type-article #edit-form-misc .fieldname-volume .display,
+.type-article #edit-form-misc .fieldname-year .display {
+  width: 85px;
+}
+
+.type-article #edit-form-misc .fieldname-page .display {
+  width: 30px;
+}
+
+.type-article #edit-form-misc .fieldname-printRessort .display {
+  width: 134px;
+}
+
+.type-article #options-b\.year,
+.type-article #options-b\.volume {
+  width: 85px;
+}
+
+.type-article #form-options-layout .field {
+  margin-bottom: 1px;
+}
+
+.type-article #article-content-main-image\.main_image .object-details{
+  margin-bottom:10px;
+}
+
+.type-article #article-content-main-image\.main_image .object-details-body {
+  padding-left: 1em;
+  padding-right: 2em;
+}
+
+.type-article #form-article-content-main-image > .fieldname-main_image,
+.type-article #form-article-content-main-image .widget,
+.type-article #form-article-content-main-image .object-widget {
+  margin:0;
+  padding:0;
+}
+
+/* TEASER AREA */
+
+.type-article #edit-form-teaser .inline-form .object-widget {
+  width: 148px;
+}
+
+.type-article #edit-form-teaser a.add_view {
+  display: block;
+  margin-top: 10px;
+  width: 108px;
+}
+
+.type-article #edit-form-teaser fieldset.teaser-image {
+  float: left;
+}
+
+.type-article #edit-form-teaser .inline-form .fieldname-images {
+  margin: 5px 5px 5px 0;
+  min-height: 220px;
+}
+
+.type-article #edit-form-teaser .inline-form .object-details {
+  border-radius: 0;
+  border: 0;
+  min-width: 0;
+  width: 148px;
+}
+
+.type-article #edit-form-teaser .inline-form .object-details img {
+  float: left;
+}
+
+.type-article #edit-form-teaser .inline-form .object-details span.publish-state {
+  padding-top: 15px;
+}
+
+.type-article #edit-form-teaser .inline-form .object-details ul.metadata {
+  float: right;
+}
+
+.type-article #edit-form-teaser .inline-form .image_details img {
+  width: 148px;
+  height: 84px;
+}
+
+.type-article #edit-form-teaser .inline-form .image_details .copyright {
+  display: none;
+}
+
+.type-article #edit-form-teaser .inline-form .image_details .toggle_infos {
+  display: none;
+}
+
+/* Teaser image */
+.type-article #form-teaser-image .widget {
+  margin-bottom: 0;
+}
+
+.type-article #teaser-image\.image {
+  margin-bottom: 0;
+}
+
+.type-article #teaser-image\.image\.url {
+  width: 100px;
+}
+
+.type-article #teaser-image\.image .edit-button {
+  margin-top: 26px;
+}
+
+.type-article #teaser-image\.image a[rel="remove"] {
+  right: -8px;
+  top: -15px;
+}
+
+.type-article #teaser-image\.image .object-details-heading {
+  padding-right: 0;
+}
+
+.type-article #teaser-image\.image ul {
+  margin-bottom: 0;
+  margin-top: 1px;
+}
+
+.type-article #teaser-image\.image ul.metadata {
+  background-color: #f1f4f9;
+  display: block;
+}
+
+.type-article #teaser-image\.image ul.metadata li {
+  display: none;
+}
+
+.type-article #teaser-image\.image ul.metadata li:before {
+  content: none;
+}
+
+.type-article #teaser-image\.image ul.metadata li.teaser_title {
+  color: #000;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 9em;
+}
+
+.type-article #edit-form-teaser #teaser-image\.fill_color {
+  margin-top: 10px;
+  width: 137px;
+}
+
+
+.type-article #form-teaser-supertitle .widget,
+.type-article #form-teaser-title .widget,
+.type-article #form-teaser-text .widget {
+  margin-bottom: 1px;
+}
+
+.type-article #form-teaser-supertitle .widget {
+  margin-top: 3px;
+}
+
+.type-article #form-teaser-title .widget,
+.type-article #form-teaser-text .widget {
+  margin-top: 0;
+}
+
+/* Assets-Stuff */
+
+.type-article #edit-form-assets .inline-form .field {
+  margin: 5px 0 5px 0;
+}
+
+.type-article #edit-form-assets .inline-form .field .widget {
+  padding-left:10px;
+}
+
+.type-article form[action$="edit.form.assets"] .objectsequencewidget ul {
+  margin: 10px 0px 10px 0;
+}
+
+.type-article .object-widget.landing-zone.visible {
+  margin:0px !important;
+  padding:0px !important;
+}
+
+.type-article .drop-object-widget.landing-zone.visible .object-reference {
+  margin:1em !important;
+}
+
+
+/* Channels */
+
+.type-article #edit-form-channel .combinationFieldWidget td.label {
+    display: none;
+}
+.type-article #edit-form-channel .combinationFieldWidget tr {
+    display: inline-block;
+}
+
+
+/* INTERNAL LINKS */
+
+.type-article #edit-form-internallinks .inline-form .field {
+  margin: 5px 0 5px 0;
+}
+
+
+/* moz-appearence:button can't handle with padding... */
+.type-article #metadata-a\.keywords\.update a:before,
+.type-article #metadata-a\.keywords\.update a:after,
+.type-article #editable-body .action-editable-body-module-droppable span a:before,
+.type-article #editable-body .action-editable-body-module-droppable span a:after,
+.type-article #metadata-c\.authorships a[href="zeit.content.author.add_contextfree"]:after,
+.type-article #metadata-c\.authorships a[href="zeit.content.author.add_contextfree"]:before,
+.type-article #recensions a:after,
+.type-article #recensions a:before,
+.type-article #checkin a:before,
+.type-article #checkin a:after,
+.type-article form[action$="edit.form.context-action"] a:after,
+.type-article form[action$="edit.form.context-action"] a:before {
+  content:'\00A0\00A0';
+}
+
+.type-article #recensions .recensions {
+  margin-bottom: 9px;
+  margin-top: 7px;
+}
+
+.type-article #recensions .recensions > p:first-child {
+  margin-bottom: 15px;
+}
+
+/* Add author lightbox */
+.type-article form[action$="zeit.content.author.add_contextfree"] .summary {
+  font-weight:bold;
+  padding-left:19px;
+}
+
+/* misc */
+
+.type-article div.objectlog {
+  border-top: 1px solid #cccccc;
+  margin-top: 20px;
+  padding: 20px 0px;
+}
+
+.type-article div.objectlog th {
+  font-size: 11px;
+}
+
+.type-article div.objectlog legend {
+  border: none;
+}
+
+.type-article div.objectlog div {
+  border: 1px solid #999999;
+  height: 15em;
+  overflow-y: scroll;
+}
+
+.type-article .inline-form fieldset.memo {
+  background: #ffffff;
+  margin: 0px;
+  padding: 0 10px 13px;
+}
+
+.type-article .inline-form .fieldname-memo,
+.type-article .fieldname-memo .widget {
+  padding: 0px;
+  margin: 0px;
+}
+
+.type-article .rst-preview.empty {
+  padding: 5px;
+}
+
+.type-article .rst-preview dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+}
+
+.type-article .rst-preview dd {
+  float: left;
+}
+
+.type-article .rst-widget {
+  background: url("bginput.png") repeat-x scroll 0 0 transparent;
+  border-top: 1px solid #999;
+  border: 1px solid #BBB;
+  overflow: hidden;
+  padding-top:2px;
+}
+
+.type-article #edit-form-article-content .inline-form.wired .rst-widget textarea {
+    border-style: none !important;
+}
+
+.type-article #edit-form-article-content .rst-preview {
+  white-space: inherit;
+}
+
+.type-article .rst-widget textarea {
+  color: #4C4C4C;
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 5px;
+
+  border: none;
+  resize: vertical;
+  width: 99%;
+}
+
+.type-article .article-editor-inner .fieldname-channels input[name="channel-selector.channels.remove"],
+.type-article .article-editor-inner .fieldname-channels input[name="channel-selector.channels.remove"]:hover {
+  background-position: 10px -2720px, 0 0;
+}
+
+.type-article #form-channel-selector {
+  margin-top: 15px;
+}
+
+.type-article .fieldname-memo textarea,
+.type-article .fieldname-memo .rst-preview {
+  background-color: #fff79a;
+}
+
+.type-article .fieldname-memo .rst-preview p {
+  color: #333333;
+}
+
+.type-article .fieldname-memo .rst-preview.empty {
+  background-color: #ffffff;
+}
+
+.type-article .fieldname-memo .rst-preview.empty:before {
+  content: "Memo";
+}
+
+.type-article label[for="memo.memo"] {
+  display: none;
+}
+
+
+/* FORM FIELDS */
+
+/* text */
+
+.type-article #edit-form-filename .inline-form .fieldtype-text,
+.type-article #edit-form-misc .inline-form .fieldtype-text,
+.type-article #edit-form-metadata .inline-form .fieldtype-text {
+  float: left;
+}
+
+
+/* checkbox */
+
+.type-article #edit-form-teaser .inline-form.wired .fieldtype-checkbox .field,
+.type-article #edit-form-teaser .inline-form.wired .fieldtype-checkbox .widget,
+.type-article #edit-form-article-content .inline-form.wired .fieldtype-checkbox .field,
+.type-article #edit-form-article-content .inline-form.wired .fieldtype-checkbox .widget {
+    width: auto;
+}
+
+.type-article #edit-form-filename .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-misc .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-metadata .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-workflow .inline-form .fieldtype-checkbox .widget {
+  margin-left: 0.2em;
+}
+
+/* Disabled checkboxes are displayed with a red cross, but for the workingcopy
+   we have to fix the margins to align with enabled checkboxes. */
+.location-workingcopy.type-article .widget.checkboxdisabled {
+  margin-bottom: 3px;
+  margin-left: 4px;
+  margin-right: 7px;
+}
+
+/* label */
+
+.type-article #edit-form-filename .inline-form .fieldtype-label,
+.type-article #edit-form-misc .inline-form .fieldtype-label,
+.type-article #edit-form-metadata .inline-form .fieldtype-label {
+  float: left;
+}
+
+.type-article #edit-form-filename .inline-form .fieldtype-label .widget,
+.type-article #edit-form-misc .inline-form .fieldtype-label .widget,
+.type-article #edit-form-metadata .inline-form .fieldtype-label .widget {
+  margin-left: 0.2em;
+  margin-top: 0.2em;
+}
+
+.type-article .fieldname-color_scheme .display,
+.type-article .fieldtype-label .display {
+  width: 200px;
+}
+
+
+.type-article iframe.preview {
+  /* XXX why does zeit.cms:forms.css use important? I suspect FCKeditor. */
+  border: none;
+  height: 500px;
+  position: inherit !important;
+  width: 100%;
+}
+
+.type-article #body .ui-menu-item {
+  background-color: #fafafa;
+  border: 1px solid #eee;
+}
+
+.type-article .widget.display {
+  background: #f1f4f9;
+  border-top: 1px solid #DDDDDD;
+  min-height: 15px;
+  padding: 3px;
+}
+
+/* Render links as buttons */
+
+.type-article .article-editor-inner a.button,
+.type-article .article-editor-inner button,
+.type-article .article-editor-inner input[type=button],
+.type-article .editable-area input.button,
+/* XXX This does not belong here, but we have no overarching styling concept. */
+.lightbox a.button,
+#variant-content a.button,
+.type-centerpage-2009 a.button {
+  -moz-border-radius:3px;
+  -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
+  background-size: auto, 100% auto;
+  background: url('/fanstatic/zeit.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px , -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
+  border-radius:2px 2px 2px 2px;
+  border: 1px solid #c1c1c1;
+  box-shadow:0px 0px 0px rgb(0, 0, 0);
+  color:rgb(0, 0, 0);
+  cursor: pointer;
+  font-family:arial, serif;
+  font-size: 12px;
+  padding: 3px 8px 2px 30px;
+  text-decoration:none;
+  text-indent: 0;
+  text-shadow: 0px 0px 5px rgb(255, 255, 255);
+  white-space: inherit;
+}
+
+.type-article .article-editor-inner a.button:hover,
+.type-article .article-editor-inner button:hover,
+.type-article .article-editor-inner input[type=button]:hover,
+/* XXX This does not belong here, but we have no overarching styling concept. */
+.lightbox a.button,
+.type-centerpage-2009 a.button {
+  background: url('/fanstatic/zeit.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
+  border-color: #a6a6a6;
+}
+
+.type-article .article-editor-inner a.button.disabled,
+.type-article .article-editor-inner a.button[disabled] {
+  color: #999999;
+}
+
+
+/* Object Detail Modules */
+
+
+.type-article #editable-body fieldset {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+/* social media */
+
+.type-article #form-social .field.fieldname-facebook_main_text .label,
+.type-article #form-social .field.fieldname-facebook_magazin_text .label,
+.type-article #form-social .field.fieldname-facebook_campus_text .label,
+.type-article #form-social .field.fieldname-short_text .label,
+.type-article #form-social .field.fieldname-twitter_ressort_text .label,
+.type-article #form-social .field.fieldname-twitter_print_text .label,
+.type-article #form-mobile .field.fieldname-mobile_text .label,
+.type-article #form-mobile .field.fieldname-mobile_image .label {
+   display: none;
+}
+
+.type-article #form-mobile .field.fieldname-mobile_payload_template .label,
+.type-article #form-mobile .field.fieldname-mobile_title .label {
+  /* Counteract float left */
+  clear: both;
+}
+
+.type-article #social\.short_text,
+.type-article #social\.twitter_ressort_text,
+.type-article #social\.twitter_print_text,
+.type-article #mobile\.mobile_text {
+  width: 100%;
+}
+
+.fieldname-mobile_title .widget:before{
+  content: "ZEIT ONLINE";
+  color: lightslategray;
+  float: left;
+  display: block;
+  vertical-align: middle;
+  line-height: 1.9rem;
+  margin-right: 10px;
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort_enabled {
+    margin-right: 0;
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort {
+   padding-top: 0; /* XXX revert to default */
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort .label span {
+    text-transform: none;
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort .widget {
+    clear: none;
+    width: inherit;
+    margin-top: 0;
+}
+
+/* XXX unclear why we need to repeat this from zeit.cms:forms.css */
+.type-article #form-social select {
+    margin-top: -4px;  /* vertically centered appearance */
+}
+
+.type-article #form-social .field.fieldname-is_amp {
+    clear: left;
+}
+
+/* XXX We should use <fieldset>, but we'd have to combine the templates of
+   zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
+.type-article #form-social .field.fieldname-short_text,
+.type-article #form-social .field.fieldname-twitter_ressort_text,
+.type-article #form-social .field.fieldname-twitter_print_text,
+.type-article #form-social .field.fieldname-is_amp {
+    border-top: 1px solid #d5dee7;
+    clear: both;
+    display: flow-root;
+    margin-top: 1em;
+    margin-bottom: 0;
+    padding-top: 1em;
+    padding-bottom: 0;
+}
+
+.type-article #form-social .field.fieldname-facebook_main_text:before ,
+.type-article #form-social .field.fieldname-short_text:before ,
+.type-article #form-social .field.fieldname-twitter_ressort_text:before ,
+.type-article #form-social .field.fieldname-twitter_print_text:before ,
+.type-article #form-social .field.fieldname-is_amp:before {
+    display: block;
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.type-article #form-social .field.fieldname-facebook_main_enabled,
+.type-article #form-social .field.fieldname-twitter_main_enabled {
+    clear: both;
+    display: flow-root;
+}
+
+.type-article #form-social .field.fieldname-facebook_main_text:before {
+    content: "Facebook";
+}
+.type-article #form-social .field.fieldname-short_text:before {
+    content: "Twitter";
+}
+.type-article #form-social .field.fieldname-twitter_print_text:before {
+    content: "Twitter DieZeit";
+}
+.type-article #form-social .field.fieldname-twitter_ressort_text:before {
+    content: "Twitter Ressort";
+}
+.type-article #form-social .field.fieldname-is_amp:before {
+    content: "Mobile Plattformen";
+    display: block;  /* counteract float: left of .widget */
+}
+/* end XXX */
+
+
+/* breaking news */
+
+#breaking-retract {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#breaking-retract-banner {
+  background-position: 10px -418px, 0 0;
+  margin-left: 1em;
+}
+
+#breaking-retract-banner:hover {
+  background-position: 10px -448px, 0 0;
+}
+
+
+.find-dialog .ui-dialog-buttonset .ui-button:nth-child(3) {
+  /* XXX jqueryui does not seem to allow specifying classes for buttons, sigh */
+  margin-left: 2em;
+}
+
+.find-dialog label[for=find-dialog-searchtext],
+.find-dialog label[for=find-dialog-replacement] {
+    display: inline-block;
+    width: 10em;
+}
+
+
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-main_image_variant_name,
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-display_mode,
+.type-article #edit-form-article-content .inline-form.wired .field.fieldname-variant_name {
+    float: left;
+    width: auto;
+    clear: none;
+}
+
+.type-article #form-article-content-main-image > .fieldname-main_image_variant_name {
+  position: relative;
+  top: -2.1em;
+  left: 19em;
+}
+
+.type-article #form-article-content-main-image .label {
+    display: none;
+}
+.type-article #form-article-content-main-image > .fieldname-main_image_variant_name div.value:before {
+    content: "Seitenverhältnis";
+    float: left;
+    padding-right: 0.5em;
+    color: #4c4c4c;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+.type-article #form-mobile .fieldname-author_enabled .widget .output {
+    background-color: #f1f4f9;
+    width: 100%;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.type-article #form-mobile .fieldname-author_enabled .label {
+    display: none;
+}
+
+.type-article form[action$="@@edit-rawtext"] .fieldname-help .label {
+    display: none;
+}
+.type-article form[action$="@@edit-rawtext"] .fieldname-help .widget {
+    margin-bottom: 1em;
+}

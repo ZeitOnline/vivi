@@ -1,0 +1,147 @@
+==========
+Recensions
+==========
+
+We need a testbrowser first:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+>>> browser.open('http://localhost/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('edit.form.recension-list')
+>>> listing = browser.url
+
+>>> print browser.contents
+<...
+    There are no book information items, yet.
+    ...
+
+As long as an article does not have recensions yet, its has_recensions property
+is False:
+
+>>> import zeit.cms.checkout.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> with zeit.cms.testing.interaction():
+...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
+...     print somalia.has_recensions
+False
+
+Let's add one:
+
+>>> browser.getLink('Add').click()
+>>> browser.getControl('Title').value = 'Der Schwarm'
+>>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
+>>> browser.getControl('ZEIT category').displayValue
+['(nothing selected)']
+>>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
+>>> browser.getControl(name='form.actions.add').click()
+>>> browser.open(listing)
+>>> print browser.contents
+<fieldset id="recensions">
+  <div class="recensions">
+    ...
+    <span class="authors">Frank Schwanitz</span>
+	<span class="title">Der Schwarm</span>
+      ...
+
+After adding the first recensions, has_recensions is set (it's needed for
+XSLT). XXX Note that it currently is never removed again.
+
+>>> with zeit.cms.testing.interaction():
+...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
+...     print somalia.has_recensions
+True
+
+Let's edit and add some more information:
+
+>>> browser.getLink('edit').click()
+>>> browser.getControl('Publisher').value = 'Kiepenheuer & Witsch'
+>>> browser.getControl('Location').value = 'Koeln'
+>>> browser.getControl('Year').value = '2004'
+>>> browser.getControl('Pages').value = '999'
+>>> browser.getControl('Price').value = '24.90'
+>>> browser.getControl('Apply').click()
+>>> browser.open(listing)
+>>> print browser.contents
+<fieldset id="recensions">
+  <div class="recensions">
+  <link ...
+...
+	<span class="authors">Frank Schwanitz</span>
+	<span class="title">Der Schwarm</span>
+	<span class="location">Koeln</span>
+	<span class="publisher">Kiepenheuer &amp; Witsch</span>
+	<span class="year">2004</span>
+	<span class="pages">999</span>
+	<span class="pageslabel">Pages</span>
+	<span class="price">24.90</span>
+...
+</fieldset>
+
+Note that the price is not rendered correctly, yet. We would like a decimal or
+just a TextLine but we need lxml 2.0 for this.
+
+Let's have a look at the source code:
+
+>>> browser.open('@@edit.html')
+>>> browser.getLink('Source').click()
+>>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
+<article>...
+  <body ...
+    <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+      <auth-info>
+        <author>Frank Schwanitz</author>
+      </auth-info>
+      <title>Der Schwarm</title>
+      <category>Belletristik</category>
+      <edition>
+        <publisher>Kiepenheuer &amp; Witsch</publisher>
+        <location>Koeln</location>
+        <year>2004</year>
+        <pages>999</pages>
+        <price>24.90</price>
+      </edition>
+    </entry>
+  </body>...
+</article>
+
+
+Let's add another recension:
+
+>>> browser.open(listing)
+>>> browser.getLink('Add').click()
+>>> browser.getControl('Title').value = 'Minima Moralia'
+>>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
+>>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
+>>> browser.getControl('Publisher').value = 'Suhrkamp'
+>>> browser.getControl('Location').value = 'Zuerich'
+>>> browser.getControl('Year').value = '2001'
+>>> browser.getControl('Pages').value = '123'
+>>> browser.getControl('Price').value = '13.80'
+>>> browser.getControl(name='form.actions.add').click()
+>>> browser.open(listing)
+>>> print browser.contents
+<fieldset id="recensions">
+  <div class="recensions">
+      ...
+        <span class="authors">Frank Schwanitz</span>
+        <span class="title">Der Schwarm</span>
+        <span class="location">Koeln</span>
+        <span class="publisher">Kiepenheuer &amp; Witsch</span>
+        <span class="year">2004</span>
+        <span class="pages">999</span>
+        ...
+        <span class="price">24.90</span>
+        ...
+        <span class="authors">Theodor W. Adorno</span>
+        <span class="title">Minima Moralia</span>
+        <span class="location">Zuerich</span>
+        <span class="publisher">Suhrkamp</span>
+        <span class="year">2001</span>
+        <span class="pages">123</span>
+        ...
+        <span class="price">13.80</span>
+    ...

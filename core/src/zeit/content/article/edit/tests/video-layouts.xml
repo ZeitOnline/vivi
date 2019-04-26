@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<video-layouts>
+  <layout id="small" available="zeit.cms.section.interfaces.IZONContent">small</layout>
+  <layout id="with-links">with info</layout>
+  <!-- default value must not use available -->
+  <layout id="large" available="zeit.cms.section.interfaces.IZONContent">large</layout>
+  <layout id="double" available="zeit.cms.section.interfaces.IZONContent">double</layout>
+</video-layouts>

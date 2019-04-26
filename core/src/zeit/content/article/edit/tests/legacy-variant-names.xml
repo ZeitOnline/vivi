@@ -1,0 +1,5 @@
+<legacy-variant-names>
+  <legacy-mapping layout="float-portrait" variant_name="portrait" />
+  <legacy-mapping layout="float-square" variant_name="square" />
+  <legacy-mapping layout="large" variant_name="wide" />
+</legacy-variant-names>

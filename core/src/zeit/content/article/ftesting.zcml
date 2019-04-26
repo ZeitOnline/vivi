@@ -1,0 +1,44 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope">
+
+  <meta:provides feature="zeit.content.article.breakingnews-with-channel" />
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
+
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
+  <include package="zeit.content.modules" />
+
+  <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+  <include package="zeit.content.article.edit.browser" />
+
+  <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
+  <include package="zeit.imp" />
+  <include package="zeit.imp.browser" />
+  <include package="zeit.content.gallery" />
+  <include package="zeit.content.gallery.browser" />
+  <include package="zeit.content.infobox" />
+  <include package="zeit.content.infobox.browser" />
+  <include package="zeit.content.portraitbox" />
+  <include package="zeit.content.portraitbox.browser" />
+
+  <include package="zeit.content.cp" />
+  <include package="zeit.content.video" />
+
+  <include package="zeit.wysiwyg" />
+  <include package="zeit.wysiwyg.browser" />
+
+  <include package="zeit.content.author" />
+  <include package="zeit.content.author.browser" />
+  <include package="zeit.content.volume" />
+  <include package="zeit.content.volume.browser" />
+
+  <include package="zeit.push" file="testing.zcml" />
+
+</configure>

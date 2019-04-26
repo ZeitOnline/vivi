@@ -1,0 +1,146 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <!-- include zeit.edit early to make sure the grokkers are grokked. -->
+  <include package="zeit.edit" />
+
+  <grok:grok package="." exclude="browser" />
+  <include package=".edit" />
+
+  <adapter factory=".article.articleFromTemplate" />
+
+  <class class=".article.Article">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <require
+      interface=".interfaces.IArticle"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IArticle"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".breaking.BreakingNews">
+    <require
+      interface=".interfaces.IBreakingNews"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBreakingNews"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <subscriber handler=".article.updateTextLengthOnChange" />
+  <subscriber handler=".article.disallowCommentsIfCommentsAreNotShown" />
+
+  <class class=".article.ArticleWorkflow">
+    <require
+      permission="zope.View"
+      interface="zeit.workflow.interfaces.IContentWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.workflow.interfaces.IContentWorkflow"
+      />
+  </class>
+
+  <adapter
+    factory=".article.ArticleWorkflow"
+    for=".interfaces.IArticle"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    trusted="yes"
+    />
+
+  <class class=".article.NoMainImageBlockReference">
+    <require like_class="zeit.cms.content.reference.EmptyReference" />
+  </class>
+
+
+   <!-- recensions -->
+
+  <adapter
+    factory=".recension.BookRecensionContainer"
+    provides="zeit.content.article.interfaces.IBookRecensionContainer"
+    />
+
+  <class class=".recension.BookRecensionContainer">
+    <require
+      interface=".interfaces.IBookRecensionReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface=".interfaces.IBookRecensionWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".recension.BookRecension">
+    <require
+      interface=".interfaces.IBookRecension"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBookRecension"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <subscriber handler=".recension.set_has_recension" />
+
+  <!-- generation -->
+
+  <utility
+    name="zeit.content.article"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+
+
+  <!-- traversing -->
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.article.interfaces.IArticle
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".recension.RecensionContainerTraverser"
+    for="zeit.content.article.interfaces.IArticle
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.article.interfaces.IBookRecensionContainer
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".recension.RecensionTraverser"
+    for="zeit.content.article.interfaces.IBookRecensionContainer
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <adapter
+    factory=".article.ArticleMetadataUpdater"
+    name="zeit.content.article.interfaces.IArticleMetadata"/>
+
+  <adapter
+    factory=".interfaces.IZONArticle"
+    for="zeit.cms.section.interfaces.IZONSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="article"
+    />
+
+  <interface
+    interface=".interfaces.IBreakingNews"
+    type="zeit.cms.content.interfaces.IAddableContent"
+    />
+
+</configure>

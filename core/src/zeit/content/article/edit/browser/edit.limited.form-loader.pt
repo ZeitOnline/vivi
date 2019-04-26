@@ -1,0 +1,5 @@
+<fieldset
+  class="category limited"
+  tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
+</fieldset>
+

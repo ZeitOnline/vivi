@@ -1,0 +1,130 @@
+.recension {
+   margin: 0 0 1em;
+   border: 1px solid #CCC;
+   border-radius: 5px;
+   padding: 0px;
+}
+
+.recension div.recensionheader {
+  margin: 0px;
+  background: #F8F9FD;
+  height: 25px; 
+  line-height: 25px;
+  border-radius: 5px 5px 0px 0px;
+  padding-left: 1em;
+}
+
+.recension div.recensionheader span {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #4C4C4C;
+}
+
+.recension div.recensionheader span.recensionaction {
+  float: right;
+  border-left: 1px solid #CCC;
+  overflow: hidden;
+  width: 50px;
+  height: 25px;
+}
+
+.recension div.recensionheader span.recensionaction a {
+  width: 30px;
+  overflow: hidden;
+  color: transparent;
+}
+
+.recension div.recensionheader span.recensionaction a[rel="edit"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 18px 2px transparent;
+}
+
+.recension div.recensionheader span.recensionaction a[rel="remove"] {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 18px -420px transparent;
+}
+
+.recension div.recensionbody {
+   padding: 0.5em 1em;
+}
+
+.recension div.recensionbody span.authors:after,
+.recension div.recensionbody span.location:after {
+  content:":";
+}
+
+.recension div.recensionbody span.publisher:after {
+  content:",";
+}
+
+.recension div.recensionbody span.pageslabel:after {
+  content:";";
+}
+
+.recension div.recensionbody span.title {
+  font-size: 100%;
+  font-weight: normal;
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  font-style: italic;
+}
+
+.recension div.recensionbody span.title:after,
+.recension div.recensionbody span.year:after {
+  content: "\A";
+  white-space: pre;
+}
+
+.recension div.recensionbody span.price:after {
+  content: " €";
+}
+
+/* rudimentary styling for lightbox, until form is implemented inline */
+
+form.recensions td {
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+form.recensions td.label {
+  width: 130px;
+}
+
+form.recensions td.field {
+  width: 250px;
+}
+
+form.recensions td.field input.textType, 
+form.recensions td.field #form\.year {
+  width: 200px;
+}
+
+form.recensions tr:first-child td.field {
+  width: 634px;
+}
+
+form.recensions tr:first-child td.field td input.submit {
+  /*height: 0;
+  padding: 0;*/
+  margin-left: 40px;
+}
+
+form.recensions td.field textarea#form\.info {
+  height: 14px;
+  width: 198px;
+  padding: 1px;
+  border-width: 3px;
+  margin: 4px 0 0;
+  -moz-appearance: none;
+}
+
+form.recensions td.field div.value select {
+  width: 206px;
+}
+
+form.recensions tr {
+  display: inline;
+}
+
+form.recensions table.form-fields {
+  table-layout: fixed;
+  border-spacing: 0px;
+}

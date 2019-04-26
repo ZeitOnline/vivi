@@ -1,0 +1,121 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    name="view.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DispatchToViewOrEdit"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:viewlet
+      name="Workflow"
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.WorkflowMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zeit.workflow.Publish"
+   />
+
+ <browser:viewlet
+      name="Edit contents"
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.EditContentsMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zope.View"
+   />
+
+  <browser:icon
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/articleResource.png"
+    />
+
+  <browser:icon
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/articleResource.png"
+    />
+
+
+  <browser:icon
+    for="zeit.content.article.interfaces.ITagesspiegelArticle"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/article-tagesspiegel.png"
+    />
+
+
+  <browser:icon
+    for="zeit.content.article.interfaces.ITagesspiegelArticle"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/article-tagesspiegel.png"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.AddAndCheckout"
+    name="zeit.content.article.Add"
+    menu="zeit-add-menu" title="Article"
+    permission="zeit.AddContent"
+    />
+
+  <!-- workflow -->
+  <adapter
+    factory=".workflow.ArticleWorkflowForm"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".breaking.Add"
+    name="zeit.content.article.AddBreakingNews"
+    menu="zeit-add-menu" title="Add breaking news"
+    permission="zeit.AddContent"
+    />
+  <!-- XXX The string "breaking news" is already in use somewhere else
+       and translated very specifically (something about "Print editions")
+  -->
+
+  <gocept:pagelet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="do-publish"
+    template="breaking-publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.breaking-retract-banner"
+    class=".breaking.Retract"
+    template="breaking-retract.pt"
+    permission="zope.View"
+    />
+
+</configure>

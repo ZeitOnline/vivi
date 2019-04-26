@@ -1,0 +1,7 @@
+<div class="article-text">
+  <div class="create-paragraph"
+       cms:cp-module="zeit.content.article.AppendParagraph"
+       tal:attributes="href string:${context/@@absolute_url}/@@landing-zone-drop-module?block_type=p&order=bottom">
+    <p></p>
+  </div>
+</div>

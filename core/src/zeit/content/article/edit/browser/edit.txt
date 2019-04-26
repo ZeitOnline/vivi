@@ -1,0 +1,105 @@
+====================
+Generic editor tests
+====================
+
+Editor block tests
+==================
+
+This file contains tests for various simple blocks.
+
+
+UnorderedList
+-------------
+
+Open editor:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('@@contents')
+>>> browser.open('editable-body/@@contents')
+>>> contents_url = browser.url
+
+Add ul and let it render:
+
+>>> import lxml.objectify
+>>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.append(lxml.objectify.Element('ul'))
+>>> article.xml.body.division.ul.li = ['eins', 'zwei']
+>>> article._p_changed = True
+>>> import transaction
+>>> transaction.commit()
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+    <div ...class="block type-ul...
+    <ul><li...>eins</li><li...>zwei</li></ul>
+    ...
+
+
+OrderedList
+-----------
+
+Add ol and let it render:
+
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.append(lxml.objectify.Element('ol'))
+>>> article.xml.body.division.ol.li = ['eins', 'zwei']
+>>> article._p_changed = True
+>>> transaction.commit()
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+    <div ...class="block type-ol...
+    <ol><li...>eins</li><li...>zwei</li></ol>
+    ...
+
+Intertitle
+----------
+
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.intertitle = 'A B C'
+>>> article._p_changed = True
+>>> transaction.commit()
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+    <div ...class="block type-intertitle...
+    <h3...>A B C</h3>
+    ...
+
+
+Checkin handling
+================
+
+On checkin all the funky __name__ attributes are removed. Before checkin there
+are __name__ attributes:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article>...
+     <division ... ns0:__name__="id-b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
+     ...
+
+
+After checkin they're gone:
+
+>>> browser.open('/++skin++vivi/workingcopy/zope.user/Somalia/@@checkin')
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> article = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> xml = lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print xml,
+<article>...
+    <division ...type="page">...
+>>> '__name__' in xml
+False
+

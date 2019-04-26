@@ -1,0 +1,106 @@
+<fieldset i18n:domain="zeit.cms" id="recensions">
+  <div class="recensions"
+    tal:define="can_edit python:request.interaction.checkPermission(
+      'zeit.EditContent', context)">
+    <link
+      rel="stylesheet" type="text/css"
+      tal:attributes="
+      href string:${request/getApplicationURL}/fanstatic/zeit.content.article.recension/recension.css"/>
+
+    <div class="recension"
+      tal:condition="view/recensions"
+      tal:repeat="recension view/recensions">
+  
+      <div class="recensionheader">
+        <span i18n:translate="">Bibliography</span>
+        <span tal:content="repeat/recension/number">0</span>
+        <tal:con condition="can_edit">
+	  <span class="recensionaction">
+        <a rel="remove"
+           title="Remove"
+           tal:attributes="href string:${recension/url}/@@remove"
+           cms:cp-module="zeit.edit.LoadAndReload"
+           i18n:attributes="title"
+           i18n:translate="">
+          [remove]
+        </a>
+      </span>
+			<span class="recensionaction">
+			  <a href="#" rel="edit" title="Edit"
+				tal:attributes="
+				href string:${recension/url}/@@edit.html;
+				cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
+				cms:lightbox-reload-id="recensions"
+				cms:cp-module="zeit.edit.LightBoxForm"
+				i18n:attributes="title"
+				i18n:translate="">
+				[edit]
+			  </a>
+			</span>
+		</tal:con>	
+      </div>
+
+      <div class="recensionbody">
+        <tal:con condition="recension/authors">
+          <span class="authors" tal:content="recension/authors">
+            Goethe
+          </span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/title">
+          <span class="title" tal:content="recension/recension/title">
+            Faust
+          </span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/location">
+          <span class="location" tal:content="recension/recension/location">
+            Zuerich
+          </span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/publisher">
+          <span class="publisher" tal:content="recension/recension/publisher">
+            Suhrkamp
+          </span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/year">
+          <span class="year" tal:content="recension/recension/year">
+            2007
+          </span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/pages">
+          <span class="pages" tal:content="recension/recension/pages">
+            100
+          </span>
+          <span class="pageslabel" i18n:translate="">Pages</span>
+        </tal:con>
+
+        <tal:con condition="recension/recension/price">
+          <span class="price" tal:content="recension/recension/price">
+            29,90
+          </span>
+        </tal:con>
+      </div>
+    </div>
+
+    <p tal:condition="not:view/has_recensions"
+      i18n:translate="recension-no-items">
+      There are no book information items, yet.
+    </p>
+    <a href="#" title="Add"
+      class="button"
+      tal:condition="can_edit"
+      tal:attributes="
+      href string:${view/container/@@absolute_url}/@@add;
+      cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
+      cms:lightbox-reload-id="recensions"
+      cms:cp-module="zeit.edit.LightBoxForm"
+      i18n:attributes="title"
+      i18n:translate="add-new-recension">
+      Add new...
+    </a>
+  </div>
+</fieldset>

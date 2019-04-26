@@ -1,0 +1,713 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <include file="form.zcml" />
+  <include package="zeit.workflow.browser" />
+
+  <adapter
+      for="zope.schema.ValidationError
+           zeit.cms.browser.interfaces.ICMSLayer"
+      provides="zope.formlib.interfaces.IWidgetInputErrorView"
+      factory="zope.formlib.exception.WidgetInputErrorView"
+      permission="zope.Public"
+      />
+
+  <gocept:pagelet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class="zeit.edit.browser.editor.Editor"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="editor-content.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".edit.Body"
+    template="edit.body.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="save_text"
+    class=".edit.SaveText"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="autosave_text"
+    class=".edit.AutoSaveText"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="slice"
+    class=".edit.Slice"
+    template="edit.body.contents-provider.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="replace-all"
+    class=".edit.ReplaceAll"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="edit.header.pt"
+    class=".edit.EditableHeaderArea"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.header.contents-provider.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone-top"
+    template="edit.header.landing.pt"
+    class=".edit.Body"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:view
+    for="zeit.content.article.edit.interfaces.IHeaderArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".edit.HeaderAreaFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.heading"
+    class="zeit.edit.browser.view.ViewLoader"
+    permission="zope.View"
+    weight="-1"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.heading"
+    class=".form.Heading"
+    template="layout.heading.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.Body"
+    template="edit.body.contents-provider.pt"
+    permission="zope.View"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone-bottom"
+    template="edit.body.create-paragraph.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-landing-zone-drop"
+    class=".edit.BodyLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-landing-zone-drop"
+    class=".edit.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <!-- paragraph -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IParagraph"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.Paragraph"
+    template="edit.paragraph.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IIntertitle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.Intertitle"
+    template="edit.paragraph.pt"
+    permission="zope.View"
+    />
+
+  <!-- override edit-bar to hide it for paragraphs -->
+
+  <browser:viewlet
+    for="..interfaces.IParagraph"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit"
+    class=".edit.Empty"
+    permission="zeit.EditContent"
+    weight="-20"
+    />
+
+  <!-- reference blocks (image, gallery, etc.) -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-portraitbox"
+    class=".reference.EditPortraitbox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-gallery"
+    class=".reference.EditGallery"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-gallery"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-portraitbox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image"
+    class=".reference.EditImage"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-infobox"
+    class=".reference.EditInfobox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-infobox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-video"
+    class=".reference.EditVideo"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-video"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-author"
+    class=".reference.EditAuthor"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-author"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-volume"
+    class=".reference.EditVolume"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-volume"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <!-- rawxml -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-rawxml"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-rawxml"
+    class=".edit.EditRawXML"
+    permission="zope.View"
+    />
+
+  <!-- rawtext -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRawText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-rawtext"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IRawText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-rawtext"
+    class=".edit.EditRawText"
+    permission="zope.View"
+    />
+
+  <!-- citation -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ICitation"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-citation"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ICitation"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-citation"
+    class=".edit.EditCitation"
+    permission="zope.View"
+    />
+
+  <!-- puzzle form -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IPuzzleForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-puzzleform"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IPuzzleForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-puzzleform"
+    class=".edit.EditPuzzleForm"
+    permission="zope.View"
+    />
+
+  <!-- liveblog -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ILiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-liveblog"
+    class=".edit.EditLiveblog"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ILiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-liveblog"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- cardstack -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ICardstack"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-cardstack"
+    class=".edit.EditCardstack"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ICardstack"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-cardstack"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- quiz -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IQuiz"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-quiz"
+    class=".edit.EditQuiz"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IQuiz"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-quiz"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- podcast -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IPodcast"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-podcast"
+    class=".edit.EditPodcast"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IPodcast"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-podcast"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- jobticker -->
+
+   <browser:viewlet
+    for="..interfaces.IJobTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-jobticker"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="..interfaces.IJobTicker"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-jobticker"
+    class=".edit.EditJobTicker"
+    permission="zope.View"
+    />
+
+  <!-- adplace -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAdplace"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-adplace"
+    class=".edit.EditAdplace"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAdplace"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-adplace"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+   <!-- box -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-box"
+    class=".edit.EditBox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IBox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-box"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- mail -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IMail"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-mail"
+    class=".edit.EditMail"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IMail"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-mail"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <!-- topicbox -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ITopicbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-topicbox"
+    class=".edit.EditTopicbox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ITopicbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-topicbox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+
+  <!-- division -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IDivision"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-division"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IDivision"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-division"
+    class=".edit.EditDivision"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.IWorkingcopyLayer"
+    name="save-and-publish.html"
+    class="zeit.workflow.browser.publish.Publish"
+    template="save-and-publish.pt"
+    permission="zeit.EditContent"
+    />
+
+  <class class="..reference.Reference">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..image.Image">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..video.Video">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..author.Author">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..volume.Volume">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..rawxml.RawXML">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..puzzleform.PuzzleForm">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..liveblog.Liveblog">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..cardstack.Cardstack">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..quiz.Quiz">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..podcast.Podcast">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..jobticker.JobTicker">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..adplace.Adplace">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..box.Box">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..mail.Mail">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <browser:page
+    for="*"
+    name="double-quote-characters"
+    class=".edit.DoubleQuotes"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.Public"
+    />
+
+  <!-- testing only -->
+  <browser:resourceDirectory
+    name="zeit.content.article.edit.browser.tests.fixtures"
+    directory="tests/fixtures"
+    />
+
+</configure>

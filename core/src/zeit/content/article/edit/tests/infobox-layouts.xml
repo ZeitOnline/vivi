@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<image-layouts>
+  <layout id="default">Standard</layout>
+  <layout id="debate">Debatte</layout>
+</image-layouts>
