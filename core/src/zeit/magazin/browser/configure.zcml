@@ -1,0 +1,115 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <!-- article -->
+
+  <browser:viewlet
+    for="..interfaces.IZMOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.content.article.edit.browser.form.InternalLinksForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.nextread"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="30"
+    />
+
+  <browser:page
+    for="..interfaces.IZMOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.nextread"
+    class=".article.NextRead"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IZMOArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.social"
+    class=".article.Social"
+    permission="zope.View"
+    />
+
+  <!-- portraitbox -->
+
+  <browser:page
+    for="zeit.magazin.interfaces.IZMOFolder"
+    name="zeit.content.portraitbox.Add"
+    permission="zeit.AddContent"
+    class=".portraitbox.Add"
+    menu="zeit-add-menu" title="Portraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IZMOPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".portraitbox.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IZMOPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".portraitbox.Display"
+    permission="zope.View"
+    />
+
+  <!-- link -->
+
+  <browser:page
+    for="..interfaces.IZMOFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".link.Add"
+    name="zeit.content.link.Add"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Link"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IZMOLink"
+    class=".link.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IZMOLink"
+    class=".link.Display"
+    permission="zope.View"
+    />
+
+  <!-- gallery -->
+
+  <browser:page
+    for="..interfaces.IZMOFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".gallery.Add"
+    name="zeit.content.gallery.Add"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Gallery"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IZMOGallery"
+    class=".gallery.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IZMOGallery"
+    class=".gallery.Display"
+    permission="zope.View"
+    />
+
+</configure>

@@ -1,0 +1,101 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." exclude="browser" />
+
+  <adapter
+    factory=".interfaces.IZMOContent"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOFolder"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="collection"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOArticle"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="article"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOCenterPage"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="centerpage"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOGallery"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="gallery"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOLink"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="link"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOPortraitbox"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="portraitbox"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOSection"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    provides="zeit.cms.section.interfaces.IRessortSection"
+    name="zeit-magazin"
+    />
+
+  <adapter
+    factory=".article.NextRead"
+    provides=".interfaces.INextRead"
+    trusted="yes" />
+
+  <class class=".article.NextRead">
+    <require
+      interface=".interfaces.INextRead"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.INextRead"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".article.RelatedLayout">
+    <require
+      interface=".interfaces.IRelatedLayout"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRelatedLayout"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".portraitbox.PortraitboxLongtext"
+    provides=".interfaces.IPortraitboxLongtext"
+    />
+
+  <adapter
+    factory=".interfaces.IHamburgContent"
+    for=".interfaces.IHamburgSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    />
+
+</configure>
