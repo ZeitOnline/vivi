@@ -1,0 +1,300 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- Element -->
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IElement"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IContentViewletManager"
+      name="edit"
+      template="layout.block.edit.pt"
+      permission="zeit.EditContent"
+      weight="-10"
+      />
+  </configure>
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="common-box"
+    template="layout.block.edit-commons.pt"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IElement"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="drag"
+      template="layout.block.drag.pt"
+      permission="zeit.EditContent"
+      weight="1000"
+      />
+  </configure>
+
+  <!-- Region -->
+
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IRegion"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.area.ViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".region.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.region.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="add"
+    template="layout.region.add.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.area.delete.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="kind"
+    template="layout.area.kind.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
+  <!-- Area -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.area.contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".automatic.Display"
+    template="layout.area.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".area.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-automatic"
+    class=".area.EditAutomatic"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-overflow"
+    class=".area.EditOverflow"
+    permission="zeit.content.cp.EditOverflow"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".area.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-automatic"
+    class=".automatic.ToggleAutomatic"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="toggle-automatic"
+    class=".automatic.ToggleAutomaticMenuItem"
+    template="layout.area.toggle-automatic.pt"
+    permission="zeit.EditContent"
+    weight="120"
+    />
+
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.area.AreaViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="landing-zone"
+    template="layout.area.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="automatic-box"
+    template="layout.block.edit-automatic.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="overflow-box"
+    template="layout.block.edit-overflow.pt"
+    permission="zeit.content.cp.EditOverflow"
+    weight="3"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="kind"
+    template="layout.area.kind.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="schematic-preview"
+    class=".area.SchematicPreview"
+    template="schematic-preview.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.area.delete.pt"
+    permission="zeit.content.cp.EditArea"
+    weight="10"
+    />
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="drag"
+      template="layout.block.drag.pt"
+      permission="zeit.content.cp.EditArea"
+      weight="1000"
+      />
+  </configure>
+
+</configure>

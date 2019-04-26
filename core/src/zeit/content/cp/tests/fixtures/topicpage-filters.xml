@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<filters>
+  <filter id="videos">Videos</filter>
+  <filter id="has_image">Mit Bild</filter>
+  <filter id="has_channel">Mit Channel</filter>
+  <filter id="exclude_news">Keine News</filter>
+  <filter id="topicpage">Themenseite</filter>
+</filters>

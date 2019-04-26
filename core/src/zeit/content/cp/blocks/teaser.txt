@@ -1,0 +1,97 @@
+Teaser block
+============
+
+The teaser block contains a list of teasers[#functional]_.
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> lead.apply_teaser_layouts_automatically = True
+>>> lead.kind = u'major'
+>>> lead.first_teaser_layout = zeit.content.cp.layout.get_layout('leader')
+>>> import zeit.content.cp.interfaces
+>>> import zeit.edit.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
+>>> teasers = factory()
+
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...
+    cp:type="teaser" module="leader"...
+    cp:__name__="id-fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
+  <block href="http://xml.zeit.de/testcontent"...>
+    ...
+    <title xsi:nil="true"/>
+    ...
+  </block>
+  <block href="http://xml.zeit.de/2007/test".../>
+</container>
+
+
+Layouts
++++++++
+
+A TeaserBlock can have different Layouts. Those correspond to different values
+for <container module="">.
+
+>>> dummy = factory()
+>>> import zeit.content.cp.layout
+>>> teasers.layout = zeit.content.cp.layout.get_layout('leader')
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container...module="leader"...
+
+>>> lead.updateOrder(lead.keys())
+>>> [foo.layout.id for foo in lead.values()]
+['leader', 'buttons']
+
+>>> dummy = factory()
+>>> [teaser_list.layout.id for teaser_list in lead.values()]
+['leader', 'buttons', 'buttons']
+
+
+Archive centerpages should always keep the same module attribute:
+
+>>> archive_cp = zeit.content.cp.centerpage.CenterPage()
+>>> archive_cp.type = u'archive-print-volume'
+>>> print archive_cp.type
+archive-print-volume
+>>> factory = zope.component.getAdapter(
+...     archive_cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
+>>> archive_teaser_1 = factory()
+>>> layout = zeit.content.cp.layout.get_layout('archive-print-volume')
+>>> archive_teaser_1.layout = layout
+>>> archive_teaser_2 = factory()
+>>> archive_teaser_2.layout = layout
+>>> archive_teaser_3 = factory()
+>>> archive_teaser_3.layout = layout
+>>> print lxml.etree.tostring(archive_cp.xml, pretty_print=True)
+<centerpage ...>
+  <head...
+  <body>
+    <cluster area="feature"...>
+      <region area="lead"...>
+        <container cp:type="teaser" module="archive-print-volume" .../>
+        <container cp:type="teaser" module="archive-print-volume" .../>
+        <container cp:type="teaser" module="archive-print-volume" .../>
+      </region>
+      <region area="informatives".../>
+    </cluster>
+  </body>
+</centerpage>
+<BLANKLINE>
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

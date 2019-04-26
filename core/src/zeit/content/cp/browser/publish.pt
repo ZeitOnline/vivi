@@ -1,0 +1,18 @@
+<div class="publish" i18n:domain="zeit.cms"> <!-- lightbox -->
+<h1 i18n:translate="">Publish</h1>
+
+<tal:block condition="view/can_publish">
+<ol id="worklist">
+  <li action="checkin" i18n:translate="">Checking in</li>
+  <li action="start_job" cms:param="publish" i18n:translate="">Publishing</li>
+  <li action="checkout" i18n:translate="">Checking out</li>
+  <li action="reload" i18n:translate="">Reloading</li>
+</ol>
+
+<script type="text/javascript">
+  new zeit.workflow.publish.Publisher('worklist');
+</script>
+</tal:block>
+
+<div tal:replace="structure view/render_error_messages"></div>
+</div>

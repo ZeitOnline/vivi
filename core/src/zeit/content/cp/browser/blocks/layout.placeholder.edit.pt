@@ -1,0 +1,7 @@
+<div class="landing-zone visible action-content-droppable"
+     cms:tooltip=""
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@drop-content"
+     i18n:domain="zeit.cms"
+     i18n:translate="">
+  Drop articles here to create a teaser list.
+</div>

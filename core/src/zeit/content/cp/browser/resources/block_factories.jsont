@@ -1,0 +1,10 @@
+{.repeated section factories}
+<div class="{css}" cms:block_type="{type}" cms:block_params="{params|htmltag}">
+  <div class="module-inner">
+    <img src="{image}" />
+    {title}
+  </div>
+</div>
+{.or}
+Es gibt keine Teaserliste, in die etwas hinzugefügt werden könnte.
+{.end}

@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<cpextras>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="mostread">
+    Meistgelesen
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="mostcommented">
+    Meistkommentiert
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="weather">
+    Wetter
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="stocks">
+    Börse
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="ressort_news">
+    Neu Im Ressort
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="live_search">
+    Live-Search
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="print_archive">
+    Print Archiv
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="blindblock">
+    Blindblock
+  </cpextra>
+
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="homepage_news">
+    Neu auf Zeit Online
+  </cpextra>
+
+  <cpextra
+    for="zeit.content.cp.interfaces.IArea"
+    id="dpa-news">
+    dpa-News
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="authors-register">
+    Autoren-Register
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="linkatory">
+    Linkatory
+  </cpextra>
+
+  <cpextra
+    for="zeit.content.cp.interfaces.IArea"
+    id="homepage_news_pics">
+    Neu auf Zeit Online (Bilder)
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="recensionsearch">
+    Rezensionssuche
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="solr-month">
+    Solr Monatsübersicht
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="dwds-ticker">
+    DWDS Ticker
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           id="sportextra">
+    Sport Extra
+  </cpextra>
+
+  <cpextra for="zeit.content.cp.interfaces.IArea"
+           available="zeit.cms.section.interfaces.IZONContent"
+           id="zonextra">
+    ZON Extra
+  </cpextra>
+
+</cpextras>

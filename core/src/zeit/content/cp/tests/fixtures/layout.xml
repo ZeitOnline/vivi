@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<layouts>
+    <layout
+        id="leader"
+        title="Großer Teaser mit Bild und Teaserliste"
+        image_pattern="450x200"
+        is_leader="true"
+        areas="solo duo minor major"
+        default="solo"
+        />
+    <layout
+        id="leader-upright"
+        title="Großer Teaser mit Hochkant-Bild und Teaserliste"
+        image_pattern="450x200"
+        areas="solo duo minor major ranking"
+        />
+    <layout
+        id="archive-print-volume"
+        title="Ausgabenteaser im Printarchiv"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="archive-print-year"
+        title="Jahresteaser im Printarchiv"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="buttons"
+        title="Kleiner Teaser mit kleinem Bild und Teaserliste"
+        image_pattern="140x140"
+        areas="solo duo minor major ranking"
+        default="major minor ranking"
+        />
+    <layout
+        id="two-side-by-side"
+        title="Zwei kleine Teaser mit Bild"
+        image_pattern="140x140"
+        areas="solo duo minor major"
+        default="duo"
+        />
+    <layout
+        id="second-duo-default"
+        title="Zweiter default teaser"
+        image_pattern="140x140"
+        areas="duo"
+        default="duo"
+        />
+    <layout
+        id="large"
+        title="Großer Teaser mit Bild und Teaserliste"
+        image_pattern="140x140"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="ressort"
+        title="Ressort Teaser mit Teaserliste"
+        image_pattern="140x140"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="short"
+        title="Kurzteaser"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="date"
+        title="Datumsteaser"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="zar-quote-yellow"
+        title="Gelber Quote"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="parquet-regular"
+        title="Parkett standard"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="parquet-large"
+        title="Parkett großer Aufmacher"
+        image_pattern="540x304"
+        areas="solo duo minor major"
+        />
+    <layout
+        id="friedbert-only"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        available="zeit.web.core.interfaces.IInternalUse"
+        />
+    <layout
+        id="ressort-only"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        types="ressort"
+        />
+    <layout
+        id="not-ressort"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        types="!ressort"
+        />
+</layouts>

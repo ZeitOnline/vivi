@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+    <title><![CDATA[Zeit Kooperationsfeed]]></title>
+    <link>http://www.spektrum.de</link>
+    <description><![CDATA[]]></description>
+    <image>
+        <url>http://www.spektrum.de/pix/sdwv/touch-icon-sd.png</url>
+        <title><![CDATA[Zeit Kooperationsfeed]]></title>
+        <link>http://www.spektrum.de</link>
+    </image>
+    <language>de-de</language>
+    <copyright>Copyright Spektrum der Wissenschaft Verlagsgesellschaft mbH. Alle Rechte vorbehalten.</copyright>
+    <atom:link href="http://www.spektrum.de/alias/rss/zeit-kooperationsfeed/1329411" rel="self" type="application/rss+xml" />
+        <item>
+            <category><![CDATA[Qijianglong]]></category>
+            <title><![CDATA[Ein Dinosaurier mit einem Hals wie ein Baukran]]></title>
+            <link><![CDATA[http://www.spektrum.de/news/ein-dinosaurier-mit-einem-hals-wie-ein-baukran/1329994]]></link>
+            <description><![CDATA[Forscher entdecken ein China die Überreste eines bisher unbekannten, langhalsigen Dinosauriers.]]></description>
+            <pubDate>Thu, 29 Jan 2015 16:31:00 +0100</pubDate>
+            <guid isPermaLink="false">sdwv-1329994</guid>
+            <enclosure url="%HOST%spektrum/images/img1.jpg" length="6341" type="image/jpeg" />
+        </item>
+        <item>
+            <category><![CDATA[Wissen]]></category>
+            <title><![CDATA[10 faszinierende Lebewesen aus dem Regenwald]]></title>
+            <link><![CDATA[http://www.spektrum.de/wissen/10-faszinierende-lebewesen-aus-dem-regenwald/1328662]]></link>
+            <description><![CDATA[Der tropische Regenwald ist das artenreichste Ökosystem der Erde. Kein Wunder, dass er einige der erstaunlichsten Lebewesen des Planeten hervorgebracht hat.]]></description>
+            <pubDate>Wed, 21 Jan 2015 14:21:00 +0100</pubDate>
+            <guid isPermaLink="false">sdwv-1328662</guid>
+            <enclosure url="%HOST%spektrum/images/img2.jpg" length="29341" type="image/jpeg" />
+        </item>
+        <item>
+            <category><![CDATA[Kindesentwicklung]]></category>
+            <title><![CDATA[Puzzeln verbessert das räumliche Denkvermögen  ]]></title>
+            <link><![CDATA[http://www.spektrum.de/news/puzzeln-verbessert-das-raeumliche-denkvermoegen/1329928]]></link>
+            <description><![CDATA[Wer die Raumvorstellung seiner Kinder verbessern möchte, sollte häufiger Puzzles und Bauklötze als Spielzeug anbieten.]]></description>
+            <pubDate>Thu, 29 Jan 2015 14:09:00 +0100</pubDate>
+            <guid isPermaLink="false">sdwv-1329928</guid>
+            <enclosure url="%HOST%spektrum/images/img3.jpg" length="18805" type="image/png" />
+        </item>
+    </channel>
+</rss>

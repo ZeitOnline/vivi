@@ -1,0 +1,9 @@
+<div class="cpextra-title" i18n:domain="zeit.cms" i18n:translate="">
+  Cardstack block
+</div>
+<div class="block-item">
+  <span tal:content="context/card_id"></span>
+  <span tal:condition="context/is_advertorial">
+    (<span i18n:translate="">Advertorial</span>)
+  </span>
+</div>

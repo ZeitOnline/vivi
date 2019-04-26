@@ -1,0 +1,108 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- Block -->
+
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IBlock"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.blocks.block.ViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="position"
+    class=".block.Position"
+    template="layout.block.position.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="../layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="type"
+    template="layout.block.type.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    template="../layout.block.edit-properties.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="common-box"
+    template="../layout.block.edit-commons.pt"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".block.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class="..landing.ContentLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <include file="teaser.zcml" />
+  <include file="automatic.zcml" />
+  <include file="xml.zcml" />
+  <include file="cpextra.zcml" />
+  <include file="playlist.zcml" />
+  <include file="podcast.zcml" />
+  <include file="quiz.zcml" />
+  <include file="headerimage.zcml" />
+  <include file="rawtext.zcml" />
+  <include file="markup.zcml" />
+  <include file="cardstack.zcml" />
+  <include file="jobticker.zcml" />
+  <include file="mail.zcml" />
+
+</configure>

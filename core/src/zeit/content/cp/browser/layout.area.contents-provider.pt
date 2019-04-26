@@ -1,0 +1,13 @@
+<tal:block i18n:domain="zeit.cms" repeat="item view/values">
+  <tal:block replace="structure item/@@contents"/>
+
+  <div class="landing-zone action-content-droppable action-cp-module-droppable action-cp-module-movable"
+       tal:define="baseurl context/@@absolute_url;
+                   query string:order=insert-after&insert-after=${item/__name__}"
+       tal:attributes="cms:drop-url string:${baseurl}/landing-zone-drop?${query};
+                       cms:create-block-url string:${baseurl}/landing-zone-drop-module?${query};
+                       cms:move-block-url string:${context/@@absolute_url}/@@landing-zone-move?${query}"
+       i18n:translate="">
+  </div>
+
+</tal:block>

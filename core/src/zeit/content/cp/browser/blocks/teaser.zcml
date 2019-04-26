@@ -1,0 +1,119 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- teaser block -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".teaser.Display"
+    template="layout.teaser.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaser.EditLayout"
+    template="teaser.edit-layout.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".teaser.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.Drop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-contents"
+    template="layout.teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="teaser.edit-contents"
+    class=".teaser.EditContents"
+    template="teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".teaser.UpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaser.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <!-- countings -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="countings"
+    class=".teaser.Countings"
+    template="layout.teaser.countings.pt"
+    permission="zeit.EditContent"
+    weight="150"
+    />
+
+  <!-- Quote Teaser -->
+  <!-- Name of the adapter has to be a layout id. See
+  http://cms-backend.zeit.de:9000/cms/work/data/cp-layouts-2015.xml -->
+  <adapter
+    name="zar-quote-red"
+    factory="zeit.content.cp.browser.blocks.teaser.quote_teaser_representation"
+  />
+
+  <adapter
+    name="zar-quote-yellow"
+    factory="zeit.content.cp.browser.blocks.teaser.quote_teaser_representation"
+  />
+
+</configure>

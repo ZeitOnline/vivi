@@ -1,0 +1,5 @@
+<div class="cp-area-schematic-preview">
+  <div tal:repeat="area view/areas" tal:attributes="class python:view.css_class(area)">
+    <svg tal:replace="structure python:view.preview(area)" />
+  </div>
+</div>

@@ -1,0 +1,107 @@
+Module library
+==============
+
+The module library allows to create blocks. There are libraries to create
+blocks in the informatives area and inside the teaser mosaic. Available modules
+are transmitted in JSON[#setup]_ and can be added on the CP in general:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@block-factories.json')
+>>> factories = json.loads(browser.contents)
+>>> pprint.pprint(sorted(factories['factories'], key=lambda x: x['title']))
+[{u'css': u'module represents-content-object cp-module',
+  u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-cpextra.png',
+  u'params': u'{}',
+  u'title': u'CPExtra',
+  u'type': u'cpextra'},
+...]
+>>> factories['template_url']
+u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'
+
+Adding blocks works by drag and drop. We simulate this here.
+
+In the informatives area is a landing zone to create a block:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+ <div class="landing-zone action-content-droppable action-cp-module-droppable..."
+      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+
+Create a cpextra block as first block in the informatives. The view returns
+information about the created block:
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...              'island/informatives/@@landing-zone-drop-module'
+...              '?block_type=cpextra')
+>>> result = json.loads(browser.contents)
+>>> pprint.pprint(result['signals'])
+[{u'args': [u'informatives',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@contents'],
+  u'name': u'reload',
+  u'when': None},
+ {u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+  u'name': u'added',
+  u'when': u'after-reload'}]
+>>> print browser.headers
+Status: 200 Ok
+Content-Length: ...
+Content-Type: text/json
+...
+
+>>> created_block_id = result['signals'][1]['args'][0]
+
+The block is contained in the contents. A landing zone to create blocks *after*
+it, is rendered too:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+<div class="landing-zone action-content-droppable action-cp-module-droppable..."
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+</div>
+  <div ...class="...block type-cpextra...id="id-<GUID>">
+    ...
+  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
+  </div>
+  ...
+
+Add another block after the just created block now:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'informatives/%s/@@landing-zone-drop-module?block_type=teaser' %
+...     created_block_id)
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+<div class="landing-zone action-content-droppable action-cp-module-droppable..."
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+</div>
+  <div ...class="...block type-cpextra...id="id-<GUID>">
+    ...
+  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
+  </div>
+  ...<div...class="...block type-teaser...
+
+
+.. [#setup]
+
+    >>> import json
+    >>> import pprint
+    >>> import z3c.etestbrowser.testing
+    >>> import zeit.content.cp.browser.testing
+    >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> zeit.content.cp.browser.testing.create_cp(browser)
+    >>> cp_url = browser.url
+    >>> browser.open('contents')
+    >>> contents_url = browser.url

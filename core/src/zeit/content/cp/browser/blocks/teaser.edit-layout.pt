@@ -1,0 +1,19 @@
+<div i18n:domain="zeit.cms" class="floating">
+
+  <div style="clear:both"
+      tal:attributes="class string:layout-chooser ${view/layout_prefix}">
+    <div class="layout-inner"
+         tal:repeat="layout view/layouts">
+      <a
+        tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
+        class layout/css_class"
+        cms:cp-module="zeit.edit.LoadAndReload">
+        <img tal:attributes="src
+             string:${request/getApplicationURL}/repository/${view/image_path}/${view/layout_prefix}-${layout/token}.png/@@raw" />
+        <span i18n:translate="" tal:content="layout/title" />
+      </a>
+    </div>
+    <div class="visual-clear"></div>
+  </div>
+
+</div>

@@ -1,0 +1,495 @@
+# coding: utf8
+from gocept.selenium.wd_selenese import split_locator
+import lxml.cssselect
+import transaction
+import zeit.content.cp.testing
+import zeit.edit.interfaces
+import zope.app.appsetup.product
+import zope.component
+
+
+def css_path(css):
+    return lxml.cssselect.CSSSelector(css).path
+
+
+class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_lookup(self):
+        self.open_centerpage()
+        # Test a name that we know that exists
+        # XXX should be moved to zeit.cms
+        result = self.eval(
+            'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))')
+        self.assertEquals('zeit.edit.Editor', result['__name__'])
+
+
+class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_add_and_delete(self):
+        self.create_teaserlist()
+        s = self.selenium
+        link = 'css=div.block.type-teaser > * > div.edit > a.edit-link'
+        s.waitForElementPresent(link)
+        s.click(link)
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-1"]')
+        apply_button = r'css=#tab-1 #form\.actions\.apply'
+        s.waitForElementPresent(apply_button)
+        s.click(apply_button)
+        s.waitForElementPresent('css=a.CloseButton')
+        s.click('css=a.CloseButton')
+        s.waitForElementNotPresent('css=.lightbox')
+
+        s.assertCssCount('css=#informatives .block a.delete-link', 3)
+        s.click('css=#informatives .block a.delete-link')
+        # mostread/mostcommented are still there
+        s.waitForCssCount('css=#informatives .block a.delete-link', 2)
+
+    def test_hover(self):
+        self.create_teaserlist()
+        s = self.selenium
+        s.verifyElementNotPresent('css=.block.type-teaser.hover')
+        s.mouseOver('css=div.teaser-list')
+        s.pause(100)
+        s.verifyElementPresent('css=.block.type-teaser.hover')
+        s.mouseMoveAt('css=div.teaser-list', '100,100')
+        s.pause(100)
+        s.verifyElementNotPresent('css=.block.type-teaser.hover')
+
+    def test_common_data_edit_form(self):
+        self.create_teaserlist()
+        s = self.selenium
+
+        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-1"]')
+        s.waitForElementPresent('id=form.title')
+        s.type('form.title', 'FooTitle')
+        s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
+        s.waitForElementPresent('css=a.CloseButton')
+        s.click('css=a.CloseButton')
+        s.waitForElementNotPresent('css=a.CloseButton')
+
+        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-1"]')
+        s.waitForElementPresent('form.title')
+        s.waitForValue('form.title', 'FooTitle')
+
+
+class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_adding_via_drag_and_drop_from_clipboard(self):
+        self.open('/')
+        s = self.selenium
+
+        self.create_clip()
+        self.open('/repository')
+        self.clip_object('testcontent')
+
+        self.create_teaserlist()
+
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/testcontent"]',
+            'css=div.type-teaser')
+        s.waitForElementPresent('css=div.supertitle')
+
+    def test_delete(self):
+        s = self.selenium
+        self.create_filled_teaserlist()
+        teaser_block_with_c2 = (
+            '//div[contains(@class, "type-teaser")]'
+            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
+        s.waitForElementPresent(teaser_block_with_c2)
+
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+
+        s.verifyXpathCount(
+            '//div[@class="lightbox"]//a[@class="delete-link"]', 3)
+        s.click(
+            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
+            'a[@class="delete-link"]')
+        s.waitForXpathCount(
+            '//div[@class="lightbox"]//a[@class="delete-link"]', 2)
+
+        # When closing the lightbox the c2 teaser goes away
+        s.click('css=a.CloseButton')
+        s.waitForElementNotPresent(teaser_block_with_c2)
+
+    def test_sort_teaser_contents(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+
+        # Drag object to the teaser bar in "wrong order"
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c1 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c2 teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=div.type-teaser')
+        s.waitForTextPresent('c3 teaser')
+
+        # Edit the teaser list and reorder
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+
+        # Get the height of the first row and drag it 2.75 times the height so
+        # it overlaps the third row. The initial order is 3, 2, 1. After drag
+        # it is 2, 1, 3.
+        def li(text, following_sibling=False):
+            path = ('//div[@class="lightbox"]//li[contains(string(.), "%s")]' %
+                    text)
+            if following_sibling:
+                path += '/following-sibling::li[1]'
+            return path
+
+        height = s.getElementHeight(li('c3'))
+        height_landing = s.getElementHeight(li('c3', True))
+
+        delta_y = (height + height_landing) * 2.75
+        s.mouseDown(li('c3'))
+        s.mouseMoveAt(li('c3'), '0,5')
+        s.mouseMoveAt(li('c3'), '0,%s' % int(delta_y))
+        s.mouseUp(li('c3'))
+
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+        s.waitForOrdered(li('c2', True), li('c1'))
+        s.waitForOrdered(li('c1', True), li('c3'))
+
+        # Drag the c1 node .75 up; the resulting order is 1, 2, 3
+        delta_y = (height + height_landing) * -0.75
+        s.mouseDown(li('c1'))
+        s.mouseMoveAt(li('c1'), '0,5')
+        s.mouseMoveAt(li('c1'), '0,%s' % int(delta_y))
+        s.mouseUp(li('c1'))
+
+        s.waitForElementPresent('css=div.teaser-list-edit-box')
+        s.waitForOrdered(li('c1', True), li('c2'))
+        s.verifyOrdered(li('c2', True), li('c3'))
+
+    def test_edit_box_drop_of_content(self):
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s = self.selenium
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=.lightbox .landing-zone')
+
+        # There is a landing zone
+        s.verifyElementNotPresent('css=.lightbox li.edit-bar')
+        s.assertCssCount('css=.lightbox li.landing-zone', 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=.lightbox .landing-zone', '10,10')
+        s.waitForElementPresent('css=.lightbox li.edit-bar')
+
+        # Now, there are two landing zones
+        s.assertCssCount('css=.lightbox li.landing-zone', 2)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]',
+            'css=.lightbox .landing-zone:first-child', '10,10')
+        s.waitForCssCount('css=.lightbox li.edit-bar', 2)
+        s.assertCssCount('css=.lightbox li.landing-zone', 3)
+
+    def test_edit_box_url_input(self):
+        self.create_teaserlist()
+        s = self.selenium
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=.url-input input')
+        s.type('css=.url-input input', 'http://xml.zeit.de/testcontent\n')
+        s.waitForElementPresent('css=.lightbox li.edit-bar')
+        s.assertCssCount('css=.lightbox li.landing-zone', 2)
+
+    def test_toggle_visible(self):
+        self.open_centerpage()
+        s = self.selenium
+
+        s.click('link=Struktur')
+        teaser_module = self.get_module('cp', 'Teaser')
+        s.waitForElementPresent(teaser_module)
+        s.dragAndDropToObject(
+            teaser_module,
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.waitForElementPresent(
+            'css=.block.type-area .block.type-teaser')
+
+        visible_off_marker = 'css=.block.type-teaser.block-visible-off'
+        toggle_visible = 'css=.block.type-teaser .toggle-visible-link'
+        s.assertElementNotPresent(visible_off_marker)
+        s.click(toggle_visible)
+        s.waitForElementPresent(visible_off_marker)
+        s.click(toggle_visible)
+        s.waitForElementNotPresent(visible_off_marker)
+
+
+class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestMoving, self).setUp()
+        cp = self.create_and_checkout_centerpage()
+        self.teaser = zope.component.getAdapter(
+            cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser')()
+        transaction.commit()
+        self.open_centerpage(create_cp=False)
+
+    def test_move_block_between_areas(self):
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=#lead .block.type-teaser .dragger',
+            'css=#informatives .landing-zone.action-cp-module-movable',
+            '10,10')
+        s.waitForElementNotPresent('css=#lead .block.type-teaser')
+        s.waitForElementPresent('css=#informatives .block.type-teaser')
+
+    def test_move_block_inside_area_to_change_order(self):
+        selector = css_path('#informatives > .block-inner > .editable-module')
+        path = 'xpath=' + selector + '[{pos}]@id'
+
+        s = self.selenium
+        block1 = s.getAttribute(path.format(pos=1))
+        block2 = s.getAttribute(path.format(pos=2))
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(block2),
+            'css=#informatives .landing-zone.action-cp-module-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), block2)
+        s.waitForAttribute(path.format(pos=2), block1)
+
+    def test_move_area_between_regions(self):
+        s = self.selenium
+        s.click(u'link=Struktur')
+        s.click(u'link=Regionen')
+        module = self.get_module('body', 'Solo')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module, 'css=.action-cp-body-module-droppable', '10,10')
+        s.waitForCssCount('css=.type-region', 2)
+        region = s.selenium.find_elements(*split_locator('css=.type-region'))
+        region = [x.get_attribute('id') for x in region]
+        region = [x for x in region if x != 'feature'][0]
+        s.dragAndDropToObject(
+            'css=#feature #informatives .dragger',
+            'css=#%s .landing-zone.action-cp-region-module-movable' % region,
+            '10,10')
+        s.waitForElementNotPresent('css=#feature #informatives')
+        s.waitForElementPresent('css=#%s #informatives' % region)
+
+    def test_move_area_inside_region_to_change_order(self):
+        selector = css_path('#feature > .block-inner > .type-area')
+        path = 'xpath=' + selector + '[{pos}]@id'
+
+        s = self.selenium
+        area1 = s.getAttribute(path.format(pos=1))
+        area2 = s.getAttribute(path.format(pos=2))
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(area2),
+            'css=#feature .landing-zone.action-cp-region-module-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), area2)
+        s.waitForAttribute(path.format(pos=2), area1)
+
+    def test_move_regions_inside_body_to_change_order(self):
+        path = 'xpath=' + css_path('#body > .type-region') + '[{pos}]@id'
+
+        s = self.selenium
+        # create new regions since browser view of Jenkins is too small to move
+        # existing regions with areas and blocks inside
+        s.assertCssCount('css=.type-region', 1)
+        selector = 'css=.action-cp-body-module-droppable'
+        module = self.get_module('body', 'Empty')
+        self.selenium.click(u'link=Struktur')
+        self.selenium.click(u'link=Regionen')
+        self.selenium.waitForElementPresent(module)
+        self.selenium.dragAndDropToObject(
+            module, selector, '10,10')
+        s.waitForCssCount('css=.type-region', 2)
+        self.selenium.dragAndDropToObject(
+            module, selector, '10,10')
+        s.waitForCssCount('css=.type-region', 3)
+
+        region1 = s.getAttribute(path.format(pos=1))
+        region2 = s.getAttribute(path.format(pos=2))
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(region2),
+            'css=#body .landing-zone.action-cp-type-region-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), region2)
+        s.waitForAttribute(path.format(pos=2), region1)
+
+    def test_move_area_integration_test(self):
+        """Chain several actions to ensure that client side JS does not break.
+
+        We often ran into issues caused by JS errors which cannot be discovered
+        when testing actions one by one, since the first action might succeed
+        and following actions might fail due to the JS error. Thus we need a
+        test that chains several actions.
+
+        """
+        self.test_move_block_between_areas()
+        self.test_move_block_inside_area_to_change_order()
+
+
+class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_lead(self):
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+        s = self.selenium
+
+        s.verifyElementNotPresent('css=.block.type-teaser')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c3"]',
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.waitForElementPresent('css=.block.type-teaser')
+
+    def test_zones_after_blocks(self):
+        self.create_content_and_fill_clipboard()
+        self.open_centerpage()
+        s = self.selenium
+
+        # Create a block, there will be a landing zone after it:
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone', '10,10')
+        s.verifyElementPresent('css=.block + .landing-zone')
+
+        # The "normal" landing zone is also there
+        s.verifyElementPresent('css=.landing-zone + .block')
+
+        # Drop something on the after-block landing zone
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=.block + .landing-zone', '10,10')
+        s.waitForElementPresent('css=.block.type-teaser')
+
+
+class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_add_quiz(self):
+        self.open_centerpage()
+
+        s = self.selenium
+        s.click('link=Struktur')
+        module = self.get_module('cp', 'Quiz')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module,
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.waitForElementPresent('css=div.type-quiz')
+
+
+class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_add_xml_to_lead(self):
+        self.open_centerpage()
+
+        s = self.selenium
+        s.click('link=Struktur')
+        module = self.get_module('cp', 'XML')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module,
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.waitForElementPresent('css=div.type-xml')
+
+
+class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_sidebar_should_be_folded_away(self):
+        s = self.selenium
+        self.open_centerpage()
+        s.waitForElementPresent(
+            '//div[@id="sidebar-dragger" and @class="sidebar-expanded"]')
+
+
+class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestOneClickPublish, self).setUp()
+        self.create_content_and_fill_clipboard()
+
+    def _fill_lead(self):
+        s = self.selenium
+        for i in range(1, 4):
+            s.dragAndDropToObject(
+                '//li[@uniqueid="Clip/c%s"]' % i,
+                'css=#lead .landing-zone', '10,10')
+            s.waitForTextPresent('c%s teaser' % i)
+
+    def test_publish_should_show_error_message(self):
+        s = self.selenium
+        self.open_centerpage()
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('css=div.lightbox')
+        s.waitForElementPresent('publish.errors')
+        s.assertTextPresent(
+            'Cannot publish since preconditions for publishing are not met.')
+
+    def test_editor_should_be_reloaded_after_publishing(self):
+        s = self.selenium
+        self.open_centerpage()
+        # satisfy the rules and publish
+        self._fill_lead()
+        s.click('xpath=//a[@title="Publish"]')
+        s.waitForElementPresent('css=div.lightbox')
+        s.waitForPageToLoad()
+        s.waitForElementPresent('css=div.landing-zone')
+
+    def test_publish_failure_should_be_displayed(self):
+        config = zope.app.appsetup.product._configs
+        old_script = config['zeit.workflow']['publish-script']
+        config['zeit.workflow']['publish-script'] = 'invalid'
+        try:
+            s = self.selenium
+            self.open_centerpage()
+            self._fill_lead()
+            s.click('xpath=//a[@title="Publish"]')
+            s.waitForElementPresent('css=div.lightbox')
+            # There were validation warnings, but we want to publish anyway
+            s.click('xpath=//a[contains(., "Publish anyway")]')
+            s.waitForPageToLoad()
+            s.waitForElementPresent('css=li.error')
+            s.verifyText(
+                'css=li.error',
+                'Publishing\n'
+                'HandleAfterAbort: Error during publish/retract: OSError*')
+        finally:
+            config['zeit.workflow']['publish-script'] = old_script
+
+
+class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_source_removed_when_dropped_to_cp(self):
+        self.create_filled_teaserlist()
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=.teaser-list > .teaser',
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.waitForElementPresent(
+            'css=#lead .block.type-teaser')
+        s.verifyText('css=#lead .block.type-teaser .teaser-list',
+                     '*c1 teaser*')
+        s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
+                        '*c2 teaser*')
+        # Verify the removal in the source:
+        s.waitForNotText(
+            'css=#informatives .block.type-teaser .teaser-list', '*c1 teaser*')
+
+    def test_source_not_removed_when_not_dropped_to_cp(self):
+        s = self.selenium
+        self.create_filled_teaserlist()
+        s.dragAndDropToObject(
+            'css=.teaser-list > .teaser',
+            '//li[@uniqueid="Clip"]')
+        s.waitForText('//li[@uniqueid="Clip"]', '*c1*c1*')
+        # Verify text still in the drag source:
+        s.verifyText('css=.teaser-list > .teaser', '*c1 teaser*')

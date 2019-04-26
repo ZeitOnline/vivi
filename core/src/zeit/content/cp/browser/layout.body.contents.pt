@@ -1,0 +1,24 @@
+<div id="body" class="editable-area"
+     i18n:domain="zeit.cms"
+     tal:attributes="cms:url context/@@absolute_url">
+
+  <div class="landing-zone action-cp-body-module-droppable action-cp-type-region-movable"
+       tal:define="baseurl context/@@absolute_url;
+                   query string:order=top"
+       tal:attributes="cms:create-block-url string:${baseurl}/landing-zone-drop-module?${query};
+                       cms:move-block-url string:${baseurl}/landing-zone-move?${query}"
+       i18n:translate="">
+  </div>
+
+  <tal:block repeat="item context/values">
+    <tal:block replace="structure item/@@contents"/>
+
+    <div class="landing-zone action-cp-body-module-droppable action-cp-type-region-movable"
+         tal:define="baseurl context/@@absolute_url;
+                     query string:order=insert-after&insert-after=${item/__name__}"
+         tal:attributes="cms:create-block-url string:${baseurl}/landing-zone-drop-module?${query};
+                         cms:move-block-url string:${baseurl}/landing-zone-move?${query}"
+         i18n:translate="">
+    </div>
+  </tal:block>
+</div>

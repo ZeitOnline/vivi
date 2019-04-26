@@ -1,0 +1,7 @@
+<div class="landing-zone action-cp-region-module-droppable action-cp-region-module-movable"
+     tal:define="baseurl context/@@absolute_url;
+                 query string:order=top"
+     tal:attributes="cms:create-block-url string:${baseurl}/landing-zone-drop-module?${query};
+                     cms:move-block-url string:${baseurl}/landing-zone-move?${query}"
+     i18n:translate="">
+</div>

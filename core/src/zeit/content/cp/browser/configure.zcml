@@ -1,0 +1,307 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.cp.Add"
+    class=".form.AddForm"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="CenterPage"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.cp.AddStoryStream"
+    class=".storystream.AddForm"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="StoryStream"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="add"
+    class="zeit.edit.browser.block.Add"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class="zeit.edit.browser.block.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-metadata.html"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <!-- Landing Zones -->
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".landing.BodyLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <!-- Editor -->
+
+  <gocept:pagelet
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".editor.Editor"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="editor-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.body.contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <include file="area.zcml" />
+  <include package=".blocks" />
+
+  <adapter
+    factory=".workflow.CenterPageWorkflowForm"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    />
+
+  <!-- Module library -->
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.CPBlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="region-factories.json"
+    class=".library.CPRegionFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="area-factories.json"
+    class=".library.CPAreaFactories"
+    permission="zeit.EditContent"
+    />
+
+  <!-- 1-click publishing -->
+
+  <browser:viewlet
+    name="Publish"
+    for="zeit.content.cp.interfaces.ICenterPage"
+    view="zeit.edit.browser.editor.Editor"
+    layer="zeit.cms.browser.interfaces.IWorkingcopyLayer"
+    class=".publish.MenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.EditContent"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.IWorkingcopyLayer"
+    name="publish.html"
+    class="zeit.workflow.browser.publish.Publish"
+    template="publish.pt"
+    permission="zeit.EditContent"
+    />
+
+  <!-- /1-click publishing -->
+
+  <!-- restrict permissions for retract and delete
+       (XXX copy&paste from the original ZCML location) -->
+
+  <browser:viewlet
+    name="Retract"
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.workflow.browser.publish.RetractMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.content.cp.Retract"
+    icon="/@@/zeit.cms/icons/retract_topmenu.png"
+    />
+  <configure package="zeit.workflow.browser">
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="retract.html"
+    template="retract.pt"
+    permission="zeit.content.cp.Retract"
+    />
+  </configure>
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class="zeit.cms.repository.browser.menu.Delete"
+    permission="zeit.content.cp.Delete"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    sort="100"
+    />
+  <configure package="zeit.cms.repository.browser">
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
+    class=".delete.DeleteContent"
+    template="delete.pt"
+    permission="zeit.content.cp.Delete"
+    />
+  </configure>
+
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/centerpage.png"
+    />
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/centerpage.png"
+    />
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="resources/teaser-icon.png"
+    />
+
+  <browser:page
+    name="raw.css"
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    class=".resources.RawCSS"
+    permission="zope.View" />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="toggle-visible"
+    class=".editor.ToggleVisibleMenuItem"
+    template="layout.block.toggle-visible.pt"
+    permission="zeit.EditContent"
+    weight="100"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-visible"
+    class=".editor.ToggleVisible"
+    permission="zeit.EditContent"
+    />
+
+  <adapter
+    for="
+    zeit.content.cp.field.DynamicCombination
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory=".area.DynamicCombinationWidget"
+    permission="zope.Public"
+    />
+
+  <browser:viewlet
+    name="Prewarm"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    action="@@prewarm-cache"
+    icon="/@@/zeit.content.cp/prewarm-cache.png"
+    sort="125"
+    />
+
+  <browser:page
+    name="prewarm-cache"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.Prewarm"
+    permission="zope.View"
+    />
+
+  <browser:page
+    name="prewarm-cache"
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".prewarm.PrewarmManual"
+    permission="zope.View"
+    />
+
+</configure>

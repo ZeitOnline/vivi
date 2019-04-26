@@ -1,0 +1,4 @@
+<div
+  tal:attributes="class view/css_class">
+  <span tal:replace="structure view/xml" />
+</div>

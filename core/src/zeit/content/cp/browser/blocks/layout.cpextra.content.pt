@@ -1,0 +1,6 @@
+<div class="cpextra-title" tal:content="view/cpextra_title">
+  Meistgelesen
+</div>
+<div class="cpextra-id" tal:content="context/cpextra">
+  mostread
+</div>

@@ -1,0 +1,7 @@
+<a class="materialize-link" title="Materialize block"
+   tal:attributes="href string:${context/@@absolute_url}/@@materialize"
+   i18n:attributes="title"
+   i18n:domain="zeit.cms"
+   cms:cp-module="zeit.edit.LoadAndReload">
+  <span class="action-title">Materialize block</span>
+</a>

@@ -1,0 +1,3 @@
+<span class="kind"
+      tal:condition="context/kind_title"
+      tal:content="context/kind_title" />

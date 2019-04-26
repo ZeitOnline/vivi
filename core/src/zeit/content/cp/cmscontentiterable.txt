@@ -1,0 +1,36 @@
+Iterating over CMSContent
+=========================
+
+By adapting to `IElementReferences` you can flatten the hierachical structure
+of a centerpage and its components[#functional]_.
+
+Some setup to fill a centerpage:
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.cms.interfaces
+>>> import zeit.edit.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.edit.interfaces.IElementFactory, name='teaser')
+>>> teasers = factory()
+
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
+
+Now we can iterate over the centerpage and we get all contents in a flat list.
+
+>>> list(zeit.edit.interfaces.IElementReferences(cp))
+[<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource...>]
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()

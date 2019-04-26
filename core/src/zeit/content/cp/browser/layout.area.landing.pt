@@ -1,0 +1,7 @@
+<div i18n:domain="zeit.cms" class="landing-zone action-content-droppable action-cp-module-droppable action-cp-module-movable"
+     tal:attributes="
+      cms:drop-url string:${context/@@absolute_url}/@@landing-zone-drop?order=top;
+      cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module?order=top;
+      cms:move-block-url string:${context/@@absolute_url}/@@landing-zone-move?order=top"
+     i18n:translate="">
+</div>

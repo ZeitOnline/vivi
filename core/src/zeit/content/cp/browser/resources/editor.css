@@ -1,0 +1,593 @@
+.type-centerpage-2009 #body {
+    background-color: #E5E6CF;
+}
+
+.type-area > .block-inner {
+    background-color: #E9E9FF;
+}
+
+.type-area .block {
+    margin: 0.5em;
+}
+
+/* Area */
+.create-area-forbidden #area-tab {
+  display: none;
+}
+
+
+/* Automatic Area */
+.edit-bar > .toggle-automatic-link {
+  float: right;
+  padding-right: 4.5em;
+  background-size: contain;
+}
+
+.block-automatic-on > .block-inner > .edit-bar > .toggle-automatic-link {
+  background-image: url('autopilot-on.png');
+}
+
+.block-automatic-off > .block-inner > .edit-bar > .toggle-automatic-link {
+  background-image: url('autopilot-off.png');
+}
+
+.block-automatic-not-possible > .block-inner > .edit-bar > .toggle-automatic-link {
+  display: none;
+}
+
+.type-area.block-automatic-on > .block-inner {
+  background-color: #D7FFDA;
+}
+
+
+
+/* When there is no "other" edit, we show the common. */
+.edit-bar > a.common-link:first-child {
+  background-image: url('/fanstatic/zeit.edit/edit.png');
+  display: block;
+  padding-right: 0.5em;
+}
+
+
+.edit-bar > a.overflow-link {
+  display: none;
+}
+
+
+.edit-bar > .edit-teaser-link {
+  background-image: url('edit-teaserlist-contents.png');
+  margin-right: 0.5em;
+}
+
+.edit-bar > .toggle-visible-link {
+  float: right;
+  padding-right: 0.5em;
+  background-image: url('eye.png');
+}
+
+.block-visible-off > .block-inner > .edit-bar > .toggle-visible-link {
+  background-image: url('contrast.png');
+}
+
+
+.edit-bar > .materialize-link {
+  float: right;
+  padding-right: 0.5em;
+  background-image: url('pin.png');
+  opacity: 0.5;
+}
+
+.edit-bar > .materialize-link:hover {
+  opacity: 1;
+}
+
+
+.edit-bar > .countings-link {
+  float: right;
+  font-size: 80%;
+  width: auto;
+}
+
+.edit-bar > .title,
+.edit-bar > .kind {
+  float: left;
+  font-size: inherit;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+  margin-right: 0.5em;
+}
+
+.edit-bar > .title {
+  font-weight: bold;
+}
+
+.edit-bar > .kind {
+  color: #888;
+}
+
+.edit-bar > .delete-link > .confirm-delete {
+  background-color: white;
+  border: 2px solid red;
+  color: red;
+  opacity: 0;  /* will be blended in by JS */
+  position: relative;
+  right: 7em;
+  text-align: center;
+  top: -0.1em;
+  width: 6em;
+  z-index: 3;
+}
+
+.type-centerpage-2009 .edit-bar {
+  height: 20px;
+}
+
+.edit-bar.column-separator {
+  -moz-border-radius: 1em;
+  border: 1px solid black;
+  font-size: 0.5em;
+  margin: auto;
+  text-align: center;
+  width: 80%;
+}
+
+#confirm-delete-overlay {
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.edit > .delete-link > .confirm-delete > a {
+  color: red;
+  text-transform: uppercase;
+  display: block;
+
+}
+
+.edit-bar {
+  background-color: #f2f2f2;
+}
+
+.type-teaser-bar > .block-inner > .block > .block-inner {
+  margin: 1.5em 0.5em;
+  padding-bottom: 2em;
+}
+
+.type-teaser-bar > .block-inner > .block > .block-inner > .edit {
+  bottom: 1.25em;
+  left: 1em;
+  right: 1em;
+}
+
+.block-inner {
+  background-color: white;
+}
+
+.type-teaser-bar > .block-inner {
+  background-color: #fff;
+}
+
+.block.type-blocked {
+    position: absolute;
+    right: 0.5em;
+}
+
+.block.type-blocked > .block-inner {
+  background-color: transparent;
+  text-align: center;
+}
+
+.block.type-blocked > .block-inner > * {
+  margin: 3em;
+}
+
+.block.type-blocked.mr {
+  width: 49%;
+}
+
+.block.type-blocked.dmr {
+  width: 74%;
+}
+
+/* dragger */
+
+.dragger {
+  margin: 0 10px;
+  z-index: -1;
+}
+
+#edit-form-article-content .dragger {
+  margin: -15px 10px;
+}
+
+.dragger > .center {
+  height: 20px;
+  cursor: move;
+}
+
+
+/* Teaser block */
+
+.block.block-visible-off .block-inner {
+  background-color: #cccccc;
+}
+
+
+.teaser-block-properties-form table.form-fields {
+  width: 100%;
+}
+
+.teaser-block-properties-form .form-fields td.label {
+  width: 25%;
+}
+
+.teaser-block-properties-form .form-fields td.field {
+  width: 75%;
+}
+
+
+.teaser-block-properties-form .object-reference {
+  width: 80%
+}
+
+/* Teaser visualisations */
+
+.type-centerpage-2009 .block .teaser-contents {
+  min-height: 5em;
+  margin: 1em;
+}
+
+.block.type-teaser > .block-inner,
+.block.type-auto-teaser > .block-inner {
+  overflow: hidden;
+}
+
+.type-centerpage-2009 .block .teaser {
+  font-size: 0.8em;
+}
+
+.type-centerpage-2009 .block .teaser-contents > img {
+  display: block;
+}
+
+.type-centerpage-2009 .block .teaser > .supertitle {
+  color: #990000;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: none;
+}
+.type-centerpage-2009 .block .teaser > .teaserTitle {
+  display: inline;
+  font-weight: normal;
+}
+.type-centerpage-2009 .block .teaser > .teaserText {
+  display: none;
+}
+
+/* layout chooser */
+
+.layout-chooser.teaser {
+  margin: 0.5em;
+}
+
+.layout-chooser > .layout-inner {
+  position:relative;
+  border:1px solid #CCCCCC;
+  float:left;
+  width: 32%;
+  height: 22em;
+  margin:0 1% 1em 0;
+  overflow: hidden;
+}
+
+.layout-chooser.teaserbar > .layout-inner {
+  height: 10em;
+}
+
+.layout-chooser > .layout-inner > a {
+  display: block;
+  margin: 0;
+  opacity: 0.5;
+}
+
+.layout-chooser > .layout-inner > a.selected,
+.layout-chooser > .layout-inner > a:hover {
+  opacity: 1;
+  background-color: inherit;
+}
+
+
+.layout-chooser > .layout-inner > a > img {
+  border: none;
+  display:block;
+  left: 0em;
+  margin: auto;
+  position: absolute;
+  right: 0em;
+  top: 4em;
+  width: 90%;
+}
+
+.layout-chooser > .layout-inner > a > span {
+  background-color: #CCCCCC;
+  display:block;
+  height: 3em;
+  margin-top: 0;
+  padding: 3px;
+  position:absolute;
+  width: 100%;
+}
+
+.lightbox-header .CloseButton {
+background:transparent url(close.png) no-repeat 0 0 !important;
+margin-top: 4px;
+
+}
+
+/* Teaser list editing */
+
+.teaser-list-edit-box > ol {
+  list-style: none;
+  padding: 0;
+}
+
+.teaser-list-edit-box > ol > li {
+  clear: both;
+  display: block;
+  height: 1.1em;
+  padding: 0.4em 0.5em;
+}
+
+.teaser-list-edit-box > ol > li.even {
+  background-color: #f2f2f2;
+}
+
+.teaser-list-edit-box > ol > li > div {
+  cursor: move;
+}
+
+.teaser-list-edit-box .url-input,
+.teaser-list-edit-box .close-lightbox {
+  /* align with li items */
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.url-input a.button.configure_search {
+  margin-right: 0px;
+}
+
+.url-input input {
+  width: 90%;
+}
+
+.close-lightbox {
+  margin-top: 1em;
+}
+
+/* XML block */
+
+.xml-block {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+/* Top lists */
+
+.block-title,
+.block-item,
+.rawtext-content,
+.rawtext-title,
+.cpextra-id,
+.cpextra-title {
+  text-align: center;
+}
+
+.block-title,
+.cpextra-title,
+.rawtext-title {
+  margin: 2em 2em 0.5em 2em;
+  text-transform: uppercase;
+}
+
+.block-item,
+.cpextra-id,
+.rawtext-content {
+  margin: 0 0 2em 0;
+}
+
+.block-item {
+  font-weight: bold;
+}
+
+.block-item > *{
+  font-weight: normal;
+}
+
+.cpextra-id:before {
+  content: '<cp_extra extra_id="';
+}
+
+.cpextra-id:after {
+  content: '"/>';
+}
+
+.object-reference-widget .object-reference {
+  width:30em;
+}
+
+/* Automatic teaser blocks */
+
+.block.type-auto-teaser .edit-bar .toggle-automatic {
+  display: inline-block;
+  height: 16px;
+  font-weight: bold;
+}
+
+.block.type-auto-teaser .teaser-contents {
+  background-color: white;
+  opacity: 0.4;
+}
+
+.type-centerpage-2009 .fieldname-automatic_type {
+    margin-bottom: 1em;
+}
+
+.type-centerpage-2009 .fieldname-automatic,
+.type-centerpage-2009 .fieldname-count {
+  float: left;
+}
+
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox] {
+  display: none;
+}
+
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox] + .checkbox {
+  background-image: url('autopilot-off.png');
+  background-repeat: no-repeat;
+  padding-left: 73px;
+  padding-bottom: 18px;
+}
+
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox]:checked + .checkbox {
+  background-image: url('autopilot-on.png');
+}
+
+.type-centerpage-2009 .fieldname-hide_dupes {
+  clear: left;
+}
+
+/* display label and widget side-by-side */
+.type-centerpage-2009 .fieldname-count * {
+  float: left;
+}
+
+.type-centerpage-2009 .fieldname-count input {
+  width: 2em;
+}
+
+.type-centerpage-2009 .fieldname-count label > span:after {
+    content: ":";
+    color: black;
+}
+
+/* XXX center these vertically with manual margin-top */
+.type-centerpage-2009 .fieldname-count label {
+  margin-top: 2px;
+  margin-left: 4em;
+}
+.type-centerpage-2009 .fieldname-count .error {
+  margin-top: 2px;
+}
+.type-centerpage-2009 .fieldname-count input {
+  margin-top: -1px;
+}
+
+.type-centerpage-2009 .fieldname-automatic .widget,
+.type-centerpage-2009 .fieldname-count .widget {
+  margin-bottom: 0;
+}
+.type-centerpage-2009 .fieldname-automatic,
+.type-centerpage-2009 .fieldname-count,
+.type-centerpage-2009 .fieldname-hide_dupes {
+  padding: 0;
+}
+
+.type-centerpage-2009 .fieldname-count {
+  margin-top: 12px;
+}
+
+.type-centerpage-2009 .fieldname-query .combinationFieldWidget tr {
+    display: inline-block;
+}
+
+.type-centerpage-2009 .fieldname-query .combinationFieldWidget .widget {
+  margin-bottom: 0.5em;
+}
+.location-repository.type-centerpage-2009 .fieldname-query .combinationFieldWidget .widget {
+  margin-bottom: 0px;
+}
+
+
+#content .lightbox .edit-common-box input[name="form.block_max"] {
+  width: 2em;
+}
+
+
+/* Since the title of the field 'query' is used by SequenceWidget for the
+buttons, we only can get a different label if we override it here. */
+.fieldname-query label[for="form.query"] span {
+  display: none;
+
+}
+.fieldname-query label[for="form.query"]:after {
+  content: "Zeige alle Teaser wenn...";
+}
+
+.fieldname-query label[for$="..combination_01"] span {
+  display: none;
+
+}
+
+/* specificity wars, yay */
+#cp-content .fieldname-query .widget .object-reference.landing-zone,
+#cp-content .fieldname-referenced_cp .widget .object-reference.landing-zone {
+    margin-left: 0px;
+    width: 100%;
+}
+#cp-content .fieldname-referenced_cp .widget .object-reference.landing-zone {
+    margin-bottom: 0.5em;
+}
+
+
+/* Display SVGs of Schematic Previews side by side and mark the active area. */
+
+.schematic-preview-tooltip {
+  max-width: 100%;
+}
+
+.cp-area-schematic-preview .area-preview-image {
+  float: left;
+}
+
+.cp-area-schematic-preview .area-preview-image.active svg rect {
+  fill: #e9e9ff !important;
+}
+
+
+/* Make Landing Zones less prominent */
+
+.type-centerpage-2009 .landing-zone.droppable-active {
+  background: none;
+  border: 1px solid transparent;
+}
+
+/* XXX Had to copy all rules from zeit.cms:cms.css */
+.type-centerpage-2009 .landing-zone.hover-content {
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  height: 10em;
+  border-color: #a6cc17;
+  outline: 4px solid #a6cc17;
+  display: block;
+  visibility: visible;
+}
+
+
+.block.type-headerimage .header {
+  background-color: white;
+  text-align: center;
+  position: absolute;
+  top: 20%;
+  width: 90%;
+  left: 5%;
+}
+.block.type-headerimage img {
+  width: 100%;
+}
+
+.block.type-headerimage .edit {
+  margin-bottom: 0;
+}

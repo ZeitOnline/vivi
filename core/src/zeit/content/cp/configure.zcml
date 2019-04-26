@@ -1,0 +1,207 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- include zeit.edit early to make sure the grokkers are grokked. -->
+  <include package="zeit.edit" />
+
+  <grok:grok package="." exclude="browser" />
+
+  <!-- CenterPage -->
+
+  <utility
+    name="zeit.content.cp"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <class class=".centerpage.CenterPage">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <require
+      interface=".interfaces.ICenterPage"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ICenterPage"
+      permission="zeit.EditContent" />
+  </class>
+
+  <utility
+    component=".source.centerPageSource"
+    name="zeit.content.cp"
+    />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.cp.interfaces.ICenterPage
+         zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <subscriber
+    factory="zeit.edit.body.PublishTraverser"
+    for="zeit.content.cp.interfaces.ICenterPage
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <class class=".centerpage.Body">
+    <require
+      interface="zeit.edit.interfaces.IReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.edit.interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".centerpage.cp_references"
+    name="zeit.content.cp.centerpage"
+    />
+  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    for=".interfaces.ICenterPage"
+    trusted="yes"
+    />
+  <subscriber handler=".centerpage.modified_propagator" />
+  <subscriber handler=".centerpage.update_centerpage_on_checkin" />
+  <subscriber
+    for="zope.interface.Interface
+         zope.container.interfaces.IObjectMovedEvent"
+    handler=".centerpage.modified_propagator" />
+
+  <!-- Areas -->
+  <class class=".area.Region">
+    <require
+      interface="zeit.content.cp.interfaces.IReadRegion"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.cp.interfaces.IReadRegion"
+      permission="zeit.EditContent" />
+    <require
+      interface="zeit.content.cp.interfaces.IWriteRegion"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <class class=".area.Area">
+    <require
+      interface="zeit.content.cp.interfaces.IReadArea"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.cp.interfaces.IReadArea"
+      permission="zeit.EditContent" />
+    <require
+      interface="zeit.content.cp.interfaces.IWriteArea"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    provides="zeit.content.cp.interfaces.IRegion"
+    name="region"
+    factory=".area.Region"
+    />
+  <adapter
+    provides="zeit.content.cp.interfaces.IArea"
+    name="area"
+    factory=".area.Area"
+    />
+
+  <!-- Blocks -->
+  <include package=".blocks" />
+
+  <adapter factory=".rule.CenterPageValidator" />
+
+  <!-- Layout -->
+  <class class=".layout.BlockLayout">
+    <require
+      interface=".layout.ITeaserBlockLayout"
+      permission="zope.View" />
+  </class>
+
+
+  <class class=".automatic.AutomaticArea">
+    <require
+      interface="zeit.content.cp.interfaces.IRenderedArea"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.cp.interfaces.IRenderedArea"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".interfaces.AutomaticFeed">
+  <require
+      attributes="id"
+      permission="zope.View"
+      />
+  <require
+      set_attributes="id"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".automatic.RSSLink">
+    <require
+      interface="zeit.content.cp.automatic.IRSSLink"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.cp.automatic.IRSSLink"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".automatic.AutomaticArea"
+    trusted="yes" />
+
+
+  <class class=".leadtime.LeadTime">
+    <require
+      interface=".interfaces.ILeadTime"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ILeadTime"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".leadtime.LeadTimeWorklist">
+    <require
+      interface=".interfaces.ILeadTimeWorklist"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ILeadTimeWorklist"
+      permission="zeit.workflow.Publish"
+      />
+  </class>
+
+  <permission
+    id="zeit.content.cp.EditArea"
+    title="Edit Area"
+    />
+
+  <permission
+    id="zeit.content.cp.EditOverflow"
+    title="Edit Article Flow"
+    />
+
+  <interface
+    interface=".interfaces.IStoryStream"
+    type="zeit.cms.content.interfaces.IAddableContent"
+    />
+
+  <class class=".centerpage.writeabledict">
+    <require
+      interface="zope.interface.common.mapping.IFullMapping"
+      permission="zope.View" />
+  </class>
+
+</configure>

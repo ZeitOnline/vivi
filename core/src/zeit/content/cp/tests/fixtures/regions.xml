@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<regions>
+    <region kind="empty" title="Empty"/>
+    <region kind="solo" title="Solo">
+        <area kind="solo"/>
+    </region>
+    <region kind="duo" title="Duo">
+        <area kind="duo"/>
+        <area kind="duo"/>
+    </region>
+    <region kind="trio" title="Trio">
+        <area kind="trio"/>
+        <area kind="trio"/>
+        <area kind="trio"/>
+    </region>
+    <region kind="duo" title="Multi">
+        <area kind="major"/>
+        <area kind="minor"/>
+    </region>
+    <region kind="solo" title="Parquet">
+        <area kind="parquet"/>
+    </region>
+    <region kind="solo" title="Ranking">
+        <area
+          kind="ranking"
+          apply_teaser_layouts_automatically="true"
+          first_teaser_layout="leader-upright"
+          />
+    </region>
+</regions>
