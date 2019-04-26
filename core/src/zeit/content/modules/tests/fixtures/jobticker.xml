@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jobboxes>
+  <jobbox id="hp" title="Homepage" feed_url="http://app-cache.zeit.de/academics-hp-feed" landing_url="http://jobs.zeit.de/" teaser="Aktuelle Jobs im ZEIT Stellenmarkt" />
+  <jobbox id="wissenschaft" title="Wissenschaft / Lehre / Forschung"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="https://jobs.zeit.de/stellenangebote/nr_wissenschaft_&amp;_lehre_488536.html?format=rss_2.0" landing_url="http://jobs.zeit.de/stellenmarkt/wissenschaft_lehre_39811.html" teaser="Aktuelle Stellen in Wissenschaft  &amp; Lehre" />
+  <jobbox id="it" title="Digitalisierung / Innovation"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="https://jobs.zeit.de/stellenangebote/ingenieure,_it_&amp;_technik_488558.html?format=rss_2.0" landing_url="http://jobs.zeit.de/stellenmarkt/ingenieure_it_technik_57353.html" teaser="Aktuelle Stellen in IT &amp; Technik" />
+  <jobbox id="medien" title="Medien / Kommunikation"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/medien_kommunikation_39801.html" landing_url="http://jobs.zeit.de/stellenmarkt/medien_kommunikation_39801.html" teaser="Aktuelle Stellen in Medien &amp; Kommunikation" />
+  <jobbox id="ausland" title="Ausland"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/international_39869.html" landing_url="http://jobs.zeit.de/stellenmarkt/international_39869.html" teaser="Internationale Stellenangebote" />
+  <jobbox id="umwelt" title="Nachhaltigkeit / Umwelt"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/nachhaltigkeit_umwelt_57374.html" landing_url="http://jobs.zeit.de/stellenmarkt/nachhaltigkeit_umwelt_57374.html" teaser="Stellen im Bereich Nachhaltigkeit &amp; Umwelt" />
+  <jobbox id="kultur" title="Kreatives Umfeld / Kultur / Kunst"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/kultur_kunst_39802.html" landing_url="http://jobs.zeit.de/stellenmarkt/kultur_kunst_39802.html" teaser="Aktuelle Stellen im Kulturbereich" />
+  <jobbox id="soziales" title="Sinnhaftigkeit / Soziales"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/paedagogik_soziales_39805.html" landing_url="http://jobs.zeit.de/stellenmarkt/paedagogik_soziales_39805.html" teaser="Stellen im Bereich Pädagogik &amp; Soziales" />
+  <jobbox id="gesundheit" title="Gesundheit / Medizin"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/medizin_gesundheit_39798.html" landing_url="http://jobs.zeit.de/stellenmarkt/medizin_gesundheit_39798.html" teaser="Aktuelle Stellen in Medizin &amp; Gesundheit" />
+  <jobbox id="wirtschaft" title="Beratung / Wirtschaft"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/verwaltung_management_recht_57354.html" landing_url="http://jobs.zeit.de/stellenmarkt/verwaltung_management_recht_57354.html" teaser="Stellen in Verwaltung, Management &amp; Recht" />
+  <jobbox id="gw" title="Geisteswissenschaften"
+          available="zeit.arbeit.interfaces.IZARContent" feed_url="http://jobs.zeit.de/stellenmarkt/geisteswissenschaften_58622.html" landing_url="http://jobs.zeit.de/stellenmarkt/geisteswissenschaften_58622.html" teaser="Stellen im Bereich Geisteswissenschaften" />
+</jobboxes>
