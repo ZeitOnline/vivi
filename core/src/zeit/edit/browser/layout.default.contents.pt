@@ -1,0 +1,2 @@
+<tal:block tal:repeat="block options/viewlets"
+           tal:content="structure python: view.render_viewlet(block)" />

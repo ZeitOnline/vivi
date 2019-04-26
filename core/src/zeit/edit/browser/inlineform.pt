@@ -1,0 +1,55 @@
+<form tal:omit-tag="not:request/show_form|nothing" method="POST">
+  <tal:comment condition="nothing">
+    When the requets contains ``show_form`` a form tag is rendered. This
+    supports testing as the testbrowser does only recognise form elements
+    inside a form. In a real browser this snipped is injected in form-tag so
+    there must not be an extra form element.
+  </tal:comment>
+  <fieldset tal:attributes="class view/css_class;
+                            id string:form-${view/prefix}"
+            i18n:domain="zeit.cms">
+    <tal:comment condition="nothing">
+      The id on the fieldset is used by the signal handler for
+      reload_inline_form to find the form.
+    </tal:comment>
+
+    <legend tal:content="view/legend"
+            tal:condition="view/legend"
+            i18n:translate="">
+      Legend
+    </legend>
+
+    <div tal:repeat="widget view/widgets"
+         tal:attributes="class widget/field_css_class">
+      <div
+         tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '');"
+         tal:condition="widget/reversed|nothing"
+         tal:content="structure widget"/>
+      <div class="error"
+           tal:condition="widget/error"
+           tal:content="structure widget/error">
+        error
+      </div>
+      <div tal:condition="widget/error" class="empty"></div>
+      <div class="label" tal:condition="widget/label">
+        <label tal:attributes="
+               cms:tooltip widget/hint;
+               for widget/name">
+          <span i18n:translate="" tal:content="widget/label">label</span>
+        </label>
+      </div>
+      <div
+          tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '')"
+           tal:condition="not:widget/reversed|nothing"
+           tal:content="structure widget"/>
+    </div>
+  </fieldset>
+
+  <div class="form-controls" tal:condition="view/availableActions">
+    <input
+      tal:repeat="action view/actions"
+      tal:replace="structure action/render" />
+  </div>
+
+  <span class="signals hidden" tal:content="view/signals"/>
+</form>

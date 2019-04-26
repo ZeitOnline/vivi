@@ -1,0 +1,20 @@
+<div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      id="cp-content-inner"
+      class="cp-content-inner article-editor-inner"
+      i18n:domain="zeit.cms">
+<h1>cp-content-inner</h1>
+
+<div id="myblock">
+<h3>will hide</h3>
+</div>
+
+<link rel="stylesheet" href="style.css" />
+
+<script type="text/javascript">
+zeit.edit.inline = true;
+</script>
+
+<script type="text/javascript" src="external.js">
+</script>
+
+</div>

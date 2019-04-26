@@ -1,0 +1,752 @@
+.visual-clear {
+  clear: both;
+}
+
+#cp-content {
+  bottom: 1em;
+  left: -0.8em;
+  position: absolute;
+  right: 34.4%;
+  top: 0;
+}
+
+#cp-content > .cp-content-inner {
+  bottom: 0em;
+  left: 0;
+  overflow: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#cp-content .editable-area {
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+#cp-content .hover > * {
+  outline: 2px solid #eee;
+  border-style: solid;
+}
+
+#cp-content .block.droppable-active,
+#cp-content .block.hover-content {
+  border: none;
+}
+
+#cp-content .block.hover-content {
+  outline: none;
+}
+
+#cp-content .block.droppable-active > *,
+#cp-content .block.hover-content > * {
+  border: 1px solid #a6cc17;
+}
+
+#cp-content .block.hover-content > * {
+  outline: 4px solid #a6cc17;
+}
+
+#cp-forms {
+  bottom: 1em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 66%;
+}
+
+#cp-forms > .context-views {
+  background: #fff url(tabs_bg.gif) repeat-x 0 100%;
+  height: 26px;
+  width: 100%;
+}
+
+#cp-forms .context-views > ul {
+  margin: 0;
+  padding: 0;
+}
+
+#cp-forms > .tab-content {
+  border: 1px solid #bbb;
+  border-top: none;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 2.2em;
+  background: #EEF3F7;
+}
+
+.tab-content a {
+  outline: none;
+}
+
+.tab-content > .context-views {
+  background: #fff url(tabs_bg.gif) repeat-x 0 100%;
+  padding-top: 0.5em;
+  right: 0;
+  top: 0;
+}
+
+.tab-content > .context-views > ul > li:first-child > a {
+  border-left: none;
+  -moz-border-radius-topleft: 0px;
+
+}
+
+#cp-search > #search_form {
+  padding: 0.7em 0.5em;
+}
+
+#cp-undo {
+  overflow: auto;
+}
+
+#extended_search fieldset {
+  border: 0px solid #ffffff;
+}
+
+.tab-content > .context-views > ul > li.selected > a {
+  background: #EEF3F7;
+  border-bottom: 1px solid #EEF3F7;
+}
+
+/* lightbox styling */
+
+#content .lightbox,
+#content .lightbox-shade,
+#content .lightbox-header {
+  position: absolute;
+  z-index: auto;
+}
+
+#cp-content > .lightbox {
+  overflow-y: visible;
+}
+
+#cp-content > .lightbox,
+#cp-content > .lightbox-header {
+  left: 5%;
+  right: 5%;
+}
+
+#cp-forms > .lightbox,
+#cp-forms > .lightbox-header {
+  left: 1em;
+  right: 1em;
+}
+
+#cp-forms > .lightbox-header {
+  top: 1em;
+  left: 1em;
+  right: 1em;
+  bottom: 1em;
+}
+
+#cp-forms > .lightbox {
+  bottom: 1em;
+  top: 3.5em;
+}
+
+#cp-forms > .lightbox #form\.teaserTitle {
+  height: 3.9em;
+}
+
+.highlight {
+  background-color: #ddd !important;
+  border: 1px solid #f00 !important;
+}
+
+#content .lightbox .edit-common-box input[type="text"] {
+  width: 30em;
+}
+
+
+#lightbox\.form .form-status {
+  margin-left: 10px;
+  margin-top: 1em;
+}
+
+#lightbox\.form .summary {
+  font-weight: bold;
+}
+
+
+/* Block layout */
+
+.block > .block-inner {
+  border: 1px solid #bbb;
+  padding: 0 0;
+}
+
+.block-inner .editable p,
+{
+  padding: 5px 12px;
+}
+
+.block-inner .editable ul {
+  margin-top: 0px;
+}
+
+.block {
+  margin-top: 1em;
+}
+
+.block-inner > .block {
+  margin-top: 0em;
+}
+
+.editable-area > .landing-zone, .editable-area > .block-inner > .landing-zone {
+  margin: 0.25em 1em;
+  height: 1em;
+}
+
+#cp-content .lightbox > div.tab-content {
+  overflow-y: auto;
+}
+
+#cp-content .lightbox h1 {
+  margin-top: 0px;
+}
+
+.edit-bar > a.common-link {
+  display: none;
+}
+
+.editable-area > .landing-zone + .block {
+  margin-top: 0;
+}
+
+.block .landing-zone {
+  margin: 1em 0 0 0;
+}
+
+#cp-content #teaser-mosaic .landing-zone.visible {
+  margin: 1.5em;
+}
+
+#cp-content .landing-zone.visible {
+  border: 1px dashed #a6cc17;
+  color: #a6cc17;
+  height: auto;
+  margin-bottom: 1em;
+}
+
+#editor-forms .landing-zone.visible {
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#cp-content .zeit-edit-interfaces-IFoldable .landing-zone.visible {
+  margin-right:12px;
+}
+
+
+/* Object sequence widget */
+
+.object-widget {
+  margin-bottom: 1.5em;
+}
+
+form[action$="edit.form.assets"] .objectsequencewidget ul {
+  margin:1em;
+}
+
+
+#cp-content .lightbox .landing-zone {
+  border: 1px solid #a6cc17;
+  height: 0.5em;
+  padding: 0;
+  margin: 0 1em;
+  visibility: hidden;
+}
+
+#cp-content .lightbox .landing-zone.droppable-active {
+  visibility: visible;
+}
+
+#cp-content .lightbox .landing-zone.visible {
+  margin-top: 1em;
+  height: 1em;
+  padding: 1em;
+}
+
+.edit {
+  border-bottom: 1px solid #bbb;
+  margin-bottom: 0.3em;
+  padding-top: 0.3em;
+}
+
+.editable-area > .edit {
+  border-top: none;
+  color: #a6cc17;
+  padding: 1em;
+}
+
+.edit > a {
+  color: inherit;
+}
+
+.edit-bar > a,
+.edit-bar > .locked-indicator,
+.edit-bar > .position {
+  background-color: inherit;
+  background-position: top left;
+  background-repeat: no-repeat;
+  display: block;
+  float: left;
+  height: 16px;
+  margin-left: .3em;
+  width: 16px;
+}
+
+.editable-area.validation-error {
+  background-color: #E67373;
+}
+
+.editable-area.validation-warning {
+  background-color: #FFE480;
+}
+
+.block.validation-error > .block-inner {
+  background-color: #E67373;
+}
+
+.block.validation-warning > .block-inner {
+  background-color: #FFE480;
+}
+
+.edit-bar > .locked-indicator {
+  padding-right: 0.5em;
+}
+
+.edit-bar > .edit-link {
+  background-image: url('edit.png');
+  padding-right: 0.5em;
+}
+
+.edit-bar > .edit-object-link {
+  background-image: url('edit-in-new-window.png');
+  padding-right: 0.5em;
+}
+
+.edit-bar > .delete-link {
+  background-image: url("/fanstatic/zeit.cms/icons/delete.png");
+  float: right;
+  padding-right: .3em;
+}
+
+
+/* dragger */
+
+.dragger {
+  margin: 0 10px;
+  z-index: -1;
+}
+
+.dragger > .center {
+  height: 20px;
+  cursor: move;
+}
+
+
+/* Busy indicator */
+
+#busy-indicator {
+  bottom: 0em;
+  left: 0;
+  position: absolute;
+  right: 35%;
+  top: 0;
+}
+
+#busy-indicator > .shade {
+  background-color: black;
+  border: none;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  opacity: 0.25;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#busy-indicator > img {
+  border: none;
+  bottom: 0;
+  height: 19px;
+  left: 0;
+  margin: auto;
+  opacity: 1;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 220px;
+}
+
+
+/* Module library */
+
+.module {
+  float: left;
+  height: 80px;
+  width: 93px;
+  border: 1px solid #cccccc;
+  margin: 0.25em;
+  overflow: hidden;
+  background-color: white;
+  font-size: 10px;
+  cursor: move;
+}
+
+.module:hover {
+  border: 1px solid #bbb;
+  background-color: #F2F2F2;
+}
+
+.module-inner {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.module-inner > img{
+  line-height: 50px;
+  margin: 5px auto;
+  display: block;
+}
+
+/* fold */
+
+.cp-content-inner .edit-bar > .fold-link,
+.cp-content-inner .object-details .fold-link,
+.cp-content-inner .object-details .toggle_infos {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2511px;
+}
+
+.cp-content-inner .folded .edit-bar > .fold-link,
+.cp-content-inner .object-details .toggle_infos.folded {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
+}
+
+.cp-content-inner .folded > .block-inner > * {
+  display: none;
+}
+
+.cp-content-inner .folded > .block-inner > .edit-bar {
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0;
+}
+
+#editor-forms div.editable-area > div.edit-bar > a {
+  color: #fff;
+  height: 2em;
+  padding-left: 15px;
+  width: 98%;
+}
+
+/* override so we don't see a flicker */
+.inline-form.busy {
+  opacity: 1;
+}
+
+/* forms */
+
+.inline-form .field {
+  margin: 1px 25px 5px 0;
+}
+
+#edit-form-assets .inline-form .field {
+  margin: 0 0px 20px 0;
+  background: #F2F2F2;
+  -moz-border-radius: 5px;
+}
+
+#edit-form-assets .landing-zone.visible {
+  background: white;
+  margin: auto 0.4em;
+  width:95%:
+}
+
+#edit-form-assets .inline-form .field div.droppable-active {
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  border: 1px solid #0A0;
+  -moz-border-radius: 5px;
+}
+
+#edit-form-assets input[type="text"] {
+  font-size: 12px;
+}
+
+.inline-form .label {
+  display: block;
+  float: left;
+  font-size: 9px;
+  margin-bottom: 2px;
+  overflow: hidden;
+}
+
+.inline-form  label {
+  font-weight: normal;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+
+.inline-form .widget {
+  clear: left;
+  float: left;
+  margin-bottom: 5px;
+  padding: 0px 0 0;
+  width: 100%;
+}
+
+.inline-form .fieldtype-text .widget {
+  margin-top: 2px;
+}
+
+#edit-form-assets .inline-form .field,
+#edit-form-assets .inline-form .widget {
+  padding: 0px 0 0;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+#edit-form-assets .inline-form .field div.label{
+  margin: 3px 0px 3px 3px;
+}
+
+#edit-form-assets .inline-form .widget .textType {
+  width: 95%;
+  display: block;
+  margin: auto;
+  margin-left:0.4em;
+  margin-right:0.4em;
+}
+
+.inline-form div.widget > input,
+.inline-form div.widget > textarea,
+.inline-form div.widget > div > div > select {
+  margin-top: 0;
+}
+
+.inline-form div.widget > input {
+  padding-left:2px;
+}
+
+.inline-form .error div.widget > input,
+.inline-form .error div.widget > textarea,
+.inline-form .error div.widget > div > div > select {
+  background: -moz-linear-gradient(center top , #FFF, #FDD) repeat scroll 0 0 transparent;
+}
+
+.inline-form .dirty div.widget > input,
+.inline-form .dirty div.widget > textarea,
+.inline-form .dirty div.widget > div > div > select {
+  background: -moz-linear-gradient(center top , #FFF, #CFD) repeat scroll 0 0 transparent;
+}
+
+.inline-form .dirty div.widget > input[type=checkbox] {
+  outline: 1px solid yellow;
+}
+
+.inline-form div.exit {
+  margin-top: 10px;
+}
+
+.inline-form div.exit > a {
+  color: #F00;
+  background: none repeat scroll 0 0 transparent;
+}
+
+.inline-form div.exit > a.warning {
+  border-radius: 3px 3px 3px 3px;
+  padding: 2px;
+}
+
+.inline-form div.exit > a:hover {
+  color: #FFF;
+  background: #F00;
+}
+
+.field select {
+  width: 211px;
+}
+
+.field button {
+  width: 180px;
+}
+
+.inline-form .form-controls {
+  display: none;
+}
+
+.field span.required {
+  background-color: #a00;
+  border-radius: 5px 5px 5px 5px;
+  color: #fff;
+  font-size: 8px;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
+}
+
+.field.required label > span:after {
+    content: "";
+}
+
+span.charcount,
+.field span.charlimit {
+  float: right;
+  font-weight: 700;
+  margin-right: 1em;
+  padding: 2px;
+  font-size: 10px;
+  color: #7f7f7f;
+}
+
+/* Textareas */
+
+textarea {
+  font-family: Georgia,serif;
+  font-size: 14px;
+  height: 4em;
+  line-height: 1.4;
+  padding: 5px;
+  border: 2px inset threedface;
+}
+
+
+/* Fieldsets */
+
+#cp-content fieldset {
+  background: none 0;
+  border: medium none;
+  margin: 0 0 0 10px;
+  padding: 0;
+}
+
+fieldset .hlink {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+fieldset .hlink a {
+  color: #009BE0;
+  font-size: 14px;
+  padding: 5px;
+  font-weight: bold;
+}
+
+fieldset .hlink a:hover {
+  color: #990000;
+}
+
+fieldset .hlink a:active {
+  color: #FF6600;
+}
+
+/* divs */
+
+#edit-form-status .block-inner > div {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#edit-form-status .block-inner > div.totop {
+  padding: 0px;
+  padding-bottom: 5px !important;
+}
+
+/* Legend */
+
+#cp-content legend {
+  border-bottom: 1px dotted #999999;
+  color: #999999;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 5px;
+  width: 100%;
+  text-transform: none;
+}
+
+/* In article-editor  */
+
+#editor-forms #checkin,
+#editor-forms #checkin_correction {
+  font-size: 14px;
+}
+
+#checkin {
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 51px;
+
+}
+
+#checkin-publish {
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 77px;
+}
+
+#delete_workingcopy, #delete_from_repository {
+  background: url("/fanstatic/zeit.cms/icons/cross.png") no-repeat 3px 5px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
+  font-size: 14px !important;
+  padding-left: 22px;
+}
+
+#publish {
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 37px;
+}
+
+#retract {
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_zurueckziehen.png") no-repeat 5px 4px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 37px;
+}
+
+
+#editor-forms a.add_view {
+  background-position: 7px -114px, 0 0;
+}
+
+#editor-forms select {
+  height: 22px;
+  padding: 0;
+}
+
+#editor-forms select option {
+  padding: 3px;
+}
+
+/* Checkboxes */
+
+.inline-form .fieldtype-checkbox .widget {
+  margin-bottom: 0;
+  width: auto;
+}
+
+.inline-form .fieldtype-checkbox .widget.checkboxdisabled {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1407px transparent;
+  display: block;
+  width: 10px;
+  height: 15px;
+}
+
+.inline-form .fieldtype-checkbox .widget.checkboxchecked {
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1380px transparent;
+}
+
+.inline-form .fieldtype-checkbox .widget input.checkboxType[disabled="disabled"] {
+  display:none
+}
+
+.fieldtype-checkbox .label {
+  margin-bottom: 0;
+  width: auto;
+  font-size: 12px;
+}

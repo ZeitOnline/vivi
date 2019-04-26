@@ -1,0 +1,250 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  i18n_domain="zeit.cms">
+
+  <!-- clients need to register an edit.html view like this
+  <gocept:pagelet
+    for="IContentType"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class="zeit.edit.browser.editor.Editor"
+    permission="zope.View"
+    />
+  -->
+
+  <browser:viewlet
+      name="Edit contents"
+      for="zeit.cms.interfaces.ICMSContent"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.EditContentsMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zope.View"
+   />
+
+  <browser:page
+    for="..interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.contents.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IReadContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IContentViewletManager"
+    name="contents"
+    template="layout.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IContentViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".view.ErrorPreventingViewletManager"
+    template="layout.default.contents.pt"
+    name="zeit.edit.contents"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IContentViewletManager"
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".block.BlockViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.edit.contents"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IEditBarViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.edit.edit-bar"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IContentViewletManager"
+    name="edit"
+    template="layout.block.edit.pt"
+    permission="zeit.EditContent"
+    weight="-20"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.block.delete.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="drag"
+    template="layout.block.drag.pt"
+    permission="zeit.EditContent"
+    weight="1000"
+    />
+
+  <!-- generic actions -->
+
+  <browser:page
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="add"
+    class=".block.Add"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".block.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".container.UpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="move"
+    class=".container.Move"
+    permission="zeit.EditContent"
+    />
+
+  <!-- library -->
+
+  <browser:view
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.BlockFactories"
+    permission="zope.View"
+    />
+
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.edit.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.AreaLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-move"
+    class=".landing.LandingZoneMove"
+    permission="zeit.EditContent"
+    />
+
+  <!-- undo -->
+
+  <browser:view
+    for="zeit.cms.content.interfaces.IXMLContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="undo-history"
+    class=".undo.History"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.cms.content.interfaces.IXMLContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="revert"
+    class=".undo.Revert"
+    permission="zeit.EditContent"
+    />
+
+  <!-- forms -->
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-forms"
+    class=".form.Forms"
+    template="layout.forms-provider.pt"
+    permission="zope.View"
+    />
+
+  <!-- folding -->
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IFoldable"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="fold"
+    template="layout.fold.pt"
+    class=".block.View"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IUnknownBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="fold"
+    template="layout.fold.pt"
+    class=".block.Unknown"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IUnknownBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="display"
+    template="layout.block.unknown.pt"
+    class=".block.Unknown"
+    permission="zope.View"
+    />
+
+  <!-- testing only -->
+  <browser:resourceDirectory
+    name="zeit.edit.browser.tests.fixtures"
+    directory="tests/fixtures"
+    />
+
+</configure>

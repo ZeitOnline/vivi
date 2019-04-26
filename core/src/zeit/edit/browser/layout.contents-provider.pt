@@ -1,0 +1,5 @@
+<tal:block repeat="item context/values">
+  <tal:block
+    condition="python:item is not None"
+    replace="structure item/@@contents"/>
+</tal:block>

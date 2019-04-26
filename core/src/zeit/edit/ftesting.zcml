@@ -1,0 +1,38 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   xmlns:grok="http://namespaces.zope.org/grok"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
+
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
+  <grok:grok package="zeit.edit.tests.fixture" />
+
+  <class class="zeit.edit.tests.fixture.Container">
+    <require
+      interface="zeit.edit.tests.fixture.IContainer"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.edit.tests.fixture.IContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class="zeit.edit.tests.fixture.Block">
+    <require
+      interface="zeit.edit.tests.fixture.IBlock"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.edit.tests.fixture.IBlock"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
+
