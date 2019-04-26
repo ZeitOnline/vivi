@@ -1,0 +1,117 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <browser:page
+     for="zeit.cms.repository.interfaces.IFolder"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     class=".form.Add"
+     name="zeit.content.volume.Add"
+     permission="zeit.AddContent"
+     />
+
+   <browser:page
+     name="edit.html"
+     for="..interfaces.IVolume"
+     class=".form.Edit"
+     permission="zeit.EditContent"
+     menu="zeit-context-views" title="Edit metadata"
+     />
+
+   <browser:page
+     name="view.html"
+     for="..interfaces.IVolume"
+     class=".form.Display"
+     permission="zope.View"
+     />
+
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="admin.html"
+    class=".admin.VolumeAdminForm"
+    permission="zeit.cms.admin.View"
+    />
+
+   <adapter factory=".admin.render_publish_action" name="render" />
+
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="do-publish-all"
+    class="zeit.workflow.browser.publish.Publish"
+    template="publish-all.pt"
+    permission="zeit.cms.admin.View"
+    />
+
+   <browser:page
+    for="..interfaces.IVolume"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish-all"
+    class=".admin.PublishAll"
+    permission="zeit.cms.admin.View"
+    />
+
+   <browser:defaultView
+     for="..interfaces.IVolume"
+     name="view.html"
+     />
+    <browser:page
+      for="..interfaces.IVolume"
+      name="toc.csv"
+      class=".toc.Toc"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      menu="zeit-context-views"
+      title="Table of Content"
+      permission="zope.View"
+    />
+   <browser:menuItem
+     for="..interfaces.IVolume"
+     action="@@view.html"
+     menu="zeit-context-views"
+     title="View metadata"
+     permission="zope.View"
+     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+     />
+
+   <browser:icon
+     for="..interfaces.IVolume"
+     name="zmi_icon"
+     width="20"
+     height="20"
+     file="resources/volume.png"
+     layer="zeit.cms.browser.interfaces.ICMSStyles"
+     />
+
+  <browser:page
+    for="..interfaces.IVolumeReference"
+    name="object-details-body"
+    template="reference-details.pt"
+    class=".reference.Display"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IVolumeReference"
+    name="edit.html"
+    class=".reference.EditReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <configure package="zeit.cms.browser">
+    <browser:page
+      for="zeit.content.volume.interfaces.IVolumeReference"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      name="object-details-heading"
+      template="object-details-heading.pt"
+      class="zeit.content.volume.browser.reference.ReferenceDetailsHeading"
+      permission="zope.View"
+      />
+  </configure>
+</configure>
