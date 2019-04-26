@@ -1,0 +1,63 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser json xmlrpc" />
+
+  <adapter factory=".workflow.ContentWorkflow"
+    provides="zeit.workflow.interfaces.IContentWorkflow"
+    trusted="yes"
+    />
+  <adapter factory=".publishinfo.NotPublishablePublishInfo" />
+  <adapter factory=".publishinfo.workflowProperties" />
+  <adapter
+    factory=".timebased.XMLReferenceUpdater"
+    name="timebased-workflow"
+    />
+  <subscriber handler=".workflow.log_workflow_changes" />
+
+  <adapter factory=".source.fromNotNecessary" />
+
+  <class class=".publishinfo.PublishInfo">
+    <require
+      permission="zope.View"
+      interface="zeit.cms.workflow.interfaces.IPublishInfo"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.cms.workflow.interfaces.IPublishInfo"
+      />
+  </class>
+
+  <class class=".workflow.ContentWorkflow">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IContentWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IContentWorkflow"
+      />
+  </class>
+
+  <!-- Asset workflow -->
+  <adapter factory=".asset.AssetWorkflow"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+
+  <class class=".asset.AssetWorkflow">
+    <require
+      permission="zope.View" interface=".interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IAssetWorkflow"
+      />
+  </class>
+
+  <!-- Publish -->
+  <adapter factory=".publish.Publish" />
+
+</configure>

@@ -1,0 +1,21 @@
+<div id="publish.errors" i18n:domain="zeit.cms">
+  <tal:block tal:condition="not: view/can_publish">
+    <p i18n:translate="publish-preconditions-not-met-lightbox">Cannot publish since preconditions for publishing are not met. <span i18n:name="name" tal:content="context/uniqueId" /></p>
+    <tal:block tal:condition="view/error_messages">
+      <ul>
+        <li tal:repeat="message view/error_messages" tal:content="message">Error Message</li>
+      </ul>
+      <form action="#">
+        <input onclick="javascript:zeit.cms.current_lightbox.close()" type="submit" value="Abbrechen">
+      </form>
+      <p><a i18n:translate=""
+         tal:condition="view/can_override_publish_errors"
+         tal:attributes="href string:
+           javascript:
+             zeit.cms.current_lightbox.close();;
+             zeit.cms.lightbox_form('${request/getURL}?force=true')">
+        Publish anyway
+      </a></p>
+    </tal:block>
+  </tal:block>
+</div>

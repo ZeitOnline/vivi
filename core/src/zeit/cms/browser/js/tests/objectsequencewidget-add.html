@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources"/>
+  </head>
+  <body>
+    <div class="objectsequencewidget" id="testwidget">
+      <input type="hidden" name="testwidget.count" id="testwidget.count" value="0" />
+      <ul class="landing-zone-candidate">
+      </ul>
+
+      <a rel="show_add_view" href="/zeit.cms.javascript/tests/addform.html">Add new</a>
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../';
+      var widget = new zeit.cms.ObjectSequenceWidget(
+            'testwidget', ['type-foo'], '@@object-details');
+    </script>
+
+  </body>
+</html>

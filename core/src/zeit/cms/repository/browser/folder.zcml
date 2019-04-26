@@ -1,0 +1,122 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <!-- Collection / Folder -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepository"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="tree.html"
+    class=".repository.Tree"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    allowed_interface="zeit.cms.browser.interfaces.ITree"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class="zeit.cms.browser.listing.Listing"
+    template="content_listing.pt"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+
+  <browser:defaultView
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:containerViews
+    for="zeit.cms.repository.interfaces.IFolder"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="metadata_preview"
+    template="collection_metadata.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+
+  <browser:page
+    zcml:condition="have zeit.cms.repository.tree"
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="hide-from-tree.html"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    class=".repository.HiddenCollections"
+    attribute="hide_collection"
+    allowed_attributes="hidden"
+    />
+
+  <browser:menuItem
+    zcml:condition="have zeit.cms.repository.tree"
+    menu="zeit-context-actions"
+    title="Hide"
+    action="@@hide-from-tree.html"
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    filter="not: context/@@hide-from-tree.html/hidden"
+    icon="hide"
+    />
+
+  <browser:page
+    zcml:condition="have zeit.cms.repository.tree"
+    for="zeit.cms.repository.interfaces.ICollection"
+    name="show-in-tree.html"
+    class=".repository.HiddenCollections"
+    attribute="show_collection"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    allowed_attributes="hidden"
+    />
+
+  <browser:menuItem
+    zcml:condition="have zeit.cms.repository.tree"
+    menu="zeit-context-actions"
+    title="Show"
+    action="@@show-in-tree.html"
+    for="zeit.cms.repository.interfaces.ICollection"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    filter="context/@@show-in-tree.html/hidden"
+    icon="show"
+    />
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/collectionResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    />
+
+  <browser:icon
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/collectionResource.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    permission="zeit.AddContent"
+    class=".folder.FolderAdd"
+    name="zeit.cms.repository.folder.Add"
+    menu="zeit-add-menu" title="Folder"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    permission="zope.View"
+    class=".folder.FolderEdit"
+    name="edit.html"
+    />
+
+</configure>

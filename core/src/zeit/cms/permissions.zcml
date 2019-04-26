@@ -1,0 +1,127 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
+  i18n_domain="zeit.cms">
+
+  <permission
+    id="zeit.RenameContent"
+    title="Rename content"
+    />
+
+  <permission
+    id="zeit.RenameFolder"
+    title="Rename folders"
+    />
+
+  <permission
+    id="zeit.CopyContent"
+    title="Copy content"
+    />
+
+  <zeit:edit-permission
+    id="zeit.EditContent"
+    title="Edit ZEIT content"
+    />
+
+  <permission
+    id="zeit.ChangeRepository"
+    title="Change objects in the repository"
+    />
+
+  <permission
+    id="zeit.AddContent"
+    title="Add ZEIT content"
+    />
+
+  <permission
+    id="zeit.DeleteContent"
+    title="Delete ZEIT content"
+    />
+
+  <permission
+    id="zeit.DeleteFolder"
+    title="Delete folders"
+    />
+
+  <permission
+    id="zeit.Checkout"
+    title="Checkout content"
+    />
+
+  <permission
+    id="zeit.Checkin"
+    title="Checkin content"
+    />
+
+  <permission
+    id="zeit.cms.repository.ViewNavigationTree"
+    title="View repository navigation tree"
+    />
+
+  <permission
+    id="zeit.cms.repository.ViewProperties"
+    title="View DAV properties"
+    />
+
+  <permission
+    id="zeit.cms.Syndicate"
+    title="Syndicate content"
+    />
+
+  <permission
+    id="zeit.workflow.Publish"
+    title="Publish objects"
+    />
+
+  <permission
+    id="zeit.Lock"
+    title="Lock and unlock objects"
+    />
+
+  <permission
+    id="zeit.ManageLocks"
+    title="Manage WebDAV locks"
+    />
+
+
+  <permission
+    id="zeit.ViewGlobalSettings"
+    title="View global settings"
+    />
+
+  <permission
+    id="zeit.ChangeGlobalSettings"
+    title="Change global settings"
+    />
+
+  <permission
+    id="zeit.EditTemplates"
+    title="Edit templates"
+    />
+
+  <permission
+    id="zeit.content.cp.Retract"
+    title="Retract centerpages"
+    />
+
+  <permission
+    id="zeit.EditRetractLog"
+    title="Edit retract log"
+    />
+
+  <permission
+    id="zeit.content.cp.Delete"
+    title="Delete centerpages"
+    />
+
+  <permission
+    id="zeit.cms.admin.View"
+    title="View admin tab"
+    />
+
+  <permission
+    id="zeit.cms.admin.EditSemantic"
+    title="Edit semantic change and date of last semantic publish"
+    />
+</configure>
+

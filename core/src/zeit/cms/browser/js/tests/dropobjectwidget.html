@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources"/>
+  </head>
+  <body>
+    <div id="testwidget" style="width: 20em; height:20em;">
+      <input type="hidden" name="testwidget" value="" />
+      <div class="object-reference landing-zone-candidate"></div>
+      <input type="text" id="testwidget.url" name="testwidget.url" />
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../';
+      zeit.cms.widget_under_test = new zeit.cms.DropObjectWidget(
+          'testwidget', ['type-foo'], '@@object-details');
+    </script>
+
+    <div id="drag" class="type-foo">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/testcontent</span>
+      Drag
+    </div>
+    <div id="drag2" class="type-foo">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/2007</span>
+      Drag-2
+    </div>
+    <script type="text/javascript">
+      zeit.cms.createDraggableContentObject('drag');
+      zeit.cms.createDraggableContentObject('drag2');
+    </script>
+  </body>
+</html>

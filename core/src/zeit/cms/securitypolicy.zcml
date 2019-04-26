@@ -1,0 +1,13 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="zeit.cms">
+
+  <!-- this is currently required to model the "owner" of a workingcopy. -->
+
+  <role id="zeit.Owner" title="Owner" />
+  <grant
+    role="zeit.Owner"
+    permission="zope.ManageContent"
+    />
+
+</configure>

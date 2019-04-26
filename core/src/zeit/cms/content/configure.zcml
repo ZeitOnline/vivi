@@ -1,0 +1,245 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
+  i18n_domain="zeit.cms">
+
+  <include file="dav.zcml" />
+
+  <adapter factory=".adapter.webDAVPropertiesFactory" trusted="yes" />
+  <adapter factory=".adapter.webdavproperties_to_cms_content" />
+  <adapter factory=".adapter.xml_source" />
+  <adapter factory=".adapter.content_sort_key" />
+
+  <!-- Live properties -->
+  <adapter factory=".liveproperty.LiveProperties"/>
+  <adapter factory=".liveproperty.LiveProperties"
+    for="zeit.cms.repository.interfaces.IRepository" />
+  <class class=".liveproperty.LiveProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <utility
+    component=".liveproperty.LiveProperties"
+    provides=".interfaces.ILivePropertyManager"
+    />
+  <subscriber handler=".liveproperty.remove_live_properties" />
+  <adapter factory=".liveproperty.live_to_cmscontent" />
+
+
+  <adapter factory=".keyreference.CMSContentKeyReference" />
+
+  <!-- uuid -->
+  <adapter factory=".contentuuid.ContentUUID" />
+  <adapter factory=".contentuuid.properties" />
+  <adapter factory=".contentuuid.SimpleUUID" />
+  <adapter factory=".contentuuid.uuid_to_content" />
+
+
+  <!-- Templates -->
+  <class class=".template.TemplateManagerContainer">
+    <require
+      interface=".interfaces.ITemplateManagerContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+
+  <class class=".template.TemplateManager">
+    <require
+      interface=".interfaces.ITemplateManager"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.app.container.interfaces.IWriteContainer"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+
+  <class class=".template.Template">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ITemplate"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITemplate"
+      permission="zeit.EditTemplates"
+      />
+  </class>
+  <adapter factory=".template.webDAVPropertiesFactory"
+    for=".interfaces.ITemplate"
+    trusted="yes"
+    />
+  <class class=".template.TemplateWebDAVProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View" />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditTemplates" />
+  </class>
+
+
+  <!-- content source -->
+  <utility
+    component=".contentsource.cmsContentSource"
+    name="all-types"
+    />
+  <utility
+    component=".contentsource.folderSource"
+    name="folders"
+    />
+  <utility
+    component=".interfaces.authorSource"
+    provides=".contentsource.INamedCMSContentSource"
+    name="authors"
+    />
+  <adapter
+    factory=".contentsource.ChoicePropertyWithCMSContentSource"
+    provides=".interfaces.IDAVPropertyConverter"
+    />
+
+  <class class=".sources.Product">
+    <require
+      interface=".interfaces.IProduct"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".sources.Serie">
+    <require
+      interface=".interfaces.ISerie"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".sources.StorystreamReference">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IStorystreamReference"
+      />
+  </class>
+
+  <!-- XML support -->
+  <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
+
+  <adapter
+    factory=".xmlsupport.CommonMetadataUpdater"
+    name="commonmetadata"
+    />
+
+  <!-- automatic xml updating -->
+  <adapter factory=".xmlsupport.PropertyToXMLAttribute" />
+  <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
+  <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
+
+  <!-- dublin core -->
+  <class class=".dublincore.RepositoryDCTimes">
+    <require
+      interface="zope.dublincore.interfaces.IDCTimes"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".dublincore.LocalDCTimes">
+    <require
+      interface="zope.dublincore.interfaces.IDCTimes"
+      permission="zope.View"
+      />
+  </class>
+
+  <!-- semantic changes -->
+  <class class=".semanticchange.SemanticChange">
+    <require
+      interface=".interfaces.ISemanticChange"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ISemanticChange"
+      permission="zope.View" />
+  </class>
+  <class class=".semanticchange.SemanticChangeLocal">
+    <require like_class=".semanticchange.SemanticChange" />
+  </class>
+  <subscriber handler=".semanticchange.set_semantic_change_on_create" />
+
+  <!-- memo -->
+  <class class=".memo.Memo">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IMemo"
+      />
+    <require
+      permission="zope.View"
+      set_schema=".interfaces.IMemo"
+      />
+  </class>
+
+  <class class=".reference.References">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReferences"
+      />
+  </class>
+
+  <class class=".reference.Reference">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReference"
+      />
+  </class>
+
+  <class class=".reference.EmptyReference">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReference"
+      />
+  </class>
+
+
+  <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
+       the other -->
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+      />
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.interface.Interface"
+      name="absolute_url"
+      />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.cms.content.interfaces.IReferences
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".reference.Traverser"
+    for="zeit.cms.content.interfaces.IReferences
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.cms.content.interfaces.IReference
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".reference.Traverser"
+    for="zeit.cms.content.interfaces.IReference
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+</configure>

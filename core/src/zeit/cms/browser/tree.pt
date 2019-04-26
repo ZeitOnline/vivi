@@ -1,0 +1,36 @@
+<tal:block i18n:domain="zeit.cms" define="tree options/sub_data|view/getTreeData;">
+
+  <ul>
+    <tal:repeat repeat="item tree">
+      <li tal:define="root python: item['isroot'] and 'Root' or 'NotRoot'"
+          tal:attributes="uniqueId item/uniqueId;
+                          class string:${root} type-${item/type};
+                          action item/action;
+                          active item/selected">
+        <p>
+        <a href="#" tal:content="item/title|item/__name__"
+                    tal:attributes="href item/url">
+          2005
+        </a>
+        <span class="uniqueId"
+              tal:content="string:${item/displayedObjectUniqueId}">
+          http://xml.zeit.de/somalia
+        </span>
+        <a title="Remove" class="deleteLink context-action"
+          tal:condition="item/delete_url"
+          tal:attributes="href item/delete_url"
+          i18n:attributes="title">
+          <img alt="Delete"
+               tal:attributes="src string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/delete.png" />
+          <span class="action-title">Remove</span>
+        </a>
+      </p>
+        <tal:block
+          define="sub_data item/sub_data"
+          condition="python:sub_data"
+          replace="
+          structure python:view.tree_template(sub_data=item['sub_data'])" />
+      </li>
+    </tal:repeat>
+  </ul>
+</tal:block>

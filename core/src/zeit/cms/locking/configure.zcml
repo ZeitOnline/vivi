@@ -1,0 +1,32 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <utility 
+    provides="zope.app.locking.interfaces.ILockStorage"
+    factory=".locking.LockStorage" />
+
+
+  <!-- Basically copied from zope.app.locking -->
+  <class class=".locking.LockInfo">
+    <require permission="zope.View"
+      attributes="principal_id created timeout locked_until" />
+    <require permission="zope.View"
+      interface="zope.interface.common.mapping.IEnumerableMapping" 
+      />
+    <require permission="zope.View"
+      interface="zope.interface.common.mapping.IWriteMapping"
+      />
+  </class>
+
+  <adapter factory=".locking.CMSLockingAdapter" trusted="yes" />
+  <class class=".locking.CMSLockingAdapter">
+    <allow attributes="locked ownLock isLockedOut getLockInfo" />
+    <require permission="zope.View"
+      attributes="locker" />
+    <require permission="zeit.Lock"
+      attributes="lock unlock" />
+    <require permission="zeit.ManageLocks"
+      attributes="breaklock" />
+  </class>
+
+
+</configure>

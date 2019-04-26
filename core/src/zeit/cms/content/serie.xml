@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<allseries>
+  <series title="-" serienname="-" url="-"/>
+  <series title="Autotest" serienname="Autotest" url="zeitmagazin-autotest"/>
+  <series title="Bachelor Tagebuch" serienname="Bachelor Tagebuch" url="bachelor-tagebuch" encoded="Bachelor%20Tagebuch"/>
+  <series title="Chefsache" serienname="Chefsache" url="chefsache" format-label="Kolumne"/>
+  <series title="City Guide" serienname="City Guide" url="city-guide" encoded="City%20Guide"/>
+  <series title="Das Prinzip 50/50" serienname="Das Prinzip 50/50" url="das-prinzip-50-50" encoded="Das%20Prinzip%2050%2F50"/>
+  <series title="E-Mail aus Davos" serienname="E-Mail aus Davos" url="email-aus-davos" encoded="E-Mail%20aus%20Davos"/>
+  <series title="Faktomat" serienname="Faktomat" url="faktomat"/>
+  <series title="Geschafft!" serienname="Geschafft!" url="geschafft"/>
+  <series title="Hör-Reise" serienname="Hör-Reise" url="hoer-reise" encoded="H%C3%B6r-Reise"/>
+  <series title="Zeitläufte" serienname="Zeitläufte" url="zeitlaeufte" encoded="Zeitl%C3%A4ufte"/>
+  <series title="Podcast" serienname="Podcast" url="podcast" encoded="Podcast" fallback_image="yes"/>
+  <videoseries>
+    <series title="BR" serienname="BR" url="br" encoded="BR" video="yes"/>
+    <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" encoded="Filmtipp" video="yes"/>
+    <series title="Utopien" serienname="Utopien" url="utopien" encoded="Utopien" video="yes"/>
+  </videoseries>
+</allseries>

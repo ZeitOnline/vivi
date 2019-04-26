@@ -1,0 +1,69 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ITemplateManagerContainer"
+    name="index.html"
+    class=".template.Manager"
+    template="template-manager.pt"
+    permission="zeit.EditTemplates"
+    />
+
+  <browser:viewlet
+    name="templates"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".template.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.EditTemplates"
+    sort="100"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ITemplateManager"
+    name="index.html"
+    class=".template.Listing"
+    template="template-listing.pt"
+    permission="zeit.EditTemplates"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ITemplateManager"
+    name="zeit.cms.content.template.add.html"
+    class=".template.Add"
+    permission="zeit.EditTemplates"
+    menu="zeit-add-menu" title="Template"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ITemplate"
+    name="index.html"
+    class=".template.Edit"
+    permission="zeit.EditTemplates"
+    menu="zeit-context-views" title="Edit"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.content.interfaces.ITemplate"
+    name="webdav-properties.html"
+    class=".template.Properties"
+    template="template-properties.pt"
+    permission="zeit.EditTemplates"
+    menu="zeit-context-views" title="Properties"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.content.interfaces.ITemplateManager"
+    action="delete"
+    menu="folder-actions"
+    title="Delete"
+    permission="zeit.EditTemplates"
+    />
+
+  <adapter factory=".template.TemplateWidgetSetup" />
+
+</configure>
+

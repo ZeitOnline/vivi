@@ -1,0 +1,15 @@
+<div i18n:domain="zeit.cms" tal:attributes="id view/form_id | nothing">
+  <h1 i18n:translate=""
+    tal:content="view/title">
+    Title
+  </h1>
+
+  <span class="nextURL" tal:content="view/nextURL" />
+
+  <form id="lightbox.form" action="#"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form">
+
+  </form>
+
+</div>

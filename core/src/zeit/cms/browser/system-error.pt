@@ -1,0 +1,12 @@
+<html metal:use-macro="context/@@standard_macros/error-page">
+  <div metal:fill-slot="body"
+    i18n:domain="zeit.cms">
+
+    <h3 i18n:translate="">
+      A system error occurred.
+      The action you were trying to do could not be finished.
+    </h3>
+    <div class="error"><b tal:content="view/message"></b></div>
+    <textarea tal:content="structure context/traceback |nothing"></textarea>
+  </div>
+</html>

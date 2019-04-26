@@ -1,0 +1,84 @@
+User Preferences
+================
+
+Users have different preferences regarding what to see and what not.
+Preferences regarding the repository are stored in an `IUserPreferences`
+objet. Login:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction(u'zope.user')
+
+... and get his preferences:
+
+>>> import zope.component
+>>> import zeit.cms.workingcopy.interfaces
+>>> from zeit.cms.repository.interfaces import IUserPreferences
+>>> location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = location.getWorkingcopy()
+>>> preferences = IUserPreferences(workingcopy)
+>>> preferences
+<zeit.cms.repository.preference.UserPreferences object at 0x...>
+
+
+There is a list of containers which are shown by default:
+
+>>> import pprint
+>>> pprint.pprint(preferences.default_shown_containers)
+('http://xml.zeit.de/repository/2007',
+ 'http://xml.zeit.de/repository/2008',
+ 'http://xml.zeit.de/repository/bilder',
+ 'http://xml.zeit.de/repository/bilder/2007',
+ 'http://xml.zeit.de/repository/bilder/2008',
+ 'http://xml.zeit.de/repository/hp_channels',
+ 'http://xml.zeit.de/repository/online',
+ 'http://xml.zeit.de/repository/online/2007',
+ 'http://xml.zeit.de/repository/online/2008',
+ 'http://xml.zeit.de/repository/themen')
+
+
+From this list the default hidden_containers are derived uppon instantiation.
+So everything which is not noted in the `default_shown_containers`, e.g.:
+
+>>> 'http://xml.zeit.de/testcontent' in preferences._hidden_containers
+True
+
+
+Let's see if is_hidden works:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+>>> preferences.is_hidden(repository['online']['2007'])
+False
+>>> 'http://xml.zeit.de/testcontent' in preferences.get_hidden_containers()
+True
+
+Let's show a container:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+Double show doesn't harm:
+
+>>> preferences.show_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+False
+
+
+Let's hide it again:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True
+
+Double hide dosn't harm as well:
+
+>>> preferences.hide_container(repository['online']['2005'])
+>>> preferences.is_hidden(repository['online']['2005'])
+True

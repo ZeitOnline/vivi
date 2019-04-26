@@ -1,0 +1,104 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <include file="template.zcml" />
+
+  <!-- XML tree editing widget -->
+  <adapter
+    for="zeit.cms.content.field.IXMLTree
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides=".interfaces.IXMLTreeWidget"
+    factory=".widget.XMLTreeWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zeit.cms.content.field.IXMLTree
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.XMLTreeDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zeit.cms.content.field.IXMLSnippet
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides=".interfaces.IXMLSnippetWidget"
+    factory=".widget.XMLSnippetWidget"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="subnavigationupdater.json"
+    class=".widget.SubNavigationUpdater"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="channelupdater.json"
+    class=".widget.ChannelUpdater"
+    permission="zope.View"
+    />
+
+  <!-- Combination widget template -->
+  <view
+    type="zeit.cms.browser.interfaces.ICMSLayer"
+    for="zc.form.interfaces.ICombinationField"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.CombinationWidget"
+    permission="zope.Public"
+    />
+
+  <!-- Metadata preview for ICommonMetadata -->
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    permission="zope.View"
+    template="common_metadata_preview.pt" 
+    name="metadata_preview"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <adapter factory=".commonmetadata.CommonMetadataListRepresentation" />
+  
+  <!-- Type change -->
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="typechange-box"
+    class=".typechange.TypeChange"
+    template="typechange.pt"
+    permission="zeit.RenameContent"
+    />
+
+  <browser:viewlet
+    name="TypeChange"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".typechange.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.RenameContent"
+    lightbox="@@typechange-box"
+    icon="/@@/zeit.cms/icons/workflow.png"
+    sort="120"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="source"
+    class=".sources.API"
+    permission="zope.Public"
+    />
+
+</configure>

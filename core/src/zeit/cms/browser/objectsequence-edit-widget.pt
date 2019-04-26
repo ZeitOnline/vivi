@@ -1,0 +1,48 @@
+<div class="object-widget objectsequencewidget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id view/name">
+  <tal:data tal:repeat="item view/_getFormValue">
+      <input type="hidden" class="uniqueId"
+        tal:attributes="
+        name string:${view/name}.${repeat/item/index};
+        id string:${view/name}.${repeat/item/index};
+        value item/uniqueId"
+        />
+  </tal:data>
+  <input tal:replace="structure view/marker" />
+
+  <ul tal:condition="not: view/query_view"
+      class="references landing-zone-candidate">
+    <!-- data will be inserted here by javascript -->
+  </ul>
+
+  <div>
+  <tal:x condition="view/query_view" replace="structure view/query_view"/>
+  <input type="text" placeholder="Link einfügen"
+         tal:condition="python:
+            view.display_url_field and not view.query_view"
+         tal:attributes="id string:${view/name}.url;
+                         name string:${view/name}.url" />
+  <a rel="configure_search" class="button configure_search"
+     tal:condition="python:
+        view.display_search_button and not view.query_view"></a>
+
+  <a target="_blank" class="add_view button"
+     tal:attributes="href view/add_view"
+     tal:condition="view/add_view"
+     i18n:translate="">
+    Add new...
+  </a>
+  </div>
+
+  <ul tal:condition="view/query_view"
+      class="references landing-zone-candidate">
+    <!-- data will be inserted here by javascript -->
+  </ul>
+</div>
+<script tal:content="string:
+  new zeit.cms.ObjectSequenceWidget(
+      '${view/name}', ${view/accept_classes}, '${view/detail_view_name}',
+      '${view/description}', ${view/cache_object_details});
+">
+</script>

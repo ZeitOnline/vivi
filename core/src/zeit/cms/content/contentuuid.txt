@@ -1,0 +1,160 @@
+===============================
+Adding a UID to content objects
+===============================
+
+When checking in objects, unique ids (UIDs) are added
+automatically.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+We need an interaction as checkout manager needs to get the principal:
+
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction()
+
+We checkout a test content object:
+
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+
+It won't have a unique id yet:
+
+>>> import zeit.cms.content.interfaces
+>>> uuid = zeit.cms.content.interfaces.IUUID(content).id
+>>> uuid is None
+True
+
+We check out the test content object:
+
+>>> from zeit.cms.checkout.interfaces import (
+...     ICheckoutManager, ICheckinManager)
+>>> checkout_manager = ICheckoutManager(content)
+>>> checked_out = checkout_manager.checkout()
+
+It still won't have the unique id:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(checked_out).id
+>>> uuid is None
+True
+
+Now we check in:
+
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+
+After the ckeckin, the unique id is added:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(checked_in).id
+>>> uuid
+'{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+>>> zeit.cms.content.interfaces.IUUID(content).id == uuid
+True
+
+>>> str(zeit.cms.content.interfaces.IUUID(content))
+'<zeit.cms.content.contentuuid.ContentUUID
+  {urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}>'
+
+Let's verify, that when we check it out and then in again, the unique id has
+not changed:
+
+>>> checkout_manager = ICheckoutManager(checked_in)
+>>> checked_out = checkout_manager.checkout()
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+>>> zeit.cms.content.interfaces.IUUID(checked_in).id == uuid
+True
+
+The XML content will contain the unique id:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(checked_in.xml, pretty_print=True),
+<testtype>
+  <head>
+    ...
+    <attribute
+        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+        py:pytype="str"
+        ns="http://namespaces.zeit.de/CMS/document"
+        name="uuid">{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}</attribute>...
+  </head>
+  <body/>
+</testtype>
+
+
+Once a content has a unique id it can be retrieved using the UUID. Due to
+limited search capabilities in the tests we use the somalia article to show
+this:
+
+>>> co = ICheckoutManager(zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')).checkout()
+>>> somalia = ICheckinManager(co).checkin()
+
+Usually, when looking up an object via UUID one only has the UUID as string:
+
+>>> uuid = zeit.cms.content.interfaces.IUUID(somalia).id
+
+The UUID can be adapted to IUUID to get an object which represents the UUID:
+
+>>> uuid_obj = zeit.cms.content.interfaces.IUUID(uuid)
+
+This object can be adapted then:
+
+>>> import logging, sys
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> logging.root.addHandler(handler)
+>>> logging.root.setLevel(logging.DEBUG)
+>>> content = zeit.cms.interfaces.ICMSContent(uuid_obj)
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a97ba-131d-4cd0-90b2-f52feecaabb0}")...
+>>> logging.root.removeHandler(handler)
+
+
+>>> print content.uniqueId
+http://xml.zeit.de/online/2007/01/Somalia
+
+When the search returns a value, but the object isn't there anymore ...
+
+>>> del content.__parent__[content.__name__]
+>>> zeit.cms.interfaces.ICMSContent(uuid_obj)
+Traceback (most recent call last):
+    ...
+TypeError: ('Could not adapt',
+    <zeit.cms.content.contentuuid.SimpleUUID object at 0x...>,
+    <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+
+
+Objects also get an UUID when they're added to the repository:
+
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> import zope.component
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> repository['content'] = (
+...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
+>>> zeit.cms.content.interfaces.IUUID(repository['content']).id
+'{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}'
+
+
+When an object is copied, it gets a new UUID:
+
+>>> import zope.copypastemove.interfaces
+>>> copier = zope.copypastemove.interfaces.IObjectCopier(
+...     repository['testcontent'])
+>>> name = copier.copyTo(repository, 'copied-content')
+>>> copied = repository[name]
+>>> zeit.cms.content.interfaces.IUUID(copied).id == (
+...     zeit.cms.content.interfaces.IUUID(repository['testcontent']).id)
+False
+
+When an object is moved, it does *not* get a new UUID:
+
+>>> tc_uuid = zeit.cms.content.interfaces.IUUID(repository['testcontent']).id
+>>> import zope.copypastemove.interfaces
+>>> mover = zope.copypastemove.interfaces.IObjectMover(
+...     repository['testcontent'])
+>>> name = mover.moveTo(repository, 'moved-content')
+>>> moved = repository[name]
+>>> zeit.cms.content.interfaces.IUUID(moved).id == tc_uuid
+True

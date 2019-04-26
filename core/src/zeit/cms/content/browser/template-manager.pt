@@ -1,0 +1,18 @@
+<tal:have-managers
+  condition="view/template_managers">
+
+  <ul>
+    <li tal:repeat="manager view/template_managers">
+      <a href="#"
+        tal:attributes="href manager/manager/@@absolute_url"
+        tal:content="manager/name">
+      </a>
+
+    </li>
+  </ul>
+
+</tal:have-managers>
+<tal:not-have-managers
+  condition="not:view/template_managers">
+    There are no template managers registered.
+</tal:not-have-managers>

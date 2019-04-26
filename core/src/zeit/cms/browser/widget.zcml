@@ -1,0 +1,289 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <!-- Use checkbox widget -->
+  <adapter
+      for="zope.schema.interfaces.IFrozenSet
+           zope.schema.interfaces.IIterableSource
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory="zope.app.form.browser.source.SourceMultiCheckBoxWidget"
+      permission="zope.Public"
+      />
+  
+  <adapter
+    for="zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectReferenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectReferenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    factory=".widget.objectDisplayWidgetMultiplexer"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.ObjectReferenceSequenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory="zope.app.form.browser.sequencewidget.SequenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- DropObjectWidget -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.DropObjectWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- Don't use autocomplete widget (which stores titles), but store
+       uniqueIds for authorships -->
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.AuthorSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.DropObjectWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.AuthorSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- ReferenceWidget -->
+
+  <adapter
+    for="
+    zeit.cms.content.interfaces.ReferenceField
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.ReferenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zeit.cms.content.interfaces.ReferenceField
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- ObjectSequenceWidget -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.ObjectSequenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.ObjectSequenceDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.IAutocompleteSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.ObjectSequenceWidget"
+    permission="zope.Public"
+    />
+
+  <!-- ReferenceSequenceWidget -->
+
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zeit.cms.content.interfaces.ReferenceField
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".widget.ReferenceCollectionInputWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zeit.cms.content.interfaces.ReferenceField
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.IDisplayWidget"
+      factory=".widget.ReferenceCollectionDisplayWidget"
+      permission="zope.Public"
+      />
+
+  <!-- object details -->
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
+    name="object-details"
+    class=".objectdetails.Details"
+    template="object-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
+    name="object-details-heading"
+    class=".objectdetails.Details"
+    template="object-details-heading.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".objectdetails.Details"
+    template="object-details-body.pt"
+    permission="zope.View"
+    />
+
+  <adapter
+    factory=".widget.find_commonmetadata"
+    trusted="true"
+    />
+
+  <!-- date time -->
+  <adapter
+    for="zope.schema.interfaces.IDatetime
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+    factory=".widget.DatetimeWidget"
+    permission="zope.Public"
+    />
+
+  <!-- boolean -->
+
+  <adapter
+      for="zope.schema.interfaces.IBool
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory=".widget.CheckBoxWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zope.schema.interfaces.IBool
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory=".widget.CheckboxDisplayWidget"
+      permission="zope.Public"
+      />
+
+  <!-- autocomplete -->
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
+    factory=".widget.AutocompleteWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.IDisplayWidget"
+    factory=".widget.AutocompleteDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <!-- colorpicker -->
+
+  <adapter
+      for="zeit.cms.content.field.Color
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory=".widget.ColorpickerWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zeit.cms.content.field.Color
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory="zope.formlib.widgets.DisplayWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zope.schema.interfaces.IIterableSource
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".widget.TupleSequenceWidget"
+      permission="zope.Public"
+      />
+
+</configure>

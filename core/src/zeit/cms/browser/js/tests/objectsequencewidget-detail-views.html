@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources"/>
+  </head>
+  <body>
+    <div class="objectsequencewidget" id="testwidget">
+      <input type="hidden" name="testwidget.count" id="testwidget.count" value="0" />
+      <ul class="landing-zone-candidate">
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../';
+      zeit.cms.test_widget = new zeit.cms.ObjectSequenceWidget(
+            'testwidget', ['type-foo'], '@@object-details');
+    </script>
+
+    <div class="objectsequencewidget" id="testwidget2">
+      <input type="hidden" name="testwidget2.count" id="testwidget2.count" value="0" />
+      <ul class="landing-zone-candidate">
+      </ul>
+    </div>
+    <script type="text/javascript">
+      zeit.cms.test_widget2 = new zeit.cms.ObjectSequenceWidget(
+            'testwidget2', ['type-foo'], '@@mydetails');
+    </script>
+  </body>
+</html>

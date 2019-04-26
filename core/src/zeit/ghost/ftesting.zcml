@@ -1,0 +1,8 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <include package="zeit.ghost" />
+  <include package="zeit.ghost.browser" />
+
+</configure>

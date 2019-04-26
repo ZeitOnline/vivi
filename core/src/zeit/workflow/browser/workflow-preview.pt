@@ -1,0 +1,16 @@
+<div class="workflow-preview" i18n:domain="zeit.cms">
+  <table>
+    <tbody>
+      <tr tal:repeat="widget view/widgets">
+        <th 
+          i18n:translate=""
+          tal:content="widget/label">
+          Edited
+        </th>
+        <td tal:content="structure widget" i18n:translate="">
+          yes
+        </td>
+      </tr>
+    </tbody> 
+  </table>
+</div>

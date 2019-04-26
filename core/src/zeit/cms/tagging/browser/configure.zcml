@@ -1,0 +1,48 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="update_tags"
+    class=".widget.UpdateTags"
+    permission="zeit.EditContent"
+    />
+
+    <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="tags_with_topicpages"
+    class=".widget.TagsWithTopicpages"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.cms.tagging.search"
+    class=".autocomplete.WhitelistSearch"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.tagging.interfaces.ITag"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details"
+    template="object-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.cms.tagging.location.search"
+    class=".autocomplete.LocationSearch"
+    permission="zope.View"
+    />
+
+</configure>

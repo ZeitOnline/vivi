@@ -1,0 +1,213 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  i18n_domain="zeit.cms">
+
+  <grok:grok package="." />
+
+  <browser:resourceDirectory name="zeit.cms.repository" directory="resources"/>
+
+  <!-- helpers -->
+
+  <browser:view
+    for="*"
+    name="get_repository"
+    class=".repository.Repository"
+    permission="zope.Public"
+    />
+
+  <!-- Add Menu -->
+
+  <browser:menu
+    id="zeit-add-menu"
+    class=".menu.SortingMenu"
+    title="Add ..."
+    description="Menu for adding content."
+    />
+
+  <!-- Sidebar/Navigation tree -->
+
+  <browser:viewlet
+    zcml:condition="have zeit.cms.repository.tree"
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="10_navtree"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    class=".repository.HTMLTree"
+    template="navtree.pt"
+    permission="zeit.cms.repository.ViewNavigationTree"
+    />
+
+  <include file="unknown.zcml" />
+  <include file="folder.zcml" />
+  <include file="file.zcml" />
+
+  <!-- entry page -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".entrypage.EntryPage"
+    permission="zope.View"
+    />
+
+  <!-- rename -->
+
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.RenameContent"
+    icon="/@@/zeit.cms/icons/rename.png"
+    lightbox="@@rename-box"
+    sort="100"
+    />
+
+  <browser:page
+    name="rename-box"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.Rename"
+    permission="zeit.RenameContent"
+    />
+
+  <browser:viewlet
+    name="Rename"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.RenameFolder"
+    icon="/@@/zeit.cms/icons/rename.png"
+    lightbox="@@rename-box"
+    sort="100"
+    />
+
+  <browser:page
+    name="rename-box"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".rename.Rename"
+    permission="zeit.RenameFolder"
+    />
+
+  <!-- Delete view -->
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class=".menu.Delete"
+    permission="zeit.DeleteContent"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    sort="100"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
+    class=".delete.DeleteContent"
+    template="delete.pt"
+    permission="zeit.DeleteContent"
+    />
+
+  <browser:viewlet
+    name="Delete"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    class=".menu.Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.DeleteFolder"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    sort="100"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
+    class=".delete.DeleteContent"
+    template="delete.pt"
+    permission="zeit.DeleteFolder"
+    />
+
+
+  <!-- popup browser -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="get_object_browser"
+    class=".objectbrowser.ObjectBrowser"
+    template="objectbrowser.pt"
+    permission="zope.View"
+    />
+
+  <adapter factory=".objectbrowser.folder_default_browse_location" />
+  <adapter factory=".objectbrowser.content_default_browse_location" />
+
+  <browser:page
+    for="zope.app.container.interfaces.IContained"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="default-browsing-location"
+    class=".objectbrowser.BrowsingLocation"
+    permission="zope.View"
+    />
+
+  <!-- unique id redirector -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="redirect_to"
+    class=".repository.RedirectToObjectWithUniqueId"
+    permission="zope.View"
+    />
+
+
+  <!-- reload -->
+
+  <browser:viewlet
+    name="Reload"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".reload.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
+    action="@@refresh-cache"
+    icon="/@@/zeit.cms/icons/reload.png"
+    sort="120"
+    />
+
+
+  <browser:page
+    name="refresh-cache"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".reload.Reload"
+    permission="zope.View"
+    />
+
+  <!-- Default content support -->
+  <adapter factory=".adapter.CMSContentListRepresentation" />
+
+  <gocept:pagelet
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    name="properties.html"
+    class=".property.Listing"
+    template="property.pt"
+    permission="zeit.cms.repository.ViewProperties"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views" title="DAV Properties"
+    />
+
+
+</configure>

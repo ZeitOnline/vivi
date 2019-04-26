@@ -1,0 +1,38 @@
+Workflow indicators
+===================
+
+
+There is an viewlet manager which renders workflow indicators for content
+objects (note that the ``view`` argument is not really relevant)[#setup]_:
+
+>>> import zope.component
+>>> import zope.viewlet.interfaces
+>>> a_view = zope.component.getMultiAdapter(
+...     (repository, request), name='view.html')
+>>> viewlet_manager = zope.component.getMultiAdapter(
+...     (content, request, a_view),
+...     zope.viewlet.interfaces.IViewletManager,
+...     name='zeit.cms.workflow-indicator')
+>>> viewlet_manager.update()
+>>> print viewlet_manager.render()
+<span class="publish-state not-published" title="Not published"></span>
+
+# XXX move workflow tests from listing.txt to here.
+
+
+.. [#setup]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)
+    >>> content = repository['testcontent']
+
+    >>> import zope.publisher.browser
+    >>> import zeit.cms.browser.interfaces
+    >>> request = zope.publisher.browser.TestRequest(
+    ...     skin=zeit.cms.browser.interfaces.ICMSSkin)

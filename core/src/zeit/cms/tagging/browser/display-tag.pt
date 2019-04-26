@@ -1,0 +1,11 @@
+<div class="keyword-widget" id="id" tal:attributes="id view/name">
+<ol id="id" tal:attributes="id view/name">
+    <li tal:repeat="item view/items">
+        <a tal:condition="item/link"
+           tal:attributes="href item/link;
+                           class item/css_class"
+           tal:content="item/text">tag</a>
+        <tal:x condition="not: item/link" replace="item/text"/>
+    </li>
+</ol>
+</div>

@@ -1,0 +1,29 @@
+<!-- This file is the equivalent of site.zcml for tests. -->
+
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope">
+
+  <meta:provides feature="zeit.cms.testing" />
+
+  <!-- Enable all feature toggles in tests. -->
+  <meta:provides feature="zeit.cms.decentral-syndication" />
+  <meta:provides feature="zeit.cms.repository.tree" />
+
+
+  <include package="zeit.cms" file="application.zcml" />
+  <include package="zeit.cms" />
+  <include package="zeit.cms.browser" />
+  <include package="zeit.cms.tagging.browser" />
+  <include package="zeit.cms.testcontenttype" />
+
+  <include package="zeit.connector" file="mock-connector.zcml" />
+
+  <include package="zeit.cms.workflow" file="mock.zcml" />
+  <include package="zeit.cms.tagging" file="mock.zcml" />
+  <include package="zeit.cms.redirect" file="mock-webservice.zcml" />
+
+  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
+
+</configure>

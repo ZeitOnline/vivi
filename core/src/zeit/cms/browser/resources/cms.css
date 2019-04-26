@@ -1,0 +1,851 @@
+/* zeit css */
+/*
+ * normal HTML element CSS defs
+ *
+ * */
+body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  overflow: hidden;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+  color: #4C4C4C;
+}
+
+a:visited,
+a {
+  color: black;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 1em;
+  margin-top: 0;
+  padding-left: 1em;
+  padding: 0.4em;
+}
+
+h2 {
+  font-size: 1em;;
+  padding-bottom: 0.1em;
+  font-weight: normal;
+}
+
+.wysiwyg-header {
+  background: transparent url("layout/fadeout.png") repeat-x 0 0;
+  padding: 1em;
+}
+
+.supertitle {
+  display: inline;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.title {
+  display: inline;
+  font-family: Georgia;
+  font-size: 1.5em;
+}
+
+/* zc.datetimewidget */
+.calendar .title {
+  display: table-cell;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.byline {
+  text-transform: uppercase;
+}
+
+pre {
+  border: none;
+}
+
+legend {
+  font-weight: bold;
+  background-color: transparent;}
+
+pre {
+  padding: 1em;
+  overflow: auto;
+}
+
+/*
+ * class + ID definitions
+ *
+ * */
+.selected {
+  background-color: #f1f4f9;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+.warning { /* textmarker effect */
+  background-color: #ffdd00;
+  font-weight: normal;
+}
+
+.error {
+  color: red;
+  font-weight: normal;
+  display: inline-block;
+}
+
+.field.error {
+  display: inherit;
+}
+
+.feedsorting {
+  width: 100%;
+}
+
+.tablesort-hover td, .tablesort-hover th {
+  border-bottom: 2px solid red !important;
+}
+
+.shadowTop {
+  background: transparent url("layout/shadowTop.png") repeat-x 5px 0;
+  border-right: 1px solid #4c4c4c;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+.shadowLeft {
+  background: transparent url("layout/shadowLeft.png") no-repeat top left;
+  border-bottom: 1px solid #4c4c4c;
+  padding-left: 5px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+.floating-field {
+  float: left;
+  margin: 1em;
+  margin-left: 0.5em;
+}
+
+.corner {
+  background: url("images/text-corner.png") no-repeat top left;
+  z-index: 5;
+}
+
+
+/*
+ * layout (positioning and such) specific CSS defs
+ */
+
+#visualContentSeparator {
+  position: absolute;
+  top: 0;
+  left: 20.1em;
+  right: 0;
+  bottom: 0;
+  background-color: #fcfcfc;
+}
+
+.sidebar-folded #breadcrumbs,
+#visualContentSeparator.sidebar-folded {
+   left: 1em;
+}
+
+#header.sidebar-folded > #main-navigation {
+   display: none;
+}
+
+#header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0em;
+}
+
+#sidebar {
+  visibility: hidden; /* The sidebar is displayed *after* resizing */
+  position: absolute;
+  background-color: #f1f4f9;
+  border-top: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
+  left: 0em;
+  width: 20.1em;
+  top: 90px;
+  bottom: 0;
+  overflow: visible;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+#sidebar.sized {
+  visibility: visible;
+}
+
+#sidebar h1 {
+  background: transparent url("layout/opener.png") no-repeat left center;
+  cursor: pointer;
+  font-weight: normal;
+  margin: 0;
+}
+
+#sidebar div.unfolded > h1 {
+  background: transparent url("layout/opener_close.png") no-repeat left center;
+  cursor: pointer;
+}
+
+#sidebar-dragger {
+  position: absolute;
+  left: 21em;
+  width: 0.45em;
+  top: 0em;
+  bottom: 0;
+  cursor: pointer;
+  background: transparent url("layout/sidebardragger.png") no-repeat center;
+  border-right: 1px solid #e4e4e4;
+  border-left: 1px solid #e4e4e4;
+}
+
+#sidebar.sidebar-folded {
+  display: none;
+}
+
+#sidebar-dragger.sidebar-folded {
+  left: 0;
+  width: 0.34em;
+  cursor: pointer;
+  background: transparent url("layout/sidebardragger-open.png") no-repeat center;
+  border-right: 1px solid #e4e4e4;
+}
+
+#sidebar .required {
+	float: right;
+}
+
+#visualContentWrapper.sidebar-folded {
+  left: 0.5em;
+}
+
+#content {
+  left: 1em;
+  right: 0;
+  bottom: 0;
+  top: 3em;
+  position: absolute;
+  overflow: auto;
+}
+
+#visualContentWrapper {
+  position: fixed;
+  left: 21.5em;
+  right: 1em;
+  top: 3em;
+  bottom: 0;
+  overflow: hidden;
+  padding-top: 3em;
+  padding-left: 1em;
+  background-color: transparent;
+  border-left: 1px solid #e4e4e4;
+}
+
+.PanelContent {
+  -moz-border-radius: 5px;
+  background-color: #ffffff;
+  border-color: #e4e4e4;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.panel  {
+  margin: 0 1em 0 0;
+}
+
+#topcontent {
+  position: absolute;
+  top: 3em;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.topcontent-small {
+  bottom: 12em !important;
+}
+
+#bottomcontent {
+  position: absolute;
+  top: auto;
+  height: 12em;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow: auto;
+  display: none;
+  background: transparent url("layout/fadeout.png") repeat-x 0 0;
+}
+
+#folderActionForm {
+  bottom: 0;
+}
+
+.BottomForm div.Column {
+  width: 49%;
+  float: left;
+  margin-top: 1em;
+}
+
+#content-actions {
+  position: absolute;
+  top: 0;
+  padding: 0;
+}
+
+#metadata_preview {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 25em;
+  top: 3em;
+  overflow-y: auto;
+}
+
+#metadata_preview .folder-contents {
+  list-style: none;
+}
+
+#metadata_preview .folder-contents li {
+  float: left;
+  display: block;
+  width: 10em;
+  overflow: hidden;
+  font-family: monospace;
+  margin-right: 1em;
+}
+
+#metadata-additions {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 3em;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+
+#full-content-area {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#actionsView {
+  background-color: #d5dee7;
+  clear: both;
+}
+
+#actionsView{
+  line-height: 35px;
+  padding-left: 10px;
+}
+
+
+/*
+ * navigations
+ *
+ * */
+
+
+#breadcrumbs li,
+#main-navigation li,
+#folder-actions li,
+.context-views li {
+  display: inline;
+  padding: 4px 25px;
+}
+
+#breadcrumbs {
+  position: absolute;
+  left: 22em;
+  padding: 0;
+  margin: 0.5em 0 0 0;
+}
+#breadcrumbs li {
+   padding: 0;
+   margin: 0;
+}
+
+.sidebar-folded #main-navigation {
+   z-index: -1;
+}
+#main-navigation {
+  height: 81px;
+  margin-top: 0em;
+  padding: 0;
+  position: absolute;
+  text-align: right;
+  width: 20em;
+}
+
+#main-navigation > li {
+  margin-bottom: 0;
+  padding: 0.5em;
+}
+
+#main-navigation > li:first-child,
+#main-navigation > li:first-child > a {
+  bottom: 0;
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0em;
+}
+
+#main-navigation > li:first-child {
+  right: 2.5em;
+}
+
+#main-navigation > li:first-child > a {
+  background: transparent url("layout/logo.png") no-repeat left center;
+  right: 0;
+}
+
+.section-IZMOSection #main-navigation > li:first-child > a {
+  background: transparent url("layout/logo_zmo.png") no-repeat left center;
+}
+
+.section-IZCOSection #main-navigation > li:first-child > a {
+  background: transparent url("layout/logo_zco.png") no-repeat left center;
+}
+
+.section-IZARSection #main-navigation > li:first-child > a {
+  background: transparent url("layout/logo_zar.png") no-repeat left center;
+}
+
+#main-navigation > li:first-child > a > span {
+  display: none;
+}
+
+#main-navigation > li.secondary > a {
+  vertical-align: bottom;
+  opacity: 0.5;
+}
+
+#main-navigation > li.secondary > a:hover {
+  opacity: 1;
+}
+
+#main-navigation > li > a > img {
+  border: none;
+  vertical-align: bottom;
+  position:absolute;
+  left:15.5em;
+  top:0.3em;
+}
+
+#main-navigation > li.secondary > ul {
+  right: 0;
+}
+
+#main-navigation > li.secondary > ul > li {
+  display: block;
+  white-space: nowrap;
+}
+
+#folder-actions {
+  margin: 0em;
+  padding: 0.5em;
+  padding-bottom: 0;
+  display: inline;
+}
+
+.heading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2em;
+  overflow: hidden;
+}
+
+.contextViewsAndActions {
+  position: absolute;
+  left: 0;
+  top: -1em;
+  height: 3.2em;
+  width: 100%;
+  border-bottom: 1px solid #c4c4c4;
+  background: #f1f4f9; /*url(layout/tabs_bg.gif) repeat-x 0 100%;*/
+}
+
+.context-views > ul {
+  overflow: hidden;
+}
+
+.context-views > ul > li {
+  float: left;
+}
+
+.context-views > ul > li > a {
+  color: #aaa;
+  display: block;
+  line-height: 2em;
+  height: 2em;
+  padding:  0.05em 1.5em;
+  text-decoration: none;
+}
+
+.context-views > ul > li > a:hover {
+  background: #ccc;
+  border-bottom: 1px solid #ccc;
+  color: #fff;
+}
+
+.context-views > ul > li.selected > a,
+.context-views > ul > li.selected > a:hover {
+  background: #fff;
+  color: #000;
+  cursor: default;
+  border: 1px solid #bbb;
+  border-bottom: 1px solid #fff;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-topright: 3px;
+}
+
+.context-actions,
+.context-views {
+  position: absolute
+}
+
+.context-actions > ul {
+  margin-top: 10px;
+}
+
+.context-actions > ul > li,
+.context-views > ul > li {
+  display: inline;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+
+}
+
+.context-views {
+  left: 0em;
+  margin: 0px;
+  padding-bottom: 0;
+}
+
+.contextViewsAndActions .context-views {
+  margin: 0 !important;
+}
+
+.context-views li.selected > a{
+  background-color: #ffdd11;
+}
+
+.context-views li > a {
+  padding: 0.4em 1em;
+  margin: 0;
+}
+
+
+/*
+ * context actions
+ *
+ * */
+
+.context-actions {
+  right: 0.5em;
+  top: .3em;
+  white-space: nowrap;
+}
+
+.context-actions li > a {
+  margin: 0;
+  padding: 0.4em;
+  white-space: nowrap;
+}
+
+.context-actions img,
+.context-action img {
+  border: none;
+}
+
+.context-actions a {
+  opacity: 0.7;
+}
+
+.context-action img {
+  opacity: 0.2;
+}
+
+.context-actions a:hover,
+.context-action img:hover {
+  opacity: 1;
+}
+
+.action-title {
+  display: none;
+}
+
+.context-actions .hide,
+.context-actions .show {
+	display: none;
+}
+
+/* secondary context actions */
+
+.secondary-context-actions {
+  display: block;
+  opacity: 1;
+  position: absolute;
+  z-index: 1;
+  background-color: #FFF;
+  border: 1px solid #c7c7c7;
+  top: 2.8em;
+  padding: 0.4em;
+  right: 0.4em;
+  box-shadow: 0 0 6px #AAAAAA;
+}
+
+.secondary-context-actions > li {
+  display: block;
+  margin: 0.5em 0;
+  border-bottom: 1px solid #C1C1C1;
+  margin: 0px 5px;
+  padding: 6px 0px;
+}
+
+.secondary-context-actions > li:last-child {
+  border-bottom: 0px solid black;
+}
+.secondary-context-actions > li > a > * {
+  vertical-align: middle;
+  padding-right: 0.5em;
+}
+
+.secondary-context-actions .action-title {
+  display: inline;
+}
+
+.state-no {
+  color: #dd0033;
+}
+
+.state-notnecessary{
+  opacity: 0.5;
+}
+
+.state-yes {
+  color: #33aa00;
+}
+
+.publish-state {
+  vertical-align: middle;
+}
+
+.workflow-column {
+  white-space: nowrap;
+  letter-spacing: -0.15em;
+  line-height: 12px;
+}
+
+.workflow-column span{
+ margin-right: 1px;
+}
+
+.tab-content {
+  position: absolute;
+  top: 3em;
+}
+
+.busy {
+  background-image: url('busy.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity:0.7;
+}
+
+li.busy {
+  background-image: none;
+  list-style: url('busy.gif');
+}
+
+.tab-content{
+  padding: 10px 5px;
+}
+
+/* Landing zone styles
+ *
+ * Visible / invislbe
+ */
+
+
+.landing-zone {
+  border: 1px solid #a6cc17;
+  visibility: hidden;
+}
+
+
+.landing-zone.visible {
+  cursor: default;
+  display: block;
+  height: auto;
+  padding: 1em;
+  visibility: visible;
+}
+
+
+.landing-zone.droppable-active {
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  border: 1px solid #a6cc17;
+  display: block;
+  visibility: visible;
+}
+
+.landing-zone.hover-content {
+  border-color: #a6cc17;
+  outline: 4px solid #a6cc17;
+  display: block;
+  visibility: visible;
+}
+
+.landing-zone.hover-content.visible {
+  height: auto;
+}
+
+.droppable-active {
+  border: 1px solid #a6cc17;
+}
+
+.hover-content {
+  outline: 4px solid #a6cc17;
+}
+
+.object-link a {
+  background-position: 1.25em center;
+  background-repeat: no-repeat;
+  padding-left: 3.2em;
+  height: 17px;
+}
+
+.object-link.goto-object a {
+  background-image: url(icons/show-original.png);
+}
+
+.object-details.type-author .object-link.goto-object a {
+  background: url("./icons/icons_sprites.png") no-repeat 12px -537px;
+}
+
+.object-details.type-author .object-link.goto-object a:hover {
+  background: url("./icons/icons_sprites.png") no-repeat 12px -567px;
+}
+
+.object-link.preview a {
+  background-image: url(icons/preview_non-menu.png);
+  height: 25px;
+  background-position: 1.25em -1px;
+}
+
+.object-link > a {
+  color: #4c4c4c;
+}
+
+#edit-form-internallinks .object-link.preview a {
+  display: block;
+  padding-top: 4px;
+}
+
+#pupil-left, #pupil-right {
+    width: 3px;
+    height: 3px;
+    background-image: url("layout/pupil.png");
+}
+
+.publish-state {
+    padding-top:15px;
+    padding-left:20px;
+    background: url("./icons/icons_sprites.png") no-repeat 15px -1581px;
+}
+
+.publish-state.published {
+    background-position: 7px -1581px;
+}
+
+.publish-state.not-published {
+    background-position: 7px -1670px;
+}
+
+.publish-state.published-with-changes {
+    background-position: 7px -1611px;
+}
+
+/* error page */
+
+body.errorview {
+    position: static;
+    background-color: #f1f4f9;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body.errorview #content {
+    background-image: url("/fanstatic/zeit.cms/layout/vivi_logo_error.png");
+    background-repeat: no-repeat;
+    background-position: -30px 0;
+    padding-top: 90px;
+
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+    margin-top: 5em;
+    background-color: #fff;
+
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+body.errorview textarea {
+    margin-top: 2em;
+    min-height: 500px;
+    color: #888;
+    border-style: none;
+}
+
+/* publish lightbox */
+
+.lightbox .publish > div {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.lightbox .publish a {
+  text-decoration:underline;
+}
+
+
+dd {
+  font-weight: bold;
+  margin-left: 0;
+  margin-top: 1em;
+}

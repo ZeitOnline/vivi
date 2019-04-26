@@ -1,0 +1,41 @@
+<div class="keyword-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id string:${view/name}.wrapper">
+
+<input
+  type="hidden"
+  tal:attributes="name string:${view/name};
+                  id string:${view/name};
+                  value view/_getFormValue;"
+  />
+
+<ol tal:attributes="id string:${view/name}.list">
+  <!-- data will be inserted here by javascript -->
+</ol>
+
+<div>
+<input
+  tal:condition="view/display_update_button"
+  type="button" name="update_tags" value="Update tags"
+  cms:call="update_tags"
+  i18n:attributes="value" />
+</div>
+
+<input
+ type="text" name="add_tag" placeholder="Type to find keywords ..."
+ i18n:attributes="placeholder"
+ tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
+                 id string:${view/name}.add"
+ />
+
+<div tal:condition="view/display_tms_link">
+  <a i18n:translate=""
+     target="_blank"
+     tal:attributes="href string:http://${view/tms_host}/documents/show/${view/uuid}">Show in TMS</a>
+</div>
+
+</div>
+<script tal:content="string:
+  new zeit.cms.tagging.Widget('${view/name}');
+">
+</script>

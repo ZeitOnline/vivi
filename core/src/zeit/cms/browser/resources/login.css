@@ -1,0 +1,42 @@
+body.login {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #f1f4f9;
+}
+
+#loginform {
+    background-image: url("/fanstatic/zeit.cms/layout/vivi_logo_full.png");
+    background-repeat: no-repeat;
+    background-position: -30px 0;
+    padding-top: 90px;
+
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+    margin-top: 5em;
+    background-color: #fff;
+}
+
+.field * {
+    display: inline-block;
+}
+
+label {
+    width: 7em;
+    text-align: right;
+    margin-right: 0.5em;
+}
+
+.button {
+    margin-top: 1em;
+}
+
+.error {
+    background-color: #e67373;
+    color: #fff;
+    padding: 0.3em;
+}

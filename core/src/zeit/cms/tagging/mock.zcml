@@ -1,0 +1,22 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope">
+
+  <adapter factory=".testing.DummyTagger"  trusted="true" />
+  <utility factory=".testing.DummyWhitelist" />
+
+  <class class=".testing.DummyTagger">
+    <require
+      interface="zeit.cms.tagging.interfaces.ITagger"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".testing.FakeTag">
+    <require
+      interface="zeit.cms.tagging.interfaces.ITag"
+      permission="zope.View"
+      />
+  </class>
+
+</configure>

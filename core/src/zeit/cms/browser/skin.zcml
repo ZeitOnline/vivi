@@ -1,0 +1,107 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <utility
+      component="z3c.conditionalviews.ConditionalHTTPRequest"
+      provides="zope.app.publication.interfaces.IHTTPRequestFactory"
+      />
+
+  <interface
+    zcml:condition="have zeit.cms.testing"
+    interface=".interfaces.ICMSTestingSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <interface
+    zcml:condition="not-have zeit.cms.testing"
+    interface=".interfaces.ICMSSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="cms"
+    />
+
+  <interface
+    interface=".interfaces.ICMSSkin"
+    type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    name="vivi"
+    />
+
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zope.site.interfaces.IRootFolder
+         zope.publisher.interfaces.IPublisherRequest"
+    />
+
+  <subscriber
+    factory=".layer.LayerAddTraverser"
+    for="zope.site.interfaces.IRootFolder
+         zope.publisher.interfaces.IPublisherRequest"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+     />
+
+  <browser:page
+    for="*"
+    name="standard_macros"
+    permission="zope.View"
+    class=".standardmacros.StandardMacros"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="breadcrumbs"
+    permission="zope.View"
+    class=".breadcrumbs.Breadcrumbs"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="*"
+    name="main_template"
+    permission="zope.View"
+    template="main_template.pt"
+    layer=".interfaces.ICMSLayer" />
+
+
+  <!-- pagelet support -->
+
+  <z3c:layout
+    for="*"
+    template="layout-template.pt"
+    layer=".interfaces.ICMSLayer"
+    />
+
+  <!-- Login form -->
+
+  <browser:page
+    for="zope.traversing.interfaces.IContainmentRoot"
+    class=".login.Login"
+    permission="zope.Public"
+    name="loginForm.html"
+    template="login.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zope.traversing.interfaces.IContainmentRoot"
+    class=".login.Logout"
+    permission="zope.Public"
+    name="logout.html"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zope.traversing.interfaces.IContainmentRoot"
+    class=".login.SSOLogin"
+    permission="zope.Public"
+    name="sso-login"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+</configure>
+

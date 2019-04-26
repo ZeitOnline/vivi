@@ -1,0 +1,5 @@
+<div id="user-information" i18n:domain="zeit.cms">
+  <tal:x replace="request/principal/title | request/principal/id"/>
+  | <a i18n:translate=""
+      tal:attributes="href string:${request/getApplicationURL}/@@logout.html">Logout</a>
+</div>

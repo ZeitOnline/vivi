@@ -1,0 +1,28 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   package="zeit.cms.section"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <adapter
+    factory=".testing.IExampleContent"
+    for=".testing.IExampleSection"
+    provides=".interfaces.ISectionMarker"
+    />
+
+  <adapter
+    factory=".testing.IExampleTestcontent"
+    for=".testing.IExampleSection"
+    provides=".interfaces.ISectionMarker"
+    name="testcontenttype"
+    />
+
+  <adapter
+    factory=".testing.IExampleSection"
+    for="..testcontenttype.interfaces.IExampleContentType"
+    provides=".interfaces.IRessortSection"
+    name="Sport"
+    />
+
+</configure>

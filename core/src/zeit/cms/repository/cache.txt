@@ -1,0 +1,70 @@
+
+Caching
+=======
+
+The map of local_name to unique_id is cached[#functional]_. Initially it is not
+defined:
+
+>>> import pprint
+>>> pprint.pprint(repository['online']._v_local_unique_map)
+Traceback (most recent call last):
+    ...
+AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
+
+After accessing something it will be filled:
+
+>>> repository['online'].keys()
+[u'2005', u'2006', u'2007']
+>>> pprint.pprint(repository['online']._v_local_unique_map)
+{u'2005': u'http://xml.zeit.de/online/2005/',
+ u'2006': u'http://xml.zeit.de/online/2006/',
+ u'2007': u'http://xml.zeit.de/online/2007/'}
+>>> pprint.pprint(repository.uncontained_content)
+{u'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
+
+
+On transaction boundaries this cache is deleted:
+
+>>> import transaction
+>>> transaction.commit()
+
+>>> repository.uncontained_content
+{}
+
+>>> repository['online']._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
+
+Let's fill the cache again and try abort:
+
+>>> repository['online'].keys()
+[u'2005', u'2006', u'2007']
+>>> pprint.pprint(repository['online']._v_local_unique_map)
+{u'2005': u'http://xml.zeit.de/online/2005/',
+ u'2006': u'http://xml.zeit.de/online/2006/',
+ u'2007': u'http://xml.zeit.de/online/2007/'}
+>>> pprint.pprint(repository.uncontained_content)
+{u'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
+
+>>> transaction.abort()
+
+>>> repository.uncontained_content
+{}
+
+>>> repository['online']._v_local_unique_map
+Traceback (most recent call last):
+    ...    
+AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
+
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+
+    >>> import zope.component
+    >>> import zeit.cms.repository.interfaces
+    >>> repository = zope.component.getUtility(
+    ...     zeit.cms.repository.interfaces.IRepository)

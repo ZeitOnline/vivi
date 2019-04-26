@@ -1,0 +1,67 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+
+  <browser:view
+    for="zeit.cms.interfaces.ICMSContent"
+    name="checkout"
+    permission="zeit.Checkout"
+    allowed_attributes="canCheckout"
+    class=".manager.Checkout"
+    />
+
+  <!-- The menu item is registered for ICMSContent and not IRepositoryContent
+       to be able to register more specific menuitems for certain content
+       types. This is not possible with IRepositoryContent as
+       IRepositoryContent is  more specific in any case.  -->
+  <browser:viewlet
+    name="Checkout"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".manager.CheckoutMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.Checkout"
+    icon="/@@/zeit.cms/icons/checkout.png"
+    />
+
+  <browser:view
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkin"
+    permission="zeit.Checkin"
+    allowed_attributes="canCheckin"
+    class=".manager.Checkin"
+    />
+
+  <browser:view
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkin-conflict-error-information"
+    class=".manager.CheckinConflictErrorInformation"
+    permission="zope.View"
+    />
+
+  <gocept:pagelet
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="checkin-conflict-error"
+    class=".manager.CheckinConflictError"
+    template="checkin-conflict-error.pt"
+    permission="zeit.Checkin"
+    allowed_attributes="checkin delete cancel"
+    />
+
+  <browser:viewlet
+    name="Checkin"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".manager.CheckinMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.Checkin"
+    icon="/@@/zeit.cms/icons/checkin.png"
+    />
+
+</configure>

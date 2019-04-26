@@ -1,0 +1,49 @@
+<tal:doctype tal:omit-tag="">
+  <!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="de" lang="de"
+    i18n:domain="zeit.cms">
+<head>
+  <title>vivi Login</title>
+</head>
+<body class="login">
+  <div id="loginform">
+
+    <p class="error"
+       tal:condition="view/submitted"
+       i18n:translate="">
+      Login failed.
+    </p>
+
+    <form method="POST" action="">
+      <input type="hidden" name="camefrom"
+             tal:condition="view/camefrom"
+             tal:attributes="value view/camefrom" />
+
+      <div class="field">
+        <label for="login" i18n:translate="">Username</label>
+        <input type="text" name="login" id="login"/>
+      </div>
+
+      <div class="field">
+        <label for="password" i18n:translate="">Password</label>
+        <input type="password" name="password" id="password"/>
+      </div>
+
+      <div class="field">
+        <label></label>
+        <input
+           class="button" type="submit" name="SUBMIT" value="Log in"
+           i18n:attributes="value" />
+      </div>
+    </form>
+
+    <script type="text/javascript">
+      document.getElementById("login").focus();
+    </script>
+  </div>
+</body>
+</html>
+</tal:doctype>

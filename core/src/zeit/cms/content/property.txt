@@ -1,0 +1,507 @@
+==============
+XML-Properties
+==============
+
+The xml properties map to elements or attributes in an xml document. There are
+several of them. All have in common that they are execting the instance to have
+an `xml` attribute being an `lxml.objectify` tree.
+
+
+ObjectPathProperty
+==================
+
+The ObjectPathProperty maps to an xml *element* defined by an object path.
+
+
+Root as `xml`
+-------------
+
+Normally the document root is the `xml` attribute.  Create a test class:
+
+>>> from zeit.cms.content.property import ObjectPathProperty
+>>> import lxml.etree
+>>> import lxml.objectify
+>>> import mock
+>>> import persistent
+>>> class Content(persistent.Persistent):
+...     xml = lxml.objectify.fromstring(
+...         '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
+...     b = ObjectPathProperty('.b')
+>>> content = Content()
+>>> content._p_jar = mock.Mock()
+
+Initially b is None, since the node doesn't exist:
+
+>>> print content.b
+None
+
+Let's assign some values to b. Integer:
+
+>>> content.b = 5
+>>> content.b
+5
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b>5</b>
+</a>
+>>> content._p_changed
+True
+
+
+Float:
+
+>>> content.b = 47.25
+>>> content.b
+47.25
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b>47.25</b>
+</a>
+
+>>> content.b = 47.0
+>>> content.b
+47.0
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b>47.0</b>
+</a>
+
+String. Note that strings are always unicode:
+
+>>> content.b = 'Foo'
+>>> content.b
+u'Foo'
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+    <b>Foo</b>
+</a>
+
+
+It is also possible to declare a field for the property. This helps when
+objectify guesses the data wrong:
+
+>>> import zope.schema
+>>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
+>>> content.xml.b = 1234
+>>> prop.__get__(content, None)
+u'1234'
+>>> content.xml.b = '1.20'
+>>> prop.__get__(content, None)
+u'1.20'
+
+Invalid values fall back to the default behaviour, i.e. don't use the field for
+validation:
+
+>>> prop = ObjectPathProperty('.b', zope.schema.TextLine(max_length=2))
+>>> content.xml.b = 1234
+>>> prop.__get__(content, None)
+1234
+
+We can also get the field's default value instead of the mssing value when the
+XML is empty:
+
+>>> prop = ObjectPathProperty(
+...     '.b', zope.schema.TextLine(default=u'foo'), use_default=True)
+>>> content.xml.b = None
+>>> prop.__get__(content, None)
+u'foo'
+
+
+Arbitrary Element as `xml`
+--------------------------
+
+The `xml` attribute can also be a sub node of an xml tree. There is a special
+object path of `None` to refer directly to the node specified by `xml`. Let's
+create a test-class:
+
+>>> xml_tree = lxml.objectify.fromstring('<a><b/><c/><b/><b/></a>')
+>>> class Content(persistent.Persistent):
+...     xml = xml_tree.b[1]
+...     b = ObjectPathProperty(None)
+>>> content = Content()
+>>> content._p_jar = mock.Mock()
+>>> content._p_changed
+False
+
+Initially b is an empty string, since the node exist and is empty:
+
+>>> content.b
+u''
+
+Let's assign some values to b. Integer:
+
+>>> content.b = 4253890
+>>> content.b
+4253890
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<a>
+    <b/>
+    <c/>
+    <b>4253890</b>
+    <b/>
+</a>
+>>> content._p_changed
+True
+
+
+ObjectPathAttributeProperty
+===========================
+
+The ObjectPathAttributeProperty refers to a node via an object path and then to
+an attribute of that node. Given the following XML we can access the attributes
+via ObjectPathAttributeProperty:
+
+>>> xml_tree = lxml.objectify.fromstring(
+...     '<doc><a href="url">link</a><count words="5" chars="20"/></doc>')
+
+Let's define a content class using the XML. Word and character count are
+integers. Since lxml.objectify only supports str/unicode attributes we give a
+hint using a zope.schema field. We are also referencing `sencences` which is
+not in the document, yet:
+
+>>> from zeit.cms.content.property import ObjectPathAttributeProperty
+>>> from zc.sourcefactory.contextual import BasicContextualSourceFactory
+>>> class ExampleSource(BasicContextualSourceFactory):
+...     def getValues(self, context):
+...         return ['one', 'two', 'three']
+...
+>>> class Content(object):
+...     xml = xml_tree
+...     url = ObjectPathAttributeProperty('.a', 'href')
+...     words = ObjectPathAttributeProperty(
+...         '.count', 'words', zope.schema.Int(default=0))
+...     chars = ObjectPathAttributeProperty(
+...         '.count', 'chars', zope.schema.Int())
+...     sentences = ObjectPathAttributeProperty(
+...         '.count', 'sentences', zope.schema.Int())
+...     choice = ObjectPathAttributeProperty(
+...         '.count', 'choice', zope.schema.Choice(source=ExampleSource()))
+...     text = ObjectPathAttributeProperty(
+...         '.', 'text', zope.schema.TextLine(required=False))
+...     bool = ObjectPathAttributeProperty(
+...         '.', 'bool', zope.schema.Bool(default=False, required=False))
+...
+>>> content = Content()
+
+Access the values:
+
+>>> content.url
+u'url'
+>>> content.words
+5
+>>> content.chars
+20
+>>> content.sentences is None
+True
+>>> content.choice is None
+True
+>>> content.bool is None
+True
+
+
+Setting new values:
+
+>>> content.url = 'http://www.zeit.de'
+>>> content.words = 53
+>>> content.sentences = 2
+>>> content.choice = 'two'
+>>> content.bool = True
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<doc bool="True">
+  <a href="http://www.zeit.de">link</a>
+  <count words="53" chars="20" sentences="2" choice="two"/>
+</doc>
+>>> content.choice
+u'two'
+
+
+Setting bool to false works as well:
+
+>>> content.bool = False
+>>> content.bool
+False
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<doc bool="False">
+  <a href="http://www.zeit.de">link</a>
+  <count words="53" chars="20" sentences="2" choice="two"/>
+</doc>
+
+
+Setting invalid values will fail:
+
+>>> content.words = 6.25
+Traceback (most recent call last):
+    ...
+WrongType: (6.25, (<type 'int'>, <type 'long'>), '')
+>>> content.words
+53
+
+
+Setting None will remove the attribute:
+
+>>> content.text = u'some text'
+>>> content.text
+u'some text'
+>>> content.text = None
+>>> content.text is None
+True
+>>> content.bool = None
+>>> print lxml.etree.tostring(xml_tree, pretty_print=True)
+<doc>
+  <a href="http://www.zeit.de">link</a>
+  <count words="53" chars="20" sentences="2" choice="two"/>
+</doc>
+
+Setting None again doens't harm:
+
+>>> content.text = None
+
+
+
+Referencing Resources
+=====================
+
+To reference other resources there are special properties which store the
+unique id instead of object references.
+
+Create a mock repository:
+
+
+>>> import zeit.cms.interfaces
+>>> import zope.component
+>>> repository_objects = {}
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerAdapter(
+...     repository_objects.get,
+...     (basestring,), zeit.cms.interfaces.ICMSContent)
+
+
+Referencing a single resource
++++++++++++++++++++++++++++++
+
+
+Create a content class which holds the reference and will also be used to be
+referenced:
+
+>>> class Content(object):
+...     res = zeit.cms.content.property.SingleResource('.res')
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML('<foo/>')
+
+Create our content object:
+
+>>> content = Content()
+
+Create an object which will be referenced:
+
+>>> referenced_obj = Content()
+>>> referenced_obj.uniqueId = u'http://xml.zeit.de/refed'
+
+Add the referenced object to the repository:
+
+>>> repository_objects[referenced_obj.uniqueId] = referenced_obj
+
+
+Reference the object:
+
+>>> content.res = referenced_obj
+
+Let's have a look how the resource has been referenced:
+
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo>
+  <res xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/refed</res>
+</foo>
+
+
+Of course we also can get the resource back:
+
+>>> content.res
+<Content object at 0x...>
+>>> content.res is referenced_obj
+True
+
+Deleting the reference is also possible:
+
+>>> content.res = None
+>>> content.res is None
+True
+>>> content.res = referenced_obj
+>>> del content.res
+>>> content.res is None
+True
+
+When the referenced object is deleted from the repository we will get None
+back:
+
+>>> content.res = referenced_obj
+>>> repository_objects.clear()
+>>> content.res is None
+True
+
+
+Some types support a special xml structure, like relateds. Register an adapter
+which provides IXMLReference for our content object:
+
+>>> class Content(object):
+...     res = zeit.cms.content.property.SingleResource(
+...         '.ref', xml_reference_name='related',
+...         attributes=('foo', 'href', ))
+...
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML(
+...             '<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
+...
+>>> import zeit.cms.content.interfaces
+>>> @zope.component.adapter(Content)
+... @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+... def xmlref(context):
+...     return lxml.objectify.E.related(type="intern", href=context.uniqueId)
+>>> gsm.registerAdapter(xmlref, name='related')
+
+Create a content object and an object which can be referenced:
+
+>>> content = Content()
+>>> referenced_obj = Content()
+>>> referenced_obj.uniqueId = u'http://xml.zeit.de/related'
+>>> repository_objects[referenced_obj.uniqueId] = referenced_obj
+
+Currently no object is referenced:
+
+>>> content.res is None
+True
+
+>>> content.res = referenced_obj
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ref href="http://xml.zeit.de/related" type="intern"/>
+</foo>
+
+Get the resource back:
+
+>>> content.res
+<Content object at 0x...>
+>>> content.res == referenced_obj
+True
+
+Delete the reference:
+
+>>> content.res = None
+
+
+Make sure we cannot instanciate invalid combinations:
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', xml_reference_name='related')
+Traceback (most recent call last):
+    ...
+ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', attributes=('blub',))
+Traceback (most recent call last):
+    ...
+ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
+
+>>> zeit.cms.content.property.SingleResource(
+...     '.ref', xml_reference_name='foo', attributes='blub')
+Traceback (most recent call last):
+    ...
+ValueError: `attributes` must be tuple, got <type 'str'>
+
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     repository_objects.get,
+...     (basestring,), zeit.cms.interfaces.ICMSContent)
+True
+>>> gsm.unregisterAdapter(xmlref, name='related')
+True
+
+
+
+SimpleMultiProperty
+===================
+
+The `SimpleMultiProperty` is used for lists of simple values.
+
+
+>>> class Content(object):
+...     authors = zeit.cms.content.property.SimpleMultiProperty(
+...         '.authors.author')
+...     def __init__(self):
+...         self.xml = lxml.objectify.XML(
+...             '<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"><head/></foo>')
+>>> content = Content()
+
+Set authors:
+
+>>> content.authors = ('Hans', 'Klaus', 'Siegfried')
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+  <head/>
+  <authors>
+    <author>Hans</author>
+    <author>Klaus</author>
+    <author>Siegfried</author>
+  </authors>
+</foo>
+
+
+>>> content.authors
+(u'Hans', u'Klaus', u'Siegfried')
+
+
+
+
+
+Structure
++++++++++
+
+Create a content class:
+
+>>> import zeit.cms.content.xmlsupport
+>>> import zeit.cms.content.property
+>>>
+>>> class Content(zeit.cms.content.xmlsupport.XMLRepresentationBase):
+...
+...     default_template = u'<foo xmlns:myns="namespace"/>'
+...     title = zeit.cms.content.property.Structure('.title')
+
+>>> content = Content()
+>>> content.title = u'Foo <em>bar</em> baz'
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:myns="namespace">
+  <title>Foo <em>bar</em> baz</title>
+</foo>
+
+Get the value:
+
+>>> content.title
+u'Foo <em>bar</em> baz'
+
+
+>>> content.title = 'Foo <em>Bar<a href="blaubs">click</a></em>'
+>>> content.title
+u'Foo <em>Bar<a href="blaubs">click</a></em>'
+
+>>> content.title = u'<em>blah</em>'
+>>> content.title
+u'<em>blah</em>'
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<foo xmlns:myns="namespace">
+  <title>
+    <em>blah</em>
+  </title>
+</foo>
+
+
+Make sure a single < in the first text node is escaped:
+
+>>> content.title = u'Foo &lt;bar <em>blubs</em>'
+>>> content.title
+u'Foo &lt;bar <em>blubs</em>'

@@ -1,0 +1,332 @@
+==============
+Navigation Tree
+===============
+
+Create a browser first:
+    
+>>> import lxml.etree
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic producer:producerpw')
+>>> browser.xml_strict = True
+>>> ns_map = {'html': 'http://www.w3.org/1999/xhtml'}
+
+
+Tree Rendering
+==============
+
+The tree is rendered  in the sidebar all the time. But it is loaded
+asynchronously:
+
+>>> browser.open('http://localhost/++skin++cms/')
+>>> navtree = browser.etree.xpath("//html:div[@id='NavtreePanel']",
+...                               namespaces=ns_map)[0]
+>>> print lxml.etree.tostring(navtree, pretty_print=True),
+<div xmlns:panel="http://namespaces.gocept.com/panel" xmlns="http://www.w3.org/1999/xhtml" class="panel unfolded" id="NavtreePanel">
+  <h1>
+    <a href="http://localhost/++skin++cms/repository">
+        Dateiverwaltung
+    </a>
+  </h1>
+  <div id="navtreecontents" class="PanelContent Tree">
+  </div>
+  <script type="text/javascript">
+      var navtree = new Tree('http://localhost/++skin++cms/repository/++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html', 'navtreecontents');
+      (function() {
+        var ident = MochiKit.Signal.connect(
+          window, 'onload', function() {
+            navtree.loadTree();
+            MochiKit.Signal.disconnect(ident);
+         });
+      })();
+      MochiKit.Signal.connect(navtree, 'state-changed', function(event) {
+        MochiKit.Signal.signal('sidebar', 'panel-content-changed');
+      });
+      </script>
+</div>
+
+The noop in the URL is actually a hash of the user's tree state. Load the tree:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/repository/'
+...     '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html')
+>>> print browser.headers
+Status: 200 Ok
+Cache-Control: private; max-age=360
+Content-Length: ...
+Content-Type: text/html;charset=utf-8
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+>>> print browser.contents,
+  <ul>
+      <li active="True" class="Root...">
+        <p>
+        <a href="http://localhost/++skin++cms/repository">Repository</a>
+        <span class="uniqueId">None</span>
+      </p>
+  <ul>
+      <li action="expand" class="NotRoot..."
+          uniqueid="http://xml.zeit.de/online/">
+        <p>
+        <a href="http://localhost/++skin++cms/repository/online">online</a>
+        <span class="uniqueId">http://xml.zeit.de/online/</span>
+      </p>
+      </li>
+      <li action="expand" class="NotRoot..."
+          uniqueid="http://xml.zeit.de/2007/">
+        <p>
+        <a href="http://localhost/++skin++cms/repository/2007">2007</a>
+        <span class="uniqueId">http://xml.zeit.de/2007/</span>
+      </p>
+      </li>
+  </ul>
+      </li>
+  </ul>
+
+The currently visited URL is transmitted as an argument. Define a helper
+function:
+
+>>> import urllib
+>>> def open_tree(url):
+...     query = urllib.urlencode(dict(view_url=url))
+...     browser.open(
+...         'http://localhost/++skin++cms/repository/'
+...         '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html?' + query)
+
+
+When we visit `online` it is *not* automatically expanded while visiting it:
+
+>>> open_tree('http://localhost/++skin++cms/repository/online')
+>>> print browser.contents
+ <ul>
+    <li active="True" class="Root...">
+      <p>
+      <a href="...">Repository</a>
+      ...
+      <ul>
+        <li...online...
+        <li...2007...
+      </ul>
+    </li>
+ </ul>
+
+
+Now we expand online/2007. This is done via an ajax request. Thus the returned
+"page" only conatains the tree, not the full html page:
+
+>>> import urllib
+>>> view_url = 'http://localhost/++skin++cms/repository'
+>>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
+...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
+...              '&view_url=%s' % urllib.quote(view_url))
+>>> print lxml.etree.tostring(browser.etree, pretty_print=True)
+<ul>
+    <li active="True" class="Root...">
+      <p>
+      <a href="...">Repository</a>
+      ...
+      <ul>
+        <li...online...
+          <ul>
+            <li...2007...
+          </ul>
+        </li>
+        <li...2007...
+      </ul>
+    </li>
+ </ul>
+
+
+Since we've explicitly expanded the tree via an ajax request (i.e. by clicking
+on the + icon) the tree stays expanded even when we're not inside online:
+
+>>> open_tree('http://localhost/++skin++cms/repository')
+>>> print browser.contents,
+  <ul>
+      <li active="True" class="Root...">
+        <p>
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...online...
+            <ul>
+              <li...2007...
+            </ul>
+          </li>
+          <li...2007...
+        </ul>
+      </li>
+   </ul>
+
+
+Hidden Containers
+=================
+
+Users often do not want to see certain containers, so they can hide them.
+Initially most containers are hidden actually. If 2006 was shown it would be
+between online/2007 and 2007:
+
+>>> print browser.contents.strip(),
+<ul>...
+      <li action="expand" class="NotRoot..."
+          uniqueid="http://xml.zeit.de/online/2007/">
+          <p>
+        <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
+        <span class="uniqueId">http://xml.zeit.de/online/2007/</span>
+        </p>
+      </li>
+  </ul>
+      </li>
+      <li action="expand" class="NotRoot..."
+          uniqueid="http://xml.zeit.de/2007/">
+          <p>
+        <a href="http://localhost/++skin++cms/repository/2007">2007</a>
+        <span class="uniqueId">http://xml.zeit.de/2007/</span>
+        </p>
+      </li>
+  </ul>
+      </li>
+  </ul>
+
+
+When we are *inside* a hidden container, it is shown nevertheles:
+
+>>> open_tree('http://localhost/++skin++cms/repository/2006')
+>>> print browser.contents,
+  <ul>
+      <li active="True" class="Root...">
+        <p>
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...online...
+            <ul>
+              <li...2007...
+            </ul>
+          </li>
+          <li...2007...
+          <li...2006...
+        </ul>
+      </li>
+   </ul>
+
+
+Let's explicitly "show' the 2006 container now:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.getLink('Show').click()
+>>> print browser.contents
+<?xml ...
+    <li class="message">"2006" is now shown in the navigation tree.</li>
+    ...
+
+The navigation tree contains the 2006 even when looking at the root:
+
+>>> open_tree('http://localhost/++skin++cms/repository/')
+>>> print browser.contents,
+  <ul>
+      <li active="True" class="Root...">
+        <p>
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...online...
+            <ul>
+              <li...2007...
+            </ul>
+          </li>
+          <li...2007...
+          <li...2006...
+        </ul>
+      </li>
+   </ul>
+
+A shown container cant't be shown twice:
+
+>>> browser.open('http://localhost/++skin++cms/repository/2006')
+>>> browser.getLink('Show')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+A shown container can be hidden again though:
+
+>>> browser.getLink('Hide').click()
+>>> print browser.contents
+<?xml ...
+    <li class="message">"2006" is now hidden from the navigation tree.</li>
+    ...
+
+>>> open_tree('http://localhost/++skin++cms/repository/2006')
+>>> print browser.contents,
+  <ul>
+      <li active="True" class="Root...">
+        <p>
+        <a href="...">Repository</a>
+        ...
+        <ul>
+          <li...online...
+            <ul>
+              <li...2007...
+            </ul>
+          </li>
+          <li...2007...
+        </ul>
+      </li>
+   </ul>
+
+Now, of course, after showing, the `Hide` action is no longer available:
+
+>>> browser.getLink('Hide')
+Traceback (most recent call last):
+    ...
+LinkNotFoundError
+
+
+Highlighting
+============
+
+The tree indicates where the user is right now. Create a test request:
+
+>>> class Request(object):
+...     view_url = None
+...     def __init__(self, path, view_path=None):
+...         self.path = path
+...         self.application_url = 'http://127.0.0.1/++skin++cms'
+...         self.URL = self.application_url + path
+...         if view_path:
+...             self.view_url = self.application_url + view_path
+...     def get(self, key):
+...         return self.view_url
+...     def getURL(self):
+...         return self.URL
+...     def getApplicationURL(self):
+...         return self.application_url
+
+
+Create a tree and verify the normal highlighting:
+
+>>> from zeit.cms.repository.browser.repository import Tree
+>>> tree = Tree(object(), Request('/testing/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/foo')
+False
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/test')
+False
+
+>>> tree = Tree(object(), Request('/testing/art/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing/art')
+True
+>>> tree.selected('http://127.0.0.1/++skin++cms/test/art')
+False
+
+
+When the tree is reloaded the url of the request cannot be used as indicator.
+Therefore a `view_url` can be passed:
+
+>>> tree = Tree(object(), Request(
+...     '/foo/@@edit.html', view_path='/testing/@@view.html'))
+>>> tree.selected('http://127.0.0.1/++skin++cms/testing')
+True

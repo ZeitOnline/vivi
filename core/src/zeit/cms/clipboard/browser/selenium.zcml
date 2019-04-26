@@ -1,0 +1,9 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    factory=".selenium.TestClipboard"
+    name="zeit.cms.clipboard.TestClipboard"
+    permission="zope.Public" 
+    />
+
+</configure>

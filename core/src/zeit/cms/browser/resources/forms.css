@@ -1,0 +1,557 @@
+/*
+ * forms
+ *
+ * */
+
+/* general input field styling */
+
+textarea{
+    font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+    font-size: 11px;
+    border:1px solid #e4e4e4;
+    color:Black;
+    width:100%;
+    padding: 0.3em;
+}
+/*font:100% Monaco,"Courier New",Courier,monospace;*/
+
+
+:-moz-placeholder {
+  color: #999;
+}
+
+select {
+    border:1px solid #e4e4e4;
+    color:Black;
+    background-color:White;
+    vertical-align:top;
+    padding: 0.2em;
+}
+
+.dateTimeWidget {
+    line-height: 2em;
+}
+
+div.widget > input,
+div.widget > textarea,
+div.widget > div > div > select {
+  margin-top: 0.4em;
+}
+
+div.widget {
+  padding: 0.1em;
+}
+
+.view div.widget {
+  margin-top: 1px;
+  padding: 0.3em;
+  background-color: #d5dee7;
+  height: 13px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.hint {
+  display: none;
+}
+
+label[for="form.authors"] + .hint {
+  display: block;
+}
+
+/* formlib styling */
+
+fieldset {
+    padding-top: -4.5em;
+    margin: 0 0 10px 0;
+    border: 1px solid #d5dee7;
+    background: #f1f4f9; /*#d5dee7;*/
+}
+
+#zeit-find-search-form fieldset {
+	border: 0px solid #fff !important;
+}
+
+legend {
+  font-weight: bold;
+  background-color: transparent;
+  text-transform: uppercase;
+  position: relative;
+  display: block;
+  top: -2px;
+}
+
+
+.field.required label > span:after {
+    content: "*";
+    color: red;
+}
+
+.annotation {
+    display: none;
+}
+
+.hint {
+    color: #aaa;
+}
+.hint:hover {
+    color: #4c4c4c;
+}
+
+.VisualClear {
+    clear: both;
+}
+
+.show-input-limit {
+  font-size: 9px;
+  margin-left: 3px;
+}
+
+/* formlib widget styling */
+
+.sequenceWidget {
+    padding-left: 2em;
+}
+
+.sequencewidget .field, .sequencewidget .widget {
+    padding: 0;
+}
+
+.sequencewidget {
+    border-collapse: collapse;
+}
+
+/* grouped layout */
+
+.field {
+    padding: 0 0 0.5em 0;
+    margin-left: 0.5em;
+}
+
+form .widgets-float .field {
+    float: left;
+    margin: 5px;
+}
+
+form .widgets-float .field label {
+    height: 1.7em;
+    display: block;
+}
+
+form .widgets-float .field .hint {
+/*    display: none; */
+}
+
+form .full-width {
+    clear: both;
+    right: 0;
+}
+
+form .full-width-float .field {
+    float: left;
+    margin: 5px;
+    max-width: 15em;
+}
+
+form .full-width-float .hint {
+    height: 5ex;
+}
+
+
+form .fullWidth {
+    right: 0;
+    clear: both;
+}
+
+form .column-left {
+    width: 58%;
+    float: left;
+}
+
+
+form .wide-widgets .field input[type="text"],
+form .wide-widgets .field .sequencewidget,
+form .wide-widgets .field .combinationFieldWidget,
+form .wide-widgets .field textarea {
+    width: 95%;
+}
+
+/* Felder ausblenden */
+
+form .field label[for="form.shortTeaserTitle"],
+form .field label[for="form.shortTeaserText"],
+form .field label[for="form.hpTeaserTitle"],
+form .field label[for="form.hpTeaserText"],
+form .field label[for="form.artbox_thema"],
+form .field label[for="form.comment_id"],
+form .field label[for="form.infobox"],
+form .field label[for="form.portraitbox"],
+form .field label[for="form.embedded_gallery"]
+{
+	display: none;
+}
+
+form .field label[for="form.shortTeaserTitle"] ~ .widget,
+form .field label[for="form.shortTeaserText"] ~ .widget
+{
+	display: none;
+}
+
+form .field textarea[id="form.shortTeaserTitle"],
+form .field textarea[id="form.shortTeaserText"],
+form .field textarea[id="form.hpTeaserTitle"],
+form .field textarea[id="form.hpTeaserText"],
+form .field input[id="form.artbox_thema"],
+form .field input[id="form.comment_id"],
+form .field input[id="form.comment_id"] + input,
+form .field input[id="form.comment_id"] + input +input,
+form .field input[id="form.infobox"],
+form .field input[id="form.infobox"] + input,
+form .field input[id="form.infobox"] + input +input,
+form .field input[id="form.portraitbox"],
+form .field input[id="form.portraitbox"] + input,
+form .field input[id="form.portraitbox"] + input + input,
+form .field input[id="form.embedded_gallery"],
+form .field input[id="form.embedded_gallery"] + input,
+form .field input[id="form.embedded_gallery"] + input + input
+{
+	display: none;
+}
+
+
+form .wide-widgets .field .object-reference-widget > .object-reference {
+    width: 80%;
+}
+
+form .wide-widgets .field .object-reference-widget.add-button > .object-reference {
+    width: 70%;
+}
+
+form .column-right {
+  clear: right;
+  float:  right;
+  margin-right: 20px;
+  width: 35%;
+}
+
+
+form #form\.page,
+form #form\.volume,
+form #form\.year {
+    width: 4em;
+}
+
+/* SMALL left column, larger right column */
+form .column-left-small {
+    clear: both;
+    width: 30%;
+    float: left;
+}
+
+form .column-left-small .field {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+form .column-right-small {
+    float:  right;
+    width: 58%;
+}
+
+.fieldname-memo {
+    width: 100%;
+}
+
+/* reversed rendering */
+
+.widget.reversed {
+  display: inline-block;
+}
+
+.checkboxes .field,
+.checkboxes .widget {
+  padding: 0;
+}
+
+/* Line height: 1.3em * rows */
+#form\.teaserText {
+    height: 6.5em;
+}
+#form\.shortTeaserText,
+#form\.hpTeaserText {
+    height: 2.6em;
+}
+
+#form\.title {
+    height: 1.3em;
+}
+
+#form\.info,
+#form\.subtitle,
+#form\.html_description {
+    height: 6.5em;
+}
+
+#form\.teaserTitle,
+#form\.shortTeaserTitle,
+#form\.hpTeaserTitle {
+    height: 1.3em;
+}
+
+input#form\.copyrights[type=text] {
+    width: 15em;
+}
+
+.gallery {
+  width: 100%;
+}
+
+
+#folderActionForm {
+    bottom: 0;
+}
+
+.BottomForm div.Column {
+    width: 49%;
+    float: left;
+    margin-top: 1em;
+}
+
+#edit-form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding-bottom: 4em;
+}
+
+
+#edit-form > form > div.form-status {
+    display: none;
+}
+
+#edit-form > form > div.field-group {
+    position: absolute;
+    bottom: 4em;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: auto;
+}
+
+#edit-form > form > div#actionsView {
+    position: absolute;
+    height: 3em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+/* image form */
+
+form .column-left.image-form {
+    width: 40%;
+}
+
+form .column-left.image-form input {
+    width: inherit;
+}
+
+form .column-left.image-form .fieldname-__name__ input {
+  width: 80%;
+}
+
+form .column-right.image-form {
+    width: 48%;
+}
+
+textarea#form\.caption {
+    height: 8em;
+}
+
+/* source editor */
+
+#source-editor {
+  height: 100%;
+}
+
+#source-editor textarea {
+  width: 95%;
+  height: 70ex;
+}
+
+label > span {
+  margin: 0.2em;
+}
+
+span.h_tag {
+  color: blue;
+}
+
+span.h_attribute {
+  color: purple;
+}
+
+span.h_doublestring {
+  color: brown;
+}
+
+span.h_singlestring {
+  color: brown;
+}
+
+span.h_default {
+  color: black;
+}
+
+span.h_other {
+  color: black;
+}
+
+
+/* WYSIWYG editor */
+
+.fckeditor  {
+  width: 99%;
+  height: 38em;
+}
+
+/* file form */
+
+.file-details {
+  float: right;
+}
+
+/*
+ * tablefilter
+ *
+ * */
+
+#tableFilter  {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#tableFilter input {
+  font-family: sans-serif;
+  width: 20em;
+  color: #196692;
+}
+
+#add_menu {
+  border: 1px solid #f1f4f9;
+  font-family: sans-serif;
+}
+
+
+/* Search
+ */
+
+#SearchPanel #search\.text {
+    width: 12em;
+}
+
+#SearchPanel fieldset {
+    margin-top: 0.5em;
+}
+
+#SearchPanel #search\.year {
+    width: 4em;
+}
+
+#SearchPanel #search\.volume {
+    width: 4em;
+}
+
+#SearchPanel #search\.page {
+    width: 2em;
+}
+
+#SearchPanel #search\.print_ressort {
+    width: 8em;
+}
+
+#SearchPanel #search\.navigation {
+    width: 8em;
+}
+
+.PanelContent fieldset#search-extended-form legend {
+  text-transform: capitalize;
+}
+
+.PanelContent #search-extended-form{
+  width: 198px;
+  background-color: #fff;
+}
+
+.PanelContent fieldset#search-extended-form {
+  border: 0px solid #fff;
+}
+
+.PanelContent fieldset#search-extended-form * {
+  white-space: normal;
+}
+
+
+iframe {
+    position: fixed !important;
+}
+
+
+.widget > iframe {
+    position: inherit !important;
+}
+
+/*
+ * Sidebar Forms
+ */
+
+#sidebar select option {
+	padding: 3px;
+}
+
+#sidebar select {
+	color:Black;
+	padding: 0 !important;
+	height: 20px;
+	border: 1px solid #E4E4E4;
+}
+
+
+.fieldname-topiclink_label_1,
+.fieldname-topiclink_label_2,
+.fieldname-topiclink_label_3 {
+    width:30%;
+    float:left;
+    clear:both;
+}
+
+.fieldname-topiclink_url_1,
+.fieldname-topiclink_url_2,
+.fieldname-topiclink_url_3 {
+    margin-right:13px;
+    float:right;
+    width:60%;
+}
+
+a.add_view {
+  -moz-appearance: button;
+}
+
+
+.conflict-error table.form-fields .widget {
+    margin-bottom: 0;
+}
+
+.conflict-error table.form-fields .field {
+    padding: 0;
+}
+
+.conflict-error table.form-fields > * > tr > td {
+    height: auto;
+}

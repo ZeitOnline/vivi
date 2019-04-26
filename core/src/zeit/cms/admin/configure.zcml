@@ -1,0 +1,15 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".semantic.AdjustSemanticPublish" />
+
+  <class class=".semantic.AdjustSemanticPublish">
+    <require
+      interface="zeit.cms.admin.interfaces.IAdjustSemanticPublish"
+      permission="zeit.cms.admin.EditSemantic"
+      />
+    <require
+      set_schema="zeit.cms.admin.interfaces.IAdjustSemanticPublish"
+      permission="zeit.cms.admin.EditSemantic"
+      />
+  </class>
+</configure>

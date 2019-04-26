@@ -1,0 +1,19 @@
+<tal:repeat
+  define="context_url context/@@absolute_url"
+  repeat="menu_item view/menu_items"
+  i18n:domain="zeit.cms">
+  <li
+    tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
+    tal:attributes="class string:$klass ${menu_item/selected}">
+    <a
+      tal:attributes="href string:$context_url/${menu_item/action};
+      title menu_item/title;
+      target menu_item/target | nothing"
+      i18n:attributes="title"
+      tal:content="menu_item/title"
+      i18n:translate=""
+      >
+        Checkout
+    </a>
+  </li>
+</tal:repeat>

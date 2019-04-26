@@ -1,0 +1,217 @@
+/* style definitions for object-details views . */
+
+.object-details {
+  border-radius: 5px;
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  cursor: move;
+  margin-bottom: .8em;
+  overflow: hidden;
+  padding: 1em;
+}
+
+.cp-content-inner .object-details {
+  min-width: 400px;
+  padding: 0px;
+  border-color: #cccccc;
+}
+
+.cp-content-inner .object-details:hover {
+  border-color: #bbbbbb;
+}
+
+.cp-content-inner .object-details strong {
+  display: block;
+  float: left;
+}
+
+.cp-content-inner .object-details a.communitylink {
+  display: block;
+  float:left;
+  color: transparent;
+  text-indent: -1000px;
+  width: 15px;
+  background: url("./icons/icons_sprites.png") no-repeat scroll 4px -116px transparent;
+  cursor: pointer;
+}
+
+.cp-content-inner .object-details a.fold-link {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  margin: 5px 7px 0px;
+  background-repeat: no-repeat;
+}
+
+.object-details-heading {
+    background: none repeat scroll 0 0 #FFF;
+    padding-right: 30px;
+    padding-bottom: 2px;
+}
+
+.object-details-heading img {
+    vertical-align: middle;
+}
+
+.object-details-heading span.publish-state {
+    padding-top:5px;
+}
+
+.object-details-heading ul {
+    font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+    font-size: 11px;
+    color: #90B0C3;
+}
+
+.object-details-heading .filename {
+    font-weight: bold;
+}
+
+.object-details-heading ul,
+.object-details-heading div,
+.object-details-heading li {
+    display: inline;
+}
+
+#internallinks\.related li a[rel="remove"],
+#metadata-c\.authorships li a[rel="remove"] {
+  display: inline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: -1000px;
+  background: url("./icons/icons_sprites.png") no-repeat scroll 0px -420px transparent;
+  margin: 0px !important;
+  padding-right: 5px !important;
+  min-height: 10px;
+  border: 0px solid #FFF;
+  top: 2px;
+  right: 3px;
+}
+
+#internallinks\.related li a[rel="remove"] {
+  background-position: 0px -417px;
+}
+
+#metadata-c\.authorships li a[rel="remove"] {
+  top: 7px;
+}
+
+.object-details-heading li:before {
+    content: "| ";
+}
+
+.object-details-heading li:first-child:before {
+    content: "";
+}
+
+.object-details-heading .metadata {
+    padding-left: 3px;
+    vertical-align: middle;
+    margin: 0px;
+}
+
+.object-details-body {
+    clear: both;
+    padding-top: 6px;
+    padding-bottom: 7px;
+}
+
+.object-details .supertitle {
+  display: block;
+  font-weight: 400;
+  margin-bottom: .5em;
+  vertical-align: middle;
+}
+
+.object-details .supertitle .text {
+  white-space: nowrap;
+}
+
+.object-details .supertitle img {
+  margin-right: .5em;
+  vertical-align: middle;}
+
+.object-details .supertitle img:last-child {
+  margin-right: 12px;
+}
+
+.object-details .teaser_title {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: .3em;
+}
+
+.object-details .teaser_text {
+  font-size: 1em;
+  margin-top: 0.3em;
+  margin-bottom:0.5em;
+}
+
+.object-details .graphical_preview {
+  float: right;
+}
+
+.object-details .graphical_preview img {
+    max-width: 120px;
+}
+
+.object-details .goto-object {
+  clear: right;
+}
+.object-details .object-link {
+  float: right;
+}
+
+.overlay-anchor {
+    min-height: 100px;
+}
+
+.overlay-anchor .overlay {
+    display: none;
+}
+
+.overlay-anchor,
+.overlay-anchor:hover .overlay .overlay-position {
+    display: inline-block;
+    position: relative;
+}
+
+.overlay-anchor:hover .overlay {
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 100%;
+}
+
+#edit-form-teaser .overlay-anchor:hover .overlay {
+    top: 30px;
+    right: 0;
+}
+
+.editable-area .overlay-position .button {
+    background: url("./icons/icons_sprites.png") no-repeat scroll 10px 5px #fff !important;
+    border: 1px solid #000;
+    float: left;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.editable-area .overlay-position .edit-button {
+    margin-left: 12px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 2px;
+}
+
+.editable-area .overlay-position .preview-button {
+    background: url("./icons/icons_sprites.png") no-repeat scroll 10px -685px #666 !important;
+    color: #fff !important;
+    margin-left: 2em;
+}
+
+.object-reference.error {
+    width: 100%;
+}

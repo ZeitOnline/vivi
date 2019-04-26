@@ -1,0 +1,149 @@
+======
+Fields
+======
+
+
+XMLSnippet
+==========
+
+The XML snipped is a text field which contains a defined subset of XML as
+unicode. For testing we use the default CMS subset which only allows italic and
+links.
+
+Converting and validating
++++++++++++++++++++++++++
+
+Create a field:
+
+>>> import zeit.cms.content.field
+>>> snippet = zeit.cms.content.field.XMLSnippet()
+
+Converting from unicode
+-----------------------
+
+The `fromUnicode` method makes sure that the value is sane and parsable.
+
+>>> snippet.fromUnicode(u'foo <em>b\xfcrf</em>')
+u'foo <em>b\xfcrf</em>'
+
+It also replaces tags which are replaced, like italic with the more general
+emphasis tag:
+
+>>> snippet.fromUnicode(u'foo <i>b\xfcrf</i>')
+u'foo <em>b\xfcrf</em>'
+
+
+Invalid input is mostly "repaired":
+
+>>> snippet.fromUnicode(u'foo <i>b\xfcrf')
+u'foo <em>b\xfcrf</em>'
+>>> snippet.fromUnicode(u'foo <i>b\xfc<b>rf')
+u'foo <em>b\xfc&lt;b&gt;rf</em>'
+>>> snippet.fromUnicode(u'a < b')
+u'a &lt; b'
+
+Links are also supported:
+
+>>> snippet.fromUnicode(
+...     u'Gehe zu  <a href="http://zeit.de">zeit <i>online</i></a>')
+u'Gehe zu  <a href="http://zeit.de">zeit <em>online</em></a>'
+
+Only href and target ar acceptable attributes. If other attributes are given,
+the tag is quoted:
+
+>>> snippet.fromUnicode(u'<a class="error">booh!</a>')
+u'&lt;a class=&quot;error&quot;&gt;booh!'
+
+``<br/>`` is also supported:
+
+>>> snippet.fromUnicode(
+...     u'Gehe ins<br/>Gefaengins')
+u'Gehe ins<br/>Gefaengins'
+>>> snippet.fromUnicode(
+...     u'Gehe ins<br>Gefaengins')
+u'Gehe ins<br/>Gefaengins'
+
+Paragraphs and ``style`` attributes work:
+
+>>> snippet.fromUnicode(
+...     u'<p>foo<br/><span style="color: red">bar<em>baz</em></span></p>')
+u'<p>foo<br/><span style="color: red">bar<em>baz</em></span></p>'
+
+Apparently some codeblocks put None into fromUnicode. That yields a useful
+error message:
+
+>>> snippet.fromUnicode(None)
+Traceback (most recent call last):
+    ...
+TypeError: Expected unicode, got <type 'NoneType'>
+
+
+Validation
+----------
+
+The XMLSnippet field is valid, when the validated value equals a value
+`fromUnicode` would have produced. So invalid XML is not valid:
+
+>>> snippet.validate(u'foo <i>b\xfcrf')
+Traceback (most recent call last):
+    ...
+InvalidXML
+
+A valid structure passes:
+
+>>> snippet.validate(u'foo <em>b\xfcrf</em>')
+
+
+XML Tree
+========
+
+>>> from zeit.cms.content.field import XMLTree
+>>> field = XMLTree()
+>>> field.__name__ = 'xml'
+>>> class Content(object):
+...     pass
+>>> content = Content()
+>>> tree = field.fromUnicode('<container/>')
+>>> field.set(content, tree)
+>>> content.xml == tree
+True
+
+>>> content2 = Content()
+>>> content.xml['child'] = 'child'
+>>> content2.xml = content.xml['child']
+>>> tree2 = field.fromUnicode('<child>MyNewValue</child>')
+>>> field.set(content2, tree2)
+>>> import lxml.etree
+>>> print lxml.etree.tostring(content.xml, pretty_print=True),
+<container>
+  <child>MyNewValue</child>
+</container>
+
+
+Replacing node when there are siblings present
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>>> root = lxml.objectify.E.root()
+>>> root.append(lxml.objectify.E.child())
+>>> root.append(lxml.objectify.E.child())
+>>> content = Content()
+>>> field = XMLTree()
+>>> field.__name__ = 'xml'
+>>> field.set(content, root.child)
+>>> field.set(content, lxml.objectify.E.new())
+>>> print lxml.etree.tostring(root, pretty_print=True)
+<root xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <new/>
+  <child/>
+</root>
+
+
+Tidying broken input
+~~~~~~~~~~~~~~~~~~~~
+
+>>> field = XMLTree(tidy_input=True)
+>>> field.__name__ = 'xml'
+>>> tree = field.fromUnicode(
+...     '<a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">')
+>>> print lxml.etree.tostring(tree, pretty_print=True),
+<a href="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"/>

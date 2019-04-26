@@ -1,0 +1,341 @@
+Widgets
+=======
+
+Object widgets
+++++++++++++++
+
+The object widgets are used to reference objects[#object-widget-setup]_.
+
+Input widget
+------------
+
+Create a field and bind it at an instance of `Content`:
+
+>>> import zope.schema
+>>> import zeit.cms.content.contentsource
+>>> source = zeit.cms.content.contentsource.CMSContentSource()
+>>> field = zope.schema.Choice(source=source)
+>>> field.__name__ = 'reference'
+>>> field = field.bind(Content())
+
+Create an instance of the object reference widget:
+
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.browser.widget
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, source, request)
+>>> widget
+<zeit.cms.browser.widget.ObjectReferenceWidget object at 0x...>
+
+Get the default browsing location now:
+
+>>> widget.default_browsing_location
+Returning location for <Content object at 0x...>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
+<Repository object at 0x...>
+
+The type filter token is used by the object browser to filter types:
+
+>>> widget.type_filter_token
+'all-types'
+
+
+Render the widget:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
+<div class="object-reference-widget" id="field.reference.outerdiv">
+  <input type="hidden" value="1"
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+          id="field.reference" value=""
+          name="field.reference" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
+</div>
+<script>
+  new zeit.cms.ObjectReferenceWidget(
+  'field.reference.outerdiv',
+  'http://127.0.0.1/repo',
+  'all-types',
+  null,
+  false,
+  self);
+  </script>
+
+
+
+Set the value to an existing, valid value; we now also see workflow
+information:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://xml.zeit.de/content'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, source, request)
+>>> widget.getInputValue()
+<Content object at 0x...>
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
+<div class="object-reference-widget" id="field.reference.outerdiv">
+  <input type="hidden" value="1"
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+         id="field.reference" value="http://xml.zeit.de/content"
+         name="field.reference" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
+  <span class="publish-state not-published" title="Not published"></span>
+</div>
+<script>
+  new zeit.cms.ObjectReferenceWidget(
+  'field.reference.outerdiv',
+  'http://127.0.0.1/repo',
+  'all-types',
+  null,
+  false,
+  self);
+  </script>
+
+
+
+Set the value to an existing but invalid value, so we get an validation error:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://xml.zeit.de/exists/blubs'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, source, request)
+>>> widget.getInputValue()
+Traceback (most recent call last):
+    ...
+WidgetInputError: ('reference', u'',
+    ConstraintNotSatisfied(<object object at 0x...>))
+
+
+The invalid value is rendered:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
+<div class="object-reference-widget" id="field.reference.outerdiv">
+  <input type="hidden" value="1"
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+         id="field.reference" value="http://xml.zeit.de/exists/blubs"
+         name="field.reference" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
+</div>
+<script>
+  new zeit.cms.ObjectReferenceWidget(
+  'field.reference.outerdiv',
+  'http://127.0.0.1/repo',
+  'all-types',
+  null,
+  false,
+  self);
+  </script>
+
+
+Test the validation. Set a non existent resource:
+
+>>> request = zope.publisher.browser.TestRequest(
+...     form={'field.reference': u'http://xml.zeit.de/foo'},
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
+...     field, source, request)
+>>> widget.getInputValue()
+Traceback (most recent call last):
+    ...
+ConversionError: (u'The object could not be found.', None)
+
+The invalid value is still rendered though:
+
+>>> print widget()
+Returning location for <Content object at 0x...>
+    <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
+<div class="object-reference-widget" id="field.reference.outerdiv">
+  <input type="hidden" value="1"
+         name="field.reference.present" />
+  <input class="object-reference" type="text"
+         id="field.reference" value="http://xml.zeit.de/foo"
+         name="field.reference" />
+  <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
+  <input title="Show object" class="show-referenced-object"
+    type="button" name="showReferencedObject" value="→" />
+  <input title="Add object" class="add-object" type="button"
+    name="addObject" value="+" />
+</div>
+<script>
+  new zeit.cms.ObjectReferenceWidget(
+  'field.reference.outerdiv',
+  'http://127.0.0.1/repo',
+  'all-types',
+  null,
+  false,
+  self);
+  </script>
+
+
+
+Display widget
+--------------
+
+The display widget for object renders the Unique Id as content and the title as
+link title. The workflow status is shown as well:
+
+>>> import zeit.cms.browser.interfaces
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+>>> widget = zeit.cms.browser.widget.ObjectReferenceDisplayWidget(
+...     field, source, request)
+>>> widget.setRenderedValue(Content())
+>>> print widget()
+<a href="http://127.0.0.1/repo/content" id="...">http://xml.zeit.de/content</a>
+<span class="publish-state not-published" title="Not published"></span>
+<script language="javascript">
+    new zeit.cms.LinkToolTip("...")
+</script>
+
+
+
+
+Clean up:
+
+>>> gsm.unregisterAdapter(
+...     browsing_location_adapter,
+...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+True
+>>> gsm.unregisterUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+True
+>>> gsm.unregisterUtility(
+...     zeit.cms.interfaces.ICMSContent,
+...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
+True
+
+Datetime widget
++++++++++++++++
+
+We have a special Datetime widget, which proivides buttons for in one day an
+in one month:
+
+>>> field = zope.schema.Datetime()
+>>> widget = zeit.cms.browser.widget.DatetimeWidget(field, request)
+>>> print widget()
+<div class="dateTimeWidget">
+<input class="textType" id="field." name="field." size="20" type="text" value=""  />
+<input type="button" value="..." id="field._trigger">
+<script type="text/javascript">
+  Calendar.setup({
+  inputField: 'field.',
+  button: 'field._trigger',
+  ifFormat: '%Y-%m-%d %H:%M:%S',
+  onClose: zeit.cms.get_datetime_close('field.'),
+  showsTime: true
+});
+</script>
+<input type="button" value="1W" class="week"
+    onclick="javascript:var date = new Date();
+        date.setDate(date.getDate() + 7);
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+          " />
+<input type="button" value="1M" class="month"
+    onclick="javascript:var date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+        " />
+<input type="button" value="∞" class="infinity"
+    onclick="javascript:$('field.').value = '';
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+    " />
+</div>
+
+
+
+.. [#object-widget-setup]
+
+    Create a mock repository:
+
+    >>> import zeit.cms.interfaces
+    >>> import zeit.cms.repository.interfaces
+    >>> import zope.component
+    >>> import zope.interface
+    >>> import zope.location.interfaces
+    >>>
+    >>> class Repository(object):
+    ...     zope.interface.implements(zope.location.interfaces.ILocation)
+    ...     __parent__ = getRootFolder()
+    ...     __name__ = 'repo'
+    ...
+    ...     def getContent(self, unique_id):
+    ...         if unique_id.startswith('http://xml.zeit.de/content'):
+    ...             return Content()
+    ...         if unique_id.startswith('http://xml.zeit.de/exists'):
+    ...             return object()
+    ...         raise KeyError(unique_id)
+    ...
+    >>> repository = Repository()
+    >>> gsm = zope.component.getGlobalSiteManager()
+    >>> gsm.registerUtility(
+    ...     repository, zeit.cms.repository.interfaces.IRepository)
+
+    Create a simple content object:
+
+    >>> import zope.annotation.interfaces
+    >>> class Content(object):
+    ...     zope.interface.implements(
+    ...         zeit.cms.interfaces.ICMSContent,
+    ...         zope.location.interfaces.ILocation,
+    ...         zope.annotation.interfaces.IAttributeAnnotatable)
+    ...     __parent__ = repository
+    ...     __name__ = u'content'
+    ...     uniqueId = 'http://xml.zeit.de/content'
+
+    Make ICMSContent generally a contenttype:
+
+    >>> gsm.registerUtility(
+    ...     zeit.cms.interfaces.ICMSContent,
+    ...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
+
+    To browse the repository the widget needs to look up the default browsing
+    location. Create a mock adapter which returns the repository:
+
+    >>> def browsing_location_adapter(context, schema):
+    ...     print "Returning location for", context
+    ...     print "   ", schema
+    ...     return repository
+    >>> import zeit.cms.browser.interfaces
+    >>> import zeit.cms.content.interfaces
+    >>> gsm.registerAdapter(
+    ...     browsing_location_adapter,
+    ...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
+    ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+    Setup interaction:
+
+    >>> import zeit.cms.testing
+    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')

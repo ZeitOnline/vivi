@@ -1,0 +1,18 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <!-- Those requirements should actually be part of the integration package.
+  -->
+
+  <include package="zeit.cms" />
+  <include package="zeit.cms.browser" />
+  <include package="zeit.cms.tagging.browser" />
+
+  <include package="zeit.workflow" />
+  <include package="zeit.workflow.browser" />
+  <include package="zeit.workflow.json" />
+  <include package="zeit.workflow.xmlrpc" />
+
+  <include package="zeit.ghost" />
+  <include package="zeit.ghost.browser" />
+
+</configure>

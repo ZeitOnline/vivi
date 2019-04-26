@@ -1,0 +1,86 @@
+Common metadata
+===============
+
+The common metadata is used for many content types. Test a few things on the
+test type[#functional]_:
+
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
+
+Set "comments allowed" from common metadata:
+
+>>> content.commentsAllowed = True
+
+Set "show commentthread from common metadata:
+
+>>> content.show_commentthread = True
+
+The initial value for the copyright is None:
+
+>>> content.copyrights is None
+True
+
+(Test for copyrights not necessary anymore. It's an optional field now)
+
+
+Set a copyright:
+
+>>> content.copyrights = u'ich'
+
+Verify the data:
+
+>>> import zeit.connector.interfaces
+>>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
+>>> import pprint
+>>> pprint.pprint(dict(properties))
+{('comments', u'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('copyrights', u'http://namespaces.zeit.de/CMS/document'): u'ich',
+ ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
+
+Products
+++++++++
+
+>>> content.product is None
+True
+
+Setting the same value doesn't change anything. We'd get an error otherwise
+that there is no title for "None":
+
+>>> content.product = None
+
+Setting normal values:
+
+>>> product = zeit.cms.content.sources.Product(u'ZEDE', u'Zeit Online')
+>>> content.product = product
+>>> content.product.id
+u'ZEDE'
+>>> content.product.title
+u'Zeit Online'
+>>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]
+u'ZEDE'
+
+Channels
+++++++++
+
+>>> content.channels = (('International', 'Nahost'), ('Wissen', None))
+>>> properties[('channels', 'http://namespaces.zeit.de/CMS/document')]
+u'International Nahost;Wissen'
+>>> content.channels
+((u'International', u'Nahost'), (u'Wissen', None))
+
+None handling
++++++++++++++
+
+Setting 
+
+>>> content.byline = None
+>>> content.byline is None
+True
+
+
+Clean up:
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()

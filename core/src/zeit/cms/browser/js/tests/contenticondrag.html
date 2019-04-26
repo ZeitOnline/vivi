@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="context/@@standard_macros/require_resources"/>
+    <style type="text/css">
+      /* make visible so webdriver has something to grab for drag&drop */
+      .content-icon .uniqueId {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="testwidget" style="width: 20em; height:20em;">
+      <input type="hidden" name="testwidget" value="" />
+      <div class="object-reference landing-zone-candidate"></div>
+      <input type="text" id="testwidget.url" name="testwidget.url" />
+    </div>
+
+    <div id="result">
+    </div>
+
+    <script type="text/javascript">
+      var application_url = '../../';
+      zeit.cms.widget_under_test = new zeit.cms.DropObjectWidget(
+          'testwidget', ['type-testcontenttype'], '@@object-details');
+
+      var d = zeit.cms.load_object_details(
+        'http://xml.zeit.de/testcontent', '@@object-details');
+      d.addCallback(function(result) {
+        var container = document.getElementById('result');
+        container.innerHTML = result;
+        jQuery(container).trigger_fragment_ready();
+      });
+    </script>
+  </body>
+</html>

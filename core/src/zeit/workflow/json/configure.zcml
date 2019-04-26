@@ -1,0 +1,54 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  >
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="publish"
+    class=".publish.Publish"
+    attribute="publish"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="retract"
+    class=".publish.Publish"
+    attribute="retract"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="can-publish"
+    class=".publish.Publish"
+    attribute="can_publish"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="job-status"
+    class=".task.Status"
+    attribute="getStatus"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="job-error"
+    class=".task.Status"
+    attribute="getError"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    name="job-result"
+    class=".task.Status"
+    attribute="getResult"
+    permission="zeit.workflow.Publish"
+    />
+
+</configure>
