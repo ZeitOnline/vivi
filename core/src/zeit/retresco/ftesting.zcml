@@ -1,0 +1,42 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
+  <!-- We provide the actual implementation to the mocks registered
+       by zeit.cms.tagging. -->
+  <includeOverrides package="zeit.retresco" />
+  <include package="zeit.retresco.json" />
+  <include package="zeit.retresco.xmlrpc" />
+
+  <include package="zeit.content.advertisement" file="ftesting.zcml" />
+  <include package="zeit.content.article" file="ftesting.zcml" />
+  <include package="zeit.content.author" file="ftesting.zcml" />
+  <include package="zeit.content.gallery" file="ftesting.zcml" />
+  <include package="zeit.content.image" file="ftesting.zcml" />
+  <include package="zeit.content.infobox" file="ftesting.zcml" />
+  <include package="zeit.content.link" file="ftesting.zcml" />
+  <include package="zeit.content.portraitbox" file="ftesting.zcml" />
+  <include package="zeit.content.rawxml" file="ftesting.zcml" />
+  <include package="zeit.content.text" file="ftesting.zcml" />
+  <include package="zeit.content.volume" file="ftesting.zcml" />
+
+  <include package="zeit.find" file="ftesting.zcml" />
+  <include package="zeit.seo" file="ftesting.zcml" />
+  <include package="zeit.push" file="testing.zcml" />
+
+  <principal
+    id="zope.index"
+    title="Updater"
+    login="index"
+    password="indexpw" />
+
+  <grant
+    principal="zope.index"
+    permission="zeit.retresco.UpdateIndex"
+    />
+
+</configure>

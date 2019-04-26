@@ -1,0 +1,258 @@
+{
+    "hits": {
+        "hits": [
+            {
+                "sort": [
+                    "behord"
+                ],
+                "_type": "documents",
+                "_source": {
+                    "author": "",
+                    "body": "<video/>",
+                    "date": "2016-07-04T15:47:01Z",
+                    "doc_id": "{urn:uuid:fd67975a-b67b-469f-934e-becd3f556386}",
+                    "doc_type": "video",
+                    "payload": {
+                        "body": {
+                            "subtitle": "Etwa 60 radikalislamische Gemeinschaften mit insgesamt mehreren Tausemd Mitgliedern befinden sich laut Beh\u00f6rdenangaben in Bosnien. Davon ziehen j\u00e4hrlich mehrere Mitglieder in den Irak und nach Syrien in den Krieg.",
+                            "supertitle": "Islamismus",
+                            "title": "Bosnische Beh\u00f6rden besorgt \u00fcber Salafisten"
+                        },
+                        "brightcove": {
+                            "id": "5020444524001"
+                        },
+                        "document": {
+                            "DailyNL": false,
+                            "banner": true,
+                            "breaking_news": false,
+                            "comments": true,
+                            "date-last-modified": "2016-07-04T15:47:01.533274+00:00",
+                            "date_first_released": "2016-07-04T13:56:12+00:00",
+                            "date_last_checkout": "2016-07-04T15:47:01.490531+00:00",
+                            "expires": "2017-07-04T15:31:00+00:00",
+                            "flv_url": "http://brightcove.vo.llnwd.net/v1/uds/pd/18140073001/201607/2321/18140073001_5020454529001_5020444524001.mp4",
+                            "has_recensions": false,
+                            "last-semantic-change": "2016-07-04T15:44:13+00:00",
+                            "last_modified_by": "zope.brightcove",
+                            "ressort": "Gesellschaft",
+                            "thumbnail": "http://brightcove.vo.llnwd.net/v1/unsecured/media/18140073001/201607/2321/18140073001_5020462889001_5020444524001-th.jpg?pubId=18140073001",
+                            "uuid": "{urn:uuid:fd67975a-b67b-469f-934e-becd3f556386}",
+                            "video_still": "http://brightcove.vo.llnwd.net/v1/unsecured/media/18140073001/201607/2321/18140073001_5020462890001_5020444524001-vs.jpg?pubId=18140073001",
+                            "year": 2016
+                        },
+                        "head": {
+                            "author_names": [],
+                            "authors": [],
+                            "keywords": []
+                        },
+                        "meta": {
+                            "provides": "<pickle>\n  <initialized_object>\n    <klass>\n      <global name=\"Provides\" module=\"zope.interface.declarations\"/>\n    </klass>\n    <arguments>\n      <tuple>\n        <global name=\"Video\" module=\"zeit.content.video.video\"/>\n        <global name=\"Interface\" module=\"zope.interface\"/>\n        <global name=\"IZONContent\" module=\"zeit.cms.section.interfaces\"/>\n      </tuple>\n    </arguments>\n  </initialized_object>\n</pickle>",
+                            "type": "video"
+                        },
+                        "teaser": {
+                            "text": "Etwa 60 radikalislamische Gemeinschaften mit insgesamt mehreren Tausemd Mitgliedern befinden sich laut Beh\u00f6rdenangaben in Bosnien. Davon ziehen j\u00e4hrlich mehrere Mitglieder in den Irak und nach Syrien in den Krieg.",
+                            "title": "Bosnische Beh\u00f6rden besorgt \u00fcber Salafisten"
+                        },
+                        "vivi": {
+                            "cms_icon": "/@@/zeit-content-video-interfaces-IVideo-zmi_icon.gif",
+                            "cms_preview_url": null,
+                            "publish_status": "published",
+                            "range": null,
+                            "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fvideo%2F2016-07%2F5020444524001"
+                        },
+                        "workflow": {
+                            "date_last_published": "2016-07-04T15:47:01.445373+00:00",
+                            "date_last_published_semantic": "2016-07-04T15:47:01.397487+00:00",
+                            "date_last_pushed": "2016-07-04T15:47:04.090373+00:00",
+                            "published": true,
+                            "status": "OK"
+                        }
+                    },
+                    "rtr_events": [],
+                    "rtr_keywords": [],
+                    "rtr_locations": [],
+                    "rtr_organisations": [],
+                    "rtr_persons": [],
+                    "rtr_products": [],
+                    "section": "/Gesellschaft",
+                    "supertitle": "Islamismus",
+                    "teaser": "Etwa 60 radikalislamische Gemeinschaften mit insgesamt mehreren Tausemd Mitgliedern befinden sich laut Beh\u00f6rdenangaben in Bosnien. Davon ziehen j\u00e4hrlich mehrere Mitglieder in den Irak und nach Syrien in den Krieg.",
+                    "title": "Bosnische Beh\u00f6rden besorgt \u00fcber Salafisten",
+                    "url": "/video/2016-07/5020444524001"
+                },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
+                "_id": "AVdSEjEHwjPkPgfuSQI5"
+            },
+            {
+                "sort": [
+                    "deutschland"
+                ],
+                "_type": "documents",
+                "_source": {
+                    "author": "Moritz von Uslar",
+                    "body": "<article/>",
+                    "date": "2015-03-17T08:46:23Z",
+                    "doc_id": "{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}",
+                    "doc_type": "article",
+                    "payload": {
+                        "body": {
+                            "byline": "von Moritz von Uslar",
+                            "subtitle": "Unser Reporter Moritz von Uslar berichtet in dieser Kolumne aus dem deutschen Alltag. Folge 7: Die Gemeinde Dinslaken-Lohberg im Ruhrgebiet gilt als ein Zentrum des deutschen Salafismus. Wie konnte diese Parallelgesellschaft mitten in Deutschland entstehen?",
+                            "supertitle": "Dinslaken",
+                            "title": "Morgens halb zehn in Deutschland"
+                        },
+                        "document": {
+                            "DailyNL": false,
+                            "access": "registration",
+                            "artbox_thema": false,
+                            "author": [
+                                "Moritz von Uslar"
+                            ],
+                            "banner": true,
+                            "breaking_news": false,
+                            "channels": [
+                                "zeit-magazin leben"
+                            ],
+                            "color_scheme": "Redaktion",
+                            "comments": true,
+                            "countings": true,
+                            "date-last-modified": "2015-03-18T23:53:35.933089+00:00",
+                            "date_first_released": "2015-03-17T08:45:58.583171+00:00",
+                            "date_last_checkout": "2015-03-18T23:53:35.728272+00:00",
+                            "erscheint": "26.02.2015",
+                            "export_cds": false,
+                            "foldable": true,
+                            "has_recensions": false,
+                            "header_layout": "briefmarke",
+                            "in_rankings": "yes",
+                            "is_content": "yes",
+                            "jobname": "Halbzehn 09",
+                            "last-semantic-change": "2015-03-17T08:46:06.599026+00:00",
+                            "last_modified_by": "ldap.bischoff",
+                            "lead_candidate": false,
+                            "minimal_header": false,
+                            "mostread": "yes",
+                            "origname": "Halbzehn 09",
+                            "page": 30,
+                            "previous_uniqueIds": [
+                                "http://xml.zeit.de/zeit-magazin/2015/09/Halbzehn-09",
+                                "http://xml.zeit.de/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islsmischer-staat-salafismus"
+                            ],
+                            "print-publish": "2015-02-26T06:00:00+00:00",
+                            "push_news": "no",
+                            "rebrush_website_content": false,
+                            "ressort": "zeit-magazin",
+                            "serie": "Morgens halb zehn in Deutschland",
+                            "show_commentthread": true,
+                            "sub_ressort": "leben",
+                            "template": "article",
+                            "text-length": 6928,
+                            "type": "article",
+                            "uuid": "{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}",
+                            "volume": 9,
+                            "year": 2015
+                        },
+                        "head": {
+                            "author_names": [
+                                "Moritz von Uslar"
+                            ],
+                            "authors": [
+                                "http://xml.zeit.de/autoren/U/Moritz_Uslarvon/index"
+                            ],
+                            "keywords": [],
+                            "teaser_image": "http://xml.zeit.de/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islsmischer-staat/",
+                            "teaser_image_fill_color": null
+                        },
+                        "lifetimecounter": {
+                            "first_count": "2015-04-03",
+                            "last_count": "2015-04-03",
+                            "total_hits": 52
+                        },
+                        "meta": {
+                            "provides": "<pickle>\n  <initialized_object>\n    <klass>\n      <global name=\"Provides\" module=\"zope.interface.declarations\"/>\n    </klass>\n    <arguments>\n      <tuple>\n        <global name=\"Article\" module=\"zeit.content.article.article\"/>\n        <global name=\"Interface\" module=\"zope.interface\"/>\n        <global name=\"IZMOContent\" module=\"zeit.magazin.interfaces\"/>\n        <global name=\"IZMOArticle\" module=\"zeit.magazin.interfaces\"/>\n      </tuple>\n    </arguments>\n  </initialized_object>\n</pickle>",
+                            "type": "article"
+                        },
+                        "print": {
+                            "article_id": "4323525",
+                            "publication-id": "1378993011928",
+                            "ressort": "zeitmagazin"
+                        },
+                        "tagging": {
+                            "disabled": "2a1717ba-c240-4750-ab52-be77ec282301",
+                            "pinned": "6c72f805-bd46-446b-9ddd-e780abf50fdf\td77ddcd6-b1d9-43bc-b7e8-895925191bfd\t9f2b559c-beff-47bf-89d1-123e5bd50543",
+                            "rankedTags": ""
+                        },
+                        "teaser": {
+                            "supertitle": "Morgens halb zehn in Deutschland",
+                            "text": "Die Gemeinde Dinslaken-Lohberg gilt als ein Zentrum des deutschen Salafismus. Wie konnte diese Parallelgesellschaft entstehen? Moritz von Uslar sucht nach Antworten.",
+                            "title": "Ein Ort in Schrittgeschwindigkeit"
+                        },
+                        "vgwort": {
+                            "private_token": "c85feb90fe314024894a972ae55deda5",
+                            "public_token": "304b98e8b84247ff89c29f9d72c16fd5",
+                            "reported_error": "",
+                            "reported_on": "2017-05-05T15:13:11.722219+00:00"
+                        },
+                        "vivi": {
+                            "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
+                            "cms_preview_url": "",
+                            "publish_status": "published-with-changes",
+                            "range": 52,
+                            "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fzeit-magazin%2F2015%2F09%2Fdinslaken-ruhrgebiet-islamischer-staat-salafismus"
+                        },
+                        "workflow": {
+                            "corrected": "yes",
+                            "date_last_published": "2016-09-10T03:12:45+00:00",
+                            "date_last_published_semantic": "2015-03-17T08:46:23.944286+00:00",
+                            "date_last_pushed": "2015-03-17T08:45:16.653584+00:00",
+                            "edited": "no",
+                            "enabled": "no",
+                            "id": "ZMLB-2015-09-Halbzehn-09",
+                            "importsource": "k4",
+                            "ipad_template": "geschichte",
+                            "last-modified-by": "import",
+                            "long_text": "\"An Ihrer Stelle w\u00fcrde ich hier keine Leute anquatschen. Sonst haben Sie ganz schnell mal eine Faust im Gesicht.\" Dieses Zitat hat Moritz von Uslar aus Dinkslaken-Lohberg mitgebracht.",
+                            "message_config": "<pickle>\n  <list>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n  </list>\n</pickle>",
+                            "product-id": "ZMLB",
+                            "product-name": "ZEIT Magazin",
+                            "publish_job_id": "649738063",
+                            "published": true,
+                            "released_from": "2015-03-18T23:53:34+00:00",
+                            "running-volume": "ZMLB-2015-09",
+                            "seo_optimized": "yes",
+                            "short_text": "Dinslaken-Lohberg gilt als ein Zentrum des dt. Salafismus. @moritzvonuslar schaut vor Ort, wie das passieren konnte.",
+                            "status": "OK",
+                            "urgent": true
+                        }
+                    },
+                    "rtr_events": [],
+                    "rtr_keywords": [],
+                    "rtr_locations": [],
+                    "rtr_organisations": [],
+                    "rtr_persons": [],
+                    "rtr_products": [],
+                    "section": "/zeit-magazin/leben",
+                    "supertitle": "Dinslaken",
+                    "teaser": "Die Gemeinde Dinslaken-Lohberg gilt als ein Zentrum des deutschen Salafismus. Wie konnte diese Parallelgesellschaft entstehen? Moritz von Uslar sucht nach Antworten.",
+                    "teaser_img_subline": "Moritz von Uslar auf Forschungsreise in Dinslaken",
+                    "teaser_img_url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islsmischer-staat/",
+                    "title": "Morgens halb zehn in Deutschland",
+                    "url": "/zeit-magazin/2015/09/dinslaken-ruhrgebiet-islamischer-staat-salafismus"
+                },
+                "_score": null,
+                "_index": "zeit_pool_20160922_103054",
+                "_id": "AVdSEuf3wjPkPgfuSQI6"
+            }
+        ],
+        "total": 5,
+        "max_score": null
+    },
+    "_shards": {
+        "successful": 1,
+        "failed": 0,
+        "total": 1
+    },
+    "took": 4,
+    "timed_out": false
+}
