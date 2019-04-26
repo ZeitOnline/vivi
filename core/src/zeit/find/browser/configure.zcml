@@ -1,0 +1,80 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml">
+
+  <include package="grokcore.component" file="meta.zcml" />
+  <grok:grok package="." />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="find"
+    template="find.pt"
+    permission="zope.View"
+  />
+
+  <gocept:pagelet
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="index.html"
+    template="find_start_page.pt"
+    permission="zope.View"
+  />
+
+  <!-- These are the JSON views. -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="search_form"
+    class=".find.SearchForm"
+    permission="zope.View"
+  />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.SearchResult"
+    name="search_result"
+    permission="zope.View"
+  />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.ToggleFavorited"
+    name="toggle_favorited"
+    permission="zope.View"
+  />
+
+  <browser:page
+    for="zope.interface.Interface"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".find.LastQuery"
+    name="zeit.find.last-query"
+    permission="zope.View"
+    />
+
+  <!-- selector -->
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.ICollection"
+    layer="zeit.cms.browser.interfaces.ICMSSkin"
+    name="get_object_browser"
+    class=".selector.Selector"
+    template="selector.pt"
+    permission="zope.View"
+    />
+
+  <!-- autocomplete -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="simple_find"
+    class=".autocomplete.SimpleFind"
+    permission="zope.Public"
+  />
+
+
+</configure>

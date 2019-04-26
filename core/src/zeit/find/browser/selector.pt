@@ -1,0 +1,22 @@
+<tal:block i18n:domain="zeit.cms">
+  <h1 i18n:translate="">Search</h1>
+
+  <div class="zeit-find-search">
+    <div id="search_form"></div>
+  </div>
+
+  <script language="javascript" tal:content="string:
+  (function() {
+    var url = '${request/getApplicationURL}/fanstatic/zeit.find';
+    zeit.cms.import(url+'/find.css');
+    var d = zeit.cms.import(url+'/find.js');
+    var initial_query = MochiKit.Base.evalJSON('${view/initial_query}');
+    d.addCallback(function(result) {
+      var search = new zeit.find.Search(initial_query)
+      var selector = new zeit.find.Selector(self, search);
+      search.render();
+      return result;
+    });
+    })();
+  "></script>
+</tal:block>

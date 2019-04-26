@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <tal:replace content="context/@@standard_macros/require_resources" />
+    <script language="javascript"
+            tal:content="string:
+            var application_url = '${context/@@absolute_url}';
+            var context_url = application_url;
+    "></script>
+  </head>
+  <body>
+    <div id="cp-search" class="zeit-find-search">
+    </div>
+    <script language="javascript">
+      zeit.find.init_full_search();
+    </script>
+  </body>
+</html>

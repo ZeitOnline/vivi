@@ -1,0 +1,7 @@
+<div class="no_search_result">
+{.section error}
+<div>Die Eingabe enthält Fehler: {@}</div>
+{.or}
+<div>Keine Suchergebnisse.</div>
+{.end}
+</div>

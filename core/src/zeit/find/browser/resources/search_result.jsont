@@ -1,0 +1,50 @@
+{.repeated section results}
+<div class="search_entry object-details type-{type}">
+  <span class="uniqueId">{uniqueId}</span>
+  {.section graphical_preview_url}
+    <div class="graphical_preview">
+      <img src="{@}" />
+    </div>
+  {.end}
+  <div class="supertitle">
+    {.section icon}
+      <img src="{icon}" />
+    {.end}
+    <a href="#" class="{favorited_css_class}"></a>
+    <img src="{publication_status}" />
+    <span class="text">
+      {supertitle}
+    </span>
+  </div>
+  <div class="teaser_title">
+    {teaser_title}
+  </div>
+  <div class="teaser_text">
+    {teaser_text}
+  </div>
+  <div class="subtitle">
+    {subtitle}
+  </div>
+  <div class="serie">
+    {serie}
+  </div>
+  <div class="metadata">
+    <span>{date}</span>
+    <span>{product}</span>
+    <span>{topic}</span>
+    {.repeated section authors}
+    <span>{@}</span>
+    {.end}
+  </div>
+  <div class="object-links">
+    <div class="goto-object object-link">
+      <a target="_top" href="{application_url}/@@redirect_to?unique_id={uniqueId}">
+        CMS
+      </a>
+    </div>
+    <div class="preview object-link">
+      <a target="_blank" href="{application_url}/@@redirect_to?unique_id={uniqueId}&view=show_preview">Vorschau</a>
+    </div>
+  </div>
+</div>
+{.end}

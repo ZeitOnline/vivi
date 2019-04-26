@@ -1,0 +1,365 @@
+#fulltext {
+  width: 75%;
+  margin-right: .4em;
+  padding: 4px;
+}
+
+#cp-search .search_result {
+  clear: both;
+  padding: 1em 0 0 0;
+}
+
+.search_result .search_entry {
+  margin: 10px;
+}
+
+.search_result {
+	background-color: #F2F2F2;
+}
+
+#reset_search_button {
+  border: 0px solid #FFF;
+  cursor: pointer;
+  padding-bottom: 8px;
+  margin-left: 20px;
+  margin-right: -2em;
+  position: relative;
+  background-color: transparent;
+  display: inline-block;
+  outline: 0;
+}
+
+#reset_search_button:after {
+  content: "X";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  background-color: #ccc;
+  right: 35px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 2px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: normal;
+  font-size: 12px;
+  box-shadow: 0 0 2px #333;
+  cursor: pointer;
+}
+
+.toggle_favorited.favorited,
+.toggle_favorited.not_favorited {
+  margin-right: .8em;
+  padding: 0.214em;
+}
+
+.search_entry .recent_links {
+  float: left;
+}
+
+.search_entry .recent_links img {
+  margin: 5px;
+}
+
+.search_entry .metadata {
+  display: none;
+  font-size: 0.8em;
+  margin-bottom: .8em;
+}
+
+/* Some search results will not be shown in some areas */
+
+#cp-search .search_entry .teaser_text {
+  display:none;
+}
+
+.search_entry .subtitle {
+  display:none;
+}
+
+.search_entry .serie {
+  display:none;
+}
+
+
+/*------*/
+
+
+#search_form .search_entry .metadata {
+  display: block;
+  overflow: hidden;
+}
+
+.search_entry .metadata > span {
+  display: block;
+  float: left;
+  color: #9BBBD3;
+  border-left: 1px solid #bbb;
+  padding: 0 .5em;
+}
+
+.search_entry .metadata > span:first-child {
+  border: none;
+  padding: 0 .5em 0 0;
+}
+
+
+.zeit-find-search .button{
+  border-top: 1px solid #ddd;
+  clear: both;
+  cursor: pointer;
+  margin: 1em 0;
+  padding-left: 15px;
+  background: transparent url(opener.png) no-repeat 0px 5px;
+}
+
+#zeit-find-search-form .unfolded {
+  background: transparent url(opener_close.png) no-repeat 0px 5px;
+}
+
+.search-with-info > .fields {
+  margin-bottom: 1em;
+}
+
+.search-with-info > .fields > div >  label {
+  float: left;
+  margin: 0 1em 0 2em;
+}
+
+
+.search-with-info > .fields > div > label.first-child {
+  margin: auto;
+  width: 8em;
+}
+
+.search-with-info > .fields > fieldset {
+  margin: 0;
+  padding: 0;
+  background: none;
+  margin-top: 0.5em;
+}
+
+.search-with-info > .fields > fieldset > label {
+  display: block;
+  float:left;
+  width: 110px;
+
+}
+
+.search-with-info > .fields > fieldset.reverse > label {
+  float: none;
+  width: auto;
+}
+
+
+.search-with-info > .fields > fieldset > input {
+  width: 178px;
+}
+
+.search-with-info > .fields > fieldset.reverse > label > input {
+  margin-left: 110px;
+}
+
+
+.search-with-info > .fields > fieldset > select {
+  width: 185px;
+}
+
+.search-with-info > .fields .likelabel {
+  width: 100px;
+  float:left;
+}
+
+.search-with-info > .fields .date > label {
+  display:block;
+}
+
+.search-with-info > .fields .date > input {
+  display:block;
+  width: 80px;
+}
+
+.search-with-info > .fields div.date {
+  float:left;
+  height:35px;
+  position:relative;
+  margin-left: 10px;
+ }
+
+.search-with-info > .fields > div > select,
+.search-with-info > .fields > div > input {
+  float: left;
+}
+
+.search-with-info > .fields > fieldset.types label {
+  float: none;
+}
+
+.search-with-info > .fields > fieldset.types div.inner {
+  float:left;
+  width: 170px;
+}
+
+.search-with-info > .fields > fieldset.types div.outer {
+  margin-top: 5px;
+}
+
+.search-with-info > .fields .types > .type-outer > .type-inner {
+  overflow: hidden;
+}
+
+.search-with-info > .info {
+  font-size: 0.8em;
+  overflow: hidden;
+}
+
+.search-with-info > .info > span {
+  display: block;
+  float: left;
+  font-style: italic;
+  margin-left: 1em;
+  padding-bottom: 0.25em;
+  white-space: nowrap;
+}
+
+.search-with-info > .info > span:before {
+  font-style: normal;
+  padding-right: 0.5em;
+}
+
+.search-with-info > .info > .info-from:before {
+  content: "ab";
+}
+
+.search-with-info > .info > .info-until:before {
+  content: "bis";
+}
+
+.search-with-info > .info > .info-from +
+.info-until {
+  /* Smaller margin when we have both from and until. */
+  margin-left: 0.5em;
+}
+
+.search-with-info > .info > .info-sort_order:before {
+  content: "sortiert nach";
+}
+
+.search-with-info > .info > .info-types\:list +
+.info-types\:list:before {
+  content: "/";
+  padding-right: 0.25em;
+}
+
+.search-with-info > .info > .info-types\:list +
+.info-types\:list {
+  margin-left: 0.25em;
+}
+
+
+#from,
+#until {
+  width: 8em;
+}
+
+.search-filter > .title {
+  font-size: 1em;
+}
+
+#filter_topic,
+#filter_time,
+#filter_type {
+  width: 33%;
+  float: left;
+}
+
+#filter_author {
+  clear:both;
+}
+
+.search-filter .filter_link {
+  cursor: pointer;
+  display: block;
+  font-size: 0.75em;
+  overflow: hidden;
+  color: blue;
+  white-space: nowrap;
+  width: 100%;
+}
+
+#filter_author .filter_link_outer {
+  width: 33%;
+  float: left;
+
+}
+
+#filter_author .filter_link {
+  white-space: normal;
+}
+
+#cp-search > div[id] {
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top: 1em;
+}
+
+.zeit-find-search .object-links {
+  float: left;
+}
+
+.toggle_favorited {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  height: 14px;
+  width: 14px;
+}
+
+
+.toggle_favorited.favorited {
+  background: transparent url('favorite.png') no-repeat center center;
+}
+
+.toggle_favorited.not_favorited {
+  background: transparent url('not_favorite.png') no-repeat center center;
+}
+
+
+#cp-search #search_form {
+  overflow-y: scroll;
+}
+
+
+/* search in lightbox styles */
+
+#content > .zeit-find-search #search_result,
+.lightbox #search_result {
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 1em;
+  width: 66%;
+}
+
+.lightbox #search_result {
+  left: 1em;
+}
+
+#content > .zeit-find-search #zeit-find-search-form,
+.lightbox #zeit-find-search-form {
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top: 1em;
+  width: 32%;
+}

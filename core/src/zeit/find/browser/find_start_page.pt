@@ -1,0 +1,13 @@
+<tal:block>
+
+  <div class="zeit-find-search">
+    <div id="search_form"></div>
+  </div>
+
+  <script language="javascript" tal:content="string:
+  (function() {
+    var search = new zeit.find.Search();
+    search.render();
+  })();
+  "></script>
+</tal:block>

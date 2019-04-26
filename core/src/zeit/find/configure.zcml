@@ -1,0 +1,6 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <utility factory=".search.from_product_config" />
+
+</configure>
