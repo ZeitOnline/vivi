@@ -1,0 +1,12 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   package="zeit.sourcepoint"
+   i18n_domain="zope">
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+
+  <include package="zeit.sourcepoint" />
+
+  <include package="zeit.content.text" />
+
+</configure>
