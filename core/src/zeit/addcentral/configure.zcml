@@ -1,0 +1,24 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  >
+
+  <browser:viewlet
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="05_addcentral"
+    manager="zeit.cms.browser.interfaces.ISidebar"
+    template="sidebar.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="addcentral"
+    class=".sidebar.Form"
+    permission="zope.View"
+    />
+
+</configure>
