@@ -16,7 +16,7 @@ DEBUG_CONNECTION = False
 
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 USER_AGENT = 'zeit.connector/' + pkg_resources.get_distribution(
-    'zeit.connector').version
+    'vivi.core').version
 
 
 logger = logging.getLogger(__name__)

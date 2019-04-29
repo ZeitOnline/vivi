@@ -20,7 +20,7 @@ class Connection(elasticsearch.connection.RequestsHttpConnection):
     def _user_agent(self):
         return requests.utils.default_user_agent(
             'zeit.retresco-%s/python-requests' % (
-                pkg_resources.get_distribution('zeit.retresco').version))
+                pkg_resources.get_distribution('vivi.core').version))
 
 
 def TransportWithConnection(connection_class):
