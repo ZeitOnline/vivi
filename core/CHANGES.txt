@@ -5,7 +5,7 @@ vivi.core changes
 4.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Fix RSS Content query breaking hide dupes clause
 
 
 4.0.0 (2019-04-29)

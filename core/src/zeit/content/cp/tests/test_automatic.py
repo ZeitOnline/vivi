@@ -757,6 +757,16 @@ class AutomaticRSSTest(HideDupesTest):
             'zeit.content.cp', './tests/fixtures/feed_data.xml')
         return lxml.etree.parse(url)
 
+    def mocked_rss_query(self, area):
+        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
+        spektrum_feed = source.factory.find(None, 'spektrum')
+        area.rss_feed = spektrum_feed.id
+        m = requests_mock.Mocker()
+        m.get(spektrum_feed.url,
+              status_code=200,
+              content=lxml.etree.tostring(self.feed_xml()))
+        return m
+
     def test_spektrum_teaser_object_should_have_expected_attributes(self):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
@@ -798,14 +808,25 @@ class AutomaticRSSTest(HideDupesTest):
 
     def test_rss_content_query_creates_teasers_from_feed(self):
         area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
-        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
-        spektrum_feed = source.factory.find(None, 'spektrum')
-        area.rss_feed = spektrum_feed.id
+        m = self.mocked_rss_query(area)
         rss_query = zeit.content.cp.automatic.RSSFeedContentQuery(area)
-        m = requests_mock.Mocker()
-        m.get(spektrum_feed.url,
-              status_code=200,
-              content=lxml.etree.tostring(self.feed_xml()))
         with m:
             result = rss_query()
         self.assertEqual(3, len(result))
+
+    def test_hide_dupe_does_not_contain_rss_link(self):
+        area = self.create_automatic_area(self.cp, count=4, type='rss-feed')
+        mocked_feed = self.mocked_rss_query(area)
+        elastic_area = self.create_automatic_area(self.cp)
+        elastic_area.automatic_type = 'elasticsearch-query'
+        elastic_area.elasticsearch_raw_query = (
+            u'{"query": {"match": {"foo": "bar"}}}')
+        elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+        with mocked_feed:
+            IRenderedArea(elastic_area).values()
+        elastic_query = elasticsearch.search.call_args[0][0]
+        # the CP has another area with 3 teasers on it
+        self.assertEqual(3,
+                         len(elastic_query['query']['bool']['must_not']
+                             [1]['ids']['values']))
