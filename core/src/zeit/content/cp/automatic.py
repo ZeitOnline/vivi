@@ -9,6 +9,7 @@ import operator
 import requests
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.connector.interfaces
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.content.link.interfaces
@@ -501,6 +502,14 @@ class RSSLink(object):
         self.feed = feed
         self.uniqueId = self.url
 
+    # Since only a few attributes of z.c.link.ILink are implemented,
+    # fall back to the missing values of zopes schema fields
+    def __getattr__(self, name):
+        field = IRSSLink.get(name)
+        if not field:
+            raise AttributeError(name)
+        return field.missing_value
+
     @cachedproperty
     def title(self):
         title = self.xml.findtext('title')
@@ -564,3 +573,9 @@ def no_counter(context):
 @grok.implementer(zeit.cms.content.interfaces.IUUID)
 def no_uuid(context):
     return None
+
+
+@grok.adapter(IRSSLink)
+@grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def no_dav_props(context):
+    return dict()

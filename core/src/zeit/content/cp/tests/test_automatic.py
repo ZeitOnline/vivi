@@ -806,6 +806,14 @@ class AutomaticRSSTest(HideDupesTest):
             lxml.etree.fromstring(xml_str))
         self.assertEqual('Lorem ipsum', teaser.supertitle)
 
+    def test_teaser_falls_back_to_icms_content_missing_value(self):
+        feed_xml = self.feed_xml()
+        items = feed_xml.xpath('/rss/channel/item')
+        item = zeit.content.cp.automatic.RSSLink(items[0])
+        self.assertEqual(None, item.byline)
+        with self.assertRaises(AttributeError):
+            item.foo
+
     def test_rss_content_query_creates_teasers_from_feed(self):
         area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
         m = self.mocked_rss_query(area)
