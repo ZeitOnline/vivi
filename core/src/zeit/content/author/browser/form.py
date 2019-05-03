@@ -117,6 +117,8 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     factory = zeit.content.author.author.Author
     checkout = False
 
+    field_groups = FormBase.field_groups
+
     need_confirmation_checkbox = False
 
     def _validate_folder_name(self, folder_name):
