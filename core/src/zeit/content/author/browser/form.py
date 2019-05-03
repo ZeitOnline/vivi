@@ -115,7 +115,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     form_fields = (FormBase._form_fields.omit(*EditForm.omit_fields) +
                    zope.formlib.form.FormFields(IDuplicateConfirmation))
     factory = zeit.content.author.author.Author
-    next_view = 'view.html'
+    checkout = False
 
     need_confirmation_checkbox = False
 
@@ -155,10 +155,8 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     def add(self, object):
         if self.ask_before_adding_author_twice(object):
             return
-        container = self.create_folder(object)
-        container['index'] = object
-        self._created_object = container['index']
-        self._finished_add = True
+        super(AddContextfree, self).add(
+            object, self.create_folder(object), 'index')
 
     def create_folder(self, object):
         path = self.author_folder + [object.lastname[0].upper()]
