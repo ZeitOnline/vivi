@@ -197,6 +197,20 @@ def update_freetext_on_add(context, event):
     update_author_freetext(context)
 
 
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def create_honorar_entry(context, event):
+    if context.honorar_id:
+        return
+    api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
+    context.honorar_id = api.create({
+        'vorname': context.firstname,
+        'nachname': context.lastname,
+        'anlageAssetId': context.uniqueId,
+    })
+
+
 class Dependencies(zeit.workflow.dependency.DependencyBase):
     """When content is published, make sure that all author objects
     referenced by it are also available to the published content.

@@ -61,3 +61,26 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
         query = parse_qs(urlparse(self.http.requests[0]['path']).query)
         params = json.loads(b64decode(query['script.param'][0]))
         self.assertEqual(author, params)
+
+
+class HonorarIDTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.author.testing.ZCML_LAYER
+
+    def test_creates_author_in_hdok_if_no_external_id(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        self.assertTrue(self.layer['honorar_mock'].create.called)
+        self.assertEqual(
+            'mock-honorar-id', self.repository['author'].honorar_id)
+
+    def test_honorar_id_present_is_left_alone(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        author.honorar_id = u'manual-id'
+        self.repository['author'] = author
+        self.assertFalse(self.layer['honorar_mock'].create.called)
+        self.assertEqual('manual-id', self.repository['author'].honorar_id)
