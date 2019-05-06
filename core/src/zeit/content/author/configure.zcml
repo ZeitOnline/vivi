@@ -86,5 +86,6 @@
       permission="zeit.EditContent" />
   </class>
 
-</configure>
+  <utility factory=".honorar.from_product_config" />
 
+</configure>
