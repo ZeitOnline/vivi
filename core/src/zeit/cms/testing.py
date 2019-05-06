@@ -406,6 +406,7 @@ def celery_ping():
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     response_code = 200
+    response_headers = {}
     response_body = '{}'
 
     def do_GET(self):
@@ -413,21 +414,20 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.requests.append(dict(
             verb=self.command,
             path=self.path,
+            headers=self.headers,
             body=self.rfile.read(length).decode('utf-8') if length else None,
         ))
-        if isinstance(self.response_code, int):
-            status = self.response_code
-        else:
-            status = self.response_code.pop(0)
-        if isinstance(self.response_body, six.string_types):
-            body = self.response_body
-        else:
-            body = self.response_body.pop(0)
-        if isinstance(body, six.text_type):
-            body = body.encode('utf-8')
-        self.send_response(status)
+        self.send_response(self._next('response_code'))
+        for key, value in self._next('response_headers').items():
+            self.send_header(key, value)
         self.end_headers()
-        self.wfile.write(body)
+        self.wfile.write(six.ensure_binary(self._next('response_body')))
+
+    def _next(self, name):
+        result = getattr(self, name)
+        if isinstance(result, list):
+            result = result.pop(0)
+        return result
 
     do_POST = do_GET
     do_PUT = do_GET
@@ -439,6 +439,7 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
     def testSetUp(self):
         super(HTTPLayer, self).testSetUp()
         self['request_handler'].requests = []
+        self['request_handler'].response_headers = {}
         self['request_handler'].response_body = '{}'
         self['request_handler'].response_code = 200
 
