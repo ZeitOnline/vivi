@@ -1,0 +1,11 @@
+<tal:block i18n:domain="zeit.cms">
+<form method="GET" action="@@zeit.content.author.do_lookup">
+  <fieldset>
+    <legend i18n:translate="">Create author</legend>
+    <label for="author-query" i18n:translate="">Name</label>
+    <input type="text" name="q" id="author-query" />
+    <input type="submit" value="Look up author"
+           i18n:attributes="value" />
+  </fieldset>
+</form>
+</tal:block>
