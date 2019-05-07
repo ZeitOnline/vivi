@@ -5,15 +5,12 @@ import lxml.etree
 import mock
 import transaction
 import zeit.cms.checkout.helper
-import zeit.cms.testing
 import zeit.content.article.interfaces
 import zeit.content.article.testing
 import zope.i18n.translationdomain
 
 
-class TestAdding(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class TestAdding(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestAdding, self).setUp()

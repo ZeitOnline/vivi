@@ -1,14 +1,10 @@
-import time
 import transaction
 import zeit.cms.clipboard.interfaces
-import zeit.cms.testing
 import zeit.content.article.testing
 import zope.security.management
 
 
-class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
 
     block_type = NotImplemented
 

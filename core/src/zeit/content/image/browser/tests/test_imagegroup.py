@@ -1,14 +1,11 @@
 # coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
 import gocept.testing.assertion
-import mock
 import pkg_resources
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zope.component
 
 
 class ImageGroupHelperMixin(object):
@@ -75,10 +72,8 @@ class ImageGroupHelperMixin(object):
 
 
 class ImageGroupGhostTest(
-        zeit.cms.testing.BrowserTestCase,
+        zeit.content.image.testing.BrowserTestCase,
         ImageGroupHelperMixin):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_adding_imagegroup_adds_a_ghost(self):
         self.add_imagegroup()
@@ -90,11 +85,9 @@ class ImageGroupGhostTest(
 
 
 class ImageGroupBrowserTest(
-        zeit.cms.testing.BrowserTestCase,
+        zeit.content.image.testing.BrowserTestCase,
         ImageGroupHelperMixin,
         gocept.testing.assertion.String):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()
@@ -280,10 +273,8 @@ class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
 
 
 class ThumbnailBrowserTest(
-        zeit.cms.testing.BrowserTestCase,
+        zeit.content.image.testing.BrowserTestCase,
         ImageGroupHelperMixin):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_thumbnail_source_is_created_on_add(self):
         self.add_imagegroup()

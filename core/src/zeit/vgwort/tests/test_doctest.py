@@ -5,5 +5,5 @@ import zeit.vgwort.testing
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.vgwort.testing.ZCML_LAYER,
+        layer=zeit.vgwort.testing.WSGI_LAYER,
         package='zeit.vgwort')

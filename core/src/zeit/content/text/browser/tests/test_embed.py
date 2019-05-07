@@ -2,9 +2,7 @@ import zeit.content.text.testing
 import zeit.cms.testing
 
 
-class EmbedBrowserTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.text.testing.ZCML_LAYER
+class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
     def test_add_embed(self):
         b = self.browser

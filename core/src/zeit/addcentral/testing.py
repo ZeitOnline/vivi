@@ -15,3 +15,13 @@ WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = SELENIUM_LAYER

@@ -2,9 +2,9 @@
 Infobox
 =======
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Lets create an infobox:
 

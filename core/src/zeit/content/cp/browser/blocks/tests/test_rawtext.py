@@ -1,12 +1,9 @@
-import zeit.cms.testing
 import zeit.content.cp
 import zeit.content.cp.centerpage
 import zeit.content.text.text
 
 
-class TestRawText(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TestRawText(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestRawText, self).setUp()

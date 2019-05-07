@@ -1,11 +1,8 @@
 import zeit.campus.testing
-import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class StudyCourseTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.campus.testing.LAYER
+class StudyCourseTest(zeit.campus.testing.BrowserTestCase):
 
     def test_study_course_can_be_edited(self):
         self.repository['campus']['article'] = (
@@ -28,9 +25,7 @@ class StudyCourseTest(zeit.cms.testing.BrowserTestCase):
             ['Mathematik'], b.getControl('Study course').displayValue)
 
 
-class FacebookTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.campus.testing.LAYER
+class FacebookTest(zeit.campus.testing.BrowserTestCase):
 
     def get_article(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)

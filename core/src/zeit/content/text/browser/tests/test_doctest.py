@@ -8,5 +8,5 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         package='zeit.content.text.browser',
-        layer=zeit.content.text.testing.ZCML_LAYER))
+        layer=zeit.content.text.testing.WSGI_LAYER))
     return suite

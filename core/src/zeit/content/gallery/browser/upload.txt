@@ -4,9 +4,9 @@ Multiple File Upload
 The file upload is handled by a flash movie. There is one view to upload an
 image to the gallery.
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 >>> from zeit.content.gallery.browser.testing import add_folder, add_image
 >>> browser.open('http://localhost/++skin++cms/repository')
@@ -119,10 +119,3 @@ Traceback (most recent call last):
 HTTPError: HTTP Error 415: Unsupported Media Type
 >>> print browser.contents
 {"error": "NotAnImage"}
-
-If the post is in any other way broken, a 500 is returned:
-
->>> browser.post('@@upload-image', 'form.actions.add=yes')
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 500: Internal Server Error

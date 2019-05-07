@@ -1,4 +1,4 @@
-from mechanize import LinkNotFoundError
+from zope.testbrowser.browser import LinkNotFoundError
 from zeit.cms import testing
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
@@ -28,8 +28,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         folder = self.repository['testing']
         folder['foo'] = ExampleContentType()
         self.assertFalse(IPublishInfo(folder).published)
-        browser = testing.Browser()
-        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser = testing.Browser(self.layer['wsgi_app'])
+        browser.login('producer', 'producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testing')
         link = browser.getLink(url='@@delete.html')
@@ -44,8 +44,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         self.assertFalse(IPublishInfo(folder).published)
         IPublishInfo(content).set_can_publish(CAN_PUBLISH_SUCCESS)
         IPublish(content).publish()
-        browser = testing.Browser()
-        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser = testing.Browser(self.layer['wsgi_app'])
+        browser.login('producer', 'producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testing')
         link = browser.getLink(url='@@delete.html')
@@ -59,8 +59,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         subfolder = folder['2005']
         self.assertFalse(IPublishInfo(folder).published)
         self.assertFalse(IPublishInfo(subfolder).published)
-        browser = testing.Browser()
-        browser.addHeader('Authorization', 'Basic producer:producerpw')
+        browser = testing.Browser(self.layer['wsgi_app'])
+        browser.login('producer', 'producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/online')
         link = browser.getLink(url='@@delete.html')

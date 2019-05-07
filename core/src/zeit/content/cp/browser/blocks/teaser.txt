@@ -4,10 +4,10 @@ Teaser block
 The teaser block contains a list of teasers. Let's first create a list of
 teasers in the lead area[#fill-dav-with-content]_:
 
->>> import z3c.etestbrowser.testing
+>>> import zeit.cms.testing
 >>> import zeit.content.cp.browser.testing
->>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.xml_strict = True
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
@@ -38,7 +38,7 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
 >>> select = lxml.cssselect.CSSSelector(
 ...     'div.type-teaser div[cms|drop-url]')
 >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
->>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+>>> drop_url = browser.xpath(select.path, namespaces=nsmap)[0].get(
 ...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
 >>> import zeit.content.cp.centerpage
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
@@ -203,12 +203,18 @@ Layouts
 
 [#setup-layout-test-needs-real-content-type-with-image]_
 
+XXX work around https://github.com/zopefoundation/zope.testbrowser/issues/78
+>>> def click_link(browser, text):
+...    browser._response.body = browser._response.body.replace('<div ', '<div xmlns:cms="http://namespaces.gocept.com/zeit-cms" ', 1)
+...    browser.open(browser.xpath(u'//a[contains(., "%s")]/@href' % text.decode('utf-8'))[0])
+
+
 The layout can be selected at the edit box:
 
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()
->>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
+>>> click_link(browser, 'Großer Teaser mit Bild und Teaserliste')
 
 It is marked in the edit box now:
 
@@ -261,7 +267,7 @@ When the image is not an image group, it will be just used:
 ...             zeit.content.image.interfaces.IImages(co).image = (
 ...                 group['obama-clinton-120x120.jpg'])
 >>> browser.getLink('Edit block properties', index=0).click()
->>> browser.getLink('Großer Teaser').click()
+>>> click_link(browser, 'Großer Teaser')
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...

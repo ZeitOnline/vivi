@@ -1,7 +1,6 @@
 # coding: utf8
 import mock
 import unittest
-import zeit.cms.testing
 import zeit.content.author.testing
 
 
@@ -11,9 +10,7 @@ class PropertyMock(mock.Mock):
         return self()
 
 
-class FormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def setUp(self):
         super(FormTest, self).setUp()

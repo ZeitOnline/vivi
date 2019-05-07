@@ -4,9 +4,9 @@ Syndcation Views
 
 Create a browser first:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Syndication is only possible for repository content. To syndicate a user
 chooses one or more syndication targets. The user can add any feed to "his
@@ -205,7 +205,7 @@ There is also a preview link, to be able to preview the feed:
 >>> bookmark = browser.url
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
-HTTP Error 303: See Other
+302 Moved Temporarily
 http://localhost/preview-prefix/politik.feed
 
 Note that if there is an `index` object in the container the preview url is
@@ -223,7 +223,7 @@ The preview goes to the index now:
 
 >>> browser.open(bookmark)
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
-HTTP Error 303: See Other
+302 Moved Temporarily
 http://localhost/preview-prefix/index/
 
 
@@ -247,7 +247,7 @@ Go to politk.feed to see that it is hidden on the HP:
 >>> browser.getLink('politik').click()
 >>> hp_checkbox = browser.getControl(name='hp.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
 >>> hp_checkbox.value
-False
+[]
 
 When we syndicate again *with* HP, the flag is set again:
 
@@ -285,7 +285,7 @@ Go to politk.feed to see that it is w/o related:
 >>> browser.getLink('politik').click()
 >>> relateds_checkbox = browser.getControl(name='visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
 >>> relateds_checkbox.value
-False
+[]
 
 When we syndicate again *with* relateds, the flag is set again:
 
@@ -504,8 +504,7 @@ True
 ...     name='hp.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4'
 ...          'tdmVyYmVzc2VydC1kaWUtd2VsdA==.')
 >>> hide_ctl.value
-False
-
+[]
 
 Let's have a look at the source now:
 
@@ -565,7 +564,7 @@ There is a checkbox to hide the relateds:
 >>> browser.getControl('Save').click()
 >>> browser.getControl(name="visible_relateds.aHR0cDovL3htbC56ZWl0LmRlL29ubGluZS8yMDA3LzAxL3JhdWNoZW4tdmVyYmVzc2VydC1kaWUtd2VsdA==."
 ...     ).value
-False
+[]
 
 Its also indicated in the source:
 

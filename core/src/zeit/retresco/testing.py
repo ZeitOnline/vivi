@@ -96,6 +96,8 @@ ZCML_LAYER = ZCMLLayer(
     zeit.content.volume.testing.product_config +
     zeit.content.image.testing.product_config)
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+
 
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
     name='CeleryLayer', bases=(ZCML_LAYER,))
@@ -110,6 +112,11 @@ MOCK_ZCML_LAYER = plone.testing.Layer(
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
 
 
 class TagTestHelpers(object):

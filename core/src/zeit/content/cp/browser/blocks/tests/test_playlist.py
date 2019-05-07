@@ -1,13 +1,10 @@
 from zeit.content.video.playlist import Playlist
 import urllib2
-import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 
 
-class TestPlaylist(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestPlaylist, self).setUp()

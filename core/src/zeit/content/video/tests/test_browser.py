@@ -1,7 +1,6 @@
 import plone.testing
 import urllib2
 import zeit.cms.browser.interfaces
-import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
 import zeit.push.interfaces
@@ -11,9 +10,7 @@ import zope.component
 import zope.publisher.browser
 
 
-class TestThumbnail(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.video.testing.LAYER
+class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
 
     def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
         player = zope.component.getUtility(
@@ -27,12 +24,10 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         factory.next()
         factory.next()
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
-        self.browser.mech_browser.set_handle_redirect(False)
-        with self.assertRaises(urllib2.HTTPError) as e:
-            self.browser.open('@@thumbnail')
-        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.browser.follow_redirects = False
+        self.browser.open('@@thumbnail')
         self.assertEqual('http://thumbnailurl',
-                         e.exception.hdrs.get('location'))
+                         self.browser.headers.get('location'))
 
     def test_url_of_view_on_video_should_return_thumbnail_url(self):
         player = zope.component.getUtility(
@@ -61,12 +56,10 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         playlist.thumbnail = 'http://thumbnailurl'
         factory.next()
         self.browser.open('http://localhost/++skin++vivi/repository/pls/')
-        self.browser.mech_browser.set_handle_redirect(False)
-        with self.assertRaises(urllib2.HTTPError) as e:
-            self.browser.open('@@thumbnail')
-        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.browser.follow_redirects = False
+        self.browser.open('@@thumbnail')
         self.assertEqual('http://thumbnailurl',
-                         e.exception.hdrs.get('location'))
+                         self.browser.headers.get('location'))
 
     def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
         factory = zeit.content.video.testing.playlist_factory(self)
@@ -84,9 +77,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(url, 'http://thumbnailurl')
 
 
-class TestStill(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.video.testing.LAYER
+class TestStill(zeit.content.video.testing.BrowserTestCase):
 
     def test_preview_view_on_video_should_redirect_to_still_url(self):
         factory = zeit.content.video.testing.video_factory(self)
@@ -100,12 +91,10 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
         factory.next()
         factory.next()
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
-        self.browser.mech_browser.set_handle_redirect(False)
-        with self.assertRaises(urllib2.HTTPError) as e:
-            self.browser.open('@@preview')
-        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.browser.follow_redirects = False
+        self.browser.open('@@preview')
         self.assertEqual('http://stillurl',
-                         e.exception.hdrs.get('location'))
+                         self.browser.headers.get('location'))
 
     def test_url_of_preview_view_on_video_should_return_still_url(self):
         player = zope.component.getUtility(
@@ -129,9 +118,7 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(url, 'http://stillurl')
 
 
-class TestPlaylist(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.video.testing.LAYER
+class TestPlaylist(zeit.content.video.testing.BrowserTestCase):
 
     def test_playlist_should_be_viewable(self):
         from zeit.content.video.playlist import Playlist
@@ -146,16 +133,16 @@ class TestPlaylist(zeit.cms.testing.BrowserTestCase):
                              """)
 
 
-VIDEO_PUSHMOCK_LAYER = plone.testing.Layer(
-    bases=(zeit.content.video.testing.LAYER,
+VIDEO_PUSHMOCK_WSGI_LAYER = plone.testing.Layer(
+    bases=(zeit.content.video.testing.WSGI_LAYER,
            zeit.push.testing.PUSH_MOCK_LAYER),
     name='VideoPushMockLayer')
 
 
-class TestVideoEdit(zeit.cms.testing.BrowserTestCase):
+class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
     """Testing ..browser.video.Edit."""
 
-    layer = VIDEO_PUSHMOCK_LAYER
+    layer = VIDEO_PUSHMOCK_WSGI_LAYER
 
     def test_push_to_social_media_is_done_on_publish(self):
         factory = zeit.content.video.testing.video_factory(self)

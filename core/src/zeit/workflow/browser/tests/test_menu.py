@@ -1,11 +1,8 @@
-import mechanize
-import zeit.cms.testing
 import zeit.workflow.testing
+import zope.testbrowser.browser
 
 
-class WorkflowTabTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class WorkflowTabTest(zeit.workflow.testing.BrowserTestCase):
 
     def test_workflow_tab_is_shown_for_repository_content(self):
         b = self.browser
@@ -19,5 +16,5 @@ class WorkflowTabTest(zeit.cms.testing.BrowserTestCase):
         b.open(
             'http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
         b.getLink('Checkout').click()
-        with self.assertRaises(mechanize.LinkNotFoundError):
+        with self.assertRaises(zope.testbrowser.browser.LinkNotFoundError):
             b.getLink('Workflow')

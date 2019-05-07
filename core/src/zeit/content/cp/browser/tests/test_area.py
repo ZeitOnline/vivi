@@ -95,8 +95,8 @@ class ElementBrowserTestHelper(object):
 
     def setUp(self):
         super(ElementBrowserTestHelper, self).setUp()
-        self.browser = zeit.cms.testing.Browser()
-        self.browser.addHeader('Authorization', 'Basic user:userpw')
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        self.browser.login('user', 'userpw')
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.open('contents')
         self.content_url = self.browser.url
@@ -120,9 +120,7 @@ class ElementBrowserTestHelper(object):
 
 class RegionBrowserTest(
         ElementBrowserTestHelper,
-        zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+        zeit.content.cp.testing.BrowserTestCase):
 
     name = 'region'
 
@@ -134,9 +132,7 @@ class RegionBrowserTest(
 
 class AreaBrowserTest(
         ElementBrowserTestHelper,
-        zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+        zeit.content.cp.testing.BrowserTestCase):
 
     name = 'area'
 
@@ -230,9 +226,8 @@ class TooltipFixture(object):
         self.repository['data']['cp-area-schemas']['major.svg'] = second
 
 
-class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TooltipBrowserTest(TooltipFixture,
+                         zeit.content.cp.testing.BrowserTestCase):
 
     def test_schematic_preview_returns_content_of_matched_files(self):
         self.browser.open(
@@ -303,9 +298,7 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         self.selenium.assertText('css=.type-region .kind', 'Duo')
 
 
-class AreaConfigurationTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class AreaConfigurationTest(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(AreaConfigurationTest, self).setUp()

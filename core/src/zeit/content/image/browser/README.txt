@@ -4,9 +4,9 @@ Image
 
 Create a browser first:
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Listing
 ========
@@ -43,8 +43,8 @@ Image Data
 
 We get the image itself just by accessing its url:
 
->>> image = zope.testbrowser.testing.Browser()
->>> image.addHeader('Authorization', 'Basic user:userpw')
+>>> image = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> image.login('user', 'userpw')
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
 >>> image.headers['content-type']
@@ -651,9 +651,6 @@ An if-modified-since header is also honoured:
 >>> image.addHeader('If-Modified-Since', modified)
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 304: Not Modified
 >>> print image.headers
 Status: 304 Not Modified
 Content-Length: 0
@@ -662,8 +659,8 @@ Last-Modified: ...
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 
->>> image = zope.testbrowser.testing.Browser()
->>> image.addHeader('Authorization', 'Basic user:userpw')
+>>> image = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> image.login('user', 'userpw')
 >>> image.addHeader('If-Modified-Since', 'Fri, 07 Feb 2008 12:47:16 GMT')
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')

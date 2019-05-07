@@ -20,4 +20,4 @@ def test_suite():
         'master-image.txt',
         package='zeit.content.image.browser',
         checker=checker,
-        layer=zeit.content.image.testing.ZCML_LAYER)
+        layer=zeit.content.image.testing.WSGI_LAYER)

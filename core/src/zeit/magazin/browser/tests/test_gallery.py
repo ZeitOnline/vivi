@@ -1,12 +1,9 @@
 import gocept.testing.assertion
-import zeit.cms.testing
 import zeit.magazin.testing
 
 
-class ZMOGalleryCRUD(zeit.cms.testing.BrowserTestCase,
+class ZMOGalleryCRUD(zeit.magazin.testing.BrowserTestCase,
                      gocept.testing.assertion.String):
-
-    layer = zeit.magazin.testing.LAYER
 
     def test_zmo_gallery_has_facebook_magazin_fields(self):
         b = self.browser

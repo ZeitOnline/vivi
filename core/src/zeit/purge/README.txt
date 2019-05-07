@@ -40,9 +40,9 @@ PurgeError: [localhost:...] timed out
 Browser integration
 -------------------
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
 >>> browser.getLink('Purge').click()
 Purging Server1 http://www.zeit.de/testcontent

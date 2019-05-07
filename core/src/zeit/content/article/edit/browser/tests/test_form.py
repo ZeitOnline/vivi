@@ -6,13 +6,10 @@ import datetime
 import pytz
 import unittest
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class MemoTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class MemoTest(zeit.content.article.testing.BrowserTestCase):
 
     def test_memo_is_editable_while_checked_in(self):
         self.repository['article'] = Article()
@@ -27,13 +24,11 @@ class MemoTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('foo bar baz', b.getControl('Memo').value)
 
 
-class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
+class ReadonlyTest(zeit.content.article.testing.BrowserTestCase):
     """Sample test to make sure the view of a checked-in article displays
     widgets in read-only mode.
 
     """
-
-    layer = zeit.content.article.testing.LAYER
 
     def setUp(self):
         super(ReadonlyTest, self).setUp()
@@ -51,9 +46,7 @@ class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
             self.browser.getControl('Year')
 
 
-class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class WorkflowStatusDisplayTest(zeit.content.article.testing.BrowserTestCase):
 
     def test_displays_status_fields_as_checkboxes(self):
         somalia = zeit.cms.interfaces.ICMSContent(
@@ -82,9 +75,7 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
             '...zope.user...', b.contents)
 
 
-class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
 
     def test_no_page_displays_as_not_applicable(self):
         b = self.browser
@@ -154,9 +145,7 @@ class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementPresent('css=.fieldname-supertitle .charlimit')
 
 
-class FilenameTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class FilenameTest(zeit.content.article.testing.BrowserTestCase):
 
     def test_existing_filename_yields_error_message(self):
         article = Article()

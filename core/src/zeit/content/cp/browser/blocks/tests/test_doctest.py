@@ -26,5 +26,6 @@ def test_suite():
         'teaser-countings.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
+        layer=zeit.content.cp.testing.WSGI_LAYER
     ))
     return suite

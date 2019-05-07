@@ -12,9 +12,9 @@ For UI-Tests we need a Testbrowser and some setup:
 >>> principal = zope.security.testing.Principal(u'zope.user')
 >>> participation = zope.security.testing.Participation(principal)
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 
 HTML views
@@ -27,12 +27,7 @@ on the UI itself:
 >>> browser.open('http://localhost:8080/++skin++cms/find')
 >>> print browser.contents
 <html>
-  <head>
-    <script language="javascript">
-            var application_url = 'http://localhost:8080/++skin++cms';
-            var context_url = application_url;
-    </script>
-  </head>
+  ...
   <body>
     <div id="cp-search" class="zeit-find-search">
     </div>

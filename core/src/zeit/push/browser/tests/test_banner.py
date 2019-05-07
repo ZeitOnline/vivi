@@ -3,9 +3,7 @@ import mock
 import zeit.push.testing
 
 
-class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.push.testing.LAYER
+class RetractBannerTest(zeit.push.testing.BrowserTestCase):
 
     def setUp(self):
         super(RetractBannerTest, self).setUp()

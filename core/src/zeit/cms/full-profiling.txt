@@ -7,9 +7,9 @@ profile the whole application pipeline.
 
 Create a test browser:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.handleErrors = False
 
 Open the start-page:

@@ -37,7 +37,7 @@ class TestWhitelistLocationAutocomplete(
         zeit.cms.testing.ZeitCmsBrowserTestCase):
     """Testing ..whitelist.Whitelist.locations()."""
 
-    layer = zeit.retresco.testing.ZCML_LAYER
+    layer = zeit.retresco.testing.WSGI_LAYER
 
     def test_search_for_locations(self):
         request = zope.publisher.browser.TestRequest(

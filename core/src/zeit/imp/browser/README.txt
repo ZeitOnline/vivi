@@ -92,9 +92,9 @@ The image manipulation view is on an imagegroup containing a master image:
 
 .. [#setup]
 
-    >>> import zope.testbrowser.testing
-    >>> browser = zope.testbrowser.testing.Browser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> import zeit.cms.testing
+    >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+    >>> browser.login('user', 'userpw')
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())

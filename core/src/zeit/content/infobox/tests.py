@@ -10,6 +10,10 @@ InfoboxLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(InfoboxLayer,))
+
+
 class InfoboxSourceTest(
         zeit.cms.content.tests.test_contentsource.ContentSourceBase,
         zeit.cms.testing.FunctionalTestCase):

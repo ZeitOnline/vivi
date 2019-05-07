@@ -79,8 +79,8 @@ Add tokens:
 
 The number of available tokens is provided as a view (for Nagios checks):
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.open('http://localhost/@@zeit.vgwort.available_tokens')
 >>> print browser.contents
 3

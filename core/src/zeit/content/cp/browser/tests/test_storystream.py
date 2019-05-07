@@ -1,12 +1,9 @@
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 
 
-class StoryStreamAddTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class StoryStreamAddTest(zeit.content.cp.testing.BrowserTestCase):
 
     def test_storystream_can_be_added(self):
         b = self.browser

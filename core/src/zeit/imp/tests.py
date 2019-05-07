@@ -25,6 +25,13 @@ imp_layer = zeit.cms.testing.ZCMLLayer(
     zeit.content.image.testing.product_config +
     product_config)
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(imp_layer,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
 
 class TestLayerMask(unittest.TestCase):
 

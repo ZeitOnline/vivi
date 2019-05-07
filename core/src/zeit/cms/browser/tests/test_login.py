@@ -17,7 +17,7 @@ import zope.securitypolicy.interfaces
 
 class LoginFormLayer(plone.testing.Layer):
 
-    defaultBases = (zeit.cms.testing.ZCML_LAYER,)
+    defaultBases = (zeit.cms.testing.WSGI_LAYER,)
 
     def setUp(self):
         root = self['functional_setup'].getRootFolder()
@@ -58,7 +58,7 @@ class LoginFormTest(zeit.cms.testing.BrowserTestCase,
 
     def setUp(self):
         super(LoginFormTest, self).setUp()
-        self.browser = zeit.cms.testing.Browser()
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_unauthenticated_redirects_to_loginform(self):
         b = self.browser
@@ -90,7 +90,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase,
 
     def setUp(self):
         super(SSOTest, self).setUp()
-        self.browser = zeit.cms.testing.Browser()
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def login(self):
         b = self.browser
@@ -107,14 +107,10 @@ class SSOTest(zeit.cms.testing.BrowserTestCase,
     def test_have_permission_redirects_to_url(self):
         self.login()
         b = self.browser
-        try:
-            b.mech_browser.set_handle_redirect(False)
-            b.open('http://localhost/++skin++vivi/sso-login'
-                   '?url=http://example.com/path')
-        except urllib2.HTTPError, e:
-            self.assertEqual('http://example.com/path', e.hdrs.get('location'))
-        else:
-            self.fail('Redirect expected')
+        b.follow_redirects = False
+        b.open('http://localhost/++skin++vivi/sso-login'
+               '?url=http://example.com/path')
+        self.assertEqual('http://example.com/path', b.headers.get('location'))
 
     def test_have_permission_sets_cookie(self):
         self.login()

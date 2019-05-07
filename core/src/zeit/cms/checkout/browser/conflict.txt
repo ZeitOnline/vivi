@@ -11,11 +11,11 @@ Conflicts happen for example in the following case:
 
 4. A checks in document X
 
->>> from zope.testbrowser.testing import Browser
->>> a = Browser()
->>> a.addHeader('Authorization', 'Basic user:userpw')
->>> b = Browser()
->>> b.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> from zeit.cms.testing import Browser
+>>> a = Browser(layer['wsgi_app'])
+>>> a.login('user', 'userpw')
+>>> b = Browser(layer['wsgi_app'])
+>>> b.login('globalmgr', 'globalmgrpw')
 
 
 1. A checks out document X

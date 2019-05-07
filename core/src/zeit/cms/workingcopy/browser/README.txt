@@ -5,9 +5,9 @@ Working Copy
 The working copy is the area of the CMS where users actually edit content.
 Create a test browser first:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 
 When we access our working copy it is created on the fly if it does not exist
@@ -75,8 +75,8 @@ There is a delete link to remove object from the workingcopy again:
 
 >>> browser.getLink('Somalia').click()
 >>> browser.getLink('Cancel workingcopy')
-<Link text='[IMG] Cancel workingcopy'
-    url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')">
+<Link text='Cancel workingcopy'
+    url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')'>
 
 Let's open the delete form:
 

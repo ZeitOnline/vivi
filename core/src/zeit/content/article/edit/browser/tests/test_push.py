@@ -1,11 +1,8 @@
-import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
 
-class SocialFormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class SocialFormTest(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
         super(SocialFormTest, self).setUp()
@@ -36,9 +33,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
 
 
-class MobileFormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
         super(MobileFormTest, self).setUp()

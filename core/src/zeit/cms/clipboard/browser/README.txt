@@ -4,9 +4,9 @@ Clipboard
 
 Create a testbrowser:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 
 Tree
@@ -38,8 +38,8 @@ The clipboard is displayed as a tree. Initially it's empty:
 
 Open the drag pane of the wirtschaft.feed:
 
->>> ajax = ExtendedTestBrowser()
->>> ajax.addHeader('Authorization', 'Basic user:userpw')
+>>> ajax = Browser(layer['wsgi_app'])
+>>> ajax.login('user', 'userpw')
 >>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
 >>> print ajax.contents
 <div class="Text">Wirtschaft</div>
@@ -410,7 +410,7 @@ the Querdax entry we've moved into New Clip above:
 
 >>> link = ajax.getLink('Remove', index=3)
 >>> link
-<Link text='Delete[IMG] Remove'
+<Link text='Remove'
    url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/Querdax/@@ajax-delete-entry'>
 
 >>> link.click()
@@ -500,8 +500,8 @@ Clips can be renamed using the rename lightbox:
 >>> browser.getLink('Clipboard').click()
 >>> browser.open(browser.url + '/New%20Clip')
 >>> browser.getLink('Rename')
-<Link text='[IMG] Rename'
-  url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@rename-clip-lightbox')">
+<Link text='Rename'
+  url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@rename-clip-lightbox')'>
 >>> ajax.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/'
@@ -567,7 +567,7 @@ On the clipboard itself there is no rename action:
 >>> browser.getLink('Clipboard').click()
 >>> 'Rename' in [
 ...     node.get('title') for node in 
-...     browser.etree.xpath('//*[@class="context-actions"]//a')]
+...     browser.xpath('//*[@class="context-actions"]//a')]
 False
 
 Deleting clips
@@ -578,15 +578,15 @@ On the clipboard itself there is now "Delete" link:
 >>> browser.getLink('Clipboard').click()
 >>> 'Delete' in [
 ...     node.get('title') for node in 
-...     browser.etree.xpath('//*[@class="context-actions"]//a')]
+...     browser.xpath('//*[@class="context-actions"]//a')]
 False
 
 Open "New clip", we have a delete link there:
 
 >>> browser.open(browser.url + '/New%20Clip')
->>> link = browser.getLink('Delete', index=4)
+>>> link = browser.getLink('Delete')
 >>> link
-<Link text='[IMG] Delete' 
+<Link text='Delete' 
     url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@delete-clip'>
 >>> link.click()
 >>> print browser.contents
@@ -618,7 +618,7 @@ Content can be copied from the clipbard. Go to a folder in the repository:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online')
 >>> browser.getLink('Copy from clipboard')
-<Link text='[IMG] Copy from clipboard' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/@@insert_from_clipboard.lightbox')">
+<Link text='Copy from clipboard' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/@@insert_from_clipboard.lightbox')'>
 
 Let's open the lightbox. It shows the clipboard tree:
 

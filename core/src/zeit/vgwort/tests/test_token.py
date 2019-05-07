@@ -87,9 +87,7 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
         self.assertEqual(None, info.reported_error)
 
 
-class SecurityObjectCopyTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.vgwort.testing.ZCML_LAYER
+class SecurityObjectCopyTest(zeit.vgwort.testing.BrowserTestCase):
 
     def test_copying_should_work_even_with_security_on(self):
         # see #9960

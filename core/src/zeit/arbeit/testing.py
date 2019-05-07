@@ -39,3 +39,10 @@ class Layer(plone.testing.Layer):
             repository['arbeit'] = zeit.cms.repository.folder.Folder()
 
 LAYER = Layer()
+
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER

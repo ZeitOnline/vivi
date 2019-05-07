@@ -2,9 +2,9 @@
 IMP for Galleries
 =================
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 >>> import zeit.content.gallery.browser.testing
 >>> from zeit.content.gallery.browser.testing import add_image

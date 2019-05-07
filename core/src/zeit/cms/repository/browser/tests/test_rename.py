@@ -1,4 +1,4 @@
-from mechanize import LinkNotFoundError
+from zope.testbrowser.browser import LinkNotFoundError
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish

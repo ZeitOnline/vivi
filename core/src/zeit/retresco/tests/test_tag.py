@@ -35,7 +35,7 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
 
 class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
-    layer = zeit.retresco.testing.ZCML_LAYER
+    layer = zeit.retresco.testing.WSGI_LAYER
 
     def test_absolute_url_works_with_traverser(self):
         from ..tag import Tag

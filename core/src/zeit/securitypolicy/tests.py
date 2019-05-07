@@ -41,6 +41,7 @@ class SecurityPolicyLayer(plone.testing.Layer):
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
 LAYER = SecurityPolicyLayer()
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 
 
 def make_xls_test(*args):
@@ -55,7 +56,7 @@ def make_xls_test(*args):
 
 class SecurityPolicyXLSSheetCase(object):
 
-    layer = LAYER
+    layer = WSGI_LAYER
 
     def __init__(self, username, cases, description):
         super(SecurityPolicyXLSSheetCase, self).__init__()
@@ -63,12 +64,13 @@ class SecurityPolicyXLSSheetCase(object):
         self.cases = cases
         self.description = description
 
-        self.browser = zeit.cms.testing.Browser()
+    def setUp(self):
+        super(SecurityPolicyXLSSheetCase, self).setUp()
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         self.browser.raiseHttpErrors = False
-        if username != 'anonymous':
+        if self.username != 'anonymous':
             password = self.username + 'pw'
-            self.browser.addHeader(
-                'Authorization', 'Basic %s:%s' % (self.username, password))
+            self.browser.login(self.username, password)
 
     def tearDown(self):
         self.connector._reset()
@@ -147,5 +149,5 @@ def test_suite():
                 start_row = None
 
     # Picked up by gocept.pytestlayer (the layer on the XLSCase is ignored)
-    suite.layer = LAYER
+    suite.layer = SecurityPolicyXLSSheetCase.layer
     return suite

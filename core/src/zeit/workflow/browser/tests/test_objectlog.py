@@ -1,13 +1,10 @@
 from datetime import datetime
 import pytz
-import zeit.cms.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.testing
 
 
-class ObjectLog(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class ObjectLog(zeit.workflow.testing.BrowserTestCase):
 
     def test_log_entries_are_grouped_by_date(self):
         testcontent = self.repository['testcontent']

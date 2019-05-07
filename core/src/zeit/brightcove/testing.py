@@ -61,3 +61,9 @@ class BrightcoveLayer(plone.testing.Layer):
         self.playbackapi_patch.stop()
 
 LAYER = BrightcoveLayer()
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER

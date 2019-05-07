@@ -4,9 +4,9 @@ Article UI
 
 For UI-Tests we need a Testbrowser:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Metadata Preview
 ================
@@ -23,7 +23,7 @@ The metadata preview shows the most important data in list views:
       <div class="teaser-title" title="Teaser">...
 
 >>> browser.getLink('Checkout')
-<Link text='[IMG] Checkout...>
+<Link text='Checkout...>
 
 Make sure we have a "view" link:
 

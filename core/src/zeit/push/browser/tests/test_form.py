@@ -1,13 +1,10 @@
-import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.workflow
 
 
-class SocialFormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.push.testing.LAYER
+class SocialFormTest(zeit.push.testing.BrowserTestCase):
 
     def setUp(self):
         super(SocialFormTest, self).setUp()
@@ -235,7 +232,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
 
 class SocialAddFormTest(SocialFormTest):
 
-    layer = zeit.push.testing.LAYER
+    layer = zeit.push.testing.WSGI_LAYER
 
     def test_applies_push_configuration_to_added_object(self):
 
@@ -256,9 +253,7 @@ class SocialAddFormTest(SocialFormTest):
              'account': 'twitter-test'}, push.message_config)
 
 
-class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.push.testing.WEBDRIVER_LAYER
+class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TwitterShorteningTest, self).setUp()
@@ -285,9 +280,7 @@ class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
         self.assertEqual(original, s.getValue(input))
 
 
-class AuthorPushTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.push.testing.LAYER
+class AuthorPushTest(zeit.push.testing.BrowserTestCase):
 
     def get_article(self):
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)

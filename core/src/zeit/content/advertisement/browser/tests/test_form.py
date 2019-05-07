@@ -1,10 +1,7 @@
-import zeit.cms.testing
 import zeit.content.advertisement.testing
 
 
-class AdvertisementTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.advertisement.testing.ZCML_LAYER
+class AdvertisementTest(zeit.content.advertisement.testing.BrowserTestCase):
 
     def test_advertisement_can_be_added(self):
         b = self.browser

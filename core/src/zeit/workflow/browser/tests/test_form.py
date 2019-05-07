@@ -1,13 +1,10 @@
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.content.interfaces
-import zeit.cms.testing
 import zeit.workflow.testing
 import zope.component.hooks
 
 
-class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.CELERY_LAYER
+class WorkflowFormTest(zeit.workflow.testing.BrowserTestCase):
 
     def test_publish_content(self):
         b = self.browser
@@ -47,9 +44,7 @@ class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
 
 class ValidatingWorkflowFormTest(
         zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.CELERY_LAYER
+        zeit.workflow.testing.BrowserTestCase):
 
     def test_publish_with_validation_error_displays_message(self):
         self.register_workflow_with_error()

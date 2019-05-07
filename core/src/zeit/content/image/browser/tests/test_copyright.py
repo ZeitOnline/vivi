@@ -3,10 +3,8 @@ import zeit.content.image.testing
 from test_imagegroup import ImageGroupHelperMixin
 
 
-class TestCopyrights(zeit.cms.testing.BrowserTestCase,
+class TestCopyrights(zeit.content.image.testing.BrowserTestCase,
                      ImageGroupHelperMixin):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
 
     def setUp(self):
         super(TestCopyrights, self).setUp()
@@ -31,7 +29,7 @@ class TestCopyrights(zeit.cms.testing.BrowserTestCase,
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/imagegroup')
         link = b.getLink('Bulk change image copyright')
-        self.assertEqual('[IMG] Bulk change image copyright', link.text)
+        self.assertEqual('Bulk change image copyright', link.text)
         self.assertEqual(
             "javascript:zeit.cms.lightbox_form('http://localhost/"
             "++skin++cms/repository/imagegroup/@@set-image-copyright')",

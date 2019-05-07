@@ -408,9 +408,9 @@ other information
 
 .. [#browser] For UI-Tests we need a Testbrowser:
 
-    >>> from zope.testbrowser.testing import Browser
-    >>> browser = Browser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> from zeit.cms.testing import Browser
+    >>> browser = Browser(layer['wsgi_app'])
+    >>> browser.login('user', 'userpw')
 
 
 .. [#site] Set the site

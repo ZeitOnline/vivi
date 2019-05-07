@@ -107,9 +107,7 @@ class TestTeaserDisplay(unittest.TestCase):
         self.assertTrue(self.display.get_image(self.content) is None)
 
 
-class CommonEditTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
 
     def test_values_are_saved(self):
         b = self.browser

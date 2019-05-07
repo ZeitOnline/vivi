@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 
 class TestMail(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.ZCML_LAYER
+    layer = zeit.content.cp.testing.WSGI_LAYER
 
     def setUp(self):
         super(TestMail, self).setUp()

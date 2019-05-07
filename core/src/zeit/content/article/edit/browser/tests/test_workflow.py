@@ -1,10 +1,8 @@
-from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import mock
 import transaction
 import unittest
 import zeit.cms.tagging.testing
-import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
@@ -13,9 +11,7 @@ import zeit.edit.rule
 import zope.component
 
 
-class Checkin(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class Checkin(zeit.content.article.testing.BrowserTestCase):
 
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
         b = self.browser
@@ -240,9 +236,7 @@ class WorkflowEndToEnd(
         s.waitForElementPresent('css=.lightbox')
 
 
-class Publish(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class Publish(zeit.content.article.testing.BrowserTestCase):
 
     def test_validation_errors_are_displayed_during_publish(self):
         # Create article with divisions, otherwise the recursive validator has
@@ -262,9 +256,7 @@ class Publish(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
-class Delete(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.LAYER
+class Delete(zeit.content.article.testing.BrowserTestCase):
 
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser

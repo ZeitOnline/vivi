@@ -1,12 +1,9 @@
 import gocept.testing.assertion
-import zeit.cms.testing
 import zeit.magazin.testing
 
 
-class ZMOLinkCRUD(zeit.cms.testing.BrowserTestCase,
+class ZMOLinkCRUD(zeit.magazin.testing.BrowserTestCase,
                   gocept.testing.assertion.String):
-
-    layer = zeit.magazin.testing.LAYER
 
     def test_zmo_link_has_facebook_magazin_fields(self):
         b = self.browser
@@ -31,9 +28,7 @@ class ZMOLinkCRUD(zeit.cms.testing.BrowserTestCase,
         self.assertEllipsis('...mymagazin...', b.contents)
 
 
-class ZMOFacebookFields(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.magazin.testing.LAYER
+class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
 
     def setUp(self):
         super(ZMOFacebookFields, self).setUp()

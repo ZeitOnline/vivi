@@ -1,14 +1,11 @@
 import transaction
-import zeit.cms.testing
 import zeit.workflow.testing
 import zope.component.hooks
 
 
 class TestPublish(
         zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.workflow.testing.SELENIUM_LAYER
+        zeit.workflow.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestPublish, self).setUp()
@@ -103,9 +100,7 @@ class TestPublish(
         self.assertTrue(IPublishInfo(self.repository['other']).published)
 
 
-class TestRetract(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.workflow.testing.SELENIUM_LAYER
+class TestRetract(zeit.workflow.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestRetract, self).setUp()
@@ -141,9 +136,7 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase):
 
 class TestPublishValidationMessages(
         zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+        zeit.workflow.testing.BrowserTestCase):
 
     def test_publish_with_validation_error_displays_message(self):
         self.register_workflow_with_error()
