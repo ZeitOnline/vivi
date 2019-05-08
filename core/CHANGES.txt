@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.0.2 (unreleased)
+4.0.2 (2019-05-08)
 ------------------
 
 - FIX: Fix xml.zeit.de being able to render rss feed objects
