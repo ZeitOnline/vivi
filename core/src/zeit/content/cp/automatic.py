@@ -562,6 +562,10 @@ class RSSLink(object):
     def lead_candidate(self):
         return False
 
+    @cachedproperty
+    def authorships(self):
+        return []
+
 
 @grok.adapter(IRSSLink)
 @grok.implementer(zeit.cms.content.interfaces.IAccessCounter)
