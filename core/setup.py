@@ -175,6 +175,8 @@ setup(
             'tms-reindex-object=zeit.retresco.update:reindex',
             'facebook-access-token = zeit.push.facebook:create_access_token',
             'ua-payload-doc = zeit.push.urbanairship:print_payload_documentation',
+            'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
+            'vgwort-report = zeit.vgwort.report:report_new_documents',
 
             'zopeshell = zeit.cms.application:zope_shell',
         ],
