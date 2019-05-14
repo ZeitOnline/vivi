@@ -7,6 +7,8 @@ vivi.core changes
 
 - IR-77: Add `mdb_id` field to images
 
+- IR-77: Add `setup_timebased_jobs` xmlrpc method
+
 
 4.0.2 (2019-05-08)
 ------------------

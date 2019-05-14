@@ -53,6 +53,26 @@ Retract:
 >>> workflow.published
 False
 
+
+Helper for timebased jobs:
+
+>>> bool(workflow.retract_job_id)
+False
+>>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
+False
+
+>>> from datetime import datetime, timedelta
+>>> import pytz
+>>> _ = zeit.cms.testing.create_interaction()
+>>> workflow.release_period = (None, datetime.now(pytz.UTC) + timedelta(days=1))
+>>> zope.security.management.endInteraction()
+
+>>> server.setup_timebased_jobs('http://xml.zeit.de/online/2007/01/Somalia')
+True
+>>> bool(workflow.retract_job_id)
+True
+
+
 Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
