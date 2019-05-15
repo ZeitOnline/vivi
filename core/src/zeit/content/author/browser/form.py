@@ -2,7 +2,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import re
-import transaction
 import zeit.cms.browser.form
 import zeit.content.author.author
 import zeit.content.author.interfaces
@@ -87,22 +86,6 @@ class DisplayForm(FormBase,
     omit_fields = EditForm.omit_fields
 
 
-class IDuplicateConfirmation(zope.interface.Interface):
-
-    confirmed_duplicate = zope.schema.Bool(title=_('Add duplicate author'))
-
-
-@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
-class DuplicateAuthorWarning(Exception):
-
-    def doc(self):
-        return _(
-            u'An author with the given name already exists. '
-            u'If you\'d like to create another author with the same '
-            u'name anyway, check "Add duplicate author" '
-            u'and save the form again.')
-
-
 class AddContextfree(zeit.cms.browser.form.AddForm):
     """Adds a new author.
 
@@ -112,14 +95,11 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     """
 
     title = _('Add author')
-    form_fields = (FormBase._form_fields.omit(*EditForm.omit_fields) +
-                   zope.formlib.form.FormFields(IDuplicateConfirmation))
+    form_fields = FormBase._form_fields.omit(*EditForm.omit_fields)
     factory = zeit.content.author.author.Author
     checkout = False
 
     field_groups = FormBase.field_groups
-
-    need_confirmation_checkbox = False
 
     def _validate_folder_name(self, folder_name):
         # Get rid of umlauts
@@ -139,24 +119,11 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         return folder_name
 
     def create(self, data):
-        self.confirmed_duplicate = data.pop('confirmed_duplicate', None)
         data['__name__'] = 'index'
         self.applyChanges(self.new_object, data)
         return self.new_object
 
-    def ask_before_adding_author_twice(self, author):
-        if self.confirmed_duplicate or not author.exists:
-            return False
-        transaction.doom()
-        self.need_confirmation_checkbox = True
-        self.errors = (DuplicateAuthorWarning(),)
-        self.status = _('There were errors')
-        self.form_reset = False
-        return True
-
     def add(self, object):
-        if self.ask_before_adding_author_twice(object):
-            return
         super(AddContextfree, self).add(
             object, self.create_folder(object), 'index')
 
@@ -180,12 +147,6 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
             'zeit.content.author')
         author_folder = config['author-folder']
         return [x for x in author_folder.split('/') if x]
-
-    def update(self):
-        super(AddContextfree, self).update()
-        if not self.need_confirmation_checkbox:
-            self.form_fields = self.form_fields.omit('confirmed_duplicate')
-            self.setUpWidgets()
 
 
 class EditReference(zeit.edit.browser.form.InlineForm):

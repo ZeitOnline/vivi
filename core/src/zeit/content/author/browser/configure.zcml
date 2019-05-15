@@ -109,7 +109,7 @@
   <gocept:pagelet
     for="*"
     name="zeit.content.author.lookup"
-    template="honorar-lookup.pt"
+    class=".honorar.LookupForm"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.AddContent"
     />

@@ -75,13 +75,13 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
-    @property
-    def exists(self):
+    @classmethod
+    def exists(cls, firstname, lastname):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         return bool(elastic.search({'query': {'bool': {'filter': [
             {'term': {'doc_type': 'author'}},
-            {'term': {'payload.xml.firstname': self.firstname}},
-            {'term': {'payload.xml.lastname': self.lastname}},
+            {'term': {'payload.xml.firstname': firstname}},
+            {'term': {'payload.xml.lastname': lastname}},
         ]}}}).hits)
 
     @property
