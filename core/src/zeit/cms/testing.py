@@ -280,6 +280,8 @@ cms_product_config = """\
   sso-cookie-domain
 
   source-api-mapping product=zeit.cms.content.sources.ProductSource
+  # We just need a dummy XML file
+  checkin-webhook-config file://{base}/content/access.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
