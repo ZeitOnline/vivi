@@ -6,7 +6,8 @@
         />
     </li>
     <li>
-      <a href="@@zeit.content.author.add_contextfree" i18n:translate="">
+        <a tal:attributes="href string:@@zeit.content.author.add_contextfree?${view/create_parameters}"
+           i18n:translate="">
         Create new author
       </a>
     </li>

@@ -90,3 +90,11 @@ class Lookup(object):
             for key, value in row.items()
             if value and key in self.FORM_FIELDS
         })
+
+    @cachedproperty
+    def create_parameters(self):
+        parts = self.request.form['q'].split(' ')
+        firstname = ' '.join(parts[:-1])
+        lastname = parts[-1]
+        return self._form_parameters({
+            'vorname': firstname, 'nachname': lastname})
