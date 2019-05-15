@@ -30,6 +30,7 @@ class HonorarMockLayer(plone.testing.Layer):
         self['honorar_mock'] = mock.Mock()
         self['honorar_mock'].search.return_value = []
         self['honorar_mock'].create.return_value = 'mock-honorar-id'
+        self.testTearDown()
         self['honorar_orig'] = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         zope.component.getSiteManager().registerUtility(
@@ -42,6 +43,8 @@ class HonorarMockLayer(plone.testing.Layer):
         del self['honorar_mock']
 
     def testTearDown(self):
+        self['honorar_mock'].search.return_value = []
+        self['honorar_mock'].create.return_value = 'mock-honorar-id'
         self['honorar_mock'].reset_mock()
 
 

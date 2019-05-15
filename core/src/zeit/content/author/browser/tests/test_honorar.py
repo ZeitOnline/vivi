@@ -18,8 +18,10 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
 
     def test_add_author_first_searches_honorar_db(self):
         api = self.layer['honorar_mock']
-        api.search.return_value = [{
-            'gcid': '1234', 'vorname': u'Williäm', 'nachname': 'Shakespeare'}]
+        api.search.return_value = [
+            {'gcid': '1234', 'vorname': u'Williäm', 'nachname': 'Shakespeare'},
+            {'gcid': '2345', 'vorname': 'Random', 'nachname': 'Filler'},
+        ]
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.lookup')
         b.getControl('Firstname').value = 'foo'
@@ -53,7 +55,6 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
 
         # Make sure the new author gets a new __name__ rather than overwriting
         # the existing one.
-        b.getLink('Create new author').click()
         b.getControl('VG-Wort ID').value = '9876'
         b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
         b.getControl(name='form.actions.add').click()

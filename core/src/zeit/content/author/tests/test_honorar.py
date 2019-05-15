@@ -63,9 +63,7 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(author, params)
 
 
-class HonorarIDTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_creates_author_in_hdok_if_no_external_id(self):
         author = zeit.content.author.author.Author()

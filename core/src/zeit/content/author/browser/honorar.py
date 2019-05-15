@@ -4,6 +4,7 @@ from zeit.content.author.author import Author
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import zeit.cms.browser.form
+import zeit.cms.browser.view
 import zeit.content.author.interfaces
 import zope.component
 import zope.formlib.form
@@ -66,7 +67,24 @@ class LookupForm(zeit.cms.browser.form.FormBase,
             self.setUpWidgets()
 
 
-class Lookup(object):
+class Lookup(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        count = len(self.results)
+        if count == 0:
+            params = self.create_parameters
+        elif count == 1:
+            params = self.results[0]['form_parameters']
+        else:
+            params = None
+        if params:
+            addform = self.url(
+                self.context, '@@zeit.content.author.add_contextfree')
+            self.redirect(addform + '?' + params)
+            return
+
+        # Render template to display selection
+        return super(Lookup, self).__call__()
 
     @cachedproperty
     def results(self):
