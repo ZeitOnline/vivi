@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.0.3 (unreleased)
+4.0.3 (2019-05-16)
 ------------------
 
 - IR-59: Allow configuring excludes for checkin webhook
