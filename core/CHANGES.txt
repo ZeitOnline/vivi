@@ -5,7 +5,7 @@ vivi.core changes
 4.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- IR-59: Allow configuring excludes for checkin webhook
 
 
 4.0.2 (2019-05-08)
@@ -16,8 +16,6 @@ vivi.core changes
 
 4.0.1 (2019-05-02)
 ------------------
-
-- IR-59: Allow configuring excludes for checkin webhook
 
 - FIX: Fix RSS Content query breaking hide dupes clause
 
