@@ -1,5 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import Product
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.objectify
 import mock
 import plone.testing
@@ -23,7 +24,9 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(WebhookTest, self).setUp()
-        self.config = ''
+        self.config = (
+            '<webhooks><webhook url="http://localhost:%s"/></webhooks>' %
+            self.layer['http_port'])
         self.patch = mock.patch(
             'zeit.cms.checkout.webhook.HookSource._get_tree',
             new=lambda x: lxml.objectify.fromstring(self.config))
@@ -37,13 +40,17 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
         super(WebhookTest, self).tearDown()
 
     def test_calls_post_with_uniqueId_for_configured_urls(self):
-        self.config = (
-            '<webhooks><webhook url="http://localhost:%s"/></webhooks>' %
-            self.layer['http_port'])
         with checked_out(self.repository['testcontent']):
             pass
         self.assertEqual(
             [{'body': '["http://xml.zeit.de/testcontent"]',
+              'path': '/', 'verb': 'POST'}],
+            self.layer['request_handler'].requests)
+
+    def test_calls_hook_when_adding_new_object_to_repository(self):
+        self.repository['testcontent2'] = ExampleContentType()
+        self.assertEqual(
+            [{'body': '["http://xml.zeit.de/testcontent2"]',
               'path': '/', 'verb': 'POST'}],
             self.layer['request_handler'].requests)
 

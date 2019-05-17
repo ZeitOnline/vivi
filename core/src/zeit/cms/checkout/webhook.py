@@ -7,6 +7,7 @@ import requests
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
+import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)
@@ -20,6 +21,19 @@ def notify_after_checkin(context, event):
         return
     # XXX Work around redis/ZODB race condition, see BUG-796.
     notify_webhooks.apply_async((context.uniqueId,), countdown=5)
+
+
+@grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
+def notify_after_add(event):
+    context = event.object
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
+            event.newParent):
+        return
+    notify_webhooks.delay(context.uniqueId)
 
 
 @zeit.cms.celery.task(queuename='webhook')
