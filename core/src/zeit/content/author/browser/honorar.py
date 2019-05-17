@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.author import Author
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
+import json
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.content.author.interfaces
@@ -70,6 +71,10 @@ class LookupForm(zeit.cms.browser.form.FormBase,
 class Lookup(zeit.cms.browser.view.Base):
 
     def __call__(self):
+        func = getattr(self, self.request.method)
+        return func()
+
+    def GET(self):
         count = len(self.results)
         if count == 0:
             params = self.create_parameters
@@ -78,22 +83,41 @@ class Lookup(zeit.cms.browser.view.Base):
         else:
             params = None
         if params:
-            addform = self.url(
-                self.context, '@@zeit.content.author.add_contextfree')
-            self.redirect(addform + '?' + params)
+            self.redirect_to_addform(params)
             return
 
         # Render template to display selection
         return super(Lookup, self).__call__()
+
+    def redirect_to_addform(self, params):
+        addform = self.url(
+            self.context, '@@zeit.content.author.add_contextfree')
+        self.redirect(addform + '?' + params)
+
+    def POST(self):
+        if 'action-import' in self.request.form:
+            params = self.result_parameters[int(
+                self.request.form['selection'])]
+        else:
+            params = self.create_parameters
+        self.redirect_to_addform(params)
 
     @cachedproperty
     def results(self):
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         result = api.search(self.request.form['q'])
-        for row in result:
+        for i, row in enumerate(result):
+            row['index'] = i
             row['form_parameters'] = self._form_parameters(row)
         return result
+
+    @cachedproperty
+    def result_parameters(self):
+        if 'result_parameters' in self.request.form:
+            return json.loads(self.request.form['result_parameters'])
+        else:
+            return json.dumps([x['form_parameters'] for x in self.results])
 
     FORM_FIELDS = {
         'gcid': 'honorar_id',

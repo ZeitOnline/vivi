@@ -27,7 +27,8 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('Firstname').value = 'foo'
         b.getControl('Lastname').value = 'bar'
         b.getControl('Look up author').click()
-        b.getLink('Shakespeare').click()
+        b.getControl(name='selection').displayValue = ['Williäm Shakespeare']
+        b.getControl(name='action-import').click()
         self.assertEqual('Williäm', b.getControl('Firstname').value)
         self.assertEqual('Shakespeare', b.getControl('Lastname').value)
         self.assertEqual('1234', b.getControl('Honorar ID').value)
