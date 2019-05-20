@@ -165,7 +165,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'brightcove-import-playlists = zeit.brightcove.update:import_playlists'
+            'brightcove-import-playlists = zeit.brightcove.update:import_playlists',
             'dump_references = zeit.cms.relation.migrate:dump_references',
             'load_references = zeit.cms.relation.migrate:load_references',
             'refresh-cache = zeit.connector.invalidator:invalidate_whole_cache',
