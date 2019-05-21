@@ -61,6 +61,8 @@ class Honorar(object):
                 if messages and messages[0].get('code') == '401':
                     # "No records match the request", wonderful API. :-(
                     return {'response': {'data': []}}
+                elif messages:
+                    err.args += tuple(messages)
             raise
 
     @CONFIG_CACHE.cache_on_arguments()
