@@ -100,6 +100,13 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
         'product-id')
 
+    ir_mediasync_id = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['ir_mediasync_id'], zeit.cms.interfaces.IR_NAMESPACE,
+        'mediasync_id')
+    ir_article_id = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE,
+        'article_id')
+
 
 @grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
 def set_default_channel_to_ressort(context, event):

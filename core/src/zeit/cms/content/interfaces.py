@@ -300,6 +300,16 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Advertisement text"),
         required=False)
 
+    ir_mediasync_id = zope.schema.TextLine(
+        title=_("InterRed MediaSync ID"),
+        required=False,
+        readonly=True)
+
+    ir_article_id = zope.schema.TextLine(
+        title=_("InterRed Article ID"),
+        required=False,
+        readonly=True)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""
