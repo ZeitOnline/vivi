@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.0.5 (unreleased)
+4.0.5 (2019-05-22)
 ------------------
 
 - FIX: Exclude rss teaser from referenced cp content
