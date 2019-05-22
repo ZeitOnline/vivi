@@ -442,6 +442,8 @@ class CenterpageContentQuery(ContentQuery):
             self.context.referenced_cp, iter([]))
         result = []
         for content in teasered:
+            if IRSSLink.providedBy(content):
+                continue
             if self.context.hide_dupes and content in self.existing_teasers:
                 continue
             result.append(content)
