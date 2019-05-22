@@ -42,12 +42,12 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'advertisement_text',
     ))
 
-    zeit.cms.content.dav.mapProperties(
-        ICommonMetadata, DOCUMENT_SCHEMA_NS, ('access',), use_default=True)
-
-    authors = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author',
-        use_default=True)
+    zeit.cms.content.dav.mapProperties(ICommonMetadata, DOCUMENT_SCHEMA_NS, (
+        'access',
+        'banner_outer',
+        'channels',
+        'storystreams',
+    ), use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
@@ -69,6 +69,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.teaser.text', ICommonMetadata['teaserText'])
     teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
         '.teaser.supertitle', ICommonMetadata['teaserSupertitle'])
+
+    authors = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author',
+        use_default=True)
 
     printRessort = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['printRessort'], zeit.cms.interfaces.PRINT_NAMESPACE,
@@ -92,21 +96,16 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
 
-    channels = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['channels'], DOCUMENT_SCHEMA_NS, 'channels',
-        use_default=True)
-
     product = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
         'product-id')
 
-    storystreams = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['storystreams'], DOCUMENT_SCHEMA_NS,
-        'storystreams', use_default=True)
-
-    banner_outer = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['banner_outer'], DOCUMENT_SCHEMA_NS, 'banner_outer',
-        use_default=True)
+    ir_mediasync_id = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['ir_mediasync_id'], zeit.cms.interfaces.IR_NAMESPACE,
+        'mediasync_id')
+    ir_article_id = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE,
+        'article_id')
 
 
 @grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
