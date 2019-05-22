@@ -88,6 +88,10 @@ class IImageMetadata(zope.interface.Interface):
         title=_('External company ID'),
         required=False)
 
+    mdb_id = zope.schema.TextLine(
+        title=_('InterRed MDB ID'),
+        required=False, readonly=True)
+
     alt = zope.schema.TextLine(
         title=_("Alternative text"),
         description=_("Enter a textual description of the image"),
