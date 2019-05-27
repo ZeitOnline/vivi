@@ -150,9 +150,6 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
         self.assertEqual(True, IAuthorBioReference.providedBy(result))
         self.assertEqual('bio', result.xml.biography.text)
 
-
-class AuthorReferenceTest(zeit.content.author.testing.FunctionalTestCase):
-
     def test_hdok_id_is_added(self):
         author = zeit.content.author.author.Author()
         author.honorar_id = 'honorar-id'
@@ -162,3 +159,17 @@ class AuthorReferenceTest(zeit.content.author.testing.FunctionalTestCase):
             zeit.cms.content.interfaces.IXMLReference,
             name='author')
         self.assertEqual('honorar-id', result.get('hdok'))
+
+    def test_empty_hdok_id_does_not_break(self):
+        # This test is about objects that existed before create_honorar_entry
+        # event handler existed -- once that's there, it's rather impossible to
+        # get to this point.
+        self.layer['honorar_mock'].create.return_value = None
+
+        author = zeit.content.author.author.Author()
+        self.repository['testauthor'] = author
+        result = zope.component.getAdapter(
+            self.repository['testauthor'],
+            zeit.cms.content.interfaces.IXMLReference,
+            name='author')
+        self.assertEqual('', result.get('hdok'))
