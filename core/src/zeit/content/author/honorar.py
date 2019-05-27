@@ -57,11 +57,18 @@ class Honorar(object):
                 self.auth_token.invalidate(self)
                 return self._request(request, retries=retries + 1)
             if status == 500:
-                messages = err.response.json().get('messages', ())
-                if messages and messages[0].get('code') == '401':
+                r = err.response.json()
+                messages = r.get('messages', ())
+                if not messages:
+                    raise
+                if messages[0].get('code') == '401':
                     # "No records match the request", wonderful API. :-(
                     return {'response': {'data': []}}
-                elif messages:
+                elif messages[0].get('code') == '101':
+                    # Even wonderfuller API: `create` with GET has no "normal"
+                    # FileMaker result, so it complains.
+                    return r
+                else:
                     err.args += tuple(messages)
             raise
 
