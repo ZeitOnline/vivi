@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -xe
+
+DEPLOYMENT=$WORKSPACE/../$(basename $WORKSPACE)-deployment
+
+COMMAND=${1:-test-app}
+case $COMMAND in
+    setup-batou)
+        if [ ! -d $DEPLOYMENT ]; then
+            git clone ssh://git@github.com/ZeitOnline/vivi-deployment $DEPLOYMENT
+            cd $DEPLOYMENT
+        else
+            cd $DEPLOYMENT
+            git fetch
+        fi
+
+        BATOU_BRANCH=$(echo -e "${ghprbPullLongDescription}" | \
+            sed -ne '/JENKINS_BATOU_BRANCH=/s/JENKINS_BATOU_BRANCH=//p' | \
+            tr --delete '\r\n')
+        if [ -z "$BATOU_BRANCH" ]; then
+          BATOU_BRANCH=master
+        fi
+        git reset --hard origin/$BATOU_BRANCH
+
+        if [ ! -e $DEPLOYMENT/work/source ]; then
+          mkdir -p $DEPLOYMENT/work/source
+        fi
+        ln -sfT $WORKSPACE $DEPLOYMENT/work/source/vivi
+
+        ./batou deploy jenkins
+    ;;
+    test-app)
+        cd $WORKSPACE
+
+        bin/ci setup-batou
+
+        rm -f report.xml cobertura.xml
+        cd $DEPLOYMENT/work/source
+        rm -f report.xml coverage.xml
+
+        echo "Preparing and starting window manager"
+        echo "session.screen0.allowRemoteActions: true" >> ${WORKSPACE}/fluxbox.init
+        fluxbox 2>/dev/null -log /dev/null -rc ${WORKSPACE}/fluxbox.init &
+
+        export GOCEPT_WEBDRIVER_REMOTE=False
+        export GOCEPT_WEBDRIVER_BROWSER=firefox
+        export GOCEPT_WEBDRIVER_FF_BINARY=/opt/firefox-34/firefox
+        export GOCEPT_SELENIUM_JUNIT_ATTACH=True
+
+        set +e
+        $DEPLOYMENT/bin/test -v -p no:sugar \
+            --cov=. --cov-report=html --cov-report=xml --junitxml=report.xml \
+            --reruns=3 -m1 -k \
+            "not (test_teaser_supertitle_is_copied_to_article_supertitle or test_change_metadata_and_text_then_revert_undoes_both_changes or test_checkin_button_is_disabled_while_validation_errors_present or test_validation_errors_are_removed_from_checkin_form_on_change or test_moving_teaser_from_n_to_n_does_not_change_layout or test_reloads_overflow_area or test_AMP_is_disabled_after_choosing_non_free_access or test_FBIA_is_disabled_after_choosing_non_free_access or test_publish_failure_should_be_displayed or test_publish_should_show_error_message or test_source_not_removed_when_not_dropped_to_cp)"
+        TEST_RESULT=$?
+        cp $DEPLOYMENT/work/source/report.xml $WORKSPACE
+        if [ -f $DEPLOYMENT/work/source/coverage.xml ]; then
+            # github pr coverage plugin has hardcoded filenames, sigh.
+            mv $DEPLOYMENT/work/source/coverage.xml $WORKSPACE/cobertura.xml
+        fi
+        cp -R $DEPLOYMENT/work/source/coverage-report $WORKSPACE
+
+        echo "Tests done, stopping window manager for clean Xvfb shutdown"
+        fluxbox-remote quit
+        rm ${WORKSPACE}/fluxbox.init
+
+        exit $TEST_RESULT
+    ;;
+    *)
+        echo "Unrecognized command: $COMMAND"
+        exit 1
+    ;;
+esac
