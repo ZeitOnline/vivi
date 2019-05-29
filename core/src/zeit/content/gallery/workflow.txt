@@ -18,7 +18,6 @@ gallery:
 ...                         'browser', 'testdata', '01.jpg')
 ...     test_data = open(filename, 'rb').read()
 >>> image.open('w').write(open(filename).read())
->>> image.mimeType = 'image/jpeg'
 >>> folder['01.jpg'] = image
 >>> image = folder['01.jpg']
 
