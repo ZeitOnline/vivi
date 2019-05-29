@@ -11,22 +11,10 @@ import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.app.container.contained
 import zope.app.container.interfaces
-import zope.app.file.image
 import zope.component
 import zope.interface
 import zope.security.proxy
-
-
-class Image(zope.app.file.image.Image,
-            zope.app.container.contained.Contained):
-    """Image contains exactly one image."""
-
-    zope.interface.implements(zeit.content.image.interfaces.IImage)
-    uniqueId = None
-
-    # XXX keep image class for migration
 
 
 class BaseImage(object):
