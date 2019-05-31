@@ -9,6 +9,8 @@ vivi.core changes
 
 - IR-77: Add `setup_timebased_jobs` xmlrpc method
 
+- ZON-5260: Add background color to cardstacks
+
 
 4.0.5 (2019-05-22)
 ------------------

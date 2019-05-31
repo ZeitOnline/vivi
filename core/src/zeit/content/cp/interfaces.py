@@ -868,13 +868,37 @@ class IMarkupBlock(IBlock):
         default='left')
 
 
+class CardstackColorSource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        (color, color) for color in [
+            u'#D8D8D8',
+            u'#5E534F',
+            u'#E4DED8',
+            u'#69696C',
+            u'#FF7783',
+            u'#7C0E14',
+            u'#6FA6B9',
+            u'#085064',
+            u'#57C494',
+            u'#1E6847']
+    ))
+
+
 class ICardstackBlock(IBlock):
 
     card_id = zope.schema.TextLine(
         title=_('Cardstack id'))
+
     is_advertorial = zope.schema.Bool(
         title=_('Advertorial?'),
         default=False)
+
+    cardstack_background_color = zope.schema.Choice(
+        title=_('Background color'),
+        description=_('Choose Background color'),
+        source=CardstackColorSource()
+    )
 
 
 JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
