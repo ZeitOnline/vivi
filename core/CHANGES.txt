@@ -9,6 +9,8 @@ vivi.core changes
 
 - IR-77: Add `setup_timebased_jobs` xmlrpc method
 
+- PERF: Determine image mime type only on demand, not always upfront on resolve
+
 
 4.0.5 (2019-05-22)
 ------------------
