@@ -11,25 +11,35 @@ import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.app.container.contained
 import zope.app.container.interfaces
-import zope.app.file.image
+import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.security.proxy
 
 
-class Image(zope.app.file.image.Image,
-            zope.app.container.contained.Contained):
-    """Image contains exactly one image."""
+class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 
-    zope.interface.implements(zeit.content.image.interfaces.IImage)
-    uniqueId = None
-
-    # XXX keep image class for migration
+    def __set__(self, inst, value):
+        pass
 
 
 class BaseImage(object):
+
+    def __init__(self, uniqueId=None):
+        super(BaseImage, self).__init__(uniqueId, mimeType='')
+
+    # Not writeable since we always calculate it, but our superclasses want to.
+    @FakeWriteableCachedProperty
+    def mimeType(self):
+        data = self.open()
+        head = data.read(200)
+        data.close()
+        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+            file_type = m.id_buffer(head)
+        if not file_type.startswith('image/'):
+            return ''
+        return file_type
 
     def getImageSize(self):
         return PIL.Image.open(self.open()).size
@@ -39,7 +49,7 @@ class BaseImage(object):
         try:
             width, height = self.getImageSize()
             return float(width) / float(height)
-        except:
+        except Exception:
             return None
 
     @property
@@ -85,7 +95,7 @@ class TemporaryImage(LocalImage):
 @zope.component.adapter(RepositoryImage)
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 def localimage_factory(context):
-    local = LocalImage(context.uniqueId, context.mimeType)
+    local = LocalImage(context.uniqueId)
     local.__name__ = context.__name__
     zeit.cms.interfaces.IWebDAVProperties(local).update(
         zeit.cms.interfaces.IWebDAVProperties(context))
@@ -122,13 +132,7 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     factory = RepositoryImage
 
     def content(self, resource):
-        head = resource.data.read(200)
-        resource.data.close()
-        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
-            file_type = m.id_buffer(head)
-        if not file_type.startswith('image/'):
-            return None
-        return self.factory(resource.id, file_type)
+        return self.factory(resource.id)
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
