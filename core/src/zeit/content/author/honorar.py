@@ -20,7 +20,10 @@ class Honorar(object):
 
     def search(self, query, count=10):
         result = self._request('POST /layouts/RESTautorenStamm/_find', json={
-            'query': [{'nameGesamt': query}],
+            'query': [
+                {'nameGesamt': query},
+                {'typ': '4', 'omit': "true"},
+            ],
             'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
             'limit': str(count),
         })
@@ -30,7 +33,7 @@ class Honorar(object):
         interaction = zope.security.management.getInteraction()
         principal = interaction.participations[0].principal
         data['anlageAccount'] = 'vivi.%s' % principal.id
-        # 1=nat. Person, 2=jur. Person, 3=Pseudonym
+        # 1=nat. Person, 2=jur. Person, 3=Pseudonym, 4=anonym/Buchhaltung
         data['typ'] = '1'
         result = self._request('GET /layouts/leer/records/1', params={
             'script': 'restNeuAutor',
