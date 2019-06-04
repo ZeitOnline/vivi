@@ -896,7 +896,7 @@ class ICardstackBlock(IBlock):
 
     cardstack_background_color = zope.schema.Choice(
         title=_('Background color'),
-        description=_('Choose Background color'),
+        description=_('Choose a background color'),
         source=CardstackColorSource()
     )
 
