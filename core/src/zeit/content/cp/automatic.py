@@ -542,7 +542,9 @@ class RSSLink(object):
 
     @cachedproperty
     def url(self):
-        return self.xml.findtext('link')
+        link = self.xml.findtext('link')
+        if link:
+            return link.strip()
 
     @cachedproperty
     def image_url(self):
