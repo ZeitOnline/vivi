@@ -172,9 +172,6 @@ class ImageTransform(object):
         image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.context.format
-            image.mimeType = self.context.mimeType
-        else:
-            image.mimeType = 'image/' + format.lower()  # XXX crude heuristic.
         # XXX Maybe encoder setting should be made configurable.
         if format in ('JPG', 'JPEG'):
             options = {'progressive': True, 'quality': 85, 'optimize': True}

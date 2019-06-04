@@ -78,14 +78,6 @@ The local image also has the title:
 >>> metadata.title
 u'my title'
 
-The repository image factory returns None when the image cannot be identified:
-
->>> import zeit.content.image.image
->>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> zeit.content.image.image.ImageType().content(
-...     connector['http://xml.zeit.de/online/2007/01/Somalia']) is None
-True
-
 There is also a view for the metadata:
 
 >>> zope.component.getMultiAdapter((image, object()), name='metadata')

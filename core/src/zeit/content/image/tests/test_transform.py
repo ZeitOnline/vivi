@@ -27,7 +27,6 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
 
     def create_image(self, pil_image):
         image = zeit.content.image.image.LocalImage()
-        image.mimeType = 'image/png'
         pil_image.save(image.open('w'), 'PNG')
         return image
 

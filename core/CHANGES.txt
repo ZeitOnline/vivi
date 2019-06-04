@@ -2,14 +2,22 @@ vivi.core changes
 =================
 
 
-4.0.6 (unreleased)
+4.1.1 (unreleased)
+------------------
+
+- ZON-5260: Add background color to cardstacks
+
+- MAINT: Clean up whitespace from rss feeds
+
+
+4.1.0 (2019-06-03)
 ------------------
 
 - IR-77: Add `mdb_id` field to images
 
 - IR-77: Add `setup_timebased_jobs` xmlrpc method
 
-- ZON-5260: Add background color to cardstacks
+- PERF: Determine image mime type only on demand, not always upfront on resolve
 
 
 4.0.5 (2019-05-22)

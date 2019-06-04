@@ -38,12 +38,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 
 
 def create_local_image(filename, path='browser/testdata/'):
-    filetype = filename.rsplit('.', 1)[-1].lower()
-    if filetype == 'jpg':
-        image = zeit.content.image.image.LocalImage(mimeType='image/jpeg')
-    else:
-        image = zeit.content.image.image.LocalImage(
-            mimeType="image/{}".format(filetype))
+    image = zeit.content.image.image.LocalImage()
     fh = image.open('w')
     file_name = pkg_resources.resource_filename(
         __name__, '%s%s' % (path, filename))
@@ -81,7 +76,6 @@ def create_image_group_with_master_image(file_name=None):
     group.master_images = (('desktop', u'master-image' + extension),)
     repository['group'] = group
     image = zeit.content.image.image.LocalImage()
-    image.mimeType = mimetypes.types_map[extension]
     image.open('w').write(fh.read())
     repository['group'][group.master_image] = image
     return repository['group']
