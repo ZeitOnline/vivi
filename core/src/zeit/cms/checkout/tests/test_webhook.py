@@ -33,7 +33,7 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
         self.patch.start()
         source = zeit.cms.checkout.webhook.HOOKS.factory
         # XXX Have to pass the instance because of zc.factory init shenanigans.
-        source.getValues.invalidate(source)
+        source._values.invalidate(source)
 
     def tearDown(self):
         self.patch.stop()
