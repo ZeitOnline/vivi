@@ -569,7 +569,8 @@ def prefill_metadata_from_referenced_cp(context, event):
         setattr(context, field, getattr(context.referenced_cp, field))
 
     if not context.read_more_url:
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config['live-prefix']
         context.read_more_url = context.referenced_cp.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE,
-            # XXX Hard-coding seems wrong (e.g. what about staging).
-            'http://www.zeit.de/')
+            live_prefix)
