@@ -1,9 +1,11 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import Product
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import celery.exceptions
 import lxml.objectify
 import mock
 import plone.testing
+import requests.exceptions
 import zeit.cms.checkout.webhook
 import zeit.cms.testing
 
@@ -66,6 +68,18 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(self.repository['testcontent']):
             pass
         self.assertEqual([], self.layer['request_handler'].requests)
+
+    def test_retry_on_technical_error(self):
+        self.layer['request_handler'].response_code = [503, 200]
+        with self.assertRaises(celery.exceptions.Retry):
+            with checked_out(self.repository['testcontent']):
+                pass
+
+    def test_no_retry_on_semantic_error(self):
+        self.layer['request_handler'].response_code = [400, 200]
+        with self.assertRaises(requests.exceptions.HTTPError):
+            with checked_out(self.repository['testcontent']):
+                pass
 
 
 class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):

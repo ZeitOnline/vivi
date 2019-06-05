@@ -39,8 +39,8 @@ def notify_after_add(event):
         notify_webhook.delay(context.uniqueId, hook.url)
 
 
-@zeit.cms.celery.task(queuename='webhook')
-def notify_webhook(uniqueId, url):
+@zeit.cms.celery.task(bind=True, queuename='webhook')
+def notify_webhook(self, uniqueId, url):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
@@ -49,7 +49,10 @@ def notify_webhook(uniqueId, url):
     if hook is None:
         log.warning('Hook configuration for %s has vanished, ignoring.', url)
         return
-    hook(content)
+    try:
+        hook(content)
+    except TechnicalError as e:
+        raise self.retry(countdown=e.countdown)
 
 
 class Hook(object):
@@ -62,10 +65,23 @@ class Hook(object):
         if self.should_exclude(content):
             return
         log.debug('Notifying %s about %s', self.url, content)
-        self.deliver(content)
+        try:
+            self.deliver(content)
+        except requests.exceptions.HTTPError as err:
+            if getattr(err.response, 'status_code', 500) < 500:
+                raise
+            else:
+                log.warning('Webhook %s returned error, retrying',
+                            self.url, exc_info=True)
+                raise TechnicalError()
+        except requests.exceptions.RequestException:
+            log.warning('Webhook %s returned error, retrying',
+                        self.url, exc_info=True)
+            raise TechnicalError()
 
     def deliver(self, content):
-        requests.post(self.url, json=[content.uniqueId])
+        r = requests.post(self.url, json=[content.uniqueId], timeout=10)
+        r.raise_for_status()
 
     def add_exclude(self, key, value):
         self.excludes.append((key, value))
@@ -116,3 +132,9 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
 
 
 HOOKS = HookSource()
+
+
+class TechnicalError(Exception):
+
+    def __init__(self, countdown=60):
+        self.countdown = countdown
