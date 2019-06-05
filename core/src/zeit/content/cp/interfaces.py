@@ -569,6 +569,31 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         source=AUTOMATIC_FEED_SOURCE,
         required=False)
 
+    topiclink_label_1 = zope.schema.TextLine(
+        title=_('Label for topiclink #1'),
+        required=False)
+
+    topiclink_url_1 = zope.schema.TextLine(
+        title=_('URL for topiclink #1'),
+        required=False)
+
+    topiclink_label_2 = zope.schema.TextLine(
+        title=_('Label for topiclink #2'),
+        required=False)
+
+    topiclink_url_2 = zope.schema.TextLine(
+        title=_('URL for topiclink #2'),
+        required=False)
+
+    topiclink_label_3 = zope.schema.TextLine(
+        title=_('Label for topiclink #3'),
+        required=False)
+
+    topiclink_url_3 = zope.schema.TextLine(
+        title=_('URL for topiclink #3'),
+        required=False)
+
+
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
 

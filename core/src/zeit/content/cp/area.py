@@ -166,6 +166,30 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
         zeit.content.cp.interfaces.IArea['rss_feed'])
 
+    topiclink_label_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_label_1',
+        zeit.content.cp.interfaces.IArea['topiclink_label_1'])
+
+    topiclink_url_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_url_1',
+        zeit.content.cp.interfaces.IArea['topiclink_url_1'])
+
+    topiclink_label_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_label_2',
+        zeit.content.cp.interfaces.IArea['topiclink_label_2'])
+
+    topiclink_url_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_url_2',
+        zeit.content.cp.interfaces.IArea['topiclink_url_2'])
+
+    topiclink_label_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_label_3',
+        zeit.content.cp.interfaces.IArea['topiclink_label_3'])
+
+    topiclink_url_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.topiclink_url_3',
+        zeit.content.cp.interfaces.IArea['topiclink_url_3'])
+
     @property
     def image(self):
         if self._image:
@@ -563,7 +587,10 @@ def prefill_metadata_from_referenced_cp(context, event):
     if context.referenced_cp is None:
         return
 
-    for field in ['title', 'supertitle']:
+    for field in ['title', 'supertitle',
+                  'topiclink_url_1', 'topiclink_label_1',
+                  'topiclink_url_2', 'topiclink_label_2',
+                  'topiclink_url_3', 'topiclink_label_3']:
         if getattr(context, field):
             continue
         setattr(context, field, getattr(context.referenced_cp, field))
