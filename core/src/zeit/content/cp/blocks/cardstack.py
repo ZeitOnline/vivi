@@ -17,6 +17,10 @@ class CardstackBlock(zeit.content.cp.blocks.block.Block):
     is_advertorial = ObjectPathAttributeProperty(
         '.', 'is_advertorial', ICardstackBlock['is_advertorial'])
 
+    cardstack_background_color = ObjectPathAttributeProperty(
+        '.', 'cardstack_background_color',
+        ICardstackBlock['cardstack_background_color'])
+
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
 

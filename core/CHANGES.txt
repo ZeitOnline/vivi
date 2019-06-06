@@ -2,8 +2,16 @@ vivi.core changes
 =================
 
 
-4.1.1 (unreleased)
+4.2.1 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+4.2.0 (2019-06-06)
+------------------
+
+- ZON-5260: Add background color to cardstacks
 
 - MAINT: Clean up whitespace from rss feeds
 
