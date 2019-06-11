@@ -65,6 +65,23 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
+class ReferencedCpFallbackProperty(
+    zeit.cms.content.property.ObjectPathProperty):
+    """
+    Special ObjectPathProperty which looks up an attribute
+    from the referenced cp as a fallback.
+    """
+
+    def __get__(self, instance, class_):
+        value = super(ReferencedCpFallbackProperty, self).__get__(
+            instance, class_)
+        if value == self.field.missing_value and instance.referenced_cp:
+            value = getattr(instance.referenced_cp,
+                            self.field.getName(),
+                            self.field.default)
+        return value
+
+
 class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
@@ -166,27 +183,27 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
         zeit.content.cp.interfaces.IArea['rss_feed'])
 
-    topiclink_label_1 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_label_1 = ReferencedCpFallbackProperty(
         '.topiclink_label_1',
         zeit.content.cp.interfaces.IArea['topiclink_label_1'])
 
-    topiclink_url_1 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_url_1 = ReferencedCpFallbackProperty(
         '.topiclink_url_1',
         zeit.content.cp.interfaces.IArea['topiclink_url_1'])
 
-    topiclink_label_2 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_label_2 = ReferencedCpFallbackProperty(
         '.topiclink_label_2',
         zeit.content.cp.interfaces.IArea['topiclink_label_2'])
 
-    topiclink_url_2 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_url_2 = ReferencedCpFallbackProperty(
         '.topiclink_url_2',
         zeit.content.cp.interfaces.IArea['topiclink_url_2'])
 
-    topiclink_label_3 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_label_3 = ReferencedCpFallbackProperty(
         '.topiclink_label_3',
         zeit.content.cp.interfaces.IArea['topiclink_label_3'])
 
-    topiclink_url_3 = zeit.cms.content.property.ObjectPathProperty(
+    topiclink_url_3 = ReferencedCpFallbackProperty(
         '.topiclink_url_3',
         zeit.content.cp.interfaces.IArea['topiclink_url_3'])
 
