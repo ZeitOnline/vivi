@@ -77,7 +77,7 @@ class ReferencedCpFallbackProperty(
             instance, class_)
         if value == self.field.missing_value and instance.referenced_cp:
             value = getattr(instance.referenced_cp,
-                            self.field.getName(),
+                            self.field.__name__,
                             self.field.default)
         return value
 
