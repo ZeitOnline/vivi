@@ -2,10 +2,10 @@ vivi.core changes
 =================
 
 
-4.2.1 (unreleased)
+4.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-4585: Add topiclink fields to areas
 
 
 4.2.0 (2019-06-06)
