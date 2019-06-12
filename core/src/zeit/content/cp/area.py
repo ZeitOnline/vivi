@@ -66,7 +66,7 @@ class RegionFactory(zeit.edit.block.ElementFactory):
 
 
 class ReferencedCpFallbackProperty(
-    zeit.cms.content.property.ObjectPathProperty):
+        zeit.cms.content.property.ObjectPathProperty):
     """
     Special ObjectPathProperty which looks up an attribute
     from the referenced cp as a fallback.

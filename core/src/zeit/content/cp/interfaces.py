@@ -593,7 +593,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('URL for topiclink #3'),
         required=False)
 
-
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
 
