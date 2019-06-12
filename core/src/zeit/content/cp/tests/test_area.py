@@ -334,6 +334,13 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('bar', self.area.topiclink_label_1)
         self.assertEqual('https://zeit.de', self.area.topiclink_url_1)
 
+    def test_untouched_topiclink_value_reacts_to_change_on_referenced_cp(self):
+        self.area.topiclink_label_1 = 'bar'
+        self.area.referenced_cp.topiclink_url_1 = 'https://foo.bar'
+        self.area.referenced_cp.topiclink_label_1 = 'foo'
+        self.assertEqual('bar', self.area.topiclink_label_1)
+        self.assertEqual('https://foo.bar', self.area.topiclink_url_1)
+
 
 class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
 

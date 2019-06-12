@@ -604,10 +604,7 @@ def prefill_metadata_from_referenced_cp(context, event):
     if context.referenced_cp is None:
         return
 
-    for field in ['title', 'supertitle',
-                  'topiclink_url_1', 'topiclink_label_1',
-                  'topiclink_url_2', 'topiclink_label_2',
-                  'topiclink_url_3', 'topiclink_label_3']:
+    for field in ['title', 'supertitle']:
         if getattr(context, field):
             continue
         setattr(context, field, getattr(context.referenced_cp, field))
