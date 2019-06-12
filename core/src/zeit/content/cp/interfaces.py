@@ -39,24 +39,7 @@ zope.security.checker.BasicTypes[fractions.Fraction] = (
     zope.security.checker.NoProxy)
 
 
-class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
-                  zeit.cms.content.interfaces.IXMLContent,
-                  zeit.edit.interfaces.IContainer,
-                  zeit.retresco.interfaces.ISkipEnrich):
-
-    type = zope.schema.Choice(
-        title=_('CP type'),
-        source=zeit.content.cp.source.CPTypeSource(),
-        default=u'centerpage')
-
-    header_image = zope.schema.Choice(
-        title=_('Header image'),
-        required=False,
-        source=zeit.content.image.interfaces.imageSource)
-
-    topiclink_title = zope.schema.TextLine(
-        title=_('Name for topiclinks'),
-        required=False)
+class ITopicLinks(zope.interface.Interface):
 
     topiclink_label_1 = zope.schema.TextLine(
         title=_('Label for topiclink #1'),
@@ -80,6 +63,27 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
     topiclink_url_3 = zope.schema.TextLine(
         title=_('URL for topiclink #3'),
+        required=False)
+
+
+class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
+                  zeit.cms.content.interfaces.IXMLContent,
+                  zeit.edit.interfaces.IContainer,
+                  ITopicLinks,
+                  zeit.retresco.interfaces.ISkipEnrich):
+
+    type = zope.schema.Choice(
+        title=_('CP type'),
+        source=zeit.content.cp.source.CPTypeSource(),
+        default=u'centerpage')
+
+    header_image = zope.schema.Choice(
+        title=_('Header image'),
+        required=False,
+        source=zeit.content.image.interfaces.imageSource)
+
+    topiclink_title = zope.schema.TextLine(
+        title=_('Name for topiclinks'),
         required=False)
 
     og_title = zope.schema.TextLine(
@@ -424,7 +428,7 @@ def automatic_area_can_read_teasers_automatically(data):
     return False
 
 
-class IReadArea(zeit.edit.interfaces.IReadContainer):
+class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
 
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.
@@ -567,30 +571,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),
         source=AUTOMATIC_FEED_SOURCE,
-        required=False)
-
-    topiclink_label_1 = zope.schema.TextLine(
-        title=_('Label for topiclink #1'),
-        required=False)
-
-    topiclink_url_1 = zope.schema.TextLine(
-        title=_('URL for topiclink #1'),
-        required=False)
-
-    topiclink_label_2 = zope.schema.TextLine(
-        title=_('Label for topiclink #2'),
-        required=False)
-
-    topiclink_url_2 = zope.schema.TextLine(
-        title=_('URL for topiclink #2'),
-        required=False)
-
-    topiclink_label_3 = zope.schema.TextLine(
-        title=_('Label for topiclink #3'),
-        required=False)
-
-    topiclink_url_3 = zope.schema.TextLine(
-        title=_('URL for topiclink #3'),
         required=False)
 
     # XXX really ugly styling hack
