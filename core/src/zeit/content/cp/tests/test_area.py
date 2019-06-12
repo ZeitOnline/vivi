@@ -295,6 +295,8 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         other = zeit.content.cp.centerpage.CenterPage()
         other.title = 'referenced'
         other.supertitle = 'supertitle'
+        other.topiclink_label_1 = 'foo'
+        other.topiclink_url_1 = 'example.com'
         self.repository['other'] = other
         self.area.referenced_cp = self.repository['other']
         zope.lifecycleevent.modified(
@@ -319,7 +321,18 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('local', self.area.title)
 
     def test_read_more_url_is_generated_from_cp(self):
-        self.assertEqual('http://www.zeit.de/other', self.area.read_more_url)
+        self.assertEqual('http://localhost/live-prefix/other',
+                         self.area.read_more_url)
+
+    def test_topiclink_values_from_referenced_cp_are_used(self):
+        self.assertEqual('foo', self.area.topiclink_label_1)
+        self.assertEqual('example.com', self.area.topiclink_url_1)
+
+    def test_topiclink_values_can_be_overwritten(self):
+        self.area.topiclink_label_1 = 'bar'
+        self.area.topiclink_url_1 = 'https://zeit.de'
+        self.assertEqual('bar', self.area.topiclink_label_1)
+        self.assertEqual('https://zeit.de', self.area.topiclink_url_1)
 
 
 class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):

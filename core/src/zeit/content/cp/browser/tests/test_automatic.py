@@ -93,7 +93,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         cp = list(wc.values())[0]
         self.assertEllipsis(
             """\
-<region...count="3" automatic="True" automatic_type="rss-feed" rss_feed="zett">...""",
+<region...count="3" automatic="True" automatic_type="rss-feed"
+ rss_feed="zett">...""",
             lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
 
