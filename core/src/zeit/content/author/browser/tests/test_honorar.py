@@ -24,7 +24,7 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         ]
         b = self.browser
         b.open('http://localhost/++skin++vivi/@@zeit.content.author.lookup')
-        b.getControl('Firstname').value = 'foo'
+        b.getControl('Firstname').value = 'föö'
         b.getControl('Lastname').value = 'bar'
         b.getControl('Look up author').click()
         b.getControl(name='selection').displayValue = ['Williäm Shakespeare']
