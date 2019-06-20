@@ -5,7 +5,7 @@ vivi.core changes
 4.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Add linkSource (mostly for pembeds)
 
 
 4.3.0 (2019-06-12)

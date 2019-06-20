@@ -1,8 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
-import zope.schema
 import zeit.content.link.sources
+import zope.schema
 
 
 class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
@@ -41,3 +42,12 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.content.link.sources.BlogSource(),
         readonly=True,
         required=False)
+
+
+class LinkSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'zeit.content.link'
+    check_interfaces = (ILink,)
+
+
+linkSource = LinkSource()
