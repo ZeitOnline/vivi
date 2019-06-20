@@ -29,6 +29,10 @@ class CMSContentSource(object):
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType
 
+    def __init__(self, check_interfaces=None):
+        if check_interfaces is not None:
+            self.check_interfaces = check_interfaces
+
     def __contains__(self, value):
         if not self.verify_interface(value):
             return False
