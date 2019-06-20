@@ -54,9 +54,10 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
-        return ((name, _id)
-                for name, _id in super(Connector, self).listCollection(id)
-                if _id not in self._deleted)
+        return (
+            (name, _id)
+            for name, _id in super(Connector, self).listCollection(id)
+            if _id not in self._deleted and _id + u'/' not in self._deleted)
 
     def _get_collection_names(self, path):
         names = super(Connector, self)._get_collection_names(path)
