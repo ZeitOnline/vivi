@@ -354,7 +354,10 @@ Now make sure we can copy folders:
 
 
 Verify the whole copied tree:
+XXX without invalidate the test passes locally but fails on jenkins
 
+>>> connector.invalidate_cache(
+...     'http://xml.zeit.de/%s/copiedtree/' % TESTFOLDER())
 >>> zeit.connector.testing.print_tree(
 ...     connector, 'http://xml.zeit.de/%s/copiedtree' % TESTFOLDER())
 http://xml.zeit.de/testing.../copiedtree
