@@ -12,16 +12,6 @@ Creating a connector:
 >>> connector
 <zeit.connector.connector.Connector object at 0x...>
 
-Set up a log handler to pick up logging output:
-
->>> import logging
->>> import StringIO
->>> logfile = StringIO.StringIO()
->>> log_handler = logging.StreamHandler(logfile)
->>> logging.root.addHandler(log_handler)
->>> old_log_level = logging.root.level
->>> logging.root.setLevel(logging.INFO)
-
 
 IConnector Interface
 ====================
@@ -504,18 +494,3 @@ inconsistent/wrong state:
 >>> conn._con._HTTPConnection__state = 'flux'
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
 []
-
-
-
-Cleanup and final tests
-=======================
-
-Restore log handler:
-
->>> logging.root.removeHandler(log_handler)
->>> logging.root.setLevel(old_log_level)
-
-Make sure the logfile is empty, as we don't expect anything to be logged in
-normal operation:
-
->>> print logfile.getvalue(),
