@@ -389,13 +389,22 @@ class EditMail(zeit.edit.browser.form.InlineForm):
         return 'mail.{0}'.format(self.context.__name__)
 
 
-class EditTopicbox(zeit.edit.browser.form.InlineForm):
+class EditTopicbox(zeit.edit.browser.form.InlineForm,
+                   zeit.cms.browser.form.CharlimitMixin):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ITopicbox).omit(
             '__name__', '__parent__', 'xml')
     undo_description = _('edit topic box')
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditTopicbox, self).setUpWidgets(*args, **kw)
+        self.set_charlimit('title')
+        self.set_charlimit('supertitle')
+        self.set_charlimit('link_text')
+        # Guess i have to manipulate the widgets here as well, to prevent the
+        # XML error
 
     @property
     def prefix(self):
