@@ -1,4 +1,10 @@
-*.po diff=po
-# put this into your ~/.gitconfig (msgcat is part of the `gettext` package)
-# [diff "po"]
-# textconv=msgcat --no-location
+*.po diff=po merge=po
+*.pot diff=po merge=po
+# install gettext (for msgcat and friends)
+# download git-merge-po.sh from https://github.com/mezis/git-whistles/blob/master/libexec/git-merge-po.sh
+# put this into your ~/.gitconfig:
+#   [diff "po"]
+#   textconv=msgcat --no-location
+#   [merge "po"]
+#   name = gettext
+#   driver = /path/to/git-merge-po.sh %O %A %B
