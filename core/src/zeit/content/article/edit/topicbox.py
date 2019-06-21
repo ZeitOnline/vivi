@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.image.interfaces
+import zope.component
 
 
 class Topicbox(zeit.content.article.edit.block.Block):
@@ -60,6 +63,18 @@ class Topicbox(zeit.content.article.edit.block.Block):
             return referenced_articles
 
         return (content for content in self._reference_properties if content)
+
+
+class TopicboxImages(zeit.cms.related.related.RelatedBase):
+
+    zope.component.adapts(zeit.content.article.edit.interfaces.ITopicbox)
+    zope.interface.implements(zeit.content.image.interfaces.IImages)
+
+    image = zeit.cms.content.reference.SingleResource('.image', 'image')
+
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.image', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

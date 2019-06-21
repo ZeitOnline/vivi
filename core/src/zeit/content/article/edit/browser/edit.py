@@ -394,7 +394,8 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ITopicbox).omit(
+        zeit.content.article.edit.interfaces.ITopicbox,
+        zeit.content.image.interfaces.IImages).omit(
             '__name__', '__parent__', 'xml')
     undo_description = _('edit topic box')
 
