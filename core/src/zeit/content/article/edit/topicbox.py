@@ -3,7 +3,6 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import itertools
 
 
 class Topicbox(zeit.content.article.edit.block.Block):
@@ -49,9 +48,17 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     def values(self):
         if self.referenced_cp:
-            return itertools.islice(
-                zeit.edit.interfaces.IElementReferences(self.referenced_cp),
-                len(self._reference_properties))
+            parent_article = zeit.content.article.interfaces.IArticle(self)
+            referenced_articles = []
+            for art in zeit.edit.interfaces.IElementReferences(
+                    self.referenced_cp, []):
+                if len(referenced_articles) >= len(self._reference_properties):
+                    break
+                if art == parent_article:
+                    continue
+                referenced_articles.append(art)
+            return referenced_articles
+
         return (content for content in self._reference_properties if content)
 
 

@@ -38,6 +38,16 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(cp, box.referenced_cp)
         self.assertEqual([], list(box.values()))
 
+    def test_topicbox_parent_is_excluded_if_in_cp(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            "http://xml.zeit.de/online/2007/01/Somalia")
+        self.repository['foo'] = ExampleContentType()
+        box = self.get_topicbox()
+        box.__parent__ = article
+        cp = self.get_cp(content=[self.repository['foo'], article])
+        box.first_reference = cp
+        self.assertEqual([self.repository['foo'], ], list(box.values()))
+
     def test_box_uses_cp_content(self):
         box = self.get_topicbox()
         article = zeit.cms.interfaces.ICMSContent(
