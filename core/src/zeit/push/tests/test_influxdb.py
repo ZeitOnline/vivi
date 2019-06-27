@@ -20,5 +20,6 @@ class ConnectionTest(zeit.push.testing.TestCase):
         with mock.patch('requests.post') as post:
             api.send(message.text, message.url, **message.config)
             self.assertEqual([
-                'template', 'push', 'http://www.zeit.de/online/2007/01/Somalia'
+                'Push', ['push', 'www', 'template'],
+                'http://www.zeit.de/online/2007/01/Somalia'
             ], post.call_args[1]['json'][0]['points'][0])
