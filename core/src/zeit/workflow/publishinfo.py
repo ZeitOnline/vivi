@@ -24,7 +24,8 @@ class PublishInfo(object):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.workflow.interfaces.WORKFLOW_NS,
-        ('published', 'date_last_published', 'date_last_published_semantic'),
+        ('published', 'date_last_published', 'date_last_published_semantic',
+         'locked', 'lock_reason'),
         use_default=True, writeable=WRITEABLE_LIVE)
 
     zeit.cms.content.dav.mapProperties(
@@ -58,6 +59,12 @@ class PublishInfo(object):
             self.error_messages = (
                 _('publish-preconditions-blacklist',
                   mapping=self._error_mapping),)
+            return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
+        if self.locked:
+            mapping = self._error_mapping
+            mapping['reason'] = self.lock_reason
+            self.error_messages = (
+                _('publish-preconditions-locked', mapping=mapping),)
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
     def matches_blacklist(self):
@@ -107,3 +114,18 @@ def id_to_principal(principal_id):
         return auth.getPrincipal(principal_id)
     except zope.authentication.interfaces.PrincipalLookupError:
         return None
+
+
+@zope.component.adapter(
+    zeit.cms.workflow.interfaces.IPublishInfo,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def log_workflow_changes(workflow, event):
+    if event.field.__name__ != 'locked':
+        return
+    message = _('${name}: ${new_value}', mapping={
+        'name': event.field.title,
+        'old_value': event.old_value,
+        'new_value': event.new_value,
+    })
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    log.log(workflow.context, message)

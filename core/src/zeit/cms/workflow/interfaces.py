@@ -77,6 +77,15 @@ class IPublishInfo(zope.interface.Interface):
         required=False,
         readonly=True)
 
+    locked = zope.schema.Bool(
+        title=_("Publish lock?"),
+        required=False,
+        default=False)
+
+    lock_reason = zope.schema.Text(
+        title=_("Publish lock reason"),
+        required=False)
+
     error_messages = zope.schema.List(
         title=u"List of warning and error messages.",
         readonly=True,
