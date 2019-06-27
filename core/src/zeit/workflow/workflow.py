@@ -32,11 +32,9 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         writeable=WRITEABLE_ALWAYS)
 
     def can_publish(self):
-        if self.matches_blacklist():
-            self.error_messages = (
-                _('publish-preconditions-blacklist',
-                  mapping=self._error_mapping),)
-            return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
+        status = super(ContentWorkflow, self).can_publish()
+        if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
+            return status
         if self.urgent:
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         if self.edited and self.corrected:

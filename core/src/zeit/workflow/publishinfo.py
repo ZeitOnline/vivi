@@ -14,6 +14,9 @@ import zope.interface
 
 
 class PublishInfo(object):
+    """Workflow baseclass. No concrete content type should use this,
+    but rather one of the subclasses like AssetWorkflow or ContentWorkflow.
+    """
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
@@ -51,7 +54,11 @@ class PublishInfo(object):
             return None
 
     def can_publish(self):
-        raise NotImplementedError()
+        if self.matches_blacklist():
+            self.error_messages = (
+                _('publish-preconditions-blacklist',
+                  mapping=self._error_mapping),)
+            return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
     def matches_blacklist(self):
         config = zope.app.appsetup.product.getProductConfiguration(
