@@ -7,6 +7,9 @@ vivi.core changes
 
 - FIX: Use correct syntax for tags in push to influxdb
 
+- MAINT: Send info about UA pushes to both grafana and influxdb,
+  so we can hopefully shut down the influxdb soon
+
 
 4.4.0 (2019-06-20)
 ------------------
