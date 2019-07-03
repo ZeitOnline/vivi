@@ -5,7 +5,7 @@ vivi.core changes
 4.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- IR-66: Retry webhook on errors
 
 
 4.4.1 (2019-07-03)
