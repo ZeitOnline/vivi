@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.4.1 (unreleased)
+4.4.1 (2019-07-03)
 ------------------
 
 - FIX: Use correct syntax for tags in push to influxdb
