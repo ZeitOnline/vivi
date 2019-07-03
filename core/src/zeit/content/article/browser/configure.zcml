@@ -22,9 +22,9 @@
       name="Workflow"
       for="zeit.content.article.interfaces.IArticle"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
-      class=".menu.WorkflowMenuItem"
+      class="zeit.workflow.browser.menu.WorkflowMenuItem"
       manager="zeit.cms.browser.interfaces.IContextViews"
-      permission="zeit.workflow.Publish"
+      permission="zeit.cms.admin.View"
    />
 
  <browser:viewlet
