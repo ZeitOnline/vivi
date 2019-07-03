@@ -1,5 +1,6 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -79,3 +80,16 @@ class ContentWorkflowTest(zeit.cms.testing.FunctionalTestCase):
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
         zope.interface.classImplementsOnly(ExampleContentType, *old_implements)
+
+    def test_locked_content_should_not_publish(self):
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.repository['testcontent'])
+        workflow.urgent = True
+        self.assertEqual(CAN_PUBLISH_SUCCESS, workflow.can_publish())
+        workflow.locked = True
+        self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
+
+        log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+        log_entries = [zope.i18n.translate(x.message)
+                       for x in log.get_log(self.repository['testcontent'])]
+        self.assertIn('Publish lock?: yes', log_entries)

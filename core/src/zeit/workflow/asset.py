@@ -1,4 +1,3 @@
-from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
@@ -13,9 +12,7 @@ class AssetWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     zope.component.adapts(zeit.cms.interfaces.IAsset)
 
     def can_publish(self):
-        if self.matches_blacklist():
-            self.error_messages = (
-                _('publish-preconditions-blacklist',
-                  mapping=self._error_mapping),)
-            return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
+        status = super(AssetWorkflow, self).can_publish()
+        if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
+            return status
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS

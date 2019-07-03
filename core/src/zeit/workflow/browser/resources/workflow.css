@@ -32,3 +32,7 @@ table.objectlog td.principal:before {
 #worklist .error {
     display: list-item;
 }
+
+.field.fieldname-lock_reason label {
+    display: none;
+}
