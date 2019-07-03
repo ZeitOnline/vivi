@@ -221,6 +221,9 @@ def celery_ping():
 
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
+    response_code = 200
+    response_body = '{}'
+
     def do_GET(self):
         length = int(self.headers.get('content-length', 0))
         self.requests.append(dict(
@@ -228,9 +231,17 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
             path=self.path,
             body=self.rfile.read(length) if length else None,
         ))
-        self.send_response(self.response_code)
+        if isinstance(self.response_code, int):
+            status = self.response_code
+        else:
+            status = self.response_code.pop(0)
+        if isinstance(self.response_body, basestring):
+            body = self.response_body
+        else:
+            body = self.response_body.pop(0)
+        self.send_response(status)
         self.end_headers()
-        self.wfile.write(self.response_body)
+        self.wfile.write(body)
 
     do_POST = do_GET
     do_PUT = do_GET
