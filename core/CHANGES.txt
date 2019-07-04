@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.5.3 (unreleased)
+4.5.3 (2019-07-04)
 ------------------
 
 - IR-67: Display different error for still published objects when lock is set
