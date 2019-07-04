@@ -24,7 +24,7 @@ class Connection(object):
         data = [{
             'name': self.series,
             'columns': ['title', 'tags', 'text'],
-            'points': [['Push', ['push', 'www', template], link]],
+            'points': [['Push', ','.join(['push', 'www', template]), link]],
         }]
         try:
             requests.post(
