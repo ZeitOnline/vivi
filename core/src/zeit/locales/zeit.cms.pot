@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Jun 27 13:02:03 2019\n"
+"POT-Creation-Date: Thu Jul  4 13:27:45 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -236,7 +236,7 @@ msgstr ""
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/file.zcml:24
-#: zeit/content/article/browser/menu.py:25
+#: zeit/content/article/browser/menu.py:18
 #: zeit/content/author/browser/form.py:84
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
@@ -1345,7 +1345,7 @@ msgid "Metadata"
 msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:51
-#: zeit/content/article/browser/menu.py:26
+#: zeit/content/article/browser/menu.py:19
 #: zeit/edit/browser/menu.py:10
 msgid "Edit contents"
 msgstr ""
@@ -1581,6 +1581,8 @@ msgid "Last published by"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:81
+#: zeit/workflow/browser/form.py:134
+#: zeit/workflow/browser/form.py:167
 msgid "Publish lock?"
 msgstr ""
 
@@ -1852,8 +1854,8 @@ msgstr ""
 #: zeit/content/cp/browser/workflow.py:30
 #: zeit/newsletter/browser/workflow.py:19
 #: zeit/workflow/browser/form.py:127
-#: zeit/workflow/browser/form.py:158
-#: zeit/workflow/browser/form.py:187
+#: zeit/workflow/browser/form.py:161
+#: zeit/workflow/browser/form.py:193
 msgid "Status"
 msgstr ""
 
@@ -2868,15 +2870,15 @@ msgstr ""
 #: zeit/content/cp/browser/workflow.py:34
 #: zeit/newsletter/browser/workflow.py:25
 #: zeit/workflow/browser/form.py:132
-#: zeit/workflow/browser/form.py:162
+#: zeit/workflow/browser/form.py:165
 msgid "Settings"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:36
 #: zeit/newsletter/browser/workflow.py:27
-#: zeit/workflow/browser/form.py:134
-#: zeit/workflow/browser/form.py:164
-#: zeit/workflow/browser/form.py:191
+#: zeit/workflow/browser/form.py:137
+#: zeit/workflow/browser/form.py:170
+#: zeit/workflow/browser/form.py:197
 msgid "Log"
 msgstr ""
 
@@ -4425,7 +4427,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
 #: zeit/workflow/browser/form.py:54
-#: zeit/workflow/publishinfo.py:96
+#: zeit/workflow/publishinfo.py:102
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
@@ -4500,12 +4502,23 @@ msgstr ""
 msgid "Collective Retraction"
 msgstr ""
 
+#: zeit/workflow/publishinfo.py:131
+#: zeit/workflow/workflow.py:57
+#. Default: ""
+msgid "${name}: ${new_value}"
+msgstr ""
+
 #: zeit/workflow/publishinfo.py:60
 #. Default: ""
 msgid "publish-preconditions-blacklist"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:65
+#: zeit/workflow/publishinfo.py:68
+#. Default: ""
+msgid "publish-preconditions-locked-published"
+msgstr ""
+
+#: zeit/workflow/publishinfo.py:72
 #. Default: ""
 msgid "publish-preconditions-locked"
 msgstr ""
@@ -4541,11 +4554,6 @@ msgstr ""
 #: zeit/workflow/workflow.py:43
 #. Default: ""
 msgid "publish-preconditions-urgent"
-msgstr ""
-
-#: zeit/workflow/workflow.py:57
-#. Default: ""
-msgid "${name}: ${new_value}"
 msgstr ""
 
 #: zeit/wysiwyg/browser/configure.zcml:13

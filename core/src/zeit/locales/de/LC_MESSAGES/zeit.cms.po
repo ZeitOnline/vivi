@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 27 13:02:03 2019\n"
-"PO-Revision-Date: 2019-06-27 13:07+0200\n"
+"POT-Creation-Date: Thu Jul  4 13:27:45 2019\n"
+"PO-Revision-Date: 2019-07-04 13:28+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -222,7 +222,7 @@ msgstr "Speichern"
 #: zeit/cms/browser/form.py:343 zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/file.zcml:24
-#: zeit/content/article/browser/menu.py:25
+#: zeit/content/article/browser/menu.py:18
 #: zeit/content/author/browser/form.py:84
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
@@ -1315,7 +1315,7 @@ msgid "Metadata"
 msgstr "Metadaten"
 
 #: zeit/cms/syndication/browser/configure.zcml:51
-#: zeit/content/article/browser/menu.py:26 zeit/edit/browser/menu.py:10
+#: zeit/content/article/browser/menu.py:19 zeit/edit/browser/menu.py:10
 msgid "Edit contents"
 msgstr "Bearbeiten"
 
@@ -1553,7 +1553,8 @@ msgstr "Veröffentlicht (Print)"
 msgid "Last published by"
 msgstr "Letzte Veröffentlichnung von"
 
-#: zeit/cms/workflow/interfaces.py:81
+#: zeit/cms/workflow/interfaces.py:81 zeit/workflow/browser/form.py:134
+#: zeit/workflow/browser/form.py:167
 msgid "Publish lock?"
 msgstr "Sperrvermerk"
 
@@ -1820,7 +1821,7 @@ msgstr "Relateds bearbeiten"
 #: zeit/content/article/edit/browser/form.py:177
 #: zeit/content/cp/browser/workflow.py:30
 #: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:127
-#: zeit/workflow/browser/form.py:158 zeit/workflow/browser/form.py:187
+#: zeit/workflow/browser/form.py:161 zeit/workflow/browser/form.py:193
 msgid "Status"
 msgstr "Status"
 
@@ -2812,13 +2813,13 @@ msgstr "Storystream"
 
 #: zeit/content/cp/browser/workflow.py:34
 #: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:132
-#: zeit/workflow/browser/form.py:162
+#: zeit/workflow/browser/form.py:165
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: zeit/content/cp/browser/workflow.py:36
-#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:134
-#: zeit/workflow/browser/form.py:164 zeit/workflow/browser/form.py:191
+#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:137
+#: zeit/workflow/browser/form.py:170 zeit/workflow/browser/form.py:197
 msgid "Log"
 msgstr "Log"
 
@@ -4368,7 +4369,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
 #. Default: ""
-#: zeit/workflow/browser/form.py:54 zeit/workflow/publishinfo.py:96
+#: zeit/workflow/browser/form.py:54 zeit/workflow/publishinfo.py:102
 msgid "publish-preconditions-not-met"
 msgstr ""
 "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
@@ -4455,12 +4456,22 @@ msgid "Collective Retraction"
 msgstr "Sammeldepublizierung"
 
 #. Default: ""
+#: zeit/workflow/publishinfo.py:131 zeit/workflow/workflow.py:57
+msgid "${name}: ${new_value}"
+msgstr "${name}: ${new_value}"
+
+#. Default: ""
 #: zeit/workflow/publishinfo.py:60
 msgid "publish-preconditions-blacklist"
 msgstr "Der Inhalt befindet sich in einem Testordner."
 
 #. Default: ""
-#: zeit/workflow/publishinfo.py:65
+#: zeit/workflow/publishinfo.py:68
+msgid "publish-preconditions-locked-published"
+msgstr "Bitte erst depublizieren, dann Sperrvermerk setzen."
+
+#. Default: ""
+#: zeit/workflow/publishinfo.py:72
 msgid "publish-preconditions-locked"
 msgstr "Sperrvermerk »${reason}«"
 
@@ -4496,11 +4507,6 @@ msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 #: zeit/workflow/workflow.py:43
 msgid "publish-preconditions-urgent"
 msgstr "Prüfen Sie die Status und/oder das »Eilig«-Feld."
-
-#. Default: ""
-#: zeit/workflow/workflow.py:57
-msgid "${name}: ${new_value}"
-msgstr "${name}: ${new_value}"
 
 #: zeit/wysiwyg/browser/configure.zcml:13
 msgid "Edit WYSIWYG"

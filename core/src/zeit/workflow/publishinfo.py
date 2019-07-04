@@ -63,8 +63,14 @@ class PublishInfo(object):
         if self.locked:
             mapping = self._error_mapping
             mapping['reason'] = self.lock_reason
-            self.error_messages = (
-                _('publish-preconditions-locked', mapping=mapping),)
+            if self.published:
+                self.error_messages = (
+                    _('publish-preconditions-locked-published',
+                      mapping=mapping),)
+            else:
+                self.error_messages = (
+                    _('publish-preconditions-locked',
+                      mapping=mapping),)
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
     def matches_blacklist(self):
