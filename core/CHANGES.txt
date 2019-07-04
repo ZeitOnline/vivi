@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.5.1 (unreleased)
+4.5.1 (2019-07-04)
 ------------------
 
 - MAINT: Exclude connector test content from released egg
