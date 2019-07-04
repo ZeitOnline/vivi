@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jul  4 13:27:45 2019\n"
-"PO-Revision-Date: 2019-07-04 13:28+0200\n"
+"POT-Creation-Date: Thu Jul  4 14:11:11 2019\n"
+"PO-Revision-Date: 2019-07-04 14:12+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1517,7 +1517,7 @@ msgstr "Nicht veröffentlicht"
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: zeit/cms/workflow/interfaces.py:105
+#: zeit/cms/workflow/interfaces.py:106
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
@@ -1558,7 +1558,11 @@ msgstr "Letzte Veröffentlichnung von"
 msgid "Publish lock?"
 msgstr "Sperrvermerk"
 
-#: zeit/cms/workflow/interfaces.py:86
+#: zeit/cms/workflow/interfaces.py:82
+msgid "Please retract first"
+msgstr "Achtung: Bitte erst depublizieren!"
+
+#: zeit/cms/workflow/interfaces.py:87
 msgid "Publish lock reason"
 msgstr "Sperrvermerk-Notizen"
 

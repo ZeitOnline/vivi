@@ -79,6 +79,7 @@ class IPublishInfo(zope.interface.Interface):
 
     locked = zope.schema.Bool(
         title=_("Publish lock?"),
+        description=_("Please retract first"),
         required=False,
         default=False)
 

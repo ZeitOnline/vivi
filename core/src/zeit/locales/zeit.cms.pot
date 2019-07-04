@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Jul  4 13:27:45 2019\n"
+"POT-Creation-Date: Thu Jul  4 14:11:11 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1544,7 +1544,7 @@ msgstr ""
 msgid "Published but has changes"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:105
+#: zeit/cms/workflow/interfaces.py:106
 msgid "Publication state"
 msgstr ""
 
@@ -1586,7 +1586,11 @@ msgstr ""
 msgid "Publish lock?"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:86
+#: zeit/cms/workflow/interfaces.py:82
+msgid "Please retract first"
+msgstr ""
+
+#: zeit/cms/workflow/interfaces.py:87
 msgid "Publish lock reason"
 msgstr ""
 

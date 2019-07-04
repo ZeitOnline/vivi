@@ -36,3 +36,8 @@ table.objectlog td.principal:before {
 .field.fieldname-lock_reason label {
     display: none;
 }
+
+.field.fieldname-locked .hint {
+    color: #4C4C4C;
+    display: block;
+}
