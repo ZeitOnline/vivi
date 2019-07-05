@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.5.4 (unreleased)
+4.5.4 (2019-07-05)
 ------------------
 
 - BUG-1096: Allow storing `False` for embed parameters with default=True
