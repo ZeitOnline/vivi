@@ -127,4 +127,15 @@
       permission="zeit.EditContent"/>
   </class>
 
+  <class class=".rss.RSSLink">
+    <require
+      interface="zeit.content.cp.blocks.rss.IRSSLink"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.cp.blocks.rss.IRSSLink"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

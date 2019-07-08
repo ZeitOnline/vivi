@@ -770,7 +770,7 @@ class AutomaticRSSTest(HideDupesTest):
     def test_spektrum_teaser_object_should_have_expected_attributes(self):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
-        item = zeit.content.cp.automatic.RSSLink(items[0])
+        item = zeit.content.cp.blocks.rss.RSSLink(items[0])
         self.assertEqual(
             'Ein Dinosaurier mit einem Hals wie ein Baukran',
             item.teaserTitle)
@@ -789,7 +789,7 @@ class AutomaticRSSTest(HideDupesTest):
             </item>"""
 
         xml = lxml.etree.fromstring(xml_str)
-        teaser = zeit.content.cp.automatic.RSSLink(xml)
+        teaser = zeit.content.cp.blocks.rss.RSSLink(xml)
 
         self.assertEqual(None, teaser.teaserSupertitle)
         self.assertEqual('', teaser.teaserTitle)
@@ -802,14 +802,14 @@ class AutomaticRSSTest(HideDupesTest):
                 <category><![CDATA[Lorem ipsum]]></category>
             </item>"""
 
-        teaser = zeit.content.cp.automatic.RSSLink(
+        teaser = zeit.content.cp.blocks.rss.RSSLink(
             lxml.etree.fromstring(xml_str))
         self.assertEqual('Lorem ipsum', teaser.supertitle)
 
     def test_teaser_falls_back_to_icms_content_missing_value(self):
         feed_xml = self.feed_xml()
         items = feed_xml.xpath('/rss/channel/item')
-        item = zeit.content.cp.automatic.RSSLink(items[0])
+        item = zeit.content.cp.blocks.rss.RSSLink(items[0])
         self.assertEqual(None, item.byline)
         with self.assertRaises(AttributeError):
             item.foo
