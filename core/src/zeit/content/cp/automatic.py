@@ -564,7 +564,7 @@ class RSSLink(object):
 
     @cachedproperty
     def lead_candidate(self):
-        return False
+        return True
 
     @cachedproperty
     def authorships(self):
