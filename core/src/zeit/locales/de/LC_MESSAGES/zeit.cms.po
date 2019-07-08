@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jul  4 14:11:11 2019\n"
-"PO-Revision-Date: 2019-07-04 14:12+0200\n"
+"POT-Creation-Date: Mon Jul  8 15:56:30 2019\n"
+"PO-Revision-Date: 2019-07-08 15:58+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -214,7 +214,7 @@ msgstr "Bearbeiten"
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
-#: zeit/content/image/browser/form.py:75 zeit/edit/browser/form.py:66
+#: zeit/content/image/browser/form.py:77 zeit/edit/browser/form.py:66
 #: zeit/edit/browser/view.py:136
 msgid "Apply"
 msgstr "Speichern"
@@ -571,7 +571,7 @@ msgstr "Kopf"
 #: zeit/cms/content/browser/form.py:20
 #: zeit/content/advertisement/browser/form.py:18
 #: zeit/content/cp/browser/form.py:32 zeit/content/gallery/browser/form.py:27
-#: zeit/content/image/browser/form.py:22
+#: zeit/content/image/browser/form.py:24
 #: zeit/content/infobox/browser/form.py:26
 #: zeit/content/infobox/browser/form.py:81
 #: zeit/content/video/browser/video.py:36
@@ -3244,7 +3244,7 @@ msgid "Edit gallery entry"
 msgstr "Bildergalerie-Eintrag bearbeiten"
 
 #: zeit/content/gallery/browser/overview.pt:17
-#: zeit/content/image/browser/form.py:66
+#: zeit/content/image/browser/form.py:68
 msgid "Edit image"
 msgstr "Bild bearbeiten"
 
@@ -3346,7 +3346,7 @@ msgstr "Copyright setzen"
 msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
-#: zeit/content/image/browser/form.py:101
+#: zeit/content/image/browser/form.py:103
 msgid "edit image"
 msgstr "Bild bearbeiten"
 
@@ -3355,7 +3355,11 @@ msgstr "Bild bearbeiten"
 msgid "Image data"
 msgstr "Bilddaten"
 
-#: zeit/content/image/browser/form.py:48
+#: zeit/content/image/browser/form.py:20
+msgid "Image source"
+msgstr "Quelle"
+
+#: zeit/content/image/browser/form.py:50
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
