@@ -5,7 +5,7 @@ vivi.core changes
 4.5.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Fix volume title listing breaking with non ascii char 
 
 
 4.5.4 (2019-07-05)
