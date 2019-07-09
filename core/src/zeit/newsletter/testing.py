@@ -1,13 +1,13 @@
-from zeit.newsletter.newsletter import Newsletter
 from zeit.content.video.testing import PLAYER_MOCK_LAYER
+from zeit.newsletter.newsletter import Newsletter
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import plone.testing
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.content.video.testing
-import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
 
@@ -19,7 +19,7 @@ product_config = """\
 """
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.workflow.testing.CONFIG_LAYER,))
+    zeit.content.image.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, PLAYER_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))

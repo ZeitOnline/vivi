@@ -3,10 +3,12 @@ import mock
 import unittest
 import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.content.portraitbox.interfaces
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.cms.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.content.image.testing.CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 

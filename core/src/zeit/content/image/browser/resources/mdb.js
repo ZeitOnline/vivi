@@ -38,7 +38,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
                 log(e);
                 return;
             }
-            self.set(mdb_id);
+            self.retrieve(mdb_id);
         });
     },
 
@@ -49,9 +49,32 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
             data.types, ['text/plain', 'application/json']);
     },
 
-    set: function(mdb_id) {
+    retrieve: function(mdb_id) {
         var self = this;
-        $('#form\\.mdb_blob').val(mdb_id);
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: window.application_url + '/@@mdb_metadata',
+            data: {'id':  mdb_id},
+            success: function(data) {
+                self.set(data);
+            },
+            error: function(request) {
+                log(request.responseText);
+                alert(request.responseText);
+            }
+        });
+    },
+
+    set: function(data) {
+        $('#form\\.mdb_blob').val(data['mdb_id']);
+        $('#form\\.mdb_id').val(data['mdb_id']);
+        var select = $('#form\\.copyright\\.combination_01');
+        var other = $('option:contains("Andere")', select).prop(
+            'selected', true);
+        select.trigger('change');
+        $('#form\\.copyright\\.combination_02').val(data['fotograf']);
+        $('#form\\.caption').val(data['beschreibung']);
     }
 
 });
