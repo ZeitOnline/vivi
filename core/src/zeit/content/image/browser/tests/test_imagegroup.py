@@ -152,15 +152,17 @@ class ImageGroupBrowserTest(
         self.add_imagegroup()
         self.set_display_type('Bildergruppe')
         self.save_imagegroup()
-        self.assertIn(
-            'repository/imagegroup/@@variant.html', self.browser.contents)
+        self.assertEllipsis(
+            '...repository/imagegroup/@@variant.html...',
+            self.browser.contents)
 
     def test_display_type_infographic_hides_edit_tab(self):
         self.add_imagegroup()
         self.set_display_type('Infografik')
         self.save_imagegroup()
-        self.assertNotIn(
-            'repository/imagegroup/@@variant.html', self.browser.contents)
+        self.assertNotEllipsis(
+            '...repository/imagegroup/@@variant.html...',
+            self.browser.contents)
 
     def test_prefills_external_id_from_image_filename(self):
         b = self.browser
