@@ -1,6 +1,9 @@
 from StringIO import StringIO
+import base64
 import lxml.etree
+import os.path
 import pkg_resources
+import re
 import requests
 import zeit.content.image.interfaces
 import zope.interface
@@ -8,6 +11,8 @@ import zope.interface
 
 USER_AGENT = 'zeit.content.image/' + pkg_resources.get_distribution(
     'vivi.core').version
+XML_TAGS = re.compile('</?[^>]*>')
+FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
 
 class MDB(object):
@@ -41,7 +46,19 @@ class MDB(object):
         return result
 
     def get_body(self, mdb_id):
-        return StringIO()
+        response = self._request('GET /mdb/%s/file' % mdb_id)
+        response = response.text
+        # Yep, they're sending megabytes of data in an XML envelope; let's not
+        # put that through an XML parser without a really good reason.
+        body = XML_TAGS.sub('', response)
+        body = base64.b64decode(body)
+        # Cannot use cStringIO since we need to set additional attributes.
+        result = StringIO(body)
+        result.filename = FILE_NAME_ATTRIBUTE.search(response).group(1)
+        result.mdb_id = mdb_id
+        result.headers = {'content-type': 'image/%s' % os.path.splitext(
+            result.filename)[1].lower()}
+        return result
 
     def _request(self, request, **kw):
         verb, path = request.split(' ')

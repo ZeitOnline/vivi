@@ -10,6 +10,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         var self = this;
         element = $(document.getElementById(element));
         self.landingzone = $('.landing-zone-candidate', element);
+        self.input = $('input', element);
 
         element.on('dragenter', function(e) {
             if (self._accept_drag(e.originalEvent.dataTransfer)) {
@@ -67,7 +68,8 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
     },
 
     set: function(data) {
-        $('#form\\.mdb_blob').val(data['mdb_id']);
+        var self = this;
+        self.input.val(data['mdb_id']);
         $('#form\\.mdb_id').val(data['mdb_id']);
         var select = $('#form\\.copyright\\.combination_01');
         var other = $('option:contains("Andere")', select).prop(

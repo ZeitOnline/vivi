@@ -14,12 +14,21 @@ class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        # XXX return zope.component.getUtility(IMDB).get_body(input)
-        return None
+        return zope.component.getUtility(
+            zeit.content.image.interfaces.IMDB).get_body(input)
 
     def _toFormValue(self, value):
-        # We only work in an AddForm, i.e. one-way.
-        return self._missing
+        if value == self.context.missing_value:
+            return self._missing
+        return value.mdb_id
+
+    def _getFormValue(self):
+        # Skip _getCurrentValueHelper() since that runs
+        # `toFormValue(toFieldValue())` which is both superfluous and expensive
+        # in our case.
+        if self._renderedValueSet():
+            return self._toFormValue(self._data)
+        return self.request.form.get(self.name, self._missing)
 
 
 class MDBProxy(object):
