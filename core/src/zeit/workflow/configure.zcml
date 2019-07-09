@@ -15,6 +15,7 @@
     factory=".timebased.XMLReferenceUpdater"
     name="timebased-workflow"
     />
+  <subscriber handler=".publishinfo.log_workflow_changes" />
   <subscriber handler=".workflow.log_workflow_changes" />
 
   <adapter factory=".source.fromNotNecessary" />

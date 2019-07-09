@@ -2,10 +2,57 @@ vivi.core changes
 =================
 
 
-4.4.1 (unreleased)
+4.5.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-5291: Rename content marketing teaser adplace
+
+
+4.5.5 (2019-07-08)
+------------------
+
+- FIX: Fix volume title listing breaking with non ascii char 
+
+
+4.5.4 (2019-07-05)
+------------------
+
+- BUG-1096: Allow storing `False` for embed parameters with default=True
+
+
+4.5.3 (2019-07-04)
+------------------
+
+- IR-67: Display different error for still published objects when lock is set
+
+
+4.5.2 (2019-07-04)
+------------------
+
+- FIX: Use correcter syntax for tags in push to influxdb
+
+
+4.5.1 (2019-07-04)
+------------------
+
+- MAINT: Exclude connector test content from released egg
+
+
+4.5.0 (2019-07-04)
+------------------
+
+- IR-66: Retry webhook on errors
+
+- IR-67: Add `locked` flag to workflow info that prevents publishing
+
+
+4.4.1 (2019-07-03)
+------------------
+
+- FIX: Use correct syntax for tags in push to influxdb
+
+- MAINT: Send info about UA pushes to both grafana and influxdb,
+  so we can hopefully shut down the influxdb soon
 
 
 4.4.0 (2019-06-20)

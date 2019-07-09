@@ -1,6 +1,7 @@
 from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.interfaces import ITypeDeclaration
+import collections
 import grokcore.component as grok
 import logging
 import requests
@@ -20,7 +21,8 @@ def notify_after_checkin(context, event):
     if event.publishing:
         return
     # XXX Work around redis/ZODB race condition, see BUG-796.
-    notify_webhooks.apply_async((context.uniqueId,), countdown=5)
+    for hook in HOOKS:
+        notify_webhook.apply_async((context.uniqueId, hook.url), countdown=5)
 
 
 @grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -33,17 +35,24 @@ def notify_after_add(event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
             event.newParent):
         return
-    notify_webhooks.delay(context.uniqueId)
+    for hook in HOOKS:
+        notify_webhook.delay(context.uniqueId, hook.url)
 
 
-@zeit.cms.celery.task(queuename='webhook')
-def notify_webhooks(uniqueId):
+@zeit.cms.celery.task(bind=True, queuename='webhook')
+def notify_webhook(self, uniqueId, url):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:
         log.warning('Could not resolve %s, ignoring.', uniqueId)
         return
-    for hook in HOOKS:
+    hook = HOOKS.factory.find(url)
+    if hook is None:
+        log.warning('Hook configuration for %s has vanished, ignoring.', url)
+        return
+    try:
         hook(content)
+    except TechnicalError as e:
+        raise self.retry(countdown=e.countdown)
 
 
 class Hook(object):
@@ -56,10 +65,23 @@ class Hook(object):
         if self.should_exclude(content):
             return
         log.debug('Notifying %s about %s', self.url, content)
-        self.deliver(content)
+        try:
+            self.deliver(content)
+        except requests.exceptions.HTTPError as err:
+            if getattr(err.response, 'status_code', 500) < 500:
+                raise
+            else:
+                log.warning('Webhook %s returned error, retrying',
+                            self.url, exc_info=True)
+                raise TechnicalError()
+        except requests.exceptions.RequestException:
+            log.warning('Webhook %s returned error, retrying',
+                        self.url, exc_info=True)
+            raise TechnicalError()
 
     def deliver(self, content):
-        requests.post(self.url, json=[content.uniqueId])
+        r = requests.post(self.url, json=[content.uniqueId], timeout=10)
+        r.raise_for_status()
 
     def add_exclude(self, key, value):
         self.excludes.append((key, value))
@@ -92,15 +114,27 @@ class HookSource(zeit.cms.content.sources.SimpleXMLSource):
     config_url = 'checkin-webhook-config'
 
     @CONFIG_CACHE.cache_on_arguments()
-    def getValues(self):
-        result = []
+    def _values(self):
+        result = collections.OrderedDict()
         tree = self._get_tree()
         for node in tree.iterchildren('webhook'):
             hook = Hook(node.get('url'))
             for exclude in node.xpath('exclude/*'):
                 hook.add_exclude(exclude.tag, exclude.text)
-            result.append(hook)
+            result[hook.url] = hook
         return result
+
+    def getValues(self):
+        return self._values().values()
+
+    def find(self, url):
+        return self._values().get(url)
 
 
 HOOKS = HookSource()
+
+
+class TechnicalError(Exception):
+
+    def __init__(self, countdown=60):
+        self.countdown = countdown

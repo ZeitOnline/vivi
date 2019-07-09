@@ -7,5 +7,6 @@
   <utility factory=".testing.PushNotifier" name="facebook" />
   <utility factory=".testing.PushNotifier" name="homepage" />
   <utility factory=".testing.PushNotifier" name="influxdb" />
+  <utility factory=".testing.PushNotifier" name="grafana" />
 
 </configure>

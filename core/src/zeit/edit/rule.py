@@ -231,11 +231,9 @@ class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         return zeit.edit.interfaces.IValidator(self.context)
 
     def can_publish(self):
-        if self.matches_blacklist():
-            self.error_messages = (
-                _('publish-preconditions-blacklist',
-                  mapping=self._error_mapping),)
-            return CAN_PUBLISH_ERROR
+        status = super(ValidatingWorkflow, self).can_publish()
+        if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
+            return status
         if self.validator.status == ERROR:
             self.error_messages = (
                 _('Could not publish ${id} since it has validation errors.',

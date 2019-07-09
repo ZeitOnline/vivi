@@ -197,6 +197,9 @@ class Message(zeit.push.message.Message):
         influxdb = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='influxdb')
         influxdb.send(self.text, self.url, **self.config)
+        grafana = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='grafana')
+        grafana.send(self.text, self.url, **self.config)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)

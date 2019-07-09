@@ -131,6 +131,9 @@ class ContentWorkflow(WorkflowForm):
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
         gocept.form.grouped.Fields(
+            _("Publish lock?"), ('locked', 'lock_reason',),
+            css_class='column-right'),
+        gocept.form.grouped.Fields(
             _("Log"), fields=('logs', ),
             css_class='full-width')
     )
@@ -160,6 +163,9 @@ class AssetWorkflow(WorkflowForm):
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Publish lock?"), ('locked', 'lock_reason',),
+            css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Log"), fields=('logs', ),
             css_class='full-width')

@@ -73,9 +73,10 @@ class EmbedParameters(
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('param[@id="%s"]' % key)
+        field = self.fields.get(key, zope.schema.TextLine())
         if node:
             self.xml.remove(node[0])
-        if value:  # XXX Use field.missing_value?
+        if value != field.missing_value:
             value = self._converter(key).toProperty(value)
             node = lxml.objectify.E.param(value, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)

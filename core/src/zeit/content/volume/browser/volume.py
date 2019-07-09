@@ -26,8 +26,7 @@ class VolumeListRepresentation(
     @property
     def title(self):
         volume = self.context
-        return '{} {}/{}'.format(
-            volume.product.title, volume.year, volume.volume)
+        return '%s %s/%s' % (volume.product.title, volume.year, volume.volume)
 
     @property
     def searchableText(self):

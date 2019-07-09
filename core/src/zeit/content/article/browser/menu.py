@@ -3,14 +3,7 @@ import zeit.cms.browser.menu
 import zeit.cms.checkout
 
 
-class WorkflowMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
-    """The Workflow menu item which is active when no other item is active."""
-    def render(self):
-        return ''
-
-
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
-    """The Workflow menu item which is active when no other item is active."""
 
     sort = -1
     viewURL = "@@edit.html"
