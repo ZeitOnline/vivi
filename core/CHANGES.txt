@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5291: Rename content marketing teaser adplace
 
+- ZON-5347: Set 'is_amp' default to true
+
 
 4.5.5 (2019-07-08)
 ------------------
