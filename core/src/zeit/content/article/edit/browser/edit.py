@@ -404,8 +404,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('title')
         self.set_charlimit('supertitle')
         self.set_charlimit('link_text')
-        # Guess i have to manipulate the widgets here as well, to prevent the
-        # XML error
 
     @property
     def prefix(self):

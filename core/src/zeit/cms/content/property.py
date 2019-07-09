@@ -161,8 +161,6 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         return value
 
     def __set__(self, instance, value):
-        if self.field is not None:
-            self.field.bind(instance).validate(value)
         if value is None:
             self.getNode(instance).attrib.pop(self.attribute_name, None)
         else:
