@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
+from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
@@ -46,6 +47,14 @@ class AddForm(FormBase,
         CustomWidgetFactory(
             zope.formlib.sequencewidget.SequenceWidget,
             zeit.cms.repository.browser.file.BlobWidget))
+    form_fields['mdb_blob'].custom_widget = MDBImportWidget
+
+    def __init__(self, *args, **kw):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.image')
+        if not config.get('mdb-api-url'):
+            self.form_fields = self.form_fields.omit('mdb_blob')
+        super(AddForm, self).__init__(*args, **kw)
 
     def validate(self, action, data):
         # SequenceWidget._generateSequence() silently discards invalid entries,
@@ -78,7 +87,8 @@ class AddForm(FormBase,
         # Must remove master_image_blobs from data before creating the images,
         # since `zeit.cms.browser.form.apply_changes_with_setattr` breaks on
         # fields that are not actually part of the interface.
-        blobs = data.pop('master_image_blobs')
+        blobs = data.pop('master_image_blobs', ()) + (
+            data.pop('mdb_blob', None),)
 
         # Create ImageGroup with remaining data.
         group = super(AddForm, self).create(data)

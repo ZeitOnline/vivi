@@ -1,0 +1,15 @@
+<div
+    i18n:domain="zeit.cms"
+    class="mdb-import-widget" tal:attributes="id view/name">
+    <input type="hidden" tal:attributes="
+                 name view/name;
+                 value view/_getFormValue" />
+    <div class="landing-zone-candidate landing-zone visible"
+         i18n:translate="">
+        Drag an MDB image here
+    </div>
+</div>
+<script tal:content="string:
+new zeit.content.image.DropMDBWidget('${view/name}');
+">
+</script>
