@@ -151,21 +151,22 @@ Anderer\r
             self.assertEqual(False,
                              excluder.is_relevant(lxml.etree.fromstring(xml)))
 
-    def test_init_toc_connector_is_registered_as_connector(self):
+    def test_toc_connector_is_registered_as_connector(self):
         old_connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         # register_archive_connector is called in __init__
         # check for the correct side effects
         t = Toc(mock.Mock(), mock.Mock())
-        new_connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        # Check if a new IConnector was registered
-        assert old_connector is not new_connector
-        # Check if the toc.connector is the ITocConnector
-        assert t.connector is zope.component.getUtility(
-            zeit.content.volume.interfaces.ITocConnector)
-        assert t.connector is zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        with t._register_archive_connector():
+            new_connector = zope.component.getUtility(
+                zeit.connector.interfaces.IConnector)
+            # Check if a new IConnector was registered
+            assert old_connector is not new_connector
+            # Check if the toc.connector is the ITocConnector
+            assert t.connector is zope.component.getUtility(
+                zeit.content.volume.interfaces.ITocConnector)
+            assert t.connector is zope.component.getUtility(
+                zeit.connector.interfaces.IConnector)
 
 
 class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
