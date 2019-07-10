@@ -109,9 +109,12 @@ class Toc(zeit.cms.browser.view.Base):
         }
         """
         results = OrderedDict()
-        for prod_uid in self._get_product_uids():
+        for product in self.product_ids:
             result_for_product = {}
-            for ressort_folder in self.list_relevant_ressort_folders(prod_uid):
+            product_folder = self._fill_template(
+                'http://xml.zeit.de/%s/{year}/{name}/' % product)
+            for ressort_folder in self.list_relevant_ressort_folders(
+                    product_folder):
                 result_for_ressort = []
                 for article in self._get_all_article_elements(ressort_folder):
                     toc_entry = self._create_toc_element(article)
@@ -120,7 +123,7 @@ class Toc(zeit.cms.browser.view.Base):
                 ressort_folder_name = ressort_folder.__name__ \
                     .replace('-', ' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
-            results[self._full_product_name(prod_uid)] = result_for_product
+            results[self._full_product_name(product)] = result_for_product
         return results
 
     @property
@@ -130,15 +133,6 @@ class Toc(zeit.cms.browser.view.Base):
             .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
-
-    def _get_product_uids(self):
-        """
-        Creates a list of uids to all given products.
-        :param product_ids: [str]
-        :return: [str]
-        """
-        return [self._fill_template('http://xml.zeit.de/%s/{year}/{name}/' % x)
-                for x in self.product_ids]
 
     def list_relevant_ressort_folders(self, product_uid):
         """
@@ -247,12 +241,7 @@ class Toc(zeit.cms.browser.view.Base):
                 zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
                 self.context, toc_entry['access'])
 
-    def _full_product_name(self, product_uid):
-        """
-        :param product_uid: str -  /PRODUCT_ID/YEAR/VOL/
-        """
-        splitted_path = product_uid.split(posixpath.sep)
-        product_id = splitted_path[-4]
+    def _full_product_name(self, product_id):
         return PRODUCT_MAPPING.get(product_id, product_id)
 
     def _sort_toc_data(self, toc_data):
