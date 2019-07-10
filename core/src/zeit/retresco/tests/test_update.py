@@ -141,6 +141,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
         self.tms.delete_id.assert_called_with(uuid)
+        self.assertFalse(self.tms.index.called)
 
     def test_remove_from_workingcopy_does_nothing(self):
         content = ExampleContentType()
@@ -148,6 +149,11 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
         zope.event.notify(event)
         self.assertFalse(self.tms.delete.called)
+
+    def test_rename_should_index(self):
+        zope.copypastemove.interfaces.IObjectMover(
+            self.repository['testcontent']).moveTo(self.repository, 'changed')
+        self.assertTrue(self.tms.index.called)
 
 
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):

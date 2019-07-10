@@ -22,11 +22,13 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
+@grok.subscribe(zope.lifecycleevent.IObjectMovedEvent)
 def index_after_add(event):
     # We don't use the "extended" (object, event) method, as we are not
     # interested in the events which are dispatched to sublocations.
     context = event.object
+    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
+        return
     if not zeit.cms.interfaces.ICMSContent.providedBy(context):
         return
     if zeit.cms.repository.interfaces.IRepository.providedBy(context):

@@ -5,7 +5,7 @@ vivi.core changes
 4.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1074: Index TMS on rename
 
 
 4.6.1 (2019-07-10)
