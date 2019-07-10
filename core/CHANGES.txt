@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.6.1 (unreleased)
+4.6.1 (2019-07-10)
 ------------------
 
 - BUG-1069: Don't index imagegroup or gallery thumbnail images in TMS
