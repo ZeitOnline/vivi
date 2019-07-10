@@ -44,6 +44,8 @@ def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(
             zeit.cms.content.interfaces.IUUID(uuid))
+        if content is None:
+            raise KeyError(uuid)
     except Exception:
         log.warning('TMS wants to update invalid id %s, ignored', uuid)
     else:

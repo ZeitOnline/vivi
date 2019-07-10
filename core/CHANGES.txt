@@ -5,7 +5,7 @@ vivi.core changes
 4.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- FIX: Don't try to nonexistent content in TMS re-enrich hook
 
 
 4.6.0 (2019-07-10)
