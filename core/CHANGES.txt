@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.5.6 (unreleased)
+4.6.0 (unreleased)
 ------------------
 
 - ZON-5239: Topicbox improvments
