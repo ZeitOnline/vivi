@@ -114,10 +114,6 @@ Anderer\r
         entry = t._create_toc_element(article_element)
         assert sys.maxint == entry.get('page')
 
-    def test_product_id_mapping_has_full_name_for_zei_product_id(self):
-        mapping = zeit.content.volume.interfaces.PRODUCT_MAPPING
-        self.assertEqual('Die Zeit'.lower(), mapping.get('ZEI', '').lower())
-
     def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
         toc_data = {
             'Die Zeit': {

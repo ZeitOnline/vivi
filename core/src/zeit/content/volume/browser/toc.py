@@ -5,9 +5,8 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IFolder
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
-from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
+from zeit.content.volume.interfaces import ITocConnector
 import csv
-import posixpath
 import re
 import StringIO
 import sys
@@ -242,7 +241,10 @@ class Toc(zeit.cms.browser.view.Base):
                 self.context, toc_entry['access'])
 
     def _full_product_name(self, product_id):
-        return PRODUCT_MAPPING.get(product_id, product_id)
+        product = PRODUCTS.find(product_id)
+        if not product:
+            return product_id
+        return product.title
 
     def _sort_toc_data(self, toc_data):
         """
@@ -329,6 +331,9 @@ class Toc(zeit.cms.browser.view.Base):
         return [str(page), title_teaser] + \
                [''] * number_of_empty_columns +  \
                [toc_entry.get('access')]
+
+
+PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)
 
 
 class Excluder(object):
