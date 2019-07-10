@@ -85,7 +85,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     is_amp = zope.schema.Bool(
         title=_('Is AMP'),
-        default=False,
+        default=True,
         required=False)
 
     hide_ligatus_recommendations = zope.schema.Bool(

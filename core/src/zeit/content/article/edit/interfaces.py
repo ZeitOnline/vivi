@@ -446,7 +446,7 @@ class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
         (u'mobile_41', 'Mobile: 41'),
         (u'mobile_42', 'Mobile: 42'),
         (u'mobile_43', 'Mobile: 43'),
-        (u'ctm', 'Content Marketing Teaser'),
+        (u'ctm', 'Content Marketing Teaser Mobil / Desktop'),
         (u'special', 'Desktop: 3 und Mobil: 1')
     ])
 

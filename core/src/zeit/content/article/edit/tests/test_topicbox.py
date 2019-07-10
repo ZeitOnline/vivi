@@ -11,6 +11,8 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.article.edit.topicbox import Topicbox
         import lxml.objectify
         box = Topicbox(None, lxml.objectify.E.topicbox())
+        self.repository['art'] = zeit.content.article.article.Article()
+        box.__parent__ = self.repository['art']
         return box
 
     def get_cp(self, content=None):
@@ -37,6 +39,14 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.first_reference = cp
         self.assertEqual(cp, box.referenced_cp)
         self.assertEqual([], list(box.values()))
+
+    def test_topicbox_parent_is_excluded_if_in_cp(self):
+        self.repository['foo'] = ExampleContentType()
+        box = self.get_topicbox()
+        art = zeit.content.article.interfaces.IArticle(box)
+        cp = self.get_cp(content=[self.repository['foo'], art])
+        box.first_reference = cp
+        self.assertEqual([self.repository['foo'], ], list(box.values()))
 
     def test_box_uses_cp_content(self):
         box = self.get_topicbox()

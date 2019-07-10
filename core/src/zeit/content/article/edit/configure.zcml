@@ -306,6 +306,21 @@
       />
   </class>
 
+  <adapter
+    factory=".topicbox.TopicboxImages"
+    provides="zeit.content.image.interfaces.IImages"
+    trusted="yes"
+    />
+
+  <class class=".topicbox.TopicboxImages">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.image.interfaces.IImages"
+      permission="zeit.EditContent" />
+  </class>
+
   <class class=".box.Box">
     <require
       interface=".interfaces.IBox"
