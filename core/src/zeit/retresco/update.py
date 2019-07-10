@@ -12,6 +12,8 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.content.image.imagegroup
+import zeit.content.image.transform
 import zeit.retresco.interfaces
 import zope.component
 import zope.lifecycleevent
@@ -107,6 +109,8 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         if (ICollection.providedBy(content) and
                 not INonRecursiveCollection.providedBy(content)):
             stack.extend(content.values())
+        if should_skip(content):
+            continue
         uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id',
                        '<no-uuid>')
         log.info('Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
@@ -157,12 +161,25 @@ def unindex_async(self, uuid):
         self.retry()
 
 
+# Mostly relevant for bulk reindex, since zeit.content.quiz is not used anymore
 SKIP_TYPES = ['quiz']
+THUMBNAIL_NAMES = [
+    '/%s/' % zeit.content.image.transform.THUMBNAIL_FOLDER_NAME,
+    zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX,
+]
 
 
 def should_skip(content):
+    for name in THUMBNAIL_NAMES:
+        if name in content.uniqueId:
+            log.debug('Skipping thumbnail %s', content)
+            return True
     content_type = zeit.cms.type.get_type(content)
-    return content_type in SKIP_TYPES
+    if content_type in SKIP_TYPES:
+        log.debug('Skipping %s due to its content type %s',
+                  content, content_type)
+        return True
+    return False
 
 
 @zeit.cms.celery.task(bind=True, queuename='manual')
@@ -179,12 +196,10 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         children = content.values()
         for item in children:
             if should_skip(item):
-                log.debug('Skipping %s due to its content type', item)
                 continue
             index_parallel.delay(item.uniqueId, enrich=enrich, publish=publish)
     else:
         if should_skip(content):
-            log.debug('Skipping %s due to its content type', content)
             return
         start = time.time()
         try:

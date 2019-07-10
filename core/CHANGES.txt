@@ -5,6 +5,8 @@ vivi.core changes
 4.6.1 (unreleased)
 ------------------
 
+- BUG-1069: Don't index imagegroup or gallery thumbnail images in TMS
+
 - FIX: Don't try to nonexistent content in TMS re-enrich hook
 
 

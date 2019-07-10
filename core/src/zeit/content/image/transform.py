@@ -229,11 +229,13 @@ def persistent_thumbnail_factory(context):
     return thumbnail_container[image_name]
 
 
+THUMBNAIL_FOLDER_NAME = u'thumbnails'
+
+
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.IThumbnailFolder)
 def thumbnail_folder_factory(context):
-    name = u'thumbnails'
     folder = context.__parent__
-    if name not in folder:
-        folder[name] = zeit.cms.repository.folder.Folder()
-    return folder[name]
+    if THUMBNAIL_FOLDER_NAME not in folder:
+        folder[THUMBNAIL_FOLDER_NAME] = zeit.cms.repository.folder.Folder()
+    return folder[THUMBNAIL_FOLDER_NAME]
