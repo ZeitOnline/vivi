@@ -11,6 +11,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         element = $(document.getElementById(element));
         self.landingzone = $('.landing-zone-candidate', element);
         self.input = $('input', element);
+        element[0].widget = self;  // for tests
 
         element.on('dragenter', function(e) {
             if (self._accept_drag(e.originalEvent.dataTransfer)) {

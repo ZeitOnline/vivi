@@ -72,6 +72,23 @@ class MDB(object):
         return response
 
 
+class FakeMDB(MDB):
+
+    def __init__(self, *args):
+        pass
+
+    def _request(self, request, **kw):
+        import requests_mock  # test-only dependency
+        if request.endswith('file'):
+            filename = 'mdb-body.xml'
+        else:
+            filename = 'mdb-meta.xml'
+        return requests_mock.create_response(
+            requests.Request(url='http://example.invalid'),
+            text=pkg_resources.resource_string(
+                __name__, 'tests/fixtures/%s' % filename))
+
+
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
