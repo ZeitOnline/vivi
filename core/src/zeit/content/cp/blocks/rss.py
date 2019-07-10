@@ -31,6 +31,9 @@ class RSSLink(object):
             raise AttributeError(name)
         return field.missing_value
 
+    lead_candidate = True
+    authorships = ()
+
     @cachedproperty
     def title(self):
         title = self.xml.findtext('title')
@@ -80,14 +83,6 @@ class RSSLink(object):
         if dc_type is not None and getattr(dc_type, 'text') == 'native-ad':
             return True
         return False
-
-    @cachedproperty
-    def lead_candidate(self):
-        return True
-
-    @cachedproperty
-    def authorships(self):
-        return []
 
 
 @grok.adapter(IRSSLink)
