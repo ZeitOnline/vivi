@@ -11,6 +11,8 @@ vivi.core changes
 
 - ZON-5347: Set 'is_amp' default to true
 
+- BUG-1121: Enable RSS-Teaser objects as lead candidate
+
 
 4.5.5 (2019-07-08)
 ------------------
