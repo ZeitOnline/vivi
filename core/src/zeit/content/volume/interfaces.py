@@ -156,8 +156,7 @@ class ProductNameMapper(object):
     def __getitem__(self, key):
         if not self.mapping:
             products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self))
-            self.mapping = dict([(product.id, product.title) for product in
-                                 products])
+            self.mapping = {product.id: product.title for product in products}
         return self.mapping[key]
 
     def get(self, key, default):
