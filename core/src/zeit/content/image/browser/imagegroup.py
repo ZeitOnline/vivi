@@ -15,6 +15,7 @@ import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zeit.ghost.ghost
+import zeit.workflow.interfaces
 import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
@@ -41,13 +42,22 @@ class AddForm(FormBase,
     form_fields = (
         FormBase.form_fields.omit(
             'references', 'master_images', 'external_id') +
-        zope.formlib.form.FormFields(IMasterImageUploadSchema))
+        zope.formlib.form.FormFields(IMasterImageUploadSchema) +
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.ITimeBasedPublishing).select(
+                'release_period')
+    )
 
     form_fields['master_image_blobs'].custom_widget = (
         CustomWidgetFactory(
             zope.formlib.sequencewidget.SequenceWidget,
             zeit.cms.repository.browser.file.BlobWidget))
     form_fields['mdb_blob'].custom_widget = MDBImportWidget
+
+    field_groups = FormBase.field_groups + (
+        gocept.form.grouped.Fields(
+            _("Settings"), ('release_period',),
+            css_class='column-right image-form'),)
 
     def __init__(self, *args, **kw):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -117,6 +127,14 @@ class AddForm(FormBase,
 
         self._created_object = group  # Additional add() calls overwrote this.
         zeit.ghost.ghost.create_ghost(group)
+
+    def createAndAdd(self, data):
+        # XXX cannot set this until object is in repository, since it wants to
+        # objectlog, which requires a uniqueId.
+        release_period = data.pop('release_period')
+        super(AddForm, self).createAndAdd(data)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self._created_object)
+        info.release_period = release_period
 
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()

@@ -2,6 +2,7 @@ from StringIO import StringIO
 import base64
 import lxml.etree
 import os.path
+import pendulum
 import pkg_resources
 import re
 import requests
@@ -27,12 +28,22 @@ class MDB(object):
     def get_metadata(self, mdb_id):
         response = self._request('GET /mdb/%s' % mdb_id)
         data = lxml.etree.fromstring(response.text)
+
         filename = data.xpath('//filename')
         filename = filename[0].text if filename else 'master.jpg'
+        expires = data.xpath('//expiration_date')
+        expires = expires[0].text if expires else None
+        if expires and expires != '0000-00-00':
+            expires = pendulum.parse(expires, tz='Europe/Berlin').isoformat()
+        else:
+            expires = None
+
         result = {
             'mdb_id': mdb_id,
             'filename': filename,
+            'expires': expires,
         }
+
         nodes = (data.xpath('//mediadata_content[@type="text"]') +
                  data.xpath('//mdb_content[@type="text"]'))
         for node in nodes:
