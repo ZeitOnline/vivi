@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.6.2 (unreleased)
+4.6.2 (2019-07-10)
 ------------------
 
 - BUG-1074: Index TMS on rename
