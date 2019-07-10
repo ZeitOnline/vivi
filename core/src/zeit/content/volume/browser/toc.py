@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from ordereddict import OrderedDict
+from collections import OrderedDict, defaultdict
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IFolder
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
-from zeit.content.volume.interfaces import ITocConnector, PRODUCT_MAPPING
-import csv
-import posixpath
-import re
+from zeit.content.volume.interfaces import ITocConnector
 import StringIO
+import contextlib
+import csv
+import os.path
+import re
 import sys
 import urlparse
 import zeit.cms.browser.view
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.connector.connector
 import zope.app.appsetup.product
 import zope.component
 import zope.site.site
-import zeit.cms.content.sources
 
 
 class Toc(zeit.cms.browser.view.Base):
@@ -45,8 +46,8 @@ class Toc(zeit.cms.browser.view.Base):
         self._context_year = self.context.year
         self._context_volume = self.context.volume
         self.connector = zope.component.getUtility(ITocConnector)
-        self._register_archive_connector()
 
+    @contextlib.contextmanager
     def _register_archive_connector(self):
         """
         Due to the need of using another section of the WebDAV-Server(
@@ -64,7 +65,11 @@ class Toc(zeit.cms.browser.view.Base):
         default_registry.removeSub(registry)
         site.setSiteManager(registry)
         registry.registerUtility(self.connector, IConnector)
+
+        old_site = zope.component.hooks.getSite()
         zope.component.hooks.setSite(site)
+        yield
+        zope.component.hooks.setSite(old_site)
 
     def __call__(self):
         filename = self._generate_file_name()
@@ -89,11 +94,14 @@ class Toc(zeit.cms.browser.view.Base):
         Create Table of Contents for the given Volume as a csv.
         :return: str - Table of content csv string
         """
-        toc_data = self._get_via_dav()
+        with self._register_archive_connector():
+            toc_data = self._get_k4_content()
+        ir_data = self._get_ir_content()
+        self._merge_ir_into_k4(toc_data, ir_data)
         sorted_toc_data = self._sort_toc_data(toc_data)
         return self._create_csv(sorted_toc_data)
 
-    def _get_via_dav(self):
+    def _get_k4_content(self):
         """
         Get and parse xml form webdav und create toc entries.
         :return: OrderedDict of Toc entries.
@@ -109,9 +117,12 @@ class Toc(zeit.cms.browser.view.Base):
         }
         """
         results = OrderedDict()
-        for prod_uid in self._get_product_uids():
+        for product in self.product_ids:
             result_for_product = {}
-            for ressort_folder in self.list_relevant_ressort_folders(prod_uid):
+            product_folder = self._fill_template(
+                'http://xml.zeit.de/%s/{year}/{name}/' % product)
+            for ressort_folder in self.list_relevant_ressort_folders(
+                    product_folder):
                 result_for_ressort = []
                 for article in self._get_all_article_elements(ressort_folder):
                     toc_entry = self._create_toc_element(article)
@@ -120,8 +131,40 @@ class Toc(zeit.cms.browser.view.Base):
                 ressort_folder_name = ressort_folder.__name__ \
                     .replace('-', ' ').title()
                 result_for_product[ressort_folder_name] = result_for_ressort
-            results[self._full_product_name(prod_uid)] = result_for_product
+            results[self._full_product_name(product)] = result_for_product
         return results
+
+    MEDIASYNC_ID = ('mediasync_id', 'http://namespaces.zeit.de/CMS/interred')
+
+    def _get_ir_content(self):
+        results = {}
+        for product in self.product_ids:
+            product = PRODUCTS.find(product)
+            if not product or not product.location:
+                continue
+            result_for_product = defaultdict(list)
+            product_folder = os.path.dirname(
+                self._fill_template(product.location))
+            product_folder = zeit.cms.interfaces.ICMSContent(
+                product_folder, None)
+            if product_folder is None:
+                continue
+            for article in product_folder.values():
+                props = zeit.connector.interfaces.IWebDAVProperties(article)
+                if self.MEDIASYNC_ID not in props:
+                    continue
+                toc_entry = self._create_toc_element(article.xml)
+                if toc_entry:
+                    result_for_product[article.printRessort].append(toc_entry)
+            results[product.title] = result_for_product
+        return results
+
+    def _merge_ir_into_k4(self, k4_data, ir_data):
+        for product, ir_product in ir_data.items():
+            k4_product = k4_data[product]
+            for name, ir_ressort in ir_product.items():
+                k4_ressort = k4_product[name]
+                k4_ressort.extend(ir_ressort)
 
     @property
     def product_ids(self):
@@ -130,15 +173,6 @@ class Toc(zeit.cms.browser.view.Base):
             .getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
-
-    def _get_product_uids(self):
-        """
-        Creates a list of uids to all given products.
-        :param product_ids: [str]
-        :return: [str]
-        """
-        return [self._fill_template('http://xml.zeit.de/%s/{year}/{name}/' % x)
-                for x in self.product_ids]
 
     def list_relevant_ressort_folders(self, product_uid):
         """
@@ -247,13 +281,11 @@ class Toc(zeit.cms.browser.view.Base):
                 zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
                 self.context, toc_entry['access'])
 
-    def _full_product_name(self, product_uid):
-        """
-        :param product_uid: str -  /PRODUCT_ID/YEAR/VOL/
-        """
-        splitted_path = product_uid.split(posixpath.sep)
-        product_id = splitted_path[-4]
-        return PRODUCT_MAPPING.get(product_id, product_id)
+    def _full_product_name(self, product_id):
+        product = PRODUCTS.find(product_id)
+        if not product:
+            return product_id
+        return product.title
 
     def _sort_toc_data(self, toc_data):
         """
@@ -340,6 +372,9 @@ class Toc(zeit.cms.browser.view.Base):
         return [str(page), title_teaser] + \
                [''] * number_of_empty_columns +  \
                [toc_entry.get('access')]
+
+
+PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)
 
 
 class Excluder(object):

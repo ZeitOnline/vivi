@@ -9,6 +9,8 @@ vivi.core changes
 
 - FIX: Don't try to nonexistent content in TMS re-enrich hook
 
+- IR-142: Also collect articles imported from InterRed for volume table of contents
+
 
 4.6.0 (2019-07-10)
 ------------------

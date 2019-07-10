@@ -148,27 +148,6 @@ class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
 VOLUME_COVER_SOURCE = VolumeCoverSource()
 
 
-class ProductNameMapper(object):
-
-    def __init__(self):
-        self.mapping = None
-
-    def __getitem__(self, key):
-        if not self.mapping:
-            products = list(zeit.cms.content.sources.PRODUCT_SOURCE(self))
-            self.mapping = dict([(product.id, product.title) for product in
-                                 products])
-        return self.mapping[key]
-
-    def get(self, key, default):
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
-PRODUCT_MAPPING = ProductNameMapper()
-
-
 class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.content.volume'
