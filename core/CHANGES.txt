@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.6.0 (unreleased)
+4.6.0 (2019-07-10)
 ------------------
 
 - ZON-5239: Topicbox improvments
