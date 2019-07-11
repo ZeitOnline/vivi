@@ -16,7 +16,8 @@ class FormBase(object):
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
-            zeit.cms.content.interfaces.ICommonMetadata).omit('keywords') +
+            zeit.cms.content.interfaces.ICommonMetadata).omit(
+            'keywords', 'commentsAPIv2') +
         zope.formlib.form.FormFields(
             zeit.content.image.interfaces.IImages) +
         zope.formlib.form.FormFields(

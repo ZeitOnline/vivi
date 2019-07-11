@@ -5,7 +5,7 @@ vivi.core changes
 4.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZC-90: Move field to activate new comments backend to article form
 
 
 4.6.2 (2019-07-10)

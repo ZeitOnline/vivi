@@ -301,7 +301,8 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
     def form_fields(self):
         fields = ('commentSectionEnable',)
         if self.context.commentSectionEnable:
-            fields += ('commentsAllowed', 'commentsPremoderate')
+            fields += (
+                'commentsAllowed', 'commentsPremoderate', 'commentsAPIv2')
         return FormFields(ICommonMetadata).select(*fields)
 
 
