@@ -57,7 +57,7 @@ class AddForm(FormBase,
     field_groups = FormBase.field_groups + (
         gocept.form.grouped.Fields(
             _("Settings"), ('release_period',),
-            css_class='column-right image-form'),)
+            css_class='column-left image-form'),)
 
     def __init__(self, *args, **kw):
         config = zope.app.appsetup.product.getProductConfiguration(

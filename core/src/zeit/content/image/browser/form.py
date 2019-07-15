@@ -16,14 +16,14 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             _("Image data"), (
                 '__name__', 'references', 'display_type'),
             css_class='column-left image-form'),
+        gocept.form.grouped.RemainingFields(
+            _("Texts"),
+            css_class='column-right image-form wide-widgets'),
         gocept.form.grouped.Fields(
             _("Image source"), (
                 'blob', 'master_image_blobs', 'master_images',
                 'mdb_blob'),
             css_class='column-left image-form'),
-        gocept.form.grouped.RemainingFields(
-            _("Texts"),
-            css_class='column-right image-form wide-widgets'),
     )
 
     form_fields = zope.formlib.form.FormFields(
