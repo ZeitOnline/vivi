@@ -79,6 +79,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         $('#form\\.copyright\\.combination_02').val(data['fotograf']);
         $('#form\\.caption').val(data['beschreibung']);
         $('#form\\.release_period\\.combination_01').val(data['expires']);
+        self.landingzone.text(self.landingzone.data('success'));
     }
 
 });

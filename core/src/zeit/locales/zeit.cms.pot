@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Jul  9 16:05:40 2019\n"
+"POT-Creation-Date: Mon Jul 15 09:18:45 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -299,7 +299,7 @@ msgstr ""
 #: zeit/cms/repository/browser/file.py:37
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
-#: zeit/content/image/browser/imagegroup.py:194
+#: zeit/content/image/browser/imagegroup.py:214
 #: zeit/content/image/browser/interfaces.py:35
 msgid "File name"
 msgstr ""
@@ -1657,7 +1657,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:98
 #: zeit/content/cp/interfaces.py:467
 #: zeit/content/cp/interfaces.py:844
-#: zeit/content/image/browser/imagegroup.py:202
+#: zeit/content/image/browser/imagegroup.py:222
 #: zeit/content/image/image.py:131
 #: zeit/content/image/browser/configure.zcml:256
 #: zeit/content/portraitbox/interfaces.py:18
@@ -1817,7 +1817,7 @@ msgstr ""
 msgid "edit mail block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:398
+#: zeit/content/article/edit/browser/edit.py:400
 msgid "edit topic box"
 msgstr ""
 
@@ -2404,7 +2404,7 @@ msgstr ""
 msgid "Raw XML block"
 msgstr ""
 
-#: zeit/content/article/edit/topicbox.py:61
+#: zeit/content/article/edit/topicbox.py:80
 msgid "Topicbox"
 msgstr ""
 
@@ -2872,6 +2872,7 @@ msgid "Add storystream"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:34
+#: zeit/content/image/browser/imagegroup.py:60
 #: zeit/newsletter/browser/workflow.py:25
 #: zeit/workflow/browser/form.py:132
 #: zeit/workflow/browser/form.py:165
@@ -2917,11 +2918,11 @@ msgstr ""
 msgid "Centerpage 2009"
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:186
+#: zeit/content/cp/configure.zcml:175
 msgid "Edit Area"
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:191
+#: zeit/content/cp/configure.zcml:180
 msgid "Edit Article Flow"
 msgstr ""
 
@@ -3410,7 +3411,7 @@ msgid "edit image"
 msgstr ""
 
 #: zeit/content/image/browser/form.py:16
-#: zeit/content/image/browser/imagegroup.py:219
+#: zeit/content/image/browser/imagegroup.py:239
 msgid "Image data"
 msgstr ""
 
@@ -3442,38 +3443,38 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:140
+#: zeit/content/image/browser/imagegroup.py:160
 msgid "Add motif"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:148
+#: zeit/content/image/browser/imagegroup.py:168
 msgid "Edit image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:153
+#: zeit/content/image/browser/imagegroup.py:173
 msgid "Add viewport to master image mapping"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:161
+#: zeit/content/image/browser/imagegroup.py:181
 msgid "Image group metadata"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:181
+#: zeit/content/image/browser/imagegroup.py:201
 msgid "Master image"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:188
+#: zeit/content/image/browser/imagegroup.py:208
 #: zeit/content/image/interfaces.py:423
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:199
+#: zeit/content/image/browser/imagegroup.py:219
 #: zeit/content/image/browser/image_view.pt:10
 msgid "Dimensions"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:38
+#: zeit/content/image/browser/imagegroup.py:39
 msgid "Add image group"
 msgstr ""
 
@@ -3496,6 +3497,10 @@ msgstr ""
 
 #: zeit/content/image/browser/interfaces.py:69
 msgid "Import image from MDB"
+msgstr ""
+
+#: zeit/content/image/browser/mdb-widget.pt:7
+msgid "MDB image dropped"
 msgstr ""
 
 #: zeit/content/image/browser/mdb-widget.pt:7

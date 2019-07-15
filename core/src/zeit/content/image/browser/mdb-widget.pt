@@ -5,7 +5,8 @@
                  name view/name;
                  value view/_getFormValue" />
     <div class="landing-zone-candidate landing-zone visible"
-         i18n:translate="">
+         data-success="MDB image dropped"
+         i18n:translate="" i18n:attributes="data-success">
         Drag an MDB image here
     </div>
 </div>
