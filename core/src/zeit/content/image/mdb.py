@@ -80,6 +80,8 @@ class MDB(object):
         headers['User-Agent'] = USER_AGENT
         response = method(self.url + path, **kw)
         response.raise_for_status()
+        # XXX IR does not declare the charset, but apparently it's utf-8.
+        response.encoding = 'utf-8'
         return response
 
 
