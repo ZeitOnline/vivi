@@ -90,4 +90,4 @@ True
 
 Clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

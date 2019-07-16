@@ -41,10 +41,8 @@ Also set the default year/volume:
 Now check for the image folder of /2007/01. We do that in python so we need
 some setup:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>>
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> import zope.component
 >>> import zeit.connector.interfaces
 >>> import zeit.cms.repository.interfaces
@@ -96,5 +94,5 @@ u'http://xml.zeit.de/2006/49/'
 
 Cleanup:
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)
 

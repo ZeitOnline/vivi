@@ -38,12 +38,12 @@ import zope.app.appsetup.product
 import zope.app.testing.functional
 import zope.app.wsgi
 import zope.component
+import zope.component.hooks
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
 import zope.security.proxy
 import zope.security.testing
-import zope.site.hooks
 import zope.testbrowser.browser
 import zope.testing.renormalizing
 
@@ -121,7 +121,7 @@ class ZCMLLayer(plone.testing.Layer):
         zeit.cms.workflow.mock.reset()
 
         self.setup.zca.reset()
-        zope.site.hooks.setSite(None)
+        zope.component.hooks.setSite(None)
         zope.security.management.endInteraction()
         self.setup.tearDown()
 
@@ -411,7 +411,7 @@ class FunctionalTestCase(
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
         setup_product_config(self.product_config)
-        zope.site.hooks.setSite(self.getRootFolder())
+        zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction(u'zope.user')
 
 
@@ -562,10 +562,10 @@ def set_site(site=None):
     """
 
     globs = sys._getframe(1).f_locals
-    globs['old_site'] = zope.site.hooks.getSite()
+    globs['old_site'] = zope.component.hooks.getSite()
     if site is None:
         site = globs['getRootFolder']()
-    zope.site.hooks.setSite(site)
+    zope.component.hooks.setSite(site)
 
 
 # XXX use zope.publisher.testing for the following two
@@ -593,10 +593,10 @@ def interaction(principal_id=u'zope.user'):
 # XXX use zope.component.testing.site instead
 @contextlib.contextmanager
 def site(root):
-    old_site = zope.site.hooks.getSite()
-    zope.site.hooks.setSite(root)
+    old_site = zope.component.hooks.getSite()
+    zope.component.hooks.setSite(root)
     yield
-    zope.site.hooks.setSite(old_site)
+    zope.component.hooks.setSite(old_site)
 
 
 class TestCatalog(object):

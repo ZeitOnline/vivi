@@ -3,7 +3,7 @@ import transaction
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zope.component
-import zope.site.hooks
+import zope.component.hooks
 
 
 # these are 'zopectl run' scripts to migrate the old indexes into the new index
@@ -11,11 +11,11 @@ import zope.site.hooks
 
 
 def dump_references(root):
-    zope.site.hooks.setSite(root)
+    zope.component.hooks.setSite(root)
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     for token in relations._catalog_generation8.findRelationTokens():
-        print token.encode('utf8')
+        print(token.encode('utf8'))
 
 
 def load_references(root):
@@ -25,16 +25,16 @@ def load_references(root):
 
 
 def _index(root, ids):
-    zope.site.hooks.setSite(root)
+    zope.component.hooks.setSite(root)
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     for id in ids:
-        print id,
-        id = unicode(id, 'utf8')
+        print(id)
+        id = id.decode('utf-8')
         obj = zeit.cms.interfaces.ICMSContent(id, None)
         if obj is None:
-            print "not found."
+            print("not found.")
             continue
         relations.index(obj)
         transaction.commit()
-        print "indexed."
+        print("indexed.")

@@ -21,10 +21,10 @@ Set up a site and caching:
 
 
 >>> import zope.interface
->>> import zope.app.component.hooks
+>>> import zope.component.hooks
 >>> from zope.annotation.interfaces import IAttributeAnnotatable
 >>> from zope.traversing.interfaces import IContainmentRoot
->>> from zope.app.component.interfaces import ISite
+>>> from zope.component.interfaces import ISite
 >>>
 >>> class Site(object):
 ...     zope.interface.implements(
@@ -34,14 +34,14 @@ Set up a site and caching:
 ...         return zope.component.getGlobalSiteManager()
 ...
 >>> site = Site()
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(site)
+>>> old_site = zope.component.hooks.getSite()
+>>> zope.component.hooks.setSite(site)
 
 And annotations:
 
 >>> import zope.annotation.attribute
 >>> import zope.annotation.interfaces
->>> site_manager = zope.app.component.hooks.getSiteManager()
+>>> site_manager = zope.component.getSiteManager()
 >>> site_manager.registerAdapter(
 ...     zope.annotation.attribute.AttributeAnnotations,
 ...     (zope.annotation.interfaces.IAttributeAnnotatable,),
@@ -87,4 +87,4 @@ True
 ...     (zope.annotation.interfaces.IAttributeAnnotatable,),
 ...     zope.annotation.interfaces.IAnnotations)
 True
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

@@ -4,9 +4,8 @@ Article
 
 We need to set the site since we're a functional test:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
@@ -269,7 +268,7 @@ None
 Get an image from the repository and attach it:
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.create_interaction(u'hans')
+>>> _ = zeit.cms.testing.create_interaction(u'hans')
 
 >>> import datetime
 >>> import zope.component
@@ -336,4 +335,4 @@ Cleanup
 After tests we clean up:
 
 >>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

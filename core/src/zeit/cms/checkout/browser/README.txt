@@ -71,20 +71,19 @@ The checkin link also indicates the ``came_from`` view:
 
 The checkin default action does not update the "last semantic change" setting:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>> import zope.component
+>>> import zeit.cms.content.interfaces
 >>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> import zope.component
+>>> zeit.cms.testing.set_site()
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> import zeit.cms.content.interfaces
 >>> sc = zeit.cms.content.interfaces.ISemanticChange(
 ...     repository['online']['2007']['01']['rauchen-verbessert-die-welt'])
 >>> last_change = sc.last_semantic_change
 >>> print last_change
 None
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)
 
 
 Getting the right tab after checkout and checkin

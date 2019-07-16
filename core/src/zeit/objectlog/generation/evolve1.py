@@ -1,6 +1,6 @@
 import BTrees
-import zope.app.component
-import zope.app.component.hooks
+import zope.component
+import zope.component.hooks
 import zope.app.zopeappgenerations
 
 
@@ -20,10 +20,10 @@ def install(root):
 
 
 def evolve(context):
-    site = zope.app.component.hooks.getSite()
+    site = zope.component.hooks.getSite()
     try:
         root = zope.app.zopeappgenerations.getRootFolder(context)
-        zope.app.component.hooks.setSite(root)
+        zope.component.hooks.setSite(root)
         install(root)
     finally:
-        zope.app.component.hooks.setSite(site)
+        zope.component.hooks.setSite(site)

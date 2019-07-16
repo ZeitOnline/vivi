@@ -145,7 +145,7 @@ Clean up
 ++++++++
 
 >>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)
 >>> logging.root.removeHandler(log_handler)
 >>> for name in loggers:
 ...     logging.getLogger(name).setLevel(oldlevels[name])

@@ -7,12 +7,12 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
+import zope.component.hooks
 import zope.interface
 import zope.lifecycleevent
 import zope.location.interfaces
 import zope.publisher.interfaces
 import zope.security.proxy
-import zope.site.hooks
 import zope.site.interfaces
 import zope.traversing.browser
 import zope.traversing.browser.absoluteurl
@@ -116,7 +116,7 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
 
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(
-            zope.site.hooks.getSite(), self.request)
+            zope.component.hooks.getSite(), self.request)
         # `zeit.retresco` possibly generates `.code` with unicode characters so
         # we have to escape them to get a valid url.
         return base + '/++tag++' + self.context.code.encode('unicode_escape')

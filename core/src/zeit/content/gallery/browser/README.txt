@@ -337,10 +337,8 @@ The browsing location for an image gallery is
 /bilder/jahr/ausgab/bildergalerien.  We verify that in python so we need some
 setup:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>>
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.browser.interfaces
@@ -389,4 +387,4 @@ u'http://xml.zeit.de/bilder/2008/26/bildergalerien/'
 
 Clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)
