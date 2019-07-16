@@ -31,6 +31,7 @@ import transaction
 import unittest
 import webtest.lint
 import xml.sax.saxutils
+import zeit.cms.application
 import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
