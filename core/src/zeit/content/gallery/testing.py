@@ -37,6 +37,8 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
 
 LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='GalleryLayer')
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+
 WORKFLOW_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-workflow.zcml',
     product_config=(

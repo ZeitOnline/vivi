@@ -2,7 +2,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.retresco.testing import create_testcontent
 import datetime
-import gocept.testing.assertion
 import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -21,8 +20,7 @@ import zeit.retresco.testing
 import zeit.seo.interfaces
 
 
-class ConvertTest(zeit.retresco.testing.FunctionalTestCase,
-                  gocept.testing.assertion.String):
+class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
 
     maxDiff = None
 

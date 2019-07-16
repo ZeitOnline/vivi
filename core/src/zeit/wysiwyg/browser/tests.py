@@ -8,5 +8,5 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'filebrowser.txt',
         'image.txt',
-        layer=zeit.wysiwyg.testing.WYSIWYGLayer))
+        layer=zeit.wysiwyg.testing.WSGI_LAYER))
     return suite

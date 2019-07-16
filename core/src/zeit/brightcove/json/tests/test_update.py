@@ -4,13 +4,11 @@ import zeit.brightcove.testing
 import zeit.cms.testing
 
 
-class NotificationTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class NotificationTest(zeit.brightcove.testing.BrowserTestCase):
 
     def test_runs_import_as_system_user(self):
         # View is available without authentication
-        b = zeit.cms.testing.Browser()
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         with mock.patch.object(
                 zeit.brightcove.update.import_video_async,
                 '__call__') as import_video:

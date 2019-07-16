@@ -5,9 +5,9 @@ Navigation Tree
 Create a browser first:
     
 >>> import lxml.etree
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic producer:producerpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('producer', 'producerpw')
 >>> browser.xml_strict = True
 >>> ns_map = {'html': 'http://www.w3.org/1999/xhtml'}
 
@@ -19,7 +19,7 @@ The tree is rendered  in the sidebar all the time. But it is loaded
 asynchronously:
 
 >>> browser.open('http://localhost/++skin++cms/')
->>> navtree = browser.etree.xpath("//html:div[@id='NavtreePanel']",
+>>> navtree = browser.xpath("//html:div[@id='NavtreePanel']",
 ...                               namespaces=ns_map)[0]
 >>> print lxml.etree.tostring(navtree, pretty_print=True),
 <div xmlns:panel="http://namespaces.gocept.com/panel" xmlns="http://www.w3.org/1999/xhtml" class="panel unfolded" id="NavtreePanel">
@@ -118,7 +118,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
 ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
 ...              '&view_url=%s' % urllib.quote(view_url))
->>> print lxml.etree.tostring(browser.etree, pretty_print=True)
+>>> print lxml.etree.tostring(browser.document, pretty_print=True)
 <ul>
     <li active="True" class="Root...">
       <p>

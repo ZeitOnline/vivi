@@ -2,17 +2,14 @@ import json
 import mock
 import urllib2
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.retresco.testing
 
 
-class TMSUpdateRequestTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
 
     def setUp(self):
         super(TMSUpdateRequestTest, self).setUp()
-        self.browser = zeit.cms.testing.Browser()
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_endpoint_avoids_get(self):
         b = self.browser

@@ -9,9 +9,9 @@ simply redirects to the ghost's origin -- so "checking in" a ghost has the same
 visible result as checking in an actual working copy object, namely a redirect
 to the repository object.
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
 >>> browser.getLink('Checkout').click()

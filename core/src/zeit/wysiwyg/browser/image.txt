@@ -4,9 +4,9 @@ Image browser
 In the image browser there is a shortcut to select the image the currently
 edited object has assigned.
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Initially the testcontent doesn't have an image assigned:
 

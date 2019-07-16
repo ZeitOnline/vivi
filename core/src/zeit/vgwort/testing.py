@@ -39,6 +39,8 @@ ZCML_LAYER = ZCMLLayer(
     'ftesting-mock.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-soap.zcml', name='SOAPLayer',
     product_config=zeit.cms.testing.cms_product_config + product_config)
@@ -47,6 +49,11 @@ SOAPLayer = zeit.cms.testing.ZCMLLayer(
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
 
 
 @pytest.mark.slow

@@ -2,14 +2,11 @@ import celery.result
 import json
 import transaction
 import uuid
-import zeit.cms.testing
 import zeit.workflow.interfaces
 import zeit.workflow.testing
 
 
-class PublishJSONTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.workflow.testing.CELERY_LAYER
+class PublishJSONTest(zeit.workflow.testing.BrowserTestCase):
 
     def setUp(self):
         super(PublishJSONTest, self).setUp()

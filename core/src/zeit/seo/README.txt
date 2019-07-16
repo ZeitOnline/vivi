@@ -8,9 +8,9 @@ optimisation.
 Browser Tests
 =============
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 Open the test content and go to the SEO page:
 

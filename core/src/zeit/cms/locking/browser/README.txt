@@ -8,7 +8,7 @@ The lock icon shows information about the current lock[1]_:
 ...        '/2007/01/Somalia')
 >>> browser.open(url)
 >>> browser.getLink('Manage lock')
-<Link text='[IMG] Manage lock' url="javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')">
+<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')'>
 >>> print browser.contents
 <?xml...
     <img src=".../lock-open.png" title="Not locked" class="lock-open" />
@@ -81,7 +81,7 @@ Make sure a lock message was send to the user:
 We can now unlock Somalia:
 
 >>> browser.getLink('Manage lock')
-<Link text='[IMG] Manage lock' url="javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')">
+<Link text='Manage lock' url='javascript:zeit.cms.lightbox_form('http://localhost:8080/++skin++cms/repository/online/2007/01/Somalia/@@locks.html')'>
 >>> browser.open(url + '/@@locks.html')
 >>> browser.getControl('Unlock').click()
 >>> print browser.contents
@@ -118,8 +118,8 @@ Let's lock the object again to test stealing:
 
 Login in as zmgr and steal the lock:
 
->>> mgr = Browser()
->>> mgr.addHeader('Authorization', 'Basic zmgr:mgrpw')
+>>> mgr = Browser(layer['wsgi_app'])
+>>> mgr.login('zmgr', 'mgrpw')
 >>> mgr.open(url)
 >>> print mgr.contents
 <?xml ...
@@ -153,8 +153,8 @@ Make sure the unlock message was sent to the user:
 
 .. [1] For UI-Tests we need a Testbrowser:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 

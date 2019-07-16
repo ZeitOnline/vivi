@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-
-import zeit.cms.testing
 import zeit.content.cp
 import zeit.content.cp.centerpage
 
 
-class TestCardstack(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TestCardstack(zeit.content.cp.testing.BrowserTestCase):
 
     def test_cardstack_props_can_be_set(self):
         self.centerpage = zeit.content.cp.centerpage.CenterPage()

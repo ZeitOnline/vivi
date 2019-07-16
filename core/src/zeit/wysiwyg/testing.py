@@ -14,6 +14,9 @@ WYSIWYGLayer = zeit.cms.testing.ZCMLLayer(
         zeit.content.image.testing.product_config +
         zeit.cms.testing.cms_product_config))
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(WYSIWYGLayer,))
+
 
 class WYSIWYGTestCase(zeit.cms.testing.FunctionalTestCase):
 

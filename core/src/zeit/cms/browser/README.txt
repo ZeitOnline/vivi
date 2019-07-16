@@ -8,8 +8,8 @@ Anonymous Access
 
 Anonymous access to the CMS is *not* possible:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
 >>> browser.open('http://localhost/++skin++cms/')
 Traceback (most recent call last):
   ...
@@ -17,7 +17,7 @@ HTTPError: HTTP Error 401: Unauthorized
 
 With credentials we don't get an error:
 
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/')
 
 Not Found
@@ -117,7 +117,7 @@ Check the preview:
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
-HTTP Error 303: See Other
+302 Moved Temporarily
 http://localhost/preview-prefix/online/2007/01/Somalia
 
 
@@ -126,23 +126,21 @@ Check the live site:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
-HTTP Error 303: See Other
+302 Moved Temporarily
 http://localhost/live-prefix/online/2007/01/Somalia
 
 
 Query arguments are passed to the server:
 
->>> import urllib2
->>> browser.mech_browser.set_handle_redirect(False)
+>>> browser.follow_redirects = False
 >>> try:
 ...     browser.open(
 ...         'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@show_preview?foo=bar')
-... except urllib2.HTTPError, e:
-...     print e
-...     print e.hdrs.get('location')
 ... finally:
-...    browser.mech_browser.set_handle_redirect(True)
-HTTP Error 303: See Other
+...     browser.follow_redirects = True
+>>> print(browser.headers['Status'])
+302 Moved Temporarily
+>>> print(browser.headers['Location'])
 http://localhost/preview-prefix/online/2007/01/Somalia?foo=bar
 
 
@@ -166,7 +164,7 @@ The preview is on the container now:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
-HTTP Error 303: See Other
+302 Moved Temporarily
 http://localhost/preview-prefix/online/2007/01/
 
 

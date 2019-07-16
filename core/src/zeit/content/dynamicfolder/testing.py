@@ -47,3 +47,12 @@ DYNAMIC_LAYER = DynamicLayer()
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = DYNAMIC_LAYER
+
+
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(DYNAMIC_LAYER,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER

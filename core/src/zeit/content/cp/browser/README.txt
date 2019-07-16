@@ -2,10 +2,9 @@
 Centerpage
 ==========
 
->>> import z3c.etestbrowser.testing
->>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
->>> browser.xml_strict = True
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 
 >>> menu = browser.getControl(name='add_menu')
@@ -111,7 +110,7 @@ Blocks can be sorted. There is an ``updateOrder`` view doing this.
 >>> browser.open(
 ...     'lead/@@landing-zone-drop-module?block_type=teaser&order=top')
 >>> browser.open(contents_url)
->>> bar_divs = browser.etree.xpath(
+>>> bar_divs = browser.xpath(
 ...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
@@ -133,7 +132,7 @@ The order has been updated now:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
->>> bar_divs = browser.etree.xpath(
+>>> bar_divs = browser.xpath(
 ...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
@@ -145,7 +144,7 @@ Restore the original order again:
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
 ...     'lead/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
->>> bar_divs = browser.etree.xpath(
+>>> bar_divs = browser.xpath(
 ...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
@@ -158,11 +157,11 @@ Deleting blocks
 Blocks and teaser bars can be removed using the delete link:
 
 >>> browser.open(contents_url)
->>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
+>>> len(browser.xpath('//div[contains(@class, "type-cpextra")]'))
 2
 >>> browser.getLink('Delete', index=5).url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@delete?key=id-<GUID>'
 >>> browser.getLink('Delete', index=5).click()
 >>> browser.open(contents_url)
->>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
+>>> len(browser.xpath('//div[contains(@class, "type-cpextra")]'))
 1

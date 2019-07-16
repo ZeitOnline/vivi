@@ -1,11 +1,8 @@
-import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
 
 
-class CommonEditTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
 
     def test_background_color_is_validated(self):
         b = self.browser

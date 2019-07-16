@@ -1,12 +1,9 @@
-import gocept.testing.assertion
-import zeit.cms.testing
 import zeit.campus.testing
 
 
-class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase,
-                  gocept.testing.assertion.String):
+class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.campus.testing.LAYER
+    layer = zeit.campus.testing.WSGI_LAYER
 
     def test_zmo_link_has_facebook_campus_fields(self):
         b = self.browser

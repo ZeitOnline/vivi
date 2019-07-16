@@ -1,13 +1,11 @@
 import lxml.etree
 import transaction
-import zeit.cms.testing
 import zeit.content.cp.testing
 import zope.security.management
 
 
-class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
+class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.ZCML_LAYER
     # XXX As long as the "automatic" properties require a special
     # permission, we can't perform the test as the normal user.
     login_as = 'zmgr:mgrpw'

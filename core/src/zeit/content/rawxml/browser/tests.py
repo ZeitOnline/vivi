@@ -7,5 +7,5 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.content.rawxml.tests.RawXMLLayer))
+        layer=zeit.content.rawxml.tests.WSGI_LAYER))
     return suite

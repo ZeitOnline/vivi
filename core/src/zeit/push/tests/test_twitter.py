@@ -1,6 +1,5 @@
 # coding: utf-8
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import gocept.testing.assertion
 import os
 import time
 import tweepy
@@ -10,8 +9,7 @@ import zeit.push.twitter
 import zope.component
 
 
-class TwitterTest(zeit.push.testing.TestCase,
-                  gocept.testing.assertion.String):
+class TwitterTest(zeit.push.testing.TestCase):
 
     level = 2
 

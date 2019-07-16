@@ -50,5 +50,5 @@ def test_suite():
         'imp.txt',
         'ticket.txt',
         'upload.txt',
-        layer=zeit.content.gallery.testing.LAYER))
+        layer=zeit.content.gallery.testing.WSGI_LAYER))
     return suite

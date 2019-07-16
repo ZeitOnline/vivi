@@ -1,6 +1,4 @@
 from zeit.magazin.interfaces import IZMOSection, IZMOFolder
-import gocept.httpserverlayer.wsgi
-import gocept.selenium
 import pkg_resources
 import plone.testing
 import zeit.cms.repository.interfaces
@@ -53,12 +51,9 @@ class Layer(plone.testing.Layer):
             repository['magazin'] = magazin
 
 LAYER = Layer()
-
-
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
-SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER

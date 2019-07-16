@@ -4,11 +4,10 @@ XML block
 The XML block contains raw XML.  Let's first create an empty XML block in the
 lead area:[#helper_functions]_
 
->>> import z3c.etestbrowser.testing
+>>> import zeit.cms.testing
 >>> import zeit.content.cp.browser.testing
->>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
->>> browser.xml_strict = True
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url

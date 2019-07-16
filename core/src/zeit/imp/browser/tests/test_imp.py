@@ -14,9 +14,8 @@ import zope.component
 import zope.component.hooks
 
 
-class TestBase(zeit.cms.testing.BrowserTestCase):
+class TestBase(zeit.imp.tests.BrowserTestCase):
 
-    layer = zeit.imp.tests.imp_layer
     image_path = 'http://localhost/++skin++cms/repository/group'
 
     def setUp(self):

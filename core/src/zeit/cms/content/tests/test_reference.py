@@ -12,7 +12,6 @@ import zeit.cms.related.related
 import zeit.cms.testing
 import zope.security.management
 import zope.security.proxy
-import zope.testbrowser.testing
 
 
 class ExampleReference(zeit.cms.content.reference.Reference):
@@ -321,9 +320,8 @@ class ReferenceTraversalBase(object):
         with checked_out(self.repository['content']) as co:
             self.set_reference(co, co.references.create(
                 self.repository['target']))
-        b = zeit.cms.testing.Browser()
-        zope.security.management.endInteraction()
-        b.addHeader('Authorization', 'Basic user:userpw')
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('user', 'userpw')
         content = self.repository['content']
         try:
             b.open(
@@ -345,7 +343,7 @@ class ReferenceTraversalBase(object):
 
 class ReferenceTraversalTest(
         ReferenceFixture, ReferenceTraversalBase,
-        zeit.cms.testing.ZeitCmsTestCase):
+        zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def set_reference(self, obj, value):
         obj.references = (value,)
@@ -356,7 +354,7 @@ class ReferenceTraversalTest(
 
 class SingleReferenceTraversalTest(
         SingleReferenceFixture, ReferenceTraversalBase,
-        zeit.cms.testing.ZeitCmsTestCase):
+        zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def set_reference(self, obj, value):
         obj.references = value

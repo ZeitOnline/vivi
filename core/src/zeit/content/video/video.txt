@@ -13,9 +13,8 @@ Create video:
 
 Videos have a view:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.handleErrors = False
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/repository/online/video')

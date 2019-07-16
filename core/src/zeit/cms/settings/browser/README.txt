@@ -3,9 +3,9 @@ Settings
 
 The settings can be reached via a global menu item:
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic producer:producerpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('producer', 'producerpw')
 >>> browser.open('http://localhost/++skin++cms/repository')
 >>> browser.getLink('Global settings').click()
 
@@ -24,7 +24,7 @@ We can set the default year and volume:
 There is a view which puts out the settings as xml. It is reachable
 anonymously:
 
->>> browser = zope.testbrowser.testing.Browser()
+>>> browser = Browser(layer['wsgi_app'])
 >>> browser.open('http://localhost/++skin++cms/@@global-settings.xml')
 >>> print browser.contents,
 <?xml version="1.0"?>

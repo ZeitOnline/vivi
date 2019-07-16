@@ -148,6 +148,11 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+
 class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
 
     layer = WEBDRIVER_LAYER

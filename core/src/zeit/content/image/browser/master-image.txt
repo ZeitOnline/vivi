@@ -110,18 +110,17 @@ It is possible to select the master image of an image group:
 
 .. [#browser]
 
-    >>> import zope.testbrowser.testing
-    >>> browser = zope.testbrowser.testing.Browser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> import zeit.cms.testing
+    >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+    >>> browser.login('user', 'userpw')
 
     >>> import os.path
     >>> def set_file_data(name):
     ...     test_file = os.path.join(
     ...         os.path.dirname(__file__), 'testdata', name)
-    ...     test_data = file(test_file, 'rb')
+    ...     test_data = file
     ...     file_control = browser.getControl(name='form.master_image_blobs.0.')
-    ...     file_control.filename = name
-    ...     file_control.value = test_data
+    ...     file_control.add_file(open(test_file, 'rb'), 'image/jpg', name)
 
 .. [#functional]
 

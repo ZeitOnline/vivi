@@ -1,13 +1,10 @@
 import zeit.cms.checkout.helper
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
 
-class ImageDetails(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.content.image.testing.WEBDRIVER_LAYER
+class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
 
     def test_clicking_button_shows_details_pane(self):
         image = zeit.cms.interfaces.ICMSContent(
@@ -24,9 +21,7 @@ class ImageDetails(zeit.cms.testing.SeleniumTestCase):
         s.waitForVisible('css=.picture_information')
 
 
-class ImageDetailsErrorHandling(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ImageDetailsErrorHandling(zeit.content.image.testing.BrowserTestCase):
 
     def test_no_image_exists_still_renders(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()

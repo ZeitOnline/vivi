@@ -1,10 +1,7 @@
 import zeit.push.testing
-import zeit.cms.testing
 
 
-class FindTitleIntegration(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.push.testing.WEBDRIVER_LAYER
+class FindTitleIntegration(zeit.push.testing.SeleniumTestCase):
 
     def setUp(self):
         super(FindTitleIntegration, self).setUp()
@@ -19,9 +16,7 @@ class FindTitleIntegration(zeit.cms.testing.SeleniumTestCase):
         self.assertEqual('Default title', s.getValue('form.mobile_title'))
 
 
-class FindTitleTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.push.testing.LAYER
+class FindTitleTest(zeit.push.testing.BrowserTestCase):
 
     def test_retrieves_default_from_rendered_template(self):
         self.layer['create_template']("""\

@@ -3,9 +3,9 @@ FCK filebrowser connector
 
 The filebrowser connector connects the fck editor to the CMS.
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 The connector has a strange, well php-like, interface, so we have to pass all
 the information as arguments instead of having views on objects :/

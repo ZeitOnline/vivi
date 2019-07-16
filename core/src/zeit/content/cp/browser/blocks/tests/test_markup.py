@@ -1,11 +1,8 @@
-import zeit.cms.testing
 import zeit.content.cp
 import zeit.content.cp.centerpage
 
 
-class TestMarkup(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TestMarkup(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestMarkup, self).setUp()

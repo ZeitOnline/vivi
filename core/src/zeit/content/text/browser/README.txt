@@ -93,6 +93,6 @@ We have a special icon:
 
 .. [#browser]
 
-    >>> import zope.testbrowser.testing
-    >>> browser = zope.testbrowser.testing.Browser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> import zeit.cms.testing
+    >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+    >>> browser.login('user', 'userpw')

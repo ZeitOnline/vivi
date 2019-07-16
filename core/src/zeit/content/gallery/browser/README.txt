@@ -5,9 +5,9 @@ Image Gallery
 Galleries are basically a document which references a folder containing images.
 Create a  browser first:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 
 
 For creating a gallery we need a folder containing images:
@@ -166,7 +166,7 @@ The default view while editing a gallery is the overview page:
 Auf den Spuren der Elfen – Overview
 >>> import lxml.cssselect
 >>> nodes = lxml.cssselect.CSSSelector('.context-views li.images.selected')(
-...     browser.etree)
+...     browser.document)
 >>> [li.xpath('string(.)').strip() for li in nodes]
 ['Images']
 
@@ -325,7 +325,7 @@ The default view while a gallery is checked in, is the metadata page:
 >>> print browser.title.strip()
 Auf den Spuren der Elfen – View gallery metadata
 >>> nodes = lxml.cssselect.CSSSelector(
-...     '.context-views li.view_metadata.selected')(browser.etree)
+...     '.context-views li.view_metadata.selected')(browser.document)
 >>> [li.xpath('string(.)').strip() for li in nodes]
 ['View metadata']
 

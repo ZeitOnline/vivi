@@ -1,14 +1,12 @@
 from datetime import datetime
 import pytz
-import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
 
 
-class RetryReport(zeit.cms.testing.BrowserTestCase):
+class RetryReport(zeit.vgwort.testing.BrowserTestCase):
 
-    layer = zeit.vgwort.testing.ZCML_LAYER
     login_as = 'producer:producerpw'
 
     def test_resets_report_properties(self):

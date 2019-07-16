@@ -10,12 +10,12 @@ import zope.publisher.browser
 class TestSimpleFind(unittest.TestCase,
                      zeit.cms.testing.BrowserAssertions):
 
-    layer = zeit.find.testing.LAYER
+    layer = zeit.find.testing.WSGI_LAYER
 
     def setUp(self):
-        from zope.testbrowser.testing import Browser
-        self.browser = Browser()
-        self.browser.addHeader('Authorization', 'Basic user:userpw')
+        from zeit.cms.testing import Browser
+        self.browser = Browser(self.layer['wsgi_app'])
+        self.browser.login('user', 'userpw')
         self.browser.open('http://localhost/++skin++vivi/')
         search_patch = mock.patch('zeit.find.search.Elasticsearch.search')
         self.addCleanup(search_patch.stop)

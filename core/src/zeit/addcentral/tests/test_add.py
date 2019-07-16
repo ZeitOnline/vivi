@@ -1,11 +1,8 @@
 import urllib
 import zeit.addcentral.testing
-import zeit.cms.testing
 
 
-class JavascriptTest(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.addcentral.testing.SELENIUM_LAYER
+class JavascriptTest(zeit.addcentral.testing.SeleniumTestCase):
 
     def test_adding(self):
         s = self.selenium
@@ -36,9 +33,7 @@ class JavascriptTest(zeit.cms.testing.SeleniumTestCase):
             '*/international/meinung/*-*/@@zeit.cms.repository.folder.Add*')
 
 
-class FormTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.addcentral.testing.ZCML_LAYER
+class FormTest(zeit.addcentral.testing.BrowserTestCase):
 
     def test_ressort_is_required_for_breaking_news(self):
         b = self.browser

@@ -2,7 +2,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
-import gocept.testing.assertion
 import json
 import mock
 import os
@@ -260,8 +259,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
 
 @pytest.mark.slow
-class IntegrationTest(zeit.retresco.testing.FunctionalTestCase,
-                      gocept.testing.assertion.String):
+class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     level = 2
 

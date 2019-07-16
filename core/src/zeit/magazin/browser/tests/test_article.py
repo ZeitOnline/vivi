@@ -3,9 +3,7 @@ import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class FacebookTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.magazin.testing.LAYER
+class FacebookTest(zeit.magazin.testing.BrowserTestCase):
 
     def get_article(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)

@@ -169,8 +169,7 @@ Anderer\r
                 zeit.connector.interfaces.IConnector)
 
 
-class TocBrowserTest(zeit.cms.testing.BrowserTestCase):
-    layer = zeit.content.volume.testing.ZCML_LAYER
+class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def setUp(self):
         super(TocBrowserTest, self).setUp()

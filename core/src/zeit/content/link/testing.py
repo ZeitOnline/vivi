@@ -22,7 +22,9 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
 
 LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='LinkLayer')
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
-    layer = LAYER
+    layer = WSGI_LAYER

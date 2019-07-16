@@ -3,9 +3,9 @@ Debug view
 
 There is a view to show the refcounts:
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('globalmgr', 'globalmgrpw')
 >>> browser.open('http://localhost/++skin++cms/@@debug-refcount')
 >>> print browser.contents
 <html>
@@ -19,8 +19,8 @@ There is a view to show the refcounts:
 
 But it is only accessible to managers.
 
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/@@debug-refcount')
 Traceback (most recent call last):
     ...

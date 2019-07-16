@@ -1,5 +1,4 @@
 import mock
-import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -7,14 +6,12 @@ import zeit.edit.rule
 import zope.component
 
 
-class PublishTest(zeit.cms.testing.BrowserTestCase):
+class PublishTest(zeit.content.cp.testing.BrowserTestCase):
     """Integration test for zeit.workflow.browser.publish.Publish.
 
     Checks that adapter to use ValidatingWorkflow was set up correctly.
 
     """
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def test_validation_errors_are_displayed_during_publish(self):
         from zeit.content.cp.centerpage import CenterPage
@@ -28,17 +25,15 @@ class PublishTest(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
-class PermissionsTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class PermissionsTest(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(PermissionsTest, self).setUp()
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.getLink('Checkin').click()
 
-        self.producing = zeit.cms.testing.Browser()
-        self.producing.addHeader('Authorization', 'Basic producer:producerpw')
+        self.producing = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        self.producing.login('producer', 'producerpw')
 
     def test_normal_user_may_not_delete(self):
         b = self.browser

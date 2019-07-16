@@ -5,9 +5,9 @@ Changing content types
 There is a UI to force an object to change it's type. This is necessary because
 there is sometimes (often?) wrong information in the DAV server.
 
->>> from zope.testbrowser.testing import Browser
->>> browser = Browser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
 
@@ -15,7 +15,7 @@ there is sometimes (often?) wrong information in the DAV server.
 The type change is a lightbox:
 
 >>> browser.getLink('Change type')
-<Link text='[IMG] Change type' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@typechange-box')">
+<Link text='Change type' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@typechange-box')'>
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01'
 ...     '/Somalia/@@typechange-box')

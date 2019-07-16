@@ -79,3 +79,13 @@ def create_image_group_with_master_image(file_name=None):
     image.open('w').write(fh.read())
     repository['group'][group.master_image] = image
     return repository['group']
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = WEBDRIVER_LAYER

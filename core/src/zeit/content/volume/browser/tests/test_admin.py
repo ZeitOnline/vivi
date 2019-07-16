@@ -4,14 +4,13 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import mock
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.volume.testing
 import zeit.find.interfaces
+import zeit.workflow.testing
 
 
-class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
+class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
-    layer = zeit.content.volume.testing.ZCML_LAYER
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
@@ -77,6 +76,7 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
                '2015/01/ausgabe/@@publish-all')
+        zeit.workflow.testing.run_tasks()
 
     def test_publish_button_publishes_volume_content(self):
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
@@ -109,11 +109,9 @@ class VolumeAdminBrowserTest(zeit.cms.testing.BrowserTestCase):
             self.repository['image']).published)
 
 
-class PublishAllContent(zeit.cms.testing.SeleniumTestCase):
+class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
 
     log_errors = True
-
-    layer = zeit.content.volume.testing.WEBDRIVER_LAYER
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):

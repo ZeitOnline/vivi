@@ -5,9 +5,9 @@ Deleting works by clicking on the 'Delete' icon in the context-actions
 menu. The user get's a confirmation screen, on where he explicitly
 confirms deleting the content.
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/2007/01')
 >>> 'LS-Personalvertretung' in browser.contents
 True
@@ -54,9 +54,9 @@ False
 The "Delete" Link references javascript driven Lightbox:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2007/01/Miami')
->>> browser.getLink("Delete", index=1)
-<Link text='[IMG] Delete'
-    url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/Miami/@@delete.html')">
+>>> browser.getLink("Delete")
+<Link text='Delete'
+    url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/2007/01/Miami/@@delete.html')'>
 
 
 Deleting folders
@@ -76,8 +76,8 @@ HTTPError: HTTP Error 403: Forbidden
 
 Let's try again as producer:
 
->>> browser = ExtendedTestBrowser()
->>> browser.addHeader('Authorization', 'Basic producer:producerpw')
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('producer', 'producerpw')
 >>> browser.open(folder_view_url)
 
 There is an extra warning about deleting the folder:

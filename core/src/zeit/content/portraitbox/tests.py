@@ -9,6 +9,9 @@ import zeit.content.portraitbox.interfaces
 PortraitboxLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(PortraitboxLayer,))
+
 
 class PortraitboxSourceTest(
         zeit.cms.content.tests.test_contentsource.ContentSourceBase,

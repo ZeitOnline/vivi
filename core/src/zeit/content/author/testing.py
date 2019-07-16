@@ -20,9 +20,15 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     zeit.workflow.testing.product_config +
     zeit.find.testing.product_config +
     product_config)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', ZCML_LAYER)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER

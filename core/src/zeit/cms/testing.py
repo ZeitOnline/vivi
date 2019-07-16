@@ -1,6 +1,8 @@
 from __future__ import absolute_import
+from urlparse import urljoin
 from zope.testing import doctest
 import __future__
+import base64
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import celery_longterm_scheduler
@@ -17,6 +19,8 @@ import inspect
 import json
 import kombu
 import logging
+import lxml.etree
+import lxml.html
 import mock
 import os
 import pkg_resources
@@ -27,18 +31,19 @@ import sys
 import transaction
 import unittest
 import urllib2
+import webtest.lint
 import xml.sax.saxutils
 import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
-import zope.app.testing.testbrowser
 import zope.app.wsgi
 import zope.component
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
+import zope.security.proxy
 import zope.security.testing
 import zope.site.hooks
 import zope.testbrowser.browser
@@ -340,13 +345,14 @@ def FunctionalDocFileSuite(*paths, **kw):
         __traceback_info__ = (config,)
         setup_product_config(config)
 
-    layer = kw.pop('layer', ZCML_LAYER)
+    layer = kw.pop('layer', WSGI_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
     globs = kw.setdefault('globs', {})
     globs['product_config'] = kw.pop('product_config', {})
     globs['with_statement'] = __future__.with_statement
     globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
+    globs['layer'] = layer
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
@@ -374,6 +380,7 @@ class FunctionalTestCase(
         unittest.TestCase,
         gocept.testing.assertion.Ellipsis,
         gocept.testing.assertion.Exceptions,
+        gocept.testing.assertion.String,
         RepositoryHelper):
 
     product_config = {}
@@ -523,15 +530,13 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
 
 
 def click_wo_redirect(browser, *args, **kwargs):
-    browser.mech_browser.set_handle_redirect(False)
+    browser.follow_redirects = False
     try:
-        try:
-            browser.getLink(*args, **kwargs).click()
-        except urllib2.HTTPError, e:
-            print str(e)
-            print e.hdrs.get('location')
+        browser.getLink(*args, **kwargs).click()
+        print(browser.headers['Status'])
+        print(browser.headers['Location'])
     finally:
-        browser.mech_browser.set_handle_redirect(True)
+        browser.follow_redirects = True
 
 
 def set_site(site=None):
@@ -634,40 +639,97 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
         return data
 
 
-class ContextIsolatingMechanizeBrowser(
-        zope.app.testing.testbrowser.PublisherMechanizeBrowser):
+class Browser(zope.testbrowser.browser.Browser):
 
-    def _mech_open(self, *args, **kw):
+    follow_redirects = True
+    xml_strict = False
+
+    def __init__(self, wsgi_app):
+        super(Browser, self).__init__(wsgi_app=wsgi_app)
+
+    def login(self, username, password):
+        self.addHeader('Authorization', 'Basic %s' % base64.b64encode(
+            ('%s:%s' % (username, password)).encode('utf-8')))
+
+    def reload(self):
+        # Don't know what the superclass is doing here, exactly, but it's not
+        # helpful at all, so we reimplement it in a hopefully more sane way.
+        if self._response is None:
+            raise zope.testbrowser.browser.BrowserStateError(
+                'No URL has yet been .open()ed')
+        self.open(self.url)
+
+    def _processRequest(self, url, make_request):
+        self._document = None
+        transaction.commit()
         old_site = zope.component.hooks.getSite()
         zope.component.hooks.setSite(None)
         old_interaction = zope.security.management.queryInteraction()
         zope.security.management.endInteraction()
         try:
-            # old-style class, so no super(), sigh.
-            return self.__class__.__bases__[0]._mech_open(self, *args, **kw)
+            # No super call, since we had to copy&paste the whole method.
+            self._do_processRequest(url, make_request)
         finally:
             zope.component.hooks.setSite(old_site)
             if old_interaction:
                 zope.security.management.thread_local.interaction = (
                     old_interaction)
 
+    # copy&paste from superclass _processRequest to plug in `follow_redirects`
+    def _do_processRequest(self, url, make_request):
+        with self._preparedRequest(url) as reqargs:
+            self._history.add(self._response)
+            resp = make_request(reqargs)
+            if self.follow_redirects:
+                remaining_redirects = 100  # infinite loops protection
+                while (remaining_redirects and
+                       resp.status_int in zope.testbrowser.browser.REDIRECTS):
+                    remaining_redirects -= 1
+                    url = urljoin(url, resp.headers['location'])
+                    with self._preparedRequest(url) as reqargs:
+                        resp = self.testapp.get(url, **reqargs)
+                assert remaining_redirects > 0, "redirect chain looks infinite"
+            self._setResponse(resp)
+            self._checkStatus()
 
-class Browser(zope.testbrowser.browser.Browser):
+    HTML_PARSER = lxml.html.HTMLParser(encoding='UTF-8')
+    _document = None
 
-    def __init__(self, url=None):
-        # copy&paste from zope.app.testing.testbrowser.Browser
-        super(Browser, self).__init__(
-            url=url, mech_browser=ContextIsolatingMechanizeBrowser())
+    @property
+    def document(self):
+        """Return an lxml.html.HtmlElement instance of the response body."""
+        if self._document is not None:
+            return self._document
+        if self.contents is not None:
+            if self.xml_strict:
+                self._document = lxml.etree.fromstring(self.contents)
+            else:
+                self._document = lxml.html.document_fromstring(
+                    self.contents, parser=self.HTML_PARSER)
+            return self._document
+
+    def xpath(self, selector, **kw):
+        """Return a list of lxml.HTMLElement instances that match a given
+        XPath selector.
+        """
+        if self.document is not None:
+            return self.document.xpath(selector, **kw)
+
+
+# Allow webtest to handle file download result iterators
+webtest.lint.isinstance = zope.security.proxy.isinstance
 
 
 class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
 
-    login_as = 'user:userpw'
+    login_as = ('user', 'userpw')
 
     def setUp(self):
         super(BrowserTestCase, self).setUp()
-        self.browser = Browser()
-        self.browser.addHeader('Authorization', 'Basic %s' % self.login_as)
+        self.browser = Browser(self.layer['wsgi_app'])
+        if isinstance(self.login_as, basestring):  # BBB:
+            self.login_as = self.login_as.split(':')
+        self.browser.login(*self.login_as)
 
 
 # These ugly names are due to two reasons:
@@ -683,7 +745,7 @@ class ZeitCmsTestCase(FunctionalTestCase):
 
 class ZeitCmsBrowserTestCase(BrowserTestCase):
 
-    layer = ZCML_LAYER
+    layer = WSGI_LAYER
 
 
 class JSLintTestCase(gocept.jslint.TestCase):

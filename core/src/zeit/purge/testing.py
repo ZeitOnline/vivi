@@ -55,3 +55,4 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 ZCML_LAYER = ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))

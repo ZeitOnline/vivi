@@ -97,10 +97,10 @@ Add another block after the just created block now:
 
     >>> import json
     >>> import pprint
-    >>> import z3c.etestbrowser.testing
+    >>> import zeit.cms.testing
     >>> import zeit.content.cp.browser.testing
-    >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+    >>> browser.login('user', 'userpw')
     >>> zeit.content.cp.browser.testing.create_cp(browser)
     >>> cp_url = browser.url
     >>> browser.open('contents')

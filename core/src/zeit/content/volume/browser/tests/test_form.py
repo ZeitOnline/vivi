@@ -3,15 +3,12 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import lxml.etree
-import zeit.cms.testing
 import zeit.content.text.python
 import zeit.content.volume.testing
 import zeit.cms.content.add
 
 
-class VolumeBrowserTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.volume.testing.ZCML_LAYER
+class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def open_add_form(self):
         b = self.browser
@@ -126,9 +123,7 @@ __return(cp)"""
         self.assertEqual(2, cp.volume)
 
 
-class TestVolumeCoverWidget(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.content.volume.testing.WEBDRIVER_LAYER
+class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestVolumeCoverWidget, self).setUp()
@@ -140,12 +135,12 @@ class TestVolumeCoverWidget(zeit.cms.testing.SeleniumTestCase):
         self.repository['2015']['01']['ausgabe'] = volume
 
     def test_only_one_cover_add_form_is_visible_at_the_time(self):
-            s = self.selenium
-            self.open('/repository/2015/01/ausgabe/@@checkout')
-            s.waitForElementPresent('css=#choose-cover')
-            s.assertCssCount('css=.column-right', 3)
-            s.assertNotVisible('css=.fieldname-cover_ZMLB_portrait')
-            s.assertVisible('css=.fieldname-cover_ZEI_portrait')
-            s.select('id=choose-cover', 'label=Zeit Magazin')
-            s.assertVisible('css=.fieldname-cover_ZMLB_portrait')
-            s.assertNotVisible('css=.fieldname-cover_ZEI_portrait')
+        s = self.selenium
+        self.open('/repository/2015/01/ausgabe/@@checkout')
+        s.waitForElementPresent('css=#choose-cover')
+        s.assertCssCount('css=.column-right', 3)
+        s.assertNotVisible('css=.fieldname-cover_ZMLB_portrait')
+        s.assertVisible('css=.fieldname-cover_ZEI_portrait')
+        s.select('id=choose-cover', 'label=Zeit Magazin')
+        s.assertVisible('css=.fieldname-cover_ZMLB_portrait')
+        s.assertNotVisible('css=.fieldname-cover_ZEI_portrait')

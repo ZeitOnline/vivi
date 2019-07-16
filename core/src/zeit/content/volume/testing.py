@@ -64,3 +64,13 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = WEBDRIVER_LAYER

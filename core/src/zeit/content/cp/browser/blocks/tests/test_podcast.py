@@ -1,11 +1,8 @@
-import zeit.cms.testing
 import zeit.content.cp
 import zeit.content.cp.centerpage
 
 
-class TestPodcast(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
         super(TestPodcast, self).setUp()

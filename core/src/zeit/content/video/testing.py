@@ -48,14 +48,22 @@ LAYER = plone.testing.Layer(
     bases=(PUSH_LAYER, PLAYER_MOCK_LAYER),
     name='Layer', module=__name__)
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(LAYER,))
+
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = LAYER
 
 
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+
 def FunctionalDocFileSuite(*args, **kw):
-    kw.setdefault('layer', LAYER)
+    kw.setdefault('layer', WSGI_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 

@@ -31,9 +31,18 @@ class TestLayer(plone.testing.Layer):
 TEST_LAYER = TestLayer()
 
 
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+
+
 class TestBrowserLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (WSGI_LAYER,)
 
     def setUp(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
@@ -42,15 +51,6 @@ class TestBrowserLayer(plone.testing.Layer):
         product_config['retract-script'] = 'true'
 
 BROWSER_LAYER = TestBrowserLayer()
-
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

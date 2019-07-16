@@ -21,7 +21,7 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
     def setUp(self):
         super(LockAPI, self).setUp()
         # API is available without authentication
-        self.browser = zeit.cms.testing.Browser()
+        self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_status_200_for_unlocked(self):
         b = self.browser

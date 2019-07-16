@@ -1,12 +1,7 @@
-import gocept.testing.assertion
-import zeit.cms.testing
 import zeit.magazin.testing
 
 
-class ZMOPortraitboxCRUD(zeit.cms.testing.BrowserTestCase,
-                         gocept.testing.assertion.String):
-
-    layer = zeit.magazin.testing.LAYER
+class ZMOPortraitboxCRUD(zeit.magazin.testing.BrowserTestCase):
 
     def test_zmo_portraitbox_has_longtext_field(self):
         b = self.browser

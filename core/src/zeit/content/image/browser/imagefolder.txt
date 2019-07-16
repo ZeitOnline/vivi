@@ -6,9 +6,9 @@ There is a policy that the image folder depends on the year/volume.
 
 Lets create a testbrowser first:
 
->>> import zope.testbrowser.testing
->>> browser = zope.testbrowser.testing.Browser()
->>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('globalmgr', 'globalmgrpw')
 
 Create the bilder structure:
 

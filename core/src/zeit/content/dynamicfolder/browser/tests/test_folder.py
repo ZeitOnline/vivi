@@ -1,11 +1,8 @@
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.dynamicfolder.testing
 
 
-class EditDynamicFolder(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.dynamicfolder.testing.DYNAMIC_LAYER
+class EditDynamicFolder(zeit.content.dynamicfolder.testing.BrowserTestCase):
 
     def test_check_out_and_edit_folder(self):
         b = self.browser
