@@ -1,10 +1,11 @@
 import os
+import plone.testing
 import pytest
 import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.testing
+import zeit.cms.webtest
 import zeit.vgwort.interfaces
-import zope.app.testing.xmlrpc
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
@@ -26,20 +27,24 @@ product_config = """
 )
 
 
-class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
-
-    def setUp(self):
-        super(ZCMLLayer, self).setUp()
-        token_service = zeit.vgwort.token.TokenService()
-        token_service.ServerProxy = zope.app.testing.xmlrpc.ServerProxy
-        zope.component.getSiteManager().registerUtility(token_service)
-
-
-ZCML_LAYER = ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-mock.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
-
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+
+
+class XMLRPCLayer(plone.testing.Layer):
+
+    defaultBases = (WSGI_LAYER,)
+
+    def setUp(self):
+        super(XMLRPCLayer, self).setUp()
+        token_service = zeit.vgwort.token.TokenService()
+        token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(
+            x, self['wsgi_app'])
+        zope.component.getSiteManager().registerUtility(token_service)
+
+XMLRPC_LAYER = XMLRPCLayer()
 
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-soap.zcml', name='SOAPLayer',

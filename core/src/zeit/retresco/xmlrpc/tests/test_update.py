@@ -4,22 +4,17 @@ import StringIO
 import logging
 import mock
 import zeit.cms.interfaces
+import zeit.cms.webtest
 import zeit.retresco.testing
-import zope.app.testing.xmlrpc
-import zope.security.management
 
 
-class XMLRPCTest(zeit.retresco.testing.FunctionalTestCase):
-
-    layer = zeit.retresco.testing.ZCML_LAYER
+class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
 
     def setUp(self):
         super(XMLRPCTest, self).setUp()
-        server = zope.app.testing.xmlrpc.ServerProxy(
-            'http://index:indexpw@localhost/')
+        server = zeit.cms.webtest.ServerProxy(
+            'http://index:indexpw@localhost/', self.layer['wsgi_app'])
         self.update = getattr(server, '@@update_tms')
-        # ServerProxy starts its own interactions
-        zope.security.management.endInteraction()
 
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
