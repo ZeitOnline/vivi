@@ -1,9 +1,7 @@
-import gocept.testing.assertion
 import zeit.campus.testing
 
 
-class ZCOInfoboxDebate(zeit.campus.testing.BrowserTestCase,
-                       gocept.testing.assertion.String):
+class ZCOInfoboxDebate(zeit.campus.testing.BrowserTestCase):
 
     def test_zco_infobox_has_debate_field(self):
         b = self.browser

@@ -1,6 +1,5 @@
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
-import gocept.testing.assertion
 import json
 import plone.testing
 import transaction
@@ -51,8 +50,7 @@ class LoginFormLayer(plone.testing.Layer):
 LOGINFORM_LAYER = LoginFormLayer()
 
 
-class LoginFormTest(zeit.cms.testing.BrowserTestCase,
-                    gocept.testing.assertion.String):
+class LoginFormTest(zeit.cms.testing.BrowserTestCase):
 
     layer = LOGINFORM_LAYER
 
@@ -83,8 +81,7 @@ class LoginFormTest(zeit.cms.testing.BrowserTestCase,
         self.assertNotIn('Login failed', b.contents)
 
 
-class SSOTest(zeit.cms.testing.BrowserTestCase,
-              gocept.testing.assertion.String):
+class SSOTest(zeit.cms.testing.BrowserTestCase):
 
     layer = LOGINFORM_LAYER
 

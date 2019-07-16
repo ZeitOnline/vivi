@@ -1,9 +1,7 @@
-import gocept.testing.assertion
 import zeit.campus.testing
 
 
-class ZCOGalleryCRUD(zeit.campus.testing.BrowserTestCase,
-                     gocept.testing.assertion.String):
+class ZCOGalleryCRUD(zeit.campus.testing.BrowserTestCase):
 
     def test_zco_gallery_has_facebook_campus_fields(self):
         b = self.browser

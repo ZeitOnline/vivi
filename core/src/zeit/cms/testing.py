@@ -380,6 +380,7 @@ class FunctionalTestCase(
         unittest.TestCase,
         gocept.testing.assertion.Ellipsis,
         gocept.testing.assertion.Exceptions,
+        gocept.testing.assertion.String,
         RepositoryHelper):
 
     product_config = {}

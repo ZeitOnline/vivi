@@ -1,9 +1,7 @@
-import gocept.testing.assertion
 import zeit.magazin.testing
 
 
-class ZMOLinkCRUD(zeit.magazin.testing.BrowserTestCase,
-                  gocept.testing.assertion.String):
+class ZMOLinkCRUD(zeit.magazin.testing.BrowserTestCase):
 
     def test_zmo_link_has_facebook_magazin_fields(self):
         b = self.browser

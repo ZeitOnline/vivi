@@ -1,10 +1,8 @@
-import gocept.testing.assertion
 import zeit.cms.testing
 import zeit.arbeit.testing
 
 
-class ZARInfoboxDebateTest(zeit.arbeit.testing.BrowserTestCase,
-                           gocept.testing.assertion.String):
+class ZARInfoboxDebateTest(zeit.arbeit.testing.BrowserTestCase):
 
     def test_zar_infobox_has_debate_field(self):
         b = self.browser

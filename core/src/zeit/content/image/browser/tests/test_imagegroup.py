@@ -1,6 +1,5 @@
 # coding: utf-8
 from zeit.content.image.testing import create_image_group_with_master_image
-import gocept.testing.assertion
 import pkg_resources
 import zeit.cms.interfaces
 import zeit.content.image.testing
@@ -86,8 +85,7 @@ class ImageGroupGhostTest(
 
 class ImageGroupBrowserTest(
         zeit.content.image.testing.BrowserTestCase,
-        ImageGroupHelperMixin,
-        gocept.testing.assertion.String):
+        ImageGroupHelperMixin):
 
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()

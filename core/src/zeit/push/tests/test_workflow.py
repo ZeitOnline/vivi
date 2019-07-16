@@ -2,7 +2,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.push.interfaces import IPushMessages
-import gocept.testing.assertion
 import lxml.etree
 import mock
 import zeit.cms.content.interfaces
@@ -30,8 +29,7 @@ class PushServiceProperties(zeit.push.testing.TestCase):
             content.xml, pretty_print=True))
 
 
-class SendingNotifications(zeit.push.testing.TestCase,
-                           gocept.testing.assertion.String):
+class SendingNotifications(zeit.push.testing.TestCase):
 
     def setUp(self):
         super(SendingNotifications, self).setUp()

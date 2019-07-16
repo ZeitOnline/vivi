@@ -1,9 +1,7 @@
-import gocept.testing.assertion
 import zeit.magazin.testing
 
 
-class ZMOPortraitboxCRUD(zeit.magazin.testing.BrowserTestCase,
-                         gocept.testing.assertion.String):
+class ZMOPortraitboxCRUD(zeit.magazin.testing.BrowserTestCase):
 
     def test_zmo_portraitbox_has_longtext_field(self):
         b = self.browser

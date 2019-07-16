@@ -1,10 +1,7 @@
-import gocept.testing.assertion
-import zeit.cms.testing
 import zeit.campus.testing
 
 
-class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase,
-                  gocept.testing.assertion.String):
+class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.campus.testing.WSGI_LAYER
 

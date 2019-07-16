@@ -2,7 +2,6 @@
 from datetime import datetime
 from zeit.cms.interfaces import ICMSContent
 from zope.lifecycleevent import ObjectCreatedEvent
-import gocept.testing.assertion
 import json
 import mock
 import os
@@ -116,8 +115,7 @@ class PayloadSourceTest(zeit.push.testing.TestCase):
         self.assertEqual(template_name, result.__name__)
 
 
-class MessageTest(zeit.push.testing.TestCase,
-                  gocept.testing.assertion.String):
+class MessageTest(zeit.push.testing.TestCase):
 
     name = 'mobile'
 

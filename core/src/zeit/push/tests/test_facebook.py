@@ -2,7 +2,6 @@
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
-import gocept.testing.assertion
 import os
 import time
 import unittest
@@ -12,8 +11,7 @@ import zeit.push.testing
 import zope.component
 
 
-class FacebookTest(zeit.push.testing.TestCase,
-                   gocept.testing.assertion.String):
+class FacebookTest(zeit.push.testing.TestCase):
 
     level = 2
 
