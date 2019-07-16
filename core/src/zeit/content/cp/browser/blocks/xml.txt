@@ -2,7 +2,15 @@ XML block
 =========
 
 The XML block contains raw XML.  Let's first create an empty XML block in the
-lead area:[#helper_functions]_
+lead area:
+
+>>> def update_xml(m, r):
+...     browser.open(contents_url)
+...     browser.getLink('Edit block properties', index=0).click()
+...     xml = browser.getControl(name="form.xml").value
+...     browser.getControl(name="form.xml").value = xml.replace(m, r)
+...     browser.getControl('Apply').click()
+...     return browser.contents
 
 >>> import zeit.cms.testing
 >>> import zeit.content.cp.browser.testing
@@ -105,15 +113,3 @@ These calls should just run through without raising HTTP 500.
 >>> browser.open(contents_url)
 >>> browser.open('lead/@@landing-zone-drop-module'
 ...              '?block_type=xml')
-
-
-
-.. [#helper_functions]
-
-    >>> def update_xml(m, r):
-    ...     browser.open(contents_url)
-    ...     browser.getLink('Edit block properties', index=0).click()
-    ...     xml = browser.getControl(name="form.xml").value
-    ...     browser.getControl(name="form.xml").value = xml.replace(m, r)
-    ...     browser.getControl('Apply').click()
-    ...     return browser.contents

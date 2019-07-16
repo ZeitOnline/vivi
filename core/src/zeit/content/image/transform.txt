@@ -3,7 +3,10 @@ Image transforms
 ================
 
 The transforms create thumbnails and may later be extended for rotating images
-or alike[#functional]_.
+or alike.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 
 Resizing
@@ -159,8 +162,3 @@ aspect ratio:
 ...     image)
 >>> persistent_thumbnail.getImageSize()
 (266, 200)
-
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()

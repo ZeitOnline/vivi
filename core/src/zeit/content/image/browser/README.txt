@@ -238,7 +238,11 @@ The image file is required:
 ...
 
 Load the opernball image data an add w/o setting a file name. This selects the
-filename automatically[#no-references]_.
+filename automatically.
+
+There must not be the "references" field on the add form:
+>>> 'Objects using this image' in browser.contents
+False
 
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
@@ -253,11 +257,6 @@ When editing, the image file is no longer required:
 >>> browser.getControl('Apply').click()
 >>> 'Required input is missing' in browser.contents
 False
-
-.. [#no-references] There must not be the "references" field on the add form:
-
-    >>> 'Objects using this image' in browser.contents
-    False
 
 
 Image browser
@@ -323,7 +322,9 @@ Lets create an image group:
 >>> print browser.title.strip()
 2006 – Add image group
 
-[#no-references]_
+There must not be the "references" field on the add form:
+>>> 'Objects using this image' in browser.contents
+False
 
 >>> def set_file_data(name, field):
 ...     test_file = os.path.join(

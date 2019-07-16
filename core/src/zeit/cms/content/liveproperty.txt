@@ -5,8 +5,20 @@ Live properties operate directly on the dav server (NOTE: this is **not** the
 same as live properties in the DAV sense. In DAV live properties are computed
 properties).
 
+Setup
++++++
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.workflow.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
 When we get the properties of an object from the repository we'll get live
-properties[#functional]_:
+properties:
 
 >>> import zeit.connector.interfaces
 >>> content = repository['testcontent']
@@ -107,27 +119,7 @@ Setting the same value again does not make a DAV request:
 >>> properties[('foo', 'test')] = 'New Value'
 
 
-Clean up:
-
+Clean up
+++++++++
 
 >>> del connector.changeProperties
-
-
-
-.. [#functional] We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    Do some imports and get the repository
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> import zeit.cms.workflow.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-    Setup interaction:
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()

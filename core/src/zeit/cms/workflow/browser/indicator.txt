@@ -1,9 +1,26 @@
 Workflow indicators
 ===================
 
+Setup:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
+
+>>> import zope.publisher.browser
+>>> import zeit.cms.browser.interfaces
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.ICMSSkin)
+
 
 There is an viewlet manager which renders workflow indicators for content
-objects (note that the ``view`` argument is not really relevant)[#setup]_:
+objects (note that the ``view`` argument is not really relevant):
 
 >>> import zope.component
 >>> import zope.viewlet.interfaces
@@ -18,21 +35,3 @@ objects (note that the ``view`` argument is not really relevant)[#setup]_:
 <span class="publish-state not-published" title="Not published"></span>
 
 # XXX move workflow tests from listing.txt to here.
-
-
-.. [#setup]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-    >>> content = repository['testcontent']
-
-    >>> import zope.publisher.browser
-    >>> import zeit.cms.browser.interfaces
-    >>> request = zope.publisher.browser.TestRequest(
-    ...     skin=zeit.cms.browser.interfaces.ICMSSkin)

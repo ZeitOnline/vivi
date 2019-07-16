@@ -1,7 +1,8 @@
 Centerpage
 ==========
 
-[#functional]_
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
@@ -47,7 +48,27 @@ The centerpage is reachable via ``__parent__`` or by adapting to it:
 >>> zeit.content.cp.interfaces.ICenterPage(cp['feature'])
 <zeit.content.cp.centerpage.CenterPage...>
 
-[#modified-handler]_
+
+The centerpages need to be nodified when sub location change. When we modify an
+area the centerpage will be considered changed:
+
+>>> import transaction
+>>> import zope.event
+>>> import zope.lifecycleevent
+>>> getRootFolder()['cp'] = cp
+>>> transaction.commit()  # Commit to actually be able to "change"
+>>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+...     cp['lead']))
+>>> cp._p_changed
+True
+
+There is also such a handler for IObjectMovedEvent:
+
+>>> import zope.container.contained
+>>> zope.event.notify(zope.container.contained.ObjectMovedEvent(
+...     cp['lead'], None, None, None, None))
+>>> cp._p_changed
+True
 
 
 Header image
@@ -116,8 +137,12 @@ After calling the factory a corresponding XML node has been created:
 </region>
 
 
-Modules are accessible via __getitem__ [#invalid-raises-error]_:
+Modules are accessible via __getitem__:
 
+>>> informatives['invalid']
+Traceback (most recent call last):
+    ...
+KeyError: 'invalid'
 >>> informatives[block.__name__]
 <zeit.content.cp.blocks.teaser.TeaserBlock...>
 
@@ -155,8 +180,17 @@ The keys have not changed:
 >>> block.__name__ == block_key
 True
 
+Invalid arguments to update order raise errors as defined in the interface:
 
-[#invalid-arguments-to-updateorder]_
+>>> informatives.updateOrder(124)
+Traceback (most recent call last):
+    ...
+TypeError: order must be tuple or list, got <type 'int'>.
+
+>>> informatives.updateOrder(['abc', 'def'])
+Traceback (most recent call last):
+    ...
+ValueError: order must have the same keys.
 
 Blocks can be removed using __delitem__:
 
@@ -175,11 +209,12 @@ Checkin handler
 +++++++++++++++
 
 When the centerpage is checked in, the metadata of all its articles need to be
-updated [#needsinteraction]_.
+updated.
 
 Before we can begin, we need to put our centerpage into the repository so that
 we can check it out:
 
+>>> principal = zeit.cms.testing.create_interaction()
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> repository['cp'] = cp
@@ -258,57 +293,3 @@ The data is, again, updated when the CP is checked in:
          date-first-released="2009-09-11T08:18:48+00:00"
          date-last-published="2009-09-11T08:18:48+00:00"
          last-semantic-change="2009-09-11T08:18:48+00:00"...
-
-
-.. [#needsinteraction]
-
-    >>> principal = zeit.cms.testing.create_interaction()
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-
-.. [#modified-handler] The centerpages need to be nodified when sub location
-    change. When we modify an area the centerpage will be considered changed:
-
-    >>> import transaction
-    >>> import zope.event
-    >>> import zope.lifecycleevent
-    >>> getRootFolder()['cp'] = cp
-    >>> transaction.commit()  # Commit to actually be able to "change"
-    >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-    ...     cp['lead']))
-    >>> cp._p_changed
-    True
-
-    There is also such a handler for IObjectMovedEvent:
-
-    >>> import zope.container.contained
-    >>> zope.event.notify(zope.container.contained.ObjectMovedEvent(
-    ...     cp['lead'], None, None, None, None))
-    >>> cp._p_changed
-    True
-
-
-.. [#invalid-raises-error]
-
-    >>> informatives['foo']
-    Traceback (most recent call last):
-        ...
-    KeyError: 'foo'
-
-.. [#invalid-arguments-to-updateorder] Invalid arguments to update order raise
-    errors as defined in the interface:
-
-    >>> informatives.updateOrder(124)
-    Traceback (most recent call last):
-        ...
-    TypeError: order must be tuple or list, got <type 'int'>.
-
-    >>> informatives.updateOrder(['abc', 'def'])
-    Traceback (most recent call last):
-        ...
-    ValueError: order must have the same keys.

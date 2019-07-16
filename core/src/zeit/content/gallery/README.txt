@@ -2,8 +2,10 @@ Image Gallery
 =============
 
 A gallery behaves like a container, it contains images. When we create a
-gallery it is empty[#functional]_:
+gallery it is empty:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
 >>> len(gallery)
@@ -192,7 +194,7 @@ xml:
 When we assign the entry the change will be reflected:
 
 >>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -212,7 +214,7 @@ When we assign the entry the change will be reflected:
         </block>
         <block name="01.jpg">
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -237,7 +239,7 @@ well:
 >>> import zope.lifecycleevent
 >>> entry.title = u'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -258,7 +260,7 @@ well:
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -284,7 +286,7 @@ u'Der Wecker klingelt'
 >>> entry.text
 <Element text at ...>
 >>> entry.text['p']
-u'Seit zwei Uhr in der Fr\xc3\xbch'
+u'Seit zwei Uhr in der Fr\xfch'
 >>> entry.caption
 u'Gallery & caption'
 
@@ -305,7 +307,7 @@ Let's set a layout on 01.jpg:
 True
 >>> entry.layout = u'image-only'
 >>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -326,7 +328,7 @@ True
         <block layout="image-only" name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -351,7 +353,7 @@ When we set the layout to None again, the layout attribute is removed:
 u'image-only'
 >>> entry.layout = None
 >>> gallery['01.jpg'] = entry
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -372,7 +374,7 @@ u'image-only'
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -449,7 +451,7 @@ Let's change the order:
 
 This is of course reflected int he XML:
 
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -461,7 +463,7 @@ This is of course reflected int he XML:
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -570,7 +572,7 @@ KeyError: u'http://xml.zeit.de/2006/01.jpg'
 
 Note that his has *not* changed the xml so far:
 
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -591,7 +593,7 @@ Note that his has *not* changed the xml so far:
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
+            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
@@ -704,7 +706,7 @@ The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>
@@ -715,7 +717,7 @@ The keys also correct(ed) and the names are set:
         <block name="DSC00109_2.JPG">
             <text...>
                <p>
-                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
                  <a href="fooo">link</a>
                </p>
              </text>
@@ -748,10 +750,10 @@ The entries' text is wrapped in a <p> node:
 >>> entry = gallery['DSC00109_2.JPG']
 >>> entry.text
 <Element text at ...>
->>> print lxml.etree.tostring(entry.text, pretty_print=True)
+>>> print lxml.etree.tostring(entry.text, pretty_print=True, encoding='unicode')
 <text xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <p>
-                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
                  <a href="fooo">link</a>
               </p>
 </text>
@@ -799,7 +801,7 @@ The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
->>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
+>>> print lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode')
 <gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>
@@ -810,7 +812,7 @@ The keys also correct(ed) and the names are set:
         <block name="DSC00109_2.JPG">
           <text...>
             <p ...>
-                 Im holl&#195;&#164;ndischen Kapit&#195;&#164;nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie&#195;&#159; aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
              </p>
           </text>
           <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
@@ -827,15 +829,10 @@ The keys also correct(ed) and the names are set:
   </body>
 </gallery>
 
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
-
 
 Searchable text
 ===============
 
 >>> adapter = zope.index.text.interfaces.ISearchableText(gallery)
 >>> adapter.getSearchableText()
-[u'Im holl\xc3\xa4ndischen Kapit\xc3\xa4nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie\xc3\x9f aber...']
+[u'Im holl\xe4ndischen Kapit\xe4nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie\xdf aber...']

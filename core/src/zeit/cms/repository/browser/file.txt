@@ -13,8 +13,12 @@ False
 Viewing, downloading and changing files
 +++++++++++++++++++++++++++++++++++++++
 
-Open the default metadata view of a file[#browser]_:
+Open the default metadata view of a file:
 
+
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/2006'
 ...              '/DSC00109_2.JPG/@@view.html')
 >>> print browser.contents
@@ -261,7 +265,6 @@ Check it in:
 
 When adding a file it is possible to explicitly set the file name:
 
-
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['File']
@@ -274,13 +277,7 @@ When adding a file it is possible to explicitly set the file name:
 'http://localhost/++skin++cms/workingcopy/zope.user/medium-pig.txt/@@edit.html'
 
 
-
-Clean up:
+Clean up
+++++++++
 
 >>> del cms_config['default-type']
-
-.. [#browser]
-
-    >>> from zeit.cms.testing import Browser
-    >>> browser = Browser(layer['wsgi_app'])
-    >>> browser.login('user', 'userpw')

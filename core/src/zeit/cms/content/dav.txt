@@ -223,8 +223,10 @@ Content sources
 There is another implementation for ICMSContentSources. It stores the Unique Id
 of the object and gets the object back from the unique id. We use the folder
 source here to show that content is only returned if it is actually in the
-source[#functional]_:
+source:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> field = zope.schema.Choice(
 ...     source=zeit.cms.content.contentsource.FolderSource())
 >>> converter = get_converter(field)
@@ -264,11 +266,6 @@ The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
 u'http://xml.zeit.de/online/'
-
-.. [#functional]_
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
 
 
 Principal source

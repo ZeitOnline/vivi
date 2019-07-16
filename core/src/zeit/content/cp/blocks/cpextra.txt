@@ -30,7 +30,11 @@ MostRead
 The most read block shows the most read articles. It is only valid in the
 Informatives area.
 
-When a centerpage is created the toplist is automatically added[#functional]_:
+When a centerpage is created the toplist is automatically added:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
 >>> import zeit.cms.interfaces
 >>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
@@ -193,11 +197,3 @@ When the CP is checked out it will be migrated automatically:
 'cpextra'
 >>> mostcommented.cpextra
 'mostcommented'
-
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()

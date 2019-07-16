@@ -2,7 +2,11 @@ Gallery references
 ==================
 
 A gallery can be referenced within every ICMSContent. Create a
-gallery[#functional]_:
+gallery:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> p = zeit.cms.testing.create_interaction()
 
 >>> from zeit.content.gallery.gallery import Gallery
 >>> gallery = Gallery()
@@ -102,11 +106,3 @@ When the reference is removed the <gallery> tag is removed:
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
 >>> '<gallery' in lxml.etree.tostring(node, pretty_print=True)
 False
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> p = zeit.cms.testing.create_interaction()
-    >>> dummy = with_statement

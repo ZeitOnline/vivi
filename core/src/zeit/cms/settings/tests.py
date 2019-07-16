@@ -1,6 +1,5 @@
 import unittest
 import zeit.cms.testing
-from zope.testing import doctest
 
 
 def test_suite():

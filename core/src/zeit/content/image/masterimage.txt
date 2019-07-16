@@ -1,7 +1,11 @@
 Master Image
 ============
 
-An image group can have a master image[#functional]_. The image group can be
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> ignored = zeit.cms.testing.create_interaction()
+
+An image group can have a master image. The image group can be
 adapted to IMasterImage to get the master image:
 
 >>> import zeit.content.image.interfaces
@@ -26,9 +30,3 @@ An image group w/o master image should promote its largest image to master:
 >>> group = zeit.content.image.testing.create_image_group()
 >>> zeit.content.image.interfaces.IMasterImage(group)
 <zeit.content.image.image.RepositoryImage...>
-
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> ignored = zeit.cms.testing.create_interaction()

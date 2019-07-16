@@ -1,10 +1,76 @@
 Widgets
 =======
 
+Setup
++++++
+
+Create a mock repository:
+
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> import zope.interface
+>>> import zope.location.interfaces
+>>>
+>>> class Repository(object):
+...     zope.interface.implements(zope.location.interfaces.ILocation)
+...     __parent__ = getRootFolder()
+...     __name__ = 'repo'
+...
+...     def getContent(self, unique_id):
+...         if unique_id.startswith('http://xml.zeit.de/content'):
+...             return Content()
+...         if unique_id.startswith('http://xml.zeit.de/exists'):
+...             return object()
+...         raise KeyError(unique_id)
+...
+>>> repository = Repository()
+>>> gsm = zope.component.getGlobalSiteManager()
+>>> gsm.registerUtility(
+...     repository, zeit.cms.repository.interfaces.IRepository)
+
+Create a simple content object:
+
+>>> import zope.annotation.interfaces
+>>> class Content(object):
+...     zope.interface.implements(
+...         zeit.cms.interfaces.ICMSContent,
+...         zope.location.interfaces.ILocation,
+...         zope.annotation.interfaces.IAttributeAnnotatable)
+...     __parent__ = repository
+...     __name__ = u'content'
+...     uniqueId = 'http://xml.zeit.de/content'
+
+Make ICMSContent generally a contenttype:
+
+>>> gsm.registerUtility(
+...     zeit.cms.interfaces.ICMSContent,
+...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
+
+To browse the repository the widget needs to look up the default browsing
+location. Create a mock adapter which returns the repository:
+
+>>> def browsing_location_adapter(context, schema):
+...     print "Returning location for", context
+...     print "   ", schema
+...     return repository
+>>> import zeit.cms.browser.interfaces
+>>> import zeit.cms.content.interfaces
+>>> gsm.registerAdapter(
+...     browsing_location_adapter,
+...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
+...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+Setup interaction:
+
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+
+
 Object widgets
 ++++++++++++++
 
-The object widgets are used to reference objects[#object-widget-setup]_.
+The object widgets are used to reference objects.
 
 Input widget
 ------------
@@ -273,69 +339,3 @@ in one month:
             'field.', 'onchange', {target: $('field.')});
     " />
 </div>
-
-
-
-.. [#object-widget-setup]
-
-    Create a mock repository:
-
-    >>> import zeit.cms.interfaces
-    >>> import zeit.cms.repository.interfaces
-    >>> import zope.component
-    >>> import zope.interface
-    >>> import zope.location.interfaces
-    >>>
-    >>> class Repository(object):
-    ...     zope.interface.implements(zope.location.interfaces.ILocation)
-    ...     __parent__ = getRootFolder()
-    ...     __name__ = 'repo'
-    ...
-    ...     def getContent(self, unique_id):
-    ...         if unique_id.startswith('http://xml.zeit.de/content'):
-    ...             return Content()
-    ...         if unique_id.startswith('http://xml.zeit.de/exists'):
-    ...             return object()
-    ...         raise KeyError(unique_id)
-    ...
-    >>> repository = Repository()
-    >>> gsm = zope.component.getGlobalSiteManager()
-    >>> gsm.registerUtility(
-    ...     repository, zeit.cms.repository.interfaces.IRepository)
-
-    Create a simple content object:
-
-    >>> import zope.annotation.interfaces
-    >>> class Content(object):
-    ...     zope.interface.implements(
-    ...         zeit.cms.interfaces.ICMSContent,
-    ...         zope.location.interfaces.ILocation,
-    ...         zope.annotation.interfaces.IAttributeAnnotatable)
-    ...     __parent__ = repository
-    ...     __name__ = u'content'
-    ...     uniqueId = 'http://xml.zeit.de/content'
-
-    Make ICMSContent generally a contenttype:
-
-    >>> gsm.registerUtility(
-    ...     zeit.cms.interfaces.ICMSContent,
-    ...     zeit.cms.interfaces.ICMSContentType, 'cmscontent')
-
-    To browse the repository the widget needs to look up the default browsing
-    location. Create a mock adapter which returns the repository:
-
-    >>> def browsing_location_adapter(context, schema):
-    ...     print "Returning location for", context
-    ...     print "   ", schema
-    ...     return repository
-    >>> import zeit.cms.browser.interfaces
-    >>> import zeit.cms.content.interfaces
-    >>> gsm.registerAdapter(
-    ...     browsing_location_adapter,
-    ...     (Content, zeit.cms.content.interfaces.ICMSContentSource),
-    ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
-
-    Setup interaction:
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')

@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 from urlparse import urljoin
-from zope.testing import doctest
-import __future__
 import base64
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
@@ -9,6 +7,7 @@ import celery_longterm_scheduler
 import contextlib
 import copy
 import datetime
+import doctest
 import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.jslint
@@ -30,7 +29,6 @@ import re
 import sys
 import transaction
 import unittest
-import urllib2
 import webtest.lint
 import xml.sax.saxutils
 import zeit.cms.celery
@@ -312,7 +310,24 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-checker = zope.testing.renormalizing.RENormalizing([
+# XXX Hopefully not necessary once we're on py3
+class OutputChecker(zope.testing.renormalizing.RENormalizing):
+
+    def check_output(self, want, got, optionflags):
+        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.check_output(self, want, got, optionflags)
+
+    def output_difference(self, example, got, optionflags):
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.output_difference(self, example, got, optionflags)
+
+
+checker = OutputChecker([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
@@ -326,7 +341,6 @@ def setup_product_config(product_config={}):
     zope.app.appsetup.product._configs.update(product_config)
 
 optionflags = (doctest.REPORT_NDIFF +
-               doctest.INTERPRET_FOOTNOTES +
                doctest.NORMALIZE_WHITESPACE +
                doctest.ELLIPSIS)
 
@@ -335,6 +349,7 @@ def DocFileSuite(*paths, **kw):
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
+    kw['encoding'] = 'utf-8'
     return doctest.DocFileSuite(*paths, **kw)
 
 
@@ -350,11 +365,11 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw['setUp'] = setUp
     globs = kw.setdefault('globs', {})
     globs['product_config'] = kw.pop('product_config', {})
-    globs['with_statement'] = __future__.with_statement
     globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
     globs['layer'] = layer
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
+    kw['encoding'] = 'utf-8'
 
     test = doctest.DocFileSuite(*paths, **kw)
     test.layer = layer

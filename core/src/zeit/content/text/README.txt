@@ -84,7 +84,15 @@ Switching back to UTF-8 solves the problem:
 Integration
 +++++++++++
 
-Let's add the text created above to the repository[#functional]_:
+Let's add the text created above to the repository:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
 
 >>> repository['atext'] = text
 
@@ -111,14 +119,3 @@ When we remove the stored encoding a encoding is guessed:
 u'Mary had a little lamb \u2014 and is happy.'
 >>> text.encoding
 'UTF-8'
-
-
-.. [#functional] 
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

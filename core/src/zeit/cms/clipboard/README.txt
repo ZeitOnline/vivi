@@ -12,8 +12,14 @@ logging out or removed automatically.
 Getting the clipbaord
 =====================
 
-After some setup[#functional]_ we can have the principal in the variable
-`principal`. We just get the clipboard for that principal via adaptation:
+After some setup we can have the principal in the variable
+`principal`.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+
+We just get the clipboard for that principal via adaptation:
 
 >>> from zeit.cms.clipboard.interfaces import IClipboard, IClipboardEntry
 >>> clipboard = IClipboard(principal)
@@ -200,13 +206,3 @@ ValueError is raised:
 Traceback (most recent call last):
     ...
 ValueError: `obj` must not be an ancestor of `new_container`.
-
-
-Footnotes
-=========
-
-.. [#functional] Setup
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()

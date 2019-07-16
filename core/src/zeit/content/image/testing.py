@@ -1,7 +1,5 @@
-from __future__ import with_statement
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
-import mimetypes
 import os.path
 import pkg_resources
 import zeit.cms.repository.interfaces

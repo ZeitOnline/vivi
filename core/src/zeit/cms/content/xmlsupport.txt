@@ -2,6 +2,18 @@
 XML tests
 =========
 
+Setup
+-----
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+
 Mapping of DAV properties to xml
 ================================
 
@@ -24,7 +36,7 @@ Update on property change
 -------------------------
 
 When we set the title, an IDAVPropertyChangedEvent is issued. Thus the xml will
-change and contain the property[#functional]_:
+change and contain the property:
 
 >>> content = repository['testcontent']
 >>> import zeit.cms.checkout.interfaces
@@ -130,21 +142,9 @@ We can now still change the values here w/o getting an error:
 2009
 
 
-Clean up:
+Clean up
+--------
 
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     *old_implements)
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
-
-    Get the repository:
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

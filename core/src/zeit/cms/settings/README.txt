@@ -5,8 +5,10 @@ Settings
 Global settings
 ---------------
 
-The global settings are stored in an annotation on the site[#functional]_:
+The global settings are stored in an annotation on the site:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> import zeit.cms.settings.interfaces
 >>> settings = zeit.cms.settings.interfaces.IGlobalSettings(getRootFolder())
 >>> settings
@@ -64,9 +66,3 @@ It is possible to adapt every located object to the settings:
 2004
 >>> settings.default_volume
 21
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()

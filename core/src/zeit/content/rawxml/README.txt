@@ -2,7 +2,14 @@ Raw XML
 =======
 
 The raw xml type is mainly there to support arbitrary blocks in
-channels[#functional]_.
+channels.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
 
 
 Basics
@@ -100,19 +107,3 @@ Let's add some more  xml:
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype"...>50</object_limit>
 </channel>
-
-
-Clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
-
-.. [#functional]
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

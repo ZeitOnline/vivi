@@ -43,7 +43,7 @@ Instanciate and add to the database:
 >>> import transaction
 >>> transaction.commit()
 
-Log something for `content` [#needs-interaction]_:
+Log something for `content`:
 
 >>> log.log(content, 'Foo')
 

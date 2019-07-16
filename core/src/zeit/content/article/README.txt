@@ -266,7 +266,10 @@ Initally there are no images attached to an article:
 >>> print images.image
 None
 
-Get an image from the repository and attach it[#needsinteraction]_:
+Get an image from the repository and attach it:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.create_interaction(u'hans')
 
 >>> import datetime
 >>> import zope.component
@@ -334,14 +337,3 @@ After tests we clean up:
 
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
-
-
-.. [#needsinteraction]
-
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'hans')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)

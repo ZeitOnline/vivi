@@ -46,7 +46,7 @@ def test_suite():
     suite.addTest(doctest.DocTestSuite(zeit.connector.connector))
     suite.addTest(doctest.DocFileSuite(
         'search.txt',
-        optionflags=doctest.ELLIPSIS,
+        optionflags=zeit.connector.testing.optionflags,
         package='zeit.connector'))
 
     return suite

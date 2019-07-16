@@ -64,7 +64,6 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', WSGI_LAYER)
-    kw['package'] = doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 

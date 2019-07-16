@@ -1,8 +1,13 @@
 Teaser block
 ++++++++++++
 
+Create a few test objects to play with:
+
+>>> import zeit.content.cp.browser.blocks.testing
+>>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
+
 The teaser block contains a list of teasers. Let's first create a list of
-teasers in the lead area[#fill-dav-with-content]_:
+teasers in the lead area:
 
 >>> import zeit.cms.testing
 >>> import zeit.content.cp.browser.testing
@@ -201,7 +206,30 @@ The cp contents also has changed of course:
 Layouts
 +++++++
 
-[#setup-layout-test-needs-real-content-type-with-image]_
+We create a new centerpage with a content type from the repository:
+
+>>> zeit.content.cp.browser.testing.create_cp(browser, filename='foreign')
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open(
+...     'lead/@@landing-zone-drop'
+...     '?uniqueId=http://xml.zeit.de/testcontent'
+...     '&order=top')
+
+Then we need to create a test 'article' to be included in this CenterPage:
+
+>>> browser.open('/++skin++cms/repository/testcontent')
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Teaser title').value = u'Foreign teaser'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
+>>> 'Foreign teaser' in browser.contents
+True
 
 XXX work around https://github.com/zopefoundation/zope.testbrowser/issues/78
 >>> def click_link(browser, text):
@@ -230,7 +258,6 @@ Teasers often have an image which is displayed in the center page editor. The
 shown image depends on the chosen layout. Create an image group and assign it
 to the test-content:
 
->>> dummy = with_statement
 >>> import zeit.cms.checkout.helper
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
@@ -277,36 +304,3 @@ When the image is not an image group, it will be just used:
     <div class="teaser">
       <div class="supertitle"></div>
       ...
-
-
-.. [#fill-dav-with-content] Create a few test objects to play with:
-
-    >>> import zeit.content.cp.browser.blocks.testing
-    >>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
-
-.. [#setup-layout-test-needs-real-content-type-with-image]:
-
-    We create a new centerpage with a content type from the repository:
-
-    >>> zeit.content.cp.browser.testing.create_cp(browser, filename='foreign')
-    >>> browser.open('contents')
-    >>> contents_url = browser.url
-    >>> browser.open(
-    ...     'lead/@@landing-zone-drop'
-    ...     '?uniqueId=http://xml.zeit.de/testcontent'
-    ...     '&order=top')
-
-    Then we need to create a test 'article' to be included in this CenterPage:
-
-    >>> browser.open('/++skin++cms/repository/testcontent')
-    >>> browser.getLink('Checkout').click()
-    >>> browser.getControl('Teaser title').value = u'Foreign teaser'
-    >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
-    >>> browser.getControl('Year').value = '2007'
-    >>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
-    >>> browser.getControl('Ressort').displayValue = ['Reisen']
-    >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
-    >>> browser.getControl('Apply').click()
-    >>> browser.getLink('Checkin').click()
-    >>> 'Foreign teaser' in browser.contents
-    True

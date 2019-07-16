@@ -1,8 +1,11 @@
 Text type browser integration
 =============================
 
-Add a new text[#browser]_:
+Add a new text:
 
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Plain text']
@@ -89,10 +92,3 @@ We have a special icon:
 <?xml...
        <img src="http://localhost/++skin++cms/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="20" height="20" border="0" />
        ...
-
-
-.. [#browser]
-
-    >>> import zeit.cms.testing
-    >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
-    >>> browser.login('user', 'userpw')

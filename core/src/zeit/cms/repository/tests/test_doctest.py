@@ -1,4 +1,3 @@
-from zope.testing import doctest
 import unittest
 import zeit.cms.testing
 

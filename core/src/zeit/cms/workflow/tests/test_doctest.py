@@ -1,4 +1,4 @@
-from zope.testing import doctest
+import doctest
 import unittest
 import zeit.cms.testing
 
@@ -8,8 +8,7 @@ def test_suite():
     suite.addTest(doctest.DocFileSuite(
         'mock.txt',
         package='zeit.cms.workflow',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS)))
+        optionflags=zeit.cms.testing.optionflags))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'modified.txt',
         'status.txt',
