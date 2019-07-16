@@ -5,8 +5,9 @@ Setup
 +++++
 
 >>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
 >>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> zeit.cms.testing.set_site()
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content = repository['testcontent']
@@ -90,11 +91,3 @@ Reset the implements:
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType,
 ...     *old_implements)
-
-
-Clean up
-++++++++
-
->>> zope.security.management.endInteraction()
->>> zope.component.hooks.setSite(old_site)
-

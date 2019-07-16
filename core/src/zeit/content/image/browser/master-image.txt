@@ -82,11 +82,6 @@ True
 False
 
 
-Clean up:
-
->>> zope.security.management.endInteraction()
-
-
 Selecting the master image
 ++++++++++++++++++++++++++
 

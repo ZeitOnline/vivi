@@ -384,7 +384,3 @@ For add forms we need to make sure we'll get the right location on the folder:
 
 >>> get_location(gallery.__parent__)
 u'http://xml.zeit.de/bilder/2008/26/bildergalerien/'
-
-Clean up:
-
->>> zope.component.hooks.setSite(old_site)

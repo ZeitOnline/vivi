@@ -83,7 +83,6 @@ The checkin default action does not update the "last semantic change" setting:
 >>> last_change = sc.last_semantic_change
 >>> print last_change
 None
->>> zope.component.hooks.setSite(old_site)
 
 
 Getting the right tab after checkout and checkin

@@ -147,9 +147,3 @@ u'http://xml.zeit.de/personen/'
 ...     zope.security.proxy.ProxyFactory(repository['testcontent']))
 >>> get_location(ref)
 u'http://xml.zeit.de/personen/'
-
-
-Clean up
---------
-
->>> zope.component.hooks.setSite(old_site)

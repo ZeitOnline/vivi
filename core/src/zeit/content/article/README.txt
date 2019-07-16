@@ -327,12 +327,3 @@ All Text inside <p> elements is extracted (empty paragraphs are ignored):
 >>> adapter = zope.index.text.interfaces.ISearchableText(article)
 >>> adapter.getSearchableText()
 [u'Link', u'und mehr Text', u'Normaler Absatz']
-
-
-Cleanup
-=======
-
-After tests we clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.component.hooks.setSite(old_site)

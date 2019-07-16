@@ -275,8 +275,8 @@ Cleaning everything that is older than 30 days changes nogthing here:
 >>> len(log._object_log)
 0
 
-Tear down / Clean up
-====================
+Clean up
+========
 
 >>> sm.unregisterAdapter(
 ...     tzinfo, (zope.interface.Interface,),

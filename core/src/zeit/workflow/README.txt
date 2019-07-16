@@ -762,7 +762,6 @@ True
 Clean up
 ++++++++
 
->>> zope.security.management.endInteraction()
 >>> logging.root.removeHandler(log_handler)
 >>> for name in loggers:
 ...     logging.getLogger(name).setLevel(oldlevels[name])

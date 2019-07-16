@@ -86,8 +86,3 @@ False
 True
 >>> bool(workflow.retract_job_id)
 True
-
-
-Clean up:
-
->>> zope.component.hooks.setSite(old_site)

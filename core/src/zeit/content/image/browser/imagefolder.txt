@@ -90,9 +90,3 @@ When there is no image folder nothing bad happens:
 >>> browser.getControl('Apply').click()
 >>> get_location(repository['2006']['49'])
 u'http://xml.zeit.de/2006/49/'
-
-
-Cleanup:
-
->>> zope.component.hooks.setSite(old_site)
-
