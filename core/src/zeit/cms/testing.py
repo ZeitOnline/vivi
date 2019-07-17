@@ -336,10 +336,6 @@ checker = OutputChecker([
      "<GUID>"),
 ])
 
-
-def setup_product_config(product_config={}):
-    zope.app.appsetup.product._configs.update(product_config)
-
 optionflags = (doctest.REPORT_NDIFF +
                doctest.NORMALIZE_WHITESPACE +
                doctest.ELLIPSIS)
@@ -354,17 +350,9 @@ def DocFileSuite(*paths, **kw):
 
 
 def FunctionalDocFileSuite(*paths, **kw):
-
-    def setUp(test):
-        config = test.globs.get('product_config', {})
-        __traceback_info__ = (config,)
-        setup_product_config(config)
-
     layer = kw.pop('layer', WSGI_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
-    kw['setUp'] = setUp
     globs = kw.setdefault('globs', {})
-    globs['product_config'] = kw.pop('product_config', {})
     globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
     globs['layer'] = layer
     kw.setdefault('checker', checker)
@@ -398,8 +386,6 @@ class FunctionalTestCase(
         gocept.testing.assertion.String,
         RepositoryHelper):
 
-    product_config = {}
-
     def getRootFolder(self):
         """Returns the Zope root folder."""
         return self.layer['functional_setup'].getRootFolder()
@@ -410,7 +396,6 @@ class FunctionalTestCase(
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        setup_product_config(self.product_config)
         zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction(u'zope.user')
 
