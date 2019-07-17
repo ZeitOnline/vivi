@@ -1,6 +1,5 @@
 import transaction
 import unittest
-import zeit.cms.testing
 import zeit.content.gallery.gallery
 import zope.component
 
@@ -24,9 +23,7 @@ class TestHTMLContent(unittest.TestCase):
         self.assertEqual(1, len(gallery.xml.body.findall('text')))
 
 
-class TestEntryMetadata(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.gallery.testing.ZCML_LAYER
+class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestEntryMetadata, self).setUp()
@@ -58,9 +55,7 @@ class TestEntryMetadata(zeit.cms.testing.FunctionalTestCase):
         assert metadata.title == u'Beautiful title'
 
 
-class TestEntryImages(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.gallery.testing.ZCML_LAYER
+class TestEntryImages(zeit.content.gallery.testing.FunctionalTestCase):
 
     def test_gallery_entry_should_adapt_to_IImages(self):
         entry = zeit.content.gallery.gallery.GalleryEntry()
@@ -70,9 +65,7 @@ class TestEntryImages(zeit.cms.testing.FunctionalTestCase):
         assert images.image is entry.image
 
 
-class TestVisibleEntryCount(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.gallery.testing.ZCML_LAYER
+class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestVisibleEntryCount, self).setUp()

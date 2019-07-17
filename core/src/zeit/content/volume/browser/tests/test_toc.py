@@ -7,6 +7,7 @@ from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import mock
+import plone.testing.zca
 import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources
@@ -65,8 +66,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         toc = Toc(mock.Mock(), mock.Mock())
         toc_connector = zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
-        self.zca.patch_utility(toc_connector,
-                               zeit.connector.interfaces.IConnector)
+        zope.component.getGlobalSiteManager().registerUtility(
+            toc_connector, zeit.connector.interfaces.IConnector)
         folders = ['images', 'leserbriefe', 'politik']
         with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['ZEI'] = Folder()
@@ -79,7 +80,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 '/ZEI/2015/01')
         foldernames = [folder.__name__ for folder in relevant_ressorts]
         self.assertIn('politik', foldernames)
-        self.zca.reset()
 
     def test_create_toc_element_should_flatten_linebreaks(self):
         article_xml = self.article_xml_template.format(page='20-20')
@@ -187,12 +187,12 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         # article
         toc_connector = zope.component.getUtility(
             zeit.content.volume.interfaces.ITocConnector)
-        self.zca.patch_utility(toc_connector,
-                               zeit.connector.interfaces.IConnector)
+        sm = zope.component.getSiteManager()
+        sm.registerUtility(toc_connector, zeit.connector.interfaces.IConnector)
         with zeit.cms.testing.site(self.getRootFolder()):
             for ressort_name in self.ressort_names:
-                zeit.cms.content.add.find_or_create_folder('ZEI', '2015',
-                                                           '01', ressort_name)
+                zeit.cms.content.add.find_or_create_folder(
+                    'ZEI', '2015', '01', ressort_name)
             with zeit.cms.testing.interaction():
                 article = create_article()
                 article.year = 2015
@@ -201,7 +201,10 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                 article.page = self.article_page
                 self.repository['ZEI']['2015']['01']['politik'][
                     'test_artikel'] = article
-        self.zca.reset()
+        sm.registerUtility(
+            zope.component.getGlobalSiteManager().getUtility(
+                zeit.connector.interfaces.IConnector),
+            zeit.connector.interfaces.IConnector)
 
     def test_toc_view_is_csv_file_download(self):
         b = self.browser

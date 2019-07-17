@@ -1,10 +1,7 @@
-import zeit.cms.testing
 import zeit.content.text.testing
 
 
-class PythonScriptTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.text.testing.ZCML_LAYER
+class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
 
     def create(self, text):
         py = zeit.content.text.python.PythonScript()

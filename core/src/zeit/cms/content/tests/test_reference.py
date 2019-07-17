@@ -37,9 +37,10 @@ class ReferenceFixture(object):
         zope.security.protectclass.protectSetAttribute(
             ExampleReference, 'foo', 'zope.Public')
 
-        self.zca.patch_adapter(
+        registry = zope.component.getGlobalSiteManager()
+        registry.registerAdapter(
             zeit.cms.related.related.BasicReference, name='test')
-        self.zca.patch_adapter(ExampleReference, name='test')
+        registry.registerAdapter(ExampleReference, name='test')
 
         self.repository['content'] = ExampleContentType()
         self.repository['target'] = ExampleContentType()

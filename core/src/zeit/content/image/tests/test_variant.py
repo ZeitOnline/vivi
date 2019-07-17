@@ -1,13 +1,10 @@
 from zeit.content.image.interfaces import IVariants
 import sys
-import zeit.cms.testing
 import zeit.content.image.testing
 import zope.interface.verify
 
 
-class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(VariantTraversal, self).setUp()
@@ -70,9 +67,7 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(180, variant.max_height)
 
 
-class VariantProperties(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(VariantProperties, self).setUp()

@@ -2,15 +2,12 @@ from zeit.cms.content.interfaces import IXMLReference
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.image.interfaces import IImageMetadata
 import lxml.etree
-import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.image.metadata
 import zope.component
 
 
-class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
 
     def set_copyright(self, value):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')

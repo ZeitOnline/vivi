@@ -3,14 +3,11 @@ from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import mock
 import zeit.cms.checkout.interfaces
-import zeit.cms.testing
 import zeit.ghost.ghost
 import zeit.ghost.testing
 
 
-class GhostbusterTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.ghost.testing.ZCML_LAYER
+class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
 
     def test_removes_excessive_ghosts_on_checkout(self):
         self.repository['ghost-origin'] = ExampleContentType()

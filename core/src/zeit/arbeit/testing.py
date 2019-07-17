@@ -2,45 +2,31 @@ import plone.testing
 import zeit.cms.testing
 import zeit.cms.repository.interfaces
 import zeit.content.article.testing
-import zeit.content.cp.testing
-import zeit.push.testing
 import zope.component
-import pkg_resources
-
-product_config = """\
-<product-config zeit.arbeit>
-</product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=(
-        product_config +
-        zeit.cms.testing.cms_product_config +
-        zeit.content.article.testing.product_config +
-        zeit.content.cp.testing.product_config +
-        zeit.push.testing.product_config
-    ))
-
-
-class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
-    layer = ZCML_LAYER
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.content.article.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class Layer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+        with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             repository['arbeit'] = zeit.cms.repository.folder.Folder()
 
 LAYER = Layer()
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

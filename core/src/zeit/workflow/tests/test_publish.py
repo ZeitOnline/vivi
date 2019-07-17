@@ -23,9 +23,7 @@ import zope.component
 import zope.i18n
 
 
-class PublishTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class PublishTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_object_already_checked_out_should_raise(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -67,9 +65,7 @@ class RelatedDependency(object):
         return relateds.related
 
 
-class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
 
     def setUp(self):
         super(PublicationDependencies, self).setUp()
@@ -142,9 +138,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
                     if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
 
 
-class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_publish_and_retract_in_same_process(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -170,9 +164,7 @@ class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(info.published)
 
 
-class PublishPriorityTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_determines_priority_via_adapter(self):
         content = self.repository['testcontent']
@@ -329,9 +321,7 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
-class MultiPublishRetractTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_publishes_and_retracts_multiple_objects_in_single_script_call(
             self):
@@ -390,7 +380,7 @@ class MultiPublishRetractTest(zeit.cms.testing.FunctionalTestCase):
             calls.append(context.uniqueId)
             if context.uniqueId == c1.uniqueId:
                 raise RuntimeError('provoked')
-        self.zca.patch_handler(
+        zope.component.getGlobalSiteManager().registerHandler(
             after_publish,
             (zeit.cms.interfaces.ICMSContent,
              zeit.cms.workflow.interfaces.IPublishedEvent))

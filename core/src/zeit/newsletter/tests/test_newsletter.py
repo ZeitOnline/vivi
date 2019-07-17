@@ -116,8 +116,9 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.newsletter = self.repository['mynl']['newsletter']
         self.newsletter.subject = 'thesubject'
 
-        self.renderer = self.zca.patch_utility(
-            mock.Mock(), zeit.newsletter.interfaces.IRenderer)
+        self.renderer = mock.Mock()
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.renderer, zeit.newsletter.interfaces.IRenderer)
         self.renderer.return_value = dict(
             html=mock.sentinel.html, text=mock.sentinel.text)
 
@@ -125,17 +126,17 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.optivo.reset()
 
     def test_send_uses_renderer_and_calls_optivo(self):
-            self.newsletter.send()
-            self.assertEqual(
-                ('send', 12345, 'recipientlist', 'thesubject',
-                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
+        self.newsletter.send()
+        self.assertEqual(
+            ('send', 12345, 'recipientlist', 'thesubject',
+             mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
 
     def test_send_test_passes_recipient_to_optivo(self):
-            self.newsletter.send_test('test@example.com')
-            self.assertEqual(
-                ('test', 12345, 'recipientlist_test',
-                 'test@example.com', '[test] thesubject',
-                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
+        self.newsletter.send_test('test@example.com')
+        self.assertEqual(
+            ('test', 12345, 'recipientlist_test',
+             'test@example.com', '[test] thesubject',
+             mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
 
     def test_send_updates_timestamp_even_when_error(self):
         with checked_out(self.newsletter) as co:

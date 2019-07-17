@@ -8,15 +8,16 @@ import zope.interface
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
+    'ftesting.zcml', bases=(zeit.cms.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class SectionLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+        with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             example = zeit.cms.repository.folder.Folder()

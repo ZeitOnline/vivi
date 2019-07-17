@@ -1,121 +1,92 @@
 import StringIO
 import ZODB.blob
-import doctest
-import inspect
 import os
 import pkg_resources
+import plone.testing
+import pytest
 import re
+import threading
 import time
+import transaction
 import urlparse
 import zc.queue.tests
+import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
+import zeit.connector.mock
 import zope.app.testing.functional
 import zope.component.hooks
 import zope.testing.renormalizing
 
 
-# XXX copied from zeit.cms; we need zeit.testing!
-def ZCMLLayer(
-        config_file, module=None, name=None, allow_teardown=True,
-        product_config=None):
-    if module is None:
-        module = inspect.stack()[1][0].f_globals['__name__']
-    if name is None:
-        name = 'ZCMLLayer(%s)' % config_file
-    if not config_file.startswith('/'):
-        config_file = pkg_resources.resource_filename(module, config_file)
+class DAVIsolationLayer(plone.testing.Layer):
 
-    def setUp(cls):
-        cls.setup = zope.app.testing.functional.FunctionalTestSetup(
-            config_file, product_config=product_config)
+    def setUp(self):
+        self['testfolder'] = 'testing/%s' % time.time()
+        TBC = zeit.connector.connector.TransactionBoundCachingConnector
+        self['connector'] = TBC({'default': os.environ['connector-url']})
+        mkdir(self['connector'], 'http://xml.zeit.de/%s' % self['testfolder'])
 
-    def tearDown(cls):
-        cls.setup.tearDownCompletely()
-        if not allow_teardown:
-            raise NotImplementedError
+    def tearDown(self):
+        del self['connector']['http://xml.zeit.de/%s' % self['testfolder']]
+        del self['testfolder']
 
-    layer = type(name, (object,), dict(
-        __module__=module,
-        setUp=classmethod(setUp),
-        tearDown=classmethod(tearDown),
-        testfolder='testing'
-    ))
-    return layer
+    def testTearDown(self):
+        transaction.abort()
+        connector = self['connector']
+        for name, uid in connector.listCollection(
+                'http://xml.zeit.de/' + self['testfolder']):
+            connector.unlock(uid)
+            del connector[uid]
+
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        connector.connections = threading.local()
+
+DAV_ISOLATION_LAYER = DAVIsolationLayer()
 
 
-zope_connector_layer = ZCMLLayer('ftesting.zcml')
+DAV_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({
+    'document-store': os.environ['connector-url'],
+    'document-store-search': os.environ['search-connector-url'],
+})
+
+ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', bases=(DAV_CONFIG_LAYER,))
+ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(
+    ZOPE_ZCML_LAYER, DAV_ISOLATION_LAYER))
+
+REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-real.zcml', bases=(DAV_CONFIG_LAYER,))
+REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(
+    REAL_ZCML_LAYER, DAV_ISOLATION_LAYER))
 
 
-real_connector_zcml_layer = ZCMLLayer('ftesting-real.zcml')
+FILESYSTEM_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    {'repository-path': pkg_resources.resource_filename(
+        'zeit.connector', 'testcontent')})
+FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-filesystem.zcml', bases=(FILESYSTEM_CONFIG_LAYER,))
+FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
+    bases=(FILESYSTEM_ZCML_LAYER,))
+
+MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-mock.zcml')
+MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
-class real_connector_layer(real_connector_zcml_layer):
-
-    @classmethod
-    def setUp(cls):
-        cls.testfolder = 'testing/%s' % time.time()
-        mkdir(cls._create_connector(),
-              'http://xml.zeit.de/%s' % cls.testfolder)
-
-    @classmethod
-    def tearDown(cls):
-        del cls._create_connector()['http://xml.zeit.de/%s' % cls.testfolder]
-
-    @classmethod
-    def _create_connector(cls):
-        return zeit.connector.connector.Connector(roots={
-            "default": os.environ['connector-url'],
-            "search": os.environ['search-connector-url']})
-
-    @classmethod
-    def testSetUp(cls):
-        cls.connector = cls._create_connector()
-        gsm = zope.component.getGlobalSiteManager()
-        gsm.registerUtility(
-            cls.connector, zeit.connector.interfaces.IConnector)
-
-    @classmethod
-    def testTearDown(cls):
-        gsm = zope.component.getGlobalSiteManager()
-        gsm.unregisterUtility(
-            cls.connector, zeit.connector.interfaces.IConnector)
-        del cls.connector
-
-
-filesystem_connector_layer = ZCMLLayer(
-    'ftesting-filesystem.zcml',
-    product_config="""\
-<product-config zeit.connector>
-repository-path %s
-</product-config>
-""" % pkg_resources.resource_filename('zeit.connector', 'testcontent'))
-
-
-mock_connector_layer = ZCMLLayer('ftesting-mock.zcml')
-
-
-optionflags = (
-    doctest.REPORT_NDIFF +
-    doctest.NORMALIZE_WHITESPACE +
-    doctest.ELLIPSIS)
-
-
-class TestCase(zope.app.testing.functional.FunctionalTestCase):
+class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     @property
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    @property
+    def testfolder(self):
+        return self.layer.get('testfolder', 'testing')
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
-        rid = 'http://xml.zeit.de/%s/%s' % (self.layer.testfolder, name)
+        rid = 'http://xml.zeit.de/%s/%s' % (self.testfolder, name)
         return zeit.connector.resource.Resource(
             rid, name, 'testing',
             StringIO.StringIO(body),
@@ -123,89 +94,51 @@ class TestCase(zope.app.testing.functional.FunctionalTestCase):
             contentType=contentType)
 
 
+@pytest.mark.slow
 class ConnectorTest(TestCase):
 
-    layer = real_connector_layer
+    layer = REAL_CONNECTOR_LAYER
     level = 2
-
-    def tearDown(self):
-        reset_testing_folder(self)
-        super(ConnectorTest, self).tearDown()
 
 
 class FilesystemConnectorTest(TestCase):
 
-    layer = filesystem_connector_layer
+    layer = FILESYSTEM_CONNECTOR_LAYER
 
 
 class MockTest(TestCase):
 
-    layer = mock_connector_layer
+    layer = MOCK_CONNECTOR_LAYER
 
     def setUp(self):
         super(MockTest, self).setUp()
-        self.connector._reset()
         # I don't really get what this is here for, but removing it breaks
         # tests:
         self.connector.add(self.get_resource(
             '', '', contentType='httpd/x-unix-directory'))
 
 
-# XXX copy&paste from zeit.cms.testing
-class OutputChecker(zope.testing.renormalizing.RENormalizing):
-
-    def check_output(self, want, got, optionflags):
-        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
-        if isinstance(got, str):
-            got = got.decode('utf-8')
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.check_output(self, want, got, optionflags)
-
-    def output_difference(self, example, got, optionflags):
-        if isinstance(got, str):
-            got = got.decode('utf-8')
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.output_difference(self, example, got, optionflags)
-
-
 parsed_url = urlparse.urlparse(os.environ['connector-url'])
-checker = OutputChecker([
+checker = zeit.cms.testing.OutputChecker([
     (re.compile(str(parsed_url.hostname)), '<DAVHOST>'),
     (re.compile(str(parsed_url.port)), '<DAVPORT>'),
 ])
 
 
 def FunctionalDocFileSuite(*paths, **kw):
-    layer = kw.pop('layer', real_connector_layer)
     kw['package'] = 'zeit.connector'
     kw['checker'] = checker
-    kw['optionflags'] = optionflags
-    kw['tearDown'] = reset_testing_folder
-    kw['globs'] = {'TESTFOLDER': lambda: layer.testfolder}
-    test = zope.app.testing.functional.FunctionalDocFileSuite(
-        *paths, **kw)
-    test.layer = layer
-    return test
+    kw['globs'] = {
+        'TESTFOLDER': lambda: kw['layer'].get('testfolder', 'testing')}
+    return zeit.cms.testing.FunctionalDocFileSuite(*paths, **kw)
 
 
-def reset_testing_folder(test):
-    no_site = object()
-    old_site = no_site
-    if hasattr(test, 'globs'):
-        root = test.globs['getRootFolder']()
-        old_site = zope.component.hooks.getSite()
-        zope.component.hooks.setSite(root)
-        testfolder = test.globs['TESTFOLDER']()
-    else:
-        testfolder = test.layer.testfolder
-
-    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-    for name, uid in connector.listCollection(
-            'http://xml.zeit.de/' + testfolder):
-        del connector[uid]
-
-    if old_site is not no_site:
-        zope.component.hooks.setSite(old_site)
+def mark_doctest_suite(suite, mark):
+    # Imitate pytest magic, see _pytest.python.transfer_markers
+    for test in suite:
+        func = test.runTest.im_func
+        mark(func)
+        test.runTest = func.__get__(test)
 
 
 def get_storage(blob_dir):

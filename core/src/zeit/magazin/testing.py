@@ -1,40 +1,24 @@
 from zeit.magazin.interfaces import IZMOSection, IZMOFolder
-import pkg_resources
 import plone.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
-import zeit.content.gallery.testing
 import zeit.content.link.testing
-import zeit.push.testing
 import zope.component
 import zope.interface
 
 
-# XXX appending to product config is not very well supported right now
-cms_product_config = zeit.cms.testing.cms_product_config.replace(
-    '</product-config>', """\
-  zmo-preview-prefix http://localhost/zmo-preview-prefix
-</product-config>""")
-
-product_config = """\
-<product-config zeit.magazin>
-</product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
-
-
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=(
-        product_config +
-        cms_product_config +
-        zeit.push.testing.product_config +
-        zeit.content.article.testing.product_config +
-        zeit.content.gallery.testing.product_config +
-        zeit.content.link.testing.product_config))
-
-
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    {},
+    patches={'zeit.cms': {
+        'zmo-preview-prefix': 'http://localhost/zmo-preview-prefix'}},
+    bases=(
+        zeit.content.article.testing.CONFIG_LAYER,
+        zeit.content.link.testing.CONFIG_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
+    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
 class Layer(plone.testing.Layer):
@@ -42,7 +26,7 @@ class Layer(plone.testing.Layer):
     defaultBases = (PUSH_LAYER,)
 
     def testSetUp(self):
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+        with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             magazin = zeit.cms.repository.folder.Folder()
@@ -51,7 +35,7 @@ class Layer(plone.testing.Layer):
             repository['magazin'] = magazin
 
 LAYER = Layer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

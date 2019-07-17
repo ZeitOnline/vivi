@@ -65,7 +65,7 @@ setup(
         'martian',
         'mock',
         'persistent',
-        'plone.testing',
+        'plone.testing[zca,zodb]',
         'pypandoc',
         'pyramid_dogpile_cache2',
         'pytest',

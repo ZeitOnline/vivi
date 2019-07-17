@@ -1,7 +1,9 @@
+from StringIO import StringIO
 import gocept.httpserverlayer.custom
 import socket
 import time
 import zeit.cms.testing
+import zope.app.appsetup.product
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
@@ -43,16 +45,17 @@ product_config = """\
 """ % timeout
 
 
-class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
-
-    defaultBases = (HTTP_LAYER1, HTTP_LAYER2)
+class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
     def setUp(self):
-        self.product_config = self.product_config.format(
+        config = product_config.format(
             port1=HTTP_LAYER1['http_port'], port2=HTTP_LAYER2['http_port'])
-        super(ZCMLLayer, self).setUp()
+        self.config = zope.app.appsetup.product.loadConfiguration(
+            StringIO(config))[self.package]
+        super(ProductConfigLayer, self).setUp()
 
-ZCML_LAYER = ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+CONFIG_LAYER = ProductConfigLayer({}, bases=(
+    zeit.cms.testing.CONFIG_LAYER, HTTP_LAYER1, HTTP_LAYER2))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))

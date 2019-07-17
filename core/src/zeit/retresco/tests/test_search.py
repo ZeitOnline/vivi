@@ -9,7 +9,7 @@ import zope.component
 class TestElasticsearch(unittest.TestCase):
     """Testing ..search.Elasticsearch."""
 
-    layer = zeit.retresco.testing.MOCK_ZCML_LAYER
+    layer = zeit.retresco.testing.MOCK_LAYER
 
     query = {
         "query": {

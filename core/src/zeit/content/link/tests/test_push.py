@@ -1,13 +1,10 @@
-import zeit.cms.testing
 import zeit.content.link.link
 import zeit.content.link.testing
 import zeit.push.interfaces
 import zope.component
 
 
-class PushURLTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.link.testing.ZCML_LAYER
+class PushURLTest(zeit.content.link.testing.FunctionalTestCase):
 
     def test_push_uses_url_of_target_instead_of_link_object(self):
         link = zeit.content.link.link.Link()

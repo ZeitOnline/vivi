@@ -4,7 +4,6 @@ import mock
 import plone.testing
 import transaction
 import zeit.cms.testing
-import zeit.content.video.testing
 import zeit.workflow.testing
 
 
@@ -26,27 +25,8 @@ product_config = """\
 </product-config>
 """
 
-# XXX appending to product config is not very well supported right now
-cms_product_config = zeit.cms.testing.cms_product_config.replace(
-    '</product-config>', """\
-  task-queue-brightcove brightcove
-</product-config>""")
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
-    cms_product_config +
-    zeit.workflow.testing.product_config +
-    product_config))
-
-
-def update_repository(root):
-    with zeit.cms.testing.site(root):
-        with transaction.manager:
-            zeit.brightcove.update.update_from_brightcove()
-
-
-class BrightcoveLayer(plone.testing.Layer):
-
-    defaultBases = (ZCML_LAYER,)
+class MockAPILayer(plone.testing.Layer):
 
     def setUp(self):
         self.cmsapi_patch = mock.patch(
@@ -60,10 +40,29 @@ class BrightcoveLayer(plone.testing.Layer):
         self.cmsapi_patch.stop()
         self.playbackapi_patch.stop()
 
-LAYER = BrightcoveLayer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+MOCK_API_LAYER = MockAPILayer()
+
+
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config,
+    patches={'zeit.cms': {'task-queue-brightcove': 'brightcove'}},
+    bases=(zeit.workflow.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, MOCK_API_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = WSGI_LAYER
+
+
+def update_repository(root):
+    with zeit.cms.testing.site(root):
+        with transaction.manager:
+            zeit.brightcove.update.update_from_brightcove()

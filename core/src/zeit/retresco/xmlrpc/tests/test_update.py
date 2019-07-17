@@ -6,6 +6,7 @@ import mock
 import zeit.cms.interfaces
 import zeit.cms.webtest
 import zeit.retresco.testing
+import zope.component
 
 
 class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
@@ -19,7 +20,8 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
         self.tms.generate_keyword_list.return_value = []
-        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.tms, zeit.retresco.interfaces.ITMS)
 
         self.log = StringIO.StringIO()
         self.log_handler = logging.StreamHandler(self.log)

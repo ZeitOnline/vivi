@@ -1,6 +1,6 @@
-import doctest
 import pytest
 import unittest
+import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.testing
 
@@ -8,53 +8,25 @@ import zeit.connector.testing
 def test_suite():
     suite = unittest.TestSuite()
 
-    real = zeit.connector.testing.FunctionalDocFileSuite(
-        'connector.txt',
-        'locking.txt',
-        'resource.txt',
-        'search-ft.txt',
-        'uuid.txt',
-    )
-    real.level = 2
-    mark_doctest_suite(real, pytest.mark.slow)
-    suite.addTest(real)
-
     mock = zeit.connector.testing.FunctionalDocFileSuite(
         'mock.txt',
         'uuid.txt',
-        layer=zeit.connector.testing.mock_connector_layer,
+        layer=zeit.connector.testing.MOCK_CONNECTOR_LAYER,
     )
     suite.addTest(mock)
-
-    long_running = zeit.connector.testing.FunctionalDocFileSuite(
-        'longrunning.txt',
-        'stressing.txt',
-    )
-    long_running.level = 3
-    mark_doctest_suite(long_running, pytest.mark.slow)
-    suite.addTest(long_running)
 
     functional = zeit.connector.testing.FunctionalDocFileSuite(
         'cache.txt',
         'functional.txt',
         'invalidator.txt',
         'invalidation-events.txt',
-        layer=zeit.connector.testing.zope_connector_layer,
+        layer=zeit.connector.testing.ZOPE_CONNECTOR_LAYER,
     )
+    zeit.connector.testing.mark_doctest_suite(functional, pytest.mark.slow)
     suite.addTest(functional)
 
-    suite.addTest(doctest.DocTestSuite(zeit.connector.connector))
-    suite.addTest(doctest.DocFileSuite(
+    suite.addTest(zeit.cms.testing.DocFileSuite(
         'search.txt',
-        optionflags=zeit.connector.testing.optionflags,
         package='zeit.connector'))
 
     return suite
-
-
-def mark_doctest_suite(suite, mark):
-    # Imitate pytest magic, see _pytest.python.transfer_markers
-    for test in suite:
-        func = test.runTest.im_func
-        mark(func)
-        test.runTest = func.__get__(test)

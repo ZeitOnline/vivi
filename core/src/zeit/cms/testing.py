@@ -1,5 +1,8 @@
 from __future__ import absolute_import
+from StringIO import StringIO
 from urlparse import urljoin
+import ZODB
+import ZODB.DemoStorage
 import base64
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
@@ -24,6 +27,8 @@ import mock
 import os
 import pkg_resources
 import plone.testing
+import plone.testing.zca
+import plone.testing.zodb
 import pytest
 import re
 import sys
@@ -35,8 +40,10 @@ import zeit.cms.application
 import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.connector.interfaces
+import zeit.connector.mock
+import zope.app.appsetup
 import zope.app.appsetup.product
-import zope.app.testing.functional
+import zope.app.publication.zopepublication
 import zope.app.wsgi
 import zope.component
 import zope.component.hooks
@@ -61,8 +68,6 @@ LOGGING_LAYER = LoggingLayer()
 
 class CeleryEagerLayer(plone.testing.Layer):
 
-    defaultBases = (LOGGING_LAYER,)
-
     def setUp(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = True
 
@@ -72,76 +77,235 @@ class CeleryEagerLayer(plone.testing.Layer):
 CELERY_EAGER_LAYER = CeleryEagerLayer()
 
 
+class ProductConfigLayer(plone.testing.Layer):
+
+    DELETE = object()
+
+    def __init__(self, config, package=None, patches=None,
+                 name='ConfigLayer', module=None, bases=None):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super(ProductConfigLayer, self).__init__(
+            name=name, module=module, bases=bases)
+        if not package:
+            package = '.'.join(module.split('.')[:-1])
+        self.package = package
+        if isinstance(config, basestring):  # BBB
+            config = self.loadConfiguration(config, package)
+        self.config = config
+        self.patches = patches or {}
+
+    def loadConfiguration(self, text, package):
+        return zope.app.appsetup.product.loadConfiguration(
+            StringIO(text))[package]
+
+    def setUp(self):
+        zope.app.appsetup.product.setProductConfiguration(
+            self.package, copy.deepcopy(self.config))
+
+        self.previous = {}
+        for package, config in self.patches.items():
+            previous = self.previous[package] = {}
+            product = zope.app.appsetup.product.getProductConfiguration(
+                package)
+            for key in config:
+                if product and key in product:
+                    previous[key] = copy.deepcopy(product[key])
+                else:
+                    previous[key] = self.DELETE
+
+    def tearDown(self):
+        zope.app.appsetup.product.setProductConfiguration(self.package, None)
+        for package, config in self.previous.items():
+            self._update(package, config)
+
+    def testSetUp(self):
+        zope.app.appsetup.product.setProductConfiguration(
+            self.package, copy.deepcopy(self.config))
+        for package, config in self.patches.items():
+            self._update(package, config)
+
+    def _update(self, package, config):
+        product = zope.app.appsetup.product.getProductConfiguration(package)
+        if product is None:
+            zope.app.appsetup.product.setProductConfiguration(package, {})
+            product = zope.app.appsetup.product.getProductConfiguration(
+                package)
+        for key, value in config.items():
+            if value is self.DELETE:
+                product.pop(key, None)
+            else:
+                product[key] = copy.deepcopy(value)
+
+
 class ZCMLLayer(plone.testing.Layer):
 
-    defaultBases = (CELERY_EAGER_LAYER,)
+    defaultBases = (LOGGING_LAYER,)
 
-    def __init__(self, config_file, product_config=None,
-                 name='ZCMLLayer', module=None):
+    def __init__(self, config_file='ftesting.zcml',
+                 name='ZCMLLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         if not config_file.startswith('/'):
             config_file = pkg_resources.resource_filename(module, config_file)
         self.config_file = config_file
-        self.product_config = product_config
-        super(ZCMLLayer, self).__init__(name=name, module=module)
+        super(ZCMLLayer, self).__init__(
+            name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
-        # This calls zope.testing.cleanup.cleanUp()
-        self.setup = zope.app.testing.functional.FunctionalTestSetup(
-            self.config_file, product_config=self.product_config)
-        self['functional_setup'] = self.setup
+        # We'd be fine with calling zope.configuration directly here, but we
+        # need to make zope.app.appsetup.getConfigContext() work, which we
+        # cannot do from the outside due to name mangling, sigh.
+        #
+        # context = zope.configuration.config.ConfigurationMachine()
+        # zope.configuration.xmlconfig.registerCommonDirectives(context)
+        # zope.configuration.xmlconfig.file(self.config_file, context=context)
+        # context.execute_actions()
+        self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
+        zope.app.appsetup.config(self.config_file)
 
     def tearDown(self):
-        # This calls zope.testing.cleanup.cleanUp()
-        self.setup.tearDownCompletely()
-        del self['functional_setup']
+        plone.testing.zca.popGlobalRegistry()
+        del self['zcaRegistry']
+        # We also need to clean up various other Zope registries here
+        # (permissions, tales expressions etc.), but the zope.testing mechanism
+        # to do that unfortunately also includes clearing the product config,
+        # which we do NOT want.
+        product = zope.app.appsetup.product.saveConfiguration()
+        zope.testing.cleanup.cleanUp()
+        zope.app.appsetup.product.restoreConfiguration(product)
 
     def testSetUp(self):
-        self.setup.setUp()
-        # ``local_product_config`` contains mutable elements which tests may
-        # modify. Create a copy to let setup restore the *original* config.
-        self.setup.local_product_config = copy.deepcopy(
-            self.setup.local_product_config)
-        self.setup.zca = gocept.zcapatch.Patches()
+        self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
 
     def testTearDown(self):
-        # We must *not* call zope.testing.cleanup.cleanUp() here, since that
-        # (among many other things) empties the zope.component registry.
+        self['zcaRegistry'] = plone.testing.zca.popGlobalRegistry()
 
-        # XXX We seem to collect unrelated tearDown things here, those should
-        # probably go into their own separate layers.
-        try:
-            connector = zope.component.getUtility(
-                zeit.connector.interfaces.IConnector)
-        except zope.component.interfaces.ComponentLookupError:
-            pass
-        else:
+
+class ZODBLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(
+            name=self.__name__ + '-layer'))
+
+    def tearDown(self):
+        self['zodbDB-layer'].close()
+        del self['zodbDB-layer']
+
+    def testSetUp(self):
+        self['zodbDB'] = plone.testing.zodb.stackDemoStorage(
+            self['zodbDB-layer'], name=self.__name__)
+        self['zodbConnection'] = self['zodbDB'].open()
+
+    def testTearDown(self):
+        transaction.abort()
+        self['zodbConnection'].close()
+        del self['zodbConnection']
+        self['zodbDB'].close()
+        del self['zodbDB']
+
+
+class MockConnectorLayer(plone.testing.Layer):
+
+    def testTearDown(self):
+        connector = zope.component.queryUtility(
+            zeit.connector.interfaces.IConnector)
+        if isinstance(connector, zeit.connector.mock.Connector):
             connector._reset()
 
+MOCK_CONNECTOR_LAYER = MockConnectorLayer()
+
+
+class MockWorkflowLayer(plone.testing.Layer):
+
+    def testTearDown(self):
         zeit.cms.workflow.mock.reset()
 
-        self.setup.zca.reset()
+MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
+
+
+class ZopeLayer(plone.testing.Layer):
+
+    defaultBases = (
+        CELERY_EAGER_LAYER,
+        MOCK_CONNECTOR_LAYER,
+        MOCK_WORKFLOW_LAYER,
+    )
+
+    def __init__(self, name='ZopeLayer', module=None, bases=()):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super(ZopeLayer, self).__init__(
+            name=name, module=module,
+            # This is a bit kludgy. We need an individual ZODB layer per ZCML
+            # file (so e.g. different install generations are isolated), but
+            # we don't really want to have to create one per package.
+            bases=self.defaultBases + bases + (ZODBLayer(),))
+
+    def setUp(self):
+        zope.event.notify(zope.processlifetime.DatabaseOpened(
+            self['zodbDB-layer']))
+        transaction.commit()
+        with self.rootFolder(self['zodbDB-layer']):
+            pass
+        self['rootFolder'] = self.rootFolder
+
+    def tearDown(self):
+        del self['rootFolder']
+
+    @contextlib.contextmanager
+    def rootFolder(self, db):
+        """Helper for other layers to access the ZODB.
+
+        We cannot leave a connection open after setUp, since it will join the
+        transactions that happen during the tests, which breaks because the
+        same DB is then joined twice. Thus we have to take care and close it
+        each time.
+        """
+        connection = db.open()
+        root = connection.root()[
+            zope.app.publication.zopepublication.ZopePublication.root_name]
+        self._set_current_zca(root)
+        yield root
+        transaction.commit()
+        connection.close()
+
+    def testSetUp(self):
+        self['zodbApp'] = self['zodbConnection'].root()[
+            zope.app.publication.zopepublication.ZopePublication.root_name]
+        self._set_current_zca(self['zodbApp'])
+        transaction.commit()
+
+    def testTearDown(self):
         zope.component.hooks.setSite(None)
         zope.security.management.endInteraction()
-        self.setup.tearDown()
+        del self['zodbApp']
+
+    def _set_current_zca(self, root):
+        site = zope.component.getSiteManager(root)
+        site.__bases__ = (self['zcaRegistry'],)
 
 
 class WSGILayer(plone.testing.Layer):
 
+    def __init__(self, name='WSGILayer', module=None, bases=None):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super(WSGILayer, self).__init__(
+            name=name, module=module, bases=bases)
+
     def setUp(self):
-        db = zope.app.testing.functional.FunctionalTestSetup().db
-        self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(db)
+        self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
+            self['zodbDB-layer'])
         self['wsgi_app'] = zeit.cms.application.APPLICATION.setup_pipeline(
             self['zope_app'])
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage.
         # Adapted from gocept.httpserverlayer.zopeapptesting.TestCase
-        db = zope.app.testing.functional.FunctionalTestSetup().db
         application = self['zope_app']
         factory = type(application.requestFactory)
-        application.requestFactory = factory(db)
+        application.requestFactory = factory(self['zodbDB'])
 
     def tearDown(self):
         del self['wsgi_app']
@@ -149,7 +313,7 @@ class WSGILayer(plone.testing.Layer):
 
 
 class CeleryWorkerLayer(plone.testing.Layer):
-    """Sets up a thread-based celery worker.
+    """Sets up a thread-layerd celery worker.
 
     Modeled after celery.contrib.testing.pytest.celery_session_worker and
     celery_session_app.
@@ -159,6 +323,12 @@ class CeleryWorkerLayer(plone.testing.Layer):
         'default', 'publish_homepage', 'publish_highprio', 'publish_lowprio',
         'publish_default', 'publish_timebased', 'webhook')
     default_queue = 'default'
+
+    def __init__(self, name='CeleryLayer', module=None, bases=None):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super(CeleryWorkerLayer, self).__init__(
+            name=name, module=module, bases=bases)
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
@@ -178,7 +348,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
             'longterm_scheduler_backend': 'memory://',
 
-            'ZODB': self['functional_setup'].db,
+            'ZODB': self['zodbDB-layer'],
         })
         self.reset_celery_app()
 
@@ -198,7 +368,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
     def testSetUp(self):
         # Switch database to the currently active DemoStorage,
         # see zeit.cms.testing.WSGILayer.testSetUp().
-        self['celery_app'].conf['ZODB'] = self['functional_setup'].db
+        self['celery_app'].conf['ZODB'] = self['zodbDB']
 
         celery_longterm_scheduler.get_scheduler(
             self['celery_app']).backend.__init__(None, None)
@@ -301,8 +471,10 @@ cms_product_config = """\
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
 
-ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=cms_product_config)
-WSGI_LAYER = WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+CONFIG_LAYER = ProductConfigLayer(cms_product_config)
+ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
+ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
@@ -354,7 +526,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', WSGI_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     globs = kw.setdefault('globs', {})
-    globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
+    globs['getRootFolder'] = lambda: layer['zodbApp']
     globs['layer'] = layer
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
@@ -389,11 +561,7 @@ class FunctionalTestCase(
 
     def getRootFolder(self):
         """Returns the Zope root folder."""
-        return self.layer['functional_setup'].getRootFolder()
-
-    @property
-    def zca(self):
-        return self.layer['functional_setup'].zca
+        return self.layer['zodbApp']
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
@@ -735,7 +903,7 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
 
 class ZeitCmsTestCase(FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = ZOPE_LAYER
 
 
 class ZeitCmsBrowserTestCase(BrowserTestCase):

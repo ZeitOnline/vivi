@@ -9,7 +9,6 @@ import mock
 import requests_mock
 import urllib
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.author.author
 import zeit.content.author.testing
 import zeit.find.interfaces
@@ -19,9 +18,7 @@ import zope.event
 NONZERO = 3
 
 
-class AuthorTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_author_exists(self):
         author = zeit.content.author.author.Author()
@@ -41,9 +38,7 @@ class AuthorTest(zeit.cms.testing.FunctionalTestCase):
             self.assertTrue(author.exists)
 
 
-class FreetextCopyTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
         super(FreetextCopyTest, self).setUp()
@@ -91,9 +86,7 @@ class FreetextCopyTest(zeit.cms.testing.FunctionalTestCase):
             ('',), self.repository['online']['testcontent'].authors)
 
 
-class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class BiographyQuestionsTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_provides_dict_access_to_xml_nodes(self):
         author = zeit.content.author.author.Author()
@@ -128,9 +121,7 @@ class BiographyQuestionsTest(zeit.cms.testing.FunctionalTestCase):
             'Das treibt mich an', author.bio_questions['drive'].title)
 
 
-class SSOIdConnectTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
         super(SSOIdConnectTest, self).setUp()

@@ -16,9 +16,7 @@ import zope.component
 import zope.i18n
 
 
-class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_add_job_calls_apply_async_on_commit_with_eta_for_future_execution(
             self):
@@ -54,9 +52,7 @@ class TimeBasedWorkflowTest(zeit.cms.testing.FunctionalTestCase):
                 apply_async.call_args[0][0][0][0])
 
 
-class PrintImportSchedulingTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class PrintImportSchedulingTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_should_schedule_job_when_no_jobid_present(self):
         content = self.repository['testcontent']

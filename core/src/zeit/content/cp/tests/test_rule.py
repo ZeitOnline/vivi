@@ -98,10 +98,6 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
         self.rm = zope.component.getUtility(
             zeit.edit.interfaces.IRulesManager)
 
-    def tearDown(self):
-        self._set_rules('example_rules.py')
-        super(RulesManagerTest, self).tearDown()
-
     def _set_rules(self, filename):
         zope.app.appsetup.product._configs['zeit.edit']['rules-url'] = (
             'file://' + pkg_resources.resource_filename(

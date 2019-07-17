@@ -1,18 +1,12 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-import celery.contrib.pytest
-import celery.contrib.testing.app
-import celery.contrib.testing.worker
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
-import kombu
-import mock
 import os
 import pkg_resources
 import plone.testing
 import stat
 import tempfile
-import z3c.celery.celery
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -34,9 +28,8 @@ product_config = """
 </product-config>
 """
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,))
 
 
 class WorkflowScriptsLayer(plone.testing.Layer):
@@ -73,20 +66,22 @@ class WorkflowScriptsLayer(plone.testing.Layer):
 SCRIPTS_LAYER = WorkflowScriptsLayer()
 
 
-LAYER = plone.testing.Layer(
-    name='Layer', module=__name__, bases=(ZCML_LAYER, SCRIPTS_LAYER))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
-    name='CeleryLayer', bases=(LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(CELERY_LAYER,))
 
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(CELERY_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

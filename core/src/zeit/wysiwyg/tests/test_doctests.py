@@ -7,4 +7,4 @@ def test_suite():
         'html.txt',
         'reference.txt',
         package='zeit.wysiwyg',
-        layer=zeit.wysiwyg.testing.WYSIWYGLayer)
+        layer=zeit.wysiwyg.testing.ZOPE_LAYER)

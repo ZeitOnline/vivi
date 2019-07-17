@@ -1,14 +1,9 @@
-import doctest
+import zeit.cms.testing
 import zeit.objectlog.testing
-import zope.app.testing.functional
 
 
 def test_suite():
-    suite = zope.app.testing.functional.FunctionalDocFileSuite(
+    return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         package='zeit.objectlog',
-        optionflags=(doctest.ELLIPSIS |
-                     doctest.REPORT_NDIFF | doctest.NORMALIZE_WHITESPACE),
-        checker=zeit.objectlog.testing.checker)
-    suite.layer = zeit.objectlog.testing.ObjectLogLayer
-    return suite
+        layer=zeit.objectlog.testing.ZOPE_LAYER)

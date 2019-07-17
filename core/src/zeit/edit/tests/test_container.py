@@ -89,7 +89,7 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_moving_item_between_containers_sends_event(self):
         check_move = mock.Mock()
-        self.zca.patch_handler(
+        zope.component.getGlobalSiteManager().registerHandler(
             check_move, (zeit.edit.interfaces.IBlock,
                          zope.lifecycleevent.IObjectMovedEvent))
         block = self.container.create_item('block')

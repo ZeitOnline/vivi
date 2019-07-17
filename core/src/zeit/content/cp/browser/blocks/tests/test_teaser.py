@@ -5,7 +5,6 @@ import mock
 import transaction
 import unittest
 import zeit.cms.browser.interfaces
-import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
@@ -128,9 +127,7 @@ class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
         self.assertEqual('foo', b.getControl('Title').value)
 
 
-class FunctionalTeaserDisplayTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super(FunctionalTeaserDisplayTest, self).setUp()

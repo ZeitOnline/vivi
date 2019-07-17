@@ -14,18 +14,22 @@ product_config = """
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    zeit.find.testing.product_config +
-    product_config)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.workflow.testing.CONFIG_LAYER,
+    zeit.find.testing.CONFIG_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 def FunctionalDocFileSuite(*args, **kw):
-    kw.setdefault('layer', ZCML_LAYER)
+    kw.setdefault('layer', ZOPE_LAYER)
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
+
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = WSGI_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

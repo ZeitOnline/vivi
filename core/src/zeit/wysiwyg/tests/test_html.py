@@ -6,7 +6,7 @@ import zeit.wysiwyg.html
 import zeit.wysiwyg.testing
 
 
-class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
+class VideoExpiresTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def setUp(self):
         super(VideoExpiresTest, self).setUp()
@@ -49,7 +49,7 @@ class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
             self.step._expires(VIDEO1, VIDEO2, None))
 
 
-class VideoStepTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
+class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def test_empty_hrefs_should_not_break_conversion(self):
         source = """\
@@ -82,7 +82,7 @@ class VideoStepTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
 """, lxml.etree.tostring(article.xml, pretty_print=True))
 
 
-class TopLevelTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
+class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
         source = '<article><body></body></article>'

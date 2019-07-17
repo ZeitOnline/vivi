@@ -3,16 +3,14 @@ import gocept.testing.mock
 import lxml.etree
 import mock
 import zeit.cms.content.interfaces
-import zeit.cms.testing
 import zeit.content.article.edit.author
 import zeit.content.author.author
 import zeit.content.author.testing
 import zope.component
 
 
-class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class AuthorshipXMLReferenceUpdater(
+        zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
         super(AuthorshipXMLReferenceUpdater, self).setUp()
@@ -108,9 +106,7 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
                 updater.update(content.xml, suppress_errors=True)
 
 
-class RelatedReferenceTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.author.testing.ZCML_LAYER
+class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
         super(RelatedReferenceTest, self).setUp()

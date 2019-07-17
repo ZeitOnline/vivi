@@ -7,6 +7,7 @@ import zeit.cms.interfaces
 import zeit.content.volume.testing
 import zeit.find.interfaces
 import zeit.workflow.testing
+import zope.component
 
 
 class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
@@ -15,7 +16,8 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def setUp(self):
         self.elastic = mock.Mock()
-        self.zca.patch_utility(self.elastic, zeit.find.interfaces.ICMSSearch)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.elastic, zeit.find.interfaces.ICMSSearch)
         super(VolumeAdminBrowserTest, self).setUp()
         volume = Volume()
         volume.year = 2015
@@ -118,7 +120,8 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         super(PublishAllContent, self).setUp()
         elastic = mock.Mock()
         elastic.search.return_value = zeit.cms.interfaces.Result()
-        self.zca.patch_utility(elastic, zeit.find.interfaces.ICMSSearch)
+        zope.component.getGlobalSiteManager().registerUtility(
+            elastic, zeit.find.interfaces.ICMSSearch)
         volume = Volume()
         volume.year = 2015
         volume.volume = 1

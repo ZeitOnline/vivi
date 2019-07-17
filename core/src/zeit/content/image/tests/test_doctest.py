@@ -10,4 +10,4 @@ def test_suite():
         'transform.txt',
         'masterimage.txt',
         package='zeit.content.image',
-        layer=zeit.content.image.testing.ZCML_LAYER)
+        layer=zeit.content.image.testing.ZOPE_LAYER)

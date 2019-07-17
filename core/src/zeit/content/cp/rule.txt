@@ -12,7 +12,6 @@ XXX this is supposed to be user documentation. writeme
 >>> import zope.app.appsetup.product
 >>> config = zope.app.appsetup.product.getProductConfiguration(
 ...     'zeit.edit')
->>> old_rules_url = config['rules-url']
 >>> config['rules-url'] = 'file://%s' % rules_filename
 
 >>> def create_rules(rules_str):
@@ -135,4 +134,3 @@ Clean up
 
 >>> import os
 >>> os.remove(rules_filename)
->>> config['rules-url'] = old_rules_url

@@ -1,13 +1,10 @@
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-import zeit.cms.testing
 import zeit.workflow.testing
 import zope.copypastemove.interfaces
 import zope.interface.verify
 
 
-class PublishInfoTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class PublishInfoTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_last_published_by_takes_last_entry_from_objectlog(self):
         content = self.repository['testcontent']
@@ -23,9 +20,7 @@ class PublishInfoTest(zeit.cms.testing.FunctionalTestCase):
         zope.interface.verify.verifyObject(IPublishInfo, info)
 
 
-class WorkflowCopyTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class WorkflowCopyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_publishinfo_is_reset_for_copied_objects(self):
         content = self.repository['testcontent']

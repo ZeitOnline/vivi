@@ -6,14 +6,11 @@ import pytz
 import transaction
 import zeit.brightcove.testing
 import zeit.cms.content.interfaces
-import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.video.video
 
 
-class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def create_video(self):
         bc = zeit.brightcove.convert.Video()
@@ -152,9 +149,7 @@ class ImportVideoTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(('William Shakespeare',), video.authors)
 
 
-class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def create_playlist(self):
         bc = zeit.brightcove.convert.Playlist()
@@ -212,9 +207,7 @@ class ImportPlaylistTest(zeit.cms.testing.FunctionalTestCase):
             None, ICMSContent('http://xml.zeit.de/video/playlist/other', None))
 
 
-class ExportTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ExportTest, self).setUp()

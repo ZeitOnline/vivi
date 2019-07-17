@@ -19,6 +19,7 @@ import zeit.content.volume.testing
 import zeit.content.volume.volume
 import zeit.find.interfaces
 import zope.app.appsetup.product
+import zope.component
 
 
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
@@ -202,9 +203,10 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
         self.elastic = mock.Mock()
-        self.zca.patch_utility(
+        zope.component.getGlobalSiteManager().registerUtility(
             self.elastic, zeit.retresco.interfaces.IElasticsearch)
-        self.zca.patch_utility(self.elastic, zeit.find.interfaces.ICMSSearch)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.elastic, zeit.find.interfaces.ICMSSearch)
 
     def create_volume(self, year, name):
         volume = Volume()

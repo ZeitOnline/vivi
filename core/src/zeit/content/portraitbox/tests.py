@@ -6,18 +6,16 @@ import zeit.cms.testing
 import zeit.content.portraitbox.interfaces
 
 
-PortraitboxLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(PortraitboxLayer,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.cms.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class PortraitboxSourceTest(
         zeit.cms.content.tests.test_contentsource.ContentSourceBase,
         zeit.cms.testing.FunctionalTestCase):
 
-    layer = PortraitboxLayer
+    layer = ZOPE_LAYER
 
     source = zeit.content.portraitbox.interfaces.portraitboxSource
     expected_types = ['portraitbox']
@@ -28,7 +26,7 @@ class PortraitboxSourceTest(
 
 class ReferenceTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = PortraitboxLayer
+    layer = ZOPE_LAYER
 
     def test_should_have_security_declarations(self):
         from zeit.content.portraitbox.reference import PortraitboxReference
@@ -50,7 +48,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=PortraitboxLayer))
+        layer=ZOPE_LAYER))
     suite.addTest(unittest.makeSuite(PortraitboxSourceTest))
     suite.addTest(unittest.makeSuite(ReferenceTest))
     return suite

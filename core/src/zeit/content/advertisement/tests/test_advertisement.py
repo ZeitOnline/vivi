@@ -1,10 +1,7 @@
-import zeit.cms.testing
 import zeit.content.advertisement.testing
 
 
-class AdvertisementTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.advertisement.testing.ZCML_LAYER
+class AdvertisementTest(zeit.content.advertisement.testing.FunctionalTestCase):
 
     def test_image_of_advertisement_can_be_retrieved_via_IImages(self):
         from zeit.content.advertisement.advertisement import Advertisement

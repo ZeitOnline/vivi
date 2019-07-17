@@ -1,11 +1,8 @@
 import zeit.campus.testing
-import zeit.cms.testing
 import zope.interface.verify
 
 
-class TopicTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.campus.testing.ZCML_LAYER
+class TopicTest(zeit.campus.testing.FunctionalTestCase):
 
     def test_topic_should_adapt_content_properly(self):
         content = self.repository['testcontent']

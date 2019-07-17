@@ -1,8 +1,9 @@
 import zeit.cms.testing
 
 
-LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer()
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 def test_suite():

@@ -6,19 +6,16 @@ import zeit.cms.testing
 import zeit.content.infobox.interfaces
 
 
-InfoboxLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
-
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(InfoboxLayer,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.cms.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class InfoboxSourceTest(
         zeit.cms.content.tests.test_contentsource.ContentSourceBase,
         zeit.cms.testing.FunctionalTestCase):
 
-    layer = InfoboxLayer
+    layer = ZOPE_LAYER
 
     source = zeit.content.infobox.interfaces.infoboxSource
     expected_types = ['infobox']
@@ -29,7 +26,7 @@ class InfoboxSourceTest(
 
 class ReferenceTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = InfoboxLayer
+    layer = ZOPE_LAYER
 
     def test_should_have_security_declarations(self):
         from zeit.content.infobox.reference import InfoboxReference
@@ -51,7 +48,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=InfoboxLayer))
+        layer=ZOPE_LAYER))
     suite.addTest(unittest.makeSuite(InfoboxSourceTest))
     suite.addTest(unittest.makeSuite(ReferenceTest))
     return suite

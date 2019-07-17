@@ -27,10 +27,12 @@ product_config = """
 )
 
 
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.cms.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-mock.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+    'ftesting-mock.zcml', bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class XMLRPCLayer(plone.testing.Layer):
@@ -46,14 +48,14 @@ class XMLRPCLayer(plone.testing.Layer):
 
 XMLRPC_LAYER = XMLRPCLayer()
 
-SOAPLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting-soap.zcml', name='SOAPLayer',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
+SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-soap.zcml', bases=(CONFIG_LAYER,))
+SOAP_LAYER = zeit.cms.testing.ZopeLayer(bases=(SOAP_ZCML_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
@@ -65,7 +67,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
                        unittest.TestCase):
 
-    layer = SOAPLayer
+    layer = SOAP_LAYER
     level = 2
 
     def setUp(self):
@@ -74,7 +76,7 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             zeit.vgwort.interfaces.IMessageService)
         try:
             service.call('qualityControl')
-        except:
+        except Exception as e:
             self.skipTest('vgwort test system is down')
 
 

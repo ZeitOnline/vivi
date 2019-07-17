@@ -1,7 +1,6 @@
 import gocept.testing.assertion
 import mock
 import unittest
-import zeit.cms.testing
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 
@@ -47,9 +46,7 @@ class AreaValidationTest(
         self.assertIn('No JSON object could be decoded', str(err.exception))
 
 
-class TopicpageFilterSourceTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+class TopicpageFilterSourceTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_parses_filter_json(self):
         self.assertEqual(

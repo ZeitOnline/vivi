@@ -5,14 +5,11 @@ import mock
 import pytz
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
-import zeit.cms.testing
 import zeit.content.video.playlist
 
 
-class VideoTest(zeit.cms.testing.FunctionalTestCase,
+class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
                 zeit.cms.tagging.testing.TaggingHelper):
-
-    layer = zeit.brightcove.testing.LAYER
 
     def test_converts_cms_fields_to_bc_names(self):
         cms = CMSVideo()
@@ -199,9 +196,7 @@ class VideoTest(zeit.cms.testing.FunctionalTestCase,
         self.assertTrue(cms.commentsAllowed)
 
 
-class PlaylistTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class PlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_converts_video_list(self):
         bc = zeit.brightcove.convert.Playlist()

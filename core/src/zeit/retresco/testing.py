@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-import gocept.httpserverlayer.custom
+from StringIO import StringIO
 import json
 import mock
 import pkg_resources
@@ -8,12 +8,10 @@ import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.article.testing
-import zeit.content.image.testing
 import zeit.content.link.testing
 import zeit.content.volume.testing
 import zeit.find.testing
-import zeit.push.testing
-import zeit.workflow.testing
+import zope.app.appsetup.product
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
@@ -23,7 +21,7 @@ HTTP_LAYER = zeit.cms.testing.HTTPLayer(
 
 product_config = """
 <product-config zeit.retresco>
-    base-url http://localhost:[PORT]
+    base-url http://localhost:{port}
     elasticsearch-url http://tms-backend.staging.zeit.de:80/elasticsearch
     elasticsearch-index zeit_pool
     elasticsearch-connection-class zeit.retresco.search.Connection
@@ -31,6 +29,23 @@ product_config = """
     index-principal zope.user
 </product-config>
 """
+
+
+class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
+
+    def setUp(self):
+        config = product_config.format(port=self['http_port'])
+        self.config = zope.app.appsetup.product.loadConfiguration(
+            StringIO(config))[self.package]
+        super(ProductConfigLayer, self).setUp()
+
+
+CONFIG_LAYER = ProductConfigLayer(product_config, bases=(
+    HTTP_LAYER,
+    zeit.content.article.testing.CONFIG_LAYER,
+    zeit.content.link.testing.CONFIG_LAYER,
+    zeit.content.volume.testing.CONFIG_LAYER,
+    zeit.find.testing.CONFIG_LAYER))
 
 
 class ElasticsearchMockLayer(plone.testing.Layer):
@@ -56,17 +71,19 @@ ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 class TMSMockLayer(plone.testing.Layer):
 
     def setUp(self):
+        registry = zope.component.getGlobalSiteManager()
+        self['old_tms'] = registry.getUtility(zeit.retresco.interfaces.ITMS)
         self['tms_mock'] = mock.Mock()
         self['tms_mock'].url = 'http://tms.example.com'
         self['tms_mock'].get_article_keywords.return_value = []
-        self['tms_zca'] = gocept.zcapatch.Patches()
-        self['tms_zca'].patch_utility(
+        registry.registerUtility(
             self['tms_mock'], zeit.retresco.interfaces.ITMS)
 
     def tearDown(self):
-        self['tms_zca'].reset()
-        del self['tms_zca']
         del self['tms_mock']
+        zope.component.getGlobalSiteManager().registerUtility(
+            self['old_tms'], zeit.retresco.interfaces.ITMS)
+        del self['old_tms']
 
     def testTearDown(self):
         self['tms_mock'].reset_mock()
@@ -75,43 +92,22 @@ class TMSMockLayer(plone.testing.Layer):
 TMS_MOCK_LAYER = TMSMockLayer()
 
 
-class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
-    defaultBases = zeit.cms.testing.ZCMLLayer.defaultBases + (HTTP_LAYER,)
-
-    def setUp(self):
-        self.product_config = self.product_config.replace(
-            '[PORT]', str(self['http_port']))
-        super(ZCMLLayer, self).setUp()
-
-
-ZCML_LAYER = ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config +
-    product_config +
-    zeit.find.testing.product_config +
-    zeit.push.testing.product_config +
-    zeit.workflow.testing.product_config +
-    zeit.content.article.testing.product_config +
-    zeit.content.link.testing.product_config +
-    zeit.content.volume.testing.product_config +
-    zeit.content.image.testing.product_config)
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
-
-
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(
-    name='CeleryLayer', bases=(ZCML_LAYER,))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
 CELERY_LAYER.queues += ('search',)
 
 
-MOCK_ZCML_LAYER = plone.testing.Layer(
-    bases=(ZCML_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockZCMLLayer',
+MOCK_LAYER = plone.testing.Layer(
+    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
     module=__name__)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
