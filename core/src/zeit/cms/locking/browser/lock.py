@@ -1,12 +1,15 @@
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import json
+import logging
 import zeit.cms.locking.browser.interfaces
 import zeit.cms.locking.interfaces
 import zeit.connector.interfaces
 import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.i18n
+
+
+log = logging.getLogger(__name__)
 
 
 def _stealable(form, action):
@@ -142,6 +145,8 @@ class API(object):
         if 'uuid' in self.request.form:
             uniqueId = zeit.cms.content.contentuuid.resolve_uuid(
                 zeit.cms.content.interfaces.IUUID(self.request.form['uuid']))
+        elif 'irid' in self.request.form:
+            uniqueId = resolve_article_id(self.request.form['irid'])
         elif 'uniqueId' in self.request.form:  # mostly for convenience/tests
             uniqueId = self.request.form['uniqueId']
             content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
@@ -150,7 +155,7 @@ class API(object):
         else:
             self.request.response.setStatus(400)
             return json.dumps(
-                {'message': 'GET parameter uuid or uniqueId is required'})
+                {'message': 'GET parameter uniqueId uuid or irid is required'})
         if not uniqueId:
             self.request.response.setStatus(404)
             return json.dumps({'message': 'Content not found'})
@@ -182,3 +187,19 @@ class DummyContent(object):
 
     def __init__(self, uniqueId):
         self.uniqueId = uniqueId
+
+
+ARTICLEID = zeit.connector.search.SearchVar(
+    'article_id', 'http://namespaces.zeit.de/CMS/interred')
+
+
+def resolve_article_id(irid):
+    connector = zope.component.getUtility(
+        zeit.connector.interfaces.IConnector)
+    result = list(connector.search([ARTICLEID], ARTICLEID == irid))
+    if not result:
+        return None
+    if len(result) > 1:
+        log.critical('There are %s objects for irid %s. Using first one.' % (
+            len(result), irid))
+    return result[0][0]

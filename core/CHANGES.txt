@@ -5,7 +5,7 @@ vivi.core changes
 4.6.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- IR-54: Also allow IR article_id, not just uuid to query the lock status
 
 
 4.6.3 (2019-07-11)

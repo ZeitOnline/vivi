@@ -50,6 +50,13 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.open('http://localhost/@@lock_status?uuid=dummy')
         self.assertEqual('200 Ok', b.headers['Status'])
 
+    def test_resolves_interred_article_id(self):
+        b = self.browser
+        # mock connector search() always returns
+        # http://xml.zeit.de/online/2007/01/Somalia
+        b.open('http://localhost/@@lock_status?irid=dummy')
+        self.assertEqual('200 Ok', b.headers['Status'])
+
     def test_status_404_for_nonexistent(self):
         b = self.browser
         with self.assertRaises(urllib2.HTTPError) as info:
