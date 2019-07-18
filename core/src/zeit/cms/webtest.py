@@ -77,8 +77,7 @@ class WebTestTransport(xmlrpclib.Transport):
             raise xmlrpclib.ProtocolError(
                 host + handler,
                 errcode, errmsg,
-                response.headers
-                )
+                response.headers)
 
         res = httplib.HTTPResponse(FakeSocket(response.body))
         res.begin()
