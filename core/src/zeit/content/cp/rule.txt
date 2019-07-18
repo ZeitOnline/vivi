@@ -114,7 +114,7 @@ Encoding:
 >>> create_rules(u"""\
 ... applicable(True)
 ... error_unless(False, u'öüäß')
-... """.encode('latin-1'))
+... """.encode('utf-8'))
 >>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
 [u'\xf6\xfc\xe4\xdf']
