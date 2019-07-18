@@ -31,8 +31,9 @@ Create a log file and attach it to the logging to verify the logging:
 
 Create a server proxy and bind the invalidate method:
 
->>> from zope.app.testing.xmlrpc import ServerProxy
->>> server = ServerProxy('http://invalidate:invalidatepw@localhost/')
+>>> from zeit.cms.webtest import ServerProxy
+>>> server = ServerProxy(
+...     'http://invalidate:invalidatepw@localhost/', layer['wsgi_app'])
 >>> invalidate = getattr(server, '@@invalidate')
 
 When we invalidate an object, the event is issued:

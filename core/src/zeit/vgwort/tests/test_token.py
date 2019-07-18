@@ -41,9 +41,7 @@ class OrderTokensTest(zeit.vgwort.testing.TestCase):
 
 class TokenTransactionTest(zeit.vgwort.testing.TestCase):
 
-    def setUp(self):
-        super(TokenTransactionTest, self).setUp()
-        zope.security.management.endInteraction() # needed for xmlrpc
+    layer = zeit.vgwort.testing.XMLRPC_LAYER
 
     def test_error_during_publish_still_marks_token_as_claimed(self):
         tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)

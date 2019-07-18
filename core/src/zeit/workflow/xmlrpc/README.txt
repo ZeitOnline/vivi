@@ -18,8 +18,8 @@ Setup:
 ...     zeit.cms.testing.celery_ping.delay().get()
 ...     transaction.abort()
 
->>> from zope.app.testing.xmlrpc import ServerProxy
->>> server = ServerProxy('http://user:userpw@localhost/')
+>>> from zeit.cms.webtest import ServerProxy
+>>> server = ServerProxy('http://user:userpw@localhost/', layer['wsgi_app'])
 >>> can_publish = getattr(server, '@@can_publish')
 >>> publish = getattr(server, '@@publish')
 >>> retract = getattr(server, '@@retract')
