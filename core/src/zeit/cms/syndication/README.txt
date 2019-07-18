@@ -6,6 +6,36 @@ When the user publishes a document, he needs to choose where the document
 should be published. He can choose one or more *syndication targets*.
 
 
+Setup
+-----
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+>>> def eventHandler(context, event):
+...     print 'Event:', event
+...     for target in event.targets:
+...         print '    Target:', target.uniqueId
+...     print '    Content:', context.uniqueId
+...
+>>> import zope.component
+>>> from zeit.cms.interfaces import ICMSContent
+>>> from zeit.cms.syndication.interfaces import IContentSyndicatedEvent
+>>> site_manager = zope.component.getGlobalSiteManager()
+>>> site_manager.registerHandler(
+...     eventHandler,
+...     (ICMSContent, IContentSyndicatedEvent))
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction()
+
+>>> from zeit.cms.interfaces import ICMSContent
+>>> from zeit.cms.repository.interfaces import IRepository
+>>> repository = zope.component.getUtility(IRepository)
+>>> content = repository['testcontent']
+>>> ICMSContent.providedBy(content)
+True
+
+
 Syndication Targets
 ===================
 
@@ -18,8 +48,8 @@ transparently be checked out by the CMS, modified and imediately checked back
 in.
 
 The user can choose which targets he is interested in. This is done via the
-`IMySyndicationTargets` adapter.  After initialization[1]_ the user `bob` is
-logged in.  We also get an object from he repository[2]_ for later user. It
+`IMySyndicationTargets` adapter.  After our test setup the user `bob` is
+logged in.  We also get an object from he repository for later user. It
 will be available as `content`.
 
 To get his syndication targets we need his workingcopy:
@@ -28,7 +58,17 @@ To get his syndication targets we need his workingcopy:
 >>> bobs_workingcopy = zope.component.getUtility(
 ...     IWorkingcopyLocation).getWorkingcopy()
 
-The workingcopy can be adapted to `IMySyndicationTargets` [#create-feeds]_:
+Create some feeds we need for testing the defaults.
+
+>>> import zeit.cms.repository.folder
+>>> import zeit.cms.syndication.feed
+>>> repository['hp_channels'] = zeit.cms.repository.folder.Folder()
+>>> repository['hp_channels']['channel_news'] = (
+...     zeit.cms.syndication.feed.Feed())
+>>> repository['hp_channels']['channel_magazin'] = (
+...     zeit.cms.syndication.feed.Feed())
+
+The workingcopy can be adapted to `IMySyndicationTargets`:
 
 >>> from zeit.cms.syndication.interfaces import IMySyndicationTargets
 >>> bobs_syndication_targets = IMySyndicationTargets(bobs_workingcopy)
@@ -117,8 +157,12 @@ Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent...>
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
-Syndicating is not possible when the feed is locked by somebody
-else[#remove-event-handler]_.
+>>> site_manager.unregisterHandler(
+...     eventHandler,
+...     (ICMSContent, IContentSyndicatedEvent))
+True
+
+Syndicating is not possible when the feed is locked by somebody else.
 
 >>> import zeit.connector.interfaces
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -155,58 +199,3 @@ False
 >>> manager.syndicate([target], hidden=True)
 >>> repository['politik.feed'].getMetadata(content).hidden
 True
-
-
-Footnotes
-=========
-
-.. [1] Initialization:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    >>> def eventHandler(context, event):
-    ...     print 'Event:', event
-    ...     for target in event.targets:
-    ...         print '    Target:', target.uniqueId
-    ...     print '    Content:', context.uniqueId
-    ...
-    >>> import zope.component
-    >>> from zeit.cms.interfaces import ICMSContent
-    >>> from zeit.cms.syndication.interfaces import IContentSyndicatedEvent
-    >>> site_manager = zope.component.getGlobalSiteManager()
-    >>> site_manager.registerHandler(
-    ...     eventHandler,
-    ...     (ICMSContent, IContentSyndicatedEvent))
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()
-
-
-.. [2] Get content from the repository:
-
-    >>> from zeit.cms.interfaces import ICMSContent
-    >>> from zeit.cms.repository.interfaces import IRepository
-    >>> repository = zope.component.getUtility(IRepository)
-    >>> content = repository['testcontent']
-    >>> ICMSContent.providedBy(content)
-    True
-
-
-.. [#create-feeds] Create some feeds we need for testing the defaults.
-
-    >>> import zeit.cms.repository.folder
-    >>> import zeit.cms.syndication.feed
-    >>> repository['hp_channels'] = zeit.cms.repository.folder.Folder()
-    >>> repository['hp_channels']['channel_news'] = (
-    ...     zeit.cms.syndication.feed.Feed())
-    >>> repository['hp_channels']['channel_magazin'] = (
-    ...     zeit.cms.syndication.feed.Feed())
-
-
-.. [#remove-event-handler]
-
-    >>> site_manager.unregisterHandler(
-    ...     eventHandler,
-    ...     (ICMSContent, IContentSyndicatedEvent))
-    True

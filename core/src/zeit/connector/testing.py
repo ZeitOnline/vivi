@@ -1,6 +1,6 @@
-from zope.testing import doctest
 import StringIO
 import ZODB.blob
+import doctest
 import inspect
 import os
 import pkg_resources
@@ -98,8 +98,7 @@ mock_connector_layer = ZCMLLayer('ftesting-mock.zcml')
 optionflags = (
     doctest.REPORT_NDIFF +
     doctest.NORMALIZE_WHITESPACE +
-    doctest.ELLIPSIS +
-    doctest.INTERPRET_FOOTNOTES)
+    doctest.ELLIPSIS)
 
 
 class TestCase(zope.app.testing.functional.FunctionalTestCase):
@@ -152,8 +151,25 @@ class MockTest(TestCase):
             '', '', contentType='httpd/x-unix-directory'))
 
 
+# XXX copy&paste from zeit.cms.testing
+class OutputChecker(zope.testing.renormalizing.RENormalizing):
+
+    def check_output(self, want, got, optionflags):
+        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.check_output(self, want, got, optionflags)
+
+    def output_difference(self, example, got, optionflags):
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.output_difference(self, example, got, optionflags)
+
+
 parsed_url = urlparse.urlparse(os.environ['connector-url'])
-checker = zope.testing.renormalizing.RENormalizing([
+checker = OutputChecker([
     (re.compile(str(parsed_url.hostname)), '<DAVHOST>'),
     (re.compile(str(parsed_url.port)), '<DAVPORT>'),
 ])

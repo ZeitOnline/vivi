@@ -7,12 +7,23 @@ extrinsic, the referenced object doesn't know about them. The actual
 references are usually intrinsic, i.e. the referencing object knows it
 references the other object.
 
+Setup
++++++
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
 
 Low level support
 +++++++++++++++++
 
 The `IRelations`-Utility handles all the magic of resolving
-references[#functional]_:
+references:
 
 >>> import zeit.cms.relation.interfaces
 >>> relations = zope.component.getUtility(
@@ -20,11 +31,22 @@ references[#functional]_:
 >>> relations
 <zeit.cms.relation.relation.Relations object at 0x...>
 
-[#interface]_
+Verify the interface:
+
+>>> import zope.interface.verify
+>>> zope.interface.verify.verifyObject(
+...     zeit.cms.relation.interfaces.IRelations, relations)
+True
 
 
-Get a testcontent[#createtestcontent]_:
+Create some testcontent:
 
+>>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+>>> repository['a'] = ExampleContentType()
+>>> repository['b'] = ExampleContentType()
+>>> repository['c'] = ExampleContentType()
+>>> repository['d'] = ExampleContentType()
+>>> repository['e'] = ExampleContentType()
 >>> a = repository['a']
 
 The content doesn't have any relateds currently, nor is it related anywhere:
@@ -71,7 +93,11 @@ c's references will still just yield a:
 >>> res[0].uniqueId
 u'http://xml.zeit.de/a'
 
-[#none-unique-id-yields-nothing]_
+When an object with a unique id of "None" is queried, nothing will be returned:
+
+>>> no_uid = ExampleContentType()
+>>> sorted(relations.get_relations(no_uid))
+[]
 
 When we remove a from the repository, but do not update the index, c will no
 longer reference a anyway (because we cannot find a anymore)
@@ -79,14 +105,6 @@ longer reference a anyway (because we cannot find a anymore)
 >>> del repository['a']
 >>> sorted(relations.get_relations(repository['c']))
 []
-
-
-.. [#none-unique-id-yields-nothing] When an object with a unique id of "None"
-    is queried, nothing will be returned:
-
-    >>> no_uid = ExampleContentType()
-    >>> sorted(relations.get_relations(no_uid))
-    []
 
 
 Event handlers
@@ -98,8 +116,13 @@ relations uptodate.
 Checkin
 -------
 
+Clean up previous test state:
+>>> for name in ('a', 'b', 'c', 'd'):
+...     relations._catalog.unindex_doc(
+...         'http://xml.zeit.de/%s' % name)
+
 Objects are indexed before checkin. We will check a out and back in and verify
-it is indexed[#cleancatalog]_. Let a relate checkout and relate c:
+it is indexed. Let a relate checkout and relate c:
 
 >>> import zeit.cms.checkout.interfaces
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
@@ -142,40 +165,3 @@ so we probably shouldn't rely on it here).
 >>> res[0].uniqueId
 u'http://xml.zeit.de/new'
 
-
-.. [#functional] Setup functional test and get some common utilities
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-
-.. [#interface] Verify the interface:
-
-    >>> import zope.interface.verify
-    >>> zope.interface.verify.verifyObject(
-    ...     zeit.cms.relation.interfaces.IRelations, relations)
-    True
-
-
-.. [#createtestcontent] Create some testcontent:
-
-    >>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-
-    >>> repository['a'] = ExampleContentType()
-    >>> repository['b'] = ExampleContentType()
-    >>> repository['c'] = ExampleContentType()
-    >>> repository['d'] = ExampleContentType()
-    >>> repository['e'] = ExampleContentType()
-
-
-.. [#cleancatalog] Clean the catalog:
-
-    >>> for name in ('a', 'b', 'c', 'd'):
-    ...     relations._catalog.unindex_doc(
-    ...         'http://xml.zeit.de/%s' % name)

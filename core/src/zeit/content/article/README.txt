@@ -4,9 +4,8 @@ Article
 
 We need to set the site since we're a functional test:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
@@ -266,7 +265,10 @@ Initally there are no images attached to an article:
 >>> print images.image
 None
 
-Get an image from the repository and attach it[#needsinteraction]_:
+Get an image from the repository and attach it:
+
+>>> import zeit.cms.testing
+>>> _ = zeit.cms.testing.create_interaction(u'hans')
 
 >>> import datetime
 >>> import zope.component
@@ -325,23 +327,3 @@ All Text inside <p> elements is extracted (empty paragraphs are ignored):
 >>> adapter = zope.index.text.interfaces.ISearchableText(article)
 >>> adapter.getSearchableText()
 [u'Link', u'und mehr Text', u'Normaler Absatz']
-
-
-Cleanup
-=======
-
-After tests we clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
-
-
-.. [#needsinteraction]
-
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> import zope.security.testing
-    >>> principal = zope.security.testing.Principal(u'hans')
-    >>> request.setPrincipal(principal)
-    >>> import zope.security.management
-    >>> zope.security.management.newInteraction(request)

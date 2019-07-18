@@ -1,4 +1,3 @@
-import __future__
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
@@ -13,8 +12,9 @@ import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.retresco.interfaces
 import zeit.workflow.testing
-import zope.testing.doctest
-import zope.testing.renormalizing
+import zope.component
+import zope.interface
+import zope.security.management
 
 
 product_config = """
@@ -93,7 +93,7 @@ ZCML_LAYER = plone.testing.Layer(
     name='ZCMLLayer', module=__name__)
 
 
-checker = zope.testing.renormalizing.RENormalizing([
+checker = zeit.cms.testing.OutputChecker([
     (re.compile(
         '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
         '<GUID>'),
@@ -110,8 +110,6 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('checker', checker)
     kw.setdefault('layer', ZCML_LAYER)
-    kw.setdefault('globs', dict(with_statement=__future__.with_statement))
-    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 

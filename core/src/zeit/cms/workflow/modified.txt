@@ -1,8 +1,17 @@
 Modified
 ========
 
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
 When an object is checked in the person who modified the object last is
-noted[#functional]_.
+noted.
 
 Currently there was no one who modified:
 
@@ -44,14 +53,3 @@ datetime.datetime(..., tzinfo=<UTC>)
 Clean up:
 
 >>> zeit.cms.workflow.mock._publish_times.clear()
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

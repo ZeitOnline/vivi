@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 from urlparse import urljoin
-from zope.testing import doctest
-import __future__
 import base64
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
@@ -9,6 +7,7 @@ import celery_longterm_scheduler
 import contextlib
 import copy
 import datetime
+import doctest
 import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.jslint
@@ -30,7 +29,6 @@ import re
 import sys
 import transaction
 import unittest
-import urllib2
 import webtest.lint
 import xml.sax.saxutils
 import zeit.cms.celery
@@ -40,12 +38,12 @@ import zope.app.appsetup.product
 import zope.app.testing.functional
 import zope.app.wsgi
 import zope.component
+import zope.component.hooks
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
 import zope.security.proxy
 import zope.security.testing
-import zope.site.hooks
 import zope.testbrowser.browser
 import zope.testing.renormalizing
 
@@ -123,7 +121,7 @@ class ZCMLLayer(plone.testing.Layer):
         zeit.cms.workflow.mock.reset()
 
         self.setup.zca.reset()
-        zope.site.hooks.setSite(None)
+        zope.component.hooks.setSite(None)
         zope.security.management.endInteraction()
         self.setup.tearDown()
 
@@ -312,7 +310,24 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-checker = zope.testing.renormalizing.RENormalizing([
+# XXX Hopefully not necessary once we're on py3
+class OutputChecker(zope.testing.renormalizing.RENormalizing):
+
+    def check_output(self, want, got, optionflags):
+        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.check_output(self, want, got, optionflags)
+
+    def output_difference(self, example, got, optionflags):
+        if isinstance(got, str):
+            got = got.decode('utf-8')
+        super_ = zope.testing.renormalizing.RENormalizing
+        return super_.output_difference(self, example, got, optionflags)
+
+
+checker = OutputChecker([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
@@ -321,12 +336,7 @@ checker = zope.testing.renormalizing.RENormalizing([
      "<GUID>"),
 ])
 
-
-def setup_product_config(product_config={}):
-    zope.app.appsetup.product._configs.update(product_config)
-
 optionflags = (doctest.REPORT_NDIFF +
-               doctest.INTERPRET_FOOTNOTES +
                doctest.NORMALIZE_WHITESPACE +
                doctest.ELLIPSIS)
 
@@ -335,26 +345,19 @@ def DocFileSuite(*paths, **kw):
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
+    kw['encoding'] = 'utf-8'
     return doctest.DocFileSuite(*paths, **kw)
 
 
 def FunctionalDocFileSuite(*paths, **kw):
-
-    def setUp(test):
-        config = test.globs.get('product_config', {})
-        __traceback_info__ = (config,)
-        setup_product_config(config)
-
     layer = kw.pop('layer', WSGI_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
-    kw['setUp'] = setUp
     globs = kw.setdefault('globs', {})
-    globs['product_config'] = kw.pop('product_config', {})
-    globs['with_statement'] = __future__.with_statement
     globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
     globs['layer'] = layer
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
+    kw['encoding'] = 'utf-8'
 
     test = doctest.DocFileSuite(*paths, **kw)
     test.layer = layer
@@ -383,8 +386,6 @@ class FunctionalTestCase(
         gocept.testing.assertion.String,
         RepositoryHelper):
 
-    product_config = {}
-
     def getRootFolder(self):
         """Returns the Zope root folder."""
         return self.layer['functional_setup'].getRootFolder()
@@ -395,8 +396,7 @@ class FunctionalTestCase(
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        setup_product_config(self.product_config)
-        zope.site.hooks.setSite(self.getRootFolder())
+        zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction(u'zope.user')
 
 
@@ -540,17 +540,11 @@ def click_wo_redirect(browser, *args, **kwargs):
 
 
 def set_site(site=None):
-    """Encapsulation of the getSite/setSite-dance.
-
-    Sets the given site, preserves the old site in the globs,
-    where it will be reset by our FunctionalDocFileSuite's tearDown.
-    """
-
+    """Encapsulation of the getSite/setSite-dance, with doctest support."""
     globs = sys._getframe(1).f_locals
-    globs['old_site'] = zope.site.hooks.getSite()
     if site is None:
         site = globs['getRootFolder']()
-    zope.site.hooks.setSite(site)
+    zope.component.hooks.setSite(site)
 
 
 # XXX use zope.publisher.testing for the following two
@@ -578,10 +572,10 @@ def interaction(principal_id=u'zope.user'):
 # XXX use zope.component.testing.site instead
 @contextlib.contextmanager
 def site(root):
-    old_site = zope.site.hooks.getSite()
-    zope.site.hooks.setSite(root)
+    old_site = zope.component.hooks.getSite()
+    zope.component.hooks.setSite(root)
     yield
-    zope.site.hooks.setSite(old_site)
+    zope.component.hooks.setSite(old_site)
 
 
 class TestCatalog(object):

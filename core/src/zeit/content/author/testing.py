@@ -2,7 +2,7 @@ import pkg_resources
 import zeit.cms.testing
 import zeit.find.testing
 import zeit.workflow.testing
-import zope.testing.doctest
+
 
 product_config = """
 <product-config zeit.content.author>
@@ -25,7 +25,6 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', ZCML_LAYER)
-    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 

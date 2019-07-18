@@ -232,7 +232,35 @@ Open the checked out somalia and change its source:
 >>> browser.getControl('Document content').value = 'no more!'
 >>> browser.getControl('Apply').click()
 
-When we look at the preview now[#prepare-preview]_:
+We change the preview path to some temp directory and put
+a file there. This will at leas give us some result to verify. 
+
+>>> import os
+>>> import os.path
+>>> import tempfile
+>>> tempdir = tempfile.mkdtemp()
+
+Create a preview file. It is created deep in a folder, so create those as well:
+
+>>> preview_dir = os.path.join(tempdir, 'online', '2007', '01')
+>>> os.makedirs(preview_dir)
+
+>>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia')
+>>> open(name, 'w').write(
+...     'The quick brown fox jumps over the lazy dog.')
+
+Create another file:
+>>> foo_name = name + '?foo=bar'
+>>> file(foo_name, 'w').write(
+...     'The quick brown foo jumps over the lazy bar.')
+
+>>> import zope.app.appsetup.product
+>>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
+
+>>> cms_config['preview-prefix'] = u'file://%s' % tempdir
+
+
+When we look at the preview now:
 
 >>> browser.handleErrors = False
 >>> browser.getLink('Preview').click()
@@ -269,32 +297,3 @@ Clean up:
 
 >>> import shutil
 >>> shutil.rmtree(tempdir)
-
-
-.. [#prepare-preview] We change the preview path to some temp directory and put
-    a file there. This will at leas give us some result to verify. 
-
-    >>> import os
-    >>> import os.path
-    >>> import tempfile
-    >>> tempdir = tempfile.mkdtemp()
-
-    Create a preview file. It is created deep in a folder, so create those as
-    well:
-
-    >>> preview_dir = os.path.join(tempdir, 'online', '2007', '01')
-    >>> os.makedirs(preview_dir)
-
-    >>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia')
-    >>> open(name, 'w').write(
-    ...     'The quick brown fox jumps over the lazy dog.')
-
-    Create another file:
-    >>> foo_name = name + '?foo=bar'
-    >>> file(foo_name, 'w').write(
-    ...     'The quick brown foo jumps over the lazy bar.')
-
-    >>> import zope.app.appsetup.product
-    >>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
-
-    >>> cms_config['preview-prefix'] = u'file://%s' % tempdir

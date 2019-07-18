@@ -4,9 +4,9 @@ Invalidator
 The invalidator invalidates the whole property and child id cache and rebuilds
 it at the same time:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.component.hooks
+>>> old_site = zope.component.hooks.getSite()
+>>> zope.component.hooks.setSite(getRootFolder())
 >>> import zeit.connector.invalidator
 >>> import zope.component
 >>> invalidator = zope.component.getUtility(
@@ -186,4 +186,4 @@ KeyError: "The resource u'http://xml.zeit.de/testing.../lt2' does not exist."
 
 Clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

@@ -10,7 +10,17 @@ body/container format
 
 The body container format has the structure of a center page. Construct a
 Resource which we inject directly to the connector and then load from the
-repository[#functional]_
+repository
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.connector.interfaces
+>>> import zeit.cms.repository.interfaces
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
 
 >>> import os.path
 >>> xml = open(os.path.join(os.path.dirname(__file__), 'testdata',
@@ -97,8 +107,10 @@ Insert a new object into the channel:
         ...
 
 
-Make sure a can access to old channels generally is possible[#needsinteraction]_:
+Make sure a can access to old channels generally is possible:
 
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
 >>> import zope.security
 >>> zope.security.canAccess(channel, 'uniqueId')
 True
@@ -122,23 +134,3 @@ raised:
 Traceback (most recent call last):
     ...
 RuntimeError: Invalid channel XML format.
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    >>> import zope.component
-    >>> import zeit.connector.interfaces
-    >>> import zeit.cms.repository.interfaces
-    >>> connector = zope.component.getUtility(
-    ...     zeit.connector.interfaces.IConnector)
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-
-.. [#needsinteraction]
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')

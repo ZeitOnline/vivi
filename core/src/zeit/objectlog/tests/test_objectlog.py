@@ -1,9 +1,11 @@
 from datetime import datetime
 import transaction
+import zeit.cms.testing
 import zeit.objectlog.interfaces
 import zeit.objectlog.testing
-import zope.app.component.hooks
 import zope.app.testing.functional
+import zope.component
+import zope.component.hooks
 import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
@@ -15,16 +17,14 @@ class ObjectLog(zope.app.testing.functional.FunctionalTestCase):
 
     def setUp(self):
         super(ObjectLog, self).setUp()
-        zope.app.component.hooks.setSite(self.getRootFolder())
-        request = zope.publisher.browser.TestRequest()
-        zope.security.management.newInteraction(request)
-        request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
+        zope.component.hooks.setSite(self.getRootFolder())
+        zeit.cms.testing.create_interaction()
         self.content = zeit.objectlog.testing.Content()
         self.getRootFolder()['content'] = self.content
         transaction.commit()
 
     def tearDown(self):
-        zope.app.component.hooks.setSite(None)
+        zope.component.hooks.setSite(None)
         zope.security.management.endInteraction()
         super(ObjectLog, self).tearDown()
 

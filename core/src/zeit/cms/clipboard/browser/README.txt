@@ -471,7 +471,14 @@ verify this is working:
 >>> browser.open(browser.url + '?sort_on%3Atokens=modified')
 
 When a referenced object is deleted, the clip will become an "invalid
-reference". Delete "wirtschaft.feed"[#functional]_:
+reference". Delete "wirtschaft.feed":
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> from zeit.cms.repository.interfaces import IRepository
+>>> repository = zope.component.getUtility(IRepository)
+>>> import transaction
 
 >>> del repository['wirtschaft.feed']
 >>> transaction.commit()
@@ -664,15 +671,3 @@ to online:
         <li class="message">http://xml.zeit.de/online/2007/01 was copied to
         http://xml.zeit.de/online/01/.</li>
         ...
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    >>> import zope.component
-    >>> from zeit.cms.repository.interfaces import IRepository
-    >>> repository = zope.component.getUtility(IRepository)
-
-    >>> import transaction

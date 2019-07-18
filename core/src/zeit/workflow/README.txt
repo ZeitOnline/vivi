@@ -4,9 +4,18 @@ Workflow
 
 XXX language mix
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.workflow.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+
 Der Workflow ist statusorientiert. Ein Dokument hat allerdings mehrere den
 Workflow betreffende Status. Aus Nutzersicht ergeben sich quasi parallele
-Aktivitäten[#functional]_.
+Aktivitäten.
 
 >>> somalia = repository['online']['2007']['01']['Somalia']
 >>> import zeit.workflow.interfaces
@@ -47,8 +56,12 @@ Currently the object cannot be published:
 >>> workflow.can_publish()
 'can-publish-error'
 
-Let's now switch one state after the other and see if we can
-publish[#needsinteraction]_:
+For publising we need an interacion, i.e. a request
+
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction()
+
+Let's now switch one state after the other and see if we can publish:
 
 >>> workflow.edited = True
 >>> workflow.can_publish()
@@ -329,7 +342,22 @@ Actual publish retract
 Publish script
 --------------
 
-The actual publishing happens by external the publish script[#loghandler]_.
+Set up a log handler to inspect
+
+>>> import logging
+>>> import StringIO
+>>> logfile = StringIO.StringIO()
+>>> log_handler = logging.StreamHandler(logfile)
+>>> logging.root.addHandler(log_handler)
+>>> loggers = [None, 'zeit']
+>>> oldlevels = {}
+>>> for name in loggers:
+...     logger = logging.getLogger(name)
+...     oldlevels[name] = logger.level
+...     logger.setLevel(logging.INFO)
+
+
+The actual publishing happens by external the publish script.
 Publish the folder again and verify the log:
 
 >>> job_id = publish.publish(async=False)
@@ -502,7 +530,16 @@ False
 False
 
 When we publish somalia now the feed is published
-automatically[#master-event-handler]_:
+automatically:
+
+We register event handlers to all the publish/retract events to see the master
+
+>>> def pr_handler(event):
+...     print type(event).__name__
+...     print '    Object:', event.object.uniqueId
+...     print '    Master:', event.master.uniqueId
+>>> gsm.registerHandler(pr_handler,
+...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 >>> job_id = publish.publish(async=False)
@@ -528,17 +565,6 @@ Of couse the feed as a log entry:
 >>> print_log(log.get_log(feed))
 http://xml.zeit.de/politik.feed
      Published
-
-.. [#master-event-handler] Register event handlers to all the publish/retract
-    events to see the master
-
-    >>> def pr_handler(event):
-    ...     print type(event).__name__
-    ...     print '    Object:', event.object.uniqueId
-    ...     print '    Master:', event.master.uniqueId
-
-    >>> gsm.registerHandler(pr_handler,
-    ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
 
 Dependend retract
@@ -733,45 +759,9 @@ True
 True
 
 
-[#cleanup]_
+Clean up
+++++++++
 
-.. [#functional]
-
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    Do some imports and get the repository
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> import zeit.cms.workflow.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-
-.. [#cleanup] Clean up
-
-    >>> zope.security.management.endInteraction()
-    >>> logging.root.removeHandler(log_handler)
-    >>> for name in loggers:
-    ...     logging.getLogger(name).setLevel(oldlevels[name])
-
-.. [#needsinteraction] For publising we need an interacion, i.e. a request
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()
-
-.. [#loghandler] We need a log handler
-
-    >>> import logging
-    >>> import StringIO
-    >>> logfile = StringIO.StringIO()
-    >>> log_handler = logging.StreamHandler(logfile)
-    >>> logging.root.addHandler(log_handler)
-    >>> loggers = [None, 'zeit']
-    >>> oldlevels = {}
-    >>> for name in loggers:
-    ...     logger = logging.getLogger(name)
-    ...     oldlevels[name] = logger.level
-    ...     logger.setLevel(logging.INFO)
+>>> logging.root.removeHandler(log_handler)
+>>> for name in loggers:
+...     logging.getLogger(name).setLevel(oldlevels[name])

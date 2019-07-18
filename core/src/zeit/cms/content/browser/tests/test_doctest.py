@@ -13,7 +13,6 @@ def test_suite():
         package='zeit.cms.content.browser'))
     suite.addTest(doctest.DocFileSuite(
         'widget.txt',
-        optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
-                     doctest.ELLIPSIS),
+        optionflags=zeit.cms.testing.optionflags,
         package='zeit.cms.content.browser'))
     return suite

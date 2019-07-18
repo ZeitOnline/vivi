@@ -6,9 +6,11 @@ Ghosts haunt other objects. We use this to put ghosts in the workingcopy after
 an object has been checked in. The checked in object will be replaced by a
 ghost, allowing the user to easily access objects he recently edited.
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
-In fact we do have those ghosts already in the clipboard, so we just reuse
-it[#functional]_.
+In fact we do have those ghosts already in the clipboard, so we just reuse it.
 
 Get the workingcopy, initially it's empty
 
@@ -249,10 +251,3 @@ Content: Saarland
 Content: Guantanamo
 Content: EU-Beitritt-rumaenien-bulgarien
 Content: 4schanzentournee-abgesang-2
-
-
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> principal = zeit.cms.testing.create_interaction()

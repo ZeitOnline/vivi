@@ -312,7 +312,12 @@ The same ETAG also doesn't generate a conflict:
 Property Cache
 ++++++++++++++
 
-The property cache stores all the webdav proprties[#cleanup]_:
+We need to manually clear the key cache from previous tests runs due to
+isolation problems:
+
+>>> zeit.connector.cache.WebDAVPropertyKey._instances.clear()
+
+The property cache stores all the webdav proprties:
 
 >>> cache = zeit.connector.cache.PropertyCache()
 
@@ -620,14 +625,8 @@ When the conflicting state is *equal* it is kept, though:
 ['foo']
 
 
-Clean:
+Clean up
+++++++++
 
 >>> import shutil
 >>> shutil.rmtree(blob_dir)
-
-.. [#cleanup] 
-
-    We need to manually clear the key cache from previous tests runs due to
-    isolation problems:
-
-    >>> zeit.connector.cache.WebDAVPropertyKey._instances.clear()

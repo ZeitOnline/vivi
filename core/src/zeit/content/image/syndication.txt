@@ -3,7 +3,11 @@ Syndication
 ===========
 
 If objects which are adaptable to IImages are syndicated, the first image will
-be added to the feed[#functional]_.
+be added to the feed.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
 Get a content from the repository:
 
@@ -43,7 +47,7 @@ We will mostly want to reference image groups, so create one first:
 >>> import zeit.content.image.testing
 >>> group = zeit.content.image.testing.create_image_group()
 
-Reference the image group[#needsinteraction]_:
+Reference the image group:
 
 >>> import zeit.cms.content.interfaces
 >>> import zeit.cms.checkout.interfaces
@@ -138,12 +142,3 @@ objects:
 >>> zeit.content.image.interfaces.IReferences(
 ...     repository['2006']['DSC00109_2.JPG']).references
 ()
-
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
-
-.. [#needsinteraction] Create interaction
-
-    >>> principal = zeit.cms.testing.create_interaction()

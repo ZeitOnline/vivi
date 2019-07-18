@@ -15,7 +15,6 @@ import zeit.content.volume.testing
 import zeit.push.testing
 import zeit.workflow.testing
 import zope.component
-import zope.testing.renormalizing
 
 
 product_config = """
@@ -37,7 +36,7 @@ product_config = """
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
 
-checker = zope.testing.renormalizing.RENormalizing([
+checker = zeit.cms.testing.OutputChecker([
     (re.compile(
         '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>")])

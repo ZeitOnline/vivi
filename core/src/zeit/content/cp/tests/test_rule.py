@@ -1,4 +1,3 @@
-from __future__ import with_statement
 from zeit.edit.interfaces import IRuleGlobs
 from zeit.edit.rule import Rule
 import pkg_resources

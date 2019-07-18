@@ -2,8 +2,11 @@
 Locking
 =======
 
-The lock icon shows information about the current lock[1]_:
+The lock icon shows information about the current lock:
 
+>>> from zeit.cms.testing import Browser
+>>> browser = Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
 >>> url = ('http://localhost:8080/++skin++cms/repository/online'
 ...        '/2007/01/Somalia')
 >>> browser.open(url)
@@ -150,11 +153,3 @@ Make sure the unlock message was sent to the user:
     <li class="message">The lock on "Somalia" has been stolen from
         "zope.user".</li>
     ...
-
-.. [1] For UI-Tests we need a Testbrowser:
-
->>> from zeit.cms.testing import Browser
->>> browser = Browser(layer['wsgi_app'])
->>> browser.login('user', 'userpw')
-
-

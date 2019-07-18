@@ -2,8 +2,14 @@
 Caching
 =======
 
-The map of local_name to unique_id is cached[#functional]_. Initially it is not
-defined:
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+The map of local_name to unique_id is cached. Initially it is not defined:
 
 >>> import pprint
 >>> pprint.pprint(repository['online']._v_local_unique_map)
@@ -56,15 +62,3 @@ Let's fill the cache again and try abort:
 Traceback (most recent call last):
     ...    
 AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
-
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

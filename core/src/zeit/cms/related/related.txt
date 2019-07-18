@@ -2,9 +2,20 @@
 Related content
 ===============
 
+Setup
+-----
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
 
 Content can be related. The default way is relating xml
-content[#functionaltest]_:
+content:
 
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
@@ -268,17 +279,3 @@ Traceback (most recent call last):
     ...
 ValueError: Could not create XML reference type 'related' for foo
     (referenced by http://xml.zeit.de/content).
-
-
-.. [#functionaltest] We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
-
-    Do some imports and get the repository
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

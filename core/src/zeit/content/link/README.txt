@@ -58,7 +58,10 @@ Syndication
 
 The target URL is added to the channel on syndication.
 
-Create a channel and insert the link[#functional]_:
+Create a channel and insert the link:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 >>> import zeit.cms.syndication.feed
 >>> feed = zeit.cms.syndication.feed.Feed()
@@ -146,9 +149,3 @@ rel=nofollow support
   </reference>
 </references>
 ...
-
-
-.. [#functional] 
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()

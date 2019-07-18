@@ -7,12 +7,12 @@ object.
 Setup
 -----
 
->>> import zope.app.component.hooks
+>>> import zope.component.hooks
 >>> import zope.publisher.browser
 >>> import zope.security.management
 >>> import zope.security.testing
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> old_site = zope.component.hooks.getSite()
+>>> zope.component.hooks.setSite(getRootFolder())
 >>> request = zope.publisher.browser.TestRequest()
 >>> zope.security.management.newInteraction(request)
 
@@ -43,7 +43,7 @@ Instanciate and add to the database:
 >>> import transaction
 >>> transaction.commit()
 
-Log something for `content` [#needs-interaction]_:
+Log something for `content`:
 
 >>> log.log(content, 'Foo')
 
@@ -275,8 +275,8 @@ Cleaning everything that is older than 30 days changes nogthing here:
 >>> len(log._object_log)
 0
 
-Tear down / Clean up
-====================
+Clean up
+========
 
 >>> sm.unregisterAdapter(
 ...     tzinfo, (zope.interface.Interface,),
@@ -285,4 +285,4 @@ True
 >>> sm.unregisterAdapter(Processor)
 True
 >>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

@@ -1,7 +1,11 @@
 Teaser block
 ============
 
-The teaser block contains a list of teasers[#functional]_.
+The teaser block contains a list of teasers.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
@@ -88,10 +92,3 @@ archive-print-volume
   </body>
 </centerpage>
 <BLANKLINE>
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()

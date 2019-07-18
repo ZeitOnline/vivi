@@ -1,8 +1,17 @@
 Gallery Workflow
 ================
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.workflow.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> principal = zeit.cms.testing.create_interaction()
+
 The when a gallery is published the referenced image folder is published with
-it automatically[#functional]_[#needsinteraction]_.
+it automatically.
 
 Create a gallery, an image folder, an image and associate the folder with the
 gallery:
@@ -38,7 +47,19 @@ False
 >>> not not image_info.published
 False
 
-When we publish the gallery now, the image is also published[#loghandler]_:
+When we publish the gallery now, the image is also published:
+
+>>> import logging
+>>> import StringIO
+>>> logfile = StringIO.StringIO()
+>>> log_handler = logging.StreamHandler(logfile)
+>>> logging.root.addHandler(log_handler)
+>>> loggers = [None, 'zeit']
+>>> oldlevels = {}
+>>> for name in loggers:
+...     logger = logging.getLogger(name)
+...     oldlevels[name] = logger.level
+...     logger.setLevel(logging.INFO)
 
 >>> gallery_info.urgent = True
 >>> gallery_info.can_publish()
@@ -120,47 +141,9 @@ done.
 Done http://xml.zeit.de/online/gallery (...s)
 
 
+Clean up
+++++++++
 
-
-
-Clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
 >>> logging.root.removeHandler(log_handler)
 >>> for name in loggers:
 ...     logging.getLogger(name).setLevel(oldlevels[name])
-
-
-.. [#functional] We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-    Do some imports and get the repository
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> import zeit.cms.workflow.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-
-.. [#needsinteraction] For publising we need an interacion, i.e. a request
-
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()
-
-.. [#loghandler] We need a log handler
-
-    >>> import logging
-    >>> import StringIO
-    >>> logfile = StringIO.StringIO()
-    >>> log_handler = logging.StreamHandler(logfile)
-    >>> logging.root.addHandler(log_handler)
-    >>> loggers = [None, 'zeit']
-    >>> oldlevels = {}
-    >>> for name in loggers:
-    ...     logger = logging.getLogger(name)
-    ...     oldlevels[name] = logger.level
-    ...     logger.setLevel(logging.INFO)

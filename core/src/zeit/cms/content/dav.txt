@@ -223,8 +223,10 @@ Content sources
 There is another implementation for ICMSContentSources. It stores the Unique Id
 of the object and gets the object back from the unique id. We use the folder
 source here to show that content is only returned if it is actually in the
-source[#functional]_:
+source:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> field = zope.schema.Choice(
 ...     source=zeit.cms.content.contentsource.FolderSource())
 >>> converter = get_converter(field)
@@ -264,11 +266,6 @@ The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
 u'http://xml.zeit.de/online/'
-
-.. [#functional]_
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
 
 
 Principal source
@@ -608,6 +605,7 @@ DAVProperty
 The `DAVProperty` class is there to easily map attributes to WebDAV properties.
 Let's create a little content class:
 
+>>> import zope.component
 >>> import zope.interface
 >>> import zeit.cms.interfaces
 >>> from zeit.cms.content.dav import DAVProperty
@@ -618,7 +616,7 @@ Let's create a little content class:
 ...
 >>> def contentDavProps(context):
 ...     return context.properties
->>> site_manager = zope.app.component.hooks.getSiteManager()
+>>> site_manager = zope.component.getSiteManager()
 >>> site_manager.registerAdapter(
 ...     contentDavProps,
 ...     (Content, ), zeit.cms.interfaces.IWebDAVProperties)
@@ -627,9 +625,6 @@ Let's create a little content class:
 When properties change an IDAVPropertyChangedEvent is issued. Register a
 subscriber:
 
->>> import zope.app.component.hooks
->>> import zope.component
->>>
 >>> def print_change(object, event):
 ...     print "Event:", event
 ...     print "    Object:", object

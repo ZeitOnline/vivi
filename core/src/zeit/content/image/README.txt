@@ -3,7 +3,11 @@ Images and image groups
 =======================
 
 Images contain the image data and some metadata. An image group contains
-several images[#functional]_.
+several images.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
 
 Image
@@ -241,10 +245,3 @@ There is also a view for the metadata:
 
 >>> zope.component.getMultiAdapter((group, object()), name='metadata')
 <zeit.content.image.metadata.ImageMetadata object at 0x...>
-
-
-.. [#functional]
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> principal = zeit.cms.testing.create_interaction()

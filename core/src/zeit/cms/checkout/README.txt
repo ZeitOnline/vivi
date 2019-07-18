@@ -3,12 +3,13 @@ Checkout Manager
 ================
 
 The checkout manager is an adapter to ICMSContent managing the checkin/checkout
-process[#functional]_.
+process.
 
 We need an interaction as checkout manager needs to get the principal:
 
 >>> import zeit.cms.testing
 >>> principal = zeit.cms.testing.create_interaction()
+>>> zeit.cms.testing.set_site()
 
 We also subscribe a testing handler to the CheckoutEvent:
 
@@ -346,12 +347,3 @@ Checking in is possible with ignored conflicts:
 
 >>> ICheckinManager(checked_out).checkin(ignore_conflicts=True)
 <zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>
-
-
-
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()

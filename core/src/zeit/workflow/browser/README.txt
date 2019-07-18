@@ -2,8 +2,13 @@
 Zeit Workflow
 =============
 
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
+>>> browser.login('user', 'userpw')
+>>> zeit.cms.testing.set_site()
+
 The workflow is state oriented. There are several states which can all be set
-using the workflow tab[#browser]_[#site]_:
+using the workflow tab:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/testcontent')
 >>> browser.getLink('Workflow').click()
@@ -357,8 +362,12 @@ shown:
 20
 
 This is really only a matter of displaying the log; the complete object log is
-still accessible[#needs-repository]_:
+still accessible:
 
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
 >>> content = repository['online']['2007']['01']['Saarland']
 >>> import zeit.objectlog.interfaces
 >>> log = zeit.objectlog.interfaces.ILog(content)
@@ -404,23 +413,3 @@ other information
           ...
           <span>Date last modified</span>
           ...
-
-
-.. [#browser] For UI-Tests we need a Testbrowser:
-
-    >>> from zeit.cms.testing import Browser
-    >>> browser = Browser(layer['wsgi_app'])
-    >>> browser.login('user', 'userpw')
-
-
-.. [#site] Set the site
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-
-.. [#needs-repository]
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)

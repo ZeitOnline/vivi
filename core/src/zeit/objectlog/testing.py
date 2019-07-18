@@ -1,8 +1,8 @@
 import os
 import persistent
 import re
+import zeit.cms.testing
 import zope.app.testing.functional
-import zope.testing.renormalizing
 
 
 ObjectLogLayer = zope.app.testing.functional.ZCMLLayer(
@@ -11,7 +11,7 @@ ObjectLogLayer = zope.app.testing.functional.ZCMLLayer(
 
 
 FORMATTED_DATE_REGEX = re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d')
-checker = zope.testing.renormalizing.RENormalizing([
+checker = zeit.cms.testing.OutputChecker([
     (FORMATTED_DATE_REGEX, '<formatted date>')])
 
 

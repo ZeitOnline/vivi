@@ -4,6 +4,20 @@ Workflow XML-Rpc interface
 
 Setup:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> import transaction
+>>> def run_tasks():
+...     """Wait for already enqueued publish job, by running another job;
+...     since we only have on worker, this works out fine."""
+...     zeit.cms.testing.celery_ping.delay().get()
+...     transaction.abort()
+
 >>> from zope.app.testing.xmlrpc import ServerProxy
 >>> server = ServerProxy('http://user:userpw@localhost/')
 >>> can_publish = getattr(server, '@@can_publish')
@@ -15,9 +29,10 @@ Let's see if we can publish Somalia:
 >>> can_publish('http://xml.zeit.de/online/2007/01/Somalia')
 False
 
-Right. Let's set the urgent flag via python[#functionaltest]_:
+Right. Let's set the urgent flag via python:
 
 >>> import zeit.workflow.interfaces
+>>> _ = zeit.cms.testing.create_interaction()
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(
 ...     repository['online']['2007']['01']['Somalia'])
 >>> workflow.urgent = True
@@ -71,28 +86,3 @@ False
 True
 >>> bool(workflow.retract_job_id)
 True
-
-
-Clean up:
-
->>> zope.app.component.hooks.setSite(old_site)
-
-.. [#functionaltest] We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> _ = zeit.cms.testing.create_interaction()
-
-    Do some imports and get the repository
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-
-    >>> import transaction
-    >>> def run_tasks():
-    ...     """Wait for already enqueued publish job, by running another job;
-    ...     since we only have on worker, this works out fine."""
-    ...     zeit.cms.testing.celery_ping.delay().get()
-    ...     transaction.abort()

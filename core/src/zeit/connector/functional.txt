@@ -4,9 +4,9 @@ Functional connector tests
 
 Test the integration with zope 3.
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zope.component.hooks
+>>> old_site = zope.component.hooks.getSite()
+>>> zope.component.hooks.setSite(getRootFolder())
 
 Get the connector:
 
@@ -152,4 +152,4 @@ Reset:
 
 After tests we clean up:
 
->>> zope.app.component.hooks.setSite(old_site)
+>>> zope.component.hooks.setSite(old_site)

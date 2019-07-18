@@ -2,8 +2,10 @@ Common metadata
 ===============
 
 The common metadata is used for many content types. Test a few things on the
-test type[#functional]_:
+test type:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
 
@@ -76,11 +78,3 @@ Setting
 >>> content.byline = None
 >>> content.byline is None
 True
-
-
-Clean up:
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
