@@ -438,7 +438,7 @@ gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
     selenium_teardown_authcache)
 
 
-@pytest.mark.slow
+@pytest.mark.selenium
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCase):
 

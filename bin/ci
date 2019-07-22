@@ -50,12 +50,13 @@ case $COMMAND in
 
         set +e
         # Run non-selenium tests first.
-        $DEPLOYMENT/bin/test -v -p no:sugar --cov=. --junitxml=report.xml
+        $DEPLOYMENT/bin/test -v -p no:sugar -m 'not selenium' \
+            --cov=. --junitxml=report.xml
         TEST_RESULT=$?
         # Run selenium tests with rerunfailures and exclusions
         $DEPLOYMENT/bin/test -v -p no:sugar \
             --cov=. --cov-append --cov-report=html --cov-report=xml \
-            --junitxml=report_selenium.xml --reruns=3 -m slow -k \
+            --junitxml=report_selenium.xml --reruns=3 -m selenium -k \
             "not (test_teaser_supertitle_is_copied_to_article_supertitle or test_change_metadata_and_text_then_revert_undoes_both_changes or test_checkin_button_is_disabled_while_validation_errors_present or test_validation_errors_are_removed_from_checkin_form_on_change or test_moving_teaser_from_n_to_n_does_not_change_layout or test_reloads_overflow_area or test_AMP_is_disabled_after_choosing_non_free_access or test_FBIA_is_disabled_after_choosing_non_free_access or test_publish_failure_should_be_displayed or test_publish_should_show_error_message or test_source_not_removed_when_not_dropped_to_cp)"
         SELENIUM_RESULT=$?
         if [ "$TEST_RESULT" = "0" ]; then
