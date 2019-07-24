@@ -121,7 +121,6 @@ setup(
         'zope.app.server',
         'zope.app.testing',
         'zope.app.wsgi',
-        'zope.app.zcmlfiles',
         'zope.app.zopeappgenerations',
         'zope.authentication',
         'zope.browser',
