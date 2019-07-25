@@ -273,7 +273,7 @@ class BoolProperty(object):
     zope.interface.implements(
         zeit.cms.content.interfaces.IDAVPropertyConverter)
     zope.component.adapts(
-        zope.schema.interfaces.IBool,
+        zope.schema.Bool,
         zeit.connector.interfaces.IWebDAVReadProperties)
 
     def __init__(self, context, content):

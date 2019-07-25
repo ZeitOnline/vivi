@@ -202,7 +202,7 @@ class JSONType(grok.MultiAdapter):
 class Bool(JSONType):
 
     grok.adapts(
-        zope.schema.interfaces.IBool,
+        zope.schema.Bool,  # IFromUnicode is parallel to IBool
         zeit.retresco.interfaces.IElasticDAVProperties)
 
 
