@@ -4,11 +4,10 @@ import zeit.cms.testing
 import zeit.workflow.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config)
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.workflow.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
@@ -19,7 +18,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = ZOPE_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):

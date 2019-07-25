@@ -37,7 +37,7 @@ class MoveContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_move_event_has_correct_oldparent(self):
         move = mock.Mock()
-        self.zca.patch_handler(
+        zope.component.getGlobalSiteManager().registerHandler(
             move, (zope.lifecycleevent.interfaces.IObjectMovedEvent,))
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')

@@ -1,12 +1,9 @@
-import zeit.cms.testing
 import zeit.content.text.embed
 import zeit.content.text.testing
 import zope.schema
 
 
-class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.text.testing.ZCML_LAYER
+class EmbedParameters(zeit.content.text.testing.FunctionalTestCase):
 
     def create(self, params):
         result = zeit.content.text.embed.Embed()

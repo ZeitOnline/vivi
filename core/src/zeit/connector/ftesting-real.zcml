@@ -1,9 +1,13 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-  <include package="zope.app.zcmlfiles" />
+  <include package="zeit.cms" file="application.zcml" />
 
   <include package="zeit.connector" />
+  <utility 
+    provides="zeit.connector.interfaces.IConnector"
+    factory="zeit.connector.connector.transaction_bound_caching_connector_factory"
+    />
 
 </configure>
 

@@ -1,14 +1,11 @@
 import PIL
 import transaction
-import zeit.cms.testing
 import zeit.content.gallery.gallery
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
 
 
-class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.gallery.testing.ZCML_LAYER
+class TestGalleryStorer(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestGalleryStorer, self).setUp()

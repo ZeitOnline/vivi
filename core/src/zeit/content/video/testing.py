@@ -1,25 +1,19 @@
-import doctest
 import mock
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
 import zeit.find.testing
 import zeit.push.testing
-import zeit.workflow.testing
 import zope.component
 import zope.interface
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=(
-        zeit.find.testing.product_config +
-        zeit.push.testing.product_config +
-        zeit.cms.testing.cms_product_config +
-        zeit.workflow.testing.product_config))
-
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.find.testing.CONFIG_LAYER,
+    zeit.push.testing.CONFIG_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
+    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
 class PlayerMockLayer(plone.testing.Layer):
@@ -47,9 +41,7 @@ PLAYER_MOCK_LAYER = PlayerMockLayer()
 LAYER = plone.testing.Layer(
     bases=(PUSH_LAYER, PLAYER_MOCK_LAYER),
     name='Layer', module=__name__)
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

@@ -9,18 +9,15 @@ import zope.component
 import zope.interface
 
 
-WYSIWYGLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=(
-        zeit.content.image.testing.product_config +
-        zeit.cms.testing.cms_product_config))
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(WYSIWYGLayer,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.content.image.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
-class WYSIWYGTestCase(zeit.cms.testing.FunctionalTestCase):
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = WYSIWYGLayer
+    layer = ZOPE_LAYER
 
 
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):

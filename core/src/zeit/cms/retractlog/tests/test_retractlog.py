@@ -2,12 +2,9 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.testing
 import zeit.cms.retractlog.retractlog
-import mock
 
 
-class RetractLogTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.cms.testing.ZCML_LAYER
+class RetractLogTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_start_job_retracts_urls(self):
         self.repository['foo'] = ExampleContentType()

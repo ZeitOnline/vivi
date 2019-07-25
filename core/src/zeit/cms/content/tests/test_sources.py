@@ -67,7 +67,7 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         class IFoo(zeit.cms.interfaces.ICMSContent):
             pass
 
-        self.zca.patch_utility(
+        zope.component.getGlobalSiteManager().registerUtility(
             IFoo, zeit.cms.content.interfaces.IAddableContent, 'IFoo')
         self.assertIn(
             IFoo,

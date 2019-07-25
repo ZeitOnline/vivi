@@ -2,12 +2,9 @@ import logging
 import mock
 import unittest
 import zeit.brightcove.testing
-import zeit.cms.testing
 
 
-class VideoIdResolverTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.cms.testing.ZCML_LAYER
+class VideoIdResolverTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_video_id_should_be_resolved_to_unique_id(self):
         with mock.patch('zeit.connector.mock.Connector.search') as search:
@@ -72,9 +69,8 @@ class QueryVideoIdTest(unittest.TestCase):
                                mock.sentinel.default))
 
 
-class BackwardCompatibleUniqueIdsTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.brightcove.testing.LAYER
+class BackwardCompatibleUniqueIdsTest(
+        zeit.brightcove.testing.FunctionalTestCase):
 
     def test_videos_should_be_resolvable(self):
         from zeit.cms.interfaces import ICMSContent

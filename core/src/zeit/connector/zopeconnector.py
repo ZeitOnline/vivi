@@ -96,23 +96,9 @@ def connectorFactory():
     import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector')
-    if config:
-        root = config.get('document-store')
-        if not root:
-            raise ZConfig.ConfigurationError(
-                "WebDAV server not configured properly.")
-        search_root = config.get('document-store-search')
-    else:
-        root = os.environ.get('connector-url')
-        search_root = os.environ.get('search-connector-url')
-
-    if not root:
-        raise ZConfig.ConfigurationError(
-            "zope.conf has no product config for zeit.connector.")
-
-    return ZopeConnector(dict(
-        default=root,
-        search=search_root))
+    return ZopeConnector({
+        'default': config['document-store'],
+        'search': config['document-store-search']})
 
 
 class DataManager(object):

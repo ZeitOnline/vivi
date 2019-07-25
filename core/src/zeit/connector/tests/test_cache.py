@@ -5,14 +5,14 @@ import ZODB
 import os
 import threading
 import transaction
+import zeit.cms.testing
 import zeit.connector.cache
 import zeit.connector.testing
-import zope.app.testing.functional
 
 
-class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
+class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.connector.testing.zope_connector_layer
+    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
 
     def setUp(self):
         super(TestResourceCache, self).setUp()

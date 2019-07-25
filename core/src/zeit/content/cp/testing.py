@@ -11,7 +11,6 @@ import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.retresco.interfaces
-import zeit.workflow.testing
 import zope.component
 import zope.interface
 import zope.security.management
@@ -31,21 +30,20 @@ product_config = """
     header-image-variant cinema
     cp-automatic-feed-source file://{fixtures}/feeds.xml
 </product-config>
-
-<product-config zeit.edit>
-    rules-url file://{fixtures}/example_rules.py
-</product-config>
 """.format(fixtures=pkg_resources.resource_filename(
-    __name__, './tests/fixtures'))
+    __name__, 'tests/fixtures'))
 
 
-CP_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', name='CPLayer',
-    product_config=zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    zeit.content.image.testing.product_config +
-    zeit.content.modules.testing.product_config +
-    product_config)
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config,
+    patches={'zeit.edit': {
+        'rules-url': 'file://%s/example_rules.py' %
+        pkg_resources.resource_filename(__name__, 'tests/fixtures')}},
+    bases=(
+        zeit.content.image.testing.CONFIG_LAYER,
+        zeit.content.modules.testing.CONFIG_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 # We do not want to use a layer from zeit.retresco.testing because we want to
@@ -72,7 +70,7 @@ class CPTemplateLayer(plone.testing.Layer):
     # BBB We have too many tests that use lead/informatives. Rewriting them
     # to create their own areas is too time-consuming to do at once.
 
-    defaultBases = (CP_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
@@ -88,9 +86,8 @@ class CPTemplateLayer(plone.testing.Layer):
 CP_TEMPLATE_LAYER = CPTemplateLayer()
 
 
-ZCML_LAYER = plone.testing.Layer(
-    bases=(CP_TEMPLATE_LAYER, ELASTICSEARCH_MOCK_LAYER),
-    name='ZCMLLayer', module=__name__)
+LAYER = plone.testing.Layer(
+    name='Layer', bases=(CP_TEMPLATE_LAYER, ELASTICSEARCH_MOCK_LAYER))
 
 
 checker = zeit.cms.testing.OutputChecker([
@@ -109,13 +106,13 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('checker', checker)
-    kw.setdefault('layer', ZCML_LAYER)
+    kw.setdefault('layer', LAYER)
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCML_LAYER
+    layer = LAYER
 
     def create_content(self, name, title):
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
@@ -137,7 +134,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(ZCML_LAYER,))
+    name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

@@ -153,9 +153,8 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             self.request('delete', '/repository/group/variants/cinema-small')
 
 
-class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
+class VariantIntegrationTest(zeit.content.image.testing.SeleniumTestCase):
 
-    layer = zeit.content.image.testing.WEBDRIVER_LAYER
     window_width = 1300  # The "Variants" tab needs to fit in and be clickable.
 
     def setUp(self):

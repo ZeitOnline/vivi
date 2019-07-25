@@ -2,14 +2,12 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.content.image.testing import create_image_group, create_local_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
-import zeit.cms.testing
 import zeit.content.image.testing
 import zope.component
 
 
-class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class TestImageMetadataAcquisition(
+        zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestImageMetadataAcquisition, self).setUp()
@@ -45,9 +43,7 @@ class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(None, metadata.title)
 
 
-class TestImageXMLReference(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
 
     def test_master_image_without_filename_extension_sets_mime_as_type(self):
         fh = self.repository['2006']['DSC00109_2.JPG'].open()
@@ -60,9 +56,7 @@ class TestImageXMLReference(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('jpeg', ref.get('type'))
 
 
-class TestImageMIMEType(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
 
     def test_ignores_stored_dav_mime_type(self):
         self.repository['image'] = create_local_image('opernball.jpg')

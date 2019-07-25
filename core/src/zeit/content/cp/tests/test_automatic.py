@@ -417,8 +417,8 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         super(AutomaticAreaTopicpageTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.tms = mock.Mock()
-        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS,
-                               registry=zope.component.getSiteManager())
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_passes_id_to_tms(self):
         lead = self.repository['cp']['lead']
@@ -597,8 +597,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'topicpage'
         self.area.referenced_topicpage = 'mytopic'
         tms = mock.Mock()
-        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS,
-                               registry=zope.component.getSiteManager())
+        zope.component.getGlobalSiteManager().registerUtility(
+            tms, zeit.retresco.interfaces.ITMS)
         tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result([
             {'url': '/t1', 'doc_type': 'testcontenttype'},
             {'url': '/t2', 'doc_type': 'testcontenttype'},
@@ -616,8 +616,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'topicpage'
         self.area.referenced_topicpage = 'mytopic'
         tms = mock.Mock()
-        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS,
-                               registry=zope.component.getSiteManager())
+        zope.component.getGlobalSiteManager().registerUtility(
+            tms, zeit.retresco.interfaces.ITMS)
         tms.get_topicpage_documents.return_value = zeit.cms.interfaces.Result([
             {'url': '/t1', 'doc_type': 'testcontenttype'},
             {'url': '/t2', 'doc_type': 'testcontenttype'},
@@ -643,8 +643,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         a2.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
         tms = mock.Mock()
-        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS,
-                               registry=zope.component.getSiteManager())
+        zope.component.getGlobalSiteManager().registerUtility(
+            tms, zeit.retresco.interfaces.ITMS)
         results = zeit.cms.interfaces.Result()
         for n in range(30):
             url = 'teaser-{}'.format(n)
@@ -746,8 +746,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         area = self.create_automatic_area(self.cp)
         area.start = 0          # TODO: are we sure this is _always_ set?
         tms = mock.Mock()
-        self.zca.patch_utility(tms, zeit.retresco.interfaces.ITMS,
-                               registry=zope.component.getSiteManager())
+        zope.component.getGlobalSiteManager().registerUtility(
+            tms, zeit.retresco.interfaces.ITMS)
         results = zeit.cms.interfaces.Result([])
         results.hits = 42
         tms.get_topicpage_documents.return_value = results

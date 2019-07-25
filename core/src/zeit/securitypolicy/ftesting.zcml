@@ -3,10 +3,12 @@
   i18n_domain="zeit.cms">
 
   <include package="zeit.cms" file="application.zcml" />
+  <!-- generic @@contents views -->
+  <include package="zope.app.container.browser.tests" />
+
   <include package="zeit.cms" />
   <include package="zeit.connector" file="mock-connector.zcml" />
   <include package="zeit.push" />
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
 
   <include package="zeit.securitypolicy" />
 

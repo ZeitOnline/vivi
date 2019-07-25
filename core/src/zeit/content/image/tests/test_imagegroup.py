@@ -5,15 +5,12 @@ from zope.publisher.interfaces import NotFound
 import PIL
 import mock
 import zeit.cms.repository.interfaces
-import zeit.cms.testing
 import zeit.content.image.testing
 import zope.event
 import zope.lifecycleevent
 
 
-class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ImageGroupTest, self).setUp()
@@ -244,9 +241,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('WEBP', image.format)
 
 
-class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ExternalIDTest, self).setUp()
@@ -277,9 +272,7 @@ class ExternalIDTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(None, self.search('wartsnurab.jpg'))
 
 
-class ThumbnailsTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         from ..imagegroup import Thumbnails

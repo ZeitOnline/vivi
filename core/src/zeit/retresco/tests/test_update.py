@@ -20,7 +20,8 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
         self.tms.generate_keyword_list.return_value = []
-        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_creating_content_should_index(self):
         self.repository['t1'] = ExampleContentType()
@@ -161,7 +162,8 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super(UpdatePublishTest, self).setUp()
         self.tms = mock.Mock()
-        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_publish_should_index_with_published_true(self):
         published = []
@@ -244,7 +246,8 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
 
         self.tms = mock.Mock()
         self.tms.enrich.return_value = {}
-        self.zca.patch_utility(self.tms, zeit.retresco.interfaces.ITMS)
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.tms, zeit.retresco.interfaces.ITMS)
 
         self.retry_patch = mock.patch(
             'zeit.cms.celery.Task.default_retry_delay', new=None)

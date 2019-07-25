@@ -12,20 +12,17 @@ import zope.interface.verify
 
 product_config = """
 <product-config zeit.imp>
-    scale-source file://%s
-    color-source file://%s
+    scale-source file://{base}/scales.xml
+    color-source file://{base}/colors.xml
 </product-config>
-""" % (
-    pkg_resources.resource_filename(__name__, 'scales.xml'),
-    pkg_resources.resource_filename(__name__, 'colors.xml'))
+""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
-imp_layer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config +
-    zeit.content.image.testing.product_config +
-    product_config)
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(imp_layer,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
@@ -110,7 +107,7 @@ class TestLayerMask(unittest.TestCase):
 
 class TestSources(zeit.cms.testing.FunctionalTestCase):
 
-    layer = imp_layer
+    layer = ZOPE_LAYER
 
     def test_scale_source(self):
         source = zeit.imp.source.ScaleSource()(None)
@@ -136,7 +133,7 @@ class TestSources(zeit.cms.testing.FunctionalTestCase):
 
 class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
-    layer = imp_layer
+    layer = ZOPE_LAYER
 
     def setUp(self):
         super(TestCrop, self).setUp()

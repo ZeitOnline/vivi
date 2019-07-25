@@ -10,7 +10,7 @@ Creating a connector:
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 >>> connector
-<zeit.connector.connector.Connector object at 0x...>
+<zeit.connector.connector... object at 0x...>
 
 
 IConnector Interface

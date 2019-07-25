@@ -2,7 +2,6 @@ from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
 import json
 import plone.testing
-import transaction
 import urllib
 import urllib2
 import zeit.cms.generation.install
@@ -19,32 +18,42 @@ class LoginFormLayer(plone.testing.Layer):
     defaultBases = (zeit.cms.testing.WSGI_LAYER,)
 
     def setUp(self):
-        root = self['functional_setup'].getRootFolder()
-        self['principalfolder'] = PrincipalFolder('principal.')
-        root['principals'] = self['principalfolder']
-        self['principalfolder']['user'] = InternalPrincipal(
-            'user', 'userpw', u'Testuser')
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            with zeit.cms.testing.site(root):
+                self['principalfolder'] = PrincipalFolder('principal.')
+                root['principals'] = self['principalfolder']
+                self['principalfolder']['user'] = InternalPrincipal(
+                    'user', 'userpw', u'Testuser')
 
-        with zeit.cms.testing.site(root):
-            site_manager = zope.component.getSiteManager()
+                site_manager = zope.component.getSiteManager(root)
+                site_manager.registerUtility(
+                    root['principals'],
+                    zope.pluggableauth.interfaces.IAuthenticatorPlugin,
+                    name='principalfolder')
 
-            site_manager.registerUtility(
-                root['principals'],
-                zope.pluggableauth.interfaces.IAuthenticatorPlugin,
-                name='principalfolder')
-
-            auth = zeit.cms.generation.install.installLocalUtility(
-                site_manager,
-                zope.pluggableauth.authentication.PluggableAuthentication,
-                'authentication',
-                zope.authentication.interfaces.IAuthentication)
-            auth.authenticatorPlugins = ('principalfolder',)
-            auth.credentialsPlugins = (
-                'No Challenge if Authenticated',
-                'Session Credentials')
-            transaction.commit()
+                auth = zeit.cms.generation.install.installLocalUtility(
+                    site_manager,
+                    zope.pluggableauth.authentication.PluggableAuthentication,
+                    'authentication',
+                    zope.authentication.interfaces.IAuthentication)
+                auth.authenticatorPlugins = ('principalfolder',)
+                auth.credentialsPlugins = (
+                    'No Challenge if Authenticated',
+                    'Session Credentials')
 
     def tearDown(self):
+        # We cannot just have ZODB_LAYER throw away a DB stack entry, since if
+        # you set a resource from further above in the layer hierarchy it's not
+        # available to lower levels. So we'd have to come up with some clever
+        # inheritance scheme and probably create 5 new layer instances to
+        # support this -- it's way easier to just clean up explicitly.
+        with self['rootFolder'](self['zodbDB-layer']) as root:
+            site_manager = zope.component.getSiteManager(root)
+            site_manager.unregisterUtility(
+                site_manager['authentication'],
+                zope.authentication.interfaces.IAuthentication)
+            del site_manager['authentication']
+            del root['principals']
         del self['principalfolder']
 
 LOGINFORM_LAYER = LoginFormLayer()

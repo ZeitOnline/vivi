@@ -6,9 +6,7 @@ import zeit.cms.related.interfaces
 import zeit.cms.relation.corehandlers
 
 
-class CorehandlerTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.cms.testing.ZCML_LAYER
+class CorehandlerTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType

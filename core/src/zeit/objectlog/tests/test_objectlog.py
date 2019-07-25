@@ -1,32 +1,17 @@
 from datetime import datetime
 import transaction
-import zeit.cms.testing
 import zeit.objectlog.interfaces
 import zeit.objectlog.testing
-import zope.app.testing.functional
 import zope.component
-import zope.component.hooks
-import zope.publisher.browser
-import zope.security.management
-import zope.security.testing
 
 
-class ObjectLog(zope.app.testing.functional.FunctionalTestCase):
-
-    layer = zeit.objectlog.testing.ObjectLogLayer
+class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ObjectLog, self).setUp()
-        zope.component.hooks.setSite(self.getRootFolder())
-        zeit.cms.testing.create_interaction()
         self.content = zeit.objectlog.testing.Content()
         self.getRootFolder()['content'] = self.content
         transaction.commit()
-
-    def tearDown(self):
-        zope.component.hooks.setSite(None)
-        zope.security.management.endInteraction()
-        super(ObjectLog, self).tearDown()
 
     def test_timestamp_can_be_overridden(self):
         log = zeit.objectlog.interfaces.ILog(self.content)

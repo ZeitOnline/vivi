@@ -8,22 +8,20 @@ import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zeit.workflow.testing
 import zope.component
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
-    zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    zeit.content.cp.testing.product_config))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
+    zeit.content.cp.testing.CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class DynamicLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+        with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
 
@@ -41,16 +39,13 @@ class DynamicLayer(plone.testing.Layer):
             transaction.commit()
 
 
-DYNAMIC_LAYER = DynamicLayer()
+LAYER = DynamicLayer()
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = DYNAMIC_LAYER
-
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(DYNAMIC_LAYER,))
+    layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

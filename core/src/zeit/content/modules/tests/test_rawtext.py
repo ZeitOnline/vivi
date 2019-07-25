@@ -2,15 +2,12 @@ from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import lxml.objectify
 import mock
-import zeit.cms.testing
 import zeit.content.modules.rawtext
 import zeit.content.modules.testing
 import zeit.content.text.embed
 
 
-class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.modules.testing.ZCML_LAYER
+class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
         super(EmbedParameters, self).setUp()
@@ -79,9 +76,7 @@ class EmbedParameters(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('10.000', self.module.params['p1'])
 
 
-class EmbedCSS(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.modules.testing.ZCML_LAYER
+class EmbedCSS(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
         super(EmbedCSS, self).setUp()

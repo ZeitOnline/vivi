@@ -8,30 +8,39 @@ import zeit.brightcove.testing
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
-import zeit.content.article.testing
-import zeit.content.image.testing
-import zeit.imp.tests
-import zeit.push.testing
 import zeit.retresco.testing
 import zope.component
 import zope.component.hooks
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=(
-        zeit.cms.testing.cms_product_config +
-        zeit.content.article.testing.product_config +
-        zeit.content.image.testing.product_config +
-        zeit.imp.tests.product_config +
-        zeit.push.testing.product_config +
-        zeit.retresco.testing.product_config +
-        zeit.brightcove.testing.product_config))
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
+
+    def testSetUp(self):
+        # Tweak pushGlobalRegistry so the registry does not have any bases,
+        # otherwise zope.authentication.principal infloops because
+        # zope.component.queryNextUtility() always finds a base and never stops
+        base = self['zcaRegistry']
+        registry = zope.component.globalregistry.BaseGlobalComponents(__name__)
+        registry.adapters.__bases__ = (base.adapters,)
+        registry.utilities.__bases__ = (base.utilities,)
+        plone.testing.zca.pushGlobalRegistry(registry)
+        self.registry = registry
+
+    def testTearDown(self):
+        self.registry.__bases__ = (self['zcaRegistry'],)
+        plone.testing.zca.popGlobalRegistry()
+
+
+ZCML_LAYER = ZCMLLayer(bases=(
+    zeit.brightcove.testing.CONFIG_LAYER,
+    zeit.retresco.testing.CONFIG_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
+    ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
 
 
 class SecurityPolicyLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER)
+    defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
         connector = zope.component.getUtility(
@@ -41,7 +50,7 @@ class SecurityPolicyLayer(plone.testing.Layer):
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
 LAYER = SecurityPolicyLayer()
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 
 def make_xls_test(*args):
@@ -71,10 +80,6 @@ class SecurityPolicyXLSSheetCase(object):
         if self.username != 'anonymous':
             password = self.username + 'pw'
             self.browser.login(self.username, password)
-
-    def tearDown(self):
-        self.connector._reset()
-        super(SecurityPolicyXLSSheetCase, self).tearDown()
 
     def runTest(self):
         for skin, path, form, expected in self.cases:
@@ -111,7 +116,7 @@ class SecurityPolicyXLSSheetCase(object):
             self.__class__.__module__, self.__class__.__name__)
 
     @property
-    def connector(self):
+    def connector(self):  # for eval()
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 

@@ -15,7 +15,8 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
     def setUp(self):
         super(TestAdding, self).setUp()
         domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
-        self.zca.patch_utility(domain, name='zeit.cms')
+        zope.component.getGlobalSiteManager().registerUtility(
+            domain, name='zeit.cms')
         self.catalog = zeit.cms.testing.TestCatalog()
         domain.addCatalog(self.catalog)
 

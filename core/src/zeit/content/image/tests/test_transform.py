@@ -3,14 +3,11 @@ from zeit.content.image.variant import Variant
 import PIL.Image
 import PIL.ImageDraw
 import pkg_resources
-import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
 
-class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(CreateVariantImageTest, self).setUp()

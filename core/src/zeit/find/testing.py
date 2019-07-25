@@ -16,14 +16,15 @@ product_config = """\
 """
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.cms.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class Layer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def setUp(self):
         self.search = zope.component.getUtility(

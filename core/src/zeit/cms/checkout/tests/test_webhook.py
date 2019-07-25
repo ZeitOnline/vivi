@@ -16,7 +16,7 @@ HTTP_LAYER = zeit.cms.testing.HTTPLayer(
 
 
 WEBHOOK_LAYER = plone.testing.Layer(
-    bases=(zeit.cms.testing.ZCML_LAYER, HTTP_LAYER),
+    bases=(zeit.cms.testing.ZOPE_LAYER, HTTP_LAYER),
     name='WebhookLayer', module=__name__)
 
 

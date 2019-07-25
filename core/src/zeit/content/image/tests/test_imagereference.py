@@ -6,15 +6,12 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
 import lxml.etree
 import mock
-import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zope.copypastemove.interfaces
 
 
-class ImageAssetTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ImageAssetTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_IImages_accepts_IImage_for_backwards_compatibility(self):
         with self.assertNothingRaised():
@@ -22,9 +19,7 @@ class ImageAssetTest(zeit.cms.testing.FunctionalTestCase):
                 ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG'))
 
 
-class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ImageReferenceTest, self).setUp()
@@ -117,9 +112,7 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
             '//head/image[@fill_color="F00F00"]')) == 1
 
 
-class MoveReferencesTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class MoveReferencesTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_moving_image_updates_uniqueId_in_referencing_obj(self):
         # This is basically the same test as zeit.cms.redirect.tests.test_move,

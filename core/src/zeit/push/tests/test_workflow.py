@@ -6,6 +6,7 @@ import lxml.etree
 import mock
 import zeit.cms.content.interfaces
 import zeit.push.testing
+import zope.component
 
 
 class PushServiceProperties(zeit.push.testing.TestCase):
@@ -34,7 +35,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
     def setUp(self):
         super(SendingNotifications, self).setUp()
         self.notifier = mock.Mock()
-        self.zca.patch_adapter(
+        zope.component.getGlobalSiteManager().registerAdapter(
             self.notifier, (zeit.cms.content.interfaces.ICommonMetadata,),
             zeit.push.interfaces.IMessage, name='mypush')
         # getAdapter instantiates factory, which causes one call

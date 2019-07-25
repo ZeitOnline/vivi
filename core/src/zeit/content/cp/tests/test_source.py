@@ -7,9 +7,7 @@ import zeit.content.cp.testing
 
 class CPSourceTest(
         zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.cp.testing.ZCML_LAYER
+        zeit.content.cp.testing.FunctionalTestCase):
 
     source = zeit.content.cp.source.centerPageSource
     expected_types = ['centerpage-2009']

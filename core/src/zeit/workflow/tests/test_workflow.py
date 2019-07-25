@@ -6,7 +6,6 @@ import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
 import zeit.cms.testcontenttype.interfaces
-import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.asset
 import zeit.workflow.testing
@@ -14,9 +13,7 @@ import zope.annotation.interfaces
 import zope.interface
 
 
-class AssetWorkflowTests(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
 
     def setUp(self):
         super(AssetWorkflowTests, self).setUp()
@@ -56,9 +53,7 @@ class AssetWorkflowTests(zeit.cms.testing.FunctionalTestCase):
         assert not workflow.published
 
 
-class ContentWorkflowTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.workflow.testing.LAYER
+class ContentWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_content_in_blacklisted_folder_should_not_publish(self):
         self.repository['blacklist'] = zeit.cms.repository.folder.Folder()

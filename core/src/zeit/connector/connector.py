@@ -786,11 +786,9 @@ class Connector(object):
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector')
-        document_store = (config or {}).get('document-store')
-        if not document_store:
-            raise ZConfig.ConfigurationError(
-                cls.long_name + " not configured properly.")
-        return cls(dict(default=document_store))
+        return cls({
+            'default': config['document-store'],
+            'search': config['document-store-search']})
 
 
 connector_factory = Connector.factory

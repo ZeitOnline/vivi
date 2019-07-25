@@ -18,20 +18,11 @@ product_config = """\
 </product-config>
 """
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
-    zeit.cms.testing.cms_product_config +
-    zeit.workflow.testing.product_config +
-    product_config))
-
-
-class TestLayer(plone.testing.Layer):
-
-    defaultBases = (ZCML_LAYER, PLAYER_MOCK_LAYER)
-
-TEST_LAYER = TestLayer()
-
-
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.workflow.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, PLAYER_MOCK_LAYER))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
@@ -55,7 +46,7 @@ BROWSER_LAYER = TestBrowserLayer()
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = TEST_LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

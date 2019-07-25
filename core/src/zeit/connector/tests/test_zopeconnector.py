@@ -3,12 +3,7 @@ import zeit.connector.testing
 
 class TestMoveRollback(zeit.connector.testing.ConnectorTest):
 
-    layer = zeit.connector.testing.zope_connector_layer
-
-    def setUp(self):
-        import zope.component.hooks
-        zope.component.hooks.setSite(self.layer.setup.getRootFolder())
-        super(TestMoveRollback, self).setUp()
+    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
 
     def test_move_should_revert_on_abort(self):
         import transaction
@@ -21,7 +16,7 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
             ['source'],
             [name for name, unique_id in
              self.connector.listCollection(
-                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
+                 'http://xml.zeit.de/%s' % self.testfolder) if name])
 
     def test_move_should_not_revert_on_commit(self):
         import transaction
@@ -34,7 +29,7 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
             ['target'],
             [name for name, unique_id in
              self.connector.listCollection(
-                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
+                 'http://xml.zeit.de/%s' % self.testfolder) if name])
 
     def test_move_should_not_try_to_revert_on_error(self):
         import transaction
@@ -53,6 +48,6 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         transaction.abort()
         self.assertEqual(
             ['target'],
-            [name for name, unique_id in
-             self.connector.listCollection('http://xml.zeit.de/testing')
+            [name for name, unique_id in self.connector.listCollection(
+                'http://xml.zeit.de/%s' % self.testfolder)
              if name])

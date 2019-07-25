@@ -50,20 +50,23 @@ product_config = """\
     __name__, 'tests/fixtures'))
 
 
-class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.workflow.testing.CONFIG_LAYER,))
+
+
+class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
     def setUp(self):
         # Break circular dependency
         import zeit.content.article.testing
-        self.product_config = (
-            product_config +
-            zeit.cms.testing.cms_product_config +
-            zeit.workflow.testing.product_config +
-            zeit.content.article.testing.product_config)
-        super(ZCMLLayer, self).setUp()
+        config = zeit.content.article.testing.product_config
+        self.config = self.loadConfiguration(config, self.package)
+        super(ArticleConfigLayer, self).setUp()
 
-
-ZCML_LAYER = ZCMLLayer('testing.zcml')
+ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(
+    CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class PushMockLayer(plone.testing.Layer):
@@ -80,13 +83,13 @@ PUSH_MOCK_LAYER = PushMockLayer()
 
 class UrbanairshipTemplateLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER,)
+    defaultBases = (ZOPE_LAYER,)
 
     def create_template(self, text=None, name='template.json'):
         if not text:
             text = pkg_resources.resource_string(
                 __name__, 'tests/fixtures/payloadtemplate.json')
-        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
+        with zeit.cms.testing.site(self['zodbApp']):
             with zeit.cms.testing.interaction():
                 cfg = zope.app.appsetup.product.getProductConfiguration(
                     'zeit.push')
@@ -112,9 +115,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()
 
 LAYER = plone.testing.Layer(
-    bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER),
-    name='ZCMLPushMockLayer',
-    module=__name__)
+    name='Layer', bases=(URBANAIRSHIP_TEMPLATE_LAYER, PUSH_MOCK_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):

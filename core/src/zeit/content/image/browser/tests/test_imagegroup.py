@@ -195,9 +195,7 @@ class ImageGroupBrowserTest(
             '...Unsupported image type...', self.browser.contents)
 
 
-class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.content.image.testing.WEBDRIVER_LAYER
+class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def setUp(self):
         super(ImageGroupWebdriverTest, self).setUp()
@@ -247,9 +245,7 @@ class ImageGroupWebdriverTest(zeit.cms.testing.SeleniumTestCase):
         sel.assertVisible(freetext)
 
 
-class ThumbnailTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.content.image.testing.ZCML_LAYER
+class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         from zeit.content.image.browser.imagegroup import Thumbnail

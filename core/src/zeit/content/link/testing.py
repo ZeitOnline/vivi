@@ -6,23 +6,24 @@ import zeit.push.testing
 
 product_config = """
 <product-config zeit.content.link>
-    source-blogs file://%s
+    source-blogs file://{base}/blog_source.xml
 </product-config>
-""" % pkg_resources.resource_filename(__name__, 'blog_source.xml')
+""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=(zeit.cms.testing.cms_product_config +
-                    zeit.push.testing.product_config +
-                    product_config))
-
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.push.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
+    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
+LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='Layer')
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
-LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='LinkLayer')
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):

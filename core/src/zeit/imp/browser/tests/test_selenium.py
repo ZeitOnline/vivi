@@ -9,7 +9,7 @@ import zeit.imp.tests
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(zeit.imp.tests.imp_layer,))
+    name='WSGILayer', bases=(zeit.imp.tests.ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

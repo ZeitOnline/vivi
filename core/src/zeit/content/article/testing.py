@@ -6,14 +6,9 @@ import re
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zeit.content.author.testing
-import zeit.content.cp.testing
 import zeit.content.gallery.testing
-import zeit.content.image.testing
-import zeit.content.modules.testing
 import zeit.content.volume.testing
 import zeit.push.testing
-import zeit.workflow.testing
 import zope.component
 
 
@@ -43,22 +38,13 @@ checker = zeit.cms.testing.OutputChecker([
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=(
-        product_config +
-        zeit.workflow.testing.product_config +
-        zeit.content.cp.testing.product_config +
-        zeit.content.image.testing.product_config +
-        zeit.content.modules.testing.product_config +
-        zeit.content.gallery.testing.product_config +
-        zeit.content.author.testing.product_config +
-        zeit.content.volume.testing.product_config +
-        zeit.push.testing.product_config +
-        zeit.cms.testing.cms_product_config))
-
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.content.gallery.testing.CONFIG_LAYER,
+    zeit.content.volume.testing.CONFIG_LAYER))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZCML_LAYER,))
+    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
 class ArticleLayer(plone.testing.Layer):
