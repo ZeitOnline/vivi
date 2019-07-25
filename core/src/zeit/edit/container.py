@@ -253,7 +253,8 @@ class TypeOnAttributeContainer(Base):
             cms='http://namespaces.zeit.de/CMS/cp'))
 
     def _get_element_type(self, xml_node):
-        return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')
+        return xml_node.get(
+            '{http://namespaces.zeit.de/CMS/cp}type', '__invalid__')
 
 
 class Sublocations(grok.Adapter):
