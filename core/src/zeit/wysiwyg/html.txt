@@ -1075,8 +1075,7 @@ Broken HTML, such as pasted from YouTube, is sanitized:
     <raw>
     <object height="340" width="560">
     <param name="movie"
-      value="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;">
-    </param>
+      value="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"/>
     </object>
     </raw>
     </body>

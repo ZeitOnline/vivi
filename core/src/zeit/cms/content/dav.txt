@@ -48,7 +48,7 @@ Try this for some fields. Integer goes first:
 >>> converter.fromProperty('text')  #doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
-ValueError: invalid literal for int(): text
+InvalidIntLiteral: invalid literal for int() with base 10: 'text'
 
 
 The other way round is handled by the toProperty method:
@@ -74,7 +74,7 @@ Floats are also supported:
 >>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-ValueError: could not convert string to float: text
+InvalidFloatLiteral: could not convert string to float: text
 
 Convert float to property. Doesn't fail for integers of course:
 
@@ -590,7 +590,7 @@ If the xml pickle is invalid an ValueError is raised:
 >>> converter.fromProperty(u'5')
 Traceback (most recent call last):
     ...
-ValueError: Start tag expected, '<' not found, line 1, column 1
+ValueError: Start tag expected, '<' not found, line 1, column 1 (line 1)
 
 >>> converter.fromProperty(u'<int>5</int>')
 Traceback (most recent call last):
