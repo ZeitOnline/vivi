@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.7.1 (unreleased)
+4.8.0 (2019-07-25)
 ------------------
 
 - IR-71: Add IAuthor.honorar_id
