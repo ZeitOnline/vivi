@@ -321,7 +321,7 @@ Object sources are used mostly by configuration files (e.g. centerpage layouts)
 ...             'one': Thing('one', 'T1'),
 ...             'two': Thing('two', 'T2'),
 ...         }
->>> field = zope.schema.Choice(source=ThingSource()).bind(None)
+>>> field = zope.schema.Choice(source=ThingSource()).bind(object())
 >>> converter = get_converter(field)
 >>> converter.fromProperty('one')
 Thing <id=one>
