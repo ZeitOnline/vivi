@@ -5,6 +5,8 @@ vivi.core changes
 4.7.1 (unreleased)
 ------------------
 
+- IR-71: Add IAuthor.honorar_id
+
 - MAINT: Increase favicon resolution
 
 

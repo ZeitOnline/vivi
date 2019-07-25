@@ -42,6 +42,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'external',
         'facebook',
         'firstname',
+        'honorar_id',
         'instagram',
         'lastname',
         'occupation',

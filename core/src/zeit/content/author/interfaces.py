@@ -56,6 +56,9 @@ class IAuthor(zope.interface.Interface,
         title=_('VG-Wort Code'), required=False,
         constraint=valid_vgwortcode)
 
+    honorar_id = zope.schema.TextLine(
+        title=_('Honorar ID'), required=False)
+
     display_name = zope.schema.TextLine(
         title=u'The computed display name. Default is "firstname lastname",'
               u' a user entered value takes precedence.',
