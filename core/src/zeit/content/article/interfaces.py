@@ -100,8 +100,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     has_audio = zope.schema.Bool(
         title=_('Has audio file'),
-        default=False,
-        readonly=True)
+        default=False)
 
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):

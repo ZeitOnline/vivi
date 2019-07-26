@@ -15,6 +15,13 @@ class EditFormCI(zeit.cms.browser.form.EditForm):
     field_groups = (gocept.form.grouped.RemainingFields(
         _('admin-field-group'), 'column-left-small'),)
 
+    def __init__(self, context, request):
+        super(EditFormCO, self).__init__(context, request)
+        for name, entry in zope.component.getUtilitiesFor(
+                zeit.cms.admin.interfaces.IAdditionalFields):
+            iface, fields = entry
+            self.form_fields += zope.formlib.form.Fields(iface).select(*fields)
+
 
 class EditFormCO(zeit.cms.browser.form.EditForm):
 
@@ -26,3 +33,10 @@ class EditFormCO(zeit.cms.browser.form.EditForm):
     # Without field group it will look weird when context is an Article.
     field_groups = (gocept.form.grouped.RemainingFields(
         _('admin-field-group'), 'column-left-small'),)
+
+    def __init__(self, context, request):
+        super(EditFormCO, self).__init__(context, request)
+        for name, entry in zope.component.getUtilitiesFor(
+                zeit.cms.admin.interfaces.IAdditionalFieldsCO):
+            iface, fields = entry
+            self.form_fields += zope.formlib.form.Fields(iface).select(*fields)

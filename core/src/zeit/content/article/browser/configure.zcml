@@ -118,4 +118,6 @@
     permission="zope.View"
     />
 
+  <utility factory=".admin.additional_fields_co" name="zeit.content.article" />
+
 </configure>

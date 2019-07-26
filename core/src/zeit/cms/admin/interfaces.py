@@ -23,3 +23,11 @@ class IAdjustSemanticPublish(zope.interface.Interface):
         title=_('Adjust first released'),
         required=False,
         max=zeit.cms.interfaces.MAX_PUBLISH_DATE)
+
+
+class IAdditionalFields(zope.interface.Interface):
+    pass
+
+
+class IAdditionalFieldsCO(zope.interface.Interface):
+    pass

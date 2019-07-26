@@ -7,6 +7,8 @@ vivi.core changes
 
 - IR-95: Add hdok id to ICommonMetadata.authorships XML reference
 
+- IR-41: Add `has_audio` field to the checked-out admin form
+
 
 4.8.0 (2019-07-25)
 ------------------
