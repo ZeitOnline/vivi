@@ -1,3 +1,4 @@
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 import gocept.testing.mock
 import lxml.etree
@@ -30,7 +31,7 @@ class AuthorshipXMLReferenceUpdater(
   ...
   <title xsi:nil="true"/>
   ...
-  <author href="http://xml.zeit.de/shakespeare"...>
+  <author...href="http://xml.zeit.de/shakespeare"...>
     <display_name...>William Shakespeare</display_name>
     <location>London</location>
   </author>
@@ -52,11 +53,11 @@ class AuthorshipXMLReferenceUpdater(
 
         reference = lxml.etree.tostring(reference, pretty_print=True)
         self.assertEllipsis(
-            '...<author href="http://xml.zeit.de/andersen"...', reference)
+            '...<author...href="http://xml.zeit.de/andersen"...', reference)
         self.assertNotIn('shakespeare', reference)
 
     def test_works_with_security(self):
-        with zeit.cms.checkout.helper.checked_out(
+        with checked_out(
                 self.repository['testcontent'], temporary=False) as co:
             co = zope.security.proxy.ProxyFactory(co)
             co.authorships = (co.authorships.create(self.shakespeare),)
@@ -134,3 +135,16 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
 
         self.assertEqual(True, IAuthorBioReference.providedBy(result))
         self.assertEqual('bio', result.xml.biography.text)
+
+
+class AuthorReferenceTest(zeit.content.author.testing.FunctionalTestCase):
+
+    def test_hdok_id_is_added(self):
+        author = zeit.content.author.author.Author()
+        author.honorar_id = 'honorar-id'
+        author = self.repository['testauthor'] = author
+        result = zope.component.getAdapter(
+            author,
+            zeit.cms.content.interfaces.IXMLReference,
+            name='author')
+        self.assertEqual('honorar-id', result.get('hdok'))

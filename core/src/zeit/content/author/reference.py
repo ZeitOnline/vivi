@@ -11,7 +11,8 @@ import zope.security.proxy
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    node = lxml.objectify.E.author(href=context.uniqueId)
+    node = lxml.objectify.E.author(
+        href=context.uniqueId, hdok=context.honorar_id or '')
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
