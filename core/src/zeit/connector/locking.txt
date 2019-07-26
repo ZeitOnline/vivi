@@ -147,7 +147,7 @@ Edge case 2.3: PROPATCH
 Traceback (most recent call last):
     ...
 DAVLockedError: (423, 'Locked',
-    u'http://.../cms/work/testing.../edge2.3',
+    u'http://.../cms/testing.../edge2.3',
     '<!DOCTYPE...
 
 >>> connector.unlock(res.id, token)

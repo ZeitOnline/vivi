@@ -9,7 +9,6 @@ Search (functional test)
 The building blocks are search vars:
 
 >>> from zeit.connector.search import SearchVar
->>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
 >>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
 >>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
 >>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
@@ -18,11 +17,22 @@ The building blocks are search vars:
 >>> etag = SearchVar('getetag', 'DAV:')
 
 Queries are built of basic terms involving search vars stitched together into
-expressions (note that we get dummy values at the moment):
+expressions:
 
->>> [res for res in connector.search([author, volume, ressort],
-...  (year == '2007') & (volume == '07') & (author == 'pm'))]
-[(u'http://xml.zeit.de/2007/07/inderzeit', 'pm', '07', 'Inhaltsverzeichnis')]
+>>> import StringIO
+>>> rid = 'http://xml.zeit.de/testing/foo'
+>>> connector[rid] = zeit.connector.resource.Resource(
+...     rid, None, 'text',
+...     StringIO.StringIO('Pop.'),
+...     {('ressort', 'http://namespaces.zeit.de/CMS/document'): 'Inhaltsverzeichnis',
+...      ('year', 'http://namespaces.zeit.de/CMS/document'): '2007',
+...      ('volume', 'http://namespaces.zeit.de/CMS/document'): '07'},
+...     contentType='text/plain')
+
+
+>>> [res for res in connector.search([volume, ressort],
+...  (year == '2007') & (volume == '07'))]
+[(u'http://xml.zeit.de/testing/foo', '07', 'Inhaltsverzeichnis')]
 
 
 We expect nothing has changed in the future

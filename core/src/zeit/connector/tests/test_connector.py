@@ -2,7 +2,6 @@
 from zeit.connector.testing import copy_inherited_functions
 import StringIO
 import mock
-import os
 import transaction
 import unittest
 import zeit.connector.connector
@@ -12,22 +11,6 @@ import zope.component
 
 
 class TestUnicode(zeit.connector.testing.ConnectorTest):
-
-    def test_access(self):
-        self.connector[
-            u'http://xml.zeit.de/online/2007/09/laktose-milchzucker-gewöhnung']
-
-    def test_create_and_list(self):
-        import zeit.connector.resource
-        rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text',
-            StringIO.StringIO('Pop.'),
-            contentType='text/plain')
-        self.assertEquals(
-            [(u'ünicöde', rid)],
-            list(self.connector.listCollection(
-                'http://xml.zeit.de/%s/' % self.testfolder)))
 
     def test_overwrite(self):
         import zeit.connector.resource
@@ -429,12 +412,11 @@ class TestTBCConnector(zeit.connector.testing.ConnectorTest):
 
     def setUp(self):
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
-            roots={'default': os.environ['connector-url'],
-                   'search': os.environ['search-connector-url']})
+            roots={'default': self.layer['dav_url'],
+                   'search': self.layer['query_url']})
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerUtility(connector, zeit.connector.interfaces.IConnector)
 
     def test_smoke(self):
-        resource = self.connector[
-            u'http://xml.zeit.de/online/2007/09/laktose-milchzucker-gewöhnung']
+        resource = self.connector[u'http://xml.zeit.de/testing']
         resource.data

@@ -23,22 +23,6 @@ Get a folder:
 >>> connector['http://xml.zeit.de/%s' % TESTFOLDER()]
 <zeit.connector.resource.CachedResource object at 0x...>
 
-Get a file-like resource:
-
->>> res = connector['http://xml.zeit.de/index']
->>> res
-<zeit.connector.resource.CachedResource object at 0x...>
->>> type(res.data)
-<type 'file'>
-
-After committing we'll still get a file back:
-
->>> import transaction
->>> transaction.commit()
->>> res = connector['http://xml.zeit.de/index']
->>> type(res.data)
-<type 'file'>
-
 The directory listing is empty:
 
 >>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))

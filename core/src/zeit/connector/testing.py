@@ -1,10 +1,14 @@
 import StringIO
 import ZODB.blob
+import contextlib
+import docker
 import os
 import pkg_resources
 import plone.testing
 import pytest
 import re
+import requests
+import socket
 import threading
 import time
 import transaction
@@ -19,23 +23,53 @@ import zope.component.hooks
 import zope.testing.renormalizing
 
 
-class DAVIsolationLayer(plone.testing.Layer):
+class DAVServerLayer(plone.testing.Layer):
 
     def setUp(self):
-        self['testfolder'] = 'testing/%s' % time.time()
+        dav = self.get_random_port()
+        query = self.get_random_port()
+        client = docker.from_env()
+        self['dav_container'] = client.containers.run(
+            "registry.zeit.de/dav-server:1.1.0", detach=True, remove=True,
+            ports={9000: dav, 9999: query})
+        self['dav_url'] = 'http://localhost:%s/cms/' % dav
+        self['query_url'] = 'http://localhost:%s' % query
+        self.wait_for_http(self['dav_url'])
+        # self.wait_for_http(self['query_url'])
         TBC = zeit.connector.connector.TransactionBoundCachingConnector
-        self['connector'] = TBC({'default': os.environ['connector-url']})
-        mkdir(self['connector'], 'http://xml.zeit.de/%s' % self['testfolder'])
+        self['connector'] = TBC({'default': self['dav_url']})
+        mkdir(self['connector'], 'http://xml.zeit.de/testing')
 
     def tearDown(self):
-        del self['connector']['http://xml.zeit.de/%s' % self['testfolder']]
-        del self['testfolder']
+        self['dav_container'].stop()
+        del self['dav_container']
+        del self['dav_url']
+        del self['query_url']
+        del self['connector']
+
+    # Taken from pytest-nginx
+    def get_random_port(self):
+        s = socket.socket()
+        with contextlib.closing(s):
+            s.bind(('localhost', 0))
+            return s.getsockname()[1]
+
+    def wait_for_http(self, url, timeout=5, sleep=0.2):
+        slept = 0
+        while slept < timeout:
+            try:
+                requests.get(url, timeout=1)
+            except Exception:
+                pass
+            else:
+                return
+        raise TimeoutError('%s did not start up' % url)
 
     def testTearDown(self):
         transaction.abort()
         connector = self['connector']
         for name, uid in connector.listCollection(
-                'http://xml.zeit.de/' + self['testfolder']):
+                'http://xml.zeit.de/testing'):
             connector.unlock(uid)
             del connector[uid]
 
@@ -43,23 +77,31 @@ class DAVIsolationLayer(plone.testing.Layer):
             zeit.connector.interfaces.IConnector)
         connector.connections = threading.local()
 
-DAV_ISOLATION_LAYER = DAVIsolationLayer()
+
+DAV_SERVER_LAYER = DAVServerLayer()
 
 
-DAV_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({
-    'document-store': os.environ['connector-url'],
-    'document-store-search': os.environ['search-connector-url'],
-})
+class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
+
+    defaultBases = (DAV_SERVER_LAYER,)
+
+    def setUp(self):
+        self.config = {
+            'document-store': self['dav_url'],
+            'document-store-search': self['query_url'],
+        }
+        super(ConfigLayer, self).setUp()
+
+
+DAV_CONFIG_LAYER = ConfigLayer({})
 
 ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml', bases=(DAV_CONFIG_LAYER,))
-ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(
-    ZOPE_ZCML_LAYER, DAV_ISOLATION_LAYER))
+ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_ZCML_LAYER,))
 
 REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-real.zcml', bases=(DAV_CONFIG_LAYER,))
-REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(
-    REAL_ZCML_LAYER, DAV_ISOLATION_LAYER))
+REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(REAL_ZCML_LAYER,))
 
 
 FILESYSTEM_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
@@ -80,6 +122,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
+    # XXX I'm not sure this is still useful now that we use a container
     @property
     def testfolder(self):
         return self.layer.get('testfolder', 'testing')
@@ -118,16 +161,8 @@ class MockTest(TestCase):
             '', '', contentType='httpd/x-unix-directory'))
 
 
-parsed_url = urlparse.urlparse(os.environ['connector-url'])
-checker = zeit.cms.testing.OutputChecker([
-    (re.compile(str(parsed_url.hostname)), '<DAVHOST>'),
-    (re.compile(str(parsed_url.port)), '<DAVPORT>'),
-])
-
-
 def FunctionalDocFileSuite(*paths, **kw):
     kw['package'] = 'zeit.connector'
-    kw['checker'] = checker
     kw['globs'] = {
         'TESTFOLDER': lambda: kw['layer'].get('testfolder', 'testing')}
     return zeit.cms.testing.FunctionalDocFileSuite(*paths, **kw)

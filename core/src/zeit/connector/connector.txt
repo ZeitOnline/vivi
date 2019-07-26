@@ -31,17 +31,6 @@ Resources
 =========
 
 
-Get an object. We will get a cached resource:
-
->>> index_id = "http://xml.zeit.de/index"
->>> resource = connector[index_id]
->>> resource
-<zeit.connector.resource.CachedResource object at 0x...>
->>> print resource.data.read()
-<?xml ...
-<centerpage ...
-
-
 If a resource does not exist, a KeyError is raised:
 
 >>> connector['http://xml.zeit.de/foobar']
@@ -49,19 +38,20 @@ Traceback (most recent call last):
     ...
 KeyError: "The resource u'http://xml.zeit.de/foobar' does not exist."
 
-The properties are cached now:
-
->>> properties = connector.property_cache[index_id]
->>> len(properties) > 0
-True
-
 We can also get directory resources:
 
 >>> resource = connector['http://xml.zeit.de/%s/' % TESTFOLDER()]
+>>> resource
+<zeit.connector.resource.CachedResource object at 0x...>
 >>> resource.type
 'folder'
->>> 'testing/' + resource.__name__ == TESTFOLDER()
+
+The properties are cached now:
+
+>>> properties = connector.property_cache['http://xml.zeit.de/%s/' % TESTFOLDER()]
+>>> len(properties) > 0
 True
+
 
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:

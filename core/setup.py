@@ -29,6 +29,7 @@ setup(
         'celery_longterm_scheduler',
         'decorator',
         'docutils',
+        'docker',
         'elasticsearch >=2.0.0, <3.0.0',
         'fanstatic[cssmin,jsmin]',
         'fb',
