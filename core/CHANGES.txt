@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.8.1 (unreleased)
+4.8.1 (2019-07-29)
 ------------------
 
 - IR-95: Add hdok id to ICommonMetadata.authorships XML reference
