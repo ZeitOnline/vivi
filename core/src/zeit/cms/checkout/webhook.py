@@ -1,6 +1,7 @@
 from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.interfaces import ITypeDeclaration
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import collections
 import grokcore.component as grok
 import logging
@@ -87,6 +88,10 @@ class Hook(object):
         self.excludes.append((key, value))
 
     def should_exclude(self, content):
+        renameable = getattr(
+            IAutomaticallyRenameable(content, None), 'renameable', False)
+        if renameable:
+            return True
         for exclude in self.excludes:
             if self._matches(exclude, content):
                 log.debug('Skipping %s, matched exclude %s', content, exclude)
