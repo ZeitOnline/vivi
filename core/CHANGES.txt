@@ -5,7 +5,7 @@ vivi.core changes
 4.8.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- MAINT: Keep __name__ attributes in article
 
 
 4.8.2 (2019-07-29)

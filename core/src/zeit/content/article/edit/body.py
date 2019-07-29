@@ -145,23 +145,6 @@ class BodyTraverser(grok.Adapter):
             self.context).traverse(name, furtherPath)
 
 
-# Remove all the __name__ thingies on before adding an article to the
-# repository
-_find_name_attributes = lxml.etree.XPath(
-    '//*[@cms:__name__]',
-    namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
-
-
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def remove_name_attributes(context, event):
-    unwrapped = zope.security.proxy.removeSecurityProxy(context)
-    for element in _find_name_attributes(unwrapped.xml):
-        del element.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
-    lxml.etree.cleanup_namespaces(unwrapped.xml)
-
-
 class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)

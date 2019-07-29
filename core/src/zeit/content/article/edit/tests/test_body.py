@@ -136,42 +136,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             [body[x].xml for x in body.keys()])
 
 
-class TestCleaner(unittest.TestCase):
-
-    def get_article(self):
-        from zeit.content.article.article import Article
-        return Article()
-
-    def assert_key(self, node, expected):
-        have = node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        if expected is None:
-            self.assertIsNone(have)
-        else:
-            self.assertEqual(expected, have)
-
-    def set_key(self, node, key):
-        node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
-
-    def clean(self, obj):
-        from zeit.content.article.edit.body import remove_name_attributes
-        remove_name_attributes(obj, mock.sentinel.event)
-
-    def test_should_remove_name_attributes(self):
-        art = self.get_article()
-        art.xml.body.division = ''
-        self.set_key(art.xml.body.division, 'divname')
-        self.clean(art)
-        self.assert_key(art.xml.body.division, None)
-
-    def test_should_remove_namespace(self):
-        art = self.get_article()
-        art.xml.body.division = ''
-        self.set_key(art.xml.body.division, 'divname')
-        self.clean(art)
-        self.assertNotIn(
-            'namespaces.zeit.de/CMS/cp', lxml.etree.tostring(art.xml))
-
-
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_children_should_return_elements(self):
