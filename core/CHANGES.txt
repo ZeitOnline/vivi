@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.8.4 (unreleased)
+4.8.4 (2019-07-30)
 ------------------
 
 - HOTFIX: Fix typo in admin "checked-in" form
