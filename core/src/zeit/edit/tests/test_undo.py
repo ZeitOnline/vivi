@@ -76,11 +76,6 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
         with self.assertRaisesRegexp(ValueError, 'No state.*found'):
             self.undo.revert(history[-1]['tid'])
 
-    def test_unicode_undo_msg_should_not_break_commit(self):
-        with mock.patch.object(transaction.Transaction, 'note') as note:
-            zeit.edit.undo.mark_transaction_undoable(u'äöü')
-            self.assertEqual(str, type(note.call_args[0][0]))
-
     def test_history_should_decode_undo_message(self):
         self.content.year = 2012
         zeit.edit.undo.mark_transaction_undoable(u'äöü')
