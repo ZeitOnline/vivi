@@ -54,13 +54,7 @@ You can edit the XML content by clicking the Edit button:
 ...<span class="h_tag">&lt;foo</span><span class="h_tagend">/&gt;</span>...
 ...<span class="h_tag">&lt;/container&gt;</span>...
 
-The XML is checked for validity:
-
->>> print update_xml('<', '')
-<...
-<span class="error">Start tag expected, '&lt;' not found, line 1, column 1 (line 1)</span>...
-
-Furthermore, there are three contraints defined, which must match.
+There are three contraints defined, which must match.
 
 First, the root element must be a <container>:
 

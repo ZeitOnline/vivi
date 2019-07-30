@@ -161,7 +161,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
     def test_normalize_body(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
-        p.text = '“up” and „down‟ and «around»'
+        p.text = u'“up” and „down‟ and «around»'
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['article']) as co:

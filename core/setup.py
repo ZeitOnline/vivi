@@ -17,11 +17,11 @@ setup(
     install_requires=[
         'BTrees',
         'Jinja2',
-        'BeautifulSoup',
         'Pillow',
         'SilverCity',
         'ZConfig',
         'ZODB',
+        'beautifulsoup4',
         'bugsnag',
         'cssselect',
         'cssutils',
