@@ -11,11 +11,11 @@ class IExampleElement(zeit.edit.interfaces.IElement):
     pass
 
 
+@grokcore.component.implementer(IExampleElement)
 class ExampleElement(zeit.edit.block.SimpleElement):
 
     area = zope.interface.Interface
     type = 'testelement'
-    grokcore.component.implements(IExampleElement)
 
 
 class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):

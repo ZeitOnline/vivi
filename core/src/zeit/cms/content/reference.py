@@ -386,12 +386,12 @@ class EmptyReference(object):
 ID_PREFIX = 'reference://'
 
 
+@grok.implementer(zeit.cms.content.interfaces.IReference)
 class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     grok.adapts(
         zeit.cms.content.interfaces.IXMLRepresentation,
         gocept.lxml.interfaces.IObjectified)
-    grok.implements(zeit.cms.content.interfaces.IReference)
     grok.baseclass()
 
     # XXX kludgy: These must be set manually after adapter call by clients.
