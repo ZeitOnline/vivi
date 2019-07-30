@@ -7,6 +7,8 @@ vivi.core changes
 
 - HOTFIX: Fix typo in admin "checked-in" form
 
+- HOTFIX: Not all ressorts in TOC now come from k4 anymore
+
 
 4.8.3 (2019-07-29)
 ------------------

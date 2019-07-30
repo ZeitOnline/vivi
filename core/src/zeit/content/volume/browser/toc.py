@@ -163,7 +163,7 @@ class Toc(zeit.cms.browser.view.Base):
         for product, ir_product in ir_data.items():
             k4_product = k4_data[product]
             for name, ir_ressort in ir_product.items():
-                k4_ressort = k4_product[name]
+                k4_ressort = k4_product.setdefault(name, [])
                 k4_ressort.extend(ir_ressort)
 
     @property
