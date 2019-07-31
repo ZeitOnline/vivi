@@ -2,8 +2,10 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.assertion
 import lxml.etree
 import mock
+import plone.testing.zca
 import unittest
 import zeit.cms.content.interfaces
+import zope.component
 import zope.interface
 import zope.schema
 
@@ -11,10 +13,10 @@ import zope.schema
 class TestDAVConverterWrapper(unittest.TestCase):
 
     def setUp(self):
-        self.zca = gocept.zcapatch.Patches()
+        plone.testing.zca.pushGlobalRegistry()
 
     def tearDown(self):
-        self.zca.reset()
+        plone.testing.zca.popGlobalRegistry()
 
     def test_get_should_convert_from_property(self):
         from zeit.cms.content.property import DAVConverterWrapper
@@ -23,7 +25,7 @@ class TestDAVConverterWrapper(unittest.TestCase):
         field = mock.Mock()
         wrap = DAVConverterWrapper(prop, field)
         idpc = mock.Mock()
-        self.zca.patch_adapter(
+        zope.component.getSiteManager().registerAdapter(
             idpc,
             required=(zope.interface.Interface, zope.interface.Interface),
             provided=zeit.cms.content.interfaces.IDAVPropertyConverter)
@@ -46,7 +48,7 @@ class TestDAVConverterWrapper(unittest.TestCase):
         field = mock.Mock()
         wrap = DAVConverterWrapper(prop, field)
         idpc = mock.Mock()
-        self.zca.patch_adapter(
+        zope.component.getSiteManager().registerAdapter(
             idpc,
             required=(zope.interface.Interface, zope.interface.Interface),
             provided=zeit.cms.content.interfaces.IDAVPropertyConverter)

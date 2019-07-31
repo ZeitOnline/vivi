@@ -16,7 +16,6 @@ import gocept.httpserverlayer.wsgi
 import gocept.jslint
 import gocept.selenium
 import gocept.testing.assertion
-import gocept.zcapatch
 import inspect
 import json
 import kombu

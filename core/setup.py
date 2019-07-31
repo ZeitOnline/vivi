@@ -46,7 +46,6 @@ setup(
         'gocept.runner>0.5.3',
         'gocept.selenium>=2.4.0',
         'gocept.testing>=1.4.0.dev0',
-        'gocept.zcapatch',
         'grokcore.component',
         'grokcore.view',
         'guppy',
