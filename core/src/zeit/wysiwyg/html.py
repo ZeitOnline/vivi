@@ -8,7 +8,6 @@ import lxml.etree
 import lxml.html.soupparser
 import lxml.objectify
 import pytz
-import rwproperty
 import zc.iso8601.parse
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -832,11 +831,11 @@ class HTMLContentBase(object):
     def __init__(self, context):
         self.context = context
 
-    @rwproperty.getproperty
+    @property
     def html(self):
         return self.convert.to_html(self.get_tree())
 
-    @rwproperty.setproperty
+    @html.setter
     def html(self, value):
         return self.convert.from_html(self.get_tree(), value)
 

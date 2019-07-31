@@ -73,7 +73,6 @@ setup(
         'requests-mock',
         'redis',
         'repoze.vhm',
-        'rwproperty',
         'setuptools',
         'sprout',
         'suds',
