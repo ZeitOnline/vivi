@@ -27,7 +27,6 @@ setup(
         'cssutils',
         'celery >= 4.0',
         'celery_longterm_scheduler',
-        'decorator',
         'docutils',
         'docker',
         'elasticsearch >=2.0.0, <3.0.0',
