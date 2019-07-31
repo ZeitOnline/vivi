@@ -30,7 +30,7 @@ setup(
         'docutils',
         'docker',
         'elasticsearch >=2.0.0, <3.0.0',
-        'fanstatic[cssmin,jsmin]',
+        'fanstatic',
         'fb',
         'feedparser',
         'filemagic',
