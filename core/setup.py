@@ -60,7 +60,6 @@ setup(
         'js.select2',
         'js.underscore',
         'js.vanderlee_colorpicker',
-        'lovely.remotetask>=0.5',
         'lxml>=2.0.2',
         'martian',
         'mock',
