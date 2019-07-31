@@ -376,7 +376,7 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 class SlowAdapter(requests.adapters.BaseAdapter):
 
     def send(self, request, **kwargs):
-        time.sleep(request.headers.get('X-Sleep', 0))
+        time.sleep(float(request.headers.get('X-Sleep', '0')))
         return requests.Response()
 
     def close(self):
@@ -398,7 +398,7 @@ class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
         # timeout patch leaves the slow request be slow.
         resp = self.session.get(
             'slow://xml.zeit.de/index',
-            headers={'X-Sleep': 0.2}, timeout=(0.01, 0.01))
+            headers={'X-Sleep': '0.2'}, timeout=(0.01, 0.01))
         self.assertTrue(isinstance(resp, requests.Response))
 
     @pytest.mark.slow
@@ -410,7 +410,7 @@ class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
             sig_func.side_effect = ValueError()
             resp = self.session.get(
                 'slow://xml.zeit.de/index',
-                headers={'X-Sleep': 0.1}, timeout=0.01)
+                headers={'X-Sleep': '0.1'}, timeout=0.01)
             self.assertTrue(isinstance(resp, requests.Response))
 
     @pytest.mark.slow
@@ -420,4 +420,4 @@ class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
         with self.assertRaises(requests.exceptions.Timeout):
             self.session.get(
                 'slow://xml.zeit.de/index',
-                headers={'X-Sleep': 0.1}, timeout=0.01)
+                headers={'X-Sleep': '0.1'}, timeout=0.01)
