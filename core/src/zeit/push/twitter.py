@@ -30,8 +30,8 @@ class Connection(object):
         log.debug('Sending %s, %s to %s', text, link, account)
         try:
             api.update_status(u'%s %s' % (text, link))
-        except tweepy.TweepError, e:
-            status = e.response.status
+        except tweepy.TweepError as e:
+            status = e.response.status_code
             if status < 500:
                 raise zeit.push.interfaces.WebServiceError(str(e))
             else:
