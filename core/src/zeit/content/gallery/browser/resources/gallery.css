@@ -170,9 +170,9 @@ table.gallery a.show-image {
 /* following two rules should be replaced, once sprite is ready*/
 
 .object-details .gallery_details .gallery_details_controls .gallery_details_prev {
-	-moz-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 .object-details .gallery_details .gallery_details_controls .gallery_details_next {
-	-moz-transform: rotate(270deg);
+	transform: rotate(270deg);
 }

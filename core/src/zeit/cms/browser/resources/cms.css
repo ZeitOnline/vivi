@@ -259,7 +259,7 @@ pre {
 }
 
 .PanelContent {
-  -moz-border-radius: 5px;
+  border-radius: 5px;
   background-color: #ffffff;
   border-color: #e4e4e4;
   border-style: solid;
@@ -522,8 +522,8 @@ pre {
   cursor: default;
   border: 1px solid #bbb;
   border-bottom: 1px solid #fff;
-  -moz-border-radius-topleft: 3px;
-  -moz-border-radius-topright: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .context-actions,
@@ -712,7 +712,7 @@ li.busy {
 
 
 .landing-zone.droppable-active {
-  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  background: linear-gradient(0deg, #FFF, #F3FFC6);
   border: 1px solid #a6cc17;
   display: block;
   visibility: visible;

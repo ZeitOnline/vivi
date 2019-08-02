@@ -7,7 +7,7 @@
   left: 0;
   top: 0;
   bottom: 14em;
-  cursor: -moz-grab;
+  cursor: grab;
 }
 
 #imp-image-area {
@@ -19,7 +19,7 @@
 }
 
 .dragging {
-    cursor: -moz-grabbing;
+    cursor: grabbing;
 }
 
 #imp-image-drag {
