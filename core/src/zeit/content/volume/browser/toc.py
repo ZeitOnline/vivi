@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict, defaultdict
+from zeit.cms.browser.interfaces import IPreviewURL
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IFolder
 from zeit.connector.interfaces import IConnector
@@ -155,6 +156,8 @@ class Toc(zeit.cms.browser.view.Base):
                     continue
                 toc_entry = self._create_toc_element(article.xml)
                 if toc_entry:
+                    toc_entry['preview_url'] = zope.component.getMultiAdapter(
+                        (article, 'preview'), IPreviewURL)
                     result_for_product[article.printRessort].append(toc_entry)
             results[product.title] = result_for_product
         return results
@@ -371,7 +374,7 @@ class Toc(zeit.cms.browser.view.Base):
         number_of_empty_columns = int(config.get('toc-num-empty-columns', 2))
         return [str(page), title_teaser] + \
                [''] * number_of_empty_columns +  \
-               [toc_entry.get('access')]
+               [toc_entry.get('access'), toc_entry.get('preview_url', '')]
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)

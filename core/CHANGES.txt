@@ -5,7 +5,7 @@ vivi.core changes
 4.8.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- IR-163: Add preview link to volume toc
 
 
 4.8.4 (2019-07-30)
