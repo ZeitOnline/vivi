@@ -369,12 +369,8 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxint:
             page = ''
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.volume')
-        number_of_empty_columns = int(config.get('toc-num-empty-columns', 2))
-        return [str(page), title_teaser] + \
-               [''] * number_of_empty_columns +  \
-               [toc_entry.get('access'), toc_entry.get('preview_url', '')]
+        return [str(page), title_teaser, '', '', toc_entry.get('access')] + \
+            [''] * 14 + [toc_entry.get('preview_url', '')]
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)
