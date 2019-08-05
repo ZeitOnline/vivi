@@ -32,12 +32,13 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
             if (! self._accept_drag(e.originalEvent.dataTransfer)) {
                 return;
             }
+            var mdb_id;
             try {
                 var data = JSON.parse(
                     e.originalEvent.dataTransfer.getData('text/plain'));
-                var mdb_id = data['data'][0];
-            } catch (e) {
-                log(e);
+                mdb_id = data['data'][0];
+            } catch (error) {
+                log(error);
                 return;
             }
             self.retrieve(mdb_id);
