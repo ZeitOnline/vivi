@@ -15,6 +15,7 @@ Resource('variant.js', depends=[
     backbone, cropper, handlebars])
 
 Resource('form.js', depends=[zeit.cms.browser.resources.base])
+Resource('mdb.js', depends=[zeit.cms.browser.resources.base])
 
 test_lib = fanstatic.Library('zeit.content.image.test', 'tests')
 test_variant_js = fanstatic.Resource(

@@ -1,8 +1,9 @@
 import zeit.cms.testing
+import zeit.content.image.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(
-    zeit.cms.testing.CONFIG_LAYER,))
+    zeit.content.image.testing.CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 

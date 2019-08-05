@@ -5,6 +5,7 @@ import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.find.interfaces
 import zope.component
 
@@ -17,7 +18,7 @@ product_config = """\
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.cms.testing.CONFIG_LAYER,))
+    zeit.content.image.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 

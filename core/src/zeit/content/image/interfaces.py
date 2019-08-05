@@ -448,3 +448,13 @@ class IImageReference(zeit.cms.content.interfaces.IReference,
                       IImageMetadata):
     """Reference to an image, allows overriding metadata locally for the
     referring content object."""
+
+
+class IMDB(zope.interface.Interface):
+    """InterRed MDB API"""
+
+    def get_metadata(mdb_id):
+        """Returns a dict of image metadata."""
+
+    def get_body(mdb_id):
+        """Returns a file-like object containing the raw image data."""

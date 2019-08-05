@@ -127,11 +127,11 @@ img.editor {
 
 .focuspoint {
     position: absolute;
-    cursor: -moz-grab;
+    cursor: grab;
 }
 
 .focuspoint.ui-draggable-dragging {
-    cursor: -moz-grabbing;
+    cursor: grabbing;
 }
 
 .preview-container.active > .preview {

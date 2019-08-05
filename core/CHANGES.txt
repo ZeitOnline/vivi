@@ -7,6 +7,9 @@ vivi.core changes
 
 - IR-163: Add preview link to volume toc
 
+- IR-68: Support importing image group images (and minimal metadata)
+  via drag&drop from the IR MDB UI
+
 
 4.8.4 (2019-07-30)
 ------------------

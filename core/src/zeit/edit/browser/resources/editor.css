@@ -89,7 +89,7 @@
 
 .tab-content > .context-views > ul > li:first-child > a {
   border-left: none;
-  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
 
 }
 
@@ -460,7 +460,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 #edit-form-assets .inline-form .field {
   margin: 0 0px 20px 0;
   background: #F2F2F2;
-  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 #edit-form-assets .landing-zone.visible {
@@ -470,9 +470,9 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 #edit-form-assets .inline-form .field div.droppable-active {
-  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  background: linear-gradient(0deg, #FFF, #F3FFC6);
   border: 1px solid #0A0;
-  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 #edit-form-assets input[type="text"] {
@@ -538,13 +538,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .inline-form .error div.widget > input,
 .inline-form .error div.widget > textarea,
 .inline-form .error div.widget > div > div > select {
-  background: -moz-linear-gradient(center top , #FFF, #FDD) repeat scroll 0 0 transparent;
+  background: linear-gradient(0deg, #FFF, #FDD);
 }
 
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select {
-  background: -moz-linear-gradient(center top , #FFF, #CFD) repeat scroll 0 0 transparent;
+  background: linear-gradient(0deg, #FFF, #CFD);
 }
 
 .inline-form .dirty div.widget > input[type=checkbox] {
@@ -679,32 +679,32 @@ fieldset .hlink a:active {
 }
 
 #checkin {
-  background: url("/fanstatic/zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, linear-gradient(0deg, #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 51px;
 
 }
 
 #checkin-publish {
-  background: url("/fanstatic/zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, linear-gradient(0deg, #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 77px;
 }
 
 #delete_workingcopy, #delete_from_repository {
-  background: url("/fanstatic/zeit.cms/icons/cross.png") no-repeat 3px 5px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
+  background: url("/fanstatic/zeit.cms/icons/cross.png") no-repeat 3px 5px, linear-gradient(0deg, #F1F4F9 50%, #DEE1E6 94%)  !important;
   font-size: 14px !important;
   padding-left: 22px;
 }
 
 #publish {
-  background: url("/fanstatic/zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, linear-gradient(0deg, #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 37px;
 }
 
 #retract {
-  background: url("/fanstatic/zeit.cms/icons/wf_bb_zurueckziehen.png") no-repeat 5px 4px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_zurueckziehen.png") no-repeat 5px 4px, linear-gradient(0deg, #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 37px;
 }

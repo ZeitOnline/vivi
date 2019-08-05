@@ -4,9 +4,9 @@ import pkg_resources
 import plone.testing
 import urlparse
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.content.text.jinja
 import zeit.push.interfaces
-import zeit.workflow.testing
 import zope.interface
 
 
@@ -51,7 +51,7 @@ product_config = """\
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.workflow.testing.CONFIG_LAYER,))
+    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,))
 
 
 class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):

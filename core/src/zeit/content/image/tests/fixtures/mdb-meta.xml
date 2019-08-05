@@ -1,0 +1,187 @@
+<response apiversion="4" message="" status="200">
+  <mdb id="2752" active="active" mediadata="2794">
+    <author id="7" active="active" loginname="import" sysadm="sysadm">
+      <email></email>
+      <firstname>Import</firstname>
+      <groups>
+      </groups>
+      <lastname>Import</lastname>
+      <shortcut></shortcut>
+    </author>
+    <changed>2019-07-02 23:47:13</changed>
+    <colorspace>sRGB</colorspace>
+    <created>2019-06-25 19:06:46</created>
+    <dimension>
+      <height>1877</height>
+      <width>845</width>
+    </dimension>
+    <emphasis>
+      <x>0</x>
+      <y>0</y>
+    </emphasis>
+    <expiration_date>2019-01-01</expiration_date>
+    <filename href="/mdb/2752/file">MDB2752_4ed1cf12e4.IRZEITDEV_14L.jpg</filename>
+    <license></license>
+    <linkfile>MDB2752_a78576f444.IRZEITDEV_14L.jpg</linkfile>
+    <mdb_contents>
+      <mdb_content placeholder_name="brightcove_beschreibung_k" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_beschreibung_l" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_dateiname" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_laenge" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_lastupdate" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_player" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_status" type="list">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_tags" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_upload" type="date">
+        <data>0000-00-00 00:00:00</data>
+      </mdb_content>
+      <mdb_content placeholder_name="brightcove_video_id" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="bundesland" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="erscheinungstag" type="date">
+        <data>0000-00-00 00:00:00</data>
+      </mdb_content>
+      <mdb_content placeholder_name="gps" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="iso_code" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="land" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="lowres_preview" type="checkbox">
+        <data checked="" />
+      </mdb_content>
+      <mdb_content placeholder_name="manuell_archivieren" type="checkbox">
+        <data checked="" />
+      </mdb_content>
+      <mdb_content placeholder_name="md5_checksum" type="text">
+        <data>1dee0782a80cb057a1f006ea040355d0</data>
+      </mdb_content>
+      <mdb_content placeholder_name="objekt" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="ressort" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="stadt" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="vivi_id" type="text">
+        <data></data>
+      </mdb_content>
+      <mdb_content placeholder_name="vivi_url" type="text">
+        <data></data>
+      </mdb_content>
+    </mdb_contents>
+    <mediadata_contents>
+      <mediadata_content placeholder_name="agentur_ressorts" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="anzeigenkennzeichnung" type="checkbox">
+        <data checked="" />
+      </mediadata_content>
+      <mediadata_content placeholder_name="autor" type="custom">
+        <advance_honor>0</advance_honor>
+        <author>
+          <id>1003666</id>
+          <city>Alzenau</city>
+          <email>peter.schwalbach@kirchner-robrecht.com</email>
+          <firstname>Peter</firstname>
+          <fullname>Peter Schwalbach</fullname>
+          <lastname>Schwalbach</lastname>
+          <mobile>00 49 172 6773784</mobile>
+          <shortcut>pstt</shortcut>
+          <telephone>00 49 6023 94353 11</telephone>
+        </author>
+        <credittext></credittext>
+        <to_honor>0</to_honor>
+      </mediadata_content>
+      <mediadata_content placeholder_name="beschreibung" type="text">
+        <data>Testbilder Honorar</data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="credit" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="erstellungsdatum" type="date">
+        <data>0000-00-00 00:00:00</data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="fotograf" type="text">
+        <data>Peter Schwalbach</data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="initiale_metadaten" type="text">
+        <data>IPTC:2:80: Peter Schwalbach
+IPTC:2:115: 1003666
+IPTC:2:120: Testbilder Honorar
+exif:GPSLatitude: 64/1, 49/1, 2601/100
+exif:GPSLatitudeRef: S
+exif:GPSLongitude: 62/1, 51/1, 2764/100
+exif:GPSLongitudeRef: W
+</data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="kommerzielle_nutzung" type="checkbox">
+        <data checked="" />
+      </mediadata_content>
+      <mediadata_content placeholder_name="personen_zustimmung" type="checkbox">
+        <data checked="" />
+      </mediadata_content>
+      <mediadata_content placeholder_name="poa" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="quelle" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="rechteinhaber" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="schlagwoerter" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="sperrvermerk" type="collection">
+        <data>
+          <collection map="GESPERRT"></collection>
+          <collection map="DATE"></collection>
+          <collection map="TIME"></collection>
+          <collection map="WHO"></collection>
+          <collection map="VERMERK"></collection>
+        </data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="sperrvermerk_historie" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="titel" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="url_quelle" type="text">
+        <data></data>
+      </mediadata_content>
+      <mediadata_content placeholder_name="weitere_ressorts" type="text">
+        <data></data>
+      </mediadata_content>
+    </mediadata_contents>
+    <mime_type>image/jpg</mime_type>
+    <orientation>portrait</orientation>
+    <size>1682944</size>
+    <tree name="Auftragsfotografen" path="Eingang:Redaktionen:ZEIT (und Supplements)" />
+  </mdb>
+</response>

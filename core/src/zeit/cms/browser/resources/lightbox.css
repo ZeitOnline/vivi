@@ -46,8 +46,8 @@
 }
 
 .lightbox-header {
-    -moz-border-radius-topleft: 3px;
-    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     background-color: #f2f2f2;
     border-bottom: 1px solid #bbb;
     z-index: 3;

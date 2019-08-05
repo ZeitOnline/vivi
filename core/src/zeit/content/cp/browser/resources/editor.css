@@ -122,7 +122,7 @@
 }
 
 .edit-bar.column-separator {
-  -moz-border-radius: 1em;
+  border-radius: 1em;
   border: 1px solid black;
   font-size: 0.5em;
   margin: auto;
@@ -574,7 +574,7 @@ buttons, we only can get a different label if we override it here. */
 
 /* XXX Had to copy all rules from zeit.cms:cms.css */
 .type-centerpage-2009 .landing-zone.hover-content {
-  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  background: linear-gradient(0deg, #FFF, #F3FFC6);
   height: 10em;
   border-color: #a6cc17;
   outline: 4px solid #a6cc17;

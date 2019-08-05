@@ -16,7 +16,7 @@ textarea{
 /*font:100% Monaco,"Courier New",Courier,monospace;*/
 
 
-:-moz-placeholder {
+:placeholder-shown {
   color: #999;
 }
 
@@ -355,6 +355,7 @@ input#form\.copyrights[type=text] {
 
 form .column-left.image-form {
     width: 40%;
+    clear: left;
 }
 
 form .column-left.image-form input {

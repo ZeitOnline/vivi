@@ -63,3 +63,9 @@ class IMasterImageUploadSchema(zope.interface.Interface):
             zope.interface.Interface,
             required=False,
             constraint=is_image))
+
+    mdb_blob = zope.schema.Object(
+        zope.interface.Interface,
+        title=_("Import image from MDB"),
+        required=False,
+        constraint=is_image)

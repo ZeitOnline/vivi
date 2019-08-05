@@ -301,7 +301,7 @@ table.properties textarea {
 }
 
 #drag-pane {
-  -moz-box-shadow: 5px 5px 10px #666;
+  box-shadow: 5px 5px 10px #666;
   background-color: transparent;
   opacity: 0.9;
   overflow: hidden;
@@ -320,10 +320,10 @@ table.properties textarea {
 }
 
 #tooltip {
-  -moz-border-radius-bottomleft:5px;
-  -moz-border-radius-bottomright:5px;
-  -moz-border-radius-topleft:5px;
-  -moz-border-radius-topright:5px;
+  border-bottom-left-radius:5px;
+  border-bottom-right-radius:5px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
   border:1px solid #C4C4C4;
   background-color: #F1F4F9;
   padding: 10px;
