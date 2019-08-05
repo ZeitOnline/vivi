@@ -5,9 +5,9 @@ import zeit.edit.interfaces
 
 
 # XXX Should we inherit from TeaserBlock?
+@grok.implementer(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
 class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
     type = 'auto-teaser'
 
     # XXX copy&paste from TeaserBlock

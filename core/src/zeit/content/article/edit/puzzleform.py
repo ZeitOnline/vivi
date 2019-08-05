@@ -5,9 +5,9 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IPuzzleForm)
 class PuzzleForm(zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IPuzzleForm)
     type = 'puzzleform'
 
     puzzle_type = zeit.cms.content.property.DAVConverterWrapper(

@@ -257,13 +257,13 @@ class TypeOnAttributeContainer(Base):
             '{http://namespaces.zeit.de/CMS/cp}type', '__invalid__')
 
 
+@grok.implementer(zope.location.interfaces.ISublocations)
 class Sublocations(grok.Adapter):
     """We don't want to dispatch events that happen to the content object
     (like being added to the Workingcopy) to their IElement children.
     """
 
     grok.context(zeit.edit.interfaces.IContainer)
-    grok.implements(zope.location.interfaces.ISublocations)
 
     def sublocations(self):
         return []

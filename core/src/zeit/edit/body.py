@@ -7,10 +7,10 @@ import zope.traversing.adapters
 import zope.traversing.interfaces
 
 
+@grok.implementer(zope.traversing.interfaces.ITraversable)
 class Traverser(grok.Adapter):
 
     grok.baseclass()
-    grok.implements(zope.traversing.interfaces.ITraversable)
 
     body_name = NotImplemented
     body_interface = NotImplemented

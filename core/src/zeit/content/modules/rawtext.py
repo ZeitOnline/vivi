@@ -34,6 +34,7 @@ class RawText(zeit.edit.block.Element):
         return zeit.content.modules.interfaces.IEmbedParameters(self)
 
 
+@grok.implementer(zeit.content.modules.interfaces.IEmbedParameters)
 class EmbedParameters(
         grok.Adapter,
         UserDict.DictMixin,
@@ -42,7 +43,6 @@ class EmbedParameters(
     # name to `param` from `question` and added type conversion.
 
     grok.context(zeit.content.modules.interfaces.IRawText)
-    grok.implements(zeit.content.modules.interfaces.IEmbedParameters)
 
     def __init__(self, context):
         # The really correct way to do this would be the "trusted adapter"
@@ -107,10 +107,10 @@ class ICSS(zope.interface.Interface):
     vivi_css = zope.schema.Text(readonly=True)
 
 
+@grok.implementer(ICSS)
 class CSSInjector(grok.Adapter):
 
     grok.context(zeit.content.modules.interfaces.IRawText)
-    grok.implements(ICSS)
 
     @cachedproperty
     def vivi_css(self):

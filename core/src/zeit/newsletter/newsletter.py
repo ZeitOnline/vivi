@@ -90,12 +90,12 @@ def category_for_newsletter(context):
         candidate = candidate.__parent__
 
 
+@grok.implementer(zeit.newsletter.interfaces.IBody)
 class Body(zeit.edit.container.TypeOnAttributeContainer,
            grok.MultiAdapter):
 
     __name__ = BODY_NAME
 
-    grok.implements(zeit.newsletter.interfaces.IBody)
     grok.provides(zeit.newsletter.interfaces.IBody)
     grok.adapts(
         zeit.newsletter.interfaces.INewsletter,
@@ -112,10 +112,10 @@ class Body(zeit.edit.container.TypeOnAttributeContainer,
         return result
 
 
+@grok.implementer(zeit.newsletter.interfaces.IGroup)
 class Group(zeit.edit.container.TypeOnAttributeContainer,
             grok.MultiAdapter):
 
-    grok.implements(zeit.newsletter.interfaces.IGroup)
     grok.provides(zeit.newsletter.interfaces.IGroup)
     grok.adapts(
         zeit.newsletter.interfaces.IBody,
@@ -144,10 +144,10 @@ class GroupFactory(zeit.edit.block.TypeOnAttributeElementFactory):
     title = _('Group')
 
 
+@grok.implementer(zeit.newsletter.interfaces.ITeaser)
 class Teaser(zeit.edit.block.SimpleElement):
 
     area = zeit.newsletter.interfaces.IGroup
-    grok.implements(zeit.newsletter.interfaces.ITeaser)
     type = 'teaser'
 
     reference = zeit.cms.content.reference.SingleResource(
@@ -192,23 +192,22 @@ class AdvertisementBase(object):
         return getattr(self.category, 'ad_%s_image' % self.position)
 
 
+# XXX Putting implements on AdvertisementBase breaks during grokking, why?
+@grok.implementer(zeit.newsletter.interfaces.IAdvertisement)
 class MiddleAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
-    # XXX Putting implements on AdvertisementBase breaks during grokking, why?
-    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
     type = 'advertisement-middle'
 
 
+@grok.implementer(zeit.newsletter.interfaces.IAdvertisement)
 class ThisWeeksAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
-    # XXX Putting implements on AdvertisementBase breaks during grokking, why?
-    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
     type = 'advertisement-thisweeks'
 
 
+@grok.implementer(zeit.newsletter.interfaces.IAdvertisement)
 class BottomAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
-    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
     type = 'advertisement-bottom'
 
 

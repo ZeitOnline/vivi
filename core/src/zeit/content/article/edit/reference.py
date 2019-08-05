@@ -69,10 +69,9 @@ class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
         return block
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IGallery)
 class Gallery(Reference):
 
-    grok.implements(
-        zeit.content.article.edit.interfaces.IGallery)
     type = 'gallery'
 
 
@@ -92,10 +91,9 @@ def factor_block_from_gallery(body, context, position):
     return block
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IInfobox)
 class Infobox(Reference):
 
-    grok.implements(
-        zeit.content.article.edit.interfaces.IInfobox)
     type = 'infobox'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -120,10 +118,9 @@ def factor_block_from_infobox(body, context, position):
     return block
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IPortraitbox)
 class Portraitbox(Reference):
 
-    grok.implements(
-        zeit.content.article.edit.interfaces.IPortraitbox)
     type = 'portraitbox'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(

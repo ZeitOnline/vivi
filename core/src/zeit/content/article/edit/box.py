@@ -11,9 +11,9 @@ import zope.component
 import zope.interface
 
 
+@grok.implementer(IBox)
 class Box(zeit.content.article.edit.block.Block):
 
-    grok.implements(IBox)
     type = 'box'
 
     supertitle = zeit.cms.content.property.ObjectPathProperty(

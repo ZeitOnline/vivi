@@ -304,6 +304,7 @@ class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'volume'
 
 
+@grok.implementer(zeit.cms.content.interfaces.ICommonMetadata)
 class VolumeMetadata(grok.Adapter):
     """Since ICenterPage inherits from ICommonMetadata, we need to ensure
     that adapting a volume to ICommonMetadata returns fields from the volume,
@@ -311,7 +312,6 @@ class VolumeMetadata(grok.Adapter):
     """
 
     grok.context(zeit.content.volume.interfaces.IVolume)
-    grok.implements(zeit.cms.content.interfaces.ICommonMetadata)
 
     missing = object()
 

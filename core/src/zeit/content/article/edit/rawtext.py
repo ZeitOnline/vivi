@@ -5,10 +5,10 @@ import zeit.content.article.edit.interfaces
 import zeit.content.modules.rawtext
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IRawText)
 class RawText(zeit.content.modules.rawtext.RawText,
               zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IRawText)
     type = 'rawtext'
 
 

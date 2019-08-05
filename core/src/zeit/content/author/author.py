@@ -230,13 +230,13 @@ def author_location(type_, adder):
         zeit.cms.repository.interfaces.IRepository)
 
 
+@grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
         grok.Adapter,
         UserDict.DictMixin,
         zeit.cms.content.xmlsupport.Persistent):
 
     grok.context(zeit.content.author.interfaces.IAuthor)
-    grok.implements(zeit.content.author.interfaces.IBiographyQuestions)
 
     def __init__(self, context):
         object.__setattr__(self, 'context', context)

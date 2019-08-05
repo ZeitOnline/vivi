@@ -20,10 +20,9 @@ class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
         instance._p_changed = True
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IVolume)
 class Volume(zeit.content.article.edit.reference.Reference):
 
-    grok.implements(
-        zeit.content.article.edit.interfaces.IVolume)
     type = 'volume'
 
     references = ReferenceProperty('.', 'related')

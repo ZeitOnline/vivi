@@ -23,10 +23,10 @@ class IBlock(zeit.edit.interfaces.IBlock):
                 'The __name__ cannot be empty!')
 
 
+@grok.implementer(IContainer)
 class Container(zeit.edit.container.TypeOnAttributeContainer,
                 grok.MultiAdapter):
 
-    grok.implements(IContainer)
     grok.provides(IContainer)
     grok.adapts(
         IContainer,
@@ -42,10 +42,10 @@ class ContainerFactory(zeit.edit.block.TypeOnAttributeElementFactory):
     title = 'Container'
 
 
+@grok.implementer(IBlock)
 class Block(zeit.edit.block.SimpleElement, grok.MultiAdapter):
 
     area = IContainer
-    grok.implements(IBlock)
     grok.provides(IBlock)
     type = 'block'
 

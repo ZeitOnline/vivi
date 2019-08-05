@@ -5,9 +5,9 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IRawXML)
 class RawXML(zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IRawXML)
     type = 'raw'
 
 

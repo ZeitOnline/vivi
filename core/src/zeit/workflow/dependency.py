@@ -4,11 +4,11 @@ import zeit.workflow.interfaces
 import zope.component
 
 
+@grok.implementer(zeit.workflow.interfaces.IPublicationDependencies)
 class Dependencies(grok.Adapter):
     """Adapter to find the publication dependencies of an object."""
 
     grok.context(zeit.cms.interfaces.ICMSContent)
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
 
     def get_dependencies(self):
         dependencies = set()
@@ -33,9 +33,9 @@ class Dependencies(grok.Adapter):
             yield adapter
 
 
+@grok.implementer(zeit.workflow.interfaces.IPublicationDependencies)
 class DependencyBase(grok.Adapter):
 
-    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
     grok.name('must be set in subclass')
     grok.baseclass()
 

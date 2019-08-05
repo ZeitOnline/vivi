@@ -28,6 +28,7 @@ for prop in [KEYWORD_PROPERTY, DISABLED_PROPERTY, PINNED_PROPERTY]:
 log = logging.getLogger(__name__)
 
 
+@grok.implementer(zeit.cms.tagging.interfaces.ITagger)
 class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
     """Serializes keywords to an XML structure and stores it in a DAV-Property.
 
@@ -47,7 +48,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     """
 
-    grok.implements(zeit.cms.tagging.interfaces.ITagger)
 
     def __iter__(self):
         tags = self.to_xml()

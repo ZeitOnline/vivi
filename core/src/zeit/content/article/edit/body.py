@@ -18,10 +18,10 @@ import zope.security.proxy
 BODY_NAME = 'editable-body'
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
                    grok.MultiAdapter):
 
-    grok.implements(zeit.content.article.edit.interfaces.IEditableBody)
     grok.provides(zeit.content.article.edit.interfaces.IEditableBody)
     grok.adapts(zeit.content.article.interfaces.IArticle,
                 gocept.lxml.interfaces.IObjectified)
@@ -119,10 +119,10 @@ def get_editable_body(article):
         zeit.content.article.edit.interfaces.IEditableBody)
 
 
+@grok.implementer(zope.traversing.interfaces.ITraversable)
 class BodyTraverser(grok.Adapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(zope.traversing.interfaces.ITraversable)
 
     candidates = {
         BODY_NAME: zeit.content.article.edit.interfaces.IEditableBody,
@@ -174,10 +174,10 @@ def validate_article(context, event):
         event.veto(errors)
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IBreakingNewsBody)
 class BreakingNewsBody(grok.Adapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(zeit.content.article.edit.interfaces.IBreakingNewsBody)
 
     @property
     def text(self):

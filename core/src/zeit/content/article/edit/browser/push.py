@@ -81,10 +81,10 @@ class IAuthorPush(zope.interface.Interface):
         readonly=True)
 
 
+@grok.implementer(IAuthorPush)
 class AuthorPush(grok.Adapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(IAuthorPush)
 
     # Should this move to zeit.push.interfaces.IAccountData?
     @property

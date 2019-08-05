@@ -6,9 +6,9 @@ import zeit.content.cp.interfaces
 import zeit.edit.interfaces
 
 
+@grok.implementer(zeit.content.cp.interfaces.IPlaylistBlock)
 class PlaylistBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IPlaylistBlock)
     type = 'playlist'
 
     referenced_playlist = zeit.cms.content.reference.SingleResource(

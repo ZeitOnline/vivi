@@ -14,9 +14,8 @@ class NextRead(zeit.cms.related.related.RelatedBase):
         '.head.nextread.reference', 'related')
 
 
+@grok.implementer(zeit.magazin.interfaces.IRelatedLayout)
 class RelatedLayout(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    grok.implements(zeit.magazin.interfaces.IRelatedLayout)
 
     zeit.cms.content.dav.mapProperties(
         zeit.magazin.interfaces.IRelatedLayout,

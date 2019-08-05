@@ -5,11 +5,11 @@ import zeit.content.article.edit.interfaces
 import zeit.content.modules.quiz
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IQuiz)
 class Quiz(
         zeit.content.modules.quiz.Quiz,
         zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IQuiz)
     type = 'quiz'
 
 

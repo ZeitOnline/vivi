@@ -11,10 +11,10 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
+@grok.implementer(zeit.push.interfaces.IMessage)
 class Message(grok.Adapter):
 
     grok.context(zeit.cms.interfaces.ICMSContent)
-    grok.implements(zeit.push.interfaces.IMessage)
     grok.baseclass()
 
     get_text_from = NotImplemented
@@ -100,10 +100,10 @@ def default_push_url(context):
     return context.uniqueId
 
 
+@grok.implementer(zeit.push.interfaces.IAccountData)
 class AccountData(grok.Adapter):
 
     grok.context(zeit.cms.interfaces.ICMSContent)
-    grok.implements(zeit.push.interfaces.IAccountData)
 
     def __init__(self, context):
         super(AccountData, self).__init__(context)

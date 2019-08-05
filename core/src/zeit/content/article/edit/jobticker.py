@@ -5,11 +5,11 @@ import zeit.content.article.edit.interfaces
 import zeit.content.modules.jobticker
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IJobTicker)
 class JobTicker(
         zeit.content.modules.jobticker.JobTicker,
         zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IJobTicker)
     type = 'jobboxticker'
 
     source = zeit.content.article.edit.interfaces.IJobTicker['feed'].source

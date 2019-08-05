@@ -157,11 +157,11 @@ def local_category_factory(context):
     return local
 
 
+@grok.implementer(zeit.newsletter.interfaces.IBuild)
 class Builder(grok.MultiAdapter):
 
     grok.adapts(zeit.newsletter.interfaces.INewsletterCategory,
                 zeit.newsletter.interfaces.INewsletter)
-    grok.implements(zeit.newsletter.interfaces.IBuild)
 
     def __init__(self, category, newsletter):
         self.category = category

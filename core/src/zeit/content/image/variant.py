@@ -9,10 +9,10 @@ import zeit.edit.body
 import zope.schema
 
 
+@grok.implementer(zeit.content.image.interfaces.IVariants)
 class Variants(grok.Adapter, UserDict.DictMixin):
 
     grok.context(zeit.content.image.interfaces.IImageGroup)
-    grok.implements(zeit.content.image.interfaces.IVariants)
 
     def __init__(self, context):
         super(Variants, self).__init__(context)
@@ -72,12 +72,11 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         return default
 
 
+@grok.implementer(zeit.content.image.interfaces.IVariant)
 class Variant(object):
 
     DEFAULT_NAME = 'default'
     interface = zeit.content.image.interfaces.IVariant
-
-    grok.implements(interface)
 
     aspect_ratio = None
     brightness = None

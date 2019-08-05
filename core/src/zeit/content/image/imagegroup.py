@@ -407,10 +407,10 @@ def find_repository_group(context):
     return zeit.cms.interfaces.ICMSContent(context.uniqueId)
 
 
+@grok.implementer(zope.location.interfaces.ISublocations)
 class RepositorySublocations(grok.Adapter):
 
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
-    grok.implements(zope.location.interfaces.ISublocations)
 
     def sublocations(self):
         for key in self.context.keys():
@@ -418,10 +418,10 @@ class RepositorySublocations(grok.Adapter):
                 yield self.context[key]
 
 
+@grok.implementer(zope.location.interfaces.ISublocations)
 class LocalSublocations(grok.Adapter):
 
     grok.context(zeit.content.image.interfaces.ILocalImageGroup)
-    grok.implements(zope.location.interfaces.ISublocations)
 
     def sublocations(self):
         return []
@@ -506,10 +506,10 @@ class ThumbnailTraverser(object):
         return zeit.content.image.interfaces.IThumbnails(self.context)
 
 
+@grok.implementer(zeit.content.image.interfaces.IThumbnails)
 class Thumbnails(grok.Adapter):
 
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
-    grok.implements(zeit.content.image.interfaces.IThumbnails)
 
     NAME = 'thumbnails'
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'

@@ -7,9 +7,9 @@ import zeit.content.cp.interfaces
 import zope.component
 
 
+@grok.implementer(zeit.content.cp.interfaces.ICPExtraBlock)
 class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.ICPExtraBlock)
     type = 'cpextra'
 
     @property

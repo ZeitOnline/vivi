@@ -17,13 +17,13 @@ def XMLRelatedReference(context):
     return node
 
 
+@grok.implementer(zeit.content.volume.interfaces.IVolumeReference)
 class RelatedReference(zeit.cms.content.reference.Reference):
 
     grok.adapts(
         zeit.content.article.edit.interfaces.IVolume,
         gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
-    grok.implements(zeit.content.volume.interfaces.IVolumeReference)
     grok.name('related')
 
     _teaserText_local = zeit.cms.content.property.ObjectPathAttributeProperty(

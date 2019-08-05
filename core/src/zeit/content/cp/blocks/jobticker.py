@@ -6,11 +6,11 @@ import zeit.content.cp.interfaces
 import zeit.content.modules.jobticker
 
 
+@grok.implementer(zeit.content.cp.interfaces.IJobTickerBlock)
 class JobTickerBlock(
         zeit.content.modules.jobticker.JobTicker,
         zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IJobTickerBlock)
     type = 'jobbox_ticker'
 
     source = zeit.content.cp.interfaces.IJobTickerBlock['feed'].source

@@ -7,10 +7,10 @@ import zeit.content.article.interfaces
 import zeit.push.banner
 
 
+@grok.implementer(zeit.content.article.interfaces.IBreakingNews)
 class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(zeit.content.article.interfaces.IBreakingNews)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IBreakingNews,

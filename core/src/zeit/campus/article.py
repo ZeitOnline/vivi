@@ -22,10 +22,10 @@ class Topic(zeit.cms.related.related.RelatedBase):
         zeit.campus.interfaces.ITopic['label'])
 
 
+@grok.implementer(zeit.campus.interfaces.IStudyCourse)
 class StudyCourse(zeit.edit.block.SimpleElement):
 
     area = zeit.content.article.edit.interfaces.IEditableBody
-    grok.implements(zeit.campus.interfaces.IStudyCourse)
     type = 'studycourse'
 
     _course = zeit.cms.content.property.DAVConverterWrapper(

@@ -138,11 +138,11 @@ def from_tms_representation(context):
     return tms_typ(context)
 
 
+@grok.implementer(zeit.retresco.interfaces.IElasticDAVProperties)
 class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
-    grok.implements(zeit.retresco.interfaces.IElasticDAVProperties)
 
     def __getitem__(self, key):
         name, ns = map(unquote_es_field_name, key)
@@ -183,10 +183,10 @@ def davproperty_to_es(ns, name):
 # DAVPropertyConverter below here ------------------------------
 
 
+@grok.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class JSONType(grok.MultiAdapter):
     """Type converter for a json-native datatype."""
 
-    grok.implements(zeit.cms.content.interfaces.IDAVPropertyConverter)
     grok.baseclass()
 
     def __init__(self, context, content):
@@ -213,13 +213,13 @@ class Int(JSONType):
         zeit.retresco.interfaces.IElasticDAVProperties)
 
 
+@grok.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class CollectionTextLine(grok.MultiAdapter):
 
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.ITextLine,
         zeit.retresco.interfaces.IElasticDAVProperties)
-    grok.implements(zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     # Taken from zeit.cms.content.dav.CollectionTextLineProperty
     def __init__(self, context, value_type, content):

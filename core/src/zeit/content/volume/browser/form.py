@@ -148,10 +148,10 @@ class ICovers(zope.interface.Interface):
     """
 
 
+@grok.implementer(ICovers)
 class Covers(grok.Adapter):
 
     grok.context(zeit.content.volume.interfaces.IVolume)
-    grok.implements(ICovers)
 
     def __getattr__(self, name):
         if not name.startswith('cover_'):

@@ -35,10 +35,10 @@ class ISerializeSource(zope.interface.Interface):
     pass
 
 
+@grok.implementer(ISerializeSource)
 class SerializeSource(grok.Adapter):
 
     grok.context(zc.sourcefactory.factories.BasicSourceFactory)
-    grok.implements(ISerializeSource)
 
     def __init__(self, context):
         super(SerializeSource, self).__init__(context)

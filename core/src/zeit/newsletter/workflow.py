@@ -7,11 +7,11 @@ import zeit.workflow.interfaces
 import zope.session.interfaces
 
 
+@grok.implementer(zeit.newsletter.interfaces.INewsletterWorkflow)
 class Workflow(zeit.workflow.timebased.TimeBasedWorkflow,
                grok.Adapter):
 
     grok.context(zeit.newsletter.interfaces.INewsletter)
-    grok.implements(zeit.newsletter.interfaces.INewsletterWorkflow)
     grok.provides(zeit.newsletter.interfaces.INewsletterWorkflow)
 
     zeit.cms.content.dav.mapProperties(
@@ -35,6 +35,7 @@ def send_email(context, event):
     info.sent = True
 
 
+@grok.implementer(zeit.newsletter.interfaces.ITestRecipient)
 class TestRecipient(grok.Adapter):
     """The recipient to test sending a newsletter is pre-populated with the
     current user's email address (from LDAP), but can be overriden in the
@@ -47,7 +48,6 @@ class TestRecipient(grok.Adapter):
     """
 
     grok.context(zeit.cms.browser.interfaces.ICMSLayer)
-    grok.implements(zeit.newsletter.interfaces.ITestRecipient)
 
     def __init__(self, request):
         self.request = request

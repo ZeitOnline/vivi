@@ -5,9 +5,9 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 
 
+@grok.implementer(zeit.content.cp.interfaces.IHeaderImageBlock)
 class HeaderImageBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IHeaderImageBlock)
     type = 'headerimage'
 
     image = zeit.cms.content.property.SingleResource('.image')

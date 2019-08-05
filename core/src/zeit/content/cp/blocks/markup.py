@@ -5,9 +5,9 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 
 
+@grok.implementer(zeit.content.cp.interfaces.IMarkupBlock)
 class MarkupBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IMarkupBlock)
     type = 'markup'
 
     text = zeit.cms.content.property.Structure('.text')

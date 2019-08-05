@@ -7,9 +7,9 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 
 
+@grok.implementer(ICardstackBlock)
 class CardstackBlock(zeit.content.cp.blocks.block.Block):
 
-    grok.implements(ICardstackBlock)
     type = 'cardstack'
 
     card_id = ObjectPathAttributeProperty(

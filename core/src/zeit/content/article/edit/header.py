@@ -13,10 +13,10 @@ import grokcore.component
 HEADER_NAME = 'editable-header'
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IHeaderArea)
 class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
                  grok.MultiAdapter):
 
-    grok.implements(zeit.content.article.edit.interfaces.IHeaderArea)
     grok.provides(zeit.content.article.edit.interfaces.IHeaderArea)
     grok.adapts(zeit.content.article.interfaces.IArticle,
                 gocept.lxml.interfaces.IObjectified)

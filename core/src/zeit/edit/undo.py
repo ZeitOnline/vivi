@@ -8,6 +8,7 @@ import zeit.edit.interfaces
 UNDOABLE_TRANSACTION = u'zeit.edit.undo: '
 
 
+@grok.implementer(zeit.edit.interfaces.IUndo)
 class Undo(grok.Adapter):
     """Provides ZODB-based undo (more precisely: reverting all changes up to
     and including a given transaction), but only for a clearly defined scope of
@@ -26,7 +27,6 @@ class Undo(grok.Adapter):
     """
 
     grok.context(zeit.cms.checkout.interfaces.ILocalContent)
-    grok.implements(zeit.edit.interfaces.IUndo)
 
     @property
     def history(self):

@@ -36,10 +36,10 @@ log = logging.getLogger(__name__)
 MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)
 
 
+@grok.implementer(zeit.retresco.interfaces.ITMSRepresentation)
 class TMSRepresentation(grok.Adapter):
 
     grok.context(zeit.cms.interfaces.ICMSContent)
-    grok.implements(zeit.retresco.interfaces.ITMSRepresentation)
 
     def __call__(self):
         result = {}
@@ -64,6 +64,7 @@ class TMSRepresentation(grok.Adapter):
         return all([data.get(x) for x in self.REQUIRED_FIELDS])
 
 
+@grok.implementer(zeit.retresco.interfaces.ITMSRepresentation)
 class Converter(grok.Adapter):
     """This adapter works a bit differently: It adapts its context to a
     separately _configured_ `interface`, and declines if that is not possible;
@@ -73,7 +74,6 @@ class Converter(grok.Adapter):
 
     grok.baseclass()
     grok.context(zeit.cms.interfaces.ICMSContent)
-    grok.implements(zeit.retresco.interfaces.ITMSRepresentation)
 
     interface = NotImplemented
     # Subclasses need to register as named adapters to work with

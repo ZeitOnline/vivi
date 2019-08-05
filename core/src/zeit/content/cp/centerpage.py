@@ -218,10 +218,10 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'centerpage-2009'
 
 
+@grok.implementer(zeit.content.cp.interfaces.IBody)
 class Body(zeit.edit.container.Base,
            grok.MultiAdapter):
 
-    grok.implements(zeit.content.cp.interfaces.IBody)
     grok.provides(zeit.content.cp.interfaces.IBody)
     grok.adapts(zeit.content.cp.interfaces.ICenterPage,
                 gocept.lxml.interfaces.IObjectified)

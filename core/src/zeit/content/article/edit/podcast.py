@@ -6,9 +6,9 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(IPodcast)
 class Podcast(zeit.content.article.edit.block.Block):
 
-    grok.implements(IPodcast)
     type = 'podcast'
 
     episode_id = ObjectPathAttributeProperty(

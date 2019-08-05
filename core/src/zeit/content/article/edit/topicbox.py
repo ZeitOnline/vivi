@@ -9,9 +9,9 @@ import zeit.content.image.interfaces
 import zope.component
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
 class Topicbox(zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.ITopicbox)
     type = 'topicbox'
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(

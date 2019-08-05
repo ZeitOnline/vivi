@@ -9,9 +9,9 @@ import zeit.edit.interfaces
 import zope.schema
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IVideo)
 class Video(zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.IVideo)
     type = 'video'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(

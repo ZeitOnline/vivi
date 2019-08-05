@@ -5,11 +5,11 @@ import zeit.content.cp.interfaces
 import zeit.content.modules.quiz
 
 
+@grok.implementer(zeit.content.cp.interfaces.IQuizBlock)
 class QuizBlock(
         zeit.content.modules.quiz.Quiz,
         zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IQuizBlock)
     type = 'quiz'
 
     # XXX somehow we use a PathProperty here, but an AttributeProperty on

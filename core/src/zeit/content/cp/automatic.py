@@ -128,10 +128,10 @@ def is_lead_candidate(content):
     return metadata.lead_candidate
 
 
+@grok.implementer(zeit.content.cp.interfaces.IContentQuery)
 class ContentQuery(grok.Adapter):
 
     grok.context(zeit.content.cp.interfaces.IRenderedArea)
-    grok.implements(zeit.content.cp.interfaces.IContentQuery)
     grok.baseclass()
 
     total_hits = NotImplemented

@@ -5,11 +5,11 @@ import zeit.content.cp.interfaces
 import zeit.content.modules.mail
 
 
+@grok.implementer(zeit.content.cp.interfaces.IMailBlock)
 class MailBlock(
         zeit.content.modules.mail.Mail,
         zeit.content.cp.blocks.block.Block):
 
-    grok.implements(zeit.content.cp.interfaces.IMailBlock)
     type = 'mail'
 
 

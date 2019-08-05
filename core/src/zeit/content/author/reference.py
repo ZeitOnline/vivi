@@ -52,9 +52,9 @@ class AuthorshipXMLReferenceUpdater(
                 raise
 
 
+@grok.implementer(zeit.content.author.interfaces.IAuthorReference)
 class Reference(zeit.cms.content.reference.Reference):
 
-    grok.implements(zeit.content.author.interfaces.IAuthorReference)
     grok.provides(zeit.content.author.interfaces.IAuthorReference)
     grok.name('author')
 
@@ -70,13 +70,13 @@ def XMLRelatedReference(context):
     return node
 
 
+@grok.implementer(zeit.content.author.interfaces.IAuthorBioReference)
 class RelatedReference(zeit.cms.content.reference.Reference):
 
     grok.adapts(
         zeit.content.article.edit.interfaces.IAuthor,
         gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
-    grok.implements(zeit.content.author.interfaces.IAuthorBioReference)
     grok.name('related')
 
     biography = zeit.cms.content.property.ObjectPathProperty('.biography')

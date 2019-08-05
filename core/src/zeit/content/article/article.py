@@ -267,11 +267,11 @@ class LayoutDependency(zeit.workflow.dependency.DependencyBase):
         return workflow.date_last_published < dc.modified
 
 
+@grok.implementer(zope.index.text.interfaces.ISearchableText)
 class SearchableText(grok.Adapter):
     """SearchableText for an article."""
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(zope.index.text.interfaces.ISearchableText)
 
     def getSearchableText(self):
         main_text = []

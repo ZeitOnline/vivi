@@ -297,24 +297,24 @@ class FakeEntry(object):
         self.title = unicode(entry.find('title'))
 
 
+@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class FakeXMLReferenceUpdater(grok.Adapter):
 
     grok.context(FakeEntry)
-    grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     def update(self, node, suppress_errors=False):
         pass
 
 
+@grok.implementer(zeit.cms.redirect.interfaces.IRenameInfo)
 class FakeRenameInfo(grok.Adapter):
 
     grok.context(FakeEntry)
-    grok.implements(zeit.cms.redirect.interfaces.IRenameInfo)
 
     previous_uniqueIds = ()
 
 
+@grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
 class FakeWebDAVProperties(grok.Adapter, dict):
 
     grok.context(FakeEntry)
-    grok.implements(zeit.connector.interfaces.IWebDAVProperties)

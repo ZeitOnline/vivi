@@ -6,9 +6,9 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.ILiveblog)
 class Liveblog(zeit.content.article.edit.block.Block):
 
-    grok.implements(zeit.content.article.edit.interfaces.ILiveblog)
     type = 'liveblog'
 
     blog_id = zeit.cms.content.property.ObjectPathAttributeProperty(

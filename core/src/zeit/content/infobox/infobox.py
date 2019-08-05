@@ -65,9 +65,8 @@ class InfoboxType(zeit.cms.type.XMLContentTypeDeclaration):
     title = _('Infobox')
 
 
+@grok.implementer(zeit.content.infobox.interfaces.IDebate)
 class Debate(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    grok.implements(zeit.content.infobox.interfaces.IDebate)
 
     action_url = zeit.cms.content.dav.DAVProperty(
         zeit.content.infobox.interfaces.IDebate['action_url'],

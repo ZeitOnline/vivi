@@ -24,10 +24,10 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
         zeit.content.image.interfaces.IImages['fill_color'])
 
 
+@grok.implementer(zeit.content.image.interfaces.IImageReference)
 class ImageReference(zeit.cms.content.reference.Reference):
 
     grok.name('image')
-    grok.implements(zeit.content.image.interfaces.IImageReference)
     grok.provides(zeit.cms.content.interfaces.IReference)
 
     # XXX The *_original XML paths must be kept in sync with

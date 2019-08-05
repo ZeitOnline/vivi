@@ -48,9 +48,9 @@ class ParagraphBase(zeit.content.article.edit.block.Block):
         return p
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IParagraph)
 class Paragraph(ParagraphBase):
 
-    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
     type = 'p'
 
     @property
@@ -73,9 +73,9 @@ class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
     produces = Paragraph
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IParagraph)
 class LegacyInitialParagraph(Paragraph):
 
-    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
     type = 'initial'
 
 
@@ -85,9 +85,9 @@ class LegacyInitialParagraphFactory(
     produces = LegacyInitialParagraph
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IUnorderedList)
 class UnorderedList(Paragraph):
 
-    grok.implements(zeit.content.article.edit.interfaces.IUnorderedList)
     type = 'ul'
     allowed_tags = inline_tags + ['li']
 
@@ -97,9 +97,9 @@ class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
     produces = UnorderedList
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IOrderedList)
 class OrderedList(UnorderedList):
 
-    grok.implements(zeit.content.article.edit.interfaces.IOrderedList)
     type = 'ol'
 
 
@@ -108,9 +108,9 @@ class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
     produces = OrderedList
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IIntertitle)
 class Intertitle(Paragraph):
 
-    grok.implements(zeit.content.article.edit.interfaces.IIntertitle)
     type = 'intertitle'
 
 

@@ -126,11 +126,11 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'video'
 
 
+@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class VideoXMLReferenceUpdater(grok.Adapter):
 
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('brightcove-image')
-    grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     def update(self, node, suppress_errors=False):
         still_node = node.find('video-still')
