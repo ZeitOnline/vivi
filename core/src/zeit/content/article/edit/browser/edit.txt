@@ -73,3 +73,33 @@ Intertitle
     <div ...class="block type-intertitle...
     <h3...>A B C</h3>
     ...
+
+
+Checkin handling
+================
+
+On checkin all the funky __name__ attributes are removed. Before checkin there
+are __name__ attributes:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article>...
+     <division ... ns0:__name__="id-b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
+     ...
+
+
+After checkin they're gone:
+
+>>> browser.open('/++skin++vivi/workingcopy/zope.user/Somalia/@@checkin')
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> article = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> xml = lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print xml,
+<article>...
+    <division ...type="page">...
+>>> '__name__' in xml
+False
+

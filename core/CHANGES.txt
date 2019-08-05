@@ -10,6 +10,10 @@ vivi.core changes
 - IR-68: Support importing image group images (and minimal metadata)
   via drag&drop from the IR MDB UI
 
+- MAINT: Revert __name__ handling from 4.8.3, Producing members often
+  massage the source code to fix formatting issues, and these
+  attributes get in the way of that
+
 
 4.8.4 (2019-07-30)
 ------------------
