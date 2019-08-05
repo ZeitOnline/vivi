@@ -27,7 +27,7 @@ def FunctionalDocFileSuite(*args, **kw):
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = WSGI_LAYER
+    layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
