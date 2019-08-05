@@ -102,7 +102,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     def _content_query(self):
         return zope.component.getAdapter(
             self, zeit.content.cp.interfaces.IContentQuery,
-            name=self.automatic_type)
+            name=self.automatic_type or '')
 
     def filter_values(self, *interfaces):
         # XXX copy&paste from zeit.edit.container.Base.filter_values

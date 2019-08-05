@@ -37,8 +37,8 @@ In the informatives area is a landing zone to create a block:
 >>> print browser.contents
 <div...
  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
-      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"
+      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"...>
 
 Create a cpextra block as first block in the informatives. The view returns
 information about the created block:
@@ -70,14 +70,14 @@ it, is rendered too:
 >>> print browser.contents
 <div...
 <div class="landing-zone action-content-droppable action-cp-module-droppable..."
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"...>
 </div>
   <div ...class="...block type-cpextra...id="id-<GUID>">
     ...
   <div class="landing-zone action-content-droppable action-cp-module-droppable..."
-       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"...>
   </div>
   ...
 
@@ -92,13 +92,13 @@ Add another block after the just created block now:
 >>> print browser.contents
 <div...
 <div class="landing-zone action-content-droppable action-cp-module-droppable..."
-     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"...>
 </div>
   <div ...class="...block type-cpextra...id="id-<GUID>">
     ...
   <div class="landing-zone action-content-droppable action-cp-module-droppable..."
-       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"...>
   </div>
   ...<div...class="...block type-teaser...

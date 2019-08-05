@@ -1,4 +1,4 @@
-import BeautifulSoup
+from bs4 import BeautifulSoup
 import lxml.objectify
 import zope.schema.interfaces
 
@@ -19,12 +19,13 @@ def objectify_soup_fromstring(text):
     # There once (r18370) was a properly integrated variant that avoided an
     # addtional serialize/deserialize cycle, but it did not understand
     # namespaces, and could not be taught easily either, so it had to go.
-    soup = BeautifulSoup.BeautifulSoup(text, convertEntities='html')
+    soup = BeautifulSoup(text, features='lxml')
     tags = [soup]
     while tags:
         tag = tags.pop()
         tags.extend(tag.findChildren())
-        for i, (key, value) in enumerate(tag.attrs):
+        for key, value in tag.attrs.items():
             if value is None:  # Attribute w/o value, like <foo attr/>
-                tag.attrs[i] = (key, key)
-    return lxml.objectify.fromstring(str(soup))
+                tag.attrs[key] = key
+    return lxml.objectify.fromstring(
+        ''.join([str(x) for x in soup.body.children]))

@@ -22,7 +22,7 @@ List the folders and files in /
 ...          CurrentFolder='/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
     <Folder name="repository" title="repository"/>
@@ -41,7 +41,7 @@ Descent to the repository:
 ...          CurrentFolder='/repository/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/repository/"
                  url="http://localhost"/>
   <Folders>
@@ -51,8 +51,8 @@ Descent to the repository:
   </Folders>
   <Files>
     ...
-    <File size="0" url="http://localhost/repository/testcontent"
-          name="testcontent (testcontent)"/>
+    <File size="0" name="testcontent (testcontent)"
+          url="http://localhost/repository/testcontent"/>
     ...
   </Files>
 </Connector>
@@ -66,7 +66,7 @@ Let's descent from the root into the clipboard:
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
                  url="http://localhost"/>
   <Folders>
@@ -103,7 +103,7 @@ Let's have a look how the clipboard looks now:
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
                  url="http://localhost"/>
   <Folders>
@@ -122,16 +122,16 @@ Our clip is listed! Decent:
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
                  url="http://localhost"/>
   <Folders>
   </Folders>
   <Files>
-    <File size="0" url="http://localhost/repository/politik.feed"
-          name="politik.feed (Politik)"/>
-    <File size="0" url="http://localhost/repository/wirtschaft.feed"
-          name="wirtschaft.feed (Wirtschaft)"/>
+    <File size="0" name="politik.feed (Politik)"
+          url="http://localhost/repository/politik.feed"/>
+    <File size="0" name="wirtschaft.feed (Wirtschaft)"
+          url="http://localhost/repository/wirtschaft.feed"/>
   </Files>
 </Connector>
 
@@ -155,7 +155,7 @@ The root listing contains it now:
 ...          CurrentFolder='/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
     <Folder name="bilder" title="bilder"/>
@@ -175,7 +175,7 @@ List it:
 ...          CurrentFolder='/bilder/'))))
 >>> print browser.contents
 <?xml version="1.0" encoding="UTF-8"?>
-<Connector resourceType="File" command="GetFoldersAndFiles">
+<Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/bilder/" url="http://localhost"/>
   <Folders>
   </Folders>

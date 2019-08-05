@@ -27,4 +27,4 @@ class RevertTest(unittest.TestCase):
         with mock.patch('zeit.edit.interfaces.IUndo') as undo:
             undo().history = ()
             r.update()
-            undo.assert_called_with_args('\x03\x8f\xa2\x8f\xf7\x99v\xaa')
+            undo().revert.assert_called_with('\x03\x8f\xa2\x8f\xf7\x99v\xaa')

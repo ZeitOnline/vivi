@@ -25,8 +25,8 @@ teasers in the lead area:
 <div ...
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
-     class="teaser-contents action-content-droppable buttons">
+    <div class="teaser-contents action-content-droppable buttons"
+         cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -55,8 +55,8 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
      ...<span class="position">1</span>...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
-         class="teaser-contents action-content-droppable buttons">
+    <div class="teaser-contents action-content-droppable buttons"
+         cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop">
          ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -190,8 +190,8 @@ The cp contents also has changed of course:
 <div ...
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
-        class="teaser-contents action-content-droppable buttons">
+    <div class="teaser-contents action-content-droppable buttons"
+         cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop">
      ...
   <div class="teaser">...
     <div class="supertitle"></div>
@@ -278,8 +278,7 @@ The 450x200 image is used now:
 
 >>> browser.open(contents_url)
 >>> print browser.contents
-<div ...
-       class="teaser-contents action-content-droppable leader">
+<div ... class="teaser-contents action-content-droppable leader"...>
   <img src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw" />
   <div class="teaser-list">
     <div class="teaser">
@@ -297,8 +296,7 @@ When the image is not an image group, it will be just used:
 >>> click_link(browser, 'Großer Teaser')
 >>> browser.open(contents_url)
 >>> print browser.contents
-<div ...
-       class="teaser-contents action-content-droppable leader">
+<div ... class="teaser-contents action-content-droppable leader"...>
   <img src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg/@@raw" />
   <div class="teaser-list">
     <div class="teaser">

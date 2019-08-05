@@ -33,7 +33,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis(
-            '...<li>...<a href="http://localhost/live-prefix/thema/t1"'
+            '...<li>...<a...href="http://localhost/live-prefix/thema/t1"'
             '...t1...',
             self.browser.contents)
 

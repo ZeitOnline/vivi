@@ -294,9 +294,7 @@ We provide a special LockStorage to simulate the behaviour:
 ...         raise zope.app.locking.interfaces.LockingError(object.uniqueId)
 ...
 >>> lock_storage = LockStorage()
->>> import gocept.zcapatch
->>> zcapatch = gocept.zcapatch.Patches()
->>> ignored = zcapatch.patch_utility(
+>>> zope.component.getGlobalSiteManager().registerUtility(
 ...     lock_storage, zope.app.locking.interfaces.ILockStorage)
 
 Now try to checkout:
@@ -311,8 +309,9 @@ CheckinCheckoutError
 
 Remove the utility registration:
 
->>> zcapatch.reset()
-
+>>> zope.component.getGlobalSiteManager().unregisterUtility(
+...     lock_storage, zope.app.locking.interfaces.ILockStorage)
+True
 
 Remove the event printer:
 

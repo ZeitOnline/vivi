@@ -61,7 +61,7 @@ def find_ressort_section(context):
     sm = zope.component.getSiteManager()
     return sm.adapters.lookup(
         (zope.interface.providedBy(context),), IRessortSection,
-        name=meta.ressort)
+        name=meta.ressort or '')
 
 
 def find_folder_section(context):

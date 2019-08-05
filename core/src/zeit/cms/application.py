@@ -1,4 +1,5 @@
 from ConfigParser import ConfigParser
+import ZConfig
 import ast
 import bugsnag
 import bugsnag.wsgi
@@ -234,3 +235,14 @@ def do_grok(dotted_name, config, extra_exclude=None):
 
 
 grokcore.component.zcml.do_grok = do_grok
+
+
+# Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
+# (Actually the old behaviour probably was to rely on the py2 str laxness, but
+# all we really want is utf-8, so that's alright.)
+def maybe_encode(value):
+    if isinstance(value, unicode):
+        value = value.encode('utf-8')
+    return value
+
+ZConfig.datatypes.stock_datatypes["string"] = maybe_encode

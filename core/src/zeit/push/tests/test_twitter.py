@@ -51,8 +51,8 @@ class TwitterTest(zeit.push.testing.TestCase):
         twitter = zeit.push.twitter.Connection(
             self.api_key, self.api_secret)
         with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
-            twitter.send('a' * 150, '', account='twitter-test')
-        self.assertIn('Status is a duplicate', e.exception.message)
+            twitter.send('a' * 350, '', account='twitter-test')
+        self.assertIn('Tweet needs to be a bit shorter', e.exception.message)
 
 
 class TwitterAccountsTest(zeit.push.testing.TestCase):

@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
-import rwproperty
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.interfaces
@@ -23,7 +22,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
 
     supertitle = zeit.cms.content.property.ObjectPathProperty('.supertitle')
 
-    @rwproperty.getproperty
+    @property
     def contents(self):
         result = []
         for node in self.xml.findall('block'):
@@ -40,7 +39,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
                            text))
         return tuple(result)
 
-    @rwproperty.setproperty
+    @contents.setter
     def contents(self, value):
         for node in self.xml.findall('block'):
             self.xml.remove(node)

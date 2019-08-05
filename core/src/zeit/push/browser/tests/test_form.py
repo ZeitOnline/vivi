@@ -266,7 +266,9 @@ class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent(input)
         original = 'a' * 245 + ' This is too long'
-        s.type(input, original + '\t')
+        s.type(input, original)
+        # XXX Why does type('\t') not trigger `change` event anymore?
+        self.eval('window.jQuery("#form\\\\.short_text").trigger("change")')
         text = s.getValue(input)
         self.assertEqual(256, len(text))
         self.assertTrue(text.endswith('This is...'))

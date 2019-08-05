@@ -1,4 +1,3 @@
-import decorator
 import zope.component
 import zope.component.hooks
 import zope.generations
@@ -19,10 +18,3 @@ def do_evolve(context, evolver):
         evolver(root)
     finally:
         zope.component.hooks.setSite(site)
-
-
-# XXX do_evolve should be phased out and implemented as the decorator itself.
-
-@decorator.decorator
-def get_root(evolver, context):
-    do_evolve(context, evolver)

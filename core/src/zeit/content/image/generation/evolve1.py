@@ -1,13 +1,10 @@
-
-import zope.component
-
 import zeit.cms.generation
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.image
+import zope.component
 
 
-@zeit.cms.generation.get_root
-def evolve(root):
+def update(root):
     workingcopy_location = zope.component.getUtility(
         zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
 
@@ -25,3 +22,7 @@ def evolve(root):
             new_image.uniqueId = image.uniqueId
             # Sneak in the new object
             workingcopy._SampleContainer__data[name] = new_image
+
+
+def evolve(context):
+    zeit.cms.generation.do_evolve(context, update)
