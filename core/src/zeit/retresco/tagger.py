@@ -48,7 +48,6 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     """
 
-
     def __iter__(self):
         tags = self.to_xml()
         return (Tag(x.text, x.get('type', '')).code
