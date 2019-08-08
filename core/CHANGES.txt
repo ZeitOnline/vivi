@@ -5,7 +5,7 @@ vivi.core changes
 4.9.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- HOTFIX: Fix paragraph handling after beautifulsoup udpate
 
 
 4.9.0 (2019-08-05)

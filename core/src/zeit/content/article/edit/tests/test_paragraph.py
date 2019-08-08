@@ -88,6 +88,10 @@ class ParagraphTest(unittest.TestCase):
         self.compare(u'<em> <a>foo</a> bar</em>',
                      u'<em> <a>foo</a> bar</em>')
 
+    def test_regression_after_beautiful_soup_update(self):
+        self.compare(u'<b>foo</b> bar baz',
+                     u'<b>foo</b> bar baz')
+
 
 class UnorderedListTest(ParagraphTest):
 
