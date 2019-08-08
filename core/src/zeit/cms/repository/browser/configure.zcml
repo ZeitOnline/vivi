@@ -65,7 +65,7 @@
     permission="zeit.RenameContent"
     icon="/@@/zeit.cms/icons/rename.png"
     lightbox="@@rename-box"
-    sort="100"
+    weight="100"
     />
 
   <browser:page
@@ -85,7 +85,7 @@
     permission="zeit.RenameFolder"
     icon="/@@/zeit.cms/icons/rename.png"
     lightbox="@@rename-box"
-    sort="100"
+    weight="100"
     />
 
   <browser:page
@@ -107,7 +107,7 @@
     permission="zeit.DeleteContent"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    sort="100"
+    weight="100"
     />
 
   <browser:page
@@ -128,7 +128,7 @@
     permission="zeit.DeleteFolder"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    sort="100"
+    weight="100"
     />
 
   <browser:page
@@ -184,7 +184,7 @@
     permission="zope.View"
     action="@@refresh-cache"
     icon="/@@/zeit.cms/icons/reload.png"
-    sort="120"
+    weight="120"
     />
 
 

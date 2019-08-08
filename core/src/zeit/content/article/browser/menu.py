@@ -5,7 +5,7 @@ import zeit.cms.checkout
 
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
 
-    sort = -1
+    weight = -1
     viewURL = "@@edit.html"
     activeCSS = 'edit_contents selected'
     inActiveCSS = 'edit_contents'

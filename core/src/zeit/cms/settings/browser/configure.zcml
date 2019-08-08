@@ -17,7 +17,7 @@
     class=".menu.Global"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.ChangeGlobalSettings"
-    sort="90"
+    weight="90"
     />
 
   <browser:page

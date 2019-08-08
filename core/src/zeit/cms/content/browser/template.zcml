@@ -18,7 +18,7 @@
     class=".template.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.EditTemplates"
-    sort="100"
+    weight="100"
     />
 
   <gocept:pagelet

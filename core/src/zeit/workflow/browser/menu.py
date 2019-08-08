@@ -8,7 +8,7 @@ class WorkflowMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
     """The Workflow menu item which is active when no other item is active."""
 
     title = _("Workflow")
-    sort = -1
+    weight = -1
     viewURL = "@@workflow.html"
     activeCSS = 'workflow selected'
     inActiveCSS = 'workflow'

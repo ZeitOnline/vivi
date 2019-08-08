@@ -91,7 +91,7 @@
     permission="zeit.RenameContent"
     lightbox="@@typechange-box"
     icon="/@@/zeit.cms/icons/workflow.png"
-    sort="120"
+    weight="120"
     />
 
   <browser:page

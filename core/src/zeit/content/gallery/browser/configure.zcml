@@ -119,7 +119,7 @@
     template="upload.pt"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.EditContent"
-    sort="0"
+    weight="0"
     selected="0"
     />
 

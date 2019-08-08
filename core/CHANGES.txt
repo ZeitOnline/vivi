@@ -5,7 +5,7 @@ vivi.core changes
 4.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-5241: Update to changed zope.viewlet sorting behaviour
 
 
 4.9.1 (2019-08-08)

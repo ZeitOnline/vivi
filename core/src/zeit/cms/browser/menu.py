@@ -22,15 +22,11 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
 
 class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
-    sort = 0
+    weight = 0
 
     @property
     def title(self):
         return _(self.__name__)
-
-    def __cmp__(self, other):
-        __traceback_info__ = (self, other)
-        return cmp(float(self.sort), float(other.sort))
 
 
 class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
@@ -97,7 +93,7 @@ class CMSMenuItem(GlobalMenuItem):
 
     title = _("CMS")
     viewURL = "@@index.html"
-    sort = 0
+    weight = 0
 
     @property
     def css(self):
@@ -123,7 +119,7 @@ class LightboxActionMenuItem(ActionMenuItem):
 
 class DropDownMenuBase(object):
 
-    sort = 1000
+    weight = 1000
     items_provider = None
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'secondary_context_actions.pt')

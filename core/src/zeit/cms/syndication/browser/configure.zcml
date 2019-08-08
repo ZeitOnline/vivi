@@ -131,7 +131,7 @@
     icon="/@@/zeit.cms/icons/default-feed.png"
     action="@@add-to-my-syndication-targets.html"
     filter="not: context/@@remove-from-my-syndication-targets.html/in_targets"
-    sort="90"
+    weight="90"
     />
 
   <browser:viewlet
@@ -145,7 +145,7 @@
     icon="/@@/zeit.cms/icons/deselect-default-feed.png"
     action="@@remove-from-my-syndication-targets.html"
     filter="context/@@remove-from-my-syndication-targets.html/in_targets"
-    sort="90"
+    weight="90"
     />
 
   <!-- Syndication Manager -->

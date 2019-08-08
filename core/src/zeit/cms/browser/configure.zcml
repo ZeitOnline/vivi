@@ -85,7 +85,6 @@
   <browser:viewletManager
     name="zeit.cms.GlobalInformation"
     provides=".interfaces.IGlobalInformation"
-    class=".manager.SortingViewletManager"
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
@@ -152,6 +151,7 @@
   <browser:viewletManager
     name="zeit.cms.secondary-context-actions"
     provides=".interfaces.ISecondaryContextActions"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
@@ -180,6 +180,7 @@
   <browser:viewletManager
     provides=".interfaces.ISecondaryGlobalViews"
     name="zeit.cms.secondary-global-views"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
@@ -207,7 +208,6 @@
   <browser:viewletManager
     name="zeit.cms.Sidebar"
     provides=".interfaces.ISidebar"
-    class=".manager.SortingViewletManager"
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />

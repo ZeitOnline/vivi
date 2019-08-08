@@ -5,7 +5,7 @@ import zeit.cms.workflow.interfaces
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
-    sort = -1
+    weight = -1
     lightbox = '@@publish.html'
 
     def is_visible(self):

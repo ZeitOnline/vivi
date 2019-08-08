@@ -36,7 +36,7 @@
     class=".facebook.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.ChangeGlobalSettings"
-    sort="200"
+    weight="200"
     />
 
   <gocept:pagelet

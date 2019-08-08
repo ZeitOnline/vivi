@@ -32,7 +32,7 @@
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.Lock"
     lightbox="@@locks.html"
-    sort="80"
+    weight="80"
     />
 
   <browser:page

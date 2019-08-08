@@ -10,7 +10,7 @@
     class=".retractlog.MenuItem"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.EditRetractLog"
-    sort="100"
+    weight="100"
     />
 
   <gocept:pagelet

@@ -121,7 +121,7 @@
     icon="/@@/zeit.cms/icons/delete.png"
     title="Delete"
     action="@@delete-clip"
-    sort="100"
+    weight="100"
     />
 
   <browser:page
@@ -168,7 +168,7 @@
     icon="/@@/zeit.cms/icons/rename.png"
     title="Rename"
     lightbox="@@rename-clip-lightbox"
-    sort="99"
+    weight="99"
     />
 
 
@@ -198,7 +198,7 @@
     class=".copypastemove.InsertMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.CopyContent"
-    sort="110"
+    weight="110"
     lightbox="@@insert_from_clipboard.lightbox"
     />
   

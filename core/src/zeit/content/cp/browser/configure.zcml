@@ -200,7 +200,7 @@
     permission="zeit.content.cp.Delete"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    sort="100"
+    weight="100"
     />
   <configure package="zeit.cms.repository.browser">
   <browser:page
@@ -285,7 +285,7 @@
     permission="zope.View"
     action="@@prewarm-cache"
     icon="/@@/zeit.content.cp/prewarm-cache.png"
-    sort="125"
+    weight="125"
     />
 
   <browser:page

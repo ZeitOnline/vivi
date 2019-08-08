@@ -214,7 +214,7 @@ class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
-    sort = -10
+    weight = -10
 
     @property
     def action(self):

@@ -340,7 +340,7 @@
     permission="zeit.Checkout"
     icon="/@@/zeit.content.image/bulk-copyright.png"
     lightbox="@@set-image-copyright"
-    sort="200"
+    weight="200"
     />
 
   <browser:page

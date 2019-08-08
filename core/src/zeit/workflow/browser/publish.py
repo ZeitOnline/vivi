@@ -12,7 +12,7 @@ import zope.component
 
 class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
-    sort = -1
+    weight = -1
     lightbox = '@@publish.html'
 
     def render(self):
@@ -60,7 +60,7 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
 
 class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
-    sort = 200
+    weight = 200
     lightbox = '@@retract.html'
 
     @property
