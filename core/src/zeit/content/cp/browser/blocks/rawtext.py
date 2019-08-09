@@ -15,7 +15,4 @@ class EditProperties(
 
 
 class Display(zeit.cms.browser.view.Base):
-
-    @property
-    def raw_code(self):
-        return self.context.raw_code or '<code />'
+    pass

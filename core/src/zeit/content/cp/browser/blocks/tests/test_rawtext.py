@@ -42,7 +42,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('Raw text', index=1).value = '<rawcode_text>'
         b.getControl('Apply').click()
         b.open(self.content_url)
-        self.assertEllipsis('...&lt;rawcode_text...', b.contents)
+        self.assertEllipsis('...(inline)...', b.contents)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual(
             '<rawcode_text>', b.getControl('Raw text', index=1).value.strip())
@@ -53,7 +53,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('Raw text reference').value = self.plaintext.uniqueId
         b.getControl('Apply').click()
         b.open(self.content_url)
-        self.assertEllipsis('...&lt;rawcode_reference...', b.contents)
+        self.assertEllipsis('...http://xml.zeit.de/plaintext...', b.contents)
 
     def test_rawtext_reference_should_be_preferred(self):
         b = self.browser
@@ -62,7 +62,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('Raw text reference').value = self.plaintext.uniqueId
         b.getControl('Apply').click()
         b.open(self.content_url)
-        self.assertEllipsis('...&lt;rawcode_reference...', b.contents)
+        self.assertEllipsis('...http://xml.zeit.de/plaintext...', b.contents)
 
     def test_rawtext_should_display_default_if_empty(self):
         b = self.browser
@@ -71,7 +71,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('Raw text reference').value = ''
         b.getControl('Apply').click()
         b.open(self.content_url)
-        self.assertEllipsis('...&lt;code...', b.contents)
+        self.assertEllipsis('...(inline)...', b.contents)
 
     def test_rawtext_should_store_parameters(self):
         embed = zeit.content.text.embed.Embed()

@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5338: Explicitly set defaults declared in IVideo during BC-import
 
+- ZON-5378: Display the embed name instead of its raw code in CP editor
+
 - ZON-5321: Make article ITopicbox.supertitle required
 
 - ZON-5241: Update to changed zope.viewlet sorting behaviour
