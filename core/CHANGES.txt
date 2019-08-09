@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.9.4 (unreleased)
+4.9.4 (2019-08-09)
 ------------------
 
 - BUG-1101: Fix CSS for "to top" link
