@@ -107,7 +107,7 @@
     permission="zeit.DeleteContent"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    weight="100"
+    weight="500"
     />
 
   <browser:page
@@ -128,7 +128,7 @@
     permission="zeit.DeleteFolder"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    weight="100"
+    weight="500"
     />
 
   <browser:page

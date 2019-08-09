@@ -200,7 +200,7 @@
     permission="zeit.content.cp.Delete"
     icon="/@@/zeit.cms/icons/delete.png"
     lightbox="@@delete.html"
-    weight="100"
+    weight="500"
     />
   <configure package="zeit.cms.repository.browser">
   <browser:page
