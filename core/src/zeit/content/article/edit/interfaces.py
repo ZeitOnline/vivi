@@ -537,7 +537,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     supertitle = zope.schema.TextLine(
         title=_('Supertitle'),
         description=_('Please take care of capitalisation.'),
-        required=False,
         max_length=30)
 
     title = zope.schema.TextLine(
