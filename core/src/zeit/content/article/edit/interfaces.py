@@ -542,14 +542,12 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     title = zope.schema.TextLine(
         title=_("Title"),
-        required=True,
         max_length=30)
 
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicReferenceSource(allow_cp=True),
-        required=True)
+        source=TopicReferenceSource(allow_cp=True))
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
