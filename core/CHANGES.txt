@@ -5,6 +5,8 @@ vivi.core changes
 4.9.2 (unreleased)
 ------------------
 
+- ZON-5338: Explicitly set defaults declared in IVideo during BC-import
+
 - ZON-5321: Make article ITopicbox.supertitle required
 
 - ZON-5241: Update to changed zope.viewlet sorting behaviour

@@ -146,6 +146,8 @@ class Video(Converter):
         data = self.data
         custom = data.get('custom_fields', {})
 
+        zeit.cms.browser.form.apply_default_values(
+            cmsobj, zeit.content.video.interfaces.IVideo)
         cmsobj.external_id = data.get('id')
         cmsobj.title = data.get('name')
         cmsobj.teaserText = data.get('description')

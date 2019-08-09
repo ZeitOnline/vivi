@@ -195,6 +195,12 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         bc.apply_to_cms(cms)
         self.assertTrue(cms.commentsAllowed)
 
+    def test_non_brightcove_fields_use_default(self):
+        bc = BCVideo()
+        cms = CMSVideo()
+        bc.apply_to_cms(cms)
+        self.assertTrue(cms.lead_candidate)
+
 
 class PlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 
