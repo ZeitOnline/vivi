@@ -199,22 +199,38 @@ class ElasticsearchContentQuery(ContentQuery):
     def __call__(self):
         self.total_hits = 0
         result = []
+
         try:
-            elasticsearch = zope.component.getUtility(
-                zeit.retresco.interfaces.IElasticsearch)
-            response = elasticsearch.search(
-                self._build_query(), self.order,
+            query = self._build_query()
+        except Exception:
+            log.warning(
+                'Error compiling elasticsearch query %r for %s',
+                self.query, self.context.uniqueId, exc_info=True)
+            return result
+
+        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        try:
+            response = es.search(
+                query, self.order,
                 start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
-            self.total_hits = response.hits
-            for item in response:
-                content = self._resolve(item)
-                if content is not None:
-                    result.append(content)
-        except Exception:
+        except Exception as e:
             log.warning(
                 'Error during elasticsearch query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
+            if 'Result window is too large' in str(e):
+                # We have to determine the actually available number of hits.
+                response = es.search(
+                    query, self.order, start=0, rows=0,
+                    include_payload=self.include_payload)
+            else:
+                response = zeit.cms.interfaces.Result()
+
+        self.total_hits = response.hits
+        for item in response:
+            content = self._resolve(item)
+            if content is not None:
+                result.append(content)
         return result
 
     def _build_query(self):
@@ -399,9 +415,14 @@ class TMSContentQuery(ContentQuery):
         try:
             response = tms.get_topicpage_documents(
                 id=self.topicpage, filter=self.filter_id, **kw)
-        except Exception:
+        except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
+            if 'Result window is too large' in str(e):
+                # We have to determine the actually available number of hits.
+                kw['start'] = 0
+                kw['rows'] = 0
+                return self._get_documents(**kw)
             return iter([]), 0
         else:
             return iter(response), response.hits

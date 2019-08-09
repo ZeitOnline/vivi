@@ -5,7 +5,8 @@ vivi.core changes
 4.9.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- BUG-1094: Retrieve the number of actually available hits if a TMS/ES
+  query hits the configured ES result limit.
 
 
 4.9.2 (2019-08-09)
