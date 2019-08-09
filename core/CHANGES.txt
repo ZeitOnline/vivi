@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.9.3 (unreleased)
+4.9.3 (2019-08-09)
 ------------------
 
 - BUG-1094: Retrieve the number of actually available hits if a TMS/ES
