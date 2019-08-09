@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.9.2 (unreleased)
+4.9.2 (2019-08-09)
 ------------------
 
 - ZON-5338: Explicitly set defaults declared in IVideo during BC-import
