@@ -487,19 +487,17 @@
 
 .type-article .block-inner .totop {
   border-radius: 0 0 5px 0;
-  bottom: 0;
   color: #FFFFFF;
   font-size: 12px;
   font-weight: 700;
   height: 15px;
   line-height: 20px;
-  right: 0;
-  width: 100%;
+  margin-left: 95%;
+  width: 1em;
   background: linear-gradient(0deg, #CCC 0%, #CCC 94%);
   background-position: right;
   background-size: 20px 20px;
   text-align: right;
-  position: relative;
   clear: both;
   display: block;
   padding-right: 5px;
