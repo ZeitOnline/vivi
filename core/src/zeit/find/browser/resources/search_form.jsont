@@ -85,6 +85,15 @@
         </select>
       </fieldset>
       <fieldset>
+          <label>Verfügbarkeit:</label>
+          <select name="access">
+              <option value=""></option>
+              {.repeated section access}
+              <option value="{access}">{access_title}</option>
+              {.end}
+          </select>
+      </fieldset>
+      <fieldset>
         <label>Autor:</label>
         <input type="text" name="author" value="" />
       </fieldset>

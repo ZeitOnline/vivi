@@ -34,6 +34,8 @@ class SearchForm(JSONView):
     def json(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
         return dict(
+            access=self.get_source(metadata_if['access'].source,
+                                   'access', 'access_title'),
             products=self.products,
             ressorts=self.get_source(metadata_if['ressort'].source,
                                      'ressort', 'ressort_name'),
@@ -371,6 +373,7 @@ def search_parameters(request):
     """extract the search parameters from the request in raw form"""
 
     parameters = [
+        'access',
         'author',
         'extended_search_expanded',
         'from',
@@ -407,6 +410,7 @@ def search_form(request):
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
     volume, year = parse_volume_year(g('volume_year', 'WW/JJJJ'))
     topic = g('topic', None)
+    access = g('access', None)
     authors = g('author', None)
     keywords = g('keywords', None)
     raw_tags = g('raw-tags', None)
@@ -422,6 +426,7 @@ def search_form(request):
     if 'embed' in types:
         types.append('text')  # BBB ZON-2932
     return dict(
+        access=access,
         authors=authors,
         from_=from_,
         fulltext=fulltext,
