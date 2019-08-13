@@ -14,9 +14,6 @@ product_config = """
   sso-api-url http://meine.fake/api/1
   sso-user vivi@zeit.de
   sso-password password
-  honorar-url
-  honorar-username
-  honorar-password
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
@@ -26,26 +23,13 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
 
 class HonorarMockLayer(plone.testing.Layer):
 
-    def setUp(self):
-        self['honorar_mock'] = mock.Mock()
-        self['honorar_mock'].search.return_value = []
-        self['honorar_mock'].create.return_value = 'mock-honorar-id'
-        self.testTearDown()
-        self['honorar_orig'] = zope.component.getUtility(
-            zeit.content.author.interfaces.IHonorar)
-        zope.component.getSiteManager().registerUtility(
-            self['honorar_mock'], zeit.content.author.interfaces.IHonorar)
-
-    def tearDown(self):
-        zope.component.getSiteManager().registerUtility(
-            self['honorar_orig'], zeit.content.author.interfaces.IHonorar)
-        del self['honorar_orig']
-        del self['honorar_mock']
-
     def testTearDown(self):
-        self['honorar_mock'].search.return_value = []
-        self['honorar_mock'].create.return_value = 'mock-honorar-id'
-        self['honorar_mock'].reset_mock()
+        honorar = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        if isinstance(honorar, mock.Mock):
+            honorar.search.return_value = []
+            honorar.create.return_value = 'mock-honorar-id'
+            honorar.reset_mock()
 
 
 HONORAR_MOCK_LAYER = HonorarMockLayer()

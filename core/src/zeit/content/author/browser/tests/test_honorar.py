@@ -1,7 +1,9 @@
 # coding: utf-8
 import mock
 import zeit.content.author.author
+import zeit.content.author.interfaces
 import zeit.content.author.testing
+import zope.component
 
 
 class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
@@ -17,7 +19,8 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         super(HonorarLookupTest, self).tearDown()
 
     def test_add_author_first_searches_honorar_db(self):
-        api = self.layer['honorar_mock']
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
         api.search.return_value = [
             {'gcid': '1234', 'vorname': u'Williäm', 'nachname': 'Shakespeare'},
             {'gcid': '2345', 'vorname': 'Random', 'nachname': 'Filler'},

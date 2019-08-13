@@ -5,7 +5,9 @@ import mock
 import plone.testing
 import zeit.cms.testing
 import zeit.content.author.honorar
+import zeit.content.author.interfaces
 import zeit.content.author.testing
+import zope.component
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
@@ -70,7 +72,9 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
         self.repository['author'] = author
-        self.assertTrue(self.layer['honorar_mock'].create.called)
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        self.assertTrue(api.create.called)
         self.assertEqual(
             'mock-honorar-id', self.repository['author'].honorar_id)
 
@@ -80,5 +84,7 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         author.lastname = u'Shakespeare'
         author.honorar_id = u'manual-id'
         self.repository['author'] = author
-        self.assertFalse(self.layer['honorar_mock'].create.called)
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        self.assertFalse(api.create.called)
         self.assertEqual('manual-id', self.repository['author'].honorar_id)

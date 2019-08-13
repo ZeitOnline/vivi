@@ -164,7 +164,9 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
         # This test is about objects that existed before create_honorar_entry
         # event handler existed -- once that's there, it's rather impossible to
         # get to this point.
-        self.layer['honorar_mock'].create.return_value = None
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        api.create.return_value = None
 
         author = zeit.content.author.author.Author()
         self.repository['testauthor'] = author

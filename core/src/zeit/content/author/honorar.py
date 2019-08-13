@@ -99,3 +99,14 @@ def from_product_config():
         config['honorar-url'],
         config['honorar-username'],
         config['honorar-password'])
+
+
+@zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
+def MockHonorar():
+    import mock  # testing dependency
+    honorar = mock.Mock()
+    zope.interface.alsoProvides(
+        honorar, zeit.content.author.interfaces.IHonorar)
+    honorar.search.return_value = []
+    honorar.create.return_value = 'mock-honorar-id'
+    return honorar
