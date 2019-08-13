@@ -59,6 +59,7 @@ class Reference(zeit.cms.content.reference.Reference):
     grok.name('author')
 
     location = zeit.cms.content.property.ObjectPathProperty('.location')
+    role = zeit.cms.content.property.ObjectPathProperty('.role')
 
 
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='related')

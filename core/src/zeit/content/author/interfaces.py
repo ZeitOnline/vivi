@@ -166,11 +166,25 @@ class BiographyQuestionSource(zeit.cms.content.sources.XMLSource):
 BIOGRAPHY_QUESTIONS = BiographyQuestionSource()
 
 
+class RoleSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.content.author'
+    config_url = 'roles'
+
+
+ROLE_SOURCE = RoleSource()
+
+
 class IAuthorReference(zeit.cms.content.interfaces.IReference):
 
     location = zope.schema.Choice(
         title=_('Location'),
         source=zeit.cms.tagging.source.locationSource,
+        required=False)
+
+    role = zope.schema.Choice(
+        title=_('Author role'),
+        source=ROLE_SOURCE,
         required=False)
 
 

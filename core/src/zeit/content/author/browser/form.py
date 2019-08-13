@@ -197,7 +197,7 @@ class EditReference(zeit.edit.browser.form.InlineForm):
         # support read-only mode, see
         # zeit.content.article.edit.browser.form.FormFields
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-        'location')
+            'location', 'role')
 
     @property
     def prefix(self):
