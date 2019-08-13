@@ -22,7 +22,8 @@ class Honorar(object):
         result = self._request('POST /layouts/RESTautorenStamm/_find', json={
             'query': [
                 {'nameGesamt': query},
-                {'typ': '4', 'omit': "true"},
+                {'typ': '4', 'omit': 'true'},
+                {'status': '>=50', 'omit': 'true'},
             ],
             'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
             'limit': str(count),
