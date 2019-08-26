@@ -93,6 +93,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         default=False,
         required=False)
 
+    prevent_ligatus_indexing = zope.schema.Bool(
+        title=_('Prevent Ligatus indexing'),
+        default=False,
+        required=False)
+
     recent_comments_first = zope.schema.Bool(
         title=_('Recent comments first'),
         default=False,

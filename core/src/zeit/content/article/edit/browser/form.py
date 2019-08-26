@@ -160,7 +160,7 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(zeit.cms.related.interfaces.IRelatedContent)
     form_fields += FormFields(
         zeit.content.article.interfaces.IArticleMetadata
-    ).select('hide_ligatus_recommendations')
+    ).select('hide_ligatus_recommendations', 'prevent_ligatus_indexing')
 
     def setUpWidgets(self, *args, **kw):
         super(InternalLinks, self).setUpWidgets(*args, **kw)

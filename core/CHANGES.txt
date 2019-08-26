@@ -5,7 +5,7 @@ vivi.core changes
 4.9.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ZON-5376: Add `IArticle.prevent_ligatus_indexing` property
 
 
 4.9.4 (2019-08-09)

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Aug 26 15:04:53 2019\n"
+"POT-Creation-Date: Mon Aug 26 15:08:45 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -337,7 +337,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:275
 #: zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:248
-#: zeit/content/article/interfaces.py:166
+#: zeit/content/article/interfaces.py:171
 #: zeit/content/author/author.py:99
 msgid "Author"
 msgstr ""
@@ -354,8 +354,8 @@ msgstr ""
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:393
 #: zeit/content/article/edit/interfaces.py:543
-#: zeit/content/article/interfaces.py:168
-#: zeit/content/article/interfaces.py:234
+#: zeit/content/article/interfaces.py:173
+#: zeit/content/article/interfaces.py:239
 #: zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:180
 #: zeit/content/cp/interfaces.py:455
@@ -676,7 +676,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:30
 #: zeit/cms/content/interfaces.py:114
-#: zeit/content/article/interfaces.py:162
+#: zeit/content/article/interfaces.py:167
 #: zeit/content/cp/interfaces.py:339
 msgid "Authors"
 msgstr ""
@@ -786,7 +786,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:61
 #: zeit/cms/content/interfaces.py:688
 #: zeit/content/article/edit/interfaces.py:510
-#: zeit/content/article/interfaces.py:203
+#: zeit/content/article/interfaces.py:208
 #: zeit/content/volume/interfaces.py:35
 msgid "Year"
 msgstr ""
@@ -1720,7 +1720,7 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
-#: zeit/content/article/article.py:172
+#: zeit/content/article/article.py:173
 #: zeit/content/article/browser/configure.zcml:77
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
@@ -1751,7 +1751,7 @@ msgid "Publish and push"
 msgstr ""
 
 #: zeit/content/article/browser/configure.zcml:92
-#: zeit/content/article/interfaces.py:250
+#: zeit/content/article/interfaces.py:255
 msgid "Add breaking news"
 msgstr ""
 
@@ -2017,7 +2017,7 @@ msgid "[edit]"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension-list.pt:78
-#: zeit/content/article/interfaces.py:211
+#: zeit/content/article/interfaces.py:216
 msgid "Pages"
 msgstr ""
 
@@ -2040,7 +2040,7 @@ msgid "Book details"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:60
-#: zeit/content/article/interfaces.py:195
+#: zeit/content/article/interfaces.py:200
 msgid "Publisher"
 msgstr ""
 
@@ -2053,7 +2053,7 @@ msgid "Edit book information"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:80
-#: zeit/content/article/interfaces.py:219
+#: zeit/content/article/interfaces.py:224
 msgid "Raw data"
 msgstr ""
 
@@ -2478,7 +2478,7 @@ msgid "First related as box"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:52
-#: zeit/content/article/interfaces.py:175
+#: zeit/content/article/interfaces.py:180
 msgid "Genre"
 msgstr ""
 
@@ -2499,47 +2499,51 @@ msgid "Hide Ligatus recommendations"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:97
-msgid "Recent comments first"
+msgid "Prevent Ligatus indexing"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:102
+msgid "Recent comments first"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:107
 msgid "Has audio file"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:171
+#: zeit/content/article/interfaces.py:176
 msgid "Info"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:179
+#: zeit/content/article/interfaces.py:184
 msgid "ZEIT category"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:183
+#: zeit/content/article/interfaces.py:188
 msgid "Agelimit"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:187
+#: zeit/content/article/interfaces.py:192
 msgid "Original language"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:191
+#: zeit/content/article/interfaces.py:196
 msgid "Translator"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:199
+#: zeit/content/article/interfaces.py:204
 #. Default: "Location"
 msgid "book-location"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:207
+#: zeit/content/article/interfaces.py:212
 msgid "Media type"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:215
+#: zeit/content/article/interfaces.py:220
 msgid "Price (EUR)"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:238
+#: zeit/content/article/interfaces.py:243
 msgid "Breaking news article"
 msgstr ""
 

@@ -64,7 +64,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'artbox_thema', 'layout', 'genre',
          'template', 'header_layout', 'is_instant_article', 'is_amp',
-         'hide_ligatus_recommendations', 'recent_comments_first'))
+         'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
+         'recent_comments_first'))
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],
