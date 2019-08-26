@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Jul 15 09:18:45 2019\n"
-"PO-Revision-Date: 2019-07-15 09:19+0200\n"
+"PO-Revision-Date: 2019-08-26 14:41+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2448,7 +2448,7 @@ msgstr ""
 
 #: zeit/content/article/interfaces.py:92
 msgid "Hide Ligatus recommendations"
-msgstr "Ligatus Empfehlungen ausblenden"
+msgstr "Outbrain Empfehlungen ausblenden"
 
 #: zeit/content/article/interfaces.py:97
 msgid "Recent comments first"
