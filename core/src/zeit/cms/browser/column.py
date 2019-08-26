@@ -2,7 +2,6 @@ import cgi
 
 import zope.interface
 import zope.traversing.browser
-from zope.app import zapi
 
 import zc.table.column
 import zc.table.interfaces
@@ -41,7 +40,8 @@ class LinkColumn(zc.table.column.GetterColumn):
 
         # Try to get a URL, if we can't then ignore setting up a link.
         try:
-            url = zapi.absoluteURL(target, formatter.request)
+            url = zope.component.getMultiAdapter(
+                (target, formatter.request), name='absolute_url')()
         except TypeError:
             result = content
         else:
