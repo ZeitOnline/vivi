@@ -7,6 +7,7 @@ product_config = """
 <product-config zeit.content.author>
   author-folder /foo/bar/authors
   biography-questions file://{fixtures}/tests/biography-questions.xml
+  roles file://{fixtures}/tests/roles.xml
   sso-api-url http://meine.fake/api/1
   sso-user vivi@zeit.de
   sso-password password

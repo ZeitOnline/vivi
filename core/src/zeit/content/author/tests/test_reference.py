@@ -37,6 +37,23 @@ class AuthorshipXMLReferenceUpdater(
   </author>
 </reference> """, lxml.etree.tostring(reference, pretty_print=True))
 
+    def test_role_is_copied(self):
+        content = self.repository['testcontent']
+        content.authorships = (content.authorships.create(self.shakespeare),)
+        content.authorships[0].role = 'Fotografie'
+        reference = zope.component.getAdapter(
+            content, zeit.cms.content.interfaces.IXMLReference, name='related')
+        self.assertEllipsis("""\
+<reference...>
+  ...
+  <title xsi:nil="true"/>
+  ...
+  <author...href="http://xml.zeit.de/shakespeare"...>
+    <display_name...>William Shakespeare</display_name>
+    <role>Fotografie</role>
+  </author>
+</reference> """, lxml.etree.tostring(reference, pretty_print=True))
+
     def test_old_author_nodes_are_removed(self):
         andersen = zeit.content.author.author.Author()
         andersen.firstname = 'Hans Christian'
