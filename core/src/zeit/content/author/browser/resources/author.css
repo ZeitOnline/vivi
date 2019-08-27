@@ -20,6 +20,10 @@
     width: 120px;
 }
 
+.object-details.type-author .fieldname-location {
+    margin-right: 0;
+}
+
 .object-details.type-authorbio .goto-object.object-link {
     float: none;
 }

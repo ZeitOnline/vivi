@@ -1172,6 +1172,11 @@
   padding-top: 0;
 }
 
+.inline-form .fieldname-authorships {
+  max-width: 700px;
+  width: 100%;
+}
+
 .inline-form .fieldname-authorships li div.object-details {
 	border-style: solid none;
 	border-radius: 0;
@@ -1194,10 +1199,6 @@
 
 .inline-form .fieldname-authorships a.button {
 	margin-left: 25px;
-}
-
-.inline-form .fieldname-authorships > div.widget {
-  width: 445px;
 }
 
 .inline-form .field .fieldname-authorships {

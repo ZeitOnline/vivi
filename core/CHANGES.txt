@@ -5,7 +5,7 @@ vivi.core changes
 4.11.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5394: Styling to put role field on the same line as location
 
 
 4.11.0 (2019-08-27)
