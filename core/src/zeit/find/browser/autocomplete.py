@@ -13,13 +13,12 @@ import zope.traversing.browser
 class SimpleFind(zeit.cms.browser.view.JSON):
 
     def json(self):
-        term = self.request.form.get('term')
-        types = self.request.form.get('types', ())
+        term = self.request.form.pop('term')
         if term:
             elastic = zope.component.getUtility(
                 zeit.find.interfaces.ICMSSearch)
             results = elastic.search(
-                zeit.find.search.query(autocomplete=term, types=types))
+                zeit.find.search.query(autocomplete=term, **self.request.form))
         else:
             results = []
         return [
