@@ -6,6 +6,7 @@ import re
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
 import zeit.push.testing
@@ -39,6 +40,7 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+    zeit.content.author.testing.CONFIG_LAYER,
     zeit.content.gallery.testing.CONFIG_LAYER,
     zeit.content.volume.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
