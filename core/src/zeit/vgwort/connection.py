@@ -155,7 +155,7 @@ class MessageService(VGWortWebService):
                             involved.cardNumber = author.vgwortid
                         parties.authors.author.append(involved)
                 except AttributeError:
-                    log.exception("Could not report")
+                    log.error('Could not report %s', content, exc_info=True)
         else:
             # Report the freetext authors if no structured authors are
             # available. VGWort will do some matching then.
