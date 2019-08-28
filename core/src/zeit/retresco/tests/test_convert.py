@@ -180,6 +180,18 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(['test'],
                          data['payload']['document']['storystreams'])
 
+    def test_converts_authorships(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        content = create_testcontent()
+        content.authorships = [
+            content.authorships.create(self.repository['author'])]
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(
+            ['http://xml.zeit.de/author'], data['payload']['head']['authors'])
+
     def test_synthesizes_tms_teaser_if_none_present(self):
         content = create_testcontent()
         content.teaserText = None
