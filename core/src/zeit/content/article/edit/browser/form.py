@@ -264,6 +264,14 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
 
 
+class MetadataAgency(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-agency'
+    undo_description = _('edit metadata')
+    form_fields = FormFields(ICommonMetadata).select('agencies')
+
+
 class MetadataAccess(zeit.edit.browser.form.InlineForm):
 
     legend = _('')

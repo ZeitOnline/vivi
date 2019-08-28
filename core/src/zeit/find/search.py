@@ -32,6 +32,7 @@ def from_product_config():
 
 field_map = dict(
     authors='payload.document.author',
+    author_type='payload.xml.status',
     access='payload.document.access',
     product_id='payload.workflow.product-id',
     published='payload.vivi.publish_status',
