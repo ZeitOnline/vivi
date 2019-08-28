@@ -69,6 +69,9 @@ class IAuthor(zope.interface.Interface,
         required=False,
         description=_(u"Default: 'Firstname Lastname'"))
 
+    initials = zope.schema.TextLine(
+        title=_('Initials'), required=False)
+
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
 

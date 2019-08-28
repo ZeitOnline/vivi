@@ -6,7 +6,8 @@ vivi.core changes
 -------------------
 
 - ZON-5432: Add value `Agentur` to `IAuthor.status` source;
-  add `ICommonMetadata.agencies` field
+  add `ICommonMetadata.agencies` field;
+  add `IAuthor.initials` field
 
 
 4.11.1 (2019-08-27)
