@@ -13,7 +13,7 @@ import zope.schema
 
 class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    values = (u'Print', u'Online', u'Reader')
+    values = (u'Print', u'Online', u'Reader', u'Agentur')
 
 
 class InvalidCode(zope.schema.ValidationError):

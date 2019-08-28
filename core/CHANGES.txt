@@ -5,7 +5,7 @@ vivi.core changes
 4.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5432: Add value `Agentur` to `IAuthor.status` source
 
 
 4.11.1 (2019-08-27)
