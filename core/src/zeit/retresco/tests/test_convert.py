@@ -93,6 +93,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'overscrolling': True,
                     'pagelabel': 'Online',
                     'paragraphsperpage': '6',
+                    'prevent_ligatus_indexing': False,
                     'recent_comments_first': False,
                     'ressort': u'International',
                     'revision': '11',
