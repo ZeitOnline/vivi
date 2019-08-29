@@ -71,7 +71,7 @@ class TMSMockLayer(plone.testing.Layer):
 
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()
-        self['old_tms'] = registry.getUtility(zeit.retresco.interfaces.ITMS)
+        self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
         self['tms_mock'] = mock.Mock()
         self['tms_mock'].url = 'http://tms.example.com'
         self['tms_mock'].get_article_keywords.return_value = []
@@ -80,8 +80,9 @@ class TMSMockLayer(plone.testing.Layer):
 
     def tearDown(self):
         del self['tms_mock']
-        zope.component.getGlobalSiteManager().registerUtility(
-            self['old_tms'], zeit.retresco.interfaces.ITMS)
+        if self['old_tms'] is not None:
+            zope.component.getGlobalSiteManager().registerUtility(
+                self['old_tms'], zeit.retresco.interfaces.ITMS)
         del self['old_tms']
 
     def testTearDown(self):
