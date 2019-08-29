@@ -12,7 +12,8 @@ import tempfile
 import zc.lockfile
 import zeit.cms.content.dav
 import zeit.cms.interfaces
-import zeit.connector.interfaces
+import zeit.find.interfaces
+import zeit.retresco.update
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
 import zope.interface
@@ -26,30 +27,41 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
     zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
 
     def __iter__(self):
-        result = self.query()
-        return (zeit.cms.interfaces.ICMSContent(x[0]) for x in result)
-
-    def query(self):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
         age = self.config['days-before-report']
         age = datetime.date.today() - datetime.timedelta(days=int(age))
         age = age.isoformat()
-        sv = zeit.vgwort.interfaces.SearchVars
-        result = connector.search(
-            [sv.FIRST_RELEASED, sv.PRIVATE_TOKEN,
-             sv.REPORTED_ON, sv.REPORTED_ERROR],
-            (sv.FIRST_RELEASED < age) & (sv.PRIVATE_TOKEN > '') &
-            (sv.REPORTED_ON == '') & (sv.REPORTED_ERROR == ''))
-        return result
+
+        i = 0
+        result = self._query(age, i)
+        while len(result) < result.hits:
+            i += 1
+            result.extend(self._query(age, i))
+
+        for row in result:
+            content = zeit.cms.interfaces.ICMSContent(
+                zeit.cms.interfaces.ID_NAMESPACE[:-1] + row['url'], None)
+            if content is not None:
+                yield content
+
+    def _query(self, age, page=0, rows=100):
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        return elastic.search({'query': {'bool': {'filter': [
+            {'exists': {'field': 'payload.vgwort.private_token'}},
+            {'range': {'payload.document.date_first_released': {'lte': age}}},
+        ], 'must_not': [
+            {'exists': {'field': 'payload.vgwort.reported_on'}},
+            {'exists': {'field': 'payload.vgwort.reported_error'}},
+        ]}}, '_source': ['url']}, start=page * rows, rows=rows)
 
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = datetime.datetime.now(pytz.UTC)
+        zeit.retresco.update.index(content)
 
     def mark_error(self, content, message):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_error = message
+        zeit.retresco.update.index(content)
 
     @property
     def config(self):

@@ -1,7 +1,10 @@
 import datetime
+import mock
 import pytz
 import time
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.find.interfaces
+import zeit.retresco.interfaces
 import zeit.vgwort.interfaces
 import zeit.vgwort.report
 import zeit.vgwort.testing
@@ -15,16 +18,22 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         super(ReportTest, self).setUp()
         self.vgwort = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
+        self.tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
     def tearDown(self):
         self.vgwort.error = False
         super(ReportTest, self).tearDown()
 
-    def test_source_smoke(self):
+    def test_source_queries_elastic(self):
+        elastic = mock.Mock()
+        zope.component.getGlobalSiteManager().registerUtility(
+            elastic, zeit.find.interfaces.ICMSSearch)
+        elastic.search.return_value = zeit.cms.interfaces.Result(
+            [{'url': '/testcontent'}])
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)
         result = list(source)
-        self.assertEqual(3, len(result))
+        self.assertEqual([self.repository['testcontent']], result)
 
     def test_successful_report_should_mark_content(self):
         now = datetime.datetime.now(pytz.UTC)
@@ -36,6 +45,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual(None, info.reported_error)
         self.assertTrue(info.reported_on > now)
+        self.assertTrue(self.tms.index.called)
 
     def test_semantic_error_should_mark_content(self):
         self.vgwort.error = zeit.vgwort.interfaces.WebServiceError
@@ -47,6 +57,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual('Provoked error', info.reported_error)
         self.assertEqual(None, info.reported_on)
+        self.assertTrue(self.tms.index.called)
 
     def test_technical_error_should_not_mark_content(self):
         self.vgwort.error = zeit.vgwort.interfaces.TechnicalError
@@ -58,3 +69,4 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual(None, info.reported_error)
         self.assertEqual(None, info.reported_on)
+        self.assertFalse(self.tms.index.called)
