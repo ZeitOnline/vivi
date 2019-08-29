@@ -25,7 +25,8 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Contact"),
-            ('title', 'firstname', 'lastname', 'email', 'ssoid', 'sso_connect',
+            ('title', 'firstname', 'lastname', 'initials',
+             'email', 'ssoid', 'sso_connect',
              'twitter', 'facebook', 'instagram'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(

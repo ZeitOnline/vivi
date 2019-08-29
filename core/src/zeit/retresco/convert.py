@@ -199,6 +199,7 @@ class CommonMetadata(Converter):
         result['payload'] = {}
         result['payload']['head'] = {
             'authors': [x.target.uniqueId for x in self.context.authorships],
+            'agencies': [x.uniqueId for x in self.context.agencies],
         }
         result['payload']['body'] = {
             'supertitle': self.context.supertitle,

@@ -110,6 +110,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 },
                 'head': {
                     'authors': [],
+                    'agencies': [],
                     'teaser_image': u'http://xml.zeit.de/2006/DSC00109_2.JPG',
                 },
                 'meta': {
@@ -179,6 +180,29 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual(['test'],
                          data['payload']['document']['storystreams'])
+
+    def test_converts_authorships(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        content = create_testcontent()
+        content.authorships = [
+            content.authorships.create(self.repository['author'])]
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(
+            ['http://xml.zeit.de/author'], data['payload']['head']['authors'])
+
+    def test_converts_agencies(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        content = create_testcontent()
+        content.agencies = [self.repository['author']]
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertEqual(
+            ['http://xml.zeit.de/author'], data['payload']['head']['agencies'])
 
     def test_synthesizes_tms_teaser_if_none_present(self):
         content = create_testcontent()

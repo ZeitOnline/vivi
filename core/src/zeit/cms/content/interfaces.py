@@ -39,6 +39,15 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 authorSource = AuthorSource()
 
 
+class AgencySource(AuthorSource):
+
+    name = 'agencies'
+    additional_query_conditions = {'author_type': 'Agentur'}
+
+
+agencySource = AgencySource()
+
+
 class IChannelField(zc.form.interfaces.ICombinationField):
     """Marker interface so we can register a specialized widget
     for this field."""
@@ -126,6 +135,12 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
+
+    agencies = zope.schema.Tuple(
+        title=_("Agencies"),
+        value_type=zope.schema.Choice(source=agencySource),
+        default=(),
+        required=False)
 
     access = zope.schema.Choice(
         title=_('Access'),

@@ -2,10 +2,12 @@ vivi.core changes
 =================
 
 
-4.11.2 (unreleased)
+4.12.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5432: Add value `Agentur` to `IAuthor.status` source;
+  add `ICommonMetadata.agencies` field;
+  add `IAuthor.initials` field
 
 
 4.11.1 (2019-08-27)

@@ -13,13 +13,12 @@ import zope.traversing.browser
 class SimpleFind(zeit.cms.browser.view.JSON):
 
     def json(self):
-        term = self.request.form.get('term')
-        types = self.request.form.get('types', ())
+        term = self.request.form.pop('term', None)
         if term:
             elastic = zope.component.getUtility(
                 zeit.find.interfaces.ICMSSearch)
             results = elastic.search(
-                zeit.find.search.query(autocomplete=term, types=types))
+                zeit.find.search.query(autocomplete=term, **self.request.form))
         else:
             results = []
         return [
@@ -39,4 +38,8 @@ def SimpleFindURL(context, request):
         zope.component.hooks.getSite(), request)
     query = urllib.urlencode(
         [('types:list', context.get_check_types())], doseq=True)
+    # Since IAutocompleteSource is only a marker and we don't have a baseclass,
+    # hasattr is the overall easiest spelling, even though it's a bit kludgy.
+    if hasattr(context, 'additional_query_conditions'):
+        query += '&' + urllib.urlencode(context.additional_query_conditions)
     return ('%s/@@simple_find?%s' % (base, query))

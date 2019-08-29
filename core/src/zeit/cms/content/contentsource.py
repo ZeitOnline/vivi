@@ -20,6 +20,11 @@ class INamedCMSContentSource(ICMSContentSource):
 class IAutocompleteSource(INamedCMSContentSource):
     """Marker that this source supports autocomplete."""
 
+    # Coupling us to zeit.find here is not great, but I don't see a helpful way
+    # to handle this in a more abstract manner.
+    additional_query_conditions = zope.interface.Attribute(
+        'Optional: additional kwargs for zeit.find.search.query')
+
 
 class CMSContentSource(object):
     """A source for all cms content."""

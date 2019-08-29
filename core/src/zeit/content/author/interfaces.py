@@ -13,7 +13,7 @@ import zope.schema
 
 class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    values = (u'Print', u'Online', u'Reader')
+    values = (u'Print', u'Online', u'Reader', u'Agentur')
 
 
 class InvalidCode(zope.schema.ValidationError):
@@ -68,6 +68,9 @@ class IAuthor(zope.interface.Interface,
         title=_('Display name'),
         required=False,
         description=_(u"Default: 'Firstname Lastname'"))
+
+    initials = zope.schema.TextLine(
+        title=_('Initials'), required=False)
 
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)

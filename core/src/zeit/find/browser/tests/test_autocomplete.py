@@ -48,6 +48,18 @@ class TestSimpleFind(unittest.TestCase,
                 ])),
             ]))))
 
+    def test_given_parameters_should_be_passed_to_search(self):
+        self.search.return_value = []
+        self.browser.open(
+            '@@simple_find?term=search-term&access=abo')
+        self.search.assert_called_with(
+            dict(query=dict(bool=dict(must=[
+                dict(match_phrase_prefix={
+                    'payload.vivi.autocomplete': 'search-term'})
+            ], filter=[
+                {'match': {'payload.document.access': u'abo'}}
+            ]))))
+
     def test_query_result_should_be_returned(self):
         self.search.return_value = [
             dict(url='/A'),
@@ -70,12 +82,15 @@ class TestSimpleFind(unittest.TestCase,
         self.assert_json([{'label': 'Title', 'value': 'http://xml.zeit.de/A'}])
 
     def test_query_view_should_render_input(self):
-        source = mock.Mock()
-        source.get_check_types.return_value = ('t1', 't2', 't3')
-        zope.interface.alsoProvides(
-            source, zeit.cms.content.interfaces.IAutocompleteSource)
+        class FakeSource(object):
+            zope.interface.implements(
+                zeit.cms.content.interfaces.IAutocompleteSource)
+
+            def get_check_types(self):
+                return ('t1', 't2', 't3')
+
         view = AutocompleteSourceQuery(
-            source, zope.publisher.browser.TestRequest(
+            FakeSource(), zope.publisher.browser.TestRequest(
                 skin=zeit.cms.browser.interfaces.ICMSLayer))
         self.assertEllipsis(
             ('<input type="text" class="autocomplete" '

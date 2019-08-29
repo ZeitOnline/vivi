@@ -155,7 +155,7 @@ class MessageService(VGWortWebService):
                             involved.cardNumber = author.vgwortid
                         parties.authors.author.append(involved)
                 except AttributeError:
-                    log.exception("Could not report")
+                    log.error('Could not report %s', content, exc_info=True)
         else:
             # Report the freetext authors if no structured authors are
             # available. VGWort will do some matching then.
@@ -169,10 +169,22 @@ class MessageService(VGWortWebService):
                 involved.surName = author[-1]
                 parties.authors.author.append(involved)
 
+        for author in content.agencies:
+            involved = self.create('Involved')
+            try:
+                if not author.vgwortcode:
+                    continue
+                involved.code = author.vgwortcode
+                parties.authors.author.append(involved)
+            except AttributeError:
+                log.warning('Ignoring agencies for %s', content, exc_info=True)
+
+        # BBB for articles created by zeit.newsimport before `agencies` existed
         if content.product and content.product.vgwortcode:
             involved = self.create('Involved')
             involved.code = content.product.vgwortcode
             parties.authors.author.append(involved)
+
         if not parties.authors.author:
             raise zeit.vgwort.interfaces.WebServiceError(
                 'Kein Autor mit VG-Wort-Code gefunden.')
