@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.12.1 (unreleased)
+4.12.1 (2019-09-03)
 -------------------
 
 - OPS-1106: Switch vgwort report to query elasticsearch instead of queryserver
