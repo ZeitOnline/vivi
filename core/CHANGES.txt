@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5453: Add dropdown with `IConsentInfo.has_thirdparty` to embed form
 
+- ZON-5447: Add multiselect with `IConsentInfo.thirdparty_vendors` to embed form
+
 
 4.13.0 (2019-09-04)
 -------------------

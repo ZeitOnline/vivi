@@ -200,6 +200,7 @@ setup(
         'fanstatic.libraries': [
             'zeit_addcentral=zeit.addcentral.resources:lib',
             'zeit_campus=zeit.campus.browser.resources:lib',
+            'zeit_cmp=zeit.cmp.browser.resources:lib',
 
             'zeit_cms=zeit.cms.browser.resources:lib_css',
             'zeit_cms_js=zeit.cms.browser.resources:lib_js',

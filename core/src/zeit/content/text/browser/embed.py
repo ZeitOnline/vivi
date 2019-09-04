@@ -36,7 +36,8 @@ class Parameters(FormBase, zeit.cms.browser.form.EditForm):
         super(FormBase, self).__init__(context, request)
         if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
             self.form_fields += zope.formlib.form.FormFields(
-                zeit.cmp.interfaces.IConsentInfo).select('has_thirdparty')
+                zeit.cmp.interfaces.IConsentInfo).select(
+                    'has_thirdparty', 'thirdparty_vendors')
 
 
 class Display(zeit.cms.browser.form.DisplayForm):
