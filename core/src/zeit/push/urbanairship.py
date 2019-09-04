@@ -1,6 +1,7 @@
 # coding: utf-8
 from __future__ import absolute_import
 from datetime import datetime, timedelta
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import bugsnag
 import grokcore.component as grok
 import json
@@ -308,19 +309,19 @@ def json_dump_sphinx(obj):
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.interfaces.IObjectCreatedEvent)
 def set_author_as_default_push_template(context, event):
-    config = zope.app.appsetup.appsetup.getConfigContext()
-    if config and config.hasFeature('zeit.push.set_author_push_default'):
-        push = zeit.push.interfaces.IPushMessages(context)
-        # Breaking News are also IArticle's and add messages
-        # we don't want to mess it up
-        if push.messages:
-            return
-        template_name = zope.app.appsetup.product\
-            .getProductConfiguration('zeit.push')\
-            .get('urbanairship-author-push-template-name')
-        push.message_config = [{
-            'type': 'mobile',
-            'enabled': True,
-            # No bw-compat needed, as it has not been enabled in production yet
-            'variant': 'automatic-author',
-            'payload_template': template_name}]
+    if not FEATURE_TOGGLES.find('push_new_articles_ua_author_tag'):
+        return
+    push = zeit.push.interfaces.IPushMessages(context)
+    # Breaking News are also IArticle's and add messages
+    # we don't want to mess it up
+    if push.messages:
+        return
+    template_name = zope.app.appsetup.product\
+        .getProductConfiguration('zeit.push')\
+        .get('urbanairship-author-push-template-name')
+    push.message_config = [{
+        'type': 'mobile',
+        'enabled': True,
+        # No bw-compat needed, as it has not been enabled in production yet
+        'variant': 'automatic-author',
+        'payload_template': template_name}]
