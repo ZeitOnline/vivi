@@ -1,11 +1,11 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
-from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 from zeit.workflow.publishinfo import id_to_principal
 import zeit.cms.browser.interfaces
@@ -269,7 +269,12 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-agency'
     undo_description = _('edit metadata')
-    form_fields = FormFields(ICommonMetadata).select('agencies')
+    form_fields = FormFields()
+
+    def __init__(self, context, request):
+        super(MetadataAgency, self).__init__(context, request)
+        if FEATURE_TOGGLES.find('article_agencies'):
+            self.form_fields = FormFields(ICommonMetadata).select('agencies')
 
 
 class MetadataAccess(zeit.edit.browser.form.InlineForm):

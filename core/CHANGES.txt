@@ -9,6 +9,8 @@ vivi.core changes
 
 - MAINT: Move runtime feature toggle source here from zeit.web
 
+- MAINT: Put `agencies` field on article UI behind feature toggle
+
 
 4.12.2 (2019-09-04)
 -------------------
