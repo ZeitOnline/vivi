@@ -13,6 +13,7 @@ import martian
 import os
 import pkg_resources
 import pyramid_dogpile_cache2
+import re
 import sys
 import webob
 import zope.app.appsetup.interfaces
@@ -136,12 +137,14 @@ Modules that were pre-imported for convenience: zope, zeit, transaction
 @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
 def configure_dogpile_cache(event):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    pyramid_dogpile_cache2.configure_dogpile_cache({
+    settings = {
         'dogpile_cache.backend': 'dogpile.cache.memory',
-        'dogpile_cache.regions': 'config',
-        'dogpile_cache.config.expiration_time': config[
-            'cache-expiration-config']
-    })
+        'dogpile_cache.regions': config['cache-regions'],
+    }
+    for region in re.split(r'\s*,\s*', config['cache-regions']):
+        settings['dogpile_cache.%s.expiration_time' % region] = config[
+            'cache-expiration-%s' % region]
+    pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
 class BugsnagMiddleware(object):
