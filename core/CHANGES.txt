@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.13.0 (unreleased)
+4.13.0 (2019-09-04)
 -------------------
 
 - FIX: Display label "Author" when role is None
