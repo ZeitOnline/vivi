@@ -200,6 +200,10 @@ class EditReference(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'location', 'role')
 
+    def setUpWidgets(self, *args, **kw):
+        super(EditReference, self).setUpWidgets(*args, **kw)
+        self.widgets['role']._messageNoValue = _('Author')
+
     @property
     def prefix(self):
         return 'reference-details-%s' % self.context.target.uniqueId

@@ -5,6 +5,8 @@ vivi.core changes
 4.13.0 (unreleased)
 -------------------
 
+- FIX: Display label "Author" when role is None
+
 - MAINT: Move runtime feature toggle source here from zeit.web
 
 
