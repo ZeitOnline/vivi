@@ -92,6 +92,7 @@ class ClearFanstaticOnError(object):
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
+FEATURE_CACHE = pyramid_dogpile_cache2.get_region('feature')
 
 
 def zope_shell():

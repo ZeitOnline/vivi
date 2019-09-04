@@ -1,9 +1,10 @@
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.application import CONFIG_CACHE, FEATURE_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import gocept.lxml.objectify
 import logging
 import operator
+import os
 import pyramid_dogpile_cache2
 import urllib2
 import xml.sax.saxutils
@@ -34,6 +35,17 @@ class CachedXMLBase(object):
         return self._get_tree_from_url(url)
 
     @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
+        __traceback_info__ = (url, )
+        logger.debug('Getting %s' % url)
+        request = urllib2.urlopen(url)
+        return gocept.lxml.objectify.fromfile(request)
+
+
+class ShortCachedXMLBase(CachedXMLBase):
+
+    # Unfortunately needs copy&paste to change the cache region.
+    @FEATURE_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
@@ -330,6 +342,41 @@ class SubChannelSource(MasterSlaveSource):
 
     def _get_title_for(self, node):
         return unicode(node['title'])
+
+
+class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
+    # Only contextual so we can customize source_class
+
+    product_configuration = 'zeit.cms'
+    config_url = 'feature-toggle-source'
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def find(self, name):
+            return self.factory.find(name)
+
+        def set(self, *args):  # only for tests
+            self.factory.override(*args, value=True)
+
+        def unset(self, *args):  # only for tests
+            self.factory.override(*args, value=False)
+
+    def find(self, name):
+        # Allow to override toggles via environment, for local development.
+        key = 'toggle_{}'.format(name)
+        if key in os.environ:
+            return bool(os.environ[key])
+        try:
+            return bool(getattr(self._get_tree(), name, False))
+        except TypeError:
+            return False
+
+    def override(self, *names, **kw):
+        for name in names:
+            # Changes are discarded between tests, as they call dogpile clear()
+            setattr(self._get_tree(), name, kw['value'])
+
+FEATURE_TOGGLES = FeatureToggleSource()(None)
 
 
 def unicode_or_none(value):
