@@ -138,6 +138,8 @@ class MessageService(VGWortWebService):
         parties.authors = self.create('Authors')
         if content.authorships:
             for author in content.authorships:
+                if author.role:
+                    continue
                 author = author.target
                 if author is None:
                     continue

@@ -5,7 +5,7 @@ vivi.core changes
 4.12.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5394: Do not report authorships with role to vgwort
 
 
 4.12.1 (2019-09-03)

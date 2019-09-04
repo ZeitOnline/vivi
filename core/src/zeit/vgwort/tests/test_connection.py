@@ -185,14 +185,15 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
-    def get_content(self, authors, freetext=None):
+    def get_content(self, authors, freetext=None, product='KINZ'):
         products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
-        product = [x for x in products if x.id == 'KINZ'][0]
+        product = [x for x in products if x.id == product]
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.authorships = [co.authorships.create(x) for x in authors]
             co.authors = freetext
-            co.product = product
+            if product:
+                co.product = product[0]
             co.title = 'Title'
             co.teaserText = 'x' * 2000
         return self.repository['testcontent']
@@ -225,9 +226,8 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author.vgwortcode = 'dpaid'
         self.repository['author'] = author
         author = self.repository['author']
-        content = self.get_content([])
+        content = self.get_content([], product=None)
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.product = None
             co.agencies = [author]
         content = self.repository['testcontent']
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
@@ -267,6 +267,19 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assertEqual(2, len(authors))
         self.assertEqual('Tina', authors[0].firstName)
         self.assertEqual('Groll', authors[0].surName)
+
+    def test_authors_with_roles_should_be_ignored(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.vgwortcode = 'Groll'
+        self.repository['author'] = author
+        content = self.get_content([], product=None)
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.authorships = [co.authorships.create(author)]
+            co.authorships[0].role = u'Illustration'
+        content = self.repository['testcontent']
+        with self.assertRaises(zeit.vgwort.interfaces.WebServiceError):
+            self.service.new_document(content)
 
     def test_url_should_point_to_www_zeit_de(self):
         content = self.get_content([])
