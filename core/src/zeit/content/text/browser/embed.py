@@ -1,4 +1,6 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cmp.interfaces
 import zeit.cms.browser.form
 import zeit.content.text.embed
 import zeit.content.text.interfaces
@@ -29,6 +31,12 @@ class Parameters(FormBase, zeit.cms.browser.form.EditForm):
         zeit.content.text.interfaces.IEmbed,
         zeit.cms.content.interfaces.IMemo).select(
             'render_as_template', 'parameter_definition', 'vivi_css', 'memo')
+
+    def __init__(self, context, request):
+        super(FormBase, self).__init__(context, request)
+        if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
+            self.form_fields += zope.formlib.form.FormFields(
+                zeit.cmp.interfaces.IConsentInfo).select('has_thirdparty')
 
 
 class Display(zeit.cms.browser.form.DisplayForm):

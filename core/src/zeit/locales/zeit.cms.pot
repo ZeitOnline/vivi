@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 28 13:08:03 2019\n"
+"POT-Creation-Date: Wed Sep  4 14:30:51 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -144,6 +144,24 @@ msgstr ""
 
 #: zeit/campus/interfaces.py:114
 msgid "Study course"
+msgstr ""
+
+#: zeit/cmp/interfaces.py:12
+msgid "Contains thirdparty code"
+msgstr ""
+
+#: zeit/cmp/source.py:51
+#: zeit/workflow/source.py:43
+msgid "yes"
+msgstr ""
+
+#: zeit/cmp/source.py:52
+#: zeit/workflow/source.py:44
+msgid "no"
+msgstr ""
+
+#: zeit/cmp/source.py:53
+msgid "unknown"
 msgstr ""
 
 #: zeit/cms/admin/browser/admin.py:16
@@ -1738,15 +1756,15 @@ msgstr ""
 msgid "Retract banner"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-mobile"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:22
+#: zeit/content/article/browser/breaking.py:23
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:24
+#: zeit/content/article/browser/breaking.py:25
 msgid "breaking-news-social"
 msgstr ""
 
@@ -3796,19 +3814,19 @@ msgid "Embed"
 msgstr ""
 
 #: zeit/content/text/browser/configure.zcml:85
-#: zeit/content/text/browser/embed.py:27
+#: zeit/content/text/browser/embed.py:35
 msgid "Edit embed parameters"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:16
+#: zeit/content/text/browser/embed.py:24
 msgid "Add embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:22
+#: zeit/content/text/browser/embed.py:30
 msgid "Edit embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:36
+#: zeit/content/text/browser/embed.py:44
 msgid "View embed"
 msgstr ""
 
@@ -4577,14 +4595,6 @@ msgstr ""
 #: zeit/workflow/publishinfo.py:131
 #: zeit/workflow/workflow.py:57
 msgid "${name}: ${new_value}"
-msgstr ""
-
-#: zeit/workflow/source.py:43
-msgid "yes"
-msgstr ""
-
-#: zeit/workflow/source.py:44
-msgid "no"
 msgstr ""
 
 #: zeit/workflow/source.py:45
