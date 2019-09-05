@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.13.1 (unreleased)
+4.14.0 (2019-09-05)
 -------------------
 
 - ZON-5453: Add dropdown with `IConsentInfo.has_thirdparty` to embed form
