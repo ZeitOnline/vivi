@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Aug 28 13:08:03 2019\n"
+"POT-Creation-Date: Wed Sep  4 16:22:45 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -144,6 +144,28 @@ msgstr ""
 
 #: zeit/campus/interfaces.py:114
 msgid "Study course"
+msgstr ""
+
+#: zeit/cmp/interfaces.py:19
+msgid "Contains thirdparty code"
+msgstr ""
+
+#: zeit/cmp/interfaces.py:24
+msgid "Vendors"
+msgstr ""
+
+#: zeit/cmp/source.py:51
+#: zeit/workflow/source.py:43
+msgid "yes"
+msgstr ""
+
+#: zeit/cmp/source.py:52
+#: zeit/workflow/source.py:44
+msgid "no"
+msgstr ""
+
+#: zeit/cmp/source.py:53
+msgid "unknown"
 msgstr ""
 
 #: zeit/cms/admin/browser/admin.py:16
@@ -297,8 +319,8 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:334
 #: zeit/cms/repository/browser/file.py:106
-#: zeit/content/article/edit/browser/form.py:514
-#: zeit/content/article/edit/browser/form.py:548
+#: zeit/content/article/edit/browser/form.py:519
+#: zeit/content/article/edit/browser/form.py:553
 #: zeit/content/article/edit/browser/push.py:67
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -339,6 +361,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:248
 #: zeit/content/article/interfaces.py:171
 #: zeit/content/author/author.py:100
+#: zeit/content/author/browser/form.py:205
 msgid "Author"
 msgstr ""
 
@@ -668,7 +691,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:25
 #: zeit/content/article/browser/form.py:36
-#: zeit/content/article/edit/browser/form.py:402
+#: zeit/content/article/edit/browser/form.py:407
 #: zeit/content/link/browser/form.py:29
 #: zeit/content/video/browser/video.py:44
 msgid "Options"
@@ -682,7 +705,7 @@ msgid "Authors"
 msgstr ""
 
 #: zeit/cms/content/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:479
+#: zeit/content/article/edit/browser/form.py:484
 msgid "Run in channel"
 msgstr ""
 
@@ -1738,15 +1761,15 @@ msgstr ""
 msgid "Retract banner"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-mobile"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:22
+#: zeit/content/article/browser/breaking.py:23
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:24
+#: zeit/content/article/browser/breaking.py:25
 msgid "breaking-news-social"
 msgstr ""
 
@@ -1922,68 +1945,68 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:247
 #: zeit/content/article/edit/browser/form.py:255
 #: zeit/content/article/edit/browser/form.py:271
-#: zeit/content/article/edit/browser/form.py:290
-#: zeit/content/article/edit/browser/form.py:298
-#: zeit/content/article/edit/browser/form.py:306
+#: zeit/content/article/edit/browser/form.py:295
+#: zeit/content/article/edit/browser/form.py:303
+#: zeit/content/article/edit/browser/form.py:311
 #: zeit/newsletter/browser/form.py:17
 msgid "edit metadata"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:279
+#: zeit/content/article/edit/browser/form.py:284
 msgid "edit access"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:320
+#: zeit/content/article/edit/browser/form.py:325
 #: zeit/content/link/browser/form.py:24
 #: zeit/newsletter/newsletter.py:161
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:327
+#: zeit/content/article/edit/browser/form.py:332
 msgid "edit teaser image"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:366
+#: zeit/content/article/edit/browser/form.py:371
 msgid "edit teaser supertitle"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:379
+#: zeit/content/article/edit/browser/form.py:384
 msgid "edit teaser title"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:392
+#: zeit/content/article/edit/browser/form.py:397
 msgid "edit teaser text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:409
-#: zeit/content/article/edit/browser/form.py:418
-#: zeit/content/article/edit/browser/form.py:436
-#: zeit/content/article/edit/browser/form.py:444
-#: zeit/content/article/edit/browser/form.py:462
+#: zeit/content/article/edit/browser/form.py:414
+#: zeit/content/article/edit/browser/form.py:423
+#: zeit/content/article/edit/browser/form.py:441
+#: zeit/content/article/edit/browser/form.py:449
+#: zeit/content/article/edit/browser/form.py:467
 #: zeit/content/article/edit/browser/template.py:12
 msgid "edit options"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:442
+#: zeit/content/article/edit/browser/form.py:447
 msgid "Product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:454
+#: zeit/content/article/edit/browser/form.py:459
 msgid "edit misc product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:486
-#: zeit/content/article/edit/browser/form.py:494
+#: zeit/content/article/edit/browser/form.py:491
+#: zeit/content/article/edit/browser/form.py:499
 msgid "select channel"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:522
+#: zeit/content/article/edit/browser/form.py:527
 #: zeit/content/link/browser/form.py:40
 msgid "Storystream"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:530
+#: zeit/content/article/edit/browser/form.py:535
 msgid "edit storystream"
 msgstr ""
 
@@ -3796,19 +3819,19 @@ msgid "Embed"
 msgstr ""
 
 #: zeit/content/text/browser/configure.zcml:85
-#: zeit/content/text/browser/embed.py:27
+#: zeit/content/text/browser/embed.py:29
 msgid "Edit embed parameters"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:16
+#: zeit/content/text/browser/embed.py:18
 msgid "Add embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:22
+#: zeit/content/text/browser/embed.py:24
 msgid "Edit embed"
 msgstr ""
 
-#: zeit/content/text/browser/embed.py:36
+#: zeit/content/text/browser/embed.py:45
 msgid "View embed"
 msgstr ""
 
@@ -4577,14 +4600,6 @@ msgstr ""
 #: zeit/workflow/publishinfo.py:131
 #: zeit/workflow/workflow.py:57
 msgid "${name}: ${new_value}"
-msgstr ""
-
-#: zeit/workflow/source.py:43
-msgid "yes"
-msgstr ""
-
-#: zeit/workflow/source.py:44
-msgid "no"
 msgstr ""
 
 #: zeit/workflow/source.py:45

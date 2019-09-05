@@ -1,5 +1,6 @@
-import zeit.content.text.testing
 import zeit.cms.testing
+import zeit.content.text.embed
+import zeit.content.text.testing
 
 
 class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
@@ -22,3 +23,22 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...<pre>changed</pre>...', b.contents)
+
+    def test_edit_cmp_fields(self):
+        embed = zeit.content.text.embed.Embed()
+        embed.text = u''
+        self.repository['embed'] = embed
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/embed/@@checkout')
+        b.getLink('Edit embed parameters').click()
+        b.getControl('Contains thirdparty code').displayValue = ['yes']
+        b.getControl(name='form.thirdparty_vendors').displayValue = [
+            'Twitter', 'YouTube']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        self.assertEqual(
+            ['yes'], b.getControl('Contains thirdparty code').displayValue)
+        self.assertEqual(
+            ['Twitter', 'YouTube'],
+            b.getControl(name='form.thirdparty_vendors').displayValue)

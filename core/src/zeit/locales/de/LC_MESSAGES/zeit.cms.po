@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Aug 28 13:08:03 2019\n"
-"PO-Revision-Date: 2019-08-28 13:08+0200\n"
+"POT-Creation-Date: Wed Sep  4 16:22:45 2019\n"
+"PO-Revision-Date: 2019-09-04 16:23+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -141,6 +141,26 @@ msgstr "Linktext (Themenseite)"
 #: zeit/campus/interfaces.py:114
 msgid "Study course"
 msgstr "Studiengang"
+
+#: zeit/cmp/interfaces.py:19
+msgid "Contains thirdparty code"
+msgstr "Verwendet 3rdparty JavaScript"
+
+#: zeit/cmp/interfaces.py:24
+msgid "Vendors"
+msgstr "Vendoren"
+
+#: zeit/cmp/source.py:51 zeit/workflow/source.py:43
+msgid "yes"
+msgstr "ja"
+
+#: zeit/cmp/source.py:52 zeit/workflow/source.py:44
+msgid "no"
+msgstr "nein"
+
+#: zeit/cmp/source.py:53
+msgid "unknown"
+msgstr "unbekannt"
 
 #: zeit/cms/admin/browser/admin.py:16 zeit/cms/admin/browser/admin.py:35
 msgid "admin-field-group"
@@ -285,8 +305,8 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:334 zeit/cms/repository/browser/file.py:106
-#: zeit/content/article/edit/browser/form.py:514
-#: zeit/content/article/edit/browser/form.py:548
+#: zeit/content/article/edit/browser/form.py:519
+#: zeit/content/article/edit/browser/form.py:553
 #: zeit/content/article/edit/browser/push.py:67
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -322,6 +342,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 #: zeit/cms/browser/listing.py:275 zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:248
 #: zeit/content/article/interfaces.py:171 zeit/content/author/author.py:100
+#: zeit/content/author/browser/form.py:205
 msgid "Author"
 msgstr "Autor"
 
@@ -643,7 +664,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:25 zeit/content/article/browser/form.py:36
-#: zeit/content/article/edit/browser/form.py:402
+#: zeit/content/article/edit/browser/form.py:407
 #: zeit/content/link/browser/form.py:29 zeit/content/video/browser/video.py:44
 msgid "Options"
 msgstr "Optionen"
@@ -654,7 +675,7 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:479
+#: zeit/content/article/edit/browser/form.py:484
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
 
@@ -1705,15 +1726,15 @@ msgstr "Eilmeldungsbanner"
 msgid "Retract banner"
 msgstr "Eilmeldungsbanner depublizieren"
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-mobile"
 msgstr "Push versenden"
 
-#: zeit/content/article/browser/breaking.py:22
+#: zeit/content/article/browser/breaking.py:23
 msgid "breaking-news-homepage"
 msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:24
+#: zeit/content/article/browser/breaking.py:25
 msgid "breaking-news-social"
 msgstr "Auf Facebook und Twitter posten"
 
@@ -1887,67 +1908,67 @@ msgstr "Status"
 #: zeit/content/article/edit/browser/form.py:247
 #: zeit/content/article/edit/browser/form.py:255
 #: zeit/content/article/edit/browser/form.py:271
-#: zeit/content/article/edit/browser/form.py:290
-#: zeit/content/article/edit/browser/form.py:298
-#: zeit/content/article/edit/browser/form.py:306
+#: zeit/content/article/edit/browser/form.py:295
+#: zeit/content/article/edit/browser/form.py:303
+#: zeit/content/article/edit/browser/form.py:311
 #: zeit/newsletter/browser/form.py:17
 msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:279
+#: zeit/content/article/edit/browser/form.py:284
 msgid "edit access"
 msgstr "Verfügbarkeit bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:320
+#: zeit/content/article/edit/browser/form.py:325
 #: zeit/content/link/browser/form.py:24 zeit/newsletter/newsletter.py:161
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
 
-#: zeit/content/article/edit/browser/form.py:327
+#: zeit/content/article/edit/browser/form.py:332
 msgid "edit teaser image"
 msgstr "Teaser-Bild bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:366
+#: zeit/content/article/edit/browser/form.py:371
 msgid "edit teaser supertitle"
 msgstr "Teaser-Spitzmarke bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:379
+#: zeit/content/article/edit/browser/form.py:384
 msgid "edit teaser title"
 msgstr "Teaser-Titel bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:392
+#: zeit/content/article/edit/browser/form.py:397
 msgid "edit teaser text"
 msgstr "Teaser-Text bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:409
-#: zeit/content/article/edit/browser/form.py:418
-#: zeit/content/article/edit/browser/form.py:436
-#: zeit/content/article/edit/browser/form.py:444
-#: zeit/content/article/edit/browser/form.py:462
+#: zeit/content/article/edit/browser/form.py:414
+#: zeit/content/article/edit/browser/form.py:423
+#: zeit/content/article/edit/browser/form.py:441
+#: zeit/content/article/edit/browser/form.py:449
+#: zeit/content/article/edit/browser/form.py:467
 #: zeit/content/article/edit/browser/template.py:12
 msgid "edit options"
 msgstr "Optionen bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:442
+#: zeit/content/article/edit/browser/form.py:447
 msgid "Product management"
 msgstr "Produktmangement"
 
-#: zeit/content/article/edit/browser/form.py:454
+#: zeit/content/article/edit/browser/form.py:459
 msgid "edit misc product management"
 msgstr "Diverse Produktmanagement Angaben bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:486
-#: zeit/content/article/edit/browser/form.py:494
+#: zeit/content/article/edit/browser/form.py:491
+#: zeit/content/article/edit/browser/form.py:499
 msgid "select channel"
 msgstr "Channel bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:522
+#: zeit/content/article/edit/browser/form.py:527
 #: zeit/content/link/browser/form.py:40
 msgid "Storystream"
 msgstr "Storystream"
 
-#: zeit/content/article/edit/browser/form.py:530
+#: zeit/content/article/edit/browser/form.py:535
 msgid "edit storystream"
 msgstr "Storystream bearbeiten"
 
@@ -3734,19 +3755,19 @@ msgid "Embed"
 msgstr "Embed"
 
 #: zeit/content/text/browser/configure.zcml:85
-#: zeit/content/text/browser/embed.py:27
+#: zeit/content/text/browser/embed.py:29
 msgid "Edit embed parameters"
 msgstr "Parameter"
 
-#: zeit/content/text/browser/embed.py:16
+#: zeit/content/text/browser/embed.py:18
 msgid "Add embed"
 msgstr "Embed hinzufügen"
 
-#: zeit/content/text/browser/embed.py:22
+#: zeit/content/text/browser/embed.py:24
 msgid "Edit embed"
 msgstr "Embed bearbeiten"
 
-#: zeit/content/text/browser/embed.py:36
+#: zeit/content/text/browser/embed.py:45
 msgid "View embed"
 msgstr "Embed anzeigen"
 
@@ -4529,14 +4550,6 @@ msgstr "Sperrvermerk »${reason}«"
 #: zeit/workflow/publishinfo.py:131 zeit/workflow/workflow.py:57
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
-
-#: zeit/workflow/source.py:43
-msgid "yes"
-msgstr "ja"
-
-#: zeit/workflow/source.py:44
-msgid "no"
-msgstr "nein"
 
 #: zeit/workflow/source.py:45
 msgid "not necessary"

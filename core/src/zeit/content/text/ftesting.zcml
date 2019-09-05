@@ -9,4 +9,6 @@
   <include package="zeit.content.text" />
   <include package="zeit.content.text.browser" />
 
+  <include package="zeit.cmp" />
+
 </configure>
