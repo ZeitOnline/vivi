@@ -5,7 +5,7 @@ vivi.core changes
 4.14.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Don't show supertitle in volume toc
 
 
 4.14.0 (2019-09-05)

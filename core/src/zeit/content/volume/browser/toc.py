@@ -363,8 +363,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _format_toc_element(self, toc_entry):
         title_teaser = " ".join(
-            [toc_entry.get("supertitle"),
-             toc_entry.get("title"),
+            [toc_entry.get("title"),
              toc_entry.get("teaser")])
         page = toc_entry.get('page')
         if page == sys.maxint:

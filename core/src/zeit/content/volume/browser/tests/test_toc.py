@@ -97,11 +97,11 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
     def test_csv_is_created_from_toc_data(self):
         expected = """Die Zeit\r
 \tPolitik\r
-1\tSuper title tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
+1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
 Anderer\r
 \tDossier\r
-1\tSuper title tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
-3\tSuper title2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
+1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
+3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
 """
         toc = Toc(mock.Mock(), mock.Mock())
         res = toc._create_csv(self.toc_data)
