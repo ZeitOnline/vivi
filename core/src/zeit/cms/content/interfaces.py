@@ -6,7 +6,6 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zope.component.interfaces
 import zope.interface
 import zope.interface.common.sequence
 import zope.interface.interfaces
@@ -420,7 +419,7 @@ class IDAVToken(zope.interface.Interface):
     """A string representing a token that uniquely identifies a value."""
 
 
-class IDAVPropertyChangedEvent(zope.component.interfaces.IObjectEvent):
+class IDAVPropertyChangedEvent(zope.interface.interfaces.IObjectEvent):
     """A dav property has been changed."""
 
     old_value = zope.interface.Attribute("The value before the change.")
@@ -433,7 +432,7 @@ class IDAVPropertyChangedEvent(zope.component.interfaces.IObjectEvent):
         "zope.schema field the property was changed for.")
 
 
-class DAVPropertyChangedEvent(zope.component.interfaces.ObjectEvent):
+class DAVPropertyChangedEvent(zope.interface.interfaces.ObjectEvent):
     zope.interface.implements(IDAVPropertyChangedEvent)
 
     def __init__(self, object, property_namespace, property_name,

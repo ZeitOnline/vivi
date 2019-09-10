@@ -165,7 +165,7 @@ class IPublish(zope.interface.Interface):
         """
 
 
-class IWithMasterObjectEvent(zope.component.interfaces.IObjectEvent):
+class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
     """Object with master image."""
 
     master = zope.schema.Choice(

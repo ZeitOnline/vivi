@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import zope.component.interfaces
 import zope.container.interfaces
 import zope.interface
 
@@ -115,7 +114,7 @@ class CheckinCheckoutError(Exception):
         self.args = args
 
 
-class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
+class ICheckinCheckoutEvent(zope.interface.interfaces.IObjectEvent):
     """Generated when a content object is checked in or out."""
 
     principal = zope.interface.Attribute(
@@ -165,7 +164,7 @@ class IAfterDeleteEvent(ICheckinCheckoutEvent):
     """Generated when a content object was deleted."""
 
 
-class EventBase(zope.component.interfaces.ObjectEvent):
+class EventBase(zope.interface.interfaces.ObjectEvent):
 
     def __init__(self, object, workingcopy, principal, publishing=False):
         super(EventBase, self).__init__(object)

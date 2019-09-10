@@ -1,6 +1,4 @@
-import zc.sourcefactory.contextual
 import zope.component
-import zope.component.interfaces
 import zope.interface
 import zope.schema
 
@@ -117,7 +115,7 @@ class IFeed(IReadFeed, IWriteFeed):
     """Documents can be published into a feed."""
 
 
-class IContentSyndicatedEvent(zope.component.interfaces.IObjectEvent):
+class IContentSyndicatedEvent(zope.interface.interfaces.IObjectEvent):
     """Issued when an object is syndicated."""
 
     targets = zope.schema.Set(

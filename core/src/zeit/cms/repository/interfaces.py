@@ -1,32 +1,30 @@
 from zeit.cms.i18n import MessageFactory as _
 import inspect
 import zeit.cms.interfaces
-import zeit.cms.interfaces
-import zope.component.interfaces
 import zope.file.interfaces
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
 
 
-class IBeforeObjectAddEvent(zope.component.interfaces.IObjectEvent):
+class IBeforeObjectAddEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent before an object will be added to the repository."""
 
 
-class BeforeObjectAddEvent(zope.component.interfaces.ObjectEvent):
+class BeforeObjectAddEvent(zope.interface.interfaces.ObjectEvent):
     """An event sent before an object will be added to the repository."""
 
     zope.interface.implements(IBeforeObjectAddEvent)
 
 
-class IAfterObjectConstructedEvent(zope.component.interfaces.IObjectEvent):
+class IAfterObjectConstructedEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent after an ICMSContent is constructed from a resource."""
 
     resource = zope.interface.Attribute(
         'IResource the object was constructed from')
 
 
-class AfterObjectConstructedEvent(zope.component.interfaces.ObjectEvent):
+class AfterObjectConstructedEvent(zope.interface.interfaces.ObjectEvent):
     """An event sent after an ICMSContent is constructed from a resource."""
 
     zope.interface.implements(IAfterObjectConstructedEvent)
@@ -216,7 +214,7 @@ class IAutomaticallyRenameable(zope.interface.Interface):
     uniqueId = zope.interface.Attribute('Current uniqueId')
 
 
-class IObjectReloadedEvent(zope.component.interfaces.IObjectEvent):
+class IObjectReloadedEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent when a reload action is triggered through the UI, so we
     can differentiate from zeit.connector.interfaces.ResourceInvaliatedEvent,
     which is triggered by the invalidator, too.
