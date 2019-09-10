@@ -12,7 +12,8 @@
 </div>
 
 <table class="form-fields"><tbody>
-    <tr tal:repeat="widget view/widgets">
+    <tr tal:repeat="widget view/widgets"
+        tal:attributes="class widget/field_css_class">
         <td class="label">
             <label tal:attributes="for widget/name">
                 <span class="required" tal:condition="widget/required"

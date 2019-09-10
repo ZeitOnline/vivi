@@ -30,6 +30,7 @@ class Lock(zeit.cms.browser.lightbox.Form):
 
     form_fields = zope.formlib.form.Fields(
         zeit.cms.locking.browser.interfaces.ILockFormSchema)
+    display_only = True
 
     def get_data(self):
         lockable = self.lockable
@@ -73,12 +74,6 @@ class Lock(zeit.cms.browser.lightbox.Form):
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
         return zope.app.locking.interfaces.ILockable(self.context)
-
-    def setUpWidgets(self, ignore_request=False):
-        self.widgets = zope.formlib.form.setUpDataWidgets(
-            self.form_fields, self.prefix, self.context, self.request,
-            data=self.get_data(), for_display=True,
-            ignore_request=ignore_request)
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):

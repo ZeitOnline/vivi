@@ -1,12 +1,12 @@
-import zope.formlib.form
-
-import zope.app.pagetemplate
-
-import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
+import zeit.cms.browser.view
+import zope.app.pagetemplate
+import zope.formlib.form
 
 
 class Form(zeit.cms.browser.view.Base,
+           zeit.cms.browser.form.WidgetCSSMixin,
            zope.formlib.form.SubPageForm):
     """A form in a lightbox that redirects after submit."""
 
@@ -27,3 +27,6 @@ class Form(zeit.cms.browser.view.Base,
             self.form_fields, self.prefix, self.context, self.request,
             data=self.get_data(), for_display=self.display_only,
             ignore_request=ignore_request)
+        # XXX copy&paste from WidgetCSSMixin since we're skipping super()
+        for widget in self.widgets:
+            widget.field_css_class = self._assemble_css_classes.__get__(widget)

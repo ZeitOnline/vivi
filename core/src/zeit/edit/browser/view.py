@@ -123,7 +123,9 @@ def validate(context):
     return (css_class, messages)
 
 
-class EditBox(zope.formlib.form.SubPageEditForm, UndoableMixin):
+class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
+              zope.formlib.form.SubPageEditForm,
+              UndoableMixin):
     """Base class for an edit box."""
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
