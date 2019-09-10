@@ -193,7 +193,7 @@ class IRetractedEvent(IWithMasterObjectEvent):
     """Issued after an object has been retracted."""
 
 
-class WithMasterObjectEvent(zope.component.interfaces.ObjectEvent):
+class WithMasterObjectEvent(zope.interface.interfaces.ObjectEvent):
 
     zope.interface.implements(IWithMasterObjectEvent)
 

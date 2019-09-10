@@ -221,6 +221,6 @@ class IObjectReloadedEvent(zope.interface.interfaces.IObjectEvent):
     """
 
 
-class ObjectReloadedEvent(zope.component.interfaces.ObjectEvent):
+class ObjectReloadedEvent(zope.interface.interfaces.ObjectEvent):
 
     zope.interface.implements(IObjectReloadedEvent)

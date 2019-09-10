@@ -123,7 +123,7 @@ class IContentSyndicatedEvent(zope.interface.interfaces.IObjectEvent):
         value_type=zope.schema.Object(IFeed))
 
 
-class ContentSyndicatedEvent(zope.component.interfaces.ObjectEvent):
+class ContentSyndicatedEvent(zope.interface.interfaces.ObjectEvent):
     """Issued when an object is syndicated."""
 
     zope.interface.implements(IContentSyndicatedEvent)
