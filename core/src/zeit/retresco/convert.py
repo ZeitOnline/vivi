@@ -83,7 +83,7 @@ class Converter(grok.Adapter):
         adapted = cls.interface(context, None)
         if adapted is None:
             return None
-        instance = super(Converter, cls).__new__(cls, None)
+        instance = object.__new__(cls)
         instance.context = adapted
         instance.content = context
         return instance
