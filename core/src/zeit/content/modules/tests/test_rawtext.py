@@ -110,3 +110,43 @@ two, three { c: 3; }
 #mymodule one, .mymodule one { a: 1; b: 2 }
 #mymodule two, .mymodule two, #mymodule three, .mymodule three { c: 3 }
 </style>""", self.css(self.module))
+
+
+class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ConsentInfo, self).setUp()
+        self.context = mock.Mock()
+        self.context.__parent__ = None
+        self.module = zeit.content.modules.rawtext.RawText(
+            self.context, lxml.objectify.XML('<container/>'))
+
+    def test_stores_local_values_in_xml(self):
+        info = zeit.cmp.interfaces.IConsentInfo(self.module)
+        info.has_thirdparty = True
+        info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        self.assertEqual(True, info.has_thirdparty)
+        self.assertEqual(
+            frozenset(['Twitter', 'Facebook']), info.thirdparty_vendors)
+        self.assertEqual(
+            '<container has_thirdparty="yes"'
+            ' thirdparty_vendors="Twitter;Facebook"/>',
+            lxml.etree.tostring(self.module.xml))
+
+    def test_passes_through_referenced_values(self):
+        info = zeit.cmp.interfaces.IConsentInfo(self.module)
+        self.assertFalse(info.has_thirdparty)
+
+        embed = zeit.content.text.embed.Embed()
+        embed.text = 'none'
+        self.repository['embed'] = embed
+        with checked_out(self.repository['embed']) as co:
+            info = zeit.cmp.interfaces.IConsentInfo(co)
+            info.has_thirdparty = True
+            info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        self.module.text_reference = self.repository['embed']
+
+        info = zeit.cmp.interfaces.IConsentInfo(self.module)
+        self.assertEqual(True, info.has_thirdparty)
+        self.assertEqual(
+            frozenset(['Twitter', 'Facebook']), info.thirdparty_vendors)

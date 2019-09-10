@@ -10,6 +10,7 @@ import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.modules.testing
+import zeit.content.text.testing
 import zeit.retresco.interfaces
 import zope.component
 import zope.interface
@@ -41,7 +42,8 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         pkg_resources.resource_filename(__name__, 'tests/fixtures')}},
     bases=(
         zeit.content.image.testing.CONFIG_LAYER,
-        zeit.content.modules.testing.CONFIG_LAYER))
+        zeit.content.modules.testing.CONFIG_LAYER,
+        zeit.content.text.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 

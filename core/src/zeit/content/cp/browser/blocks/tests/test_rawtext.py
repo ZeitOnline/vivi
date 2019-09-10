@@ -90,3 +90,19 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.open(self.content_url)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual('p1', b.getControl('One').value)
+
+    def test_rawtext_stores_consent_info(self):
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Contains thirdparty code').displayValue = ['yes']
+        b.getControl(name='form.thirdparty_vendors').displayValue = [
+            'Twitter', 'YouTube']
+        b.getControl('Apply').click()
+
+        b.open(self.content_url)
+        b.getLink('Edit block properties', index=0).click()
+        self.assertEqual(
+            ['yes'], b.getControl('Contains thirdparty code').displayValue)
+        self.assertEqual(
+            ['Twitter', 'YouTube'],
+            b.getControl(name='form.thirdparty_vendors').displayValue)
