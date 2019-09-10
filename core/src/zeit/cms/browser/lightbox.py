@@ -13,6 +13,7 @@ class Form(zeit.cms.browser.view.Base,
     template = zope.app.pagetemplate.ViewPageTemplateFile('lightbox.pt')
     title = _('Form')
     display_only = False
+    form = zope.app.pagetemplate.ViewPageTemplateFile('subpageform.pt')
 
     def nextURL(self):
         return self.url(self.context, '@@view.html')
@@ -26,7 +27,3 @@ class Form(zeit.cms.browser.view.Base,
             self.form_fields, self.prefix, self.context, self.request,
             data=self.get_data(), for_display=self.display_only,
             ignore_request=ignore_request)
-
-    @property
-    def form(self):
-        return super(Form, self).template

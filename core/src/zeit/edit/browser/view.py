@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import cgi
 import json
 import logging
+import pkg_resources
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -126,12 +127,11 @@ class EditBox(zope.formlib.form.SubPageEditForm, UndoableMixin):
     """Base class for an edit box."""
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
+    form = zope.app.pagetemplate.ViewPageTemplateFile(
+        'subpageform.pt',
+        pkg_resources.resource_filename('zeit.cms.browser', ''))
     close = False
     form_fields = NotImplemented
-
-    @property
-    def form(self):
-        return super(EditBox, self).template
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
