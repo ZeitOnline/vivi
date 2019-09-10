@@ -1,11 +1,12 @@
-import suds
-import suds_ext  # activate monkeypatches
 import logging
+import suds
 import suds.cache
 import suds.client
 import suds.plugin
+import suds_ext  # activate monkeypatches
 import threading
 import urlparse
+import zeit.content.author.interfaces
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
 import zope.cachedescriptors.property
@@ -137,8 +138,9 @@ class MessageService(VGWortWebService):
         parties = self.create('Parties')
         parties.authors = self.create('Authors')
         if content.authorships:
+            ROLES = zeit.content.author.interfaces.ROLE_SOURCE(None)
             for author in content.authorships:
-                if author.role:
+                if not ROLES.report_to_vgwort(author.role):
                     continue
                 author = author.target
                 if author is None:

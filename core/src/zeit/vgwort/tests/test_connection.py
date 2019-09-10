@@ -268,18 +268,29 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assertEqual('Tina', authors[0].firstName)
         self.assertEqual('Groll', authors[0].surName)
 
-    def test_authors_with_roles_should_be_ignored(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'Tina'
-        author.vgwortcode = 'Groll'
-        self.repository['author'] = author
+    def test_only_authors_with_configured_roles_should_be_reported(self):
+        tina = zeit.content.author.author.Author()
+        tina.firstname = 'Tina'
+        tina.vgwortcode = 'Groll'
+        self.repository['tina'] = tina
+        paul = zeit.content.author.author.Author()
+        paul.firstname = 'Paul'
+        paul.vgwortcode = 'Auster'
+        paul.vgwortcode = 'code'
+        self.repository['paul'] = paul
         content = self.get_content([], product=None)
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.authorships = [co.authorships.create(author)]
+            co.authorships = [co.authorships.create(tina),
+                              co.authorships.create(paul)]
             co.authorships[0].role = u'Illustration'
+            co.authorships[1].role = u'Visualisierung'
         content = self.repository['testcontent']
-        with self.assertRaises(zeit.vgwort.interfaces.WebServiceError):
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(1, len(authors))
+        self.assertEqual('code', authors[0].code)
 
     def test_url_should_point_to_www_zeit_de(self):
         content = self.get_content([])
