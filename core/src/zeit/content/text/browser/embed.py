@@ -45,4 +45,5 @@ class Display(zeit.cms.browser.form.DisplayForm):
     title = _('View embed')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IEmbed,
-        zeit.cms.content.interfaces.IMemo)
+        zeit.cms.content.interfaces.IMemo,
+        zeit.cmp.interfaces.IConsentInfo)

@@ -582,17 +582,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   display: none;
 }
 
-.field span.required {
-  background-color: #a00;
-  border-radius: 5px 5px 5px 5px;
-  color: #fff;
-  font-size: 8px;
-  padding-left: 1em;
-  padding-right: 1em;
-  text-transform: uppercase;
-}
-
-.field.required label > span:after {
+#cp-content .field.required label > span:after {
     content: "";
 }
 

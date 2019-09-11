@@ -23,7 +23,9 @@ $(document).bind('fragment-ready', function(event) {
 });
 
 $(document).ready(function() {
-    setup(document);
+    if ($('body').hasClass('location-workingcopy')) {
+        setup(document);
+    }
 });
 
 }(jQuery));

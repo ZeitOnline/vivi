@@ -294,6 +294,8 @@ class DAVConverterWrapper(object):
         if instance is None:
             return self
         value = self.wrapped_property.__get__(instance, class_)
+        if value == self.field.missing_value:
+            return value
         return self.get_converter(instance).fromProperty(value)
 
     def __set__(self, instance, value):

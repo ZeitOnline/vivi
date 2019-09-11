@@ -1,6 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import datetime
-import grokcore.component
+import grokcore.component as grok
 import logging
 import lxml.etree
 import pytz
@@ -10,6 +10,7 @@ import time
 import zc.iso8601.parse
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
+import zeit.cms.grok
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
@@ -19,8 +20,6 @@ import zope.event
 import zope.proxy
 import zope.publisher.browser
 import zope.schema.interfaces
-import zope.security.adapter
-import zope.security.proxy
 import zope.xmlpickle
 
 
@@ -538,27 +537,13 @@ def findProperty(class_, name, namespace):
     return None
 
 
-class DAVPropertiesAdapter(grokcore.component.Adapter):
+class DAVPropertiesAdapter(zeit.cms.grok.TrustedAdapter):
 
-    grokcore.component.context(zeit.cms.repository.interfaces.IDAVContent)
-    grokcore.component.baseclass()
-
-    def __new__(cls, context):
-        # Trusted adapter
-        instance = object.__new__(cls)
-        instance.__parent__ = context
-        if zope.security.proxy.removeSecurityProxy(context) is context:
-            # Context is unwrapped. Basically do nothing special here.
-            instance.__init__(context)
-            return instance
-        # Context is wrapped. Unwrap and wrap adapter
-        context = zope.security.proxy.removeSecurityProxy(context)
-        instance.__init__(context)
-        instance = zope.security.adapter.assertLocation(instance, context)
-        return zope.security.proxy.ProxyFactory(instance)
+    grok.context(zeit.cms.repository.interfaces.IDAVContent)
+    grok.baseclass()
 
 
-@grokcore.component.adapter(DAVPropertiesAdapter)
-@grokcore.component.implementer(zeit.connector.interfaces.IWebDAVProperties)
+@grok.adapter(DAVPropertiesAdapter)
+@grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def dav_properties_for_dav_properties_adapter(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context)

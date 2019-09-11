@@ -1,10 +1,15 @@
 from zeit.cms.browser.widget import RestructuredTextDisplayWidget
+from zeit.cms.content.property import DAVConverterWrapper
+from zeit.cms.content.property import ObjectPathAttributeProperty
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import UserDict
 import grokcore.component as grok
 import lxml.objectify
+import zeit.cmp.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
+import zeit.cms.grok
 import zeit.content.modules.interfaces
 import zeit.edit.block
 import zope.formlib.form
@@ -148,6 +153,10 @@ class EmbedParameterForm(object):
         self.form_fields = zope.formlib.form.FormFields(
             ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
                 *self._omit_fields)
+        if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
+            self.form_fields += zope.formlib.form.FormFields(
+                zeit.cmp.interfaces.IConsentInfo).select(
+                    'has_thirdparty', 'thirdparty_vendors')
 
         memo = self.form_fields['memo']
         memo.custom_widget = RestructuredTextDisplayWidget
@@ -185,3 +194,33 @@ class RawDisplayWidget(zope.formlib.widget.DisplayWidget):
 
     def __call__(self):
         return self._data
+
+
+@grok.implementer(zeit.cmp.interfaces.IConsentInfo)
+class ConsentInfo(zeit.cms.grok.TrustedAdapter,
+                  zeit.cms.content.xmlsupport.Persistent):
+
+    grok.context(zeit.content.modules.interfaces.IRawText)
+
+    _has_thirdparty_local = DAVConverterWrapper(
+        ObjectPathAttributeProperty('.', 'has_thirdparty'),
+        zeit.cmp.interfaces.IConsentInfo['has_thirdparty'])
+    has_thirdparty = zeit.cms.content.reference.OverridableProperty(
+        zeit.cmp.interfaces.IConsentInfo['has_thirdparty'],
+        original='reference_consent')
+
+    _thirdparty_vendors_local = DAVConverterWrapper(
+        ObjectPathAttributeProperty('.', 'thirdparty_vendors'),
+        zeit.cmp.interfaces.IConsentInfo['thirdparty_vendors'])
+    thirdparty_vendors = zeit.cms.content.reference.OverridableProperty(
+        zeit.cmp.interfaces.IConsentInfo['thirdparty_vendors'],
+        original='reference_consent')
+
+    @cachedproperty  # for ObjectPathAttributeProperty
+    def xml(self):
+        return self.context.xml
+
+    @cachedproperty  # for OverridableProperty
+    def reference_consent(self):
+        return zeit.cmp.interfaces.IConsentInfo(
+            self.context.text_reference, None)
