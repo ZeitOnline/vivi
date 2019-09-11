@@ -1,5 +1,6 @@
 # coding: utf-8
 from datetime import datetime
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
@@ -168,6 +169,16 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
         cp = zeit.content.cp.interfaces.ICenterPage(volume, None)
+        self.assertEqual(None, cp)
+
+    def test_no_centerpage_setting_does_not_break(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
+        with mock.patch('zeit.content.volume.volume.Volume.product',
+                        new=mock.PropertyMock()) as product:
+            product().centerpage = None
+            product().location = 'http://xml.zeit.de/{year}/{name}/ausgabe'
+            cp = zeit.content.cp.interfaces.ICenterPage(volume, None)
         self.assertEqual(None, cp)
 
     def test_looks_up_centerpage_for_depent_product_content(self):

@@ -5,6 +5,8 @@ vivi.core changes
 4.14.1 (unreleased)
 -------------------
 
+- FIX: Don't break when creating a volume without a `centerpage` setting
+
 - MAINT: Don't show supertitle in volume toc
 
 

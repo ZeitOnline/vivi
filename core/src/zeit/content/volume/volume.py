@@ -92,6 +92,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @staticmethod
     def _fill_template(context, text):
+        if not text:
+            return ''
         return text.format(
             year=context.year,
             name=str(context.volume).rjust(2, '0'))
