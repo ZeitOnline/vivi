@@ -5,6 +5,10 @@ vivi.core changes
 4.14.1 (unreleased)
 -------------------
 
+- ZON-5488: Implement IConsentInfo for the rawtext module
+
+- ZON-5483: Allow configuring which authorship roles to report to vgwort
+
 - FIX: Don't break when creating a volume without a `centerpage` setting
 
 - MAINT: Don't show supertitle in volume toc
