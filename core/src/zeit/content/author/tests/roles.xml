@@ -1,7 +1,7 @@
 <roles>
   <role>Fotografie</role>
   <role>Illustration</role>
-  <role>Visualisierung</role>
+  <role vgwort="true">Visualisierung</role>
   <role>Video</role>
   <role>Programmierung</role>
 </roles>

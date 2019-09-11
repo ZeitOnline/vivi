@@ -5,6 +5,7 @@ import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
+import zeit.content.author.testing
 import zeit.retresco.testing
 import zeit.vgwort.interfaces
 import zope.component
@@ -29,7 +30,7 @@ product_config = """
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.cms.testing.CONFIG_LAYER,))
+    zeit.content.author.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-mock.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(

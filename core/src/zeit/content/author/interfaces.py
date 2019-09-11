@@ -169,7 +169,17 @@ class BiographyQuestionSource(zeit.cms.content.sources.XMLSource):
 BIOGRAPHY_QUESTIONS = BiographyQuestionSource()
 
 
-class RoleSource(zeit.cms.content.sources.SimpleXMLSource):
+class RoleSource(zeit.cms.content.sources.XMLSource):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def report_to_vgwort(self, value):
+            if not value:
+                return True
+            nodes = self.factory._get_tree().xpath('//*[text()="%s"]' % value)
+            if not nodes:
+                return False
+            return nodes[0].get('vgwort') == 'true'
 
     product_configuration = 'zeit.content.author'
     config_url = 'roles'
