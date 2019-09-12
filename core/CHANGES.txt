@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.15.1 (unreleased)
+4.15.1 (2019-09-12)
 -------------------
 
 - HOTFIX: Fix error in author object-details view
