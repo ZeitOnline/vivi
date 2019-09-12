@@ -84,11 +84,6 @@ legend {
 }
 
 
-.field.required label > span:after {
-    content: "*";
-    color: red;
-}
-
 .annotation {
     display: none;
 }

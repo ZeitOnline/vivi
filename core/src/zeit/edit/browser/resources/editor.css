@@ -582,10 +582,6 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   display: none;
 }
 
-#cp-content .field.required label > span:after {
-    content: "";
-}
-
 span.charcount,
 .field span.charlimit {
   float: right;
