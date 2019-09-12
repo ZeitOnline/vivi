@@ -169,7 +169,7 @@ class BiographyQuestionSource(zeit.cms.content.sources.XMLSource):
 BIOGRAPHY_QUESTIONS = BiographyQuestionSource()
 
 
-class RoleSource(zeit.cms.content.sources.XMLSource):
+class RoleSource(zeit.cms.content.sources.SimpleContextualXMLSource):
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
 

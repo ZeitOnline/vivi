@@ -5,7 +5,8 @@ vivi.core changes
 4.15.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- HOTFIX: Fix error in author object-details view
+  (wrong source base class)
 
 
 4.15.0 (2019-09-11)
