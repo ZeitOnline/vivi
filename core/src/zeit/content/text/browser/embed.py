@@ -24,7 +24,17 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
     title = _('Edit embed')
 
 
-class Parameters(FormBase, zeit.cms.browser.form.EditForm):
+class CMPFields(object):
+
+    def __init__(self, context, request):
+        super(CMPFields, self).__init__(context, request)
+        if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
+            self.form_fields += zope.formlib.form.FormFields(
+                zeit.cmp.interfaces.IConsentInfo).select(
+                    'has_thirdparty', 'thirdparty_vendors')
+
+
+class Parameters(CMPFields, FormBase, zeit.cms.browser.form.EditForm):
 
     title = _('Edit embed parameters')
     form_fields = zope.formlib.form.FormFields(
@@ -32,18 +42,10 @@ class Parameters(FormBase, zeit.cms.browser.form.EditForm):
         zeit.cms.content.interfaces.IMemo).select(
             'render_as_template', 'parameter_definition', 'vivi_css', 'memo')
 
-    def __init__(self, context, request):
-        super(FormBase, self).__init__(context, request)
-        if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
-            self.form_fields += zope.formlib.form.FormFields(
-                zeit.cmp.interfaces.IConsentInfo).select(
-                    'has_thirdparty', 'thirdparty_vendors')
 
-
-class Display(zeit.cms.browser.form.DisplayForm):
+class Display(CMPFields, zeit.cms.browser.form.DisplayForm):
 
     title = _('View embed')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IEmbed,
-        zeit.cms.content.interfaces.IMemo,
-        zeit.cmp.interfaces.IConsentInfo)
+        zeit.cms.content.interfaces.IMemo)

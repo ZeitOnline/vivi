@@ -5,7 +5,7 @@ vivi.core changes
 4.15.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Put display of CMP fields behind feature toggle as well
 
 
 4.15.1 (2019-09-12)
