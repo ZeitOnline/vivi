@@ -203,6 +203,9 @@ class AuthorLocationTest(
         s.click(fold)
         location_input = 'css=.object-details.type-author .autocomplete-widget'
         s.waitForElementPresent(location_input)
+        self.eval(
+            'document.querySelector("%s").scrollIntoView()' %
+            location_input.replace('css=', ''))
         self.add_by_autocomplete('Paris', location_input)
 
         s.pause(500)  # Workflow area is reloaded on each InlineForm submit.
