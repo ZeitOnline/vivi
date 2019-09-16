@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.15.2 (unreleased)
+4.15.2 (2019-09-16)
 -------------------
 
 - ZON-5453: Use dropdown instead of checkbox widget for CMP vendors
