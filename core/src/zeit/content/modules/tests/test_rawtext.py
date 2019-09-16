@@ -126,8 +126,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         info.has_thirdparty = True
         info.thirdparty_vendors = [u'Twitter', u'Facebook']
         self.assertEqual(True, info.has_thirdparty)
-        self.assertEqual(
-            frozenset(['Twitter', 'Facebook']), info.thirdparty_vendors)
+        self.assertEqual(('Twitter', 'Facebook'), info.thirdparty_vendors)
         self.assertEqual(
             '<container has_thirdparty="yes"'
             ' thirdparty_vendors="Twitter;Facebook"/>',
@@ -148,5 +147,4 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
 
         info = zeit.cmp.interfaces.IConsentInfo(self.module)
         self.assertEqual(True, info.has_thirdparty)
-        self.assertEqual(
-            frozenset(['Twitter', 'Facebook']), info.thirdparty_vendors)
+        self.assertEqual(('Twitter', 'Facebook'), info.thirdparty_vendors)

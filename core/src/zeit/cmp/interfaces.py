@@ -20,9 +20,9 @@ class IConsentInfo(zope.interface.Interface):
         default=Unknown,
         source=zeit.cmp.source.TriState())
 
-    thirdparty_vendors = zope.schema.FrozenSet(
+    thirdparty_vendors = zope.schema.Tuple(
         title=_('Vendors'),
         value_type=zope.schema.Choice(
             source=VendorSource()),
-        default=frozenset(),
+        default=(),
         required=False)
