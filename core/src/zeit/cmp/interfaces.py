@@ -25,4 +25,5 @@ class IConsentInfo(zope.interface.Interface):
         value_type=zope.schema.Choice(
             source=VendorSource()),
         default=(),
-        required=False)
+        required=False,
+        unique=True)

@@ -5,7 +5,7 @@ vivi.core changes
 4.15.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Require CMP vendors to be unique
 
 
 4.15.2 (2019-09-16)
