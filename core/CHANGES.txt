@@ -5,7 +5,7 @@ vivi.core changes
 4.15.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Make admin form work for articles again after 4.8.4
 
 
 4.15.3 (2019-09-16)
