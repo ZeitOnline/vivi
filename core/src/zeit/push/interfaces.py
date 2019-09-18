@@ -266,17 +266,11 @@ class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
 MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 
-class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
+class PayloadTemplateSource(zeit.cms.content.sources.FolderItemSource):
 
-    @property
-    def template_folder(self):
-        template_folder_path = zope.app.appsetup.product\
-            .getProductConfiguration('zeit.push').get('push-payload-templates')
-        return zeit.cms.interfaces.ICMSContent(template_folder_path)
-
-    def getValues(self):
-        return [x for x in self.template_folder.values()
-                if zeit.content.text.interfaces.IJinjaTemplate.providedBy(x)]
+    product_configuration = 'zeit.push'
+    config_url = 'push-payload-templates'
+    interface = zeit.content.text.interfaces.IJinjaTemplate
 
     def filterValue(self, value):
         try:
@@ -285,18 +279,6 @@ class PayloadTemplateSource(zc.sourcefactory.basic.BasicSourceFactory):
             return True
         else:
             return not result.get('hide_in_vivi')
-
-    def getTitle(self, value):
-        return value.title
-
-    def getToken(self, value):
-        return value.__name__
-
-    def find(self, id):
-        # NOTE: Must not use getValues() since those are filtered for display.
-        if not id:
-            return None
-        return self.template_folder.get(id)
 
     def getDefaultTitle(self, value):
         try:

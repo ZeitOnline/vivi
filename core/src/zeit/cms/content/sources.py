@@ -204,6 +204,37 @@ class AllowedBase(object):
             other, self.__class__) and self.id == other.id
 
 
+class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    product_configuration = NotImplemented
+    config_url = NotImplemented
+    interface = None
+
+    @property
+    def folder(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            self.product_configuration)
+        return zeit.cms.interfaces.ICMSContent(config[self.config_url])
+
+    def getValues(self):
+        values = self.folder.values()
+        if self.interface is not None:
+            values = [x for x in values
+                      if zeit.content.text.interfaces.IText.providedBy(x)]
+        return values
+
+    def getTitle(self, value):
+        return value.title
+
+    def getToken(self, value):
+        return value.__name__
+
+    def find(self, id):
+        if not id:
+            return None
+        return self.folder.get(id)
+
+
 class RessortSource(XMLSource):
 
     config_url = 'source-ressorts'
