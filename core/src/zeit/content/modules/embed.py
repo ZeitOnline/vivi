@@ -1,5 +1,7 @@
 from urlparse import urlparse
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
+import zeit.cmp.interfaces
 import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -27,3 +29,15 @@ class Embed(zeit.edit.block.Element):
     def template(self):
         source = zeit.content.modules.interfaces.EMBED_PROVIDER_SOURCE.factory
         return source.find(self.domain)
+
+
+@grok.implementer(zeit.cmp.interfaces.IConsentInfo)
+class ConsentInfo(grok.Adapter):
+
+    grok.context(zeit.content.modules.interfaces.IEmbed)
+
+    has_thirdparty = True
+
+    @cachedproperty
+    def thirdparty_vendors(self):
+        return (self.context.domain.split('.')[0],)
