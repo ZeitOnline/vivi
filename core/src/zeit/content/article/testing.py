@@ -45,13 +45,18 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
     zeit.content.volume.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
+EMBED_LAYER = zeit.content.modules.testing.EmbedTemplateLayer(
+    name='EmbedTemplateLayer', bases=(ZOPE_LAYER,))
+TEMPLATE_LAYER = plone.testing.Layer(
+    name='Layer', bases=(PUSH_LAYER, EMBED_LAYER))
 
 
 class ArticleLayer(plone.testing.Layer):
 
-    defaultBases = (PUSH_LAYER,)
+    defaultBases = (TEMPLATE_LAYER,)
 
     def testSetUp(self):
         connector = zope.component.getUtility(
