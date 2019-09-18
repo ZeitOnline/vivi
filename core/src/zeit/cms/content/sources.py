@@ -210,6 +210,11 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
     config_url = NotImplemented
     interface = None
 
+    class source_class(zc.sourcefactory.source.FactoredSource):
+
+        def find(self, name):
+            return self.factory.find(name)
+
     @property
     def folder(self):
         config = zope.app.appsetup.product.getProductConfiguration(
