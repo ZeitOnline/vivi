@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
 import zeit.cms.repository.interfaces
 import zope.schema
 
