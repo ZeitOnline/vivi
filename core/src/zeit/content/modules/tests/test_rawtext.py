@@ -124,12 +124,12 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
     def test_stores_local_values_in_xml(self):
         info = zeit.cmp.interfaces.IConsentInfo(self.module)
         info.has_thirdparty = True
-        info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        info.thirdparty_vendors = [u'twitter', u'facebook']
         self.assertEqual(True, info.has_thirdparty)
-        self.assertEqual(('Twitter', 'Facebook'), info.thirdparty_vendors)
+        self.assertEqual(('twitter', 'facebook'), info.thirdparty_vendors)
         self.assertEqual(
             '<container has_thirdparty="yes"'
-            ' thirdparty_vendors="Twitter;Facebook"/>',
+            ' thirdparty_vendors="twitter;facebook"/>',
             lxml.etree.tostring(self.module.xml))
 
     def test_passes_through_referenced_values(self):
@@ -142,9 +142,9 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         with checked_out(self.repository['embed']) as co:
             info = zeit.cmp.interfaces.IConsentInfo(co)
             info.has_thirdparty = True
-            info.thirdparty_vendors = [u'Twitter', u'Facebook']
+            info.thirdparty_vendors = [u'twitter', u'facebook']
         self.module.text_reference = self.repository['embed']
 
         info = zeit.cmp.interfaces.IConsentInfo(self.module)
         self.assertEqual(True, info.has_thirdparty)
-        self.assertEqual(('Twitter', 'Facebook'), info.thirdparty_vendors)
+        self.assertEqual(('twitter', 'facebook'), info.thirdparty_vendors)
