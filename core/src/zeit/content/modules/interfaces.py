@@ -28,6 +28,11 @@ class IEmbedParameters(zope.interface.common.mapping.IMapping):
 # is so different that they don't really share any code.
 
 
+class IEmbed(zeit.edit.interfaces.IBlock):
+
+    url = zope.schema.URI(title=_('Embed URL'))
+
+
 class IJobTicker(zeit.edit.interfaces.IBlock):
 
     feed = zope.schema.Choice(

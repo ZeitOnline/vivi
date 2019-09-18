@@ -373,6 +373,26 @@
     permission="zope.View"
     />
 
+  <!-- embed -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEmbed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-embed"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEmbed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-embed"
+    class=".edit.EditEmbed"
+    permission="zope.View"
+    />
+
   <!-- citation -->
 
   <browser:viewlet
