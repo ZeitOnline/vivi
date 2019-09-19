@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.15.6 (unreleased)
+4.15.6 (2019-09-19)
 -------------------
 
 - ZC-450: More diagnostics
