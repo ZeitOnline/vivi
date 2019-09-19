@@ -8,6 +8,7 @@ import requests
 import requests.exceptions
 import requests.sessions
 import signal
+import time
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
@@ -366,8 +367,12 @@ def signal_timeout_request(self, method, url, **kw):
             log.warning('Registering timeout signal handler for %s failed',
                         url)
 
+    start = time.time()
     try:
-        return original_session_request(self, method, url, **kw)
+        result = original_session_request(self, method, url, **kw)
+        stop = time.time()
+        log.debug('Request to %s took %s', url, stop - start)
+        return result
     except SignalTimeout:
         raise requests.exceptions.Timeout(
             'Request attempt timed out after %s seconds' % sig_timeout)
