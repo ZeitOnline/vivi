@@ -5,7 +5,7 @@ vivi.core changes
 4.15.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZC-450: Add diagnostics to the requests timeout signal handler setup
 
 
 4.15.4 (2019-09-17)
