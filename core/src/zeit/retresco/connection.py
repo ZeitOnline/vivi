@@ -8,7 +8,6 @@ import requests
 import requests.exceptions
 import requests.sessions
 import signal
-import time
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
@@ -352,27 +351,12 @@ def signal_timeout_request(self, method, url, **kw):
         # Timeout tuples (connect, read) shall not invoke signal timeouts
         sig_timeout = float(kw['timeout'])
     except (KeyError, TypeError, ValueError):
-        if 'timeout' in kw:
-            log.warning('Setting timeout signal at %s for %s failed',
-                        kw['timeout'], url, exc_info=True)
         sig_timeout = None
     else:
         signal.setitimer(signal.ITIMER_REAL, sig_timeout)
-        (interval, delay) = signal.getitimer(signal.ITIMER_REAL)
-        if sig_timeout - interval > 0.1:
-            log.warning(
-                'Signal timeout for %s of %s does not match requested %s',
-                url, interval, sig_timeout)
-        if signal.getsignal(signal.SIGALRM) != handler:
-            log.warning('Registering timeout signal handler for %s failed',
-                        url)
 
-    start = time.time()
     try:
-        result = original_session_request(self, method, url, **kw)
-        stop = time.time()
-        log.debug('Request to %s took %s', url, stop - start)
-        return result
+        return original_session_request(self, method, url, **kw)
     except SignalTimeout:
         raise requests.exceptions.Timeout(
             'Request attempt timed out after %s seconds' % sig_timeout)
