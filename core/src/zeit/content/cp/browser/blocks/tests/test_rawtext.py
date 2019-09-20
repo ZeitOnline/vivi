@@ -95,8 +95,12 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
         b.getControl('Contains thirdparty code').displayValue = ['yes']
-        b.getControl(name='form.thirdparty_vendors').displayValue = [
-            'Twitter', 'YouTube']
+        b.getControl('Add Vendors').click()
+        b.getControl('Add Vendors').click()
+        b.getControl(name='form.thirdparty_vendors.0.').displayValue = [
+            'Twitter']
+        b.getControl(name='form.thirdparty_vendors.1.').displayValue = [
+            'YouTube']
         b.getControl('Apply').click()
 
         b.open(self.content_url)
@@ -104,5 +108,8 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         self.assertEqual(
             ['yes'], b.getControl('Contains thirdparty code').displayValue)
         self.assertEqual(
-            ['Twitter', 'YouTube'],
-            b.getControl(name='form.thirdparty_vendors').displayValue)
+            ['Twitter'],
+            b.getControl(name='form.thirdparty_vendors.0.').displayValue)
+        self.assertEqual(
+            ['YouTube'],
+            b.getControl(name='form.thirdparty_vendors.1.').displayValue)

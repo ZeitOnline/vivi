@@ -32,13 +32,20 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/embed/@@checkout')
         b.getLink('Edit embed parameters').click()
         b.getControl('Contains thirdparty code').displayValue = ['yes']
-        b.getControl(name='form.thirdparty_vendors').displayValue = [
-            'Twitter', 'YouTube']
+        b.getControl('Add Vendors').click()
+        b.getControl('Add Vendors').click()
+        b.getControl(name='form.thirdparty_vendors.0.').displayValue = [
+            'Twitter']
+        b.getControl(name='form.thirdparty_vendors.1.').displayValue = [
+            'YouTube']
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
         self.assertEqual(
             ['yes'], b.getControl('Contains thirdparty code').displayValue)
         self.assertEqual(
-            ['Twitter', 'YouTube'],
-            b.getControl(name='form.thirdparty_vendors').displayValue)
+            ['Twitter'],
+            b.getControl(name='form.thirdparty_vendors.0.').displayValue)
+        self.assertEqual(
+            ['YouTube'],
+            b.getControl(name='form.thirdparty_vendors.1.').displayValue)
