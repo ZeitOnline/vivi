@@ -25,11 +25,6 @@ class Embed(zeit.edit.block.Element):
             return None
         return '.'.join(urlparse(url).netloc.split('.')[-2:])
 
-    @cachedproperty
-    def template(self):
-        source = zeit.content.modules.interfaces.EMBED_PROVIDER_SOURCE.factory
-        return source.find(self.domain)
-
 
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
 class ConsentInfo(grok.Adapter):

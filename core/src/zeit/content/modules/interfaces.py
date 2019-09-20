@@ -30,11 +30,10 @@ class IEmbedParameters(zope.interface.common.mapping.IMapping):
 # is so different that they don't really share any code.
 
 
-class EmbedProviderSource(zeit.cms.content.sources.FolderItemSource):
+class EmbedProviderSource(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.modules'
-    config_url = 'embed-templates'
-    interface = zeit.content.text.interfaces.IText
+    config_url = 'embed-provider-source'
 
 
 EMBED_PROVIDER_SOURCE = EmbedProviderSource()
@@ -48,7 +47,7 @@ class URIChoice(zope.schema.URI):
 
     def _validate(self, value):
         super(URIChoice, self)._validate(value)
-        if self.source.find(self.context.extract_domain(value)) is None:
+        if self.context.extract_domain(value) not in self.source:
             raise zeit.cms.interfaces.ValidationError(
                 _('Unsupported embed domain'))
 
