@@ -277,6 +277,13 @@ def _update_topiclist():
     with checked_out(keywords) as co:
         co.xml = _build_topic_xml(topicpages)
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
+    try:
+        transaction.commit()
+    except Exception:
+        # We don't really care about the DAV cache, to be honest. Worst case we
+        # won't see the matching zeit.objectlog entry for this publish.
+        transaction.abort()
+        log.warning('Error during commit', exc_info=True)
 
     # Refresh iterator
     topicpages = tms.get_all_topicpages()

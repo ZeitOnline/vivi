@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5490: Add module to embed thirdparty content by pasting an URL
 
+- OPS-1116: Add an explicit commit to separate the two retresco files
+
 
 4.15.7 (2019-09-19)
 -------------------
