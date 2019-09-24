@@ -1,6 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.sources
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
+import zope.app.appsetup.product
 import zope.schema
 
 
@@ -26,6 +28,38 @@ class IEmbedParameters(zope.interface.common.mapping.IMapping):
 
 # XXX Both article and cp use a "raw xml" module, but their XML serialization
 # is so different that they don't really share any code.
+
+
+class EmbedProviderSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    product_configuration = 'zeit.content.modules'
+    config_url = 'embed-provider-source'
+
+
+EMBED_PROVIDER_SOURCE = EmbedProviderSource()
+
+
+class URIChoice(zope.schema.URI):
+
+    def __init__(self, *args, **kw):
+        self.source = kw.pop('source')
+        super(URIChoice, self).__init__(*args, **kw)
+
+    def _validate(self, value):
+        super(URIChoice, self)._validate(value)
+        if self.context.extract_domain(value) not in self.source:
+            raise zeit.cms.interfaces.ValidationError(
+                _('Unsupported embed domain'))
+
+
+class IEmbed(zeit.edit.interfaces.IBlock):
+
+    url = URIChoice(title=_('Embed URL'), source=EMBED_PROVIDER_SOURCE)
+
+    domain = zope.interface.Attribute('The secondlevel domain of our `url`')
+
+    def extract_domain(url):
+        pass
 
 
 class IJobTicker(zeit.edit.interfaces.IBlock):

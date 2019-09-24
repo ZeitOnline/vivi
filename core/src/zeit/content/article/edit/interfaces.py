@@ -279,6 +279,10 @@ class IRawText(zeit.content.modules.interfaces.IRawText):
     pass
 
 
+class IEmbed(zeit.content.modules.interfaces.IEmbed):
+    pass
+
+
 class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
     """
     Superclass for articleblocklayouts, which can be defined via XML

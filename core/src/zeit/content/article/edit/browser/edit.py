@@ -226,6 +226,19 @@ class EditRawText(
         return 'rawtext.{0}'.format(self.context.__name__)
 
 
+class EditEmbed(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IEmbed).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit embed block')
+
+    @property
+    def prefix(self):
+        return 'embed.{0}'.format(self.context.__name__)
+
+
 class EditCitation(zeit.edit.browser.form.InlineForm):
 
     legend = None
