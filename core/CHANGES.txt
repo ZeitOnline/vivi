@@ -5,7 +5,7 @@ vivi.core changes
 4.15.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5490: Add module to embed thirdparty content by pasting an URL
 
 
 4.15.7 (2019-09-19)
