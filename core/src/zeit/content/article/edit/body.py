@@ -145,6 +145,16 @@ class BodyTraverser(grok.Adapter):
             self.context).traverse(name, furtherPath)
 
 
+class ModuleSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'module-source'
+    attribute = 'id'
+
+
+MODULES = ModuleSource()
+
+
 # Remove all the __name__ thingies on before adding an article to the
 # repository
 _find_name_attributes = lxml.etree.XPath(

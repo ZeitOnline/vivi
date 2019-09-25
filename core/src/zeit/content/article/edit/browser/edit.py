@@ -177,6 +177,27 @@ class ReplaceAll(zeit.edit.browser.view.Action):
         self.signal(None, 'after-replace-all', count)
 
 
+class ModuleFactories(zeit.edit.browser.library.BlockFactories):
+
+    @property
+    def library_name(self):
+        return zeit.content.article.edit.body.BODY_NAME
+
+    def get_adapters(self):
+        return [{
+            'name': name,
+            'type': name,
+            'title': zeit.content.article.edit.body.MODULES.factory.getTitle(
+                self.context, name),
+            'library_name': self.library_name,
+            'params': {},
+        } for name in zeit.content.article.edit.body.MODULES(self.context)]
+
+    def sort_block_types(self, items):
+        # Use order defined by the source.
+        return items
+
+
 class HeaderAreaFactories(zeit.edit.browser.library.BlockFactories):
 
     @property

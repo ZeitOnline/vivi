@@ -1,0 +1,25 @@
+<modules>
+  <module id="adplace">Ad-Place</module>
+  <module id="author">Autorenbox</module>
+  <module id="box">Box</module>
+  <module id="cardstack">Kartenstapel</module>
+  <module id="citation">Zitat</module>
+  <module id="division">Seitenumbruch</module>
+  <module id="embed">Social Embed</module>
+  <module id="gallery">Bildergalerie</module>
+  <module id="image">Bild</module>
+  <module id="infobox">Infobox</module>
+  <module id="jobboxticker">Jobticker Modul</module>
+  <module id="liveblog">Liveblog</module>
+  <module id="mail">Mail-Formular</module>
+  <module id="podcast">Podcast-Block</module>
+  <module id="portraitbox">Porträtbox</module>
+  <module id="puzzleform">Rätselformular</module>
+  <module id="quiz">Quiz</module>
+  <module id="raw">Embed Code</module>
+  <module id="rawtext">Embed-Link</module>
+  <module id="studycourse">Studiengang-Orientierungsangebot</module>
+  <module id="topicbox">Themenbox</module>
+  <module id="video">Video</module>
+  <module id="volume">Ausgabe</module>
+</modules>

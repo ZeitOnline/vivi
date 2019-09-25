@@ -5,7 +5,7 @@ vivi.core changes
 4.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Make article module library configurable just like CP
 
 
 4.16.0 (2019-09-24)

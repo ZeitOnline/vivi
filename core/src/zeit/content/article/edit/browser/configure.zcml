@@ -43,6 +43,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".edit.ModuleFactories"
+    permission="zeit.EditContent"
+    />
+
   <browser:page
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

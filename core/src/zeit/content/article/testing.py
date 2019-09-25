@@ -24,6 +24,7 @@ product_config = """
   video-layout-source file://{base}/edit/tests/video-layouts.xml
   infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
   template-source file://{base}/edit/tests/templates.xml
+  module-source file://{base}/edit/tests/modules.xml
   header-module-source file://{base}/edit/tests/header-modules.xml
   citation-layout-source file://{base}/edit/tests/citation-layouts.xml
   box-layout-source file://{base}/edit/tests/box-layouts.xml
