@@ -8,6 +8,7 @@ import requests
 import requests.exceptions
 import requests.sessions
 import signal
+import transaction
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
