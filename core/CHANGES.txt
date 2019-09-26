@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.17.1 (unreleased)
+4.17.1 (2019-09-26)
 -------------------
 
 - ZON-5480: Store mime type in a location that's actually writeable
