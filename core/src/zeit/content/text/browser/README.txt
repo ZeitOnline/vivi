@@ -72,6 +72,14 @@ Check out:
  ...
 
 
+MIME type is editable:
+
+>>> browser.getControl('Mime Type').value = 'application/json'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Updated on...
+>>> browser.getControl('Mime Type').value
+'application/json'
 
 Verify the metdata preview:
 
