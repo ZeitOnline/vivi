@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.16.2 (unreleased)
+4.17.0 (2019-09-26)
 -------------------
 
 - ZON-5480: Make mime type editable for text objects
