@@ -16,12 +16,13 @@ class Text(zeit.cms.repository.repository.ContentBase,
                               zeit.cms.interfaces.IAsset)
 
     uniqueId = None
-    mimeType = None
 
     text = None
-    encoding = zeit.cms.content.dav.DAVProperty(
-        zeit.content.text.interfaces.IText['encoding'],
-        zeit.content.text.interfaces.DAV_NAMESPACE, 'encoding',
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.text.interfaces.IText,
+        zeit.content.text.interfaces.DAV_NAMESPACE,
+        ('mimeType', 'encoding'),
         use_default=True)
 
 
@@ -37,7 +38,6 @@ class TextType(zeit.cms.type.TypeDeclaration):
         data = resource.data.read()
         text = self.factory()
         text.uniqueId = resource.id
-        text.mimeType = resource.contentType
         encoding = text.encoding  # Read from the DAV properties
         unicode_data = None
         if encoding:
@@ -66,4 +66,4 @@ class TextType(zeit.cms.type.TypeDeclaration):
         return StringIO.StringIO(content.text.encode(content.encoding))
 
     def resource_content_type(self, content):
-        return content.mimeType
+        return 'text/plain'

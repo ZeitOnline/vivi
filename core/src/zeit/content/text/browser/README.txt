@@ -81,6 +81,11 @@ MIME type is editable:
 >>> browser.getControl('Mime Type').value
 'application/json'
 
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<...application/json...
+
+
 Verify the metdata preview:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
