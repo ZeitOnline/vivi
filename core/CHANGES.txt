@@ -5,7 +5,7 @@ vivi.core changes
 4.17.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1155: Display topiclink fields below each other in area edit form
 
 
 4.17.2 (2019-10-02)
