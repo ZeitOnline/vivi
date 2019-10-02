@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.17.3',
+    version='wolfgang.schnerring@zeit.de	asdfgh.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
