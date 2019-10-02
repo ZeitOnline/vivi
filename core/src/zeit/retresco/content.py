@@ -62,6 +62,10 @@ class Content(object):
             # See zeit.content.author.reference.XMLReference
             head.append(E.author(href=id))
 
+        for id in self._tms_payload_head.get('agencies', ()):
+            # See zeit.cms.content.metadata.CommonMetadata.agencies
+            head.append(E.agency(href=id))
+
         if 'covers' in self._tms_payload_head:
             # See zeit.content.volume.volume.Volume.set_cover
             covers = E.covers()

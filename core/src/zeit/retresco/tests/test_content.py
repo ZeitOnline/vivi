@@ -39,6 +39,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         with checked_out(article) as co:
             co.keywords = (zeit.retresco.tag.Tag('Berlin', 'location'),)
             co.authorships = (co.authorships.create(self.repository['shake']),)
+            co.agencies = (self.repository['shake'],)
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
 
