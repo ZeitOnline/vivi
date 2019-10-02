@@ -5,7 +5,7 @@ vivi.core changes
 4.17.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1156: Roll back change for now, it breaks autopilots
 
 
 4.17.4 (2019-10-02)

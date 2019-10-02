@@ -186,15 +186,6 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(3, len(lead))
         self.assertEqual(manual_teaser, lead.values()[0])
 
-    def test_changing_automatic_count_only_counts_teaser_modules(self):
-        lead = self.repository['cp']['lead']
-        lead.create_item('markup')
-        lead.count = 2
-        lead.automatic = True
-        self.assertEqual(
-            ['markup', 'auto-teaser', 'auto-teaser'],
-            [x.type for x in lead.values()])
-
     def test_reducing_automatic_count_does_not_delete_manual_content(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
