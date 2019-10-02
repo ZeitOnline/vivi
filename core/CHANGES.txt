@@ -5,7 +5,7 @@ vivi.core changes
 4.17.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1156: Only count teasers, not all modules when adjusting auto block count
 
 
 4.17.3 (2019-10-02)
