@@ -2,8 +2,8 @@ vivi.core changes
 =================
 
 
-wolfgang.schnerring@zeit.de	asdfgh (unreleased)
------------------------------------------------
+4.17.4 (unreleased)
+-------------------
 
 - Nothing changed yet.
 
