@@ -100,6 +100,10 @@ class IEmbed(IText):
         title=_("Embed CSS"),
         required=False)
 
+    amp_code = Code(
+        title=_("AMP Code"),
+        required=False)
+
 
 class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
 
