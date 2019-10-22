@@ -393,6 +393,11 @@ class Properties(persistent.mapping.PersistentMapping):
         if newstate_data == commited_data:
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
+        log.warning(
+            'Could not resolve conflict, invalidating %s',
+            commited_data.get(
+                ('uuid', 'http://namespaces.zeit.de/CMS/document'),
+                'uuid-unknown'))
         old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
