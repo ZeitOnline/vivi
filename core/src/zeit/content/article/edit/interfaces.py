@@ -149,6 +149,13 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
+class AnimationSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = collections.OrderedDict([
+        (u'fade-in', _('Fade in')),
+    ])
+
+
 class IImage(IReference):
 
     references = zeit.cms.content.interfaces.ReferenceField(
@@ -174,6 +181,11 @@ class IImage(IReference):
         title=_('Variant Name'),
         source=zeit.content.article.source.IMAGE_VARIANT_NAME_SOURCE,
         default=u'wide',
+        required=False)
+
+    animation = zope.schema.Choice(
+        title=_('Animation'),
+        source=AnimationSource(),
         required=False)
 
 

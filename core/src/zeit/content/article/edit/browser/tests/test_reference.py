@@ -28,12 +28,14 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('editable-body/blockname/@@edit-image?show_form=1')
         b.getControl('Display Mode').displayValue = ['Float']
         b.getControl('Variant Name').displayValue = ['Square 1:1']
+        b.getControl('Animation').displayValue = ['Fade in']
         b.getControl('Apply').click()
         b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
             ['Float'], b.getControl('Display Mode').displayValue)
         self.assertEqual(
             ['Square 1:1'], b.getControl('Variant Name').displayValue)
+        self.assertEqual(['Fade in'], b.getControl('Animation').displayValue)
 
     def get_image_block(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)

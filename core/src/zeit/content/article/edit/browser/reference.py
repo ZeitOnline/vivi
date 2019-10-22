@@ -33,7 +33,7 @@ class EditBase(zeit.edit.browser.form.InlineForm):
 class EditImage(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IImage
-    fields = ('references', 'display_mode', 'variant_name')
+    fields = ('references', 'display_mode', 'variant_name', 'animation')
     undo_description = _('edit image block')
 
     @property

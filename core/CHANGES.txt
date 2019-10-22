@@ -2,10 +2,18 @@ vivi.core changes
 =================
 
 
-4.17.6 (unreleased)
+4.18.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.18.0 (2019-10-22)
+-------------------
+
+- ZON-5464: Add `animation` field to article image module
+
+- OPS-1133: Add diagnostics to DAV cache conflict resolution
 
 
 4.17.5 (2019-10-02)

@@ -17,13 +17,14 @@ import zope.lifecycleevent
 class ImageReferenceProperty(
         zeit.cms.content.reference.SingleReferenceProperty):
 
+    ATTRIBUTES = (
+        set(['__name__']) |
+        set(zeit.content.article.edit.interfaces.IImage) -
+        set(zeit.content.article.edit.interfaces.IReference))
+
     def __set__(self, instance, value):
-        saved_attributes = {name: getattr(instance, name) for name in [
-            '__name__',
-            'display_mode',
-            'variant_name',
-            'set_manually',
-        ]}
+        saved_attributes = {
+            name: getattr(instance, name) for name in self.ATTRIBUTES}
 
         super(ImageReferenceProperty, self).__set__(instance, value)
 
@@ -51,6 +52,9 @@ class Image(zeit.content.article.edit.reference.Reference):
     set_manually = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'set-manually',
         zeit.content.article.edit.interfaces.IImage['set_manually'])
+
+    animation = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'animation')
 
     @property
     def display_mode(self):
