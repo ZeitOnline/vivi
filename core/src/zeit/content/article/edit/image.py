@@ -53,6 +53,9 @@ class Image(zeit.content.article.edit.reference.Reference):
         '.', 'set-manually',
         zeit.content.article.edit.interfaces.IImage['set_manually'])
 
+    animation = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'animation')
+
     @property
     def display_mode(self):
         if self._display_mode is not None:

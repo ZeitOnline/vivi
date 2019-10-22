@@ -5,6 +5,8 @@ vivi.core changes
 4.17.6 (unreleased)
 -------------------
 
+- ZON-5464: Add `animation` field to article image module
+
 - OPS-1133: Add diagnostics to DAV cache conflict resolution
 
 

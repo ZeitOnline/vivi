@@ -15,6 +15,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image.__name__ = u'myname'
         image.display_mode = u'float'
         image.variant_name = u'square'
+        image.animation = u'fade-in'
         image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         image.references = image.references.create(
             zeit.cms.interfaces.ICMSContent(image_uid))
@@ -23,6 +24,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'float', image.display_mode)
         self.assertEqual(u'square', image.variant_name)
+        self.assertEqual(u'fade-in', image.animation)
         self.assertEllipsis("""\
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
