@@ -101,7 +101,8 @@ class IEmbed(IText):
         required=False)
 
     amp_code = Code(
-        title=_("AMP Code"),
+        title=_("Embed AMP Code"),
+        description=_("Please use an AMP validator to check your code"),
         required=False)
 
 
