@@ -17,13 +17,16 @@ import zope.lifecycleevent
 class ImageReferenceProperty(
         zeit.cms.content.reference.SingleReferenceProperty):
 
+    ATTRIBUTES = [
+        '__name__',
+        'display_mode',
+        'variant_name',
+        'set_manually',
+    ]
+
     def __set__(self, instance, value):
-        saved_attributes = {name: getattr(instance, name) for name in [
-            '__name__',
-            'display_mode',
-            'variant_name',
-            'set_manually',
-        ]}
+        saved_attributes = {
+            name: getattr(instance, name) for name in self.ATTRIBUTES}
 
         super(ImageReferenceProperty, self).__set__(instance, value)
 
