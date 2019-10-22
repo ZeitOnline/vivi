@@ -40,7 +40,8 @@ class Parameters(CMPFields, FormBase, zeit.cms.browser.form.EditForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IEmbed,
         zeit.cms.content.interfaces.IMemo).select(
-            'render_as_template', 'parameter_definition', 'vivi_css', 'memo')
+            'render_as_template', 'parameter_definition', 'vivi_css', 'memo',
+            'amp_code')
 
 
 class Display(CMPFields, zeit.cms.browser.form.DisplayForm):
