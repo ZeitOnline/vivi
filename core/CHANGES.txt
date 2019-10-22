@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.19.0 (unreleased)
+4.19.0 (2019-10-22)
 -------------------
 
 - ZON-5523: Add additional amp_code field to embeds
