@@ -5,7 +5,7 @@ vivi.core changes
 4.19.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5447: Translate vendor IDs to external CMP values
 
 
 4.19.0 (2019-10-22)

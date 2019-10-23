@@ -1,3 +1,4 @@
+from zeit.cmp.interfaces import VENDOR_SOURCE
 from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 from zeit.cms.content.property import DAVConverterWrapper
 from zeit.cms.content.property import ObjectPathAttributeProperty
@@ -6,6 +7,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import UserDict
 import grokcore.component as grok
 import lxml.objectify
+import zeit.cmp.consent
 import zeit.cmp.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -198,7 +200,8 @@ class RawDisplayWidget(zope.formlib.widget.DisplayWidget):
 
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
 class ConsentInfo(zeit.cms.grok.TrustedAdapter,
-                  zeit.cms.content.xmlsupport.Persistent):
+                  zeit.cms.content.xmlsupport.Persistent,
+                  zeit.cmp.consent.ConsentInfoBase):
 
     grok.context(zeit.content.modules.interfaces.IRawText)
 
