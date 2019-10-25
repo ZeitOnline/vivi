@@ -9,6 +9,12 @@ import zope.event
 
 class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
 
+    def setUp(self):
+        super(LastSemanticPublish, self).setUp()
+        zeit.cms.workflow.mock._publish_times[
+            'http://xml.zeit.de/testcontent'] = datetime(
+                2015, 5, 17, tzinfo=pytz.UTC)
+
     def test_lsp_is_updated_when_lsc_is_newer(self):
         content = self.repository['testcontent']
         published = zeit.cms.workflow.interfaces.IPublishInfo(content)

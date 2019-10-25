@@ -60,4 +60,4 @@ def update_date_last_published_semantic(context, event):
     lsc = zeit.cms.content.interfaces.ISemanticChange(context)
     last_semantic_change = lsc.last_semantic_change or MIN_DATE
     if last_semantic_change > date_last_published_semantic:
-        published.date_last_published_semantic = datetime.now(pytz.UTC)
+        published.date_last_published_semantic = published.date_last_published

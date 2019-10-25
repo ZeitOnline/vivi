@@ -5,7 +5,7 @@ vivi.core changes
 4.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Set dlps to dlp instead of yet another separate "now"
 
 
 4.20.0 (2019-10-23)
