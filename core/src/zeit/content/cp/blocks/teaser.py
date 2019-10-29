@@ -37,6 +37,9 @@ class TeaserBlock(
                     'No default teaser layout defined for this area.'))
             self.layout = self.layout
         assert self.xml.get('module') != 'teaser'
+        if 'force_mobile_image' not in self.xml.attrib:
+            ref = zeit.content.cp.interfaces.IReadTeaserBlock
+            self.force_mobile_image = ref['force_mobile_image'].default
 
     @property
     def entries(self):

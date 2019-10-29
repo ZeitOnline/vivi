@@ -25,6 +25,9 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if self.xml.get('module') == 'auto-teaser':
             self.layout = self.layout
         assert self.xml.get('module') != 'auto-teaser'
+        if 'force_mobile_image' not in self.xml.attrib:
+            ref = zeit.content.cp.interfaces.IReadTeaserBlock
+            self.force_mobile_image = ref['force_mobile_image'].default
 
     def __len__(self):
         return len(self.entries)
