@@ -5,7 +5,7 @@ vivi.core changes
 4.20.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Put article image `animation` behind feature toggle `article_image_animation`
 
 
 4.20.1 (2019-10-25)

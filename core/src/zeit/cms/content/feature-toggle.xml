@@ -1,5 +1,6 @@
 <features>
   <article_agencies>true</article_agencies>
+  <article_image_animation>true</article_image_animation>
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
   <breakingnews_with_channel>true</breakingnews_with_channel>
   <push_new_articles_ua_author_tag>true</push_new_articles_ua_author_tag>
