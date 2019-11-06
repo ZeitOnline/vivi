@@ -286,6 +286,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         except KeyError:
             raise KeyError(key)
         if self._is_deleted(value):
+            log.info('%s not found in %s', key, self)
             raise KeyError(key)
         self._update_cache_access(skey)
         return value
@@ -397,7 +398,7 @@ class Properties(persistent.mapping.PersistentMapping):
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
         log.warning(
-            'Could not resolve conflict, invalidating %s',
+            'Could not resolve conflict, deleting %s',
             commited_data.get(
                 ('uuid', 'http://namespaces.zeit.de/CMS/document'),
                 'uuid-unknown'))
@@ -445,6 +446,7 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
+        log.warning('Could not resolve conflict, deleting %s', old)
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
         return old
 

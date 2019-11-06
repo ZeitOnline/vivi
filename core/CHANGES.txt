@@ -5,7 +5,7 @@ vivi.core changes
 4.20.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1133: More diagnostics for DAV cache deletes
 
 
 4.20.3 (2019-11-05)
