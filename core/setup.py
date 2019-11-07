@@ -41,7 +41,6 @@ setup(
         'gocept.jasmine',
         'gocept.jslint>=0.2',
         'gocept.lxml>=0.2.1',
-        'gocept.mochikit>=1.4.2.2',
         'gocept.pagelet',
         'gocept.runner>0.5.3',
         'gocept.selenium>=2.4.0',
