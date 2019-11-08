@@ -1,7 +1,6 @@
-import ZConfig
 import ZODB.POSException
+import grokcore.component as grok
 import logging
-import os
 import transaction
 import transaction.interfaces
 import zeit.connector.connector
@@ -38,10 +37,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         if not interaction.participations:
             return None
         request = interaction.participations[0]
-        if not (zope.publisher.interfaces.http.IHTTPApplicationRequest
-                .providedBy(request)):
-            return None
-        return request.getURL()
+        return ICurrentURL(request, None)
 
     def get_datamanager(self):
         conn = self.get_connection()
@@ -177,3 +173,19 @@ def invalidate_cache(event):
         # The connector isn't responsible for the id, or the id is just plain
         # invalid. There is nothing to invalidate then anyway.
         pass
+
+
+class ICurrentURL(zope.interface.Interface):
+    pass
+
+
+@grok.adapter(zope.publisher.interfaces.http.IHTTPApplicationRequest)
+@grok.implementer(ICurrentURL)
+def http_current_url(request):
+    return request.getURL()
+
+
+@grok.adapter(zope.interface.Interface)
+@grok.implementer(ICurrentURL)
+def default_current_url(request):
+    return getattr(request, '_zeit_connector_referrer', None)

@@ -1,13 +1,17 @@
+from dogpile.cache.api import NO_VALUE
 import BTrees
 import UserDict
 import ZODB.POSException
 import ZODB.blob
 import cStringIO
+import dogpile.cache
 import logging
 import persistent
 import persistent.mapping
+import pyramid_dogpile_cache2
 import tempfile
 import time
+import traceback
 import transaction
 import zc.set
 import zeit.connector.interfaces
@@ -285,6 +289,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         except KeyError:
             raise KeyError(key)
         if self._is_deleted(value):
+            log.info('%s not found in %s', key, self)
             raise KeyError(key)
         self._update_cache_access(skey)
         return value
@@ -308,6 +313,8 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         return (key for key in keys if key in self)
 
     def __delitem__(self, key):
+        log.info('Deleting %s from %s:\n%s', key, self,
+                 ''.join(traceback.format_stack()))
         value = self._storage[get_storage_key(key)]
         if isinstance(value, self.CACHE_VALUE_CLASS):
             self._mark_deleted(value)
@@ -394,7 +401,7 @@ class Properties(persistent.mapping.PersistentMapping):
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
         log.warning(
-            'Could not resolve conflict, invalidating %s',
+            'Could not resolve conflict, deleting %s',
             commited_data.get(
                 ('uuid', 'http://namespaces.zeit.de/CMS/document'),
                 'uuid-unknown'))
@@ -442,6 +449,7 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
+        log.warning('Could not resolve conflict, deleting %s', old)
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
         return old
 
@@ -487,3 +495,50 @@ class AlwaysEmptyDict(UserDict.DictMixin):
 
     def keys(self):
         return ()
+
+
+# Don't use pyramid_dogpile_cache2.get_region, we want no key mangling here.
+DAV_CACHE = dogpile.cache.make_region('dav')
+pyramid_dogpile_cache2.CACHE_REGIONS['dav'] = DAV_CACHE
+
+
+class DogpileCache(object):
+
+    prefix = NotImplemented
+
+    def _key(self, key):
+        return key.replace(
+            zeit.cms.interfaces.ID_NAMESPACE, u'%s:' % self.prefix, 1)
+
+    def __getitem__(self, key):
+        value = self.get(key, NO_VALUE)
+        if value is NO_VALUE:
+            raise KeyError(key)
+        return value
+
+    def get(self, key, default=None):
+        value = DAV_CACHE.get(self._key(key))
+        return value if value is not NO_VALUE else default
+
+    def __setitem__(self, key, value):
+        DAV_CACHE.set(self._key(key), value)
+
+    def __delitem__(self, key):
+        DAV_CACHE.delete(self._key(key))
+
+    def __contains__(self, key):
+        return self.get(key, NO_VALUE) is not NO_VALUE
+
+
+class PropertyDogpileCache(DogpileCache):
+
+    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
+
+    prefix = 'prop'
+
+
+class ChildNameDogpileCache(DogpileCache):
+
+    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
+
+    prefix = 'child'

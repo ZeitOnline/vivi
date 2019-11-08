@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.20.3.dev0',
+    version='4.20.6.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -41,7 +41,6 @@ setup(
         'gocept.jasmine',
         'gocept.jslint>=0.2',
         'gocept.lxml>=0.2.1',
-        'gocept.mochikit>=1.4.2.2',
         'gocept.pagelet',
         'gocept.runner>0.5.3',
         'gocept.selenium>=2.4.0',

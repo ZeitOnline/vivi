@@ -106,15 +106,17 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         mode_select = selector_template.format('.fieldname-display_mode')
         variant_select = selector_template.format('.fieldname-variant_name')
 
+        # It seems that when tabbing results in a jump that ends in a dropdown
+        # menu no save is triggered and the dirty flag is not removed. Thus we
+        # target a (luckily available) input field instead.
+        link_input = 'css=.block.type-image:nth-child(3) input[type="text"]'
+
         s.waitForElementPresent(mode_select)
         self.assertEqual(
             ['(nothing selected)', 'Large', 'Float'],
             s.getSelectOptions(mode_select))
         s.select(mode_select, 'label=Large')
-        # It seems that when tabbing results in a jump that ends in a dropdown
-        # menu no save is triggered and the dirty flag is not removed. We,
-        # therefore, us the next one here.
-        s.type(variant_select, '\t')
+        s.type(link_input, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
 
         s.waitForElementPresent(variant_select)
@@ -123,7 +125,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
              'Templates Only', 'Header: Von A nach B'],
             s.getSelectOptions(variant_select))
         s.select(variant_select, 'label=Original')
-        s.type(variant_select, '\t')
+        s.type(link_input, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
 
         # Re-open the page and verify that the data is still there
