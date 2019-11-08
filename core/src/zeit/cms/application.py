@@ -139,10 +139,16 @@ Modules that were pre-imported for convenience: zope, zeit, transaction
 def configure_dogpile_cache(event):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     settings = {
-        'dogpile_cache.backend': 'dogpile.cache.memory',
-        'dogpile_cache.regions': config['cache-regions'],
+        'dogpile_cache.regions': config['cache-regions']
     }
+    if config.get('cache-redis-url', '').strip():
+        settings['dogpile_cache.regions'] += ', dav'
+        settings.update({
+            'dogpile_cache.dav.backend': 'dogpile.cache.redis',
+            'dogpile_cache.dav.arguments.url': config['cache-redis-url'],
+        })
     for region in re.split(r'\s*,\s*', config['cache-regions']):
+        settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
         settings['dogpile_cache.%s.expiration_time' % region] = config[
             'cache-expiration-%s' % region]
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)

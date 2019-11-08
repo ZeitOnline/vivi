@@ -5,7 +5,8 @@ vivi.core changes
 4.20.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1133: Implement a DAV cache (properties and childnames) with
+  dogpile/redis as the storage backend
 
 
 4.20.5 (2019-11-08)
