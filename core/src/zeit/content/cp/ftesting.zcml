@@ -26,6 +26,8 @@
 
   <include package="zeit.content.video" />
 
+  <include package="zeit.content.gallery" />
+
   <!-- Allow test user to create and move areas -->
   <grant
     principal="zope.Authenticated"

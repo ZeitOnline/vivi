@@ -37,12 +37,6 @@ class TeaserBlock(
                     'No default teaser layout defined for this area.'))
             self.layout = self.layout
         assert self.xml.get('module') != 'teaser'
-        gallery = False
-        if hasattr(self.xml, 'block'):
-            gallery = self.xml.block.get('contenttype') == 'gallery'
-        if gallery and 'force_mobile_image' not in self.xml.attrib:
-            ref = zeit.content.cp.interfaces.IReadTeaserBlock
-            self.force_mobile_image = ref['force_mobile_image'].default
 
     @property
     def entries(self):
@@ -95,6 +89,10 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
 def make_block_from_content(container, content, position):
     block = Factory(container)(position)
     block.insert(0, content)
+    gallery = block.xml.block.get('contenttype') == 'gallery'
+    if gallery and 'force_mobile_image' not in block.xml.attrib:
+        ref = zeit.content.cp.interfaces.IReadTeaserBlock
+        block.force_mobile_image = ref['force_mobile_image'].default
     return block
 
 
