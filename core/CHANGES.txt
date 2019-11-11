@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.20.6 (unreleased)
+4.21.0 (2019-11-11)
 -------------------
 
 - OPS-1133: Implement a DAV cache (properties and childnames) with
