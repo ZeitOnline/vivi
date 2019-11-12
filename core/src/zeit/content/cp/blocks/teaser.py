@@ -89,6 +89,10 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
 def make_block_from_content(container, content, position):
     block = Factory(container)(position)
     block.insert(0, content)
+    gallery = block.xml.block.get('contenttype') == 'gallery'
+    if gallery and 'force_mobile_image' not in block.xml.attrib:
+        ref = zeit.content.cp.interfaces.IReadTeaserBlock
+        block.force_mobile_image = ref['force_mobile_image'].default
     return block
 
 
