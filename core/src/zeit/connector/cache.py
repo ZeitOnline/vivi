@@ -511,7 +511,6 @@ class AlwaysEmptyDict(UserDict.DictMixin):
 
 # Don't use pyramid_dogpile_cache2.get_region, we want no key mangling here.
 DAV_CACHE = dogpile.cache.make_region('dav')
-pyramid_dogpile_cache2.CACHE_REGIONS['dav'] = DAV_CACHE
 
 
 class DogpileCache(object):
