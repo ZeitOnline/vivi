@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.21.1 (unreleased)
+4.21.1 (2019-11-12)
 -------------------
 
 - ZON-5473: Set force_mobile_image=True for gallery teasers
