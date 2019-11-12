@@ -8,6 +8,7 @@ import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.content.gallery.interfaces
 import zeit.edit.interfaces
 import zope.component
 import zope.container.interfaces
@@ -89,10 +90,16 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
 def make_block_from_content(container, content, position):
     block = Factory(container)(position)
     block.insert(0, content)
-    gallery = block.xml.block.get('contenttype') == 'gallery'
-    if gallery and 'force_mobile_image' not in block.xml.attrib:
-        ref = zeit.content.cp.interfaces.IReadTeaserBlock
-        block.force_mobile_image = ref['force_mobile_image'].default
+    return block
+
+
+@grok.adapter(zeit.content.cp.interfaces.IArea,
+              zeit.content.gallery.interfaces.IGallery,
+              int)
+@grok.implementer(zeit.edit.interfaces.IElement)
+def make_block_from_gallery(container, content, position):
+    block = make_block_from_content(container, content, position)
+    block.force_mobile_image = True
     return block
 
 
