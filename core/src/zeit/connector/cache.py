@@ -322,7 +322,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         del self._storage[get_storage_key(key)]
 
     def __setitem__(self, key, value):
-        if self._is_deleted(value):
         skey = get_storage_key(key)
         old_value = self._storage.get(skey)
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
@@ -403,7 +402,6 @@ class Properties(persistent.mapping.PersistentMapping):
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
-        if key is zeit.connector.interfaces.DeleteProperty:
         if (key is not zeit.connector.interfaces.DeleteProperty and
                 not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
@@ -413,7 +411,6 @@ class Properties(persistent.mapping.PersistentMapping):
         if dict is None:
             dict = {}
         for key, value in dict.items() + kwargs.items():
-            if key is zeit.connector.interfaces.DeleteProperty:
             self[key] = value
         self._p_changed = True
 
@@ -454,7 +451,6 @@ class ChildNames(zc.set.Set):
         return object.__repr__(self)
 
     def insert(self, key):
-        if key is zeit.connector.interfaces.DeleteProperty:
         # BTree sets have insert instead of add. Let's be greedy.
         self.add(key)
 
