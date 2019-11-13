@@ -382,6 +382,7 @@ class Properties(persistent.mapping.PersistentMapping):
 
     cached_time = None
 
+    # NOTE: By default, conflict resolution is performed by the ZEO *server*!
     def _p_resolveConflict(self, old, commited, newstate):
         if not (old.keys() ==
                 commited.keys() ==
