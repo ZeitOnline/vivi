@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.21.2 (unreleased)
+4.21.2 (2019-11-13)
 -------------------
 
 - OPS-1133: Write the traceback into the property cache
