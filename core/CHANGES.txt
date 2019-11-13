@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.21.4 (unreleased)
+4.21.4 (2019-11-13)
 -------------------
 
 - HOTFIX: brown-bag 4.21.3 due to syntax error
