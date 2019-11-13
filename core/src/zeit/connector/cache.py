@@ -11,7 +11,6 @@ import persistent.mapping
 import pyramid_dogpile_cache2
 import tempfile
 import time
-import traceback
 import transaction
 import zc.set
 import zeit.connector.interfaces
@@ -314,8 +313,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
     def __delitem__(self, key):
         value = self._storage[get_storage_key(key)]
-        log.info('Deleting %s from %s:\n%s', key, self,
-                 ''.join(traceback.format_stack()))
         if isinstance(value, self.CACHE_VALUE_CLASS):
             self._mark_deleted(value)
         else:
@@ -326,8 +323,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
     def __setitem__(self, key, value):
         if self._is_deleted(value):
-            log.info('Mark %s deleted in %s:\n%s', key, self,
-                     ''.join(traceback.format_stack()))
         skey = get_storage_key(key)
         old_value = self._storage.get(skey)
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
@@ -403,22 +398,12 @@ class Properties(persistent.mapping.PersistentMapping):
         if newstate_data == commited_data:
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
-        log.warning(
-            'Could not resolve conflict, deleting %s',
-            commited_data.get(
-                ('uuid', 'http://namespaces.zeit.de/CMS/document'),
-                'uuid-unknown'))
-        old['data'] = {
-            zeit.connector.interfaces.DeleteProperty: None,
-            ('traceback', 'INTERNAL'): ''.join(traceback.format_stack())
-        }
+        old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
         if key is zeit.connector.interfaces.DeleteProperty:
-            log.info('Mark %s deleted in %s:\n%s', key, self,
-                     ''.join(traceback.format_stack()))
         if (key is not zeit.connector.interfaces.DeleteProperty and
                 not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
@@ -429,8 +414,6 @@ class Properties(persistent.mapping.PersistentMapping):
             dict = {}
         for key, value in dict.items() + kwargs.items():
             if key is zeit.connector.interfaces.DeleteProperty:
-                log.info('Mark %s deleted in %s:\n%s', key, self,
-                         ''.join(traceback.format_stack()))
             self[key] = value
         self._p_changed = True
 
@@ -450,7 +433,6 @@ class PropertyCache(PersistentCache):
     def _mark_deleted(self, value):
         value.clear()
         value[zeit.connector.interfaces.DeleteProperty] = None
-        value[('traceback', 'INTERNAL')] = ''.join(traceback.format_stack())
 
     @staticmethod
     def _cache_values_equal(a, b):
@@ -462,7 +444,6 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
-        log.warning('Could not resolve conflict, deleting %s', old)
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
         return old
 
@@ -474,8 +455,6 @@ class ChildNames(zc.set.Set):
 
     def insert(self, key):
         if key is zeit.connector.interfaces.DeleteProperty:
-            log.info('Mark %s deleted in %s:\n%s', key, self,
-                     ''.join(traceback.format_stack()))
         # BTree sets have insert instead of add. Let's be greedy.
         self.add(key)
 
