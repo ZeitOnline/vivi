@@ -313,9 +313,9 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         return (key for key in keys if key in self)
 
     def __delitem__(self, key):
+        value = self._storage[get_storage_key(key)]
         log.info('Deleting %s from %s:\n%s', key, self,
                  ''.join(traceback.format_stack()))
-        value = self._storage[get_storage_key(key)]
         if isinstance(value, self.CACHE_VALUE_CLASS):
             self._mark_deleted(value)
         else:
