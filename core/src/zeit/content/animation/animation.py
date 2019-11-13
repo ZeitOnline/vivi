@@ -12,21 +12,6 @@ import zope.component
 import zope.interface
 
 
-class ArticleReferenceProperty(zeit.cms.content.reference.SingleResource):
-
-    ATTRIBUTES = set(["__name__"]) | set(['display_mode', 'article'])
-
-    def __set__(self, instance, value):
-        saved_attributes = {name: getattr(instance, name) for name in self.ATTRIBUTES}
-
-        super(ArticleReferenceProperty, self).__set__(instance, value)
-
-        for name, val in saved_attributes.items():
-            setattr(instance, name, val)
-        instance.is_empty = value is None
-        instance._p_changed = True
-
-
 class Animation(zeit.cms.content.metadata.CommonMetadata):
     """A type for managing animations made from existing media."""
 
@@ -40,12 +25,12 @@ class Animation(zeit.cms.content.metadata.CommonMetadata):
         "<head/><body><display_mode/><article/><images/><video/></body></animation>"
     )
 
-    article = ArticleReferenceProperty(".", "article")
+    article = zeit.cms.content.reference.SingleResource(".", "related")
     display_mode = zeit.cms.content.property.ObjectPathProperty('.body.display_mode')
 
     @property
     def title(self):
-        return u"Foo"
+        return self.article.title
 
 
 class AnimationType(zeit.cms.type.XMLContentTypeDeclaration):
