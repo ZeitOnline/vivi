@@ -583,8 +583,7 @@ class Connector(object):
             # Set the resource type from resource.type.
             properties = dict(resource.properties)
             properties[RESOURCE_TYPE_PROPERTY] = resource.type
-            __traceback_info__ = (
-                dict(properties), zeit.connector.interfaces.DeleteProperty)
+            __traceback_info__ = (dict(properties),)
             self.changeProperties(id, properties, locktoken=locktoken)
         finally:
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
