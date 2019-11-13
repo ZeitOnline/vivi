@@ -408,7 +408,10 @@ class Properties(persistent.mapping.PersistentMapping):
             commited_data.get(
                 ('uuid', 'http://namespaces.zeit.de/CMS/document'),
                 'uuid-unknown'))
-        old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
+        old['data'] = {
+            zeit.connector.interfaces.DeleteProperty: None,
+            ('traceback', 'INTERNAL'): ''.join(traceback.format_stack())
+        }
         return old
 
     def __setitem__(self, key, value):
@@ -447,6 +450,7 @@ class PropertyCache(PersistentCache):
     def _mark_deleted(self, value):
         value.clear()
         value[zeit.connector.interfaces.DeleteProperty] = None
+        value[('traceback', 'INTERNAL')] = ''.join(traceback.format_stack())
 
     @staticmethod
     def _cache_values_equal(a, b):
