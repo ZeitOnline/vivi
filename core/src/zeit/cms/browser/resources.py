@@ -19,7 +19,7 @@ backend = Group([])
 
 def register(resource):
     depends = backend.depends.union(
-        set(fanstatic.core.normalize_groups([resource])))
+        set([resource]))
     for dep in depends:
         backend.resources.update(dep.resources)
 
