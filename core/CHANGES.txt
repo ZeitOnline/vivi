@@ -5,7 +5,11 @@ vivi.core changes
 4.21.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1133: Modify DAV cache conflict resolution rules
+  to avoid deleting cache entries (doing that was definitely correct,
+  but it caused thundering herd issues e.g. for often-used folders)
+  Set feature toggle `dav_cache_delete_on_conflict` to revert to the previous
+  behaviour.
 
 
 4.21.4 (2019-11-13)
