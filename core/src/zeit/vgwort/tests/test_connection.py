@@ -203,7 +203,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             self.service.new_document(mock.sentinel.notanarticle)
         self.assertEqual(
             e.exception.args,
-            ('Does not seem to be an article -- stale cache?',))
+            ('Artikel existiert nicht mehr.',))
 
     def test_product_is_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()
