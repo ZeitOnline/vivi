@@ -97,7 +97,6 @@ setup(
         'zc.set',
         'zc.sourcefactory',
         'zc.table',
-        'zdaemon',
         'zeit.optivo',
         'zope.annotation',
         'zope.app.authentication',
