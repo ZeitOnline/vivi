@@ -5,7 +5,7 @@ vivi.core changes
 4.21.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5586: Finally remove unused XMLSnippet field (since zeit.cms-2.35.1)
 
 
 4.21.4 (2019-11-13)

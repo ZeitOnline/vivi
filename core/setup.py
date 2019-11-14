@@ -72,7 +72,6 @@ setup(
         'redis',
         'repoze.vhm',
         'setuptools',
-        'sprout',
         'suds',
         'tblib',
         'transaction',
