@@ -12,11 +12,7 @@ Let's view the source of an object. The source syntax highlighted:
 testcontent – View source code
 >>> print browser.contents
 <?xml ...
-              <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;head</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;body</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-</span><span class="h_tag">&lt;/testtype&gt;</span><span class="h_default"><br/>
-</span></div>
+<div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype&gt;</span>
 ...
 
 When we check out an object we can edit the source:
@@ -48,12 +44,7 @@ After checking in we see the changes in the source view:
 testcontent – View source code
 >>> print browser.contents
 <?xml ...
-              <div class="widget"><span class="h_tag">&lt;testtype&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;head&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;foo</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-...
-</span><span class="h_tag">&lt;/testtype&gt;</span><span class="h_default"><br/>
-</span></div>
-            </div>
+<div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype&gt;</span>
+  <span class="nt">&lt;head&gt;</span> <span class="nt">&lt;foo/&gt;</span>
 ...
 
