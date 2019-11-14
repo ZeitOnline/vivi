@@ -17,7 +17,7 @@ There is a IDCTimes adapter for repository content:
 >>> dc
 <zeit.cms.content.dublincore.RepositoryDCTimes object at 0x...>
 >>> dc.modified
-datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 >>> dc.created is None
 True
 
@@ -36,33 +36,32 @@ True
 The modified depends on _p_mtime but falls back to the DAV modification time:
 
 >>> dc.modified
-datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 
 The modified can be set:
 
->>> import datetime
->>> import pytz
->>> dc.modified = datetime.datetime(2009, 1, 1, tzinfo=pytz.UTC)
+>>> import pendulum
+>>> dc.modified = pendulum.datetime(2009, 1, 1)
 
 But that value is only used if there is neither one in the DAV properties nor
 on _p_mtime:
 
 >>> dc.modified
-datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 >>> import zeit.connector.interfaces
 >>> del zeit.connector.interfaces.IWebDAVProperties(
 ...     checked_out)[('getlastmodified', 'DAV:')]
 >>> dc.modified
-datetime.datetime(2009, 1, 1, 0, 0, tzinfo=<UTC>)
+DateTime(2009, 1, 1, 0, 0, 0, tzinfo=Timezone('UTC'))
 
 After committing the object has its own modified:
 
->>> before_commit_time = datetime.datetime.now(pytz.UTC)
+>>> before_commit_time = pendulum.now('UTC')
 >>> import time  # wait a bit to be sure modified is > before_commit_time
 >>> time.sleep(0.25)
 >>> import transaction
 >>> transaction.commit()
 >>> dc.modified
-datetime.datetime(...)
+DateTime(...)
 >>> dc.modified > before_commit_time
 True

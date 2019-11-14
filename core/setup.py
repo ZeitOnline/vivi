@@ -34,7 +34,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
-        'pendulum',
+        'pendulum>=2.0.0.dev0',
         'persistent',
         'pyramid_dogpile_cache2',
         'pytz',
@@ -51,7 +51,6 @@ setup(
         'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
         'zope.deferredimport',  # undeclared by zc.form
-        'zc.iso8601',
         'zc.queue',
         'zc.relation',
         'zc.set',

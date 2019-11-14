@@ -3,11 +3,11 @@ import datetime
 import grokcore.component as grok
 import logging
 import lxml.etree
+import pendulum
 import pytz
 import re
 import sys
 import time
-import zc.iso8601.parse
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
 import zeit.cms.grok
@@ -304,19 +304,10 @@ class DatetimeProperty(object):
     def fromProperty(self, value):
         if not value:
             return None
-        try:
-            return zc.iso8601.parse.datetimetz(value)
-        except ValueError:
-            pass
-        try:
-            # Uff. Try the "Thu, 13 Mar 2008 13:48:37 GMT" format
-            date = datetime.datetime(*(time.strptime(
-                value, '%a, %d %b %Y %H:%M:%S GMT')[0:6]))
-        except ValueError:
-            pass
-        else:
-            return date.replace(tzinfo=pytz.UTC)
-        raise ValueError(value)
+        # We have _mostly_ iso8601, but some old content has the format
+        # "Thu, 13 Mar 2008 13:48:37 GMT", so we use a lenient parser.
+        date = pendulum.parse(value, strict=False)
+        return date.in_tz('UTC')
 
     def toProperty(self, value):
         if value is None:

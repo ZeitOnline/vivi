@@ -1,7 +1,7 @@
 from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import zc.iso8601.parse
+import pendulum
 import zeit.brightcove.resolve
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
@@ -50,7 +50,7 @@ class Converter(object):
     def cms_date(value):
         if not value:
             return None
-        return zc.iso8601.parse.datetimetz(value)
+        return pendulum.parse(value)
 
     def __repr__(self):
         return '<%s.%s %s>' % (
