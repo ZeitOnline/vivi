@@ -35,7 +35,7 @@ setup(
         'feedparser',
         'filemagic',
         'gocept.cache >= 2.1',
-        'gocept.fckeditor[fanstatic]>=2.6.4.1-2',
+        'gocept.fckeditor[fanstatic]',
         'gocept.form[formlib]>=0.7.5',
         'gocept.httpserverlayer>=1.4.0.dev0',
         'gocept.jasmine',
