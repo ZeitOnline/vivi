@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
 from zeit.retresco.interfaces import ISkipEnrich
 import argparse
@@ -87,6 +88,8 @@ def index_async(self, uniqueId, enrich=True):
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
         return
+    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
+        enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = True
     if meta is not None:
