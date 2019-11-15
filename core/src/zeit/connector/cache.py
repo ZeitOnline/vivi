@@ -386,7 +386,7 @@ class Properties(persistent.mapping.PersistentMapping):
 
     # NOTE: By default, conflict resolution is performed by the ZEO *server*!
     def _p_resolveConflict(self, old, commited, newstate):
-        if not FEATURE_TOGGLES.find('dav_cache_delete_on_conflict'):
+        if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
             log.info('Overwriting %s with %s after ConflictError',
                      commited, newstate)
             return newstate
@@ -450,7 +450,7 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
-        if not FEATURE_TOGGLES.find('dav_cache_delete_on_conflict'):
+        if not FEATURE_TOGGLES.find('dav_cache_delete_childname_on_conflict'):
             raise ZODB.POSException.ConflictError()
         log.info('Emptying %s due to ConflictError', newstate)
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
