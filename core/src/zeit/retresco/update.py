@@ -61,7 +61,10 @@ def index_on_publish(context, event):
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    index(context, enrich=True)
+    enrich = True
+    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
+        enrich = False
+    index(context, enrich=enrich)
 
 
 @grok.subscribe(

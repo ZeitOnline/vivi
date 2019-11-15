@@ -5,7 +5,7 @@ vivi.core changes
 4.21.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Apply enrich toggle also on publish
 
 
 4.21.6 (2019-11-15)
