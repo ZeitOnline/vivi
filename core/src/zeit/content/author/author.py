@@ -33,6 +33,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     for name in [
         'biography',
+        'briefkasten',
         'display_name',
         'email',
         'sso_connect',
