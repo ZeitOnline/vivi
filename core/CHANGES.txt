@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.21.6 (unreleased)
+4.21.6 (2019-11-15)
 -------------------
 
 - MAINT: Add feature toggle `tms_enrich_on_checkin` so we can disable
