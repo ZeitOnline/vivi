@@ -141,16 +141,6 @@ def configure_dogpile_cache(event):
     settings = {
         'dogpile_cache.regions': config['cache-regions']
     }
-    if config.get('cache-redis-url', '').strip():
-        import zeit.connector.cache
-        settings['dogpile_cache.regions'] += ', dav'
-        pyramid_dogpile_cache2.CACHE_REGIONS[
-            'dav'] = zeit.connector.cache.DAV_CACHE
-
-        settings.update({
-            'dogpile_cache.dav.backend': 'dogpile.cache.redis',
-            'dogpile_cache.dav.arguments.url': config['cache-redis-url'],
-        })
     for region in re.split(r'\s*,\s*', config['cache-regions']):
         settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
         settings['dogpile_cache.%s.expiration_time' % region] = config[

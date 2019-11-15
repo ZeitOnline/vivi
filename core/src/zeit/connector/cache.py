@@ -1,11 +1,9 @@
-from dogpile.cache.api import NO_VALUE
 from gocept.cache.method import Memoize as memoize
 import BTrees
 import UserDict
 import ZODB.POSException
 import ZODB.blob
 import cStringIO
-import dogpile.cache
 import gocept.lxml.objectify
 import logging
 import lxml.objectify
@@ -528,49 +526,3 @@ class FeatureToggles(object):
 
 
 FEATURE_TOGGLES = FeatureToggles()
-
-
-# Don't use pyramid_dogpile_cache2.get_region, we want no key mangling here.
-DAV_CACHE = dogpile.cache.make_region('dav')
-
-
-class DogpileCache(object):
-
-    prefix = NotImplemented
-
-    def _key(self, key):
-        return key.replace(
-            zeit.cms.interfaces.ID_NAMESPACE, u'%s:' % self.prefix, 1)
-
-    def __getitem__(self, key):
-        value = self.get(key, NO_VALUE)
-        if value is NO_VALUE:
-            raise KeyError(key)
-        return value
-
-    def get(self, key, default=None):
-        value = DAV_CACHE.get(self._key(key))
-        return value if value is not NO_VALUE else default
-
-    def __setitem__(self, key, value):
-        DAV_CACHE.set(self._key(key), value)
-
-    def __delitem__(self, key):
-        DAV_CACHE.delete(self._key(key))
-
-    def __contains__(self, key):
-        return self.get(key, NO_VALUE) is not NO_VALUE
-
-
-class PropertyDogpileCache(DogpileCache):
-
-    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
-
-    prefix = 'prop'
-
-
-class ChildNameDogpileCache(DogpileCache):
-
-    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
-
-    prefix = 'child'
