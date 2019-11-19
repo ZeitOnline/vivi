@@ -95,8 +95,8 @@ class IAuthor(zope.interface.Interface,
     enable_feedback = zope.schema.Bool(
         title=_(u'Enable feedback?'), default=False)
 
-    briefkasten = zope.schema.Bool(
-        title=_(u'Anonymen Briefkasten verlinken'), default=False)
+    show_letterbox_link = zope.schema.Bool(
+        title=_(u'Link letterbox'), default=False)
 
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
