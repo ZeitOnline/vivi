@@ -112,6 +112,7 @@ setup(
         'zope.app.error',
         'zope.app.exception',
         'zope.app.file',
+        'zope.app.folder',
         'zope.app.form>=3.6.0',
         'zope.app.generations',
         'zope.app.interface',
