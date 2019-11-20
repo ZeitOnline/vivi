@@ -16,7 +16,10 @@ function filterContentTable() {
         supertitle: has_supertitle,
     };
 
+
     var contentTableRows = document.querySelectorAll('.contentListing tr');
+
+    var numberOfFilterData = 0;
 
     contentTableRows.forEach(function(row) {
 
@@ -73,9 +76,14 @@ function filterContentTable() {
         };
 
         row.style.display = rowVisibility(curRowData, filterData);
+
+        if (row.style.display === 'table-row') {
+            numberOfFilterData += 1;
+        }
     });
 
     document.querySelectorAll('thead tr')[0].style.display = "table-row";
+    document.getElementById('numberOfVisibleRows').innerHTML = '<b>' + numberOfFilterData + ' rows' + '</b>';
 }
 
 function rowVisibility(curRowData, filterData) {
@@ -183,4 +191,6 @@ window.onload = function () {
         '#topcontent table tr td:nth-child(9)',
         'filter_ressort',
         'innerText');
+    
+    document.getElementById('numberOfVisibleRows').innerHTML = '<b>' + document.querySelectorAll('.contentListing tr').length + ' rows' + '</b>';
 };

@@ -17,6 +17,7 @@
     <input type="checkbox" id="filter_has_teaser_img"/>
     Spitzmarke vorhanden:
     <input type="checkbox" id="filter_has_supertitle"/>
+    <span id="numberOfVisibleRows"></span>
 </div>
 <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">
