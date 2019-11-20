@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Nov 19 11:04:49 2019\n"
+"POT-Creation-Date: Wed Nov 20 09:36:04 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -360,7 +360,7 @@ msgstr ""
 #: zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:260
 #: zeit/content/article/interfaces.py:171
-#: zeit/content/author/author.py:100
+#: zeit/content/author/author.py:101
 #: zeit/content/author/browser/form.py:205
 msgid "Author"
 msgstr ""
@@ -2600,7 +2600,7 @@ msgid "Author Favourites"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:57
-#: zeit/content/author/interfaces.py:207
+#: zeit/content/author/interfaces.py:210
 msgid "Biography"
 msgstr ""
 
@@ -2723,46 +2723,50 @@ msgid "Enable feedback?"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:99
+msgid "Link letterbox"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:102
 msgid "Short Biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:104
+#: zeit/content/author/interfaces.py:107
 msgid "Favourite content"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:112
+#: zeit/content/author/interfaces.py:115
 msgid "Occupation"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:118
+#: zeit/content/author/interfaces.py:121
 msgid "Label for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:122
+#: zeit/content/author/interfaces.py:125
 msgid "Label for favourite topic #2"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:126
+#: zeit/content/author/interfaces.py:129
 msgid "Label for favourite topic #3"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:130
+#: zeit/content/author/interfaces.py:133
 msgid "URL for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:134
+#: zeit/content/author/interfaces.py:137
 msgid "URL for favourite topic #2"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:138
+#: zeit/content/author/interfaces.py:141
 msgid "URL for favourite topic #3"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:194
+#: zeit/content/author/interfaces.py:197
 msgid "Location"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:199
+#: zeit/content/author/interfaces.py:202
 msgid "Author role"
 msgstr ""
 
