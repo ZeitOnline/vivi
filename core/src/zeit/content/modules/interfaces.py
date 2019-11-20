@@ -43,7 +43,9 @@ class URIChoice(zope.schema.URI):
 
     def __init__(self, *args, **kw):
         self.source = kw.pop('source')
+        placeholder = kw.pop('placeholder')
         super(URIChoice, self).__init__(*args, **kw)
+        self.setTaggedValue('placeholder', placeholder)
 
     def _validate(self, value):
         super(URIChoice, self)._validate(value)
@@ -54,7 +56,9 @@ class URIChoice(zope.schema.URI):
 
 class IEmbed(zeit.edit.interfaces.IBlock):
 
-    url = URIChoice(title=_('Embed URL'), source=EMBED_PROVIDER_SOURCE)
+    url = URIChoice(title=_('Embed URL'),
+                    placeholder=_('Add URL'),
+                    source=EMBED_PROVIDER_SOURCE)
 
     domain = zope.interface.Attribute('The secondlevel domain of our `url`')
 
