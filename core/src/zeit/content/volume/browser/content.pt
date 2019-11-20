@@ -1,4 +1,23 @@
 <div id="tableFilter">Filter: <input name="tableFilter" type="text" value="" /></div>
+<div id="tableContentFilter">
+    Content-Typ:
+    <select id="filter_content_typ">
+    </select>
+    Verf&uuml;gbarkeit:
+    <select id="filter_availibility">
+    </select>
+    ist eilig:
+    <input type="checkbox" id="filter_is_urgent" />
+    ist SEO optimiert:
+    <input type="checkbox" id="filter_is_optimized"/>
+    Ressort:
+    <select id="filter_ressort" id="filter_ressort">
+    </select>
+    Teaserbild vorhanden:
+    <input type="checkbox" id="filter_has_teaser_img"/>
+    Spitzmarke vorhanden:
+    <input type="checkbox" id="filter_has_supertitle"/>
+    </div>
 <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">
   <div id="topcontent">
