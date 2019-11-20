@@ -6,7 +6,8 @@ import zeit.cms.content.interfaces
 
 
 class CommonMetadataListRepresentation(
-        zeit.cms.browser.listing.CommonListRepresentation):
+        zeit.cms.browser.listing.CommonListRepresentation,
+        zeit.content.volume.browser.content.CommonListRepresentation):
 
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
     zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata,

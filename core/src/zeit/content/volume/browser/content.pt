@@ -1,0 +1,18 @@
+<div id="tableFilter">Filter: <input name="tableFilter" type="text" value="" /></div>
+<form name="containerContentsForm" method="get"
+      action="" id="folderActionForm">
+  <div id="topcontent">
+      <table
+        tal:replace="structure view/contentTable">
+        Table with contents...
+      </table>
+
+      <span class="Info"
+        tal:condition="not:view/content"
+        tal:content="view/no_content_message"
+        i18n:translate="">
+      There are no objects in this folder.
+    </span>
+  </div>
+  <div id="bottomcontent"></div>
+</form>

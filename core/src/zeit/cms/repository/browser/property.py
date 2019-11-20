@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.table.column
 import zc.table.interfaces
 import zeit.cms.browser.listing
+import zeit.content.volume.browser.content
 import zope.interface
 
 
@@ -20,7 +21,9 @@ class MetadataColumn(GetterColumn):
             map(unicode, [item[0][0], item[0][1], item[1]]))
 
 
-class Listing(zeit.cms.browser.listing.Listing):
+class Listing(zeit.cms.browser.listing.Listing,
+              zeit.content.volume.browser.content.Listing
+):
 
     title = _('DAV Properties')
     filter_interface = None
