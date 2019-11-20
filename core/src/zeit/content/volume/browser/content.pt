@@ -17,7 +17,7 @@
     <input type="checkbox" id="filter_has_teaser_img"/>
     Spitzmarke vorhanden:
     <input type="checkbox" id="filter_has_supertitle"/>
-    </div>
+</div>
 <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">
   <div id="topcontent">

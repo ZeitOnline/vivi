@@ -1,13 +1,13 @@
 function filterContentTable() {
-    const filter_contenttype = document.getElementById('filter_content_typ').value.trim();
-    const filter_publishtype = document.getElementById('filter_availibility').value.trim();
-    const filter_ressorttype = document.getElementById('filter_ressort').value.trim();
+    var filter_contenttype = document.getElementById('filter_content_typ').value.trim();
+    var filter_publishtype = document.getElementById('filter_availibility').value.trim();
+    var filter_ressorttype = document.getElementById('filter_ressort').value.trim();
 
-    const is_urgent = document.getElementById('filter_is_urgent').checked;
-    const is_optimized = document.getElementById('filter_is_optimized').checked;
-    const has_supertitle = document.getElementById('filter_has_supertitle').checked;
+    var is_urgent = document.getElementById('filter_is_urgent').checked;
+    var is_optimized = document.getElementById('filter_is_optimized').checked;
+    var has_supertitle = document.getElementById('filter_has_supertitle').checked;
 
-    const filterData = {
+    var filterData = {
         contenttype: filter_contenttype,
         publish: filter_publishtype,
         urgent: is_urgent,
@@ -16,16 +16,16 @@ function filterContentTable() {
         supertitle: has_supertitle,
     };
 
-    const contentTableRows = document.querySelectorAll('.contentListing tr');
+    var contentTableRows = document.querySelectorAll('.contentListing tr');
 
-    contentTableRows.forEach((row) => {
+    contentTableRows.forEach(function(row) {
 
-        let contenttype_td = row.querySelector('td:nth-child(1) img');
-        let publishtype_td = row.querySelector('.workflow-column > span');
-        let ressorttype_td = row.querySelector('td:nth-child(9)');
-        let is_urgent_td = row.querySelector('td:nth-child(10)');
-        let is_optimized_td = row.querySelector('td:nth-child(11)');
-        let has_supertitle_td = row.querySelector('td:nth-child(6)');
+        var contenttype_td = row.querySelector('td:nth-child(1) img');
+        var publishtype_td = row.querySelector('.workflow-column > span');
+        var ressorttype_td = row.querySelector('td:nth-child(9)');
+        var is_urgent_td = row.querySelector('td:nth-child(10)');
+        var is_optimized_td = row.querySelector('td:nth-child(11)');
+        var has_supertitle_td = row.querySelector('td:nth-child(6)');
 
         if (contenttype_td !== null) {
             contenttype_td = contenttype_td.alt.trim();
@@ -63,7 +63,7 @@ function filterContentTable() {
             has_supertitle_td = '';
         }
 
-        const curRowData = {
+        var curRowData = {
             contenttype: contenttype_td,
             publish: publishtype_td,
             urgent: is_urgent_td,
@@ -79,19 +79,19 @@ function filterContentTable() {
 }
 
 function rowVisibility(curRowData, filterData) {
-    Object.keys(filterData).filter((key) => {
+    Object.keys(filterData).filter(function(key) {
         if (typeof filterData[key] === 'string') {
-            return filterData[key] === ''
+            return filterData[key] === '';
         } else if (typeof filterData[key] === 'boolean') {
-            return !filterData[key]
+            return !filterData[key];
         }
         return true;
-    }).forEach((removeKey) => {
+    }).forEach(function(removeKey){
         delete filterData[removeKey];
     });
 
     var hideRow = 'table-row';
-    Object.keys(filterData).forEach((key) => {
+    Object.keys(filterData).forEach(function(key) {
         if (typeof filterData[key] === 'boolean') {
             if (filterData[key] && curRowData[key] === '') {
                 hideRow = 'none';
@@ -109,24 +109,24 @@ function rowVisibility(curRowData, filterData) {
 }
 
 function setFilterValues(td_query_selector, filter_id, valueAttr) {
-    let filterValues = new Set();
+    var filterValues = new Set();
 
-    const tableValues = list(document.querySelectorAll(td_query_selector));
-    const filterSelectForm = document.getElementById(filter_id);
+    var tableValues = Array.from(document.querySelectorAll(td_query_selector));
+    var filterSelectForm = document.getElementById(filter_id);
 
     if (filterSelectForm === null) {
         return;
     }
 
-    tableValues.forEach((tableValue) => {
-        let val = tableValue[valueAttr];
+    tableValues.forEach(function(tableValue) {
+        var val = tableValue[valueAttr];
         filterValues.add(val);
     });
 
     filterValues.add('');
 
-    Array.from(filterValues).sort().forEach((filterValue) => {
-        let opt = document.createElement('option');
+    Array.from(filterValues).sort().forEach(function(filterValue) {
+        var opt = document.createElement('option');
         opt.text = filterValue;
 
         filterSelectForm.appendChild(opt);
@@ -134,12 +134,12 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
 }
 
 function registerFilterChangeEvents() {
-    const filterContentTypeSelect = document.getElementById('filter_content_typ');
-    const filterPublishTypeSelect = document.getElementById('filter_availibility');
-    const is_urgent = document.getElementById('filter_is_urgent');
-    const is_optimized = document.getElementById('filter_is_optimized');
-    const filterRessortSelect = document.getElementById('filter_ressort');
-    const has_supertitle = document.getElementById('filter_has_supertitle');
+    var filterContentTypeSelect = document.getElementById('filter_content_typ');
+    var filterPublishTypeSelect = document.getElementById('filter_availibility');
+    var is_urgent = document.getElementById('filter_is_urgent');
+    var is_optimized = document.getElementById('filter_is_optimized');
+    var filterRessortSelect = document.getElementById('filter_ressort');
+    var has_supertitle = document.getElementById('filter_has_supertitle');
 
     if (filterContentTypeSelect !== null) {
         filterContentTypeSelect.onchange = filterContentTable;
