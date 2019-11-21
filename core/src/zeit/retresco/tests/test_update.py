@@ -174,12 +174,14 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.index = index
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(content).publish(
+            background=False)
         self.assertEqual([True], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(content).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(content).publish(
+            background=False)
         self.assertEqual([True, True], published)
 
     def test_retract_should_index_with_published_false(self):
@@ -191,12 +193,14 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.index = index
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
-        zeit.cms.workflow.interfaces.IPublish(content).retract(async=False)
+        zeit.cms.workflow.interfaces.IPublish(content).retract(
+            background=False)
         self.assertEqual([False], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
         zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
-        zeit.cms.workflow.interfaces.IPublish(content).retract(async=False)
+        zeit.cms.workflow.interfaces.IPublish(content).retract(
+            background=False)
         self.assertEqual([False, False], published)
 
 

@@ -37,7 +37,7 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=None, async=True, **kw):
+    def publish(self, priority=None, background=True, **kw):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -45,17 +45,17 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         return self._execute_task(
-            PUBLISH_TASK, [self.context.uniqueId], priority, async,
+            PUBLISH_TASK, [self.context.uniqueId], priority, background,
             _('Publication scheduled'), **kw)
 
-    def retract(self, priority=None, async=True, **kw):
+    def retract(self, priority=None, background=True, **kw):
         """Retract object."""
         return self._execute_task(
-            RETRACT_TASK, [self.context.uniqueId], priority, async,
+            RETRACT_TASK, [self.context.uniqueId], priority, background,
             _('Retracting scheduled'), **kw)
 
     def publish_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Publish multiple objects."""
         if not objects:
             logger.warning('Not starting a publishing task, because no objects'
@@ -67,10 +67,10 @@ class Publish(object):
             self.log(obj, _('Collective Publication'))
             ids.append(obj.uniqueId)
         return self._execute_task(
-            MULTI_PUBLISH_TASK, ids, priority, async, **kw)
+            MULTI_PUBLISH_TASK, ids, priority, background, **kw)
 
     def retract_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Retract multiple objects."""
         if not objects:
             logger.warning('Not starting a retract task, because no objects'
@@ -82,10 +82,11 @@ class Publish(object):
             self.log(obj, _('Collective Retraction'))
             ids.append(obj.uniqueId)
         return self._execute_task(
-            MULTI_RETRACT_TASK, ids, priority, async, **kw)
+            MULTI_RETRACT_TASK, ids, priority, background, **kw)
 
-    def _execute_task(self, task, ids, priority, async, message=None, **kw):
-        if async:
+    def _execute_task(self, task, ids, priority, background,
+                      message=None, **kw):
+        if background:
             if message:
                 self.log(self.context, message)
             return task.apply_async(

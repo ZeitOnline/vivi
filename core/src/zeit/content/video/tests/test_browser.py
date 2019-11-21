@@ -157,7 +157,7 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
         self.assertIn('Updated on', browser.contents)
         browser.getLink('Checkin').click()
         self.assertIn('"video" has been checked in.', browser.contents)
-        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(

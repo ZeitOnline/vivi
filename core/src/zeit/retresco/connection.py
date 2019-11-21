@@ -277,7 +277,7 @@ def _update_topiclist():
 
     with checked_out(keywords) as co:
         co.xml = _build_topic_xml(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
+    zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
     try:
         transaction.commit()
     except Exception:
@@ -290,7 +290,7 @@ def _update_topiclist():
     topicpages = tms.get_all_topicpages()
     with checked_out(redirects) as co:
         co.text = _build_topic_redirects(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(redirects).publish(async=False)
+    zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
 
 
 TOPIC_PAGE_ATTRIBUTES = {

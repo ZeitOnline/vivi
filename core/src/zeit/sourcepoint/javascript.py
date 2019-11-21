@@ -61,7 +61,7 @@ class JavaScript(object):
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
         self.folder[filename] = obj
-        IPublish(self.folder[filename]).publish(async=False)
+        IPublish(self.folder[filename]).publish(background=False)
 
     def sweep(self, keep):
         names = sorted(self.folder.keys())
@@ -69,7 +69,7 @@ class JavaScript(object):
             return
         delete = names[:-keep]
         for name in delete:
-            IPublish(self.folder[name]).retract(async=False)
+            IPublish(self.folder[name]).retract(background=False)
             del self.folder[name]
 
 

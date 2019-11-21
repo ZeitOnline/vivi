@@ -180,7 +180,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
             'http://xml.zeit.de/online/2007/01/Somalia'
             '</article_id></xml>')
         self.repository['banner'] = banner_config
-        IPublish(self.repository['banner']).publish(async=False)
+        IPublish(self.repository['banner']).publish(background=False)
 
         # Make Somalia breaking news, so the retract section is shown.
         article = ICMSContent(

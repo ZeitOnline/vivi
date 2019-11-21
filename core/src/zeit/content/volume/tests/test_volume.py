@@ -198,10 +198,10 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
-        zeit.cms.workflow.interfaces.IPublish(volume).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(volume).publish(background=False)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
-        zeit.cms.workflow.interfaces.IPublish(volume).retract(async=False)
+        zeit.cms.workflow.interfaces.IPublish(volume).retract(background=False)
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
 

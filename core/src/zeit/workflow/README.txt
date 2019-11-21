@@ -114,7 +114,7 @@ exception:
 >>> workflow.urgent = False
 >>> workflow.can_publish()
 'can-publish-error'
->>> publish.publish(async=False)
+>>> publish.publish(background=False)
 Traceback (most recent call last):
     ...
 PublishingError: Publish pre-conditions not satisifed.
@@ -132,7 +132,7 @@ True
 Let's publish the object:
 
 >>> workflow.urgent = True
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> workflow.published
 True
 >>> workflow.date_last_published
@@ -141,7 +141,7 @@ DateTime(...)
 
 One can publish more than once to put up a new version:
 
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> workflow.published
 True
 
@@ -153,7 +153,7 @@ After retracting an object it is no longer publically visible. Note that
 retract is unconditinally possible:
 
 >>> workflow.urgent = False
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 >>> workflow.published
 False
 
@@ -213,7 +213,7 @@ True
 >>> workflow.urgent = True
 >>> import zeit.cms.workflow.interfaces
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> workflow.date_first_released
 DateTime(...)
 
@@ -238,7 +238,7 @@ We expect the value to be in the xml now as well (amongst others):
 
 When we de-publish the object, the status-flag is removed again:
 
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
@@ -294,7 +294,7 @@ False
 Now publish the folder:
 
 >>> workflow.urgent = True
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> workflow.published
 True
 
@@ -314,7 +314,7 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 
 Retracting is also possible recursivly:
 
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 >>> workflow.published
 False
 
@@ -360,7 +360,7 @@ Set up a log handler to inspect
 The actual publishing happens by external the publish script.
 Publish the folder again and verify the log:
 
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> print logfile.getvalue()
 Running job ... for http://xml.zeit.de/online/2007/01/
 Publishing http://xml.zeit.de/online/2007/01/
@@ -432,7 +432,7 @@ of publish:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 >>> print logfile.getvalue()
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/
@@ -460,7 +460,7 @@ fails when there is 'JPG' in the input data:
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(jpg)
 >>> workflow.urgent = True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 Traceback (most recent call last):
 HandleAfterAbort: Error during publish/retract: ScriptError: ('error\n', 1)
 
@@ -542,7 +542,7 @@ We register event handlers to all the publish/retract events to see the master
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -574,7 +574,7 @@ Retract does *not* honour dependencies by default:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -600,7 +600,7 @@ If the dependencies adapter allows it, the dependencies are retracted as well:
 >>> SomaliaFeed.retract_dependencies = True
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.retract(async=False)
+>>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -641,7 +641,7 @@ Add the reverse dependency:
 
 Publish somalia again:
 
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
@@ -704,7 +704,7 @@ When somalia is published, the folder and its content is also published:
 
 >>> logfile.seek(0)
 >>> logfile.truncate()
->>> job_id = publish.publish(async=False)
+>>> job_id = publish.publish(background=False)
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia

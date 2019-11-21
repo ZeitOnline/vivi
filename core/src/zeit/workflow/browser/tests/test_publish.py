@@ -82,8 +82,8 @@ class TestPublish(
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
         transaction.commit()
-        IPublish(self.repository['other']).publish(async=False)
-        IPublish(self.repository['testcontent']).publish(async=False)
+        IPublish(self.repository['other']).publish(background=False)
+        IPublish(self.repository['testcontent']).publish(background=False)
         transaction.commit()
         self.open('/repository')
         s = self.selenium

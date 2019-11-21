@@ -54,7 +54,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(article).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(article).publish(background=False)
         self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
             article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
