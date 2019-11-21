@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.22.0 (unreleased)
+4.22.0 (2019-11-21)
 -------------------
 
 - ZON-5614: Make social embed labels and texts more explainable
