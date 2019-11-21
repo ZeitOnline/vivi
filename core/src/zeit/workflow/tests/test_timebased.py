@@ -167,7 +167,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
     def test_released_from__revokes_job_on_change(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
+        publish_on = datetime.now(pytz.UTC) + timedelta(days=1)
 
         self.workflow.release_period = (publish_on, None)
         transaction.commit()
@@ -188,7 +188,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         assert scheduler.backend.get(new_job)
 
     def test_released_from__revokes_job_on_change_while_checked_out(self):
-        publish_on = datetime.now(pytz.UTC) + timedelta(seconds=1.2)
+        publish_on = datetime.now(pytz.UTC) + timedelta(days=1)
 
         with checked_out(self.content) as co:
             workflow = zeit.cms.workflow.interfaces.IPublishInfo(co)
