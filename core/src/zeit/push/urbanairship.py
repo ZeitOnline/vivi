@@ -150,11 +150,12 @@ class Message(zeit.push.message.Message):
         return result['messages']
 
     def find_template(self, name):
-        template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.find(name)
+        source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE
+        template = source.find(name)
         if template is None:
             raise KeyError(
                 'Could not find template %r in %s' % (
-                    name, source.template_folder.uniqueId))
+                    name, source.folder.uniqueId))
         return template
 
     @property
