@@ -46,8 +46,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
             self.xml.remove(node)
         for title, text in value:
             text_node = lxml.objectify.E.text()
-            html = self.html_converter.from_html(text_node, text)
-
+            self.html_converter.from_html(text_node, text)
             self.xml.append(lxml.objectify.E.block(
                 lxml.objectify.E.title(title),
                 text_node))

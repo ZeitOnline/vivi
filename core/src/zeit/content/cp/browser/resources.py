@@ -13,15 +13,15 @@ Resource('editor.js', depends=[
     zeit.edit.browser.resources.context_js,
     zeit.edit.browser.resources.edit_js,
     zeit.edit.browser.resources.sortable_js,
-    editor_css,
+    editor_css,  # noqa
 ])
 
 Resource('library.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.edit.browser.resources.library_js,
     zeit.edit.browser.resources.drop_js,
-    editor_js,
-    editor_css,
+    editor_js,  # noqa
+    editor_css,  # noqa
 ])
 
 Resource('teaser.js', depends=[
@@ -33,8 +33,8 @@ Resource('teaser.js', depends=[
     zeit.edit.browser.resources.drop_js,
     zeit.edit.browser.resources.json_js,
     zeit.edit.browser.resources.lightbox_js,
-    editor_js,
-    editor_css,
+    editor_js,  # noqa
+    editor_css,  # noqa
 ])
 
 

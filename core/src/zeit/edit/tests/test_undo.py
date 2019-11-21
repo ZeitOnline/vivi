@@ -1,6 +1,5 @@
 # coding: utf8
 import lxml.etree
-import mock
 import transaction
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces

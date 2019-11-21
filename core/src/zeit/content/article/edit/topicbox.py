@@ -57,8 +57,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
                                                                       None)
             return itertools.islice(
                 filter(lambda x: x != parent_article,
-                                  zeit.edit.interfaces.IElementReferences(
-                                      self.referenced_cp)),
+                       zeit.edit.interfaces.IElementReferences(
+                           self.referenced_cp)),
                 len(self._reference_properties))
         return (content for content in self._reference_properties if content)
 

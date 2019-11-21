@@ -160,6 +160,7 @@ class SubjectSource(zeit.cms.content.sources.XMLSource):
     config_url = 'subject-source'
     attribute = 'id'
 
+
 SUBJECT_SOURCE = SubjectSource()
 
 

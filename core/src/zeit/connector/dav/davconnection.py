@@ -72,7 +72,9 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             extra_headers = {}
         self.set_if_header(extra_headers, url, locktoken, etag)
         res = self.get_result(
-            'put', (six.moves.http_client.OK, six.moves.http_client.CREATED, six.moves.http_client.NO_CONTENT),
+            'put', (six.moves.http_client.OK,
+                    six.moves.http_client.CREATED,
+                    six.moves.http_client.NO_CONTENT),
             url, data, content_type=mime_type, content_enc=encoding,
             extra_hdrs=extra_headers)
         return res
@@ -84,7 +86,9 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
         res = self.get_result(
-            'delete', (six.moves.http_client.OK, six.moves.http_client.ACCEPTED, six.moves.http_client.NO_CONTENT),
+            'delete', (six.moves.http_client.OK,
+                       six.moves.http_client.ACCEPTED,
+                       six.moves.http_client.NO_CONTENT),
             url, hdrs)
         return res
 
@@ -92,13 +96,15 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
         res = self.get_result(
-            'move', (six.moves.http_client.CREATED, six.moves.http_client.NO_CONTENT),
+            'move', (six.moves.http_client.CREATED,
+                     six.moves.http_client.NO_CONTENT),
             url, destination, hdrs)
         return res
 
     def copy(self, url, destination, locktoken=None, depth=None):
         res = self.get_result(
-            'copy', (six.moves.http_client.CREATED, six.moves.http_client.NO_CONTENT),
+            'copy', (six.moves.http_client.CREATED,
+                     six.moves.http_client.NO_CONTENT),
             url, destination, depth)
         return res
 

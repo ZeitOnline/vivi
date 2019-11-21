@@ -1,4 +1,3 @@
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import StringIO
 import datetime
 import gocept.lxml.objectify

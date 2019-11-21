@@ -111,4 +111,5 @@ class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
     name = 'zeit.content.text.embed'
     check_interfaces = (IText, IEmbed)
 
+
 embedSource = EmbedSource()

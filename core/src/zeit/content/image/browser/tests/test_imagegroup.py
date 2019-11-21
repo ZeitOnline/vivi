@@ -206,7 +206,7 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
     def test_visibility_of_origin_field_depends_on_display_type(self):
         sel = self.selenium
         origin = 'css=.fieldname-origin'
-        display_type = 'css=#form\.display_type'
+        display_type = r'css=#form\.display_type'
         sel.open('/repository/group/@@checkout')
 
         sel.select(display_type, 'label=Infografik')
@@ -222,8 +222,8 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def test_photographer_is_shown_if_company_is_chosen(self):
         sel = self.selenium
-        photographer = 'css=#form\.copyright\.combination_00'
-        company = 'css=#form\.copyright\.combination_01'
+        photographer = r'css=#form\.copyright\.combination_00'
+        company = r'css=#form\.copyright\.combination_01'
         sel.open('/repository/group/@@checkout')
 
         sel.assertVisible(photographer)
@@ -235,8 +235,8 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def test_freetext_is_only_shown_if_special_company_value_is_selected(self):
         sel = self.selenium
-        freetext = 'css=#form\.copyright\.combination_02'
-        company = 'css=#form\.copyright\.combination_01'
+        freetext = r'css=#form\.copyright\.combination_02'
+        company = r'css=#form\.copyright\.combination_01'
         sel.open('/repository/group/@@checkout')
 
         sel.assertNotVisible(freetext)

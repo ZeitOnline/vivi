@@ -88,7 +88,7 @@ def report_new_documents():
     except zc.lockfile.LockError:
         sys.stderr.write(
             "VGWort report alredy running? Could not lock {}\n".format(
-              lock_file_name))
+                lock_file_name))
         sys.exit(1)
 
     now = datetime.datetime.now()
@@ -133,7 +133,7 @@ def report(context):
         source.mark_done(context)
     except ZODB.POSException.ConflictError:
         raise
-    except zeit.vgwort.interfaces.TechnicalError as e:
+    except zeit.vgwort.interfaces.TechnicalError:
         log.warning(
             'technical error reporting %s, will be retried on the next run'
             % context.uniqueId, exc_info=True)

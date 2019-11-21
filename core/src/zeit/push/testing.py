@@ -28,6 +28,7 @@ class PushNotifier(object):
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
 
+
 product_config = """\
 <product-config zeit.push>
   twitter-accounts file://{fixtures}/twitter-accounts.xml
@@ -63,6 +64,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         self.config = self.loadConfiguration(config, self.package)
         super(ArticleConfigLayer, self).setUp()
 
+
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(
     CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
@@ -77,6 +79,7 @@ class PushMockLayer(plone.testing.Layer):
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
+
 
 PUSH_MOCK_LAYER = PushMockLayer()
 

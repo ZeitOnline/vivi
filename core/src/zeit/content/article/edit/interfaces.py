@@ -1,5 +1,5 @@
+from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.content.article.i18n import MessageFactory as _
 import collections
 import datetime
 import six

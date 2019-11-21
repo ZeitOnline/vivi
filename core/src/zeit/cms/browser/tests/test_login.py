@@ -56,6 +56,7 @@ class LoginFormLayer(plone.testing.Layer):
             del root['principals']
         del self['principalfolder']
 
+
 LOGINFORM_LAYER = LoginFormLayer()
 
 

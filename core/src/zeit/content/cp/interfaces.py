@@ -135,10 +135,11 @@ class IStoryStream(ICenterPage):
     AddForm. (XXX Maybe convert to an actual content type that inherits from
     Centerpage?)
     """
+
+
 IStoryStream.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.cp.AddStoryStream')
-IStoryStream.setTaggedValue(
-    'zeit.cms.title', _('Add storystream'))
+IStoryStream.setTaggedValue('zeit.cms.title', _('Add storystream'))
 
 
 class ISitemap(ICenterPage):

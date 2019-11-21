@@ -42,9 +42,8 @@ class Layer(plone.testing.Layer):
             zope.interface.alsoProvides(campus, IZCOFolder)
             repository['campus'] = campus
 
+
 LAYER = Layer()
-
-
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))

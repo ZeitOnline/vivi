@@ -49,7 +49,7 @@ class TestPublish(
         self.register_workflow_with_warning()
         s = self.selenium
         s.click('link=Publish')
-        s.waitForElementPresent('css=#publish\.errors')
+        s.waitForElementPresent(r'css=#publish\.errors')
         s.assertTextPresent('Validation Warning')
         s.click('link=Publish anyway')
         s.waitForElementPresent('css=li.busy[action=start_job]')

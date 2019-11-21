@@ -187,7 +187,8 @@ class Message(zeit.push.message.Message):
     @property
     def app_link(self):
         parts = six.moves.urllib.parse.urlparse(self.url)
-        path = six.moves.urllib.parse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
+        path = six.moves.urllib.parse.urlunparse(
+            ['', ''] + list(parts[2:])).lstrip('/')
         return u'%s://%s' % (self.APP_IDENTIFIER, path)
 
     @property
@@ -288,8 +289,8 @@ Pushnachricht zugegriffen werden::\n""")
         zeit.content.article.interfaces.IArticle)}
     print(json_dump_sphinx(vars))
 
-    print ("\nIm Folgenden nun ein Beispiel wie ein solches Template"
-           " funktioniert. Nutzt man das Template::\n")
+    print("\nIm Folgenden nun ein Beispiel wie ein solches Template"
+          " funktioniert. Nutzt man das Template::\n")
     print(re.sub('^', '    ', template_text, flags=re.MULTILINE))
     print("\nmit der push-Konfiguration::\n")
     print(json_dump_sphinx(message.config))

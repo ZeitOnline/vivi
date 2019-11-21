@@ -161,7 +161,7 @@ class ContentList(object):
         __traceback_info__ = (self.uniqueId, )
         try:
             return self.xml['container']
-        except AttributeError as e:
+        except AttributeError:
             log.error("Invalid channel XML format", exc_info=True)
             raise RuntimeError("Invalid channel XML format.")
 

@@ -1,4 +1,3 @@
-import StringIO
 import json
 import lxml.etree
 import pygments

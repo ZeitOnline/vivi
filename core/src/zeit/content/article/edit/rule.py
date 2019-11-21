@@ -15,12 +15,12 @@ def content(context):
     return []
 
 
-@glob(zeit.content.article.edit.interfaces.IVideo)
+@glob(zeit.content.article.edit.interfaces.IVideo)  # noqa
 def content(context):
     return [x for x in [context.video] if x]
 
 
-@glob(zeit.content.article.edit.interfaces.IReference)
+@glob(zeit.content.article.edit.interfaces.IReference)  # noqa
 def content(context):
     field = zope.interface.implementedBy(type(
         zope.security.proxy.getObject(context))).get('references')
@@ -30,7 +30,7 @@ def content(context):
         return [x for x in [context.references] if x]
 
 
-@glob(zeit.content.article.edit.interfaces.IImage)
+@glob(zeit.content.article.edit.interfaces.IImage)  # noqa
 def content(context):
     if context.references.target:
         return [context.references.target]
@@ -38,7 +38,7 @@ def content(context):
         return []
 
 
-@glob(zeit.content.article.edit.interfaces.IVolume)
+@glob(zeit.content.article.edit.interfaces.IVolume)  # noqa
 def content(context):
     if context.references.target:
         return [context.references.target]

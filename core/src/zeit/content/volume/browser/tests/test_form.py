@@ -1,4 +1,3 @@
-from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume

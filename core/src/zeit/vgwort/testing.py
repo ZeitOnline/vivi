@@ -50,6 +50,7 @@ class XMLRPCLayer(plone.testing.Layer):
             x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
 
+
 XMLRPC_LAYER = XMLRPCLayer()
 
 SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -80,7 +81,7 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             zeit.vgwort.interfaces.IMessageService)
         try:
             service.call('qualityControl')
-        except Exception as e:
+        except Exception:
             self.skipTest('vgwort test system is down')
 
 

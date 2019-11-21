@@ -190,6 +190,7 @@ def service_factory(TYPE):
         list(zope.interface.implementedBy(TYPE))[0])(factory)
     return factory
 
+
 real_pixel_service = service_factory(PixelService)
 real_message_service = service_factory(MessageService)
 

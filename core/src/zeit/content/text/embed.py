@@ -1,6 +1,6 @@
 from __future__ import unicode_literals  # for eval() since IDAVToken is fussy
 from zeit.cms.i18n import MessageFactory as _
-import collections  # make available to eval()
+import collections  # noqa make available to eval()
 import logging
 import six
 import zeit.cms.content.dav
@@ -9,7 +9,7 @@ import zeit.content.modules.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.text
 import zope.interface
-import zope.schema  # make available to eval()
+import zope.schema  # noqa make available to eval()
 
 
 log = logging.getLogger(__name__)

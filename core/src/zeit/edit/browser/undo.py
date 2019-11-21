@@ -17,12 +17,13 @@ class History(zeit.cms.browser.view.JSON):
         for entry in history:
             if entry['description'] is None:
                 entry['description'] = '[none]'
-            entry['tid'] = six.moves.urllib.parse.quote(entry['tid'].encode('base64'))
+            entry['tid'] = six.moves.urllib.parse.quote(
+                entry['tid'].encode('base64'))
 
-        return dict(
-            context_url=self.url(self.context),
-            history=history,
-        )
+        return {
+            'context_url': self.url(self.context),
+            'history': history,
+        }
 
 
 class Revert(zeit.edit.browser.view.Action):

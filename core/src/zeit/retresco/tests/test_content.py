@@ -1,4 +1,3 @@
-from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.content.sources

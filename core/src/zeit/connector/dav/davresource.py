@@ -52,7 +52,7 @@ def _find_child(node, name):
 
 
 # As of rfc2616: 6.1 Status Line
-_stat_patt = re.compile("^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$")
+_stat_patt = re.compile(r"^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$")
 
 
 def _parse_status_line(line):

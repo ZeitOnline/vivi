@@ -2,16 +2,12 @@ import StringIO
 import ZODB.blob
 import contextlib
 import docker
-import os
 import pkg_resources
 import plone.testing
 import pytest
-import re
 import requests
-import six.moves.urllib.parse
 import socket
 import threading
-import time
 import transaction
 import zc.queue.tests
 import zeit.cms.testing

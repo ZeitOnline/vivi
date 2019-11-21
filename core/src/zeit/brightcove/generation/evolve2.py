@@ -42,6 +42,7 @@ class Content(persistent.Persistent, zope.container.contained.Contained):
     # Stub so the generation can remove the objects properly
     pass
 
+
 Video = Playlist = Content
 
 

@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.action

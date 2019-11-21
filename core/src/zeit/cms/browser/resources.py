@@ -88,27 +88,27 @@ register(datetime_widget_js)
 
 
 SplitDirResource('namespace.js')
-SplitDirResource('logging.js', depends=[namespace_js, mochikit, jquery])
+SplitDirResource('logging.js', depends=[namespace_js, mochikit, jquery])  # noqa
 SplitDirResource('draganddrop.js', depends=[mochikit])
 SplitDirResource('base.js', depends=[
-    namespace_js, draganddrop_js, mochikit, jquery, jqueryui, underscore,
-    select2_de])
+    namespace_js, draganddrop_js, mochikit, jquery, jqueryui,   # noqa
+    underscore, select2_de])
 
 base = Group([
-    namespace_js, logging_js, base_js,
-    cms_css, forms_css, tables_css, lightbox_css,
-    cms_widgets_css, object_details_css,
+    namespace_js, logging_js, base_js,  # noqa
+    cms_css, forms_css, tables_css, lightbox_css,  # noqa
+    cms_widgets_css, object_details_css,  # noqa
 ])
 
 SplitDirResource('objectbrowser.js', depends=[base])
 SplitDirResource('tooltip.js', depends=[base])
 SplitDirResource('view.js', depends=[base])
-SplitDirResource('form.js', depends=[view_js, base])
-SplitDirResource('lightbox.js', depends=[form_js, base])
+SplitDirResource('form.js', depends=[view_js, base])  # noqa
+SplitDirResource('lightbox.js', depends=[form_js, base])  # noqa
 SplitDirResource('counter.js', depends=[base])
 SplitDirResource('details.js', depends=[base])
 SplitDirResource('dnd.js', depends=[base])
-SplitDirResource('object_reference.js', depends=[lightbox_js, base])
+SplitDirResource('object_reference.js', depends=[lightbox_js, base])  # noqa
 SplitDirResource('object_sequence.js', depends=[base])
 SplitDirResource('restructuredtext.js', depends=[base])
 SplitDirResource('autocomplete.js', depends=[base])
@@ -117,8 +117,8 @@ SplitDirResource('table.js', depends=[base])
 SplitDirResource('xeyes.js', depends=[base])
 SplitDirResource('menu.js', depends=[base])
 SplitDirResource('json-template.js', depends=[base])
-SplitDirResource('messages.js', depends=[base, view_js])
-SplitDirResource('tab.js', depends=[base, view_js])
+SplitDirResource('messages.js', depends=[base, view_js])  # noqa
+SplitDirResource('tab.js', depends=[base, view_js])  # noqa
 SplitDirResource('tree.js', depends=[base])
 SplitDirResource('filteringtable.js', depends=[base])
 SplitDirResource('panelHandlers.js', depends=[base])

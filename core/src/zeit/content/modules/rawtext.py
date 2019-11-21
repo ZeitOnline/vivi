@@ -189,6 +189,7 @@ class EmptyMemo(object):
 
     memo = u''
 
+
 EMPTY_MEMO = EmptyMemo()
 
 

@@ -215,6 +215,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
 
         return result
 
+
 VARIANT_SOURCE = VariantSource()
 
 

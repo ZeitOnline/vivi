@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
@@ -353,7 +352,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/2019/01/foobar', 5, 0.1],  # both
             ['web..trekk|www.zeit.de/2019/01/baz', 1, 0.01]     # None of above
         ]
-        with self.webtrekk(webtrekk_data) as m:
+        with self.webtrekk(webtrekk_data):
             res = zeit.content.volume.volume.\
                 _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual({'/2019/01/foo',
@@ -367,7 +366,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/magazin/2019/01/bar', 10, 0.2],
             ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
         ]
-        with self.webtrekk(webtrekk_data) as m:
+        with self.webtrekk(webtrekk_data):
             res = zeit.content.volume.volume.\
                 _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual({'/2019/01/foo', '/magazin/2019/01/bar'},

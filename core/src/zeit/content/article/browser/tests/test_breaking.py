@@ -1,6 +1,5 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import lxml.etree
 import mock
 import transaction

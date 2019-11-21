@@ -35,6 +35,7 @@ class PlayerMockLayer(plone.testing.Layer):
             'video_still': None,
         }
 
+
 PLAYER_MOCK_LAYER = PlayerMockLayer()
 
 

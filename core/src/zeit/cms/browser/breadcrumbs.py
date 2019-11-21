@@ -86,10 +86,10 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         return result
 
     def cms_url(self, unique_id):
-            try:
-                return self.url(zeit.cms.interfaces.ICMSContent(unique_id))
-            except TypeError:
-                return None
+        try:
+            return self.url(zeit.cms.interfaces.ICMSContent(unique_id))
+        except TypeError:
+            return None
 
     def content_name(self, content):
         try:

@@ -58,7 +58,7 @@ class IClipboard(IClip):
 
         Clipboards have a hierarichal structure:
 
-        1. If the ``reference\_object`` is a clip *and* insert is True
+        1. If the ``reference\\_object`` is a clip *and* insert is True
            content is inserted *into* the container at first position.
 
         2. In other cases the object is added *after* the reference object.

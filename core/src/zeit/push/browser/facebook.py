@@ -37,10 +37,10 @@ class TokenForm(zeit.cms.browser.form.FormBase,
         # /docs/facebook-login/manually-build-a-login-flow#login>
         url = ('https://www.facebook.com/dialog/oauth?' +
                six.moves.urllib.parse.urlencode({
-            'client_id': data['app_id'],
-            'redirect_uri': data['redirect_uri'],
-            'scope': 'manage_pages,publish_pages',
-        }))
+                   'client_id': data['app_id'],
+                   'redirect_uri': data['redirect_uri'],
+                   'scope': 'manage_pages,publish_pages',
+               }))
         self.request.response.redirect(url, trusted=True)
 
 

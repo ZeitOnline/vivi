@@ -18,6 +18,7 @@ class ProductSource(zeit.cms.content.sources.ProductSource):
         values = super(ProductSource, self).getValues(context)
         return [value for value in values if value.volume]
 
+
 PRODUCT_SOURCE = ProductSource()
 
 
@@ -128,6 +129,7 @@ class VolumeSource(zeit.cms.content.contentsource.CMSContentSource):
 
     check_interfaces = (IVolume,)
     name = 'volume'
+
 
 VOLUME_SOURCE = VolumeSource()
 

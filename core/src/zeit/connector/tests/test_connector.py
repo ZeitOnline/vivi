@@ -110,13 +110,13 @@ class ConflictDetectionBase(object):
 
 
 class TestConflictDetectionReal(
-    ConflictDetectionBase, zeit.connector.testing.ConnectorTest):
+        ConflictDetectionBase, zeit.connector.testing.ConnectorTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
 
 class TestConflictDetectionMock(
-    ConflictDetectionBase, zeit.connector.testing.MockTest):
+        ConflictDetectionBase, zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
@@ -159,14 +159,14 @@ class MoveConflictDetectionBase(object):
 
 
 class TestMoveConflictDetectionReal(
-    MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
+        MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
     """Test move conflict with real connector and real DAV."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())
 
 
 class TestMoveConflictDetectionMock(
-    MoveConflictDetectionBase, zeit.connector.testing.MockTest):
+        MoveConflictDetectionBase, zeit.connector.testing.MockTest):
     """Test move conflict with mock connector."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())

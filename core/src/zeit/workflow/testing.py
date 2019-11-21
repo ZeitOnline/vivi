@@ -63,9 +63,8 @@ class WorkflowScriptsLayer(plone.testing.Layer):
         self._tempfiles.append(destination)
         return destination.name
 
+
 SCRIPTS_LAYER = WorkflowScriptsLayer()
-
-
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))

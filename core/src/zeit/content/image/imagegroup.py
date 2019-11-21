@@ -468,7 +468,7 @@ def find_master_image(context):
     return master_image
 
 
-EXTERNAL_ID_PATTERN = re.compile('^[^\d]*([\d]+)[^\d]*$')
+EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
 
 
 @grok.subscribe(

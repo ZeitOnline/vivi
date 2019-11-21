@@ -1,9 +1,7 @@
-
 import base64
 import hashlib
 import random
 import struct
-import sys
 import sys
 import zope.app.appsetup.product
 import zope.component

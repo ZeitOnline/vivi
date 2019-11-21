@@ -48,7 +48,7 @@ class DAVProperty(object):
         PROPERTY_REGISTRY[(name, namespace)] = self
 
     def __get__(self, instance, class_, properties=None):
-        __traceback_info = (instance, )
+        __traceback_info = (instance, )  # noqa
         if instance is None:
             return self
         if properties is None:

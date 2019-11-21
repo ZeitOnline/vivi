@@ -105,7 +105,7 @@ class DynamicCombinationWidget(
         missing_value = field.missing_value
         if value is not missing_value:
             try:
-                len_value = len(value)
+                len(value)
             except (TypeError, AttributeError):
                 value = missing_value
             # patched

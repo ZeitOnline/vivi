@@ -2,9 +2,6 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageColor
 import StringIO
-import calendar
-import zope.datetime
-import zope.dublincore.interfaces
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.imp.mask

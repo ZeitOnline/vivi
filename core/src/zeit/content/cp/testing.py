@@ -66,6 +66,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
             self['elasticsearch'])
         del self['elasticsearch']
 
+
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
@@ -86,6 +87,7 @@ class CPTemplateLayer(plone.testing.Layer):
         self['cp-template-patch'].stop()
         del self['cp-template-patch']
 
+
 CP_TEMPLATE_LAYER = CPTemplateLayer()
 
 
@@ -99,7 +101,7 @@ checker = zeit.cms.testing.OutputChecker([
         '<GUID>'),
     (re.compile('[0-9a-f]{32}'), '<MD5>'),
     (re.compile('[0-9]{4}-[0-9]{2}-[0-9]{2}[T ][0-9]{2}:[0-9]{2}:[0-9]{2}'
-                '(\.[0-9]+)?(\+[0-9]{2}:[0-9]{2})?'), '<ISO DATE>'),
+                r'(\.[0-9]+)?(\+[0-9]{2}:[0-9]{2})?'), '<ISO DATE>'),
     (re.compile('[A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} [0-9]{4} '
                 '[0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}'), '<RFC822 DATE>'),
 ])

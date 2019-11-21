@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import z3c.menu.simple.menu
 import zc.table.column
 import zc.table.table
 import zeit.cms.browser.column

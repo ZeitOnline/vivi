@@ -71,7 +71,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_box_if_cp_is_referenced_rest_is_ignored(self):
         self.repository['foo'] = ExampleContentType()
         box = self.get_topicbox()
-        cp = self.get_cp(content=[self.repository['foo'],])
+        cp = self.get_cp(content=[self.repository['foo']])
         box.first_reference = cp
         box.second_reference = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia")

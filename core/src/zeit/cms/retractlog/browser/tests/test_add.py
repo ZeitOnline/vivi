@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublishInfo
 import mock
 import zeit.cms.content.add
 import zeit.cms.testing

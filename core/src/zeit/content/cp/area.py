@@ -3,7 +3,6 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ITeaserBlock
 import gocept.lxml.interfaces
 import grokcore.component as grok
-import json
 import lxml.etree
 import lxml.objectify
 import six

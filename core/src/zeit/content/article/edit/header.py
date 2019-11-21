@@ -103,6 +103,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
     def _get_title_for(self, node):
         return six.text_type(node.get('title'))
 
+
 MODULES = ModuleSource()
 
 

@@ -1,5 +1,4 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import zeit.cms.interfaces
@@ -132,6 +131,7 @@ def reset():
     _publish_times.clear()
     _publish_times_semantic.clear()
     _publish_times_first.clear()
+
 
 try:
     import zope.testing.cleanup

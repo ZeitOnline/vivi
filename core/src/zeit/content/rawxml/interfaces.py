@@ -1,4 +1,4 @@
-from zeit.content.rawxml.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces

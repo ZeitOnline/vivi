@@ -40,6 +40,7 @@ class MockAPILayer(plone.testing.Layer):
         self.cmsapi_patch.stop()
         self.playbackapi_patch.stop()
 
+
 MOCK_API_LAYER = MockAPILayer()
 
 

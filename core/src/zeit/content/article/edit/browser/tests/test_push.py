@@ -88,17 +88,17 @@ class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_AMP_is_disabled_after_choosing_non_free_access(self):
         s = self.selenium
         s.click('css=#edit-form-socialmedia .fold-link')
-        s.waitForVisible('css=#social\.is_amp')
-        self.assertEqual(True, s.isEditable('css=#social\.is_amp'))
+        s.waitForVisible(r'css=#social\.is_amp')
+        self.assertEqual(True, s.isEditable(r'css=#social\.is_amp'))
 
-        s.check('css=#social\.is_amp')
+        s.check(r'css=#social\.is_amp')
         s.click('css=#edit-form-metadata .fold-link')
         s.waitForVisible('css=#form-metadata-access select')
         s.select('css=#form-metadata-access select', 'label=abopflichtig')
         s.type('css=#form-metadata-access select', '\t')
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
         s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
-        self.assertEqual(False, s.isEditable('css=#social\.is_amp'))
+        self.assertEqual(False, s.isEditable(r'css=#social\.is_amp'))
 
 
 class SocialFBIATest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -110,10 +110,10 @@ class SocialFBIATest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_FBIA_is_disabled_after_choosing_non_free_access(self):
         s = self.selenium
         s.click('css=#edit-form-socialmedia .fold-link')
-        s.waitForVisible('css=#social\.is_instant_article')
-        self.assertEqual(True, s.isEditable('css=#social\.is_instant_article'))
+        s.waitForVisible(r'css=#social\.is_instant_article')
+        self.assertTrue(s.isEditable(r'css=#social\.is_instant_article'))
 
-        s.check('css=#social\.is_instant_article')
+        s.check(r'css=#social\.is_instant_article')
         s.click('css=#edit-form-metadata .fold-link')
         s.waitForVisible('css=#form-metadata-access select')
         s.select('css=#form-metadata-access select', 'label=abopflichtig')
@@ -121,5 +121,4 @@ class SocialFBIATest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
         s.waitForElementPresent(
             'css=.fieldname-is_instant_article .checkboxdisabled')
-        self.assertEqual(
-            False, s.isEditable('css=#social\.is_instant_article'))
+        self.assertFalse(s.isEditable(r'css=#social\.is_instant_article'))

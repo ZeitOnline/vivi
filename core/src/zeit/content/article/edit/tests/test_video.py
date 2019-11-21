@@ -4,7 +4,6 @@ import mock
 import pytz
 import unittest
 import zeit.content.article.testing
-import zope.lifecycleevent
 
 
 class VideoTest(unittest.TestCase):

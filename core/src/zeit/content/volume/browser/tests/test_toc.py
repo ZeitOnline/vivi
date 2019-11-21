@@ -7,7 +7,6 @@ from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import mock
-import plone.testing.zca
 import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources

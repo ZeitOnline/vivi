@@ -50,6 +50,7 @@ class SecurityPolicyLayer(plone.testing.Layer):
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
+
 LAYER = SecurityPolicyLayer()
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
@@ -85,7 +86,7 @@ class SecurityPolicyXLSSheetCase(object):
     def runTest(self):
         for skin, path, form, expected in self.cases:
             if skin.strip() == 'python:':
-                test = self  # needed by the eval() call below
+                test = self  # noqa needed by the eval() call below
                 site = zope.component.hooks.getSite()
                 zope.component.hooks.setSite(self.getRootFolder())
                 try:

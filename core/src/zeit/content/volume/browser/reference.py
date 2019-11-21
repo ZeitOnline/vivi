@@ -1,6 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zope.browserpage import ViewPageTemplateFile
-import pkg_resources
 import zeit.cms.browser.objectdetails
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces

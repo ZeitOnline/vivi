@@ -1,5 +1,4 @@
 # coding: utf-8
-from StringIO import StringIO
 from xmldiff.main import diff_trees
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree

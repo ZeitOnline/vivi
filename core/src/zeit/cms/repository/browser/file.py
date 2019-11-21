@@ -1,6 +1,4 @@
-
 from zeit.cms.i18n import MessageFactory as _
-import ZODB.interfaces
 import gocept.form.grouped
 import os.path
 import zeit.cms.browser.interfaces
@@ -11,6 +9,7 @@ import zeit.cms.repository.interfaces
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -48,10 +47,11 @@ class BlobWidget(zope.app.form.browser.FileWidget):
         if input is None or input == '':
             return self.context.missing_value
         try:
-            seek = input.seek
-            read = input.read
+            input.seek
+            input.read
         except AttributeError as e:
-            raise ConversionError(_('Form input is not a file object'), e)
+            raise zope.formlib.interfaces.ConversionError(
+                _('Form input is not a file object'), e)
         else:
             if getattr(input, 'filename', ''):
                 return input

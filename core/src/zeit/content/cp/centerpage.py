@@ -8,7 +8,6 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import itertools
 import lxml.etree
-import pkg_resources
 import xml.sax.saxutils
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav

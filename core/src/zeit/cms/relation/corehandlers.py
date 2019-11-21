@@ -1,5 +1,4 @@
 import grokcore.component as grok
-import inspect
 import logging
 import zeit.cms.celery
 import zeit.cms.checkout.helper

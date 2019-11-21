@@ -91,7 +91,7 @@ class ExceptionFormatter(
 
     # copy&paste to throw away non-application parts of the traceback.
     def formatException(self, etype, value, tb):
-        __exception_formatter__ = 1
+        __exception_formatter__ = 1  # noqa
         result = [self.getPrefix() + '\n']
         limit = self.getLimit()
         n = 0

@@ -40,8 +40,8 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
             KeyError, self.cache.getData, self.uniqueId, self.properties1)
 
     def test_missing_blob_file(self):
-        data1 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'x')
-        data2 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'y')
+        data1 = StringIO.StringIO(self.BUFFER_SIZE * 2 * 'x')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE * 2 * 'y')
         self.cache.setData(self.uniqueId, self.properties1, data1)
         transaction.commit()
         body = self.cache._data[self.key]

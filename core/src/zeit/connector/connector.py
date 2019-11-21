@@ -193,10 +193,11 @@ class Connector(object):
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return
-        id = self._loc2id(six.moves.urllib.parse.urljoin(self._roots['default'],
-                                           dav_response.path))
+        id = self._loc2id(six.moves.urllib.parse.urljoin(
+            self._roots['default'], dav_response.path))
         child_ids = self.child_name_cache[id] = [
-            self._loc2id(six.moves.urllib.parse.urljoin(self._roots['default'], path))
+            self._loc2id(six.moves.urllib.parse.urljoin(
+                self._roots['default'], path))
             for path in dav_response.get_child_names()]
         return child_ids
 
@@ -229,7 +230,8 @@ class Connector(object):
                 ('getcontenttype', 'DAV:'))
         except (zeit.connector.dav.interfaces.DAVNotFoundError,
                 zeit.connector.dav.interfaces.DAVBadRequestError):
-            raise KeyError("The resource %r does not exist." % six.text_type(id))
+            raise KeyError(
+                "The resource %r does not exist." % six.text_type(id))
         return zeit.connector.resource.CachedResource(
             six.text_type(id), self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
@@ -323,13 +325,14 @@ class Connector(object):
             self._add_collection(new_id)
             self.changeProperties(new_id, source.properties)
             for name, child_id in self.listCollection(old_id):
-                self._copy_or_move(method_name, exception,
-                                   child_id, six.moves.urllib.parse.urljoin(new_id, name))
+                self._copy_or_move(
+                    method_name, exception,
+                    child_id, six.moves.urllib.parse.urljoin(new_id, name))
             if method_name == 'move':
                 del self[old_id]
         else:
             token = self._get_my_locktoken(old_id)
-            response = method(old_loc, new_loc, locktoken=token)
+            method(old_loc, new_loc, locktoken=token)
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
@@ -466,7 +469,8 @@ class Connector(object):
         for url, resp in davres.responses.items():
             try:
                 id = self._loc2id(
-                    six.moves.urllib.parse.urljoin(self._roots['default'], url))
+                    six.moves.urllib.parse.urljoin(
+                        self._roots['default'], url))
             except ValueError:
                 # Search returns documents which are outside the root, ignore
                 continue
@@ -525,7 +529,7 @@ class Connector(object):
             # only lock for files
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-            davres = self._get_dav_resource(id, ensure='collection')
+            self._get_dav_resource(id, ensure='collection')
 
         if autolock:
             locktoken = self.lock(id, "AUTOLOCK",
@@ -641,7 +645,7 @@ class Connector(object):
             elif timeout == 'Infinity':
                 timeout = TIME_ETERNITY
             else:
-                m = re.match("second-(\d+)", six.text_type(timeout), re.I)
+                m = re.match(r'second-(\d+)', six.text_type(timeout), re.I)
                 if m is None:
                     # Better too much than not enough
                     timeout = TIME_ETERNITY

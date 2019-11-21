@@ -185,8 +185,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
-                result.append(
-                    self._create_tag(six.text_type(node), node.get('type', '')))
+                result.append(self._create_tag(
+                    six.text_type(node), node.get('type', '')))
             except KeyError:
                 pass
         return result

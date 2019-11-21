@@ -1,10 +1,10 @@
+from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
-import itertools
 import re
 import zc.table.column
 import zeit.cms.browser.form
@@ -19,7 +19,6 @@ import zeit.workflow.interfaces
 import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
-from six.moves import zip
 
 
 class FormBase(object):

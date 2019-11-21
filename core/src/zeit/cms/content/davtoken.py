@@ -1,5 +1,4 @@
 import six
-import types
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zope.component

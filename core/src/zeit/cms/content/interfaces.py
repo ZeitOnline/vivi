@@ -18,9 +18,9 @@ import zope.schema.interfaces
 
 
 # prevent circular import
-from zeit.cms.content.contentsource import ICMSContentSource
-from zeit.cms.content.contentsource import INamedCMSContentSource
-from zeit.cms.content.contentsource import IAutocompleteSource
+from zeit.cms.content.contentsource import ICMSContentSource  # noqa
+from zeit.cms.content.contentsource import INamedCMSContentSource  # noqa
+from zeit.cms.content.contentsource import IAutocompleteSource  # noqa
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):

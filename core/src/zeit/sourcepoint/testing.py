@@ -28,4 +28,5 @@ class Layer(plone.testing.Layer):
                 zeit.cms.repository.interfaces.IRepository)
             repository['sourcepoint'] = zeit.cms.repository.folder.Folder()
 
+
 LAYER = Layer()

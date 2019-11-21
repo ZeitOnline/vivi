@@ -12,6 +12,7 @@ def get():
         _holder.session = Session()
     return _holder.session
 
+
 _holder = threading.local()
 
 

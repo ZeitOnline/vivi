@@ -1,8 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import StringIO
 import grokcore.component as grok
 import lxml.etree

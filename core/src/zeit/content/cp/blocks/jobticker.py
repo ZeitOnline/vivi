@@ -2,7 +2,6 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.content.cp.interfaces
 import zeit.content.modules.jobticker
 
 

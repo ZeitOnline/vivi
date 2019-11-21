@@ -1,4 +1,4 @@
-from collections import defaultdict, namedtuple
+from collections import namedtuple
 import grokcore.component
 import json
 import six.moves.urllib.parse

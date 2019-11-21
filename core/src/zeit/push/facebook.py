@@ -90,13 +90,13 @@ def create_access_token(argv=None):
     # /docs/facebook-login/manually-build-a-login-flow#login>
     login_url = ('https://www.facebook.com/dialog/oauth?' +
                  six.moves.urllib.parse.urlencode({
-        'client_id': options.app_id,
-        'redirect_uri': options.redirect_uri,
-        'scope': 'manage_pages,publish_pages',
-    }))
+                     'client_id': options.app_id,
+                     'redirect_uri': options.redirect_uri,
+                     'scope': 'manage_pages,publish_pages',
+                 }))
     print(u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
         login_url))
-    print (
+    print(
         u'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
     result_url = input('die neue URL bitte hier eingeben: ')
     code = six.moves.urllib.parse.parse_qs(
@@ -105,7 +105,8 @@ def create_access_token(argv=None):
     # Step 1b: Convert code to token <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#confirm>
     r = requests.get(
-        'https://graph.facebook.com/oauth/access_token?' + six.moves.urllib.parse.urlencode({
+        'https://graph.facebook.com/oauth/access_token?' +
+        six.moves.urllib.parse.urlencode({
             'client_id': options.app_id,
             'client_secret': options.app_secret,
             'redirect_uri': options.redirect_uri,

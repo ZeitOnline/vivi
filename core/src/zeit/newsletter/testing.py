@@ -42,6 +42,7 @@ class TestBrowserLayer(plone.testing.Layer):
         product_config['publish-script'] = 'true'
         product_config['retract-script'] = 'true'
 
+
 BROWSER_LAYER = TestBrowserLayer()
 
 

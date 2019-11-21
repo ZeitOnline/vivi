@@ -150,6 +150,7 @@ class TeaserBlockLayoutSource(
         area = zeit.content.cp.interfaces.IArea(context)
         return area.kind in value.areas
 
+
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
@@ -179,6 +180,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
+
 REGION_CONFIGS = RegionConfigSource()
 
 
@@ -200,6 +202,7 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
+
 AREA_CONFIGS = AreaConfigSource()
 
 
@@ -219,5 +222,6 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
                 node.get('available', None), node.get('types', None),
             )
         return result
+
 
 MODULE_CONFIGS = ModuleConfigSource()

@@ -39,7 +39,8 @@ class Toc(zeit.cms.browser.view.Base):
         config = zope.app.appsetup.product \
             .getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
-        self.dav_archive_url_parsed = six.moves.urllib.parse.urlparse(self.dav_archive_url)
+        self.dav_archive_url_parsed = six.moves.urllib.parse.urlparse(
+            self.dav_archive_url)
         self.excluder = Excluder()
         # We need to remember our context DAV properties, as we can't get to
         # them after we change IConnector to ITocConnector. But since we only
@@ -263,7 +264,7 @@ class Toc(zeit.cms.browser.view.Base):
         """Transform page to correct integer"""
         page_string = toc_entry.get('page', u'')
         page_entries = [page_string .lstrip("0") for page_string in
-                        re.findall('\d+', page_string)]
+                        re.findall(r'\d+', page_string)]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
@@ -385,8 +386,8 @@ class Excluder(object):
     SUPERTITLE_XPATH = "body/supertitle/text()"
     JOBNAME_XPATH = "//attribute[@name='jobname']/text()"
     _title_exclude = [
-        u"Heute \d+.\d+",
-        u"Damals \d+.\d+",
+        u"Heute \\d+.\\d+",
+        u"Damals \\d+.\\d+",
         u"PROMINENT IGNORIERT",
         u"Du siehst aus, wie ich mich fühle",
         u"WAS MEIN LEBEN REICHER MACHT",

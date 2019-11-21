@@ -34,6 +34,7 @@ class Layer(plone.testing.Layer):
             zope.interface.alsoProvides(magazin, IZMOFolder)
             repository['magazin'] = magazin
 
+
 LAYER = Layer()
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 

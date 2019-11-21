@@ -1,4 +1,3 @@
-import grokcore.component as grok
 import persistent
 import zope.container.btree
 import zope.container.contained

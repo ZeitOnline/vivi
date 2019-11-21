@@ -5,7 +5,6 @@ import zeit.content.video.testing
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
-import zope.component
 import zope.publisher.browser
 
 
