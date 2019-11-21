@@ -213,9 +213,12 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         assert scheduler.backend.get(new_job)
 
     def test_released_to__in_past_retracts_instantly(self):
-        publish_on = datetime(2000, 2, 3, tzinfo=pytz.UTC)
+        zeit.cms.workflow.interfaces.IPublish(
+            self.content).publish(async=False)
+        transaction.commit()
+
         retract_on = datetime.now(pytz.UTC) + timedelta(seconds=-1)
-        self.workflow.release_period = (publish_on, retract_on)
+        self.workflow.release_period = (None, retract_on)
         transaction.commit()
 
         result = celery.result.AsyncResult(self.workflow.retract_job_id)
@@ -230,10 +233,12 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
     def test_released_to__in_future_is_retracted_later(self):
-        publish_on = datetime(2000, 2, 3, tzinfo=pytz.UTC)
-        retract_on = datetime.now(pytz.UTC) + timedelta(seconds=1.5)
+        zeit.cms.workflow.interfaces.IPublish(
+            self.content).publish(async=False)
+        transaction.commit()
 
-        self.workflow.release_period = (publish_on, retract_on)
+        retract_on = datetime.now(pytz.UTC) + timedelta(seconds=1.5)
+        self.workflow.release_period = (None, retract_on)
         transaction.commit()
         cancel_retract_job_id = self.workflow.retract_job_id
         scheduler = celery_longterm_scheduler.get_scheduler(
@@ -242,7 +247,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
         # The current job gets revoked on change of released_to:
         new_retract_on = retract_on + timedelta(seconds=1)
-        self.workflow.release_period = (publish_on, new_retract_on)
+        self.workflow.release_period = (None, new_retract_on)
         transaction.commit()
         with self.assertRaises(KeyError):
             scheduler.backend.get(cancel_retract_job_id)
@@ -261,8 +266,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
         self.assertEqual([
             u'Urgent: yes',
-            u'To publish on 2000 2 3  01:00:00  (job #{})'.format(
-                self.workflow.publish_job_id),
+            u'Published',
             u'To retract on {} (job #{})'.format(
                 berlin(retract_on), cancel_retract_job_id),
             u'Scheduled retract cancelled (job #{}).'.format(
