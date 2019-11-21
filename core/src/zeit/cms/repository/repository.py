@@ -1,3 +1,4 @@
+from functools import total_ordering
 from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
@@ -26,6 +27,7 @@ import zope.securitypolicy.interfaces
 log = logging.getLogger('zeit.cms.repository')
 
 
+@total_ordering
 class ContentBase(zope.container.contained.Contained):
     """Base class for repository content."""
 
@@ -34,10 +36,18 @@ class ContentBase(zope.container.contained.Contained):
     uniqueId = None
     __name__ = None
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         if not zeit.cms.interfaces.ICMSContent.providedBy(other):
-            return -1
-        return cmp(self.uniqueId, other.uniqueId)
+            return False
+        return self.uniqueId == other.uniqueId
+
+    def __ne__(self, other):  # BBB only needed for py2
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
+            return False
+        return self.uniqueId < other.uniqueId
 
     def __hash__(self):
         return hash(self.uniqueId)

@@ -1,3 +1,4 @@
+from functools import total_ordering
 from gocept.cache.method import Memoize as memoize
 import BTrees
 import UserDict
@@ -343,6 +344,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         old_value.update(new_value)
 
 
+@total_ordering
 class WebDAVPropertyKey(object):
 
     __slots__ = ('name',)
@@ -361,10 +363,18 @@ class WebDAVPropertyKey(object):
     def __getitem__(self, idx):
         return self.name.__getitem__(idx)
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
-            return cmp(self.name, other.name)
-        return cmp(self.name, other)
+            return self.name == other.name
+        return self.name == other
+
+    def __ne__(self, other):  # BBB only py2
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
+            return self.name < other.name
+        return self.name < other
 
     def __hash__(self):
         assert not zope.security.proxy.isinstance(self.name, WebDAVPropertyKey)

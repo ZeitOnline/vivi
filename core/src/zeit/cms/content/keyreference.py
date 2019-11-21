@@ -1,9 +1,11 @@
+from functools import total_ordering
 import zeit.cms.interfaces
 import zope.app.keyreference.interfaces
 import zope.component
 import zope.interface
 
 
+@total_ordering
 class CMSContentKeyReference(object):
     """An IKeyReference to cms objects."""
 
@@ -31,11 +33,16 @@ class CMSContentKeyReference(object):
     def __hash__(self):
         return hash(self.referenced_object)
 
-    def __cmp__(self, other):
-        v = cmp(self.key_type_id, other.key_type_id)
-        if v:
-            return v
-        return cmp(self.referenced_object, other.referenced_object)
+    def __eq__(self, other):
+        return self.referenced_object == other.referenced_object
+
+    def __ne__(self, other):  # BBB only py2
+        return not self.__eq__(other)
+
+    def __gt__(self, other):
+        if self.key_type_id > other.key_type_id:
+            return True
+        return self.referenced_object > other.referenced_object
 
 
 class UniqueIdKeyReference(CMSContentKeyReference):
