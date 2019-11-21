@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.21.5.dev0',
+    version='4.22.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -35,7 +35,7 @@ setup(
         'feedparser',
         'filemagic',
         'gocept.cache >= 2.1',
-        'gocept.fckeditor[fanstatic]>=2.6.4.1-2',
+        'gocept.fckeditor[fanstatic]',
         'gocept.form[formlib]>=0.7.5',
         'gocept.httpserverlayer>=1.4.0.dev0',
         'gocept.jasmine',
@@ -112,6 +112,7 @@ setup(
         'zope.app.error',
         'zope.app.exception',
         'zope.app.file',
+        'zope.app.folder',
         'zope.app.form>=3.6.0',
         'zope.app.generations',
         'zope.app.interface',
