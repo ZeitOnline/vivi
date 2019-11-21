@@ -2,6 +2,7 @@ import UserDict
 import grokcore.component as grok
 import logging
 import lxml.etree
+import six
 import uuid
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -53,7 +54,7 @@ class Base(UserDict.DictMixin,
             pass
         else:
             try:
-                return self.values()[position]
+                return list(self.values())[position]
             except IndexError:
                 raise KeyError(key)
 
@@ -79,7 +80,7 @@ class Base(UserDict.DictMixin,
             name=element_type)
 
     def __iter__(self):
-        return (unicode(k) for k in self._get_keys(self.xml))
+        return (six.text_type(k) for k in self._get_keys(self.xml))
 
     def keys(self):
         return list(iter(self))

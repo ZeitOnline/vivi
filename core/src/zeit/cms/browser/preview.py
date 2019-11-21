@@ -1,4 +1,5 @@
-import urlparse
+import six
+import six.moves.urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -16,12 +17,12 @@ def prefixed_url(prefix, unique_id):
     prefix = cms_config[prefix]
     if not prefix.endswith('/'):
         prefix = prefix + '/'
-    return urlparse.urljoin(prefix, path)
+    return six.moves.urllib.parse.urljoin(prefix, path)
 
 
 # it would be nicer if this were a named adapter, but then we wouldn't have
 # access to the name, so that's not feasible
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent, basestring)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent, six.string_types[0])
 @zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
 def preview_url(content, preview_type):
     try:

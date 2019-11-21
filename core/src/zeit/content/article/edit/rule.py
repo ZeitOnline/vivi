@@ -17,7 +17,7 @@ def content(context):
 
 @glob(zeit.content.article.edit.interfaces.IVideo)
 def content(context):
-    return filter(None, [context.video])
+    return [x for x in [context.video] if x]
 
 
 @glob(zeit.content.article.edit.interfaces.IReference)
@@ -27,7 +27,7 @@ def content(context):
     if field.required:
         return [context.references]
     else:
-        return filter(None, [context.references])
+        return [x for x in [context.references] if x]
 
 
 @glob(zeit.content.article.edit.interfaces.IImage)

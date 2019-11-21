@@ -53,7 +53,7 @@ class TicketIssuer(object):
                 principal):
             raise zope.security.interfaces.Unauthorized
         principal = str(principal.id)
-        rnd = random.randint(-sys.maxint, sys.maxint)
+        rnd = random.randint(-sys.maxsize, sys.maxsize)
         self.request.response.setHeader('Content-Type', 'text/plain')
         self.request.response.setHeader('Cache-Control', 'no-cache')
         ticket = get_hash(rnd, principal)

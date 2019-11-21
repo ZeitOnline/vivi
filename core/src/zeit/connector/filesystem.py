@@ -9,7 +9,8 @@ import lxml.etree
 import magic
 import os
 import os.path
-import urlparse
+import six
+import six.moves.urllib.parse
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -69,7 +70,7 @@ class Connector(object):
 
         result = []
         for name in sorted(names):
-            child_id = unicode(
+            child_id = six.text_type(
                 self._get_cannonical_id(self._make_id(path + (name, ))))
             result.append((name, child_id))
         self.child_name_cache[id] = result
@@ -83,7 +84,7 @@ class Connector(object):
             for name in os.listdir(absolute_path):
                 try:
                     name = name.decode('utf-8')
-                except:
+                except Exception:
                     continue
                 names.add(name)
         for x in names.copy():
@@ -126,7 +127,7 @@ class Connector(object):
         path = self._path(id)
         name = path[-1] if path else ''
         return self.resource_class(
-            unicode(id), name, type,
+            six.text_type(id), name, type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
             content_type=self._get_content_type(id))
@@ -140,7 +141,7 @@ class Connector(object):
             f = self._get_file(id)
             data = f.read()
             f.close()
-        except:
+        except Exception:
             data = ''
         self.body_cache[id] = data
         return StringIO(data)
@@ -244,7 +245,7 @@ class Connector(object):
         filename = self._absolute_path(self._path(id))
         __traceback_info__ = (id, filename)
         try:
-            return file(filename, 'rb')
+            return open(filename, 'rb')
         except IOError:
             if os.path.isdir(filename):
                 raise ValueError(
@@ -255,14 +256,14 @@ class Connector(object):
         filename = self._absolute_path(self._path(id)) + '.meta'
         __traceback_info__ = (id, filename)
         try:
-            return file(filename, 'rb')
+            return open(filename, 'rb')
         except IOError:
             if not id.endswith('.meta'):
                 return self._get_file(id)
             return StringIO('')
 
     def _make_id(self, path):
-        return urlparse.urljoin(ID_NAMESPACE, '/'.join(
+        return six.moves.urllib.parse.urljoin(ID_NAMESPACE, '/'.join(
             element for element in path if element))
 
     def _get_properties(self, id):

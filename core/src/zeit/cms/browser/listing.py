@@ -1,19 +1,18 @@
 
+from zeit.cms.i18n import MessageFactory as _
 import datetime
 import logging
-
+import six
 import zc.table.column
 import zc.table.table
+import zeit.cms.browser.interfaces
+import zeit.cms.content.sources
 import zope.app.locking.interfaces
 import zope.app.security.interfaces
 import zope.component
 import zope.interface
 import zope.interface.common.idatetime
 import zope.viewlet.interfaces
-
-import zeit.cms.browser.interfaces
-import zeit.cms.content.sources
-from zeit.cms.i18n import MessageFactory as _
 
 
 logger = logging.getLogger('zeit.cms.browser.listing')
@@ -107,7 +106,7 @@ class CommonListRepresentation(BaseListRepresentation):
         for name in ('author', 'title', 'subtitle', 'byline',
                      'ressort', 'volume', 'page', 'year', '__name__'):
             try:
-                items.append(unicode(getattr(self, name)))
+                items.append(six.text_type(getattr(self, name)))
             except Exception:
                 continue
         return u' '.join(items)
@@ -143,7 +142,7 @@ class GetterColumn(zc.table.column.GetterColumn):
     def cell_formatter(self, value, item, formatter):
         if value is None:
             return u''
-        return unicode(value)
+        return six.text_type(value)
 
 
 class MetadataColumn(GetterColumn):
@@ -171,7 +170,7 @@ class LockedColumn(zc.table.column.GetterColumn):
             (item, formatter.request), name='get_locking_indicator')
 
     def cell_formatter(self, value, item, formatter):
-        return unicode(value)
+        return six.text_type(value)
 
 
 class TypeColumn(GetterColumn):

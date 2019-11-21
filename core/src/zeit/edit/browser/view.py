@@ -3,6 +3,7 @@ import cgi
 import json
 import logging
 import pkg_resources
+import six
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -45,7 +46,7 @@ class Form(object):
         value = instance.request.form.get(self.var_name, self.default)
         if value is self.default:
             return value
-        if self.json and isinstance(value, basestring):
+        if self.json and isinstance(value, six.string_types):
             value = json.loads(value)
         return value
 
@@ -200,7 +201,7 @@ class ErrorPreventingViewletManager(
         "Renders viewlet. Returns error message if viewlet cannot be rendered."
         try:
             return viewlet.render()
-        except Exception, e:
+        except Exception as e:
             mapping = dict(name=viewlet.__name__, exc_type=type(e).__name__,
                            exc_msg=str(e))
             error_msg = _(

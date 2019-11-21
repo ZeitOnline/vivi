@@ -1,7 +1,7 @@
 from collections import defaultdict, namedtuple
 import grokcore.component
 import json
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -87,7 +87,7 @@ class Widget(grokcore.component.MultiAdapter,
             # an abstraction instead doesn't really seem worthwile either.
             import zeit.retresco.interfaces
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return urlparse.urlparse(tms.url).netloc
+            return six.moves.urllib.parse.urlparse(tms.url).netloc
         except (ImportError, LookupError):
             return None
 
@@ -137,7 +137,7 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
         try:
             self.tags_with_topicpages = tagger.links
-        except:
+        except Exception:
             self.tags_with_topicpages = {}
 
     def __call__(self):

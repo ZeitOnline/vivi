@@ -33,7 +33,7 @@ class CMSAPI(object):
     def get_video(self, id):
         try:
             return self._request('GET /videos/%s' % id)
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             if status == 404:
                 return None
@@ -48,7 +48,7 @@ class CMSAPI(object):
     def get_playlist(self, id):
         try:
             return self._request('GET /playlists/%s' % id)
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             if status == 404:
                 return None
@@ -134,7 +134,7 @@ class CMSAPI(object):
                 timeout=self.timeout)
             log.debug(dump_request(response))
             response.raise_for_status()
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', 510)
             if status == 401:
                 log.debug('Refreshing access token')
@@ -157,7 +157,7 @@ class CMSAPI(object):
 
         try:
             return response.json()
-        except:
+        except Exception:
             log.error('%s returned invalid json %r', request, response.text)
             raise ValueError('No valid JSON found for %s' % request)
 

@@ -6,6 +6,7 @@ import lxml.etree
 import pendulum
 import pytz
 import re
+import six
 import sys
 import time
 import zeit.cms.content.interfaces
@@ -67,7 +68,7 @@ class DAVProperty(object):
                     (field, properties),
                     zeit.cms.content.interfaces.IDAVPropertyConverter)
                 value = converter.fromProperty(dav_value)
-            except (ValueError, zope.schema.ValidationError), e:
+            except (ValueError, zope.schema.ValidationError) as e:
                 value = self.field.default
                 if zeit.cms.interfaces.ICMSContent.providedBy(instance):
                     unique_id = instance.uniqueId
@@ -143,11 +144,11 @@ class UnicodeProperty(object):
         # ascii-str when the value has only 7bit characters. While this is an
         # optimisation in lxml we *need* a unicode here. If the value contains
         # 8 bit chars this is supposed to break.
-        value = unicode(value)
+        value = six.text_type(value)
         return self.context.fromUnicode(value)
 
     def toProperty(self, value):
-        return unicode(value)
+        return six.text_type(value)
 
 
 @zope.component.adapter(
@@ -200,11 +201,11 @@ class ChoicePropertyWithPrincipalSource(object):
 
     def fromProperty(self, value):
         if value in self.source:
-            return unicode(value)
+            return six.text_type(value)
         raise ValueError(value)
 
     def toProperty(self, value):
-        return unicode(value)
+        return six.text_type(value)
 
 
 DUMMY_REQUEST = zope.publisher.browser.TestRequest()
@@ -411,7 +412,7 @@ class ChannelProperty(UnicodeProperty):
 
     def fromProperty(self, value):
         # Cannot call super since CombinationField has no `fromUnicode`
-        value = unicode(value)
+        value = six.text_type(value)
         return tuple(value.split(' ')) if ' ' in value else (value, None)
 
     def toProperty(self, value):
@@ -450,7 +451,7 @@ class GenericProperty(object):
     def fromProperty(self, value):
         try:
             xml = lxml.etree.fromstring(value)
-        except (lxml.etree.XMLSyntaxError), e:
+        except (lxml.etree.XMLSyntaxError) as e:
             # Caputure generic xml errors reliably.
             raise ValueError(str(e))
         if xml.tag != 'pickle':

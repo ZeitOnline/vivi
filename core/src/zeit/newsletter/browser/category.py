@@ -4,6 +4,7 @@ import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.newsletter.interfaces
 import zope.formlib.form
+from six.moves import range
 
 
 class AddAndCheckout(zeit.cms.browser.view.Base):

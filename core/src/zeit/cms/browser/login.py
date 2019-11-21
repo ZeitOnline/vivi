@@ -1,5 +1,6 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import json
+import six
 import webob.cookies
 import zeit.cms.browser.resources
 import zope.app.appsetup.product
@@ -131,12 +132,12 @@ class SimpleSerializer(object):
     """Copied from pyramid.authentication._SimpleSerializer."""
 
     def loads(self, bstruct):
-        if isinstance(bstruct, unicode):
+        if isinstance(bstruct, six.text_type):
             return bstruct.encode('latin-1')
         return str(bstruct)
 
     def dumps(self, appstruct):
-        if isinstance(appstruct, unicode):
+        if isinstance(appstruct, six.text_type):
             return appstruct.encode('latin-1')
         return appstruct
 

@@ -370,7 +370,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
         with mock.patch('zeit.connector.dav.davresource.DAVResult') as dav:
             dav.has_errors.return_value = True
             self.assertRaises(
-                DAVError, lambda: result.next())
+                DAVError, lambda: next(result))
 
     def test_should_convert_unicode(self):
         from zeit.connector.search import SearchVar
@@ -382,7 +382,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
             # StopIteration will be raised. This is okay as the test should
             # only assert that the unicode search var is correctly rendered
             # and sent to the server.
-            result.next()
+            next(result)
         except StopIteration:
             pass
 

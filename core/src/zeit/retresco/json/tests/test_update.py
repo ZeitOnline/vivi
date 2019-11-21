@@ -1,6 +1,6 @@
 import json
 import mock
-import urllib2
+import six.moves.urllib.error
 import zeit.cms.interfaces
 import zeit.retresco.testing
 
@@ -13,16 +13,16 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
 
     def test_endpoint_avoids_get(self):
         b = self.browser
-        with self.assertRaisesRegexp(urllib2.HTTPError,
+        with self.assertRaisesRegexp(six.moves.urllib.error.HTTPError,
                                      'HTTP Error 405: Method Not Allowed'):
             b.open('http://localhost/@@update_keywords')
 
     def test_endpoint_rejects_post_without_doc_ids(self):
         b = self.browser
-        with self.assertRaisesRegexp(urllib2.HTTPError,
+        with self.assertRaisesRegexp(six.moves.urllib.error.HTTPError,
                                      'HTTP Error 400: Bad Request'):
             b.post('http://localhost/@@update_keywords', '')
-        with self.assertRaisesRegexp(urllib2.HTTPError,
+        with self.assertRaisesRegexp(six.moves.urllib.error.HTTPError,
                                      'HTTP Error 400: Bad Request'):
             b.post('http://localhost/@@update_keywords',
                    '{"foo" : "bar"}', 'application/x-javascript')

@@ -13,6 +13,7 @@ import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.publisher.interfaces.browser
+from six.moves import zip
 
 
 class Manager(object):

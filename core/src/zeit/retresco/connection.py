@@ -210,7 +210,7 @@ class TMS(object):
     def delete_id(self, uuid):
         try:
             self._request('DELETE /content/%s' % uuid)
-        except zeit.retresco.interfaces.TMSError, e:
+        except zeit.retresco.interfaces.TMSError as e:
             if e.status == 404:
                 log.debug(
                     'Warning: Tried to delete non-existent %s, ignored.', uuid)
@@ -230,7 +230,7 @@ class TMS(object):
             response = method(url, **kw)
             log.debug(dump_request(response))
             response.raise_for_status()
-        except requests.exceptions.RequestException, e:
+        except requests.exceptions.RequestException as e:
             status = getattr(e.response, 'status_code', 500)
             body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(

@@ -2,6 +2,7 @@ import UserDict
 import collections
 import copy
 import grokcore.component as grok
+import six
 import sys
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -92,7 +93,7 @@ class Variant(object):
         for key, value in kw.items():
             if key not in fields:
                 continue  # ignore attributes that aren't part of the schema
-            value = fields[key].fromUnicode(unicode(value))
+            value = fields[key].fromUnicode(six.text_type(value))
             setattr(self, key, value)
 
     def __cmp__(self, other):
@@ -118,14 +119,14 @@ class Variant(object):
     @property
     def max_width(self):
         if self.max_size is None:
-            return sys.maxint
+            return sys.maxsize
         width, height = self.max_size.split('x')
         return int(width)
 
     @property
     def max_height(self):
         if self.max_size is None:
-            return sys.maxint
+            return sys.maxsize
         width, height = self.max_size.split('x')
         return int(height)
 

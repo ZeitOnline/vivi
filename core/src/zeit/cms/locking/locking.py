@@ -47,7 +47,7 @@ class LockStorage(object):
             until = None
         try:
             self.connector.lock(object.uniqueId, lock.principal_id, until)
-        except zeit.connector.interfaces.LockingError, e:
+        except zeit.connector.interfaces.LockingError as e:
             raise zope.app.locking.interfaces.LockingError(e.uniqueId, *e.args)
         # Now make sure the object *really* exists. In case we've create a null
         # resource lock, we unlock and raise an error

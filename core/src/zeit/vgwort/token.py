@@ -6,7 +6,7 @@ import grokcore.component
 import logging
 import persistent
 import random
-import xmlrpclib
+import six.moves.xmlrpc_client
 import zc.queue
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -34,7 +34,7 @@ class TokenStorage(persistent.Persistent,
 
     def load(self, csv_file):
         reader = csv.reader(csv_file, delimiter=';')
-        reader.next()  # skip first line
+        next(reader)  # skip first line
         for public_token, private_token in reader:
             self.add(public_token, private_token)
 
@@ -91,7 +91,7 @@ class TokenService(grokcore.component.GlobalUtility):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
     # Make mutable by tests.
-    ServerProxy = xmlrpclib.ServerProxy
+    ServerProxy = six.moves.xmlrpc_client.ServerProxy
 
     def claim_token(self):
         tokens = self.ServerProxy(self.config['claim-token-url'])

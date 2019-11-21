@@ -6,7 +6,8 @@ import UserDict
 import grokcore.component as grok
 import lxml.objectify
 import requests
-import urllib
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -151,7 +152,7 @@ def update_ssoid(context, event):
 def request_acs(email):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.author')
-    url = config['sso-api-url'] + '/users/' + urllib.quote(
+    url = config['sso-api-url'] + '/users/' + six.moves.urllib.parse.quote(
         email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
     try:
@@ -245,7 +246,7 @@ class BiographyQuestions(
     def __getitem__(self, key):
         node = self.xml.xpath('//question[@id="%s"]' % key)
         return Question(
-            key, self.title(key), unicode(node[0]) if node else None)
+            key, self.title(key), six.text_type(node[0]) if node else None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//question[@id="%s"]' % key)

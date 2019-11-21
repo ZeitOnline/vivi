@@ -184,7 +184,7 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         try:
             s.click('css=.create-paragraph')
-        except Exception, e:
+        except Exception as e:
             self.assertIn('Unable to locate element', str(e))
         else:
             self.fail('second click should have raised')
@@ -796,7 +796,7 @@ class AutoSaveIntegration(
     def assert_paragraphs(self, *contents):
         transaction.abort()
         wc = self.getRootFolder()['workingcopy']['zope.user']
-        article = wc.values().next()
+        article = next(wc.values())
         self.assertEqual(
             contents, tuple(el.text for el in article.xml.xpath('//p')))
 

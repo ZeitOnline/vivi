@@ -187,7 +187,7 @@ class ImageGroupBrowserTest(
             'image/jpeg', u'föö.jpg'.encode('utf-8'))
         self.save_imagegroup()
         group = self.repository['imagegroup']
-        self.assertEqual(['foeoe.jpg'], group.keys())
+        self.assertEqual(['foeoe.jpg'], list(group.keys()))
 
     def test_group_rejects_unsupported_mime_types_on_upload(self):
         self.add_imagegroup()

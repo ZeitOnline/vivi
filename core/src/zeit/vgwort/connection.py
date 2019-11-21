@@ -1,8 +1,8 @@
 import logging
 import requests
 import requests.auth
+import six.moves.urllib.parse
 import threading
-import urlparse
 import zeep
 import zeep.exceptions
 import zeit.content.author.interfaces
@@ -49,7 +49,7 @@ class VGWortWebService(object):
 
     @property
     def wsdl(self):
-        return urlparse.urljoin(self.base_url, self.service_path)
+        return six.moves.urllib.parse.urljoin(self.base_url, self.service_path)
 
     def call(self, method_name, *args, **kw):
         with self.lock:

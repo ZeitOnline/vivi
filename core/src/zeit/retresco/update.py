@@ -5,6 +5,7 @@ import argparse
 import gocept.runner
 import grokcore.component as grok
 import logging
+import six
 import time
 import transaction
 import zeit.cms.celery
@@ -149,10 +150,10 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                         log.info(
                             'Skip publish for %s, missing required fields',
                             content.uniqueId)
-        except zeit.retresco.interfaces.TechnicalError, e:
+        except zeit.retresco.interfaces.TechnicalError as e:
             log.info('Retrying %s due to %r', content.uniqueId, e)
             raise
-        except Exception, e:
+        except Exception as e:
             errors.append(e)
             log.warning('Error indexing %s, giving up',
                         content.uniqueId, exc_info=True)
@@ -226,7 +227,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
 def reindex():
     parser = argparse.ArgumentParser(description='Reindex folder in TMS')
     parser.add_argument(
-        'ids', type=unicode, nargs='+', help='uniqueIds to reindex')
+        'ids', type=six.text_type, nargs='+', help='uniqueIds to reindex')
     parser.add_argument(
         '--file', action='store_true',
         help='Load uniqueIds from a file to reindex')

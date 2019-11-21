@@ -8,11 +8,11 @@ import plone.testing
 import pytest
 import re
 import requests
+import six.moves.urllib.parse
 import socket
 import threading
 import time
 import transaction
-import urlparse
 import zc.queue.tests
 import zeit.cms.testing
 import zeit.connector.connector
@@ -173,7 +173,7 @@ def FunctionalDocFileSuite(*paths, **kw):
 def mark_doctest_suite(suite, mark):
     # Imitate pytest magic, see _pytest.python.transfer_markers
     for test in suite:
-        func = test.runTest.im_func
+        func = test.runTest.__func__
         mark(func)
         test.runTest = func.__get__(test)
 
@@ -186,7 +186,7 @@ def get_storage(blob_dir):
 
 def print_tree(connector, base):
     """Helper to print a tree."""
-    print '\n'.join(list_tree(connector, base))
+    print('\n'.join(list_tree(connector, base)))
 
 
 def list_tree(connector, base, level=0):

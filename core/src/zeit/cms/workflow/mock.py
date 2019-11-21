@@ -29,7 +29,7 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context,
                                                             self.context))
-        print "Publishing: %s" % self.context.uniqueId
+        print("Publishing: %s" % self.context.uniqueId)
         _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
@@ -42,7 +42,7 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))
-        print "Retracting: %s" % self.context.uniqueId
+        print("Retracting: %s" % self.context.uniqueId)
         _published[self.context.uniqueId] = False
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,

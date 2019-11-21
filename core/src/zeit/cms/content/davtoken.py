@@ -1,10 +1,9 @@
+import six
 import types
-
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zope.component
 import zope.interface
-
-import zeit.cms.interfaces
-import zeit.cms.content.interfaces
 
 
 @zope.component.adapter(bool)
@@ -15,14 +14,14 @@ def fromBool(value):
     return 'no'
 
 
-@zope.component.adapter(types.NoneType)
+@zope.component.adapter(type(None))
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
 def fromNone(value):
     # XXX: i'm not sure this is right
     return ''
 
 
-@zope.component.adapter(unicode)
+@zope.component.adapter(six.text_type)
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
 def fromUnicode(value):
     return value

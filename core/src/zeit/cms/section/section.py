@@ -106,4 +106,4 @@ def get_markers_for_section(section, content):
     result.append(lookup(
         (section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
     result.append(lookup((section,), ISectionMarker))
-    return filter(None, result)
+    return [x for x in result if x]

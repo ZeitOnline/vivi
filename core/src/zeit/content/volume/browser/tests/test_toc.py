@@ -112,14 +112,14 @@ Anderer\r
         article_element = lxml.etree.fromstring(article_xml)
         t = Toc(mock.Mock(), mock.Mock())
         entry = t._create_toc_element(article_element)
-        assert sys.maxint == entry.get('page')
+        assert sys.maxsize == entry.get('page')
 
     def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
         toc_data = {
             'Die Zeit': {
                 'Politik':
                     [
-                        {'page': sys.maxint, 'title': 'title2'},
+                        {'page': sys.maxsize, 'title': 'title2'},
                         {'page': 1, 'title': 'title1'}
                     ]
             }
@@ -127,7 +127,7 @@ Anderer\r
         toc_data = OrderedDict(toc_data)
         t = Toc(mock.Mock(), mock.Mock())
         result = t._sort_toc_data(toc_data)
-        assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
+        assert sys.maxsize == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
 
     def test_article_excluder_excludes_blacklisted_property_values(self):

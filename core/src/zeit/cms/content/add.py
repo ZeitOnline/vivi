@@ -1,6 +1,6 @@
 import datetime
 import grokcore.component as grok
-import urllib
+import six.moves.urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zope.browser.interfaces
@@ -48,7 +48,7 @@ class ContentAdder(object):
         return '%s/@@%s?%s' % (
             zope.traversing.browser.absoluteURL(context, self.request),
             self.type_.getTaggedValue('zeit.cms.addform'),
-            urllib.urlencode(params))
+            six.moves.urllib.parse.urlencode(params))
 
     def _get_token(self, field,
                    interface=zeit.cms.content.interfaces.IContentAdder):

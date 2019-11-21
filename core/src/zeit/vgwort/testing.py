@@ -11,6 +11,7 @@ import zeit.vgwort.interfaces
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
+from six.moves import range
 
 
 product_config = """

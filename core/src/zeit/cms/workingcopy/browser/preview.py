@@ -1,5 +1,5 @@
-import urllib2
-import urlparse
+import six.moves.urllib.parse
+import six.moves.urllib.request
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -31,7 +31,7 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
     def proxied_preview(self):
         preview_obj = self.temporary_checkin()
         url = self.get_preview_url_for(preview_obj)
-        preview_request = urllib2.urlopen(url)
+        preview_request = six.moves.urllib.request.urlopen(url)
         del preview_obj.__parent__[preview_obj.__name__]
         return preview_request.read()
 
@@ -62,7 +62,8 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
             self.request.principal.id, name)
 
     def workingcopy_url(self, url):
-        repository_path = urlparse.urlparse(self.context.uniqueId).path
+        repository_path = six.moves.urllib.parse.urlparse(
+            self.context.uniqueId).path
         fullpath = self.url(self.context)
         workingcopy = self.url(zope.component.getUtility(
             zeit.cms.workingcopy.interfaces.IWorkingcopyLocation))

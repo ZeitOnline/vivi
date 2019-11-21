@@ -1,4 +1,5 @@
 from pprint import pformat
+from six.moves import range
 from zeit.content.image.variant import Variant
 import PIL.Image
 import PIL.ImageDraw

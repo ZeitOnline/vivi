@@ -1,6 +1,6 @@
-import copy_reg
 import lxml.etree
 import lxml.objectify
+import six.moves.copyreg
 
 
 def treeFactory(state):
@@ -10,7 +10,7 @@ def treeFactory(state):
     except Exception as e:
         return lxml.objectify.fromstring(
             '<error><!-- XML-FEHLER: %s\n\n%s\n\n--></error>' % (e, state))
-copy_reg.constructor(treeFactory)
+six.moves.copyreg.constructor(treeFactory)
 
 
 def reduceObjectifiedElement(object):
@@ -19,5 +19,5 @@ def reduceObjectifiedElement(object):
     """
     state = lxml.etree.tostring(object.getroottree())
     return (treeFactory, (state, ))
-copy_reg.pickle(
+six.moves.copyreg.pickle(
     lxml.objectify.ObjectifiedElement, reduceObjectifiedElement, treeFactory)

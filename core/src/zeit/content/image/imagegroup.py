@@ -9,8 +9,8 @@ import lxml.objectify
 import os.path
 import persistent
 import re
+import six.moves.urllib.parse
 import sys
-import urlparse
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -135,7 +135,7 @@ class ImageGroupBase(object):
         # Set size to max_size if Variant has max_size defined in XML and size
         # was not given in URL.
         if (size is None and
-                variant.max_width < sys.maxint > variant.max_height):
+                variant.max_width < sys.maxsize > variant.max_height):
             size = [variant.max_width, variant.max_height]
 
         # Be defensive about missing meta files, so source could not be
@@ -154,7 +154,7 @@ class ImageGroupBase(object):
     def variant_url(self, name, width=None, height=None,
                     fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
-        path = urlparse.urlparse(self.uniqueId).path
+        path = six.moves.urllib.parse.urlparse(self.uniqueId).path
         if path.endswith(u'/'):
             path = path[:-1]
         if thumbnail:

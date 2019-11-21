@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import persistent
+import six
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
@@ -17,7 +18,7 @@ class UnknownResource(zeit.cms.repository.repository.ContentBase):
     uniqueId = None
 
     def __init__(self, data, type_info=None):
-        if not isinstance(data, unicode):
+        if not isinstance(data, six.text_type):
             raise TypeError('data must be unicode.')
         self.data = data
         self.type = type_info
@@ -49,7 +50,7 @@ class UnknownResourceType(zeit.cms.type.TypeDeclaration):
 
     def content(self, resource):
         return self.factory(
-            unicode(resource.data.read(), 'latin1'), resource.type)
+            six.text_type(resource.data.read(), 'latin1'), resource.type)
 
     def resource_body(self, content):
         return zeit.cms.util.MemoryFile(content.data.encode('latin1'))

@@ -144,7 +144,7 @@ class DataManager(object):
                 method(*args, **kwargs)
             except ZODB.POSException.ConflictError:
                 raise
-            except:
+            except Exception:
                 log.warning("Cleanup failed", exc_info=True)
 
         self.cleanup[:] = []

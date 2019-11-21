@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+import six
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.interfaces
@@ -35,7 +36,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
                     lxml.objectify.E.p(text_node.text,
                                        *text_node.getchildren()))
             text = self.html_converter.to_html(text_node)
-            result.append((unicode(node['title']),
+            result.append((six.text_type(node['title']),
                            text))
         return tuple(result)
 

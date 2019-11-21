@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from StringIO import StringIO
-from urlparse import urljoin
+from six.moves.urllib.parse import urljoin
 import ZODB
 import ZODB.DemoStorage
 import base64
@@ -30,6 +30,7 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import re
+import six
 import sys
 import transaction
 import unittest
@@ -65,6 +66,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('selenium').setLevel(logging.INFO)
         logging.getLogger('bugsnag').setLevel(logging.FATAL)
 
+
 LOGGING_LAYER = LoggingLayer()
 
 
@@ -75,6 +77,7 @@ class CeleryEagerLayer(plone.testing.Layer):
 
     def tearDown(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = False
+
 
 CELERY_EAGER_LAYER = CeleryEagerLayer()
 
@@ -92,7 +95,7 @@ class ProductConfigLayer(plone.testing.Layer):
         if not package:
             package = '.'.join(module.split('.')[:-1])
         self.package = package
-        if isinstance(config, basestring):  # BBB
+        if isinstance(config, six.string_types):  # BBB
             config = self.loadConfiguration(config, package)
         self.config = config
         self.patches = patches or {}
@@ -215,6 +218,7 @@ class MockConnectorLayer(plone.testing.Layer):
         if isinstance(connector, zeit.connector.mock.Connector):
             connector._reset()
 
+
 MOCK_CONNECTOR_LAYER = MockConnectorLayer()
 
 
@@ -222,6 +226,7 @@ class MockWorkflowLayer(plone.testing.Layer):
 
     def testTearDown(self):
         zeit.cms.workflow.mock.reset()
+
 
 MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
 
@@ -411,7 +416,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
             status = self.response_code
         else:
             status = self.response_code.pop(0)
-        if isinstance(self.response_body, basestring):
+        if isinstance(self.response_body, six.string_types):
             body = self.response_body
         else:
             body = self.response_body.pop(0)
@@ -601,6 +606,8 @@ def selenium_setup_authcache(self):
     # We don't really know how much time the browser needs until it's
     # satisfied, or how we could determine this.
     s.pause(1000)
+
+
 original_setup = gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp
 gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = (
     selenium_setup_authcache)
@@ -609,6 +616,8 @@ gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = (
 def selenium_teardown_authcache(self):
     original_teardown(self)
     del self['http_auth_cache']
+
+
 original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
 gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
     selenium_teardown_authcache)
@@ -710,8 +719,8 @@ def click_wo_redirect(browser, *args, **kwargs):
     browser.follow_redirects = False
     try:
         browser.getLink(*args, **kwargs).click()
-        print(browser.headers['Status'])
-        print(browser.headers['Location'])
+        print((browser.headers['Status']))
+        print((browser.headers['Location']))
     finally:
         browser.follow_redirects = True
 
@@ -726,7 +735,7 @@ def set_site(site=None):
 
 # XXX use zope.publisher.testing for the following two
 def create_interaction(name='zope.user'):
-    name = unicode(name)  # XXX At least zope.dublincore requires unicode...
+    name = six.text_type(name)  # XXX At least zope.dublincore requires unicode
     principal = zope.security.testing.Principal(
         name, groups=['zope.Authenticated'], description=u'test@example.com')
     request = zope.publisher.browser.TestRequest()
@@ -898,7 +907,7 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
     def setUp(self):
         super(BrowserTestCase, self).setUp()
         self.browser = Browser(self.layer['wsgi_app'])
-        if isinstance(self.login_as, basestring):  # BBB:
+        if isinstance(self.login_as, six.string_types):  # BBB:
             self.login_as = self.login_as.split(':')
         self.browser.login(*self.login_as)
 
@@ -969,9 +978,7 @@ class FreezeMeta(type):
             return True
 
 
-class Freeze(datetime.datetime):
-
-    __metaclass__ = FreezeMeta
+class Freeze(six.with_metaclass(FreezeMeta, datetime.datetime)):
 
     @classmethod
     def freeze(cls, val):

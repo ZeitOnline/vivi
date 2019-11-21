@@ -1,14 +1,14 @@
 import base64
-import httplib
 import logging
 import lxml.etree
 import mimetypes
 import pkg_resources
 import re
+import six
+import six.moves.http_client
+import six.moves.urllib.parse
 import socket
 import sys
-import urllib
-import urlparse
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
@@ -33,7 +33,7 @@ class HTTPBasicAuthCon(object):
 
     """
 
-    connect_class = httplib.HTTPConnection
+    connect_class = six.moves.http_client.HTTPConnection
     rx = re.compile('[ \t]*([^ \t]+)[ \t]+realm="([^"]*)"')
     authhdr = 'WWW-Authenticate'
 
@@ -93,21 +93,22 @@ class HTTPBasicAuthCon(object):
         return
 
     def get_quoted_path(self, uri):
-        if isinstance(uri, unicode):
+        if isinstance(uri, six.text_type):
             uri = uri.encode('utf8')
-        path = urlparse.urlunparse(('', '') + urlparse.urlparse(uri)[2:])
+        path = six.moves.urllib.parse.urlunparse(
+            ('', '') + six.moves.urllib.parse.urlparse(uri)[2:])
         # NOTE: Everything after the netloc is considered a path and will be
         # quoted
-        quoted = urllib.quote(path)
+        quoted = six.moves.urllib.parse.quote(path)
         return quoted
 
     def quote_uri(self, uri):
-        if isinstance(uri, unicode):
+        if isinstance(uri, six.text_type):
             uri = uri.encode('utf8')
-        parsed = urlparse.urlparse(uri)
-        quoted = urlparse.urlunparse((parsed.scheme, parsed.netloc,
-                                      self.get_quoted_path(uri),
-                                      '', '', ''))
+        parsed = six.moves.urllib.parse.urlparse(uri)
+        quoted = six.moves.urllib.parse.urlunparse(
+            (parsed.scheme, parsed.netloc, self.get_quoted_path(uri),
+             '', '', ''))
         return quoted
 
     def request(self, method, uri, body=None, extra_hdrs=None):
@@ -127,7 +128,7 @@ class HTTPBasicAuthCon(object):
             raw = "%s:%s" % self.get_auth(self._realm)
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
-        host = str(urlparse.urlparse(uri).netloc)
+        host = str(six.moves.urllib.parse.urlparse(uri).netloc)
         if host:
             headers['Host'] = host
         headers['Connection'] = 'keep-alive'
@@ -135,7 +136,7 @@ class HTTPBasicAuthCon(object):
         headers.update(self.additional_headers)
         try:
             self._con.request(method, path, body, headers)
-        except httplib.CannotSendRequest:
+        except six.moves.http_client.CannotSendRequest:
             # Yikes. The connection got into an inconsistent state! Reconnect.
             self.connect()
             # If that raises the error again, well let it raise.
@@ -170,11 +171,13 @@ class DAVBase(object):
         if data:
             body = ''
             for key, value in data.items():
-                if isinstance(value, types.ListType):
+                if isinstance(value, list):
                     for item in value:
-                        body = body + '&' + key + '=' + urllib.quote(str(item))
+                        body = (body + '&' + key + '=' +
+                                six.moves.urllib.parse.quote(str(item)))
                 else:
-                    body = body + '&' + key + '=' + urllib.quote(str(value))
+                    body = (body + '&' + key + '=' +
+                            six.moves.urllib.parse.quote(str(value)))
             body = body[1:]
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         return self._request('POST', url, body, headers)
@@ -292,7 +295,7 @@ class DAVBase(object):
                     "%s: %s" % (k, v) for k, v in extra_hdrs.items()]
             else:
                 debug_header_items = []
-            print >>sys.stderr, (
+            sys.stderr.write(
                 "### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n" % (
                     method, url,
                     "\n  ".join(debug_header_items),
@@ -302,14 +305,14 @@ class DAVBase(object):
         self.request(method, url, body, extra_hdrs)
         try:
             resp = self.getresponse()
-        except httplib.BadStatusLine:
+        except six.moves.http_client.BadStatusLine:
             # Gnah. We may have waited too long.  Try one more time.
             self.connect()
             self.request(method, url, body, extra_hdrs)
             resp = self.getresponse()
 
         if DEBUG_REQUEST:
-            print >>sys.stderr, (
+            sys.stderr.write(
                 "### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % (
                     (resp.status, resp.reason,
                      "\n  ".join(["%s: %s" % h for h in resp.getheaders()]))))
@@ -328,7 +331,7 @@ class DAVConnection (HTTPBasicAuthCon, DAVBase):
 if getattr(socket, 'ssl', None):
     # only include DAVS if SSL support is compiled in
     class HTTPSBasicAuthCon(HTTPBasicAuthCon):
-        connect_class = httplib.HTTPSConnection
+        connect_class = six.moves.http_client.HTTPSConnection
         pass
 
     class DAVSConnection(HTTPSBasicAuthCon, DAVBase):

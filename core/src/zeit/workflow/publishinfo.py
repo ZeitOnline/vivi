@@ -1,7 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import re
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -76,7 +76,7 @@ class PublishInfo(object):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         blacklist = re.split(', *', config['blacklist'])
-        path = urlparse.urlparse(self.context.uniqueId).path
+        path = six.moves.urllib.parse.urlparse(self.context.uniqueId).path
         for item in blacklist:
             if item and path.startswith(item):
                 return True

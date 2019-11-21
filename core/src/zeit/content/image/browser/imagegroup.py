@@ -19,6 +19,7 @@ import zeit.workflow.interfaces
 import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
+from six.moves import zip
 
 
 class FormBase(object):
@@ -111,7 +112,7 @@ class AddForm(FormBase,
         # is configured with first viewport of source, secondary master image
         # with second viewport etc.
         viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE(group)
-        for image, viewport in itertools.izip(self.images, viewports):
+        for image, viewport in zip(self.images, viewports):
             group.master_images += ((viewport, image.__name__),)
 
         return group

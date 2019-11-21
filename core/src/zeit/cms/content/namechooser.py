@@ -1,4 +1,5 @@
 import re
+import six
 import zope.container.contained
 import zope.container.interfaces
 import zope.exceptions.interfaces
@@ -24,7 +25,7 @@ class NameChooser(zope.container.contained.NameChooser):
 
     def chooseName(self, name, object):
         if isinstance(name, str):
-            name = unicode(name)
+            name = six.text_type(name)
         name = name.lower().replace(' ', '-')
         name = invalid_chars.sub('', name)
         return super(NameChooser, self).chooseName(name, object)

@@ -21,6 +21,7 @@ import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
+from six.moves import range
 
 
 class PublishTest(zeit.workflow.testing.FunctionalTestCase):

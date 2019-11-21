@@ -11,6 +11,7 @@ import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.widgets
+from six.moves import map
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
@@ -138,7 +139,7 @@ class DynamicCombinationWidget(
         for w in widgets:
             try:
                 val = w.getInputValue()
-            except zope.formlib.interfaces.WidgetInputError, e:
+            except zope.formlib.interfaces.WidgetInputError as e:
                 if isinstance(getattr(e, 'errors'),
                               zope.schema.interfaces.RequiredMissing):
                     required_errors.append((w, e))

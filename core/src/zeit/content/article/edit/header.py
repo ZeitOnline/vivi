@@ -1,13 +1,14 @@
 import gocept.lxml.interfaces
+import grokcore.component
 import grokcore.component as grok
 import lxml.objectify
+import six
 import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.source
 import zope.component
-import grokcore.component
 
 
 HEADER_NAME = 'editable-header'
@@ -100,7 +101,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 
     # For consistency with the zeit.content.cp config files.
     def _get_title_for(self, node):
-        return unicode(node.get('title'))
+        return six.text_type(node.get('title'))
 
 MODULES = ModuleSource()
 

@@ -22,7 +22,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
             expected = getattr(original, name)
             try:
                 actual = getattr(new, name)
-            except Exception, e:
+            except Exception as e:
                 actual = str(e)
             if expected != actual:
                 errors.append('%s: %s != %s' % (name, expected, actual))

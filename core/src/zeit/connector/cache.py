@@ -10,10 +10,11 @@ import lxml.objectify
 import os
 import persistent
 import persistent.mapping
+import six
+import six.moves.urllib.request
 import tempfile
 import time
 import transaction
-import urllib2
 import zc.set
 import zeit.connector.interfaces
 import zope.interface
@@ -24,7 +25,7 @@ log = logging.getLogger(__name__)
 
 
 def get_storage_key(key):
-    if isinstance(key, unicode):
+    if isinstance(key, six.text_type):
         key = key.encode('utf8')
     assert isinstance(key, str)
     return key
@@ -158,8 +159,8 @@ class AccessTimes(object):
         timeout = self._get_time_key(time.time() - cache_timeout)
         while True:
             try:
-                access_time = iter(self._access_time_to_ids.keys(
-                    min=start, max=timeout)).next()
+                access_time = next(iter(self._access_time_to_ids.keys(
+                    min=start, max=timeout)))
                 id_set = []
                 # For reasons unknown we sometimes get "the bucket being
                 # iterated changed size" here, which according to
@@ -197,7 +198,7 @@ class AccessTimes(object):
                                 i -= 100
                     self._access_time_to_ids.pop(access_time, None)
                     start = access_time
-                except:
+                except Exception:
                     start = access_time + 1
                     log.info('Abort %s', access_time, exc_info=True)
                     transaction.abort()
@@ -529,7 +530,7 @@ class FeatureToggles(object):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         log.debug('Getting %s' % url)
-        response = urllib2.urlopen(url)
+        response = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(response)
 
 

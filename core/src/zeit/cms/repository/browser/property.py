@@ -1,4 +1,6 @@
+from six.moves import map
 from zeit.cms.i18n import MessageFactory as _
+import six
 import zc.table.column
 import zc.table.interfaces
 import zeit.cms.browser.listing
@@ -17,7 +19,7 @@ class MetadataColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
         return u'<span class="SearchableText">%s</span>' % u' '.join(
-            map(unicode, [item[0][0], item[0][1], item[1]]))
+            map(six.text_type, [item[0][0], item[0][1], item[1]]))
 
 
 class Listing(zeit.cms.browser.listing.Listing):
@@ -35,7 +37,7 @@ class Listing(zeit.cms.browser.listing.Listing):
             getter=lambda t, c: t[0][0]),
         GetterColumn(
             title=_('Value'),
-            getter=lambda t, c: unicode(t[1])),
+            getter=lambda t, c: six.text_type(t[1])),
         MetadataColumn(),
     )
 

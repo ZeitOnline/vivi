@@ -42,7 +42,7 @@ class PreviewPayload(object):
     def error(self):
         try:
             self.message.validate_template(self.rendered)
-        except Exception, e:
+        except Exception as e:
             e.traceback = zeit.cms.browser.error.getFormattedException(
                 sys.exc_info())
             return e

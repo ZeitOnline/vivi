@@ -1,5 +1,4 @@
 import plone.testing
-import urllib2
 import zeit.cms.browser.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
@@ -21,8 +20,8 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        factory.next()
+        next(factory)
+        next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@thumbnail')
@@ -38,8 +37,8 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()
+        next(factory)
+        video = next(factory)
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
@@ -52,9 +51,9 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
 
     def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
         factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = factory.next()
+        playlist = next(factory)
         playlist.thumbnail = 'http://thumbnailurl'
-        factory.next()
+        next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/pls/')
         self.browser.follow_redirects = False
         self.browser.open('@@thumbnail')
@@ -63,9 +62,9 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
 
     def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
         factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = factory.next()
+        playlist = next(factory)
         playlist.thumbnail = 'http://thumbnailurl'
-        playlist = factory.next()
+        playlist = next(factory)
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
@@ -88,8 +87,8 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             'thumbnail': None,
             'video_still': 'http://stillurl',
         }
-        factory.next()
-        factory.next()
+        next(factory)
+        next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@preview')
@@ -105,8 +104,8 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             'video_still': 'http://stillurl',
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()
+        next(factory)
+        video = next(factory)
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
@@ -146,10 +145,10 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
 
     def test_push_to_social_media_is_done_on_publish(self):
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
+        video = next(factory)
         video.title = u'My video'
         video.ressort = u'Deutschland'
-        video = factory.next()
+        video = next(factory)
         browser = self.browser
         browser.open('http://localhost/++skin++vivi/repository/video')
         browser.getLink('Checkout').click()

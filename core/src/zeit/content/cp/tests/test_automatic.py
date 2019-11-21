@@ -1,4 +1,5 @@
 # coding: utf-8
+from six.moves import range
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import json

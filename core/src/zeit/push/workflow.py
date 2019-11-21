@@ -94,7 +94,7 @@ def send_push_on_publish(context, event):
         config['text'] = message.text
         try:
             message.send()
-        except Exception, e:
+        except Exception as e:
             zeit.objectlog.interfaces.ILog(context).log(_(
                 'Error while sending ${type}: ${reason}',
                 mapping={'type': message.type.capitalize(), 'reason': str(e)}))

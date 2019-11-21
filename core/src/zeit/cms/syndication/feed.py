@@ -4,6 +4,7 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import os.path
+import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -160,7 +161,7 @@ class ContentList(object):
         __traceback_info__ = (self.uniqueId, )
         try:
             return self.xml['container']
-        except AttributeError, e:
+        except AttributeError as e:
             log.error("Invalid channel XML format", exc_info=True)
             raise RuntimeError("Invalid channel XML format.")
 
@@ -294,7 +295,7 @@ class FakeEntry(object):
             setattr(self, field, None)
         self.uniqueId = id
         self.__name__ = os.path.basename(id)
-        self.title = unicode(entry.find('title'))
+        self.title = six.text_type(entry.find('title'))
 
 
 @grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)

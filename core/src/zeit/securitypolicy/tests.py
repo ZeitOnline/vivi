@@ -1,8 +1,9 @@
+from six.moves import range
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
+import six.moves.urllib.parse
 import unittest
-import urllib
 import xlrd
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
@@ -98,8 +99,9 @@ class SecurityPolicyXLSSheetCase(object):
 
             if form:
                 self.browser.post(
+                    path_with_skin,
                     # XXX pass variables in explicitly
-                    path_with_skin, urllib.urlencode(eval(form)))
+                    six.moves.urllib.parse.urlencode(eval(form)))
             else:
                 self.browser.open(path_with_skin)
 
@@ -130,14 +132,14 @@ def test_suite():
     username_row = 1
     username_column_start = 3
 
-    for expected_column in xrange(username_column_start, sheet.ncols):
+    for expected_column in range(username_column_start, sheet.ncols):
         username = sheet.cell_value(username_row, expected_column)
         if not username:
             continue
 
         cases = []
         start_row = None
-        for row in xrange(2, sheet.nrows):
+        for row in range(2, sheet.nrows):
             if start_row is None:
                 start_row = row
             skin = sheet.cell_value(row, 0)

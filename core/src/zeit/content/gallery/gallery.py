@@ -1,7 +1,9 @@
+from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import lxml.etree
 import lxml.objectify
+import six
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
@@ -106,7 +108,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
-            entry.title = unicode(entry.title)
+            entry.title = six.text_type(entry.title)
         entry.text = node.find('text')
         if entry.text is None:
             entry.text = lxml.objectify.E.text()
@@ -117,11 +119,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                                    *entry.text.getchildren()))
         entry.layout = node.get('layout')
         if entry.layout is not None:
-            entry.layout = unicode(entry.layout)
+            entry.layout = six.text_type(entry.layout)
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            entry.caption = unicode(gallery_caption)
+            entry.caption = six.text_type(gallery_caption)
 
         # XXX need location information on the entry itself for crops(),
         # but just returning entry here breaks tests, so we do both for now.
@@ -172,7 +174,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def items(self):
         """Return the items of the mapping object.
         """
-        return zip(self.keys(), self.values())
+        return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
         return self._entries_container.xpath('count(block)')
@@ -231,7 +233,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 return block
 
     def _list_all_keys(self):
-        return (unicode(name)
+        return (six.text_type(name)
                 for name in self._entries_container.xpath('block/@name'))
 
     def _guess_image_folder(self):
@@ -406,7 +408,7 @@ class SearchableText(grokcore.component.Adapter):
     def getSearchableText(self):
         main_text = []
         for p in self.context.xml.body.xpath("//p"):
-            text = unicode(p).strip()
+            text = six.text_type(p).strip()
             if text:
                 main_text.append(text)
         return main_text

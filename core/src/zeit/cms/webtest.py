@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 from StringIO import StringIO
-import httplib
+import six.moves.http_client
+import six.moves.xmlrpc_client
 import transaction
 import webtest
-import xmlrpclib
 import zope.component.hooks
 import zope.security.management
 
@@ -14,10 +14,11 @@ def ServerProxy(uri, wsgi_app, encoding=None,
     by default.
     """
     transport = WebTestTransport(webtest.TestApp(wsgi_app), handleErrors)
-    return xmlrpclib.ServerProxy(uri, transport, encoding, verbose, allow_none)
+    return six.moves.xmlrpc_client.ServerProxy(
+        uri, transport, encoding, verbose, allow_none)
 
 
-class WebTestTransport(xmlrpclib.Transport):
+class WebTestTransport(six.moves.xmlrpc_client.Transport):
     """xmlrpclib transport that delegates to webtest.
 
     It can be used like a normal transport, including support for basic
@@ -27,7 +28,8 @@ class WebTestTransport(xmlrpclib.Transport):
     verbose = False
 
     def __init__(self, testapp, handleErrors=True, use_datetime=0):
-        xmlrpclib.Transport.__init__(self, use_datetime=use_datetime)
+        six.moves.xmlrpc_client.Transport.__init__(
+            self, use_datetime=use_datetime)
         self.testapp = testapp
         self.handleErrors = handleErrors
 
@@ -74,12 +76,12 @@ class WebTestTransport(xmlrpclib.Transport):
         errcode = response.status_int
         errmsg = response.status
         if errcode != 200:
-            raise xmlrpclib.ProtocolError(
+            raise six.moves.xmlrpc_client.ProtocolError(
                 host + handler,
                 errcode, errmsg,
                 response.headers)
 
-        res = httplib.HTTPResponse(FakeSocket(response.body))
+        res = six.moves.http_client.HTTPResponse(FakeSocket(response.body))
         res.begin()
         return self.parse_response(res)
 

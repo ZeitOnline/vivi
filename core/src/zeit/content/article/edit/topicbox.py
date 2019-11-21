@@ -7,6 +7,7 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
 import zope.component
+from six.moves import filter
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
@@ -55,7 +56,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
             return itertools.islice(
-                itertools.ifilter(lambda x: x != parent_article,
+                filter(lambda x: x != parent_article,
                                   zeit.edit.interfaces.IElementReferences(
                                       self.referenced_cp)),
                 len(self._reference_properties))

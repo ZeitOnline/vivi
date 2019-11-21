@@ -11,6 +11,7 @@ import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
+from six.moves import map
 
 
 class Content(object):

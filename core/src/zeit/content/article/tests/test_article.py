@@ -1,4 +1,5 @@
 # coding: utf8
+from six.moves import range
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import lxml.etree
@@ -7,14 +8,14 @@ import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.cms.section.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.content.image.imagegroup
-import zeit.magazin.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
+import zeit.magazin.interfaces
 import zope.component
 import zope.event
 import zope.interface

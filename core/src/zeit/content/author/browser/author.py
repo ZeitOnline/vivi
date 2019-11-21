@@ -19,7 +19,7 @@ class AuthorListRepresentation(
     def title(self):
         try:
             return self.context.display_name
-        except:
+        except Exception:
             return u'%s %s' % (self.context.firstname, self.context.lastname)
 
     @property

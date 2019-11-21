@@ -1,11 +1,12 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ITeaserBlock
-import json
 import gocept.lxml.interfaces
 import grokcore.component as grok
+import json
 import lxml.etree
 import lxml.objectify
+import six
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
@@ -419,7 +420,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             operator = condition.get('operator')
             if not operator:  # BBB
                 operator = 'eq'
-            value = self._converter(typ).fromProperty(unicode(condition))
+            value = self._converter(typ).fromProperty(six.text_type(condition))
             field = zeit.content.cp.interfaces.IArea[
                 'query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):

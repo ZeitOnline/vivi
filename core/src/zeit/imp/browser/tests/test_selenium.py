@@ -6,6 +6,7 @@ import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.imp.tests
+from six.moves import range
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(

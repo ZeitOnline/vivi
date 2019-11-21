@@ -8,6 +8,7 @@ import zope.interface
 import zope.lifecycleevent
 import zope.publisher.interfaces
 import zope.security.proxy
+import six
 
 
 class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
@@ -64,7 +65,7 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
     def _create_recension(self, index, node):
         recension = BookRecension()
         recension.xml = node
-        recension_classes = '%s %s' % (self.__name__, unicode(index))
+        recension_classes = '%s %s' % (self.__name__, six.text_type(index))
         recension = zope.location.location.located(
             recension, self, recension_classes)
         # located() sets __parent__ first, so it has triggered a false write

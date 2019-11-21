@@ -4,6 +4,7 @@ import lxml.etree
 import pygments
 import pygments.formatters
 import pygments.lexers
+import six
 import zc.form.browser.combinationwidget
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -22,7 +23,7 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
     def _toFieldValue(self, input):
         try:
             return self.context.fromUnicode(input)
-        except zope.schema.ValidationError, e:
+        except zope.schema.ValidationError as e:
             raise zope.app.form.interfaces.ConversionError(e)
 
     def _toFormValue(self, value):
@@ -47,7 +48,7 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
             content = self._data
             content = zope.proxy.removeAllProxies(content)
             content = lxml.etree.tostring(content, pretty_print=True,
-                                          encoding=unicode)
+                                          encoding=six.text_type)
         else:
             content = self.context.default
         if not content:

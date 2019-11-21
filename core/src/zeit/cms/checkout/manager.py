@@ -69,7 +69,7 @@ class CheckoutManager(object):
             timeout = int(config[timeout])
             try:
                 lockable.lock(timeout=timeout)
-            except zope.app.locking.interfaces.LockingError, e:
+            except zope.app.locking.interfaces.LockingError as e:
                 # This is to catch a race condition when the object is locked
                 # by another process/thread between the lock check above and
                 # here.

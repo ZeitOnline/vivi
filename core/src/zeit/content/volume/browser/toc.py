@@ -12,8 +12,8 @@ import contextlib
 import csv
 import os.path
 import re
+import six.moves.urllib.parse
 import sys
-import urlparse
 import zeit.cms.browser.view
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -39,7 +39,7 @@ class Toc(zeit.cms.browser.view.Base):
         config = zope.app.appsetup.product \
             .getProductConfiguration('zeit.content.volume')
         self.dav_archive_url = config.get('dav-archive-url')
-        self.dav_archive_url_parsed = urlparse.urlparse(self.dav_archive_url)
+        self.dav_archive_url_parsed = six.moves.urllib.parse.urlparse(self.dav_archive_url)
         self.excluder = Excluder()
         # We need to remember our context DAV properties, as we can't get to
         # them after we change IConnector to ITocConnector. But since we only
@@ -232,7 +232,7 @@ class Toc(zeit.cms.browser.view.Base):
             'access': "//attribute[@name='access']/text()"
         }
         res = {}
-        for key, xpath in xpaths.iteritems():
+        for key, xpath in xpaths.items():
             res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
 
@@ -251,7 +251,7 @@ class Toc(zeit.cms.browser.view.Base):
         return False
 
     def _normalize_toc_element(self, toc_entry):
-        for key, value in toc_entry.iteritems():
+        for key, value in toc_entry.items():
             toc_entry[key] = value[0].replace(self.CSV_DELIMITER, '') \
                 if len(value) > 0 else u""
         self._normalize_teaser(toc_entry)
@@ -267,7 +267,7 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
-            page = sys.maxint
+            page = sys.maxsize
         toc_entry['page'] = page
 
     def _normalize_teaser(self, toc_entry):
@@ -296,11 +296,11 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data: Table of content data as dict.
         :return: OrderedDict
         """
-        for product_name, ressort_dict in toc_data.iteritems():
-            for ressort_name, articles in ressort_dict.iteritems():
+        for product_name, ressort_dict in toc_data.items():
+            for ressort_name, articles in ressort_dict.items():
                 toc_data[product_name][ressort_name] = \
-                    sorted(articles, key=lambda x: x.get('page', sys.maxint))
-        for product_name, ressort_dict in toc_data.iteritems():
+                    sorted(articles, key=lambda x: x.get('page', sys.maxsize))
+        for product_name, ressort_dict in toc_data.items():
             toc_data[product_name] = self._sorted_ressorts(ressort_dict)
         return toc_data
 
@@ -312,11 +312,11 @@ class Toc(zeit.cms.browser.view.Base):
         :return: OrderedDict
         """
         ressort_min_page_number_tuples = []
-        for resort_name, articles in ressorts.iteritems():
+        for resort_name, articles in ressorts.items():
             # Empty ressorts should be listed as last entries in toc
-            min_page = sys.maxint
+            min_page = sys.maxsize
             if articles:
-                min_page = articles[0].get('page', sys.maxint)
+                min_page = articles[0].get('page', sys.maxsize)
             ressort_min_page_number_tuples.append((resort_name, min_page))
         d = OrderedDict()
         for ressort_page_tuple in sorted(
@@ -353,9 +353,9 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_entries - The Toc data as ordered dict.
         :return: [CSV Row]
         """
-        for product_name, ressort_dict in toc_entries.iteritems():
+        for product_name, ressort_dict in toc_entries.items():
             yield [product_name]
-            for ressort_name, toc_entries in ressort_dict.iteritems():
+            for ressort_name, toc_entries in ressort_dict.items():
                 yield ['', ressort_name]
                 for toc_entry in toc_entries:
                     yield self._format_toc_element(toc_entry)
@@ -366,7 +366,7 @@ class Toc(zeit.cms.browser.view.Base):
             [toc_entry.get("title"),
              toc_entry.get("teaser")])
         page = toc_entry.get('page')
-        if page == sys.maxint:
+        if page == sys.maxsize:
             page = ''
         return [str(page), title_teaser, '', '', toc_entry.get('access')] + \
             [''] * 14 + [toc_entry.get('preview_url', '')]

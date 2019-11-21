@@ -5,7 +5,8 @@ import fractions
 import json
 import logging
 import re
-import urllib2
+import six
+import six.moves.urllib.request
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -287,9 +288,9 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             feed = AutomaticFeed(
-                unicode(node.get('id')),
-                unicode(node.text.strip()),
-                unicode(node.get('url')),
+                six.text_type(node.get('id')),
+                six.text_type(node.text.strip()),
+                six.text_type(node.get('url')),
                 int(node.get('timeout', 2))
             )
             result[feed.id] = feed
@@ -381,7 +382,7 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
         url = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp').get('topicpage-filter-source')
         try:
-            data = '\n'.join([x for x in urllib2.urlopen(url)
+            data = '\n'.join([x for x in six.moves.urllib.request.urlopen(url)
                               if not re.search(r'\s*//', x)])
             data = json.loads(data)
         except Exception:
@@ -611,7 +612,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
                 query = json.loads(data.elasticsearch_raw_query)
                 if 'query' not in query:
                     raise ValueError('Top-level key "query" is required.')
-            except (TypeError, ValueError), err:
+            except (TypeError, ValueError) as err:
                 raise zeit.cms.interfaces.ValidationError(
                     _('Elasticsearch raw query is malformed: {error}'
                       ).format(error=err.message))
@@ -709,7 +710,7 @@ class IntChoice(zope.schema.Choice):
     def fromUnicode(self, value):
         try:
             value = int(value)
-        except:
+        except Exception:
             pass
         return super(IntChoice, self).fromUnicode(value)
 

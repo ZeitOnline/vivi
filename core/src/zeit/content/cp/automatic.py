@@ -395,13 +395,13 @@ class TMSContentQuery(ContentQuery):
             cache[key] = response, start, hits
         while len(result) < self.rows:
             try:
-                item = response.next()
+                item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
                 response, hits = self._get_documents(start=start, rows=rows)
                 cache[key] = response, start, hits
                 try:
-                    item = response.next()
+                    item = next(response)
                 except StopIteration:
                     break                       # results are exhausted
             content = self._resolve(item)
@@ -495,7 +495,7 @@ class RSSFeedContentQuery(ContentQuery):
                                      self.rss_feed.timeout)
             xml = lxml.etree.fromstring(content)
         except (requests.exceptions.RequestException,
-                lxml.etree.XMLSyntaxError), e:
+                lxml.etree.XMLSyntaxError) as e:
             log.debug('Could not fetch feed {}: {}'.format(
                 self.rss_feed.url, e))
             return []

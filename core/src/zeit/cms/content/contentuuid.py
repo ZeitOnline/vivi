@@ -1,6 +1,7 @@
 import logging
-import zeit.cms.checkout.interfaces
+import six
 import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -45,7 +46,7 @@ def properties(context):
 
 class SimpleUUID(object):
 
-    zope.component.adapts(basestring)
+    zope.component.adapts(six.string_types[0])
     zope.interface.implements(zeit.cms.content.interfaces.IUUID)
 
     def __init__(self, context):

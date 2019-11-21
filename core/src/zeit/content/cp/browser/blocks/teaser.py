@@ -300,7 +300,7 @@ class Countings(object):
     @zope.cachedescriptors.property.Lazy
     def countings(self):
         try:
-            item = iter(self.context).next()
+            item = next(iter(self.context))
         except StopIteration:
             pass
         else:

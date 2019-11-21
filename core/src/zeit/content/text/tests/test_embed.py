@@ -30,4 +30,4 @@ class EmbedParameters(zeit.content.text.testing.FunctionalTestCase):
         self.assertEqual({}, embed.parameter_fields)
         embed = self.create(
             '{"one": "not a field", "two": zope.schema.TextLine()}')
-        self.assertEqual(["two"], embed.parameter_fields.keys())
+        self.assertEqual(["two"], list(embed.parameter_fields.keys()))

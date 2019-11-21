@@ -1,5 +1,6 @@
 # coding: utf8
 from gocept.selenium.wd_selenese import split_locator
+from six.moves import range
 import lxml.cssselect
 import transaction
 import zeit.content.cp.testing

@@ -8,6 +8,7 @@ import zeit.edit.testing
 import zeit.edit.tests.fixture
 import zope.interface
 import zope.security.proxy
+from six.moves import range
 
 
 class TestContainer(unittest.TestCase):

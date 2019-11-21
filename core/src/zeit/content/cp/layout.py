@@ -1,5 +1,6 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
+import six
 import zeit.cms.content.sources
 import zope.interface
 
@@ -118,7 +119,7 @@ class ModuleConfig(AllowedMixin):
 class ObjectSource(zeit.cms.content.sources.ObjectSource):
 
     def _get_title_for(self, node):
-        return unicode(node.get('title'))
+        return six.text_type(node.get('title'))
 
 
 class TeaserBlockLayoutSource(

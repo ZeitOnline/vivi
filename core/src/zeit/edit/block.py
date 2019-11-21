@@ -1,9 +1,10 @@
 from xmldiff.main import diff_trees
+from six.moves import map
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import sys
-import urlparse
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
@@ -75,17 +76,17 @@ class Element(zope.container.contained.Contained,
     def __repr__(self):
         try:
             uniqueId = self.uniqueId.encode('ascii', 'replace')
-        except:
+        except Exception:
             uniqueId = '(unknown)'
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, uniqueId)
 
 
 @grok.adapter(
-    basestring, name='http://block.vivi.zeit.de/')
+    six.string_types[0], name='http://block.vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def resolve_block_id(context):
-    parts = urlparse.urlparse(context)
+    parts = six.moves.urllib.parse.urlparse(context)
     assert parts.path.startswith('/')
     path = parts.path[1:]
     content = zeit.cms.cmscontent.resolve_wc_or_repository(path)
@@ -139,7 +140,8 @@ class ElementFactory(object):
 
         """
         element = zope.component.getSiteManager().adapters.lookup(
-            map(zope.interface.providedBy, (self.context, self.get_xml())),
+            list(map(zope.interface.providedBy,
+                     (self.context, self.get_xml()))),
             zeit.edit.interfaces.IElement,
             name=self.element_type)
         return getattr(element, 'grokcore.component.directive.provides', None)

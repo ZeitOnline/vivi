@@ -1,3 +1,4 @@
+from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
 import gocept.cache.property
@@ -6,6 +7,7 @@ import logging
 import os.path
 import persistent
 import re
+import six
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.repository.interfaces
@@ -134,7 +136,7 @@ class Container(ContentBase):
 
     def items(self):
         '''See interface `IReadContainer`'''
-        return zip(self.keys(), self.values())
+        return list(zip(list(self.keys()), list(self.values())))
 
     def __contains__(self, key):
         '''See interface `IReadContainer`'''
@@ -254,7 +256,7 @@ class Repository(persistent.Persistent, Container):
         return super(Repository, self).keys()
 
     def getContent(self, unique_id):
-        if not isinstance(unique_id, basestring):
+        if not isinstance(unique_id, six.string_types):
             raise TypeError("unique_id: string expected, got %s" %
                             type(unique_id))
         unique_id = self._get_normalized_unique_id(unique_id)
@@ -401,7 +403,7 @@ def invalidate_uncontained_content(event):
 
 
 @grokcore.component.adapter(
-    basestring, name=zeit.cms.interfaces.ID_NAMESPACE)
+    six.string_types[0], name=zeit.cms.interfaces.ID_NAMESPACE)
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_content(uniqueId):
     repository = zope.component.queryUtility(
@@ -419,7 +421,7 @@ def unique_id_to_content(uniqueId):
 
 
 @grokcore.component.adapter(
-    basestring, name=zeit.cms.interfaces.ID_NAMESPACE)
+    six.string_types[0], name=zeit.cms.interfaces.ID_NAMESPACE)
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSWCContent)
 def unique_id_to_wc_or_repository(uniqueId):
     wc = zope.component.queryAdapter(
@@ -442,7 +444,7 @@ IGNORED_VIVI_SUFFIXES = re.compile(r'/@@.*$')
 
 
 @grokcore.component.adapter(
-    basestring, name='http://www.zeit.de/')
+    six.string_types[0], name='http://www.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def live_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('www', 'xml', 1)
@@ -451,7 +453,7 @@ def live_url_to_content(uniqueId):
 
 
 @grokcore.component.adapter(
-    basestring, name='https://www.zeit.de/')
+    six.string_types[0], name='https://www.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def live_https_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('https://www', 'http://xml', 1)
@@ -460,7 +462,7 @@ def live_https_url_to_content(uniqueId):
 
 
 @grokcore.component.adapter(
-    basestring, name='http://vivi.zeit.de/')
+    six.string_types[0], name='http://vivi.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_url_to_content(uniqueId):
     prefix = 'http://vivi.zeit.de/repository/'
@@ -472,7 +474,7 @@ def vivi_url_to_content(uniqueId):
 
 
 @grokcore.component.adapter(
-    basestring, name='https://vivi.zeit.de/')
+    six.string_types[0], name='https://vivi.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_https_url_to_content(uniqueId):
     prefix = 'https://vivi.zeit.de/repository/'
@@ -483,7 +485,8 @@ def vivi_https_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
-@grokcore.component.adapter(basestring, name='<no-scheme>://<no-netloc>/')
+@grokcore.component.adapter(
+    six.string_types[0], name='<no-scheme>://<no-netloc>/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
     # try repository

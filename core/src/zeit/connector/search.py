@@ -1,3 +1,5 @@
+import six
+
 # search.py
 # format a search spec as S-expression
 
@@ -20,7 +22,7 @@ def render(x):
     if isinstance(x, SearchSymbol):  # FIXME more generic!
         return x._render()
     else:  # assume string
-        if isinstance(x, unicode):
+        if isinstance(x, six.text_type):
             x = x.encode('utf8')
         return quotestring(x)
 

@@ -1,12 +1,12 @@
 # coding: utf-8
+from six.moves import input
 from zeit.push.interfaces import facebookAccountSource
 import argparse
 import fb
 import grokcore.component as grok
 import logging
 import requests
-import urllib
-import urlparse
+import six.moves.urllib.parse
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
@@ -88,46 +88,49 @@ def create_access_token(argv=None):
 
     # Step 1: Get user token. <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#login>
-    login_url = 'https://www.facebook.com/dialog/oauth?' + urllib.urlencode({
+    login_url = ('https://www.facebook.com/dialog/oauth?' +
+                 six.moves.urllib.parse.urlencode({
         'client_id': options.app_id,
         'redirect_uri': options.redirect_uri,
         'scope': 'manage_pages,publish_pages',
-    })
-    print u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
-        login_url)
+    }))
+    print(u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
+        login_url))
     print (
         u'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
-    result_url = raw_input('die neue URL bitte hier eingeben: ')
-    code = urlparse.parse_qs(urlparse.urlparse(result_url).query)['code'][0]
+    result_url = input('die neue URL bitte hier eingeben: ')
+    code = six.moves.urllib.parse.parse_qs(
+        six.moves.urllib.parse.urlparse(result_url).query)['code'][0]
 
     # Step 1b: Convert code to token <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#confirm>
     r = requests.get(
-        'https://graph.facebook.com/oauth/access_token?' + urllib.urlencode({
+        'https://graph.facebook.com/oauth/access_token?' + six.moves.urllib.parse.urlencode({
             'client_id': options.app_id,
             'client_secret': options.app_secret,
             'redirect_uri': options.redirect_uri,
             'code': code,
         }))
     if 'error' in r.text:
-        print r.text
+        print(r.text)
         raise SystemExit(1)
     short_lived_user_token = r.json()['access_token']
 
     # Step 2: Exchange for long-lived token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#extending>
     r = requests.get(
-        'https://graph.facebook.com/oauth/access_token?' + urllib.urlencode({
+        'https://graph.facebook.com/oauth/access_token?' +
+        six.moves.urllib.parse.urlencode({
             'client_id': options.app_id,
             'client_secret': options.app_secret,
             'grant_type': 'fb_exchange_token',
             'fb_exchange_token': short_lived_user_token,
         }))
     if 'error' in r.text:
-        print r.text
+        print(r.text)
         raise SystemExit(1)
     long_lived_user_token = r.json()['access_token']
-    print u'Das User Token ist: %s' % long_lived_user_token
+    print(u'Das User Token ist: %s' % long_lived_user_token)
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#pagetokens>
@@ -139,4 +142,4 @@ def create_access_token(argv=None):
     page_token = [x['access_token'] for x in accounts['accounts']['data']
                   if x['name'] == options.page_name][0]
 
-    print u'Das Page Token für %s ist: %s' % (options.page_name, page_token)
+    print(u'Das Page Token für %s ist: %s' % (options.page_name, page_token))

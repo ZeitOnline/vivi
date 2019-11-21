@@ -50,7 +50,7 @@ class BlobWidget(zope.app.form.browser.FileWidget):
         try:
             seek = input.seek
             read = input.read
-        except AttributeError, e:
+        except AttributeError as e:
             raise ConversionError(_('Form input is not a file object'), e)
         else:
             if getattr(input, 'filename', ''):

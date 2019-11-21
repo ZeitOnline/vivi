@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import persistent
+import six
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
@@ -42,7 +43,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         unicode_data = None
         if encoding:
             try:
-                unicode_data = unicode(data, encoding)
+                unicode_data = six.text_type(data, encoding)
             except UnicodeDecodeError:
                 pass
         if unicode_data is None:
@@ -51,7 +52,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
                     zeit.content.text.interfaces.IText['encoding'].vocabulary):
                 encoding = encoding_term.value
                 try:
-                    unicode_data = unicode(data, encoding)
+                    unicode_data = six.text_type(data, encoding)
                 except UnicodeDecodeError:
                     pass
                 else:

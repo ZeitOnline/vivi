@@ -4,14 +4,14 @@ DAVResource is the class to use; it points to a location (URL) and offers
 some methods to retrieve informations about the refered to resource.
 """
 
-from urlparse import urlparse, urlunparse
+from six.moves.urllib.parse import urlparse, urlunparse, unquote
 from zeit.connector.dav.interfaces import DAVNotFoundError, DAVNoFileError
 import lxml.etree
 import pprint
 import re
-import urllib
 import zeit.connector.dav.davxml
 import zeit.connector.dav.interfaces
+import six
 
 
 _DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
@@ -193,7 +193,7 @@ class DAVResponse(object):
             raise zeit.connector.dav.interfaces.DAVNotFoundError(
                 'No href found in node %s!' % res_node.nodePath())
         url_node = href_nodes[0]
-        self.url = urllib.unquote(url_node.text.strip())
+        self.url = unquote(url_node.text.strip())
         if isinstance(self.url, str):
             self.url = self.url.decode('utf8')
         # self.url = url_node.text.strip()
@@ -501,7 +501,7 @@ class DAVResource(object):
                     # the values should be unicode. If they are not the we at
                     # least try to make one. This is ok for ascii stirngs and
                     # breaks on every encoded string. Just like it should.
-                    value = unicode(value)
+                    value = six.text_type(value)
                     # Temporary fix to avoid webdav server confusion. When the
                     # value starts with a '<' the server does some magic. Avoid
                     # this by adding a magic marker before the actual value.
@@ -707,7 +707,7 @@ class DAVCollection(DAVResource):
             except DAVNoFileError:
                 fo = DAVCollection(furl, self._conn, self.auto_request)
                 pass
-            except zeit.connector.dav.interfaces.DAVError, ex:
+            except zeit.connector.dav.interfaces.DAVError as ex:
                 # forbidden, not found, mehtod not allowed
                 if ex.args[0] in (403, 404, 405):
                     # ignore files one does not have access to

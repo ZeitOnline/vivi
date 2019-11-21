@@ -1,3 +1,4 @@
+import six
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
@@ -42,7 +43,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
     title_xpath = '/templates/template'
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
     def allow_header_module(self, context):
         tree = self._get_tree()
@@ -76,18 +77,18 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
                 continue
             defaults = header.get('default_for').split(' ')
             if self._provides_default(context, defaults):
-                return (unicode(template.get('name')),
-                        unicode(header.get('name')))
+                return (six.text_type(template.get('name')),
+                        six.text_type(header.get('name')))
 
     def _get_generic_default(self):
         generic_default = self._get_tree().xpath('//*[@default_for="*"]')
         if len(generic_default) == 1:
             elem = generic_default.pop()
             if elem.tag == 'header':
-                return (unicode(elem.getparent().get('name')),
-                        unicode(elem.get('name')))
+                return (six.text_type(elem.getparent().get('name')),
+                        six.text_type(elem.get('name')))
             elif elem.tag == 'template':
-                return (unicode(elem.get('name')), u'')
+                return (six.text_type(elem.get('name')), u'')
         return (u'', u'')
 
     def get_default_template(self, context):
@@ -96,7 +97,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
             if template.get('default_for'):
                 defaults = template.get('default_for').split(' ')
                 if self._provides_default(context, defaults):
-                    return (unicode(template.get('name')), u'')
+                    return (six.text_type(template.get('name')), u'')
 
             # header might define default for this template
             # implicitly
@@ -135,7 +136,7 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
         return zeit.content.article.interfaces.IArticleMetadata
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
 
 class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
@@ -200,7 +201,7 @@ class MainImageVariantNameSource(ImageVariantNameSource):
 
     def _template(self, context):
         return '.'.join(
-            filter(None, [context.template, context.header_layout]))
+            [x for x in [context.template, context.header_layout] if x])
 
     def getValues(self, context):
         values = super(MainImageVariantNameSource, self).getValues(context)

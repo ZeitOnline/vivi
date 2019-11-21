@@ -1,17 +1,18 @@
 from datetime import datetime
+from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zeit.cms.i18n import MessageFactory as _
 from zeit.workflow.interfaces import ITimeBasedPublishing
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException
 import grokcore.component
 import logging
 import pytz
+import six
+import six.moves.urllib.request
 import sys
-import urllib2
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.interfaces
@@ -64,7 +65,7 @@ class Rule(object):
             pass
         except ZODB.POSException.ConflictError:
             raise
-        except:
+        except Exception:
             log.error('Error while evaluating rule starting line %s\n'
                       'Globals=%s' %
                       (self.line if self.line else '<unknown>', globs),
@@ -140,13 +141,13 @@ class RulesManager(grokcore.component.GlobalUtility):
         url = config.get('rules-url')
         if not url:
             return []
-        file_rules = urllib2.urlopen(url)
+        file_rules = six.moves.urllib.request.urlopen(url)
         log.info('Loading rules from %s' % url)
         noop = True
         rule = []
         start_line = 0
         for line_no, line in enumerate(file_rules):
-            line = unicode(line, 'utf-8')
+            line = six.text_type(line, 'utf-8')
             if line.startswith('applicable') and noop:
                 # start a new rule
                 if rule:
@@ -171,7 +172,7 @@ class RulesManager(grokcore.component.GlobalUtility):
     def rules(self):
         try:
             self._rules = self.get_rules()
-        except SyntaxError, e:
+        except SyntaxError as e:
             # return the previously cached rules unmodified
             log.exception(e)
         return self._rules

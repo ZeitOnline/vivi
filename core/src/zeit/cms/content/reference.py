@@ -16,8 +16,8 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import urllib
-import urlparse
+import six
+import six.moves.urllib.parse
 import z3c.traverser.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
@@ -450,7 +450,7 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def uniqueId(self):
-        return '%s?%s' % (ID_PREFIX, urllib.urlencode(dict(
+        return '%s?%s' % (ID_PREFIX, six.moves.urllib.parse.urlencode(dict(
             source=self.__parent__.uniqueId, attribute=self.attribute,
             target=self.target_unique_id)))
 
@@ -465,11 +465,12 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
-@grok.adapter(basestring, name=ID_PREFIX)
+@grok.adapter(six.string_types[0], name=ID_PREFIX)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_reference(unique_id):
     assert unique_id.startswith(ID_PREFIX)
-    params = urlparse.parse_qs(urlparse.urlparse(unique_id).query)
+    params = six.moves.urllib.parse.parse_qs(
+        six.moves.urllib.parse.urlparse(unique_id).query)
     source = zeit.cms.cmscontent.resolve_wc_or_repository(params['source'][0])
     references = getattr(source, params['attribute'][0], {})
     return references.get(params['target'][0])
@@ -487,8 +488,8 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         return base + '/++attribute++%s/%s' % (
             # XXX zope.publisher seems to decode stuff (but why?), so we need
             # to encode twice
-            self.context.attribute, urllib.quote_plus(
-                urllib.quote_plus(self.context.__name__)))
+            self.context.attribute, six.moves.urllib.parse.quote_plus(
+                six.moves.urllib.parse.quote_plus(self.context.__name__)))
 
 
 class Traverser(object):
@@ -500,7 +501,7 @@ class Traverser(object):
         self.request = request
 
     def publishTraverse(self, request, name):
-        reference = self.context.get(urllib.unquote_plus(name))
+        reference = self.context.get(six.moves.urllib.parse.unquote_plus(name))
         if reference is not None:
             return reference
         raise zope.publisher.interfaces.NotFound(self.context, name, request)

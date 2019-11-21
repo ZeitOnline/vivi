@@ -5,6 +5,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import logging
 import os.path
 import pytz
+import six
 import subprocess
 import tempfile
 import threading
@@ -170,7 +171,7 @@ class PublishRetractTask(object):
         finally:
             timer.mark('Done %s' % ids_str)
             timer_logger.debug(
-                'Timings:\n%s' % (unicode(timer).encode('utf8'),))
+                'Timings:\n%s' % (six.text_type(timer).encode('utf8'),))
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -308,7 +309,7 @@ class PublishRetractTask(object):
 
     @staticmethod
     def call_script(filename, input_data):
-        if isinstance(input_data, unicode):
+        if isinstance(input_data, six.text_type):
             input_data = input_data.encode('UTF-8')
         with tempfile.NamedTemporaryFile() as f:
             f.write(input_data)
@@ -356,7 +357,7 @@ class PublishTask(PublishRetractTask):
             try:
                 obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_publish, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
             else:
                 published.append(obj)
@@ -372,7 +373,7 @@ class PublishTask(PublishRetractTask):
             try:
                 self.recurse(self.after_publish, obj, obj)
                 obj = self.recurse(self.unlock, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
 
         if errors:
@@ -440,7 +441,7 @@ class RetractTask(PublishRetractTask):
                     obj.uniqueId)
             try:
                 obj = self.recurse(self.before_retract, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
             else:
                 retracted.append(obj)
@@ -455,7 +456,7 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             try:
                 self.recurse(self.after_retract, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
 
         if errors:

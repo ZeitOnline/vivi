@@ -133,7 +133,7 @@ class XMLContentTypeDeclaration(TypeDeclaration):
     def content(self, resource):
         try:
             return self.factory(xml_source=resource.data)
-        except lxml.etree.XMLSyntaxError, e:
+        except lxml.etree.XMLSyntaxError as e:
             log.warning("Could not parse XML of %s: %s (%s)" % (
                 resource.id, e.__class__.__name__, e))
             return None

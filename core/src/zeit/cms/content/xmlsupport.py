@@ -7,6 +7,7 @@ import lxml.objectify
 import persistent
 import persistent.interfaces
 import pytz
+import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
@@ -270,16 +271,16 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
         entry['text'] = entry['description'] = metadata.teaserText
         entry['byline'] = metadata.byline
         if metadata.year:
-            entry.set('year', unicode(metadata.year))
+            entry.set('year', six.text_type(metadata.year))
         if metadata.volume:
-            entry.set('issue', unicode(metadata.volume))
+            entry.set('issue', six.text_type(metadata.volume))
         if metadata.ressort:
-            entry.set('ressort', unicode(metadata.ressort))
+            entry.set('ressort', six.text_type(metadata.ressort))
         if metadata.serie:
-            entry.set('serie', unicode(metadata.serie.serienname))
+            entry.set('serie', six.text_type(metadata.serie.serienname))
         try:
             type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
         except TypeError:
             return
         if type_decl.type_identifier:
-            entry.set('contenttype', unicode(type_decl.type_identifier))
+            entry.set('contenttype', six.text_type(type_decl.type_identifier))

@@ -141,7 +141,7 @@ class CMSContent(Converter):
                         zeit.cms.content.interfaces.IDAVPropertyConverter)
                     pyval = davconverter.fromProperty(value)
                     value = converter.toProperty(pyval)
-                except Exception, e:
+                except Exception as e:
                     log.warning(
                         'Could not parse DAV property value %r for '
                         '%s.%s at %s [%s: %r]. Using default %r instead.' % (
