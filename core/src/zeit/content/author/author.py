@@ -47,6 +47,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'initials',
         'lastname',
         'occupation',
+        'show_letterbox_link',
         'status',
         'summary',
         'title',
