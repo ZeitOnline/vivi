@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.22.1 (unreleased)
+4.22.1 (2019-11-22)
 -------------------
 
 - FIX: Restore translations that were lost in 4.22.0
