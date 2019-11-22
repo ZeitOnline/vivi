@@ -88,9 +88,10 @@ class MasterSlaveDropdownUpdater(object):
         except KeyError:
             return []
 
+        @zope.interface.implementer(
+            self.slave_source.factory.master_value_iface)
         class Fake(object):
-            zope.interface.implements(
-                self.slave_source.factory.master_value_iface)
+            pass
         fake = Fake()
         setattr(fake, self.slave_source.factory.master_value_key, master_value)
 

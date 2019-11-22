@@ -8,9 +8,8 @@ import zeit.edit.block
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.modules.interfaces.IEmbed)
 class Embed(zeit.edit.block.Element):
-
-    zope.interface.implements(zeit.content.modules.interfaces.IEmbed)
 
     url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'url', zeit.content.modules.interfaces.IEmbed['url'])

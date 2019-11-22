@@ -85,10 +85,9 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             self.skipTest('vgwort test system is down')
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zope.index.text.interfaces.ISearchableText)
 class SearchableText(object):
-
-    zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata)
-    zope.interface.implements(zope.index.text.interfaces.ISearchableText)
 
     def __init__(self, context):
         self.context = context

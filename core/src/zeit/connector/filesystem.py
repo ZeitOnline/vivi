@@ -23,15 +23,13 @@ ID_NAMESPACE = u'http://xml.zeit.de/'
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector(object):
     """Connect to the CMS backend in read-only mode.
 
     The current implementation does *not* talk to the CMS backend but to
     a data store in the filesystem, the path to which needs to be configured.
-
     """
-
-    zope.interface.implements(zeit.connector.interfaces.IConnector)
 
     resource_class = zeit.connector.resource.CachedResource
     canonicalize_directories = True

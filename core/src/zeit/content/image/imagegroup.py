@@ -32,11 +32,10 @@ import zope.security.proxy
 INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 
+@zope.interface.implementer(
+    zeit.content.image.interfaces.IImageGroup,
+    zeit.cms.repository.interfaces.INonRecursiveCollection)
 class ImageGroupBase(object):
-
-    zope.interface.implements(
-        zeit.content.image.interfaces.IImageGroup,
-        zeit.cms.repository.interfaces.INonRecursiveCollection)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
@@ -169,6 +168,7 @@ class ImageGroupBase(object):
         return url
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class VariantTraverser(object):
     """The following URLs may render images:
 
@@ -194,8 +194,6 @@ class VariantTraverser(object):
       to generate the new variant.
 
     """
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -325,11 +323,10 @@ class VariantTraverser(object):
         return None
 
 
+@zope.interface.implementer(
+    zeit.content.image.interfaces.IRepositoryImageGroup)
 class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
-
-    zope.interface.implements(
-        zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def __getitem__(self, key):
         item = super(ImageGroup, self).__getitem__(key)
@@ -360,11 +357,10 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
         return 'httpd/unix-directory'
 
 
+@zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)
 class LocalImageGroup(ImageGroupBase,
                       persistent.Persistent,
                       zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
 
     def __getitem__(self, key):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
@@ -491,9 +487,8 @@ def guess_external_id(context, event):
         meta.external_id = match.group(1)
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class ThumbnailTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

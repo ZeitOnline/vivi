@@ -14,9 +14,8 @@ import zope.schema.interfaces
 from six.moves import map
 
 
+@zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
 class Content(object):
-
-    zope.interface.implements(zeit.retresco.interfaces.ITMSContent)
 
     uniqueId = None
     __name__ = None

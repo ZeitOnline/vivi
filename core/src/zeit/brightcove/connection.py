@@ -10,6 +10,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.brightcove.interfaces.ICMSAPI)
 class CMSAPI(object):
     """Connection to the Brightcove "CMS API".
 
@@ -17,8 +18,6 @@ class CMSAPI(object):
     * API Reference: <https://brightcovelearning.github.io
         /Brightcove-API-References/cms-api/v1/doc/index.html>
     """
-
-    zope.interface.implements(zeit.brightcove.interfaces.ICMSAPI)
 
     MAX_RETRIES = 2
     _access_token = None
@@ -185,6 +184,7 @@ def cms_from_product_config():
     )
 
 
+@zope.interface.implementer(zeit.content.video.interfaces.IPlayer)
 class PlaybackAPI(object):
     """Connection to the Brightcove "Playback API".
 
@@ -192,8 +192,6 @@ class PlaybackAPI(object):
     * API Reference: <https://brightcovelearning.github.io
         /Brightcove-API-References/playback-api/v1/doc/index.html>
     """
-
-    zope.interface.implements(zeit.content.video.interfaces.IPlayer)
 
     def __init__(self, base_url, policy_key, timeout):
         self.base_url = base_url

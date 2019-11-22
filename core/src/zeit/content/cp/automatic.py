@@ -42,10 +42,9 @@ def cached_on_centerpage(keyfunc=operator.attrgetter('__name__'), attr=None):
     return decorator
 
 
+@zope.component.adapter(zeit.content.cp.interfaces.IArea)
+@zope.interface.implementer(zeit.content.cp.interfaces.IRenderedArea)
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
-
-    zope.component.adapts(zeit.content.cp.interfaces.IArea)
-    zope.interface.implements(zeit.content.cp.interfaces.IRenderedArea)
 
     start = 0  # Extension point for zeit.web to do pagination
 

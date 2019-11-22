@@ -238,9 +238,9 @@ that reduces the list of log entries to just the last two:
 >>> [entry.message for entry in content_log.logs]
 ['not-there-log', 'bling', 'baz', 'bar', 'Foo']
 
->>> class Processor(object):
-...     zope.component.adapts(Content)
-...     zope.interface.implements(zeit.objectlog.interfaces.ILogProcessor)
+>>> @zope.component.adapter(Content)
+... @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
+... class Processor(object):
 ...     def __init__(self, context):
 ...         pass
 ...     def __call__(self, entries):

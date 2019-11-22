@@ -6,11 +6,10 @@ import zope.interface
 
 
 @total_ordering
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zope.app.keyreference.interfaces.IKeyReference)
 class CMSContentKeyReference(object):
     """An IKeyReference to cms objects."""
-
-    zope.interface.implements(zope.app.keyreference.interfaces.IKeyReference)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     key_type_id = 'zeit.cms.content.keyreference'
 

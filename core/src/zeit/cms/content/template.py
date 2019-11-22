@@ -4,6 +4,7 @@ import zeit.cms.content.interfaces
 import zeit.connector.resource
 import zope.container.btree
 import zope.container.contained
+import zope.interface
 
 
 class BasicTemplateSourceFactory(zc.sourcefactory.basic.BasicSourceFactory):
@@ -24,24 +25,21 @@ def BasicTemplateSource(template_manager):
     return source
 
 
+@zope.interface.implementer(
+    zeit.cms.content.interfaces.ITemplateManagerContainer)
 class TemplateManagerContainer(zope.container.btree.BTreeContainer):
     """Container which holds all template managers."""
 
-    zope.interface.implements(
-        zeit.cms.content.interfaces.ITemplateManagerContainer)
 
-
+@zope.interface.implementer(zeit.cms.content.interfaces.ITemplateManager)
 class TemplateManager(zope.container.btree.BTreeContainer):
     """Manages templates for a content type."""
 
-    zope.interface.implements(zeit.cms.content.interfaces.ITemplateManager)
 
-
+@zope.interface.implementer(zeit.cms.content.interfaces.ITemplate)
 class Template(zope.container.contained.Contained,
                persistent.Persistent):
     """A template for xml content types."""
-
-    zope.interface.implements(zeit.cms.content.interfaces.ITemplate)
 
     xml = None
     title = None

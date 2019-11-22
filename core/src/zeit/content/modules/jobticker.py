@@ -7,9 +7,8 @@ import zeit.edit.block
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.modules.interfaces.IJobTicker)
 class JobTicker(zeit.edit.block.Element):
-
-    zope.interface.implements(zeit.content.modules.interfaces.IJobTicker)
 
     source = NotImplemented
 

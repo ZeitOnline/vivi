@@ -5,9 +5,10 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 
 
+@zope.component.adapter(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class CommonMetadataListRepresentation(
         zeit.cms.browser.listing.CommonListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata,
-                          zeit.cms.browser.interfaces.ICMSLayer)
+    pass

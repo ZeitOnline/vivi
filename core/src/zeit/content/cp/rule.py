@@ -6,9 +6,8 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
 
     @property
     def children(self):

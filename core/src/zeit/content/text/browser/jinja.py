@@ -16,13 +16,12 @@ class Edit(zeit.cms.browser.form.EditForm):
         zeit.content.text.interfaces.IJinjaTemplate)
 
 
+@zope.component.adapter(
+    zeit.content.text.interfaces.IJinjaTemplate,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(
         zeit.cms.repository.browser.adapter.CMSContentListRepresentation):
-
-    zope.component.adapts(
-        zeit.content.text.interfaces.IJinjaTemplate,
-        zope.publisher.interfaces.IPublicationRequest)
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     @property
     def title(self):

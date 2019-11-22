@@ -34,11 +34,11 @@ GALLERY_TEMPLATE = u"""\
 </gallery>"""
 
 
+@zope.interface.implementer(
+    zeit.content.gallery.interfaces.IGallery,
+    zeit.cms.interfaces.IEditorialContent)
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
     """Gallery"""
-
-    zope.interface.implements(zeit.content.gallery.interfaces.IGallery,
-                              zeit.cms.interfaces.IEditorialContent)
 
     _image_folder = zeit.cms.content.property.SingleResource(
         '.head.image-folder')
@@ -286,9 +286,8 @@ def galleryentry_factory(context):
     return entry
 
 
+@zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
 class GalleryEntry(object):
-
-    zope.interface.implements(zeit.content.gallery.interfaces.IGalleryEntry)
 
     @property
     def crops(self):
@@ -299,10 +298,9 @@ class GalleryEntry(object):
         return result
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class EntryXMLRepresentation(object):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
     def __init__(self, context):
         self.context = context
@@ -334,9 +332,8 @@ class EntryXMLRepresentation(object):
         return node
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGallery)
 
     def get_tree(self):
         # we can't express that 'body' is allowed for IGallery objects as a
@@ -351,9 +348,8 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
         return text
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
 
     def get_tree(self):
         return self.context.text
@@ -372,11 +368,10 @@ def get_visible_entry_count_for_gallery(context):
     return len(container.xpath('block[not(@layout="hidden")]/@name'))
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
 class EntryMetadata(object):
     """ImageMetadata composition from gallery entry and its image."""
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-    zope.interface.implements(zeit.content.image.interfaces.IImageMetadata)
 
     def __init__(self, context):
         self.context = context

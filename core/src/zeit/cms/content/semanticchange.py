@@ -11,9 +11,8 @@ import zope.lifecycleevent.interfaces
 import zope.security.proxy
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.ISemanticChange)
 class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.cms.content.interfaces.ISemanticChange)
 
     last_semantic_change = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ISemanticChange['last_semantic_change'],

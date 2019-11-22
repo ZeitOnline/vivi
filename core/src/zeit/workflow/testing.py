@@ -93,6 +93,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
 
@@ -103,9 +104,6 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     mechanism to display validation errors during publish.
 
     """
-
-    zope.interface.implements(
-        zeit.cms.workflow.interfaces.IPublishInfo)
 
     def __init__(self, context, message, can_publish):
         self.context = context

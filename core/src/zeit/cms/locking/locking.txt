@@ -44,8 +44,8 @@ Create a fake content object:
 
 
 >>> import zeit.cms.interfaces
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     uniqueId = 'foo'
 
 LockStorage

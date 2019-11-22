@@ -3,13 +3,11 @@ import zeit.cms.tagging.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.tag
 import zope.component
-import zope.interface
 
 
+@grok.implementer(zeit.cms.tagging.interfaces.IWhitelist)
 class Whitelist(grok.GlobalUtility):
     """Search for known keywords using the Retresco API."""
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
     def search(self, term):
         return self._tms.get_keywords(term)
@@ -25,9 +23,8 @@ class Whitelist(grok.GlobalUtility):
         return zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
 
+@grok.implementer(zeit.cms.tagging.interfaces.ITopicpages)
 class Topicpages(grok.GlobalUtility):
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITopicpages)
 
     def get_topics(self, start=0, rows=25):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)

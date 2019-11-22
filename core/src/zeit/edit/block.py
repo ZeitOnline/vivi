@@ -12,15 +12,13 @@ import zope.interface
 import zope.traversing.api
 
 
+@zope.component.adapter(
+    zeit.edit.interfaces.IContainer,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.edit.interfaces.IElement)
 class Element(zope.container.contained.Contained,
               zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
-
-    zope.interface.implements(zeit.edit.interfaces.IElement)
-
-    zope.component.adapts(
-        zeit.edit.interfaces.IContainer,
-        gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
         self.xml = xml
@@ -104,11 +102,11 @@ def area_for_element(context):
     return zeit.edit.interfaces.IArea(context.__parent__, None)
 
 
+@grok.implementer(zeit.edit.interfaces.IElementFactory)
 class ElementFactory(object):
     """Base class for element factories."""
 
     grok.baseclass()
-    zope.interface.implements(zeit.edit.interfaces.IElementFactory)
 
     produces = NotImplemented
     element_type = NotImplemented  # Deduced from produces by grokker
@@ -164,8 +162,8 @@ class TypeOnAttributeElementFactory(ElementFactory):
         return self.element_type
 
 
+@zope.interface.implementer(zeit.edit.interfaces.IUnknownBlock)
 class UnknownBlock(SimpleElement):
 
-    zope.interface.implements(zeit.edit.interfaces.IUnknownBlock)
     area = zeit.edit.interfaces.IArea
     type = '__unknown__'

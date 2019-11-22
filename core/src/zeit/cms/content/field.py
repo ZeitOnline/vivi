@@ -23,9 +23,8 @@ class IXMLTree(zope.schema.interfaces.IField):
     # This is here to avoid circular imports
 
 
+@zope.interface.implementer(zope.schema.interfaces.IFromUnicode)
 class _XMLBase(zope.schema.Field):
-
-    zope.interface.implements(zope.schema.interfaces.IFromUnicode)
 
     def __init__(self, *args, **kw):
         tidy_input = kw.pop('tidy_input', False)
@@ -76,9 +75,9 @@ def located(obj, parent, name):
     return obj_
 
 
+@zope.interface.implementer(IXMLTree)
 class XMLTree(_XMLBase):
-
-    zope.interface.implements(IXMLTree)
+    pass
 
 
 class Color(zope.schema.TextLine):

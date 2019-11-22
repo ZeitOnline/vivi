@@ -325,9 +325,8 @@ def update_metadata_on_checkin(context, event):
             attr.update_metadata(context)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IReferences)
 class References(tuple):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IReferences)
 
     def __new__(cls, items, source, attribute, xml_reference_name):
         self = super(References, cls).__new__(cls, items)
@@ -348,12 +347,11 @@ class References(tuple):
             self.source, self.attribute, target, default)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IReference)
 class EmptyReference(object):
     """Helper so an empty SingleReferenceProperty still supports
     ``create()``.
     """
-
-    zope.interface.implements(zeit.cms.content.interfaces.IReference)
 
     target = None
     target_unique_id = None
@@ -476,11 +474,10 @@ def unique_id_to_reference(unique_id):
     return references.get(params['target'][0])
 
 
+@zope.component.adapter(
+    zeit.cms.content.interfaces.IReference,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
-    zope.component.adapts(
-        zeit.cms.content.interfaces.IReference,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(
@@ -492,9 +489,8 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
                 six.moves.urllib.parse.quote_plus(self.context.__name__)))
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class Traverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

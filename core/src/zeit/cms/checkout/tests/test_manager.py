@@ -18,10 +18,10 @@ class IContent(zeit.cms.interfaces.ICMSContent):
     pass
 
 
+@zope.interface.implementer(
+    IContent, zope.annotation.interfaces.IAttributeAnnotatable)
 class Content(object):
 
-    zope.interface.implements(
-        IContent, zope.annotation.interfaces.IAttributeAnnotatable)
     uniqueId = u'testcontent://'
     __name__ = u'karlheinz'
 

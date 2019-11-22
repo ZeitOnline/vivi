@@ -5,10 +5,9 @@ import zope.cachedescriptors.property
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
 class Tag(object):
     """Representation of a keyword."""
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
 
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = u'☃'

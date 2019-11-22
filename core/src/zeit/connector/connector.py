@@ -78,12 +78,11 @@ class CannonicalId(six.text_type):
         return '<CannonicalId %s>' % super(CannonicalId, self).__repr__()
 
 
+@zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector(object):
     """Connect to the CMS backend.
        WebDAV implementation based on pydavclient
     """
-
-    zope.interface.implements(zeit.connector.interfaces.ICachingConnector)
 
     long_name = u'DAV connector'
 

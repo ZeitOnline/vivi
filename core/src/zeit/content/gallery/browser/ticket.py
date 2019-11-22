@@ -11,18 +11,16 @@ import zope.security
 import zope.traversing.interfaces
 
 
+@zope.component.adapter(
+    zope.interface.Interface,
+    zope.publisher.interfaces.browser.IDefaultBrowserLayer)
+@zope.interface.implementer(zope.traversing.interfaces.ITraversable)
 class TicketTraverser(object):
     """This traverser takes a ticket and authenticates the user.
 
     This is useful for uploading files with flash.
 
     """
-
-    zope.component.adapts(
-        zope.interface.Interface,
-        zope.publisher.interfaces.browser.IDefaultBrowserLayer)
-
-    zope.interface.implements(zope.traversing.interfaces.ITraversable)
 
     def __init__(self, context, request):
         self.context = context

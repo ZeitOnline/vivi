@@ -137,8 +137,9 @@ For choices wich iterable sources tokenize the value before storing it to the
 dav. There is a standard tokenizer for bool. So create a choice which allows
 True and False:
 
->>> class BoolSource(list):
-...     zope.interface.implements(zope.schema.interfaces.IIterableSource)
+>>> @zope.interface.implementer(zope.schema.interfaces.IIterableSource)
+... class BoolSource(list):
+...     pass
 >>> field = zope.schema.Choice(source=BoolSource([True, False]))
 >>> converter = get_converter(field)
 >>> converter.fromProperty('yes')
@@ -209,8 +210,8 @@ Token adapter
 
 For content objects there is also a token adapter:
 
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     uniqueId = u'my-unique-id'
 >>> content = Content()
 >>> zeit.cms.content.interfaces.IDAVToken(content)
@@ -602,11 +603,10 @@ Let's create a little content class:
 >>> import zope.interface
 >>> import zeit.cms.interfaces
 >>> from zeit.cms.content.dav import DAVProperty
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     properties = zeit.connector.resource.WebDAVProperties()
 ...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
-...
 >>> def contentDavProps(context):
 ...     return context.properties
 >>> site_manager = zope.component.getSiteManager()

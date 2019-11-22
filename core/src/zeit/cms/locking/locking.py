@@ -13,9 +13,8 @@ import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(zope.app.locking.interfaces.ILockStorage)
 class LockStorage(object):
-
-    zope.interface.implements(zope.app.locking.interfaces.ILockStorage)
 
     def getLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
@@ -71,9 +70,8 @@ class LockStorage(object):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 
+@zope.interface.implementer(zeit.cms.locking.interfaces.ILockInfo)
 class LockInfo(persistent.mapping.PersistentMapping):
-
-    zope.interface.implements(zeit.cms.locking.interfaces.ILockInfo)
 
     locked_until = None
 
@@ -96,11 +94,10 @@ class LockInfo(persistent.mapping.PersistentMapping):
             id(self))
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zope.app.locking.interfaces.ILockable)
 class CMSLockingAdapter(zope.app.locking.adapter.LockingAdapter):
     """Special locking adapter with different security."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-    zope.interface.implements(zope.app.locking.interfaces.ILockable)
 
     __repr__ = object.__repr__
 

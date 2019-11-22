@@ -371,9 +371,9 @@ class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
     """A source for images."""
 
 
+@zope.interface.implementer(IImageSource)
 class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = IImageType
     name = 'images'
 
@@ -381,9 +381,9 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 imageSource = ImageSource()
 
 
+@zope.interface.implementer(IImageSource)
 class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = (IImage,)
     name = 'bare-images'
 
@@ -391,9 +391,9 @@ class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
 bareImageSource = BareImageSource()
 
 
+@zope.interface.implementer(IImageSource)
 class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = (IImageGroup,)
     name = 'image-groups'
 

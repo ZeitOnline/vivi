@@ -873,9 +873,8 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['content'] = ExampleContentType()
         self.repository['target'] = ExampleContentType()
 
+        @zope.interface.implementer(zope.schema.interfaces.ISource)
         class FakeSource(object):
-
-            zope.interface.implements(zope.schema.interfaces.ISource)
 
             def __contains__(self, value):
                 return True

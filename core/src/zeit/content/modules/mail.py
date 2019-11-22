@@ -3,9 +3,8 @@ import zeit.edit.block
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.modules.interfaces.IMail)
 class Mail(zeit.edit.block.Element):
-
-    zope.interface.implements(zeit.content.modules.interfaces.IMail)
 
     to = zeit.cms.content.property.ObjectPathProperty(
         '.to', zeit.content.modules.interfaces.IMail['to'])

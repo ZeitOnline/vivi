@@ -18,13 +18,12 @@ import zope.container.interfaces
 import zope.interface
 
 
+@zope.component.adapter(
+    zeit.content.cp.interfaces.IBody,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.content.cp.interfaces.IRegion)
 class Region(zeit.content.cp.blocks.block.VisibleMixin,
              zeit.edit.container.Base):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IRegion)
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IBody,
-        gocept.lxml.interfaces.IObjectified)
 
     _find_item = lxml.etree.XPath(
         './*[@area = $name or @cms:__name__ = $name]',
@@ -82,13 +81,12 @@ class ReferencedCpFallbackProperty(
         return value
 
 
+@zope.component.adapter(
+    zeit.content.cp.interfaces.IRegion,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.content.cp.interfaces.IArea)
 class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IArea)
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IRegion,
-        gocept.lxml.interfaces.IObjectified)
 
     type = 'area'
 

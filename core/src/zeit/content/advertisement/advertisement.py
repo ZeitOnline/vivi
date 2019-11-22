@@ -8,11 +8,10 @@ import zeit.content.advertisement.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.advertisement.interfaces.IAdvertisement,
+    zeit.cms.interfaces.IEditorialContent)
 class Advertisement(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(
-        zeit.content.advertisement.interfaces.IAdvertisement,
-        zeit.cms.interfaces.IEditorialContent)
 
     default_template = (
         '<advertisement xmlns:py="http://codespeak.net/lxml/objectify/pytype">'

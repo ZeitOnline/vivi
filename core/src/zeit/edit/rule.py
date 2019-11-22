@@ -199,11 +199,10 @@ class Validator(grokcore.component.Adapter):
                 self.messages.append(status.message)
 
 
+@zope.interface.implementer(zeit.edit.interfaces.IValidator)
 class RecursiveValidator(object):
     """A RecursiveValidator iterates through (some definition of) children of
     its context and generates its result from the validation of those."""
-
-    zope.interface.implements(zeit.edit.interfaces.IValidator)
 
     status = None
 

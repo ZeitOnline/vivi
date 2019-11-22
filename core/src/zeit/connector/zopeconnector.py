@@ -92,10 +92,9 @@ def connectorFactory():
         'search': config['document-store-search']})
 
 
+@zope.interface.implementer(transaction.interfaces.IDataManager)
 class DataManager(object):
     """Takes care of the transaction process in Zope. """
-
-    zope.interface.implements(transaction.interfaces.IDataManager)
 
     def __init__(self, connector):
         self.connector = connector
@@ -150,9 +149,8 @@ class DataManager(object):
         self.cleanup[:] = []
 
 
+@zope.interface.implementer(transaction.interfaces.IDataManagerSavepoint)
 class ConnectorSavepoint(object):
-
-    zope.interface.implements(transaction.interfaces.IDataManagerSavepoint)
 
     def rollback(self):
         raise Exception("Can't roll back connector savepoints.")

@@ -13,9 +13,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class PushNotifier(object):
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def __init__(self):
         self.reset()

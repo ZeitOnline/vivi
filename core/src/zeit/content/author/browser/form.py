@@ -92,9 +92,8 @@ class IDuplicateConfirmation(zope.interface.Interface):
     confirmed_duplicate = zope.schema.Bool(title=_('Add duplicate author'))
 
 
+@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
 class DuplicateAuthorWarning(Exception):
-
-    zope.interface.implements(zope.formlib.interfaces.IWidgetInputError)
 
     def doc(self):
         return _(

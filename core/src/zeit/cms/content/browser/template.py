@@ -127,11 +127,10 @@ def TemplateChooserSchema(source_name):
     return ITemplateChooserSchema
 
 
+@zope.component.adapter(zope.publisher.interfaces.browser.IBrowserPage)
+@zope.interface.implementer(
+    zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
 class TemplateWidgetSetup(object):
-
-    zope.component.adapts(zope.publisher.interfaces.browser.IBrowserPage)
-    zope.interface.implements(
-        zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
 
     def __init__(self, context):
         self.context = context

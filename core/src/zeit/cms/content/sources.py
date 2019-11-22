@@ -159,9 +159,8 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
 
 class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
 
+    @zope.interface.implementer(IObjectSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        zope.interface.implements(IObjectSource)
 
         def find(self, id):
             return self.factory.find(self.context, id)

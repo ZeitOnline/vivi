@@ -9,11 +9,10 @@ import zope.interface
 import zope.publisher.browser
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.clipboard.interfaces.IObjectReference)
 class Entry(zope.container.contained.Contained,
             persistent.Persistent):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.clipboard.interfaces.IObjectReference)
 
     title = None
     content_type = None
@@ -55,9 +54,8 @@ def entry_to_clipboard(context):
     return zeit.cms.clipboard.interfaces.IClipboard(context.__parent__)
 
 
+@zope.interface.implementer(zeit.cms.clipboard.interfaces.IClip)
 class Clip(zope.container.ordered.OrderedContainer):
-
-    zope.interface.implements(zeit.cms.clipboard.interfaces.IClip)
 
     def __init__(self, title):
         super(Clip, self).__init__()

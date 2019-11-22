@@ -72,9 +72,8 @@ class WorkflowActions(object):
         }
 
 
+@zope.interface.implementer(zeit.workflow.browser.interfaces.IWorkflowForm)
 class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
-
-    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
 
     title = _("Workflow")
 
@@ -115,11 +114,10 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
         self.do_retract()
 
 
+@zope.component.adapter(
+    zeit.cms.interfaces.IEditorialContent,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class ContentWorkflow(WorkflowForm):
-
-    zope.component.adapts(
-        zeit.cms.interfaces.IEditorialContent,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -149,11 +147,10 @@ class ContentWorkflow(WorkflowForm):
                 'created'))
 
 
+@zope.component.adapter(
+    zeit.cms.interfaces.IAsset,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class AssetWorkflow(WorkflowForm):
-
-    zope.component.adapts(
-        zeit.cms.interfaces.IAsset,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -179,13 +176,11 @@ class AssetWorkflow(WorkflowForm):
                 *WorkflowForm.omit_fields))
 
 
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.workflow.browser.interfaces.IWorkflowForm)
 class NoWorkflow(zeit.cms.browser.form.EditForm):
-
-    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
-
-    zope.component.adapts(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     field_groups = (
         gocept.form.grouped.Fields(

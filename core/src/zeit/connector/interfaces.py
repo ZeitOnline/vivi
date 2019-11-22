@@ -343,9 +343,8 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
     id = zope.interface.Attribute("Unique id of resource")
 
 
+@zope.interface.implementer(IResourceInvalidatedEvent)
 class ResourceInvalidatedEvent(object):
-
-    zope.interface.implements(IResourceInvalidatedEvent)
 
     def __init__(self, id):
         self.id = id

@@ -10,13 +10,11 @@ import zeit.content.text.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.text.interfaces.IText,
+    zeit.cms.interfaces.IAsset)
 class Text(zeit.cms.repository.repository.ContentBase,
            persistent.Persistent):
-
-    zope.interface.implements(zeit.content.text.interfaces.IText,
-                              zeit.cms.interfaces.IAsset)
-
-    uniqueId = None
 
     text = None
 

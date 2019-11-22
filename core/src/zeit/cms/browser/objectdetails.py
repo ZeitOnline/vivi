@@ -10,9 +10,9 @@ import zope.dublincore.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zope.annotation.interfaces.IAttributeAnnotatable)
 class NoMetadata(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zope.annotation.interfaces.IAttributeAnnotatable)
     default_template = '<empty/>'
 
 

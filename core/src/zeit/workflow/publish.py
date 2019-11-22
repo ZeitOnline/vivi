@@ -29,10 +29,9 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
 class Publish(object):
-
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
     def __init__(self, context):
         self.context = context

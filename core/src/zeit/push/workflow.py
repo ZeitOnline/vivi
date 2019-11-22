@@ -12,9 +12,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushMessages)
 class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.push.interfaces.IPushMessages)
 
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,

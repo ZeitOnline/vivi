@@ -7,11 +7,10 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
 class MockPublish(object):
     """A mock publisher."""
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
 
     def __init__(self, context):
         self.context = context
@@ -60,10 +59,9 @@ class MockPublish(object):
             self.retract(priority, background, obj)
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class MockPublishInfo(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
     error_messages = ()
     date_print_published = None

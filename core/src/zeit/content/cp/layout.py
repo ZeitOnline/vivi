@@ -59,9 +59,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         """True if this layout is the default for the given block's area."""
 
 
+@zope.interface.implementer(ITeaserBlockLayout)
 class BlockLayout(AllowedMixin):
-
-    zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
                  areas=None, default=False, available=None,

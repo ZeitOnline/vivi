@@ -11,12 +11,11 @@ import zope.security.proxy
 import six
 
 
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
+@zope.interface.implementer(
+    zeit.content.article.interfaces.IBookRecensionContainer,
+    zope.location.interfaces.ILocation)
 class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
-
-    zope.interface.implements(
-        zeit.content.article.interfaces.IBookRecensionContainer,
-        zope.location.interfaces.ILocation)
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     def __init__(self, context):
         self.context = context
@@ -73,13 +72,12 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         return recension
 
 
+@zope.interface.implementer(
+    zeit.content.article.interfaces.IBookRecension,
+    zope.location.interfaces.ILocation)
 class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
                     zeit.cms.content.xmlsupport.Persistent):
     """Information about a book in a recension."""
-
-    zope.interface.implements(
-        zeit.content.article.interfaces.IBookRecension,
-        zope.location.interfaces.ILocation)
 
     default_template = (
         u'<entry xmlns="http://namespaces.zeit.de/bibinfo" '
@@ -116,9 +114,8 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
     __name__ = None
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class RecensionContainerTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context
@@ -133,9 +130,8 @@ class RecensionContainerTraverser(object):
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class RecensionTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

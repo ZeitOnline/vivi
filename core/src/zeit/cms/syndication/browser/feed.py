@@ -63,12 +63,12 @@ class OrderedSelectionColumn(zc.table.column.SelectionColumn):
         raise NotImplementedError()
 
 
+@zope.component.adapter(
+    zeit.cms.syndication.interfaces.IFeed,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing a feed."""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.syndication.interfaces.IFeed,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     @property
     def title(self):
@@ -309,12 +309,12 @@ class RemoveFromMySyndicationTargetsMenuItem(
             return super(RemoveFromMySyndicationTargetsMenuItem, self).render()
 
 
+@zope.component.adapter(
+    zeit.cms.syndication.feed.FakeEntry,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FakeEntryRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing a feed."""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.syndication.feed.FakeEntry,
-                          zeit.cms.browser.interfaces.ICMSLayer)
 
     @property
     def title(self):

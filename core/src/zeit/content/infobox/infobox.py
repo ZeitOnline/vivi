@@ -10,10 +10,10 @@ import zeit.content.infobox.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.infobox.interfaces.IInfobox,
+    zeit.cms.interfaces.IAsset)
 class Infobox(zeit.cms.content.metadata.CommonMetadata):
-
-    zope.interface.implements(zeit.content.infobox.interfaces.IInfobox,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<container layout="artbox" label="info" '

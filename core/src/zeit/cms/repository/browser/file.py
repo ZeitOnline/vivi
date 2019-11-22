@@ -14,12 +14,11 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(
+    zeit.cms.repository.interfaces.IFile,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.component.adapts(
-        zeit.cms.repository.interfaces.IFile,
-        zeit.cms.browser.interfaces.ICMSLayer)
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     author = title = subtitle = byline = ressort = volume = page = year = \
         searchableText = None

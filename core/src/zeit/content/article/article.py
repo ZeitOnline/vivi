@@ -46,11 +46,11 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
+@zope.interface.implementer(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.interfaces.IEditorialContent)
 class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
-
-    zope.interface.implements(zeit.content.article.interfaces.IArticle,
-                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = ARTICLE_TEMPLATE
 
@@ -282,9 +282,8 @@ class SearchableText(grok.Adapter):
         return main_text
 
 
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
-
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     def can_publish(self):
         result = super(ArticleWorkflow, self).can_publish()

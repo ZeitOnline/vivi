@@ -6,12 +6,11 @@ import zope.component
 import zope.publisher.interfaces.browser
 
 
+@zope.component.adapter(
+    zeit.content.portraitbox.interfaces.IPortraitbox,
+    zope.publisher.interfaces.browser.IBrowserRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(
-        zeit.content.portraitbox.interfaces.IPortraitbox,
-        zope.publisher.interfaces.browser.IBrowserRequest)
 
     author = ressort = page = volume = year = u''
 

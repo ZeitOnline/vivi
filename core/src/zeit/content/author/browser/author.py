@@ -1,17 +1,16 @@
-import grokcore
+import grokcore.component as grok
 import zeit.cms.browser.listing
 import zope.publisher.interfaces
 
 
+@grok.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class AuthorListRepresentation(
-        grokcore.component.MultiAdapter,
+        grok.MultiAdapter,
         zeit.cms.browser.listing.BaseListRepresentation):
 
-    grokcore.component.adapts(
+    grok.context(
         zeit.content.author.interfaces.IAuthor,
         zope.publisher.interfaces.IPublicationRequest)
-    grokcore.component.implements(
-        zeit.cms.browser.interfaces.IListRepresentation)
 
     ressort = page = volume = year = author = u''
 

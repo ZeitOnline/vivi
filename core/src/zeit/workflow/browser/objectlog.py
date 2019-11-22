@@ -5,10 +5,9 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
 class ProcessForDisplay(object):
-
-    zope.component.adapts(zope.interface.Interface)
-    zope.interface.implements(zeit.objectlog.interfaces.ILogProcessor)
 
     max_entries = 500
 

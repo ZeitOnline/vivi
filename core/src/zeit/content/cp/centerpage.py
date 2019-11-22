@@ -40,10 +40,10 @@ class writeabledict(dict):
     """dict with all (especially write) methods allowed by security"""
 
 
+@zope.interface.implementer(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.interfaces.IEditorialContent)
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
-
-    zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
-                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = """\
 <centerpage

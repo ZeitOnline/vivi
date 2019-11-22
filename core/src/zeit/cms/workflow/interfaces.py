@@ -193,34 +193,29 @@ class IRetractedEvent(IWithMasterObjectEvent):
     """Issued after an object has been retracted."""
 
 
+@zope.interface.implementer(IWithMasterObjectEvent)
 class WithMasterObjectEvent(zope.interface.interfaces.ObjectEvent):
-
-    zope.interface.implements(IWithMasterObjectEvent)
 
     def __init__(self, obj, master):
         super(WithMasterObjectEvent, self).__init__(obj)
         self.master = master
 
 
+@zope.interface.implementer(IBeforePublishEvent)
 class BeforePublishEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
-    zope.interface.implements(IBeforePublishEvent)
 
-
+@zope.interface.implementer(IPublishedEvent)
 class PublishedEvent(WithMasterObjectEvent):
     """Issued when an object was published."""
 
-    zope.interface.implements(IPublishedEvent)
 
-
+@zope.interface.implementer(IBeforeRetractEvent)
 class BeforeRetractEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
-    zope.interface.implements(IBeforeRetractEvent)
 
-
+@zope.interface.implementer(IRetractedEvent)
 class RetractedEvent(WithMasterObjectEvent):
     """Issued after an object has been retracted."""
-
-    zope.interface.implements(IRetractedEvent)

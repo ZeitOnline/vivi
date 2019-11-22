@@ -15,10 +15,9 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class ContentUUID(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IUUID)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     id = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.IUUID['id'],
@@ -44,10 +43,9 @@ def properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
+@zope.component.adapter(six.string_types[0])
+@zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class SimpleUUID(object):
-
-    zope.component.adapts(six.string_types[0])
-    zope.interface.implements(zeit.cms.content.interfaces.IUUID)
 
     def __init__(self, context):
         self.id = context

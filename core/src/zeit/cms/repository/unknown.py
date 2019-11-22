@@ -9,13 +9,11 @@ import zeit.cms.util
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.cms.repository.interfaces.IUnknownResource,
+    zeit.cms.content.interfaces.ITextContent)
 class UnknownResource(zeit.cms.repository.repository.ContentBase):
     """Represent an unknown resource"""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IUnknownResource,
-                              zeit.cms.content.interfaces.ITextContent)
-
-    uniqueId = None
 
     def __init__(self, data, type_info=None):
         if not isinstance(data, six.text_type):

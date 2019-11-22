@@ -8,8 +8,8 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
         import zeit.cms.interfaces
         import zope.interface
 
+        @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
         class Content(object):
-            zope.interface.implements(zeit.cms.interfaces.ICMSContent)
             uniqueId = 'testcontent://'
 
         content = Content()

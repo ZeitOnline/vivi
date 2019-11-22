@@ -21,10 +21,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(
-        zeit.cms.testcontenttype.interfaces.IExampleContentType)
 
     def get_tree(self):
         return self.context.xml['body']

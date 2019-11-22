@@ -764,9 +764,9 @@ def site(root):
     zope.component.hooks.setSite(old_site)
 
 
+@zope.interface.implementer(zope.i18n.interfaces.IGlobalMessageCatalog)
 class TestCatalog(object):
 
-    zope.interface.implements(zope.i18n.interfaces.IGlobalMessageCatalog)
     language = 'tt'
     messages = {}
 

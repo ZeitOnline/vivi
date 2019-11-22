@@ -63,10 +63,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
         return (content for content in self._reference_properties if content)
 
 
+@zope.component.adapter(zeit.content.article.edit.interfaces.ITopicbox)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class TopicboxImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.article.edit.interfaces.ITopicbox)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image', 'image')
 

@@ -18,9 +18,8 @@ import zope.interface
 import zope.security
 
 
+@zope.interface.implementer(zeit.content.modules.interfaces.IRawText)
 class RawText(zeit.edit.block.Element):
-
-    zope.interface.implements(zeit.content.modules.interfaces.IRawText)
 
     text_reference = zeit.cms.content.reference.SingleResource(
         '.text_reference', 'related')

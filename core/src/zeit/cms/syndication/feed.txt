@@ -41,10 +41,10 @@ We now will add objects to the feed. Let's create some fake object:
 
 >>> import zope.annotation.interfaces
 >>> import zope.interface
->>> class Article(object):
-...     zope.interface.implements(
-...         zeit.cms.interfaces.ICMSContent,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
+>>> @zope.interface.implementer(
+...     zeit.cms.interfaces.ICMSContent,
+...     zope.annotation.interfaces.IAttributeAnnotatable)
+... class Article(object):
 ...     def __init__(self, id=None):
 ...         self.uniqueId = id
 

@@ -26,6 +26,8 @@ import zope.security.proxy
 import zope.traversing.interfaces
 
 
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(zeit.wysiwyg.interfaces.IHTMLConverter)
 class HTMLConverter(object):
     """General XML to HTML converter.
 
@@ -38,9 +40,6 @@ class HTMLConverter(object):
     conversion direction.
 
     """
-
-    zope.component.adapts(zope.interface.Interface)
-    zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLConverter)
 
     def __init__(self, context):
         self.context = context
@@ -168,6 +167,9 @@ class HTMLConverter(object):
 SKIP = object()
 
 
+@zope.component.adapter(
+    zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
+@zope.interface.implementer(zeit.wysiwyg.interfaces.IConversionStep)
 class ConversionStep(object):
     """Encapsulates one step of XML<-->HTML conversion.
 
@@ -189,9 +191,6 @@ class ConversionStep(object):
     matter), so the HTMLConverter can pick them all up using getAdapters().
     """
 
-    zope.component.adapts(
-        zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
-    zope.interface.implements(zeit.wysiwyg.interfaces.IConversionStep)
     order_to_html = 0.0
     order_to_xml = 0.0
 
@@ -826,10 +825,9 @@ class InlineElementAppendParagraph(ConversionStep):
         return node
 
 
+@zope.interface.implementer(zeit.wysiwyg.interfaces.IHTMLContent)
 class HTMLContentBase(object):
     """Base class for html content."""
-
-    zope.interface.implements(zeit.wysiwyg.interfaces.IHTMLContent)
 
     def __init__(self, context):
         self.context = context

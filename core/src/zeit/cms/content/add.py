@@ -8,9 +8,8 @@ import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IContentAdder)
 class ContentAdder(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IContentAdder)
 
     def __init__(self, request,
                  type_=None, ressort=None,

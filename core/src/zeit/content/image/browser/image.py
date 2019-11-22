@@ -145,13 +145,13 @@ class Thumbnail(Scaled):
     width = height = 100
 
 
+@zope.component.adapter(
+    zeit.content.image.interfaces.IImage,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ImageListRepresentation(
         zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.content.image.interfaces.IImage,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     author = ressort = page = u''
 

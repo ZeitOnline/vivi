@@ -6,12 +6,11 @@ import zeit.cms.type
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType,
+    zeit.cms.interfaces.IEditorialContent)
 class ExampleContentType(zeit.cms.content.metadata.CommonMetadata):
     """A type for testing."""
-
-    zope.interface.implements(
-        zeit.cms.testcontenttype.interfaces.IExampleContentType,
-        zeit.cms.interfaces.IEditorialContent)
 
     default_template = (
         '<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">'

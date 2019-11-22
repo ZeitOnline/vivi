@@ -28,10 +28,9 @@ import zope.lifecycleevent.interfaces
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection(object):
     """Class to send push notifications to mobile devices via urbanairship."""
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret,

@@ -5,9 +5,8 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.newsletter.interfaces.INewsletter)
 class NewsletterValidator(zeit.edit.rule.RecursiveValidator):
-
-    zope.component.adapts(zeit.newsletter.interfaces.INewsletter)
 
     @property
     def children(self):

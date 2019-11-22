@@ -10,9 +10,8 @@ import zeit.edit.block
 import zope.interface
 
 
+@zope.interface.implementer(zeit.campus.interfaces.ITopic)
 class Topic(zeit.cms.related.related.RelatedBase):
-
-    zope.interface.implements(zeit.campus.interfaces.ITopic)
 
     page = zeit.cms.content.reference.SingleResource(
         '.head.topic', 'related')

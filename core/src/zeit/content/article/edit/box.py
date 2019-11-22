@@ -36,10 +36,9 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     title = _('Box')
 
 
+@zope.component.adapter(IBox)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class BoxImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(IBox)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image', 'image')
 

@@ -7,10 +7,9 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection(object):
     """Writes an event to InfluxDB which can be shown in Grafana."""
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def __init__(self, base_url, database, user, password, series):
         self.base_url = base_url

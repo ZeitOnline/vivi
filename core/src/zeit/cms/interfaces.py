@@ -109,10 +109,9 @@ class IResult(zope.interface.common.sequence.IReadSequence):
         'Number of total available entries (for pagination)')
 
 
+@zope.interface.implementer(IResult)
 class Result(list):
     """A list with additional property ``hits``."""
-
-    zope.interface.implements(IResult)
 
     hits = 0
 

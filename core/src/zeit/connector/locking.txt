@@ -285,9 +285,8 @@ ours. To make this happen, we register an IAuthentication utility:
 >>> import zope.authentication.interfaces
 >>> class Principal(object):
 ...     pass
->>> class Auth(object):
-...     zope.interface.implements(
-...         zope.authentication.interfaces.IAuthentication)
+>>> @zope.interface.implementer(zope.authentication.interfaces.IAuthentication)
+... class Auth(object):
 ...     def getPrincipal(self, id):
 ...         if id == 'internal':
 ...             p = Principal()

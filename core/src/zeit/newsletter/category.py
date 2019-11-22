@@ -33,9 +33,8 @@ DAILY_NEWSLETTER = zeit.connector.search.SearchVar(
 DAILY_NAME = 'taeglich'
 
 
+@zope.interface.implementer(zeit.newsletter.interfaces.INewsletterCategory)
 class NewsletterCategoryBase(object):
-
-    zope.interface.implements(zeit.newsletter.interfaces.INewsletterCategory)
 
     zeit.cms.content.dav.mapProperties(
         zeit.newsletter.interfaces.INewsletterCategory,
@@ -62,12 +61,11 @@ class NewsletterCategoryBase(object):
             setattr(self, 'ad_thisweeks_on_%d' % dow, True)
 
 
+@zope.interface.implementer(
+    zeit.newsletter.interfaces.IRepositoryCategory,
+    zeit.cms.repository.interfaces.INonRecursiveCollection)
 class NewsletterCategory(NewsletterCategoryBase,
                          zeit.cms.repository.folder.Folder):
-
-    zope.interface.implements(
-        zeit.newsletter.interfaces.IRepositoryCategory,
-        zeit.cms.repository.interfaces.INonRecursiveCollection)
 
     def create(self):
         now = datetime.datetime.now(pytz.UTC)
@@ -139,11 +137,11 @@ class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):
     addform = zeit.cms.type.SKIP_ADD
 
 
+@zope.interface.implementer(zeit.newsletter.interfaces.ILocalCategory)
 class LocalCategory(NewsletterCategoryBase,
                     persistent.Persistent,
                     zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.newsletter.interfaces.ILocalCategory)
+    pass
 
 
 @grok.adapter(zeit.newsletter.interfaces.INewsletterCategory)

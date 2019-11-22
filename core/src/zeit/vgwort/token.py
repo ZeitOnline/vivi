@@ -23,10 +23,9 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.ITokens)
 class TokenStorage(persistent.Persistent,
                    zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.vgwort.interfaces.ITokens)
 
     def __init__(self):
         self._data = zc.queue.CompositeQueue(compositeSize=100)

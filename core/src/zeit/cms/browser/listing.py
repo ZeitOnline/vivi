@@ -1,4 +1,3 @@
-
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import logging
@@ -119,9 +118,8 @@ def listRepresentation_to_Lockable(obj):
     return zope.app.locking.interfaces.ILockable(obj.context, None)
 
 
+@zope.interface.implementer(zc.table.interfaces.ISortableColumn)
 class GetterColumn(zc.table.column.GetterColumn):
-
-    zope.interface.implements(zc.table.interfaces.ISortableColumn)
 
     def __init__(self, *args, **kw):
         self._getter = kw.pop('getter', None)

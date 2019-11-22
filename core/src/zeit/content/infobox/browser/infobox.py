@@ -8,12 +8,11 @@ import zeit.content.infobox.interfaces
 import zeit.content.infobox.reference
 
 
+@zope.component.adapter(
+    zeit.content.infobox.interfaces.IInfobox,
+    zope.publisher.interfaces.browser.IBrowserRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(
-        zeit.content.infobox.interfaces.IInfobox,
-        zope.publisher.interfaces.browser.IBrowserRequest)
 
     author = ressort = page = volume = year = u''
 

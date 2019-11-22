@@ -7,9 +7,9 @@ import zeit.cms.browser.listing
 import zope.interface
 
 
+@zope.interface.implementer(zc.table.interfaces.ISortableColumn)
 class GetterColumn(zc.table.column.GetterColumn):
-
-    zope.interface.implements(zc.table.interfaces.ISortableColumn)
+    pass
 
 
 class MetadataColumn(GetterColumn):

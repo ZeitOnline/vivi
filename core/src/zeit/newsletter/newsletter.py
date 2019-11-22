@@ -17,10 +17,9 @@ import zope.interface
 BODY_NAME = 'newsletter_body'
 
 
+@zope.interface.implementer(zeit.newsletter.interfaces.INewsletter)
 class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
                  UserDict.DictMixin):
-
-    zope.interface.implements(zeit.newsletter.interfaces.INewsletter)
 
     default_template = pkg_resources.resource_string(__name__, 'template.xml')
 

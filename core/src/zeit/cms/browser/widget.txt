@@ -11,9 +11,8 @@ Create a mock repository:
 >>> import zope.component
 >>> import zope.interface
 >>> import zope.location.interfaces
->>>
->>> class Repository(object):
-...     zope.interface.implements(zope.location.interfaces.ILocation)
+>>> @zope.interface.implementer(zope.location.interfaces.ILocation)
+... class Repository(object):
 ...     __parent__ = getRootFolder()
 ...     __name__ = 'repo'
 ...
@@ -32,11 +31,11 @@ Create a mock repository:
 Create a simple content object:
 
 >>> import zope.annotation.interfaces
->>> class Content(object):
-...     zope.interface.implements(
-...         zeit.cms.interfaces.ICMSContent,
-...         zope.location.interfaces.ILocation,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
+>>> @zope.interface.implementer(
+...     zeit.cms.interfaces.ICMSContent,
+...     zope.location.interfaces.ILocation,
+...     zope.annotation.interfaces.IAttributeAnnotatable)
+... class Content(object):
 ...     __parent__ = repository
 ...     __name__ = u'content'
 ...     uniqueId = 'http://xml.zeit.de/content'

@@ -7,10 +7,9 @@ import zeit.cms.relation.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.relation.interfaces.IRelations)
 class Relations(persistent.Persistent):
     """Handles relations between content."""
-
-    zope.interface.implements(zeit.cms.relation.interfaces.IRelations)
 
     def __init__(self):
         super(Relations, self).__init__()

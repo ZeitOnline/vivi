@@ -82,10 +82,9 @@ class TestSimpleFind(unittest.TestCase,
         self.assert_json([{'label': 'Title', 'value': 'http://xml.zeit.de/A'}])
 
     def test_query_view_should_render_input(self):
+        @zope.interface.implementer(
+            zeit.cms.content.interfaces.IAutocompleteSource)
         class FakeSource(object):
-            zope.interface.implements(
-                zeit.cms.content.interfaces.IAutocompleteSource)
-
             def get_check_types(self):
                 return ('t1', 't2', 't3')
 

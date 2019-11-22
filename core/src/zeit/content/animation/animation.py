@@ -1,25 +1,24 @@
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
-from zeit.cms.content.interfaces import ICommonMetadata
 import zeit.content.animation.interfaces
-import zeit.content.article.interfaces
 import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 import zeit.push.interfaces
 import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.animation.interfaces.IAnimation,
+    zeit.cms.interfaces.IEditorialContent,
+)
 class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     """A type for managing animations made from existing media."""
-
-    zope.interface.implements(
-        zeit.content.animation.interfaces.IAnimation,
-        zeit.cms.interfaces.IEditorialContent,
-    )
 
     default_template = "<body/>"
 

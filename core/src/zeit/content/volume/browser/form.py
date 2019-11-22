@@ -14,9 +14,8 @@ import zope.interface
 import zope.schema
 
 
+@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
 class DuplicateVolumeWarning(Exception):
-
-    zope.interface.implements(zope.formlib.interfaces.IWidgetInputError)
 
     def doc(self):
         return _(u'A volume with the given name already exists.')

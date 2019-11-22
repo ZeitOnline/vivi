@@ -22,9 +22,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 class TMS(object):
-
-    zope.interface.implements(zeit.retresco.interfaces.ITMS)
 
     def __init__(self, url, username=None, password=None):
         self.url = url

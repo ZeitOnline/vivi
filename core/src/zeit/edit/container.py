@@ -16,11 +16,10 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.edit.interfaces.IContainer)
 class Base(UserDict.DictMixin,
            zeit.edit.block.Element,
            zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.edit.interfaces.IContainer)
 
     def __init__(self, context, xml):
         self.xml = xml

@@ -10,10 +10,9 @@ import zeit.cms.content.dav
 import zeit.seo.interfaces
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.seo.interfaces.ISEO)
 class SEO(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.seo.interfaces.ISEO)
 
     html_title = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['html_title'],

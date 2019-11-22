@@ -178,11 +178,10 @@ class ContentList(object):
             raise ValueError("'%s' not in feed." % unique_id)
 
 
+@zope.interface.implementer(
+    zeit.cms.syndication.interfaces.IFeed,
+    zeit.cms.interfaces.IAsset)
 class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeed,
-        zeit.cms.interfaces.IAsset)
 
     title = zeit.cms.content.property.ObjectPathProperty('.title')
 
@@ -231,11 +230,9 @@ def update_feed_metadata_on_checkin(context, event):
         context.updateMetadata(item)
 
 
+@zope.interface.implementer(zeit.cms.syndication.interfaces.IEntry)
 class Entry(object):
     """An entry in the feed."""
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IEntry)
 
     def __init__(self, element):
         self.xml = element
@@ -283,12 +280,11 @@ class Entry(object):
         self.xml.set(attribute, value)
 
 
+@zope.interface.implementer(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.content.interfaces.ICommonMetadata)
 class FakeEntry(object):
     """Entry which does not reference an object in the CMS."""
-
-    zope.interface.implements(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.content.interfaces.ICommonMetadata)
 
     def __init__(self, id, entry):
         for field in zeit.cms.content.interfaces.ICommonMetadata:

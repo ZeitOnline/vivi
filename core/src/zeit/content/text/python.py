@@ -9,9 +9,8 @@ class Break(Exception):
     pass
 
 
+@zope.interface.implementer(zeit.content.text.interfaces.IPythonScript)
 class PythonScript(zeit.content.text.text.Text):
-
-    zope.interface.implements(zeit.content.text.interfaces.IPythonScript)
 
     def __call__(self, **kw):
         self._v_result = None

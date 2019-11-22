@@ -22,9 +22,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IReportableContentSource)
 class ReportableContentSource(grokcore.component.GlobalUtility):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
 
     def __iter__(self):
         age = self.config['days-before-report']

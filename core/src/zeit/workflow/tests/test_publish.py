@@ -52,11 +52,9 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
         return None
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.workflow.interfaces.IPublicationDependencies)
 class RelatedDependency(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
 
     def __init__(self, context):
         self.context = context

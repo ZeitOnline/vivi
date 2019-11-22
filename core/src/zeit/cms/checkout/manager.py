@@ -16,12 +16,11 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(
+    zeit.cms.checkout.interfaces.ICheckoutManager,
+    zeit.cms.checkout.interfaces.ICheckinManager)
 class CheckoutManager(object):
-
-    zope.interface.implements(
-        zeit.cms.checkout.interfaces.ICheckoutManager,
-        zeit.cms.checkout.interfaces.ICheckinManager)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
         self.context = context

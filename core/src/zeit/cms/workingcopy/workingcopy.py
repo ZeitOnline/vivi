@@ -12,10 +12,10 @@ import zope.security.management
 import zope.securitypolicy.interfaces
 
 
+@zope.interface.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 class Workingcopy(zope.container.btree.BTreeContainer):
     """The working copy is the area of the CMS where users edit content."""
 
-    zope.interface.implements(zeit.cms.workingcopy.interfaces.IWorkingcopy)
     _order = ()
     temporary = False  # avoid migration of existing objects
 
@@ -52,11 +52,10 @@ class Workingcopy(zope.container.btree.BTreeContainer):
             self._order = tuple(order)
 
 
+@zope.interface.implementer(
+    zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
 class WorkingcopyLocation(zope.container.btree.BTreeContainer):
     """Location for working copies of all users."""
-
-    zope.interface.implements(
-        zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
 
     def getWorkingcopy(self):
         """Get the working copy for the currently logged in user."""
@@ -134,10 +133,9 @@ def workingcopy_for_current_principal(ignored):
     return zeit.cms.workingcopy.interfaces.IWorkingcopy(principal, None)
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class WorkingcopyTraverser(object):
     """Traverses to working copies, creating them on the fly."""
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

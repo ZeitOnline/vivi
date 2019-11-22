@@ -28,10 +28,9 @@ log = logging.getLogger('zeit.cms.repository')
 
 
 @total_ordering
+@zope.interface.implementer(zeit.cms.repository.interfaces.IDAVContent)
 class ContentBase(zope.container.contained.Contained):
     """Base class for repository content."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IDAVContent)
 
     uniqueId = None
     __name__ = None
@@ -95,10 +94,9 @@ class ContentBase(zope.container.contained.Contained):
             del self.__explicit_parent__
 
 
+@zope.interface.implementer(zeit.cms.repository.interfaces.ICollection)
 class Container(ContentBase):
     """The container represents webdav collections."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.ICollection)
 
     _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
         '_v_local_unique_map', dict)
@@ -238,15 +236,14 @@ class Container(ContentBase):
         return self._local_unique_map_data
 
 
+@zope.interface.implementer(
+    zeit.cms.repository.interfaces.IRepository,
+    zeit.cms.repository.interfaces.IFolder,
+    zeit.cms.repository.interfaces.IRepositoryContent,
+    zeit.cms.section.interfaces.IZONSection,
+    zope.annotation.interfaces.IAttributeAnnotatable)
 class Repository(persistent.Persistent, Container):
     """Access the webdav repository."""
-
-    zope.interface.implements(
-        zeit.cms.repository.interfaces.IRepository,
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.cms.repository.interfaces.IRepositoryContent,
-        zeit.cms.section.interfaces.IZONSection,
-        zope.annotation.interfaces.IAttributeAnnotatable)
 
     # "root" edge case part 2, allow the ZODB folder to set itself as the
     # parent when installing the Repository object, since the DAV hierarchy

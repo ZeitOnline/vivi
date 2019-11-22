@@ -24,6 +24,8 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.IDynamicFolder)
 class DynamicFolderBase(object):
     """Base class for the dynamic folder that holds all attributes.
 
@@ -31,22 +33,18 @@ class DynamicFolderBase(object):
 
     """
 
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.IDynamicFolder)
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('config_file',))
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
 class RepositoryDynamicFolder(
         DynamicFolderBase,
         zeit.cms.repository.folder.Folder):
     """Inside the repository the dynamic folder can contain children."""
-
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
 
     def __getitem__(self, key):
         """Overwrite to return VirtualContent object for virtual content.
@@ -201,13 +199,12 @@ class RepositoryDynamicFolder(
         return result
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
 class LocalDynamicFolder(DynamicFolderBase,
                          persistent.Persistent,
                          zope.container.contained.Contained):
     """Inside the workingcopy the folder only holds attributes, no children."""
-
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
 
 
 class DynamicFolderType(zeit.cms.repository.folder.FolderType):

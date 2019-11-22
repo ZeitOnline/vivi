@@ -143,13 +143,12 @@ class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
         return super(EditBox, self).handle_edit_action.success(data)
 
 
+# There is no SubPageAddForm, so we set this up analog to SubPageEditForm
+@zope.interface.implementer(zope.formlib.interfaces.ISubPageForm)
 class AddBox(zeit.cms.browser.form.AddFormBase,
              zope.formlib.form.AddFormBase,
              UndoableMixin):
     """Base class for an add box."""
-
-    # there is no SubPageAddForm, so we set this up analog to SubPageEditForm
-    zope.interface.implements(zope.formlib.interfaces.ISubPageForm)
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
     close = False

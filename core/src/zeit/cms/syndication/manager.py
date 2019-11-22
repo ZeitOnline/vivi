@@ -10,12 +10,11 @@ import zope.event
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(
+    zeit.cms.syndication.interfaces.ISyndicationManager)
 class SyndicationManager(object):
     """A syndicaiton manager for CMS content."""
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.ISyndicationManager)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
         self.context = context

@@ -3,9 +3,9 @@ import zeit.imp.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.imp.interfaces.IPossibleScale)
 class PossibleScale(object):
-
-    zope.interface.implements(zeit.imp.interfaces.IPossibleScale)
+    pass
 
 
 class ScaleSource(zeit.cms.content.sources.XMLSource):
@@ -25,9 +25,9 @@ class ScaleSource(zeit.cms.content.sources.XMLSource):
                 yield scale
 
 
+@zope.interface.implementer(zeit.imp.interfaces.IColor)
 class Color(object):
-
-    zope.interface.implements(zeit.imp.interfaces.IColor)
+    pass
 
 
 class ColorSource(zeit.cms.content.sources.XMLSource):

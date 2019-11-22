@@ -11,9 +11,9 @@ import zope.traversing.browser.absoluteurl
 import zope.traversing.interfaces
 
 
+@grok.implementer(zope.traversing.interfaces.ITraversable)
 class TagTraverser(grok.MultiAdapter):
 
-    zope.interface.implements(zope.traversing.interfaces.ITraversable)
     grok.adapts(
         zope.site.interfaces.IRootFolder,
         zope.publisher.interfaces.IRequest)
@@ -34,10 +34,10 @@ class TagTraverser(grok.MultiAdapter):
         return tag
 
 
+@zope.component.adapter(
+    zeit.cms.tagging.interfaces.ITag,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
-    zope.component.adapts(zeit.cms.tagging.interfaces.ITag,
-                          zeit.cms.browser.interfaces.ICMSLayer)
 
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(

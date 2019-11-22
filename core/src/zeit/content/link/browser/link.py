@@ -7,12 +7,12 @@ import zope.interface
 import zope.publisher.interfaces
 
 
+@zope.component.adapter(
+    zeit.content.link.interfaces.ILink,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class LinkListRepresentation(
         zeit.cms.browser.listing.CommonListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.content.link.interfaces.ILink,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):

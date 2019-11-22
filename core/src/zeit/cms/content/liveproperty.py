@@ -9,13 +9,11 @@ import zope.interface
 import zope.security.interfaces
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+@zope.interface.provider(zeit.cms.content.interfaces.ILivePropertyManager)
 class LiveProperties(object, UserDict.DictMixin):
     """Webdav properties which are updated upon change."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-    zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
-    zope.interface.classProvides(
-        zeit.cms.content.interfaces.ILivePropertyManager)
 
     live_properties = dict()
 

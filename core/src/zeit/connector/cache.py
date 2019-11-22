@@ -213,10 +213,9 @@ class AccessTimes(object):
         return int(time / self.UPDATE_INTERVAL)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IResourceCache)
 class ResourceCache(AccessTimes, persistent.Persistent):
     """Cache for ressource data."""
-
-    zope.interface.implements(zeit.connector.interfaces.IResourceCache)
 
     UPDATE_INTERVAL = 24 * 3600
 
@@ -274,9 +273,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._data.pop(unique_id, None)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
 class PersistentCache(AccessTimes, persistent.Persistent):
-
-    zope.interface.implements(zeit.connector.interfaces.IPersistentCache)
 
     CACHE_VALUE_CLASS = None  # Set in subclass
 
@@ -441,10 +439,9 @@ class Properties(persistent.mapping.PersistentMapping):
         return object.__repr__(self)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IPropertyCache)
 class PropertyCache(PersistentCache):
     """Property cache."""
-
-    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
     CACHE_VALUE_CLASS = Properties
 
@@ -481,10 +478,9 @@ class ChildNames(zc.set.Set):
         self.add(key)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IChildNameCache)
 class ChildNameCache(PersistentCache):
     """Cache for child names."""
-
-    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
     CACHE_VALUE_CLASS = ChildNames
     UPDATE_INTERVAL = 24 * 3600

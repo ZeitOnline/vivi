@@ -6,9 +6,8 @@ import zeit.cms.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IMemo)
 class Memo(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IMemo)
 
     memo = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.IMemo['memo'],

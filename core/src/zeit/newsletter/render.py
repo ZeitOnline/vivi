@@ -4,9 +4,8 @@ import zeit.newsletter.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.newsletter.interfaces.IRenderer)
 class Renderer(object):
-
-    zope.interface.implements(zeit.newsletter.interfaces.IRenderer)
 
     def __init__(self, host):
         self.host = host

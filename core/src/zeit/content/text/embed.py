@@ -15,9 +15,8 @@ import zope.schema  # noqa make available to eval()
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.content.text.interfaces.IEmbed)
 class Embed(zeit.content.text.text.Text):
-
-    zope.interface.implements(zeit.content.text.interfaces.IEmbed)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IEmbed,

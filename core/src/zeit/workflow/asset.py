@@ -5,11 +5,10 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.workflow.interfaces.IAssetWorkflow)
 class AssetWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     """Workflow for assets."""
-
-    zope.interface.implements(zeit.workflow.interfaces.IAssetWorkflow)
-    zope.component.adapts(zeit.cms.interfaces.IAsset)
 
     def can_publish(self):
         status = super(AssetWorkflow, self).can_publish()

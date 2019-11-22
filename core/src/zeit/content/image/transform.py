@@ -10,10 +10,9 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
+@zope.interface.implementer(zeit.content.image.interfaces.ITransform)
 class ImageTransform(object):
-
-    zope.interface.implements(zeit.content.image.interfaces.ITransform)
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
 
     MAXIMUM_IMAGE_SIZE = 5000
 

@@ -23,10 +23,10 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(zeit.content.author.interfaces.IAuthor,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
@@ -99,10 +99,9 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.content.author.add_contextfree'
 
 
+@zope.component.adapter(zeit.content.author.interfaces.IAuthor)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.author.interfaces.IAuthor)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
@@ -277,9 +276,8 @@ class BiographyQuestions(
         self[key] = value
 
 
+@zope.interface.implementer(zeit.content.author.interfaces.IQuestion)
 class Question(object):
-
-    zope.interface.implements(zeit.content.author.interfaces.IQuestion)
 
     def __init__(self, id, title, answer):
         self.id = id

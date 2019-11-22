@@ -21,11 +21,10 @@ Create a content object:
 
 >>> import lxml.objectify
 >>> import zeit.cms.content.property
->>> class Content(object):
-...     zope.interface.implements(IContent)
+>>> @zope.interface.implementer(IContent)
+... class Content(object):
 ...     xml = lxml.objectify.XML('<art/><?foo?>')
 ...     snippet = zeit.cms.content.property.Structure('.title')
-...
 >>> content = Content()
 
 We also need a a request:

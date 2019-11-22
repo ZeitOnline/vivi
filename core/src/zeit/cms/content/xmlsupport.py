@@ -18,9 +18,8 @@ import zope.security.interfaces
 import zope.security.proxy
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class XMLRepresentationBase(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
     #: XML string with which to initalize new objects. Define in subclass.
     default_template = None
@@ -34,12 +33,11 @@ class XMLRepresentationBase(object):
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
 class XMLContentBase(zeit.cms.repository.repository.ContentBase,
                      XMLRepresentationBase,
                      persistent.Persistent):
     """Base class for XML content."""
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
 
 
 _default_marker = object()
@@ -79,10 +77,10 @@ class Persistent(object):
             parent = parent.__parent__
 
 
+@zope.interface.implementer(
+    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 class SynchronisingDAVPropertyToXMLEvent(object):
 
-    zope.interface.implements(
-        zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
     vetoed = False
 
     def __init__(self, namespace, name, value):
@@ -106,12 +104,11 @@ def veto_internal(event):
         event.veto()
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
+@zope.interface.implementer(
+    zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
 class PropertyToXMLAttribute(object):
     """Attribute nodes reside in the head."""
-
-    zope.component.adapts(zeit.cms.content.interfaces.IXMLRepresentation)
-    zope.interface.implements(
-        zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
 
     path = lxml.objectify.ObjectPath('.head.attribute')
 
@@ -212,11 +209,9 @@ def map_dav_properties_to_xml_before_checkin(context, event):
     sync.sync()
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class XMLReferenceUpdater(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     target_iface = None
     suppress_errors = False

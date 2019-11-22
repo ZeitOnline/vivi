@@ -26,11 +26,10 @@ log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
+@zope.interface.implementer(
+    zeit.content.volume.interfaces.IVolume,
+    zeit.cms.interfaces.IAsset)
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(
-        zeit.content.volume.interfaces.IVolume,
-        zeit.cms.interfaces.IAsset)
 
     default_template = u"""\
         <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">

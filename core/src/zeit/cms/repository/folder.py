@@ -7,10 +7,9 @@ import zeit.cms.util
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.repository.interfaces.IFolder)
 class Folder(zeit.cms.repository.repository.Container):
     """The Folder structures content in the repository."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
 
 
 class FolderType(zeit.cms.type.TypeDeclaration):
