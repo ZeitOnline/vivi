@@ -322,19 +322,29 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         only the number of _automatic_ teasers is configured via the
         `Area.count` setting. Thus we may contain more than `Area.count`
         teasers.
-
         """
         if not self.automatic:
             return
 
-        automatic_blocks = [
-            x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
+        # We want the configured blocks here, not the rendered ones.
+        filter_values = super(Area, self).filter_values
 
-        while self.count < len(self) and len(automatic_blocks) > 0:
-            block = automatic_blocks.pop(-1)
-            del self[block.__name__]
-        while self.count > len(self):
-            self.create_item('auto-teaser')
+        to_adjust = len(list(filter_values(ITeaserBlock))) - (self.count or 0)
+        if to_adjust == 0:
+            return
+
+        changed = 0
+        if to_adjust > 0:
+            automatic_blocks = list(filter_values(IAutomaticTeaserBlock))
+            while changed < to_adjust and automatic_blocks:
+                changed += 1
+                block = automatic_blocks.pop(-1)
+                del self[block.__name__]
+        elif to_adjust < 0:
+            to_adjust = abs(to_adjust)
+            while changed < to_adjust:
+                changed += 1
+                self.create_item('auto-teaser')
 
     def _create_auto_blocks(self):
         """Add automatic teaser blocks so we have #count of them.
