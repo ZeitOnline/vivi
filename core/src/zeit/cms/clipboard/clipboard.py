@@ -109,12 +109,8 @@ class WorkingcopyTraverser(object):
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
-<<<<<<< HEAD
-class ClipboardNameChooser(zope.container.contained.NameChooser):
-=======
 @zope.component.adapter(zeit.cms.clipboard.interfaces.IClipboard)
-class ClipboardNameChooser(zope.app.container.contained.NameChooser):
->>>>>>> ZON-5645: Replace implements/adapts with decorators
+class ClipboardNameChooser(zope.container.contained.NameChooser):
     """A namechooser removing invalid characters."""
 
     def chooseName(self, name, object):

@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import z3c.traverser.interfaces
 import zeit.cms.workingcopy.interfaces
 import zope.container.btree
@@ -113,8 +113,8 @@ def principalAdapter(context):
     return location.getWorkingcopyFor(context)
 
 
-@grokcore.component.adapter(None)
-@grokcore.component.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)
+@grok.adapter(None)
+@grok.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 def workingcopy_for_current_principal(ignored):
     # Find the current principal. Note that it is possible for there
     # to be more than one principal - in this case adapting fails

@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import grokcore.component.testing
 import unittest
 import zeit.cms.content.dav
@@ -24,7 +24,7 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
             'http://xml.zeit.de/testcontent')
 
     def test_adapter_grokking(self):
-        @grokcore.component.implementer(ITestInterface)
+        @grok.implementer(ITestInterface)
         class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
             pass
 

@@ -1,7 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE
 from zeit.content.article.source import LEGACY_VARIANT_NAME_SOURCE
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import six
 import zeit.cms.checkout.interfaces
@@ -35,9 +35,9 @@ class ImageReferenceProperty(
         instance._p_changed = True
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IImage)
 class Image(zeit.content.article.edit.reference.Reference):
 
-    grokcore.component.implements(zeit.content.article.edit.interfaces.IImage)
     type = 'image'
 
     references = ImageReferenceProperty('.', 'image')
@@ -92,10 +92,11 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
     title = _('Image')
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.image.interfaces.IImage,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(
+    zeit.content.article.edit.interfaces.IArticleArea,
+    zeit.content.image.interfaces.IImage,
+    int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_image(body, image, position):
     block = Factory(body)(position)
     block.references = (block.references.get(image) or
@@ -103,15 +104,16 @@ def factor_image_block_from_image(body, image, position):
     return block
 
 
-@grokcore.component.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-                            zeit.content.image.interfaces.IImageGroup,
-                            int)
-@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+@grok.adapter(
+    zeit.content.article.edit.interfaces.IArticleArea,
+    zeit.content.image.interfaces.IImageGroup,
+    int)
+@grok.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_imagegroup(body, group, position):
     return factor_image_block_from_image(body, group, position)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def copy_image_to_body(context, event):
@@ -131,7 +133,7 @@ def copy_image_to_body(context, event):
     context.main_image = image
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def copy_image_to_push(context, event):
@@ -152,7 +154,7 @@ def copy_image_to_push(context, event):
         push.set(service, image=image.uniqueId if image is not None else None)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def change_variant_name_on_template_change(context, event):
@@ -169,7 +171,7 @@ def change_variant_name_on_template_change(context, event):
     context.main_image_variant_name = source.get_default(context)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def migrate_image_nodes_inside_p(article, event):

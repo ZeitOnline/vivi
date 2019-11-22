@@ -2,7 +2,7 @@ from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
 import gocept.runner
-import grokcore.component
+import grokcore.component as grok
 import logging
 import os.path
 import pytz
@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IReportableContentSource)
-class ReportableContentSource(grokcore.component.GlobalUtility):
+class ReportableContentSource(grok.GlobalUtility):
 
     def __iter__(self):
         age = self.config['days-before-report']
@@ -69,7 +69,7 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
 
 class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.provides(zeit.vgwort.interfaces.IReportInfo)
+    grok.provides(zeit.vgwort.interfaces.IReportInfo)
 
     zeit.cms.content.dav.mapProperties(
         zeit.vgwort.interfaces.IReportInfo,

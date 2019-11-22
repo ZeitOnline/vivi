@@ -1,5 +1,4 @@
 import gocept.lxml.interfaces
-import grokcore.component
 import grokcore.component as grok
 import lxml.objectify
 import six
@@ -107,7 +106,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 MODULES = ModuleSource()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def clear_header_module_if_not_allowed_by_template(context, event):

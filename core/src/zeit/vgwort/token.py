@@ -2,7 +2,7 @@ from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import BTrees.Length
 import csv
 import gocept.runner
-import grokcore.component
+import grokcore.component as grok
 import logging
 import persistent
 import random
@@ -66,7 +66,8 @@ class ITokenService(zope.interface.Interface):
     pass
 
 
-class TokenService(grokcore.component.GlobalUtility):
+@grok.implementer(ITokenService)
+class TokenService(grok.GlobalUtility):
     """DAV does not support transactions, so we need to work around the case
     that an error occurs (and the transaction is rolled back) after a token has
     been claimed -- because the token has be written to DAV nonetheless, thus
@@ -77,8 +78,6 @@ class TokenService(grokcore.component.GlobalUtility):
     token claming to an XML-RPC call (which happens in its own, independent
     transaction).
     """
-
-    grokcore.component.implements(ITokenService)
 
     def __init__(self):
         if not self.config:
@@ -99,7 +98,7 @@ class TokenService(grokcore.component.GlobalUtility):
 
 class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.provides(zeit.vgwort.interfaces.IToken)
+    grok.provides(zeit.vgwort.interfaces.IToken)
 
     zeit.cms.content.dav.mapProperties(
         zeit.vgwort.interfaces.IToken,
@@ -108,7 +107,7 @@ class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.vgwort.interfaces.IGenerallyReportableContent,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def add_token(context, event):
@@ -135,7 +134,7 @@ def add_token(context, event):
     reginfo.reported_error = ''
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
@@ -143,7 +142,7 @@ def ignore_private_token(event):
         event.veto()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectCopiedEvent)
 def remove_vgwort_properties_after_copy(context, event):

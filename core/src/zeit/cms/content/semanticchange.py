@@ -1,6 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import datetime
-import grokcore.component
+import grokcore.component as grok
 import pytz
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
@@ -38,7 +38,7 @@ hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']
 
 class SemanticChangeLocal(SemanticChange):
 
-    grokcore.component.context(zeit.cms.checkout.interfaces.ILocalContent)
+    grok.context(zeit.cms.checkout.interfaces.ILocalContent)
 
     ANNOTATION_KEY = 'zeit.cms.content.semanticchange.has_semantic_change'
 

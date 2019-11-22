@@ -1,5 +1,5 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-import grokcore.component
+import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -15,7 +15,7 @@ class Memo(zeit.cms.content.dav.DAVPropertiesAdapter):
         'memo', writeable=WRITEABLE_ALWAYS)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
     if event.name == 'memo':

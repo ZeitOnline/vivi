@@ -1,7 +1,7 @@
 import StringIO
 import datetime
 import gocept.lxml.objectify
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import persistent
 import persistent.interfaces
@@ -90,14 +90,14 @@ class SynchronisingDAVPropertyToXMLEvent(object):
         self.vetoed = True
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_dav(event):
     if event.namespace == 'DAV:':
         event.veto()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_internal(event):
     if event.namespace == 'INTERNAL':

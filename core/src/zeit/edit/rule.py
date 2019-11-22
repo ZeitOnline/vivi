@@ -7,7 +7,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zeit.workflow.interfaces import ITimeBasedPublishing
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException
-import grokcore.component
+import grokcore.component as grok
 import logging
 import pytz
 import six
@@ -95,8 +95,8 @@ class Rule(object):
         self.warning_if(status, not condition, message)
 
 
-@grokcore.component.adapter(zope.interface.Interface)
-@grokcore.component.implementer(zeit.edit.interfaces.IRuleGlobs)
+@grok.adapter(zope.interface.Interface)
+@grok.implementer(zeit.edit.interfaces.IRuleGlobs)
 def globs(context):
     globs = {}
     for name, adapter in zope.component.getAdapters(
@@ -125,9 +125,8 @@ def glob(adapts):
     return decorate
 
 
-class RulesManager(grokcore.component.GlobalUtility):
-
-    grokcore.component.implements(zeit.edit.interfaces.IRulesManager)
+@grok.implementer(zeit.edit.interfaces.IRulesManager)
+class RulesManager(grok.GlobalUtility):
 
     def __init__(self):
         self._rules = []
@@ -178,11 +177,11 @@ class RulesManager(grokcore.component.GlobalUtility):
         return self._rules
 
 
-class Validator(grokcore.component.Adapter):
+@grok.implementer(zeit.edit.interfaces.IValidator)
+class Validator(grok.Adapter):
     """Generic validator for all elements."""
 
-    grokcore.component.implements(zeit.edit.interfaces.IValidator)
-    grokcore.component.context(zeit.edit.interfaces.IElement)
+    grok.context(zeit.edit.interfaces.IElement)
 
     status = None
 

@@ -8,7 +8,7 @@ class AuthorListRepresentation(
         grok.MultiAdapter,
         zeit.cms.browser.listing.BaseListRepresentation):
 
-    grok.context(
+    grok.adapts(
         zeit.content.author.interfaces.IAuthor,
         zope.publisher.interfaces.IPublicationRequest)
 

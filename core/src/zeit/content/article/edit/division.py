@@ -1,15 +1,14 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.IDivision)
 class Division(zeit.content.article.edit.block.Block):
 
     type = 'division'
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IDivision)
 
     teaser = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'teaser',

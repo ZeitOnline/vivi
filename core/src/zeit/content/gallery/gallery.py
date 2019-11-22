@@ -1,6 +1,6 @@
 from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import six
@@ -387,18 +387,18 @@ class EntryMetadata(object):
         return value
 
 
-@grokcore.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@grokcore.component.implementer(zeit.content.image.interfaces.IImages)
+@grok.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@grok.implementer(zeit.content.image.interfaces.IImages)
 def images_for_entry(context):
     context.fill_color = None
     return context
 
 
-class SearchableText(grokcore.component.Adapter):
+@grok.implementer(zope.index.text.interfaces.ISearchableText)
+class SearchableText(grok.Adapter):
     """SearchableText for a gallery."""
 
-    grokcore.component.context(zeit.content.gallery.interfaces.IGallery)
-    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+    grok.context(zeit.content.gallery.interfaces.IGallery)
 
     def getSearchableText(self):
         main_text = []
