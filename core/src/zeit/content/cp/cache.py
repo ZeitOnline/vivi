@@ -34,6 +34,10 @@ def prewarm_cache(uniqueId):
                         log.info('Found author %s', x.target.uniqueId)
 
             transaction.commit()
+    elif zeit.cms.repository.interfaces.IFolder.providedBy(content):
+        for child in content.values():
+            log.info('Found child %s', child)
+            transaction.commit()
 
     # Explicitly resolve parents, zeit.cms.repository.repository.ContentBase
     for item in todo:

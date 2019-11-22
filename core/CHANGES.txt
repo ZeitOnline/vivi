@@ -5,7 +5,7 @@ vivi.core changes
 4.22.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Also pre-warm folder entries
 
 
 4.22.0 (2019-11-21)
