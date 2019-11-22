@@ -5,6 +5,8 @@ vivi.core changes
 4.22.1 (unreleased)
 -------------------
 
+- FIX: Restore translations that were lost in 4.22.0
+
 - MAINT: Also pre-warm folder entries
 
 
