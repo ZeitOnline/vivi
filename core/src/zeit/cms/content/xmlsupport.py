@@ -22,7 +22,8 @@ class XMLRepresentationBase(object):
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
-    default_template = None  # Define in subclasses
+    #: XML string with which to initalize new objects. Define in subclass.
+    default_template = None
 
     def __init__(self, xml_source=None):
         if xml_source is None:
@@ -36,7 +37,7 @@ class XMLRepresentationBase(object):
 class XMLContentBase(zeit.cms.repository.repository.ContentBase,
                      XMLRepresentationBase,
                      persistent.Persistent):
-    """Base class for xml content."""
+    """Base class for XML content."""
 
     zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
 
