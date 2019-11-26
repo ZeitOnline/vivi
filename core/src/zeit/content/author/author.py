@@ -74,6 +74,11 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
+    show_letterbox_link = zeit.cms.content.property.ObjectPathProperty(
+        '.show_letterbox_link',
+        IAuthor['show_letterbox_link'],
+        use_default=False)
+
     @property
     def exists(self):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
