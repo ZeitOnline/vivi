@@ -123,5 +123,11 @@
     id="zeit.cms.admin.EditSemantic"
     title="Edit semantic change and date of last semantic publish"
     />
+
+  <permission
+    id="zeit.content.text.AddEmbed"
+    title="Add Embed objects"
+    />
+
 </configure>
 

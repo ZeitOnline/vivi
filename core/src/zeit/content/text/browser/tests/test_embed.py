@@ -5,6 +5,8 @@ import zeit.content.text.testing
 
 class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
+    login_as = 'producer:producerpw'
+
     def test_add_embed(self):
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/2006')
