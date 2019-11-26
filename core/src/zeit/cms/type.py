@@ -33,6 +33,7 @@ class TypeDeclaration(object):
     factory = NotImplemented
     title = None
     addform = None
+    addpermission = None
     register_as_type = True
 
     def __init__(self):

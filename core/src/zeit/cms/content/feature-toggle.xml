@@ -1,4 +1,5 @@
 <features>
+  <add_content_permissions>true</add_content_permissions>
   <article_agencies>true</article_agencies>
   <article_image_animation>true</article_image_animation>
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
