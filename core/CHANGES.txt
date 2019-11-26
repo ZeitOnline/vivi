@@ -5,7 +5,8 @@ vivi.core changes
 4.22.3 (unreleased)
 -------------------
 
-- BUG-1136: Don't show admin checked-out for objects without ICommonMetadata
+- BUG-1136: Don't show admin checked-out for objects without ICommonMetadata,
+  implement a basic SEO tab for them.
 
 
 4.22.2 (2019-11-22)

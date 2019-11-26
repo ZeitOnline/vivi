@@ -35,13 +35,32 @@ class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
     title = _('View SEO data')
 
 
-@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
 def edit_view_name(context):
     return 'seo-edit.html'
 
 
-@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
 def display_view_name(context):
     return 'seo-view.html'
+
+
+class OnlySEOBaseForm(object):
+
+    form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO)
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('SEO data'), 'column-left wide-widgets'),)
+
+
+class OnlySEOEdit(OnlySEOBaseForm, zeit.cms.browser.form.EditForm):
+
+    title = _('Edit OnlySEO data')
+
+
+class OnlySEODisplay(OnlySEOBaseForm, zeit.cms.browser.form.DisplayForm):
+
+    title = _('View OnlySEO data')
