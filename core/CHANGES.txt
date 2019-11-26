@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.22.3 (unreleased)
+4.22.3 (2019-11-26)
 -------------------
 
 - BUG-1136: Don't show admin checked-out for objects without ICommonMetadata,
