@@ -3701,7 +3701,7 @@ msgstr "URL"
 #: zeit/content/modules/interfaces.py:60
 msgid "Add URL"
 msgstr ""
-"Füge hier die URL eines Twitter-, Instagram-, Youtube-, Facebook-, oder "
+"Füge hier die URL eines Twitter-, Instagram-, Youtube-, Facebook- oder "
 "Vimeo-Posts ein."
 
 #: zeit/content/modules/interfaces.py:82
