@@ -76,6 +76,14 @@ class IJobTicker(zeit.edit.interfaces.IBlock):
     title = zope.interface.Attribute('Title of the chosen feed')
 
 
+class INewsletterSignup(zeit.edit.interfaces.IBlock):
+
+    newsletter = zope.schema.Choice(
+        title=_('Newsletter Signup'),
+        required=True,
+        values=())  # actual source must be set in concrete subclass
+
+
 class IQuiz(zeit.edit.interfaces.IBlock):
 
     quiz_id = zope.schema.TextLine(
