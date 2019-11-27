@@ -306,6 +306,17 @@
       />
   </class>
 
+  <class class="zeit.content.modules.newslettersignup.NewsletterSignup">
+    <require
+      interface="zeit.content.modules.interfaces.INewsletterSignup"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.modules.interfaces.INewsletterSignup"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".topicbox.Topicbox">
     <require
       interface=".interfaces.ITopicbox"

@@ -630,6 +630,26 @@
     weight="10"
     />
 
+<!-- newslettersignup -->
+
+   <browser:viewlet
+    for="zeit.content.modules.interfaces.INewsletterSignup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-newslettersignup"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.modules.interfaces.INewsletterSignup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-newslettersignup"
+    class=".edit.EditNewsletterSignup"
+    permission="zope.View"
+    />
 
   <!-- division -->
 
@@ -725,6 +745,10 @@
   </class>
 
   <class class="..mail.Mail">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="zeit.content.modules.newslettersignup.NewsletterSignup">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
