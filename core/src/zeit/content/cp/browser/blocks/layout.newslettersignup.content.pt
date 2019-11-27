@@ -1,0 +1,3 @@
+<div class="newslettersignup-title" tal:content="context/newsletter/title|nothing">
+  Newslettersignuptitle
+</div>

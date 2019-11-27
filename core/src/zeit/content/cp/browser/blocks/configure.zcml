@@ -104,5 +104,6 @@
   <include file="cardstack.zcml" />
   <include file="jobticker.zcml" />
   <include file="mail.zcml" />
+  <include file="newslettersignup.zcml" />
 
 </configure>

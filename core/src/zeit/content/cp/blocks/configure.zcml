@@ -127,6 +127,15 @@
       permission="zeit.EditContent"/>
   </class>
 
+  <class class=".newslettersignup.NewsletterSignupBlock">
+    <require
+      interface="zeit.content.modules.interfaces.INewsletterSignup"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.modules.interfaces.INewsletterSignup"
+      permission="zeit.EditContent"/>
+  </class>
+
   <class class=".rss.RSSLink">
     <require
       interface="zeit.content.cp.blocks.rss.IRSSLink"
