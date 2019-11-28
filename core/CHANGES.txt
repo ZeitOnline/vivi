@@ -5,6 +5,8 @@ vivi.core changes
 4.22.4 (unreleased)
 -------------------
 
+- ZON-5586: Finally remove unused XMLSnippet field (since zeit.cms-2.35.1)
+
 - ZON-5585: Replace SilverCity with Pygments for syntax highlighting
 
 
