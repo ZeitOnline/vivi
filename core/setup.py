@@ -46,7 +46,6 @@ setup(
         'gocept.selenium>=2.4.0',
         'gocept.testing>=1.4.0.dev0',
         'grokcore.component',
-        'grokcore.view',
         'guppy',
         'iso8601>=0.1.2',
         'js.backbone',
