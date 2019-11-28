@@ -9,6 +9,8 @@ vivi.core changes
 
 - ZON-5585: Replace SilverCity with Pygments for syntax highlighting
 
+- ZON-5603: Replace suds with zeep as our SOAP client library
+
 
 4.22.3 (2019-11-26)
 -------------------
