@@ -1,9 +1,9 @@
-
+import lxml.etree
+import pygments
+import pygments.formatters
+import pygments.lexers
 import zeit.cms.browser.view
 import zope.proxy
-import lxml.etree
-import SilverCity.XML
-import StringIO
 
 form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
     zope.app.pagetemplate.ViewPageTemplateFile('xml.edit-contents.pt'),
@@ -18,12 +18,10 @@ class Display(zeit.cms.browser.view.Base):
 
     def update(self):
         content = zope.proxy.removeAllProxies(self.context.xml)
-        content = lxml.etree.tostring(content, pretty_print=True,
-                                      encoding=unicode)
-        io = StringIO.StringIO()
-        SilverCity.XML.XMLHTMLGenerator().generate_html(
-            io, content.encode('UTF-8'))
-        self.xml = io.getvalue().decode('UTF-8')
+        content = lxml.etree.tounicode(content, pretty_print=True)
+        self.xml = pygments.highlight(
+            content, pygments.lexers.XmlLexer(),
+            pygments.formatters.HtmlFormatter(cssclass='pygments'))
 
 
 class EditProperties(zeit.cms.browser.sourceedit.XMLEditForm):

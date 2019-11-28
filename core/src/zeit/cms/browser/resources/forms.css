@@ -385,28 +385,28 @@ label > span {
   margin: 0.2em;
 }
 
-span.h_tag {
+.pygments pre {
+    padding: 0;
+}
+
+.pygments {
+    color: black;
+}
+
+.pygments .nt {
   color: blue;
 }
 
-span.h_attribute {
+.pygments .na {
   color: purple;
 }
 
-span.h_doublestring {
+.pygments .s {
   color: brown;
 }
 
-span.h_singlestring {
-  color: brown;
-}
-
-span.h_default {
-  color: black;
-}
-
-span.h_other {
-  color: black;
+.pygments .c {
+    color: green;
 }
 
 

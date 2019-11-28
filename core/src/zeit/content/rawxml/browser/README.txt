@@ -58,10 +58,9 @@ After checking in we see the read/only view:
 <?xml ...
     <title>... View Raw XML </title>
     ...
-        <div class="widget"><span class="h_tag">&lt;block&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;feed</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-</span><span class="h_tag">&lt;/block&gt;</span><span class="h_default"><br/>
-</span></div>
+    <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;block&gt;</span>
+      <span class="nt">&lt;feed/&gt;</span>
+        <span class="nt">&lt;/block&gt;</span>
 ...
 >>> print browser.url
 http://localhost/++skin++cms/repository/rawxml/@@view.html

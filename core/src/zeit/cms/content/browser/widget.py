@@ -1,7 +1,9 @@
-import SilverCity.XML
 import StringIO
 import json
 import lxml.etree
+import pygments
+import pygments.formatters
+import pygments.lexers
 import zc.form.browser.combinationwidget
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -50,10 +52,9 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
             content = self.context.default
         if not content:
             return u''
-        io = StringIO.StringIO()
-        SilverCity.XML.XMLHTMLGenerator().generate_html(
-            io, content.encode('UTF-8'))
-        return io.getvalue().decode('UTF-8')
+        return pygments.highlight(
+            content, pygments.lexers.XmlLexer(),
+            pygments.formatters.HtmlFormatter(cssclass='pygments'))
 
 
 # XXX This needs to be much smarter. Users need to be able to input

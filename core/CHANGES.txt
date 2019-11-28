@@ -5,7 +5,7 @@ vivi.core changes
 4.22.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5585: Replace SilverCity with Pygments for syntax highlighting
 
 
 4.22.3 (2019-11-26)

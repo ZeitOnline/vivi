@@ -18,7 +18,7 @@ setup(
         'BTrees',
         'Jinja2',
         'Pillow',
-        'SilverCity',
+        'Pygments',
         'ZConfig',
         'ZODB',
         'beautifulsoup4',
