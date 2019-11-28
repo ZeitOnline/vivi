@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
 from zeit.retresco.interfaces import ISkipEnrich
 import argparse
@@ -60,7 +61,10 @@ def index_on_publish(context, event):
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    index(context, enrich=True)
+    enrich = True
+    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
+        enrich = False
+    index(context, enrich=enrich)
 
 
 @grok.subscribe(
@@ -87,6 +91,8 @@ def index_async(self, uniqueId, enrich=True):
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
         return
+    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
+        enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = True
     if meta is not None:

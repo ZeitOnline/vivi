@@ -93,45 +93,10 @@ Set a tree as rendered value:
 
 >>> widget.setRenderedValue(content.whole_tree)
 >>> print widget()
-<span class="h_tag">&lt;a&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;b</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;editme&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="h_tag">&lt;c</span><span class="h_tagend">/&gt;</span><span class="h_default"><br/>
-&nbsp;&nbsp;</span><span class="h_tag">&lt;/editme&gt;</span><span class="h_default"><br/>
-</span><span class="h_tag">&lt;/a&gt;</span><span class="h_default"><br/>
-</span>
-
-
-XML snippets
-============
-
->>> class IContent(zope.interface.Interface):
-...     snippet = zeit.cms.content.field.XMLSnippet()
-
-To initialize the widget we need a bound field:
-
->>> field = IContent['snippet'].bind(content)
-
-Now create the widget:
-
->>> import zeit.cms.content.browser.widget
->>> widget = zeit.cms.content.browser.widget.XMLSnippetWidget(field, request)
->>> widget
-<zeit.cms.content.browser.widget.XMLSnippetWidget object at 0x...>
->>> widget.setRenderedValue(content.snippet)
->>> widget._getFormValue()
-u''
-
-
->>> content.snippet = u'Foo <em>bar</em> baz'
->>> widget.setRenderedValue(content.snippet)
->>> widget._getFormValue()
-u'Foo <em>bar</em> baz'
-
->>> widget.setRenderedValue(u'Foo &lt;bla <em>baz</em>')
->>> widget()
-u'<textarea cols="60" id="field.snippet" name="field.snippet" rows="15" >Foo &amp;lt;bla &lt;em&gt;baz&lt;/em&gt;</textarea>'
-
->>> invalid_value = u'Fo <!bla <em>baz</em>'
->>> widget._toFieldValue(invalid_value)
-u'Fo &lt;!bla <em>baz</em>'
+<div class="pygments"><pre><span></span><span class="nt">&lt;a&gt;</span>
+  <span class="nt">&lt;b/&gt;</span>
+  <span class="nt">&lt;editme&gt;</span>
+    <span class="nt">&lt;c/&gt;</span>
+  <span class="nt">&lt;/editme&gt;</span>
+<span class="nt">&lt;/a&gt;</span>
+</pre></div>

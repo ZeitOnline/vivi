@@ -2,10 +2,65 @@ vivi.core changes
 =================
 
 
-4.21.5 (unreleased)
+4.22.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5586: Finally remove unused XMLSnippet field (since zeit.cms-2.35.1)
+
+- ZON-5585: Replace SilverCity with Pygments for syntax highlighting
+
+
+4.22.3 (2019-11-26)
+-------------------
+
+- BUG-1136: Don't show admin checked-out for objects without ICommonMetadata,
+  implement a basic SEO tab for them.
+
+
+4.22.2 (2019-11-22)
+-------------------
+
+- BUG-1156: Only count teasers, not all modules when adjusting auto block count
+  (reprise of 4.17.4)
+
+
+4.22.1 (2019-11-22)
+-------------------
+
+- FIX: Restore translations that were lost in 4.22.0
+
+- MAINT: Also pre-warm folder entries
+
+
+4.22.0 (2019-11-21)
+-------------------
+
+- ZON-5614: Make social embed labels and texts more explainable
+
+- ZON-5472: Add `IAuthor.show_letterbox_link` field
+
+
+4.21.7 (2019-11-15)
+-------------------
+
+- MAINT: Apply enrich toggle also on publish
+
+
+4.21.6 (2019-11-15)
+-------------------
+
+- MAINT: Add feature toggle `tms_enrich_on_checkin` so we can disable
+  it in overload situations
+
+
+4.21.5 (2019-11-15)
+-------------------
+
+- OPS-1133: Modify DAV cache conflict resolution rules
+  to avoid deleting cache entries (doing that was definitely correct,
+  but it caused thundering herd issues e.g. for often-used folders)
+  Set feature toggle `dav_cache_delete_property_on_conflict` (or `childname`)
+  to revert to the previous behaviour.
 
 
 4.21.4 (2019-11-13)

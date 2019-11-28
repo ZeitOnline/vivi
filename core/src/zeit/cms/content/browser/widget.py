@@ -1,7 +1,9 @@
-import SilverCity.XML
 import StringIO
 import json
 import lxml.etree
+import pygments
+import pygments.formatters
+import pygments.lexers
 import zc.form.browser.combinationwidget
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -50,28 +52,9 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
             content = self.context.default
         if not content:
             return u''
-        io = StringIO.StringIO()
-        SilverCity.XML.XMLHTMLGenerator().generate_html(
-            io, content.encode('UTF-8'))
-        return io.getvalue().decode('UTF-8')
-
-
-# XXX This needs to be much smarter. Users need to be able to input
-# - Special characters (like quotation marks),
-#   outside of tags they need to be quoted, but not inside.
-# - Markup (like <b>tags</b>), they must be stored unquoted and displayed
-#   in the browser properly.
-class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
-    def _toFieldValue(self, input):
-        as_unicode = super(XMLSnippetWidget, self)._toFieldValue(input)
-        if as_unicode:
-            try:
-                return self.context.fromUnicode(as_unicode)
-            except zope.schema.ValidationError, error:
-                raise zope.app.form.interfaces.ConversionError(
-                    error.__doc__, error)
-        return as_unicode
+        return pygments.highlight(
+            content, pygments.lexers.XmlLexer(),
+            pygments.formatters.HtmlFormatter(cssclass='pygments'))
 
 
 class CombinationWidget(
