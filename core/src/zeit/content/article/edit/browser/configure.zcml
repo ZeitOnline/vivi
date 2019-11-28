@@ -688,6 +688,10 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <class class="..embed.Embed">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
   <class class="..puzzleform.PuzzleForm">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>

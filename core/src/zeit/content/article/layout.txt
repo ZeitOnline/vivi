@@ -64,6 +64,8 @@ datetime.datetime(...)
 >>> published_cp
 datetime.datetime(...)
 
+>>> transaction.commit()
+
 When publishing again, the centerpage is not published again, since it
 is already published:
 

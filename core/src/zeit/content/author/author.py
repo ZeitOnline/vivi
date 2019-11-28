@@ -38,6 +38,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'sso_connect',
         'ssoid',
         'enable_followpush',
+        'enable_feedback',
         'entered_display_name',
         'external',
         'facebook',
@@ -47,6 +48,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'initials',
         'lastname',
         'occupation',
+        'show_letterbox_link',
         'status',
         'summary',
         'title',
@@ -64,11 +66,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     community_profile = zeit.cms.content.property.ObjectPathProperty(
         '.communityprofile')
-
-    enable_feedback = zeit.cms.content.property.ObjectPathProperty(
-        '.enable_feedback',
-        IAuthor['enable_feedback'],
-        use_default=False)
 
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
