@@ -70,13 +70,13 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
     def test_adding_block_by_hand_removes_automatic_block_to_keep_count(self):
         auto_teaser_selector = 'css=#{} .block.type-auto-teaser'.format(
             self.area.__name__)
-        quiz_selector = 'css=#{} .block.type-quiz'.format(self.area.__name__)
+        teaser_selector = 'css=#{} .block.type-teaser'.format(self.area.__name__)
 
         self.selenium.waitForCssCount(auto_teaser_selector, 1)
-        self.selenium.waitForCssCount(quiz_selector, 0)
-        self.create_block('quiz', self.area.__name__)
+        self.selenium.waitForCssCount(teaser_selector, 0)
+        self.create_block('teaser', self.area.__name__)
         self.selenium.waitForCssCount(auto_teaser_selector, 0)
-        self.selenium.waitForCssCount(quiz_selector, 1)
+        self.selenium.waitForCssCount(teaser_selector, 1)
 
     def test_pin_icon_converts_to_normal_teaser(self):
         sel = self.selenium
