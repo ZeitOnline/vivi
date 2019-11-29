@@ -21,8 +21,7 @@ class MetadataColumn(GetterColumn):
             map(unicode, [item[0][0], item[0][1], item[1]]))
 
 
-class Listing(zeit.cms.browser.listing.Listing,
-              zeit.content.volume.browser.content.Listing):
+class Listing(zeit.cms.browser.listing.Listing):
 
     title = _('DAV Properties')
     filter_interface = None
