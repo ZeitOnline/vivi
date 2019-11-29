@@ -13,7 +13,7 @@
       />
   </class>
 
-  <class class=".newslettersignup.Newsletter">
+  <class class=".interfaces.Newsletter">
     <require
       attributes="id title image abo_text anon_text"
       permission="zope.View"

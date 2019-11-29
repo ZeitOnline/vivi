@@ -1,5 +1,9 @@
+from zeit.cms.application import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
+import collections
+import grokcore.component as grok
 import zeit.cms.content.sources
+import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
 import zope.app.appsetup.product
@@ -76,12 +80,60 @@ class IJobTicker(zeit.edit.interfaces.IBlock):
     title = zope.interface.Attribute('Title of the chosen feed')
 
 
+class Newsletter(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, image, abo_text, anon_text):
+        super(Newsletter, self).__init__(id, title, available=None)
+        self.image = image
+        self.abo_text = abo_text
+        self.anon_text = anon_text
+
+
+@grok.implementer(zeit.content.image.interfaces.IImages)
+class NewsletterImage(grok.Adapter):
+
+    grok.context(Newsletter)
+
+    fill_color = None
+
+    @property
+    def image(self):
+        return zeit.cms.interfaces.ICMSContent(self.context.image, None)
+
+
+class NewsletterSource(zeit.cms.content.sources.ObjectSource,
+                       zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.modules'
+    config_url = 'newsletter-source'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        tree = self._get_tree()
+        for node in tree.iterchildren('*'):
+            newsletter = Newsletter(
+                unicode(node.get('id')),
+                self.child(node, 'title'),
+                self.child(node, 'image'),
+                self.child(node, 'text'),
+                self.child(node, 'text_anonymous'),
+            )
+            result[newsletter.id] = newsletter
+        return result
+
+    def child(self, node, name):
+        child = node.find(name)
+        if child is None:
+            return None
+        return unicode(child.text).strip()
+
+
 class INewsletterSignup(zeit.edit.interfaces.IBlock):
 
     newsletter = zope.schema.Choice(
         title=_('Newsletter Signup'),
-        required=True,
-        values=())  # actual source must be set in concrete subclass
+        source=NewsletterSource())
 
 
 class IQuiz(zeit.edit.interfaces.IBlock):
