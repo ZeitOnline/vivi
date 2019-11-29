@@ -306,7 +306,7 @@
       />
   </class>
 
-  <class class="zeit.content.modules.newslettersignup.NewsletterSignup">
+  <class class=".newslettersignup.NewsletterSignup">
     <require
       interface="zeit.content.modules.interfaces.INewsletterSignup"
       permission="zope.View"
