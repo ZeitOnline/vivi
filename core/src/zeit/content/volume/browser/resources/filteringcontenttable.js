@@ -1,9 +1,9 @@
 function getTrimedElementById(id) {
-    return document.getElementById(id).value.trim()
+    return document.getElementById(id).value.trim();
 }
 
 function filterIsCheked(id) {
-    return document.getElementById(id).checked
+    return document.getElementById(id).checked;
 }
 
 function filterContentTable() {
@@ -14,6 +14,7 @@ function filterContentTable() {
         optimized: filterIsCheked('filter_is_optimized'),
         ressort: getTrimedElementById('filter_ressort'),
         supertitle: filterIsCheked('filter_has_supertitle'),
+        teaserimage: filterIsCheked('filter_has_teaser_img'),
     };
 
     var contentTableRows = document.querySelectorAll('.contentListing tr');
@@ -32,6 +33,8 @@ function filterContentTable() {
             ressort: getTdValue(row.querySelector('td:nth-child(9)'),
             'innerText'),
             supertitle: getTdValue(row.querySelector('td:nth-child(6)'),
+            'innerText'),
+            teaserimage: getTdValue(row.querySelector('td:nth-child(14)'),
             'innerText'),
         };
 
@@ -107,7 +110,8 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
 
 function registerFilterChangeEvents() {
     ['filter_content_typ', 'filter_availibility', 'filter_is_urgent',
-    'filter_is_optimized', 'filter_ressort', 'filter_has_supertitle'].map(function(el) {
+    'filter_is_optimized', 'filter_ressort', 'filter_has_supertitle',
+    'filter_has_teaser_img'].map(function(el) {
         var filterElement = document.getElementById(el);
         if (filterElement !== null) {
             filterElement.onchange = filterContentTable;
@@ -120,7 +124,7 @@ function setNumberOfVisibleRows(number) {
     if (numOfVisibleRows === null) {
         return false;
     }
-    numOfVisibleRows.innerHTML = '<b>' + number + ' rows' + '</b>';
+    numOfVisibleRows.innerHTML = '<strong>' + number + '</strong>';
     return true;
 }
 
@@ -131,6 +135,7 @@ jQuery(document).ready(function() {
 
     registerFilterChangeEvents();
 
+    // insert the filter values of the three dropdown menus
     setFilterValues(
         '#topcontent table tr td:nth-child(1) img',
         'filter_content_typ',
@@ -145,4 +150,5 @@ jQuery(document).ready(function() {
         '#topcontent table tr td:nth-child(9)',
         'filter_ressort',
         'innerText');
+    //////////////////////////////////////////////////////////
 });
