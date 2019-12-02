@@ -455,4 +455,3 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'newsletter.{0}'.format(self.context.__name__)
-
