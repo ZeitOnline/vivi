@@ -238,7 +238,7 @@ class EditRawText(
 
     legend = None
     _form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IRawText)
+        zeit.content.article.edit.interfaces.IRawText).select('text_reference')
     _omit_fields = ('__name__', '__parent__', 'xml')
     undo_description = _('edit raw text block')
 

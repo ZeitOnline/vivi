@@ -25,11 +25,13 @@ class RawText(zeit.edit.block.Element):
 
     text_reference = zeit.cms.content.reference.SingleResource(
         '.text_reference', 'related')
+    # BBB inline code cannot be entered in vivi UI since ZON-5615,
+    # only kept for old content objects so zeit.web can still render them.
     text = zeit.cms.content.property.ObjectPathProperty(
         '.text', zeit.content.modules.interfaces.IRawText['text'])
 
     @property
-    def raw_code(self):
+    def raw_code(self):  # BBB See RawText.text above
         if self.text_reference:
             return self.text_reference.text
         if self.text:
@@ -155,10 +157,6 @@ class EmbedParameterForm(object):
         self.form_fields = zope.formlib.form.FormFields(
             ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
                 *self._omit_fields)
-        if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
-            self.form_fields += zope.formlib.form.FormFields(
-                zeit.cmp.interfaces.IConsentInfo).select(
-                    'has_thirdparty', 'thirdparty_vendors')
 
         memo = self.form_fields['memo']
         memo.custom_widget = RestructuredTextDisplayWidget
@@ -198,6 +196,7 @@ class RawDisplayWidget(zope.formlib.widget.DisplayWidget):
         return self._data
 
 
+# BBB See RawText.text above
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
 class ConsentInfo(zeit.cms.grok.TrustedAdapter,
                   zeit.cms.content.xmlsupport.Persistent,

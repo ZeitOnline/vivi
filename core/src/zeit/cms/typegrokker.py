@@ -58,6 +58,14 @@ class TypeGrokker(martian.ClassGrokker):
                     'zeit.cms.addform'),
                 callable=annotate_interface,
                 args=(context.interface, 'zeit.cms.addform', context.addform))
+            if context.addpermission:
+                config.action(
+                    discriminator=(
+                        'annotate_interface', context.interface,
+                        'zeit.cms.addpermission'),
+                    callable=annotate_interface,
+                    args=(context.interface, 'zeit.cms.addpermission',
+                          context.addpermission))
             zope.component.zcml.interface(
                 config, context.interface, context.interface_type)
 

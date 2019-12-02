@@ -10,5 +10,6 @@
   <include package="zeit.content.text.browser" />
 
   <include package="zeit.cmp" />
+  <include package="zeit.addcentral" />
 
 </configure>
