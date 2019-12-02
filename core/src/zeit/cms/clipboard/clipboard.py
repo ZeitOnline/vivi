@@ -6,9 +6,9 @@ import zope.publisher.interfaces
 import zope.security.interfaces
 import zope.traversing.api
 
-import zope.app.container.interfaces
-import zope.app.container.contained
-import zope.app.container.ordered
+import zope.container.interfaces
+import zope.container.contained
+import zope.container.ordered
 
 import z3c.traverser.interfaces
 
@@ -16,7 +16,7 @@ import zeit.cms.workingcopy.interfaces
 import zeit.cms.clipboard.interfaces
 
 
-class Clipboard(zope.app.container.ordered.OrderedContainer):
+class Clipboard(zope.container.ordered.OrderedContainer):
 
     zope.interface.implements(zeit.cms.clipboard.interfaces.IClipboard)
     zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
@@ -39,14 +39,14 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
             position = list(container.keys()).index(
                 reference_object.__name__) + 1
 
-        if not zope.app.container.interfaces.IOrderedContainer.providedBy(
+        if not zope.container.interfaces.IOrderedContainer.providedBy(
                 container):
             raise ValueError('`reference_object` must be a Clip to insert.')
 
         entry = zeit.cms.clipboard.interfaces.IClipboardEntry(add_object)
         entry = zope.proxy.removeAllProxies(entry)
         order = list(container.keys())
-        chooser = zope.app.container.interfaces.INameChooser(container)
+        chooser = zope.container.interfaces.INameChooser(container)
         name = chooser.chooseName(name, entry)
         container[name] = entry
 
@@ -55,7 +55,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
 
     def addClip(self, title):
         clip = zeit.cms.clipboard.entry.Clip(title)
-        chooser = zope.app.container.interfaces.INameChooser(self)
+        chooser = zope.container.interfaces.INameChooser(self)
         name = chooser.chooseName(title, clip)
         self[name] = clip
         return self[name]
@@ -111,7 +111,7 @@ class WorkingcopyTraverser(object):
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
-class ClipboardNameChooser(zope.app.container.contained.NameChooser):
+class ClipboardNameChooser(zope.container.contained.NameChooser):
     """A namechooser removing invalid characters."""
 
     zope.component.adapts(zeit.cms.clipboard.interfaces.IClipboard)

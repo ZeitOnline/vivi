@@ -2,14 +2,14 @@ import persistent
 import zeit.cms.browser.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
-import zope.app.container.contained
-import zope.app.container.ordered
+import zope.container.contained
+import zope.container.ordered
 import zope.component
 import zope.interface
 import zope.publisher.browser
 
 
-class Entry(zope.app.container.contained.Contained,
+class Entry(zope.container.contained.Contained,
             persistent.Persistent):
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
@@ -55,7 +55,7 @@ def entry_to_clipboard(context):
     return zeit.cms.clipboard.interfaces.IClipboard(context.__parent__)
 
 
-class Clip(zope.app.container.ordered.OrderedContainer):
+class Clip(zope.container.ordered.OrderedContainer):
 
     zope.interface.implements(zeit.cms.clipboard.interfaces.IClip)
 

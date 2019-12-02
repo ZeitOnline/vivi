@@ -3,7 +3,6 @@ from zeit.cms.i18n import MessageFactory as _
 import datetime
 import pytz
 import re
-import zope.app.container.interfaces
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence

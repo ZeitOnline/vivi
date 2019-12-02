@@ -21,7 +21,7 @@ import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.variant
-import zope.app.container.contained
+import zope.container.contained
 import zope.interface
 import zope.lifecycleevent.interfaces
 import zope.location.interfaces
@@ -362,7 +362,7 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
 
 class LocalImageGroup(ImageGroupBase,
                       persistent.Persistent,
-                      zope.app.container.contained.Contained):
+                      zope.container.contained.Contained):
 
     zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
 
