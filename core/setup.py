@@ -129,7 +129,6 @@ setup(
         'zope.app.security',
         'zope.app.securitypolicy',
         'zope.app.tree',
-        'zope.app.testing',
         'zope.app.wsgi',
         'zope.app.zapi',  # undeclared by z3c.menu.simple
         'zope.app.zopeappgenerations',
