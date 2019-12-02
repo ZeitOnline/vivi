@@ -1,5 +1,5 @@
 <div id="tableFilter">Filter: <input name="tableFilter" type="text" value="" /></div>
-<div id="tableContentFilter">
+<div id="tocListingFilter">
     <span
       tal:content="view/contenttype"
       i18n:translate="">

@@ -1,4 +1,0 @@
-.content_listing > thead > tr > th:nth-last-child(2),
-.content_listing > tbody > tr > td:nth-last-child(2) {
-   display: none;
-}

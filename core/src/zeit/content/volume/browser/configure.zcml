@@ -39,7 +39,6 @@
     />
 
    <adapter factory=".admin.render_publish_action" name="render" />
-   <adapter factory=".commonmetadata.CommonMetadataContentListRepresentation" />
 
    <browser:page
     for="..interfaces.IVolume"
@@ -120,9 +119,9 @@
   <gocept:pagelet
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="content.html"
-    template="content.pt"
-    class=".content.ContentListing"
+    name="toc-listing.html"
+    template="toc-listing.pt"
+    class=".toc_listing.TocListing"
     permission="zope.View"
     menu="zeit-context-views" title="Inhaltsverzeichnis"
   />

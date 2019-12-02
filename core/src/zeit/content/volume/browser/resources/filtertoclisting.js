@@ -6,7 +6,7 @@ function filterIsCheked(id) {
     return document.getElementById(id).checked;
 }
 
-function filterContentTable() {
+function filterTocListingTable() {
     var filterData = {
         contenttype: getTrimedElementById('filter_content_typ'),
         publish: getTrimedElementById('filter_availibility'),
@@ -17,7 +17,7 @@ function filterContentTable() {
         teaserimage: filterIsCheked('filter_has_teaser_img'),
     };
 
-    var contentTableRows = document.querySelectorAll('.contentListing tr');
+    var contentTableRows = document.querySelectorAll('.tocListing tr');
     var numberOfFilterData = 0;
 
     contentTableRows.forEach(function(row) {
@@ -114,7 +114,7 @@ function registerFilterChangeEvents() {
     'filter_has_teaser_img'].map(function(el) {
         var filterElement = document.getElementById(el);
         if (filterElement !== null) {
-            filterElement.onchange = filterContentTable;
+            filterElement.onchange = filterTocListingTable;
         }
     });
 }
@@ -129,7 +129,7 @@ function setNumberOfVisibleRows(number) {
 }
 
 jQuery(document).ready(function() {
-    if (setNumberOfVisibleRows(document.querySelectorAll('.contentListing tr').length) === false) {
+    if (setNumberOfVisibleRows(document.querySelectorAll('.tocListing tr').length) === false) {
         return;
     }
 
