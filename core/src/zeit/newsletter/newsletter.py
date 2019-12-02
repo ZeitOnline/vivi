@@ -53,6 +53,7 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         self._send(to)
 
     def _send(self, to=None):
+        import zeit.optivo.interfaces  # UI-only dependency
         category = zeit.newsletter.interfaces.INewsletterCategory(self)
         renderer = zope.component.getUtility(
             zeit.newsletter.interfaces.IRenderer)
