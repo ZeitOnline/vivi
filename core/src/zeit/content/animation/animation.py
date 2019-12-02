@@ -25,7 +25,7 @@ class Animation(zeit.cms.content.metadata.CommonMetadata):
         "<head/><body><display_mode/><article/><images/><video/></body></animation>"
     )
 
-    article = zeit.cms.content.reference.SingleResource(".", "related")
+    article = zeit.cms.content.reference.SingleResource(".body.article", "related")
     display_mode = zeit.cms.content.property.ObjectPathProperty('.body.display_mode')
     images = zeit.cms.content.reference.MultiResource(".body.images", "image")
 
