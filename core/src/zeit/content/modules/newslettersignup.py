@@ -1,3 +1,4 @@
+import zeit.cms.content.property
 import zeit.cms.content.sources
 import zeit.content.modules.interfaces
 import zeit.edit.block
