@@ -27,6 +27,7 @@ class Animation(zeit.cms.content.metadata.CommonMetadata):
 
     article = zeit.cms.content.reference.SingleResource(".", "related")
     display_mode = zeit.cms.content.property.ObjectPathProperty('.body.display_mode')
+    images = zeit.cms.content.reference.MultiResource(".body.images", "image")
 
     @property
     def title(self):
