@@ -12,7 +12,7 @@
   <meta:provides feature="zeit.cms.repository.tree" />
 
 
-  <include package="zeit.cms" file="application.zcml" />
+  <include package="zeit.cms" file="ui.zcml" />
   <include package="zeit.cms" />
   <include package="zeit.cms.browser" />
   <include package="zeit.cms.tagging.browser" />

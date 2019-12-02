@@ -147,6 +147,7 @@ setup(
             'zope.browser',
             'zope.browserpage',
             'zope.configuration',
+            'zope.componentvocabulary',
             'zope.error',
             'zope.formlib',
             'zope.login',
