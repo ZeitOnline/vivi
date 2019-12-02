@@ -11,6 +11,11 @@ vivi.core changes
 
 - ZON-5603: Replace suds with zeep as our SOAP client library
 
+- ZON-5615: Require special permission to add embed objects,
+  set feature toggle `add_content_permission` to enable
+
+- ZON-5615: Removed inline code entry from rawtext module
+
 
 4.22.3 (2019-11-26)
 -------------------
