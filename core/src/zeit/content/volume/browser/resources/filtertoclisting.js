@@ -1,12 +1,35 @@
+/**
+ * Get the value from a given id and return the trimmed string
+ *
+ * @param {string} id
+ * @returns {string} The trimmed string. If the given element is `null` return ''
+ */
 function getTrimedElementById(id) {
-    return document.getElementById(id).value.trim();
+    var el = document.getElementById(id);
+
+    return el === null ? '' : el.value.trim();
 }
 
+/**
+ * Get the state (checked/unchecked) from a given id
+ *
+ * @param {string} id
+ * @returns {boolean} Return the state of the given id.
+ * If the id is null, return false
+ */
 function filterIsCheked(id) {
-    return document.getElementById(id).checked;
+    var el = document.getElementById(id);
+
+    return el === null ? false : el.checked;
 }
 
+
+/**
+ * Filter the table of content
+ */
 function filterTocListingTable() {
+
+    // The current filter datas
     var filterData = {
         contenttype: getTrimedElementById('filter_content_typ'),
         publish: getTrimedElementById('filter_availibility'),
@@ -45,14 +68,31 @@ function filterTocListingTable() {
         }
     });
 
+    // show the header row
     document.querySelectorAll('thead tr')[0].style.display = "table-row";
+
     setNumberOfVisibleRows(numberOfFilterData);
 }
 
+/**
+ * Get trimmed value of a given HTMLElement
+ *
+ * @param {string} raw_tdValue HTMLElement
+ * @param {string} dataField Value attribute of `raw_tdValue`
+ * @returns Returns '' if `raw_tdValue` is null, otherwise the trimmed
+ * value of the td-value attribute
+ */
 function getTdValue(raw_tdValue, dataField) {
     return raw_tdValue === null ? '' : raw_tdValue[dataField].trim();
 }
 
+/**
+ * Returns the display style of a given row and the current filter datas
+ *
+ * @param {Object} curRowData
+ * @param {Object} filterData
+ * @returns Returns 'none' or 'table-row'
+ */
 function rowVisibility(curRowData, filterData) {
     Object.keys(filterData).filter(function(key) {
         if (typeof filterData[key] === 'string') {
@@ -83,6 +123,17 @@ function rowVisibility(curRowData, filterData) {
     return hideRow;
 }
 
+/**
+ * Insert all values from a given td column into the given dropdown.
+ *
+ * @param {string} td_query_selector The css selector of the 'td', that contains the
+ * filter value
+ * @param {string} filter_id The 'id' of the filter drop-down menu
+ * @param {string} valueAttr The attribute, that contains the fitler value of the
+ * `td_query_selector`
+ * @return If the given `filter_id` is not on the current page, return `null`,
+ * otherwise `undefined`
+ */
 function setFilterValues(td_query_selector, filter_id, valueAttr) {
     var filterValues = new Set();
 
@@ -90,7 +141,7 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
     var filterSelectForm = document.getElementById(filter_id);
 
     if (filterSelectForm === null) {
-        return;
+        return null;
     }
 
     tableValues.forEach(function(tableValue) {
@@ -108,6 +159,9 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
     });
 }
 
+/**
+ * Register filter change events
+ */
 function registerFilterChangeEvents() {
     ['filter_content_typ', 'filter_availibility', 'filter_is_urgent',
     'filter_is_optimized', 'filter_ressort', 'filter_has_supertitle',
@@ -119,7 +173,14 @@ function registerFilterChangeEvents() {
     });
 }
 
+/**
+ * Write the number of current visible rows in the table of cpntents
+ *
+ * @param {Int} number
+ * @returns Returns `false` on error, otherwise `true`
+ */
 function setNumberOfVisibleRows(number) {
+
     var numOfVisibleRows = document.getElementById('numberOfVisibleRows');
     if (numOfVisibleRows === null) {
         return false;
@@ -127,6 +188,7 @@ function setNumberOfVisibleRows(number) {
     numOfVisibleRows.innerHTML = '<strong>' + number + '</strong>';
     return true;
 }
+
 
 jQuery(document).ready(function() {
     if (setNumberOfVisibleRows(document.querySelectorAll('.tocListing tr').length) === false) {
