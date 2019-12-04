@@ -17,7 +17,7 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
                   '/replace.html')
 
     def test_no_current_selection_starts_search_at_beginning_of_node(self):
-        self.eval(
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("one"), "foo")')
         self.assertEqual(
@@ -26,9 +26,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_starts_search_at_current_selection_if_one_exists(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("two").firstChild, 4, 4)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("two").firstChild, 4, 4)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("two"), "foo")')
         self.assertEqual(
@@ -37,9 +37,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             11, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_searching_backward(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("two").firstChild, 4, 4)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("two").firstChild, 4, 4)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("two"), "foo", '
             'zeit.content.article.BACKWARD)')
@@ -49,7 +49,7 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_setting_case_insensitive_ignores_case(self):
-        self.eval(
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("one"), "FoO")')
         self.assertEqual(
@@ -58,9 +58,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_selection_outside_of_node_is_ignored(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("one").firstChild, 4, 4)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("one").firstChild, 4, 4)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("two"), "foo")')
         self.assertEqual(
@@ -69,9 +69,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_sibling_text(self):
-        self.eval('zeit.content.article.select('
-                  'window.jQuery("#three b")[0].firstChild, 0, 0)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'window.jQuery("#three b")[0].firstChild, 0, 0)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("content"), "foo")')
         self.assertEqual(
@@ -80,9 +80,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             4, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_sibling_element(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("one").firstChild, 4, 4)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("one").firstChild, 4, 4)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("content"), "foo")')
         self.assertEqual(
@@ -95,9 +95,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_moving_to_sibling_starts_from_the_beginning(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("three").firstChild, 0, 3)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("three").firstChild, 0, 3)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("content"), "foo")')
         self.assertEqual(
@@ -106,9 +106,9 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             4, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_moves_to_parent_sibling(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("list-c").firstChild, 3, 3)')
-        self.eval(
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("list-c").firstChild, 3, 3)')
+        self.execute(
             'zeit.content.article.find_next('
             'document.getElementById("content"), "foo")')
         self.assertEqual(
@@ -121,8 +121,8 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             3, self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
     def test_not_found_at_all_returns_special_value(self):
-        self.eval('zeit.content.article.select('
-                  'document.getElementById("three").firstChild, 0, 0)')
+        self.execute('zeit.content.article.select('
+                     'document.getElementById("three").firstChild, 0, 0)')
         self.assertEqual(
             -1, self.eval(
                 'zeit.content.article.find_next('
@@ -226,9 +226,10 @@ class FindReplaceTest(
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar foo</p>")
-        self.eval("zeit.content.article.select("
-                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
-                  "4, 4)")
+        self.execute(
+            "zeit.content.article.select("
+            "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+            "4, 4)")
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'foo')
@@ -243,9 +244,10 @@ class FindReplaceTest(
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar foo</p>")
-        self.eval("zeit.content.article.select("
-                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
-                  "4, 4)")
+        self.execute(
+            "zeit.content.article.select("
+            "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+            "4, 4)")
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'foo')
@@ -262,9 +264,10 @@ class FindReplaceTest(
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar foo</p>")
-        self.eval("zeit.content.article.select("
-                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
-                  "4, 4)")
+        self.execute(
+            "zeit.content.article.select("
+            "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+            "4, 4)")
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'foo')
@@ -284,9 +287,10 @@ class FindReplaceTest(
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar foo</p>")
-        self.eval("zeit.content.article.select("
-                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
-                  "4, 4)")
+        self.execute(
+            "zeit.content.article.select("
+            "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+            "4, 4)")
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'baz')
@@ -320,9 +324,10 @@ class FindReplaceTest(
         s = self.selenium
         s.waitForElementPresent('css=.block.type-p .editable p')
         s.click('css=.block.type-p .editable p')
-        self.eval("zeit.content.article.select("
-                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
-                  "0, 0)")
+        self.execute(
+            "zeit.content.article.select("
+            "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+            "0, 0)")
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'foo')

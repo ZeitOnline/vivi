@@ -366,7 +366,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
                       'http://xml.zeit.de/testcontent')
 
     def test_configure_search_calls_activate_objectbrowser_with_types(self):
-        self.eval("""\
+        self.execute("""\
 zeit.cms.activate_objectbrowser = function(types) {
     if (window.isUndefinedOrNull(types)) {
         types = '__NULL__';
@@ -374,7 +374,7 @@ zeit.cms.activate_objectbrowser = function(types) {
     zeit.cms._activate_objectbrowser_arg = types;
 };
 """)
-        self.eval('zeit.cms.widget_under_test.configure_search()')
+        self.execute('zeit.cms.widget_under_test.configure_search()')
         self.assertEqual(
             ['foo'], self.eval('zeit.cms._activate_objectbrowser_arg'))
 
@@ -439,11 +439,11 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
             'objectsequencewidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
-        self.eval(
+        self.execute(
             "zeit.cms.test_widget.add('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=ul.metadata')
         s.assertElementNotPresent('css=div.mydetails')
-        self.eval(
+        self.execute(
             "zeit.cms.test_widget2.add('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=div.mydetails')
 
@@ -453,11 +453,11 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
             'dropobjectwidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
-        self.eval(
+        self.execute(
             "zeit.cms.test_widget.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=ul.metadata')
         s.assertElementNotPresent('css=div.mydetails')
-        self.eval(
+        self.execute(
             "zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=div.mydetails')
 
@@ -467,7 +467,7 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
             '/@@/zeit.cms.browser.tests.fixtures/'
             'dropobjectwidget-detail-views.html')
         s = self.selenium
-        self.eval(
+        self.execute(
             "zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=.object-reference.error')
         s.assertElementPresent('css=a[rel=remove]')
@@ -540,7 +540,7 @@ class TestDropObjectWidgetFoo(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget', '')
 
     def test_configure_search_calls_activate_objectbrowser_with_types(self):
-        self.eval("""\
+        self.execute("""\
 zeit.cms.activate_objectbrowser = function(types) {
     if (window.isUndefinedOrNull(types)) {
         types = '__NULL__';
@@ -548,7 +548,7 @@ zeit.cms.activate_objectbrowser = function(types) {
     zeit.cms._activate_objectbrowser_arg = types;
 };
 """)
-        self.eval('zeit.cms.widget_under_test.configure_search()')
+        self.execute('zeit.cms.widget_under_test.configure_search()')
         self.assertEqual(
             ['foo'], self.eval('zeit.cms._activate_objectbrowser_arg'))
 
@@ -987,7 +987,7 @@ class RestructuredTextWidgetJavascriptTest(
 
     def test_empty_preview_can_be_clicked(self):
         s = self.selenium
-        self.eval('window.jQuery("#testwidget\\\\.preview").text("")')
+        self.execute('window.jQuery("#testwidget\\\\.preview").text("")')
         s.click('css=.field')
         s.waitForVisible('id=testwidget')
         s.assertNotVisible('id=testwidget.preview')

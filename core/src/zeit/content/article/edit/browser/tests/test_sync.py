@@ -13,7 +13,8 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_teaser_supertitle_is_copied_to_article_supertitle_if_empty(self):
         s = self.selenium
-        self.eval('document.getElementById("%s").value = ""' % self.supertitle)
+        self.execute(
+            'document.getElementById("%s").value = ""' % self.supertitle)
         s.click('//a[@href="edit-form-teaser"]')
         s.type('id=%s' % self.teaser_supertitle, 'super\t')
         # The sync triggers an inlineform save

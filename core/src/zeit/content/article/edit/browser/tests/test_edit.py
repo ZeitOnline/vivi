@@ -202,7 +202,8 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 class='title'>blubbel</h4>")
         s.assertElementPresent('css=.block.type-p h4.title')
-        self.eval('window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute(
+            'window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('css=.block.type-p h4.title')
 
     @unittest.skip('Triggering keyup does not work')
@@ -210,7 +211,8 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 style='display: inline'>blubbel</h4>")
         s.assertElementPresent('jquery=.block.type-p h4[style]')
-        self.eval('window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute(
+            'window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('jquery=.block.type-p h4[style]')
 
     def test_consequent_paragraphs_should_be_editable_together(self):
@@ -238,7 +240,7 @@ class TestTextEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -359,7 +361,7 @@ class TestLinkEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -372,7 +374,7 @@ class TestLinkEditing(
         self.create(
             '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
                 additional, href))
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
@@ -509,7 +511,8 @@ class TestLinkEditing(
         click(s, 'xpath=//a[@href="insert_link"]')
         # We need to scroll the inner "frame" to top, otherwise dragging will
         # get confused:
-        self.eval("document.getElementById('cp-content-inner').scrollTop = 0;")
+        self.execute(
+            "document.getElementById('cp-content-inner').scrollTop = 0;")
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/testcontent"]', 'css=.link_input')
         s.assertValue('css=.link_input input[name=href]',
@@ -628,7 +631,7 @@ class TestLinkEditing(
         self.create('<p>I want to link <b>some bold text</b></p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -790,7 +793,7 @@ class AutoSaveIntegration(
         super(AutoSaveIntegration, self).setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
-        self.eval(
+        self.execute(
             "zeit.content.article.Editable.prototype.autosave_interval = 0.2;")
 
     def assert_paragraphs(self, *contents):
@@ -817,14 +820,14 @@ class DirtySaveVersusPersistTests(
         super(DirtySaveVersusPersistTests, self).setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
-        self.eval(
+        self.execute(
             "zeit.content.article.Editable.prototype.persist = function () { "
             "  zeit.edit.persist_called = true; }")
 
     def save(self):
         # Override self.save() as the superclass expects that save is working
         # properly but as we mocked persist it doesn't.
-        self.eval('%s.save()' % self.get_js_editable())
+        self.execute('%s.save()' % self.get_js_editable())
 
     def test_does_not_save_on_server_if_not_dirty(self):
         self.create('<p>foo</p><p>bar</p>')

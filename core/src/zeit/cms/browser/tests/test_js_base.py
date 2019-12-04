@@ -11,10 +11,10 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
 
     def write_html(self, text):
         text = text.replace('\n', ' ')
-        self.eval("document.getElementById('foo').innerHTML = '%s'" % text)
+        self.execute("document.getElementById('foo').innerHTML = '%s'" % text)
 
     def evaluate_js_and_css(self):
-        self.eval(
+        self.execute(
             'zeit.cms.evaluate_js_and_css(document.getElementById("foo"))')
 
     def test_loads_external_scripts(self):

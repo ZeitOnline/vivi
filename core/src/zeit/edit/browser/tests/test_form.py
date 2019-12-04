@@ -214,8 +214,8 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
         input = 'edit.subtitle'
         s.waitForElementPresent(input)
 
-        self.eval('zeit.cms.InlineForm.submitted = 0;')
-        self.eval("""zeit.cms.InlineForm.prototype.submit = function() {
+        self.execute('zeit.cms.InlineForm.submitted = 0;')
+        self.execute("""zeit.cms.InlineForm.prototype.submit = function() {
             zeit.cms.InlineForm.submitted += 1; }""")
 
         s.type(input, 'asdf')

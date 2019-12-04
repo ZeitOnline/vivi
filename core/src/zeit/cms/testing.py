@@ -698,7 +698,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.original_width = self.selenium.getEval('window.outerWidth')
         self.original_height = self.selenium.getEval('window.outerHeight')
         self.selenium.setWindowSize(self.window_width, self.window_height)
-        self.eval('window.localStorage.clear()')
+        self.execute('window.localStorage.clear()')
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
@@ -732,9 +732,11 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         var zeit = window.zeit;
     """
 
+    def execute(self, text):
+        self.selenium.selenium.execute_script(self.js_globals + text)
+
     def eval(self, text):
-        return self.selenium.selenium.execute_script(
-            self.js_globals + 'return ' + text)
+        return self.execute('return ' + text)
 
     def wait_for_condition(self, text):
         self.selenium.waitForCondition(self.js_globals + """\
