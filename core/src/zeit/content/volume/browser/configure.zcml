@@ -123,6 +123,6 @@
     template="toc-listing.pt"
     class=".toc_listing.TocListing"
     permission="zope.View"
-    menu="zeit-context-views" title="Inhaltsverzeichnis"
+    menu="zeit-context-views" title="Table of Content"
   />
 </configure>
