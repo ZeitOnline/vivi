@@ -25,7 +25,7 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, PLAYER_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))

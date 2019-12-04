@@ -35,7 +35,7 @@ HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(
     name='HTTPStaticLayer',
     bases=(HTTP_LAYER,))
 
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))

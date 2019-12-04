@@ -30,6 +30,7 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import re
+import selenium.webdriver
 import six
 import sys
 import transaction
@@ -492,8 +493,21 @@ ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
+
+
+class WebdriverLayer(gocept.selenium.WebdriverLayer):
+
+    # copy&paste from superclass to customize the ff binary
+    def _start_selenium(self):
+        options = selenium.webdriver.FirefoxOptions()
+        if self.headless:
+            options.add_argument('-headless')
+        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        self['seleniumrc'] = selenium.webdriver.Firefox(
+            firefox_profile=self.profile, options=options)
+
+
+WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
