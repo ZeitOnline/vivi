@@ -199,7 +199,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
         input = 'edit.subtitle'
         s.waitForElementPresent(input)
         s.type(input, 'asdf')
-        s.click('header')
+        s.click('id=header')
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.refresh()
@@ -219,7 +219,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
             zeit.cms.InlineForm.submitted += 1; }""")
 
         s.type(input, 'asdf')
-        s.click('header')
+        s.click('id=header')
         self.assertEqual(1, self.eval('zeit.cms.InlineForm.submitted'))
 
     def test_subpageform_in_lightbox_submits_correctly(self):

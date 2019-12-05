@@ -39,7 +39,7 @@ class TestPanels(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         self.open('/repository/online/2007/01')
         self.assertSidebarState('expanded')
-        s.click('sidebar-dragger')
+        s.click('id=sidebar-dragger')
         self.assertSidebarState('folded')
         s.refresh()
         self.assertSidebarState('folded')

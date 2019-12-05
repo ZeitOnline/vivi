@@ -142,7 +142,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
                 'zeit.cms.tagging.browser.widget.UpdateTags.json') as mocked:
             self.open_content()
             s = self.selenium
-            s.click('update_tags')
+            s.click('name=update_tags')
             s.pause(100)
             self.assertTrue(mocked.called)
 
@@ -152,7 +152,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
-        s.click('update_tags')
+        s.click('name=update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.waitForTextPresent('t1')
