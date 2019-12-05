@@ -120,7 +120,8 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
-        s.clickAndWait('name=form.actions.apply')
+        s.click('name=form.actions.apply')
+        s.waitForTextPresent('t2')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
 
