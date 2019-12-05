@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 
 
@@ -16,7 +17,8 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.execute(
             'document.getElementById("%s").value = ""' % self.supertitle)
         s.click('//a[@href="edit-form-teaser"]')
-        s.type('id=%s' % self.teaser_supertitle, 'super\t')
+        s.type('id=%s' % self.teaser_supertitle, 'super')
+        s.keyPress('id=%s' % self.teaser_supertitle, Keys.TAB)
         # The sync triggers an inlineform save
         s.waitForElementNotPresent('css=.field.dirty')
         s.assertValue('id=%s' % self.supertitle, 'super')

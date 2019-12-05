@@ -1,4 +1,5 @@
 # coding: utf8
+from selenium.webdriver.common.keys import Keys
 from gocept.selenium.wd_selenese import split_locator
 import lxml.cssselect
 import transaction
@@ -206,7 +207,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         s.click('link=Edit teaser list')
         s.waitForElementPresent('css=.url-input input')
-        s.type('css=.url-input input', 'http://xml.zeit.de/testcontent\n')
+        s.type('css=.url-input input', 'http://xml.zeit.de/testcontent')
+        s.keyPress('css=.url-input input', Keys.TAB)
         s.waitForElementPresent('css=.lightbox li.edit-bar')
         s.assertCssCount('css=.lightbox li.landing-zone', 2)
 

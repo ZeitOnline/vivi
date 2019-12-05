@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 
 
@@ -25,7 +26,8 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s.assertValue('id=metadata-b.copyrights', '')  # before
         s.select('id=metadata-b.product', 'Die Zeit')  # required field
-        s.type('id=metadata-b.copyrights', 'ZEI\t')
+        s.type('id=metadata-b.copyrights', 'ZEI')
+        s.keyPress('id=metadata-b.copyrights', Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForXpathCount('//*[@id="cp-undo"]//a', 1)
         s.assertText('//*[@id="cp-undo"]//li[1]/a', 'edit metadata')

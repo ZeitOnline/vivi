@@ -1,4 +1,5 @@
 # coding: utf8
+from selenium.webdriver.common.keys import Keys
 from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceWidget
 from zeit.cms.browser.widget import ReferenceSequenceWidget
@@ -292,11 +293,13 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.assertValue("//input[@name='testwidget.count']", '0')
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent\n')
         s.waitForValue("//input[@name='testwidget.count']", '1')
+               'http://xml.zeit.de/testcontent')
+        s.keyPress("//input[@name='testwidget.url']", Keys.RETURN)
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent\n')
         s.waitForValue("//input[@name='testwidget.count']", '2')
+               'http://xml.zeit.de/testcontent')
+        s.keyPress("//input[@name='testwidget.url']", Keys.RETURN)
 
     def test_widget_should_load_details_from_server(self):
         s = self.selenium
@@ -527,7 +530,8 @@ class TestDropObjectWidgetFoo(zeit.cms.testing.SeleniumTestCase):
     def test_url_input_should_set_input_value(self):
         s = self.selenium
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent\n')
+               'http://xml.zeit.de/testcontent')
+        s.keyPress("//input[@name='testwidget.url']", Keys.RETURN)
         s.waitForValue('name=testwidget',
                        'http://xml.zeit.de/testcontent')
 

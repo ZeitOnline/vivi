@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.testing
 
 
@@ -11,7 +12,8 @@ class Memo(zeit.content.article.testing.SeleniumTestCase):
     def test_links_are_clickable(self):
         s = self.selenium
         s.click('id=memo.memo.preview')
-        s.type('id=memo.memo', 'foo http://localhost/blub bar\t')
+        s.type('id=memo.memo', 'foo http://localhost/blub bar')
+        s.keyPress('id=memo.memo', Keys.TAB)
         s.waitForElementPresent('link=*blub*')
         s.click('link=*blub*')
         s.selectWindow(s.getAllWindowIds()[-1])

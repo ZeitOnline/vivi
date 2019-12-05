@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.cms.workingcopy.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
@@ -278,7 +279,8 @@ class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent(input)
         original = 'a' * 239 + ' This is not long'
-        s.type(input, original + '\t')
+        s.type(input, original)
+        s.keyPress(input, Keys.TAB)
         self.assertEqual(original, s.getValue(input))
 
 

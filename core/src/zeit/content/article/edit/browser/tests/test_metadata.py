@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 import transaction
@@ -30,7 +31,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertValue('id=options-b.year', '2007')
         s._find('id=options-b.year').clear()
         s.type('id=options-b.year', '2010')
-        s.type('id=options-b.volume', '\t')  # Trigger blur for form.
+        s.keyPress('id=options-b.volume', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
@@ -41,7 +42,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.click('css=#edit-form-metadata .fold-link')
         s.select('id=metadata-b.product', 'Zeit Magazin')
-        s.type('id=metadata-b.copyrights', '\t')  # Trigger blur for form.
+        s.keyPress('id=metadata-b.copyrights', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
         s.assertSelectedLabel('id=metadata-b.product', 'Zeit Magazin')
 
@@ -59,7 +60,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             [u'(nothing selected)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
-        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
+        s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.pause(500)
         self.assertEqual(
             [u'(nothing selected)', u'Datenschutz', u'Integration',
@@ -70,7 +71,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
         s.type('id=options-b.year', 'ASDF')
-        s.type('id=options-b.volume', '\t')  # Trigger blur for form.
+        s.keyPress('id=options-b.volume', Keys.TAB)  # Trigger blur
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
@@ -225,5 +226,6 @@ class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click(fold)
         input_filename = 'new-filename.rename_to'
         s.waitForElementPresent(input_filename)
-        s.type(input_filename, 'foo bar\t')
+        s.type(input_filename, 'foo bar')
+        s.keyPress(input_filename, Keys.TAB)
         s.waitForValue(input_filename, 'foo-bar')

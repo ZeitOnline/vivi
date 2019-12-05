@@ -230,8 +230,9 @@ class SeleniumMaskTests(Selenium):
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         for i in range(3):
-            s.type('mask-h', Keys.BACKSPACE)
-        s.type('mask-h', '280\n')
+            s.keyPress('mask-h', Keys.BACKSPACE)
+        s.type('mask-h', '280')
+        s.keyPress('mask-h', Keys.RETURN)
         s.verifyEval('window.document.imp.mask_dimensions.h', '280')
 
     def test_input_field_up_arrow_once_increases_by_1(self):
@@ -250,10 +251,7 @@ class SeleniumMaskTests(Selenium):
         s = self.selenium
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
-        s.keyDown('mask-h', key_code)
-        # XXX selenium.webdriver implements both keyDown and keyUp as
-        # "sendKeys", which results in two presses, sigh.
-        # s.keyUp('mask-h', key_code)
+        s.keyPress('mask-h', key_code)
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
 
     @unittest.skip('python webdriver bindings cannot hold down keys')

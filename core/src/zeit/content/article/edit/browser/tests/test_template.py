@@ -1,4 +1,5 @@
 # coding: utf8
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 
 
@@ -32,7 +33,7 @@ class ArticleTemplateTest(
         self.assertEqual(
             kolumne_layouts,
             s.getSelectOptions('id=options-template.header_layout'))
-        s.type('id=options-template.header_layout', '\t')
+        s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.pause(500)
         self.assertEqual(
             kolumne_layouts,

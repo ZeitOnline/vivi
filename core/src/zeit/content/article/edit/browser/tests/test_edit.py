@@ -723,7 +723,8 @@ class TestDivision(
         self.create_division()
         s = self.selenium
         s.waitForElementPresent('css=.type-division textarea')
-        s.type('css=.type-division textarea', 'Division teaser\t')
+        s.type('css=.type-division textarea', 'Division teaser')
+        s.keyPress('css=.type-division textarea', Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
