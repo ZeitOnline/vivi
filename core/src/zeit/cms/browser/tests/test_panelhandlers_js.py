@@ -25,14 +25,14 @@ class TestPanels(zeit.cms.testing.SeleniumTestCase):
         s.click('//div[@id = "ClipboardPanel"]/h1')
         self.assertPanelState('ClipboardPanel', 'folded')
         # Stays that way when reloading
-        self.open('/repository/online/2007/01')
+        s.refresh()
         self.assertPanelState('ClipboardPanel', 'folded')
 
         # unfold again:
         s.click('//div[@id = "ClipboardPanel"]/h1')
         self.assertPanelState('ClipboardPanel', 'unfolded')
         # Stays that way when reloading
-        self.open('/repository/online/2007/01')
+        s.refresh()
         self.assertPanelState('ClipboardPanel', 'unfolded')
 
     def test_sidebar_should_be_expandable_and_foldable(self):
@@ -41,5 +41,5 @@ class TestPanels(zeit.cms.testing.SeleniumTestCase):
         self.assertSidebarState('expanded')
         s.click('sidebar-dragger')
         self.assertSidebarState('folded')
-        self.open('/repository/online/2007/01')
+        s.refresh()
         self.assertSidebarState('folded')
