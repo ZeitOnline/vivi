@@ -733,7 +733,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
     """
 
     def execute(self, text):
-        self.selenium.selenium.execute_script(self.js_globals + text)
+        return self.selenium.selenium.execute_script(self.js_globals + text)
 
     def eval(self, text):
         return self.execute('return ' + text)
