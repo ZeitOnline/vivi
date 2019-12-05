@@ -982,7 +982,7 @@ class RestructuredTextWidgetJavascriptTest(
 
     def test_clicking_on_a_link_opens_it(self):
         s = self.selenium
-        s.click('link=my link')
+        s.clickAndWait('link=my link')
         s.selectWindow(s.getAllWindowIds()[-1])
         s.assertNotLocation('*/restructuredtext.html')
         s.close()

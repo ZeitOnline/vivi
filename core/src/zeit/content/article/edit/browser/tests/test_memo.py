@@ -15,6 +15,6 @@ class Memo(zeit.content.article.testing.SeleniumTestCase):
         s.type('id=memo.memo', 'foo http://localhost/blub bar')
         s.keyPress('id=memo.memo', Keys.TAB)
         s.waitForElementPresent('link=*blub*')
-        s.click('link=*blub*')
+        s.clickAndWait('link=*blub*')
         s.selectWindow(s.getAllWindowIds()[-1])
         s.waitForLocation('*blub')
