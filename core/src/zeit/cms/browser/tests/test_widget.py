@@ -73,7 +73,8 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
             '/@@/zeit.cms.browser.tests.fixtures/contenticondrag.html')
         s = self.selenium
         s.waitForElementPresent('css=#result .content-icon')
-        s.dragAndDropToObject('css=#result .content-icon', 'id=testwidget')
+        s.dragAndDropToObject(
+            'css=#result .content-icon .uniqueId', 'id=testwidget', '10,10')
         s.waitForValue('name=testwidget',
                        'http://xml.zeit.de/testcontent')
 
@@ -254,6 +255,11 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
+    def waitForDropFinished(self, count=1):
+        s = self.selenium
+        s.waitForCssCount('css=li.element', count)
+        s.waitForElementNotPresent('css=li.element.busy')
+
     def test_widget_should_render_note_about_new_items(self):
         s = self.selenium
         s.waitForTextPresent(
@@ -263,9 +269,11 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.assertElementNotPresent('css=li.element')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForElementPresent('css=li.element')
+        self.waitForDropFinished()
+        s.assertElementPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
-        s.waitForElementPresent('jquery=li.element[index=1]')
+        self.waitForDropFinished(2)
+        s.assertElementPresent('jquery=li.element[index=1]')
 
     def test_widget_should_not_insert_dropped_non_object_draggables(self):
         s = self.selenium
@@ -285,21 +293,25 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.assertValue("//input[@name='testwidget.count']", '0')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForValue("//input[@name='testwidget.count']", '1')
+        self.waitForDropFinished()
+        s.assertValue("//input[@name='testwidget.count']", '1')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForValue("//input[@name='testwidget.count']", '2')
+        self.waitForDropFinished(2)
+        s.assertValue("//input[@name='testwidget.count']", '2')
 
     def test_entering_uid_should_increase_count(self):
         s = self.selenium
         s.assertValue("//input[@name='testwidget.count']", '0')
         s.type("//input[@name='testwidget.url']",
-        s.waitForValue("//input[@name='testwidget.count']", '1')
                'http://xml.zeit.de/testcontent')
         s.keyPress("//input[@name='testwidget.url']", Keys.RETURN)
+        self.waitForDropFinished()
+        s.assertValue("//input[@name='testwidget.count']", '1')
         s.type("//input[@name='testwidget.url']",
-        s.waitForValue("//input[@name='testwidget.count']", '2')
                'http://xml.zeit.de/testcontent')
         s.keyPress("//input[@name='testwidget.url']", Keys.RETURN)
+        self.waitForDropFinished(2)
+        s.assertValue("//input[@name='testwidget.count']", '2')
 
     def test_widget_should_load_details_from_server(self):
         s = self.selenium
