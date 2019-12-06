@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import lxml.html.soupparser
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
@@ -7,6 +6,7 @@ import zeit.content.gallery.source
 import zeit.content.image.interfaces
 import zeit.imp.source
 import zeit.wysiwyg.interfaces
+import zope.container.interfaces
 import zope.schema
 
 
@@ -43,11 +43,11 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 class IReadGallery(
         IGalleryMetadata,
         zeit.cms.content.interfaces.IXMLContent,
-        zope.app.container.interfaces.IReadContainer):
+        zope.container.interfaces.IReadContainer):
     """Read methods for gallery."""
 
 
-class IWriteGallery(zope.app.container.interfaces.IWriteContainer):
+class IWriteGallery(zope.container.interfaces.IWriteContainer):
     """Write methods for gallery."""
 
     def reload_image_folder():

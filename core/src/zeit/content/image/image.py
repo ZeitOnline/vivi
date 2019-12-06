@@ -11,7 +11,7 @@ import zeit.cms.workingcopy.interfaces
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.app.container.interfaces
+import zope.container.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -63,7 +63,7 @@ class RepositoryImage(BaseImage,
 
     zope.interface.implementsOnly(
         zeit.content.image.interfaces.IImage,
-        zope.app.container.interfaces.IContained)
+        zope.container.interfaces.IContained)
 
 
 class LocalImage(BaseImage,
@@ -72,7 +72,7 @@ class LocalImage(BaseImage,
     zope.interface.implementsOnly(
         zeit.content.image.interfaces.IImage,
         zeit.cms.workingcopy.interfaces.ILocalContent,
-        zope.app.container.interfaces.IContained)
+        zope.container.interfaces.IContained)
 
 
 class TemporaryImage(LocalImage):

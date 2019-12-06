@@ -1,6 +1,6 @@
 import re
-import zope.app.container.contained
-import zope.app.container.interfaces
+import zope.container.contained
+import zope.container.interfaces
 import zope.exceptions.interfaces
 import zope.interface
 
@@ -8,9 +8,9 @@ import zope.interface
 invalid_chars = re.compile(r'[^a-z0-9\-]')
 
 
-class NameChooser(zope.app.container.contained.NameChooser):
+class NameChooser(zope.container.contained.NameChooser):
 
-    zope.interface.implements(zope.app.container.interfaces.INameChooser)
+    zope.interface.implements(zope.container.interfaces.INameChooser)
 
     def __init__(self, context):
         self.context = context

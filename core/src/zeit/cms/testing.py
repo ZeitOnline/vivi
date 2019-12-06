@@ -46,6 +46,7 @@ import zope.app.publication.zopepublication
 import zope.app.wsgi
 import zope.component
 import zope.component.hooks
+import zope.error.interfaces
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management

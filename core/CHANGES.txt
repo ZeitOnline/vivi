@@ -16,6 +16,8 @@ vivi.core changes
 
 - ZON-5615: Removed inline code entry from rawtext module
 
+- ZON-5593, ZON-5594: Declare test-only and UI dependencies separately
+
 
 4.22.3 (2019-11-26)
 -------------------

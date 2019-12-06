@@ -18,7 +18,6 @@ import zc.set
 import zeit.connector.interfaces
 import zope.interface
 import zope.security.proxy
-import zope.testing.cleanup
 
 
 log = logging.getLogger(__name__)
@@ -377,7 +376,11 @@ class WebDAVPropertyKey(object):
         return (WebDAVPropertyKey, (self.name,))
 
 
-zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
+try:
+    import zope.testing.cleanup
+    zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
+except ImportError:
+    pass
 
 
 class Properties(persistent.mapping.PersistentMapping):

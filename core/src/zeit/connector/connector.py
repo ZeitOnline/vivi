@@ -1,6 +1,5 @@
 """Connect to the CMS backend."""
 
-import ZConfig
 import cStringIO
 import datetime
 import gocept.cache.property
@@ -430,8 +429,12 @@ class Connector(object):
             # We have no information about the lock. Let's see if the principal
             # is one we know. It's most likely that it actually was our lock
             # but we just forgot about it.
-            authentication = zope.component.queryUtility(
-                zope.authentication.interfaces.IAuthentication)
+            try:
+                import zope.authentication.interfaces  # UI-only dependency
+                authentication = zope.component.queryUtility(
+                    zope.authentication.interfaces.IAuthentication)
+            except ImportError:
+                authentication = None
             if authentication is not None:
                 try:
                     authentication.getPrincipal(owner)

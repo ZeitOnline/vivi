@@ -5,7 +5,7 @@ import gocept.form.grouped
 import pytz
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
-import zope.app.container.interfaces
+import zope.container.interfaces
 import zope.app.pagetemplate
 import zope.event
 import zope.formlib.form
@@ -264,7 +264,7 @@ class AddFormBase(object):
     def add(self, object, container=None):
         if container is None:
             container = self.context
-        chooser = zope.app.container.interfaces.INameChooser(container)
+        chooser = zope.container.interfaces.INameChooser(container)
         name = chooser.chooseName(self.suggestName(object), object)
         container[name] = object
         object = container[name]

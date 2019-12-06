@@ -6,7 +6,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.objectlog.interfaces
-import zope.app.container.interfaces
+import zope.container.interfaces
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
@@ -92,7 +92,7 @@ class CheckoutManager(object):
             "to use transaction.commit() to avoid poisoning the "
             "caches with objects providing ILocalContent." % self.context)
         content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
-        namechooser = zope.app.container.interfaces.INameChooser(workingcopy)
+        namechooser = zope.container.interfaces.INameChooser(workingcopy)
         name = namechooser.chooseName(content.__name__, content)
         added = workingcopy[name] = content
 

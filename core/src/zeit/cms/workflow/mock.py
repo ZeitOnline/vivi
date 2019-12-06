@@ -6,7 +6,6 @@ import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
 import zope.interface
-import zope.testing.cleanup
 
 
 class MockPublish(object):
@@ -133,4 +132,9 @@ def reset():
     _publish_times.clear()
     _publish_times_semantic.clear()
     _publish_times_first.clear()
-zope.testing.cleanup.addCleanUp(reset)
+
+try:
+    import zope.testing.cleanup
+    zope.testing.cleanup.addCleanUp(reset)
+except ImportError:
+    pass

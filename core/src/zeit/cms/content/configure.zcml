@@ -48,7 +48,7 @@
       permission="zope.View"
       />
     <require
-      interface="zope.app.container.interfaces.IWriteContainer"
+      interface="zope.container.interfaces.IWriteContainer"
       permission="zeit.EditTemplates"
       />
   </class>
@@ -59,7 +59,7 @@
       permission="zope.View"
       />
     <require
-      interface="zope.app.container.interfaces.IWriteContainer"
+      interface="zope.container.interfaces.IWriteContainer"
       permission="zeit.EditTemplates"
       />
   </class>

@@ -30,18 +30,18 @@
       set_schema=".interfaces.IObjectReference"
       permission="zope.ManageContent" /> 
     <require
-      interface="zope.app.container.interfaces.IContained"
+      interface="zope.container.interfaces.IContained"
       permission="zope.View" /> 
   </class>
   
   <class class=".entry.Clip">
     <require
         permission="zope.View"
-        interface="zope.app.container.interfaces.IReadContainer" 
+        interface="zope.container.interfaces.IReadContainer" 
         />
     <require
         permission="zope.ManageContent"
-        interface="zope.app.container.interfaces.IWriteContainer"
+        interface="zope.container.interfaces.IWriteContainer"
         />
     <require
         permission="zope.ManageContent"

@@ -115,7 +115,7 @@ class Tree(zope.publisher.browser.BrowserView):
         expandable.
 
         """
-        if zope.app.container.interfaces.IContainer.providedBy(obj):
+        if zope.container.interfaces.IContainer.providedBy(obj):
             return True
         return False
 

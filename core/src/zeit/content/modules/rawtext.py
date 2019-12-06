@@ -123,7 +123,7 @@ class CSSInjector(grok.Adapter):
 
     @cachedproperty
     def vivi_css(self):
-        import cssutils
+        import cssutils  # UI-only dependency
 
         embed = self.context.text_reference
         if not zeit.content.text.interfaces.IEmbed.providedBy(embed):
