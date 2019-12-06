@@ -63,6 +63,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
+        logging.getLogger('bugsnag').setLevel(logging.FATAL)
 
 LOGGING_LAYER = LoggingLayer()
 
