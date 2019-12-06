@@ -35,7 +35,6 @@ class TocListing(zeit.cms.browser.listing.Listing):
             _('Ressort'),
             name='ressort',
             getter=lambda t, c: t.printRessort),) +
-        zeit.cms.browser.listing.Listing.columns[8:9] +
         (CheckColumn(
             _('Urgent'),
             name='urgent',
@@ -44,7 +43,7 @@ class TocListing(zeit.cms.browser.listing.Listing):
                 _('status-seo-optimized'),
                 name='seo-optimized',
                 getter=lambda t, c: t.workflow.seo_optimized),) +
-        zeit.cms.browser.listing.Listing.columns[8:10] +
+        zeit.cms.browser.listing.Listing.columns[9:10] +
         (CheckColumn(
             _('Teaserimage'),
             name='teaserimage',

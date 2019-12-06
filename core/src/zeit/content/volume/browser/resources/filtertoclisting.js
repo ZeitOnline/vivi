@@ -49,15 +49,15 @@ function filterTocListingTable() {
             'alt'),
             publish: getTdValue(row.querySelector('.workflow-column > span'),
             'title'),
-            urgent: getTdValue(row.querySelector('td:nth-child(10)'),
+            urgent: getTdValue(row.querySelector('td:nth-child(9)'),
             'innerText'),
-            optimized: getTdValue(row.querySelector('td:nth-child(11)'),
+            optimized: getTdValue(row.querySelector('td:nth-child(10)'),
             'innerText'),
-            ressort: getTdValue(row.querySelector('td:nth-child(9)'),
+            ressort: getTdValue(row.querySelector('td:nth-child(8)'),
             'innerText'),
             supertitle: getTdValue(row.querySelector('td:nth-child(6)'),
             'innerText'),
-            teaserimage: getTdValue(row.querySelector('td:nth-child(14)'),
+            teaserimage: getTdValue(row.querySelector('td:nth-child(12)'),
             'innerText'),
         };
 
@@ -209,7 +209,7 @@ jQuery(document).ready(function() {
         'title');
 
     setFilterValues(
-        '#topcontent table tr td:nth-child(9)',
+        '#topcontent table tr td:nth-child(8)',
         'filter_ressort',
         'innerText');
     //////////////////////////////////////////////////////////
