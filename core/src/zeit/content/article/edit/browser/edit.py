@@ -442,3 +442,16 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
     @property
     def prefix(self):
         return 'topicbox.{0}'.format(self.context.__name__)
+
+
+class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    undo_description = _('edit newsletter signup')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.modules.interfaces.INewsletterSignup).omit(
+            *list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def prefix(self):
+        return 'newsletter.{0}'.format(self.context.__name__)

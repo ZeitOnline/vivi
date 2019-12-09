@@ -5,6 +5,7 @@ from zeit.content.article.edit.browser.tests.test_edit import click
 from zeit.edit.interfaces import IElementFactory
 import transaction
 import unittest
+import zeit.cms.content.field
 import zeit.content.article.testing
 import zope.component
 
@@ -303,7 +304,7 @@ class FindReplaceTest(
             zeit.cms.tagging.interfaces.IWhitelist)
         self.repository['article'] = Article()
         with checked_out(self.repository['article']) as co:
-            zeit.cms.browser.form.apply_default_values(
+            zeit.cms.content.field.apply_default_values(
                 co, IArticle)
             co.year = 2010
             co.ressort = u'International'

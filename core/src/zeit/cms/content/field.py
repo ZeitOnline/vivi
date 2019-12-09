@@ -82,3 +82,34 @@ class XMLTree(_XMLBase):
 
 class Color(zope.schema.TextLine):
     pass
+
+
+EMPTY = object()
+
+
+def apply_default_values(context, interface, set_none=False):
+    """Apply default values from ``interface`` to ``context``."""
+    for name, field in zope.schema.getFields(interface).items():
+        if field.readonly:
+            continue
+        __traceback_info__ = (name,)
+        default = getattr(field, 'default')
+        # don't set None values (#9406)
+        if default is None and not set_none:
+            continue
+        current = getattr(context, name, EMPTY)
+        # don't cause a field to be written unnecessarily
+        if current == default:
+            continue
+        # if a value exists, don't overwrite it if it's valid (#10362)
+        if current is not EMPTY and current is not field.missing_value:
+            field = field.bind(context)
+            try:
+                field.validate(current)
+            except zope.schema.ValidationError:
+                pass
+            else:
+                continue
+        # now we have both an attribute without a meaningful value and a
+        # meaningful value to set it to
+        setattr(context, name, default)

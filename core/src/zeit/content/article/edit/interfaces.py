@@ -1,5 +1,5 @@
 from zeit.content.article.i18n import MessageFactory as _
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import datetime
 import zeit.cms.content.field
@@ -592,3 +592,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         """
         Iterable of ICMSContent
         """
+
+
+class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
+    pass

@@ -3,6 +3,7 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
 import mock
+import zeit.cms.content.field
 import zeit.cms.interfaces
 import zeit.content.volume.testing
 import zeit.find.interfaces
@@ -40,7 +41,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         from zeit.content.infobox.infobox import Infobox
         import zeit.cms.browser.form
         article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        zeit.cms.content.field.apply_default_values(article, IArticle)
         article.year = 2017
         article.title = u'title'
         article.ressort = u'Deutschland'

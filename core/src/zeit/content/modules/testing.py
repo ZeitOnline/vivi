@@ -10,6 +10,7 @@ product_config = """\
   jobticker-source file://{base}/tests/fixtures/jobticker.xml
   subject-source file://{base}/tests/fixtures/mail-subjects.xml
   embed-provider-source file://{base}/tests/fixtures/embed-providers.xml
+  newsletter-source file://{base}/tests/fixtures/newsletter.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, '.'))
 

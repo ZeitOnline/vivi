@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.23.1.dev0',
+    version='4.24.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -25,6 +25,8 @@ setup(
         'fb',
         'filemagic',
         'gocept.cache >= 2.1',
+        # XXX Should move to [ui], but is entrenched
+        'gocept.form[formlib]>=0.7.5',
         'gocept.lxml>=0.2.1',
         'gocept.runner>0.5.3',
         'grokcore.component',
@@ -32,6 +34,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
+        'pendulum',
         'persistent',
         'pyramid_dogpile_cache2',
         'pytz',
@@ -44,7 +47,10 @@ setup(
         'webob',
         'werkzeug',
         'xml-compare',
-        'z3c.traverser',  # XXX Should move to [ui], but is entrenched
+        'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
+        'z3c.traverser',  # XXX Should be [ui], but is entrenched
+        'zc.form',  # Should be [ui], but it also contains schema fields
+        'zope.deferredimport',  # undeclared by zc.form
         'zc.iso8601',
         'zc.queue',
         'zc.relation',
@@ -65,12 +71,15 @@ setup(
         'zope.event',
         'zope.exceptions',
         'zope.file',
+        'zope.generations',
         'zope.i18n>3.4.0',
         'zope.index',
         'zope.interface',
         'zope.lifecycleevent',
         'zope.location>=3.4.0b2',
         'zope.proxy',
+        # XXX Should be [ui], but ZODB contains persistent objects
+        'zope.principalannotation',
         'zope.publisher',  # XXX Should move to [ui], but is entrenched
         'zope.schema',
         'zope.security',
@@ -85,12 +94,10 @@ setup(
             'celery >= 4.0',
             'celery_longterm_scheduler',
             'redis',
-            'z3c.celery >= 1.2.0.dev0',
             'cssutils',
             'docutils',
             'fanstatic',
             'gocept.fckeditor[fanstatic]',
-            'gocept.form[formlib]>=0.7.5',
             'gocept.pagelet',
             'guppy',
             'js.backbone',
@@ -109,8 +116,6 @@ setup(
             'z3c.menu.simple>=0.5.1',
             'z3c.noop',
             'zc.datetimewidget',
-            'zc.form',
-            'zope.deferredimport',  # undeclared by zc.form
             'zc.table',
             'zeep',
             'zeit.optivo',
@@ -152,12 +157,13 @@ setup(
             'zope.formlib',
             'zope.login',
             'zope.pluggableauth',
-            'zope.principalannotation',
             'zope.session',
             'zope.site',
             'zope.viewlet',
         ],
         'test': [
+            'celery >= 4.0',
+            'celery_longterm_scheduler',
             'cssselect',
             'docker',
             'gocept.httpserverlayer>=1.4.0.dev0',

@@ -1,5 +1,4 @@
 from zeit.cmp.interfaces import VENDOR_SOURCE
-from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 from zeit.cms.content.property import DAVConverterWrapper
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -153,6 +152,9 @@ class EmbedParameterForm(object):
     _omit_fields = ()
 
     def __init__(self, context, request):
+        # UI-only dependency
+        from zeit.cms.browser.widget import RestructuredTextDisplayWidget
+
         super(EmbedParameterForm, self).__init__(context, request)
         self.form_fields = zope.formlib.form.FormFields(
             ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(

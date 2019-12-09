@@ -1,7 +1,7 @@
 import zope.component
 import zope.component.hooks
-import zope.generations
-import zope.app.zopeappgenerations
+import zope.generations.generations
+import zope.generations.utility
 
 
 minimum_generation = generation = 16
@@ -13,7 +13,7 @@ manager = zope.generations.generations.SchemaManager(
 def do_evolve(context, evolver):
     site = zope.component.hooks.getSite()
     try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
+        root = zope.generations.utility.getRootFolder(context)
         zope.component.hooks.setSite(root)
         evolver(root)
     finally:
