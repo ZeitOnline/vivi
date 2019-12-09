@@ -78,6 +78,8 @@ setup(
         'zope.lifecycleevent',
         'zope.location>=3.4.0b2',
         'zope.proxy',
+        # XXX Should be [ui], but ZODB contains persistent objects
+        'zope.principalannotation',
         'zope.publisher',  # XXX Should move to [ui], but is entrenched
         'zope.schema',
         'zope.security',
@@ -155,7 +157,6 @@ setup(
             'zope.formlib',
             'zope.login',
             'zope.pluggableauth',
-            'zope.principalannotation',
             'zope.session',
             'zope.site',
             'zope.viewlet',
