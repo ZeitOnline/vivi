@@ -1,7 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
-import celery_longterm_scheduler
 import datetime
 import grokcore.component as grok
 import pytz
@@ -99,6 +98,8 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         return job_id
 
     def cancel_job(self, job_id):
+        import celery_longterm_scheduler  # UI-only dependency
+
         if not job_id:
             return False
         return celery_longterm_scheduler.get_scheduler(
