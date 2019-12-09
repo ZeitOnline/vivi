@@ -34,6 +34,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
+        'pendulum',
         'persistent',
         'pyramid_dogpile_cache2',
         'pytz',
