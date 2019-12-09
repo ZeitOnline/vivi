@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.23.1 (unreleased)
+4.23.1 (2019-12-09)
 -------------------
 
 - ZON-5594: Honor separated UI dependencies by not needlessly importing UI code
