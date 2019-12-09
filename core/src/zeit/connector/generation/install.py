@@ -4,7 +4,7 @@ import zeit.connector.invalidator
 import zeit.connector.lockinfo
 import zope.component
 import zope.component.hooks
-import zope.app.zopeappgenerations
+import zope.generations.utility
 
 
 def installLocalUtility(root, factory, name, interface, utility_name=u''):
@@ -40,7 +40,7 @@ def install(root):
 def evolve(context):
     site = zope.component.hooks.getSite()
     try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
+        root = zope.generations.utility.getRootFolder(context)
         zope.component.hooks.setSite(root)
         install(root)
     finally:

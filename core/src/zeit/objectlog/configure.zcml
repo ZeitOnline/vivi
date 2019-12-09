@@ -5,7 +5,7 @@
 
   <utility 
     name="zeit.objectlog"
-    provides="zope.app.generations.interfaces.ISchemaManager"
+    provides="zope.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
 

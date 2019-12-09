@@ -46,7 +46,8 @@ setup(
         'webob',
         'werkzeug',
         'xml-compare',
-        'z3c.traverser',  # XXX Should move to [ui], but is entrenched
+        'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
+        'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
         'zope.deferredimport',  # undeclared by zc.form
         'zc.iso8601',
@@ -69,6 +70,7 @@ setup(
         'zope.event',
         'zope.exceptions',
         'zope.file',
+        'zope.generations',
         'zope.i18n>3.4.0',
         'zope.index',
         'zope.interface',
@@ -89,7 +91,6 @@ setup(
             'celery >= 4.0',
             'celery_longterm_scheduler',
             'redis',
-            'z3c.celery >= 1.2.0.dev0',
             'cssutils',
             'docutils',
             'fanstatic',

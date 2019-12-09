@@ -94,7 +94,7 @@
 
   <utility
     name="zeit.content.article"
-    provides="zope.app.generations.interfaces.ISchemaManager"
+    provides="zope.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
 
