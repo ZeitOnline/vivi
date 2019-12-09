@@ -161,6 +161,8 @@ setup(
             'zope.viewlet',
         ],
         'test': [
+            'celery >= 4.0',
+            'celery_longterm_scheduler',
             'cssselect',
             'docker',
             'gocept.httpserverlayer>=1.4.0.dev0',
