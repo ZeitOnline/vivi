@@ -25,6 +25,8 @@ setup(
         'fb',
         'filemagic',
         'gocept.cache >= 2.1',
+        # XXX Should move to [ui], but is entrenched
+        'gocept.form[formlib]>=0.7.5',
         'gocept.lxml>=0.2.1',
         'gocept.runner>0.5.3',
         'grokcore.component',
@@ -92,7 +94,6 @@ setup(
             'docutils',
             'fanstatic',
             'gocept.fckeditor[fanstatic]',
-            'gocept.form[formlib]>=0.7.5',
             'gocept.pagelet',
             'guppy',
             'js.backbone',
