@@ -5,7 +5,7 @@ import zope.annotation
 import zope.component
 import zope.interface
 
-import zope.app.container.contained
+import zope.container.contained
 import zope.app.keyreference.interfaces
 
 import zeit.cms.content.property
@@ -16,7 +16,7 @@ import zeit.cms.syndication.interfaces
 
 
 class MySyndicationTargets(persistent.Persistent,
-                           zope.app.container.contained.Contained):
+                           zope.container.contained.Contained):
 
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IMySyndicationTargets)

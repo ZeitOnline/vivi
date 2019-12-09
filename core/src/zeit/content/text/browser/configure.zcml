@@ -68,7 +68,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     name="zeit.content.text.embed.Add"
-    permission="zeit.AddContent"
+    permission="zeit.content.text.AddEmbed"
     class=".embed.Add"
     menu="zeit-add-menu" title="Embed"
     />

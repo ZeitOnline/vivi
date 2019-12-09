@@ -1,7 +1,6 @@
 from cStringIO import StringIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
-import ZConfig
 import ast
 import email.utils
 import gocept.cache.property
@@ -335,7 +334,7 @@ def connector_factory():
         'zeit.connector') or {}
     repository_path = config.get('repository-path')
     if not repository_path:
-        raise ZConfig.ConfigurationError(
+        raise KeyError(
             "Filesystem connector not configured properly.")
     connector = Connector(repository_path)
     canonicalize = config.get('canonicalize-directories', None)

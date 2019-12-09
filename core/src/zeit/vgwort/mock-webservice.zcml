@@ -2,6 +2,6 @@
    xmlns="http://namespaces.zope.org/zope"
    i18n_domain="zope"
    >
-  <utility factory="zeit.vgwort.testing.PixelService" />
-  <utility factory="zeit.vgwort.testing.MessageService" />
+  <utility factory="zeit.vgwort.connection.MockPixelService" />
+  <utility factory="zeit.vgwort.connection.MockMessageService" />
 </configure>

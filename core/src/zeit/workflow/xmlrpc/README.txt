@@ -11,11 +11,10 @@ Setup:
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 
+>>> import zeit.workflow.testing
 >>> import transaction
 >>> def run_tasks():
-...     """Wait for already enqueued publish job, by running another job;
-...     since we only have on worker, this works out fine."""
-...     zeit.cms.testing.celery_ping.delay().get()
+...     zeit.workflow.testing.run_tasks()
 ...     transaction.abort()
 
 >>> from zeit.cms.webtest import ServerProxy

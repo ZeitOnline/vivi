@@ -1,7 +1,7 @@
 import grokcore.component
 import z3c.traverser.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.app.container.btree
+import zope.container.btree
 import zope.app.security.interfaces
 import zope.component
 import zope.dublincore.interfaces
@@ -12,7 +12,7 @@ import zope.security.management
 import zope.securitypolicy.interfaces
 
 
-class Workingcopy(zope.app.container.btree.BTreeContainer):
+class Workingcopy(zope.container.btree.BTreeContainer):
     """The working copy is the area of the CMS where users edit content."""
 
     zope.interface.implements(zeit.cms.workingcopy.interfaces.IWorkingcopy)
@@ -52,7 +52,7 @@ class Workingcopy(zope.app.container.btree.BTreeContainer):
             self._order = tuple(order)
 
 
-class WorkingcopyLocation(zope.app.container.btree.BTreeContainer):
+class WorkingcopyLocation(zope.container.btree.BTreeContainer):
     """Location for working copies of all users."""
 
     zope.interface.implements(

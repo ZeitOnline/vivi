@@ -1,7 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-<!-- Security policy for tests -->
+  <!-- Security policy for tests -->
+
+  <include package="zope.principalregistry" file="meta.zcml" />
 
   <include package="zope.securitypolicy" />
   <securityPolicy
@@ -157,6 +159,10 @@
   <grant
     principal="zope.producer"
     permission="zeit.content.cp.Retract"
+    />
+  <grant
+    principal="zope.producer"
+    permission="zeit.content.text.AddEmbed"
     />
 
   <!-- SEO grants -->

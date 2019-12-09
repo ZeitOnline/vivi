@@ -1,7 +1,6 @@
 import gocept.httpserverlayer.custom
 import mock
 import pkg_resources
-import suds.sax.parser
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -42,9 +41,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             co.product = product
         with self.assertRaises(zeit.vgwort.interfaces.WebServiceError) as e:
             self.service.new_document(self.repository['testcontent'])
-        self.assertIn(
-            "The value 'None' of attribute 'privateidentificationid'",
-            str(e.exception))
+        self.assertIn('privateidentificationid', str(e.exception))
 
     def test_business_fault_should_raise_error_message(self):
         shakespeare = zeit.content.author.author.Author()
@@ -203,7 +200,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             self.service.new_document(mock.sentinel.notanarticle)
         self.assertEqual(
             e.exception.args,
-            ('Does not seem to be an article -- stale cache?',))
+            ('Artikel existiert nicht mehr.',))
 
     def test_product_is_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()
@@ -350,12 +347,3 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assertEqual('Auster', authors[0].surName)
         self.assertEqual('Hans Christian', authors[1].firstName)
         self.assertEqual('Andersen', authors[1].surName)
-
-
-class CodeFixer(unittest.TestCase):
-
-    def test_dont_raise_when_not_applicable(self):
-        context = mock.Mock()
-        context.envelope = suds.sax.parser.Parser().parse(
-            string='<Body><foo></foo></Body>')
-        zeit.vgwort.connection.CodeFixer().marshalled(context)

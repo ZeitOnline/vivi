@@ -28,7 +28,8 @@ PROPERTY_REGISTRY = {}
 
 
 class DAVProperty(object):
-    """WebDAV properties."""
+    """Descriptor that stores value in WebDAV properties and performs type
+    conversion according to the given schema field."""
 
     def __init__(self, field, namespace, name, use_default=False,
                  writeable=WRITEABLE_ON_CHECKIN):
@@ -508,6 +509,10 @@ class GenericCollectionProperty(GenericProperty):
 
 def mapProperties(interface, namespace, names, use_default=False,
                   writeable=WRITEABLE_ON_CHECKIN):
+    """Create DAVProperty descriptors for all given names of the interface.
+    Convenience to map several properties, if they use the same namespace
+    and the python name is the same as the DAV property name.
+    """
     vars = sys._getframe(1).f_locals
     for name in names:
         field = interface[name]

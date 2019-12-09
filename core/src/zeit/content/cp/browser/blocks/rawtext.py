@@ -10,7 +10,7 @@ class EditProperties(
         zeit.content.cp.browser.blocks.block.EditCommon):
 
     _form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IRawTextBlock)
+        zeit.content.cp.interfaces.IRawTextBlock).select('text_reference')
     _omit_fields = list(zeit.content.cp.interfaces.IBlock)
 
 

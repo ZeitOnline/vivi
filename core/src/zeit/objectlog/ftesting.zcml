@@ -3,7 +3,7 @@
    xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope">
 
-  <include package="zeit.cms" file="application.zcml" />
+  <include package="zeit.cms" file="ftesting.zcml" />
   <include package="zeit.objectlog" />
 
   <principal

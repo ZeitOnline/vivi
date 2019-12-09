@@ -2,10 +2,119 @@ vivi.core changes
 =================
 
 
-4.20.5 (unreleased)
+4.23.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.23.0 (2019-12-06)
+-------------------
+
+- ZON-5586: Finally remove unused XMLSnippet field (since zeit.cms-2.35.1)
+
+- ZON-5585: Replace SilverCity with Pygments for syntax highlighting
+
+- ZON-5603: Replace suds with zeep as our SOAP client library
+
+- ZON-5615: Require special permission to add embed objects,
+  set feature toggle `add_content_permission` to enable
+
+- ZON-5615: Removed inline code entry from rawtext module
+
+- ZON-5593, ZON-5594: Declare test-only and UI dependencies separately
+
+
+4.22.3 (2019-11-26)
+-------------------
+
+- BUG-1136: Don't show admin checked-out for objects without ICommonMetadata,
+  implement a basic SEO tab for them.
+
+
+4.22.2 (2019-11-22)
+-------------------
+
+- BUG-1156: Only count teasers, not all modules when adjusting auto block count
+  (reprise of 4.17.4)
+
+
+4.22.1 (2019-11-22)
+-------------------
+
+- FIX: Restore translations that were lost in 4.22.0
+
+- MAINT: Also pre-warm folder entries
+
+
+4.22.0 (2019-11-21)
+-------------------
+
+- ZON-5614: Make social embed labels and texts more explainable
+
+- ZON-5472: Add `IAuthor.show_letterbox_link` field
+
+
+4.21.7 (2019-11-15)
+-------------------
+
+- MAINT: Apply enrich toggle also on publish
+
+
+4.21.6 (2019-11-15)
+-------------------
+
+- MAINT: Add feature toggle `tms_enrich_on_checkin` so we can disable
+  it in overload situations
+
+
+4.21.5 (2019-11-15)
+-------------------
+
+- OPS-1133: Modify DAV cache conflict resolution rules
+  to avoid deleting cache entries (doing that was definitely correct,
+  but it caused thundering herd issues e.g. for often-used folders)
+  Set feature toggle `dav_cache_delete_property_on_conflict` (or `childname`)
+  to revert to the previous behaviour.
+
+
+4.21.4 (2019-11-13)
+-------------------
+
+- HOTFIX: brown-bag 4.21.3 due to syntax error
+
+
+4.21.3 (2019-11-13)
+-------------------
+
+- OPS-1133: Don't write traceback into the property cache anymore
+
+
+4.21.2 (2019-11-13)
+-------------------
+
+- OPS-1133: Write the traceback into the property cache
+
+
+4.21.1 (2019-11-12)
+-------------------
+
+- ZON-5473: Set force_mobile_image=True for gallery teasers
+
+- OPS-1133: More diagnostics for DAV cache deletes
+
+
+4.21.0 (2019-11-11)
+-------------------
+
+- OPS-1133: Implement a DAV cache (properties and childnames) with
+  dogpile/redis as the storage backend
+
+
+4.20.5 (2019-11-08)
+-------------------
+
+- OPS-1133: Allow setting a connector referrer for non-http requests
 
 
 4.20.4 (2019-11-06)

@@ -6,6 +6,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
+import zope.container.interfaces
 import zope.interface
 import zope.interface.common.sequence
 import zope.interface.interfaces
@@ -548,11 +549,11 @@ class IXMLContent(zeit.cms.repository.interfaces.IDAVContent,
     """Content with an XML representation."""
 
 
-class ITemplateManagerContainer(zope.app.container.interfaces.IReadContainer):
+class ITemplateManagerContainer(zope.container.interfaces.IReadContainer):
     """Container which holds all template managers."""
 
 
-class ITemplateManager(zope.app.container.interfaces.IReadContainer):
+class ITemplateManager(zope.container.interfaces.IReadContainer):
     """Manages templates for a content type."""
 
 

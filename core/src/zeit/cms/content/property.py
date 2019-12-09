@@ -10,7 +10,7 @@ import zope.schema.interfaces
 
 
 class ObjectPathProperty(object):
-    """Property which is stored in an XML tree."""
+    """Property which is stored in an XML node."""
 
     def __init__(self, path, field=None, use_default=False):
         if path is None:
@@ -130,7 +130,7 @@ class Structure(ObjectPathProperty):
 
 
 class ObjectPathAttributeProperty(ObjectPathProperty):
-    """Property which is stored in an XML tree."""
+    """Property which is stored in an XML attribute."""
 
     def __init__(self, path, attribute_name, field=None, use_default=False):
         super(ObjectPathAttributeProperty, self).__init__(

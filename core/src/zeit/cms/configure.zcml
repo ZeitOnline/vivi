@@ -5,11 +5,9 @@
   i18n_domain="zeit.cms">
 
   <include package="grokcore.component" file="meta.zcml" />
-  <include package="grokcore.view" file="meta.zcml" />
-  <include package="grokcore.view"/>
   <include file="meta.zcml" />
 
-  <grok:grok package="." exclude="browser celery testcontenttype" />
+  <grok:grok package="." exclude="application browser celery testcontenttype testing webtest" />
 
   <!-- Include requirements -->
   <include package="zeit.cms" file="securitypolicy.zcml" />

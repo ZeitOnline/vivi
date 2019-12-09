@@ -18,7 +18,6 @@ import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.mock
-import zope.app.testing.functional
 import zope.component.hooks
 import zope.testing.renormalizing
 

@@ -9,10 +9,7 @@ def test_suite():
         'form.txt',
         'template.txt',
         'typechange.txt',
-        'widget-subnav.txt',
-        package='zeit.cms.content.browser'))
-    suite.addTest(doctest.DocFileSuite(
         'widget.txt',
-        optionflags=zeit.cms.testing.optionflags,
+        'widget-subnav.txt',
         package='zeit.cms.content.browser'))
     return suite

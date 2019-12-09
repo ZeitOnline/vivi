@@ -1,20 +1,23 @@
+from gocept.cache.method import Memoize as memoize
 import BTrees
 import UserDict
 import ZODB.POSException
 import ZODB.blob
 import cStringIO
+import gocept.lxml.objectify
 import logging
+import lxml.objectify
+import os
 import persistent
 import persistent.mapping
 import tempfile
 import time
-import traceback
 import transaction
+import urllib2
 import zc.set
 import zeit.connector.interfaces
 import zope.interface
 import zope.security.proxy
-import zope.testing.cleanup
 
 
 log = logging.getLogger(__name__)
@@ -310,8 +313,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         return (key for key in keys if key in self)
 
     def __delitem__(self, key):
-        log.info('Deleting %s from %s:\n%s', key, self,
-                 ''.join(traceback.format_stack()))
         value = self._storage[get_storage_key(key)]
         if isinstance(value, self.CACHE_VALUE_CLASS):
             self._mark_deleted(value)
@@ -375,14 +376,24 @@ class WebDAVPropertyKey(object):
         return (WebDAVPropertyKey, (self.name,))
 
 
-zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
+try:
+    import zope.testing.cleanup
+    zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
+except ImportError:
+    pass
 
 
 class Properties(persistent.mapping.PersistentMapping):
 
     cached_time = None
 
+    # NOTE: By default, conflict resolution is performed by the ZEO *server*!
     def _p_resolveConflict(self, old, commited, newstate):
+        if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
+            log.info('Overwriting %s with %s after ConflictError',
+                     commited, newstate)
+            return newstate
+
         if not (old.keys() ==
                 commited.keys() ==
                 newstate.keys() ==
@@ -397,11 +408,7 @@ class Properties(persistent.mapping.PersistentMapping):
         if newstate_data == commited_data:
             return newstate
         # Completely invalidate cache entry when we cannot resolve.
-        log.warning(
-            'Could not resolve conflict, deleting %s',
-            commited_data.get(
-                ('uuid', 'http://namespaces.zeit.de/CMS/document'),
-                'uuid-unknown'))
+        log.info('Emptying %s due to ConflictError', newstate)
         old['data'] = {zeit.connector.interfaces.DeleteProperty: None}
         return old
 
@@ -446,7 +453,9 @@ class ChildNames(zc.set.Set):
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
-        log.warning('Could not resolve conflict, deleting %s', old)
+        if not FEATURE_TOGGLES.find('dav_cache_delete_childname_on_conflict'):
+            raise ZODB.POSException.ConflictError()
+        log.info('Emptying %s due to ConflictError', newstate)
         old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
         return old
 
@@ -492,3 +501,31 @@ class AlwaysEmptyDict(UserDict.DictMixin):
 
     def keys(self):
         return ()
+
+
+# Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment
+# where we have no dogpile setup, no product config, etc.pp.
+class FeatureToggles(object):
+
+    config_url = 'ZEIT_VIVI_FEATURE_TOGGLE_SOURCE'
+
+    def find(self, name):
+        try:
+            return bool(getattr(self._get_tree(), name, False))
+        except TypeError:
+            return False
+
+    @memoize(300, ignore_self=True)
+    def _get_tree(self):
+        if self.config_url not in os.environ:
+            return lxml.objectify.XML('<empty/>')
+        return self._get_tree_from_url(os.environ[self.config_url])
+
+    def _get_tree_from_url(self, url):
+        __traceback_info__ = (url, )
+        log.debug('Getting %s' % url)
+        response = urllib2.urlopen(url)
+        return gocept.lxml.objectify.fromfile(response)
+
+
+FEATURE_TOGGLES = FeatureToggles()

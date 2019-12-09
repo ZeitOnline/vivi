@@ -5,7 +5,7 @@ import zope.annotation
 import zope.component
 import zope.interface
 
-import zope.app.container.contained
+import zope.container.contained
 
 import zeit.cms.interfaces
 import zeit.cms.content.property
@@ -15,7 +15,7 @@ import zeit.cms.repository.interfaces
 
 
 class UserPreferences(persistent.Persistent,
-                      zope.app.container.contained.Contained):
+                      zope.container.contained.Contained):
 
     zope.interface.implements(
         zeit.cms.repository.interfaces.IUserPreferences)

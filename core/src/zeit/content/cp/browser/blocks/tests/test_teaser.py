@@ -168,6 +168,15 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         citation.text = u"Foo"
         return article
 
+    def create_gallery(self):
+        gallery = zeit.content.gallery.gallery.Gallery()
+        gallery.image_folder = self.repository['2007']
+        self.repository['2007']['image01'] = ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        transaction.commit()
+        gallery.reload_image_folder()
+        return gallery
+
     def test_layout_without_image_pattern_shows_no_header_image(self):
         view = self.view(self.create_teaserblock(layout='short'))
         self.assertEqual(None, view.header_image)
@@ -194,6 +203,14 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             'content'])
         self.assertEqual('Zitat:', view.teasers[0]['texts'][1][
             'content'])
+
+    def test_gallery_teaser_forces_mobile_image(self):
+        self.repository['gallery'] = self.create_gallery()
+        container = self.cp.body.create_item('region').create_item('area')
+        block = zope.component.getMultiAdapter(
+            (container, self.repository['gallery'], 0),
+            zeit.edit.interfaces.IElement)
+        assert block.force_mobile_image
 
     def test_teaser_with_non_quote_layout_shows_teaser_text(
             self):

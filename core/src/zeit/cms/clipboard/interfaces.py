@@ -1,5 +1,5 @@
 import zeit.cms.interfaces
-import zope.app.container.interfaces
+import zope.container.interfaces
 import zope.interface
 import zope.schema
 
@@ -36,7 +36,7 @@ class IClipSchema(zope.interface.Interface):
 
 
 class IClip(IClipSchema, IClipboardEntry,
-            zope.app.container.interfaces.IOrderedContainer):
+            zope.container.interfaces.IOrderedContainer):
     """A colleciton of entries."""
 
 

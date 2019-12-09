@@ -46,6 +46,7 @@ import zope.app.publication.zopepublication
 import zope.app.wsgi
 import zope.component
 import zope.component.hooks
+import zope.error.interfaces
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
@@ -61,6 +62,8 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger().setLevel(logging.INFO)
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
+        logging.getLogger('selenium').setLevel(logging.INFO)
+        logging.getLogger('bugsnag').setLevel(logging.FATAL)
 
 LOGGING_LAYER = LoggingLayer()
 
@@ -458,9 +461,10 @@ cms_product_config = """\
   trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true
 
-  cache-regions config, feature
+  cache-regions config, feature, dav
   cache-expiration-config 600
   cache-expiration-feature 15
+  cache-expiration-dav 0
   feature-toggle-source file://{base}/content/feature-toggle.xml
 
   sso-cookie-name-prefix my_sso_

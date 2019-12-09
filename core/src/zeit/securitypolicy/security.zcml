@@ -179,6 +179,10 @@
     role="zeit.Producer"
     permission="zeit.vgwort.RetryReport"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.text.AddEmbed"
+    />
 
 
   <!-- CvD grants -->

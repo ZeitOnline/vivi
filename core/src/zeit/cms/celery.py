@@ -1,36 +1,57 @@
 from __future__ import absolute_import
-import celery
-import celery_longterm_scheduler
-import celery_longterm_scheduler.backend
-import z3c.celery.celery
-import z3c.celery.loader
+try:
+    import celery
+    import celery_longterm_scheduler
+    import celery_longterm_scheduler.backend
+    import z3c.celery.celery
+    import z3c.celery.loader
+except ImportError:
+    # Provide fake @task decorator, so zeit.web can avoid importing the whole
+    # celery machinery (which is somewhat expensive, and totally unnecessary).
+    def task(*args, **kw):
+        if args:
+            return args[0]
+        else:
+            class Callable:
+                def __init__(self, *args, **kwargs):
+                    self.args = args
+                    self.kwargs = kwargs
 
+                def __call__(self, func):
+                    return func
 
-class Task(z3c.celery.celery.TransactionAwareTask,
-           celery_longterm_scheduler.Task):
-    """Combines transactions and proper scheduling.
+                def delay(self, *args, **kwargs):
+                    pass
 
-    Note: the order is important so that scheduling jobs also only happens
-    on transaction commit.
-    """
+                def apply_async(self, *args, **kwargs):
+                    pass
 
-    def _assert_json_serializable(self, *args, **kw):
-        celery_longterm_scheduler.backend.serialize(args)
-        celery_longterm_scheduler.backend.serialize(kw)
+            return Callable
+else:
+    class Task(z3c.celery.celery.TransactionAwareTask,
+               celery_longterm_scheduler.Task):
+        """Combines transactions and proper scheduling.
 
+        Note: the order is important so that scheduling jobs also only happens
+        on transaction commit.
+        """
 
-CELERY = celery.Celery(
-    __name__, task_cls=Task, loader=z3c.celery.loader.ZopeLoader,
-    # Disable argument type checking, it seems broken. Tasks complain about
-    # celery-internal kwargs passed to them, etc.
-    strict_typing=False)
-# XXX The whole "default app" concept seems a bit murky. However, when using
-# waitress this is necessary, otherwise the polling publish dialog tries
-# talking to an unconfigured Celery app. (With gunicorn it works ootb.)
-CELERY.set_default()
+        def _assert_json_serializable(self, *args, **kw):
+            celery_longterm_scheduler.backend.serialize(args)
+            celery_longterm_scheduler.backend.serialize(kw)
 
-# Export decorator, so client modules can simply say `@zeit.cms.celery.task()`.
-task = CELERY.task
+    CELERY = celery.Celery(
+        __name__, task_cls=Task, loader=z3c.celery.loader.ZopeLoader,
+        # Disable argument type checking, it seems broken. Tasks complain about
+        # celery-internal kwargs passed to them, etc.
+        strict_typing=False)
+    # XXX The whole "default app" concept seems a bit murky. However, under
+    # waitress this is necessary, otherwise the polling publish dialog tries
+    # talking to an unconfigured Celery app. (With gunicorn it works ootb.)
+    CELERY.set_default()
+
+    # Export decorator, so client modules can say `@zeit.cms.celery.task()`.
+    task = CELERY.task
 
 
 def route_task(name, args, kwargs, options, task=None, **kw):

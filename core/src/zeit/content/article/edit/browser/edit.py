@@ -238,8 +238,8 @@ class EditRawText(
 
     legend = None
     _form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IRawText)
-    _omit_fields = ('__name__', '__parent__', 'xml')
+        zeit.content.article.edit.interfaces.IRawText).select('text_reference')
+    _omit_fields = list(zeit.edit.interfaces.IBlock)
     undo_description = _('edit raw text block')
 
     @property
@@ -265,7 +265,7 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitation).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit citation block')
 
     @property
@@ -278,7 +278,7 @@ class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IPuzzleForm).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit puzzle form block')
 
     @property
@@ -291,7 +291,7 @@ class EditLiveblog(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ILiveblog).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit liveblog block')
 
     @property
@@ -304,7 +304,7 @@ class EditCardstack(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICardstack).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit cardstack block')
 
     @property
@@ -317,7 +317,7 @@ class EditQuiz(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IQuiz).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit quiz block')
 
     @property
@@ -330,7 +330,7 @@ class EditPodcast(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IPodcast).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit podcast block')
 
     @property
@@ -345,7 +345,7 @@ class EditBox(zeit.edit.browser.form.InlineForm):
     _form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IBox,
         zeit.content.image.interfaces.IImages)
-    omit_fields = ('__name__', '__parent__', 'xml')
+    omit_fields = list(zeit.edit.interfaces.IBlock)
 
     def setUpWidgets(self, *args, **kwargs):
         super(EditBox, self).setUpWidgets(*args, **kwargs)
@@ -365,7 +365,7 @@ class EditAdplace(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IAdplace).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit adplace block')
 
     @property
@@ -415,7 +415,7 @@ class EditMail(zeit.edit.browser.form.InlineForm):
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IMail).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit mail block')
 
     @property
@@ -430,7 +430,7 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ITopicbox,
         zeit.content.image.interfaces.IImages).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit topic box')
 
     def setUpWidgets(self, *args, **kw):

@@ -1,22 +1,14 @@
 import collections
 import copy
 import grokcore.component as grok
-import zeit.cms.browser.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
-import zope.component.hooks
 import zope.interface
 import zope.lifecycleevent
-import zope.location.interfaces
-import zope.publisher.interfaces
 import zope.security.proxy
-import zope.site.interfaces
-import zope.traversing.browser
-import zope.traversing.browser.absoluteurl
-import zope.traversing.interfaces
 
 
 class Tags(object):
@@ -107,39 +99,3 @@ def unique_id_to_tag(unique_id):
     # ``pinned`` on it). This is analogue to the way zeit.intrafind.Tagger
     # works, it also returns fresh Tag objects on each read access.
     return copy.copy(whitelist.get(token))
-
-
-class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
-    zope.component.adapts(zeit.cms.tagging.interfaces.ITag,
-                          zeit.cms.browser.interfaces.ICMSLayer)
-
-    def __str__(self):
-        base = zope.traversing.browser.absoluteURL(
-            zope.component.hooks.getSite(), self.request)
-        # `zeit.retresco` possibly generates `.code` with unicode characters so
-        # we have to escape them to get a valid url.
-        return base + '/++tag++' + self.context.code.encode('unicode_escape')
-
-
-class TagTraverser(grok.MultiAdapter):
-
-    zope.interface.implements(zope.traversing.interfaces.ITraversable)
-    grok.adapts(
-        zope.site.interfaces.IRootFolder,
-        zope.publisher.interfaces.IRequest)
-    grok.name('tag')
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def traverse(self, name, ignored):
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        # As we encoded the code in `AbsoluteURL` we have to undo the escaping.
-        name = name.decode('unicode_escape')
-        tag = whitelist.get(name)
-        if tag is None:
-            raise zope.location.interfaces.LocationError(self.context, name)
-        return tag

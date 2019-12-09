@@ -241,7 +241,7 @@ class VariantApp(gocept.jasmine.jasmine.TestApp):
         zeit.content.image.browser.resources.test_variant_js.need()
 
 
-@pytest.mark.slow
+@pytest.mark.selenium
 class VariantJasmineTestCase(gocept.jasmine.jasmine.TestCase):
 
     layer = gocept.jasmine.jasmine.get_layer(VariantApp())

@@ -36,42 +36,13 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 
-    def test_rawtext_is_edited(self):
-        b = self.browser
-        b.getLink('Edit block properties', index=0).click()
-        b.getControl('Raw text', index=1).value = '<rawcode_text>'
-        b.getControl('Apply').click()
-        b.open(self.content_url)
-        self.assertEllipsis('...(inline)...', b.contents)
-        b.getLink('Edit block properties', index=0).click()
-        self.assertEqual(
-            '<rawcode_text>', b.getControl('Raw text', index=1).value.strip())
-
-    def test_rawtext_is_referenced(self):
+    def test_rawtext_can_be_referenced(self):
         b = self.browser
         b.getLink('Edit block properties', index=0).click()
         b.getControl('Raw text reference').value = self.plaintext.uniqueId
         b.getControl('Apply').click()
         b.open(self.content_url)
         self.assertEllipsis('...http://xml.zeit.de/plaintext...', b.contents)
-
-    def test_rawtext_reference_should_be_preferred(self):
-        b = self.browser
-        b.getLink('Edit block properties', index=0).click()
-        b.getControl('Raw text', index=1).value = '<rawcode_text>'
-        b.getControl('Raw text reference').value = self.plaintext.uniqueId
-        b.getControl('Apply').click()
-        b.open(self.content_url)
-        self.assertEllipsis('...http://xml.zeit.de/plaintext...', b.contents)
-
-    def test_rawtext_should_display_default_if_empty(self):
-        b = self.browser
-        b.getLink('Edit block properties', index=0).click()
-        b.getControl('Raw text', index=1).value = ''
-        b.getControl('Raw text reference').value = ''
-        b.getControl('Apply').click()
-        b.open(self.content_url)
-        self.assertEllipsis('...(inline)...', b.contents)
 
     def test_rawtext_should_store_parameters(self):
         embed = zeit.content.text.embed.Embed()
@@ -90,26 +61,3 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         b.open(self.content_url)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual('p1', b.getControl('One').value)
-
-    def test_rawtext_stores_consent_info(self):
-        b = self.browser
-        b.getLink('Edit block properties', index=0).click()
-        b.getControl('Contains thirdparty code').displayValue = ['yes']
-        b.getControl('Add Vendors').click()
-        b.getControl('Add Vendors').click()
-        b.getControl(name='form.thirdparty_vendors.0.').displayValue = [
-            'Twitter']
-        b.getControl(name='form.thirdparty_vendors.1.').displayValue = [
-            'YouTube']
-        b.getControl('Apply').click()
-
-        b.open(self.content_url)
-        b.getLink('Edit block properties', index=0).click()
-        self.assertEqual(
-            ['yes'], b.getControl('Contains thirdparty code').displayValue)
-        self.assertEqual(
-            ['Twitter'],
-            b.getControl(name='form.thirdparty_vendors.0.').displayValue)
-        self.assertEqual(
-            ['YouTube'],
-            b.getControl(name='form.thirdparty_vendors.1.').displayValue)
