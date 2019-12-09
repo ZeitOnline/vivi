@@ -308,11 +308,11 @@
 
   <class class=".newslettersignup.NewsletterSignup">
     <require
-      interface="zeit.content.modules.interfaces.INewsletterSignup"
+      interface=".interfaces.INewsletterSignup"
       permission="zope.View"
       />
     <require
-      set_schema="zeit.content.modules.interfaces.INewsletterSignup"
+      set_schema=".interfaces.INewsletterSignup"
       permission="zeit.EditContent"
       />
   </class>

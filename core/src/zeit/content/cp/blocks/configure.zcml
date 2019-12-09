@@ -129,10 +129,10 @@
 
   <class class=".newslettersignup.NewsletterSignupBlock">
     <require
-      interface="zeit.content.modules.interfaces.INewsletterSignup"
+      interface="..interfaces.INewsletterSignupBlock"
       permission="zope.View" />
     <require
-      set_schema="zeit.content.modules.interfaces.INewsletterSignup"
+      set_schema="..interfaces.INewsletterSignupBlock"
       permission="zeit.EditContent"/>
   </class>
 

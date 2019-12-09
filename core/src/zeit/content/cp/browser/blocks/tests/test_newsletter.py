@@ -25,3 +25,18 @@ class TestNewsletter(zeit.content.cp.testing.BrowserTestCase):
         ))
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-{}'.format(block_type)))
+
+    def test_newsletter_is_editable(self):
+        b = self.browser
+        b.getLink('Edit block properties', index=0).click()
+        b.getControl('Newsletter Signup').displayValue = ['Z+/Abonnenten']
+        zeit.content.cp.centerpage._test_helper_cp_changed = False
+        b.getControl('Apply').click()
+        self.assertTrue(zeit.content.cp.centerpage._test_helper_cp_changed)
+        self.assertEllipsis('...Updated on...', b.contents)
+
+        b.open(self.content_url)
+        self.assertEllipsis('...Z+/Abonnenten...', b.contents)
+        b.getLink('Edit block properties', index=0).click()
+        self.assertEqual(
+            ['Z+/Abonnenten'], b.getControl('Newsletter Signup').displayValue)

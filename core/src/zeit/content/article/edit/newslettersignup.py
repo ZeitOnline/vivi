@@ -5,7 +5,7 @@ import zeit.content.article.edit.interfaces
 import zeit.content.modules.newslettersignup
 
 
-@grok.implementer(zeit.content.modules.interfaces.INewsletterSignup)
+@grok.implementer(zeit.content.article.edit.interfaces.INewsletterSignup)
 class NewsletterSignup(
         zeit.content.modules.newslettersignup.NewsletterSignup,
         zeit.content.article.edit.block.Block):

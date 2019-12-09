@@ -21,7 +21,6 @@ import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
-import zeit.content.modules.newslettersignup
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces

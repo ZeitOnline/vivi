@@ -630,10 +630,10 @@
     weight="10"
     />
 
-<!-- newslettersignup -->
+   <!-- newslettersignup -->
 
    <browser:viewlet
-    for="zeit.content.modules.interfaces.INewsletterSignup"
+    for="zeit.content.article.edit.interfaces.INewsletterSignup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
@@ -644,7 +644,7 @@
     />
 
   <browser:page
-    for="zeit.content.modules.interfaces.INewsletterSignup"
+    for="zeit.content.article.edit.interfaces.INewsletterSignup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-newslettersignup"
     class=".edit.EditNewsletterSignup"
@@ -748,7 +748,7 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
-  <class class="zeit.content.modules.newslettersignup.NewsletterSignup">
+  <class class="..newslettersignup.NewsletterSignup">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
