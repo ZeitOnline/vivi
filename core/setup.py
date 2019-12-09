@@ -45,6 +45,8 @@ setup(
         'werkzeug',
         'xml-compare',
         'z3c.traverser',  # XXX Should move to [ui], but is entrenched
+        'zc.form',  # Should be [ui], but it also contains schema fields
+        'zope.deferredimport',  # undeclared by zc.form
         'zc.iso8601',
         'zc.queue',
         'zc.relation',
@@ -109,8 +111,6 @@ setup(
             'z3c.menu.simple>=0.5.1',
             'z3c.noop',
             'zc.datetimewidget',
-            'zc.form',
-            'zope.deferredimport',  # undeclared by zc.form
             'zc.table',
             'zeep',
             'zeit.optivo',
