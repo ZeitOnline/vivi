@@ -17,7 +17,7 @@ class DummyContext(object):
 class ApplyDefaultValuesTests(unittest.TestCase):
 
     def apply(self, interface, context=None):
-        from ..form import apply_default_values
+        from zeit.cms.content.field import apply_default_values
         if context is None:
             context = DummyContext()
         apply_default_values(context, interface)

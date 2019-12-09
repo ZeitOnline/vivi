@@ -97,9 +97,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
 def create_article():
     from zeit.content.article.article import Article
     from zeit.content.article.interfaces import IArticle
-    import zeit.cms.browser.form
+    import zeit.cms.content.field
     article = Article()
-    zeit.cms.browser.form.apply_default_values(article, IArticle)
+    zeit.cms.content.field.apply_default_values(article, IArticle)
     article.year = 2011
     article.title = u'title'
     article.ressort = u'Deutschland'

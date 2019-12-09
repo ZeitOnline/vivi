@@ -3,6 +3,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zc.iso8601.parse
 import zeit.brightcove.resolve
+import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
@@ -146,7 +147,7 @@ class Video(Converter):
         data = self.data
         custom = data.get('custom_fields', {})
 
-        zeit.cms.browser.form.apply_default_values(
+        zeit.cms.content.field.apply_default_values(
             cmsobj, zeit.content.video.interfaces.IVideo)
         cmsobj.external_id = data.get('id')
         cmsobj.title = data.get('name')
