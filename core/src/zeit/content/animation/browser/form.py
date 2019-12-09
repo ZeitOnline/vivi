@@ -14,7 +14,7 @@ class Base(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.animation.interfaces.IAnimation
-    ).select("article", "display_mode")
+    ).select("article", "video", "images", "display_mode")
 
     field_groups = (gocept.form.grouped.RemainingFields(_("Texts")),)
 

@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.content.video.interfaces
 import zeit.content.article.interfaces
 import zope.schema
 
@@ -31,3 +32,21 @@ class IAnimation(
     display_mode = zope.schema.Choice(
         title=_("Display mode"), required=False, source=DisplayModeSource()
     )
+
+    video = zope.schema.Tuple(
+        title=_("Video ID"),
+        required=False,
+        readonly=True,
+        default=(),
+        unique=False,
+        value_type=zope.schema.Choice(
+            title=_('Video to use for animation'),
+            source=zeit.content.video.interfaces.VideoSource()))
+
+    images = zope.schema.Tuple(
+        title=_('Images'),
+        default=(),
+        max_length=3,
+        required=False,
+        value_type=zope.schema.Choice(
+            source=zeit.content.image.interfaces.ImageSource()))
