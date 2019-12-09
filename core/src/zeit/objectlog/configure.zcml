@@ -3,6 +3,8 @@
   xmlns:i18n="http://namespaces.zope.org/i18n"
   i18n_domain="zeit.objectlog">
 
+  <include package="zope.i18n" file="meta.zcml" />
+
   <utility 
     name="zeit.objectlog"
     provides="zope.generations.interfaces.ISchemaManager"
