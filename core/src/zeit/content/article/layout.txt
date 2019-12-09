@@ -30,7 +30,7 @@ article is published.
 >>> wl = zope.component.getUtility(
 ...     zeit.cms.tagging.interfaces.IWhitelist)
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
-...     zeit.cms.content.fieldapply_default_values(co, IArticle)
+...     zeit.cms.content.field.apply_default_values(co, IArticle)
 ...     co.year = 2011
 ...     co.title = u'Mary had a little lamb'
 ...     co.ressort = u'Deutschland'
