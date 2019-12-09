@@ -929,6 +929,11 @@ class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):
     pass
 
 
+class INewsletterSignupBlock(
+        zeit.content.modules.interfaces.INewsletterSignup, IBlock):
+    pass
+
+
 # BBB We don't need this anymore, but existing content still has it.
 class ICP2015(ICenterPage):
     """Marker interfaces for CPs edited by the current CP-Editor (master)."""

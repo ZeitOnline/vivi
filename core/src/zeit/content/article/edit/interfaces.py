@@ -592,3 +592,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         """
         Iterable of ICMSContent
         """
+
+
+class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
+    pass
