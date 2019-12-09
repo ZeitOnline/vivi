@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.23.2 (unreleased)
+4.23.2 (2019-12-09)
 -------------------
 
 - FIX: Declare dependency that friedbert-preview needs
