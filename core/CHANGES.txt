@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.24.0 (unreleased)
+4.24.0 (2019-12-09)
 -------------------
 
 - ZON-5694: Implement NewsletterSignup Module
