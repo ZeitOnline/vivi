@@ -450,7 +450,7 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit newsletter signup')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.INewsletterSignup).omit(
-            '__name__', '__parent__', 'xml')
+            *list(zeit.edit.interfaces.IBlock))
 
     @property
     def prefix(self):
