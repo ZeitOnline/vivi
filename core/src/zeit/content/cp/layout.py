@@ -1,4 +1,4 @@
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import zeit.cms.content.sources
 import zope.interface

@@ -1,4 +1,4 @@
-from zeit.cms.application import CONFIG_CACHE, FEATURE_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import gocept.lxml.objectify

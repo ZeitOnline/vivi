@@ -1,6 +1,7 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import datetime
+import pyramid_dogpile_cache2
 import pytz
 import re
 import zope.i18nmessageid
@@ -24,6 +25,10 @@ MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
 from zeit.connector.interfaces import (  # noqa
     DeleteProperty, LockingError, IConnector, IResource,
     IWebDAVReadProperties, IWebDAVWriteProperties, IWebDAVProperties)
+
+
+CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
+FEATURE_CACHE = pyramid_dogpile_cache2.get_region('feature')
 
 
 class ICMSContentType(zope.interface.interfaces.IInterface):
