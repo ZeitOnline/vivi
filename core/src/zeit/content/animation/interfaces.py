@@ -30,7 +30,9 @@ class IAnimation(
     )
 
     display_mode = zope.schema.Choice(
-        title=_("Display mode"), required=False, source=DisplayModeSource()
+        title=_("Display mode"),
+        required=True,
+        source=DisplayModeSource(),
     )
 
     video = zope.schema.Choice(
@@ -40,9 +42,11 @@ class IAnimation(
     )
 
     images = zope.schema.Tuple(
-        title=_('Images'),
+        title=_("Images"),
         default=(),
         max_length=3,
         required=False,
         value_type=zope.schema.Choice(
-            source=zeit.content.image.interfaces.ImageSource()))
+            source=zeit.content.image.interfaces.ImageSource()
+        ),
+    )
