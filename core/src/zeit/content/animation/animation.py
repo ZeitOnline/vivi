@@ -22,7 +22,7 @@ class Animation(zeit.cms.content.metadata.CommonMetadata):
 
     default_template = (
         '<animation xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        "<head/><body><display_mode/><article/><images/><video/></body></animation>"
+        "<head/><body><display_mode/><article/><image/><image/><video/></body></animation>"
     )
 
     article = zeit.cms.content.reference.SingleResource(".body.article", "related")
