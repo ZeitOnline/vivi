@@ -4,6 +4,7 @@ import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
+from zeit.cms.content.interfaces import ICommonMetadata
 import zeit.content.animation.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.edit.interfaces
@@ -12,7 +13,7 @@ import zope.component
 import zope.interface
 
 
-class Animation(zeit.cms.content.metadata.CommonMetadata):
+class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     """A type for managing animations made from existing media."""
 
     zope.interface.implements(
@@ -30,9 +31,10 @@ class Animation(zeit.cms.content.metadata.CommonMetadata):
     images = zeit.cms.content.reference.MultiResource(".body.image", "image")
     video = zeit.cms.content.reference.SingleResource(".body.video", "related")
 
-    @property
-    def title(self):
-        return self.article.title
+    def __getattr__(self, name):
+        if name not in list(ICommonMetadata):
+            raise AttributeError(name)
+        return getattr(self.article, name)
 
 
 class AnimationType(zeit.cms.type.XMLContentTypeDeclaration):
