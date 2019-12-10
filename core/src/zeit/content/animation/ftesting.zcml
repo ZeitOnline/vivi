@@ -7,11 +7,9 @@
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.content.animation" />
-  <!-- <include package="zeit.content.animation.browser" /> -->
+  <include package="zeit.content.animation.browser" />
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
-
-  <include package="zeit.content.text" />
 
 </configure>
