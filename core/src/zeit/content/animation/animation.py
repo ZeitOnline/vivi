@@ -21,10 +21,7 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.interfaces.IEditorialContent,
     )
 
-    default_template = (
-        '<animation xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        "<head/><body><display_mode/><article/><image/><image/><video/></body></animation>"
-    )
+    default_template = "<body/>"
 
     article = zeit.cms.content.reference.SingleResource(".body.article", "related")
     display_mode = zeit.cms.content.property.ObjectPathProperty(".body.display_mode")
