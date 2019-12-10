@@ -19,7 +19,8 @@ class DisplayModeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 
 class IAnimation(
-    zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.content.interfaces.IXMLContent
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
 ):
     """A type for managing animated placeholders for articles."""
 
@@ -30,9 +31,7 @@ class IAnimation(
     )
 
     display_mode = zope.schema.Choice(
-        title=_("Display mode"),
-        required=True,
-        source=DisplayModeSource(),
+        title=_("Display mode"), required=True, source=DisplayModeSource()
     )
 
     video = zope.schema.Choice(

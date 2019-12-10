@@ -23,8 +23,12 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
 
     default_template = "<body/>"
 
-    article = zeit.cms.content.reference.SingleResource(".body.article", "related")
-    display_mode = zeit.cms.content.property.ObjectPathProperty(".body.display_mode")
+    article = zeit.cms.content.reference.SingleResource(
+        ".body.article", "related"
+    )
+    display_mode = zeit.cms.content.property.ObjectPathProperty(
+        ".body.display_mode"
+    )
     images = zeit.cms.content.reference.MultiResource(".body.image", "image")
     video = zeit.cms.content.reference.SingleResource(".body.video", "related")
 
