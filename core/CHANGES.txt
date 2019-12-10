@@ -5,7 +5,7 @@ vivi.core changes
 4.24.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- HOTFIX: Don't require special permission to add embed when toggle is off
 
 
 4.24.0 (2019-12-09)
@@ -36,7 +36,7 @@ vivi.core changes
 - ZON-5603: Replace suds with zeep as our SOAP client library
 
 - ZON-5615: Require special permission to add embed objects,
-  set feature toggle `add_content_permission` to enable
+  set feature toggle `add_content_permissions` to enable
 
 - ZON-5615: Removed inline code entry from rawtext module
 
