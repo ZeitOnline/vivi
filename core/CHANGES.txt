@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.24.1 (unreleased)
+4.24.1 (2019-12-10)
 -------------------
 
 - HOTFIX: Don't require special permission to add embed when toggle is off
