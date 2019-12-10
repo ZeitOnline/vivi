@@ -33,15 +33,11 @@ class IAnimation(
         title=_("Display mode"), required=False, source=DisplayModeSource()
     )
 
-    video = zope.schema.Tuple(
-        title=_("Video ID"),
+    video = zope.schema.Choice(
+        title=_("Video to use for animation"),
+        source=zeit.content.video.interfaces.VideoSource(),
         required=False,
-        readonly=True,
-        default=(),
-        unique=False,
-        value_type=zope.schema.Choice(
-            title=_('Video to use for animation'),
-            source=zeit.content.video.interfaces.VideoSource()))
+    )
 
     images = zope.schema.Tuple(
         title=_('Images'),
