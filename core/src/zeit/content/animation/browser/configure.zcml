@@ -9,7 +9,7 @@
     class=".form.Add"
     name="zeit.content.animation.Add"
     permission="zeit.AddContent"
-    menu="zeit-add-menu" title="Tutorial"
+    menu="zeit-add-menu" title="Animation"
     />
 
   <browser:page
