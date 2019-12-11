@@ -16,7 +16,10 @@ class Base(object):
         zeit.content.animation.interfaces.IAnimation
     ).select("article", "video", "images", "display_mode")
 
-    field_groups = (gocept.form.grouped.RemainingFields(_("Texts")),)
+    field_groups = (
+        gocept.form.grouped.RemainingFields(_("Article")),
+        gocept.form.grouped.Fields(_("Teaser"), ("display_mode", "images", "video")),
+    )
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):
