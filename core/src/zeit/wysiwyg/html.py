@@ -7,8 +7,8 @@ import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
 import lxml.objectify
+import pendulum
 import pytz
-import zc.iso8601.parse
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -226,7 +226,7 @@ class ConversionStep(object):
         dt = ''
         if dt_string:
             try:
-                dt = zc.iso8601.parse.datetimetz(dt_string)
+                dt = pendulum.parse(dt_string)
             except ValueError:
                 pass
             else:

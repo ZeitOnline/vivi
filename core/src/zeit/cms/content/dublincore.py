@@ -1,7 +1,5 @@
-
-import datetime
 import grokcore.component
-import pytz
+import pendulum
 import zeit.cms.content.dav
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -38,7 +36,7 @@ class LocalDCTimes(RepositoryDCTimes):
                     self.context)
                 modified = annotations.get(__name__)
         else:
-            modified = datetime.datetime.fromtimestamp(ts, pytz.UTC)
+            modified = pendulum.from_timestamp(ts)
         return modified
 
     @modified.setter

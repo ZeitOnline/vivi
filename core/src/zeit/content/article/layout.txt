@@ -60,9 +60,9 @@ Check that there were no errors during publishing:
 >>> published_cp = IPublishInfo(cp).date_last_published
 >>> published_article = IPublishInfo(article).date_last_published
 >>> published_article
-datetime.datetime(...)
+DateTime(...)
 >>> published_cp
-datetime.datetime(...)
+DateTime(...)
 
 >>> transaction.commit()
 

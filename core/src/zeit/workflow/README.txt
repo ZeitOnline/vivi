@@ -136,7 +136,7 @@ Let's publish the object:
 >>> workflow.published
 True
 >>> workflow.date_last_published
-datetime.datetime(...)
+DateTime(...)
 
 
 One can publish more than once to put up a new version:
@@ -215,7 +215,7 @@ True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(article)
 >>> job_id = publish.publish(async=False)
 >>> workflow.date_first_released
-datetime.datetime(...)
+DateTime(...)
 
 We expect the value to be in the xml now as well (amongst others):
 

@@ -368,15 +368,15 @@ Datetimes are stored in iso 8601 format:
 >>> field = zope.schema.Datetime()
 >>> converter = get_converter(field)
 >>> converter.fromProperty('2007-05-25T13:24:59Z')
-datetime.datetime(2007, 5, 25, 13, 24, 59, tzinfo=<UTC>)
+DateTime(2007, 5, 25, 13, 24, 59, tzinfo=Timezone('UTC'))
 
 >>> converter.fromProperty('2007-06-12T09:10:00+01:00')
-datetime.datetime(2007, 6, 12, 8, 10, tzinfo=<UTC>)
+DateTime(2007, 6, 12, 8, 10, 0, tzinfo=Timezone('UTC'))
 
 We can also parse ISO dates w/o seconds:
 
 >>> converter.fromProperty('2007-05-25T13:24Z')
-datetime.datetime(2007, 5, 25, 13, 24, tzinfo=<UTC>)
+DateTime(2007, 5, 25, 13, 24, 0, tzinfo=Timezone('UTC'))
 
 
 When the date is invalid, a ValueError is raised:
@@ -384,7 +384,7 @@ When the date is invalid, a ValueError is raised:
 >>> print converter.fromProperty('asdf')
 Traceback (most recent call last):
     ...
-ValueError: asdf
+ParserError: Invalid date string: asdf
 
 Converting datetimes takes timezone info into account:
 
@@ -398,14 +398,7 @@ Converting datetimes takes timezone info into account:
 The "other" format is supported, too (read only):
 
 >>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 GMT")
-datetime.datetime(2008, 3, 13, 13, 48, 37, tzinfo=<UTC>)
-
-Note that only the "GMT" timezone is supported:
-
->>> converter.fromProperty("Thu, 13 Mar 2008 13:48:37 CET")
-Traceback (most recent call last):
-    ...
-ValueError: Thu, 13 Mar 2008 13:48:37 CET
+DateTime(2008, 3, 13, 13, 48, 37, tzinfo=Timezone('UTC'))
 
 
 Setting a datetime without timezone information raises an error:
