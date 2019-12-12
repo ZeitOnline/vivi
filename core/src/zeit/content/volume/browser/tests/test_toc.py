@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from collections import defaultdict
-from ordereddict import OrderedDict
+from collections import defaultdict, OrderedDict
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc, Excluder
