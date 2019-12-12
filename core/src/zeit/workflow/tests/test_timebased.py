@@ -1,6 +1,6 @@
 from ..timebased import TimeBasedWorkflow
-from StringIO import StringIO
 from datetime import datetime, timedelta
+from six import StringIO
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED

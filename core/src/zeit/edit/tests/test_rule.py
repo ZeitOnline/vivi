@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
+from six import StringIO
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import StringIO
 import mock
 import pytz
 import unittest
@@ -197,7 +197,7 @@ class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
                 as gpc:
             gpc.return_value = {'rules-url': mock.sentinel.rulesurl}
             with mock.patch('six.moves.urllib.request.urlopen') as urlopen:
-                urlopen.return_value = StringIO.StringIO(rules)
+                urlopen.return_value = StringIO(rules)
                 return rm.rules
 
     def test_valid_rules_file_should_be_loaded(self):

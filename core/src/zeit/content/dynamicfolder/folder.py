@@ -1,5 +1,5 @@
 # coding: utf8
-from StringIO import StringIO
+from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy

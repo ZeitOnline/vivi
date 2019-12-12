@@ -1,6 +1,6 @@
 # coding: utf8
+from io import BytesIO
 from zeit.connector.testing import copy_inherited_functions
-import StringIO
 import mock
 import transaction
 import unittest
@@ -17,11 +17,11 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Paff'),
+            BytesIO(b'Paff'),
             contentType='text/plain')
         self.assertEquals('Paff', self.connector[rid].data.read())
 
@@ -31,7 +31,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
@@ -43,7 +43,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         new_rid = rid + u'-renamed'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
@@ -57,7 +57,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
         rid = 'http://xml.zeit.de/%s/foo#bar' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         resource = self.connector[rid]
         self.assertEquals('Pop.', resource.data.read())
@@ -104,7 +104,7 @@ class ConflictDetectionBase(object):
             self.connector.add, r)
 
     def test_no_conflict_with_same_content(self):
-        self.r_a.data = StringIO.StringIO('Bang.')
+        self.r_a.data = BytesIO(b'Bang.')
         self.connector.add(self.r_a)
         self.assertEquals('Bang.', self.connector[self.r_a.id].data.read())
 
@@ -179,7 +179,7 @@ class TestResource(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/%s/aresource' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain',
             properties={('foo', 'bar'): 'baz'})
         res = self.connector[rid]
@@ -197,7 +197,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         self.rid = 'http://xml.zeit.de/%s/cache_test' % self.testfolder
         self.connector[self.rid] = zeit.connector.resource.Resource(
             self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         list(self.connector.listCollection(
             'http://xml.zeit.de/%s/' % self.testfolder))
@@ -344,7 +344,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
     def test_move_collection_moves_all_members(self):
         coll = zeit.connector.resource.Resource(
             'http://xml.zeit.de/%s/foo' % self.testfolder,
-            'foo', 'collection', StringIO.StringIO(''))
+            'foo', 'collection', BytesIO(b''))
         self.connector.add(coll)
         res = self.get_resource('foo/one', 'body')
         self.connector.add(res)

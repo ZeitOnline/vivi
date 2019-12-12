@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from io import BytesIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import ast
@@ -132,7 +132,7 @@ class Connector(object):
 
     def _get_body(self, id):
         try:
-            return StringIO(self.body_cache[id])
+            return BytesIO(self.body_cache[id])
         except KeyError:
             pass
         try:
@@ -142,7 +142,7 @@ class Connector(object):
         except Exception:
             data = ''
         self.body_cache[id] = data
-        return StringIO(data)
+        return BytesIO(data)
 
     def _get_content_type(self, id):
         properties = self._get_properties(id)
@@ -258,7 +258,7 @@ class Connector(object):
         except IOError:
             if not id.endswith('.meta'):
                 return self._get_file(id)
-            return StringIO('')
+            return BytesIO(b'')
 
     def _make_id(self, path):
         return six.moves.urllib.parse.urljoin(ID_NAMESPACE, '/'.join(

@@ -542,7 +542,7 @@ Make sure we have a metadata preview for repository image groups:
 Make sure the image group view doesn't break when there is some other object
 than an image in the image group:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> import zope.component
 >>> import zeit.connector.interfaces
 >>> import zeit.connector.resource
@@ -550,7 +550,7 @@ than an image in the image group:
 ...     zeit.connector.interfaces.IConnector)
 >>> connector.add(zeit.connector.resource.Resource(
 ...     'http://xml.zeit.de/2006/new-hampshire/foo',
-...     'foo', 'strage-type', StringIO.StringIO('data')))
+...     'foo', 'strage-type', BytesIO(b'data')))
 >>> import transaction
 >>> transaction.commit()
 
@@ -619,7 +619,7 @@ read it):
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image (single)']
 >>> browser.open(menu.value[0])
->>> test_data = StringIO.StringIO('392-392938r82r')
+>>> test_data = BytesIO(b'392-392938r82r')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'corrupt.jpg')
 >>> browser.getControl(name='form.actions.add').click()

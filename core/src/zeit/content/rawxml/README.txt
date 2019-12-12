@@ -42,7 +42,7 @@ stored in a webdav property:
 u'Roh'
 >>> resource.data.read()
 "<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
->>> resource.data.seek(0)
+>>> _ = resource.data.seek(0)
 >>> resource.type
 'rawxml'
 

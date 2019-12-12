@@ -1,4 +1,4 @@
-import StringIO
+from six import StringIO
 import datetime
 import gocept.lxml.objectify
 import grokcore.component as grok
@@ -29,7 +29,7 @@ class XMLRepresentationBase(object):
             if self.default_template is None:
                 raise NotImplementedError(
                     "default_template needs to be set in subclasses")
-            xml_source = StringIO.StringIO(self.default_template)
+            xml_source = StringIO(self.default_template)
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
 
 

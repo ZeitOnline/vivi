@@ -1,6 +1,6 @@
+from io import BytesIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import UUID_PROPERTY
-import StringIO
 import datetime
 import logging
 import os
@@ -261,7 +261,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _get_file(self, id):
         if id in self._data:
-            return StringIO.StringIO(self._data[id])
+            return BytesIO(self._data[id])
         return super(Connector, self)._get_file(id)
 
     def _get_lastmodified(self, id):

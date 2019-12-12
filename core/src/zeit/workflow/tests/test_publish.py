@@ -1,5 +1,6 @@
-from StringIO import StringIO
 from datetime import datetime
+from six import StringIO
+from six.moves import range
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
@@ -21,7 +22,6 @@ import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
-from six.moves import range
 
 
 class PublishTest(zeit.workflow.testing.FunctionalTestCase):

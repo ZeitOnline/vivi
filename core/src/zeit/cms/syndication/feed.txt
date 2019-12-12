@@ -180,12 +180,12 @@ Creating Feeds From Resources
 
 Feeds are cms content. So we also need to create them from resources:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> from zeit.cms.connector import Resource
 >>> from zeit.cms.syndication.feed import FeedType
 >>> resource = Resource(
 ...    '/wirtschaft', 'wirtschaft', 'feed', 
-...     StringIO.StringIO('''\
+...     BytesIO(b'''\
 ...     <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...       <container>
 ...         <block href="/2006/siemens" />

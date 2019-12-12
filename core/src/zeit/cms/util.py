@@ -1,15 +1,15 @@
-import cStringIO
+from io import BytesIO
 
 
 class MemoryFile(object):
 
     def __init__(self, value=None):
-        # XXX Even though the signature is StringIO.__init__(buf=''), it
-        # behaves differently when passed no argument.
+        # XXX Even though the signature is BytesIO.__init__([initial_bytes]),
+        # it behaves differently when passed no argument.
         if value is not None:
-            self.data = cStringIO.StringIO(value)
+            self.data = BytesIO(value)
         else:
-            self.data = cStringIO.StringIO()
+            self.data = BytesIO()
 
     def __getattr__(self, name):
         return getattr(self.data, name)

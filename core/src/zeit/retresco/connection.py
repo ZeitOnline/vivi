@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from six import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner

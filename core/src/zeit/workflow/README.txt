@@ -345,8 +345,8 @@ Publish script
 Set up a log handler to inspect
 
 >>> import logging
->>> import StringIO
->>> logfile = StringIO.StringIO()
+>>> from six import StringIO
+>>> logfile = StringIO()
 >>> log_handler = logging.StreamHandler(logfile)
 >>> logging.root.addHandler(log_handler)
 >>> loggers = [None, 'zeit']

@@ -1,10 +1,10 @@
 from functools import total_ordering
 from gocept.cache.method import Memoize as memoize
+from io import BytesIO
 import BTrees
 import UserDict
 import ZODB.POSException
 import ZODB.blob
-import cStringIO
 import gocept.lxml.objectify
 import logging
 import lxml.objectify
@@ -39,7 +39,7 @@ class StringRef(persistent.Persistent):
         self._str = s
 
     def open(self, mode):
-        return cStringIO.StringIO(self._str)
+        return BytesIO(self._str)
 
     def update(self, new_data):
         self._str = new_data
@@ -83,7 +83,7 @@ class Body(persistent.Persistent):
             else:
                 data_file = open(commited_name, 'rb')
         elif isinstance(self.data, str):
-            data_file = cStringIO.StringIO(self.data)
+            data_file = BytesIO(self.data)
         else:
             raise RuntimeError('self.data is of unsupported type %s' %
                                type(self.data))
@@ -100,7 +100,7 @@ class Body(persistent.Persistent):
         if len(s) < self.BUFFER_SIZE:
             # Small object
             small = True
-            target = cStringIO.StringIO()
+            target = BytesIO()
         else:
             small = False
             self.data = ZODB.blob.Blob()
@@ -254,7 +254,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         if current_etag is None:
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.
-            f = cStringIO.StringIO(data.read())
+            f = BytesIO(data.read())
             return f
 
         log.debug('Storing body of %s with etag %s' % (

@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from StringIO import StringIO
+from io import BytesIO
 import six.moves.http_client
 import six.moves.xmlrpc_client
 import transaction
@@ -92,4 +92,4 @@ class FakeSocket(object):
         self.data = data
 
     def makefile(self, mode, bufsize=None):
-        return StringIO(self.data)
+        return BytesIO(self.data)

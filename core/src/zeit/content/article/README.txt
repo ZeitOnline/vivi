@@ -9,9 +9,9 @@ We need to set the site since we're a functional test:
 
 Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
->>> import StringIO
+>>> from six import StringIO
 >>> from zeit.content.article.article import Article
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
@@ -168,7 +168,7 @@ this.
 We first define some XML which contains some properties we want to be
 reflected in the WebDAV properties:
 
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
@@ -314,7 +314,7 @@ Searchable text
 
 All Text inside <p> elements is extracted (empty paragraphs are ignored):
 
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>

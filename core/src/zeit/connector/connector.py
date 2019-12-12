@@ -1,6 +1,6 @@
 """Connect to the CMS backend."""
 
-import cStringIO
+from io import BytesIO
 import datetime
 import gocept.cache.property
 import gocept.lxml.objectify
@@ -217,7 +217,7 @@ class Connector(object):
                     assert not additional_data, additional_data
         if data is None:
             # The resource does not have a body but only properties.
-            data = cStringIO.StringIO('')
+            data = BytesIO(b'')
         return data
 
     def __getitem__(self, id):

@@ -1,6 +1,6 @@
+from io import BytesIO
 import PIL.Image
 import PIL.ImageDraw
-import cStringIO
 
 
 class Mask(object):
@@ -35,7 +35,7 @@ class Mask(object):
             fill=cross_color, width=1)
 
         del draw
-        self._data = cStringIO.StringIO()
+        self._data = BytesIO()
         image.save(self._data, format='PNG')
 
     def _get_rect_box(self):

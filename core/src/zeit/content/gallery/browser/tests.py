@@ -1,4 +1,4 @@
-import StringIO
+from six import StringIO
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
@@ -15,7 +15,7 @@ class TestTicketAuthorization(unittest.TestCase):
     def setUp(self):
         self.config = zope.app.appsetup.product.saveConfiguration()
         config = zope.app.appsetup.product.loadConfiguration(
-            StringIO.StringIO(zeit.content.gallery.testing.product_config))
+            StringIO(zeit.content.gallery.testing.product_config))
         config = [
             zope.app.appsetup.product.FauxConfiguration(name, values)
             for name, values in config.items()]

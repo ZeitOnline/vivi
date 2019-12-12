@@ -1,5 +1,5 @@
 # coding: utf8
-import StringIO
+from io import BytesIO
 import unittest
 import zeit.connector.dav.davbase
 import zeit.connector.dav.davconnection
@@ -22,7 +22,7 @@ class TestPropfind(unittest.TestCase):
 
     def propfind(self, *args, **kwargs):
         self.count += 1
-        result = StringIO.StringIO(self.response)
+        result = BytesIO(self.response)
         result.status = 207
         result.reason = 'Multi Status'
         result.getheader = lambda x, y=None: y

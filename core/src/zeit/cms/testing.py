@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from StringIO import StringIO
+from six import StringIO
 from six.moves.urllib.parse import urljoin
 import ZODB
 import ZODB.DemoStorage
@@ -501,13 +501,13 @@ class OutputChecker(zope.testing.renormalizing.RENormalizing):
 
     def check_output(self, want, got, optionflags):
         # `want` is already unicode, since we pass `encoding` to DocFileSuite.
-        if isinstance(got, str):
+        if not isinstance(got, six.text_type):
             got = got.decode('utf-8')
         super_ = zope.testing.renormalizing.RENormalizing
         return super_.check_output(self, want, got, optionflags)
 
     def output_difference(self, example, got, optionflags):
-        if isinstance(got, str):
+        if not isinstance(got, six.text_type):
             got = got.decode('utf-8')
         super_ = zope.testing.renormalizing.RENormalizing
         return super_.output_difference(self, example, got, optionflags)

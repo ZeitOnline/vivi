@@ -1,6 +1,6 @@
 # coding: utf-8
+from six import StringIO
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import StringIO
 import logging
 import mock
 import zeit.cms.interfaces
@@ -23,7 +23,7 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS)
 
-        self.log = StringIO.StringIO()
+        self.log = StringIO()
         self.log_handler = logging.StreamHandler(self.log)
         logging.root.addHandler(self.log_handler)
         self.old_log_level = logging.root.level

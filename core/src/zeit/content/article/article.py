@@ -1,6 +1,6 @@
+from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import StringIO
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
@@ -175,8 +175,7 @@ class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.interface.implementer(zeit.content.article.interfaces.IArticle)
 @zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
 def articleFromTemplate(context):
-    source = StringIO.StringIO(
-        zeit.cms.content.interfaces.IXMLSource(context))
+    source = StringIO(zeit.cms.content.interfaces.IXMLSource(context))
     article = Article(xml_source=source)
     zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
         zeit.cms.interfaces.IWebDAVReadProperties(context))

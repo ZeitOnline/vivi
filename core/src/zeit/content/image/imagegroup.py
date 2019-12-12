@@ -1,8 +1,8 @@
 from math import ceil
+from io import BytesIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
-import StringIO
 import collections
 import grokcore.component as grok
 import lxml.objectify
@@ -351,7 +351,7 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
         return ig
 
     def resource_body(self, content):
-        return StringIO.StringIO()
+        return BytesIO()
 
     def resource_content_type(self, content):
         return 'httpd/unix-directory'

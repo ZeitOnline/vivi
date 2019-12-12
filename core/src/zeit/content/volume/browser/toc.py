@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict, defaultdict
+from six import StringIO
 from zeit.cms.browser.interfaces import IPreviewURL
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IFolder
 from zeit.connector.interfaces import IConnector
 from zeit.content.article.interfaces import IArticle
 from zeit.content.volume.interfaces import ITocConnector
-import StringIO
 import contextlib
 import csv
 import os.path
@@ -334,7 +334,7 @@ class Toc(zeit.cms.browser.view.Base):
         :return: unicode - csv content
         """
         file_content = u''
-        out = StringIO.StringIO()
+        out = StringIO()
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
             for toc_element in self._generate_csv_rows(toc_data):

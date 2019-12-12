@@ -1,4 +1,4 @@
-import StringIO
+from io import BytesIO
 import ZODB.blob
 import contextlib
 import docker
@@ -6,6 +6,7 @@ import pkg_resources
 import plone.testing
 import pytest
 import requests
+import six
 import socket
 import threading
 import transaction
@@ -127,10 +128,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
+        if not isinstance(body, six.binary_type):
+            body = body.encode('utf-8')
         rid = 'http://xml.zeit.de/%s/%s' % (self.testfolder, name)
         return zeit.connector.resource.Resource(
             rid, name, 'testing',
-            StringIO.StringIO(body),
+            BytesIO(body),
             properties=properties,
             contentType=contentType)
 
@@ -200,7 +203,7 @@ def list_tree(connector, base, level=0):
 
 def mkdir(connector, id):
     res = zeit.connector.resource.Resource(
-        id, None, 'folder', StringIO.StringIO(''),
+        id, None, 'folder', BytesIO(b''),
         contentType='httpd/unix-directory')
     connector.add(res)
 
@@ -214,7 +217,7 @@ def create_folder_structure(connector, testfolder):
     def add_file(id):
         id = u'http://xml.zeit.de/%s/%s' % (testfolder, id)
         res = zeit.connector.resource.Resource(
-            id, None, 'text', StringIO.StringIO('Pop.'),
+            id, None, 'text', BytesIO(b'Pop.'),
             contentType='text/plain')
         connector.add(res)
 

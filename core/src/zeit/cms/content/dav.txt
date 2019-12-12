@@ -178,9 +178,9 @@ Invalid Values
 The `DAVProperty` takes care of invalid values and logs them. Prepare the
 logger:
 
->>> import StringIO
+>>> from six import StringIO
 >>> import logging
->>> log = StringIO.StringIO()
+>>> log = StringIO()
 >>> logging.root.addHandler(logging.StreamHandler(log))
 
 Create a dav property and set an invalid value:

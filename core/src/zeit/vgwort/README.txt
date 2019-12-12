@@ -15,8 +15,8 @@ Tokens management
 Load tokens
 -----------
 
->>> import StringIO
->>> csv = StringIO.StringIO("""\
+>>> from six import StringIO
+>>> csv = StringIO("""\
 ... Öffentlicher Identifikationscode;Privater Identifikationscode
 ... c0063bcfb7234b35b145af20dccf5e2a;8018af9154bd4b60b0ee4a6891b85583
 ... 4c47ec781b5b4a288b9a1ab8b2c5ab3c;82e7bb658f75444a9bf74273641f2c29

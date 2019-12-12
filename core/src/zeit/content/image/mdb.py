@@ -1,4 +1,4 @@
-from StringIO import StringIO
+from six import StringIO
 import base64
 import lxml.etree
 import os.path

@@ -1,5 +1,5 @@
+from six import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
-import StringIO
 import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
@@ -61,7 +61,7 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
 </article>
 """
         article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
-            xml_source=StringIO.StringIO(source))
+            xml_source=StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(
             article.xml['body'],
@@ -87,7 +87,7 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
     def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
         source = '<article><body></body></article>'
         article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
-            xml_source=StringIO.StringIO(source))
+            xml_source=StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
