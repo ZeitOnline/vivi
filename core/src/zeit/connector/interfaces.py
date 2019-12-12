@@ -252,7 +252,7 @@ class IResource(zope.interface.Interface):
     contentType = zope.schema.BytesLine(
         title=u"Content Type",
         description=u'The mime content type identifies the type of data.',
-        default='',
+        default=b'',
         required=False)
 
     properties = zope.schema.Object(
