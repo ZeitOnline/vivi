@@ -603,8 +603,9 @@ Image groups also have a thumbnail:
 >>> browser.open('@@thumbnail')
 >>> print browser.headers
 Status: 200 Ok
-Content-Length: ...
+Content-Length: 2783
 Content-Type: image/jpeg
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 >>> browser.contents[:16]
 '\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
 
