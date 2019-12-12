@@ -1,4 +1,11 @@
 from setuptools import setup, find_packages
+import sys
+
+
+if sys.version_info < (3,):
+    guppy = ['guppy']
+else:
+    guppy = ['guppy3']
 
 
 setup(
@@ -86,7 +93,7 @@ setup(
         'zope.xmlpickle',
     ],
     extras_require={
-        'ui': [
+        'ui': guppy + [
             'Pygments',
             'ZConfig',
             'celery >= 4.0',
@@ -97,7 +104,6 @@ setup(
             'fanstatic',
             'gocept.fckeditor[fanstatic]',
             'gocept.pagelet',
-            'guppy',
             'js.backbone',
             'js.cropper',
             'js.handlebars',
