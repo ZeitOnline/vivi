@@ -2,7 +2,7 @@ from requests.exceptions import RequestException
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
-import UserDict
+import collections
 import grokcore.component as grok
 import lxml.objectify
 import requests
@@ -231,7 +231,7 @@ def author_location(type_, adder):
 @grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
         grok.Adapter,
-        UserDict.DictMixin,
+        collections.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
 
     grok.context(zeit.content.author.interfaces.IAuthor)
@@ -259,6 +259,15 @@ class BiographyQuestions(
 
     def keys(self):
         return list(zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self))
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, key):
+        raise NotImplementedError()
 
     def title(self, key):
         return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(

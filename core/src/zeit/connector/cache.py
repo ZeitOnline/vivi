@@ -2,9 +2,9 @@ from functools import total_ordering
 from gocept.cache.method import Memoize as memoize
 from io import BytesIO
 import BTrees
-import UserDict
 import ZODB.POSException
 import ZODB.blob
+import collections
 import gocept.lxml.objectify
 import logging
 import lxml.objectify
@@ -494,7 +494,7 @@ class ChildNameCache(PersistentCache):
         return set(a) == set(b)
 
 
-class AlwaysEmptyDict(UserDict.DictMixin):
+class AlwaysEmptyDict(collections.MutableMapping):
     """Used by mock connector to disable filesystem transaction bound cache."""
 
     def __getitem__(self, key):
@@ -508,6 +508,12 @@ class AlwaysEmptyDict(UserDict.DictMixin):
 
     def keys(self):
         return ()
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
 
 
 # Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment

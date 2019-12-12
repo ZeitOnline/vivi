@@ -1,4 +1,4 @@
-import UserDict
+import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
@@ -17,9 +17,9 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.edit.interfaces.IContainer)
-class Base(UserDict.DictMixin,
-           zeit.edit.block.Element,
-           zope.container.contained.Contained):
+class Base(zeit.edit.block.Element,
+           zope.container.contained.Contained,
+           collections.MutableMapping):
 
     def __init__(self, context, xml):
         self.xml = xml
@@ -80,6 +80,12 @@ class Base(UserDict.DictMixin,
 
     def __iter__(self):
         return (six.text_type(k) for k in self._get_keys(self.xml))
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError()
 
     def keys(self):
         return list(iter(self))

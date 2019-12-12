@@ -1,4 +1,3 @@
-import UserDict
 import collections
 import copy
 import grokcore.component as grok
@@ -11,7 +10,7 @@ import zope.schema
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariants)
-class Variants(grok.Adapter, UserDict.DictMixin):
+class Variants(grok.Adapter, collections.Mapping):
 
     grok.context(zeit.content.image.interfaces.IImageGroup)
 
@@ -62,6 +61,12 @@ class Variants(grok.Adapter, UserDict.DictMixin):
 
     def keys(self):
         return [x.id for x in VARIANT_SOURCE(self.context)]
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
 
     @property
     def default_variant(self):
