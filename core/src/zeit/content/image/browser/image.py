@@ -4,7 +4,6 @@ from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
 import pkg_resources
-import z3c.conditionalviews
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
@@ -38,7 +37,6 @@ class Image(zope.file.download.Display):
         self.request.response.setHeader('Content-Type', self.context.mimeType)
         return self.stream_image()
 
-    @z3c.conditionalviews.ConditionalView
     def stream_image(self):
         return super(Image, self).__call__()
 
