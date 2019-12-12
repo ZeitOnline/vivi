@@ -1,6 +1,6 @@
 # coding: utf-8
 from StringIO import StringIO
-from xml_compare import xml_compare
+from xmldiff.main import diff_trees
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import mock
@@ -25,11 +25,7 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         return factory()
 
     def assertXML(self, expected, actual):
-        errors = []
-        xml_compare(
-            expected, actual, reporter=errors.append, strip_whitespaces=True)
-        if errors:
-            raise AssertionError('\n'.join(errors))
+        assert diff_trees(expected, actual) == []
 
     def test_without_any_auto_blocks_the_rendered_xml_looks_the_same(self):
         cp = zeit.content.cp.centerpage.CenterPage()
