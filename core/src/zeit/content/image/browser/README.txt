@@ -641,30 +641,3 @@ Status: 200 Ok
 Content-Length: 2926
 Content-Type: image/jpeg
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
-
-
-An if-modified-since header is also honoured:
-
->>> import datetime
->>> modified = datetime.datetime.now() + datetime.timedelta(seconds=360)
->>> modified = modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
->>> image.addHeader('If-Modified-Since', modified)
->>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
->>> print image.headers
-Status: 200 Ok
-Content-Length: 2926
-Content-Type: image/jpeg
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
-
-
->>> image = zeit.cms.testing.Browser(layer['wsgi_app'])
->>> image.login('user', 'userpw')
->>> image.addHeader('If-Modified-Since', 'Fri, 07 Feb 2008 12:47:16 GMT')
->>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
->>> print image.headers
-Status: 200 Ok
-Content-Length: 2926
-Content-Type: image/jpeg
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
