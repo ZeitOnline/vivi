@@ -2,10 +2,14 @@ vivi.core changes
 =================
 
 
-4.24.2 (unreleased)
+4.25.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5560: Implement `Animation` content type
+
+- ZON-5590: Remove z3c.conditionalviews
+
+- MAINT: Update wording of IConsentInfo.thirdparty_vendors (via @milan)
 
 
 4.24.1 (2019-12-10)

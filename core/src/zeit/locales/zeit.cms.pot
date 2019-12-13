@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Dec  9 13:20:48 2019\n"
+"POT-Creation-Date: Wed Dec 11 11:19:43 2019\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:15
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:132
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:15
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:35
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:48
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:97
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:48
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:865
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:57
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:228
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:78
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:87
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:105
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:124
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.container-4.0.0-py2.7.egg/zope/app/container/browser/configure.zcml:5
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.container-4.0.0-py2.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.generations-4.0.0-py2.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.generations-4.0.0-py2.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.i18n-4.0.0-py2.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py2.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py2.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py2.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/tomster/Development/vivi-deployment/work/_/home/tomster/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py2.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -635,6 +635,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:32
+#: zeit/content/animation/browser/form.py:35
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
 msgstr ""
@@ -1747,10 +1748,72 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
+#: zeit/content/animation/animation.py:45
+#: zeit/content/animation/browser/configure.zcml:6
+#: zeit/content/article/edit/interfaces.py:187
+msgid "Animation"
+msgstr ""
+
+#: zeit/content/animation/browser/configure.zcml:15
+#: zeit/content/cp/browser/configure.zcml:69
+#: zeit/content/dynamicfolder/browser/folder.py:20
+#: zeit/content/gallery/browser/configure.zcml:39
+#: zeit/content/link/browser/configure.zcml:17
+#: zeit/magazin/browser/configure.zcml:46
+#: zeit/magazin/browser/configure.zcml:74
+#: zeit/magazin/browser/configure.zcml:100
+#: zeit/newsletter/browser/category.py:50
+msgid "Edit metadata"
+msgstr ""
+
+#: zeit/content/animation/browser/configure.zcml:30
+#: zeit/content/cp/browser/configure.zcml:53
+#: zeit/content/gallery/browser/configure.zcml:56
+#: zeit/content/link/browser/configure.zcml:32
+msgid "View metadata"
+msgstr ""
+
+#: zeit/content/animation/browser/form.py:20
+#: zeit/content/animation/interfaces.py:28
 #: zeit/content/article/article.py:174
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
+msgstr ""
+
+#: zeit/content/animation/browser/form.py:21
+#: zeit/content/article/edit/browser/form.py:325
+#: zeit/content/link/browser/form.py:24
+#: zeit/newsletter/newsletter.py:162
+#: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
+msgid "Teaser"
+msgstr ""
+
+#: zeit/content/animation/browser/form.py:27
+msgid "Add animated teaser"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:12
+msgid "use images"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:12
+msgid "use video"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:34
+msgid "Display mode"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:38
+msgid "Video to use for animation"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:44
+#: zeit/content/gallery/browser/configure.zcml:85
+#: zeit/content/image/browser/configure.zcml:179
+#: zeit/content/image/browser/imagebrowser.py:7
+msgid "Images"
 msgstr ""
 
 #: zeit/content/article/browser/breaking-retract.pt:4
@@ -1962,13 +2025,6 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:284
 msgid "edit access"
-msgstr ""
-
-#: zeit/content/article/edit/browser/form.py:325
-#: zeit/content/link/browser/form.py:24
-#: zeit/newsletter/newsletter.py:162
-#: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
-msgid "Teaser"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:332
@@ -2280,10 +2336,6 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:181
 #: zeit/content/article/interfaces.py:64
 msgid "Variant Name"
-msgstr ""
-
-#: zeit/content/article/edit/interfaces.py:187
-msgid "Animation"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:196
@@ -2900,23 +2952,6 @@ msgstr ""
 msgid "StoryStream"
 msgstr ""
 
-#: zeit/content/cp/browser/configure.zcml:53
-#: zeit/content/gallery/browser/configure.zcml:56
-#: zeit/content/link/browser/configure.zcml:32
-msgid "View metadata"
-msgstr ""
-
-#: zeit/content/cp/browser/configure.zcml:69
-#: zeit/content/dynamicfolder/browser/folder.py:20
-#: zeit/content/gallery/browser/configure.zcml:39
-#: zeit/content/link/browser/configure.zcml:17
-#: zeit/magazin/browser/configure.zcml:46
-#: zeit/magazin/browser/configure.zcml:74
-#: zeit/magazin/browser/configure.zcml:100
-#: zeit/newsletter/browser/category.py:50
-msgid "Edit metadata"
-msgstr ""
-
 #: zeit/content/cp/browser/form.py:43
 msgid "OG Metadata"
 msgstr ""
@@ -3373,12 +3408,6 @@ msgstr ""
 #: zeit/content/dynamicfolder/interfaces.py:27
 #: zeit/push/browser/facebook-token.pt:11
 msgid "Configuration file"
-msgstr ""
-
-#: zeit/content/gallery/browser/configure.zcml:85
-#: zeit/content/image/browser/configure.zcml:179
-#: zeit/content/image/browser/imagebrowser.py:7
-msgid "Images"
 msgstr ""
 
 #: zeit/content/gallery/browser/configure.zcml:172

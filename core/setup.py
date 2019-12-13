@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.24.2.dev0',
+    version='4.25.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -110,7 +110,6 @@ setup(
             'js.vanderlee_colorpicker',
             'pypandoc',
             'repoze.vhm',
-            'z3c.conditionalviews>=1.0b2.dev-r91510',
             'z3c.flashmessage',
             'z3c.menu.simple>=0.5.1',
             'z3c.noop',
