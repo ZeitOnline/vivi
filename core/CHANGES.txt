@@ -2,8 +2,10 @@ vivi.core changes
 =================
 
 
-4.24.2 (unreleased)
+4.25.0 (unreleased)
 -------------------
+
+- ZON-5560: Implement `Animation` content type
 
 - ZON-5590: Remove z3c.conditionalviews
 
