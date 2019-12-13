@@ -1,4 +1,4 @@
-from xml_compare import xml_compare
+from xmldiff.main import diff_trees
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
@@ -32,12 +32,9 @@ class Element(zope.container.contained.Contained,
         if self.__name__ and other.__name__:
             return self.__name__ == other.__name__
 
-        differences = []
         self_xml = zope.security.proxy.getObject(self.xml)
         other_xml = zope.security.proxy.getObject(other.xml)
-        xml_compare(
-            self_xml, other_xml, reporter=differences.append,
-            strip_whitespaces=True)
+        differences = diff_trees(self_xml, other_xml)
         return not differences
 
     def __ne__(self, other):

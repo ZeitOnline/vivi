@@ -46,7 +46,7 @@ setup(
         'urbanairship >= 1.0',
         'webob',
         'werkzeug',
-        'xml-compare',
+        'xmldiff',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
         'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
