@@ -1,11 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
-
 import gocept.form.grouped
-import zeit.content.image.interfaces
 import zeit.cms.browser.form
-import zeit.cms.settings.interfaces
-import zeit.content.link.interfaces
-import zeit.content.link.link
+import zeit.content.animation.interfaces
+import zeit.content.image.interfaces
 import zeit.push.browser.form
 import zope.formlib.form
 
@@ -18,7 +15,8 @@ class Base(object):
 
     field_groups = (
         gocept.form.grouped.RemainingFields(_("Article")),
-        gocept.form.grouped.Fields(_("Teaser"), ("display_mode", "images", "video")),
+        gocept.form.grouped.Fields(
+            _("Teaser"), ("display_mode", "images", "video")),
     )
 
 
