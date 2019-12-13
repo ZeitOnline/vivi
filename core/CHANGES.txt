@@ -9,6 +9,8 @@ vivi.core changes
 
 - ZON-5590: Remove z3c.conditionalviews
 
+- ZON-5748: Replace xml_compare with xmldiff
+
 - MAINT: Update wording of IConsentInfo.thirdparty_vendors (via @milan)
 
 
