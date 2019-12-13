@@ -56,6 +56,14 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         self.assertEqual(
             u'bar', pls.xml['body']['videos']['video']['title'])
 
+    def test_animation_video_reference(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        factory.next()
+        video = factory.next()
+        animation = zeit.content.animation.animation.Animation()
+        animation.video = video
+        assert animation.xml.body.video.xpath("@contenttype")[0] == 'video'
+
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 
