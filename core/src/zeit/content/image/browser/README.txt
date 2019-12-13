@@ -603,9 +603,9 @@ Image groups also have a thumbnail:
 >>> browser.open('@@thumbnail')
 >>> print browser.headers
 Status: 200 Ok
-Content-Length: 2783
+Content-Length: ...
 Content-Type: image/jpeg
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+...
 >>> browser.contents[:16]
 '\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
 
@@ -638,6 +638,6 @@ Images are sent with correct-type, length and last-modified headers:
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
 >>> print image.headers
 Status: 200 Ok
-Content-Length: 2926
+Content-Length: ...
 Content-Type: image/jpeg
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+...
