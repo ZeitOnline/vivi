@@ -1,21 +1,18 @@
 from zeit.cms.i18n import MessageFactory as _
-import zc.sourcefactory.basic
+import collections
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
-import zeit.content.video.interfaces
 import zeit.content.article.interfaces
+import zeit.content.video.interfaces
 import zope.schema
 
 
-class DisplayModeSource(zc.sourcefactory.basic.BasicSourceFactory):
+class DisplayModeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    values = {"images": _("use images"), "video": _("use video")}
-
-    def getValues(self):
-        return self.values.keys()
-
-    def getTitle(self, value):
-        return self.values.get(value, value)
+    values = collections.OrderedDict([
+        ("images", _("use images")),
+        ("video", _("use video")),
+    ])
 
 
 class IAnimation(
