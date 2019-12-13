@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
 "POT-Creation-Date: Wed Dec 11 11:19:43 2019\n"
-"PO-Revision-Date: 2019-12-11 11:49+0100\n"
+"PO-Revision-Date: 2019-12-13 09:03+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "Language: de\n"
@@ -143,7 +143,7 @@ msgstr "Studiengang"
 
 #: zeit/cmp/interfaces.py:36
 msgid "Contains thirdparty code"
-msgstr "Verwendet 3rdparty JavaScript"
+msgstr "Externe Inhalte in diesem Embed verarbeiten personenbezogene Daten"
 
 #: zeit/cmp/interfaces.py:41
 msgid "Vendors"

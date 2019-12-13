@@ -9,6 +9,8 @@ vivi.core changes
 
 - ZON-5590: Remove z3c.conditionalviews
 
+- MAINT: Update wording of IConsentInfo.thirdparty_vendors (via @milan)
+
 
 4.24.1 (2019-12-10)
 -------------------
