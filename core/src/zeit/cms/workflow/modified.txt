@@ -36,7 +36,7 @@ The last modifier is zope.user now:
 >>> zeit.cms.workflow.interfaces.IModified(content).last_modified_by
 u'zope.user'
 >>> zeit.cms.workflow.interfaces.IModified(content).date_last_checkout
-datetime.datetime(..., tzinfo=<UTC>)
+DateTime(..., tzinfo=Timezone('UTC'))
 
 
 The access time from IDCTimes can be accessed through IModified:
@@ -47,7 +47,7 @@ The access time from IDCTimes can be accessed through IModified:
 >>> dc == wf
 True
 >>> wf
-datetime.datetime(..., tzinfo=<UTC>)
+DateTime(..., tzinfo=Timezone('UTC'))
 
 
 Clean up:

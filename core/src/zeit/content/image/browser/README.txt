@@ -605,7 +605,7 @@ Image groups also have a thumbnail:
 Status: 200 Ok
 Content-Length: ...
 Content-Type: image/jpeg
-Last-Modified: ...
+...
 >>> browser.contents[:16]
 '\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
 
@@ -638,36 +638,6 @@ Images are sent with correct-type, length and last-modified headers:
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
 >>> print image.headers
 Status: 200 Ok
-Content-Length: 2926
+Content-Length: ...
 Content-Type: image/jpeg
-Last-Modified: ...
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
-
-
-An if-modified-since header is also honoured:
-
->>> import datetime
->>> modified = datetime.datetime.now() + datetime.timedelta(seconds=360)
->>> modified = modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
->>> image.addHeader('If-Modified-Since', modified)
->>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
->>> print image.headers
-Status: 304 Not Modified
-Content-Length: 0
-Content-Type: image/jpeg
-Last-Modified: ...
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
-
-
->>> image = zeit.cms.testing.Browser(layer['wsgi_app'])
->>> image.login('user', 'userpw')
->>> image.addHeader('If-Modified-Since', 'Fri, 07 Feb 2008 12:47:16 GMT')
->>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
->>> print image.headers
-Status: 200 Ok
-Content-Length: 2926
-Content-Type: image/jpeg
-Last-Modified: ...
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+...

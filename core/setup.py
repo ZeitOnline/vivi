@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.24.1.dev0',
+    version='4.24.2.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -34,7 +34,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
-        'pendulum',
+        'pendulum>=2.0.0.dev0',
         'persistent',
         'pyramid_dogpile_cache2',
         'pytz',
@@ -51,7 +51,6 @@ setup(
         'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
         'zope.deferredimport',  # undeclared by zc.form
-        'zc.iso8601',
         'zc.queue',
         'zc.relation',
         'zc.set',
@@ -111,7 +110,6 @@ setup(
             'js.vanderlee_colorpicker',
             'pypandoc',
             'repoze.vhm',
-            'z3c.conditionalviews>=1.0b2.dev-r91510',
             'z3c.flashmessage',
             'z3c.menu.simple>=0.5.1',
             'z3c.noop',
