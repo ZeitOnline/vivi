@@ -5,7 +5,7 @@ vivi.core changes
 4.24.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5590: Remove z3c.conditionalviews
 
 
 4.24.1 (2019-12-10)
