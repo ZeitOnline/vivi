@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.0 (unreleased)
+4.25.0 (2019-12-16)
 -------------------
 
 - ZON-5560: Implement `Animation` content type
