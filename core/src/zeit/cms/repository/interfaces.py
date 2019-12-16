@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import inspect
 import zeit.cms.interfaces
+import zope.container.interfaces
 import zope.file.interfaces
 import zope.interface
 import zope.lifecycleevent
@@ -131,7 +132,7 @@ class IUnknownResource(IDAVContent):
     type = zope.interface.Attribute("Raw type info got from connector.")
 
 
-class ICollection(zope.app.container.interfaces.IContainer):
+class ICollection(zope.container.interfaces.IContainer):
     """A collection."""
 
 

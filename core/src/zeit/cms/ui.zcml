@@ -1,0 +1,151 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:meta="http://namespaces.zope.org/meta"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="zeit.cms">
+
+  <meta:provides feature="zeit.cms.ui" />
+
+  <!-- XXX Each zcml file should include the meta it needs, instead of doing
+       it globally -->
+  <include package="zope.app.publisher" file="meta.zcml" />
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.app.container.browser" file="meta.zcml" />
+  <include package="zeit.cms" file="application.zcml" />
+
+  <!-- default menus (zope.app.zcmlfiles:menu.zcml) -->
+  <browser:menu
+      id="zmi_views"
+      title="Views"
+      description="Menu for displaying alternate representations of an object"
+      />
+  <browser:menu
+      id="zmi_actions"
+      title="Actions"
+      description="Menu for displaying actions to be performed"
+      />
+  <browser:menu
+      id="zope.app.container.add"
+      title="Add"
+      description="Menu for objects to be added according to
+                   containment constraints"
+      interface="zope.app.publisher.interfaces.browser.AddMenu"
+      />
+  <browser:menu
+      id="add_component"
+      title="Add"
+      description="Menu of objects to be added to site management folders"
+      />
+  <browser:menu
+      id="add_registration"
+      title="Add Registration"
+      description="Menu of addable configuration objects"
+      />
+
+  <include package="zope.app.content" />
+  <include package="zope.app.dependable" />
+  <include package="zope.app.generations" />
+  <include package="zope.app.pagetemplate" />
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.app.publication" />
+  <include package="zope.app.publisher" />
+  <include package="zope.app.schema" />
+  <include package="zope.app.security" />
+  <include package="zope.copypastemove" />
+  <include package="zope.componentvocabulary" />
+  <include package="zope.publisher" />
+  <include package="zope.site" />
+  <include package="zope.size" />
+
+  <!-- Views -->
+  <include package="zope.app.http" />
+
+  <!-- Translations -->
+  <configure package="zope.app.locales">
+    <include package="zope.i18n" file="meta.zcml" />
+    <i18n:registerTranslations directory="." />
+  </configure>
+
+  <include package="zope.app.i18n" />
+
+  <!-- Database boostrapping and maintanance -->
+  <include package="zope.app.appsetup" />
+  <include package="zope.app.zopeappgenerations" />
+
+  <!-- Services -->
+  <include package="zope.app.principalannotation" />
+
+  <!-- Utilities -->
+  <include package="zope.app.error" />
+
+  <!-- Broken-object support -->
+  <include package="zope.app.broken" />
+
+  <!-- Skins -->
+
+  <include package="zope.app.basicskin" />
+  <include package="zope.app.rotterdam" />
+
+  <!-- browser -->
+  <browser:defaultView name="index.html" />
+
+  <include package="zope.app.component.browser" />
+  <include package="zope.app.container.browser" />
+  <include package="zope.app.exception.browser" />
+  <include package="zope.app.form.browser" file="meta.zcml" />
+  <include package="zope.app.form.browser" />
+  <include package="zope.app.security.browser" />
+
+  <!-- Additional packages -->
+
+  <include package="zope.app.applicationcontrol" />
+  <include package="zope.dublincore" />
+  <include package="zope.formlib" />
+  <include package="zope.app.wsgi" />
+
+  <include package="zope.i18n.locales"/>
+  <include package="zope.traversing.browser"/>
+  <include package="zope.viewlet" file="meta.zcml"/>
+  <include package="zope.viewlet" />
+  <include package="zope.contentprovider" />
+  <include package="zope.session" />
+  <include package="zope.mimetype" file="meta.zcml" />
+  <include package="zope.mimetype" />
+  <include package="zope.file" />
+
+  <include package="zope.login" />
+  <include package="zope.authentication" />
+  <include package="zope.pluggableauth" />
+  <include package="zope.app.localpermission" />
+  <include package="zope.principalregistry" />
+  <include package="zope.app.securitypolicy"/>
+  <include package="zope.app.authentication"/>
+  <include package="zope.app.tree"/>
+  <include package="zope.app.renderer"/>
+  <include package="zope.app.preference" file="meta.zcml"/>
+  <include package="zope.app.preference"/>
+  <include package="zope.app.locking"/>
+  <include package="zope.app.keyreference"/>
+
+  <include package="zc.resourcelibrary" file="meta.zcml"/>
+  <include package="zc.form" />
+  <include package="zc.table" />
+  <includeOverrides package="zc.datetimewidget" file="overrides.zcml"/>
+  <include package="zc.datetimewidget"/>
+
+  <include package="z3c.template" file="meta.zcml" />
+  <include package="z3c.pagelet" file="meta.zcml" />
+  <include package="z3c.pagelet" />
+  <include package="z3c.noop" />
+  <include package="gocept.pagelet" file="meta.zcml" />
+  <include package="gocept.form" />
+
+  <include package="grokcore.component" file="meta.zcml" />
+  <grok:grok package="zeit.cms.application" />
+
+  <include package="zeit.connector" />
+  <include package="zeit.objectlog" />
+
+</configure>

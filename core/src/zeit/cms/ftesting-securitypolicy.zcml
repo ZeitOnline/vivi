@@ -1,7 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-<!-- Security policy for tests -->
+  <!-- Security policy for tests -->
+
+  <include package="zope.principalregistry" file="meta.zcml" />
 
   <include package="zope.securitypolicy" />
   <securityPolicy

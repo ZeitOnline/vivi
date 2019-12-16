@@ -1,7 +1,7 @@
 import datetime
 import logging
+import pendulum
 import urlparse
-import zc.iso8601.parse
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -257,7 +257,7 @@ class SearchResult(JSONView):
             'payload.document.last-semantic-change')
         dt = None
         if last_semantic_change is not None:
-            dt = zc.iso8601.parse.datetimetz(last_semantic_change)
+            dt = pendulum.parse(last_semantic_change)
         return dt
 
     def get_favorited(self, result):

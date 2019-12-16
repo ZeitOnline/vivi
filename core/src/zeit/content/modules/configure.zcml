@@ -13,6 +13,13 @@
       />
   </class>
 
+  <class class=".interfaces.Newsletter">
+    <require
+      attributes="id title image abo_text anon_text"
+      permission="zope.View"
+      />
+  </class>
+
   <class class=".rawtext.ConsentInfo">
     <require like_class="zeit.cmp.consent.ConsentInfo" />
   </class>

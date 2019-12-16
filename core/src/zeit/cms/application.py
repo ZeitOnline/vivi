@@ -11,6 +11,7 @@ import grokcore.component.zcml
 import logging.config
 import martian
 import os
+import pendulum
 import pkg_resources
 import pyramid_dogpile_cache2
 import re
@@ -21,6 +22,7 @@ import zope.app.appsetup.product
 import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
+import zope.security.checker
 
 
 FANSTATIC_PATH = fanstatic.DEFAULT_SIGNATURE
@@ -28,6 +30,12 @@ FANSTATIC_DEBUG = os.environ.get('FANSTATIC_DEBUG', False)
 FANSTATIC_VERSIONING = os.environ.get('FANSTATIC_VERSIONING', True)
 BUNDLE = not FANSTATIC_DEBUG
 MINIFIED = False  # XXX
+
+
+# Make pendulum a rock, just like datetime.datetime.
+for cls in ['DateTime', 'Date', 'Time']:
+    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = (
+        zope.security.checker.NoProxy)
 
 
 class Application(object):
@@ -89,10 +97,6 @@ class ClearFanstaticOnError(object):
         except Exception:
             fanstatic.clear_needed()
             raise
-
-
-CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
-FEATURE_CACHE = pyramid_dogpile_cache2.get_region('feature')
 
 
 def zope_shell():

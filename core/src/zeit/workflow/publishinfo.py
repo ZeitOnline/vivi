@@ -8,7 +8,6 @@ import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.workflow.interfaces
 import zope.app.appsetup.product
-import zope.authentication.interfaces
 import zope.component
 import zope.interface
 
@@ -112,6 +111,8 @@ def workflowProperties(context):
 # XXX what's the proper place for this?
 # XXX return null object insted of None?
 def id_to_principal(principal_id):
+    import zope.authentication.interfaces  # UI-only dependency
+
     if principal_id is None:
         return None
     auth = zope.component.getUtility(

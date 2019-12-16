@@ -1,9 +1,8 @@
-
 import zeit.objectlog.interfaces
 import zeit.objectlog.objectlog
 import zope.component
 import zope.component.hooks
-import zope.app.zopeappgenerations
+import zope.generations.utility
 
 
 def install(root):
@@ -16,7 +15,7 @@ def install(root):
 def evolve(context):
     site = zope.component.hooks.getSite()
     try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
+        root = zope.generations.utility.getRootFolder(context)
         zope.component.hooks.setSite(root)
         install(root)
     finally:

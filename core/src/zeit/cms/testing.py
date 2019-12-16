@@ -46,6 +46,7 @@ import zope.app.publication.zopepublication
 import zope.app.wsgi
 import zope.component
 import zope.component.hooks
+import zope.error.interfaces
 import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
@@ -62,6 +63,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit').setLevel(logging.DEBUG)
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
+        logging.getLogger('bugsnag').setLevel(logging.FATAL)
 
 LOGGING_LAYER = LoggingLayer()
 

@@ -306,6 +306,17 @@
       />
   </class>
 
+  <class class=".newslettersignup.NewsletterSignup">
+    <require
+      interface=".interfaces.INewsletterSignup"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.INewsletterSignup"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".topicbox.Topicbox">
     <require
       interface=".interfaces.ITopicbox"

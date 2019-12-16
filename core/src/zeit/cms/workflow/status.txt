@@ -30,7 +30,7 @@ The content was modified last at the following time:
 >>> import zope.dublincore.interfaces
 >>> times = zope.dublincore.interfaces.IDCTimes(content)
 >>> times.modified
-datetime.datetime(2008, 3, 7, 12, 47, 16, tzinfo=<UTC>)
+DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 
 When we publish the object after that time, the publication status indicates
 that accordingly:

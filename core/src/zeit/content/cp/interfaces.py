@@ -1,4 +1,4 @@
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import fractions
@@ -926,6 +926,11 @@ class IPodcastBlock(IBlock):
 
 
 class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):
+    pass
+
+
+class INewsletterSignupBlock(
+        zeit.content.modules.interfaces.INewsletterSignup, IBlock):
     pass
 
 

@@ -125,8 +125,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(
             self):
         from zeit.content.article.interfaces import IArticle
-        import zeit.cms.browser.form
         import zeit.cms.checkout.interfaces
+        import zeit.cms.content.field
         import zeit.cms.interfaces
         import zeit.connector.interfaces
         import zope.component
@@ -137,7 +137,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         article = self.get_image_article("""
                 <p>A leading para</p>
                 <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />""")
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        zeit.cms.content.field.apply_default_values(article, IArticle)
         article.year = 2011
         article.title = u'title'
         article.ressort = u'Deutschland'

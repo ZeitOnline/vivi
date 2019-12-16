@@ -83,32 +83,6 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             self.skipTest('vgwort test system is down')
 
 
-class PixelService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
-
-    def order_pixels(self, amount):
-        for i in range(amount):
-            yield ('public-%s' % i, 'private-%s' % i)
-
-
-class MessageService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
-
-    def __init__(self):
-        self.reset()
-
-    def reset(self):
-        self.calls = []
-        self.error = None
-
-    def new_document(self, content):
-        if self.error:
-            raise self.error('Provoked error')
-        self.calls.append(content)
-
-
 class SearchableText(object):
 
     zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata)

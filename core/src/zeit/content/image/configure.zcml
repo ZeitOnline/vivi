@@ -6,7 +6,7 @@
 
   <utility
     name="zeit.content.image"
-    provides="zope.app.generations.interfaces.ISchemaManager"
+    provides="zope.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
 

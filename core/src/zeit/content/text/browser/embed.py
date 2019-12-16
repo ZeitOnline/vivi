@@ -4,6 +4,7 @@ import zeit.cmp.interfaces
 import zeit.cms.browser.form
 import zeit.content.text.embed
 import zeit.content.text.interfaces
+import zope.browsermenu.menu
 import zope.formlib.form
 
 
@@ -17,6 +18,30 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 
     title = _('Add embed')
     factory = zeit.content.text.embed.Embed
+
+
+class AddMenuItem(zope.browsermenu.menu.BrowserMenuItem):
+
+    # zope.browsermenu wants to set the permission from the outside (as
+    # declared in zcml), but we want to set it ourselves (according to the
+    # toggle), so we allow setting it exactly once.
+    _permission = None
+
+    def __init__(self, context, request):
+        if FEATURE_TOGGLES.find('add_content_permissions'):
+            self._permission = 'zeit.content.text.AddEmbed'
+        else:
+            self._permission = 'zeit.AddContent'
+        return super(AddMenuItem, self).__init__(context, request)
+
+    @property
+    def permission(self):
+        return self._permission
+
+    @permission.setter
+    def permission(self, value):
+        if not self._permission:
+            self._permission = value
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):

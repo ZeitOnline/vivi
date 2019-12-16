@@ -1,5 +1,5 @@
 from datetime import datetime
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING

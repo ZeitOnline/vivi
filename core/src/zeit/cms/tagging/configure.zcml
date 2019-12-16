@@ -1,18 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:zcml="http://namespaces.zope.org/zcml">
 
-  <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
-       the other -->
-  <adapter
-      factory=".tag.AbsoluteURL"
-      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
-      />
-  <adapter
-      factory=".tag.AbsoluteURL"
-      provides="zope.interface.Interface"
-      name="absolute_url"
-      />
-
   <permission
     id="zeit.cms.tagging.ViewInTMS"
     title="View article in TMS"

@@ -4,7 +4,7 @@ import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zope.app.container.interfaces
+import zope.container.interfaces
 import zope.component
 import zope.interface
 
@@ -19,7 +19,7 @@ def folder_default_browse_location(context, source):
 
 
 @zope.component.adapter(
-    zope.app.container.interfaces.IContained,
+    zope.container.interfaces.IContained,
     zeit.cms.content.interfaces.ICMSContentSource)
 @zope.interface.implementer(
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)

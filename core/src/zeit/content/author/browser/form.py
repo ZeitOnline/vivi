@@ -8,6 +8,7 @@ import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.form
+import zope.container.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
@@ -167,7 +168,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         author_folder = zeit.cms.repository.folder.Folder()
         folder_name = u'%s_%s' % (object.firstname, object.lastname)
         folder_name = self._validate_folder_name(folder_name)
-        chooser = zope.app.container.interfaces.INameChooser(folder)
+        chooser = zope.container.interfaces.INameChooser(folder)
         name = chooser.chooseName(folder_name, author_folder)
         folder[name] = author_folder
         author_folder = folder[name]

@@ -1,0 +1,4 @@
+<div class="block-item"
+     tal:condition="context/newsletter"
+     tal:content="context/newsletter/title">
+</div>

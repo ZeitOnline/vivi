@@ -1,4 +1,4 @@
-from zeit.cms.application import CONFIG_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable

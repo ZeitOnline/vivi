@@ -10,6 +10,7 @@ import lxml.objectify
 import re
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
+import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
@@ -318,7 +319,7 @@ def ensure_division_handler(context, event):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def set_default_values(context, event):
-    zeit.cms.browser.form.apply_default_values(
+    zeit.cms.content.field.apply_default_values(
         context, zeit.content.article.interfaces.IArticle)
 
 

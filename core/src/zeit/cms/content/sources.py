@@ -1,4 +1,4 @@
-from zeit.cms.application import CONFIG_CACHE, FEATURE_CACHE
+from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import gocept.lxml.objectify
@@ -16,11 +16,15 @@ import zope.component
 import zope.dottedname
 import zope.i18n
 import zope.security.proxy
-import zope.testing.cleanup
 
 
 logger = logging.getLogger('zeit.cms.content.sources')
-zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
+
+try:
+    import zope.testing.cleanup
+    zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
+except ImportError:
+    pass
 
 
 class CachedXMLBase(object):
