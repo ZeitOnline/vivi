@@ -5,7 +5,7 @@ vivi.core changes
 4.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Display different vivi logo in staging
 
 
 4.25.0 (2019-12-16)

@@ -435,6 +435,8 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 
 cms_product_config = """\
 <product-config zeit.cms>
+  environment testing
+
   source-access file://{base}/content/access.xml
   source-serie file://{base}/content/serie.xml
   source-ressorts file://{base}/content/ressorts.xml
