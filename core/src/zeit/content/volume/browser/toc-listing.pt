@@ -31,7 +31,7 @@
       i18n:translate="">
         Ressort
     </span>
-    <select id="filter_ressort" id="filter_ressort">
+    <select id="filter_ressort">
     </select>
     <span
       tal:content="view/teaser_image_available"
