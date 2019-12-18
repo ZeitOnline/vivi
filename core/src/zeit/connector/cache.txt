@@ -417,8 +417,7 @@ The cache keeps track of the used keys:
 >>> import pprint
 >>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
 {'foo': <WebDAVPropertyKey foo>,
- ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>,
- ('traceback', 'INTERNAL'): <WebDAVPropertyKey ('traceback', 'INTERNAL')>}
+ ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
 
 When the a value is set to the cache which is equal to the value it alreay
 stores, the new value is not updated. We verify this by setting a new value
