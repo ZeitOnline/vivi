@@ -2,6 +2,7 @@ from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import json
 import webob.cookies
 import zeit.cms.browser.resources
+import zope.app.appsetup.product
 import zope.authentication.interfaces
 import zope.traversing.browser
 
@@ -37,6 +38,11 @@ class Login(object):
     @property
     def submitted(self):
         return self.request.method == 'POST'
+
+    @property
+    def environment(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        return config['environment']
 
 
 class Logout(object):

@@ -4,6 +4,7 @@ import zeit.cms.browser.resources
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
+import zope.app.appsetup.product
 import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
@@ -56,3 +57,8 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
 
     def require_resources(self):
         zeit.cms.browser.resources.backend.need()
+
+    @property
+    def environment(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        return config['environment']

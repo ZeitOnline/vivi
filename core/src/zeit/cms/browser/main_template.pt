@@ -58,7 +58,7 @@
         tal:define="
         site_url request/getApplicationURL;
         sidebar_css context/@@sidebar_handlers/css_class"
-        tal:attributes="class string:type-${context/@@standard_macros/type_declaration/type_identifier} location-${context/@@standard_macros/context_location} section-${context/@@standard_macros/section}">
+          tal:attributes="class string:type-${context/@@standard_macros/type_declaration/type_identifier} location-${context/@@standard_macros/context_location} section-${context/@@standard_macros/section} environment-${context/@@standard_macros/environment}">
         <div id="visualContentSeparator" class="sidebar-expanded"
              tal:attributes="class sidebar_css">
           </div>

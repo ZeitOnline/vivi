@@ -2,10 +2,22 @@ vivi.core changes
 =================
 
 
-4.25.1 (unreleased)
+4.25.3 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.25.2 (2019-12-17)
+-------------------
+
+- MAINT: Display different vivi logo on loginform too
+
+
+4.25.1 (2019-12-17)
+-------------------
+
+- MAINT: Display different vivi logo in staging
 
 
 4.25.0 (2019-12-16)

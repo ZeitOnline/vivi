@@ -21,6 +21,21 @@ body.login {
     background-color: #fff;
 }
 
+.environment-staging #loginform {
+    background-image: url("/fanstatic/zeit.cms/layout/vivi_logo_full_staging.png");
+    padding-top: 60px;
+}
+.environment-staging #loginform:before {
+    content: "STAGING";
+    color: green;
+    font-weight: bold;
+    font-size: 23px;
+    position: relative;
+    top: -30px;
+    left: 140px;
+}
+
+
 .field * {
     display: inline-block;
 }

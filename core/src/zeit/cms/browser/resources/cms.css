@@ -436,6 +436,17 @@ pre {
   background: transparent url("layout/logo_zar.png") no-repeat left center;
 }
 
+.environment-staging #main-navigation > li:first-child > a {
+    background: transparent url("layout/logo_staging.png") no-repeat left center;
+}
+
+.environment-staging #main-navigation > li:first-child > a:after {
+    content: "STAGING";
+    color: green;
+    font-weight: bold;
+    font-size: 20px;
+}
+
 #main-navigation > li:first-child > a > span {
   display: none;
 }

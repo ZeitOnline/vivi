@@ -8,7 +8,7 @@
 <head>
   <title>vivi Login</title>
 </head>
-<body class="login">
+<body tal:attributes="class string:login environment-${view/environment}">
   <div id="loginform">
 
     <p class="error"
