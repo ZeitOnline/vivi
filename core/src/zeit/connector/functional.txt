@@ -65,10 +65,10 @@ automatically unlocked.
 ...     StringIO.StringIO('Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
->>> connector.lock(res.id, 'frodo', until=None)
+>>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
-(u'frodo', datetime.datetime(...), True)
+(u'zope.user', datetime.datetime(...), True)
 
 Now rollback:
 
@@ -86,7 +86,7 @@ When the lock times out in between the clean up doesn't fail:
 >>> import datetime
 >>> import pytz
 >>> until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=2)
->>> token = connector.lock(res.id, 'frodo', until=until)
+>>> token = connector.lock(res.id, 'zope.user', until=until)
 >>> import time
 >>> time.sleep(2)
 >>> transaction.abort()
@@ -95,12 +95,12 @@ When the lock times out in between the clean up doesn't fail:
 
 Make sure the resource stays locked on commit:
 
->>> connector.lock(res.id, 'frodo', until=None)
+>>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> transaction.commit()
 >>> connector._invalidate_cache(res.id)
 >>> connector.locked(res.id)
-(u'frodo', datetime.datetime(...), True)
+(u'zope.user', datetime.datetime(...), True)
 
 Remove the resource to clean up:
 

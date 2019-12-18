@@ -28,10 +28,6 @@ def install(root):
         'connector-child-name-cache',
         zeit.connector.interfaces.IChildNameCache)
     installLocalUtility(
-        site_manager, zeit.connector.lockinfo.LockInfo,
-        'connector-lockinfo',
-        zeit.connector.interfaces.ILockInfoStorage)
-    installLocalUtility(
         site_manager, zeit.connector.invalidator.Invalidator,
         'connector-invalidator',
         zeit.connector.invalidator.IInvalidator)

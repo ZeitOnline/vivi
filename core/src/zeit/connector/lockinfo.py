@@ -1,4 +1,4 @@
-
+# BBB obsolete, left only until removed from all ZODBs
 import persistent
 import BTrees.OOBTree
 

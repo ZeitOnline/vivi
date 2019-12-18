@@ -87,19 +87,10 @@ Resources may be locked:
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
 (None, None, False)
 >>> token = connector.lock('http://xml.zeit.de/%s/conn1' % TESTFOLDER(),
-...                        'http://xml.zeit.de/users/frodo',
+...                        'zope.user',
 ...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-(u'http://xml.zeit.de/users/frodo', datetime.datetime(..., tzinfo=...), True)
-
-The whole lock-information is stored in the lockinfo utility:
-
->>> lockinfo = connector.locktokens
->>> lockinfo.get('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-('opaquelocktoken:...',
- 'http://xml.zeit.de/users/frodo',
- datetime.datetime(..., tzinfo=<UTC>))
-
+(u'zope.user', datetime.datetime(..., tzinfo=...), True)
 
 To unlock it, you would have to supply the locktoken. The library takes
 care of that, though:
@@ -108,16 +99,14 @@ care of that, though:
 u'opaquelocktoken:...'
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
 (None, None, False)
->>> lockinfo.get('http://xml.zeit.de/%s/conn1' % TESTFOLDER()) is None
-True
 
 To specify an infinte lock, timeout can be None:
 
 >>> token = connector.lock(
 ...     'http://xml.zeit.de/%s/conn1' % TESTFOLDER(),
-...     'frodo', until=None)
+...     'zope.user', until=None)
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-(u'frodo', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+(u'zope.user', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  True)
 >>> connector.unlock('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
 u'opaquelocktoken:...'
@@ -151,7 +140,7 @@ always indexed by a namespace/name pair.
 Note: name comes first -- don't ask me why:
 
 >>> token = connector.lock('http://xml.zeit.de/%s/conn3' % TESTFOLDER(),
-...                        'http://xml.zeit.de/users/frodo',
+...                        'zope.user',
 ...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> res.data = StringIO.StringIO("Mary had a little lamb")
 >>> res.properties[('colour', 'http://namespaces.zeit.de/test')] = (

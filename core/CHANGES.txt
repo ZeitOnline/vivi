@@ -5,7 +5,7 @@ vivi.core changes
 4.25.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1163: Remove connector lockinfo cache
 
 
 4.25.2 (2019-12-17)

@@ -15,7 +15,6 @@ import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
 import zeit.connector.interfaces
-import zeit.connector.lockinfo
 import zeit.connector.resource
 import zeit.connector.search
 import zope.cachedescriptors.property
@@ -392,8 +391,6 @@ class Connector(object):
                 id, "%s is already locked." % id)
         # Just pass-on other exceptions. It's more informative
 
-        if token:
-            self._put_my_lockinfo(id, token, principal, until)
         self._invalidate_cache(id)
         return token
 
@@ -403,11 +400,7 @@ class Connector(object):
         url = self._id2loc(self._get_cannonical_id(id))
         locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
         if locktoken:
-            try:
-                self.get_connection().unlock(url, locktoken)
-            finally:
-                if invalidate:
-                    self._put_my_lockinfo(id, None)
+            self.get_connection().unlock(url, locktoken)
         if invalidate:
             self._invalidate_cache(id)
         return locktoken
@@ -423,12 +416,10 @@ class Connector(object):
         owner = davlock.get('owner')
         timeout = davlock.get('timeout')
         token = davlock.get('locktoken')
+        mylock = None
 
-        mylock = self._get_my_lockinfo(id)
-        if mylock is None and davlock and owner:
-            # We have no information about the lock. Let's see if the principal
-            # is one we know. It's most likely that it actually was our lock
-            # but we just forgot about it.
+        if davlock and owner:
+            # Let's see if the principal is one we know.
             try:
                 import zope.authentication.interfaces  # UI-only dependency
                 authentication = zope.component.queryUtility(
@@ -442,12 +433,6 @@ class Connector(object):
                     pass
                 else:
                     mylock = (token, owner, timeout)
-                    self._put_my_lockinfo(id, *mylock)
-        elif mylock and mylock[0] != token:
-            # We know something about a locktoken, but it is no longer valid.
-            # Forget about it.
-            self._put_my_lockinfo(id, None)
-            mylock = None
 
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
@@ -488,17 +473,6 @@ class Connector(object):
             yield tuple([id] + [
                 props[(a.name, a.namespace)] for a in attrlist])
 
-    def _get_my_lockinfo(self, id):
-        # returns (token, principal, time)
-        return self.locktokens.get(id)
-
-    def _put_my_lockinfo(self, id, token, principal=None, time=None):
-        # FIXME better defaults
-        if token is None:
-            self.locktokens.remove(id)
-        else:
-            self.locktokens.set(id, (token, principal, time))
-
     def _get_my_locktoken(self, id):
         locker, until, myself = self.locked(id)
 
@@ -506,10 +480,11 @@ class Connector(object):
             __traceback_info__ = (id, locker, until)
             raise zeit.connector.interfaces.LockedByOtherSystemError(
                 id, locker, until)
-        my_lock_info = self._get_my_lockinfo(id)
-        if my_lock_info:
-            return my_lock_info[0]
-        return None
+        try:
+            davlock = self._get_dav_lock(id)
+        except KeyError:
+            davlock = {}
+        return davlock.get('locktoken')
 
     def _id2loc(self, id):
         """Transform an id to a location, e.g.
@@ -778,10 +753,6 @@ class Connector(object):
     @zope.cachedescriptors.property.Lazy
     def child_name_cache(self):
         return zeit.connector.cache.ChildNameCache()
-
-    @zope.cachedescriptors.property.Lazy
-    def locktokens(self):
-        return zeit.connector.lockinfo.LockInfo()
 
     @classmethod
     def factory(cls):

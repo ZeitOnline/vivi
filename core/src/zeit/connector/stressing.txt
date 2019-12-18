@@ -33,7 +33,7 @@ on parallel delete on which the server just stops putting out XML.
 ...     res.properties[('count', 'bar')] = '-1'
 ...     until = (
 ...         datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
-...     token = connector.lock(res.id, 'frodo', until)
+...     token = connector.lock(res.id, 'zope.user', until)
 ...     connector.add(res)
 ...     for count in range(50):
 ...         r = connector[id]
