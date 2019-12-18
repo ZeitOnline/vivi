@@ -515,6 +515,11 @@ class FeatureToggles(object):
         except TypeError:
             return False
 
+    def set(self, *names, **kw):  # only for tests
+        for name in names:
+            # Changes are discarded between tests by gocept.cache
+            setattr(self._get_tree(), name, kw['value'])
+
     @memoize(300, ignore_self=True)
     def _get_tree(self):
         if self.config_url not in os.environ:

@@ -313,6 +313,7 @@ class IChildNameCache(ICache):
     """A cache for child names of collections."""
 
 
+# BBB obsolete, left only until removed from all ZODBs
 class ILockInfoStorage(zope.interface.Interface):
     """Storage for locktokens."""
 

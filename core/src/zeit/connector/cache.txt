@@ -417,8 +417,7 @@ The cache keeps track of the used keys:
 >>> import pprint
 >>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
 {'foo': <WebDAVPropertyKey foo>,
- ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>,
- ('traceback', 'INTERNAL'): <WebDAVPropertyKey ('traceback', 'INTERNAL')>}
+ ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
 
 When the a value is set to the cache which is equal to the value it alreay
 stores, the new value is not updated. We verify this by setting a new value
@@ -445,6 +444,10 @@ does conflict resolution:
 
 Conflict resolution
 -------------------
+
+XXX This section is obsolete and not used in production anymore
+>>> zeit.connector.cache.FEATURE_TOGGLES.set(
+...     'dav_cache_delete_property_on_conflict', value=True)
 
 The property cache resolves conflicts in a very brutal way as it considers the
 cache stale when ever there was a conflict. Since it is only a cache we do not
@@ -584,6 +587,10 @@ Setting ``new_children`` does not update ``baz`` to unicode:
 
 Conflict resolution
 -------------------
+
+XXX This section is obsolete and not used in production anymore
+>>> zeit.connector.cache.FEATURE_TOGGLES.set(
+...     'dav_cache_delete_childname_on_conflict', value=True)
 
 The conflict resolution works like the property cache:
 

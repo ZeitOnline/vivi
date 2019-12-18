@@ -1,6 +1,8 @@
+from subprocess import check_output
+import unittest
+import zeit.arbeit.interfaces
 import zeit.content.article.edit.browser.testing
 import zeit.content.image.testing
-import zeit.arbeit.interfaces
 import zope.interface
 
 
@@ -32,8 +34,11 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
                          b.getControl(name='form.layout').displayValue)
         self.assertEqual(group.uniqueId, b.getControl(name='form.image').value)
 
-    def test_teaser_text_field_mardown_is_stored_correctly(self):
-        article = self.get_article(with_empty_block=True)
+    @unittest.skipUnless(
+        check_output('pandoc --version', shell=True).startswith('pandoc 1'),
+        'pandoc not available')
+    def test_teaser_text_field_markdown_is_stored_correctly(self):
+        self.get_article(with_empty_block=True)
         b = self.browser
         b.open('editable-body/blockname/@@edit-%s?show_form=1'
                % self.block_type)

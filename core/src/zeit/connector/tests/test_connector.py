@@ -314,7 +314,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
     def test_move_own_locked_resource_should_work(self):
         res = self.get_resource('foo', 'body')
         self.connector.add(res)
-        self.connector.lock(res.id, 'userid', None)
+        self.connector.lock(res.id, 'zope.user', None)
         self.connector.move(
             res.id, 'http://xml.zeit.de/%s/bar' % self.testfolder)
         self.connector['http://xml.zeit.de/%s/bar' % self.testfolder]
@@ -336,7 +336,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
     def test_copy_locked_resource_should_work(self):
         res = self.get_resource('foo', 'body')
         self.connector.add(res)
-        self.connector.lock(res.id, 'userid', None)
+        self.connector.lock(res.id, 'zope.user', None)
         self.connector.copy(
             res.id, 'http://xml.zeit.de/%s/bar' % self.testfolder)
         self.connector['http://xml.zeit.de/%s/bar' % self.testfolder]

@@ -3,6 +3,8 @@
   xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
   i18n_domain="zeit.cms">
 
+  <include package="zeit.cms" file="meta.zcml" />
+
   <permission
     id="zeit.RenameContent"
     title="Rename content"
