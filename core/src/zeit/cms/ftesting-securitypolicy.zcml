@@ -1,5 +1,6 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="zeit.cms">
 
   <!-- Security policy for tests -->
 
@@ -8,6 +9,8 @@
   <include package="zope.securitypolicy" />
   <securityPolicy
     component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <include package="zeit.cms" file="permissions.zcml" />
 
   <!-- Roles -->
   <role id="zope.Anonymous" title="Everybody"
