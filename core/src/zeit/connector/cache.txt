@@ -445,6 +445,10 @@ does conflict resolution:
 Conflict resolution
 -------------------
 
+XXX This section is obsolete and not used in production anymore
+>>> zeit.connector.cache.FEATURE_TOGGLES.set(
+...     'dav_cache_delete_property_on_conflict', value=True)
+
 The property cache resolves conflicts in a very brutal way as it considers the
 cache stale when ever there was a conflict. Since it is only a cache we do not
 loose any data here.
@@ -583,6 +587,10 @@ Setting ``new_children`` does not update ``baz`` to unicode:
 
 Conflict resolution
 -------------------
+
+XXX This section is obsolete and not used in production anymore
+>>> zeit.connector.cache.FEATURE_TOGGLES.set(
+...     'dav_cache_delete_childname_on_conflict', value=True)
 
 The conflict resolution works like the property cache:
 
