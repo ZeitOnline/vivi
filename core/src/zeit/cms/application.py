@@ -223,3 +223,9 @@ def maybe_decode(value):
 
 
 ZConfig.datatypes.stock_datatypes["string"] = maybe_decode
+
+
+if sys.version_info < (3,):
+    # Upstream has `lambda x: x` which is not _quite_ correct.
+    fanstatic.compat.as_bytestring = (
+        lambda x: x.encode('utf-8') if isinstance(x, unicode) else x)
