@@ -143,7 +143,6 @@ setup(
             'zope.app.securitypolicy',
             'zope.app.tree',
             'zope.app.wsgi',
-            'zope.app.zapi',  # undeclared by z3c.menu.simple
             'zope.app.zopeappgenerations',
             'zope.authentication',
             'zope.browser',
