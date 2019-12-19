@@ -40,7 +40,6 @@ setup(
         'pytz',
         'requests',
         'setuptools',
-        'sprout',
         'transaction',
         'tweepy',
         'urbanairship >= 1.0',
