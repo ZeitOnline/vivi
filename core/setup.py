@@ -129,7 +129,6 @@ setup(
             'zope.app.folder',
             'zope.app.form>=3.6.0',
             'zope.app.generations',
-            'zope.app.interface',
             'zope.app.http',
             'zope.app.localpermission',
             'zope.app.pagetemplate',
