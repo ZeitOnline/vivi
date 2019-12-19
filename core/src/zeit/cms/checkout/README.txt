@@ -14,10 +14,10 @@ We need an interaction as checkout manager needs to get the principal:
 We also subscribe a testing handler to the CheckoutEvent:
 
 >>> def checkoutEvent(context, event):
-...     print 'Event:', event
-...     print '    Principal:', event.principal.id
-...     print '    Content:', context
-...     print '    Workingcopy:', event.workingcopy
+...     print('Event: %s' % event)
+...     print('    Principal: %s' % event.principal.id)
+...     print('    Content: %s' % context)
+...     print('    Workingcopy: %s' % event.workingcopy)
 ...
 >>> import zope.component
 >>> from zeit.cms.interfaces import ICMSContent

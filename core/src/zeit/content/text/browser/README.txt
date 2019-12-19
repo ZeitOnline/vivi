@@ -10,7 +10,7 @@ Add a new text:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Plain text']
 >>> browser.open(menu.value[0])
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... Add plain text </title>
  ...
@@ -34,7 +34,7 @@ We can choose the encoding:
 After adding we're at the edit form:
 
 >>> browser.getControl('Add').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
  <title>... Edit plain text </title>
  ...
@@ -46,7 +46,7 @@ browser and server is *always* UTF-8 regardles of the storage encoding.
 >>> browser.getControl('Content').value = u'F\xfc'.encode('utf8')
 >>> browser.getControl('Encoding').displayValue = ['UTF-8']
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
  <title>... Edit plain text </title>
  ...Updated on...
@@ -55,7 +55,7 @@ browser and server is *always* UTF-8 regardles of the storage encoding.
 Check in (note that the contents is preformatted):
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
  <title>... View plain text </title>
  ...
@@ -66,7 +66,7 @@ Check in (note that the contents is preformatted):
 Check out: 
 
 >>> browser.getLink('Checkout').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
  <title>... Edit plain text </title>
  ...
@@ -76,13 +76,13 @@ MIME type is editable:
 
 >>> browser.getControl('Mime Type').value = 'application/json'
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...Updated on...
 >>> browser.getControl('Mime Type').value
 'application/json'
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...application/json...
 
 
@@ -90,7 +90,7 @@ Verify the metdata preview:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'render.xslt/metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
   <div...
     <p>
       http://namespaces.zeit.de/CMS/meta type:
@@ -101,7 +101,7 @@ Verify the metdata preview:
 We have a special icon:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
        <img src="http://localhost/++skin++cms/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="20" height="20" border="0" />
        ...

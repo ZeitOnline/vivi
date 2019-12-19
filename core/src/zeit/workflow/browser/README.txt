@@ -86,7 +86,7 @@ To publish the document, hit the 'publish' button:
 
 This failed because only `edited` was set to 'yes':
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="error">publish-preconditions-urgent</li>
     ...
@@ -95,7 +95,7 @@ Use the urgent flag to override:
 
 >>> browser.getControl('Urgent').selected = True
 >>> browser.getControl("publish").click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/testcontent has been scheduled for publishing.</li>
         <li class="message">Updated on 2008 4 3  12:02:00 </li>
@@ -123,7 +123,7 @@ Since publishing is done asynchronously we have to trigger processing:
 Reload the workflow page.
 
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <label for="form.last_modified_by">
           <span>Last modified by</span>
@@ -157,7 +157,7 @@ again:
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Checkin').click()
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <label for="form.last_modified_by">
           <span>Last modified by</span>
@@ -186,7 +186,7 @@ Check out an unpublished object:
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Saarland')
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" id="...
         <label for="form.published">
@@ -207,7 +207,7 @@ Do a publish/retract cycle to set the property to false:
 
 >>> browser.getControl('Urgent').selected = True
 >>> browser.getControl('publish').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
@@ -217,7 +217,7 @@ Do a publish/retract cycle to set the property to false:
 
 The retract action is protected by javascript (which doesn't matter here):
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
             <input type="submit" id="form.actions.retract" name="form.actions.retract" value="Save state and retract now" class="button" />
         <script type="text/javascript">
@@ -232,7 +232,7 @@ The retract action is protected by javascript (which doesn't matter here):
         ...
 
 >>> browser.getControl('retract').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
@@ -254,7 +254,7 @@ Go back to the repository and publish:
 False
 >>> run_tasks()
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
@@ -271,7 +271,7 @@ Go the the checked out object and check in:
 The object is still published:
 
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
@@ -284,7 +284,7 @@ Now try the other way around, unpublish a published document while it is
 checked out:
 
 >>> browser.getControl('publish').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for publishing.</li>
         ...
@@ -298,13 +298,13 @@ Unpublish now:
 ...              '/2007/01/Saarland')
 >>> browser.getLink('Workflow').click()
 >>> browser.getControl('retract').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01/Saarland has been scheduled for retracting.</li>
         ...
 >>> run_tasks()
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" id="...
         <label for="form.published">
@@ -321,7 +321,7 @@ Check back in:
 The object is still unpublished:
 
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         ...<input class="checkboxType" id="...
         <label for="form.published">
@@ -336,7 +336,7 @@ Log
 
 The workflow logs various changes in an objectlog. Verify this:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
         <div class="widget">...
 <FORMATTED DATE>  [User]: Retracted<br />...
@@ -387,7 +387,7 @@ Set a very high value for publish/retract to make sure we cannot set this:
 >>> browser.getControl(name='form.release_period.combination_01').value = (
 ...     '2040-05-06')
 >>> browser.getControl('Save state only').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <input class="textType" id="form.release_period.combination_00" name="form.release_period.combination_00" size="20" type="text" value="2040-05-06"  />
  ...
@@ -407,7 +407,7 @@ other information
 
 >>> browser.open('http://localhost/++skin++cms/repository/online')
 >>> browser.getLink('Workflow').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
           <span>Last modified by</span>
           ...

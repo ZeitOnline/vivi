@@ -6,7 +6,7 @@ There are form stubs at the top of the editor:
 >>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
 ...              '/2007/01/Somalia/@@checkout')
 >>> browser.open('@@contents')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <form class="inline-form"
   action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-a">
@@ -22,7 +22,7 @@ There are form stubs at the top of the editor:
 Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-a')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <div class="field fieldname-ressort required fieldtype-text">...
 <label cms:tooltip="" for="metadata-a.ressort">...
@@ -30,7 +30,7 @@ Those forms are loaded via javascript:
 
 
 >>> browser.open('@@edit.form.metadata-b')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 ...<label cms:tooltip="" for="metadata-b.product">...
 ...<label cms:tooltip="Do not enter (c)."
@@ -38,25 +38,25 @@ Those forms are loaded via javascript:
 
 
 >>> browser.open('@@edit.form.metadata-c')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 ...<label cms:tooltip=""
         for="metadata-c.authorships">...
 
 
 >>> browser.open('@@edit.form.metadata-nl')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 ...<label cms:tooltip="Should this article be listed in the daily newsletter?"
         for="metadata-nl.dailyNewsletter">...
 
 
 >>> browser.open('@@edit.form.keywords')
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <div class="field fieldname-keywords...">...
 
 
 >>> browser.open('@@edit.form.recension-list')
->>> print browser.contents
+>>> print(browser.contents)
 <...<div class="recensions">...

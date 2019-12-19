@@ -21,7 +21,7 @@ asynchronously:
 >>> browser.open('http://localhost/++skin++cms/')
 >>> navtree = browser.xpath("//html:div[@id='NavtreePanel']",
 ...                               namespaces=ns_map)[0]
->>> print lxml.etree.tostring(navtree, pretty_print=True),
+>>> print(lxml.etree.tostring(navtree, pretty_print=True))
 <div xmlns:panel="http://namespaces.gocept.com/panel" xmlns="http://www.w3.org/1999/xhtml" class="panel unfolded" id="NavtreePanel">
   <h1>
     <a href="http://localhost/++skin++cms/repository">
@@ -50,13 +50,13 @@ The noop in the URL is actually a hash of the user's tree state. Load the tree:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/'
 ...     '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html')
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: private; max-age=360
 Content-Length: ...
 Content-Type: text/html;charset=utf-8
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
->>> print browser.contents,
+>>> print(browser.contents)
   <ul>
       <li active="True" class="Root...">
         <p>
@@ -96,7 +96,7 @@ function:
 When we visit `online` it is *not* automatically expanded while visiting it:
 
 >>> open_tree('http://localhost/++skin++cms/repository/online')
->>> print browser.contents
+>>> print(browser.contents)
  <ul>
     <li active="True" class="Root...">
       <p>
@@ -118,7 +118,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
 ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
 ...              '&view_url=%s' % urllib.quote(view_url))
->>> print lxml.etree.tostring(browser.document, pretty_print=True)
+>>> print(lxml.etree.tostring(browser.document, pretty_print=True))
 <ul>
     <li active="True" class="Root...">
       <p>
@@ -140,7 +140,7 @@ Since we've explicitly expanded the tree via an ajax request (i.e. by clicking
 on the + icon) the tree stays expanded even when we're not inside online:
 
 >>> open_tree('http://localhost/++skin++cms/repository')
->>> print browser.contents,
+>>> print(browser.contents)
   <ul>
       <li active="True" class="Root...">
         <p>
@@ -165,7 +165,7 @@ Users often do not want to see certain containers, so they can hide them.
 Initially most containers are hidden actually. If 2006 was shown it would be
 between online/2007 and 2007:
 
->>> print browser.contents.strip(),
+>>> print(browser.contents.strip())
 <ul>...
       <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/online/2007/">
@@ -191,7 +191,7 @@ between online/2007 and 2007:
 When we are *inside* a hidden container, it is shown nevertheles:
 
 >>> open_tree('http://localhost/++skin++cms/repository/2006')
->>> print browser.contents,
+>>> print(browser.contents)
   <ul>
       <li active="True" class="Root...">
         <p>
@@ -214,7 +214,7 @@ Let's explicitly "show' the 2006 container now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
 >>> browser.getLink('Show').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <li class="message">"2006" is now shown in the navigation tree.</li>
     ...
@@ -222,7 +222,7 @@ Let's explicitly "show' the 2006 container now:
 The navigation tree contains the 2006 even when looking at the root:
 
 >>> open_tree('http://localhost/++skin++cms/repository/')
->>> print browser.contents,
+>>> print(browser.contents)
   <ul>
       <li active="True" class="Root...">
         <p>
@@ -251,13 +251,13 @@ LinkNotFoundError
 A shown container can be hidden again though:
 
 >>> browser.getLink('Hide').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <li class="message">"2006" is now hidden from the navigation tree.</li>
     ...
 
 >>> open_tree('http://localhost/++skin++cms/repository/2006')
->>> print browser.contents,
+>>> print(browser.contents)
   <ul>
       <li active="True" class="Root...">
         <p>

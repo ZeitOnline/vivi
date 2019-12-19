@@ -21,7 +21,7 @@ doesn't support Javascript unforunately. Therefore we're just opening the url:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
 ...Querdax...
@@ -43,7 +43,7 @@ The user is redirected to the repository directory listing, if he hits
 the site root:
 
 >>> browser.open('http://localhost/++skin++cms/')
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/repository/online/2008/26
 
 
@@ -63,7 +63,7 @@ Folders can be added just like any other content:
 After adding a folder we are not at @@edit.html, but on the normal view. In
 fact @@edit.html redirects us:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
   ...There are no objects in this folder...
@@ -86,7 +86,7 @@ Folders have a metadata page which shows the folder contents:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/new-folder/'
 ...     '@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
   <div class="context-views">
   ...
@@ -106,7 +106,7 @@ reachable at `get_object_browser` for every folder:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/'
 ...              '@@get_object_browser')
->>> print browser.contents
+>>> print(browser.contents)
   <h1>http://xml.zeit.de/online/2007/01/</h1>
   <div id="popup-navtree" class="Tree">
   <ul>
@@ -127,7 +127,7 @@ name. Without filter everything is displayed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
->>> print browser.contents
+>>> print(browser.contents)
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
@@ -170,7 +170,7 @@ Let's filter for folders:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/@@get_object_browser'
 ...     '?type_filter=folders')
->>> print browser.contents
+>>> print(browser.contents)
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
@@ -207,7 +207,7 @@ When there are no suitable objects, we'll get a message:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     '@@get_object_browser?type_filter=folders')
->>> print browser.contents
+>>> print(browser.contents)
   <h1>http://xml.zeit.de/online/2007/01/</h1>
   ...
   <div class="objectbrowser-content no-content">
@@ -221,7 +221,7 @@ Within the object browser the tree is automatically expanded:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     '@@get_object_browser')
->>> print browser.contents
+>>> print(browser.contents)
   <h1>http://xml.zeit.de/online/2007/01/</h1>
   ...
       <li action="collapse" active="True" class="NotRoot..."
@@ -271,7 +271,7 @@ There is a view all ICMSContent which redirects to the browsing location:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     '@@default-browsing-location?type_filter=all-types')
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/repository/online/2007/01/@@get_object_browser?type_filter=all-types
 
 
@@ -302,7 +302,7 @@ returned:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/@@redirect_to'
 ...     '?unique_id=blafasel')
->>> print browser.contents
+>>> print(browser.contents)
 <div class="error">The object 'blafasel' could not be found.</div>
 
 
@@ -316,7 +316,7 @@ reload. Reloading sends an IResourceInvalidatedEvent.
 >>> @zope.component.adapter(
 ...     zeit.connector.interfaces.IResourceInvalidatedEvent)
 ... def invalid(event):
-...     print "Invalidate:", event.id
+...     print("Invalidate: %s" % event.id)
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerHandler(invalid)
 

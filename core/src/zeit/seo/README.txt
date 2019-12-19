@@ -16,13 +16,13 @@ Open the test content and go to the SEO page:
 
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
 >>> browser.getLink('SEO').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – View SEO data
 
 To edit the SEO data we need to check the object out:
 
 >>> browser.getLink('Checkout').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – Edit SEO data
 
 Fill out the form:
@@ -38,7 +38,7 @@ Fill out the form:
 Verify the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value.replace('\r', '')
+>>> print(browser.getControl('Source').value.replace('\r', ''))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">...</attribute>
@@ -60,7 +60,7 @@ Go back to the SEO tab and check in. We're still at the SEO view then:
 
 >>> browser.getLink('SEO').click()
 >>> browser.getLink('Checkin').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – View SEO data
 
 

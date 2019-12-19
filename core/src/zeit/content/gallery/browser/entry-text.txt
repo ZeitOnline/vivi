@@ -66,5 +66,5 @@ If an entry already has text, the widget is displayed:
 >>> image = workingcopy['island']['01.jpg']
 
 >>> browser.reload()
->>> print browser.getControl('Text').value
+>>> print(browser.getControl('Text').value)
 <p>foo</p>

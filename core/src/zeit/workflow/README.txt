@@ -166,8 +166,8 @@ We did quite some stuff now. Verify the object log:
 >>> import zope.i18n
 >>> def print_log(result):
 ...     for e in result:
-...         print e.get_object().uniqueId
-...         print '    ', zope.i18n.translate(e.message)
+...         print(e.get_object().uniqueId)
+...         print('    ' + zope.i18n.translate(e.message))
 >>> print_log(result)
 http://xml.zeit.de/online/2007/01/Somalia
      status-edited: yes
@@ -220,7 +220,7 @@ DateTime(...)
 We expect the value to be in the xml now as well (amongst others):
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
@@ -239,7 +239,7 @@ We expect the value to be in the xml now as well (amongst others):
 When we de-publish the object, the status-flag is removed again:
 
 >>> job_id = publish.retract(background=False)
->>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
@@ -361,7 +361,7 @@ The actual publishing happens by external the publish script.
 Publish the folder again and verify the log:
 
 >>> job_id = publish.publish(background=False)
->>> print logfile.getvalue()
+>>> print(logfile.getvalue())
 Running job ... for http://xml.zeit.de/online/2007/01/
 Publishing http://xml.zeit.de/online/2007/01/
 ...publish.sh:
@@ -433,7 +433,7 @@ of publish:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> job_id = publish.retract(background=False)
->>> print logfile.getvalue()
+>>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/
 ...retract.sh:
@@ -535,9 +535,9 @@ automatically:
 We register event handlers to all the publish/retract events to see the master
 
 >>> def pr_handler(event):
-...     print type(event).__name__
-...     print '    Object:', event.object.uniqueId
-...     print '    Master:', event.master.uniqueId
+...     print(type(event).__name__)
+...     print('    Object: %s' % event.object.uniqueId)
+...     print('    Master: %s' % event.master.uniqueId)
 >>> gsm.registerHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 
@@ -586,7 +586,7 @@ True
 
 Make sure the file would actually have been removed:
 
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/Somalia
 ...retract.sh:
@@ -705,7 +705,7 @@ When somalia is published, the folder and its content is also published:
 >>> logfile.seek(0)
 >>> logfile.truncate()
 >>> job_id = publish.publish(background=False)
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...publish.sh:

@@ -15,7 +15,7 @@ Tree
 The clipboard is displayed as a tree. Initially it's empty:
 
 >>> browser.open('http://localhost/++skin++cms/repository')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
   <div class="PanelContent" id="ClipboardPanelContent">
@@ -41,7 +41,7 @@ Open the drag pane of the wirtschaft.feed:
 >>> ajax = Browser(layer['wsgi_app'])
 >>> ajax.login('user', 'userpw')
 >>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
->>> print ajax.contents
+>>> print(ajax.contents)
 <div class="Text">Wirtschaft</div>
 <div class="UniqueId">http://xml.zeit.de/wirtschaft.feed</div>
 
@@ -51,7 +51,7 @@ We assume, that we drag the pane over the Clipboard:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
 ...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
     <p>
@@ -85,7 +85,7 @@ added *after* the feed:
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
 ...           'add_to=wirtschaft.feed&'
 ...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
->>> print ajax.contents
+>>> print(ajax.contents)
     <ul>
       <li class="Root..." uniqueid="">
         <p>
@@ -150,7 +150,7 @@ We can also get the unique id from an entry:  XXX why do we need this?
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
 ...     '/@@ajax.get_unique_id')
->>> print ajax.contents
+>>> print(ajax.contents)
 http://xml.zeit.de/wirtschaft.feed
 
 
@@ -172,7 +172,7 @@ element of the root node:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
 ...           'title=New+Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -207,7 +207,7 @@ Let's add another clip:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
 ...           'title=Second+Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
     <p>
@@ -253,7 +253,7 @@ expanded:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
 ...           'object_path=Querdax&add_to=New%20Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -291,7 +291,7 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/tree.html/'
 ...           '@@expandTree?uniqueId=New%20Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -325,7 +325,7 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
 ...           'object_path=Querdax&add_to=New%20Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -367,7 +367,7 @@ We can of course also move clips into clips:
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@moveContent?'
 ...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -414,7 +414,7 @@ the Querdax entry we've moved into New Clip above:
    url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/Querdax/@@ajax-delete-entry'>
 
 >>> link.click()
->>> print ajax.contents
+>>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
       <p>
@@ -451,7 +451,7 @@ When accessing the clipboard we get a normal content listing. The feed we have
 in the clipboard also has its icon:
 
 >>> browser.getLink('Clipboard').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html ...
 <table class="contentListing hasMetadata">
@@ -486,7 +486,7 @@ reference". Delete "wirtschaft.feed":
 Let's have a look at the sidebar:
 
 >>> browser.open('http://localhost/++skin++cms/repository')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <div id="clipboardcontents" class="Tree">
   <ul>
@@ -513,7 +513,7 @@ Clips can be renamed using the rename lightbox:
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/'
 ...     '@@rename-clip-lightbox')
->>> print ajax.contents
+>>> print(ajax.contents)
 <div>
   <h1>Rename</h1>
   ...
@@ -535,7 +535,7 @@ Reload the whole page and verify the title change:
 >>> ajax.open(
 ...     '/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/New%20Clip')
->>> print ajax.contents
+>>> print(ajax.contents)
 <?xml ...
 <!DOCTYPE ...
   <li class="message">"New Clip" was renamed to "Wirtschaft clip".</li>
@@ -596,7 +596,7 @@ Open "New clip", we have a delete link there:
 <Link text='Delete' 
     url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@delete-clip'>
 >>> link.click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
   <li class="message">"Wirtschaft clip" was removed from the clipboard.</li>
@@ -632,7 +632,7 @@ Let's open the lightbox. It shows the clipboard tree:
 >>> browser.handleErrors = False
 >>> ajax.open('http://localhost/++skin++cms/repository/online'
 ...           '/@@insert_from_clipboard.lightbox')
->>> print ajax.contents
+>>> print(ajax.contents)
 <div>
   <h1>
     Copy content into
@@ -666,7 +666,7 @@ to online:
 >>> browser.open('%s?unique_id=%s' % (copy_url, unique_id))
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/01'
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01 was copied to
         http://xml.zeit.de/online/01/.</li>

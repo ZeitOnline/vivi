@@ -28,7 +28,7 @@ True
 Initially there are no entries:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(ib.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(ib.xml, pretty_print=True))
 <container
     xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -39,7 +39,7 @@ Initially there are no entries:
 The title of an infobox is a supertitle:
 
 >>> ib.supertitle = u'Altersvorsorge'
->>> print lxml.etree.tostring(ib.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(ib.xml, pretty_print=True))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
 </container>
@@ -49,7 +49,7 @@ Add a contents element:
 >>> ib.contents = (
 ...     ('Renteninformation', '<p>Nutzen Sie die Renteninformation, etc</p>'),)
 >>> ib.supertitle = u'Altersvorsorge'
->>> print lxml.etree.tostring(ib.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(ib.xml, pretty_print=True))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
   <block>
@@ -67,7 +67,7 @@ Add a contents element:
 ...      '<p>Pruefen Sie, ob in <strong>Ihrer</strong> Renteninformation '
 ...      'alle</p><p>Fitze fitze fatze</p>'))
 >>> ib.supertitle = u'Altersvorsorge'
->>> print lxml.etree.tostring(ib.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(ib.xml, pretty_print=True))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
   <block>

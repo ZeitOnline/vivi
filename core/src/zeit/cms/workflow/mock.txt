@@ -21,8 +21,8 @@ Register adapters
 Register event handlers to make sure the proper events are sent out:
 
 >>> def event(event):
-...     print event
-...     print "   ", event.object.uniqueId
+...     print(event)
+...     print("    %s" % event.object.uniqueId)
 >>> gsm.registerHandler(
 ...     event, (zeit.cms.workflow.interfaces.IBeforePublishEvent,))
 >>> gsm.registerHandler(

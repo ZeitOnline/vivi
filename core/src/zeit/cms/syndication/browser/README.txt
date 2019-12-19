@@ -25,7 +25,7 @@ page. We do have a syndication link there:
 After clicking `Syndicate` we look at a page showing possible syndication
 targets:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html...
     <p>
@@ -40,7 +40,7 @@ now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Remember as syndication target').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <li class="message">"politik.feed" has been added to your syndication
     targets.</li>
@@ -51,7 +51,7 @@ Visit the syndication page again:
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
 >>> link = browser.getLink('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html...
 <table...
@@ -94,7 +94,7 @@ in the feed:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html...
     <li class="message">"rauchen-verbessert-die-welt" has been syndicated to
@@ -136,7 +136,7 @@ Let's look at the feed in the repository, to make sure our document is really
 in there:
 
 >>> browser.getLink('http://xml.zeit.de/politik.feed').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
   <td>
@@ -156,7 +156,7 @@ Locking information is also be displayed in the syndication manager:
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
 >>> browser.getLink('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html...
 <div id="edit-form">
@@ -190,7 +190,7 @@ When we try to syndicate to that feed we'll get an error message:
 ...  name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3dpcnRzY2hhZnQuZmVlZA==.')
 >>> wirtschaft_checkbox.value = True
 >>> browser.getControl('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="error">Could not syndicate because
             "http://xml.zeit.de/wirtschaft.feed" could not be locked or
@@ -238,7 +238,7 @@ the homepage. This is a separate action:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Synd. w/o HP').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
 
@@ -256,7 +256,7 @@ When we syndicate again *with* HP, the flag is set again:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
 >>> browser.getLink('politik').click()
@@ -276,7 +276,7 @@ This is a separate action:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Synd. w/o relateds').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
 
@@ -294,7 +294,7 @@ When we syndicate again *with* relateds, the flag is set again:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ..."rauchen-verbessert-die-welt" has been syndicated to politik.feed...
 >>> browser.getLink('politik').click()
@@ -313,7 +313,7 @@ Publish the politik channel:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Publish').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
         <li class="error">Could not publish "politik.feed".</li>
         ...
@@ -370,9 +370,9 @@ also be pinned and hidden from the homepage. Open the politik.feed and first
 have a look at its display view:
 
 >>> browser.open('/++skin++cms/repository/politik.feed')
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Politik – Feed contents
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <table class="feedsorting table-sorter">
   <thead>
@@ -416,9 +416,9 @@ True
 Check it out to change the order. We're at the edit/sort page after checking out:
 
 >>> browser.getLink('Checkout').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Politik – Edit feed contents
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <table class="feedsorting table-sorter">
   <thead>
@@ -509,7 +509,7 @@ True
 Let's have a look at the source now:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML').value.replace('\r\n', '\n')
+>>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
 <channel> 
   <title>Politik</title>
   <container>
@@ -539,7 +539,7 @@ True
 Its also indicated in the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML').value.replace('\r\n', '\n')
+>>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
 <channel> 
   <title>Politik</title>
   <container>
@@ -569,7 +569,7 @@ There is a checkbox to hide the relateds:
 Its also indicated in the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML').value.replace('\r\n', '\n'),
+>>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
 <channel> 
   <title>Politik</title>
   <container>
@@ -595,7 +595,7 @@ Items can be removed at the contents page:
 Let's have a look at the source now:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML').value.replace('\r\n', '\n')
+>>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
 <channel> 
   <title>Politik</title>
   <container/>
@@ -611,7 +611,7 @@ The 'Politik' Feed is currently a syndication target:
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...     '2007/01/rauchen-verbessert-die-welt/metadata_preview')
 >>> link = browser.getLink('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE html...
 </tr>
@@ -644,7 +644,7 @@ We remove it now from the syndication targets:
 
 >>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
 >>> browser.getLink('Remove from my syndication targets').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <li class="message">"politik.feed" has been removed from your syndication targets.</li>
 ...
@@ -684,11 +684,11 @@ we can see it in the UI:
 ... </channel>'''
 
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ...Updated on...
 >>> browser.getLink('Edit contents').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <td>
       1
@@ -718,7 +718,7 @@ People do strange things and add the channel to itself. Let's try that:
 Let's have a look at the feed now:
 
 >>> browser.open('http://localhost/++skin++cms/repository/wirtschaft.feed')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <td>
       1
@@ -765,7 +765,7 @@ is now way to remove the title w/o editing the source:
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()
 >>> browser.getLink('Contents').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <td>
       1

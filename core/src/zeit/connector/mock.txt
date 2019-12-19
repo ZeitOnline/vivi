@@ -36,7 +36,7 @@ The browsing interface basically allows listing collections:
 
 >>> entry = list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/01'))[0]
->>> print entry
+>>> print(entry)
 (u'4schanzentournee-abgesang',
  u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang')
 
@@ -158,7 +158,7 @@ We now can get the object back from the connector:
 
 >>> from pprint import pprint
 >>> resource_2 = connector[resource.id]
->>> print resource_2.data.read()
+>>> print(resource_2.data.read())
 Seehofer schlaegt zurueck
 >>> pprint(dict(resource_2.properties))
 {('foo', 'foo-ns'): 'bar',

@@ -29,12 +29,12 @@ group:
 >>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open('@@view.html')
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 opernball – Image group
 
 After uploading the overview is diplayed. The uploaded image was created:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
     <td>
       opernball.jpg
@@ -104,11 +104,11 @@ It is possible to select the master image of an image group:
 >>> browser.getControl('Apply').click()
 >>> browser.getControl('Image file').displayValue
 ['obama-clinton-120x120.jpg']
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ...Updated on...
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
     <td>
       obama-clinton-120x120.jpg

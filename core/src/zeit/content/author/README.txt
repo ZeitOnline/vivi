@@ -21,7 +21,7 @@ Authors
 >>> shakespeare.vgwortid = 12345
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
->>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(shakespeare.xml, pretty_print=True))
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Sir</title>
   <firstname>William</firstname>
@@ -36,7 +36,7 @@ takes precedence:
 >>> shakespeare.entered_display_name = 'Flub'
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
->>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(shakespeare.xml, pretty_print=True))
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Sir</title>
   <firstname>William</firstname>
@@ -49,7 +49,7 @@ takes precedence:
 >>> shakespeare.entered_display_name = None
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
->>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(shakespeare.xml, pretty_print=True))
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Sir</title>
   <firstname>William</firstname>
@@ -64,7 +64,7 @@ The author image group is stored using the IImages interface.
 >>> images.image = repository['2007']['03']['group']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
->>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(shakespeare.xml, pretty_print=True))
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   ...
   <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
@@ -85,7 +85,7 @@ It takes precedence over the freetext authors:
 ...     co.authors = ['Charles Dickens']
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
 ...         ICommonMetadata, 'authorships', 'authors'))
->>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
 <testtype>
   <head>
     <author ... href="http://xml.zeit.de/shakespeare" ...>
@@ -103,7 +103,7 @@ It takes precedence over the freetext authors:
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = []
 ...     co.authors = ['Charles Dickens']
->>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
 <testtype>
   <head>
     <attribute ... name="author">Charles Dickens</attribute>

@@ -10,7 +10,7 @@ Toplits are automatically created when the CP is created.
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> print browser.contents
+>>> print(browser.contents)
 <div...
 <div class="cpextra-title">Meistgelesen</div>
 <div class="cpextra-id">mostread</div>
@@ -29,10 +29,10 @@ CP extras can be edited:
 ['Meistgelesen']
 >>> browser.getControl('CP Extra Id').displayValue = ['Wetter']
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...Updated on...
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
 <div class="cpextra-title">Wetter</div>
 <div class="cpextra-id">weather</div>

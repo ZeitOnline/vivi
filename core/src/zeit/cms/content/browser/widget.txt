@@ -91,7 +91,7 @@ u''
 Set a tree as rendered value:
 
 >>> widget.setRenderedValue(content.whole_tree)
->>> print widget()
+>>> print(widget())
 <div class="pygments"><pre><span></span><span class="nt">&lt;a&gt;</span>
   <span class="nt">&lt;b/&gt;</span>
   <span class="nt">&lt;editme&gt;</span>

@@ -48,7 +48,7 @@ Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
 
->>> print browser.contents
+>>> print(browser.contents)
  <!DOCTYPE html ...
      <div class="error">
        The action you were trying to do could not be finished because the

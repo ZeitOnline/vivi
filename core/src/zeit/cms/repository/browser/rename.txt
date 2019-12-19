@@ -24,7 +24,7 @@ Let's open the document indicated by the javascript link:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              'online/2007/01/Somalia/@@rename-box')
->>> print browser.contents
+>>> print(browser.contents)
 <div id="rename-box" class="floating">
   <h1>
     Rename
@@ -41,7 +41,7 @@ The new name field initially contains the old name:
 When we just submit we'll get an error because 'Somalia' already exists:
 
 >>> browser.getControl('Rename').click()
->>> print browser.contents
+>>> print(browser.contents)
 <div id="rename-box" class="floating">
     ...
     <ul class="errors">
@@ -55,7 +55,7 @@ Umlauts are not allowed in file names:
 
 >>> browser.getControl('New file name').value = 'Sööö'
 >>> browser.getControl('Rename').click()
->>> print browser.contents
+>>> print(browser.contents)
 <div id="rename-box" class="floating">
     ...
     <ul class="errors">
@@ -74,7 +74,7 @@ Choose a new name now and submit:
 The page contains the url to the renamed object. Javascript
 will redirect to this URL:
 
->>> print browser.contents
+>>> print(browser.contents)
 <div id="rename-box" class="floating">
     ...
    <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia-krieg/@@view.html</span>
@@ -86,7 +86,7 @@ renamed. There is also a message that the content was renamed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...              '2007/01/Somalia-krieg/@@view.html')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
    <li class="message">Renamed "Somalia" to "Somalia-krieg"</li>
               ...
@@ -126,5 +126,5 @@ A manager could rename, but only empty folders:
 >>> browser.getLink('Rename')
 <Link text='Rename' url='javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/empty/@@rename-box')'>
 >>> browser.open('http://localhost/++skin++cms/repository/empty/@@rename-box')
->>> print browser.contents
+>>> print(browser.contents)
 <div id="rename-box"...

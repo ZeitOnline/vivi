@@ -13,7 +13,7 @@ We need a testbrowser first:
 >>> browser.open('edit.form.recension-list')
 >>> listing = browser.url
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
     There are no book information items, yet.
     ...
@@ -26,7 +26,7 @@ is False:
 >>> zeit.cms.testing.set_site()
 >>> with zeit.cms.testing.interaction():
 ...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
-...     print somalia.has_recensions
+...     print(somalia.has_recensions)
 False
 
 Let's add one:
@@ -39,7 +39,7 @@ Let's add one:
 >>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
->>> print browser.contents
+>>> print(browser.contents)
 <fieldset id="recensions">
   <div class="recensions">
     ...
@@ -52,7 +52,7 @@ XSLT). XXX Note that it currently is never removed again.
 
 >>> with zeit.cms.testing.interaction():
 ...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
-...     print somalia.has_recensions
+...     print(somalia.has_recensions)
 True
 
 Let's edit and add some more information:
@@ -65,7 +65,7 @@ Let's edit and add some more information:
 >>> browser.getControl('Price').value = '24.90'
 >>> browser.getControl('Apply').click()
 >>> browser.open(listing)
->>> print browser.contents
+>>> print(browser.contents)
 <fieldset id="recensions">
   <div class="recensions">
   <link ...
@@ -88,7 +88,7 @@ Let's have a look at the source code:
 
 >>> browser.open('@@edit.html')
 >>> browser.getLink('Source').click()
->>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
+>>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
 <article>...
   <body ...
     <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -123,7 +123,7 @@ Let's add another recension:
 >>> browser.getControl('Price').value = '13.80'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
->>> print browser.contents
+>>> print(browser.contents)
 <fieldset id="recensions">
   <div class="recensions">
       ...

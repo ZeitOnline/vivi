@@ -29,7 +29,7 @@ XXX This check has an isolation/ordering problem. If it runs *after* tests
 from zeit.content.article.browser, it fails. If run before or stand-alone, it
 works fine.
 
-#>>> print browser.contents
+#>>> print(browser.contents)
 <div id="editable-body"
      cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body"
      class="editable-area action-block-sorter">
@@ -66,7 +66,7 @@ A module can be created:
   u'when': None},
  {u'args': [u'id-15'], u'name': u'added', u'when': u'after-reload'}]
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div id="editable-body"
 ...
   <div class="block type-image...
@@ -95,7 +95,7 @@ Drop of an uniqueId which doesn't resolve to an object returns an error:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
->>> print browser.contents
+>>> print(browser.contents)
 <...The object "nada" does not exist...
 
 
@@ -107,7 +107,7 @@ Drop of an object which cannot be converted to a block returns an error:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
->>> print browser.contents
+>>> print(browser.contents)
 <...Could not create block for "http://xml.zeit.de/testcontent",
 because I don't know which one...
 
