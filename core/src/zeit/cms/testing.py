@@ -499,16 +499,26 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
 # XXX Hopefully not necessary once we're on py3
 class OutputChecker(zope.testing.renormalizing.RENormalizing):
 
+    string_prefix = re.compile(r"(\W|^)[uU]([rR]?[\'\"])", re.UNICODE)
+
+    # Strip out u'' literals, adapted from
+    # <https://stackoverflow.com/a/56507895>.
+    def remove_u(self, want, got):
+        return (re.sub(self.string_prefix, r'\1\2', want),
+                re.sub(self.string_prefix, r'\1\2', got))
+
     def check_output(self, want, got, optionflags):
         # `want` is already unicode, since we pass `encoding` to DocFileSuite.
         if not isinstance(got, six.text_type):
             got = got.decode('utf-8')
+        want, got = self.remove_u(want, got)
         super_ = zope.testing.renormalizing.RENormalizing
         return super_.check_output(self, want, got, optionflags)
 
     def output_difference(self, example, got, optionflags):
         if not isinstance(got, six.text_type):
             got = got.decode('utf-8')
+        example.want, got = self.remove_u(example.want, got)
         super_ = zope.testing.renormalizing.RENormalizing
         return super_.output_difference(self, example, got, optionflags)
 
