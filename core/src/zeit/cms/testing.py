@@ -838,8 +838,11 @@ class Browser(zope.testbrowser.browser.Browser):
         super(Browser, self).__init__(wsgi_app=wsgi_app)
 
     def login(self, username, password):
-        self.addHeader('Authorization', 'Basic %s' % base64.b64encode(
-            ('%s:%s' % (username, password)).encode('utf-8')))
+        auth = base64.b64encode(
+            ('%s:%s' % (username, password)).encode('utf-8'))
+        if sys.version_info > (3,):
+            auth = auth.decode('ascii')
+        self.addHeader('Authorization', 'Basic %s' % auth)
 
     def reload(self):
         # Don't know what the superclass is doing here, exactly, but it's not
