@@ -216,10 +216,10 @@ else:
 # Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
 # (Actually the old behaviour probably was to rely on the py2 str laxness, but
 # all we really want is utf-8, so that's alright.)
-def maybe_encode(value):
-    if isinstance(value, six.text_type):
-        value = value.encode('utf-8')
+def maybe_decode(value):
+    if isinstance(value, six.binary_type):
+        value = value.decode('utf-8')
     return value
 
 
-ZConfig.datatypes.stock_datatypes["string"] = maybe_encode
+ZConfig.datatypes.stock_datatypes["string"] = maybe_decode

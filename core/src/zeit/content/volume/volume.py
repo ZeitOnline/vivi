@@ -76,7 +76,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if text is None:
             config = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.content.volume')
-            text = config['default-teaser-text'].decode('utf-8')
+            text = config['default-teaser-text']
         return self.fill_template(text)
 
     @teaserText.setter
