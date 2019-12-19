@@ -15,7 +15,7 @@ To get a ticket we have to authenticate normally first:
 Status: 200 Ok
 Cache-Control: no-cache
 Content-Length: 60
-Content-Type: text/plain
+Content-Type: text/plain...
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 Every time we ask for a ticket we get a new one:

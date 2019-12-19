@@ -73,11 +73,11 @@ format = '>q28s'
 
 def pack(rnd, hash_, principal):
     packed = struct.pack(format, rnd, hash_) + principal
-    return base64.urlsafe_b64encode(packed).strip()
+    return base64.urlsafe_b64encode(packed).decode('ascii').strip()
 
 
 def unpack(ticket):
-    ticket = base64.urlsafe_b64decode(str(ticket))
+    ticket = base64.urlsafe_b64decode(ticket.encode('ascii'))
     rnd, hash_ = struct.unpack_from(format, ticket)
     principal = ticket[struct.calcsize(format):]
     return rnd, hash_, principal
