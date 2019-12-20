@@ -54,7 +54,7 @@
 </div>
 <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">
-  <div id="topcontent">
+  <div id="topcontent" class="toc_topcontent">
       <table
         tal:replace="structure view/contentTable">
         Table with contents...
