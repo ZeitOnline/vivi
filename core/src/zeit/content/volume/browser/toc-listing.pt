@@ -1,56 +1,76 @@
 <div id="tableFilter">Filter: <input name="tableFilter" type="text" value="" /></div>
 <div id="tocListingFilter">
-    <span
-      tal:content="view/contenttype"
-      i18n:translate="">
-        Content-Typ
+    <span class="toclisting_container">
+      <span
+        tal:content="view/contenttype"
+        i18n:translate="">
+          Content-Typ
+      </span>
+      <select id="filter_content_typ"></select>
     </span>
-    <select id="filter_content_typ">
-    </select>
-    <span
-      tal:content="view/availability"
-      i18n:translate="">
-        Availability
+    
+    <span class="toclisting_container">
+      <span
+        tal:content="view/availability"
+        i18n:translate="">
+          Availability
+      </span>
+      <select id="filter_availibility"></select>
     </span>
-    <select id="filter_availibility">
-    </select>
-    <span
-      tal:content="view/is_urgent"
-      i18n:translate="">
-        is urgent
+
+    <span class="toclisting_container">
+      <span
+        tal:content="view/is_urgent"
+        i18n:translate="">
+          is urgent
+      </span>
+      <input type="checkbox" id="filter_is_urgent" />
     </span>
-    <input type="checkbox" id="filter_is_urgent" />
-    <span 
-      tal:content="view/is_seo_optimized"
-      i18n:translate="">
-        is SEO optimized
+
+    <span class="toclisting_container">
+      <span 
+        tal:content="view/is_seo_optimized"
+        i18n:translate="">
+          is SEO optimized
+      </span>
+      <input type="checkbox" id="filter_is_optimized"/>
     </span>
-    <input type="checkbox" id="filter_is_optimized"/>
-    <span
-      tal:content="view/ressort"
-      i18n:translate="">
-        Ressort
+
+    <span class="toclisting_container">
+      <span
+        tal:content="view/ressort"
+        i18n:translate="">
+          Ressort
+      </span>
+      <select id="filter_ressort"></select>
     </span>
-    <select id="filter_ressort">
-    </select>
-    <span
-      tal:content="view/teaser_image_available"
-      i18n:translate="">
-        Teaser image available
+
+    <span class="toclisting_container">
+      <span
+        tal:content="view/teaser_image_available"
+        i18n:translate="">
+          Teaser image available
+      </span>
+      <input type="checkbox" id="filter_has_teaser_img"/>
     </span>
-    <input type="checkbox" id="filter_has_teaser_img"/>
-    <span
-      tal:content="view/supertitle_available"
-      i18n:translate="">
-        Supertitle available
+    
+    <span class="toclisting_container">
+      <span
+        tal:content="view/supertitle_available"
+        i18n:translate="">
+          Supertitle available
+      </span>
+      <input type="checkbox" id="filter_has_supertitle"/>
     </span>
-    <input type="checkbox" id="filter_has_supertitle"/>
-    <span id="numberOfVisibleRows"></span>
-    <strong
-      tal:content="view/rows"
-      i18n:translate="">
-        rows
-    </strong>
+
+    <span class="toclisting_container">
+      <span id="numberOfVisibleRows"></span>
+      <strong
+        tal:content="view/rows"
+        i18n:translate="">
+          rows
+      </strong>
+    </span>
 </div>
 <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">

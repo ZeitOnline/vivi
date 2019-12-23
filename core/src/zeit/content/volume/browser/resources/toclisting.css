@@ -10,3 +10,7 @@
 #tocListingFilter {
    width: 75%;
 }
+
+#tocListingFilter > .toclisting_container {
+   padding-left: 30px;
+}
