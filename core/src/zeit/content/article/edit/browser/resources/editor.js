@@ -152,33 +152,23 @@ zeit.content.article.Editable = gocept.Class.extend({
             // Catch the blur-signal in the capturing-phase!
             // In case you use the toolbar, the editing-mode won't be stopped.
             var handle_blur = function(e) {
-                var clicked_on_block =
-                    MochiKit.DOM.getFirstParentByTagAndClassName(
-                       e.explicitOriginalTarget, 'div', 'block');
-                // VIV-395: The explicitOriginalTarget only has a meaningful
-                // value, if the user did *not* click on an input field or a
-                // textarea. In this case the explicitOriginalTarget is the
-                // editor node itself, which doesn't help us at all in detecting
-                // whether we should close the editor or not. Luckily the
-                // rangeParent is null in this case. We use this as additional
-                // indicator for closing or not closing.
-                var probably_targeted_input_field = isNull(e.rangeParent);
-                var is_in_block = (clicked_on_block == self.block) &&
-                    !probably_targeted_input_field;
-                // BUG-837: At some point FF decided to trigger a blur event
-                // when FindDialog.on_close() restores the selection back to
-                // the editable text node. In that case, the <a>"SEA"</a> is
-                // the explicitOriginalTarget, but rangeParent is null,
-                // breaking the above heuristic.
-                if (!is_in_block) {
-                    var is_in_toolbar = !isNull(
-                        MochiKit.DOM.getFirstParentByTagAndClassName(
-                           e.explicitOriginalTarget, 'div', 'rte-toolbar'));
-                    if (is_in_toolbar) is_in_block = true;
+                // Try to detect whether we should close the editor or not.
+                var skip_event = false;
+                // FocusEvent.relatedTarget = the EventTarget receiving focus (if any)
+                // (FF >= 48)
+                // Element.closest() returns itself or the matching ancestor.
+                // If no such element exists, it returns null. (FF >= 35)
+                if (e.relatedTarget) {
+                    var clicked_on_block = e.relatedTarget.closest('div.block');
+                    skip_event = (clicked_on_block == self.block);
+                    if (!skip_event) {
+                        var is_in_toolbar = e.relatedTarget.closest('div.rte-toolbar');
+                        skip_event = is_in_toolbar;
+                    }
                 }
-                log("Blur while editing:", is_in_block, self.block.id);
+                log("Blur while editing:", skip_event, self.block.id);
                 if (!self.unconditional_save_on_blur && (
-                        is_in_block || self.locked)) {
+                        skip_event || self.locked)) {
                     e.stopPropagation();
                 } else {
                     self.editable.parentNode.removeEventListener(
