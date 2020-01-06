@@ -497,14 +497,24 @@ HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
 
-    # copy&paste from superclass to customize the ff binary
+    # copy&paste from superclass to customize the ff binary, and to note that
+    # chrome indeed does support non-headless now.
     def _start_selenium(self):
-        options = selenium.webdriver.FirefoxOptions()
-        if self.headless:
-            options.add_argument('-headless')
-        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
-        self['seleniumrc'] = selenium.webdriver.Firefox(
-            firefox_profile=self.profile, options=options)
+        if self._browser == 'firefox':
+            options = selenium.webdriver.FirefoxOptions()
+            if self.headless:
+                options.add_argument('-headless')
+            options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+            self['seleniumrc'] = selenium.webdriver.Firefox(
+                firefox_profile=self.profile, options=options)
+
+        if self._browser == 'chrome':
+            options = selenium.webdriver.ChromeOptions()
+            if self.headless:
+                options.add_argument('--headless')
+            self['seleniumrc'] = selenium.webdriver.Chrome(
+                options=options,
+                service_args=['--log-path=chromedriver.log'])
 
 
 WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
