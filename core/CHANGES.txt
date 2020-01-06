@@ -7,6 +7,9 @@ vivi.core changes
 
 - ZON-5645: Make source-code (hopefully) py3 compatible
 
+- ZON-5771: Make RTE toolbar compatible for Google Chrome
+
+
 
 4.25.3 (2019-12-18)
 -------------------
