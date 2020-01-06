@@ -61,7 +61,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'artbox_thema', 'layout', 'genre',
+        ('has_recensions', 'artbox_thema', 'genre',
          'template', 'header_layout', 'is_instant_article', 'is_amp',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
          'recent_comments_first'))
@@ -240,30 +240,6 @@ def iter_referenced_content(context):
             else:
                 referenced_content.append(element.references)
     return referenced_content
-
-
-class LayoutDependency(zeit.workflow.dependency.DependencyBase):
-
-    grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('zeit.content.article.layout')
-
-    def get_dependencies(self):
-        layout = self.context.layout
-        if layout is not None and self.needs_publishing(layout):
-            return [layout]
-        else:
-            return []
-
-    def needs_publishing(self, content):
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        dc = zope.dublincore.interfaces.IDCTimes(content)
-
-        if not workflow.published:
-            return True
-        if not all((workflow.date_last_published, dc.modified)):
-            return False
-
-        return workflow.date_last_published < dc.modified
 
 
 @grok.implementer(zope.index.text.interfaces.ISearchableText)

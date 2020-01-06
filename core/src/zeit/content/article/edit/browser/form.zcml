@@ -804,25 +804,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.OptionFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.misc-layout"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="50"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.misc-layout"
-    class=".form.OptionsLayout"
-    permission="zope.View"
-    />
-
   <!-- timebased -->
 
   <browser:viewlet

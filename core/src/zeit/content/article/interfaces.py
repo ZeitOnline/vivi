@@ -3,7 +3,6 @@ import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
-import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zope.schema
 
@@ -41,11 +40,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     artbox_thema = zope.schema.Bool(
         title=_('First related as box'),
         default=False,
-        required=False)
-
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.source.centerPageSource,
         required=False)
 
     genre = zope.schema.Choice(

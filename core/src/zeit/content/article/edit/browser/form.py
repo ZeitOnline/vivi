@@ -460,25 +460,6 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('overscrolling')
 
 
-class OptionsLayout(zeit.edit.browser.form.InlineForm):
-
-    legend = ''
-    prefix = 'options-layout'
-    undo_description = _('edit options')
-    form_fields = (
-        FormFields(IArticle).select('layout'))
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(OptionsLayout, self).__call__()
-
-    def setUpWidgets(self, *args, **kw):
-        super(OptionsLayout, self).setUpWidgets(*args, **kw)
-        self.widgets['layout'].display_search_button = False
-        self.widgets['layout'].display_url_field = False
-
-
 class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Run in channel')
