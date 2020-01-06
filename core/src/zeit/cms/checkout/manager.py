@@ -16,12 +16,11 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(
+    zeit.cms.checkout.interfaces.ICheckoutManager,
+    zeit.cms.checkout.interfaces.ICheckinManager)
 class CheckoutManager(object):
-
-    zope.interface.implements(
-        zeit.cms.checkout.interfaces.ICheckoutManager,
-        zeit.cms.checkout.interfaces.ICheckinManager)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
         self.context = context
@@ -69,7 +68,7 @@ class CheckoutManager(object):
             timeout = int(config[timeout])
             try:
                 lockable.lock(timeout=timeout)
-            except zope.app.locking.interfaces.LockingError, e:
+            except zope.app.locking.interfaces.LockingError as e:
                 # This is to catch a race condition when the object is locked
                 # by another process/thread between the lock check above and
                 # here.

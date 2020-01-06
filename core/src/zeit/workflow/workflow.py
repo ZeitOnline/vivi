@@ -16,15 +16,14 @@ WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 logger = logging.getLogger(__name__)
 
 
+@zope.component.adapter(zeit.cms.interfaces.IEditorialContent)
+@zope.interface.implementer(zeit.workflow.interfaces.IContentWorkflow)
 class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     """Adapt ICMSContent to IWorkflow using the "live" data from connector.
 
     We must read and write properties directly from the DAV to be sure we
     actually can do the transition.
     """
-
-    zope.interface.implements(zeit.workflow.interfaces.IContentWorkflow)
-    zope.component.adapts(zeit.cms.interfaces.IEditorialContent)
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IContentWorkflow,

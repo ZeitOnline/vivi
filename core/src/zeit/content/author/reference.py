@@ -2,6 +2,7 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import six
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.author.interfaces
@@ -40,12 +41,12 @@ class AuthorshipXMLReferenceUpdater(
         # BBB The ``author`` attribute is deprecated in favor of the <author>
         # tags, but XSLT and mobile still use it.
         try:
-            legacy_author = unicode(';'.join(
+            legacy_author = six.text_type(';'.join(
                 [x.target.display_name for x in context.authorships]))
             node.attrib.pop('author', None)
             if context.authorships:
                 node.set('author', legacy_author)
-        except:
+        except Exception:
             # We've sometimes seen data errors with Friedbert where authors
             # don't have a type (and thus no ``display_name``), see VIV-629.
             if not self.suppress_errors:

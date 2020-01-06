@@ -4,6 +4,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import celery
+import six
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
 import zope.browserpage
@@ -52,7 +53,7 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
     def __call__(self, job, objectlog=False):
         async_result = celery.result.AsyncResult(job)
         if async_result.failed():
-            error = unicode(async_result.result)
+            error = six.text_type(async_result.result)
             self.send_message(error, type='error')
             if objectlog:
                 zeit.objectlog.interfaces.ILog(self.context).log(error)

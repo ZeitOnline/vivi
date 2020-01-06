@@ -11,9 +11,8 @@ Create a mock repository:
 >>> import zope.component
 >>> import zope.interface
 >>> import zope.location.interfaces
->>>
->>> class Repository(object):
-...     zope.interface.implements(zope.location.interfaces.ILocation)
+>>> @zope.interface.implementer(zope.location.interfaces.ILocation)
+... class Repository(object):
 ...     __parent__ = getRootFolder()
 ...     __name__ = 'repo'
 ...
@@ -32,11 +31,11 @@ Create a mock repository:
 Create a simple content object:
 
 >>> import zope.annotation.interfaces
->>> class Content(object):
-...     zope.interface.implements(
-...         zeit.cms.interfaces.ICMSContent,
-...         zope.location.interfaces.ILocation,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
+>>> @zope.interface.implementer(
+...     zeit.cms.interfaces.ICMSContent,
+...     zope.location.interfaces.ILocation,
+...     zope.annotation.interfaces.IAttributeAnnotatable)
+... class Content(object):
 ...     __parent__ = repository
 ...     __name__ = u'content'
 ...     uniqueId = 'http://xml.zeit.de/content'
@@ -51,8 +50,8 @@ To browse the repository the widget needs to look up the default browsing
 location. Create a mock adapter which returns the repository:
 
 >>> def browsing_location_adapter(context, schema):
-...     print "Returning location for", context
-...     print "   ", schema
+...     print("Returning location for %s" % context)
+...     print("    %s" % schema)
 ...     return repository
 >>> import zeit.cms.browser.interfaces
 >>> import zeit.cms.content.interfaces
@@ -110,7 +109,7 @@ The type filter token is used by the object browser to filter types:
 
 Render the widget:
 
->>> print widget()
+>>> print(widget())
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-reference-widget" id="field.reference.outerdiv">
@@ -146,7 +145,7 @@ information:
 ...     field, source, request)
 >>> widget.getInputValue()
 <Content object at 0x...>
->>> print widget()
+>>> print(widget())
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-reference-widget" id="field.reference.outerdiv">
@@ -190,7 +189,7 @@ WidgetInputError: ('reference', u'',
 
 The invalid value is rendered:
 
->>> print widget()
+>>> print(widget())
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-reference-widget" id="field.reference.outerdiv">
@@ -230,7 +229,7 @@ ConversionError: (u'The object could not be found.', None)
 
 The invalid value is still rendered though:
 
->>> print widget()
+>>> print(widget())
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
 <div class="object-reference-widget" id="field.reference.outerdiv">
@@ -269,7 +268,7 @@ link title. The workflow status is shown as well:
 >>> widget = zeit.cms.browser.widget.ObjectReferenceDisplayWidget(
 ...     field, source, request)
 >>> widget.setRenderedValue(Content())
->>> print widget()
+>>> print(widget())
 <a href="http://127.0.0.1/repo/content" id="...">http://xml.zeit.de/content</a>
 <span class="publish-state not-published" title="Not published"></span>
 <script language="javascript">
@@ -302,7 +301,7 @@ in one month:
 
 >>> field = zope.schema.Datetime()
 >>> widget = zeit.cms.browser.widget.DatetimeWidget(field, request)
->>> print widget()
+>>> print(widget())
 <div class="dateTimeWidget">
 <input class="textType" id="field." name="field." size="20" type="text" value=""  />
 <input type="button" value="..." id="field._trigger">

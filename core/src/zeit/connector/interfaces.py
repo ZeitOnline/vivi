@@ -252,7 +252,7 @@ class IResource(zope.interface.Interface):
     contentType = zope.schema.BytesLine(
         title=u"Content Type",
         description=u'The mime content type identifies the type of data.',
-        default='',
+        default=b'',
         required=False)
 
     properties = zope.schema.Object(
@@ -343,9 +343,8 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
     id = zope.interface.Attribute("Unique id of resource")
 
 
+@zope.interface.implementer(IResourceInvalidatedEvent)
 class ResourceInvalidatedEvent(object):
-
-    zope.interface.implements(IResourceInvalidatedEvent)
 
     def __init__(self, id):
         self.id = id

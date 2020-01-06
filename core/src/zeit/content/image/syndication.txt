@@ -28,7 +28,7 @@ Insert content to the feed:
 
 We have not added any image, so no image is referenced:
 
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
@@ -62,7 +62,7 @@ Reference the image group:
 Update the metadata of the feed. The image is now referenced:
 
 >>> feed.updateMetadata(content)
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>
@@ -86,7 +86,7 @@ When we have no image referenced it is also removed from the channel:
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 >>> feed.updateMetadata(content)
->>> print feed.xml_source,
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title/>
   <container>

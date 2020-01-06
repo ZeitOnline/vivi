@@ -16,7 +16,7 @@ u'homepage'
 The ancient XML representation looked as follows:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cp.xml, pretty_print=True))
 <centerpage... type="homepage"...>
   <head>...
   <body>
@@ -27,8 +27,8 @@ The ancient XML representation looked as follows:
   </body>
 </centerpage>
 >>> import zeit.connector.interfaces
->>> print zeit.connector.interfaces.IWebDAVProperties(cp)[
-...     ('type', 'http://namespaces.zeit.de/CMS/zeit.content.cp')]
+>>> print(zeit.connector.interfaces.IWebDAVProperties(cp)[
+...     ('type', 'http://namespaces.zeit.de/CMS/zeit.content.cp')])
 homepage
 
 
@@ -79,7 +79,7 @@ Header image
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> cp.header_image = repository['2006']['DSC00109_2.JPG']
->>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cp.xml, pretty_print=True))
 <centerpage...>
 <head>
 ...
@@ -94,7 +94,7 @@ OG-Metadata
 >>> cp.og_title = 'Isch bin da Title'
 >>> cp.og_description = 'Hier geht die Description'
 >>> cp.og_image = 'yo-man.jpg'
->>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cp.xml, pretty_print=True))
 <centerpage...>
   <head>
 ...
@@ -131,7 +131,7 @@ u'List of teasers'
 
 After calling the factory a corresponding XML node has been created:
 
->>> print lxml.etree.tostring(informatives.xml, pretty_print=True),
+>>> print(lxml.etree.tostring(informatives.xml, pretty_print=True))
 <region ... area="informatives"...>
   <container cp:type="teaser" module="buttons" ... cp:__name__="..."/>
 </region>
@@ -239,7 +239,7 @@ When we now check in the centerpage, the changes in our article are propagated.
 
 >>> cp = zeit.cms.checkout.interfaces.ICheckinManager(cp).checkin()
 >>> cp = repository['cp']
->>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cp.xml, pretty_print=True))
 <centerpage ...
 <block href="http://xml.zeit.de/testcontent"...
   <title py:pytype="str">Foo</title>...
@@ -247,7 +247,7 @@ When we now check in the centerpage, the changes in our article are propagated.
 
 Content referenced in a centerpage has additional dates on the node:
 
->>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cp.xml, pretty_print=True))
 <centerpage...
   <block href="http://xml.zeit.de/testcontent"...
          date-last-modified="2009-09-11T08:18:48+00:00"
@@ -267,7 +267,7 @@ The metadata is updated (asynchronously) when the centerpage is checked in:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
 ...     pass
->>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['cp'].xml, pretty_print=True))
 <centerpage...
   <block href="http://xml.zeit.de/testcontent"...
          date-last-modified="2009-09-11T08:18:48+00:00"
@@ -286,7 +286,7 @@ The data is, again, updated when the CP is checked in:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
 ...     pass
->>> print lxml.etree.tostring(repository['cp'].xml, pretty_print=True)
+>>> print(lxml.etree.tostring(repository['cp'].xml, pretty_print=True))
 <centerpage...
   <block href="http://xml.zeit.de/testcontent"...
          date-last-modified="2009-09-11T08:18:48+00:00"

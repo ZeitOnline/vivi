@@ -1,13 +1,12 @@
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
+@grok.implementer(zeit.content.article.edit.interfaces.ICitation)
 class Citation(zeit.content.article.edit.block.Block):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.ICitation)
     type = 'citation'
 
     text = zeit.cms.content.property.ObjectPathAttributeProperty(

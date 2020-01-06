@@ -86,8 +86,8 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         content = self.get_content()
         push = zeit.push.interfaces.IPushMessages(content)
         for service in push.message_config:
-            if (service['type'] != 'facebook'
-                or service.get('account') != 'fb-magazin'):
+            if (service['type'] != 'facebook' or
+                    service.get('account') != 'fb-magazin'):
                 continue
             self.assertEqual('facebook', service['override_text'])
             break
@@ -96,4 +96,3 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         self.open_form()
         self.assertEqual(
             'facebook', b.getControl('Facebook Magazin Text').value)
-

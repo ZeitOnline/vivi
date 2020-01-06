@@ -20,7 +20,7 @@ List the folders and files in /
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
@@ -39,7 +39,7 @@ Descent to the repository:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/repository/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/repository/"
@@ -64,7 +64,7 @@ Let's descent from the root into the clipboard:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
@@ -101,7 +101,7 @@ Let's have a look how the clipboard looks now:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
@@ -120,7 +120,7 @@ Our clip is listed! Decent:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
@@ -153,7 +153,7 @@ The root listing contains it now:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
@@ -173,7 +173,7 @@ List it:
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/bilder/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/bilder/" url="http://localhost"/>

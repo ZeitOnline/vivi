@@ -56,12 +56,12 @@ True
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> from zeit.connector.resource import Resource
 >>> res = Resource('http://xml.zeit.de/%s/conn1' % TESTFOLDER(),
 ...                'conn1',
 ...                'text',
-...                StringIO.StringIO('Pop goes the weasel!'),
+...                BytesIO(b'Pop goes the weasel!'),
 ...                contentType = 'text/plain')
 >>> res.id in connector
 False
@@ -119,7 +119,7 @@ Remove the `conn1` after user:
 
 The object can be also stored dictionary-style:
 
->>> res.data = StringIO.StringIO("Round and round the cobbler's bench")
+>>> res.data = BytesIO(b"Round and round the cobbler's bench")
 >>> connector["http://xml.zeit.de/%s/conn2" % TESTFOLDER()] = res
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
 [(u'conn2', u'http://xml.zeit.de/testing.../conn2')]
@@ -142,7 +142,7 @@ Note: name comes first -- don't ask me why:
 >>> token = connector.lock('http://xml.zeit.de/%s/conn3' % TESTFOLDER(),
 ...                        'zope.user',
 ...                        datetime.now(pytz.UTC) + timedelta(hours=2))
->>> res.data = StringIO.StringIO("Mary had a little lamb")
+>>> res.data = BytesIO(b"Mary had a little lamb")
 >>> res.properties[('colour', 'http://namespaces.zeit.de/test')] = (
 ...     'bright blue')
 >>> res.properties[('colour', 'http://namespaces.zeit.de/test2')] = (
@@ -178,7 +178,7 @@ u''
 
 Resources can be overwritten by just assigning them again:
 
->>> res.data = StringIO.StringIO("Mary had two little lambs")
+>>> res.data = BytesIO(b"Mary had two little lambs")
 >>> connector["http://xml.zeit.de/%s/conn3" % TESTFOLDER()] = res
 >>> res_got = connector["http://xml.zeit.de/%s/conn3" % TESTFOLDER()]
 >>> res_got.data.read()
@@ -206,7 +206,7 @@ object first:
 >>> import zeit.connector.resource
 >>> collection_id = 'http://xml.zeit.de/%s/my-collection/' % TESTFOLDER()
 >>> coll = zeit.connector.resource.Resource(
-...     collection_id, 'my-collection', 'collection', StringIO.StringIO(''))
+...     collection_id, 'my-collection', 'collection', BytesIO(b''))
 
 Add the collection rssource to the dav and see we get it back:
 
@@ -227,7 +227,7 @@ content-type is boss:
 ...     'http://xml.zeit.de/%s/my-other-collection' % TESTFOLDER())
 >>> coll = zeit.connector.resource.Resource(
 ...     other_collection_id, 'my-other-collection', 'image-group',
-...     StringIO.StringIO(''),
+...     BytesIO(b''),
 ...     contentType='httpd/unix-directory')
 
 Again, add the collection:
@@ -272,7 +272,7 @@ Try a single file first. Create it:
 >>> res = Resource('http://xml.zeit.de/%s/copy-test' % TESTFOLDER(),
 ...                'conn1',
 ...                'text',
-...                StringIO.StringIO('Pop goes the weasel!'),
+...                BytesIO(b'Pop goes the weasel!'),
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 
@@ -372,7 +372,7 @@ Lets create an object which we can move then:
 >>> res = Resource('http://xml.zeit.de/%s/move-test' % TESTFOLDER(),
 ...                'conn1',
 ...                'text',
-...                StringIO.StringIO('Pop goes the weasel!'),
+...                BytesIO(b'Pop goes the weasel!'),
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
@@ -396,7 +396,7 @@ We cannot move an object onto another:
 >>> res = Resource('http://xml.zeit.de/%s/move-test-2' % TESTFOLDER(),
 ...                'conn1',
 ...                'text',
-...                StringIO.StringIO('Pop goes the fox!'),
+...                BytesIO(b'Pop goes the fox!'),
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 >>> connector.move('http://xml.zeit.de/%s/move-test-2' % TESTFOLDER(),

@@ -1,8 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-from zope.i18nmessageid import ZopeMessageFactory as _zope
-import datetime
 import gocept.form.grouped
-import pytz
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zope.container.interfaces

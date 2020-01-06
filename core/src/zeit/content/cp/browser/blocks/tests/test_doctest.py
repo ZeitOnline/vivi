@@ -1,3 +1,4 @@
+from six.moves import range
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype

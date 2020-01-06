@@ -7,7 +7,7 @@ from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
 import lxml.etree
 import mock
 import requests_mock
-import urllib
+import six.moves.urllib.parse
 import zeit.cms.interfaces
 import zeit.content.author.author
 import zeit.content.author.testing
@@ -133,7 +133,8 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
 
     def acs(self, email, **json):
         base = self.config['sso-api-url']
-        url = '{}/users/{}'.format(base, urllib.quote(email.encode('utf8')))
+        url = '{}/users/{}'.format(base, six.moves.urllib.parse.quote(
+            email.encode('utf8')))
         m = requests_mock.Mocker()
         m.get(url, status_code=200, json=json)
         return m

@@ -11,11 +11,11 @@ import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.link.interfaces.ILink,
+    zeit.cms.interfaces.IEditorialContent)
 class Link(zeit.cms.content.metadata.CommonMetadata):
     """A type for managing links to non-local content."""
-
-    zope.interface.implements(zeit.content.link.interfaces.ILink,
-                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = (
         '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
@@ -48,9 +48,8 @@ class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'link'
 
 
+@zope.component.adapter(zeit.content.link.interfaces.ILink)
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
-    zope.component.adapts(zeit.content.link.interfaces.ILink)
 
     def update(self, entry, suppress_errors=False):
         url = self.context.url

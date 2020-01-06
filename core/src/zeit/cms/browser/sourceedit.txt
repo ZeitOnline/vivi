@@ -8,9 +8,9 @@ Let's view the source of an object. The source syntax highlighted:
 >>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
 >>> browser.getLink('View source').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – View source code
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype&gt;</span>
 ...
@@ -18,9 +18,9 @@ testcontent – View source code
 When we check out an object we can edit the source:
 
 >>> browser.getLink('Checkout').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – Edit source code
->>> print browser.getControl('XML').value
+>>> print(browser.getControl('XML').value)
 <testtype>
   <head>...</head>
   <body/>
@@ -29,7 +29,7 @@ testcontent – Edit source code
 >>> browser.getControl('XML').value = (
 ...     '<testtype><head><foo/></head><body/></testtype>')
 >>> browser.getControl('Apply').click()
->>> print browser.getControl('XML').value
+>>> print(browser.getControl('XML').value)
 <testtype>
   <head>
     <foo/>
@@ -40,9 +40,9 @@ testcontent – Edit source code
 After checking in we see the changes in the source view:
 
 >>> browser.getLink('Checkin').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 testcontent – View source code
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype&gt;</span>
   <span class="nt">&lt;head&gt;</span> <span class="nt">&lt;foo/&gt;</span>

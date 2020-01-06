@@ -26,10 +26,9 @@ class IAutocompleteSource(INamedCMSContentSource):
         'Optional: additional kwargs for zeit.find.search.query')
 
 
+@zope.interface.implementer(INamedCMSContentSource)
 class CMSContentSource(object):
     """A source for all cms content."""
-
-    zope.interface.implements(INamedCMSContentSource)
 
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType
@@ -86,12 +85,11 @@ class FolderSource(CMSContentSource):
 folderSource = FolderSource()
 
 
+@zope.component.adapter(
+    zope.schema.interfaces.IChoice,
+    ICMSContentSource,
+    zope.interface.Interface)
 class ChoicePropertyWithCMSContentSource(object):
-
-    zope.component.adapts(
-        zope.schema.interfaces.IChoice,
-        ICMSContentSource,
-        zope.interface.Interface)
 
     def __init__(self, context, source, content):
         self.context = context

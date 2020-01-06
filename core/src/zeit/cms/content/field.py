@@ -1,8 +1,9 @@
 from zeit.cms.content.util import objectify_soup_fromstring
 from zeit.cms.i18n import MessageFactory as _
-import HTMLParser
 import lxml.etree
 import lxml.objectify
+import six
+import six.moves.html_parser
 import xml.dom.minidom
 import zope.interface
 import zope.location.location
@@ -22,9 +23,8 @@ class IXMLTree(zope.schema.interfaces.IField):
     # This is here to avoid circular imports
 
 
+@zope.interface.implementer(zope.schema.interfaces.IFromUnicode)
 class _XMLBase(zope.schema.Field):
-
-    zope.interface.implements(zope.schema.interfaces.IFromUnicode)
 
     def __init__(self, *args, **kw):
         tidy_input = kw.pop('tidy_input', False)
@@ -38,7 +38,7 @@ class _XMLBase(zope.schema.Field):
         try:
             return self.parse(text)
         except (lxml.etree.XMLSyntaxError, ValueError,
-                HTMLParser.HTMLParseError), e:
+                six.moves.html_parser.HTMLParseError) as e:
             message = str(e)
             if message == 'None':
                 # BeautifulSoup using HTMLParser used to be able to say
@@ -75,9 +75,9 @@ def located(obj, parent, name):
     return obj_
 
 
+@zope.interface.implementer(IXMLTree)
 class XMLTree(_XMLBase):
-
-    zope.interface.implements(IXMLTree)
+    pass
 
 
 class Color(zope.schema.TextLine):

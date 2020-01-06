@@ -1,9 +1,9 @@
+from io import BytesIO
 import PIL.Image
-import StringIO
 import json
 import pkg_resources
+import six.moves.urllib.parse
 import transaction
-import urllib
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
@@ -69,7 +69,7 @@ class CropTest(TestBase):
     def get_image_data(self, **form):
         self.browser.post(
             self.image_path + '/@@imp-crop',
-            urllib.urlencode(dict(
+            six.moves.urllib.parse.urlencode(dict(
                 w='1000', h='500',
                 x1='400', y1='100',
                 x2='800', y2='300',
@@ -83,7 +83,7 @@ class CropTest(TestBase):
     def test_crop_returns_image_url(self):
         self.browser.post(
             self.image_path + '/@@imp-crop',
-            urllib.urlencode(dict(
+            six.moves.urllib.parse.urlencode(dict(
                 w='1200', h='749',
                 x1='400', y1='100',
                 x2='800', y2='300',
@@ -106,7 +106,7 @@ class CropTest(TestBase):
             ('image/jpeg', 400, 200),
             zope.app.file.image.getImageInfo(image_data))
 
-        image = PIL.Image.open(StringIO.StringIO(image_data))
+        image = PIL.Image.open(BytesIO(image_data))
         # Verify some pixels around the border, they're all black:
 
         self.looks_black(image, 0, 0)

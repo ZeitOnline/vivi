@@ -1,6 +1,6 @@
 # coding: utf8
+from io import BytesIO
 import BTrees
-import StringIO
 import ZODB
 import os
 import threading
@@ -27,10 +27,10 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
     def test_etag_migration(self):
         self.cache._etags = BTrees.family64.OO.BTree()
         self.cache._etags[self.key] = 'etag1'
-        data = zeit.connector.cache.SlottedStringRef('data')
+        data = zeit.connector.cache.SlottedStringRef(b'data')
         self.cache._data[self.key] = data
         self.assertEquals(
-            'data',
+            b'data',
             self.cache.getData(self.uniqueId, self.properties1).read())
         del self.cache._etags[self.key]
         self.assertRaises(
@@ -40,8 +40,8 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
             KeyError, self.cache.getData, self.uniqueId, self.properties1)
 
     def test_missing_blob_file(self):
-        data1 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'x')
-        data2 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'y')
+        data1 = BytesIO(self.BUFFER_SIZE * 2 * b'x')
+        data2 = BytesIO(self.BUFFER_SIZE * 2 * b'y')
         self.cache.setData(self.uniqueId, self.properties1, data1)
         transaction.commit()
         body = self.cache._data[self.key]
@@ -65,7 +65,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         del data._p_changed
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
-        data2 = StringIO.StringIO(self.BUFFER_SIZE * 2 * 'y')
+        data2 = BytesIO(self.BUFFER_SIZE * 2 * b'y')
         self.cache.setData(self.uniqueId, self.properties2, data2)
         self.assertEquals(
             data2.getvalue(),
@@ -73,7 +73,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
     def test_blob_conflict_resolution(self):
         size = zeit.connector.cache.Body.BUFFER_SIZE
-        body = StringIO.StringIO('body' * size)
+        body = BytesIO(b'body' * size)
 
         def store():
             transaction.abort()

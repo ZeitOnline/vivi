@@ -20,7 +20,7 @@ class InvariantsTest(zeit.newsletter.testing.TestCase):
         category.ad_thisweeks_groups_above = 3
         try:
             INewsletterCategory.validateInvariants(category)
-        except zope.schema.ValidationError, e:
+        except zope.schema.ValidationError as e:
             raise AssertionError(e)
 
     def test_middle_ad_same_place_as_thisweeks_ad_raises(self):
@@ -204,7 +204,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         c1 = self.create_content('c1', u'Politik')
         try:
             self.builder([mock.Mock(), c1])
-        except TypeError, e:
+        except TypeError as e:
             if 'Could not adapt' == e.args[0]:
                 self.fail('Adaptation should not fail. Raised: %s' % e)
             raise e

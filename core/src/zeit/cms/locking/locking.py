@@ -1,5 +1,5 @@
 import datetime
-import grokcore.component
+import grokcore.component as grok
 import persistent.mapping
 import pytz
 import time
@@ -13,9 +13,8 @@ import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(zope.app.locking.interfaces.ILockStorage)
 class LockStorage(object):
-
-    zope.interface.implements(zope.app.locking.interfaces.ILockStorage)
 
     def getLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
@@ -47,7 +46,7 @@ class LockStorage(object):
             until = None
         try:
             self.connector.lock(object.uniqueId, lock.principal_id, until)
-        except zeit.connector.interfaces.LockingError, e:
+        except zeit.connector.interfaces.LockingError as e:
             raise zope.app.locking.interfaces.LockingError(e.uniqueId, *e.args)
         # Now make sure the object *really* exists. In case we've create a null
         # resource lock, we unlock and raise an error
@@ -71,9 +70,8 @@ class LockStorage(object):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 
+@zope.interface.implementer(zeit.cms.locking.interfaces.ILockInfo)
 class LockInfo(persistent.mapping.PersistentMapping):
-
-    zope.interface.implements(zeit.cms.locking.interfaces.ILockInfo)
 
     locked_until = None
 
@@ -96,16 +94,15 @@ class LockInfo(persistent.mapping.PersistentMapping):
             id(self))
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zope.app.locking.interfaces.ILockable)
 class CMSLockingAdapter(zope.app.locking.adapter.LockingAdapter):
     """Special locking adapter with different security."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-    zope.interface.implements(zope.app.locking.interfaces.ILockable)
 
     __repr__ = object.__repr__
 
 
-@grokcore.component.adapter(zeit.cms.interfaces.ICMSContent)
-@grokcore.component.implementer(zope.app.locking.interfaces.ILockable)
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zope.app.locking.interfaces.ILockable)
 def no_general_locking(context):
     return None

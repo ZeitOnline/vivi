@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -7,8 +7,8 @@ import zope.copypastemove.interfaces
 import zope.interface
 
 
-@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
-@grokcore.component.implementer(zeit.cms.checkout.interfaces.ILocalContent)
+@grok.adapter(zeit.cms.repository.interfaces.IDAVContent)
+@grok.implementer(zeit.cms.checkout.interfaces.ILocalContent)
 def default_local_content_adapter(context):
     # Default adapter to adapt cms content to local content: create a copy and
     # mark as local content
@@ -55,30 +55,28 @@ def add_to_repository(context, ignore_conflicts):
     return added
 
 
-@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
-@grokcore.component.implementer(
-    zeit.cms.checkout.interfaces.IRepositoryContent)
+@grok.adapter(zeit.cms.repository.interfaces.IDAVContent)
+@grok.implementer(zeit.cms.checkout.interfaces.IRepositoryContent)
 def default_repository_content_adapter(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return
     return add_to_repository(context, False)
 
 
-@grokcore.component.adapter(zeit.cms.repository.interfaces.IDAVContent,
-                            name=u'non-conflicting')
-@grokcore.component.implementer(
-    zeit.cms.checkout.interfaces.IRepositoryContent)
+@grok.adapter(
+    zeit.cms.repository.interfaces.IDAVContent,
+    name=u'non-conflicting')
+@grok.implementer(zeit.cms.checkout.interfaces.IRepositoryContent)
 def default_repository_content_adapter_non_conflicting(context):
     # Default adapter to adapt local content to repository content: add to
     # repository and return
     return add_to_repository(context, True)
 
 
+@grok.implementer(zeit.cms.repository.interfaces.IAutomaticallyRenameable)
 class AutomaticallyRenameable(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
-    grokcore.component.implements(
-        zeit.cms.repository.interfaces.IAutomaticallyRenameable)
+    grok.adapts(zeit.cms.repository.interfaces.IDAVContent)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.repository.interfaces.IAutomaticallyRenameable,

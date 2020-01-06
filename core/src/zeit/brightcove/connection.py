@@ -10,6 +10,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.brightcove.interfaces.ICMSAPI)
 class CMSAPI(object):
     """Connection to the Brightcove "CMS API".
 
@@ -17,8 +18,6 @@ class CMSAPI(object):
     * API Reference: <https://brightcovelearning.github.io
         /Brightcove-API-References/cms-api/v1/doc/index.html>
     """
-
-    zope.interface.implements(zeit.brightcove.interfaces.ICMSAPI)
 
     MAX_RETRIES = 2
     _access_token = None
@@ -33,7 +32,7 @@ class CMSAPI(object):
     def get_video(self, id):
         try:
             return self._request('GET /videos/%s' % id)
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             if status == 404:
                 return None
@@ -48,7 +47,7 @@ class CMSAPI(object):
     def get_playlist(self, id):
         try:
             return self._request('GET /playlists/%s' % id)
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             if status == 404:
                 return None
@@ -134,7 +133,7 @@ class CMSAPI(object):
                 timeout=self.timeout)
             log.debug(dump_request(response))
             response.raise_for_status()
-        except requests.exceptions.RequestException, err:
+        except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', 510)
             if status == 401:
                 log.debug('Refreshing access token')
@@ -157,7 +156,7 @@ class CMSAPI(object):
 
         try:
             return response.json()
-        except:
+        except Exception:
             log.error('%s returned invalid json %r', request, response.text)
             raise ValueError('No valid JSON found for %s' % request)
 
@@ -185,6 +184,7 @@ def cms_from_product_config():
     )
 
 
+@zope.interface.implementer(zeit.content.video.interfaces.IPlayer)
 class PlaybackAPI(object):
     """Connection to the Brightcove "Playback API".
 
@@ -192,8 +192,6 @@ class PlaybackAPI(object):
     * API Reference: <https://brightcovelearning.github.io
         /Brightcove-API-References/playback-api/v1/doc/index.html>
     """
-
-    zope.interface.implements(zeit.content.video.interfaces.IPlayer)
 
     def __init__(self, base_url, policy_key, timeout):
         self.base_url = base_url

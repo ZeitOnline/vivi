@@ -8,10 +8,8 @@ import zope.component
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryReference)
 class GalleryReference(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(
-        zeit.content.gallery.interfaces.IGalleryReference)
 
     gallery = zeit.cms.content.dav.DAVProperty(
         zeit.content.gallery.interfaces.IGalleryReference['gallery'],

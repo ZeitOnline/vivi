@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from six import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner
@@ -22,9 +22,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 class TMS(object):
-
-    zope.interface.implements(zeit.retresco.interfaces.ITMS)
 
     def __init__(self, url, username=None, password=None):
         self.url = url
@@ -210,7 +209,7 @@ class TMS(object):
     def delete_id(self, uuid):
         try:
             self._request('DELETE /content/%s' % uuid)
-        except zeit.retresco.interfaces.TMSError, e:
+        except zeit.retresco.interfaces.TMSError as e:
             if e.status == 404:
                 log.debug(
                     'Warning: Tried to delete non-existent %s, ignored.', uuid)
@@ -230,7 +229,7 @@ class TMS(object):
             response = method(url, **kw)
             log.debug(dump_request(response))
             response.raise_for_status()
-        except requests.exceptions.RequestException, e:
+        except requests.exceptions.RequestException as e:
             status = getattr(e.response, 'status_code', 500)
             body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(
@@ -277,7 +276,7 @@ def _update_topiclist():
 
     with checked_out(keywords) as co:
         co.xml = _build_topic_xml(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(keywords).publish(async=False)
+    zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
     try:
         transaction.commit()
     except Exception:
@@ -290,7 +289,7 @@ def _update_topiclist():
     topicpages = tms.get_all_topicpages()
     with checked_out(redirects) as co:
         co.text = _build_topic_redirects(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(redirects).publish(async=False)
+    zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
 
 
 TOPIC_PAGE_ATTRIBUTES = {

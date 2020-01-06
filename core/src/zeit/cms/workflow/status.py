@@ -7,10 +7,9 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublicationStatus)
 class PublicationStatus(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublicationStatus)
 
     def __init__(self, context):
         self.context = context

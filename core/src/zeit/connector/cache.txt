@@ -33,11 +33,11 @@ Set some data. `setData` returns either a StringIO or an open file handle. What
 it returns depends on the size of the input data. For small data is returned as
 StringIO:
 
->>> from StringIO import StringIO
->>> data = StringIO('datadata/end of line.')
+>>> from io import BytesIO
+>>> data = BytesIO(b'datadata/end of line.')
 >>> file_handle = cache.setData('some-id', properties, data)
 >>> file_handle
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> file_handle.read()
 'datadata/end of line.'
 
@@ -45,7 +45,7 @@ We can get the data also via `getData` now which also returns a StringIO for
 small objects:
 
 >>> cache.getData('some-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 
 We have data in the cache. Since it's a small object it is stored as a
 reference to a plain string:
@@ -57,7 +57,7 @@ reference to a plain string:
 >>> cached.data
 'datadata/end of line.'
 >>> cached.open('r')
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> cached.open('r').read()
 'datadata/end of line.'
 
@@ -75,7 +75,7 @@ When we now access getData the access time will be updated by at most one
 count since less time than the update interval should have passed:
 
 >>> cache.getData('some-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> cache._last_access_time[get_storage_key('some-id')] <= last_access + 1
 True
 
@@ -87,7 +87,7 @@ Let's wait 1 second:
 If we access now the time will be updated:
 
 >>> cache.getData('some-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> new_access = cache._last_access_time[get_storage_key('some-id')]
 >>> new_access > last_access
 True
@@ -107,9 +107,9 @@ Removal of cached bodies by time out
 Add another resource to the cache to see how resources are removed from the
 cache:
 
->>> data = StringIO('another text')
+>>> data = BytesIO(b'another text')
 >>> cache.setData('another-id', properties, data)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 
 We now have two elements in the cache:
 
@@ -121,7 +121,7 @@ Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 >>> time.sleep(1)
 >>> cache.sweep(4)
 >>> cache.getData('another-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 ['another-id', 'some-id']
 
@@ -130,7 +130,7 @@ Still there ...
 >>> time.sleep(1)
 >>> cache.sweep(4)
 >>> cache.getData('another-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 ['another-id', 'some-id']
 
@@ -139,7 +139,7 @@ Still there ...
 >>> time.sleep(1)
 >>> cache.sweep(4)
 >>> cache.getData('another-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 ['another-id', 'some-id']
 
@@ -148,7 +148,7 @@ Now it's gone:
 >>> time.sleep(1)
 >>> cache.sweep(4)
 >>> cache.getData('another-id', properties)
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 ['another-id']
 
@@ -174,7 +174,7 @@ Create data which is large than that:
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> 
 >>> file_handle = cache.setData(
-...     'some-id', properties, StringIO(large_data))
+...     'some-id', properties, BytesIO(large_data))
 >>> file_handle
 <open file '...', mode 'rb' at 0x...>
 >>> file_handle.read() == large_data
@@ -222,7 +222,7 @@ Create a new cache and attach it to the database root:
 
 Add an object to the cache and commit:
 
->>> data = StringIO('Frodo went deep into Mordor.')
+>>> data = BytesIO(b'Frodo went deep into Mordor.')
 >>> properties = {('getetag', 'DAV:'): 'ent'}
 >>> file_handle = cache.setData('mordor', properties, data)
 >>> transaction.commit()
@@ -267,7 +267,7 @@ different. We don't expect this to happen.
 >>> root_1 = connection_1.root()
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
->>> body = StringIO('A small file' * BUFFER_SIZE)
+>>> body = BytesIO(b'A small file' * BUFFER_SIZE)
 >>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'initial-etag'}, body)
 >>> transactionmanager_1.commit()
 
@@ -278,8 +278,8 @@ different. We don't expect this to happen.
 
 Different ETAGS:
 
->>> body1 = StringIO('Body 1' * BUFFER_SIZE)
->>> body2 = StringIO('Body 2' * BUFFER_SIZE)
+>>> body1 = BytesIO(b'Body 1' * BUFFER_SIZE)
+>>> body2 = BytesIO(b'Body 2' * BUFFER_SIZE)
 >>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag1'}, body1)
 >>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag2'}, body2)
 >>> transactionmanager_2.commit()

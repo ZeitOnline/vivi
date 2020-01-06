@@ -36,7 +36,7 @@ The browsing interface basically allows listing collections:
 
 >>> entry = list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/01'))[0]
->>> print entry
+>>> print(entry)
 (u'4schanzentournee-abgesang',
  u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang')
 
@@ -133,11 +133,11 @@ Item Assignment
 Adding content or changing works by item assignement to the connector. The key
 is the unique Id of the object. Create a resource first:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> from zeit.connector.resource import Resource
 >>> resource = Resource(
 ...   'http://xml.zeit.de/online/2007/02/Seehofer',
-...   'Seehofer', 'article', StringIO.StringIO('Seehofer schlaegt zurueck'),
+...   'Seehofer', 'article', BytesIO(b'Seehofer schlaegt zurueck'),
 ...   properties={('resourcetype', 'DAV:'): 'article',
 ...               ('foo', 'foo-ns'): 'bar'},
 ...   contentType='text/plain')
@@ -158,7 +158,7 @@ We now can get the object back from the connector:
 
 >>> from pprint import pprint
 >>> resource_2 = connector[resource.id]
->>> print resource_2.data.read()
+>>> print(resource_2.data.read())
 Seehofer schlaegt zurueck
 >>> pprint(dict(resource_2.properties))
 {('foo', 'foo-ns'): 'bar',
@@ -200,7 +200,7 @@ resource and add id using the `add` method:
 >>> resource = Resource(
 ...     'http://xml.zeit.de/online/2007/02/DaimlerChrysler',
 ...     'DaimlerChrysler', 'unkown',
-...     StringIO.StringIO('Zwischen Angst und Schock'))
+...     BytesIO(b'Zwischen Angst und Schock'))
 >>> connector.add(resource)
 
 >>> pprint(list(connector.listCollection(
@@ -218,7 +218,7 @@ Adding Collections
 >>> resource = Resource(
 ...     collection_id,
 ...     '03', 'collection',
-...     StringIO.StringIO(''))
+...     BytesIO(b''))
 >>> connector.add(resource)
 
 After we've hadded the collection we can query it:
@@ -241,7 +241,7 @@ We can also add new collections to the collection:
 >>> resource = Resource(
 ...     collection_2_id,
 ...     'foo', 'collection',
-...     StringIO.StringIO(''))
+...     BytesIO(b''))
 >>> connector[collection_2_id] = resource
 >>> list(connector.listCollection(collection_id))
 [(u'foo', u'http://xml.zeit.de/online/2007/03/foo/')]
@@ -360,7 +360,7 @@ object first:
 
 >>> collection_id = 'http://xml.zeit.de/%s/collection' % TESTFOLDER()
 >>> coll = Resource(
-...     collection_id, 'collection', 'collection', StringIO.StringIO(''))
+...     collection_id, 'collection', 'collection', BytesIO(b''))
 
 Add the collection rssource to the dav and see we get it back:
 >>> connector.add(coll)

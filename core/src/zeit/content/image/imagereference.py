@@ -11,10 +11,9 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class ImagesAdapter(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource(
         '.head.image', 'image')
@@ -148,10 +147,9 @@ def image_references(context):
     return (image, )
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
+@zope.interface.implementer(zeit.content.image.interfaces.IReferences)
 class References(object):
-
-    zope.interface.implements(zeit.content.image.interfaces.IReferences)
-    zope.component.adapts(zeit.content.image.interfaces.IImageGroup)
 
     def __init__(self, context):
         self.context = context

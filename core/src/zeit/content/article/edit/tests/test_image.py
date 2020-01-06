@@ -44,7 +44,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_image_article(self, content):
         from zeit.connector.resource import Resource
-        import StringIO
+        from io import BytesIO
         import zeit.cms.checkout.interfaces
         import zeit.cms.interfaces
         import zeit.connector.interfaces
@@ -62,7 +62,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             zeit.connector.interfaces.IConnector)
         connector.add(Resource(
             'http://xml.zeit.de/article', 'article', 'article',
-            StringIO.StringIO(article_xml)))
+            BytesIO(article_xml)))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
         return zeit.cms.checkout.interfaces.ICheckoutManager(

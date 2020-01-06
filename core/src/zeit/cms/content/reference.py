@@ -16,8 +16,8 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import urllib
-import urlparse
+import six
+import six.moves.urllib.parse
 import z3c.traverser.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
@@ -325,9 +325,8 @@ def update_metadata_on_checkin(context, event):
             attr.update_metadata(context)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IReferences)
 class References(tuple):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IReferences)
 
     def __new__(cls, items, source, attribute, xml_reference_name):
         self = super(References, cls).__new__(cls, items)
@@ -348,12 +347,11 @@ class References(tuple):
             self.source, self.attribute, target, default)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IReference)
 class EmptyReference(object):
     """Helper so an empty SingleReferenceProperty still supports
     ``create()``.
     """
-
-    zope.interface.implements(zeit.cms.content.interfaces.IReference)
 
     target = None
     target_unique_id = None
@@ -450,7 +448,7 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def uniqueId(self):
-        return '%s?%s' % (ID_PREFIX, urllib.urlencode(dict(
+        return '%s?%s' % (ID_PREFIX, six.moves.urllib.parse.urlencode(dict(
             source=self.__parent__.uniqueId, attribute=self.attribute,
             target=self.target_unique_id)))
 
@@ -465,21 +463,21 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
-@grok.adapter(basestring, name=ID_PREFIX)
+@grok.adapter(six.string_types[0], name=ID_PREFIX)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_reference(unique_id):
     assert unique_id.startswith(ID_PREFIX)
-    params = urlparse.parse_qs(urlparse.urlparse(unique_id).query)
+    params = six.moves.urllib.parse.parse_qs(
+        six.moves.urllib.parse.urlparse(unique_id).query)
     source = zeit.cms.cmscontent.resolve_wc_or_repository(params['source'][0])
     references = getattr(source, params['attribute'][0], {})
     return references.get(params['target'][0])
 
 
+@zope.component.adapter(
+    zeit.cms.content.interfaces.IReference,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
-    zope.component.adapts(
-        zeit.cms.content.interfaces.IReference,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     def __str__(self):
         base = zope.traversing.browser.absoluteURL(
@@ -487,20 +485,19 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         return base + '/++attribute++%s/%s' % (
             # XXX zope.publisher seems to decode stuff (but why?), so we need
             # to encode twice
-            self.context.attribute, urllib.quote_plus(
-                urllib.quote_plus(self.context.__name__)))
+            self.context.attribute, six.moves.urllib.parse.quote_plus(
+                six.moves.urllib.parse.quote_plus(self.context.__name__)))
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class Traverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def publishTraverse(self, request, name):
-        reference = self.context.get(urllib.unquote_plus(name))
+        reference = self.context.get(six.moves.urllib.parse.unquote_plus(name))
         if reference is not None:
             return reference
         raise zope.publisher.interfaces.NotFound(self.context, name, request)

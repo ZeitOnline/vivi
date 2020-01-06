@@ -40,13 +40,13 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
         super(AuthorshipsProperty, self).__set__(instance, items)
 
 
+@zope.interface.implementer(
+    zeit.content.video.interfaces.IVideo,
+    zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zeit.content.video.interfaces.IVideo,
-                              zeit.cms.interfaces.IAsset)
-
-    default_template = pkg_resources.resource_string(__name__,
-                                                     'video-template.xml')
+    default_template = pkg_resources.resource_string(
+        __name__, 'video-template.xml')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
@@ -110,8 +110,9 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
 
 
+@zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)
 class VideoRendition():
-    zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
+
     frame_width = 0
     url = None
     video_duration = 0

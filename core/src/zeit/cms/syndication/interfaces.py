@@ -123,10 +123,9 @@ class IContentSyndicatedEvent(zope.interface.interfaces.IObjectEvent):
         value_type=zope.schema.Object(IFeed))
 
 
+@zope.interface.implementer(IContentSyndicatedEvent)
 class ContentSyndicatedEvent(zope.interface.interfaces.ObjectEvent):
     """Issued when an object is syndicated."""
-
-    zope.interface.implements(IContentSyndicatedEvent)
 
     def __init__(self, object, targets):
         super(ContentSyndicatedEvent, self).__init__(object)
@@ -156,9 +155,9 @@ class IFeedSource(zeit.cms.content.interfaces.ICMSContentSource):
     """A source for feeds."""
 
 
+@zope.interface.implementer(IFeedSource)
 class FeedSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IFeedSource)
     name = 'zeit.cms.syndication.feed'
     check_interfaces = (IFeed,)
 

@@ -1,16 +1,16 @@
 from math import ceil
+from io import BytesIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
-import StringIO
 import collections
 import grokcore.component as grok
 import lxml.objectify
 import os.path
 import persistent
 import re
+import six.moves.urllib.parse
 import sys
-import urlparse
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -32,11 +32,10 @@ import zope.security.proxy
 INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 
+@zope.interface.implementer(
+    zeit.content.image.interfaces.IImageGroup,
+    zeit.cms.repository.interfaces.INonRecursiveCollection)
 class ImageGroupBase(object):
-
-    zope.interface.implements(
-        zeit.content.image.interfaces.IImageGroup,
-        zeit.cms.repository.interfaces.INonRecursiveCollection)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
@@ -135,7 +134,7 @@ class ImageGroupBase(object):
         # Set size to max_size if Variant has max_size defined in XML and size
         # was not given in URL.
         if (size is None and
-                variant.max_width < sys.maxint > variant.max_height):
+                variant.max_width < sys.maxsize > variant.max_height):
             size = [variant.max_width, variant.max_height]
 
         # Be defensive about missing meta files, so source could not be
@@ -154,7 +153,7 @@ class ImageGroupBase(object):
     def variant_url(self, name, width=None, height=None,
                     fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
-        path = urlparse.urlparse(self.uniqueId).path
+        path = six.moves.urllib.parse.urlparse(self.uniqueId).path
         if path.endswith(u'/'):
             path = path[:-1]
         if thumbnail:
@@ -169,6 +168,7 @@ class ImageGroupBase(object):
         return url
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class VariantTraverser(object):
     """The following URLs may render images:
 
@@ -194,8 +194,6 @@ class VariantTraverser(object):
       to generate the new variant.
 
     """
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -325,11 +323,10 @@ class VariantTraverser(object):
         return None
 
 
+@zope.interface.implementer(
+    zeit.content.image.interfaces.IRepositoryImageGroup)
 class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
-
-    zope.interface.implements(
-        zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def __getitem__(self, key):
         item = super(ImageGroup, self).__getitem__(key)
@@ -354,17 +351,16 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
         return ig
 
     def resource_body(self, content):
-        return StringIO.StringIO()
+        return BytesIO()
 
     def resource_content_type(self, content):
         return 'httpd/unix-directory'
 
 
+@zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)
 class LocalImageGroup(ImageGroupBase,
                       persistent.Persistent,
                       zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
 
     def __getitem__(self, key):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
@@ -468,7 +464,7 @@ def find_master_image(context):
     return master_image
 
 
-EXTERNAL_ID_PATTERN = re.compile('^[^\d]*([\d]+)[^\d]*$')
+EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
 
 
 @grok.subscribe(
@@ -491,9 +487,8 @@ def guess_external_id(context, event):
         meta.external_id = match.group(1)
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class ThumbnailTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

@@ -21,7 +21,7 @@ Open the default metadata view of a file:
 >>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/2006'
 ...              '/DSC00109_2.JPG/@@view.html')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... View file </title>
  ...
@@ -44,7 +44,7 @@ Download the file:
 
 >>> bookmark = browser.url
 >>> browser.getLink('DSC00109_2').click()
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
@@ -58,7 +58,7 @@ Check the file out. The edit view also contains the metadata:
 
 >>> browser.open(bookmark)
 >>> browser.getLink('Checkout').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... Edit file </title>
  ...
@@ -80,7 +80,7 @@ We can also download the file here:
 
 >>> bookmark = browser.url
 >>> browser.getLink('DSC00109_2.JPG').click()
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
@@ -92,12 +92,12 @@ Content-Type: image/jpeg
 Let's upload a new file:
 
 >>> browser.open(bookmark)
->>> import StringIO
+>>> from io import BytesIO
 >>> browser.getControl('Upload new file').add_file(
-...     StringIO.StringIO('Mary had a little lamb.'), 'text/plain', 'new.txt')
+...     BytesIO(b'Mary had a little lamb.'), 'text/plain', 'new.txt')
 >>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... Edit file </title>
  ...Your changes have been saved...
@@ -120,7 +120,7 @@ We can download the new file now:
 
 >>> bookmark = browser.url
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG')
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 23
@@ -134,7 +134,7 @@ When we check in the file is updated in the repository:
 
 >>> browser.open(bookmark)
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... View file </title>
  ...
@@ -156,7 +156,7 @@ We can still download the new file:
 
 >>> bookmark = browser.url
 >>> browser.getLink('DSC00109_2').click()
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 23
@@ -170,7 +170,7 @@ The metadata preview also shows the file details:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006'
 ...              '/DSC00109_2.JPG/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div...
     <dl>
   <dt>File name</dt>
@@ -194,7 +194,7 @@ Files are added like other types:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['File']
 >>> browser.open(menu.value[0])
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... Add file </title>
  ...
@@ -202,14 +202,14 @@ Files are added like other types:
 We can upload a file w/o setting a file name:
 
 >>> browser.getControl('Upload new file').add_file(
-...     StringIO.StringIO('Mary had a giant ogre.'), 'text/plain', 'ogre.txt')
+...     BytesIO(b'Mary had a giant ogre.'), 'text/plain', 'ogre.txt')
 >>> browser.getControl('Add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt/@@edit.html'
 
 After adding we're at the edit form:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... Edit file </title>
  ...
@@ -231,7 +231,7 @@ We can download the file:
 
 >>> bookmark = browser.url
 >>> browser.getLink('ogre.txt').click()
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="ogre.txt"
 Content-Length: 22
@@ -244,7 +244,7 @@ Check it in:
 
 >>> browser.open(bookmark)
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <title>... View file </title>
  ...
@@ -270,7 +270,7 @@ When adding a file it is possible to explicitly set the file name:
 >>> menu.displayValue = ['File']
 >>> browser.open(menu.value[0])
 >>> browser.getControl('Upload new file').add_file(
-...     StringIO.StringIO('Mary had a medium pig.'), 'text/plain', 'pig.txt')
+...     BytesIO(b'Mary had a medium pig.'), 'text/plain', 'pig.txt')
 >>> browser.getControl('File name').value = 'medium-pig.txt'
 >>> browser.getControl('Add').click()
 >>> browser.url

@@ -97,7 +97,7 @@ def query(fulltext=None, **conditions):
         clauses['must_not'] = [
             dict(match={'payload.document.ressort': 'News'})] + [
                 dict(match={'payload.workflow.product-id': pid})
-                for pid in 'News', 'afp', 'SID', 'dpa-hamburg']
+                for pid in ('News', 'afp', 'SID', 'dpa-hamburg')]
     # handle "keywords" (by querying all `rtr_*` fields)
     keyword = conditions.pop('keywords', None)
     if keyword is not None:
@@ -128,8 +128,12 @@ def query(fulltext=None, **conditions):
         clauses['must'] = must
     if filters:
         clauses['filter'] = filters
-    if len(clauses) == 1 and len(clauses.values()[0]) == 1:
-        qry = clauses.values()[0][0]
+    if len(clauses) == 1:
+        subclause = list(clauses.values())[0]
+        if len(subclause) == 1:
+            qry = subclause[0]
+        else:
+            qry = dict(bool=clauses)
     elif clauses:
         qry = dict(bool=clauses)
     else:

@@ -9,9 +9,9 @@ We need to set the site since we're a functional test:
 
 Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
->>> import StringIO
+>>> from six import StringIO
 >>> from zeit.content.article.article import Article
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
@@ -46,7 +46,7 @@ XML:
 >>> article.volume = 1
 >>> article.textLength = 4711
 >>> import lxml.etree
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
@@ -68,7 +68,7 @@ When we set an attribute multiple times it's just changed:
 
 >>> article.textLength = 1000
 >>> article.textLength = 2000
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
@@ -92,7 +92,7 @@ When we set an attribute multiple times it's just changed:
 the authors in the xml:
 
 >>> article.authors = ('Bart Simpson', 'Lisa Simpson')
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
@@ -119,7 +119,7 @@ There is an adapter which sets the text length automatically:
 
 >>> from zeit.content.article.article import updateTextLengthOnChange
 >>> updateTextLengthOnChange(article, object())
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
@@ -168,7 +168,7 @@ this.
 We first define some XML which contains some properties we want to be
 reflected in the WebDAV properties:
 
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
@@ -237,7 +237,7 @@ article:
 <zeit.content.article.article.Article...>
 >>> article.title
 u'Jahr der \xdcberraschungen'
->>> print article.year
+>>> print(article.year)
 None
 
 
@@ -251,7 +251,7 @@ The resource factory creates Resource objects from articles:
 >>> resource = ArticleType().resource(article)
 >>> resource.type
 'article'
->>> print resource.data.read()
+>>> print(resource.data.read())
 <?xml version='1.0' ...
   ...Tom...Jerry...
 
@@ -265,7 +265,7 @@ Initally there are no images attached to an article:
 >>> article = Article()
 >>> import zeit.content.image.interfaces
 >>> images = zeit.content.image.interfaces.IImages(article)
->>> print images.image
+>>> print(images.image)
 None
 
 Get an image from the repository and attach it:
@@ -297,7 +297,7 @@ It's now stored on the article:
 
 And the image is referenced in the XML structure:
 
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <image ...
@@ -314,7 +314,7 @@ Searchable text
 
 All Text inside <p> elements is extracted (empty paragraphs are ignored):
 
->>> article_xml = StringIO.StringIO("""\
+>>> article_xml = StringIO("""\
 ... <?xml version="1.0" encoding="UTF-8"?>
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>

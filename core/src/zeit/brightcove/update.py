@@ -44,7 +44,7 @@ class import_video(object):
             return True
         log.info('Deleting %s', self.bcobj)
         if IPublishInfo(self.cmsobj).published:
-            IPublish(self.cmsobj).retract(async=False)
+            IPublish(self.cmsobj).retract(background=False)
         del self.bcobj.__parent__[self.bcobj.id]
         return True
 
@@ -53,7 +53,7 @@ class import_video(object):
             return False
         self._add()
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(async=False)
+            IPublish(self.cmsobj).publish(background=False)
         return True
 
     def _add(self):
@@ -72,11 +72,11 @@ class import_video(object):
             return True
         self._update()
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(async=False)
+            IPublish(self.cmsobj).publish(background=False)
         else:
             log.info('Deactivating %s', self.bcobj)
             if IPublishInfo(self.cmsobj).published:
-                IPublish(self.cmsobj).retract(async=False)
+                IPublish(self.cmsobj).retract(background=False)
 
     def _update(self):
         log.info('Updating %s', self.bcobj)
@@ -139,7 +139,7 @@ class import_playlist(import_video):
         if self.cmsobj is not None:
             return False
         self._add()
-        IPublish(self.cmsobj).publish(async=False)
+        IPublish(self.cmsobj).publish(background=False)
         return True
 
     def update(self):
@@ -148,7 +148,7 @@ class import_playlist(import_video):
         if self.bcobj.updated_at <= lsc:
             return False
         self._update()
-        IPublish(self.cmsobj).publish(async=False)
+        IPublish(self.cmsobj).publish(background=False)
 
     @classmethod
     def generate_actions(cls):
@@ -174,7 +174,7 @@ class import_playlist(import_video):
             log.info('Deleting <Playlist id=%s>', name)
             cmsobj = folder[name]
             if IPublishInfo(cmsobj).published:
-                IPublish(cmsobj).retract(async=False)
+                IPublish(cmsobj).retract(background=False)
             del folder[name]
 
 

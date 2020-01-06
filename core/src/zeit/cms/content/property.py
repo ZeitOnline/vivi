@@ -1,5 +1,6 @@
 import lxml.etree
 import lxml.objectify
+import six
 import sys
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
@@ -37,7 +38,7 @@ class ObjectPathProperty(object):
             try:
                 if node.text is not None:
                     return self.field.bind(instance).fromUnicode(
-                        unicode(node.text))
+                        six.text_type(node.text))
             except zope.schema.interfaces.ValidationError:
                 # Fall back to not using the field when the validaion fails.
                 pass
@@ -48,7 +49,7 @@ class ObjectPathProperty(object):
         if isinstance(value, str):
             # This is safe because lxml only uses str for optimisation
             # reasons and unicode when non us-ascii chars are in the str:
-            value = unicode(value)
+            value = six.text_type(value)
         return value
 
     def __set__(self, instance, value):
@@ -114,11 +115,12 @@ class Structure(ObjectPathProperty):
         node = self.getNode(instance)
         if node is None:
             return self.field.missing_value if self.field else None
-        node = lxml.objectify.fromstring(unicode(self.remove_namespaces(node)))
-        result = [xml.sax.saxutils.escape(unicode(node))]
+        node = lxml.objectify.fromstring(
+            six.text_type(self.remove_namespaces(node)))
+        result = [xml.sax.saxutils.escape(six.text_type(node))]
         for child in node.iterchildren():
             lxml.objectify.deannotate(child)
-            result.append(lxml.etree.tostring(child, encoding=unicode))
+            result.append(lxml.etree.tostring(child, encoding=six.text_type))
         return u''.join(result)
 
     def __set__(self, instance, value):
@@ -152,7 +154,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
                     return self.field.missing_value
             else:
                 return None
-        value = unicode(value)
+        value = six.text_type(value)
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
                 return self.field.bind(instance).fromUnicode(value)
@@ -164,8 +166,8 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         if value is None:
             self.getNode(instance).attrib.pop(self.attribute_name, None)
         else:
-            if not isinstance(value, basestring):
-                value = unicode(value)
+            if not isinstance(value, six.string_types):
+                value = six.text_type(value)
             node = self.getNode(instance)
             if node is None:
                 super(ObjectPathAttributeProperty, self).__set__(instance, '')
@@ -217,7 +219,7 @@ class MultiPropertyBase(object):
 class SimpleMultiProperty(MultiPropertyBase):
 
     def _element_factory(self, node, tree):
-        return unicode(node)
+        return six.text_type(node)
 
     def _node_factory(self, entry, tree):
         return entry

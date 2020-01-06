@@ -63,9 +63,8 @@ class WorkflowScriptsLayer(plone.testing.Layer):
         self._tempfiles.append(destination)
         return destination.name
 
+
 SCRIPTS_LAYER = WorkflowScriptsLayer()
-
-
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
@@ -94,6 +93,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
 
@@ -104,9 +104,6 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     mechanism to display validation errors during publish.
 
     """
-
-    zope.interface.implements(
-        zeit.cms.workflow.interfaces.IPublishInfo)
 
     def __init__(self, context, message, can_publish):
         self.context = context

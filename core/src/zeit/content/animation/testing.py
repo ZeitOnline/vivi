@@ -12,6 +12,7 @@ layer = ZOPE_LAYER
 
 
 class FunctionalTestCase(zeit.content.article.testing.FunctionalTestCase):
+
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
         self.article = zeit.cms.interfaces.ICMSContent(

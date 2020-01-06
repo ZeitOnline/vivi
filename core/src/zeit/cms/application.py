@@ -1,20 +1,18 @@
-from ConfigParser import ConfigParser
+from six.moves.configparser import ConfigParser
 import ZConfig
 import ast
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
-import fnmatch
 import grokcore.component as grok
-import grokcore.component.zcml
 import logging.config
-import martian
 import os
 import pendulum
 import pkg_resources
 import pyramid_dogpile_cache2
 import re
+import six
 import sys
 import webob
 import zope.app.appsetup.interfaces
@@ -123,7 +121,8 @@ def zope_shell():
     if len(sys.argv) > 2:
         sys.argv[:] = sys.argv[2:]
         globs['__file__'] = sys.argv[0]
-        execfile(sys.argv[0], globs)
+        exec(compile(open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'),
+             globs)
         sys.exit()
     else:
         zope.component.hooks.setSite(globs['root'])
@@ -208,7 +207,8 @@ else:
         """
 
         def __init__(self, fmt=None, datefmt=None, **kw):
-            if isinstance(fmt, basestring) and fmt.strip().startswith('{'):
+            if (isinstance(fmt, six.string_types) and
+                    fmt.strip().startswith('{')):
                 fmt = ast.literal_eval(fmt)
             super(FluentRecordFormatter, self).__init__(fmt, **kw)
 
@@ -216,9 +216,16 @@ else:
 # Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
 # (Actually the old behaviour probably was to rely on the py2 str laxness, but
 # all we really want is utf-8, so that's alright.)
-def maybe_encode(value):
-    if isinstance(value, unicode):
-        value = value.encode('utf-8')
+def maybe_decode(value):
+    if isinstance(value, six.binary_type):
+        value = value.decode('utf-8')
     return value
 
-ZConfig.datatypes.stock_datatypes["string"] = maybe_encode
+
+ZConfig.datatypes.stock_datatypes["string"] = maybe_decode
+
+
+if sys.version_info < (3,):
+    # Upstream has `lambda x: x` which is not _quite_ correct.
+    fanstatic.compat.as_bytestring = (
+        lambda x: x.encode('utf-8') if isinstance(x, unicode) else x)

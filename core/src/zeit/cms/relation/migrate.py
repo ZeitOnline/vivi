@@ -15,7 +15,7 @@ def dump_references(root):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     for token in relations._catalog_generation8.findRelationTokens():
-        print(token.encode('utf8'))
+        print((token.encode('utf8')))
 
 
 def load_references(root):

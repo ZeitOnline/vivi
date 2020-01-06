@@ -1,7 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import re
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -12,13 +12,12 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class PublishInfo(object):
     """Workflow baseclass. No concrete content type should use this,
     but rather one of the subclasses like AssetWorkflow or ContentWorkflow.
     """
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,
@@ -76,7 +75,7 @@ class PublishInfo(object):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         blacklist = re.split(', *', config['blacklist'])
-        path = urlparse.urlparse(self.context.uniqueId).path
+        path = six.moves.urllib.parse.urlparse(self.context.uniqueId).path
         for item in blacklist:
             if item and path.startswith(item):
                 return True

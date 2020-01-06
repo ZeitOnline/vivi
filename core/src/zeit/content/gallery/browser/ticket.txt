@@ -11,7 +11,7 @@ To get a ticket we have to authenticate normally first:
 >>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/@@get-ticket')
 >>> ticket = browser.contents
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: no-cache
 Content-Length: 60
@@ -30,7 +30,7 @@ We can now use the ticket to authenticate a request:
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.open(
 ...     'http://localhost/++skin++cms/++ticket++%s/repository' % ticket)
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 repository – Directory listing
 
 Without the ++ticket++ authentication does not happen:

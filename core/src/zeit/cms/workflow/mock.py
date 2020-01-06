@@ -1,5 +1,4 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import zeit.cms.interfaces
@@ -8,16 +7,15 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
 class MockPublish(object):
     """A mock publisher."""
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
 
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT, async=True,
+    def publish(self, priority=PRIORITY_DEFAULT, background=True,
                 object=None, **kw):
         if object:
             self.context = object
@@ -29,42 +27,41 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context,
                                                             self.context))
-        print "Publishing: %s" % self.context.uniqueId
+        print("Publishing: %s" % self.context.uniqueId)
         _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
                                                         self.context))
 
-    def retract(
-            self, priority=PRIORITY_DEFAULT, async=True, object=None, **kw):
+    def retract(self, priority=PRIORITY_DEFAULT, background=True,
+                object=None, **kw):
         if object:
             self.context = object
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))
-        print "Retracting: %s" % self.context.uniqueId
+        print("Retracting: %s" % self.context.uniqueId)
         _published[self.context.uniqueId] = False
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,
                                                         self.context))
 
     def publish_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.publish(priority, async, obj)
+            self.publish(priority, background, obj)
 
     def retract_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.retract(priority, async, obj)
+            self.retract(priority, background, obj)
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class MockPublishInfo(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
     error_messages = ()
     date_print_published = None
@@ -132,6 +129,7 @@ def reset():
     _publish_times.clear()
     _publish_times_semantic.clear()
     _publish_times_first.clear()
+
 
 try:
     import zope.testing.cleanup

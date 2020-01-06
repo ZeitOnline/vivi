@@ -1,4 +1,3 @@
-from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.content.sources
@@ -22,7 +21,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
             expected = getattr(original, name)
             try:
                 actual = getattr(new, name)
-            except Exception, e:
+            except Exception as e:
                 actual = str(e)
             if expected != actual:
                 errors.append('%s: %s != %s' % (name, expected, actual))
@@ -55,7 +54,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(article).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(article).publish(background=False)
         self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
             article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()

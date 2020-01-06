@@ -2,7 +2,7 @@ import gocept.selenium
 import logging
 import pkg_resources
 import plone.testing
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.text.jinja
@@ -13,9 +13,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class PushNotifier(object):
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def __init__(self):
         self.reset()
@@ -27,6 +26,7 @@ class PushNotifier(object):
         self.calls.append((text, link, kw))
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, kw=kw))
+
 
 product_config = """\
 <product-config zeit.push>
@@ -63,6 +63,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         self.config = self.loadConfiguration(config, self.package)
         super(ArticleConfigLayer, self).setUp()
 
+
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', bases=(
     CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
@@ -77,6 +78,7 @@ class PushMockLayer(plone.testing.Layer):
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
+
 
 PUSH_MOCK_LAYER = PushMockLayer()
 
@@ -94,7 +96,7 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
                 cfg = zope.app.appsetup.product.getProductConfiguration(
                     'zeit.push')
                 folder = zeit.cms.content.add.find_or_create_folder(
-                    *urlparse.urlparse(
+                    *six.moves.urllib.parse.urlparse(
                         cfg['push-payload-templates']).path[1:].split('/'))
                 template = zeit.content.text.jinja.JinjaTemplate()
                 template.text = text

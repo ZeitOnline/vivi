@@ -89,7 +89,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent(group1 + ' .block.type-teaser')
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', group2+ ' .landing-zone', '10,10')
+            '//li[@uniqueid="Clip/c2"]', group2 + ' .landing-zone', '10,10')
         s.waitForElementPresent(group2 + ' .block.type-teaser')
 
     def test_groups_should_be_sortable_with_drag_and_drop(self):

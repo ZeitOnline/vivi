@@ -93,7 +93,7 @@ def rendered_xml(context):
     return copy.copy(context.xml)
 
 
+@zope.interface.implementer(zeit.content.cp.interfaces.IUnknownBlock)
 class UnknownBlock(Block, zeit.edit.block.UnknownBlock):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IUnknownBlock)
     area = zeit.content.cp.interfaces.IArea

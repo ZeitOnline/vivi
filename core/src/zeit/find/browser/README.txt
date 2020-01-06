@@ -25,7 +25,7 @@ JSON template to setup the search UI. See the selenium tests for more details
 on the UI itself:
 
 >>> browser.open('http://localhost:8080/++skin++cms/find')
->>> print browser.contents
+>>> print(browser.contents)
 <html>
   ...
   <body>
@@ -41,7 +41,7 @@ on the UI itself:
 The index of the CMS (ISite) is a search whyen using the vivi skin:
 
 >>> browser.open('http://localhost:8080/++skin++vivi/')
->>> print browser.contents
+>>> print(browser.contents)
 <...
     var search = new zeit.find.Search(...
     ...

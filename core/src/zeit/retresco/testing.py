@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from StringIO import StringIO
+from six import StringIO
 import json
 import mock
 import pkg_resources

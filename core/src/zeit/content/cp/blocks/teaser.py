@@ -16,14 +16,14 @@ import zope.interface
 import zope.schema
 
 
+@zope.interface.implementer_only(
+    zeit.content.cp.interfaces.ITeaserBlock,
+    zeit.cms.syndication.interfaces.IFeed,
+    zope.container.interfaces.IContained)
 class TeaserBlock(
         zeit.content.cp.blocks.block.Block,
         zeit.cms.syndication.feed.ContentList):
 
-    zope.interface.implementsOnly(
-        zeit.content.cp.interfaces.ITeaserBlock,
-        zeit.cms.syndication.interfaces.IFeed,
-        zope.container.interfaces.IContained)
     type = 'teaser'
 
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(

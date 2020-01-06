@@ -3,7 +3,7 @@ from zeit.cms.content.property import DAVConverterWrapper
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import UserDict
+import collections
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cmp.consent
@@ -18,9 +18,8 @@ import zope.interface
 import zope.security
 
 
+@zope.interface.implementer(zeit.content.modules.interfaces.IRawText)
 class RawText(zeit.edit.block.Element):
-
-    zope.interface.implements(zeit.content.modules.interfaces.IRawText)
 
     text_reference = zeit.cms.content.reference.SingleResource(
         '.text_reference', 'related')
@@ -45,7 +44,7 @@ class RawText(zeit.edit.block.Element):
 @grok.implementer(zeit.content.modules.interfaces.IEmbedParameters)
 class EmbedParameters(
         grok.Adapter,
-        UserDict.DictMixin,
+        collections.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
     # 99% copy&paste from z.c.author.author.BiographyQuestions, changed the tag
     # name to `param` from `question` and added type conversion.
@@ -100,6 +99,15 @@ class EmbedParameters(
 
     def keys(self):
         return [x.get('id') for x in self.xml.xpath('param')]
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, key):
+        raise NotImplementedError()
 
     # Attribute-style access is meant only for zope.formlib.
 
@@ -188,6 +196,7 @@ def embed_memo(context):
 class EmptyMemo(object):
 
     memo = u''
+
 
 EMPTY_MEMO = EmptyMemo()
 

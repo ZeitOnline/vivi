@@ -44,7 +44,7 @@ change and contain the property:
 >>> content.year = 2004
 >>> content.ressort = u'Deutschland'
 >>> import lxml.etree
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(content.xml, pretty_print=True))
 <testtype>
   <head>
     ...<attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
@@ -96,7 +96,7 @@ INTERNAL namespace are *not* mapped:
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(content.xml, pretty_print=True))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
@@ -107,7 +107,7 @@ INTERNAL namespace are *not* mapped:
 
 
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(content).checkin()
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(content.xml, pretty_print=True))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"

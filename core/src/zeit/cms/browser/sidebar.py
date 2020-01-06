@@ -8,10 +8,9 @@ import zope.interface
 import zope.security.interfaces
 
 
+@zope.component.adapter(zope.security.interfaces.IPrincipal)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IPanelState)
 class PanelState(persistent.mapping.PersistentMapping):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IPanelState)
-    zope.component.adapts(zope.security.interfaces.IPrincipal)
 
     def folded(self, panel):
         return self.get(panel, False)

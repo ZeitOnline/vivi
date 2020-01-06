@@ -18,19 +18,17 @@ import zope.schema.interfaces
 
 
 # prevent circular import
-from zeit.cms.content.contentsource import ICMSContentSource
-from zeit.cms.content.contentsource import INamedCMSContentSource
-from zeit.cms.content.contentsource import IAutocompleteSource
+from zeit.cms.content.contentsource import ICMSContentSource  # noqa
+from zeit.cms.content.contentsource import INamedCMSContentSource  # noqa
+from zeit.cms.content.contentsource import IAutocompleteSource  # noqa
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
     """Interface type for authors."""
 
 
+@zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    zope.interface.implements(
-        zeit.cms.content.contentsource.IAutocompleteSource)
 
     check_interfaces = IAuthorType
     name = 'authors'
@@ -433,8 +431,8 @@ class IDAVPropertyChangedEvent(zope.interface.interfaces.IObjectEvent):
         "zope.schema field the property was changed for.")
 
 
+@zope.interface.implementer(IDAVPropertyChangedEvent)
 class DAVPropertyChangedEvent(zope.interface.interfaces.ObjectEvent):
-    zope.interface.implements(IDAVPropertyChangedEvent)
 
     def __init__(self, object, property_namespace, property_name,
                  old_value, new_value, field):

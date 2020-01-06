@@ -11,6 +11,7 @@ import zeit.vgwort.interfaces
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
+from six.moves import range
 
 
 product_config = """
@@ -49,6 +50,7 @@ class XMLRPCLayer(plone.testing.Layer):
             x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
 
+
 XMLRPC_LAYER = XMLRPCLayer()
 
 SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -79,14 +81,13 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             zeit.vgwort.interfaces.IMessageService)
         try:
             service.call('qualityControl')
-        except Exception as e:
+        except Exception:
             self.skipTest('vgwort test system is down')
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zope.index.text.interfaces.ISearchableText)
 class SearchableText(object):
-
-    zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata)
-    zope.interface.implements(zope.index.text.interfaces.ISearchableText)
 
     def __init__(self, context):
         self.context = context

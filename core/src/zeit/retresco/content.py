@@ -1,4 +1,4 @@
-import UserDict
+import collections
 import grokcore.component as grok
 import lxml.objectify
 import os.path
@@ -11,11 +11,11 @@ import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
+from six.moves import map
 
 
+@zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
 class Content(object):
-
-    zope.interface.implements(zeit.retresco.interfaces.ITMSContent)
 
     uniqueId = None
     __name__ = None
@@ -143,7 +143,7 @@ def from_tms_representation(context):
 
 
 @grok.implementer(zeit.retresco.interfaces.IElasticDAVProperties)
-class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
+class WebDAVProperties(grok.Adapter, collections.MutableMapping):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
@@ -160,6 +160,12 @@ class WebDAVProperties(grok.Adapter, UserDict.DictMixin):
             for name in values:
                 yield (unquote_es_field_name(name),
                        unquote_es_field_name(namespace))
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
 
     def __delitem__(self, key):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")

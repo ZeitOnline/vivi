@@ -1,10 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import copy
 import grokcore.component as grok
 import lxml.etree
 import lxml.html.clean
 import lxml.html.soupparser
 import lxml.objectify
+import six
 import xml.sax.saxutils
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -58,7 +58,7 @@ class Paragraph(ParagraphBase):
         p_text = self.xml.text or ''
         text = xml.sax.saxutils.escape(p_text) + ''.join(
             lxml.etree.tostring(copy.copy(c)) for c in self.xml.iterchildren())
-        return unicode(text)
+        return six.text_type(text)
 
     @text.setter
     def text(self, value):

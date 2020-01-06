@@ -1,5 +1,6 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
+import six
 import zeit.cms.content.sources
 import zope.interface
 
@@ -58,9 +59,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         """True if this layout is the default for the given block's area."""
 
 
+@zope.interface.implementer(ITeaserBlockLayout)
 class BlockLayout(AllowedMixin):
-
-    zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
                  areas=None, default=False, available=None,
@@ -118,7 +118,7 @@ class ModuleConfig(AllowedMixin):
 class ObjectSource(zeit.cms.content.sources.ObjectSource):
 
     def _get_title_for(self, node):
-        return unicode(node.get('title'))
+        return six.text_type(node.get('title'))
 
 
 class TeaserBlockLayoutSource(
@@ -149,6 +149,7 @@ class TeaserBlockLayoutSource(
         area = zeit.content.cp.interfaces.IArea(context)
         return area.kind in value.areas
 
+
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
@@ -178,6 +179,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
+
 REGION_CONFIGS = RegionConfigSource()
 
 
@@ -199,6 +201,7 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
+
 AREA_CONFIGS = AreaConfigSource()
 
 
@@ -218,5 +221,6 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
                 node.get('available', None), node.get('types', None),
             )
         return result
+
 
 MODULE_CONFIGS = ModuleConfigSource()

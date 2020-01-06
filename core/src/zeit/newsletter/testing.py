@@ -10,6 +10,7 @@ import zeit.content.image.testing
 import zeit.content.video.testing
 import zope.app.appsetup.product
 import zope.component
+from six.moves import range
 
 
 product_config = """\
@@ -40,6 +41,7 @@ class TestBrowserLayer(plone.testing.Layer):
             'zeit.workflow')
         product_config['publish-script'] = 'true'
         product_config['retract-script'] = 'true'
+
 
 BROWSER_LAYER = TestBrowserLayer()
 

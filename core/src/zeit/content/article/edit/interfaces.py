@@ -1,7 +1,8 @@
-from zeit.content.article.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import datetime
+import six
 import zeit.cms.content.field
 import zeit.content.article.interfaces
 import zeit.content.article.source
@@ -501,8 +502,8 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             puzzle = Puzzle(
-                unicode(node.get('id')),
-                unicode(node.text.strip()),
+                six.text_type(node.get('id')),
+                six.text_type(node.text.strip()),
                 node.get('multiple') == u'true'
             )
             result[puzzle.id] = puzzle

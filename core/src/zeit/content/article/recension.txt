@@ -26,7 +26,7 @@ True
 A book recension has an xml representation:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(rec.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(rec.xml, pretty_print=True))
 <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>
 
 Set values and verify the xml:
@@ -46,7 +46,7 @@ Set values and verify the xml:
 >>> rec.pages = 124
 >>> rec.price = '25,99'
 
->>> print lxml.etree.tostring(rec.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(rec.xml, pretty_print=True))
 <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <auth-info>
     <author>Klaus</author>
@@ -111,7 +111,7 @@ Let's add the recension we've created above:
 
 The recension is now already part of the article:
 
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(article.xml, pretty_print=True))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <header/>

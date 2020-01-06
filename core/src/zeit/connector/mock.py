@@ -1,16 +1,17 @@
+from io import BytesIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import UUID_PROPERTY
-import StringIO
 import datetime
-import httplib
 import logging
 import os
 import os.path
 import pkg_resources
 import pytz
 import random
+import six
+import six.moves.http_client
+import six.moves.urllib.parse
 import time
-import urlparse
 import uuid
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
@@ -73,7 +74,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def __getitem__(self, id):
         id = self._get_cannonical_id(id)
         if id in self._deleted:
-            raise KeyError(unicode(id))
+            raise KeyError(six.text_type(id))
         return super(Connector, self).__getitem__(id)
 
     def __setitem__(self, id, object):
@@ -83,7 +84,7 @@ class Connector(zeit.connector.filesystem.Connector):
                   resource.contentType == 'httpd/unix-directory')
         if iscoll and not id.endswith('/'):
             id = CannonicalId(id + '/')
-        resource.id = unicode(id)  # override
+        resource.id = six.text_type(id)  # override
 
         if id in self:
             old_etag = self[id].properties.get(('getetag', 'DAV:'))
@@ -110,7 +111,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 resource.properties[UUID_PROPERTY] = new_uuid
             else:
                 if existing_uuid and existing_uuid != new_uuid:
-                    raise httplib.HTTPException(409, 'Conflict')
+                    raise six.moves.http_client.HTTPException(409, 'Conflict')
 
             for key in self._properties.keys():
                 if key == self._get_cannonical_id(resource.id):
@@ -118,7 +119,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
                 if (existing_uuid and existing_uuid ==
                         resource.properties[UUID_PROPERTY]):
-                    raise httplib.HTTPException(409, 'Conflict')
+                    raise six.moves.http_client.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
@@ -136,7 +137,7 @@ class Connector(zeit.connector.filesystem.Connector):
             # detetection e.g. for images takes over on the next read.
             resource.properties[
                 ('getcontenttype', 'DAV:')] = resource.contentType
-        resource.properties[('getlastmodified', 'DAV:')] = unicode(
+        resource.properties[('getlastmodified', 'DAV:')] = six.text_type(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
         resource.properties[('getetag', 'DAV:')] = repr(
@@ -172,7 +173,7 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            self.copy(uid, urlparse.urljoin(new_id, name))
+            self.copy(uid, six.moves.urllib.parse.urljoin(new_id, name))
 
     def move(self, old_id, new_id):
         if new_id in self:
@@ -195,7 +196,7 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            self.move(uid, urlparse.urljoin(new_id, name))
+            self.move(uid, six.moves.urllib.parse.urljoin(new_id, name))
         del self[old_id]
 
     def changeProperties(self, id, properties):
@@ -260,7 +261,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _get_file(self, id):
         if id in self._data:
-            return StringIO.StringIO(self._data[id])
+            return BytesIO(self._data[id])
         return super(Connector, self)._get_file(id)
 
     def _get_lastmodified(self, id):

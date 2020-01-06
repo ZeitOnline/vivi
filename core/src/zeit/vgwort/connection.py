@@ -1,8 +1,8 @@
 import logging
 import requests
 import requests.auth
+import six.moves.urllib.parse
 import threading
-import urlparse
 import zeep
 import zeep.exceptions
 import zeit.content.author.interfaces
@@ -49,7 +49,7 @@ class VGWortWebService(object):
 
     @property
     def wsdl(self):
-        return urlparse.urljoin(self.base_url, self.service_path)
+        return six.moves.urllib.parse.urljoin(self.base_url, self.service_path)
 
     def call(self, method_name, *args, **kw):
         with self.lock:
@@ -79,9 +79,8 @@ class VGWortWebService(object):
         return cls(**kw)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class PixelService(VGWortWebService):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
 
     service_path = '/services/1.0/pixelService.wsdl'
     namespace = 'http://vgwort.de/1.0/PixelService/xsd'
@@ -92,9 +91,8 @@ class PixelService(VGWortWebService):
             yield (pixel.publicIdentificationId, pixel.privateIdentificationId)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MessageService(VGWortWebService):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
     service_path = '/services/1.1/messageService.wsdl'
     namespace = 'http://vgwort.de/1.1/MessageService/xsd'
@@ -190,22 +188,21 @@ def service_factory(TYPE):
         list(zope.interface.implementedBy(TYPE))[0])(factory)
     return factory
 
+
 real_pixel_service = service_factory(PixelService)
 real_message_service = service_factory(MessageService)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class MockPixelService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
 
     def order_pixels(self, amount):
         for i in range(amount):
             yield ('public-%s' % i, 'private-%s' % i)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MockMessageService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
     def __init__(self):
         self.reset()

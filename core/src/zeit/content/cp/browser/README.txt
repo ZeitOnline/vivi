@@ -23,7 +23,7 @@ Centerpage
 
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/@@view.html'
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
 <!DOCTYPE...
 ...Title...Auf den Spuren der Elfen...
@@ -45,13 +45,13 @@ Traceback (most recent call last):
 LinkNotFoundError
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...
 ...Title...Auf den Spuren der Elfen...
 ...CP type...Themenseite...
 ...Header image...DSC00109_2.JPG...
 >>> browser.getLink('View metadata').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Auf den Spuren der Elfen – View centerpage metadata
 
 
@@ -65,13 +65,13 @@ Check the CP out again, and go to the edit view:
 
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Edit contents').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Auf den Spuren der Elfen – Edit
 
 
 The inital page doens't contain much:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
  <div id="content">
      <div id="cp-content">
@@ -89,7 +89,7 @@ The contents of cp-content is loaded via javascript:
 
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> print browser.contents
+>>> print(browser.contents)
 <...
   <div ...class="...editable-area..."...id="lead"...
   <div ...class="...editable-area..."...id="informatives"...

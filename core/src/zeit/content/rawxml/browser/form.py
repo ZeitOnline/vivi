@@ -1,9 +1,8 @@
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import zope.formlib.form
-
 import zeit.content.rawxml.interfaces
 import zeit.content.rawxml.rawxml
-from zeit.content.rawxml.i18n import MessageFactory as _
+import zope.formlib.form
 
 
 class Base(object):

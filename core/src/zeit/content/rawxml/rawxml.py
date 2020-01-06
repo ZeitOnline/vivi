@@ -9,10 +9,8 @@ import zope.interface
 import zope.proxy
 
 
+@zope.interface.implementer(zeit.content.rawxml.interfaces.IRawXML)
 class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(
-        zeit.content.rawxml.interfaces.IRawXML)
 
     default_template = u'<your-xml-here/>'
     zeit.cms.content.dav.mapProperties(
@@ -30,10 +28,9 @@ class RawXMLType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = zeit.cms.type.SKIP_ADD
 
 
+@zope.component.adapter(zeit.content.rawxml.interfaces.IRawXML)
 class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     """Add content of xmlreference to xml reference."""
-
-    zope.component.adapts(zeit.content.rawxml.interfaces.IRawXML)
 
     def update(self, xml_node, suppress_errors=False):
         # Since we're adding arbitrary xml, we need to mark nodes we've

@@ -2,11 +2,11 @@ from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import BTrees.Length
 import csv
 import gocept.runner
-import grokcore.component
+import grokcore.component as grok
 import logging
 import persistent
 import random
-import xmlrpclib
+import six.moves.xmlrpc_client
 import zc.queue
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -23,10 +23,9 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.ITokens)
 class TokenStorage(persistent.Persistent,
                    zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.vgwort.interfaces.ITokens)
 
     def __init__(self):
         self._data = zc.queue.CompositeQueue(compositeSize=100)
@@ -34,7 +33,7 @@ class TokenStorage(persistent.Persistent,
 
     def load(self, csv_file):
         reader = csv.reader(csv_file, delimiter=';')
-        reader.next()  # skip first line
+        next(reader)  # skip first line
         for public_token, private_token in reader:
             self.add(public_token, private_token)
 
@@ -67,7 +66,8 @@ class ITokenService(zope.interface.Interface):
     pass
 
 
-class TokenService(grokcore.component.GlobalUtility):
+@grok.implementer(ITokenService)
+class TokenService(grok.GlobalUtility):
     """DAV does not support transactions, so we need to work around the case
     that an error occurs (and the transaction is rolled back) after a token has
     been claimed -- because the token has be written to DAV nonetheless, thus
@@ -79,8 +79,6 @@ class TokenService(grokcore.component.GlobalUtility):
     transaction).
     """
 
-    grokcore.component.implements(ITokenService)
-
     def __init__(self):
         if not self.config:
             log.warning(
@@ -91,7 +89,7 @@ class TokenService(grokcore.component.GlobalUtility):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
     # Make mutable by tests.
-    ServerProxy = xmlrpclib.ServerProxy
+    ServerProxy = six.moves.xmlrpc_client.ServerProxy
 
     def claim_token(self):
         tokens = self.ServerProxy(self.config['claim-token-url'])
@@ -100,7 +98,7 @@ class TokenService(grokcore.component.GlobalUtility):
 
 class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.provides(zeit.vgwort.interfaces.IToken)
+    grok.provides(zeit.vgwort.interfaces.IToken)
 
     zeit.cms.content.dav.mapProperties(
         zeit.vgwort.interfaces.IToken,
@@ -109,7 +107,7 @@ class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE)
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.vgwort.interfaces.IGenerallyReportableContent,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def add_token(context, event):
@@ -136,7 +134,7 @@ def add_token(context, event):
     reginfo.reported_error = ''
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
@@ -144,7 +142,7 @@ def ignore_private_token(event):
         event.veto()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectCopiedEvent)
 def remove_vgwort_properties_after_copy(context, event):

@@ -1,3 +1,4 @@
+import six
 import zeit.cms.content.sources
 
 
@@ -10,7 +11,7 @@ class Blog(object):
 
 def unicode_or_none(value):
     if value:
-        return unicode(value)
+        return six.text_type(value)
 
 
 class BlogSource(zeit.cms.content.sources.SimpleContextualXMLSource):
@@ -19,6 +20,6 @@ class BlogSource(zeit.cms.content.sources.SimpleContextualXMLSource):
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [Blog(unicode(node.get('name')),
+        return [Blog(six.text_type(node.get('name')),
                      unicode_or_none(node.get('url')))
                 for node in tree.iterchildren('*')]

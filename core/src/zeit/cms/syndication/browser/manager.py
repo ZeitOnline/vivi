@@ -36,7 +36,7 @@ class Manager(zeit.cms.browser.view.Base):
     def syndicate(self, targets, **kw):
         try:
             self.manager.syndicate(targets, **kw)
-        except zeit.cms.syndication.interfaces.SyndicationError, e:
+        except zeit.cms.syndication.interfaces.SyndicationError as e:
             self.send_message(
                 _('Could not syndicate because "${name}" could not be '
                   'locked or checked out.',

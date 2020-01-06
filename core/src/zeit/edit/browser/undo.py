@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import urllib
+import six.moves.urllib.parse
 import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zeit.edit.interfaces
@@ -17,12 +17,13 @@ class History(zeit.cms.browser.view.JSON):
         for entry in history:
             if entry['description'] is None:
                 entry['description'] = '[none]'
-            entry['tid'] = urllib.quote(entry['tid'].encode('base64'))
+            entry['tid'] = six.moves.urllib.parse.quote(
+                entry['tid'].encode('base64'))
 
-        return dict(
-            context_url=self.url(self.context),
-            history=history,
-        )
+        return {
+            'context_url': self.url(self.context),
+            'history': history,
+        }
 
 
 class Revert(zeit.edit.browser.view.Action):
@@ -30,7 +31,7 @@ class Revert(zeit.edit.browser.view.Action):
     tid = zeit.edit.browser.view.Form('tid')
 
     def update(self):
-        tid = urllib.unquote(self.tid).decode('base64')
+        tid = six.moves.urllib.parse.unquote(self.tid).decode('base64')
         undo = zeit.edit.interfaces.IUndo(
             zope.security.proxy.getObject(self.context))
 

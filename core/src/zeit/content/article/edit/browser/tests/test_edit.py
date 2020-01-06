@@ -125,7 +125,7 @@ class SaveTextTest(TextViewHelper,
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
-        view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',
+        view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',  # noqa
                                       'factory': 'div'},
                                      {'text': '\n<a><strong></strong></a>',
                                       'factory': 'p'}]
@@ -184,7 +184,7 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         try:
             s.click('css=.create-paragraph')
-        except Exception, e:
+        except Exception as e:
             self.assertIn('Unable to locate element', str(e))
         else:
             self.fail('second click should have raised')
@@ -796,7 +796,7 @@ class AutoSaveIntegration(
     def assert_paragraphs(self, *contents):
         transaction.abort()
         wc = self.getRootFolder()['workingcopy']['zope.user']
-        article = wc.values().next()
+        article = next(wc.values())
         self.assertEqual(
             contents, tuple(el.text for el in article.xml.xpath('//p')))
 

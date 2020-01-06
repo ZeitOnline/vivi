@@ -115,7 +115,7 @@ does not hurt:
 
 There is a pretty print function so the rendered result is human readable:
 
->>> print expr._pprint()
+>>> print(expr._pprint())
 (:or
   (:eq "ns" "year" "2009")
   (:eq "ns" "year" "2010")
@@ -125,7 +125,7 @@ There is a pretty print function so the rendered result is human readable:
 Even new terms can be added after "cooking":
 
 >>> expr = expr | (year == '2008') | (year == '2007')
->>> print expr._collect()._pprint()
+>>> print(expr._collect()._pprint())
 (:or
   (:eq "ns" "year" "2009")
   (:eq "ns" "year" "2010")
@@ -137,7 +137,7 @@ Even new terms can be added after "cooking":
 
 >>> expr2 = ((author == 'pm') & (year == '2010')) | (author == 'ab') | \
 ...     (author == 'qw')
->>> print expr2._pprint()
+>>> print(expr2._pprint())
 (:or
   (:and
     (:eq "namespace" "author" "pm")

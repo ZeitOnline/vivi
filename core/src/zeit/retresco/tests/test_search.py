@@ -37,7 +37,7 @@ class TestElasticsearch(unittest.TestCase):
     def test_search_result_may_contain_specific_source(self):
         query = self.query.copy()
         query['_source'] = ['payload.teaser.title', 'payload.body.title']
-        result = self.elasticsearch.search(query, 'title:asc', rows=2)
+        self.elasticsearch.search(query, 'title:asc', rows=2)
         call_body = self.elasticsearch.client.search.call_args[1]['body']
         self.assertEqual(query['_source'], json.loads(call_body)['_source'])
 

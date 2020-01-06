@@ -149,7 +149,8 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_invalid_names_should_return_none(self):
         self.assertEqual(
-            None, self.traverser._parse_variant_by_size('foobarbaz__9999x9999'))
+            None, self.traverser._parse_variant_by_size(
+                'foobarbaz__9999x9999'))
         self.assertEqual(
             None, self.traverser._parse_variant_by_size('cinema__200xfoo'))
         self.assertEqual(
@@ -213,7 +214,8 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         }
         self.assertEqual(
             0.3,
-            self.traverser._parse_variant_by_size('cinema__300x160__scale_2.0').zoom)
+            self.traverser._parse_variant_by_size(
+                'cinema__300x160__scale_2.0').zoom)
         self.assertEqual(
             0.3, self.traverser._parse_variant_by_size('cinema__300x160').zoom)
         self.assertEqual(

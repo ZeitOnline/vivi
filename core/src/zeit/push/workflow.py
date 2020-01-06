@@ -12,9 +12,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushMessages)
 class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.push.interfaces.IPushMessages)
 
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,
@@ -94,7 +93,7 @@ def send_push_on_publish(context, event):
         config['text'] = message.text
         try:
             message.send()
-        except Exception, e:
+        except Exception as e:
             zeit.objectlog.interfaces.ILog(context).log(_(
                 'Error while sending ${type}: ${reason}',
                 mapping={'type': message.type.capitalize(), 'reason': str(e)}))

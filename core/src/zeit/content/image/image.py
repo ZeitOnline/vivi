@@ -58,21 +58,19 @@ class BaseImage(object):
         return subtype.upper()
 
 
-class RepositoryImage(BaseImage,
-                      zeit.cms.repository.file.RepositoryFile):
+@zope.interface.implementer_only(
+    zeit.content.image.interfaces.IImage,
+    zope.container.interfaces.IContained)
+class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
+    pass
 
-    zope.interface.implementsOnly(
-        zeit.content.image.interfaces.IImage,
-        zope.container.interfaces.IContained)
 
-
-class LocalImage(BaseImage,
-                 zeit.cms.repository.file.LocalFile):
-
-    zope.interface.implementsOnly(
-        zeit.content.image.interfaces.IImage,
-        zeit.cms.workingcopy.interfaces.ILocalContent,
-        zope.container.interfaces.IContained)
+@zope.interface.implementer_only(
+    zeit.content.image.interfaces.IImage,
+    zeit.cms.workingcopy.interfaces.ILocalContent,
+    zope.container.interfaces.IContained)
+class LocalImage(BaseImage, zeit.cms.repository.file.LocalFile):
+    pass
 
 
 class TemporaryImage(LocalImage):
@@ -141,10 +139,10 @@ class ImageType(zeit.cms.type.TypeDeclaration):
         return content.mimeType
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
 class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
 
     target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
 
     def update_with_context(self, entry, workflow):
         super(XMLReferenceUpdater, self).update_with_context(entry, workflow)

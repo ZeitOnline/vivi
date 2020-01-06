@@ -17,7 +17,7 @@ Let's instanciate a box and verify the xml:
 >>> import lxml.etree
 >>> import zeit.content.portraitbox.portraitbox
 >>> pb = zeit.content.portraitbox.portraitbox.Portraitbox()
->>> print lxml.etree.tostring(pb.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(pb.xml, pretty_print=True))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     layout="artbox" label="portrait"/>
 
@@ -39,7 +39,7 @@ Set data:
 >>> pb.name = u'Hans Wurst'
 >>> pb.text = u'<p><strong>Hans Wurst</strong> wursted hansig.</p>'
 >>> pb.image = repository['2006']['DSC00109_2.JPG']
->>> print lxml.etree.tostring(pb.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(pb.xml, pretty_print=True))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
@@ -56,14 +56,14 @@ Verify the HTML support:
 
 >>> import zeit.wysiwyg.interfaces
 >>> html = zeit.wysiwyg.interfaces.IHTMLContent(pb)
->>> print html.html
+>>> print(html.html)
 <p><strong>Hans Wurst</strong> wursted hansig.</p>
 
 When there is only text and no <p> node the contents is wrapped into a <p>
 automatically:
 
 >>> pb.text = u'ist <strong>ein Hans</strong> und wurstet.'
->>> print html.html
+>>> print(html.html)
 <p>ist <strong>ein Hans</strong> und wurstet.</p>
 
 
@@ -87,7 +87,7 @@ content:
 ...     content)
 >>> repository['pb'] = pb
 >>> pb_ref.portraitbox = pb
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(content.xml, pretty_print=True))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"

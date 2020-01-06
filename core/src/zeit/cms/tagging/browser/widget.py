@@ -1,7 +1,7 @@
-from collections import defaultdict, namedtuple
-import grokcore.component
+from collections import namedtuple
+import grokcore.component as grok
 import json
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -16,7 +16,7 @@ import zope.lifecycleevent
 import zope.schema.interfaces
 
 
-class Widget(grokcore.component.MultiAdapter,
+class Widget(grok.MultiAdapter,
              zope.formlib.widget.SimpleInputWidget,
              zeit.cms.browser.view.Base):
     """Widget to edit tags on context.
@@ -26,12 +26,11 @@ class Widget(grokcore.component.MultiAdapter,
 
     """
 
-    grokcore.component.adapts(
+    grok.adapts(
         zope.schema.interfaces.ITuple,
         zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
-    grokcore.component.provides(
-        zope.formlib.interfaces.IInputWidget)
+    grok.provides(zope.formlib.interfaces.IInputWidget)
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
@@ -87,7 +86,7 @@ class Widget(grokcore.component.MultiAdapter,
             # an abstraction instead doesn't really seem worthwile either.
             import zeit.retresco.interfaces
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return urlparse.urlparse(tms.url).netloc
+            return six.moves.urllib.parse.urlparse(tms.url).netloc
         except (ImportError, LookupError):
             return None
 
@@ -116,15 +115,14 @@ class TagsWithTopicpages(zeit.cms.browser.view.JSON):
         return dict(tagger.links)
 
 
-class DisplayWidget(grokcore.component.MultiAdapter,
+class DisplayWidget(grok.MultiAdapter,
                     zope.formlib.itemswidgets.ItemsWidgetBase):
 
-    grokcore.component.adapts(
+    grok.adapts(
         zope.schema.interfaces.ITuple,
         zeit.cms.tagging.source.IWhitelistSource,
         zeit.cms.browser.interfaces.ICMSLayer)
-    grokcore.component.provides(
-        zope.formlib.interfaces.IDisplayWidget)
+    grok.provides(zope.formlib.interfaces.IDisplayWidget)
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('display-tag.pt')
     tag_highling_css_class = 'with-topic-page'
@@ -137,7 +135,7 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
         try:
             self.tags_with_topicpages = tagger.links
-        except:
+        except Exception:
             self.tags_with_topicpages = {}
 
     def __call__(self):

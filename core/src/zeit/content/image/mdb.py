@@ -1,4 +1,4 @@
-from StringIO import StringIO
+from six import StringIO
 import base64
 import lxml.etree
 import os.path
@@ -16,9 +16,8 @@ XML_TAGS = re.compile('</?[^>]*>')
 FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
 
+@zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 class MDB(object):
-
-    zope.interface.implements(zeit.content.image.interfaces.IMDB)
 
     def __init__(self, url, username, password):
         self.url = url

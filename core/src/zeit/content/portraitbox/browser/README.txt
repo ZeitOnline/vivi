@@ -41,7 +41,7 @@ We're now at the edit form:
 
 Make sure the box is listed in the workingcopy panel:
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <li class="draggable-content type-portraitbox">
       <img src="...zmi_icon.png"...
@@ -51,7 +51,7 @@ Make sure the box is listed in the workingcopy panel:
 Verify the source:
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value
+>>> print(browser.getControl('Source').value)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
@@ -68,7 +68,7 @@ Verify the source:
 Let's check it in:
 
 >>> browser.getLink('Checkin').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Hans Wurst – View source code
 
 
@@ -79,7 +79,7 @@ Make sure there is a metadata preview:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     'Wurst-Hans/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">
     ...
@@ -90,7 +90,7 @@ Make sure an box has a default view:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Wurst-Hans')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title> Hans Wurst – View portraitbox </title>
     ...

@@ -31,7 +31,7 @@ objects (note that the ``view`` argument is not really relevant):
 ...     zope.viewlet.interfaces.IViewletManager,
 ...     name='zeit.cms.workflow-indicator')
 >>> viewlet_manager.update()
->>> print viewlet_manager.render()
+>>> print(viewlet_manager.render())
 <span class="publish-state not-published" title="Not published"></span>
 
 # XXX move workflow tests from listing.txt to here.

@@ -6,9 +6,8 @@ import zeit.magazin.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.magazin.interfaces.INextRead)
 class NextRead(zeit.cms.related.related.RelatedBase):
-
-    zope.interface.implements(zeit.magazin.interfaces.INextRead)
 
     nextread = zeit.cms.content.reference.MultiResource(
         '.head.nextread.reference', 'related')

@@ -1,4 +1,3 @@
-from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.browser.widget

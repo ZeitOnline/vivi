@@ -10,9 +10,8 @@ import zeit.cms.tagging.tag
 import zope.interface
 
 
+@zope.interface.implementer(ICommonMetadata)
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(ICommonMetadata)
 
     zeit.cms.content.dav.mapProperties(ICommonMetadata, DOCUMENT_SCHEMA_NS, (
         'banner_id',

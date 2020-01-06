@@ -19,7 +19,7 @@ The type change is a lightbox:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01'
 ...     '/Somalia/@@typechange-box')
->>> print browser.contents
+>>> print(browser.contents)
 <div>
   <h1>
     Change type of
@@ -36,7 +36,7 @@ We can select which type we want to
 Just clicking "change" w/o selecting anything displays the form again:
 
 >>> browser.getControl('Change type').click()
->>> print browser.contents
+>>> print(browser.contents)
 <div>
   <h1>
     Change type of
@@ -48,7 +48,7 @@ Make it a channel.
 
 >>> browser.getControl(name='newtype').displayValue = ['channel_cp']
 >>> browser.getControl('Change type').click()
->>> print browser.contents
+>>> print(browser.contents)
 <div>
   <h1>
     Change type of

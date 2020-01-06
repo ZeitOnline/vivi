@@ -45,7 +45,7 @@ class Message(grok.Adapter):
             notifier.send(self.text, self.url, **kw)
             self.log_success()
             log.info('Push notification for %s sent', self.type)
-        except Exception, e:
+        except Exception as e:
             self.log_error(str(e))
             log.error(u'Error during push to %s with config %s',
                       self.type, self.config, exc_info=True)

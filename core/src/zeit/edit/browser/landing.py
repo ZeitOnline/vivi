@@ -107,7 +107,7 @@ class LandingZone(ReloadContainerAction, OrderMixin):
             field = schema[key]
             try:
                 field.validate(value)
-            except zope.schema.interfaces.ValidationError, e:
+            except zope.schema.interfaces.ValidationError as e:
                 errors.append(e)
         try:
             schema.validateInvariants(data, errors)

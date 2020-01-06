@@ -29,12 +29,12 @@ Create the gallery:
 ...     '[{"code": "tag://testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
 >>> gallery_url = browser.url
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 Gallery – Overview
 
 There is a javascript action:
 
->>> print browser.contents
+>>> print(browser.contents)
 <...<li>
   <a href="#" title="Upload images to gallery">
     <span id="image-upload"></span>
@@ -83,9 +83,9 @@ After calling POSTing, a new image has been added to the folder:
 >>> post_data = post_data_template % (pkg_resources.resource_stream(
 ...     'zeit.content.gallery.browser', 'testdata/01.jpg').read())
 >>> browser.post('@@upload-image', post_data, content_type)
->>> print browser.contents
+>>> print(browser.contents)
 {}
->>> print browser.headers
+>>> print(browser.headers)
 Status: 201 Created
 Cache-Control: no-cache
 Content-Length: 2
@@ -117,5 +117,5 @@ Posting erroneous image data yields a 415. The contents indicates the error:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 415: Unsupported Media Type
->>> print browser.contents
+>>> print(browser.contents)
 {"error": "NotAnImage"}

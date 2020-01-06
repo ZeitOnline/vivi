@@ -7,7 +7,6 @@ import zeit.content.video.interfaces
 import zeit.push.browser.form
 import zope.dublincore.interfaces
 import zope.formlib.form
-import zope.formlib.form
 
 
 class Base(zeit.push.browser.form.SocialBase,

@@ -1,6 +1,7 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import six
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
@@ -36,7 +37,7 @@ class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [unicode(node)
+        return [six.text_type(node)
                 for node in tree.iterchildren('*')
                 if self.isAvailable(node, context)]
 
@@ -370,9 +371,9 @@ class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
     """A source for images."""
 
 
+@zope.interface.implementer(IImageSource)
 class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = IImageType
     name = 'images'
 
@@ -380,9 +381,9 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 imageSource = ImageSource()
 
 
+@zope.interface.implementer(IImageSource)
 class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = (IImage,)
     name = 'bare-images'
 
@@ -390,9 +391,9 @@ class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
 bareImageSource = BareImageSource()
 
 
+@zope.interface.implementer(IImageSource)
 class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
 
-    zope.interface.implements(IImageSource)
     check_interfaces = (IImageGroup,)
     name = 'image-groups'
 

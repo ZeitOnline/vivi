@@ -1,5 +1,5 @@
-import httplib
 import random
+import six.moves.http_client
 import time
 import zeit.connector.dav.davbase
 import zeit.connector.dav.davresource
@@ -13,28 +13,28 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
     """
 
     error_map = {
-        httplib.LOCKED:
+        six.moves.http_client.LOCKED:
             zeit.connector.dav.interfaces.DAVLockedError,
-        httplib.PRECONDITION_FAILED:
+        six.moves.http_client.PRECONDITION_FAILED:
             zeit.connector.dav.interfaces.PreconditionFailedError,
-        httplib.MOVED_PERMANENTLY:
+        six.moves.http_client.MOVED_PERMANENTLY:
             zeit.connector.dav.interfaces.DAVRedirectError,
-        httplib.NOT_FOUND:
+        six.moves.http_client.NOT_FOUND:
             zeit.connector.dav.interfaces.DAVNotFoundError,
-        httplib.BAD_REQUEST:
+        six.moves.http_client.BAD_REQUEST:
             zeit.connector.dav.interfaces.DAVBadRequestError
     }
 
     def lock(self, url, owner=None, depth=0, timeout=None, headers={}):
         r = self.get_result(
-            'lock', (httplib.OK,),
+            'lock', (six.moves.http_client.OK,),
             url, owner=owner, depth=depth, timeout=timeout,
             extra_hdrs=headers)
         return r.lock_token
 
     def unlock(self, url, locktoken, headers={}):
         r = self.get_result(
-            'unlock', (httplib.NO_CONTENT,),
+            'unlock', (six.moves.http_client.NO_CONTENT,),
             url, locktoken, extra_hdrs=headers)
         return r
 
@@ -44,9 +44,9 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             tries += 1
             try:
                 return self.get_result(
-                    'propfind', (httplib.MULTI_STATUS,),
+                    'propfind', (six.moves.http_client.MULTI_STATUS,),
                     *args, **kwargs)
-            except zeit.connector.dav.interfaces.DavXmlParseError, e:
+            except zeit.connector.dav.interfaces.DavXmlParseError as e:
                 last_error = e.args[0].last_error
                 if (last_error and
                         last_error.type_name == 'ERR_TAG_NOT_FINISHED' and
@@ -60,7 +60,7 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
         res = self.get_result(
-            'proppatch', (httplib.MULTI_STATUS,),
+            'proppatch', (six.moves.http_client.MULTI_STATUS,),
             url, body, extra_hdrs=hdrs)
         return res
 
@@ -72,19 +72,23 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             extra_headers = {}
         self.set_if_header(extra_headers, url, locktoken, etag)
         res = self.get_result(
-            'put', (httplib.OK, httplib.CREATED, httplib.NO_CONTENT),
+            'put', (six.moves.http_client.OK,
+                    six.moves.http_client.CREATED,
+                    six.moves.http_client.NO_CONTENT),
             url, data, content_type=mime_type, content_enc=encoding,
             extra_hdrs=extra_headers)
         return res
 
     def mkcol(self, url):
-        return self.get_result('mkcol', (httplib.CREATED,), url)
+        return self.get_result('mkcol', (six.moves.http_client.CREATED,), url)
 
     def delete(self, url, locktoken=None):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
         res = self.get_result(
-            'delete', (httplib.OK, httplib.ACCEPTED, httplib.NO_CONTENT),
+            'delete', (six.moves.http_client.OK,
+                       six.moves.http_client.ACCEPTED,
+                       six.moves.http_client.NO_CONTENT),
             url, hdrs)
         return res
 
@@ -92,13 +96,15 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         hdrs = {}
         self.set_if_header(hdrs, url, locktoken)
         res = self.get_result(
-            'move', (httplib.CREATED, httplib.NO_CONTENT),
+            'move', (six.moves.http_client.CREATED,
+                     six.moves.http_client.NO_CONTENT),
             url, destination, hdrs)
         return res
 
     def copy(self, url, destination, locktoken=None, depth=None):
         res = self.get_result(
-            'copy', (httplib.CREATED, httplib.NO_CONTENT),
+            'copy', (six.moves.http_client.CREATED,
+                     six.moves.http_client.NO_CONTENT),
             url, destination, depth)
         return res
 
@@ -121,6 +127,6 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         body = response.read()
         exception = self.error_map.get(response.status)
         if exception is None:
-            raise httplib.HTTPException(
+            raise six.moves.http_client.HTTPException(
                 response.status, response.reason, url, body, response)
         raise exception(response.status, response.reason, url, body, response)

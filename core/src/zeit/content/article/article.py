@@ -1,13 +1,11 @@
+from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-from zope.cachedescriptors.property import Lazy as cachedproperty
-import StringIO
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import re
+import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.field
@@ -48,11 +46,11 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
+@zope.interface.implementer(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.interfaces.IEditorialContent)
 class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
-
-    zope.interface.implements(zeit.content.article.interfaces.IArticle,
-                              zeit.cms.interfaces.IEditorialContent)
 
     default_template = ARTICLE_TEMPLATE
 
@@ -177,8 +175,7 @@ class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.interface.implementer(zeit.content.article.interfaces.IArticle)
 @zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
 def articleFromTemplate(context):
-    source = StringIO.StringIO(
-        zeit.cms.content.interfaces.IXMLSource(context))
+    source = StringIO(zeit.cms.content.interfaces.IXMLSource(context))
     article = Article(xml_source=source)
     zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
         zeit.cms.interfaces.IWebDAVReadProperties(context))
@@ -278,15 +275,14 @@ class SearchableText(grok.Adapter):
     def getSearchableText(self):
         main_text = []
         for p in self.context.xml.body.xpath("//p//text()"):
-            text = unicode(p).strip()
+            text = six.text_type(p).strip()
             if text:
                 main_text.append(text)
         return main_text
 
 
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
-
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     def can_publish(self):
         result = super(ArticleWorkflow, self).can_publish()

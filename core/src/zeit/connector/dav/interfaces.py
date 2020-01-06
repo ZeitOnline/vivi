@@ -1,4 +1,4 @@
-import httplib
+import six.moves.http_client
 
 
 class DavXmlParseError(Exception):
@@ -44,7 +44,7 @@ class DAVRedirectError(DAVError):
     """Raised when a resource was moved."""
 
 
-class PreconditionFailedError(httplib.HTTPException):
+class PreconditionFailedError(six.moves.http_client.HTTPException):
     """Raised when a precondition (if header) fails."""
 
 

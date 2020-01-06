@@ -50,8 +50,8 @@ False
 When we publish the gallery now, the image is also published:
 
 >>> import logging
->>> import StringIO
->>> logfile = StringIO.StringIO()
+>>> from six import StringIO
+>>> logfile = StringIO()
 >>> log_handler = logging.StreamHandler(logfile)
 >>> logging.root.addHandler(log_handler)
 >>> loggers = [None, 'zeit']
@@ -73,7 +73,7 @@ True
 
 The publis script also got all the folders and files:
 
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
@@ -99,7 +99,7 @@ False
 
 Note that the script gets the reverse order for removing:
 
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/gallery
 ...retract.sh:
@@ -131,7 +131,7 @@ Delete the folder and try to publish:
 >>> tid = publish.publish()
 >>> gallery_info.published
 True
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:

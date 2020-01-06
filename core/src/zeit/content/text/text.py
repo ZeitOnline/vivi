@@ -1,6 +1,7 @@
+from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
-import StringIO
 import persistent
+import six
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
@@ -9,13 +10,11 @@ import zeit.content.text.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.text.interfaces.IText,
+    zeit.cms.interfaces.IAsset)
 class Text(zeit.cms.repository.repository.ContentBase,
            persistent.Persistent):
-
-    zope.interface.implements(zeit.content.text.interfaces.IText,
-                              zeit.cms.interfaces.IAsset)
-
-    uniqueId = None
 
     text = None
 
@@ -42,7 +41,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         unicode_data = None
         if encoding:
             try:
-                unicode_data = unicode(data, encoding)
+                unicode_data = six.text_type(data, encoding)
             except UnicodeDecodeError:
                 pass
         if unicode_data is None:
@@ -51,7 +50,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
                     zeit.content.text.interfaces.IText['encoding'].vocabulary):
                 encoding = encoding_term.value
                 try:
-                    unicode_data = unicode(data, encoding)
+                    unicode_data = six.text_type(data, encoding)
                 except UnicodeDecodeError:
                     pass
                 else:
@@ -63,7 +62,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         return text
 
     def resource_body(self, content):
-        return StringIO.StringIO(content.text.encode(content.encoding))
+        return StringIO(content.text.encode(content.encoding))
 
     def resource_content_type(self, content):
         return 'text/plain'

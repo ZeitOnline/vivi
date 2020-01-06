@@ -42,7 +42,7 @@ stored in a webdav property:
 u'Roh'
 >>> resource.data.read()
 "<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
->>> resource.data.seek(0)
+>>> _ = resource.data.seek(0)
 >>> resource.type
 'rawxml'
 
@@ -77,7 +77,7 @@ a channel:
 
 >>> channel = repository['politik.feed']
 >>> channel.insert(0, content)
->>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(channel.xml, pretty_print=True))
 <channel>
   <title>Politik</title>
   <container>
@@ -94,7 +94,7 @@ Let's add some more  xml:
 >>> content.xml.append(lxml.objectify.E.foo(bar='baz'))
 >>> content.xml.append(lxml.objectify.E.blubs('oink'))
 >>> channel.updateMetadata(content)
->>> print lxml.etree.tostring(channel.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(channel.xml, pretty_print=True))
 <channel>
   <title>Politik</title>
   <container>

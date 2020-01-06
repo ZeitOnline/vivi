@@ -18,11 +18,10 @@ class WhitelistSource(
 
     # this is only contextual so we can customize the source_class
 
+    @zope.interface.implementer(
+        IWhitelistSource,
+        zeit.cms.content.contentsource.IAutocompleteSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        zope.interface.implements(
-            IWhitelistSource,
-            zeit.cms.content.contentsource.IAutocompleteSource)
 
         def get_check_types(self):
             """IAutocompleteSource"""
@@ -51,11 +50,10 @@ class ILocationSource(zope.schema.interfaces.IIterableSource):
 
 class LocationSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
+    @zope.interface.implementer(
+        ILocationSource,
+        zeit.cms.content.contentsource.IAutocompleteSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        zope.interface.implements(
-            ILocationSource,
-            zeit.cms.content.contentsource.IAutocompleteSource)
 
         def get_check_types(self):
             """IAutocompleteSource, but not applicable for us"""

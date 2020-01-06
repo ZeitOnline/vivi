@@ -16,13 +16,13 @@ The lookup is delegated to a protocol handler:
 
 >>> import zope.component
 >>> import zope.interface
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     def __init__(self, uid):
 ...         self.uniqueId = uid
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> def lookup_foo(unique_id):
-...     print "foo:// lookup:", unique_id
+...     print("foo:// lookup: %s" % unique_id)
 ...     return Content(unique_id)
 >>> gsm.registerAdapter(
 ...         lookup_foo, (basestring,), zeit.cms.interfaces.ICMSContent,
@@ -40,7 +40,7 @@ Traceback (most recent call last):
     ...
 TypeError: ('Could not adapt', 'http://gocept.com/content', <InterfaceClass zeit.cms.interfaces.ICMSContent>)
 >>> def lookup_gocept(unique_id):
-...     print "gocept lookup:", unique_id
+...     print("gocept lookup: %s" % unique_id)
 ...     return Content(unique_id)
 >>> gsm.registerAdapter(
 ...         lookup_gocept, (basestring,), zeit.cms.interfaces.ICMSContent,

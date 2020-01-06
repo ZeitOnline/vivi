@@ -5,6 +5,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import logging
 import os.path
 import pytz
+import six
 import subprocess
 import tempfile
 import threading
@@ -28,15 +29,14 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
 class Publish(object):
-
-    zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=None, async=True, **kw):
+    def publish(self, priority=None, background=True, **kw):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -44,17 +44,17 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         return self._execute_task(
-            PUBLISH_TASK, [self.context.uniqueId], priority, async,
+            PUBLISH_TASK, [self.context.uniqueId], priority, background,
             _('Publication scheduled'), **kw)
 
-    def retract(self, priority=None, async=True, **kw):
+    def retract(self, priority=None, background=True, **kw):
         """Retract object."""
         return self._execute_task(
-            RETRACT_TASK, [self.context.uniqueId], priority, async,
+            RETRACT_TASK, [self.context.uniqueId], priority, background,
             _('Retracting scheduled'), **kw)
 
     def publish_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Publish multiple objects."""
         if not objects:
             logger.warning('Not starting a publishing task, because no objects'
@@ -66,10 +66,10 @@ class Publish(object):
             self.log(obj, _('Collective Publication'))
             ids.append(obj.uniqueId)
         return self._execute_task(
-            MULTI_PUBLISH_TASK, ids, priority, async, **kw)
+            MULTI_PUBLISH_TASK, ids, priority, background, **kw)
 
     def retract_multiple(
-            self, objects, priority=PRIORITY_LOW, async=True, **kw):
+            self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Retract multiple objects."""
         if not objects:
             logger.warning('Not starting a retract task, because no objects'
@@ -81,10 +81,11 @@ class Publish(object):
             self.log(obj, _('Collective Retraction'))
             ids.append(obj.uniqueId)
         return self._execute_task(
-            MULTI_RETRACT_TASK, ids, priority, async, **kw)
+            MULTI_RETRACT_TASK, ids, priority, background, **kw)
 
-    def _execute_task(self, task, ids, priority, async, message=None, **kw):
-        if async:
+    def _execute_task(self, task, ids, priority, background,
+                      message=None, **kw):
+        if background:
             if message:
                 self.log(self.context, message)
             return task.apply_async(
@@ -170,7 +171,7 @@ class PublishRetractTask(object):
         finally:
             timer.mark('Done %s' % ids_str)
             timer_logger.debug(
-                'Timings:\n%s' % (unicode(timer).encode('utf8'),))
+                'Timings:\n%s' % (six.text_type(timer).encode('utf8'),))
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -308,7 +309,7 @@ class PublishRetractTask(object):
 
     @staticmethod
     def call_script(filename, input_data):
-        if isinstance(input_data, unicode):
+        if isinstance(input_data, six.text_type):
             input_data = input_data.encode('UTF-8')
         with tempfile.NamedTemporaryFile() as f:
             f.write(input_data)
@@ -356,7 +357,7 @@ class PublishTask(PublishRetractTask):
             try:
                 obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_publish, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
             else:
                 published.append(obj)
@@ -372,7 +373,7 @@ class PublishTask(PublishRetractTask):
             try:
                 self.recurse(self.after_publish, obj, obj)
                 obj = self.recurse(self.unlock, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
 
         if errors:
@@ -440,7 +441,7 @@ class RetractTask(PublishRetractTask):
                     obj.uniqueId)
             try:
                 obj = self.recurse(self.before_retract, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
             else:
                 retracted.append(obj)
@@ -455,7 +456,7 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             try:
                 self.recurse(self.after_retract, obj, obj)
-            except Exception, e:
+            except Exception as e:
                 errors.append((obj, e))
 
         if errors:

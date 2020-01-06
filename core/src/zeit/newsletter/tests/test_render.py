@@ -1,9 +1,9 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.newsletter.render import Renderer
 import gocept.httpserverlayer.custom
+import six.moves.urllib.parse
 import time
 import unittest
-import urlparse
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
@@ -20,8 +20,8 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         time.sleep(self.sleep)
 
         # dear stdlib, you've got to be kidding
-        query = urlparse.parse_qs(
-            urlparse.urlparse('http://host' + self.path).query)
+        query = six.moves.urllib.parse.parse_qs(
+            six.moves.urllib.parse.urlparse('http://host' + self.path).query)
         format = query.get('format', [''])[0]
         response = format
 

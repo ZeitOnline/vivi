@@ -11,7 +11,7 @@ Verify the lxml pickle support.
 >>> xml = lxml.objectify.fromstring('<foo><b>zoot</b></foo><?bar?>')
 >>> p = pickle.dumps(xml)
 >>> restored_xml = pickle.loads(p)
->>> print lxml.etree.tostring(restored_xml.getroottree(), pretty_print=True)
+>>> print(lxml.etree.tostring(restored_xml.getroottree(), pretty_print=True))
 <foo>
   <b>zoot</b>
 </foo>

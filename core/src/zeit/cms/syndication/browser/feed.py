@@ -1,22 +1,20 @@
+from zeit.cms.i18n import MessageFactory as _
 import cgi
 import logging
-
+import six
+import zc.table.column
+import zc.table.table
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.browser.menu
+import zeit.cms.browser.view
+import zeit.cms.syndication.feed
+import zeit.cms.syndication.interfaces
+import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.publisher.interfaces
-
-import zc.table.column
-import zc.table.table
-
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
-import zeit.cms.browser.view
-import zeit.cms.browser.menu
-import zeit.cms.workingcopy.interfaces
-import zeit.cms.syndication.interfaces
-import zeit.cms.syndication.feed
-from zeit.cms.i18n import MessageFactory as _
 
 
 logger = logging.getLogger(__name__)
@@ -65,12 +63,12 @@ class OrderedSelectionColumn(zc.table.column.SelectionColumn):
         raise NotImplementedError()
 
 
+@zope.component.adapter(
+    zeit.cms.syndication.interfaces.IFeed,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing a feed."""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.syndication.interfaces.IFeed,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     @property
     def title(self):
@@ -134,7 +132,7 @@ class FeedView(object):
             return u'<a href="%s">%s</a>' % (item.url, cgi.escape(value))
 
         def _escape(value, item, formatter):
-            return cgi.escape(unicode(value))
+            return cgi.escape(six.text_type(value))
 
         return (
             zc.table.column.GetterColumn(
@@ -311,12 +309,12 @@ class RemoveFromMySyndicationTargetsMenuItem(
             return super(RemoveFromMySyndicationTargetsMenuItem, self).render()
 
 
+@zope.component.adapter(
+    zeit.cms.syndication.feed.FakeEntry,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FakeEntryRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing a feed."""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.syndication.feed.FakeEntry,
-                          zeit.cms.browser.interfaces.ICMSLayer)
 
     @property
     def title(self):

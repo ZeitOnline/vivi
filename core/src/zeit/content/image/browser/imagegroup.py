@@ -1,10 +1,10 @@
+from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
-import itertools
 import re
 import zc.table.column
 import zeit.cms.browser.form
@@ -111,7 +111,7 @@ class AddForm(FormBase,
         # is configured with first viewport of source, secondary master image
         # with second viewport etc.
         viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE(group)
-        for image, viewport in itertools.izip(self.images, viewports):
+        for image, viewport in zip(self.images, viewports):
             group.master_images += ((viewport, image.__name__),)
 
         return group

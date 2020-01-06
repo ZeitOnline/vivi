@@ -1,3 +1,4 @@
+from six.moves import range
 import transaction
 import unittest
 import zeit.cms.checkout.interfaces
@@ -9,13 +10,13 @@ import zope.security.management
 
 
 def add_to_clipboard(obj, name):
-        principal = (zope.security.management.getInteraction()
-                     .participations[0].principal)
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-        clipboard.addClip('Clip')
-        clip = clipboard['Clip']
-        clipboard.addContent(clip, obj, name, insert=True)
-        transaction.commit()
+    principal = (zope.security.management.getInteraction()
+                 .participations[0].principal)
+    clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+    clipboard.addClip('Clip')
+    clip = clipboard['Clip']
+    clipboard.addContent(clip, obj, name, insert=True)
+    transaction.commit()
 
 
 class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

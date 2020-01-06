@@ -11,11 +11,11 @@ import zope.publisher.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
+@zope.component.adapter(
+    zeit.cms.clipboard.interfaces.IClip,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ClipListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.clipboard.interfaces.IClip,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     author = subtitle = byline = ressort = volume = page = year = None
     uniqueId = None

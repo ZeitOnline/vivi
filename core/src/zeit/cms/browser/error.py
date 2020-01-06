@@ -1,6 +1,7 @@
 import bugsnag
+import six
+import six.moves.urllib.parse
 import traceback
-import urlparse
 import zope.error.error
 import zope.exceptions.exceptionformatter
 import zope.i18n
@@ -55,14 +56,14 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         super(ErrorReportingUtility, self).raising(info, request)
         self._notify_bugsnag(info, request)
         exception = info[1]
-        if not isinstance(info[2], basestring):
+        if not isinstance(info[2], six.string_types):
             exception.traceback = getFormattedException(info)
         else:
             exception.traceback = zope.error.error.getPrintable(info[2])
 
     def _notify_bugsnag(self, info, request):
         url = str(getattr(request, 'URL', ''))
-        path = urlparse.urlparse(url).path if url else None
+        path = six.moves.urllib.parse.urlparse(url).path if url else None
         username = (self._getUsername(request) or '').split(', ')
         if username:
             user = {'id': username[1], 'name': username[2]}
@@ -90,7 +91,7 @@ class ExceptionFormatter(
 
     # copy&paste to throw away non-application parts of the traceback.
     def formatException(self, etype, value, tb):
-        __exception_formatter__ = 1
+        __exception_formatter__ = 1  # noqa
         result = [self.getPrefix() + '\n']
         limit = self.getLimit()
         n = 0

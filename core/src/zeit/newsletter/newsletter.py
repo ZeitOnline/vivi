@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import UserDict
+import collections
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
@@ -17,10 +17,9 @@ import zope.interface
 BODY_NAME = 'newsletter_body'
 
 
+@zope.interface.implementer(zeit.newsletter.interfaces.INewsletter)
 class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
-                 UserDict.DictMixin):
-
-    zope.interface.implements(zeit.newsletter.interfaces.INewsletter)
+                 collections.Mapping):
 
     default_template = pkg_resources.resource_string(__name__, 'template.xml')
 
@@ -29,6 +28,12 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
 
     def keys(self):
         return [BODY_NAME]
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
 
     def __getitem__(self, key):
         if key == BODY_NAME:

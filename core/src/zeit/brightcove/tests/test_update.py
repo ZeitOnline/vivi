@@ -231,7 +231,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_changes_are_not_written_during_publish(self):
         zeit.cms.workflow.interfaces.IPublish(
-            self.repository['myvid']).publish(async=False)
+            self.repository['myvid']).publish(background=False)
         self.assertEqual(False, self.request.called)
 
     def test_changes_are_written_on_commit(self):
@@ -251,7 +251,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_video_is_published_on_checkin(self):
         video = self.repository['myvid']
-        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         last_published = info.date_last_published
 
@@ -264,7 +264,8 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
     def test_playlist_is_published_on_checkin(self):
         self.repository['playlist'] = zeit.content.video.playlist.Playlist()
         playlist = self.repository['playlist']
-        zeit.cms.workflow.interfaces.IPublish(playlist).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(playlist).publish(
+            background=False)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         last_published = info.date_last_published
 

@@ -1,7 +1,9 @@
+from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
+import six
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
@@ -32,11 +34,11 @@ GALLERY_TEMPLATE = u"""\
 </gallery>"""
 
 
+@zope.interface.implementer(
+    zeit.content.gallery.interfaces.IGallery,
+    zeit.cms.interfaces.IEditorialContent)
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
     """Gallery"""
-
-    zope.interface.implements(zeit.content.gallery.interfaces.IGallery,
-                              zeit.cms.interfaces.IEditorialContent)
 
     _image_folder = zeit.cms.content.property.SingleResource(
         '.head.image-folder')
@@ -106,7 +108,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
-            entry.title = unicode(entry.title)
+            entry.title = six.text_type(entry.title)
         entry.text = node.find('text')
         if entry.text is None:
             entry.text = lxml.objectify.E.text()
@@ -117,11 +119,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                                    *entry.text.getchildren()))
         entry.layout = node.get('layout')
         if entry.layout is not None:
-            entry.layout = unicode(entry.layout)
+            entry.layout = six.text_type(entry.layout)
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            entry.caption = unicode(gallery_caption)
+            entry.caption = six.text_type(gallery_caption)
 
         # XXX need location information on the entry itself for crops(),
         # but just returning entry here breaks tests, so we do both for now.
@@ -172,7 +174,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def items(self):
         """Return the items of the mapping object.
         """
-        return zip(self.keys(), self.values())
+        return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
         return self._entries_container.xpath('count(block)')
@@ -231,7 +233,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 return block
 
     def _list_all_keys(self):
-        return (unicode(name)
+        return (six.text_type(name)
                 for name in self._entries_container.xpath('block/@name'))
 
     def _guess_image_folder(self):
@@ -284,9 +286,8 @@ def galleryentry_factory(context):
     return entry
 
 
+@zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
 class GalleryEntry(object):
-
-    zope.interface.implements(zeit.content.gallery.interfaces.IGalleryEntry)
 
     @property
     def crops(self):
@@ -297,10 +298,9 @@ class GalleryEntry(object):
         return result
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class EntryXMLRepresentation(object):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
     def __init__(self, context):
         self.context = context
@@ -332,9 +332,8 @@ class EntryXMLRepresentation(object):
         return node
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGallery)
 
     def get_tree(self):
         # we can't express that 'body' is allowed for IGallery objects as a
@@ -349,9 +348,8 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
         return text
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
 
     def get_tree(self):
         return self.context.text
@@ -370,11 +368,10 @@ def get_visible_entry_count_for_gallery(context):
     return len(container.xpath('block[not(@layout="hidden")]/@name'))
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
 class EntryMetadata(object):
     """ImageMetadata composition from gallery entry and its image."""
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-    zope.interface.implements(zeit.content.image.interfaces.IImageMetadata)
 
     def __init__(self, context):
         self.context = context
@@ -390,23 +387,23 @@ class EntryMetadata(object):
         return value
 
 
-@grokcore.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@grokcore.component.implementer(zeit.content.image.interfaces.IImages)
+@grok.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@grok.implementer(zeit.content.image.interfaces.IImages)
 def images_for_entry(context):
     context.fill_color = None
     return context
 
 
-class SearchableText(grokcore.component.Adapter):
+@grok.implementer(zope.index.text.interfaces.ISearchableText)
+class SearchableText(grok.Adapter):
     """SearchableText for a gallery."""
 
-    grokcore.component.context(zeit.content.gallery.interfaces.IGallery)
-    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+    grok.context(zeit.content.gallery.interfaces.IGallery)
 
     def getSearchableText(self):
         main_text = []
         for p in self.context.xml.body.xpath("//p"):
-            text = unicode(p).strip()
+            text = six.text_type(p).strip()
             if text:
                 main_text.append(text)
         return main_text

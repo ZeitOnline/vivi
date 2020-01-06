@@ -12,9 +12,8 @@ class IRSSLink(zeit.content.link.interfaces.ILink):
     image_url = zope.interface.Attribute('image_url')
 
 
+@zope.interface.implementer(IRSSLink)
 class RSSLink(object):
-
-    zope.interface.implements(IRSSLink)
 
     def __init__(self, xml, feed=None):
         self.xml = xml

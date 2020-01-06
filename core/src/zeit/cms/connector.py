@@ -1,2 +1,2 @@
 # Backward compatibility
-from zeit.connector.resource import Resource
+from zeit.connector.resource import Resource  # noqa

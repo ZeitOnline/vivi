@@ -15,12 +15,11 @@ import zeit.cms.workingcopy.interfaces
 import zeit.cms.syndication.interfaces
 
 
+@zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)
+@zope.interface.implementer(
+    zeit.cms.syndication.interfaces.IMySyndicationTargets)
 class MySyndicationTargets(persistent.Persistent,
                            zope.container.contained.Contained):
-
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IMySyndicationTargets)
-    zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 
     default_targets = (
         'http://xml.zeit.de/hp_channels/r07_hp_aufmacher',

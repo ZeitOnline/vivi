@@ -1,16 +1,17 @@
 from datetime import datetime, timedelta
+from six import StringIO
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import StringIO
 import mock
 import pytz
 import unittest
-import zeit.edit.testing
-import zope.interface
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.edit.rule
 import zeit.edit.interfaces
+import zeit.edit.rule
+import zeit.edit.testing
+import zeit.workflow.browser.publish
 import zope.component
+import zope.interface
 
 
 class RuleTest(unittest.TestCase):
@@ -195,8 +196,8 @@ class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
         with mock.patch('zope.app.appsetup.product.getProductConfiguration') \
                 as gpc:
             gpc.return_value = {'rules-url': mock.sentinel.rulesurl}
-            with mock.patch('urllib2.urlopen') as urlopen:
-                urlopen.return_value = StringIO.StringIO(rules)
+            with mock.patch('six.moves.urllib.request.urlopen') as urlopen:
+                urlopen.return_value = StringIO(rules)
                 return rm.rules
 
     def test_valid_rules_file_should_be_loaded(self):
@@ -312,9 +313,6 @@ class ValidatingWorkflowTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_validating_workflow_provides_error_messages_for_publish_info(
             self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-        import zeit.workflow.browser.publish
-
         view = zeit.workflow.browser.publish.Publish()
         view.context = self.repository['testcontent']
         view.can_publish()

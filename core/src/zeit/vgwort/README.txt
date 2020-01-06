@@ -15,8 +15,8 @@ Tokens management
 Load tokens
 -----------
 
->>> import StringIO
->>> csv = StringIO.StringIO("""\
+>>> from six import StringIO
+>>> csv = StringIO("""\
 ... Öffentlicher Identifikationscode;Privater Identifikationscode
 ... c0063bcfb7234b35b145af20dccf5e2a;8018af9154bd4b60b0ee4a6891b85583
 ... 4c47ec781b5b4a288b9a1ab8b2c5ab3c;82e7bb658f75444a9bf74273641f2c29
@@ -82,7 +82,7 @@ The number of available tokens is provided as a view (for Nagios checks):
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.open('http://localhost/@@zeit.vgwort.available_tokens')
->>> print browser.contents
+>>> print(browser.contents)
 3
 
 >>> import zeit.cms.interfaces
@@ -101,7 +101,7 @@ reported with VGWort or not. Since the DAV-Server cannot query for the
 non-existence of properties, we initialize them with empty values:
 
 >>> info = zeit.vgwort.interfaces.IReportInfo(content)
->>> print info.reported_on
+>>> print(info.reported_on)
 None
 >>> info.reported_error
 u''
@@ -130,7 +130,7 @@ Tokens are only assigned for the master object of the event:
 The private token is *not* synched to xml:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(content.xml, pretty_print=True),
+>>> print(lxml.etree.tostring(content.xml, pretty_print=True))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>

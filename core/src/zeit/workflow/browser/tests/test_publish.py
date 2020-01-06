@@ -49,7 +49,7 @@ class TestPublish(
         self.register_workflow_with_warning()
         s = self.selenium
         s.click('link=Publish')
-        s.waitForElementPresent('css=#publish\.errors')
+        s.waitForElementPresent(r'css=#publish\.errors')
         s.assertTextPresent('Validation Warning')
         s.click('link=Publish anyway')
         s.waitForElementPresent('css=li.busy[action=start_job]')
@@ -82,8 +82,8 @@ class TestPublish(
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
         transaction.commit()
-        IPublish(self.repository['other']).publish(async=False)
-        IPublish(self.repository['testcontent']).publish(async=False)
+        IPublish(self.repository['other']).publish(background=False)
+        IPublish(self.repository['testcontent']).publish(background=False)
         transaction.commit()
         self.open('/repository')
         s = self.selenium

@@ -30,7 +30,7 @@ Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 404: Not Found
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title>
            Object: &lt;zope...Folder object at 0x...&gt;, name: u'doesnotexist' – Zeit CMS
@@ -46,7 +46,7 @@ The sidebar remembers its folding state. This is dependent on the user.
 Initially the sidebar is open (expanded):
 
 >>> browser.open('http://localhost/++skin++cms/' )
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
     <div id="sidebar" class="sidebar-expanded">...
@@ -64,7 +64,7 @@ The java script calls `set_folded`:
 So with the next page load the panel is folded:
 
 >>> browser.open('http://localhost/++skin++cms/' )
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
     <div id="sidebar" class="sidebar-folded">...
@@ -79,7 +79,7 @@ Toggling again will expand the sidebar again:
 >>> browser.contents
 'sidebar-expanded'
 >>> browser.open('http://localhost/++skin++cms/' )
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
 <!DOCTYPE ...
     <div id="sidebar" class="sidebar-expanded">...
@@ -100,7 +100,7 @@ Make sure the menu entries are there and the targets are _blank:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <li class="preview ">
      <a href=".../online/2007/01/Somalia/@@show_preview" rel="..."
@@ -184,7 +184,7 @@ There is a view which dispatches to the actual drag pane:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/get-drag-pane?'
 ...     'uniqueId=http://xml.zeit.de/testcontent')
->>> print browser.contents
+>>> print(browser.contents)
   <div class="Text">
     :
   </div>

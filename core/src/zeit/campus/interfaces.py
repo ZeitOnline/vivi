@@ -104,6 +104,7 @@ class StudyCourseSource(
                 g('button_text', None))
         return result
 
+
 STUDY_COURSE_SOURCE = StudyCourseSource()
 
 

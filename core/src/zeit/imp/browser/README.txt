@@ -19,7 +19,7 @@ Scaled image
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/group'
 ...     '/@@imp-scaled?width=200&height=60')
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: public,max-age=3600
 Content-Length: ...
@@ -41,7 +41,7 @@ The mask is loaded from the site with the image size and mask size parameters:
 ...     'mask_height:int': '10',
 ...     'border': ''})
 >>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: public,max-age=86400
 Content-Length: ...
@@ -59,7 +59,7 @@ The border can be coloured:
 ...     'mask_height:int': '10',
 ...     'border': '#fde32b'})
 >>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: public,max-age=86400
 Content-Length: ...
@@ -75,7 +75,7 @@ If the colour doesn't parse there will not be a border:
 ...     'mask_height:int': '10',
 ...     'border': '#xzy'})
 >>> browser.open('http://localhost/++skin++cms/@@imp-cut-mask?' + query)
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Cache-Control: public,max-age=86400
 Content-Length: ...
@@ -90,7 +90,7 @@ The image manipulation view is on an imagegroup containing a master image:
 
 >>> browser.open('http://localhost/++skin++cms/repository/group/@@view.html')
 >>> browser.getLink('Transform').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <div id="imp-metadata">
     <div id="imp-width">2048</div>

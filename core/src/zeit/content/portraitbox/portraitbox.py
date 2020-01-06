@@ -12,10 +12,10 @@ import zeit.wysiwyg.html
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.portraitbox.interfaces.IPortraitbox,
+    zeit.cms.interfaces.IAsset)
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(zeit.content.portraitbox.interfaces.IPortraitbox,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<container layout="artbox" label="portrait" '
@@ -35,10 +35,10 @@ class PortraiboxType(zeit.cms.type.XMLContentTypeDeclaration):
     title = _('Portraitbox')
 
 
+@zope.component.adapter(zeit.content.portraitbox.interfaces.IPortraitbox)
 class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     """HTML content of an article."""
 
-    zope.component.adapts(zeit.content.portraitbox.interfaces.IPortraitbox)
     path = lxml.objectify.ObjectPath('.block.text')
 
     def get_tree(self):

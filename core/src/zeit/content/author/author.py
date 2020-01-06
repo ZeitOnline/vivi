@@ -2,11 +2,12 @@ from requests.exceptions import RequestException
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
-import UserDict
+import collections
 import grokcore.component as grok
 import lxml.objectify
 import requests
-import urllib
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -22,10 +23,10 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(zeit.content.author.interfaces.IAuthor,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
@@ -98,10 +99,9 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.content.author.add_contextfree'
 
 
+@zope.component.adapter(zeit.content.author.interfaces.IAuthor)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.author.interfaces.IAuthor)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
@@ -151,7 +151,7 @@ def update_ssoid(context, event):
 def request_acs(email):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.author')
-    url = config['sso-api-url'] + '/users/' + urllib.quote(
+    url = config['sso-api-url'] + '/users/' + six.moves.urllib.parse.quote(
         email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
     try:
@@ -231,7 +231,7 @@ def author_location(type_, adder):
 @grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
         grok.Adapter,
-        UserDict.DictMixin,
+        collections.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
 
     grok.context(zeit.content.author.interfaces.IAuthor)
@@ -245,7 +245,7 @@ class BiographyQuestions(
     def __getitem__(self, key):
         node = self.xml.xpath('//question[@id="%s"]' % key)
         return Question(
-            key, self.title(key), unicode(node[0]) if node else None)
+            key, self.title(key), six.text_type(node[0]) if node else None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//question[@id="%s"]' % key)
@@ -259,6 +259,15 @@ class BiographyQuestions(
 
     def keys(self):
         return list(zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self))
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, key):
+        raise NotImplementedError()
 
     def title(self, key):
         return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
@@ -276,9 +285,8 @@ class BiographyQuestions(
         self[key] = value
 
 
+@zope.interface.implementer(zeit.content.author.interfaces.IQuestion)
 class Question(object):
-
-    zope.interface.implements(zeit.content.author.interfaces.IQuestion)
 
     def __init__(self, id, title, answer):
         self.id = id

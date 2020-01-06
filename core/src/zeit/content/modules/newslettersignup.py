@@ -5,10 +5,9 @@ import zeit.edit.block
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.modules.interfaces.INewsletterSignup)
 class NewsletterSignup(zeit.edit.block.Element):
-
-    zope.interface.implements(
-        zeit.content.modules.interfaces.INewsletterSignup)
 
     newsletter = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'id'),

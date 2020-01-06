@@ -1,6 +1,4 @@
-
 from zeit.cms.i18n import MessageFactory as _
-import ZODB.interfaces
 import gocept.form.grouped
 import os.path
 import zeit.cms.browser.interfaces
@@ -11,16 +9,16 @@ import zeit.cms.repository.interfaces
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(
+    zeit.cms.repository.interfaces.IFile,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.component.adapts(
-        zeit.cms.repository.interfaces.IFile,
-        zeit.cms.browser.interfaces.ICMSLayer)
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     author = title = subtitle = byline = ressort = volume = page = year = \
         searchableText = None
@@ -48,10 +46,11 @@ class BlobWidget(zope.app.form.browser.FileWidget):
         if input is None or input == '':
             return self.context.missing_value
         try:
-            seek = input.seek
-            read = input.read
-        except AttributeError, e:
-            raise ConversionError(_('Form input is not a file object'), e)
+            input.seek
+            input.read
+        except AttributeError as e:
+            raise zope.formlib.interfaces.ConversionError(
+                _('Form input is not a file object'), e)
         else:
             if getattr(input, 'filename', ''):
                 return input

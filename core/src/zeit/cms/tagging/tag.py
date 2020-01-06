@@ -1,6 +1,7 @@
 import collections
 import copy
 import grokcore.component as grok
+import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -84,7 +85,7 @@ def update_tags_on_modify(content, event):
 
 
 @grok.adapter(
-    basestring, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
+    six.string_types[0], name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_tag(unique_id):
     assert unique_id.startswith(

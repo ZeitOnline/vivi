@@ -11,8 +11,8 @@ invalidate the resource. Create a test handler:
 >>> import zope.component
 >>> import zeit.connector.interfaces
 >>> def invalidated(event):
-...     print "Resource invalidated:", event.id
-...     print "   ", event
+...     print("Resource invalidated: %s" % event.id)
+...     print("    %s" % event)
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerHandler(
 ...     invalidated,
@@ -21,8 +21,8 @@ invalidate the resource. Create a test handler:
 Create a log file and attach it to the logging to verify the logging:
 
 >>> import logging
->>> import StringIO
->>> log = StringIO.StringIO()
+>>> from six import StringIO
+>>> log = StringIO()
 >>> log_handler = logging.StreamHandler(log)
 >>> logging.root.addHandler(log_handler)
 >>> old_log_level = logging.root.level
@@ -54,7 +54,7 @@ Fault: <Fault 100: "`resource_id` must be string type, got <type 'int'>">
 We made one invalidation request which is in the log file. The error is logged
 as well:
 
->>> print log.getvalue()
+>>> print(log.getvalue())
 zope.invalidate invalidated http://xml.zeit.de/index.
 http://localhost/@@invalidate
 Traceback (most recent call last):
@@ -90,7 +90,7 @@ Traceback (most recent call last):
 Fault: <Fault 100: "`resource_list` must be sequence type, got <type 'str'>">
 
 
->>> print log.getvalue()
+>>> print(log.getvalue())
 zope.invalidate invalidated index.
 zope.invalidate invalidated foo.
 zope.invalidate invalidated bar.

@@ -1,5 +1,6 @@
 import datetime
 import pytz
+import six
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
@@ -20,10 +21,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
+@zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.IExampleContentType)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
-    zope.component.adapts(
-        zeit.cms.testcontenttype.interfaces.IExampleContentType)
 
     def get_tree(self):
         return self.context.xml['body']
@@ -39,7 +39,7 @@ class Dummy(object):
     pass
 
 
-@zope.component.adapter(basestring)
+@zope.component.adapter(six.string_types[0])
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 def mock_video_repository(uniqueId):
     result = None

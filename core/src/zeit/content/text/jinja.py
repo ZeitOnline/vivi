@@ -11,9 +11,8 @@ import zeit.content.text.text
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.text.interfaces.IJinjaTemplate)
 class JinjaTemplate(zeit.content.text.text.Text):
-
-    zope.interface.implements(zeit.content.text.interfaces.IJinjaTemplate)
 
     title = zeit.cms.content.dav.DAVProperty(
         zeit.content.text.interfaces.IJinjaTemplate['title'],

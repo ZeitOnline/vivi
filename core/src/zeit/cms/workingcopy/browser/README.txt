@@ -14,7 +14,7 @@ When we access our working copy it is created on the fly if it does not exist
 yet. So let's open our workingcopy. It doesn't contain any documents, yet:
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
 No edited documents...
@@ -24,7 +24,7 @@ Adding content to the working copy works by checking them out. Let's view the
 repository and checkout a document:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
 ...namespaces.zeit.de...
@@ -42,7 +42,7 @@ Checking out redirected us to the document *in* the working copy:
 
 The sidebar lists the document now:
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <div...id="WorkingcopyPanel"...
   <ul class="contentListing">
@@ -66,7 +66,7 @@ Looking at our working copy also shows the `Somalia` article:
 
 >>> browser.getLink('Checkout').click()
 >>> browser.getLink('Edited documents').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
 ...Somalia...
@@ -83,7 +83,7 @@ Let's open the delete form:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/Somalia/'
 ...     '@@delete.html')
->>> print browser.contents
+>>> print(browser.contents)
 <div class="topcontent deleteScreen">
   <h1>Delete from workingcopy</h1>
   ...
@@ -108,10 +108,10 @@ Let's open the delete form:
 Let's delete it:
 
 >>> browser.getControl('Confirm delete').click()
->>> print browser.contents
+>>> print(browser.contents)
 <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia</span>
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
       <div id="topcontent">
         <span class="Info">There are no objects in this folder.</span>
@@ -143,9 +143,9 @@ We need some setup:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/Querdax/@@delete.html')
 >>> browser.getControl('Confirm delete').click()
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/workingcopy/zope.user/Querdax/delete.html?form.actions.delete=Confirm+delete
->>> print browser.contents
+>>> print(browser.contents)
 <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01</span>
 
 
@@ -162,7 +162,7 @@ the first. Checkout two documents:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/studiVZ')
 >>> browser.getLink('Checkout').click()
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
   <a href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/@@edit.html">studiVZ</a>...
   <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>...
@@ -264,7 +264,7 @@ When we look at the preview now:
 
 >>> browser.handleErrors = False
 >>> browser.getLink('Preview').click()
->>> print browser.contents
+>>> print(browser.contents)
 The quick brown fox jumps over the lazy dog.
 
 The preview object will have been be removed though:
@@ -280,7 +280,7 @@ preview doesn't break when the folders already exist:
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'Somalia/@@view.html')
 >>> browser.getLink('Preview').click()
->>> print browser.contents
+>>> print(browser.contents)
 The quick brown fox jumps over the lazy dog.
 
 Query arguments are passed to the server:
@@ -290,7 +290,7 @@ Query arguments are passed to the server:
 ...     'Somalia/@@view.html')
 >>> url = browser.getLink('Preview').url
 >>> browser.open(url + '?foo=bar')
->>> print browser.contents
+>>> print(browser.contents)
 The quick brown foo jumps over the lazy bar.
 
 Clean up:

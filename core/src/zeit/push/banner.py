@@ -13,9 +13,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IBanner)
 class Banner(object):
-
-    zope.interface.implements(zeit.push.interfaces.IBanner)
 
     def __init__(self, banner_unique_id):
         self.banner_unique_id = banner_unique_id
@@ -72,9 +71,8 @@ def get_breaking_news_article():
     return zeit.cms.interfaces.ICMSContent(banner.article_id, None)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Push(object):
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def send(self, text, article_unique_id, **kw):
         log.debug('Publishing Homepage banner for %s', article_unique_id)

@@ -1,7 +1,7 @@
-import UserDict
 import collections
 import copy
 import grokcore.component as grok
+import six
 import sys
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -10,7 +10,7 @@ import zope.schema
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariants)
-class Variants(grok.Adapter, UserDict.DictMixin):
+class Variants(grok.Adapter, collections.Mapping):
 
     grok.context(zeit.content.image.interfaces.IImageGroup)
 
@@ -62,6 +62,12 @@ class Variants(grok.Adapter, UserDict.DictMixin):
     def keys(self):
         return [x.id for x in VARIANT_SOURCE(self.context)]
 
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
     @property
     def default_variant(self):
         if Variant.DEFAULT_NAME in self.context.variants:
@@ -92,7 +98,7 @@ class Variant(object):
         for key, value in kw.items():
             if key not in fields:
                 continue  # ignore attributes that aren't part of the schema
-            value = fields[key].fromUnicode(unicode(value))
+            value = fields[key].fromUnicode(six.text_type(value))
             setattr(self, key, value)
 
     def __cmp__(self, other):
@@ -118,14 +124,14 @@ class Variant(object):
     @property
     def max_width(self):
         if self.max_size is None:
-            return sys.maxint
+            return sys.maxsize
         width, height = self.max_size.split('x')
         return int(width)
 
     @property
     def max_height(self):
         if self.max_size is None:
-            return sys.maxint
+            return sys.maxsize
         width, height = self.max_size.split('x')
         return int(height)
 
@@ -213,6 +219,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
                 parent_attr['name'], child_attr['id'])
 
         return result
+
 
 VARIANT_SOURCE = VariantSource()
 

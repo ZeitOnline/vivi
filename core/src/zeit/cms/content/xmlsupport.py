@@ -1,12 +1,12 @@
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-import StringIO
+from six import StringIO
 import datetime
 import gocept.lxml.objectify
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import persistent
 import persistent.interfaces
 import pytz
+import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
@@ -18,9 +18,8 @@ import zope.security.interfaces
 import zope.security.proxy
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class XMLRepresentationBase(object):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
 
     #: XML string with which to initalize new objects. Define in subclass.
     default_template = None
@@ -30,16 +29,15 @@ class XMLRepresentationBase(object):
             if self.default_template is None:
                 raise NotImplementedError(
                     "default_template needs to be set in subclasses")
-            xml_source = StringIO.StringIO(self.default_template)
+            xml_source = StringIO(self.default_template)
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
 
 
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
 class XMLContentBase(zeit.cms.repository.repository.ContentBase,
                      XMLRepresentationBase,
                      persistent.Persistent):
     """Base class for XML content."""
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLContent)
 
 
 _default_marker = object()
@@ -79,10 +77,10 @@ class Persistent(object):
             parent = parent.__parent__
 
 
+@zope.interface.implementer(
+    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 class SynchronisingDAVPropertyToXMLEvent(object):
 
-    zope.interface.implements(
-        zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
     vetoed = False
 
     def __init__(self, namespace, name, value):
@@ -92,26 +90,25 @@ class SynchronisingDAVPropertyToXMLEvent(object):
         self.vetoed = True
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_dav(event):
     if event.namespace == 'DAV:':
         event.veto()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_internal(event):
     if event.namespace == 'INTERNAL':
         event.veto()
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
+@zope.interface.implementer(
+    zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
 class PropertyToXMLAttribute(object):
     """Attribute nodes reside in the head."""
-
-    zope.component.adapts(zeit.cms.content.interfaces.IXMLRepresentation)
-    zope.interface.implements(
-        zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
 
     path = lxml.objectify.ObjectPath('.head.attribute')
 
@@ -212,11 +209,9 @@ def map_dav_properties_to_xml_before_checkin(context, event):
     sync.sync()
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class XMLReferenceUpdater(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     target_iface = None
     suppress_errors = False
@@ -270,16 +265,16 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
         entry['text'] = entry['description'] = metadata.teaserText
         entry['byline'] = metadata.byline
         if metadata.year:
-            entry.set('year', unicode(metadata.year))
+            entry.set('year', six.text_type(metadata.year))
         if metadata.volume:
-            entry.set('issue', unicode(metadata.volume))
+            entry.set('issue', six.text_type(metadata.volume))
         if metadata.ressort:
-            entry.set('ressort', unicode(metadata.ressort))
+            entry.set('ressort', six.text_type(metadata.ressort))
         if metadata.serie:
-            entry.set('serie', unicode(metadata.serie.serienname))
+            entry.set('serie', six.text_type(metadata.serie.serienname))
         try:
             type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
         except TypeError:
             return
         if type_decl.type_identifier:
-            entry.set('contenttype', unicode(type_decl.type_identifier))
+            entry.set('contenttype', six.text_type(type_decl.type_identifier))

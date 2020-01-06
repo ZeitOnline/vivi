@@ -1,5 +1,5 @@
 from zeit.cms.checkout.interfaces import ILocalContent
-from zeit.content.article.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import uuid
 import zeit.cms.browser.form

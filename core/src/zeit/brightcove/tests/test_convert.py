@@ -3,6 +3,7 @@ from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
 import mock
 import pytz
+import six
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
 import zeit.content.video.playlist
@@ -124,7 +125,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         bc = BCVideo.from_cms(cms)
         for key, value in bc.data['custom_fields'].items():
             self.assertIsInstance(
-                value, basestring, '%s should be a string' % key)
+                value, six.string_types, '%s should be a string' % key)
 
     def test_applies_values_to_cms_object(self):
         from zeit.content.author.author import Author

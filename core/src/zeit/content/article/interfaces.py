@@ -1,4 +1,4 @@
-from zeit.content.article.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
@@ -128,6 +128,7 @@ class ArticleSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'article'
     check_interfaces = (IArticle,)
+
 
 articleSource = ArticleSource()
 

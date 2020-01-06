@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import zeit.content.image.testing
-from test_imagegroup import ImageGroupHelperMixin
+from .test_imagegroup import ImageGroupHelperMixin
 
 
 class TestCopyrights(zeit.content.image.testing.BrowserTestCase,

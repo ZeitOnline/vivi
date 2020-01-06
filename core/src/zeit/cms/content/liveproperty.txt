@@ -107,7 +107,7 @@ request:
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector) 
 >>> change_properties = connector.changeProperties
 >>> def printing_change_props(id, properties):
-...     print 'Change:', id, properties
+...     print('Change: %s %s' % (id, properties))
 ...     change_properties(id, properties)
 >>> connector.changeProperties = printing_change_props
 

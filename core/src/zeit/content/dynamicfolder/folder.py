@@ -1,5 +1,5 @@
 # coding: utf8
-from StringIO import StringIO
+from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
@@ -8,7 +8,8 @@ import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
-import urllib
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -23,6 +24,8 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.IDynamicFolder)
 class DynamicFolderBase(object):
     """Base class for the dynamic folder that holds all attributes.
 
@@ -30,22 +33,18 @@ class DynamicFolderBase(object):
 
     """
 
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.IDynamicFolder)
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('config_file',))
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
 class RepositoryDynamicFolder(
         DynamicFolderBase,
         zeit.cms.repository.folder.Folder):
     """Inside the repository the dynamic folder can contain children."""
-
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
 
     def __getitem__(self, key):
         """Overwrite to return VirtualContent object for virtual content.
@@ -169,10 +168,10 @@ class RepositoryDynamicFolder(
                 key_match = entry.xpath(key_getter)
                 if not key_match:
                     continue  # entry provides no key
-                key = urllib.unquote(key_match[0])
+                key = six.moves.urllib.parse.unquote(key_match[0])
                 if isinstance(key, lxml.etree._ElementUnicodeResult):
                     # Dear lxml, why?
-                    key = unicode(key)
+                    key = six.text_type(key)
                 else:
                     key = key.decode('utf-8')
                 contents[key] = dict(entry.attrib)  # copy
@@ -200,13 +199,12 @@ class RepositoryDynamicFolder(
         return result
 
 
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
 class LocalDynamicFolder(DynamicFolderBase,
                          persistent.Persistent,
                          zope.container.contained.Contained):
     """Inside the workingcopy the folder only holds attributes, no children."""
-
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
 
 
 class DynamicFolderType(zeit.cms.repository.folder.FolderType):
@@ -284,7 +282,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
     @classmethod
     def parse(cls, body):
         properties = {}
-        if isinstance(body, (str, unicode)):
+        if isinstance(body, (str, six.text_type)):
             try:
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:

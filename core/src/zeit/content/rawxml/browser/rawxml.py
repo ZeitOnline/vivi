@@ -7,11 +7,11 @@ import zeit.cms.browser.interfaces
 import zeit.content.rawxml.interfaces
 
 
+@zope.component.adapter(
+    zeit.content.rawxml.interfaces.IRawXML,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.component.adapts(zeit.content.rawxml.interfaces.IRawXML,
-                          zeit.cms.browser.interfaces.ICMSLayer)
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     author = ressort = page = volume = year = None
     type = 'rawxml'

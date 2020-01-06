@@ -20,7 +20,7 @@ Create a cp extra block:
 Initialy the block is empty and has no module assinged:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(cpextra.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(cpextra.xml, pretty_print=True))
 <container ... cp:type="cpextra" module="" ... cp:__name__="id-ce7dc496-327f-432d-b6ec-380866c1ce29"/>
 
 
@@ -44,7 +44,7 @@ When a centerpage is created the toplist is automatically added:
 'cpextra'
 >>> mr.cpextra
 'mostread'
->>> print lxml.etree.tostring(mr.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(mr.xml, pretty_print=True))
 <container...>
   <cp_extra id="mostread"/>
 </container>
@@ -54,7 +54,7 @@ The generic title can be set:
 >>> mr.title is None
 True
 >>> mr.title = u'a title'
->>> print mr.title
+>>> print(mr.title)
 a title
 
 
@@ -71,7 +71,7 @@ the mostcommented is automatically added. We look at the cp created above:
 >>> mc.cpextra
 'mostcommented'
 >>> import lxml.etree
->>> print lxml.etree.tostring(mc.xml, pretty_print=True)
+>>> print(lxml.etree.tostring(mc.xml, pretty_print=True))
 <container...>
   <cp_extra id="mostcommented"/>
 </container>
@@ -122,7 +122,7 @@ The cpextras have titles:
 >>> terms = zope.component.getMultiAdapter(
 ...     (lead_items, request), zope.browser.interfaces.ITerms)
 >>> term = terms.getTerm('weather')
->>> print term.title
+>>> print(term.title)
 Wetter
 
 cpextras can be filtered using `available` which targets the containing

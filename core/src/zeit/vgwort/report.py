@@ -1,12 +1,12 @@
-from __future__ import print_function
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
 import gocept.runner
-import grokcore.component
+import grokcore.component as grok
 import logging
 import os.path
 import pytz
+import six
 import sys
 import tempfile
 import zc.lockfile
@@ -22,9 +22,8 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class ReportableContentSource(grokcore.component.GlobalUtility):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
+@zope.interface.implementer(zeit.vgwort.interfaces.IReportableContentSource)
+class ReportableContentSource(grok.GlobalUtility):
 
     def __iter__(self):
         age = self.config['days-before-report']
@@ -70,7 +69,7 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
 
 class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.provides(zeit.vgwort.interfaces.IReportInfo)
+    grok.provides(zeit.vgwort.interfaces.IReportInfo)
 
     zeit.cms.content.dav.mapProperties(
         zeit.vgwort.interfaces.IReportInfo,
@@ -86,8 +85,9 @@ def report_new_documents():
     try:
         lock = zc.lockfile.LockFile(lock_file_name)
     except zc.lockfile.LockError:
-        print("VGWort report alredy running? Could not lock {}".format(
-              lock_file_name), file=sys.stderr)
+        sys.stderr.write(
+            "VGWort report alredy running? Could not lock {}\n".format(
+                lock_file_name))
         sys.exit(1)
 
     now = datetime.datetime.now()
@@ -95,8 +95,8 @@ def report_new_documents():
     four = today.replace(hour=3, minute=50)
     six = today.replace(hour=6, minute=10)
     if four <= now <= six:
-        print('VGWort API maintenance window between 04:00-06:00, exiting',
-              file=sys.stderr)
+        sys.stderr.write(
+            'VGWort API maintenance window between 04:00-06:00, exiting\n')
         sys.exit(2)
 
     vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
@@ -132,11 +132,11 @@ def report(context):
         source.mark_done(context)
     except ZODB.POSException.ConflictError:
         raise
-    except zeit.vgwort.interfaces.TechnicalError, e:
+    except zeit.vgwort.interfaces.TechnicalError:
         log.warning(
             'technical error reporting %s, will be retried on the next run'
             % context.uniqueId, exc_info=True)
-    except zeit.vgwort.interfaces.WebServiceError, e:
+    except zeit.vgwort.interfaces.WebServiceError as e:
         log.warning(
             'semantic error reporting %s' % context.uniqueId, exc_info=True)
-        source.mark_error(context, unicode(e))
+        source.mark_error(context, six.text_type(e))

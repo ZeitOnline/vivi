@@ -1,19 +1,21 @@
+from functools import total_ordering
 from gocept.cache.method import Memoize as memoize
+from io import BytesIO
 import BTrees
-import UserDict
 import ZODB.POSException
 import ZODB.blob
-import cStringIO
+import collections
 import gocept.lxml.objectify
 import logging
 import lxml.objectify
 import os
 import persistent
 import persistent.mapping
+import six
+import six.moves.urllib.request
 import tempfile
 import time
 import transaction
-import urllib2
 import zc.set
 import zeit.connector.interfaces
 import zope.interface
@@ -24,7 +26,7 @@ log = logging.getLogger(__name__)
 
 
 def get_storage_key(key):
-    if isinstance(key, unicode):
+    if isinstance(key, six.text_type):
         key = key.encode('utf8')
     assert isinstance(key, str)
     return key
@@ -37,7 +39,7 @@ class StringRef(persistent.Persistent):
         self._str = s
 
     def open(self, mode):
-        return cStringIO.StringIO(self._str)
+        return BytesIO(self._str)
 
     def update(self, new_data):
         self._str = new_data
@@ -81,7 +83,7 @@ class Body(persistent.Persistent):
             else:
                 data_file = open(commited_name, 'rb')
         elif isinstance(self.data, str):
-            data_file = cStringIO.StringIO(self.data)
+            data_file = BytesIO(self.data)
         else:
             raise RuntimeError('self.data is of unsupported type %s' %
                                type(self.data))
@@ -98,7 +100,7 @@ class Body(persistent.Persistent):
         if len(s) < self.BUFFER_SIZE:
             # Small object
             small = True
-            target = cStringIO.StringIO()
+            target = BytesIO()
         else:
             small = False
             self.data = ZODB.blob.Blob()
@@ -158,8 +160,8 @@ class AccessTimes(object):
         timeout = self._get_time_key(time.time() - cache_timeout)
         while True:
             try:
-                access_time = iter(self._access_time_to_ids.keys(
-                    min=start, max=timeout)).next()
+                access_time = next(iter(self._access_time_to_ids.keys(
+                    min=start, max=timeout)))
                 id_set = []
                 # For reasons unknown we sometimes get "the bucket being
                 # iterated changed size" here, which according to
@@ -197,7 +199,7 @@ class AccessTimes(object):
                                 i -= 100
                     self._access_time_to_ids.pop(access_time, None)
                     start = access_time
-                except:
+                except Exception:
                     start = access_time + 1
                     log.info('Abort %s', access_time, exc_info=True)
                     transaction.abort()
@@ -211,10 +213,9 @@ class AccessTimes(object):
         return int(time / self.UPDATE_INTERVAL)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IResourceCache)
 class ResourceCache(AccessTimes, persistent.Persistent):
     """Cache for ressource data."""
-
-    zope.interface.implements(zeit.connector.interfaces.IResourceCache)
 
     UPDATE_INTERVAL = 24 * 3600
 
@@ -253,7 +254,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         if current_etag is None:
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.
-            f = cStringIO.StringIO(data.read())
+            f = BytesIO(data.read())
             return f
 
         log.debug('Storing body of %s with etag %s' % (
@@ -272,9 +273,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._data.pop(unique_id, None)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
 class PersistentCache(AccessTimes, persistent.Persistent):
-
-    zope.interface.implements(zeit.connector.interfaces.IPersistentCache)
 
     CACHE_VALUE_CLASS = None  # Set in subclass
 
@@ -342,6 +342,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         old_value.update(new_value)
 
 
+@total_ordering
 class WebDAVPropertyKey(object):
 
     __slots__ = ('name',)
@@ -360,10 +361,18 @@ class WebDAVPropertyKey(object):
     def __getitem__(self, idx):
         return self.name.__getitem__(idx)
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
-            return cmp(self.name, other.name)
-        return cmp(self.name, other)
+            return self.name == other.name
+        return self.name == other
+
+    def __ne__(self, other):  # BBB only py2
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
+            return self.name < other.name
+        return self.name < other
 
     def __hash__(self):
         assert not zope.security.proxy.isinstance(self.name, WebDAVPropertyKey)
@@ -430,10 +439,9 @@ class Properties(persistent.mapping.PersistentMapping):
         return object.__repr__(self)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IPropertyCache)
 class PropertyCache(PersistentCache):
     """Property cache."""
-
-    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
 
     CACHE_VALUE_CLASS = Properties
 
@@ -470,10 +478,9 @@ class ChildNames(zc.set.Set):
         self.add(key)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IChildNameCache)
 class ChildNameCache(PersistentCache):
     """Cache for child names."""
-
-    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
     CACHE_VALUE_CLASS = ChildNames
     UPDATE_INTERVAL = 24 * 3600
@@ -487,7 +494,7 @@ class ChildNameCache(PersistentCache):
         return set(a) == set(b)
 
 
-class AlwaysEmptyDict(UserDict.DictMixin):
+class AlwaysEmptyDict(collections.MutableMapping):
     """Used by mock connector to disable filesystem transaction bound cache."""
 
     def __getitem__(self, key):
@@ -501,6 +508,12 @@ class AlwaysEmptyDict(UserDict.DictMixin):
 
     def keys(self):
         return ()
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
 
 
 # Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment
@@ -529,7 +542,7 @@ class FeatureToggles(object):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         log.debug('Getting %s' % url)
-        response = urllib2.urlopen(url)
+        response = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(response)
 
 

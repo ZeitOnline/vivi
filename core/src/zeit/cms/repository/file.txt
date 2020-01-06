@@ -47,9 +47,9 @@ The file has a size:
 We can get the data via the ``open`` method:
 
 >>> f.open()
-<...StringIO...at 0x...>
+<...BytesIO object at 0x...>
 >>> f.open('r')
-<...StringIO...at 0x...>
+<...BytesIO object at 0x...>
 >>> f.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 
@@ -92,9 +92,9 @@ True
 We can get the data via the ``open`` method:
 
 >>> local.open()
-<...StringIO...at 0x...>
+<...BytesIO object at 0x...>
 >>> local.open('r')
-<...StringIO...at 0x...>
+<...BytesIO object at 0x...>
 >>> local.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 
@@ -108,7 +108,7 @@ True
 The LocalFile can be opened for writing:
 
 >>> f_write = local.open('w')
->>> f_write.write('New data')
+>>> _ = f_write.write(b'New data')
 >>> f_write.close()
 >>> local.mimeType = 'text/plain'
 
@@ -139,8 +139,8 @@ ValueError: Cannot open for reading, no data available.
 Writing works as usual:
 
 >>> f_write = local.open('w')
->>> f_write.write(
-...     'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen')
+>>> _ = f_write.write(
+...     b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen')
 >>> f_write.close()
 >>> local.open('r').read()
 'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
@@ -194,7 +194,7 @@ u'DSC00109_2.JPG'
 When we change some data ...
 
 >>> f_write = local.open('w')
->>> f_write.write('new data')
+>>> _ = f_write.write(b'new data')
 >>> f_write.close()
 >>> local.mimeType = 'text/plain'
 

@@ -8,12 +8,12 @@ Simple case
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
->>> import StringIO
+>>> from io import BytesIO
 >>> import zeit.connector.resource
 >>> id = 'http://xml.zeit.de/%s/lt1' % TESTFOLDER()
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
-...     StringIO.StringIO('Pop goes the weasel!'),
+...     BytesIO('Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
 >>> connector.lock(res.id, 'zope.user', until=None)
@@ -213,7 +213,7 @@ Edge case 5: Null resouce locks
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector[res.id].data
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> connector.unlock(res.id)
 u'opaquelocktoken:...'
 
@@ -285,9 +285,8 @@ ours. To make this happen, we register an IAuthentication utility:
 >>> import zope.authentication.interfaces
 >>> class Principal(object):
 ...     pass
->>> class Auth(object):
-...     zope.interface.implements(
-...         zope.authentication.interfaces.IAuthentication)
+>>> @zope.interface.implementer(zope.authentication.interfaces.IAuthentication)
+... class Auth(object):
 ...     def getPrincipal(self, id):
 ...         if id == 'internal':
 ...             p = Principal()

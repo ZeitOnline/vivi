@@ -9,9 +9,8 @@ import zope.component
 import zope.lifecycleevent.interfaces
 
 
+@zope.interface.implementer(zeit.cms.redirect.interfaces.IRenameInfo)
 class RenameInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.cms.redirect.interfaces.IRenameInfo)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.redirect.interfaces.IRenameInfo,

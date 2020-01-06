@@ -16,8 +16,8 @@ class TestVideo(zeit.content.video.testing.TestCase):
         import zope.security.management
         from zope.security.proxy import ProxyFactory
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()  # in repository
+        next(factory)
+        video = next(factory)  # in repository
         zope.security.management.endInteraction()
         with zeit.cms.testing.interaction('zope.mgr'):
             proxied = ProxyFactory(video)
@@ -26,7 +26,7 @@ class TestVideo(zeit.content.video.testing.TestCase):
     def test_has_advertisement_defaults_to_true(self):
         # For bw-compat to videos imported before we recognized the field.
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
+        video = next(factory)
         self.assertEqual(True, video.has_advertisement)
 
 
@@ -54,8 +54,8 @@ class TestReference(zeit.content.video.testing.TestCase):
 
     def create_video(self, **kw):
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        factory.next()  # video is now in repository['video']
+        next(factory)
+        next(factory)  # video is now in repository['video']
         player = zope.component.getUtility(
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value.update(kw)
