@@ -1,10 +1,12 @@
-from xmldiff.main import diff_trees
 from six.moves import map
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import six
 import six.moves.urllib.parse
+import xmldiff.actions
+import xmldiff.diff
+import xmldiff.utils
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
@@ -33,7 +35,8 @@ class Element(zope.container.contained.Contained,
 
         self_xml = zope.security.proxy.getObject(self.xml)
         other_xml = zope.security.proxy.getObject(other.xml)
-        differences = diff_trees(self_xml, other_xml)
+        differ = XMLDiff()
+        differences = differ.diff(self_xml, other_xml)
         return not differences
 
     def __ne__(self, other):
@@ -78,6 +81,21 @@ class Element(zope.container.contained.Contained,
             uniqueId = '(unknown)'
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, uniqueId)
+
+
+class XMLDiff(xmldiff.diff.Differ):
+
+    def diff(self, left, right):
+        return list(super(XMLDiff, self).diff(left, right))
+
+    # copy&paste from superclass to avoid writing to the input nodes, because
+    # `.text` is readonly in lxml.objectify
+    def update_node_text(self, left, right):
+        left_xpath = xmldiff.utils.getpath(left)
+        if left.text != right.text:
+            yield xmldiff.actions.UpdateTextIn(left_xpath, right.text)
+        if left.tail != right.tail:
+            yield xmldiff.actions.UpdateTextAfter(left_xpath, right.tail)
 
 
 @grok.adapter(

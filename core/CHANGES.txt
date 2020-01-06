@@ -9,6 +9,8 @@ vivi.core changes
 
 - ZON-5771: Make RTE toolbar compatible for Google Chrome
 
+- FIX: Make xmldiff work with objectify
+
 
 
 4.25.3 (2019-12-18)
