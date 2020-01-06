@@ -51,19 +51,15 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
                 '/testcontent#body/0', self.block.uniqueId)
 
     def test_block_equality_compares_xml(self):
-        xml1 = lxml.objectify.fromstring("""
+        xml = """
         <container
           xmlns:cp="http://namespaces.zeit.de/CMS/cp"
           cp:__name__="body">
             <block cp:type="block" cp:__name__="foo"/>
-        </container>""")
-        xml2 = lxml.objectify.fromstring("""
-        <container
-          xmlns:cp="http://namespaces.zeit.de/CMS/cp"
-          cp:__name__="body">
-            <block cp:type="block" cp:__name__="foo"/>
-        </container>""")
-        # CAUTION: xml1 == xml2 does not do what you think it does,
+        </container>"""
+        xml1 = lxml.objectify.fromstring(xml)
+        xml2 = lxml.objectify.fromstring(xml)
+        # CAUTION: xml1 == xml2 does not do what one might think it does,
         # thus block equality uses a proper in-depth xml comparison:
         self.assertNotEqual(xml1, xml2)
         block1 = zeit.edit.tests.fixture.Block(None, xml1)
