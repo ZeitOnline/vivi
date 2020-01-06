@@ -52,9 +52,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_block_equality_compares_xml(self):
         xml = """
-        <container
-          xmlns:cp="http://namespaces.zeit.de/CMS/cp"
-          cp:__name__="body">
+        <container xmlns:cp="http://namespaces.zeit.de/CMS/cp">
             <block cp:type="block" cp:__name__="foo"/>
         </container>"""
         xml1 = lxml.objectify.fromstring(xml)
