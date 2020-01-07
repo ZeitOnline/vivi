@@ -5,7 +5,7 @@ vivi.core changes
 4.25.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Make xmldiff work with objectify for further cases
 
 
 4.25.6 (2020-01-07)

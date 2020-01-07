@@ -97,6 +97,46 @@ class XMLDiff(xmldiff.diff.Differ):
         if left.tail != right.tail:
             yield xmldiff.actions.UpdateTextAfter(left_xpath, right.tail)
 
+    # copy&paste from superclass to avoid getitem access, since objectify
+    # overrides that to mean sibling-by-tag instead of child-by-position.
+    def find_pos(self, node):
+        parent = node.getparent()
+        # The paper here first checks if the child is the first child in
+        # order, but I am entirely unable to actually make that happen, and
+        # if it does, the "else:" will catch that case anyway, and it also
+        # deals with the case of no child being in order.
+
+        # Find the last sibling before the child that is in order
+        i = parent.index(node)
+        children = parent.getchildren()
+        while i >= 1:
+            i -= 1
+            sibling = children[i]  # PATCHED instead of `parent[i]`
+            if sibling in self._inorder:
+                # That's it
+                break
+        else:
+            # No previous sibling in order.
+            return 0
+
+        # Now find the partner of this in the left tree
+        sibling_match = self._r2lmap[id(sibling)]
+        node_match = self._r2lmap.get(id(node))
+
+        i = 0
+        for child in sibling_match.getparent().getchildren():
+            if child is node_match:
+                # Don't count the node we're looking for.
+                continue
+            if child in self._inorder or child not in self._l2rmap:
+                # Count nodes that are in order, or will be deleted:
+                i += 1
+            if child is sibling_match:
+                # We found the position!
+                break
+        return i
+
+
 
 @grok.adapter(
     six.string_types[0], name='http://block.vivi.zeit.de/')

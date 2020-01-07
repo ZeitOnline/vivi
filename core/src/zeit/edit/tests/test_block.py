@@ -64,10 +64,9 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         block2 = zeit.edit.tests.fixture.Block(None, xml2)
         self.assertEqual(block1, block2)
 
-    def test_differing_blocks_are_considered_unequal(self):
-        # The test uses differing text nodes because upstream xmldiff wants to
-        # write to (a copy of) those, which is not possible with
-        # lxml.objectify.
+    def test_blocks_are_unequal_when_text_nodes_differ(self):
+        # Upstream xmldiff wants to write to (a copy of) text nodes, which is
+        # not possible with lxml.objectify.
         xml1 = lxml.objectify.fromstring("""
         <container>
             <foo>bar</foo>
@@ -76,6 +75,17 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         <container>
             <foo>qux</foo>
         </container>""")
+        block1 = zeit.edit.tests.fixture.Block(None, xml1)
+        block2 = zeit.edit.tests.fixture.Block(None, xml2)
+        self.assertNotEqual(block1, block2)
+
+    def test_blocks_are_unequal_when_tag_counts_differ(self):
+        xml1 = lxml.objectify.fromstring("""
+        <foo><one/></foo>
+        """)
+        xml2 = lxml.objectify.fromstring("""
+        <foo><one/><two/><three/></foo>
+        """)
         block1 = zeit.edit.tests.fixture.Block(None, xml1)
         block2 = zeit.edit.tests.fixture.Block(None, xml2)
         self.assertNotEqual(block1, block2)
