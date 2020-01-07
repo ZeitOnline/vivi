@@ -71,15 +71,27 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
 
     set: function(data) {
         var self = this;
+
         self.input.val(data['mdb_id']);
         $('#form\\.mdb_id').val(data['mdb_id']);
+
         var select = $('#form\\.copyright\\.combination_01');
         var other = $('option:contains("Andere")', select).prop(
             'selected', true);
         select.trigger('change');
-        $('#form\\.copyright\\.combination_02').val(data['fotograf']);
+
+        var credits = data['credit'];
+        if (! credits) {
+            credits = data['fotograf'];
+        }
+        if (! credits) {
+            credits = data['rechteinhaber'];
+        }
+        $('#form\\.copyright\\.combination_02').val(credits);
+
         $('#form\\.caption').val(data['beschreibung']);
         $('#form\\.release_period\\.combination_01').val(data['expires']);
+
         self.landingzone.text(self.landingzone.data('success'));
     }
 
