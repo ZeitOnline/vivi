@@ -9,7 +9,7 @@ import zope.interface
 invalid_chars = re.compile(r'[^a-z0-9\-]')
 
 
-@zope.interface.implementer(zope.app.container.interfaces.INameChooser)
+@zope.interface.implementer(zope.container.interfaces.INameChooser)
 class NameChooser(zope.container.contained.NameChooser):
 
     def __init__(self, context):

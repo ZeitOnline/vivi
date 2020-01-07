@@ -5,6 +5,8 @@ vivi.core changes
 4.25.5 (unreleased)
 -------------------
 
+- FIX: Add missing import
+
 - MAINT: Remove obsolete IArticle.layout property
 
 
