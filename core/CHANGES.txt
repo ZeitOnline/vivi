@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.5 (unreleased)
+4.25.5 (2020-01-07)
 -------------------
 
 - FIX: Add missing import
