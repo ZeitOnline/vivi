@@ -446,7 +446,7 @@ class DAVResource(object):
         response = result.get_response(self.path)
         props = response.get_all_properties()
         ret = props.get(propname, None)
-        return ret
+        return ret.decode()
 
     def get_all_properties(self):
         r = self._result.get_response(self.path)
