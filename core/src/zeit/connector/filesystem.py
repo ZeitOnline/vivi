@@ -80,10 +80,6 @@ class Connector(object):
 
         if os.path.isdir(absolute_path):
             for name in os.listdir(absolute_path):
-                try:
-                    name = name.decode('utf-8')
-                except Exception:
-                    continue
                 names.add(name)
         for x in names.copy():
             if x.startswith(u'.'):
