@@ -26,8 +26,6 @@ log = logging.getLogger(__name__)
 
 
 def get_storage_key(key):
-    if isinstance(key, six.text_type):
-        key = key.encode('utf8')
     assert isinstance(key, str)
     return key
 
