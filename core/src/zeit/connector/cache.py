@@ -431,7 +431,7 @@ class Properties(persistent.mapping.PersistentMapping):
     def update(self, dict=None, **kwargs):
         if dict is None:
             dict = {}
-        for key, value in dict.items() + kwargs.items():
+        for key, value in list(dict.items()) + list(kwargs.items()):
             self[key] = value
         self._p_changed = True
 
