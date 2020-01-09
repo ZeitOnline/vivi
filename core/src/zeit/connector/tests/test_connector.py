@@ -90,11 +90,11 @@ class ConflictDetectionBase(object):
     def test_implicit_override(self):
         del self.r_a.properties[('getetag', 'DAV:')]
         self.connector.add(self.r_a)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_explicit_override(self):
         self.connector.add(self.r_a, verify_etag=False)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_adding_with_etag_fails(self):
         r = self.get_resource('cannot-be-added', '*Puff*')
@@ -106,7 +106,7 @@ class ConflictDetectionBase(object):
     def test_no_conflict_with_same_content(self):
         self.r_a.data = BytesIO(b'Bang.')
         self.connector.add(self.r_a)
-        self.assertEquals('Bang.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Bang.', self.connector[self.r_a.id].data.read())
 
 
 class TestConflictDetectionReal(

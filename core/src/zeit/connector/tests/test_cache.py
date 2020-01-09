@@ -56,7 +56,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
     def test_missing_blob_file_with_legacy_data(self):
         data = ZODB.blob.Blob()
-        data.open('w').write('ablob')
+        data.open('w').write(b'ablob')
         self.cache._data[self.key] = data
         self.cache._etags = BTrees.family64.OO.BTree()
         self.cache._etags[self.key] = 'etag1'
