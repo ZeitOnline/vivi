@@ -81,6 +81,8 @@ class Body(persistent.Persistent):
             else:
                 data_file = open(commited_name, 'rb')
         elif isinstance(self.data, str):
+            data_file = BytesIO(self.data.encode())
+        elif isinstance(self.data, bytes):
             data_file = BytesIO(self.data)
         else:
             raise RuntimeError('self.data is of unsupported type %s' %
