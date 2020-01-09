@@ -8,5 +8,5 @@ class TestSearchVar(unittest.TestCase):
         from zeit.connector.search import SearchVar
         author = SearchVar('author', 'namespace')
         self.assertEqual(
-            '(:eq "namespace" "author" "Fr\xc3\xb6bel")',
+            '(:eq "namespace" "author" "Fröbel")',
             (author == u'Fröbel')._render())
