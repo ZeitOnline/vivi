@@ -18,6 +18,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
+import zeit.content.image.image
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -252,7 +253,7 @@ def print_payload_documentation():
         lambda x: {},
         (type(article),), zeit.connector.interfaces.IWebDAVReadProperties)
     zope.component.provideAdapter(zeit.push.message.default_push_url)
-    image = zeit.content.image.image.Image()
+    image = zeit.content.image.image.LocalImage()
     image.uniqueId = 'http://xml.zeit.de/my-image'
     imageref = mock.Mock()
     imageref.image = image
