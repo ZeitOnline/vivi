@@ -116,7 +116,7 @@ def report_new_documents():
                 log.warning(
                     'Error reporting %s, ignoring', content, exc_info=True)
             # XXX vgwort returns 401 after some requests for unknown reasons.
-            if i % 6 == 0:
+            if i % 6 == 0 and 'client' in vgwort.__dict__:
                 del vgwort.client
     finally:
         lock.close()
