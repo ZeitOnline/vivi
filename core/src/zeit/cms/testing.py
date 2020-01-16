@@ -410,7 +410,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.requests.append(dict(
             verb=self.command,
             path=self.path,
-            body=self.rfile.read(length) if length else None,
+            body=self.rfile.read(length).decode('utf-8') if length else None,
         ))
         if isinstance(self.response_code, int):
             status = self.response_code
@@ -420,6 +420,8 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
             body = self.response_body
         else:
             body = self.response_body.pop(0)
+        if isinstance(body, six.text_type):
+            body = body.encode('utf-8')
         self.send_response(status)
         self.end_headers()
         self.wfile.write(body)
