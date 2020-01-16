@@ -1,4 +1,5 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
+import base64
 import json
 import six
 import webob.cookies
@@ -103,9 +104,10 @@ class SSOLogin(object):
         principal = self.request.principal
         headers = set_cookie_headers(
             config['sso-cookie-name-prefix'] + permission,
-            json.dumps({'id': principal.id, 'name': principal.title,
-                        'email': principal.description}).encode(
-                            'base64').strip())
+            base64.b64encode(json.dumps({
+                'id': principal.id, 'name': principal.title,
+                'email': principal.description}
+            ).encode('utf-8')).decode('ascii'))
         for key, value in headers:
             self.request.response.setHeader(key, value)
         url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
