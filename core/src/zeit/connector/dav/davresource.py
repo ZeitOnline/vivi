@@ -320,6 +320,12 @@ class DAVResult(object):
         return etag
 
 
+def stringify(data):
+    if isinstance(data, bytes):
+        return data.decode()
+    return data
+
+
 class DAVResource(object):
     """Basic class describing an arbitrary DAV resource (file or collection)
     """
@@ -446,7 +452,7 @@ class DAVResource(object):
         response = result.get_response(self.path)
         props = response.get_all_properties()
         ret = props.get(propname, None)
-        return ret.decode()
+        return stringify(ret)
 
     def get_all_properties(self):
         r = self._result.get_response(self.path)
