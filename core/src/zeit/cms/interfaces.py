@@ -4,7 +4,6 @@ import datetime
 import pyramid_dogpile_cache2
 import pytz
 import re
-import zeit.cms.security_patch  # noqa
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence

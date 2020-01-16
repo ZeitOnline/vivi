@@ -15,6 +15,7 @@
   <!-- local includes -->
 
   <include file="permissions.zcml" />
+  <include file="patches.zcml" />
 
   <include package=".admin" />
   <include package=".content" />
