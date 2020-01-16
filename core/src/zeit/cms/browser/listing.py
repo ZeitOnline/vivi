@@ -253,6 +253,8 @@ class DatetimeColumn(GetterColumn):
         value = self.getter(item, formatter)
         if isinstance(value, datetime.datetime):
             value = value.timetuple()
+        else:
+            value = datetime.datetime.min.timetuple()
         return value
 
 

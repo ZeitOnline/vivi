@@ -127,6 +127,7 @@ name. Without filter everything is displayed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
+>>> import pdb; pdb.foo = True
 >>> print(browser.contents)
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
@@ -140,15 +141,11 @@ name. Without filter everything is displayed:
    <tbody>
    ...
      <td>
-       online
+       2006
      </td>
      ...
      <td>
        2007
-     </td>
-     ...
-     <td>
-       2006
      </td>
      ...
      <td>
@@ -183,15 +180,11 @@ Let's filter for folders:
    <tbody>
    ...
      <td>
-       online
+       2006
      </td>
      ...
      <td>
        2007
-     </td>
-     ...
-     <td>
-       2006
      </td>
      ...
      <td>
