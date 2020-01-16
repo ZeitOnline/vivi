@@ -5,7 +5,7 @@ vivi.core changes
 4.25.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5649: Make zeit.find py3 compatible
 
 
 4.25.7 (2020-01-07)
