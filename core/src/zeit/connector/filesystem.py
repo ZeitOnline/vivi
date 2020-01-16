@@ -81,7 +81,8 @@ class Connector(object):
         if os.path.isdir(absolute_path):
             for name in os.listdir(absolute_path):
                 try:
-                    name = name.decode('utf-8')
+                    if isinstance(name, six.binary_type):
+                        name = name.decode('utf-8')
                 except Exception:
                     continue
                 names.add(name)
@@ -140,7 +141,7 @@ class Connector(object):
             data = f.read()
             f.close()
         except Exception:
-            data = ''
+            data = b''
         self.body_cache[id] = data
         return BytesIO(data)
 

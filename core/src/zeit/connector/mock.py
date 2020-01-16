@@ -261,7 +261,10 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _get_file(self, id):
         if id in self._data:
-            return BytesIO(self._data[id])
+            value = self._data[id]
+            if isinstance(value, six.text_type):
+                value = value.encode('utf-8')
+            return BytesIO(value)
         return super(Connector, self)._get_file(id)
 
     def _get_lastmodified(self, id):
