@@ -4,9 +4,6 @@ import grokcore.component as grok
 import lxml.objectify
 import six
 import six.moves.urllib.parse
-import xmldiff.actions
-import xmldiff.diff
-import xmldiff.utils
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
@@ -35,9 +32,7 @@ class Element(zope.container.contained.Contained,
 
         self_xml = zope.security.proxy.getObject(self.xml)
         other_xml = zope.security.proxy.getObject(other.xml)
-        differ = XMLDiff()
-        differences = differ.diff(self_xml, other_xml)
-        return not differences
+        return xml_tree_equal(self_xml, other_xml)
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -83,59 +78,23 @@ class Element(zope.container.contained.Contained,
             self.__class__.__module__, self.__class__.__name__, uniqueId)
 
 
-class XMLDiff(xmldiff.diff.Differ):
+def xml_tree_equal(a, b):
+    for prop in ['tag', 'attrib', 'text', 'tail']:
+        a_val = getattr(a, prop)
+        b_val = getattr(b, prop)
+        if a_val != b_val:
+            return False
 
-    def diff(self, left, right):
-        return list(super(XMLDiff, self).diff(left, right))
+    a_children = a.getchildren()
+    b_children = b.getchildren()
+    if len(a_children) != len(b_children):
+        return False
 
-    # copy&paste from superclass to avoid writing to the input nodes, because
-    # `.text` is readonly in lxml.objectify
-    def update_node_text(self, left, right):
-        left_xpath = xmldiff.utils.getpath(left)
-        if left.text != right.text:
-            yield xmldiff.actions.UpdateTextIn(left_xpath, right.text)
-        if left.tail != right.tail:
-            yield xmldiff.actions.UpdateTextAfter(left_xpath, right.tail)
+    for a_child, b_child in zip(a_children, b_children):
+        if not xml_tree_equal(a_child, b_child):
+            return False
 
-    # copy&paste from superclass to avoid getitem access, since objectify
-    # overrides that to mean sibling-by-tag instead of child-by-position.
-    def find_pos(self, node):
-        parent = node.getparent()
-        # The paper here first checks if the child is the first child in
-        # order, but I am entirely unable to actually make that happen, and
-        # if it does, the "else:" will catch that case anyway, and it also
-        # deals with the case of no child being in order.
-
-        # Find the last sibling before the child that is in order
-        i = parent.index(node)
-        children = parent.getchildren()
-        while i >= 1:
-            i -= 1
-            sibling = children[i]  # PATCHED instead of `parent[i]`
-            if sibling in self._inorder:
-                # That's it
-                break
-        else:
-            # No previous sibling in order.
-            return 0
-
-        # Now find the partner of this in the left tree
-        sibling_match = self._r2lmap[id(sibling)]
-        node_match = self._r2lmap.get(id(node))
-
-        i = 0
-        for child in sibling_match.getparent().getchildren():
-            if child is node_match:
-                # Don't count the node we're looking for.
-                continue
-            if child in self._inorder or child not in self._l2rmap:
-                # Count nodes that are in order, or will be deleted:
-                i += 1
-            if child is sibling_match:
-                # We found the position!
-                break
-        return i
-
+    return True
 
 
 @grok.adapter(
