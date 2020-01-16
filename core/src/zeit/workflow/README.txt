@@ -219,8 +219,7 @@ DateTime(...)
 
 We expect the value to be in the xml now as well (amongst others):
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
@@ -239,7 +238,7 @@ We expect the value to be in the xml now as well (amongst others):
 When we de-publish the object, the status-flag is removed again:
 
 >>> job_id = publish.retract(background=False)
->>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>

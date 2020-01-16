@@ -319,15 +319,14 @@ The layout can be big:
 >>> feed.getMetadata(third).big_layout = True
 >>> feed.getMetadata(third).big_layout
 True
->>> import lxml.etree
->>> print(lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" layout="big"/>
 
 When the layout is not big, the attribute is removed:
 
 >>> feed.getMetadata(third).big_layout = False
->>> print(lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false"/>
 
@@ -341,14 +340,14 @@ Relateds can be marked as hidden:
 >>> feed.getMetadata(third).hidden_relateds
 True
 >>> import lxml.etree
->>> print(lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" hidden_relateds="true"/>
 
 The default is that they're shown though:
 
 >>> feed.getMetadata(third).hidden_relateds = False
->>> print(lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" hidden_relateds="false"/>
 

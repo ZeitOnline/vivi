@@ -1,5 +1,5 @@
-import lxml.etree
 import unittest
+import zeit.cms.testing
 import zeit.content.article.testing
 import zope.schema
 
@@ -35,5 +35,4 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
             zeit.content.article.edit.interfaces.IRawXML.providedBy(div))
         self.assertEqual('raw', div.xml.tag)
         self.assertEllipsis(
-            '<raw...>\n\n</raw>',
-            lxml.etree.tostring(div.xml, pretty_print=True))
+            '<raw...>\n\n</raw>', zeit.cms.testing.xmltotext(div.xml))

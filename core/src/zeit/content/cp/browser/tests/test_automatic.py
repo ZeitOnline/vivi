@@ -1,5 +1,5 @@
-import lxml.etree
 import transaction
+import zeit.cms.testing
 import zeit.content.cp.testing
 import zope.security.management
 
@@ -41,7 +41,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 <region...count="3" automatic="True" automatic_type="elasticsearch-query"...>...
 <elasticsearch_raw_query>{..."match_all": {}...}</elasticsearch_raw_query>...
 <elasticsearch_raw_order>date:desc</elasticsearch_raw_order>...""",  # noqa
-            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(cp['lead'].xml))
 
     def test_stores_centerpage_properties_in_xml(self):
         # Create centerpage to reference later on
@@ -60,7 +60,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="centerpage"...>...
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
-            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(cp['lead'].xml))
 
     def test_stores_topicpage_properties_in_xml(self):
         b = self.browser
@@ -77,7 +77,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
-            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(cp['lead'].xml))
 
     def test_stores_rss_feed_in_xml(self):
         b = self.browser
@@ -93,7 +93,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="rss-feed"
  rss_feed="zett">...""",
-            lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(cp['lead'].xml))
 
 
 class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):

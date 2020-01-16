@@ -1,8 +1,8 @@
 import gocept.testing.mock
-import lxml.etree
 import mock
 import six
 import unittest
+import zeit.cms.testing
 import zeit.content.article.testing
 import zope.schema
 
@@ -171,7 +171,7 @@ class TestCleaner(unittest.TestCase):
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
         self.assertNotIn(
-            'namespaces.zeit.de/CMS/cp', lxml.etree.tostring(art.xml))
+            'namespaces.zeit.de/CMS/cp', zeit.cms.testing.xmltotext(art.xml))
 
 
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):

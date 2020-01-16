@@ -60,7 +60,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
                 article).is_breaking)
         self.assertEllipsis(
             '...<attribute...name="is_breaking">yes</attribute>...',
-            lxml.etree.tostring(article.xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(article.xml))
 
     def test_sets_amp(self):
         self.create_breakingnews()

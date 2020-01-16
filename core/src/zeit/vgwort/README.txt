@@ -129,8 +129,7 @@ Tokens are only assigned for the master object of the event:
 
 The private token is *not* synched to xml:
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>

@@ -68,8 +68,7 @@ True
 
 The XML content will contain the unique id:
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(checked_in.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(checked_in.xml))
 <testtype>
   <head>
     ...

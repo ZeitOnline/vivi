@@ -1025,3 +1025,7 @@ def clock(dt=None):
     with mock.patch('datetime.datetime', Freeze):
         Freeze.freeze(dt)
         yield Freeze
+
+
+def xmltotext(xml):
+    return lxml.etree.tostring(xml, pretty_print=True, encoding=six.text_type)

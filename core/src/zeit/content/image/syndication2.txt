@@ -2,7 +2,6 @@ When referencing an image out of an image group, the group's expired attribute
 appears on the image as well:
 
 >>> import datetime
->>> import lxml
 >>> import pytz
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.testing
@@ -27,7 +26,7 @@ appears on the image as well:
 >>> images.image = first
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
->>> print(lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype>
   <head>
     <image ...src="http://xml.zeit.de/image-group/new-hampshire-450x....jpg"

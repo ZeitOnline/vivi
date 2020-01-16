@@ -4,7 +4,6 @@ Navigation Tree
 
 Create a browser first:
     
->>> import lxml.etree
 >>> from zeit.cms.testing import Browser
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('producer', 'producerpw')
@@ -21,7 +20,7 @@ asynchronously:
 >>> browser.open('http://localhost/++skin++cms/')
 >>> navtree = browser.xpath("//html:div[@id='NavtreePanel']",
 ...                               namespaces=ns_map)[0]
->>> print(lxml.etree.tostring(navtree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(navtree))
 <div xmlns:panel="http://namespaces.gocept.com/panel" xmlns="http://www.w3.org/1999/xhtml" class="panel unfolded" id="NavtreePanel">
   <h1>
     <a href="http://localhost/++skin++cms/repository">
@@ -118,7 +117,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
 ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
 ...              '&view_url=%s' % urllib.quote(view_url))
->>> print(lxml.etree.tostring(browser.document, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(browser.document))
 <ul>
     <li active="True" class="Root...">
       <p>

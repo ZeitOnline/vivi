@@ -1,7 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 import gocept.testing.mock
-import lxml.etree
 import mock
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.author
@@ -35,7 +34,7 @@ class AuthorshipXMLReferenceUpdater(
     <display_name...>William Shakespeare</display_name>
     <location>London</location>
   </author>
-</reference> """, lxml.etree.tostring(reference, pretty_print=True))
+</reference> """, zeit.cms.testing.xmltotext(reference))
 
     def test_role_is_copied(self):
         content = self.repository['testcontent']
@@ -52,7 +51,7 @@ class AuthorshipXMLReferenceUpdater(
     <display_name...>William Shakespeare</display_name>
     <role>Fotografie</role>
   </author>
-</reference> """, lxml.etree.tostring(reference, pretty_print=True))
+</reference> """, zeit.cms.testing.xmltotext(reference))
 
     def test_old_author_nodes_are_removed(self):
         andersen = zeit.content.author.author.Author()
@@ -68,7 +67,7 @@ class AuthorshipXMLReferenceUpdater(
         zeit.cms.content.interfaces.IXMLReferenceUpdater(
             content).update(reference)
 
-        reference = lxml.etree.tostring(reference, pretty_print=True)
+        reference = zeit.cms.testing.xmltotext(reference)
         self.assertEllipsis(
             '...<author...href="http://xml.zeit.de/andersen"...', reference)
         self.assertNotIn('shakespeare', reference)
@@ -82,8 +81,7 @@ class AuthorshipXMLReferenceUpdater(
             reference = zope.component.getAdapter(
                 co, zeit.cms.content.interfaces.IXMLReference, name='related')
             self.assertIn(
-                'William Shakespeare',
-                lxml.etree.tostring(reference, pretty_print=True))
+                'William Shakespeare', zeit.cms.testing.xmltotext(reference))
 
     def test_fills_in_bbb_author_attribute(self):
         andersen = zeit.content.author.author.Author()
@@ -94,8 +92,7 @@ class AuthorshipXMLReferenceUpdater(
         content = self.repository['testcontent']
         reference = zope.component.getAdapter(
             content, zeit.cms.content.interfaces.IXMLReference, name='related')
-        self.assertNotIn(
-            'author=""', lxml.etree.tostring(reference, pretty_print=True))
+        self.assertNotIn('author=""', zeit.cms.testing.xmltotext(reference))
 
         content.authorships = (
             content.authorships.create(self.shakespeare),
@@ -105,7 +102,7 @@ class AuthorshipXMLReferenceUpdater(
         self.assertEllipsis(
             """<reference...
             author="William Shakespeare;Hans Christian Andersen"...""",
-            lxml.etree.tostring(reference, pretty_print=True))
+            zeit.cms.testing.xmltotext(reference))
 
     def test_updater_suppress_errors(self):
         content = ICheckoutManager(self.repository['testcontent']).checkout()

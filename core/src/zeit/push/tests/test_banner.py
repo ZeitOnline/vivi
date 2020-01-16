@@ -4,6 +4,7 @@ from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.workflow.interfaces import IPublishInfo
 import lxml.etree
 import transaction
+import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.banner
 import zeit.push.testing
@@ -25,8 +26,8 @@ class BannerPublisherTest(zeit.push.testing.TestCase):
     def test_banner_xml_is_updated_on_push(self):
         self.publisher.send('foo', 'http://xml.zeit.de/foo')
         banner = self.repository['banner']
-        self.assertTrue('http://xml.zeit.de/foo' in
-                        lxml.etree.tostring(banner.xml))
+        self.assertIn(
+            'http://xml.zeit.de/foo', zeit.cms.testing.xmltotext(banner.xml))
 
     def test_banner_utility_is_updated_on_push(self):
         self.publisher.send('foo', 'http://xml.zeit.de/foo')

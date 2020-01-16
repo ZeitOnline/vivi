@@ -2,6 +2,7 @@
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import mock
+import six
 import unittest
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
@@ -126,7 +127,9 @@ class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
             pass
         self.assertEllipsis(
             '...<tag...>foo</tag>...',
-            lxml.etree.tostring(self.repository['testcontent'].xml.head))
+            lxml.etree.tostring(
+                self.repository['testcontent'].xml.head,
+                encoding=six.text_type))
 
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']
