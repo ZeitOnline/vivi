@@ -458,6 +458,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
                 self.attribute == other.attribute and
                 self.target.uniqueId == other.target_unique_id)
 
+    def __hash__(self):
+        return hash((
+            self.__parent__.uniqueId, self.attribute, self.target_unique_id))
+
     def __repr__(self):
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, self.uniqueId)

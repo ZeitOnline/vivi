@@ -56,7 +56,7 @@ class Element(zope.container.contained.Contained,
 
     @property
     def uniqueId(self):
-        parent = self.__parent__.uniqueId
+        parent = getattr(self.__parent__, 'uniqueId', '')
         if not parent.startswith(zeit.edit.interfaces.BLOCK_NAMESPACE):
             return '%s%s#%s' % (
                 zeit.edit.interfaces.BLOCK_NAMESPACE, parent, self.__name__)
