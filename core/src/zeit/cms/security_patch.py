@@ -1,7 +1,11 @@
 import abc
-import collections.abc
 import zope.security.checker
 import zope.security.proxy
+
+try:
+    from collections.abc import Mapping     # Python 3.3+
+except ImportError:
+    from collections import Mapping
 
 
 # <https://github.com/zopefoundation/zope.security/issues/26>
@@ -16,7 +20,7 @@ def instancecheck_with_zope_proxy(cls, instance):
     return abc.ABCMeta._old___instancecheck__(cls, instance)
 
 
-class DummyMapping(collections.abc.Mapping):
+class DummyMapping(Mapping):
 
     def __getitem__(self, key):
         raise KeyError(key)
