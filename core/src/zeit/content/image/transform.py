@@ -38,9 +38,9 @@ class ImageTransform(object):
         orig_width, orig_height = self.image.size
 
         if width is None:
-            width = orig_width * height / orig_height
+            width = orig_width * height // orig_height
         elif height is None:
-            height = orig_height * width / orig_width
+            height = orig_height * width // orig_width
 
         image = self.image.resize((width, height), filter)
         return self._construct_image(image)
