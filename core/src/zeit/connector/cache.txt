@@ -64,7 +64,7 @@ reference to a plain string:
 Also the access times are noted in the cache:
 
 >>> last_access = cache._last_access_time[get_storage_key('some-id')]
->>> isinstance(last_access, (int, long))
+>>> isinstance(last_access, (int, int))
 True
 >>> cache._access_time_to_ids[last_access]
 <BTrees.OIBTree.OITreeSet object at 0x...>
@@ -168,24 +168,25 @@ buffer size:
 
 >>> BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 
-Create data which is large than that:
+Create data which is larger than that:
 
 
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
+>>> large_data = bytes(large_data.encode())
 >>> 
 >>> file_handle = cache.setData(
 ...     'some-id', properties, BytesIO(large_data))
 >>> file_handle
-<open file '...', mode 'rb' at 0x...>
+<_io.BufferedReader ...>
 >>> file_handle.read() == large_data
 True
 
 We can get the data also via `getData` which returns an open file handle:
 
 >>> type(cache.getData('some-id', properties))
-<type 'file'>
+<class '_io.BufferedReader'>
 >>> cache.getData('some-id', properties)
-<open file '...', mode 'rb' at 0x...>
+<_io.BufferedReader ...>
 
 Internally a blob is created in this case:
 
@@ -204,7 +205,7 @@ storage. Make the blob commited:
 We get the commited data now:
 
 >>> cache.getData('some-id', properties)
-<open file '...', mode 'rb' at 0x...>
+<_io.BufferedReader ...>
 >>> cache.getData('some-id', properties).read() == large_data
 True
 
