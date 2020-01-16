@@ -1,10 +1,6 @@
 from zeit.cms.content.util import objectify_soup_fromstring
-from zeit.cms.i18n import MessageFactory as _
 import lxml.etree
 import lxml.objectify
-import six
-import six.moves.html_parser
-import xml.dom.minidom
 import zope.interface
 import zope.location.location
 import zope.proxy
@@ -37,8 +33,7 @@ class _XMLBase(zope.schema.Field):
     def fromUnicode(self, text):
         try:
             return self.parse(text)
-        except (lxml.etree.XMLSyntaxError, ValueError,
-                six.moves.html_parser.HTMLParseError) as e:
+        except (lxml.etree.XMLSyntaxError, ValueError) as e:
             message = str(e)
             if message == 'None':
                 # BeautifulSoup using HTMLParser used to be able to say
