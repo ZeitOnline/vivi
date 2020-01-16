@@ -5,7 +5,7 @@ vivi.core changes
 4.25.8 (unreleased)
 -------------------
 
-- FIX: Add missing import
+- FIX: Add missing import, log end of vgwort report job
 
 
 4.25.7 (2020-01-07)

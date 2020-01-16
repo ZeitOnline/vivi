@@ -90,6 +90,7 @@ def report_new_documents():
                 lock_file_name))
         sys.exit(1)
 
+    log.info('Report start')
     now = datetime.datetime.now()
     today = datetime.datetime(now.year, now.month, now.day)
     four = today.replace(hour=3, minute=50)
@@ -119,6 +120,7 @@ def report_new_documents():
                 del vgwort.client
     finally:
         lock.close()
+    log.info('Report end')
 
 
 def report(context):
