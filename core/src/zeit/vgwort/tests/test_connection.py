@@ -139,8 +139,8 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.send_response(200)
         self.end_headers()
         wsdl = pkg_resources.resource_string(__name__, 'pixelService.wsdl')
-        wsdl = wsdl.replace('__PORT__', str(HTTP_LAYER['http_port']))
-        self.wfile.write(wsdl)
+        wsdl = wsdl.decode().replace('__PORT__', str(HTTP_LAYER['http_port']))
+        self.wfile.write(wsdl.encode())
 
     def do_POST(self):
         self.send_response(500)

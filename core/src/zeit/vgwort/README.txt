@@ -37,11 +37,11 @@ Seed the random generator with a fixed value to get predictable results:
 >>> import random
 >>> random.seed(0)
 >>> tokens.claim()
-('3b787da5b75846e2b39bd814b55a9512', 'c32e3e163d874e7d8da0d21f96bfeb47')
+('4c47ec781b5b4a288b9a1ab8b2c5ab3c', '82e7bb658f75444a9bf74273641f2c29')
 >>> len(tokens)
 2
 >>> tokens.claim()
-('4c47ec781b5b4a288b9a1ab8b2c5ab3c', '82e7bb658f75444a9bf74273641f2c29')
+('3b787da5b75846e2b39bd814b55a9512', 'c32e3e163d874e7d8da0d21f96bfeb47')
 >>> len(tokens)
 1
 >>> tokens.claim()
