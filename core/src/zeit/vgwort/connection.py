@@ -163,7 +163,7 @@ class MessageService(VGWortWebService):
             'MessageText', lyric=False, shorttext=content.title[:100],
             text=self.create('Text', plainText=u'\n'.join(
                 searchable.getSearchableText()
-            ).encode('utf-8').encode('base64')))
+            ).encode('utf-8')))
 
         public_url = content.uniqueId.replace(
             'http://xml.zeit.de', 'http://www.zeit.de') + '/komplettansicht'

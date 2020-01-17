@@ -7,6 +7,8 @@ vivi.core changes
 
 - FIX: Add missing import, log end of vgwort report job
 
+- FIX: Don't double-b64encode vgwort text
+
 
 4.25.7 (2020-01-07)
 -------------------
