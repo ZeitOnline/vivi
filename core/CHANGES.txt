@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.8 (unreleased)
+4.25.8 (2020-01-20)
 -------------------
 
 - BUG-1199: Patch bug in zeep SOAP client so it serializes agency
