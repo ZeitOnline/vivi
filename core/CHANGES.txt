@@ -5,6 +5,9 @@ vivi.core changes
 4.25.8 (unreleased)
 -------------------
 
+- BUG-1199: Patch bug in zeep SOAP client so it serializes agency
+  authors (only code, no firstname/lastname) correctly
+
 - FIX: Add missing import, log end of vgwort report job
 
 - FIX: Don't double-b64encode vgwort text
