@@ -62,6 +62,12 @@ class ReportableContentSource(grok.GlobalUtility):
         info.reported_error = message
         zeit.retresco.update.index(content)
 
+    def mark_todo(self, content):
+        info = zeit.vgwort.interfaces.IReportInfo(content)
+        info.reported_on = None
+        info.reported_error = None
+        zeit.retresco.update.index(content)
+
     @property
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')

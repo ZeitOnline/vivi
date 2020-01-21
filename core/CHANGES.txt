@@ -5,7 +5,7 @@ vivi.core changes
 4.25.9 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Index in ES after marking an article as vgwort-todo
 
 
 4.25.8 (2020-01-20)
