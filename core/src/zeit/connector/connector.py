@@ -771,7 +771,7 @@ class TransactionBoundCachingConnector(Connector):
     long_name = u'(Transaction-bound) DAV connector'
 
     body_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_body_cache', zeit.connector.cache.ResourceCache)
+        '_v_body_cache', zeit.connector.cache.ETagLessResourceCache)
 
     property_cache = gocept.cache.property.TransactionBoundCache(
         '_v_property_cache', zeit.connector.cache.PropertyCache)

@@ -273,6 +273,26 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._data.pop(unique_id, None)
 
 
+class ETagLessResourceCache(object):
+
+    def __init__(self):
+        self._data = {}
+
+    def getData(self, unique_id, ignored_properties):
+        value = self._data.get(unique_id)
+        if value is None:
+            raise KeyError(unique_id)
+        return value.open()
+
+    def setData(self, unique_id, ignored_properties, data):
+        store = self._data.get(unique_id)
+        if store is None or not isinstance(store, Body):
+            self._data[unique_id] = store = Body()
+        always_different_fake_etag = object()
+        store.update(data, always_different_fake_etag)
+        return store.open()
+
+
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
 class PersistentCache(AccessTimes, persistent.Persistent):
 
