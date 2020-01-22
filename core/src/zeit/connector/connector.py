@@ -528,7 +528,6 @@ class Connector(object):
             # only lock for files
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-            self._get_dav_resource(id, ensure='collection')
 
         if autolock:
             locktoken = self.lock(id, "AUTOLOCK",
