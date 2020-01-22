@@ -130,9 +130,7 @@ class Connector(object):
         for child_id in self._get_resource_child_ids(id):
             yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
 
-    def _get_resource_type(self, id):
-        __traceback_info__ = (id, )
-        properties = self._get_resource_properties(id)
+    def _get_resource_type(self, properties):
         r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
             dav_type = properties.get(('resourcetype', 'DAV:'))
@@ -224,19 +222,14 @@ class Connector(object):
         """Return the resource identified by `id`."""
         __traceback_info__ = (id, )
         id = self._get_cannonical_id(id)
-        try:
-            content_type = self._get_resource_properties(id).get(
-                ('getcontenttype', 'DAV:'))
-        except (zeit.connector.dav.interfaces.DAVNotFoundError,
-                zeit.connector.dav.interfaces.DAVBadRequestError):
-            raise KeyError(
-                "The resource %r does not exist." % six.text_type(id))
-        return zeit.connector.resource.CachedResource(
+        if id in self.property_cache:  # XXX handle inconsistencies
+            properties = self.property_cache[id]
+            body = self.body_cache.getData(id, None)
+        else:
+            properties, body = self._fetch(id)
+        return zeit.connector.resource.Resource(
             six.text_type(id), self._id_splitlast(id)[1].rstrip('/'),
-            self._get_resource_type(id),
-            lambda: self._get_resource_properties(id),
-            lambda: self._get_resource_body(id),
-            content_type=content_type)
+            self._get_resource_type(properties), body, properties)
 
     def __setitem__(self, id, object):
         """Add the given `object` to the document store under the given name.
