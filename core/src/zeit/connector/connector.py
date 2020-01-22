@@ -602,19 +602,14 @@ class Connector(object):
             raise DAVUnexpectedResultError(
                 'Unexpected result code for %s: %d' % (url, st))
 
-    def _get_dav_resource(self, id, ensure=None):
-        """returns resource corresponding to <id>, which see [8],
-        <ensure> may be 'file' or 'collection'"""
+    def _get_dav_resource(self, id):
+        """returns resource corresponding to <id>"""
         url = self._id2loc(id)
         # NOTE: We tacitly assume that URIs ending with '/' MUST
         # be collections. This ain't strictly right, but is sufficient.
-        wantcoll = (ensure == 'collection' or url.endswith('/'))
-        if wantcoll:
+        if url.endswith('/'):
             klass = zeit.connector.dav.davresource.DAVCollection
-        elif ensure == 'file':
-            klass = zeit.connector.dav.davresource.DAVFile
         else:
-            # This one to disappear when [14] fixed
             klass = zeit.connector.dav.davresource.DAVResource
         return klass(url, conn=self.get_connection())
 
