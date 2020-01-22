@@ -21,6 +21,9 @@ import zeit.connector.search
 import zope.cachedescriptors.property
 import zope.interface
 
+import sqlalchemy
+from sqlalchemy.sql import text
+
 
 # IMPLEMENTATION NOTES:
 #
@@ -92,6 +95,9 @@ class Connector(object):
         self._roots = roots
         self._prefix = prefix
         self.connections = threading.local()
+
+        engine = sqlalchemy.create_engine('postgresql://@/content')
+        self._connection = engine.connect()
 
     def get_connection(self, root='default'):
         """Try to get a cached connection suitable for url"""
@@ -230,6 +236,22 @@ class Connector(object):
         return zeit.connector.resource.Resource(
             six.text_type(id), self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(properties), body, properties)
+
+    def _fetch(self, id):
+        logger.info('fetch %s', id)
+        url = id.replace(self._prefix, '/', 1)
+        row = self._connection.execute(
+            text("""SELECT * FROM documents WHERE url=:url"""),
+            url=url).fetchone()
+        if row is None:
+            raise KeyError(id)
+        body = row['body']
+        # TODO generalize property names
+        properties = {
+            ('uuid', 'http://namespaces.zeit.de/CMS/document'): row['id'],
+            ('type', 'http://namespaces.zeit.de/CMS/meta'): row['meta_type'],
+        }
+        return properties, BytesIO(body.encode('utf-8'))
 
     def __setitem__(self, id, object):
         """Add the given `object` to the document store under the given name.
