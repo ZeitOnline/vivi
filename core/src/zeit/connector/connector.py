@@ -585,19 +585,18 @@ class Connector(object):
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
            Issue a head request and return not None when found.
-           (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
         hresp = zeit.connector.dav.davresource.DAVResource(
             url, conn=self.get_connection()).head()
         if not hresp:
-            return None  # FIXME throw exception?
+            return False
         hresp.read()
         st = int(hresp.status)
         if st == six.moves.http_client.OK:
-            return hresp.getheader('ETag', 'Unspecified ETag')
+            return True
         elif st == six.moves.http_client.NOT_FOUND:
-            return None
+            return False
         else:
             raise DAVUnexpectedResultError(
                 'Unexpected result code for %s: %d' % (url, st))
