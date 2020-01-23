@@ -73,6 +73,7 @@ The checkin handler copies all webdav properties to the xml *before* the object
 is checked in. It removes all existing head.attribute nodes before adding the
 properties. Add some attributes to make sure they're removed:
 
+>>> import lxml.objectify
 >>> content.xml = lxml.objectify.XML(u"""\
 ...     <testtype>
 ...      <head>

@@ -151,6 +151,7 @@ u'Nice image'
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
+>>> import lxml.objectify
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
 >>> entry.caption = u'Gallery & caption'

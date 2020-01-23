@@ -6,6 +6,7 @@ XML Tree
 ========
 
 >>> from zeit.cms.content.field import XMLTree
+>>> import zeit.cms.testing
 >>> field = XMLTree()
 >>> field.__name__ = 'xml'
 >>> class Content(object):
@@ -30,6 +31,7 @@ True
 Replacing node when there are siblings present
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+>>> import lxml.objectify
 >>> root = lxml.objectify.E.root()
 >>> root.append(lxml.objectify.E.child())
 >>> root.append(lxml.objectify.E.child())

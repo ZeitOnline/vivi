@@ -49,10 +49,10 @@ XML:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -71,10 +71,10 @@ When we set an attribute multiple times it's just changed:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -95,10 +95,10 @@ the authors in the xml:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -122,10 +122,10 @@ There is an adapter which sets the text length automatically:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>

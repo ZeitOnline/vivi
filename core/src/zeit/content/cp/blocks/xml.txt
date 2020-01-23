@@ -41,6 +41,7 @@ True
 
 You can add elements to the container:
 
+>>> import lxml.etree
 >>> container.append(lxml.etree.Element('foo'))
 >>> print(zeit.cms.testing.xmltotext(container))
 <container ...>

@@ -1,5 +1,6 @@
 from six import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
+import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
 import zeit.wysiwyg.testing
@@ -91,4 +92,4 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
-            zeit.cms.testing.xmltotext(article.xml))
+            lxml.etree.tostring(article.xml, encoding='unicode'))

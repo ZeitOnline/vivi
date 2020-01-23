@@ -64,7 +64,7 @@ u'Roh'
 >>> new_content.xml
 <Element a at ...>
 >>> zeit.cms.testing.xmltotext(new_content.xml)
-'<a/>'
+'<a/>\n'
 
 
 Syndication

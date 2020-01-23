@@ -111,7 +111,7 @@ HTML-entities are replaced by the real character, but XML entities are not:
 ...   <p>&mdash;&gt;&lt;</p>
 ... """)
 
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
@@ -126,7 +126,7 @@ saving. br's inside a <p> are kept:
 
 >>> converter.from_html(article.xml['body'],
 ...     '<p>Foo</p><h3/><foo/><p/><p> </p><p><b>bar<br/></b></p>')
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
@@ -144,7 +144,7 @@ rule is applied after that:
 
 >>> converter.from_html(article.xml['body'],
 ...     '<p>Foo</p><div>blah</div><div/><foo>bluba</foo>')
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
@@ -178,7 +178,7 @@ Support trailing text on the toplevel:
 ... <p>
 ...   <p>Test</p>er
 ... </p>""")
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body><title>Title</title><teaser/><p>Test</p>er
@@ -209,7 +209,7 @@ The converter tries to be smart in regard to fixing nested paragraphs:
 ...   <p>Anleitung zum Gemeinsein</p>
 ...   <p>Der Kuenstler Erwin Wurm hat ...</p>
 ... </p>""")
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
@@ -228,7 +228,7 @@ Lists are <ul> and <ol>. They're supported as root tag:
 
 >>> converter.from_html(article.xml['body'],
 ...     '<p>Foo</p><ul><li>bar</li><li>baz</li></ul>')
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
@@ -254,7 +254,7 @@ Of course the other way round works as well:
 
 >>> converter.from_html(article.xml['body'],
 ...     '<p>Foo</p><ol><li>bar</li><li>baz</li></ol>')
->>> print(zeit.cms.testing.xmltotext(article.xml, encoding='utf8'))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
   <body>
