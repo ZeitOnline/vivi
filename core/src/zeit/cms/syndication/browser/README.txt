@@ -513,11 +513,7 @@ Let's have a look at the source now:
 <channel> 
   <title>Politik</title>
   <container>
-    <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
-           hidden_relateds="false"
-           hp_hide="true"
-           pinned="true"/>
+    <block...hp_hide="true".../>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
@@ -543,12 +539,7 @@ Its also indicated in the source:
 <channel> 
   <title>Politik</title>
   <container>
-    <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
-           hidden_relateds="false"
-           hp_hide="true"
-           pinned="true"
-           layout="big"/>
+    <block...layout="big".../>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
@@ -573,12 +564,7 @@ Its also indicated in the source:
 <channel> 
   <title>Politik</title>
   <container>
-    <block ...
-           href="http://xml.zeit.de/online/2007/01/rauchen-verbessert-die-welt"...
-           hidden_relateds="true"
-           hp_hide="true"
-           pinned="true"
-           layout="big"/>
+    <block...hidden_relateds="true".../>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
