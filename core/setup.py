@@ -28,6 +28,7 @@ setup(
         'ZODB',
         'beautifulsoup4',
         'bugsnag',
+        'collective.monkeypatcher',
         'elasticsearch >=2.0.0, <3.0.0',
         'fb',
         'filemagic',

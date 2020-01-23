@@ -372,8 +372,10 @@ class EmptyReference(object):
     def get(self, target, default=None):
         return default
 
-    def __nonzero__(self):
+    def __bool__(self):
         return False
+
+    __nonzero__ = __bool__  # XXX py2 only
 
     def __eq__(self, other):
         if isinstance(other, type(self)):

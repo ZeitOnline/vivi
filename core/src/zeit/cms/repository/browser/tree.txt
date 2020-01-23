@@ -64,17 +64,17 @@ X-Powered-By: Zope (www.zope.org), Python (www.python.org)
       </p>
   <ul>
       <li action="expand" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/online/">
-        <p>
-        <a href="http://localhost/++skin++cms/repository/online">online</a>
-        <span class="uniqueId">http://xml.zeit.de/online/</span>
-      </p>
-      </li>
-      <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/2007/">
         <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
         <span class="uniqueId">http://xml.zeit.de/2007/</span>
+      </p>
+      </li>
+      <li action="expand" class="NotRoot..."
+          uniqueid="http://xml.zeit.de/online/">
+        <p>
+        <a href="http://localhost/++skin++cms/repository/online">online</a>
+        <span class="uniqueId">http://xml.zeit.de/online/</span>
       </p>
       </li>
   </ul>
@@ -103,7 +103,6 @@ When we visit `online` it is *not* automatically expanded while visiting it:
       ...
       <ul>
         <li...online...
-        <li...2007...
       </ul>
     </li>
  </ul>
@@ -129,7 +128,6 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
             <li...2007...
           </ul>
         </li>
-        <li...2007...
       </ul>
     </li>
  </ul>
@@ -146,12 +144,12 @@ on the + icon) the tree stays expanded even when we're not inside online:
         <a href="...">Repository</a>
         ...
         <ul>
+          <li...2007...
           <li...online...
             <ul>
               <li...2007...
             </ul>
           </li>
-          <li...2007...
         </ul>
       </li>
    </ul>
@@ -164,27 +162,8 @@ Users often do not want to see certain containers, so they can hide them.
 Initially most containers are hidden actually. If 2006 was shown it would be
 between online/2007 and 2007:
 
->>> print(browser.contents.strip())
-<ul>...
-      <li action="expand" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/online/2007/">
-          <p>
-        <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
-        <span class="uniqueId">http://xml.zeit.de/online/2007/</span>
-        </p>
-      </li>
-  </ul>
-      </li>
-      <li action="expand" class="NotRoot..."
-          uniqueid="http://xml.zeit.de/2007/">
-          <p>
-        <a href="http://localhost/++skin++cms/repository/2007">2007</a>
-        <span class="uniqueId">http://xml.zeit.de/2007/</span>
-        </p>
-      </li>
-  </ul>
-      </li>
-  </ul>
+>>> '2006' in browser.contents
+False
 
 
 When we are *inside* a hidden container, it is shown nevertheles:
@@ -197,12 +176,6 @@ When we are *inside* a hidden container, it is shown nevertheles:
         <a href="...">Repository</a>
         ...
         <ul>
-          <li...online...
-            <ul>
-              <li...2007...
-            </ul>
-          </li>
-          <li...2007...
           <li...2006...
         </ul>
       </li>
@@ -228,12 +201,6 @@ The navigation tree contains the 2006 even when looking at the root:
         <a href="...">Repository</a>
         ...
         <ul>
-          <li...online...
-            <ul>
-              <li...2007...
-            </ul>
-          </li>
-          <li...2007...
           <li...2006...
         </ul>
       </li>
@@ -255,26 +222,9 @@ A shown container can be hidden again though:
     <li class="message">"2006" is now hidden from the navigation tree.</li>
     ...
 
->>> open_tree('http://localhost/++skin++cms/repository/2006')
->>> print(browser.contents)
-  <ul>
-      <li active="True" class="Root...">
-        <p>
-        <a href="...">Repository</a>
-        ...
-        <ul>
-          <li...online...
-            <ul>
-              <li...2007...
-            </ul>
-          </li>
-          <li...2007...
-        </ul>
-      </li>
-   </ul>
-
 Now, of course, after showing, the `Hide` action is no longer available:
 
+>>> open_tree('http://localhost/++skin++cms/repository/2006')
 >>> browser.getLink('Hide')
 Traceback (most recent call last):
     ...

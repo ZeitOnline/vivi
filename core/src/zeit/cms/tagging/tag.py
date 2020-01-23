@@ -93,6 +93,8 @@ def unique_id_to_tag(unique_id):
     token = unique_id.replace(
         zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
     # `zeit.retresco` generates unicode escaped uniqueIds, so we decode them.
+    if isinstance(token, six.text_type):
+        token = token.encode('utf-8')
     token = token.decode('unicode_escape')
     whitelist = zope.component.getUtility(
         zeit.cms.tagging.interfaces.IWhitelist)
