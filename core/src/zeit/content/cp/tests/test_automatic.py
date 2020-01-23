@@ -7,6 +7,7 @@ import lxml.etree
 import mock
 import pkg_resources
 import requests_mock
+import six
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -83,9 +84,10 @@ class AutomaticAreaElasticsearchTest(
         leader = result[0]
         self.assertEqual('buttons', leader.layout.id)
         self.assertEqual('leader', self.area.values()[0].layout.id)
-        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
-            zeit.content.cp.interfaces.IRenderedXML(self.area),
-            pretty_print=True))
+        self.assertEllipsis(
+            '...module="buttons"...',
+            zeit.cms.testing.xmltotext(
+                zeit.content.cp.interfaces.IRenderedXML(self.area)))
 
     def test_leader_block_takes_everything_if_area_configured(self):
         self.repository['normal'] = ExampleContentType()
@@ -112,7 +114,7 @@ class AutomaticAreaElasticsearchTest(
 <region...>
   <container...type="teaser"...>
     <block...href="http://xml.zeit.de/testcontent"...""",
-            lxml.etree.tostring(xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(xml))
 
     def test_cms_content_iter_returns_filled_in_blocks(self):
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(

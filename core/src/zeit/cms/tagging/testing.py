@@ -156,7 +156,7 @@ class FakeTag(object):
     @property
     def uniqueId(self):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape'))
+                self.code.encode('unicode_escape').decode('ascii'))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

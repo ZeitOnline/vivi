@@ -45,15 +45,14 @@ XML:
 >>> article.year = 2007
 >>> article.volume = 1
 >>> article.textLength = 4711
->>> import lxml.etree
->>> print(lxml.etree.tostring(article.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -68,14 +67,14 @@ When we set an attribute multiple times it's just changed:
 
 >>> article.textLength = 1000
 >>> article.textLength = 2000
->>> print(lxml.etree.tostring(article.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -92,14 +91,14 @@ When we set an attribute multiple times it's just changed:
 the authors in the xml:
 
 >>> article.authors = ('Bart Simpson', 'Lisa Simpson')
->>> print(lxml.etree.tostring(article.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -119,14 +118,14 @@ There is an adapter which sets the text length automatically:
 
 >>> from zeit.content.article.article import updateTextLengthOnChange
 >>> updateTextLengthOnChange(article, object())
->>> print(lxml.etree.tostring(article.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <body>
     <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne &#220;berraschungen</title>
+    <title>Jahr ohne Überraschungen</title>
     <subtitle>
      Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu &#252;berra schen. Von einer Reformpause will sie nichts wissen
+     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
   <head>
@@ -297,7 +296,7 @@ It's now stored on the article:
 
 And the image is referenced in the XML structure:
 
->>> print(lxml.etree.tostring(article.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <image ...

@@ -2,7 +2,6 @@
 from six.moves import range
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-import lxml.etree
 import mock
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
@@ -377,8 +376,7 @@ class ArticleXMLReferenceUpdate(
             self.repository['article'],
             zeit.cms.content.interfaces.IXMLReference, name='related')
         self.assertIn(
-            'genre="nachricht"',
-            lxml.etree.tostring(reference, pretty_print=True))
+            'genre="nachricht"', zeit.cms.testing.xmltotext(reference))
 
 
 class ArticleElementReferencesTest(

@@ -47,8 +47,7 @@ True
 
 The source has not changed:
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
    </head>
@@ -66,7 +65,7 @@ Add a related content:
 
 Let's have a look at the source:
 
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -98,7 +97,7 @@ True
 Assigning the same content object again doesn't change the xml:
 
 >>> related.related = (related_content, )
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -122,7 +121,7 @@ Let's add another related content:
 ...     zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
 >>> repository['related2'] = related_content2
 >>> related.related = (related_content, related_content2)
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -159,7 +158,7 @@ ICommonMetadata some information is included in the XML:
 
 So far nothing has changed:
 
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -189,7 +188,7 @@ So far nothing has changed:
 when we reassign the two objects the metadata will be reflected in the xml:
 
 >>> related.related = (related_content, related_content2)
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -229,7 +228,7 @@ After sending the event the metadata is updated:
 >>> zope.event.notify(
 ...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
 ...         content, None, zope.security.testing.Principal('hans.wurst')))
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
     <references>
@@ -259,7 +258,7 @@ After sending the event the metadata is updated:
 When we remove the relateds they're of course removed from the XML:
 
 >>> related.related = ()
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <references/>...

@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.25.8.dev0',
+    version='4.25.9.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -28,6 +28,7 @@ setup(
         'ZODB',
         'beautifulsoup4',
         'bugsnag',
+        'collective.monkeypatcher',
         'elasticsearch >=2.0.0, <3.0.0',
         'fb',
         'filemagic',

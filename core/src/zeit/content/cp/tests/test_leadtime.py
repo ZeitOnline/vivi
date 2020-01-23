@@ -2,8 +2,8 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-import lxml.etree
 import transaction
+import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
@@ -40,7 +40,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(None, leadtime.end)
         self.assertEllipsis(
             '...<attribute...name="leadtime_start">...',
-            lxml.etree.tostring(self.repository['foo'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(self.repository['foo'].xml))
 
     def test_sets_end_on_article_when_no_longer_in_lead(self):
         self.publish(self.repository['cp'])
@@ -52,7 +52,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertNotEqual(None, leadtime.end)
         self.assertEllipsis(
             '...<attribute...name="leadtime_end">...',
-            lxml.etree.tostring(self.repository['foo'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(self.repository['foo'].xml))
 
     def test_marks_do_not_change_when_lead_article_not_changed(self):
         self.publish(self.repository['cp'])
@@ -79,7 +79,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.publish(self.repository['cp'])
         self.assertEllipsis(
             '...<attribute...name="leadtime_start">...',
-            lxml.etree.tostring(self.repository['foo'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(self.repository['foo'].xml))
 
     def test_article_checked_out_already_does_not_update_xml(self):
         ICheckoutManager(self.repository['foo']).checkout()
@@ -88,4 +88,4 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertNotEqual(None, leadtime.start)
         self.assertNotIn(
             'leadtime_start',
-            lxml.etree.tostring(self.repository['foo'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(self.repository['foo'].xml))

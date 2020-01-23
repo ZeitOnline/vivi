@@ -43,8 +43,7 @@ change and contain the property:
 >>> content = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
 >>> content.year = 2004
 >>> content.ressort = u'Deutschland'
->>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
     ...<attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
@@ -64,7 +63,7 @@ property:
 
 >>> content.year = None
 >>> content.ressort = None
->>> 'name="year"' in lxml.etree.tostring(content.xml, pretty_print=True)
+>>> 'name="year"' in zeit.cms.testing.xmltotext(content.xml)
 False
 
 Checkin handler
@@ -74,6 +73,7 @@ The checkin handler copies all webdav properties to the xml *before* the object
 is checked in. It removes all existing head.attribute nodes before adding the
 properties. Add some attributes to make sure they're removed:
 
+>>> import lxml.objectify
 >>> content.xml = lxml.objectify.XML(u"""\
 ...     <testtype>
 ...      <head>
@@ -96,7 +96,7 @@ INTERNAL namespace are *not* mapped:
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
@@ -107,7 +107,7 @@ INTERNAL namespace are *not* mapped:
 
 
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(content).checkin()
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"

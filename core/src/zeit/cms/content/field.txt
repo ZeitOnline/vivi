@@ -6,6 +6,7 @@ XML Tree
 ========
 
 >>> from zeit.cms.content.field import XMLTree
+>>> import zeit.cms.testing
 >>> field = XMLTree()
 >>> field.__name__ = 'xml'
 >>> class Content(object):
@@ -21,8 +22,7 @@ True
 >>> content2.xml = content.xml['child']
 >>> tree2 = field.fromUnicode('<child>MyNewValue</child>')
 >>> field.set(content2, tree2)
->>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <container>
   <child>MyNewValue</child>
 </container>
@@ -31,6 +31,7 @@ True
 Replacing node when there are siblings present
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+>>> import lxml.objectify
 >>> root = lxml.objectify.E.root()
 >>> root.append(lxml.objectify.E.child())
 >>> root.append(lxml.objectify.E.child())
@@ -39,7 +40,7 @@ Replacing node when there are siblings present
 >>> field.__name__ = 'xml'
 >>> field.set(content, root.child)
 >>> field.set(content, lxml.objectify.E.new())
->>> print(lxml.etree.tostring(root, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(root))
 <root xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <new/>
   <child/>
@@ -53,5 +54,5 @@ Tidying broken input
 >>> field.__name__ = 'xml'
 >>> tree = field.fromUnicode(
 ...     '<a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">')
->>> print(lxml.etree.tostring(tree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(tree))
 <a href="http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;"/>

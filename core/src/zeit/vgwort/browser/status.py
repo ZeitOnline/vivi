@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import re
 import zeit.vgwort.interfaces
+import zope.component
 
 
 class Status(object):
@@ -58,7 +59,7 @@ class Retry(zeit.cms.browser.view.Base):
     def __call__(self):
         if self.request.method != 'POST':
             return 405, 'Only POST supported'
-        info = zeit.vgwort.interfaces.IReportInfo(self.context)
-        info.reported_on = None
-        info.reported_error = None
+        source = zope.component.getUtility(
+            zeit.vgwort.interfaces.IReportableContentSource)
+        source.mark_todo(self.context)
         return self.redirect(self.url('vgwort.html'))

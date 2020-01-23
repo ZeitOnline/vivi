@@ -4,7 +4,6 @@ from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zope.lifecycleevent import Attributes
 from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
-import lxml.etree
 import mock
 import requests_mock
 import six.moves.urllib.parse
@@ -94,7 +93,7 @@ class BiographyQuestionsTest(zeit.content.author.testing.FunctionalTestCase):
         self.assertEqual('answer', author.bio_questions['drive'].answer)
         self.assertEllipsis(
             '...<question id="drive">answer</question>...',
-            lxml.etree.tostring(author.xml))
+            zeit.cms.testing.xmltotext(author.xml))
 
     def test_provides_attribute_access_for_formlib(self):
         author = zeit.content.author.author.Author()
@@ -107,7 +106,8 @@ class BiographyQuestionsTest(zeit.content.author.testing.FunctionalTestCase):
         author.bio_questions['hobby'] = 'answer2'
         author.bio_questions['drive'] = 'answer1'
         self.assertEqual('answer1', author.bio_questions['drive'].answer)
-        self.assertEqual(1, lxml.etree.tostring(author.xml).count('answer1'))
+        self.assertEqual(
+            1, zeit.cms.testing.xmltotext(author.xml).count('answer1'))
 
     def test_setting_empty_value_removes_node(self):
         author = zeit.content.author.author.Author()

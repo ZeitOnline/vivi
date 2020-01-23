@@ -198,7 +198,8 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def xml_source(self):
         # BBB deprecated
-        return lxml.etree.tostring(self.xml, pretty_print=True)
+        return lxml.etree.tostring(
+            self.xml, pretty_print=True, encoding=six.text_type)
 
 
 class FeedType(zeit.cms.type.XMLContentTypeDeclaration):

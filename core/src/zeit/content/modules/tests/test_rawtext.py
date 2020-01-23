@@ -2,6 +2,7 @@ from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import lxml.objectify
 import mock
+import six
 import zeit.content.modules.rawtext
 import zeit.content.modules.testing
 import zeit.content.text.embed
@@ -21,7 +22,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEqual('val', self.module.params['p1'])
         self.assertEllipsis(
             '...<param id="p1">val</param>...',
-            lxml.etree.tostring(self.module.xml))
+            lxml.etree.tostring(self.module.xml, encoding=six.text_type))
 
     def test_provides_attribute_access_for_formlib(self):
         self.module.params.p1 = 'val'
@@ -33,7 +34,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         self.module.params['p1'] = 'val1'
         self.assertEqual('val1', self.module.params['p1'])
         self.assertEqual(
-            1, lxml.etree.tostring(self.module.xml).count('val1'))
+            1, zeit.cms.testing.xmltotext(self.module.xml).count('val1'))
 
     def test_setting_empty_value_removes_node(self):
         self.module.params['p1'] = 'val1'
@@ -56,7 +57,8 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         lxml.objectify.deannotate(module.xml, cleanup_namespaces=True)
         self.assertEllipsis(
             '<container>...<param id="ref">http://xml.zeit.de/testcontent'
-            '</param></container>', lxml.etree.tostring(module.xml))
+            '</param></container>',
+            lxml.etree.tostring(module.xml, encoding=six.text_type))
         self.assertEqual(self.repository['testcontent'], module.params['ref'])
 
     def test_no_value_set_uses_field_default(self):
@@ -132,7 +134,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEqual(
             '<container has_thirdparty="yes"'
             ' thirdparty_vendors="twitter;facebook"/>',
-            lxml.etree.tostring(self.module.xml))
+            lxml.etree.tostring(self.module.xml, encoding=six.text_type))
 
     def test_passes_through_referenced_values(self):
         info = zeit.cmp.interfaces.IConsentInfo(self.module)

@@ -43,8 +43,7 @@ There is one image in the image folder, so the gallery has a length of 1 now:
 
 The gallery is also noted in the xml structure:
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -91,7 +90,7 @@ We need to call `reload_image_folder`:
 
 The change is reflected in the xml:
 
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -152,10 +151,11 @@ u'Nice image'
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
+>>> import lxml.objectify
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
 >>> entry.caption = u'Gallery & caption'
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -194,7 +194,7 @@ xml:
 When we assign the entry the change will be reflected:
 
 >>> gallery['01.jpg'] = entry
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -239,7 +239,7 @@ well:
 >>> import zope.lifecycleevent
 >>> entry.title = u'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -307,7 +307,7 @@ Let's set a layout on 01.jpg:
 True
 >>> entry.layout = u'image-only'
 >>> gallery['01.jpg'] = entry
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -353,7 +353,7 @@ When we set the layout to None again, the layout attribute is removed:
 u'image-only'
 >>> entry.layout = None
 >>> gallery['01.jpg'] = entry
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -451,7 +451,7 @@ Let's change the order:
 
 This is of course reflected int he XML:
 
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -572,7 +572,7 @@ KeyError: u'http://xml.zeit.de/2006/01.jpg'
 
 Note that his has *not* changed the xml so far:
 
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -614,7 +614,7 @@ Note that his has *not* changed the xml so far:
 When calling `reload_image_folder` the entry is removed from the xml:
 
 >>> gallery.reload_image_folder()
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
@@ -706,7 +706,7 @@ The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>
@@ -750,7 +750,7 @@ The entries' text is wrapped in a <p> node:
 >>> entry = gallery['DSC00109_2.JPG']
 >>> entry.text
 <Element text at ...>
->>> print(lxml.etree.tostring(entry.text, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(entry.text))
 <text xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <p>
                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
@@ -801,7 +801,7 @@ The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
 [u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
->>> print(lxml.etree.tostring(gallery.xml, pretty_print=True, encoding='unicode'))
+>>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
       <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>

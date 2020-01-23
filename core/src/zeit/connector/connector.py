@@ -528,7 +528,6 @@ class Connector(object):
             # only lock for files
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-            self._get_dav_resource(id, ensure='collection')
 
         if autolock:
             locktoken = self.lock(id, "AUTOLOCK",
@@ -586,36 +585,30 @@ class Connector(object):
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
            Issue a head request and return not None when found.
-           (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
         hresp = zeit.connector.dav.davresource.DAVResource(
             url, conn=self.get_connection()).head()
         if not hresp:
-            return None  # FIXME throw exception?
+            return False
         hresp.read()
         st = int(hresp.status)
         if st == six.moves.http_client.OK:
-            return hresp.getheader('ETag', 'Unspecified ETag')
+            return True
         elif st == six.moves.http_client.NOT_FOUND:
-            return None
+            return False
         else:
             raise DAVUnexpectedResultError(
                 'Unexpected result code for %s: %d' % (url, st))
 
-    def _get_dav_resource(self, id, ensure=None):
-        """returns resource corresponding to <id>, which see [8],
-        <ensure> may be 'file' or 'collection'"""
+    def _get_dav_resource(self, id):
+        """returns resource corresponding to <id>"""
         url = self._id2loc(id)
         # NOTE: We tacitly assume that URIs ending with '/' MUST
         # be collections. This ain't strictly right, but is sufficient.
-        wantcoll = (ensure == 'collection' or url.endswith('/'))
-        if wantcoll:
+        if url.endswith('/'):
             klass = zeit.connector.dav.davresource.DAVCollection
-        elif ensure == 'file':
-            klass = zeit.connector.dav.davresource.DAVFile
         else:
-            # This one to disappear when [14] fixed
             klass = zeit.connector.dav.davresource.DAVResource
         return klass(url, conn=self.get_connection())
 

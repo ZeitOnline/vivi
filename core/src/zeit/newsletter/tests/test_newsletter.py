@@ -1,6 +1,5 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
-import lxml.etree
 import mock
 import pytz
 import zeit.cms.testing
@@ -51,7 +50,7 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
         advertisement = factory()
         self.assertIsInstance(advertisement, BottomAdvertisement)
 
-        xml = lxml.etree.tostring(newsletter.xml, pretty_print=True)
+        xml = zeit.cms.testing.xmltotext(newsletter.xml)
         self.assert_ellipsis("""\
 <newsletter...>
   <head/>

@@ -70,12 +70,18 @@ The widget converts the entered data back to a tree:
 <Element editedyou at ...>
 
 
-When the entered data is not valid xml a `ConversionError` is raised:
+When the entered data is not valid xml an error is raised:
 
->>> widget._toFieldValue(u'<ed')
+>>> import traceback
+>>> try:
+...    widget._toFieldValue(u'<ed')
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-ConversionError:...Couldn't find end of Start Tag ed line 1, line 1, column 4...
+...Couldn't find end of Start Tag ed line 1, line 1, column 4...
 
 
 Display field

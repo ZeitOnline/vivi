@@ -1,0 +1,15 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:monkey="http://namespaces.plone.org/monkey"
+  i18n_domain="collective.monkeypatcher">
+
+  <include package="collective.monkeypatcher" />
+
+  <monkey:patch
+    description="Workaround for https://github.com/zopefoundation/zope.security/issues/26"
+    class="abc.ABCMeta"
+    original="__instancecheck__"
+    preserveOriginal="true"
+    replacement=".security_patch.instancecheck_with_zope_proxy" />
+
+</configure>

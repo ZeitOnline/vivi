@@ -2,6 +2,7 @@
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import mock
+import six
 import unittest
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
@@ -87,7 +88,7 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
     def test_redirecting_to_tag_with_unicode_escaped_url_yields_tag(self):
         # Redirect tests IAbsoluteURL and Traverser, so we know it's symmetric.
         self.setup_tags(u'Bärlin')
-        code = u'Bärlin'.encode('unicode_escape')
+        code = u'Bärlin'.encode('unicode_escape').decode('ascii')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
         b.open(base + u'@@redirect_to?unique_id=tag://{}&view=@@object-details'
@@ -105,7 +106,8 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
     def test_adapting_tag_url_with_escaped_unicode_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
         self.setup_tags(u'Bärlin')
-        tag = ICMSContent(u'tag://%s' % u'Bärlin'.encode('unicode_escape'))
+        tag = ICMSContent(
+            u'tag://%s' % u'Bärlin'.encode('unicode_escape').decode('ascii'))
         self.assertEqual(u'Bärlin', tag.label)
 
     def test_adapting_unicode_escaped_uniqueId_of_tag_yields_tag(self):
@@ -126,7 +128,9 @@ class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
             pass
         self.assertEllipsis(
             '...<tag...>foo</tag>...',
-            lxml.etree.tostring(self.repository['testcontent'].xml.head))
+            lxml.etree.tostring(
+                self.repository['testcontent'].xml.head,
+                encoding=six.text_type))
 
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']

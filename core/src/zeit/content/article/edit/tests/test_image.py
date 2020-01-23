@@ -29,8 +29,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
 </image>
-        """.format(image_uid=image_uid), lxml.etree.tostring(
-            image.xml, pretty_print=True))
+        """.format(image_uid=image_uid), zeit.cms.testing.xmltotext(
+            image.xml))
 
     def test_setting_image_to_none_removes_href(self):
         from zeit.content.article.edit.image import Image

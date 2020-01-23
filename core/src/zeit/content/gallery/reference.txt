@@ -73,11 +73,10 @@ The gallery source is a utility:
 
 An xml reference to content also indicates the gallery:
 
->>> import lxml.etree
 >>> import zeit.cms.content.interfaces
 >>> node = zope.component.getAdapter(
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> print(lxml.etree.tostring(node, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(node))
 <reference ...type="intern" href="http://xml.zeit.de/online/content"...>
   ...
   <gallery type="intern" href="http://xml.zeit.de/gallery"...>
@@ -104,5 +103,5 @@ When the reference is removed the <gallery> tag is removed:
 >>> content = repository['online']['content']
 >>> node = zope.component.getAdapter(
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> '<gallery' in lxml.etree.tostring(node, pretty_print=True)
+>>> '<gallery' in zeit.cms.testing.xmltotext(node)
 False

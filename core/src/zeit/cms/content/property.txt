@@ -19,7 +19,6 @@ Root as `xml`
 Normally the document root is the `xml` attribute.  Create a test class:
 
 >>> from zeit.cms.content.property import ObjectPathProperty
->>> import lxml.etree
 >>> import lxml.objectify
 >>> import mock
 >>> import persistent
@@ -40,7 +39,7 @@ Let's assign some values to b. Integer:
 >>> content.b = 5
 >>> content.b
 5
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b>5</b>
 </a>
@@ -53,7 +52,7 @@ Float:
 >>> content.b = 47.25
 >>> content.b
 47.25
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b>47.25</b>
 </a>
@@ -61,7 +60,7 @@ Float:
 >>> content.b = 47.0
 >>> content.b
 47.0
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b>47.0</b>
 </a>
@@ -71,7 +70,7 @@ String. Note that strings are always unicode:
 >>> content.b = 'Foo'
 >>> content.b
 u'Foo'
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b>Foo</b>
 </a>
@@ -133,7 +132,7 @@ Let's assign some values to b. Integer:
 >>> content.b = 4253890
 >>> content.b
 4253890
->>> print(lxml.etree.tostring(xml_tree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(xml_tree))
 <a>
     <b/>
     <c/>
@@ -206,7 +205,7 @@ Setting new values:
 >>> content.sentences = 2
 >>> content.choice = 'two'
 >>> content.bool = True
->>> print(lxml.etree.tostring(xml_tree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(xml_tree))
 <doc bool="True">
   <a href="http://www.zeit.de">link</a>
   <count words="53" chars="20" sentences="2" choice="two"/>
@@ -220,7 +219,7 @@ Setting bool to false works as well:
 >>> content.bool = False
 >>> content.bool
 False
->>> print(lxml.etree.tostring(xml_tree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(xml_tree))
 <doc bool="False">
   <a href="http://www.zeit.de">link</a>
   <count words="53" chars="20" sentences="2" choice="two"/>
@@ -246,7 +245,7 @@ u'some text'
 >>> content.text is None
 True
 >>> content.bool = None
->>> print(lxml.etree.tostring(xml_tree, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(xml_tree))
 <doc>
   <a href="http://www.zeit.de">link</a>
   <count words="53" chars="20" sentences="2" choice="two"/>
@@ -308,7 +307,7 @@ Reference the object:
 
 Let's have a look how the resource has been referenced:
 
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo>
   <res xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/refed</res>
 </foo>
@@ -372,7 +371,7 @@ Currently no object is referenced:
 True
 
 >>> content.res = referenced_obj
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ref href="http://xml.zeit.de/related" type="intern"/>
 </foo>
@@ -439,7 +438,7 @@ The `SimpleMultiProperty` is used for lists of simple values.
 Set authors:
 
 >>> content.authors = ('Hans', 'Klaus', 'Siegfried')
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <authors>
@@ -474,7 +473,7 @@ Create a content class:
 >>> content.title = u'Foo <em>bar</em> baz'
 
 >>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:myns="namespace">
   <title>Foo <em>bar</em> baz</title>
 </foo>
@@ -492,7 +491,7 @@ u'Foo <em>Bar<a href="blaubs">click</a></em>'
 >>> content.title = u'<em>blah</em>'
 >>> content.title
 u'<em>blah</em>'
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:myns="namespace">
   <title>
     <em>blah</em>

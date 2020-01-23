@@ -63,9 +63,8 @@ All the data is still there:
 u'Roh'
 >>> new_content.xml
 <Element a at ...>
->>> import lxml.etree
->>> lxml.etree.tostring(new_content.xml)
-'<a/>'
+>>> zeit.cms.testing.xmltotext(new_content.xml)
+'<a/>\n'
 
 
 Syndication
@@ -77,7 +76,7 @@ a channel:
 
 >>> channel = repository['politik.feed']
 >>> channel.insert(0, content)
->>> print(lxml.etree.tostring(channel.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(channel.xml))
 <channel>
   <title>Politik</title>
   <container>
@@ -94,7 +93,7 @@ Let's add some more  xml:
 >>> content.xml.append(lxml.objectify.E.foo(bar='baz'))
 >>> content.xml.append(lxml.objectify.E.blubs('oink'))
 >>> channel.updateMetadata(content)
->>> print(lxml.etree.tostring(channel.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(channel.xml))
 <channel>
   <title>Politik</title>
   <container>
