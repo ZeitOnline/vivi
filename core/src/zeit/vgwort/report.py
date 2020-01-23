@@ -62,6 +62,12 @@ class ReportableContentSource(grok.GlobalUtility):
         info.reported_error = message
         zeit.retresco.update.index(content)
 
+    def mark_todo(self, content):
+        info = zeit.vgwort.interfaces.IReportInfo(content)
+        info.reported_on = None
+        info.reported_error = None
+        zeit.retresco.update.index(content)
+
     @property
     def config(self):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
@@ -90,6 +96,7 @@ def report_new_documents():
                 lock_file_name))
         sys.exit(1)
 
+    log.info('Report start')
     now = datetime.datetime.now()
     today = datetime.datetime(now.year, now.month, now.day)
     four = today.replace(hour=3, minute=50)
@@ -115,10 +122,11 @@ def report_new_documents():
                 log.warning(
                     'Error reporting %s, ignoring', content, exc_info=True)
             # XXX vgwort returns 401 after some requests for unknown reasons.
-            if i % 6 == 0:
+            if i % 6 == 0 and 'client' in vgwort.__dict__:
                 del vgwort.client
     finally:
         lock.close()
+    log.info('Report end')
 
 
 def report(context):

@@ -2,10 +2,23 @@ vivi.core changes
 =================
 
 
-4.25.8 (unreleased)
+4.25.9 (unreleased)
 -------------------
 
 - ZON-5649: Make zeit.find py3 compatible
+
+- FIX: Index in ES after marking an article as vgwort-todo
+
+
+4.25.8 (2020-01-20)
+-------------------
+
+- BUG-1199: Patch bug in zeep SOAP client so it serializes agency
+  authors (only code, no firstname/lastname) correctly
+
+- FIX: Add missing import, log end of vgwort report job
+
+- FIX: Don't double-b64encode vgwort text
 
 
 4.25.7 (2020-01-07)

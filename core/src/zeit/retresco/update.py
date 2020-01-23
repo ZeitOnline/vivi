@@ -13,6 +13,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.transform
