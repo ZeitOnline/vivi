@@ -19,8 +19,7 @@ Create a cp extra block:
 
 Initialy the block is empty and has no module assinged:
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(cpextra.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(cpextra.xml))
 <container ... cp:type="cpextra" module="" ... cp:__name__="id-ce7dc496-327f-432d-b6ec-380866c1ce29"/>
 
 
@@ -44,7 +43,7 @@ When a centerpage is created the toplist is automatically added:
 'cpextra'
 >>> mr.cpextra
 'mostread'
->>> print(lxml.etree.tostring(mr.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(mr.xml))
 <container...>
   <cp_extra id="mostread"/>
 </container>
@@ -71,7 +70,7 @@ the mostcommented is automatically added. We look at the cp created above:
 >>> mc.cpextra
 'mostcommented'
 >>> import lxml.etree
->>> print(lxml.etree.tostring(mc.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(mc.xml))
 <container...>
   <cp_extra id="mostcommented"/>
 </container>

@@ -2,7 +2,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import lxml.etree
 import mock
 import zeit.cms.testing
 import zope.copypastemove.interfaces
@@ -27,7 +26,7 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertFalse(lookup().find.called)
         self.assertIn(
             'http://xml.zeit.de/changed',
-            lxml.etree.tostring(referencing.xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(referencing.xml))
 
     def test_rename_stores_old_name_on_dav_property(self):
         self.repository['article'] = ExampleContentType()

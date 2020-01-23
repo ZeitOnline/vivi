@@ -52,7 +52,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def xml_source(self):
-        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True)
+        return lxml.etree.tostring(
+            self.xml, 'UTF-8', xml_declaration=True, encoding=six.text_type)
 
     @property
     def image_folder(self):

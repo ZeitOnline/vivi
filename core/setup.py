@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.25.8.dev0',
+    version='4.25.9.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -52,7 +52,6 @@ setup(
         'urbanairship >= 1.0',
         'webob',
         'werkzeug',
-        'xmldiff',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
         'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
@@ -177,6 +176,7 @@ setup(
             'requests-mock',
             'webtest',
             'xlrd',
+            'xmldiff',
             'zope.app.wsgi',
             'zope.configuration',
             'zope.error',

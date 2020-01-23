@@ -2,6 +2,7 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import lxml.etree
+import six
 import zeit.content.text.python
 import zeit.content.volume.testing
 import zeit.cms.content.add
@@ -67,7 +68,8 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
             'http://xml.zeit.de/2010/02/ausgabe')
         cover_string = '<cover href="http://xml.zeit.de/imagegroup/" ' \
                        'id="landscape" product_id="ZMLB"/>'
-        self.assertIn(cover_string, lxml.etree.tostring(volume.xml))
+        self.assertIn(cover_string, lxml.etree.tostring(
+            volume.xml, encoding=six.text_type))
 
     def test_displays_warning_if_volume_with_same_name_already_exists(self):
         b = self.browser

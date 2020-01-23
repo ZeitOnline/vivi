@@ -94,8 +94,7 @@ u'Informationen gegen H\xfcftgold'
 Insert a new object into the channel:
 
 >>> channel.insert(0, repository['online']['2007']['01']['eta-zapatero'])
->>> import lxml.etree
->>> print(lxml.etree.tostring(channel.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(channel.xml))
  <centerpage>
    <head>
    ...

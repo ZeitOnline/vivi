@@ -1,5 +1,5 @@
-import lxml.etree
 import lxml.objectify
+import zeit.cms.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
@@ -23,8 +23,9 @@ class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):
         source = zeit.content.cp.interfaces.IJobTickerBlock['feed'].source
         feed = source.factory.getValues(block)[0]
         block.feed = feed
-        self.assertTrue("id=\"{id}\"".format(id=feed.id)
-                        in lxml.etree.tostring(block.xml))
+        self.assertTrue(
+            "id=\"{id}\"".format(id=feed.id)
+            in zeit.cms.testing.xmltotext(block.xml))
 
     def test_feed_is_read_from_jobticker_block(self):
         xml = lxml.objectify.fromstring("""

@@ -21,8 +21,7 @@ Instantiate and verify the inital xml:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content.__parent__ = repository
 
->>> import lxml.etree
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body/>
@@ -45,7 +44,7 @@ Now that was pretty boring. Add a title and year (from common metadata):
 
 >>> content.title = u'gocept'
 >>> content.year = 2008
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2008</attribute>

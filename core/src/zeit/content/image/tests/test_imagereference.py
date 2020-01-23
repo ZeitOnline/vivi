@@ -4,7 +4,6 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
-import lxml.etree
 import mock
 import zeit.content.image.interfaces
 import zeit.content.image.testing
@@ -132,4 +131,4 @@ class MoveReferencesTest(zeit.content.image.testing.FunctionalTestCase):
             self.assertFalse(lookup().find.called)
         self.assertIn(
             'http://xml.zeit.de/changed',
-            lxml.etree.tostring(content.xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(content.xml))

@@ -60,8 +60,12 @@ The `search_form` view returns the template URL for the search form and the
 data for dropdowns/selects:
 
 >>> browser.open('http://localhost:8080/++skin++cms/search_form')
->>> browser.headers['Content-Type']
-'text/json'
+>>> print(browser.headers)
+Status: 200 Ok
+Content-Length: 4025
+Content-Type: text/json...
+X-Powered-By: Zope (www.zope.org), Python (www.python.org)
+
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents))
