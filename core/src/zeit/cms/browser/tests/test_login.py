@@ -1,5 +1,6 @@
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
+import base64
 import json
 import plone.testing
 import six.moves.urllib.error
@@ -129,7 +130,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/online/2008/26', b.url)
         cookie = b.cookies.getinfo('my_sso_zope.View')
         self.assertEqual(None, cookie['expires'])
-        data = json.loads(cookie['value'].decode('base64'))
+        data = json.loads(base64.b64decode(cookie['value'].encode('ascii')))
         self.assertEqual('principal.user', data['id'])
 
     def test_url_parameter_redirects_all_the_way_back_after_login(self):
@@ -152,7 +153,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi'
                '/sso-login?permission=zeit.cms.admin.View')
         cookie = b.cookies.getinfo('my_sso_zeit.cms.admin.View')
-        data = json.loads(cookie['value'].decode('base64'))
+        data = json.loads(base64.b64decode(cookie['value'].encode('ascii')))
         self.assertEqual('principal.user', data['id'])
 
     def test_user_without_required_permission_shows_unauthorized(self):

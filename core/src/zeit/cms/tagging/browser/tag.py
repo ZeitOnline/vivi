@@ -1,4 +1,5 @@
 import grokcore.component as grok
+import six
 import zeit.cms.browser.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
@@ -27,6 +28,8 @@ class TagTraverser(grok.MultiAdapter):
         whitelist = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         # As we encoded the code in `AbsoluteURL` we have to undo the escaping.
+        if isinstance(name, six.text_type):
+            name = name.encode('utf-8')
         name = name.decode('unicode_escape')
         tag = whitelist.get(name)
         if tag is None:
@@ -44,4 +47,5 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
             zope.component.hooks.getSite(), self.request)
         # `zeit.retresco` possibly generates `.code` with unicode characters so
         # we have to escape them to get a valid url.
-        return base + '/++tag++' + self.context.code.encode('unicode_escape')
+        return base + '/++tag++' + self.context.code.encode(
+            'unicode_escape').decode('ascii')

@@ -180,11 +180,16 @@ Set the value to an existing but invalid value, so we get an validation error:
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
->>> widget.getInputValue()
+>>> import traceback
+>>> try:
+...     widget.getInputValue()
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-WidgetInputError: ('reference', u'',
-    ConstraintNotSatisfied(<object object at 0x...>, 'reference'))
+...ConstraintNotSatisfied(<object object at 0x...>, 'reference')...
 
 
 The invalid value is rendered:
