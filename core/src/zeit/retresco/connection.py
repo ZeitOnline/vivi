@@ -191,6 +191,9 @@ class TMS(object):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         return self._request('POST /content/%s/publish' % uuid)
 
+    def unpublish_id(self, uuid):
+        return self._request('POST /content/%s/unpublish' % uuid)
+
     def enrich(self, content, intextlinks=True):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
