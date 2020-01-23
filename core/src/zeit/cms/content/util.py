@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import lxml.objectify
+import six
 import zope.schema.interfaces
 
 
@@ -27,5 +28,7 @@ def objectify_soup_fromstring(text):
         for key, value in tag.attrs.items():
             if value is None:  # Attribute w/o value, like <foo attr/>
                 tag.attrs[key] = key
-    return lxml.objectify.fromstring(
-        ''.join([str(x) for x in soup.body.children]))
+    soup = ''.join([str(x) for x in soup.body.children])
+    if isinstance(soup, six.text_type):
+        soup = soup.encode('utf-8')
+    return lxml.objectify.fromstring(soup)
