@@ -334,7 +334,7 @@ class PublishRetractTask(object):
                 logger.error("%s:\n%s" % (filename, stderr))
             if proc.returncode:
                 raise zeit.workflow.interfaces.ScriptError(
-                    stderr, proc.returncode)
+                    six.ensure_str(stderr), proc.returncode)
 
 
 class PublishTask(PublishRetractTask):
