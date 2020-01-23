@@ -1,6 +1,5 @@
 from six import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
-import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
 import zeit.wysiwyg.testing
@@ -79,7 +78,7 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
     <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
   </body>
 </article>
-""", lxml.etree.tostring(article.xml, pretty_print=True))
+""", zeit.cms.testing.xmltotext(article.xml))
 
 
 class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
@@ -92,4 +91,4 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
-            lxml.etree.tostring(article.xml))
+            zeit.cms.testing.xmltotext(article.xml))

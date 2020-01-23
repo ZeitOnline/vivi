@@ -1,10 +1,10 @@
 # coding: utf-8
 from xmldiff.main import diff_trees
 from zeit.cms.checkout.helper import checked_out
-import lxml.etree
 import mock
 import unittest
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
@@ -67,7 +67,7 @@ class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
             pass
         self.assertIn(
             'http://xml.zeit.de/changed',
-            lxml.etree.tostring(self.repository['cp'].xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(self.repository['cp'].xml))
 
 
 class TestContentIter(unittest.TestCase):

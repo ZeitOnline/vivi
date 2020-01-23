@@ -14,10 +14,9 @@ A portraitbox contains of title, text and an image.
 
 Let's instanciate a box and verify the xml:
 
->>> import lxml.etree
 >>> import zeit.content.portraitbox.portraitbox
 >>> pb = zeit.content.portraitbox.portraitbox.Portraitbox()
->>> print(lxml.etree.tostring(pb.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(pb.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype"
     layout="artbox" label="portrait"/>
 
@@ -39,7 +38,7 @@ Set data:
 >>> pb.name = u'Hans Wurst'
 >>> pb.text = u'<p><strong>Hans Wurst</strong> wursted hansig.</p>'
 >>> pb.image = repository['2006']['DSC00109_2.JPG']
->>> print(lxml.etree.tostring(pb.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(pb.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
@@ -87,7 +86,7 @@ content:
 ...     content)
 >>> repository['pb'] = pb
 >>> pb_ref.portraitbox = pb
->>> print(lxml.etree.tostring(content.xml, pretty_print=True))
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"

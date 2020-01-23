@@ -6,6 +6,7 @@ import jinja2
 import lxml.etree
 import mock
 import pkg_resources
+import six
 import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
@@ -156,7 +157,8 @@ class TestDynamicFolder(
 </test>""")
             self.assertIn(
                 '<body>xanten dynamicfolder</body>',
-                lxml.etree.tostring(self.folder['xanten'].xml))
+                lxml.etree.tostring(
+                    self.folder['xanten'].xml, encoding=six.text_type))
 
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not
