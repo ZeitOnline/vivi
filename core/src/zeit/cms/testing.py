@@ -546,7 +546,8 @@ def remove_exception_module(msg):
     # if i >= 0:
     #     end = i
     # retain just the exception name
-    i = msg.rfind('.', 0, end)
+    name_end = msg.find(':', 0, end)  # PATCHED
+    i = msg.rfind('.', 0, name_end)
     if i >= 0:
         start = i + 1
     return msg[start: end]
