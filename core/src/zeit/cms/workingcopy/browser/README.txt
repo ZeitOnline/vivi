@@ -136,7 +136,7 @@ We need some setup:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Querdax')
 >>> browser.getLink('Checkout').click()
->>> co = workingcopy.values().next()
+>>> co = next(workingcopy.values())
 >>> import zeit.cms.repository.interfaces
 >>> zeit.cms.repository.interfaces.IAutomaticallyRenameable(
 ...     co).renameable = True
@@ -184,11 +184,7 @@ There is no default location for the working copy itself:
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 Traceback (most recent call last):
     ...
-ComponentLookupError:
-    ((<zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>,
-      <zeit.cms.content.contentsource.CMSContentSource object at 0x...>),
-     <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>,
-     u'')
+ComponentLookupError:...
 
 For the somalia document we'll get the folder in the repository though:
 
@@ -232,68 +228,18 @@ Open the checked out somalia and change its source:
 >>> browser.getControl('Document content').value = 'no more!'
 >>> browser.getControl('Apply').click()
 
-We change the preview path to some temp directory and put
-a file there. This will at leas give us some result to verify. 
-
->>> import os
->>> import os.path
->>> import tempfile
->>> tempdir = tempfile.mkdtemp()
-
-Create a preview file. It is created deep in a folder, so create those as well:
-
->>> preview_dir = os.path.join(tempdir, 'online', '2007', '01')
->>> os.makedirs(preview_dir)
-
->>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia')
->>> open(name, 'w').write(
-...     'The quick brown fox jumps over the lazy dog.')
-
-Create another file:
->>> foo_name = name + '?foo=bar'
->>> file(foo_name, 'w').write(
-...     'The quick brown foo jumps over the lazy bar.')
-
->>> import zope.app.appsetup.product
->>> cms_config = zope.app.appsetup.product._configs['zeit.cms']
-
->>> cms_config['preview-prefix'] = u'file://%s' % tempdir
-
-
 When we look at the preview now:
 
->>> browser.handleErrors = False
+>>> browser.follow_redirects = False
 >>> browser.getLink('Preview').click()
->>> print(browser.contents)
-The quick brown fox jumps over the lazy dog.
+>>> browser.headers['Location']
+'http://localhost/preview-prefix/wcpreview/zope.user/Somalia'
 
-The preview object will have been be removed though:
+Query arguments are passed to the preview server:
 
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> 'preview-zope.user' in browser.contents
-False
-
-
-Check the preview again to make sure the created folders are used and the
-preview doesn't break when the folders already exist:
-
->>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
-...     'Somalia/@@view.html')
->>> browser.getLink('Preview').click()
->>> print(browser.contents)
-The quick brown fox jumps over the lazy dog.
-
-Query arguments are passed to the server:
-
->>> 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'Somalia/@@view.html')
 >>> url = browser.getLink('Preview').url
 >>> browser.open(url + '?foo=bar')
->>> print(browser.contents)
-The quick brown foo jumps over the lazy bar.
-
-Clean up:
-
->>> import shutil
->>> shutil.rmtree(tempdir)
+>>> browser.headers['Location']
+'http://localhost/preview-prefix/wcpreview/zope.user/Somalia?foo=bar'
