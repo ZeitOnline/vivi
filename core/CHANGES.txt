@@ -5,6 +5,8 @@ vivi.core changes
 4.25.9 (unreleased)
 -------------------
 
+- ZON-5653: Make zeit.imp py3 compatible
+
 - ZON-5649: Make zeit.find py3 compatible
 
 - FIX: Index in ES after marking an article as vgwort-todo
