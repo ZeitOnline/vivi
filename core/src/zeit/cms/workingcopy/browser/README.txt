@@ -136,7 +136,7 @@ We need some setup:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Querdax')
 >>> browser.getLink('Checkout').click()
->>> co = workingcopy.values().next()
+>>> co = next(workingcopy.values())
 >>> import zeit.cms.repository.interfaces
 >>> zeit.cms.repository.interfaces.IAutomaticallyRenameable(
 ...     co).renameable = True
@@ -184,11 +184,7 @@ There is no default location for the working copy itself:
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 Traceback (most recent call last):
     ...
-ComponentLookupError:
-    ((<zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>,
-      <zeit.cms.content.contentsource.CMSContentSource object at 0x...>),
-     <InterfaceClass zeit.cms.browser.interfaces.IDefaultBrowsingLocation>,
-     u'')
+ComponentLookupError:...
 
 For the somalia document we'll get the folder in the repository though:
 
@@ -246,12 +242,12 @@ Create a preview file. It is created deep in a folder, so create those as well:
 >>> os.makedirs(preview_dir)
 
 >>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia')
->>> open(name, 'w').write(
+>>> ignored = open(name, 'w').write(
 ...     'The quick brown fox jumps over the lazy dog.')
 
 Create another file:
 >>> foo_name = name + '?foo=bar'
->>> file(foo_name, 'w').write(
+>>> ignored = open(foo_name, 'w').write(
 ...     'The quick brown foo jumps over the lazy bar.')
 
 >>> import zope.app.appsetup.product
