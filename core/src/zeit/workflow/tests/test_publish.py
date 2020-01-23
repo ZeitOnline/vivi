@@ -1,5 +1,5 @@
 from datetime import datetime
-from six import StringIO
+from six import StringIO, binary_type
 from six.moves import range
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
@@ -261,6 +261,7 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
+    error = 'Error during publish/retract: ScriptError: ({}, 1)'.format(binary_type())
 
     def setUp(self):
         super(PublishErrorEndToEndTest, self).setUp()
@@ -287,10 +288,10 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+        self.assertEqual(self.error,
                          str(err.exception))
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping)
              for m in get_object_log(content)])
 
@@ -311,13 +312,13 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+        self.assertEqual(self.error,
                          str(err.exception))
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
