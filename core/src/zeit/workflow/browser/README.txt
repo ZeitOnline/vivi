@@ -353,7 +353,7 @@ shown:
 >>> browser.getControl('Edited').displayValue = ['yes']
 >>> browser.getControl('Save state only').click()
 
->>> for i in xrange(25):
+>>> for i in range(25):
 ...     browser.getControl('Edited').displayValue = ['yes']
 ...     browser.getControl('Save state only').click()
 ...     browser.getControl('Edited').displayValue = ['not necessary']
