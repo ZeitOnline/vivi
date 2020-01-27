@@ -2,6 +2,7 @@ import BTrees
 import gocept.runner
 import logging
 import persistent
+import six
 import zeit.connector.interfaces
 import zope.component
 import zope.event
@@ -41,7 +42,9 @@ class Invalidator(persistent.Persistent):
 
     def fill_working_set(self):
         log.info("Filling working set.")
-        self.working_set.update(self.property_cache.keys())
+        for id in self.property_cache.keys():
+            # The inverse of .cache.get_storage_key()
+            self.working_set.add(six.ensure_text(id))
         self.missed.clear()
         self.got.clear()
 

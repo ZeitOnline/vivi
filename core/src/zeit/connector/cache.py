@@ -26,9 +26,7 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
-def get_storage_key(key):
-    assert isinstance(key, str)
-    return key
+get_storage_key = six.ensure_binary
 
 
 class StringRef(persistent.Persistent):
@@ -272,7 +270,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         return store.open()
 
     def remove(self, unique_id):
-        self._data.pop(unique_id, None)
+        key = get_storage_key(unique_id)
+        self._data.pop(key, None)
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)

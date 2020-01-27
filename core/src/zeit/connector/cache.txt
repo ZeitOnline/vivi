@@ -437,7 +437,7 @@ Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 Note that internally no dictionaries are stored but a special object which also
 does conflict resolution:
 
->>> cache._storage['id']
+>>> cache._storage[b'id']
 <zeit.connector.cache.Properties object at 0x...>
 
 
@@ -566,9 +566,9 @@ True
 
 But actually the're just marked as deleted:
 
->>> cache._storage['id']
+>>> cache._storage[b'id']
 <zeit.connector.cache.ChildNames object at 0x...>
->>> list(cache._storage['id'])
+>>> list(cache._storage[b'id'])
 [DeleteProperty]
 
 
