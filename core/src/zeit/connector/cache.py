@@ -13,6 +13,7 @@ import persistent
 import persistent.mapping
 import six
 import six.moves.urllib.request
+import sys
 import tempfile
 import time
 import transaction
@@ -94,6 +95,9 @@ class Body(persistent.Persistent):
             return
         self.etag = etag
 
+        if ((sys.version_info < (3,) and hasattr(data, 'seek')) or
+                (sys.version_info >= (3,) and data.seekable())):
+            data.seek(0)
         s = data.read(self.BUFFER_SIZE)
         if len(s) < self.BUFFER_SIZE:
             # Small object
