@@ -78,12 +78,6 @@ class CannonicalId(six.text_type):
         return '<CannonicalId %s>' % super(CannonicalId, self).__repr__()
 
 
-def stringify(data):
-    if isinstance(data, bytes):
-        return data.decode()
-    return data
-
-
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector(object):
     """Connect to the CMS backend.
@@ -141,8 +135,10 @@ class Connector(object):
         properties = self._get_resource_properties(id)
         r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
-            dav_type = stringify(properties.get(('resourcetype', 'DAV:')))
-            content_type = stringify(properties.get(('getcontenttype', 'DAV:'), b''))
+            dav_type = six.ensure_text(
+                properties.get(('resourcetype', 'DAV:'), ''))
+            content_type = six.ensure_text(
+                properties.get(('getcontenttype', 'DAV:'), ''))
             __traceback_info__ = (id, dav_type, content_type)
             if dav_type and 'collection' in dav_type:
                 r_type = 'collection'
