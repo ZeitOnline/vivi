@@ -80,6 +80,11 @@ class Connector(object):
 
         if os.path.isdir(absolute_path):
             for name in os.listdir(absolute_path):
+                try:
+                    if isinstance(name, six.binary_type):
+                        name = name.decode('utf-8')
+                except Exception:
+                    continue
                 names.add(name)
         for x in names.copy():
             if x.startswith(u'.'):
@@ -136,7 +141,7 @@ class Connector(object):
             data = f.read()
             f.close()
         except Exception:
-            data = ''
+            data = b''
         self.body_cache[id] = data
         try:
             data = data.encode()

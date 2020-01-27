@@ -372,8 +372,10 @@ class EmptyReference(object):
     def get(self, target, default=None):
         return default
 
-    def __nonzero__(self):
+    def __bool__(self):
         return False
+
+    __nonzero__ = __bool__  # XXX py2 only
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
@@ -457,6 +459,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
                 self.__parent__.uniqueId == other.__parent__.uniqueId and
                 self.attribute == other.attribute and
                 self.target.uniqueId == other.target_unique_id)
+
+    def __hash__(self):
+        return hash((
+            self.__parent__.uniqueId, self.attribute, self.target_unique_id))
 
     def __repr__(self):
         return '<%s.%s %s>' % (

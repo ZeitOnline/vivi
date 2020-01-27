@@ -46,14 +46,14 @@ When we just submit we'll get an error because 'Somalia' already exists:
     ...
     <ul class="errors">
        <li>
-          New file name: <span class="error">"Somalia" already exists.</span>
+          New file name: <span class="error">...Somalia... already exists.</span>
        </li>
     </ul>
     ...
 
 Umlauts are not allowed in file names:
 
->>> browser.getControl('New file name').value = 'Sööö'
+>>> browser.getControl('New file name').value = u'Sööö'.encode('utf-8')
 >>> browser.getControl('Rename').click()
 >>> print(browser.contents)
 <div id="rename-box" class="floating">

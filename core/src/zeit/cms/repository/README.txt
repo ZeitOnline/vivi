@@ -371,12 +371,12 @@ A TypeError is raised if anything but a string is passed:
 >>> repository.getContent(None)
 Traceback (most recent call last):
     ...
-TypeError: unique_id: string expected, got <type 'NoneType'>
+TypeError: unique_id: string expected, got ...NoneType...
 
 >>> repository.getContent(123)
 Traceback (most recent call last):
     ...
-TypeError: unique_id: string expected, got <type 'int'>
+TypeError: unique_id: string expected, got ...int...
 
 
 A ValueError is raised if the unique_id doesn't start with the configured

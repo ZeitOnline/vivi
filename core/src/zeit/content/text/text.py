@@ -62,7 +62,10 @@ class TextType(zeit.cms.type.TypeDeclaration):
         return text
 
     def resource_body(self, content):
-        return StringIO(content.text.encode(content.encoding))
+        if isinstance(content.text, six.text_type):
+            return StringIO(content.text)
+        else:
+            return StringIO(content.text.decode(content.encoding))
 
     def resource_content_type(self, content):
         return 'text/plain'

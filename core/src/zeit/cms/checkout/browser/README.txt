@@ -113,12 +113,17 @@ Since the foobar view doesn't actually exist we'll get an error:
 
 >>> browser.open(browser.url)
 >>> browser.handleErrors = False
->>> browser.getLink('Checkout').click()
+>>> import traceback
+>>> try:
+...     browser.getLink('Checkout').click()
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-    name: u'@@foobar.html'
+...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+   name: u'@@foobar.html'
 
 Clean up the adpater:
 
@@ -147,12 +152,16 @@ an error because the foobar view still doesn't exist:
 >>> browser.open(
 ...  'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...  'rauchen-verbessert-die-welt/@@view.html')
->>> browser.getLink('Checkin').click()
+>>> try:
+...    browser.getLink('Checkin').click()
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-    name: u'@@foobar.html'
+...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+   name: u'@@foobar.html'
 
 Clean up the adapter:
 

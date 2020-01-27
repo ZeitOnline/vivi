@@ -14,6 +14,7 @@ TypeError: ('Could not adapt', 'foo://bar/baz', <InterfaceClass zeit.cms.interfa
 
 The lookup is delegated to a protocol handler:
 
+>>> import six
 >>> import zope.component
 >>> import zope.interface
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
@@ -25,7 +26,7 @@ The lookup is delegated to a protocol handler:
 ...     print("foo:// lookup: %s" % unique_id)
 ...     return Content(unique_id)
 >>> gsm.registerAdapter(
-...         lookup_foo, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         lookup_foo, (six.string_types[0],), zeit.cms.interfaces.ICMSContent,
 ...         name='foo://')
 >>> zeit.cms.interfaces.ICMSContent('foo://bar/baz')
 foo:// lookup: foo://bar/baz
@@ -43,7 +44,7 @@ TypeError: ('Could not adapt', 'http://gocept.com/content', <InterfaceClass zeit
 ...     print("gocept lookup: %s" % unique_id)
 ...     return Content(unique_id)
 >>> gsm.registerAdapter(
-...         lookup_gocept, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         lookup_gocept, (six.string_types[0],), zeit.cms.interfaces.ICMSContent,
 ...         name='http://gocept.com/')
 >>> zeit.cms.interfaces.ICMSContent('http://gocept.com/content')
 gocept lookup: http://gocept.com/content
@@ -54,10 +55,10 @@ gocept lookup: http://gocept.com/content
 Clean up:
 
 >>> gsm.unregisterAdapter(
-...         lookup_foo, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         lookup_foo, (six.string_types[0],), zeit.cms.interfaces.ICMSContent,
 ...         name='foo://')
 True
 >>> gsm.unregisterAdapter(
-...         lookup_gocept, (basestring,), zeit.cms.interfaces.ICMSContent,
+...         lookup_gocept, (six.string_types[0],), zeit.cms.interfaces.ICMSContent,
 ...         name='http://gocept.com/')
 True

@@ -460,13 +460,15 @@ class Connector(object):
         # Collect "result" vars as bindings "into" expression:
         for at in attrlist:
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
+        expr = expr._render()
 
-        logger.debug('Searching for %s' % (expr._render(),))
+        logger.debug('Searching for %s' % expr)
+        if isinstance(expr, six.text_type):
+            expr = expr.encode('utf8')
         conn = self.get_connection('search')
-
         response = conn.search(
             self._roots.get('search', self._roots['default']),
-            body=expr._render())
+            body=expr)
         davres = zeit.connector.dav.davresource.DAVResult(response)
         if davres.has_errors():
             raise zeit.connector.dav.interfaces.DAVError(

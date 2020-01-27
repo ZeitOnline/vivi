@@ -36,13 +36,5 @@ class FolderType(zeit.cms.type.TypeDeclaration):
 @zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
 def folder_sort_key(context):
     weight = -5  # folders first
-
-    if context.__name__ == 'online':
-        # online first
-        weight = -6
-    try:
-        key = -int(context.__name__)
-    except ValueError:
-        key = context.__name__.lower()
-
+    key = context.__name__.lower()
     return (weight, key)

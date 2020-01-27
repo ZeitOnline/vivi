@@ -45,10 +45,10 @@ Try this for some fields. Integer goes first:
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('5')
 5
->>> converter.fromProperty('text')  #doctest: +IGNORE_EXCEPTION_DETAIL
+>>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-InvalidIntLiteral: invalid literal for int() with base 10: 'text'
+InvalidIntLiteral: invalid literal for int...
 
 
 The other way round is handled by the toProperty method:
@@ -74,7 +74,7 @@ Floats are also supported:
 >>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-InvalidFloatLiteral: could not convert string to float: text
+InvalidFloatLiteral: could not convert string to float...
 
 Convert float to property. Doesn't fail for integers of course:
 
@@ -421,10 +421,10 @@ datetime.date(2007, 5, 25)
 
 Invalid dates raise a ValueError:
 
->>> converter.fromProperty("1.1.07")  # doctest: +IGNORE_EXCEPTION_DETAIL
+>>> converter.fromProperty("1.1.07")
 Traceback (most recent call last):
     ...
-ValueError: time data did not match format:  data=1.1.07  fmt=%Y-%m-%d
+ValueError: time data...not match format...
 
 
 The date is written in iso format:
@@ -488,8 +488,8 @@ List, Set and FrozenSet as field:
 ...     default=set())
 >>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
->>> result
-set([..., ...])
+>>> type(result).__name__
+'set'
 >>> sorted(result)
 [u'Klaus Kleber', u'Peter Buhr']
 
@@ -498,8 +498,8 @@ set([..., ...])
 ...     default=frozenset())
 >>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
->>> result
-frozenset([..., ...])
+>>> type(result).__name__
+'frozenset'
 >>> sorted(result)
 [u'Klaus Kleber', u'Peter Buhr']
 
@@ -514,8 +514,9 @@ There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 ...     value_type=zope.schema.Dict())
 >>> converter = get_converter(field)
 >>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
->>> type(value)
-<type 'unicode'>
+>>> import six
+>>> type(value) == six.text_type
+True
 >>> print(value)
 <pickle>
   <tuple>
@@ -584,7 +585,7 @@ If the xml pickle is invalid an ValueError is raised:
 >>> converter.fromProperty(u'5')
 Traceback (most recent call last):
     ...
-ValueError: Start tag expected, '<' not found, line 1, column 1 (line 1)
+ValueError: Start tag expected...
 
 >>> converter.fromProperty(u'<int>5</int>')
 Traceback (most recent call last):
