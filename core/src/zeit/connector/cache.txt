@@ -176,17 +176,15 @@ Create data which is larger than that:
 >>> 
 >>> file_handle = cache.setData(
 ...     'some-id', properties, BytesIO(large_data))
->>> file_handle
-<_io.BufferedReader ...>
+>>> hasattr(file_handle, 'read')
+True
 >>> file_handle.read() == large_data
 True
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> type(cache.getData('some-id', properties))
-<class '_io.BufferedReader'>
->>> cache.getData('some-id', properties)
-<_io.BufferedReader ...>
+>>> hasattr(cache.getData('some-id', properties), 'read')
+True
 
 Internally a blob is created in this case:
 
@@ -204,8 +202,8 @@ storage. Make the blob commited:
 
 We get the commited data now:
 
->>> cache.getData('some-id', properties)
-<_io.BufferedReader ...>
+>>> hasattr(cache.getData('some-id', properties), 'read')
+True
 >>> cache.getData('some-id', properties).read() == large_data
 True
 
