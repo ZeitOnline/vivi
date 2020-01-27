@@ -252,7 +252,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         key = zope.security.proxy.ProxyFactory(key)
         self.connector.property_cache['id'] = {key: 'baz'}
         self.assertTrue(isinstance(
-            self.connector.property_cache['id'].keys()[0],
+            list(self.connector.property_cache['id'].keys())[0],
             zeit.connector.cache.WebDAVPropertyKey))
 
     @unittest.expectedFailure
