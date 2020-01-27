@@ -94,8 +94,6 @@ class Body(persistent.Persistent):
             return
         self.etag = etag
 
-        if hasattr(data, 'seek'):
-            data.seek(0)
         s = data.read(self.BUFFER_SIZE)
         if len(s) < self.BUFFER_SIZE:
             # Small object
