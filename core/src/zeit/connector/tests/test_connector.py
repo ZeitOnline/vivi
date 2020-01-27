@@ -23,7 +23,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             rid, None, 'text',
             BytesIO(b'Paff'),
             contentType='text/plain')
-        self.assertEquals('Paff', self.connector[rid].data.read())
+        self.assertEquals(b'Paff', self.connector[rid].data.read())
 
     def test_copy(self):
         import zeit.connector.resource
@@ -35,7 +35,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
     def test_move(self):
         import zeit.connector.resource
@@ -47,7 +47,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
 
 class TestEscaping(zeit.connector.testing.ConnectorTest):
@@ -60,7 +60,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
             BytesIO(b'Pop.'),
             contentType='text/plain')
         resource = self.connector[rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
 
 class ConflictDetectionBase(object):
