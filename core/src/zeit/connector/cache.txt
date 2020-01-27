@@ -332,11 +332,11 @@ True
 
 Test the methods:
 
->>> cache['id'] = {'foo': 'bar'}
+>>> cache['id'] = {('ns', 'foo'): 'bar'}
 >>> dict(cache['id'])
-{<WebDAVPropertyKey foo>: 'bar'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'bar'}
 >>> dict(cache.get('id'))
-{<WebDAVPropertyKey foo>: 'bar'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'bar'}
 >>> cache.get('foo', "don't have that")
 "don't have that"
 
@@ -392,7 +392,7 @@ False
 When we get the properties of 'otherid' back, the key2 is the same instance as
 key:
 
->>> key2_back = cache['otherid'].keys()[0]
+>>> key2_back = list(cache['otherid'].keys())[0]
 >>> key2_back == key2 == key
 True
 >>> key2_back is key2
@@ -400,24 +400,25 @@ False
 
 We can also directly set keys on the property dict:
 
->>> cache['id']['foo'] = 'zoot'
->>> cache['id']['foo']
+>>> cache['id'][('foo', 'bar')] = 'zoot'
+>>> cache['id'][('foo', 'bar')]
 'zoot'
 
 Note that the key is also munged into a WebDAVPropertyKey:
 
->>> cache['id'].keys()
-[<WebDAVPropertyKey foo>, <WebDAVPropertyKey ('ns', 'name')>]
+>>> sorted(list(cache['id'].keys()))
+[<WebDAVPropertyKey ('foo', 'bar')>, <WebDAVPropertyKey ('ns', 'name')>]
 
 Removing also works directly:
 
->>> del cache['id']['foo']
+>>> del cache['id'][('foo', 'bar')]
 
 The cache keeps track of the used keys:
 
 >>> import pprint
 >>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
-{'foo': <WebDAVPropertyKey foo>,
+{('foo', 'bar'): <WebDAVPropertyKey ('foo', 'bar')>,
+ ('ns', 'foo'): <WebDAVPropertyKey ('ns', 'foo')>,
  ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
 
 When the a value is set to the cache which is equal to the value it alreay
@@ -458,7 +459,7 @@ Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.PropertyCache()
->>> c_1['id'] = {'foo': 'bar'}
+>>> c_1['id'] = {('ns', 'foo'): 'bar'}
 >>> transactionmanager_1.commit()
 
 >>> transactionmanager_2 = transaction.TransactionManager()
@@ -466,8 +467,8 @@ change the conflict resolution of the underling btree.
 >>> root_2 = connection_2.root()
 >>> c_2 = root_2['cache']
 
->>> c_1['id'] = {'foo': 'baz'}
->>> c_2['id'] = {'oink': 'chackalacka'}
+>>> c_1['id'] = {('ns', 'foo'): 'baz'}
+>>> c_2['id'] = {('ns', 'oink'): 'chackalacka'}
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
@@ -484,16 +485,16 @@ KeyError: 'id'
 
 When the conflicting state is *equal* it is kept, though:
 
->>> c_1['id'] = {'foo': 'baz'}
->>> c_2['id'] = {'foo': 'baz'}
+>>> c_1['id'] = {('ns', 'foo'): 'baz'}
+>>> c_2['id'] = {('ns', 'foo'): 'baz'}
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
 >>> dict(c_1['id'])
-{<WebDAVPropertyKey foo>: 'baz'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 >>> dict(c_2['id'])
-{<WebDAVPropertyKey foo>: 'baz'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 
 
 The conflict resolution ignores the property {INTERNAL}cached-time when
@@ -517,12 +518,12 @@ Note that the cached time of the transaction wins which is commited last:
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
->>> dict(c_1['id'])
+>>> pprint.pprint(dict(c_1['id']))
 {<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey foo>: 'baz'}
->>> dict(c_2['id'])
+ <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
+>>> pprint.pprint(dict(c_2['id']))
 {<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey foo>: 'baz'}
+ <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 
 
 When there was an attribute set on the cache entry, it cannot be resolved any
