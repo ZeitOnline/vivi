@@ -46,6 +46,7 @@ setup(
         'persistent',
         'pyramid_dogpile_cache2',
         'pytz',
+        'redis',
         'requests',
         'setuptools',
         'transaction',

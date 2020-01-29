@@ -17,10 +17,55 @@ import zeit.connector.resource
 import zope.app.file.image
 import zope.interface
 
+import pyramid.events
+import pyramid.threadlocal
+import redis
+import time
+
 
 ID_NAMESPACE = u'http://xml.zeit.de/'
 
 log = logging.getLogger(__name__)
+
+
+content_dependencies = redis.Redis(host='localhost', port=6379, db=0)
+
+
+def get_dependencies(request, attr='dependencies'):
+    if not hasattr(request, attr):
+        request.dependencies = {}
+        for filename in content_dependencies.smembers(request.url) or []:
+            with open(filename, 'rb') as fd:
+                request.dependencies[filename] = fd.read()
+    return request.dependencies
+
+
+def load_from_file(filename, mode, **kw):
+    request = pyramid.threadlocal.get_current_request()
+    dependencies = get_dependencies(request)
+    if filename in dependencies:
+        data = dependencies[filename]
+        log.info('[%s] returning pre-fetched "%s"', request.url, filename)
+    else:
+        with open(filename, mode) as fd:
+            data = fd.read()
+        dependencies[filename] = data
+        log.info('[%s] opening file "%s"', request.url, filename)
+        time.sleep(0.05)
+    return data
+
+
+@pyramid.events.subscriber(pyramid.events.NewRequest)
+def setup_callback(event):
+    event.request.add_finished_callback(store_dependencies)
+
+
+def store_dependencies(request):
+    dependencies = getattr(request, 'dependencies', None)
+    if dependencies:
+        content_dependencies.sadd(request.url, *dependencies)
+        log.warning('{} dependencies found for {} ({})'.format(
+            len(dependencies), request.url, dependencies.keys()))
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -108,9 +153,7 @@ class Connector(object):
         if os.path.isdir(path):
             return 'collection'
 
-        f = self._get_file(id)
-        data = f.read(200)
-        f.close()
+        data = self._get_file(id)[:200]
         content_type, width, height = zope.app.file.image.getImageInfo(data)
         if content_type:
             return 'image'
@@ -137,9 +180,7 @@ class Connector(object):
         except KeyError:
             pass
         try:
-            f = self._get_file(id)
-            data = f.read()
-            f.close()
+            data = self._get_file(id)
         except Exception:
             data = b''
         self.body_cache[id] = data
@@ -244,7 +285,7 @@ class Connector(object):
         filename = self._absolute_path(self._path(id))
         __traceback_info__ = (id, filename)
         try:
-            return open(filename, 'rb')
+            return load_from_file(filename, 'rb')
         except IOError:
             if os.path.isdir(filename):
                 raise ValueError(
@@ -255,11 +296,11 @@ class Connector(object):
         filename = self._absolute_path(self._path(id)) + '.meta'
         __traceback_info__ = (id, filename)
         try:
-            return open(filename, 'rb')
+            return load_from_file(filename, 'rb')
         except IOError:
             if not id.endswith('.meta'):
                 return self._get_file(id)
-            return BytesIO(b'')
+            return b''
 
     def _make_id(self, path):
         return six.moves.urllib.parse.urljoin(ID_NAMESPACE, '/'.join(
@@ -279,8 +320,7 @@ class Connector(object):
         metadata_parse_error = False
         try:
             data = self._get_metadata_file(id)
-            xml = lxml.etree.parse(data)
-            data.close()
+            xml = lxml.etree.parse(BytesIO(data))
         except ValueError:
             # Performance optimization: We know this error happens only for
             # directories, so we can determine the resource type here instead
