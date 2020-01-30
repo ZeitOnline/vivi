@@ -182,7 +182,7 @@ Invalid arguments to update order raise errors as defined in the interface:
 >>> informatives.updateOrder(124)
 Traceback (most recent call last):
     ...
-TypeError: order must be tuple or list, got <type 'int'>.
+TypeError: order must be tuple or list...
 
 >>> informatives.updateOrder(['abc', 'def'])
 Traceback (most recent call last):
