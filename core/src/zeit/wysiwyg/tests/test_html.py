@@ -52,8 +52,7 @@ class VideoExpiresTest(zeit.wysiwyg.testing.FunctionalTestCase):
 class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def test_empty_hrefs_should_not_break_conversion(self):
-        source = """\
-<?xml version='1.0' encoding='UTF-8'?>
+        source = u"""\
 <article>
   <body>
     <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
