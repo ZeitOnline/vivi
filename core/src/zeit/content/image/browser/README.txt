@@ -115,7 +115,7 @@ Let's verify get the right file data back from the image:
 
 >>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...            'DSC00109_2.JPG/@@raw')
->>> test_data.seek(0)
+>>> _ = test_data.seek(0)
 >>> image.contents == test_data.read()
 True
 >>> test_data.close()
