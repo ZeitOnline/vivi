@@ -37,6 +37,8 @@ class ImageTransform(object):
 
         orig_width, orig_height = self.image.size
 
+        # width and height need to be int rather than float,
+        # so we use // instead of / as division operator.
         if width is None:
             width = orig_width * height // orig_height
         elif height is None:
