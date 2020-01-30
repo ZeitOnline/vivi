@@ -46,7 +46,7 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
     default_template = pkg_resources.resource_string(
-        __name__, 'video-template.xml')
+        __name__, 'video-template.xml').decode('utf-8')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,

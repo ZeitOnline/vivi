@@ -378,13 +378,20 @@ class QuerySortOrderSource(SimpleDictSource):
 
 class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
 
+    COMMENT = re.compile(r'\s*//')
+
     @CONFIG_CACHE.cache_on_arguments()
     def json_data(self):
         url = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp').get('topicpage-filter-source')
         try:
-            data = '\n'.join([x for x in six.moves.urllib.request.urlopen(url)
-                              if not re.search(r'\s*//', x)])
+            data = []
+            for line in six.moves.urllib.request.urlopen(url):
+                line = six.ensure_text(line)
+                if self.COMMENT.search(line):
+                    continue
+                data.append(line)
+            data = '\n'.join(data)
             data = json.loads(data)
         except Exception:
             log.warning(

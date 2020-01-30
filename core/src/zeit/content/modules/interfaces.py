@@ -1,7 +1,8 @@
-from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import grokcore.component as grok
+import six
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
@@ -113,7 +114,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             newsletter = Newsletter(
-                unicode(node.get('id')),
+                six.text_type(node.get('id')),
                 self.child(node, 'title'),
                 self.child(node, 'image'),
                 self.child(node, 'text'),
@@ -126,7 +127,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
         child = node.find(name)
         if child is None:
             return None
-        return unicode(child.text).strip()
+        return six.text_type(child.text).strip()
 
 
 class INewsletterSignup(zeit.edit.interfaces.IBlock):
