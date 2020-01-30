@@ -15,8 +15,8 @@ the information as arguments instead of having views on objects :/
 
 List the folders and files in /
 
->>> import urllib
->>> browser.open(base_url % (urllib.urlencode(
+>>> from six.moves.urllib.parse import urlencode
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
@@ -35,7 +35,7 @@ List the folders and files in /
 
 Descent to the repository:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/repository/'))))
@@ -60,7 +60,7 @@ Descent to the repository:
 
 Let's descent from the root into the clipboard:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
@@ -97,7 +97,7 @@ something in there:
 
 Let's have a look how the clipboard looks now:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
@@ -116,7 +116,7 @@ Let's have a look how the clipboard looks now:
 
 Our clip is listed! Decent:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
@@ -149,7 +149,7 @@ when it exists. Currently it doesn't exist. We saw that above. Create it:
 
 The root listing contains it now:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
@@ -169,7 +169,7 @@ The root listing contains it now:
 
 List it:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/bilder/'))))
