@@ -86,7 +86,7 @@ Fill out some values:
 >>> import os
 >>> test_file = os.path.join(
 ...     os.path.dirname(__file__), 'testdata', 'opernball.jpg')
->>> test_data = file(test_file, 'rb')
+>>> test_data = open(test_file, 'rb')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl('Image title').value = 'Opernball'
@@ -329,7 +329,7 @@ False
 >>> def set_file_data(name, field):
 ...     test_file = os.path.join(
 ...         os.path.dirname(__file__), 'testdata', name)
-...     test_data = file(test_file, 'rb')
+...     test_data = open(test_file, 'rb')
 ...     file_control = browser.getControl(name='form.' + field)
 ...     file_control.add_file(test_data, 'image/jpeg', name)
 
