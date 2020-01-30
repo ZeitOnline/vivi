@@ -1,5 +1,3 @@
-import six
-
 # search.py
 # format a search spec as S-expression
 
