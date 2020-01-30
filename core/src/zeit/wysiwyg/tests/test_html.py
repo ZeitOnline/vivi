@@ -72,13 +72,10 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
   <div class="format">large</div>
 </div>
 """)
-        self.assertEqual("""\
-<article>
-  <body>
-    <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
-  </body>
-</article>
-""", zeit.cms.testing.xmltotext(article.xml))
+        self.assertEqual(
+            {'href': '', 'href2': '',
+             'expires': '2011-01-03T06:00:00+01:00', 'format': 'large'},
+            article.xml.body.video.attrib)
 
 
 class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):

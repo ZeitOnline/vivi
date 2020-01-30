@@ -158,10 +158,7 @@ The root listing contains it now:
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
-    <Folder name="bilder" title="bilder"/>
-    <Folder name="repository" title="repository"/>
-    <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
-            title="Clipboard"/>
+    ...<Folder name="bilder" title="bilder"/>...
   </Folders>
   <Files>
   </Files>
