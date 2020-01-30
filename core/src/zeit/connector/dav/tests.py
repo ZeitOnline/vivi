@@ -22,7 +22,7 @@ class TestPropfind(unittest.TestCase):
 
     def propfind(self, *args, **kwargs):
         self.count += 1
-        result = BytesIO(self.response)
+        result = BytesIO(self.response.encode('utf-8'))
         result.status = 207
         result.reason = 'Multi Status'
         result.getheader = lambda x, y=None: y

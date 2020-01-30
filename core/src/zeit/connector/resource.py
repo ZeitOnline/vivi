@@ -15,7 +15,7 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
     def __init__(self, adict=None):
         super(ReadOnlyWebDAVProperties, self).__init__()
         if adict is not None:
-            super(ReadOnlyWebDAVProperties, self).update(adict)
+            self.data.update(adict)
 
     def __delitem__(self, *args, **kwargs):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")

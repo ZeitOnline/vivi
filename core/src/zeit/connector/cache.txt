@@ -64,7 +64,7 @@ reference to a plain string:
 Also the access times are noted in the cache:
 
 >>> last_access = cache._last_access_time[get_storage_key('some-id')]
->>> isinstance(last_access, (int, long))
+>>> isinstance(last_access, (int, int))
 True
 >>> cache._access_time_to_ids[last_access]
 <BTrees.OIBTree.OITreeSet object at 0x...>
@@ -168,24 +168,23 @@ buffer size:
 
 >>> BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 
-Create data which is large than that:
+Create data which is larger than that:
 
 
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
+>>> large_data = bytes(large_data.encode())
 >>> 
 >>> file_handle = cache.setData(
 ...     'some-id', properties, BytesIO(large_data))
->>> file_handle
-<open file '...', mode 'rb' at 0x...>
+>>> hasattr(file_handle, 'read')
+True
 >>> file_handle.read() == large_data
 True
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> type(cache.getData('some-id', properties))
-<type 'file'>
->>> cache.getData('some-id', properties)
-<open file '...', mode 'rb' at 0x...>
+>>> hasattr(cache.getData('some-id', properties), 'read')
+True
 
 Internally a blob is created in this case:
 
@@ -203,8 +202,8 @@ storage. Make the blob commited:
 
 We get the commited data now:
 
->>> cache.getData('some-id', properties)
-<open file '...', mode 'rb' at 0x...>
+>>> hasattr(cache.getData('some-id', properties), 'read')
+True
 >>> cache.getData('some-id', properties).read() == large_data
 True
 
@@ -331,11 +330,11 @@ True
 
 Test the methods:
 
->>> cache['id'] = {'foo': 'bar'}
+>>> cache['id'] = {('ns', 'foo'): 'bar'}
 >>> dict(cache['id'])
-{<WebDAVPropertyKey foo>: 'bar'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'bar'}
 >>> dict(cache.get('id'))
-{<WebDAVPropertyKey foo>: 'bar'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'bar'}
 >>> cache.get('foo', "don't have that")
 "don't have that"
 
@@ -391,7 +390,7 @@ False
 When we get the properties of 'otherid' back, the key2 is the same instance as
 key:
 
->>> key2_back = cache['otherid'].keys()[0]
+>>> key2_back = list(cache['otherid'].keys())[0]
 >>> key2_back == key2 == key
 True
 >>> key2_back is key2
@@ -399,24 +398,25 @@ False
 
 We can also directly set keys on the property dict:
 
->>> cache['id']['foo'] = 'zoot'
->>> cache['id']['foo']
+>>> cache['id'][('foo', 'bar')] = 'zoot'
+>>> cache['id'][('foo', 'bar')]
 'zoot'
 
 Note that the key is also munged into a WebDAVPropertyKey:
 
->>> cache['id'].keys()
-[<WebDAVPropertyKey foo>, <WebDAVPropertyKey ('ns', 'name')>]
+>>> sorted(list(cache['id'].keys()))
+[<WebDAVPropertyKey ('foo', 'bar')>, <WebDAVPropertyKey ('ns', 'name')>]
 
 Removing also works directly:
 
->>> del cache['id']['foo']
+>>> del cache['id'][('foo', 'bar')]
 
 The cache keeps track of the used keys:
 
 >>> import pprint
 >>> pprint.pprint(zeit.connector.cache.WebDAVPropertyKey._instances)
-{'foo': <WebDAVPropertyKey foo>,
+{('foo', 'bar'): <WebDAVPropertyKey ('foo', 'bar')>,
+ ('ns', 'foo'): <WebDAVPropertyKey ('ns', 'foo')>,
  ('ns', 'name'): <WebDAVPropertyKey ('ns', 'name')>}
 
 When the a value is set to the cache which is equal to the value it alreay
@@ -437,7 +437,7 @@ Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 Note that internally no dictionaries are stored but a special object which also
 does conflict resolution:
 
->>> cache._storage['id']
+>>> cache._storage[b'id']
 <zeit.connector.cache.Properties object at 0x...>
 
 
@@ -457,7 +457,7 @@ Note that the most common conflicts are value changes *in* the cache. We do not
 change the conflict resolution of the underling btree.
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.PropertyCache()
->>> c_1['id'] = {'foo': 'bar'}
+>>> c_1['id'] = {('ns', 'foo'): 'bar'}
 >>> transactionmanager_1.commit()
 
 >>> transactionmanager_2 = transaction.TransactionManager()
@@ -465,8 +465,8 @@ change the conflict resolution of the underling btree.
 >>> root_2 = connection_2.root()
 >>> c_2 = root_2['cache']
 
->>> c_1['id'] = {'foo': 'baz'}
->>> c_2['id'] = {'oink': 'chackalacka'}
+>>> c_1['id'] = {('ns', 'foo'): 'baz'}
+>>> c_2['id'] = {('ns', 'oink'): 'chackalacka'}
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
@@ -483,16 +483,16 @@ KeyError: 'id'
 
 When the conflicting state is *equal* it is kept, though:
 
->>> c_1['id'] = {'foo': 'baz'}
->>> c_2['id'] = {'foo': 'baz'}
+>>> c_1['id'] = {('ns', 'foo'): 'baz'}
+>>> c_2['id'] = {('ns', 'foo'): 'baz'}
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
 >>> dict(c_1['id'])
-{<WebDAVPropertyKey foo>: 'baz'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 >>> dict(c_2['id'])
-{<WebDAVPropertyKey foo>: 'baz'}
+{<WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 
 
 The conflict resolution ignores the property {INTERNAL}cached-time when
@@ -516,12 +516,12 @@ Note that the cached time of the transaction wins which is commited last:
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
->>> dict(c_1['id'])
+>>> pprint.pprint(dict(c_1['id']))
 {<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey foo>: 'baz'}
->>> dict(c_2['id'])
+ <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
+>>> pprint.pprint(dict(c_2['id']))
 {<WebDAVPropertyKey ('cached-time', 'INTERNAL')>: '2008-01-01T00:00:00+00:00',
- <WebDAVPropertyKey foo>: 'baz'}
+ <WebDAVPropertyKey ('ns', 'foo')>: 'baz'}
 
 
 When there was an attribute set on the cache entry, it cannot be resolved any
@@ -530,10 +530,10 @@ longer:
 >>> c_1['id'].foo = 'bar'
 >>> c_2['id'][('hick', 'hack')] = 'huck'
 >>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()  # doctest: +IGNORE_EXCEPTION_DETAIL
+>>> transactionmanager_1.commit()
 Traceback (most recent call last):
     ...
-ConflictError: database conflict error
+ConflictError: database conflict error...
 
 >>> transactionmanager_1.abort()
 
@@ -566,9 +566,9 @@ True
 
 But actually the're just marked as deleted:
 
->>> cache._storage['id']
+>>> cache._storage[b'id']
 <zeit.connector.cache.ChildNames object at 0x...>
->>> list(cache._storage['id'])
+>>> list(cache._storage[b'id'])
 [DeleteProperty]
 
 

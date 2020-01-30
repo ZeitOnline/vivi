@@ -91,8 +91,8 @@ The resource is locked in DAV for about an hour:
 >>> lockable = zope.app.locking.interfaces.ILockable(content)
 >>> lockable.locked()
 True
->>> round(lockable.getLockInfo().timeout)
-3600.0
+>>> int(round(lockable.getLockInfo().timeout))
+3600
 
 After checking out the resource is locked in the WebDAV. This means other users
 cannot check it out. Login another user called `bob`:
@@ -259,8 +259,8 @@ The lock timeout is small for temporary checkouts (around 30 seconds):
 >>> lockable = zope.app.locking.interfaces.ILockable(content)
 >>> lockable.locked()
 True
->>> round(lockable.getLockInfo().timeout)
-30.0
+>>> int(round(lockable.getLockInfo().timeout))
+30
 
 We can also check in the temporary checkout:
 

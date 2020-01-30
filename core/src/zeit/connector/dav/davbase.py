@@ -93,7 +93,7 @@ class HTTPBasicAuthCon(object):
         return
 
     def get_quoted_path(self, uri):
-        if isinstance(uri, six.text_type):
+        if sys.version_info < (3,) and isinstance(uri, six.text_type):
             uri = uri.encode('utf8')
         path = six.moves.urllib.parse.urlunparse(
             ('', '') + six.moves.urllib.parse.urlparse(uri)[2:])
@@ -103,7 +103,7 @@ class HTTPBasicAuthCon(object):
         return quoted
 
     def quote_uri(self, uri):
-        if isinstance(uri, six.text_type):
+        if sys.version_info < (3,) and isinstance(uri, six.text_type):
             uri = uri.encode('utf8')
         parsed = six.moves.urllib.parse.urlparse(uri)
         quoted = six.moves.urllib.parse.urlunparse(

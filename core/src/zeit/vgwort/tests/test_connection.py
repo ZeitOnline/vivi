@@ -224,7 +224,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author.vgwortcode = 'dpaid'
         self.repository['author'] = author
         author = self.repository['author']
-        content = self.get_content([], product=None)
+        content = self.get_content([])
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.agencies = [author]
         content = self.repository['testcontent']

@@ -85,7 +85,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_file(self):
         f = zeit.cms.repository.file.LocalFile()
-        f.open('w').write('data')
+        f.open('w').write(b'data')
         zope.interface.alsoProvides(f, ITestInterface)
         self.repository['foo'] = f
         f = self.repository['foo']
@@ -103,7 +103,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_restore_returns_provides_with_correct_class(self):
         f_local = zeit.cms.repository.file.LocalFile()
-        f_local.open('w').write('blub')
+        f_local.open('w').write(b'blub')
         zope.interface.alsoProvides(f_local, ITestInterface)
         self.repository['file'] = f_local
         f_remote = self.repository['file']

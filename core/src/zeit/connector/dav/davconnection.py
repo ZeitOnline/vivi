@@ -124,7 +124,7 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         response = method(url, *args, **kwargs)
         if accept_status is None or response.status in accept_status:
             return zeit.connector.dav.davresource.DAVResult(response)
-        body = response.read()
+        body = response.read().decode('utf-8')
         exception = self.error_map.get(response.status)
         if exception is None:
             raise six.moves.http_client.HTTPException(
