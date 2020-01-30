@@ -404,9 +404,9 @@ class Properties(persistent.mapping.PersistentMapping):
                      commited, newstate)
             return newstate
 
-        if not (old.keys() ==
-                commited.keys() ==
-                newstate.keys() ==
+        if not (list(old.keys()) ==
+                list(commited.keys()) ==
+                list(newstate.keys()) ==
                 ['data']):
             # We can only resolve data.
             raise ZODB.POSException.ConflictError
