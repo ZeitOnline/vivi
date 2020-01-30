@@ -530,10 +530,10 @@ longer:
 >>> c_1['id'].foo = 'bar'
 >>> c_2['id'][('hick', 'hack')] = 'huck'
 >>> transactionmanager_2.commit()
->>> transactionmanager_1.commit()  # doctest: +IGNORE_EXCEPTION_DETAIL
+>>> transactionmanager_1.commit()
 Traceback (most recent call last):
     ...
-ConflictError: database conflict error
+ConflictError: database conflict error...
 
 >>> transactionmanager_1.abort()
 
