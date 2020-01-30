@@ -175,7 +175,7 @@ in x140 is used:
 
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('foo')
+>>> _ = image.open('w').write(b'foo')
 >>> group['title-120x140.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -194,7 +194,7 @@ one is used:
 >>> del group['title-120x140.gif']
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('bar')
+>>> _ = image.open('w').write(b'bar')
 >>> group['title-120x120.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -212,7 +212,7 @@ Images whose names have no extension at all will be ignored:
 
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('blubs')
+>>> _ = image.open('w').write(b'blubs')
 >>> group['title-120x140'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
