@@ -613,10 +613,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
                 query = json.loads(data.elasticsearch_raw_query)
                 if 'query' not in query:
                     raise ValueError('Top-level key "query" is required.')
-            except (TypeError, ValueError) as err:
+            except Exception as err:
                 raise zeit.cms.interfaces.ValidationError(
-                    _('Elasticsearch raw query is malformed: {error}'
-                      ).format(error=err.message))
+                    _('Elasticsearch raw query is malformed: %s' % err))
         return True
 
     def adjust_auto_blocks_to_count():
