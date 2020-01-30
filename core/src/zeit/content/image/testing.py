@@ -68,7 +68,7 @@ def create_image_group_with_master_image(file_name=None):
         try:
             fh = zeit.cms.interfaces.ICMSContent(file_name).open()
         except TypeError:
-            fh = open(file_name)
+            fh = open(file_name, 'rb')
     extension = os.path.splitext(file_name)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
