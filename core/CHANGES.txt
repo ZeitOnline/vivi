@@ -2,8 +2,17 @@ vivi.core changes
 =================
 
 
-4.25.9 (unreleased)
+4.25.10 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
+4.25.9 (2020-01-30)
 -------------------
+
+- BUG-1206: Restrict product-related vgwort author fallback to
+  articles without agencies
 
 - ZON-5649 etc: Make packages py3 compatible:
   zeit.cms, zeit.workflow, zeit.find, z.c.author, text, link

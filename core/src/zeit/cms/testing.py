@@ -536,23 +536,13 @@ checker = OutputChecker([
 
 
 def remove_exception_module(msg):
-    """Copy&paste so we keep the exception message."""
+    """Copy&paste so we keep the exception message and support multi-line."""
     start, end = 0, len(msg)
-    # The exception name must appear on the first line.
-    i = msg.find("\n")
-    if i >= 0:
-        end = i
-    # retain up to the first colon (if any)
-    # PATCHED
-    # i = msg.find(':', 0, end)
-    # if i >= 0:
-    #     end = i
-    # retain just the exception name
-    name_end = msg.find(':', 0, end)  # PATCHED
+    name_end = msg.find(':', 0, end)
     i = msg.rfind('.', 0, name_end)
     if i >= 0:
         start = i + 1
-    return msg[start: end]
+    return msg[start:end]
 
 
 if sys.version_info > (3,):
