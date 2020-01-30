@@ -15,6 +15,7 @@ import zeit.cms.grok
 import zeit.content.modules.interfaces
 import zeit.edit.block
 import zope.formlib.form
+import zope.formlib.widget
 import zope.interface
 import zope.security
 
