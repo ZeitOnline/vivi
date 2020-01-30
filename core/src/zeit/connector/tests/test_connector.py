@@ -23,7 +23,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             rid, None, 'text',
             BytesIO(b'Paff'),
             contentType='text/plain')
-        self.assertEquals('Paff', self.connector[rid].data.read())
+        self.assertEquals(b'Paff', self.connector[rid].data.read())
 
     def test_copy(self):
         import zeit.connector.resource
@@ -35,7 +35,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
     def test_move(self):
         import zeit.connector.resource
@@ -47,7 +47,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
 
 class TestEscaping(zeit.connector.testing.ConnectorTest):
@@ -60,7 +60,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
             BytesIO(b'Pop.'),
             contentType='text/plain')
         resource = self.connector[rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEquals(b'Pop.', resource.data.read())
 
 
 class ConflictDetectionBase(object):
@@ -90,11 +90,11 @@ class ConflictDetectionBase(object):
     def test_implicit_override(self):
         del self.r_a.properties[('getetag', 'DAV:')]
         self.connector.add(self.r_a)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_explicit_override(self):
         self.connector.add(self.r_a, verify_etag=False)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_adding_with_etag_fails(self):
         r = self.get_resource('cannot-be-added', '*Puff*')
@@ -106,7 +106,7 @@ class ConflictDetectionBase(object):
     def test_no_conflict_with_same_content(self):
         self.r_a.data = BytesIO(b'Bang.')
         self.connector.add(self.r_a)
-        self.assertEquals('Bang.', self.connector[self.r_a.id].data.read())
+        self.assertEquals(b'Bang.', self.connector[self.r_a.id].data.read())
 
 
 class TestConflictDetectionReal(
@@ -252,7 +252,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         key = zope.security.proxy.ProxyFactory(key)
         self.connector.property_cache['id'] = {key: 'baz'}
         self.assertTrue(isinstance(
-            self.connector.property_cache['id'].keys()[0],
+            list(self.connector.property_cache['id'].keys())[0],
             zeit.connector.cache.WebDAVPropertyKey))
 
     @unittest.expectedFailure

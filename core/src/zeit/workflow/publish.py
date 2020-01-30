@@ -321,8 +321,8 @@ class PublishRetractTask(object):
             proc.communicate()
             out.seek(0)
             err.seek(0)
-            stdout = out.read()
-            stderr = err.read()
+            stdout = six.ensure_str(out.read())
+            stderr = six.ensure_str(err.read())
             out.close()
             err.close()
 

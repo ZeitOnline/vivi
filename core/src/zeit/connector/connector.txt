@@ -467,7 +467,7 @@ inconsistent/wrong state:
 
 >>> conn = connector.get_connection()
 >>> conn._con
-<httplib.HTTPConnection instance at 0x...>
+<...HTTPConnection ... at 0x...>
 >>> conn._con._HTTPConnection__state
 'Idle'
 >>> conn._con._HTTPConnection__state = 'flux'

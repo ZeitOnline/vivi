@@ -40,9 +40,9 @@ We really only see inv1 here:
 
 >>> list(connector.listCollection(testing))
 [(u'inv1', u'http://xml.zeit.de/testing.../inv1')]
->>> print(connector[inv].data.read())
+>>> print(connector[inv].data.read().decode('utf-8'))
 pop.
->>> print(connector[inv2].data.read())
+>>> print(connector[inv2].data.read().decode('utf-8'))
 peep.
 
 When an object changes the invalidaton will also tell the connector to reload:
@@ -54,9 +54,9 @@ When an object changes the invalidaton will also tell the connector to reload:
 >>> connector[inv].data.read()
 'pop.'
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))
->>> print(connector[inv].data.read())
+>>> print(connector[inv].data.read().decode('utf-8'))
 Mary had a little lamb.
->>> print(connector[inv2].data.read())
+>>> print(connector[inv2].data.read().decode('utf-8'))
 peep.
 
 When an object is remove in the dav the connector only sees this after an

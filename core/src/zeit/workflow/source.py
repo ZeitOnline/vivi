@@ -1,4 +1,5 @@
 import zc.sourcefactory.basic
+import collections
 import zope.component
 import zope.interface
 import zope.security.checker
@@ -39,10 +40,11 @@ def fromNotNecessary(value):
 class TriState(zc.sourcefactory.basic.BasicSourceFactory):
     """Source providing yes/no/notnecessary."""
 
-    _values = {
-        True: _('yes'),
-        False: _('no'),
-        NotNecessary: _('not necessary')}
+    _values = collections.OrderedDict((
+        (False, _('no')),
+        (True, _('yes')),
+        (NotNecessary, _('not necessary')),
+    ))
 
     def getTitle(self, value):
         return self._values.get(value, value)

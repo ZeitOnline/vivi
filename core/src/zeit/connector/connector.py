@@ -135,8 +135,10 @@ class Connector(object):
         properties = self._get_resource_properties(id)
         r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
-            dav_type = properties.get(('resourcetype', 'DAV:'))
-            content_type = properties.get(('getcontenttype', 'DAV:'), '')
+            dav_type = six.ensure_text(
+                properties.get(('resourcetype', 'DAV:'), ''))
+            content_type = six.ensure_text(
+                properties.get(('getcontenttype', 'DAV:'), ''))
             __traceback_info__ = (id, dav_type, content_type)
             if dav_type and 'collection' in dav_type:
                 r_type = 'collection'

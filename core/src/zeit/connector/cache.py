@@ -13,6 +13,7 @@ import persistent
 import persistent.mapping
 import six
 import six.moves.urllib.request
+import sys
 import tempfile
 import time
 import transaction
@@ -25,11 +26,7 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
-def get_storage_key(key):
-    if isinstance(key, six.text_type):
-        key = key.encode('utf8')
-    assert isinstance(key, str)
-    return key
+get_storage_key = six.ensure_binary
 
 
 class StringRef(persistent.Persistent):
@@ -83,6 +80,8 @@ class Body(persistent.Persistent):
             else:
                 data_file = open(commited_name, 'rb')
         elif isinstance(self.data, str):
+            data_file = BytesIO(self.data.encode())
+        elif isinstance(self.data, bytes):
             data_file = BytesIO(self.data)
         else:
             raise RuntimeError('self.data is of unsupported type %s' %
@@ -94,7 +93,8 @@ class Body(persistent.Persistent):
             return
         self.etag = etag
 
-        if hasattr(data, 'seek'):
+        if ((sys.version_info < (3,) and hasattr(data, 'seek')) or
+                (sys.version_info >= (3,) and data.seekable())):
             data.seek(0)
         s = data.read(self.BUFFER_SIZE)
         if len(s) < self.BUFFER_SIZE:
@@ -270,7 +270,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         return store.open()
 
     def remove(self, unique_id):
-        self._data.pop(unique_id, None)
+        key = get_storage_key(unique_id)
+        self._data.pop(key, None)
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
@@ -403,9 +404,9 @@ class Properties(persistent.mapping.PersistentMapping):
                      commited, newstate)
             return newstate
 
-        if not (old.keys() ==
-                commited.keys() ==
-                newstate.keys() ==
+        if not (list(old.keys()) ==
+                list(commited.keys()) ==
+                list(newstate.keys()) ==
                 ['data']):
             # We can only resolve data.
             raise ZODB.POSException.ConflictError
@@ -431,7 +432,7 @@ class Properties(persistent.mapping.PersistentMapping):
     def update(self, dict=None, **kwargs):
         if dict is None:
             dict = {}
-        for key, value in dict.items() + kwargs.items():
+        for key, value in list(dict.items()) + list(kwargs.items()):
             self[key] = value
         self._p_changed = True
 

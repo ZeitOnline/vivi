@@ -128,7 +128,7 @@ class Display(zeit.cms.browser.view.Base):
             if preview:
                 return self.url(preview)
             return
-        if not images.image:
+        if images.image is None:
             return
         image = images.image
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):

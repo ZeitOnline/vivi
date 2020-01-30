@@ -88,8 +88,10 @@ class WebTestTransport(six.moves.xmlrpc_client.Transport):
 
 class FakeSocket(object):
 
+    prefix = b'HTTP/1.1 200 Ok\r\n\r\n'
+
     def __init__(self, data):
         self.data = data
 
     def makefile(self, mode, bufsize=None):
-        return BytesIO(self.data)
+        return BytesIO(self.prefix + self.data)
