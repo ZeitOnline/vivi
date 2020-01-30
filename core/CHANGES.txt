@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.9 (unreleased)
+4.25.9 (2020-01-30)
 -------------------
 
 - BUG-1206: Restrict product-related vgwort author fallback to
