@@ -31,15 +31,10 @@ Content-Type: image/jpeg
 Mask
 ++++
 
->>> import urllib
->>> try:
-...     encode = urllib.parse.urlencode # py3
-... except AttributeError:
-...     encode = urllib.urlencode # py2 fallback
-
 The mask is loaded from the site with the image size and mask size parameters:
 
->>> query = encode({
+>>> from six.moves.urllib.parse import urlencode
+>>> query = urlencode({
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',
 ...     'mask_width:int': '20',
@@ -57,7 +52,7 @@ Content-Type: image/png
 
 The border can be coloured:
 
->>> query = encode({
+>>> query = urlencode({
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',
 ...     'mask_width:int': '20',
@@ -73,7 +68,7 @@ Content-Type: image/png
 
 If the colour doesn't parse there will not be a border:
 
->>> query = encode({
+>>> query = urlencode({
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',
 ...     'mask_width:int': '20',
