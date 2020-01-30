@@ -146,7 +146,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if not result:
             return None
         return zeit.cms.interfaces.ICMSContent(
-            UNIQUEID_PREFIX + iter(result).next()['url'], None)
+            UNIQUEID_PREFIX + next(iter(result))['url'], None)
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
