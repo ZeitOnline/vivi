@@ -147,8 +147,6 @@ KeyError: 'invalid'
 
 The area can also be iterated:
 
->>> list(informatives.itervalues())
-[<zeit.content.cp.blocks.teaser.TeaserBlock...>]
 >>> informatives.values()
 [<zeit.content.cp.blocks.teaser.TeaserBlock...>]
 

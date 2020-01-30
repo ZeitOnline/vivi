@@ -90,6 +90,9 @@ class Base(zeit.edit.block.Element,
     def keys(self):
         return list(iter(self))
 
+    def values(self):
+        return [self[x] for x in self]
+
     def slice(self, start, end):
         result = []
         started = False
