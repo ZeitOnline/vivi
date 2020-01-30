@@ -132,7 +132,7 @@ The private token is *not* synched to xml:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public2</attribute>
   </head>
   <body/>
 </testtype>
