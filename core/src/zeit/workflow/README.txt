@@ -429,8 +429,8 @@ Retract script
 The retract script removes files and folders. It removes in the opposite order
 of publish:
 
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> job_id = publish.retract(background=False)
 >>> print(logfile.getvalue())
 Running job ...
@@ -571,8 +571,8 @@ Dependend retract
 
 Retract does *not* honour dependencies by default:
 
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
@@ -597,8 +597,8 @@ done.
 If the dependencies adapter allows it, the dependencies are retracted as well:
 
 >>> SomaliaFeed.retract_dependencies = True
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
@@ -701,8 +701,8 @@ False
 
 When somalia is published, the folder and its content is also published:
 
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> job_id = publish.publish(background=False)
 >>> print(logfile.getvalue())
 Running job ...
