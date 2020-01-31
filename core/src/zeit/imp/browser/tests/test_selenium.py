@@ -234,7 +234,10 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         for i in range(3):
             s.keyPress('mask-h', Keys.BACKSPACE)
-        s.type('mask-h', '280')
+            s.pause(100)
+        for x in '280':
+            s.keyPress('mask-h', x)
+            s.pause(1000)
         s.keyPress('mask-h', Keys.RETURN)
         s.verifyEval('window.document.imp.mask_dimensions.h', '280')
 
