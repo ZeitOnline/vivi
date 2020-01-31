@@ -211,7 +211,8 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/repository/'
                    '2015/01/ausgabe/@@toc.csv')
-            self.assertEqual('text/csv', b.headers['content-type'])
+            self.assertIn(b.headers['content-type'],
+                          ('text/csv', 'text/csv;charset=utf-8'))
             self.assertEqual('attachment; '
                              'filename="table_of_content_2015_01.csv"',
                              b.headers['content-disposition'])
