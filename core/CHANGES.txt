@@ -5,7 +5,7 @@ vivi.core changes
 4.25.10 (unreleased)
 --------------------
 
-- ZON-5653: Make zeit.imp py3 compatible
+- ZON-5653: Make zeit.connector, zeit.imp, zeit.content.volume py3 compatible
 
 - OPS-908: Remove notifying influxdb for pushes, has been replaced
   by grafana
