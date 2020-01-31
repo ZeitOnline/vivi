@@ -443,7 +443,7 @@ class FilterTests(Selenium):
 
         # Clicking 0 yields 0.75 as value and changes the image url
         image_url = s.getEval('window.document.imp.image.src')
-        s.clickAt(selector, '1,0')
+        s.clickAt(selector, '1,5')
         s.verifyValue('filter.%s.input' % name, '-100')
         s.verifyEval(
             "window.document.imp.crop_arguments['filter.%s']" % name, '0.75')
@@ -451,7 +451,7 @@ class FilterTests(Selenium):
             "window.document.imp.image.src == '%s'" % image_url, 'false')
 
         # Clicking > 0 increases the value:
-        s.clickAt(selector, '100,0')
+        s.clickAt(selector, '100,5')
         s.verifyEval(
             "new Number(window.document.getElementById("
             "   'filter.%s.input').value) > -100" % name,
