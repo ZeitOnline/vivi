@@ -52,7 +52,7 @@ class TwitterTest(zeit.push.testing.TestCase):
             self.api_key, self.api_secret)
         with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
             twitter.send('a' * 350, '', account='twitter-test')
-        self.assertIn('Tweet needs to be a bit shorter', e.exception.message)
+        self.assertIn('Tweet needs to be a bit shorter', str(e.exception))
 
 
 class TwitterAccountsTest(zeit.push.testing.TestCase):
