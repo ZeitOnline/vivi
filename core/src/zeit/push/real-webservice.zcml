@@ -6,7 +6,6 @@
   <utility factory=".twitter.from_product_config" name="twitter" />
   <utility factory=".facebook.Connection" name="facebook" />
   <utility factory=".banner.Push" name="homepage" />
-  <utility factory=".influxdb.from_product_config" name="influxdb" />
   <utility factory=".grafana.from_product_config" name="grafana" />
 
 </configure>

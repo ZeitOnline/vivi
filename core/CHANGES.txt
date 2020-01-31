@@ -7,6 +7,9 @@ vivi.core changes
 
 - ZON-5653: Make zeit.imp py3 compatible
 
+- OPS-908: Remove notifying influxdb for pushes, has been replaced
+  by grafana
+
 
 4.25.9 (2020-01-30)
 -------------------
