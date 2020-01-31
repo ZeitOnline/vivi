@@ -5,7 +5,7 @@ vivi.core changes
 4.25.11 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- FIX: Turns out zope.app.folder is not a ui-only dependency
 
 
 4.25.10 (2020-01-31)
