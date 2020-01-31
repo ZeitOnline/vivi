@@ -157,12 +157,11 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
     skin = 'vivi'
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
-        # We need a certain min width/height which is given on larger screens.
-        # For smaller screens the default window is too small. Maximizing the
-        # test window is large enough.
-        self.selenium.windowMaximize()
 
     def get_module(self, area, text):
         return ('xpath=//div'

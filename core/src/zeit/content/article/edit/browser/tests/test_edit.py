@@ -351,9 +351,11 @@ class TestEditingMultipleParagraphs(
 class TestLinkEditing(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(TestLinkEditing, self).setUp()
-        self.selenium.windowMaximize()
         self.add_article()
 
     def select_text(self):

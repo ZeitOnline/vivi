@@ -69,6 +69,9 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(InputWidgetUI, self).setUp()
         self.patches = gocept.testing.mock.Patches()
@@ -84,7 +87,6 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium
-        s.windowMaximize()
         s.type('name=form.year', '2011')
         s.select('name=form.ressort', 'label=Deutschland')
         s.type('name=form.title', 'Test')
