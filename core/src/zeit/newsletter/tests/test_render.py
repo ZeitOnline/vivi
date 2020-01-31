@@ -28,11 +28,11 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         if response:
             self.send_response(self.response_code)
             self.end_headers()
-            self.wfile.write(response)
+            self.wfile.write(six.ensure_binary(response))
         else:
             self.send_response(500)
             self.end_headers()
-            self.wfile.write('error')
+            self.wfile.write(b'error')
 
 
 HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
