@@ -165,12 +165,15 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=label.cropped')
         self.click_label(u"140×140")
         s.clickAt('id=imp-zoom-slider', '500,0')
+        s.setWindowSize(self.window_width, 1000)
         s.dragAndDrop('id=imp-mask', '+500,+500')
         s.clickAt('id=imp-zoom-slider', '1,0')
         s.click('id=imp-action-crop')
         s.verifyAlert('Das Bild ist nicht*')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
+    @unittest.skip(
+        'selenium3 does not support dragging beyond the window boundaries')
     def test_drag_outside_mask_snaps_to_mask(self):
         # As it snaps to the mask we can crop the image and no alert is
         # generated.
