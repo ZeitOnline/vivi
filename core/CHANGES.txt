@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.13 (unreleased)
+4.25.13 (2020-02-03)
 --------------------
 
 - HOTFIX: Explicitly specify UTF8 as our encoding
