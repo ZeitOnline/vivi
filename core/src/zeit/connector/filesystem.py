@@ -143,13 +143,7 @@ class Connector(object):
         except Exception:
             data = b''
         self.body_cache[id] = data
-        try:
-            data = data.encode()
-        except UnicodeDecodeError:
-            data = bytes(data)
-        except AttributeError:
-            pass
-        return BytesIO(data)
+        return BytesIO(six.ensure_binary(data))
 
     def _get_content_type(self, id):
         properties = self._get_properties(id)
