@@ -5,7 +5,8 @@ vivi.core changes
 4.25.12 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- ZON-5659: Use bytes for resource body in z.c.text
+  so it conforms to the zeit.connector behaviour
 
 
 4.25.11 (2020-01-31)
