@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.12 (unreleased)
+4.25.12 (2020-02-03)
 --------------------
 
 - ZON-5659: Use bytes for resource body in z.c.text
