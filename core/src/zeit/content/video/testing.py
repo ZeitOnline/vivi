@@ -1,5 +1,6 @@
 import mock
 import plone.testing
+from zeit.cms.interfaces import ICMSContent
 import zeit.cms.repository.folder
 import zeit.cms.testing
 import zeit.find.testing
@@ -82,6 +83,10 @@ def video_factory(self):
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
             video = Video()
+            image = ICMSContent("http://xml.zeit.de/2006/DSC00109_2.JPG")
+            image2 = ICMSContent("http://xml.zeit.de/2006/DSC00109_3.JPG")
+            video.video_still = image
+            video.thumbnail = image2
             yield video
             self.repository['video'] = video
     yield self.repository['video']
