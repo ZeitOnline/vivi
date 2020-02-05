@@ -57,6 +57,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
             u'bar', pls.xml['body']['videos']['video']['title'])
 
     def test_animation_video_reference(self):
+        import zeit.content.animation.animation
         factory = zeit.content.video.testing.video_factory(self)
         factory.next()
         video = factory.next()
