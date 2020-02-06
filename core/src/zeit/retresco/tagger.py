@@ -72,7 +72,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             root.append(tags)
         tags.append(self._serialize_tag(value))
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
+            tags.getroottree(), encoding='unicode')
 
     def values(self):
         tags = self.to_xml()
@@ -108,13 +109,15 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             tags.remove(tag)
         tags.extend(orderd)
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree())
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
+            tags.getroottree(), encoding='unicode')
 
     def __delitem__(self, key):
         node = self._find_tag_node(key)
         node.getparent().remove(node)
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(node.getroottree())
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
+            node.getroottree(), encoding='unicode')
         self._disable(key)
 
     def set_pinned(self, keys):
@@ -221,7 +224,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
                 new_tags.append(self._serialize_tag(tag))
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree())
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
+            root.getroottree(), encoding='unicode')
         if clear_disabled:
             dav[DISABLED_PROPERTY] = u''
 

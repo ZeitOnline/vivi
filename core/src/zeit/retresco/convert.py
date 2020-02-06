@@ -109,7 +109,8 @@ class CMSContent(Converter):
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
             'body': lxml.etree.tostring(
-                zeit.retresco.interfaces.IBody(self.context)),
+                zeit.retresco.interfaces.IBody(self.context),
+                encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
         return result
