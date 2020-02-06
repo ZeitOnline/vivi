@@ -40,12 +40,12 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.mark_dirty()
         self.save()
         s.waitForElementPresent('jquery=.editable p:contains(Mary had)')
-        s.waitForXpathCount('//*[@id="cp-undo"]//a', 3)
+        s.waitForXpathCount('//*[@id="cp-undo"]//a', 4)
         s.assertText('//*[@id="cp-undo"]//li[1]/a', 'edit body text')
         s.assertText('//*[@id="cp-undo"]//li[2]/a', "add 'p' block")
 
         s.click('//*[@id="cp-undo"]//li[position() = last()]/a')
-        s.waitForXpathCount('//*[@id="cp-undo"]//a', 4)
+        s.waitForXpathCount('//*[@id="cp-undo"]//a', 5)
         s.assertText('//*[@id="cp-undo"]//li[1]/a',
                      'revert up to "edit metadata"')
 
