@@ -26,7 +26,7 @@ class HitColumnTest(zeit.cms.testing.ZeitCmsTestCase):
              zope.publisher.browser.TestRequest()),
             zeit.cms.browser.interfaces.IListRepresentation)
         column = zeit.cms.browser.listing.HitColumn()
-        self.assertEquals((19, 5), column.getSortKey(listrep, formatter=None))
+        self.assertEqual((19, 5), column.getSortKey(listrep, formatter=None))
 
 
 class ListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):

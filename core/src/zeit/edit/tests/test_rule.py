@@ -26,26 +26,26 @@ class RuleTest(unittest.TestCase):
 applicable(False)
 invalid_name
 """)
-        self.assertEquals(None, s.status)
+        self.assertEqual(None, s.status)
 
     def test_valid_rule_should_return_none(self):
         s = self.apply_rule("applicable(True)")
-        self.assertEquals(None, s.status)
+        self.assertEqual(None, s.status)
 
     def test_invalid_rule_should_return_code(self):
         import zeit.edit.rule
         s = self.apply_rule("error_if(True)")
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
         s = self.apply_rule("error_unless(False)")
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_warning_with_message(self):
         import zeit.edit.rule
         s = self.apply_rule('warning_unless(False, "A dire warning")')
-        self.assertEquals(zeit.edit.rule.WARNING, s.status)
-        self.assertEquals('A dire warning', s.message)
+        self.assertEqual(zeit.edit.rule.WARNING, s.status)
+        self.assertEqual('A dire warning', s.message)
         s = self.apply_rule("warning_if(True)")
-        self.assertEquals(zeit.edit.rule.WARNING, s.status)
+        self.assertEqual(zeit.edit.rule.WARNING, s.status)
 
     def test_error_overrides_warning(self):
         import zeit.edit.rule
@@ -53,8 +53,8 @@ invalid_name
 error_if(True, "An error message")
 warning_if(True, "A warning")
 """)
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
-        self.assertEquals('An error message', s.message)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual('An error message', s.message)
 
 
 class GlobTest(zeit.edit.testing.FunctionalTestCase):

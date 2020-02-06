@@ -20,7 +20,7 @@ class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
         # XXX should be moved to zeit.cms
         result = self.eval(
             'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))')
-        self.assertEquals('zeit.edit.Editor', result['__name__'])
+        self.assertEqual('zeit.edit.Editor', result['__name__'])
 
 
 class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):

@@ -38,7 +38,7 @@ class TestPropfind(unittest.TestCase):
     def test_valid_returns_result(self):
         self.response = '<a><b/></a>'
         result = self.conn.propfind('/')
-        self.assertEquals(207, result.status)
+        self.assertEqual(207, result.status)
 
     def verifyRaisesAfter(self, xml, count):
         self.response = xml
@@ -54,7 +54,7 @@ class TestURLEncode(unittest.TestCase):
         self.conn = zeit.connector.dav.davbase.DAVConnection('foo.testing')
 
     def assertQuote(self, unquoted, quoted):
-        self.assertEquals(quoted, self.conn.quote_uri(unquoted))
+        self.assertEqual(quoted, self.conn.quote_uri(unquoted))
 
     def test_simple(self):
         self.assertQuote('http://foo.testing/bar/baz',

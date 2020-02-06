@@ -28,17 +28,17 @@ class TestTicketAuthorization(unittest.TestCase):
         packed = zeit.content.gallery.browser.ticket.pack(
             self.rnd, self.hash_, self.principal)
         unpacked = zeit.content.gallery.browser.ticket.unpack(packed)
-        self.assertEquals(unpacked[0], self.rnd)
-        self.assertEquals(unpacked[1], self.hash_)
-        self.assertEquals(unpacked[2], self.principal)
+        self.assertEqual(unpacked[0], self.rnd)
+        self.assertEqual(unpacked[1], self.hash_)
+        self.assertEqual(unpacked[2], self.principal)
 
     def test_ticket(self):
         ticket = zeit.content.gallery.browser.ticket.get_hash(
             self.rnd, self.principal)
         unpacked = zeit.content.gallery.browser.ticket.unpack(ticket)
-        self.assertEquals(unpacked[0], self.rnd)
-        self.assertNotEquals(unpacked[1], self.hash_)
-        self.assertEquals(unpacked[2], self.principal)
+        self.assertEqual(unpacked[0], self.rnd)
+        self.assertNotEqual(unpacked[1], self.hash_)
+        self.assertEqual(unpacked[2], self.principal)
 
 
 def test_suite():

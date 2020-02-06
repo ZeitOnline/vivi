@@ -10,7 +10,7 @@ class ContentSourceBase(object):
         'channel', 'collection', 'file', 'testcontenttype', 'unknown']
 
     def test_get_check_types(self):
-        self.assertEquals(
+        self.assertEqual(
             self.expected_types,
             sorted(self.source.get_check_types()))
 
