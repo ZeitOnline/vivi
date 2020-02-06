@@ -54,7 +54,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_unchanged_provides_does_not_store_property(self):
         self.repository['foo'] = self.content
         properties = zeit.connector.interfaces.IWebDAVProperties(self.content)
-        self.assertEquals(
+        self.assertEqual(
             zeit.connector.interfaces.DeleteProperty,
             properties[('provides', 'http://namespaces.zeit.de/CMS/meta')])
 
@@ -113,7 +113,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
         event = zeit.cms.repository.interfaces.AfterObjectConstructedEvent(
             f_remote, resource)
         zeit.cms.type.restore_provided_interfaces_from_dav(f_remote, event)
-        self.assertEquals(f_remote.__class__, f_remote.__provides__._cls)
+        self.assertEqual(f_remote.__class__, f_remote.__provides__._cls)
 
 
 class StoreProvidedInterfacesIntegration(zeit.cms.testing.ZeitCmsTestCase):

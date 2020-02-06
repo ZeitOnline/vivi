@@ -31,7 +31,7 @@ class ImageBarTest(TestBase):
         return json.loads(self.browser.contents)
 
     def assertAPI(self, expected):
-        self.assertEquals(expected, self.get_image_bar_data())
+        self.assertEqual(expected, self.get_image_bar_data())
 
     def test_no_other_images_but_other_objects_return_empty_list(self):
         self.assertAPI([])
@@ -89,7 +89,7 @@ class CropTest(TestBase):
                 x2='800', y2='300',
                 name='400x200')))
         # The image name contains the parent name, the given name and .jpg
-        self.assertEquals(
+        self.assertEqual(
             'http://localhost/++skin++cms/repository/group/group-400x200.jpg',
             self.browser.contents)
 

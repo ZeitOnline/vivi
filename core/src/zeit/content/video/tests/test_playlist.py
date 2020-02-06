@@ -79,7 +79,7 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 
         videos = zeit.cms.relation.interfaces.IReferences(pls)
         self.assertEqual(1, len(videos))
-        self.assertEquals(
+        self.assertEqual(
             'http://xml.zeit.de/video', videos[0].uniqueId)
 
     def test_playlist_is_published_when_contained_video_is_published(self):

@@ -217,7 +217,7 @@ class DefaultTemplateByContentType(
 
     def test_config_should_define_generic_default_for_context(self):
         source = zeit.content.article.source.ArticleTemplateSource().factory
-        self.assertEquals(
+        self.assertEqual(
             ('article', 'inside'),
             source._get_generic_default())
 
@@ -226,7 +226,7 @@ class DefaultTemplateByContentType(
         source = zeit.content.article.source.ArticleTemplateSource().factory
         zope.interface.alsoProvides(article,
                                     zeit.cms.section.interfaces.IZONContent)
-        self.assertEquals(
+        self.assertEqual(
             ('article', 'default'),
             source.get_default_template(article))
 
@@ -234,12 +234,12 @@ class DefaultTemplateByContentType(
         source = zeit.content.article.source.ArticleTemplateSource().factory
         zope.interface.alsoProvides(article,
                                     zeit.magazin.interfaces.IZMOContent)
-        self.assertEquals(
+        self.assertEqual(
             ('short', ''),
             source.get_default_template(article))
 
         article = self.get_article()
-        self.assertEquals(
+        self.assertEqual(
             ('article', 'inside'),
             source.get_default_template(article))
 
@@ -248,8 +248,8 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
-        self.assertEquals('article', self.repository['article'].template)
-        self.assertEquals('default', self.repository['article'].header_layout)
+        self.assertEqual('article', self.repository['article'].template)
+        self.assertEqual('default', self.repository['article'].header_layout)
 
     def test_checkout_should_not_change_template_if_already_set(self):
         article = self.get_article()
@@ -258,8 +258,8 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
-        self.assertEquals('column', self.repository['article'].template)
-        self.assertEquals('heiter', self.repository['article'].header_layout)
+        self.assertEqual('column', self.repository['article'].template)
+        self.assertEqual('heiter', self.repository['article'].header_layout)
 
     def test_checkout_should_assign_default_if_current_value_invalid(self):
         article = self.get_article()
@@ -267,7 +267,7 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
-        self.assertEquals('article', self.repository['article'].template)
+        self.assertEqual('article', self.repository['article'].template)
 
     def test_article_should_have_default_variant_name_on_checkout(self):
         article = self.get_article()
@@ -275,7 +275,7 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
-        self.assertEquals(
+        self.assertEqual(
             'original', self.repository['article'].main_image_variant_name)
 
     def test_checkout_should_not_change_variant_name_if_already_set(self):
@@ -285,7 +285,7 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with zeit.cms.checkout.helper.checked_out(self.repository['article']):
             pass
-        self.assertEquals(
+        self.assertEqual(
             'wide', self.repository['article'].main_image_variant_name)
 
     def test_changing_template_should_set_default_header(self):

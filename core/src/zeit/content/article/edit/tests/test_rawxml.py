@@ -10,10 +10,9 @@ class RawXMLTest(unittest.TestCase):
         from zeit.content.article.edit.interfaces import IRawXML
         import lxml.objectify
         field = IRawXML['xml']
-        self.assertRaisesRegexp(
-            zope.schema.ValidationError,
-            'The root element must be <raw>',
-            lambda: field.validate(lxml.objectify.E.foo()))
+        with self.assertRaises(zope.schema.ValidationError) as e:
+            field.validate(lxml.objectify.E.foo())
+            self.assertIn('The root element must be <raw>', str(e.exception))
         field.validate(lxml.objectify.E.raw())
 
 

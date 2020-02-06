@@ -24,8 +24,8 @@ class QueryTest(FunctionalTestCase):
         elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
         result = elastic.search(q)
-        self.assertEquals(37002, result.hits)
-        self.assertEquals(
+        self.assertEqual(37002, result.hits)
+        self.assertEqual(
             '/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik',
             result[-1]['url'])
         req = self.layer.search.client.search
