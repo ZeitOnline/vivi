@@ -1,5 +1,5 @@
 # coding: utf8
-from six import StringIO
+from io import BytesIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
@@ -81,7 +81,7 @@ class RepositoryDynamicFolder(
                 return jinja2.Template('')
             self._v_content_template = jinja2.Template(
                 zeit.connector.interfaces.IResource(
-                    self.content_template_file).data.read(),
+                    self.content_template_file).data.read().decode('utf-8'),
                 autoescape=True, extensions=['jinja2.ext.autoescape'])
         return self._v_content_template
 
@@ -100,7 +100,7 @@ class RepositoryDynamicFolder(
             type=properties.get(
                 ('type', 'http://namespaces.zeit.de/CMS/meta'),
                 'centerpage-2009'),
-            data=StringIO(body),
+            data=BytesIO(body),
             # Even though virtual content never touches the connector and thus
             # we have to override the IWebDAVProperties adapter, some parts of
             # the system use this, e.g. for reconstructing provided interfaces.
@@ -173,7 +173,7 @@ class RepositoryDynamicFolder(
                     # Dear lxml, why?
                     key = six.text_type(key)
                 else:
-                    key = key.decode('utf-8')
+                    key = six.ensure_text(key)
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key]['text'] = entry.text
                 contents[key]['__parent__'] = self
@@ -282,7 +282,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
     @classmethod
     def parse(cls, body):
         properties = {}
-        if isinstance(body, (str, six.text_type)):
+        if isinstance(body, (six.binary_type, six.text_type)):
             try:
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:
