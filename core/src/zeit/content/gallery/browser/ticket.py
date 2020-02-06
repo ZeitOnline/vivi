@@ -1,6 +1,7 @@
 import base64
 import hashlib
 import random
+import six
 import struct
 import sys
 import zope.app.appsetup.product
@@ -62,8 +63,8 @@ def get_hash(rnd, principal):
     secret = config['ticket-secret']
     ticket_hash = hashlib.sha224()
 
-    for element in (secret, str(rnd), principal):
-        ticket_hash.update(element)
+    for element in (secret, str(rnd), six.ensure_binary(principal)):
+        ticket_hash.update(six.ensure_binary(element))
     hash_ = ticket_hash.digest()
     return pack(rnd, hash_, principal)
 
@@ -72,7 +73,7 @@ format = '>q28s'
 
 
 def pack(rnd, hash_, principal):
-    packed = struct.pack(format, rnd, hash_) + principal
+    packed = struct.pack(format, rnd, hash_) + six.ensure_binary(principal)
     return base64.urlsafe_b64encode(packed).decode('ascii').strip()
 
 
