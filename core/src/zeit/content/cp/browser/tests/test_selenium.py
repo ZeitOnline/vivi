@@ -130,16 +130,19 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # Drag object to the teaser bar in "wrong order"
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c1 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c2 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser')
-        s.waitForTextPresent('c3 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c3 teaser"]')
 
         # Edit the teaser list and reorder
         s.click('link=Edit teaser list')
@@ -424,8 +427,9 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         for i in range(1, 4):
             s.dragAndDropToObject(
                 '//li[@uniqueid="Clip/c%s"]' % i,
-                'css=#lead .landing-zone', '10,10')
-            s.waitForTextPresent('c%s teaser' % i)
+                'css=#lead .landing-zone', '10,150')
+            s.waitForElementPresent(
+                '//div[@class="teaserTitle" and text() = "c%s teaser"]' % i)
 
     def test_publish_should_show_error_message(self):
         s = self.selenium
