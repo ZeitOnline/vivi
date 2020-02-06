@@ -476,10 +476,8 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
             'css=.landing-zone.action-cp-module-droppable', '10,10')
-        s.waitForElementPresent(
-            'css=#lead .block.type-teaser')
-        s.verifyText('css=#lead .block.type-teaser .teaser-list',
-                     '*c1 teaser*')
+        s.waitForText('css=#lead .block.type-teaser .teaser-list',
+                      '*c1 teaser*')
         s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
                         '*c2 teaser*')
         # Verify the removal in the source:
