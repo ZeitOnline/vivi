@@ -1,4 +1,3 @@
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
 import plone.testing
@@ -109,7 +108,7 @@ def create_article():
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))

@@ -1,5 +1,4 @@
 from zeit.campus.interfaces import IZCOSection, IZCOFolder
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
 import plone.testing
@@ -45,7 +44,7 @@ class Layer(plone.testing.Layer):
 
 LAYER = Layer()
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))

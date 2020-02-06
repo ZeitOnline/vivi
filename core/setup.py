@@ -175,6 +175,7 @@ setup(
             'plone.testing[zca,zodb]',
             'pytest',
             'requests-mock',
+            'waitress',
             'webtest',
             'xlrd',
             'xmldiff',

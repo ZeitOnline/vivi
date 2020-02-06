@@ -1,6 +1,5 @@
 # coding: utf8
 from selenium.webdriver.common.keys import Keys
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import unittest
 import zeit.cms.testing
@@ -10,7 +9,7 @@ import zeit.imp.tests
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(zeit.imp.tests.ZOPE_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
