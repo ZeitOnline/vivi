@@ -92,8 +92,8 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
->>> browser.getControl('Gallery type').displayValue
-['eigenst\xc3\xa4ndig']
+>>> print(browser.getControl('Gallery type').displayValue[0])
+eigenständig
 >>> browser.getControl('Gallery type').displayValue = ['inline']
 >>> browser.getControl('Apply').click()
 >>> print(browser.contents)
