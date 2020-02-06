@@ -24,7 +24,7 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@thumbnail')
-        self.assertEqual('http://thumbnailurl',
+        self.assertEqual('http://localhost/group/thumbnail',
                          self.browser.headers.get('location'))
 
     def test_url_of_view_on_video_should_return_thumbnail_url(self):
