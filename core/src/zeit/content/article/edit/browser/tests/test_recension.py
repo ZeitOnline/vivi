@@ -28,6 +28,8 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  fold.replace('css=', ''))
 
     def test_recensions_should_be_listed(self):
         self.create_recension()
@@ -66,6 +68,8 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  fold.replace('css=', ''))
         s.click('jquery=#recensions a:contains(Add new)')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.authors.0.', 'Lord Byron')

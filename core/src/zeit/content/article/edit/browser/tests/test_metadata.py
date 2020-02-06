@@ -77,8 +77,11 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_relateds_should_be_addable(self):
         self.add_testcontent_to_clipboard()
         s = self.selenium
-        s.waitForElementPresent('id=internallinks.related')
-        s.click('css=#edit-form-internallinks .fold-link')
+        fold = 'css=#edit-form-internallinks .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  fold.replace('css=', ''))
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/testcontent"]',
             'xpath=//*[@id="internallinks.related"]//ul')

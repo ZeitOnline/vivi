@@ -133,6 +133,12 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
 class FindReplaceTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
+    def add_article(self):
+        super(FindReplaceTest, self).add_article()
+        below_body = '#edit-form-recensions .edit-bar .fold-link'
+        self.eval(
+            'document.querySelector("%s").scrollIntoView()' % below_body)
+
     def test_finding_text_works_accross_non_text_blocks(self):
         s = self.selenium
         self.add_article()
@@ -148,7 +154,9 @@ class FindReplaceTest(
         s.refresh()
         para = 'css=.block.type-p .editable p'
         s.waitForElementPresent(para)
-        s.clickAt(para, '0,0')
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  para.replace('css=', ''))
+        s.clickAt(para, '5,5')
         s.waitForElementPresent('xpath=//a[@href="show_find_dialog"]')
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')

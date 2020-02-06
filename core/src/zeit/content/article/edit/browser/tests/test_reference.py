@@ -312,6 +312,8 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             ['(nothing selected)', 'small', 'with info', 'large', 'double'],
             s.getSelectOptions(select))
         s.select(select, 'label=large')
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  select.replace('css=', ''))
         s.keyPress(select, Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there

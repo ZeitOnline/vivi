@@ -424,11 +424,9 @@ class FilterTests(Selenium):
     def test_brightness_slider(self):
         self.verify_slider('brightness')
 
-    @unittest.skip('No idea why this slider does not move on click')
     def test_contrast_slider(self):
         self.verify_slider('contrast')
 
-    @unittest.skip('No idea why this slider does not move on click')
     def test_color_slider(self):
         self.verify_slider('color')
 
@@ -439,6 +437,9 @@ class FilterTests(Selenium):
         s = self.selenium
         selector = 'css=*[id="filter.%s"] .uislider' % name
         s.waitForElementPresent(selector)
+        self.eval(
+            'document.querySelector(\'%s\').scrollIntoView()' %
+            selector.replace('css=', ''))
 
         # Clicking 0 yields 0.75 as value and changes the image url
         image_url = s.getEval('window.document.imp.image.src')

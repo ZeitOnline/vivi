@@ -15,6 +15,7 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.select('id=options-template.header_layout', 'Standard')
         s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.pause(500)
+        s.click('css=#edit-form-misc .edit-bar .fold-link')
 
         block = 'quiz'
         # copy&paste from self.create_block()
