@@ -33,7 +33,8 @@ class TicketTraverser(object):
         rnd, hash_, principal = unpack(name)
         if not get_hash(rnd, principal) == name:
             raise zope.security.interfaces.Unauthorized
-        self.request.setPrincipal(auth.getPrincipal(principal))
+        self.request.setPrincipal(auth.getPrincipal(
+            six.ensure_text(principal)))
         return self.context
 
 
