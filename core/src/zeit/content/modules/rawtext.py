@@ -1,7 +1,5 @@
-from zeit.cmp.interfaces import VENDOR_SOURCE
 from zeit.cms.content.property import DAVConverterWrapper
 from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
 import grokcore.component as grok

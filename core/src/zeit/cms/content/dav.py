@@ -4,7 +4,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import pendulum
-import pytz
 import re
 import six
 import sys
