@@ -564,7 +564,7 @@ def rst2html(text):
 
 def html2rst(text):
     try:
-        return pypandoc.convert(text, to='rst', format='html')
+        return pypandoc.convert_text(text, to='rst', format='html')
     except OSError:
         return text
 
