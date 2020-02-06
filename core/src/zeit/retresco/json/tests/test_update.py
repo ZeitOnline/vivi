@@ -36,7 +36,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
                    '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
                    'application/x-javascript')
             self.assertEqual({'message': 'OK'}, json.loads(b.contents))
-            self.assertEqual('200 Ok', b.headers.getheader('status'))
+            self.assertEqual('200 Ok', b.headers.get('status'))
             self.assertEqual(2, index.call_count)
             self.assertEqual(
                 zeit.cms.interfaces.ICMSContent(
@@ -58,5 +58,5 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
                '{"doc_ids" : ['
                '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"]}',
                'application/x-javascript')
-        self.assertEqual('200 Ok', b.headers.getheader('status'))
+        self.assertEqual('200 Ok', b.headers.get('status'))
         self.assertEqual((tag.code,), tagger.disabled)
