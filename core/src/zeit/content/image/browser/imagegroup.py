@@ -18,6 +18,7 @@ import zeit.workflow.interfaces
 import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
+from zope.publisher._compat import PYTHON2
 
 
 class FormBase(object):
@@ -138,8 +139,11 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        name = zeit.cms.interfaces.normalize_filename(
-            getattr(blob, 'filename', ''))
+        name = getattr(blob, 'filename', '')
+        if not PYTHON2:
+            # honor the PEP-3333 gods...
+            name = name.encode('latin-1').decode('utf-8')
+        name = zeit.cms.interfaces.normalize_filename(name)
         zeit.cms.browser.form.apply_changes_with_setattr(
             image,
             self.form_fields.omit('__name__', 'display_type'), data)
