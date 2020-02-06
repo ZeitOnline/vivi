@@ -1,5 +1,4 @@
 # coding: utf8
-from six.moves import range
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import mock

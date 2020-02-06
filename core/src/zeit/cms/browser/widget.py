@@ -1,5 +1,4 @@
 # coding: utf8
-from six.moves import range
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
 import grokcore.component as grok

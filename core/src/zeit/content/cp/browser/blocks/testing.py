@@ -1,4 +1,3 @@
-from six.moves import range
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing

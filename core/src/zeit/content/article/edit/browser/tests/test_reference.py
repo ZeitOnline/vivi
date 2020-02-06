@@ -1,4 +1,3 @@
-from six.moves import range
 import transaction
 import unittest
 import zeit.cms.checkout.interfaces

@@ -1,4 +1,3 @@
-from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget

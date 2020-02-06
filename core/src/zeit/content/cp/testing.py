@@ -1,4 +1,3 @@
-from six.moves import range
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock

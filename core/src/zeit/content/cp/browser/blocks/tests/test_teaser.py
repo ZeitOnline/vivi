@@ -1,4 +1,3 @@
-from six.moves import range
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.cssselect

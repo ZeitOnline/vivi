@@ -1,4 +1,3 @@
-from six.moves import range
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing

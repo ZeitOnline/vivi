@@ -11,7 +11,6 @@ import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.widgets
-from six.moves import map
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):

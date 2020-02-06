@@ -8,7 +8,6 @@ import zeit.imp.interfaces
 import zeit.imp.mask
 import zeit.imp.source
 import zope.interface.verify
-from six.moves import range
 
 
 product_config = """

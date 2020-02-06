@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-import itertools
+from six.moves import filter
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import itertools
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
 import zope.component
-from six.moves import filter
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
