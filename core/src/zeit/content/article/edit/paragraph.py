@@ -57,7 +57,8 @@ class Paragraph(ParagraphBase):
         # The copy.copy magically removes unnecessary namespace declarations.
         p_text = self.xml.text or ''
         text = xml.sax.saxutils.escape(p_text) + ''.join(
-            lxml.etree.tostring(copy.copy(c)) for c in self.xml.iterchildren())
+            lxml.etree.tostring(copy.copy(c), encoding='unicode')
+            for c in self.xml.iterchildren())
         return six.text_type(text)
 
     @text.setter
