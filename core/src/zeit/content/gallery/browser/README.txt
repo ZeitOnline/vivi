@@ -110,7 +110,7 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Images').click()
 >>> browser.getLink('Edit image').click()
 >>> browser.getControl('Title').value = 'The man man'
->>> browser.getControl('Layout').displayOptions
+>>> sorted(browser.getControl('Layout').displayOptions)
 ['(nothing selected)', 'Hidden', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
 >>> browser.getControl('Image caption').value = "Mann/Stein"
