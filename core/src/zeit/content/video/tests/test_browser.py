@@ -15,8 +15,6 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
-            'thumbnail': 'http://thumbnailurl',
-            'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
         next(factory)
@@ -32,8 +30,6 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
-            'thumbnail': 'http://thumbnailurl',
-            'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
         next(factory)
