@@ -38,7 +38,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             types[item['name']]['css'].append(item['library_name'] + '-module')
         for type_ in types.values():
             type_['css'] = ' '.join(type_['css'])
-        return self.sort_block_types(types.values())
+        return self.sort_block_types(list(types.values()))
 
     def sort_block_types(self, items):
         return sorted(items, key=lambda r: r['title'])

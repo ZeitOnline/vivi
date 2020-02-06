@@ -15,8 +15,8 @@ import zope.interface
     zeit.cms.interfaces.IAsset)
 class Playlist(zeit.cms.content.metadata.CommonMetadata):
 
-    default_template = pkg_resources.resource_string(__name__,
-                                                     'playlist-template.xml')
+    default_template = pkg_resources.resource_string(
+        __name__, 'playlist-template.xml').decode('utf-8')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IPlaylist,

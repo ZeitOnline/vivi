@@ -11,8 +11,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
 >>> from six import StringIO
 >>> from zeit.content.article.article import Article
->>> article_xml = StringIO("""\
-... <?xml version="1.0" encoding="UTF-8"?>
+>>> article_xml = StringIO(u"""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
@@ -167,8 +166,7 @@ this.
 We first define some XML which contains some properties we want to be
 reflected in the WebDAV properties:
 
->>> article_xml = StringIO("""\
-... <?xml version="1.0" encoding="UTF-8"?>
+>>> article_xml = StringIO(u"""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
@@ -250,7 +248,7 @@ The resource factory creates Resource objects from articles:
 >>> resource = ArticleType().resource(article)
 >>> resource.type
 'article'
->>> print(resource.data.read())
+>>> print(resource.data.read().decode('utf-8'))
 <?xml version='1.0' ...
   ...Tom...Jerry...
 
@@ -313,8 +311,7 @@ Searchable text
 
 All Text inside <p> elements is extracted (empty paragraphs are ignored):
 
->>> article_xml = StringIO("""\
-... <?xml version="1.0" encoding="UTF-8"?>
+>>> article_xml = StringIO(u"""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>

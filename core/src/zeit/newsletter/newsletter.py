@@ -21,7 +21,8 @@ BODY_NAME = 'newsletter_body'
 class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
                  collections.Mapping):
 
-    default_template = pkg_resources.resource_string(__name__, 'template.xml')
+    default_template = pkg_resources.resource_string(
+        __name__, 'template.xml').decode('utf-8')
 
     subject = zeit.cms.content.property.ObjectPathProperty(
         '.head.subject', zeit.newsletter.interfaces.INewsletter['subject'])

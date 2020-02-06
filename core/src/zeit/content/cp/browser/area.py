@@ -114,7 +114,7 @@ class DynamicCombinationWidget(
             #         value = missing_value
         if value is not missing_value:
             hasInput = self.hasInput()
-            for w, v in map(None, self.widgets, value):
+            for w, v in map(lambda *args: args, self.widgets, value):
                 if not hasInput or v != w.context.missing_value:
                     w.setRenderedValue(v)
         for w in self.widgets:

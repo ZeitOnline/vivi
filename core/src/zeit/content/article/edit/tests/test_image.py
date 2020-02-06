@@ -1,5 +1,6 @@
 # coding: utf8
 import contextlib
+import six
 import zeit.content.article.testing
 
 
@@ -62,7 +63,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             zeit.connector.interfaces.IConnector)
         connector.add(Resource(
             'http://xml.zeit.de/article', 'article', 'article',
-            BytesIO(article_xml)))
+            BytesIO(six.ensure_binary(article_xml))))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
         return zeit.cms.checkout.interfaces.ICheckoutManager(

@@ -48,7 +48,7 @@ The resource id must be a string, a Fault(100) is returned otherwise:
 >>> invalidate(27)
 Traceback (most recent call last):
     ...
-Fault: <Fault 100: "`resource_id` must be string type, got <type 'int'>">
+Fault: <Fault 100: "`resource_id` must be string type...
 
 
 We made one invalidation request which is in the log file. The error is logged
@@ -58,8 +58,7 @@ as well:
 zope.invalidate invalidated http://xml.zeit.de/index.
 http://localhost/@@invalidate
 Traceback (most recent call last):
-...
-Fault: <Fault 100: "`resource_id` must be string type, got <type 'int'>">
+...Fault: <Fault 100: "`resource_id` must be string type...
 
 
 We can also invalidate may objects at once using the `invalidate_many` method:
@@ -68,7 +67,7 @@ We can also invalidate may objects at once using the `invalidate_many` method:
 
 Clear the log:
 
->>> log.seek(0)
+>>> _ = log.seek(0)
 
 Invalidate several objects at once:
 
@@ -87,7 +86,7 @@ True
 >>> invalidate_many('honk')
 Traceback (most recent call last):
     ...
-Fault: <Fault 100: "`resource_list` must be sequence type, got <type 'str'>">
+Fault: <Fault 100: "`resource_list` must be sequence type...
 
 
 >>> print(log.getvalue())

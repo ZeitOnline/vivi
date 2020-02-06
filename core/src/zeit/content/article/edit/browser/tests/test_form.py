@@ -157,7 +157,7 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
         b.open('@@edit.form.new-filename?show_form=1')
         b.getControl('New file name').value = 'Somalia'
         b.getControl('Apply').click()
-        self.assertEllipsis('..."Somalia" already exists...', b.contents)
+        self.assertEllipsis('...Somalia...already exists...', b.contents)
 
 
 @unittest.skip('Channels need special permission, and selenium breaks when'

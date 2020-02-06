@@ -2,10 +2,39 @@ vivi.core changes
 =================
 
 
-4.25.10 (unreleased)
+4.25.14 (unreleased)
 --------------------
 
-- ZON-5653: Make zeit.imp py3 compatible
+- ZON-5679 etc: Make packages py3 compatible:
+  z.c.article, cp, dynamicfolder, modules, zeit.wysiwyg
+
+
+4.25.13 (2020-02-03)
+--------------------
+
+- HOTFIX: Explicitly specify UTF8 as our encoding
+
+
+4.25.12 (2020-02-03)
+--------------------
+
+- ZON-5659: Use bytes for resource body in z.c.text
+  so it conforms to the zeit.connector behaviour
+
+
+4.25.11 (2020-01-31)
+--------------------
+
+- FIX: Turns out zope.app.folder is not a ui-only dependency
+
+
+4.25.10 (2020-01-31)
+--------------------
+
+- ZON-5653: Make zeit.connector, zeit.imp, zeit.content.volume py3 compatible
+
+- OPS-908: Remove notifying influxdb for pushes, has been replaced
+  by grafana
 
 
 4.25.9 (2020-01-30)

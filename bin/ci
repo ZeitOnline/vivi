@@ -43,8 +43,9 @@ case $COMMAND in
         rm -f report.xml coverage.xml .coverage
 
         set +e
+        shift
         $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'not selenium' \
-            --cov=. --cov-report=html --cov-report=xml --junitxml=report.xml
+            --cov=. --cov-report=html --cov-report=xml --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
         cp $DEPLOYMENT/work/source/report.xml $WORKSPACE
