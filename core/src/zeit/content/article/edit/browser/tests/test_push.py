@@ -98,6 +98,7 @@ class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.select('css=#form-metadata-access select', 'label=abopflichtig')
         s.keyPress('css=#form-metadata-access select', Keys.TAB)
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
+        s.pause(500)
         s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
         self.assertEqual(False, s.isEditable(r'css=#social\.is_amp'))
 

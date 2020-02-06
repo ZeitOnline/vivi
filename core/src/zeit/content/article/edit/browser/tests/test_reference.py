@@ -120,6 +120,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.keyPress(link_input, Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
 
+        s.pause(500)
         s.waitForElementPresent(variant_select)
         self.assertEqual(
             ['(nothing selected)', u'Breit', u'Original', u'Square 1:1',

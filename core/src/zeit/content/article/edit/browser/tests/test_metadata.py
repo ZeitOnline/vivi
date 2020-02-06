@@ -44,6 +44,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.select('id=metadata-b.product', 'Zeit Magazin')
         s.keyPress('id=metadata-b.copyrights', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
+        s.pause(500)
         s.assertSelectedLabel('id=metadata-b.product', 'Zeit Magazin')
 
     def test_change_in_ressort_should_update_subressort_list(self):
