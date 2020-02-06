@@ -51,7 +51,7 @@ There is a javascript action:
 Construct a POST which looks like a post which the Flash movie would generate:
 
 >>> import pkg_resources
->>> post_data_template = """\
+>>> post_data_template = b"""\
 ... ------------Ij5Ij5KM7ei4GI3ae
 ... Content-Disposition: form-data; name="Filename"
 ... 
@@ -89,7 +89,7 @@ After calling POSTing, a new image has been added to the folder:
 Status: 201 Created
 Cache-Control: no-cache
 Content-Length: 2
-Content-Type: text/json
+Content-Type: text/json...
 Location: http://localhost/++skin++cms/repository/image-folder/a-new-file.jpg/@@view.html
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
@@ -112,7 +112,7 @@ True
 
 Posting erroneous image data yields a 415. The contents indicates the error:
 
->>> post_data = post_data_template % 'this is not an image'
+>>> post_data = post_data_template % b'this is not an image'
 >>> browser.post('@@upload-image', post_data, content_type)
 Traceback (most recent call last):
     ...
