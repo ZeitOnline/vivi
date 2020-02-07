@@ -42,10 +42,6 @@ case $COMMAND in
         cd $DEPLOYMENT/work/source
         rm -f report.xml coverage.xml .coverage
 
-        echo "Preparing and starting window manager"
-        echo "session.screen0.allowRemoteActions: true" >> ${WORKSPACE}/fluxbox.init
-        fluxbox 2>/dev/null -log /dev/null -rc ${WORKSPACE}/fluxbox.init &
-
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
         set +e
@@ -61,10 +57,6 @@ case $COMMAND in
             mv $DEPLOYMENT/work/source/coverage.xml $WORKSPACE/cobertura.xml
         fi
         cp -R $DEPLOYMENT/work/source/coverage-report $WORKSPACE
-
-        echo "Tests done, stopping window manager for clean Xvfb shutdown"
-        fluxbox-remote quit
-        rm ${WORKSPACE}/fluxbox.init
 
         exit $TEST_RESULT
     ;;
