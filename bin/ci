@@ -38,20 +38,28 @@ case $COMMAND in
 
         bin/ci setup-batou
 
-        rm -f report.xml cobertura.xml
+        rm -f report*.xml cobertura.xml
         cd $DEPLOYMENT/work/source
-        rm -f report.xml coverage.xml .coverage
+        rm -f report*.xml coverage.xml .coverage
 
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
         set +e
         shift
-        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 1 \
-            --cov=. --cov-report=html --cov-report=xml \
-            --junitxml=report.xml "$@"
+        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'not selenium' \
+            --cov=. --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
-        cp $DEPLOYMENT/work/source/report.xml $WORKSPACE
+        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'selenium' \
+            --cov=. --junitxml=report_selenium.xml \
+            --cov-append --cov-report=html --cov-report=xml \
+            --reruns=3 --reruns-delay=1 "$@"
+        SELENIUM_RESULT=$?
+        if [ "$TEST_RESULT" = "0" ]; then
+            TEST_RESULT=$SELENIUM_RESULT
+        fi
+
+        cp $DEPLOYMENT/work/source/report*.xml $WORKSPACE
         if [ -f $DEPLOYMENT/work/source/coverage.xml ]; then
             # github pr coverage plugin has hardcoded filenames, sigh.
             mv $DEPLOYMENT/work/source/coverage.xml $WORKSPACE/cobertura.xml
