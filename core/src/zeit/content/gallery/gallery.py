@@ -177,7 +177,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
-        return self._entries_container.xpath('count(block)')
+        return int(self._entries_container.xpath('count(block)'))
 
     def __setitem__(self, key, value):
         node = zeit.cms.content.interfaces.IXMLRepresentation(value).xml
