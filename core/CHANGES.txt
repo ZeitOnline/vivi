@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.14 (unreleased)
+4.25.14 (2020-02-07)
 --------------------
 
 - ZON-5679 etc: Make packages py3 compatible:
