@@ -49,7 +49,8 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=.block.type-auto-teaser .edit-link')
         sel.waitForElementPresent('css=.lightbox')
         sel.click('css=.two-side-by-side')
-        sel.waitForElementPresent('css=.teaser-contents.two-side-by-side')
+        sel.waitForElementPresent(
+            'css=.teaser-contents.two-side-by-side .teaser-list')
         sel.assertTextPresent(self.auto_teaser_title)
 
     @unittest.skip('Since visible is not part of the form anymore,'
