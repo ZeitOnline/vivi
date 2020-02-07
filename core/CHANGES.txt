@@ -6,7 +6,8 @@ vivi.core changes
 --------------------
 
 - ZON-5679 etc: Make packages py3 compatible:
-  z.c.article, cp, dynamicfolder, image, modules, zeit.retresco, wysiwyg
+  z.c.article, cp, dynamicfolder, gallery, image, modules,
+  zeit.retresco, wysiwyg
 
 
 4.25.13 (2020-02-03)
