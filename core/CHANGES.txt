@@ -9,6 +9,8 @@ vivi.core changes
   z.c.article, cp, dynamicfolder, gallery, image, modules,
   zeit.retresco, wysiwyg
 
+- FIX: Remove influxdb remnants (4.25.10)
+
 
 4.25.13 (2020-02-03)
 --------------------

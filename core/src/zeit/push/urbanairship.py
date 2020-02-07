@@ -197,12 +197,13 @@ class Message(zeit.push.message.Message):
 
     def log_success(self):
         super(Message, self).log_success()
-        influxdb = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='influxdb')
-        influxdb.send(self.text, self.url, **self.config)
-        grafana = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='grafana')
-        grafana.send(self.text, self.url, **self.config)
+        try:
+            grafana = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='grafana')
+            grafana.send(self.text, self.url, **self.config)
+        except Exception:
+            log.warning(
+                'Error in log_success for %s', self.url, exc_info=True)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
