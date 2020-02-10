@@ -1,6 +1,5 @@
 import mock
 import plone.testing
-from zeit.cms.interfaces import ICMSContent
 import zeit.cms.repository.folder
 import zeit.cms.testing
 import zeit.find.testing

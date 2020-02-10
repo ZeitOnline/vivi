@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
