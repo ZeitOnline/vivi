@@ -63,14 +63,14 @@ class TestReference(zeit.content.video.testing.TestCase):
     def test_still_should_be_contained_in_xml_reference(self):
         self.create_video()
         video = self.repository['video']
-        assert video.xml.body.video_still.xpath("@type")[0] == "JPG"
+        assert video.xml.body.video_still.xpath("@type")[0] == "jpg"
 
     def test_thumbnail_should_be_contained_in_xml_reference(self):
         self.create_video()
         video = self.repository['video']
         assert (
-            video.xml.body.thumbnail.xpath("@src")[0] ==
-            "http://xml.zeit.de/2006/DSC00109_3.JPG"
+            video.xml.body.thumbnail.xpath('@base-id')[0] ==
+            "http://xml.zeit.de/group/"
         )
 
 
