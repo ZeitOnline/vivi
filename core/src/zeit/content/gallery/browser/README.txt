@@ -92,8 +92,8 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
->>> browser.getControl('Gallery type').displayValue
-['eigenst\xc3\xa4ndig']
+>>> print(browser.getControl('Gallery type').displayValue[0])
+eigenständig
 >>> browser.getControl('Gallery type').displayValue = ['inline']
 >>> browser.getControl('Apply').click()
 >>> print(browser.contents)
@@ -110,7 +110,7 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Images').click()
 >>> browser.getLink('Edit image').click()
 >>> browser.getControl('Title').value = 'The man man'
->>> browser.getControl('Layout').displayOptions
+>>> sorted(browser.getControl('Layout').displayOptions)
 ['(nothing selected)', 'Hidden', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
 >>> browser.getControl('Image caption').value = "Mann/Stein"

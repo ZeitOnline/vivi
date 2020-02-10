@@ -92,12 +92,12 @@ class TestInfobox(ReferenceTest):
 
     def test_no_layout_set_should_return_default(self):
         ref = self.get_ref()
-        self.assertEquals('default', ref.layout)
+        self.assertEqual('default', ref.layout)
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
         ref.layout = u'debatte'
-        self.assertEquals('debatte', ref.xml.get('layout'))
+        self.assertEqual('debatte', ref.xml.get('layout'))
 
 
 class TestPortraitbox(ReferenceTest):
@@ -109,18 +109,18 @@ class TestPortraitbox(ReferenceTest):
 
     def test_default_layout_should_be_set(self):
         ref = self.get_ref()
-        self.assertEquals('short', ref.xml.get('layout'))
+        self.assertEqual('short', ref.xml.get('layout'))
 
     def test_stored_layout_should_be_returned(self):
         ref = self.get_ref()
         ref.layout = u'wide'
         ref = self.test_class(None, ref.xml)
-        self.assertEquals('wide', ref.xml.get('layout'))
+        self.assertEqual('wide', ref.xml.get('layout'))
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
         ref.layout = u'wide'
-        self.assertEquals('wide', ref.xml.get('layout'))
+        self.assertEqual('wide', ref.xml.get('layout'))
 
     def test_default_name_should_be_read_from_referenced_box(self):
         ref = self.get_ref()

@@ -216,13 +216,13 @@ class TooltipFixture(object):
             zeit.cms.repository.folder.Folder()
 
         first = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
-        with first.open('w') as file_:
-            file_.write('minor')
+        with first.open('w') as f:
+            f.write(b'minor')
         self.repository['data']['cp-area-schemas']['minor.svg'] = first
 
         second = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
-        with second.open('w') as file_:
-            file_.write('major')
+        with second.open('w') as f:
+            f.write(b'major')
         self.repository['data']['cp-area-schemas']['major.svg'] = second
 
 

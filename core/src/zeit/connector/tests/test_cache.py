@@ -29,7 +29,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.cache._etags[self.key] = 'etag1'
         data = zeit.connector.cache.SlottedStringRef(b'data')
         self.cache._data[self.key] = data
-        self.assertEquals(
+        self.assertEqual(
             b'data',
             self.cache.getData(self.uniqueId, self.properties1).read())
         del self.cache._etags[self.key]
@@ -50,7 +50,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
         self.cache.setData(self.uniqueId, self.properties2, data2)
-        self.assertEquals(
+        self.assertEqual(
             data2.getvalue(),
             self.cache.getData(self.uniqueId, self.properties2).read())
 
@@ -67,7 +67,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
                           self.cache.getData, self.uniqueId, self.properties1)
         data2 = BytesIO(self.BUFFER_SIZE * 2 * b'y')
         self.cache.setData(self.uniqueId, self.properties2, data2)
-        self.assertEquals(
+        self.assertEqual(
             data2.getvalue(),
             self.cache.getData(self.uniqueId, self.properties2).read())
 

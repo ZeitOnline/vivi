@@ -1,4 +1,3 @@
-from six.moves import range
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
@@ -80,7 +79,7 @@ class CPTemplateLayer(plone.testing.Layer):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
             new=pkg_resources.resource_string(
-                __name__, './tests/fixtures/cp-template.xml'))
+                __name__, './tests/fixtures/cp-template.xml').decode('utf-8'))
         self['cp-template-patch'].start()
 
     def tearDown(self):

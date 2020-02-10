@@ -1,4 +1,3 @@
-from six.moves import map
 from zeit.cms.i18n import MessageFactory as _
 import six
 import zc.table.column

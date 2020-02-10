@@ -23,7 +23,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             rid, None, 'text',
             BytesIO(b'Paff'),
             contentType='text/plain')
-        self.assertEquals(b'Paff', self.connector[rid].data.read())
+        self.assertEqual(b'Paff', self.connector[rid].data.read())
 
     def test_copy(self):
         import zeit.connector.resource
@@ -35,7 +35,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals(b'Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
     def test_move(self):
         import zeit.connector.resource
@@ -47,7 +47,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals(b'Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
 
 class TestEscaping(zeit.connector.testing.ConnectorTest):
@@ -60,7 +60,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
             BytesIO(b'Pop.'),
             contentType='text/plain')
         resource = self.connector[rid]
-        self.assertEquals(b'Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
 
 class ConflictDetectionBase(object):
@@ -83,18 +83,18 @@ class ConflictDetectionBase(object):
         self.assertRaises(
             zeit.connector.dav.interfaces.PreconditionFailedError,
             self.connector.add, self.r_a)
-        self.assertEquals(
+        self.assertEqual(
             (None, None, False),
             self.connector.locked(self.r_a.id))
 
     def test_implicit_override(self):
         del self.r_a.properties[('getetag', 'DAV:')]
         self.connector.add(self.r_a)
-        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_explicit_override(self):
         self.connector.add(self.r_a, verify_etag=False)
-        self.assertEquals(b'Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_adding_with_etag_fails(self):
         r = self.get_resource('cannot-be-added', '*Puff*')
@@ -106,7 +106,7 @@ class ConflictDetectionBase(object):
     def test_no_conflict_with_same_content(self):
         self.r_a.data = BytesIO(b'Bang.')
         self.connector.add(self.r_a)
-        self.assertEquals(b'Bang.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Bang.', self.connector[self.r_a.id].data.read())
 
 
 class TestConflictDetectionReal(
@@ -183,10 +183,10 @@ class TestResource(zeit.connector.testing.ConnectorTest):
             contentType='text/plain',
             properties={('foo', 'bar'): 'baz'})
         res = self.connector[rid]
-        self.assertEquals('baz', res.properties[('foo', 'bar')])
+        self.assertEqual('baz', res.properties[('foo', 'bar')])
         self.connector.changeProperties(
             rid, {('foo', 'bar'): 'changed'})
-        self.assertEquals('changed', res.properties[('foo', 'bar')])
+        self.assertEqual('changed', res.properties[('foo', 'bar')])
 
 
 class TestConnectorCache(zeit.connector.testing.ConnectorTest):
@@ -214,7 +214,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         del self.connector[self.rid]
         children = self.connector.child_name_cache[
             'http://xml.zeit.de/%s/' % self.testfolder]
-        self.assertEquals([], list(children))
+        self.assertEqual([], list(children))
 
     def test_cache_time_is_not_stored_on_dav(self):
         key = ('cached-time', 'INTERNAL')

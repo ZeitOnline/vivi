@@ -6,6 +6,7 @@ XXX this is supposed to be user documentation. writeme
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 
+>>> import sys
 >>> import tempfile
 >>> import pyramid_dogpile_cache2
 >>> rules_file, rules_filename = tempfile.mkstemp()
@@ -16,6 +17,8 @@ XXX this is supposed to be user documentation. writeme
 
 >>> def create_rules(rules_str):
 ...     rules_file = open(rules_filename, 'w')
+...     if sys.version_info < (3,):
+...         rules_str = rules_str.encode('utf-8')
 ...     rules_file.write(rules_str)
 ...     rules_file.close()
 ...     pyramid_dogpile_cache2.clear()
@@ -28,7 +31,7 @@ Specifying rules
 
 Rules can be specified in a file which contains:
 
->>> create_rules("""\
+>>> create_rules(u"""\
 ... applicable(is_block and area == 'teaser-mosaic' and position == 2)
 ... error_unless(layout == 'dmr', u'Die zweite Teaserleiste muss ein DMR sein')
 ...
@@ -78,7 +81,7 @@ Rules are seperated by blank lines and/or comments. That means writing your
 file without those, the whole file is interpreted as one rule. However, every
 rule has to start with `applicable`:
 
->>> create_rules("""\
+>>> create_rules(u"""\
 ... applicable(False)
 ... applicable(True)
 ... """)
@@ -88,7 +91,7 @@ rule has to start with `applicable`:
 
 Comments are allowed to seperate rules:
 
->>> create_rules("""\
+>>> create_rules(u"""\
 ... # The first rule
 ... applicable(True)
 ... # Here starts a second rule
@@ -103,7 +106,7 @@ Comments are allowed to seperate rules:
 
 An empty rules file can be parsed, too:
 
->>> create_rules("")
+>>> create_rules(u"")
 >>> rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
 >>> len(rm.rules)
 0
@@ -113,14 +116,14 @@ Encoding:
 >>> create_rules(u"""\
 ... applicable(True)
 ... error_unless(False, u'öüäß')
-... """.encode('utf-8'))
+... """)
 >>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
 [u'\xf6\xfc\xe4\xdf']
 
 Syntax error handling:
 
->>> create_rules("""\
+>>> create_rules(u"""\
 ... applicable(True)
 ... error_unless(False
 ... """)

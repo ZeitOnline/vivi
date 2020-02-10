@@ -43,7 +43,6 @@ class AreaValidationTest(
         self.area.elasticsearch_raw_query = 'this is no json'
         with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
             self.interface.validateInvariants(self.area)
-        self.assertIn('No JSON object could be decoded', str(err.exception))
 
 
 class TopicpageFilterSourceTest(zeit.content.cp.testing.FunctionalTestCase):

@@ -59,7 +59,7 @@ class DAVServerLayer(plone.testing.Layer):
                 pass
             else:
                 return
-        raise TimeoutError('%s did not start up' % url)
+        raise RuntimeError('%s did not start up' % url)
 
     def testTearDown(self):
         transaction.abort()

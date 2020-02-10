@@ -1,6 +1,5 @@
 from datetime import datetime
 from six import StringIO
-from six.moves import range
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent

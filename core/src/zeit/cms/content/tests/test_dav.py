@@ -39,7 +39,7 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
         self.assertFalse(isinstance(adapter, Adapter))
         self.assertTrue(isinstance(zope.security.proxy.removeSecurityProxy(
             adapter), Adapter))
-        self.assertEquals(self.content, adapter.__parent__)
+        self.assertEqual(self.content, adapter.__parent__)
         # Unregister adapter so we don't leak it
         self.assertTrue(
             zope.component.getSiteManager().unregisterAdapter(

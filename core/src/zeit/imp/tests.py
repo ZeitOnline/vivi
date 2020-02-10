@@ -8,7 +8,6 @@ import zeit.imp.interfaces
 import zeit.imp.mask
 import zeit.imp.source
 import zope.interface.verify
-from six.moves import range
 
 
 product_config = """
@@ -93,7 +92,7 @@ class TestLayerMask(unittest.TestCase):
     def test_given_border_colour_should_be_used(self):
         mask = zeit.imp.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
         image = PIL.Image.open(mask.open('r'))
-        self.assertEquals((255, 0, 0, 255), image.getpixel((0, 0)))
+        self.assertEqual((255, 0, 0, 255), image.getpixel((0, 0)))
 
     def test_rect_box_should_match_given_mask_size(self):
         mask = zeit.imp.mask.Mask((150, 100), (20, 30))
@@ -113,23 +112,23 @@ class TestSources(zeit.cms.testing.FunctionalTestCase):
     def test_scale_source(self):
         source = zeit.imp.source.ScaleSource()(None)
         scales = list(source)
-        self.assertEquals(7, len(scales))
+        self.assertEqual(7, len(scales))
         scale = scales[0]
         zope.interface.verify.verifyObject(
             zeit.imp.interfaces.IPossibleScale, scale)
-        self.assertEquals('450x200', scale.name)
-        self.assertEquals('450', scale.width)
-        self.assertEquals('200', scale.height)
-        self.assertEquals(u'Aufmacher groß (450×200)', scale.title)
+        self.assertEqual('450x200', scale.name)
+        self.assertEqual('450', scale.width)
+        self.assertEqual('200', scale.height)
+        self.assertEqual(u'Aufmacher groß (450×200)', scale.title)
 
     def test_color_source(self):
         source = zeit.imp.source.ColorSource()(None)
         values = list(source)
-        self.assertEquals(3, len(values))
+        self.assertEqual(3, len(values))
         value = values[1]
         zope.interface.verify.verifyObject(zeit.imp.interfaces.IColor, value)
-        self.assertEquals('schwarzer Rahmen (1 Pixel)', value.title)
-        self.assertEquals('#000000', value.color)
+        self.assertEqual('schwarzer Rahmen (1 Pixel)', value.title)
+        self.assertEqual('#000000', value.color)
 
 
 class TestCrop(zeit.cms.testing.FunctionalTestCase):
@@ -156,32 +155,32 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
         self.crop.add_filter('brightness', 0)
         image = self.crop.crop(200, 200, 0, 0, 200, 200)
         r, g, b = self.get_histogram(image)
-        self.assertEquals(40000, r[0])
-        self.assertEquals(40000, g[0])
-        self.assertEquals(40000, b[0])
-        self.assertEquals(0, sum(r[1:]))
-        self.assertEquals(0, sum(g[1:]))
-        self.assertEquals(0, sum(b[1:]))
+        self.assertEqual(40000, r[0])
+        self.assertEqual(40000, g[0])
+        self.assertEqual(40000, b[0])
+        self.assertEqual(0, sum(r[1:]))
+        self.assertEqual(0, sum(g[1:]))
+        self.assertEqual(0, sum(b[1:]))
 
     def test_color_filter(self):
         # Factor 0 gives a black and white image, so the channels are equal
         self.crop.add_filter('color', 0)
         image = self.crop.crop(200, 200, 0, 0, 200, 200)
         r, g, b = self.get_histogram(image)
-        self.assertEquals(r, g)
-        self.assertEquals(r, b)
+        self.assertEqual(r, g)
+        self.assertEqual(r, b)
 
     def test_contrast_filter(self):
         # A contrast factor of 0 produces a solid gray image:
         self.crop.add_filter('contrast', 0)
         image = self.crop.crop(200, 200, 0, 0, 200, 200)
         r, g, b = self.get_histogram(image)
-        self.assertEquals(40000, sum(r))
-        self.assertEquals(40000, sum(g))
-        self.assertEquals(40000, sum(b))
-        self.assertEquals(40000, r[99])
-        self.assertEquals(40000, g[99])
-        self.assertEquals(40000, b[99])
+        self.assertEqual(40000, sum(r))
+        self.assertEqual(40000, sum(g))
+        self.assertEqual(40000, sum(b))
+        self.assertEqual(40000, r[99])
+        self.assertEqual(40000, g[99])
+        self.assertEqual(40000, b[99])
 
     def test_sharpness_filter(self):
         # Testing the sharpnes is not quite trival. We just check that the
@@ -211,17 +210,17 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
         self.crop.add_filter('contrast', 0)
         image = self.crop.crop(200, 200, 0, 0, 200, 200, border=(0, 0, 0))
         r, g, b = self.get_histogram(image)
-        self.assertNotEquals(40000, r[156])
-        self.assertNotEquals(40000, g[156])
-        self.assertNotEquals(40000, b[156])
-        self.assertNotEquals(0, r[0])
-        self.assertNotEquals(0, g[0])
-        self.assertNotEquals(0, b[0])
+        self.assertNotEqual(40000, r[156])
+        self.assertNotEqual(40000, g[156])
+        self.assertNotEqual(40000, b[156])
+        self.assertNotEqual(0, r[0])
+        self.assertNotEqual(0, g[0])
+        self.assertNotEqual(0, b[0])
 
     def test_border_color(self):
         image = self.crop.crop(200, 200, 0, 0, 200, 200,
                                border=(127, 127, 127))
-        self.assertEquals((127, 127, 127), image.getpixel((0, 0)))
+        self.assertEqual((127, 127, 127), image.getpixel((0, 0)))
 
     def test_border_on_grayscale_image(self):
         self.group = (
@@ -239,7 +238,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                     __name__, 'testdata/cmyk.jpg')))
         crop = zeit.imp.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
-        self.assertEquals('RGB', image.mode)
+        self.assertEqual('RGB', image.mode)
 
     def test_palette_converted_to_rgb(self):
         self.group = (
@@ -248,7 +247,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                     __name__, 'testdata/palette.gif')))
         crop = zeit.imp.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
-        self.assertEquals('RGB', image.mode)
+        self.assertEqual('RGB', image.mode)
 
     def test_png_converted_to_rgba(self):
         self.group = (
@@ -257,9 +256,9 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                     __name__, 'testdata/transparent.png')))
         crop = zeit.imp.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
-        self.assertEquals('RGBA', image.mode)
+        self.assertEqual('RGBA', image.mode)
         # Check that the alpha channel survives the cropping intact.
-        self.assertEquals((183, 255, 159, 64), image.getpixel((100, 25)))
+        self.assertEqual((183, 255, 159, 64), image.getpixel((100, 25)))
 
 
 def test_suite():

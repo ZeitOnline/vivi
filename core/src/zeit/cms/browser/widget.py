@@ -1,5 +1,4 @@
 # coding: utf8
-from six.moves import range
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
 import grokcore.component as grok
@@ -565,7 +564,7 @@ def rst2html(text):
 
 def html2rst(text):
     try:
-        return pypandoc.convert(text, to='rst', format='html')
+        return pypandoc.convert_text(text, to='rst', format='html')
     except OSError:
         return text
 

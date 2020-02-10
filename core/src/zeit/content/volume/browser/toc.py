@@ -262,9 +262,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
-        page_string = toc_entry.get('page', u'')
-        page_entries = [page_string .lstrip("0") for page_string in
-                        re.findall(r'\d+', page_string)]
+        page_entries = [x.lstrip("0") for x in re.findall(
+            r'\d+', toc_entry.get('page', u''))]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):

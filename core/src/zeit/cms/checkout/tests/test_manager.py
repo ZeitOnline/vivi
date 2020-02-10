@@ -155,8 +155,9 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
         changed = lsc.last_semantic_change
 
         manager = ICheckinManager(self.checked_out)
-        self.assertRaisesRegexp(
-            CheckinCheckoutError, '.*provoked veto.*', manager.checkin)
+        with self.assertRaises(CheckinCheckoutError) as e:
+            manager.checkin()
+            self.assertIn('provoked veto', str(e.exception))
 
         self.assertEqual(1, len(self.workingcopy))
 

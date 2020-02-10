@@ -1,5 +1,6 @@
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.workflow.interfaces
+import zeit.content.animation.animation
 import zeit.content.video.testing
 
 
@@ -59,8 +60,8 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
     def test_animation_video_reference(self):
         import zeit.content.animation.animation
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()
+        next(factory)
+        video = next(factory)
         animation = zeit.content.animation.animation.Animation()
         animation.video = video
         assert animation.xml.body.video.xpath("@contenttype")[0] == 'video'
@@ -79,7 +80,7 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 
         videos = zeit.cms.relation.interfaces.IReferences(pls)
         self.assertEqual(1, len(videos))
-        self.assertEquals(
+        self.assertEqual(
             'http://xml.zeit.de/video', videos[0].uniqueId)
 
     def test_playlist_is_published_when_contained_video_is_published(self):

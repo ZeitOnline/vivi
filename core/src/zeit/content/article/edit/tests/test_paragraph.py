@@ -13,7 +13,7 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_text_inserts_xml(self):
         p = self.get_paragraph()
-        self.assertEquals(u'', p.text)
+        self.assertEqual(u'', p.text)
         text = u'The quick brown fox jumps over the lazy dog.'
         p.text = text
         self.assertEqual(text, p.text)

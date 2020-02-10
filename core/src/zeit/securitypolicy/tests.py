@@ -1,4 +1,3 @@
-from six.moves import range
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
@@ -107,7 +106,7 @@ class SecurityPolicyXLSSheetCase(object):
                 self.browser.open(path_with_skin)
 
             status, msg = self.browser.headers['Status'].split(' ', 1)
-            self.assertEquals(
+            self.assertEqual(
                 (int(status) < 400), expected,
                 '%s: %s (expected <400: %s)\n%s' % (
                     path.encode('utf8'), status, bool(expected),

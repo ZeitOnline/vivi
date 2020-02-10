@@ -78,7 +78,7 @@ class UploadImage(zeit.cms.browser.view.JSON):
         view()
         result = {}
         if view.errors:
-            if len(view.errors) == 1 and view.errors[0][0] == 'blob':
+            if len(view.errors) == 1 and view.errors[0].field_name == 'blob':
                 # That was not an image.
                 self.request.response.setStatus(415)
                 result['error'] = 'NotAnImage'

@@ -306,7 +306,7 @@ class Connector(object):
             value = (
                 '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
                 '/CMS/tagging">')
-            value += lxml.etree.tostring(tags[0])
+            value += lxml.etree.tostring(tags[0], encoding='unicode')
             value += '</tag:rankedTags>'
             properties[(
                 'keywords',

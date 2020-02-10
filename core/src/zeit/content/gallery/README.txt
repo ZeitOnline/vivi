@@ -297,7 +297,7 @@ Entry layout
 Each entry can have a different layout. This is defined by a source:
 
 >>> field = zeit.content.gallery.interfaces.IGalleryEntry['layout']
->>> list(field.vocabulary)
+>>> sorted(list(field.vocabulary))
 [u'hidden', u'image-only']
 
 Let's set a layout on 01.jpg:
