@@ -3,6 +3,9 @@ import shutil
 from os import path
 from pytest_server_fixtures.http import SimpleHTTPTestServer
 from zeit.content.image import fetch
+import zeit.cms.repository.interfaces
+import zope.component
+import zeit.content.image.testing
 
 
 @pytest.yield_fixture
@@ -22,3 +25,16 @@ def test_image_server(image_server):
 def test_fetch_remote_image(image_server):
     local_image = fetch.get_remote_image('%s/testdata/opernball.jpg' % image_server.uri)
     assert local_image.mimeType == 'image/jpeg'
+
+
+class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
+
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    def test_image_group_from_image(self):
+        repository = self.repository()
+        local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
+        group = fetch.image_group_from_image(repository, 'group', local_image)
+        assert group.master_image is not None

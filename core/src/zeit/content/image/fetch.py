@@ -1,5 +1,6 @@
 import requests
 from zeit.content.image.image import LocalImage
+from zeit.content.image.imagegroup import ImageGroup
 
 KiB = 1024
 DOWNLOAD_CHUNK_SIZE = 2 * KiB
@@ -18,3 +19,12 @@ def get_remote_image(url, timeout=2):
                 assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
             fh.write(chunk)
     return image
+
+
+def image_group_from_image(where, name, image):
+    group = ImageGroup()
+    image_name = 'master.' + image.format
+    group.master_images = (('desktop', image_name))
+    where[name] = group
+    where[name][image_name] = image
+    return where[name]
