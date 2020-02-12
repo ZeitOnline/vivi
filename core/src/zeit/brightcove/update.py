@@ -66,24 +66,8 @@ class import_video(object):
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         folder[self.bcobj.id] = cmsobj
-        try:
-            video_still = zeit.content.image.fetch.get_remote_image(
-                self.bcobj.data['images']['poster']['src'])
-        except Exception:
-            video_still = None
-        zeit.content.image.fetch.image_group_from_image(
-            folder,
-            '%s-still' % self.bcobj.id,
-            video_still)
-        try:
-            thumbnail = zeit.content.image.fetch.get_remote_image(
-                self.bcobj.data['images']['thumbnail']['src'])
-        except Exception:
-            thumbnail = None
-        zeit.content.image.fetch.image_group_from_image(
-            folder,
-            '%s-thumbnail' % self.bcobj.id,
-            thumbnail)
+        download_teaser_image(folder, self.bcobj.data, 'still')
+        download_teaser_image(folder, self.bcobj.data, 'thumbnail')
         self.cmsobj = folder[self.bcobj.id]
 
     def update(self):
@@ -116,6 +100,25 @@ class import_video(object):
                     zope.lifecycleevent.ObjectModifiedEvent(
                         co, zope.lifecycleevent.Attributes(
                             IVideo, *list(IVideo))))
+
+
+BC_IMG_KEYS = {
+    'still': 'poster',
+    'thumbnail': 'thumbnail'
+}
+
+
+def download_teaser_image(folder, bcdata, ttype='still'):
+
+    try:
+        image = zeit.content.image.fetch.get_remote_image(
+            bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
+    except Exception:
+        image = None
+    zeit.content.image.fetch.image_group_from_image(
+        folder,
+        '%s-%s' % (bcdata['id'], ttype),
+        image)
 
 
 # Triggered by BC notification webhook, which we receive in
