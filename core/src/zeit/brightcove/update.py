@@ -1,6 +1,7 @@
 from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
+import zeit.content.image.fetch
 import gocept.runner
 import logging
 import zeit.brightcove.convert
@@ -65,6 +66,11 @@ class import_video(object):
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         folder[self.bcobj.id] = cmsobj
+        zeit.content.image.fetch.image_group_from_image(
+            folder,
+            '%s-still' % self.bcobj.id,
+            zeit.content.image.fetch.get_remote_image(
+                self.bcobj.data['images']['poster']['src']))
         self.cmsobj = folder[self.bcobj.id]
 
     def update(self):
