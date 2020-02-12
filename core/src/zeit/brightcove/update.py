@@ -71,6 +71,11 @@ class import_video(object):
             '%s-still' % self.bcobj.id,
             zeit.content.image.fetch.get_remote_image(
                 self.bcobj.data['images']['poster']['src']))
+        zeit.content.image.fetch.image_group_from_image(
+            folder,
+            '%s-thumbnail' % self.bcobj.id,
+            zeit.content.image.fetch.get_remote_image(
+                self.bcobj.data['images']['thumbnail']['src']))
         self.cmsobj = folder[self.bcobj.id]
 
     def update(self):
