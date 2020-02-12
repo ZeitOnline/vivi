@@ -32,6 +32,11 @@ def test_fetch_remote_image_fail(image_server):
     assert local_image is None
 
 
+def test_fetch_remote_image_fail_url(image_server):
+    local_image = fetch.get_remote_image('nosuchhost')
+    assert local_image is None
+
+
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def repository(self):
