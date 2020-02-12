@@ -43,3 +43,8 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
         group = fetch.image_group_from_image(repository, 'group', local_image)
         assert group.master_image is not None
+
+    def test_image_group_from_none(self):
+        repository = self.repository()
+        group = fetch.image_group_from_image(repository, 'group', None)
+        assert group.master_image is None

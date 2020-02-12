@@ -25,8 +25,10 @@ def get_remote_image(url, timeout=2):
 
 def image_group_from_image(where, name, image):
     group = ImageGroup()
-    image_name = 'master.' + image.format
-    group.master_images = (('desktop', image_name))
+    if image is not None:
+        image_name = 'master.' + image.format
+        group.master_images = (('desktop', image_name))
     where[name] = group
-    where[name][image_name] = image
+    if image is not None:
+        where[name][image_name] = image
     return where[name]
