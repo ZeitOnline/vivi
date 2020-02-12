@@ -42,21 +42,22 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertEqual(True, info.published)
 
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
     def test_new_video_should_create_empty_still_image_group(self):
         import_video(self.create_video())
-        repository = self.repository()
-        assert repository['video']['2017-05']['myvid'].video_still is None
-        assert repository['video']['2017-05']['myvid-still'] is not None
+        assert self.repository['video']['2017-05']['myvid'].video_still is None
+        assert self.repository['video']['2017-05']['myvid-still'] is not None
+
+    def test_new_video_should_create_empty_still_image_group_for_missing_src(self):
+        video = self.create_video()
+        del video.data['images']
+        import_video(video)
+        assert self.repository['video']['2017-05']['myvid'].video_still is None
+        assert self.repository['video']['2017-05']['myvid-still'] is not None
 
     def test_new_video_should_create_empty_thumbnail_image_group(self):
         import_video(self.create_video())
-        repository = self.repository()
-        assert repository['video']['2017-05']['myvid'].thumbnail is None
-        assert repository['video']['2017-05']['myvid-thumbnail'] is not None
+        assert self.repository['video']['2017-05']['myvid'].thumbnail is None
+        assert self.repository['video']['2017-05']['myvid-thumbnail'] is not None
 
     def test_changed_video_should_be_written_to_cms(self):
         bc = self.create_video()
