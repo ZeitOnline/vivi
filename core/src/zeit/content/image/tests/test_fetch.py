@@ -27,6 +27,11 @@ def test_fetch_remote_image(image_server):
     assert local_image.mimeType == 'image/jpeg'
 
 
+def test_fetch_remote_image_fail(image_server):
+    local_image = fetch.get_remote_image('%s/testdata/nosuchimage.jpg' % image_server.uri)
+    assert local_image is None
+
+
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def repository(self):

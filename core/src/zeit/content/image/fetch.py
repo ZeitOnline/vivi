@@ -9,6 +9,8 @@ DOWNLOAD_CHUNK_SIZE = 2 * KiB
 def get_remote_image(url, timeout=2):
 
     response = requests.get(url, stream=True, timeout=timeout)
+    if not response.ok:
+        return
     image = LocalImage()
     with image.open('w') as fh:
         first_chunk = True
