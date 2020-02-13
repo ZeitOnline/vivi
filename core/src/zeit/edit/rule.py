@@ -285,7 +285,7 @@ def count(context):
 
 @glob(zeit.edit.interfaces.IElement)
 def position(context):
-    return context.__parent__.keys().index(context.__name__) + 1
+    return list(context.__parent__).index(context.__name__) + 1
 
 
 @glob(zope.interface.Interface)
