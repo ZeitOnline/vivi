@@ -146,7 +146,7 @@ class RulesManager(grok.GlobalUtility):
         rule = []
         start_line = 0
         for line_no, line in enumerate(file_rules):
-            line = six.text_type(line, 'utf-8')
+            line = six.ensure_text(line, 'utf-8')
             if line.startswith('applicable') and noop:
                 # start a new rule
                 if rule:
