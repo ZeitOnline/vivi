@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict, defaultdict
-from six import StringIO
+from six import StringIO, ensure_str
 from zeit.cms.browser.interfaces import IPreviewURL
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IFolder
@@ -262,9 +262,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
-        page_string = toc_entry.get('page', u'')
-        page_entries = [page_string .lstrip("0") for page_string in
-                        re.findall(r'\d+', page_string)]
+        page_entries = [x.lstrip("0") for x in re.findall(
+            r'\d+', toc_entry.get('page', u''))]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
@@ -340,7 +339,7 @@ class Toc(zeit.cms.browser.view.Base):
             for toc_element in self._generate_csv_rows(toc_data):
 
                 writer.writerow(
-                    [val.encode('utf-8') for val in toc_element]
+                    [ensure_str(val) for val in toc_element]
                 )
 
             file_content = out.getvalue()

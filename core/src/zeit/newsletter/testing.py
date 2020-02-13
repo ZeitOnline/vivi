@@ -10,7 +10,6 @@ import zeit.content.image.testing
 import zeit.content.video.testing
 import zope.app.appsetup.product
 import zope.component
-from six.moves import range
 
 
 product_config = """\

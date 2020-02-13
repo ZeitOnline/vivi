@@ -20,7 +20,6 @@ import zope.container.contained
 import zope.dublincore.interfaces
 import zope.interface
 import zope.security.proxy
-from six.moves import range
 
 
 FIRST_RELEASED = zeit.connector.search.SearchVar(

@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.25.10.dev0',
+    version='4.25.15.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -64,6 +64,7 @@ setup(
         'zope.annotation',
         'zope.app.appsetup',
         'zope.app.file',
+        'zope.app.folder',
         'zope.app.keyreference',
         'zope.app.locking',
         'zope.app.security',
@@ -132,7 +133,6 @@ setup(
             'zope.app.dependable',
             'zope.app.error',
             'zope.app.exception',
-            'zope.app.folder',
             'zope.app.form>=3.6.0',
             'zope.app.generations',
             'zope.app.http',

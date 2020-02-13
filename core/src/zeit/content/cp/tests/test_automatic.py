@@ -1,5 +1,4 @@
 # coding: utf-8
-from six.moves import range
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import json
@@ -7,7 +6,6 @@ import lxml.etree
 import mock
 import pkg_resources
 import requests_mock
-import six
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces

@@ -9,6 +9,7 @@ import lxml.etree
 import os.path
 import pytz
 import re
+import sys
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -108,7 +109,8 @@ class CMSContent(Converter):
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
             'body': lxml.etree.tostring(
-                zeit.retresco.interfaces.IBody(self.context)),
+                zeit.retresco.interfaces.IBody(self.context),
+                encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
         return result
@@ -466,7 +468,10 @@ class Volume(Converter):
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
-        instance = super(Converter, cls).__new__(cls, None)
+        if sys.version_info < (3,):
+            instance = super(Converter, cls).__new__(cls, None)
+        else:
+            instance = super(Converter, cls).__new__(cls)
         instance.context = context
         instance.content = context
         return instance

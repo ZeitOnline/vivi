@@ -5,7 +5,6 @@ import mock
 import zeit.cms.checkout.interfaces
 import zeit.ghost.ghost
 import zeit.ghost.testing
-from six.moves import range
 
 
 class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):

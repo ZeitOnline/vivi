@@ -14,7 +14,7 @@ applicable(article)
 error_if(True, u'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_IReference_content_returns_referenced_object(self):
         self.repository['info'] = zeit.content.infobox.infobox.Infobox()
@@ -27,7 +27,7 @@ applicable(True)
 error_if(IInfobox.providedBy(content[0]), u'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_IImage_content_returns_referenced_object(self):
         block = self.get_factory(self.get_article(), 'image')()
@@ -40,7 +40,7 @@ applicable(True)
 error_if(IImage.providedBy(content[0]), u'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_IVolume_content_returns_referenced_object(self):
         from zeit.content.volume.volume import Volume
@@ -59,4 +59,4 @@ applicable(True)
 error_if(IVolume.providedBy(content[0]), u'bar')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)

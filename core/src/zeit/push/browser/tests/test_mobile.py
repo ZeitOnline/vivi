@@ -13,7 +13,7 @@ class FindTitleIntegration(zeit.push.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent('form.mobile_payload_template')
         s.select('form.mobile_payload_template', 'label=Foo')
-        self.assertEqual('Default title', s.getValue('form.mobile_title'))
+        s.waitForValue('form.mobile_title', 'Default title')
 
 
 class FindTitleTest(zeit.push.testing.BrowserTestCase):

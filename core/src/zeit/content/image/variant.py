@@ -101,10 +101,17 @@ class Variant(object):
             value = fields[key].fromUnicode(six.text_type(value))
             setattr(self, key, value)
 
-    def __cmp__(self, other):
+    def __eq__(self, other):
         if zeit.content.image.interfaces.IVariant.providedBy(other) and (
                 self.id == other.id):
-            return 0
+            return True
+        else:
+            return False
+
+    def __ne__(self, other):  # BBB only py2
+        return not self.__eq__(other)
+
+    def __cmp__(self, other):
         return super(Variant, self).__cmp__(other)
 
     @property

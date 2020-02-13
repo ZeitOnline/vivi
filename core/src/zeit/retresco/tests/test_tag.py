@@ -42,6 +42,6 @@ class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
         tag = Tag(u'Snowman Tag', u'Snowman')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
-        b.open(base + u'@@redirect_to?unique_id=tag://{}&view=@@object-details'
-                      .format(tag.code.encode('unicode_escape')))
+        b.open(base + u'@@redirect_to?unique_id=tag://%s&view=@@object-details'
+               % tag.code.encode('unicode_escape').decode('ascii'))
         self.assertEqual(u'<h3>Snowman Tag</h3>', b.contents)

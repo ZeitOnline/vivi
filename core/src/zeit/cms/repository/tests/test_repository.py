@@ -38,8 +38,8 @@ class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_conflict_override(self):
         self.repository.addContent(self.res, ignore_conflicts=True)
-        self.assertEquals(u'Pop',
-                          self.repository['online']['conflicting'].data)
+        self.assertEqual(u'Pop',
+                         self.repository['online']['conflicting'].data)
 
 
 class LiveURLToContent(unittest.TestCase):
@@ -153,8 +153,8 @@ class RepositoryTest(zeit.cms.testing.ZeitCmsTestCase):
             lst.return_value = [
                 ('one', 'http://xml.zeit.de/cache/one'),
                 ('two', 'http://xml.zeit.de/cache/two')]
-            self.assertEquals(['one', 'two'], list(folder.keys()))
-            self.assertEquals(
+            self.assertEqual(['one', 'two'], list(folder.keys()))
+            self.assertEqual(
                 ['http://xml.zeit.de/cache/one'],
                 [x.uniqueId for x in folder.values()])
 

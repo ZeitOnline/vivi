@@ -44,7 +44,7 @@ class ImageTransform(object):
         elif height is None:
             height = orig_height * width // orig_width
 
-        image = self.image.resize((width, height), filter)
+        image = self.image.resize((int(width), int(height)), filter)
         return self._construct_image(image)
 
     def create_variant_image(

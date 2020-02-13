@@ -1,4 +1,3 @@
-from six.moves import range
 from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok

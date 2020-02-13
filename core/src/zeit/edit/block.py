@@ -1,4 +1,3 @@
-from six.moves import map
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify

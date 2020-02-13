@@ -9,8 +9,8 @@ import zope.app.appsetup.product
 class TestTicketAuthorization(unittest.TestCase):
 
     rnd = -2134234234
-    hash_ = 28 * 'x'
-    principal = 'prin.cipal'
+    hash_ = 28 * b'x'
+    principal = b'prin.cipal'
 
     def setUp(self):
         self.config = zope.app.appsetup.product.saveConfiguration()
@@ -28,17 +28,17 @@ class TestTicketAuthorization(unittest.TestCase):
         packed = zeit.content.gallery.browser.ticket.pack(
             self.rnd, self.hash_, self.principal)
         unpacked = zeit.content.gallery.browser.ticket.unpack(packed)
-        self.assertEquals(unpacked[0], self.rnd)
-        self.assertEquals(unpacked[1], self.hash_)
-        self.assertEquals(unpacked[2], self.principal)
+        self.assertEqual(unpacked[0], self.rnd)
+        self.assertEqual(unpacked[1], self.hash_)
+        self.assertEqual(unpacked[2], self.principal)
 
     def test_ticket(self):
         ticket = zeit.content.gallery.browser.ticket.get_hash(
-            self.rnd, self.principal)
+            self.rnd, self.principal.decode('utf-8'))
         unpacked = zeit.content.gallery.browser.ticket.unpack(ticket)
-        self.assertEquals(unpacked[0], self.rnd)
-        self.assertNotEquals(unpacked[1], self.hash_)
-        self.assertEquals(unpacked[2], self.principal)
+        self.assertEqual(unpacked[0], self.rnd)
+        self.assertNotEqual(unpacked[1], self.hash_)
+        self.assertEqual(unpacked[2], self.principal)
 
 
 def test_suite():

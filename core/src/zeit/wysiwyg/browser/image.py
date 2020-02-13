@@ -14,5 +14,4 @@ class Images(zeit.cms.browser.view.JSON):
                     result.append(i)
             else:
                 result.append(image)
-        return dict(
-            images=[image.uniqueId for image in result])
+        return {'images': [x.uniqueId for x in result]}

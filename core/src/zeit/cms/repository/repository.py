@@ -1,5 +1,4 @@
 from functools import total_ordering
-from six.moves import zip
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
 import gocept.cache.property

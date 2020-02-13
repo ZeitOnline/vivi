@@ -11,7 +11,6 @@ import zeit.content.link.link
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
-from six.moves import map
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
