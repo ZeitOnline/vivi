@@ -42,7 +42,7 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
     def test_order_argument_is_required(self):
         with self.assertRaises(ValueError) as e:
             self.landing_zone()
-        self.assertEqual('Order must be specified!', e.exception.message)
+        self.assertEqual('Order must be specified!', str(e.exception))
 
     def test_json_params_validate_schema_fields_before_creation(self):
         self.request.form['order'] = 'top'
