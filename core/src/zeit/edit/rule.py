@@ -146,7 +146,7 @@ class RulesManager(grok.GlobalUtility):
         rule = []
         start_line = 0
         for line_no, line in enumerate(file_rules):
-            line = six.text_type(line, 'utf-8')
+            line = six.ensure_text(line, 'utf-8')
             if line.startswith('applicable') and noop:
                 # start a new rule
                 if rule:
@@ -285,7 +285,7 @@ def count(context):
 
 @glob(zeit.edit.interfaces.IElement)
 def position(context):
-    return context.__parent__.keys().index(context.__name__) + 1
+    return list(context.__parent__).index(context.__name__) + 1
 
 
 @glob(zope.interface.Interface)
