@@ -50,7 +50,9 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
             "example_amount": "nonnumeric"})
         with self.assertRaises(zope.interface.Invalid) as e:
             self.landing_zone()
-        self.assertIn("WrongType(u'nonnumeric'", str(e.exception))
+        exception_str = str(e.exception)
+        self.assertIn("WrongType", exception_str)
+        self.assertIn("nonnumeric", exception_str)
 
     def test_json_params_validate_invariants_before_creation(self):
         self.request.form['order'] = 'top'
