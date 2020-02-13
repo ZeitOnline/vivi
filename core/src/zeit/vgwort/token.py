@@ -44,7 +44,7 @@ class TokenStorage(persistent.Persistent,
     def claim(self):
         if len(self) == 0:
             raise ValueError("No tokens available.")
-        value = self._data.pull(random.randint(0, len(self) - 1))
+        value = self._data.pull(int(random.random() * (len(self) - 1)))
         self._len.change(-1)
         return value
 

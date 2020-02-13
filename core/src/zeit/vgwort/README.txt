@@ -35,17 +35,18 @@ Getting tokens is randomized to mostly avoid conflicts.
 Seed the random generator with a fixed value to get predictable results:
 
 >>> import random
->>> random.seed(0)
+>>> try: random.seed(0, version=1)
+... except TypeError: random.seed(0)
 >>> tokens.claim()
 ('4c47ec781b5b4a288b9a1ab8b2c5ab3c', '82e7bb658f75444a9bf74273641f2c29')
 >>> len(tokens)
 2
 >>> tokens.claim()
-('3b787da5b75846e2b39bd814b55a9512', 'c32e3e163d874e7d8da0d21f96bfeb47')
+('c0063bcfb7234b35b145af20dccf5e2a', '8018af9154bd4b60b0ee4a6891b85583')
 >>> len(tokens)
 1
 >>> tokens.claim()
-('c0063bcfb7234b35b145af20dccf5e2a', '8018af9154bd4b60b0ee4a6891b85583')
+('3b787da5b75846e2b39bd814b55a9512', 'c32e3e163d874e7d8da0d21f96bfeb47')
 >>> len(tokens)
 0
 >>> tokens.claim()
@@ -132,7 +133,7 @@ The private token is *not* synched to xml:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public2</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>
   </head>
   <body/>
 </testtype>
