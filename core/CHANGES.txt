@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.25.15 (unreleased)
+4.25.15 (2020-02-14)
 --------------------
 
 - ZON-5651 etc: Make zeit.edit, zeit.vgwort py3 compatible
