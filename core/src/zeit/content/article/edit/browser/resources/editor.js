@@ -540,10 +540,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             pos.y = tmp_pos.top;
             pos.x = tmp_pos.left;
             tmp_el.remove();
-            if (par.children().length==0){
-                // allow empty paragraphs while editing
-                document.execCommand('insertHTML', false,'<br type="_moz" />');
-            }
         } else {
             return null;
         }
