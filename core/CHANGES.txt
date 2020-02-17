@@ -2,10 +2,19 @@ vivi.core changes
 =================
 
 
-4.25.15 (unreleased)
+4.25.16 (unreleased)
 --------------------
 
 - Nothing changed yet.
+
+
+4.25.15 (2020-02-14)
+--------------------
+
+- ZON-5651 etc: Make zeit.edit, zeit.vgwort py3 compatible
+
+- BUG-1205: Remove obsolete browser workaround that inserted
+  an additional br element in article editor.
 
 
 4.25.14 (2020-02-07)
