@@ -1,7 +1,6 @@
 from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
-import zeit.content.image.fetch
 import gocept.runner
 import logging
 import zeit.brightcove.convert
@@ -111,11 +110,11 @@ BC_IMG_KEYS = {
 def download_teaser_image(folder, bcdata, ttype='still'):
 
     try:
-        image = zeit.content.image.fetch.get_remote_image(
+        image = zeit.content.image.image.get_remote_image(
             bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
     except Exception:
         image = None
-    zeit.content.image.fetch.image_group_from_image(
+    zeit.brightcove.convert.image_group_from_image(
         folder,
         '%s-%s' % (bcdata['id'], ttype),
         image)

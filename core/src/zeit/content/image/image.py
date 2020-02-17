@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import lxml.objectify
 import magic
+import requests
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -156,3 +157,27 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
             parent_workflow = self.target_iface(parent)
             super(XMLReferenceUpdater, self).update_with_context(
                 entry, parent_workflow)
+
+
+KiB = 1024
+DOWNLOAD_CHUNK_SIZE = 2 * KiB
+
+
+def get_remote_image(url, timeout=2):
+
+    try:
+        response = requests.get(url, stream=True, timeout=timeout)
+    except Exception:
+        return
+    if not response.ok:
+        return
+    image = LocalImage()
+    with image.open('w') as fh:
+        first_chunk = True
+        for chunk in response.iter_content(DOWNLOAD_CHUNK_SIZE):
+            # Too small means something is not right with this download
+            if first_chunk:
+                first_chunk = False
+                assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
+            fh.write(chunk)
+    return image

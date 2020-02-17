@@ -4,7 +4,6 @@ from zeit.cms.interfaces import ICMSContent
 import mock
 import pytz
 import transaction
-import zope.component
 import zeit.brightcove.testing
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
