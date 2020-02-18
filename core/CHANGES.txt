@@ -2,8 +2,8 @@ vivi.core changes
 =================
 
 
-4.25.16 (unreleased)
---------------------
+4.26.0 (2020-02-18)
+-------------------
 
 - OPS-786: Extract fluent logging helper so zeit.web can reuse it
 
