@@ -1,6 +1,5 @@
 from six.moves.configparser import ConfigParser
 import ZConfig
-import ast
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
@@ -191,26 +190,6 @@ def bugsnag_filter(global_conf, **local_conf):
     def bugsnag_filter(app):
         return BugsnagMiddleware(app)
     return bugsnag_filter
-
-
-try:
-    import fluent.handler
-except ImportError:
-    pass  # soft dependency
-else:
-    class FluentRecordFormatter(fluent.handler.FluentRecordFormatter):
-        """Work around the fact that `logging.fileConfig` (which most clients
-        use) is not based on `logging.dictConfig` and thus is less expressive,
-        especially concerning Formatter instantiation: it only supports a
-        (string) `format=` parameter, and nothing else. Since
-        FluentRecordFormatter needs a dict, we call literal_eval so it works.
-        """
-
-        def __init__(self, fmt=None, datefmt=None, **kw):
-            if (isinstance(fmt, six.string_types) and
-                    fmt.strip().startswith('{')):
-                fmt = ast.literal_eval(fmt)
-            super(FluentRecordFormatter, self).__init__(fmt, **kw)
 
 
 # Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
