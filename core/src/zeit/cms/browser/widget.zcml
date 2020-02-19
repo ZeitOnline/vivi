@@ -104,6 +104,28 @@
     permission="zope.Public"
     />
 
+  <!-- RecipeWidget -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.RecipeSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.DropObjectWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.RecipeSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
   <!-- ReferenceWidget -->
 
   <adapter

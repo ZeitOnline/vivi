@@ -100,6 +100,11 @@
     name="folders"
     />
   <utility
+    component=".interfaces.recipeSource"
+    provides=".contentsource.INamedCMSContentSource"
+    name="recipes"
+    />
+  <utility
     component=".interfaces.authorSource"
     provides=".contentsource.INamedCMSContentSource"
     name="authors"
