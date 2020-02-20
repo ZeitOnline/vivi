@@ -130,6 +130,7 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
                 '["position"]'))
 
 
+@unittest.skip('Functionality is broken under FF72')
 class FindReplaceTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
