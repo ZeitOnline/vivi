@@ -270,22 +270,6 @@ class RecipeForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Recipe')
 
 
-class Recipe(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'recipe'
-    undo_description = _('edit recipe')
-    form_fields = FormFields(ICommonMetadata).select('recipes')
-
-    def setUpWidgets(self, *args, **kw):
-        super(Recipe, self).setUpWidgets(*args, **kw)
-        self.widgets['recipes'].add_type = IAuthor
-        self.widgets['recipes'].display_list_below_buttons = True
-
-    def _success_handler(self):
-        self.signal('reload-inline-view', 'edit.heading')
-
-
 class MetadataAgency(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
@@ -557,3 +541,19 @@ class Tldr(zeit.edit.browser.form.InlineForm,
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
         super(Tldr, self).handle_edit_action.success(data)
+
+
+class RecipeList(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'recipe'
+    undo_description = _('edit recipe')
+    form_fields = FormFields(ICommonMetadata).select('recipelists')
+
+    def setUpWidgets(self, *args, **kw):
+        super(RecipeList, self).setUpWidgets(*args, **kw)
+        self.widgets['recipelists'].add_type = IAuthor
+        self.widgets['recipelists'].display_list_below_buttons = True
+
+    def _success_handler(self):
+        self.signal('reload-inline-view', 'edit.heading')

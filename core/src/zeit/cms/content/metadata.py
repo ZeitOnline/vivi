@@ -50,8 +50,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
-    recipes = zeit.cms.content.reference.ReferenceProperty(
-        '.head.recipes', xml_reference_name='recipes')
+    recipelists = zeit.cms.content.reference.ReferenceProperty(
+        '.head.recipelists', xml_reference_name='recipelists')
     agencies = zeit.cms.content.reference.MultiResource(
         '.head.agency', xml_reference_name='related')
 

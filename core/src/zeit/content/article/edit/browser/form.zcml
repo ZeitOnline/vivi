@@ -388,7 +388,7 @@
     name="recipe"
     class=".form.RecipeForms"
     permission="zope.View"
-    weight="15"
+    weight="25"
     />
 
   <browser:viewlet
@@ -396,17 +396,17 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.RecipeForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.recipe"
+    name="edit.form.recipelists"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="30"
+    weight="10"
     />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.recipe"
-    class=".form.Recipe"
+    name="edit.form.recipelists"
+    class=".form.RecipeList"
     permission="zope.View"
     />
 

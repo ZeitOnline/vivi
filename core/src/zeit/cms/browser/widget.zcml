@@ -109,7 +109,7 @@
   <adapter
     for="
     zope.schema.interfaces.IChoice
-    zeit.cms.content.interfaces.RecipeSource
+    zeit.cms.content.interfaces.RecipeListSource
     .interfaces.IGlobalSearchLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.DropObjectWidget"
@@ -119,7 +119,7 @@
   <adapter
     for="
     zope.schema.interfaces.IChoice
-    zeit.cms.content.interfaces.RecipeSource
+    zeit.cms.content.interfaces.RecipeListSource
     .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IDisplayWidget"
     factory=".widget.DropObjectDisplayWidget"

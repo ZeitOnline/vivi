@@ -27,8 +27,8 @@ class IAuthorType(zeit.cms.interfaces.ICMSContentType):
     """Interface type for authors."""
 
 
-class IRecipeType(zeit.cms.interfaces.ICMSContentType):
-    """Interface type for authors."""
+class IRecipeListType(zeit.cms.interfaces.ICMSContentType):
+    """Interface type for recipe lists."""
 
 
 @zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
@@ -42,13 +42,13 @@ authorSource = AuthorSource()
 
 
 @zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
-class RecipeSource(zeit.cms.content.contentsource.CMSContentSource):
+class RecipeListSource(zeit.cms.content.contentsource.CMSContentSource):
 
     check_interfaces = IAuthorType
-    name = 'recipes'
+    name = 'recipelists'
 
 
-recipeSource = RecipeSource()
+recipeListSource = RecipeListSource()
 
 
 class AgencySource(AuthorSource):
@@ -139,11 +139,9 @@ class ICommonMetadata(zope.interface.Interface):
     authorships.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
-    # not required since e.g. Agenturmeldungen don't have an author, only
-    # a copyright notice
-    recipes = zope.schema.Tuple(
-        title=_("Authors"),
-        value_type=ReferenceField(source=recipeSource),
+    recipelists = zope.schema.Tuple(
+        title=_("Recipe Lists"),
+        value_type=ReferenceField(source=recipeListSource),
         default=(),
         required=False)
 

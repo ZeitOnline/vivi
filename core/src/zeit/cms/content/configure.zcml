@@ -100,9 +100,9 @@
     name="folders"
     />
   <utility
-    component=".interfaces.recipeSource"
+    component=".interfaces.recipeListSource"
     provides=".contentsource.INamedCMSContentSource"
-    name="recipes"
+    name="recipelists"
     />
   <utility
     component=".interfaces.authorSource"
