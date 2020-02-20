@@ -195,13 +195,7 @@ def bugsnag_filter(global_conf, **local_conf):
 # Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
 # (Actually the old behaviour probably was to rely on the py2 str laxness, but
 # all we really want is utf-8, so that's alright.)
-def maybe_decode(value):
-    if isinstance(value, six.binary_type):
-        value = value.decode('utf-8')
-    return value
-
-
-ZConfig.datatypes.stock_datatypes["string"] = maybe_decode
+ZConfig.datatypes.stock_datatypes["string"] = six.ensure_text
 
 
 if sys.version_info < (3,):
