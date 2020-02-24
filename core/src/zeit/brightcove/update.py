@@ -112,9 +112,10 @@ def download_teaser_image(folder, bcdata, ttype='still'):
     try:
         image = zeit.content.image.image.get_remote_image(
             bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
-    except Exception:
+    except Exception as exc:
+        log.error(exc)
         image = None
-    zeit.brightcove.convert.image_group_from_image(
+    return zeit.brightcove.convert.image_group_from_image(
         folder,
         '%s-%s' % (bcdata['id'], ttype),
         image)
