@@ -2,6 +2,7 @@ import mock
 import zeit.brightcove.convert
 import zeit.brightcove.testing
 import zeit.cms.testing
+from zeit.brightcove import convert
 
 
 class NotificationTest(zeit.brightcove.testing.BrowserTestCase):
@@ -27,3 +28,14 @@ class NotificationTest(zeit.brightcove.testing.BrowserTestCase):
             'state': 'INACTIVE',
         }
         return bc
+
+
+class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
+
+    def test_image_group_from_image(self):
+        local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
+        convert.image_group_from_image(self.repository, 'group', local_image)
+        b = self.browser
+        b.handleErrors = False
+        b.open('http://localhost/++skin++vivi/repository'
+               '/group/@@metadata.html')
