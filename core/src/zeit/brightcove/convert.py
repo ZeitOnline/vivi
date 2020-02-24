@@ -331,7 +331,7 @@ def image_group_from_image(where, name, image):
     group = zeit.content.image.imagegroup.ImageGroup()
     if image is not None:
         image_name = 'master.' + image.format
-        group.master_images = (('desktop', image_name))
+        group.master_images = (('desktop', image_name),)
     where[name] = group
     if image is not None:
         where[name][image_name] = image
