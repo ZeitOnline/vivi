@@ -6,7 +6,6 @@ import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
 import zope.publisher.browser
-from zeit.content.image.testing import create_image_group_with_master_image
 
 
 class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
@@ -47,23 +46,23 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
         url = zope.component.getMultiAdapter(
             (thumbnail_view, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, '/group/thumbnail')
+        self.assertEqual(url, 'http://thumbnailurl')
 
     def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
         factory = zeit.content.video.testing.playlist_factory(self)
         playlist = next(factory)
-        playlist.thumbnail = create_image_group_with_master_image()
+        playlist.thumbnail = 'http://thumbnailurl'
         next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/pls/')
         self.browser.follow_redirects = False
         self.browser.open('@@thumbnail')
-        self.assertEqual('http://localhost/group/thumbnail',
+        self.assertEqual('http://thumbnailurl',
                          self.browser.headers.get('location'))
 
     def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
         factory = zeit.content.video.testing.playlist_factory(self)
         playlist = next(factory)
-        playlist.thumbnail = create_image_group_with_master_image()
+        playlist.thumbnail = 'http://thumbnailurl'
         playlist = next(factory)
 
         request = zope.publisher.browser.TestRequest(
@@ -73,7 +72,7 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
         url = zope.component.getMultiAdapter(
             (thumbnail_view, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, '/group/thumbnail')
+        self.assertEqual(url, 'http://thumbnailurl')
 
 
 class TestStill(zeit.content.video.testing.BrowserTestCase):
@@ -84,13 +83,15 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
+            'thumbnail': None,
+            'video_still': 'http://stillurl',
         }
         next(factory)
         next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@preview')
-        self.assertEqual('http://localhost/group/small',
+        self.assertEqual('http://stillurl',
                          self.browser.headers.get('location'))
 
     def test_url_of_preview_view_on_video_should_return_still_url(self):
@@ -98,6 +99,8 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
+            'thumbnail': None,
+            'video_still': 'http://stillurl',
         }
         factory = zeit.content.video.testing.video_factory(self)
         next(factory)
@@ -110,7 +113,7 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
         url = zope.component.getMultiAdapter(
             (view, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, '/group/small')
+        self.assertEqual(url, 'http://stillurl')
 
 
 class TestPlaylist(zeit.content.video.testing.BrowserTestCase):
