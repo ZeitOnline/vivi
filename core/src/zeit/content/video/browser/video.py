@@ -71,7 +71,7 @@ class Thumbnail(zeit.cms.browser.view.Base):
 
     @property
     def thumbnail_url(self):
-        return self.context.thumbnail.variant_url('thumbnail')
+        return self.context.thumbnail
 
     def __call__(self):
         return self.redirect(self.thumbnail_url, trusted=True)
@@ -89,7 +89,7 @@ class Still(zeit.cms.browser.view.Base):
 
     @property
     def video_still_url(self):
-        return self.context.video_still.variant_url('small')
+        return self.context.video_still
 
     def __call__(self):
         return self.redirect(self.video_still_url, trusted=True)
