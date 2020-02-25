@@ -108,7 +108,9 @@ BC_IMG_KEYS = {
 
 
 def download_teaser_image(folder, bcdata, ttype='still'):
-
+    name = '%s-%s' % (bcdata['id'], ttype)
+    if name in folder:
+        return folder[name]
     try:
         image = zeit.content.image.image.get_remote_image(
             bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
@@ -117,7 +119,7 @@ def download_teaser_image(folder, bcdata, ttype='still'):
         image = None
     return zeit.brightcove.convert.image_group_from_image(
         folder,
-        '%s-%s' % (bcdata['id'], ttype),
+        name,
         image)
 
 

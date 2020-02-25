@@ -184,6 +184,20 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         group = self.repository['foo-thumbnail']
         assert group.master_image is None
 
+    def test_download_teaser_image_error_uses_existing(self):
+        from zeit.content.image.testing import create_image_group_with_master_image
+        self.repository['foo-thumbnail'] = create_image_group_with_master_image()
+        existing = self.repository['foo-thumbnail']
+        existing.stamped = 'this'
+        new = zeit.brightcove.update.download_teaser_image(
+            self.repository,
+            dict(
+                id="foo",
+                images=dict(
+                    thumbnail=dict(src="foo"))),
+            "thumbnail")
+        assert new.stamped == 'this'
+
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 

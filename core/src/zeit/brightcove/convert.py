@@ -328,11 +328,14 @@ def playlist_location(bcobj):
 
 
 def image_group_from_image(where, name, image):
-    group = zeit.content.image.imagegroup.ImageGroup()
+    if name in where:
+        group = where[name]
+    else:
+        group = zeit.content.image.imagegroup.ImageGroup()
+        where[name] = group
     if image is not None:
         image_name = 'master.' + image.format
         group.master_images = (('desktop', image_name),)
-    where[name] = group
     if image is not None:
         where[name][image_name] = image
     return where[name]
