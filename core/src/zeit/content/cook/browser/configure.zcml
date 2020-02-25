@@ -1,0 +1,44 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Add"
+    name="zeit.content.cook.Add"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Cook"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.ICook"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.ICook"
+    class=".form.Display"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.ICook"
+    action="@@view.html"
+    menu="zeit-context-views"
+    title="View metadata"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="..interfaces.ICook"
+    name="view.html"
+    />
+
+</configure>

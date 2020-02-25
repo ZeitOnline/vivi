@@ -125,6 +125,15 @@ class ICommonMetadata(zope.interface.Interface):
     authorships.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
+
+    cooks = zope.schema.Tuple(
+        title=_("Cooks"),
+        value_type=ReferenceField(source=authorSource),
+        default=(),
+        required=False)
+    cooks.value_type.setTaggedValue(
+        'zeit.cms.addform.contextfree', 'zeit.content.cooks.add_contextfree')
+
     # DEPRECATED, use authorships instead
     # (still used by zeit.vgwort for querying)
     authors = zope.schema.Tuple(
