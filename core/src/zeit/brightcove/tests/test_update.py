@@ -173,6 +173,17 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual(('William Shakespeare',), video.authors)
 
+    def test_download_teaser_image_error_produces_empty_group(self):
+        zeit.brightcove.update.download_teaser_image(
+            self.repository,
+            dict(
+                id="foo",
+                images=dict(
+                    thumbnail=dict(src="foo"))),
+            "thumbnail")
+        group = self.repository['foo-thumbnail']
+        assert group.master_image is None
+
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 
