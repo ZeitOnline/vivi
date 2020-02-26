@@ -140,10 +140,22 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     recipelists = zope.schema.Tuple(
-        title=_("Recipe Lists"),
-        value_type=ReferenceField(source=recipeListSource),
+        title=_('Rezeptliste'),
+        value_type=zc.form.field.Combination(
+            (zope.schema.Tuple(
+                title=_("Authors"),
+                value_type=ReferenceField(source=authorSource),
+                default=(),
+                required=False),
+             zope.schema.Choice(
+                 title=_('Tolle Auswahl'),
+                 source=zeit.cms.content.sources.SubChannelSource(),
+                 required=False))
+        ),
         default=(),
         required=False)
+    recipelists.value_type.fields[0].setTaggedValue(
+        'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     # DEPRECATED, use authorships instead
     # (still used by zeit.vgwort for querying)
