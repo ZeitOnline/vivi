@@ -66,6 +66,12 @@ class TestReference(zeit.content.video.testing.TestCase):
         updater.update(node)
 
     def test_still_should_be_contained_in_xml_reference(self):
+        self.create_video(video_still='http://stillurl')
+        self.update(self.node)
+        self.assertEqual(
+            'http://stillurl', self.node['video-still'].get('src'))
+
+    def test_thumbnail_should_be_contained_in_xml_reference(self):
         self.create_video(thumbnail='http://thumbnailurl')
         self.update(self.node)
         self.assertEqual(
@@ -79,17 +85,6 @@ class TestReference(zeit.content.video.testing.TestCase):
         self.update(self.node)
         self.assertRaises(AttributeError, lambda: self.node['video-still'])
         self.assertRaises(AttributeError, lambda: self.node['thumbnail'])
-        self.create_video()
-        video = self.repository['video']
-        assert video.xml.body.video_still.xpath("@type")[0] == "JPG"
-
-    def test_thumbnail_should_be_contained_in_xml_reference(self):
-        self.create_video()
-        video = self.repository['video']
-        assert (
-            video.xml.body.thumbnail.xpath("@src")[0] ==
-            "http://xml.zeit.de/2006/DSC00109_3.JPG"
-        )
 
 
 class TestAuthorshipsProperty(zeit.content.video.testing.TestCase):
