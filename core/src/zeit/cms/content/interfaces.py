@@ -125,7 +125,6 @@ class ICommonMetadata(zope.interface.Interface):
     authorships.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
-
     cooks = zope.schema.Tuple(
         title=_("Cooks"),
         value_type=ReferenceField(source=authorSource),
