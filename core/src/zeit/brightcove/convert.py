@@ -7,6 +7,7 @@ import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
+import zeit.content.image.imagegroup
 import zeit.content.video.video
 import zope.component
 
@@ -324,3 +325,14 @@ def playlist_location(bcobj):
         'zeit.brightcove')
     path = config['playlist-folder']
     return zeit.cms.content.add.find_or_create_folder(*path.split('/'))
+
+
+def image_group_from_image(where, name, image):
+    group = zeit.content.image.imagegroup.ImageGroup()
+    if image is not None:
+        image_name = 'master.' + image.format
+        group.master_images = (('desktop', image_name),)
+    where[name] = group
+    if image is not None:
+        where[name][image_name] = image
+    return where[name]

@@ -65,6 +65,8 @@ class import_video(object):
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         folder[self.bcobj.id] = cmsobj
+        download_teaser_image(folder, self.bcobj.data, 'still')
+        download_teaser_image(folder, self.bcobj.data, 'thumbnail')
         self.cmsobj = folder[self.bcobj.id]
 
     def update(self):
@@ -97,6 +99,28 @@ class import_video(object):
                     zope.lifecycleevent.ObjectModifiedEvent(
                         co, zope.lifecycleevent.Attributes(
                             IVideo, *list(IVideo))))
+
+
+BC_IMG_KEYS = {
+    'still': 'poster',
+    'thumbnail': 'thumbnail'
+}
+
+
+def download_teaser_image(folder, bcdata, ttype='still'):
+    name = '%s-%s' % (bcdata['id'], ttype)
+    if name in folder:
+        return folder[name]
+    try:
+        image = zeit.content.image.image.get_remote_image(
+            bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
+    except Exception as exc:
+        log.error(exc)
+        image = None
+    return zeit.brightcove.convert.image_group_from_image(
+        folder,
+        name,
+        image)
 
 
 # Triggered by BC notification webhook, which we receive in

@@ -4,9 +4,13 @@ from zeit.content.video.video import Video as CMSVideo
 import mock
 import pytz
 import six
+import zope.component
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
 import zeit.content.video.playlist
+import zeit.cms.repository.interfaces
+import zeit.content.image.testing
+from zeit.brightcove import convert
 
 
 class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
@@ -214,3 +218,21 @@ class PlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
             bc.apply_to_cms(playlist)
             self.assertEqual(['http://xml.zeit.de/online/2007/01/Somalia'],
                              [x.uniqueId for x in playlist.videos])
+
+
+class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
+
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    def test_image_group_from_image(self):
+        repository = self.repository()
+        local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
+        group = convert.image_group_from_image(repository, 'group', local_image)
+        assert group.master_image is not None
+
+    def test_image_group_from_none(self):
+        repository = self.repository()
+        group = convert.image_group_from_image(repository, 'group', None)
+        assert group.master_image is None

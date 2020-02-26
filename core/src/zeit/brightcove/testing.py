@@ -4,6 +4,7 @@ import mock
 import plone.testing
 import transaction
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.workflow.testing
 
 
@@ -42,12 +43,10 @@ class MockAPILayer(plone.testing.Layer):
 
 
 MOCK_API_LAYER = MockAPILayer()
-
-
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
     patches={'zeit.cms': {'task-queue-brightcove': 'brightcove'}},
-    bases=(zeit.workflow.testing.CONFIG_LAYER,))
+    bases=(zeit.content.image.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, MOCK_API_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))

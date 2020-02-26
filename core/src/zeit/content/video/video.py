@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -125,30 +124,6 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = zeit.cms.type.SKIP_ADD
     factory = Video
     type = 'video'
-
-
-@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-class VideoXMLReferenceUpdater(grok.Adapter):
-
-    grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('brightcove-image')
-
-    def update(self, node, suppress_errors=False):
-        still_node = node.find('video-still')
-        if still_node is not None:
-            node.remove(still_node)
-        if self.context.video_still:
-            node.append(getattr(lxml.objectify.E, 'video-still')(
-                src=self.context.video_still))
-
-        thumbnail_node = node.find('thumbnail')
-        if thumbnail_node is not None:
-            node.remove(thumbnail_node)
-        if self.context.thumbnail:
-            node.append(lxml.objectify.E.thumbnail(
-                src=self.context.thumbnail))
-
-        node.set('type', 'video')
 
 
 class Dependencies(zeit.workflow.dependency.DependencyBase):

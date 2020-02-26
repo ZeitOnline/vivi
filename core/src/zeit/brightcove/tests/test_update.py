@@ -21,6 +21,14 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             'updated_at': '2017-05-16T08:24:55.916Z',
             'state': 'ACTIVE',
             'custom_fields': {},
+            "images": {
+                "poster": {
+                    "src": "nosuchhost"
+                },
+                "thumbnail": {
+                    "src": "nosuchhost"
+                }
+            },
         }
         return bc
 
@@ -32,6 +40,23 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual('title', video.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertEqual(True, info.published)
+
+    def test_new_video_should_create_empty_still_image_group(self):
+        import_video(self.create_video())
+        assert self.repository['video']['2017-05']['myvid'].video_still is None
+        assert self.repository['video']['2017-05']['myvid-still'] is not None
+
+    def test_new_video_should_create_empty_still_image_group_for_missing_src(self):
+        video = self.create_video()
+        del video.data['images']
+        import_video(video)
+        assert self.repository['video']['2017-05']['myvid'].video_still is None
+        assert self.repository['video']['2017-05']['myvid-still'] is not None
+
+    def test_new_video_should_create_empty_thumbnail_image_group(self):
+        import_video(self.create_video())
+        assert self.repository['video']['2017-05']['myvid'].thumbnail is None
+        assert self.repository['video']['2017-05']['myvid-thumbnail'] is not None
 
     def test_changed_video_should_be_written_to_cms(self):
         bc = self.create_video()
@@ -147,6 +172,31 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual(('William Shakespeare',), video.authors)
+
+    def test_download_teaser_image_error_produces_empty_group(self):
+        zeit.brightcove.update.download_teaser_image(
+            self.repository,
+            dict(
+                id="foo",
+                images=dict(
+                    thumbnail=dict(src="foo"))),
+            "thumbnail")
+        group = self.repository['foo-thumbnail']
+        assert group.master_image is None
+
+    def test_download_teaser_image_error_uses_existing(self):
+        from zeit.content.image.testing import create_image_group_with_master_image
+        self.repository['foo-thumbnail'] = create_image_group_with_master_image()
+        existing = self.repository['foo-thumbnail']
+        existing.stamped = 'this'
+        new = zeit.brightcove.update.download_teaser_image(
+            self.repository,
+            dict(
+                id="foo",
+                images=dict(
+                    thumbnail=dict(src="foo"))),
+            "thumbnail")
+        assert new.stamped == 'this'
 
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
