@@ -6,6 +6,7 @@ vivi.core changes
 -------------------
 
 - BUG-1205: Revert bugfix 4.25.15, it causes a different misbehaviour
+- ZON-5635: add teaser image as cms content: basic setup
 
 
 4.26.0 (2020-02-18)
