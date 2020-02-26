@@ -46,6 +46,8 @@ class IAuthor(zope.interface.Interface,
     instagram = zope.schema.TextLine(
         title=_('Instagram handle'), required=False)
 
+    website = zope.schema.TextLine(title=_('Webseite'), required=False)
+
     vgwortid = zope.schema.Int(
         title=_('VG-Wort ID'),
         required=False,

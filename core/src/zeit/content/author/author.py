@@ -35,7 +35,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     for name in [
         'biography',
         'display_name',
-        'cook',
         'email',
         'sso_connect',
         'ssoid',
