@@ -44,6 +44,54 @@ def test_seo_slug_returns_url_normalized_version_of_title_and_supertitle(
     assert result == video.seo_slug
 
 
+class TestReference(zeit.content.video.testing.TestCase):
+
+    def setUp(self):
+        super(TestReference, self).setUp()
+        self.node = lxml.objectify.XML(
+            '<block xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+            ' xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>')
+
+    def create_video(self, **kw):
+        factory = zeit.content.video.testing.video_factory(self)
+        next(factory)
+        next(factory)  # video is now in repository['video']
+        player = zope.component.getUtility(
+            zeit.content.video.interfaces.IPlayer)
+        player.get_video.return_value.update(kw)
+
+    def update(self, node):
+        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
+            self.repository['video'])
+        updater.update(node)
+
+    def test_still_should_be_contained_in_xml_reference(self):
+        self.create_video(thumbnail='http://thumbnailurl')
+        self.update(self.node)
+        self.assertEqual(
+            'http://thumbnailurl', self.node['thumbnail'].get('src'))
+
+    def test_nodes_should_be_removed_from_reference(self):
+        self.create_video(
+            video_still='http://stillurl', thumbnail='http://thumbnailurl')
+        self.update(self.node)
+        self.create_video(video_still=None, thumbnail=None)
+        self.update(self.node)
+        self.assertRaises(AttributeError, lambda: self.node['video-still'])
+        self.assertRaises(AttributeError, lambda: self.node['thumbnail'])
+        self.create_video()
+        video = self.repository['video']
+        assert video.xml.body.video_still.xpath("@type")[0] == "JPG"
+
+    def test_thumbnail_should_be_contained_in_xml_reference(self):
+        self.create_video()
+        video = self.repository['video']
+        assert (
+            video.xml.body.thumbnail.xpath("@src")[0] ==
+            "http://xml.zeit.de/2006/DSC00109_3.JPG"
+        )
+
+
 class TestAuthorshipsProperty(zeit.content.video.testing.TestCase):
 
     def test_authorships_property_converts_IAuthor_to_IReference(
