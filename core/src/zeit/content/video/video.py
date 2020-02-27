@@ -75,10 +75,18 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         high = sorted(self.renditions, key=lambda r: r.frame_width).pop()
         return getattr(high, 'url', '')
 
-    thumbnail = zeit.cms.content.reference.SingleResource(
+    @property
+    def thumbnail(self):
+        return self._player_data['thumbnail']
+
+    cms_thumbnail = zeit.cms.content.reference.SingleResource(
         '.body.thumbnail', "image")
 
-    video_still = zeit.cms.content.reference.SingleResource(
+    @property
+    def video_still(self):
+        return self._player_data['video_still']
+
+    cms_video_still = zeit.cms.content.reference.SingleResource(
         '.body.video_still', "image")
 
     @cachedproperty

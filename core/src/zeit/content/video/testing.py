@@ -83,8 +83,8 @@ def video_factory(self):
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
             video = Video()
-            video.video_still = create_image_group_with_master_image()
-            video.thumbnail = create_image_group_with_master_image()
+            video.cms_video_still = create_image_group_with_master_image()
+            video.cms_thumbnail = create_image_group_with_master_image()
             yield video
             self.repository['video'] = video
     yield self.repository['video']
