@@ -45,8 +45,7 @@ class IAuthor(zope.interface.Interface,
     facebook = zope.schema.TextLine(title=_('Facebook handle'), required=False)
     instagram = zope.schema.TextLine(
         title=_('Instagram handle'), required=False)
-
-    website = zope.schema.TextLine(title=_('Webseite'), required=False)
+    website = zope.schema.TextLine(title=_('Website handle'), required=False)
 
     vgwortid = zope.schema.Int(
         title=_('VG-Wort ID'),
@@ -105,6 +104,9 @@ class IAuthor(zope.interface.Interface,
 
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
+
+    cook_biography = zope.schema.Text(
+        title=_('Short Cook Biography'), required=False)
 
     bio_questions = zope.interface.Attribute('Our IBiographyQuestions dict')
 
