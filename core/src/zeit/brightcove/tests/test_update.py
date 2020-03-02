@@ -1,6 +1,11 @@
 from datetime import datetime
+from os import path
 from zeit.brightcove.update import import_video, import_playlist
 from zeit.cms.interfaces import ICMSContent
+import pkg_resources
+import zeit.content.image.testing
+import shutil
+
 import mock
 import pytz
 import transaction
@@ -172,6 +177,15 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual(('William Shakespeare',), video.authors)
+
+
+class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportVideoTest):
+    def setUp(self):
+        super(TestDownloadTeasers, self).setUp()
+        image_dir = pkg_resources.resource_filename(
+            "zeit.content.image.browser", "testdata"
+        )
+        shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
 
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(
