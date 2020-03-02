@@ -66,7 +66,7 @@ class import_video(object):
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         folder[self.bcobj.id] = cmsobj
         download_teaser_image(folder, self.bcobj.data, 'still')
-        download_teaser_image(folder, self.bcobj.data, 'thumbnail')
+        folder[self.bcobj.id].cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
         self.cmsobj = folder[self.bcobj.id]
 
     def update(self):

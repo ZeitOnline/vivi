@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
+import zeit.content.image.interfaces
 import zope.schema
 
 
@@ -16,6 +17,10 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('URI of the thumbnail'),
         required=False,
         readonly=True)
+
+    cms_thumbnail = zope.schema.Choice(
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
 
     id_prefix = zope.schema.TextLine(
         title=_('Id prefix'),
