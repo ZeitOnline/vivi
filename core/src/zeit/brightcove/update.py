@@ -52,13 +52,16 @@ class import_video(object):
         if self.cmsobj is not None or self.bcobj.skip_import:
             return False
         self._add()
+        self._publish()
+        return True
+
+    def _publish(self):
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(background=False)
             if self.cmsobj.cms_thumbnail is not None:
                 IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
             if self.cmsobj.cms_video_still is not None:
                 IPublish(self.cmsobj.cms_video_still).publish(background=False)
-        return True
 
     def _add(self):
         log.info('Adding %s', self.bcobj)
@@ -68,12 +71,18 @@ class import_video(object):
         # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
-        cms_video_still = download_teaser_image(folder, self.bcobj.data, 'still')
-        cmsobj.cms_video_still = cms_video_still
-        cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
-        cmsobj.cms_thumbnail = cms_thumbnail
+        self.cmsobj = cmsobj
+        self._handle_teasers(folder)
         folder[self.bcobj.id] = cmsobj
         self.cmsobj = folder[self.bcobj.id]
+
+    def _handle_teasers(self, folder):
+        cms_video_still = download_teaser_image(
+            folder, self.bcobj.data, 'still')
+        self.cmsobj.cms_video_still = cms_video_still
+        cms_thumbnail = download_teaser_image(
+            folder, self.bcobj.data, 'thumbnail')
+        self.cmsobj.cms_thumbnail = cms_thumbnail
 
     def update(self):
         if self.bcobj.skip_import:
