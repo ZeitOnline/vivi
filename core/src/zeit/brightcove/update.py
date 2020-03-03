@@ -68,7 +68,8 @@ class import_video(object):
         cmsobj.cms_video_still = cms_video_still
         cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
         cmsobj.cms_thumbnail = cms_thumbnail
-        self.cmsobj = folder[self.bcobj.id] = cmsobj
+        folder[self.bcobj.id] = cmsobj
+        self.cmsobj = folder[self.bcobj.id]
 
     def update(self):
         if self.bcobj.skip_import:
