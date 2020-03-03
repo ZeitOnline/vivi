@@ -184,6 +184,7 @@ class import_playlist(import_video):
         self.bcobj = bcobj
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
+        self.folder = self.cmsobj.__parent__
         log.debug('CMS object resolved: %r', self.cmsobj)
         success = self.add() or self.update()
         if not success:
