@@ -187,7 +187,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         )
         shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
 
-    def test_download_teaser_image_success(self):
+    def test_download_teaser_image__thumbnail_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
         bc = self.create_video()
         bc.data['images']['thumbnail']['src'] = src
@@ -195,6 +195,15 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         # importing the video has created an image group "next to it" for its thumbnail
         # and has assigned it as its thumbnail
         assert self.repository['video']['2017-05']['myvid'].cms_thumbnail == self.repository['video']['2017-05']['myvid-thumbnail']
+
+    def test_download_teaser_image__still_success(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = self.create_video()
+        bc.data['images']['poster']['src'] = src
+        import_video(bc)
+        # importing the video has created an image group "next to it" for its still image
+        # and has assigned it as its thumbnail
+        assert self.repository['video']['2017-05']['myvid'].cms_video_still == self.repository['video']['2017-05']['myvid-still']
 
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(

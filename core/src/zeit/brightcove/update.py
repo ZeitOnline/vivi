@@ -64,7 +64,8 @@ class import_video(object):
         # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
-        download_teaser_image(folder, self.bcobj.data, 'still')
+        cms_video_still = download_teaser_image(folder, self.bcobj.data, 'still')
+        cmsobj.cms_video_still = cms_video_still
         cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
         cmsobj.cms_thumbnail = cms_thumbnail
         self.cmsobj = folder[self.bcobj.id] = cmsobj
