@@ -64,10 +64,10 @@ class import_video(object):
         # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
-        folder[self.bcobj.id] = cmsobj
         download_teaser_image(folder, self.bcobj.data, 'still')
-        folder[self.bcobj.id].cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
-        self.cmsobj = folder[self.bcobj.id]
+        cms_thumbnail = download_teaser_image(folder, self.bcobj.data, 'thumbnail')
+        cmsobj.cms_thumbnail = cms_thumbnail
+        self.cmsobj = folder[self.bcobj.id] = cmsobj
 
     def update(self):
         if self.bcobj.skip_import:
