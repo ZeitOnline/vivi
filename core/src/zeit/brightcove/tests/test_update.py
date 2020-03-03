@@ -195,6 +195,16 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         # importing the video has created an image group "next to it" for its thumbnail
         # and has assigned it as its thumbnail
         assert self.repository['video']['2017-05']['myvid'].cms_thumbnail == self.repository['video']['2017-05']['myvid-thumbnail']
+        # the video has been published
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid')).published)
+        # and so has the thumbnail
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail')).published)
 
     def test_download_teaser_image__still_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
@@ -204,6 +214,10 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         # importing the video has created an image group "next to it" for its still image
         # and has assigned it as its thumbnail
         assert self.repository['video']['2017-05']['myvid'].cms_video_still == self.repository['video']['2017-05']['myvid-still']
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')).published)
 
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(

@@ -54,6 +54,10 @@ class import_video(object):
         self._add()
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(background=False)
+            if self.cmsobj.cms_thumbnail is not None:
+                IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
+            if self.cmsobj.cms_video_still is not None:
+                IPublish(self.cmsobj.cms_video_still).publish(background=False)
         return True
 
     def _add(self):
