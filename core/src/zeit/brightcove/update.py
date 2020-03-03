@@ -29,6 +29,7 @@ class import_video(object):
     def __init__(self, bcobj):
         log.debug('Import for video %s', bcobj.uniqueId)
         self.bcobj = bcobj
+        self.folder = self.bcobj.__parent__
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
         log.debug('CMS object resolved: %r', self.cmsobj)
@@ -65,24 +66,26 @@ class import_video(object):
 
     def _add(self):
         log.info('Adding %s', self.bcobj)
-        folder = self.bcobj.__parent__
         cmsobj = self.cms_class()
         self.bcobj.apply_to_cms(cmsobj)
         # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         self.cmsobj = cmsobj
-        self._handle_teasers(folder)
-        folder[self.bcobj.id] = cmsobj
-        self.cmsobj = folder[self.bcobj.id]
+        self._handle_teasers()
+        self._commit()
 
-    def _handle_teasers(self, folder):
+    def _handle_teasers(self):
         cms_video_still = download_teaser_image(
-            folder, self.bcobj.data, 'still')
+            self.folder, self.bcobj.data, 'still')
         self.cmsobj.cms_video_still = cms_video_still
         cms_thumbnail = download_teaser_image(
-            folder, self.bcobj.data, 'thumbnail')
+            self.folder, self.bcobj.data, 'thumbnail')
         self.cmsobj.cms_thumbnail = cms_thumbnail
+
+    def _commit(self):
+        self.folder[self.bcobj.id] = self.cmsobj
+        self.cmsobj = self.folder[self.bcobj.id]
 
     def update(self):
         if self.bcobj.skip_import:
@@ -114,6 +117,18 @@ class import_video(object):
                     zope.lifecycleevent.ObjectModifiedEvent(
                         co, zope.lifecycleevent.Attributes(
                             IVideo, *list(IVideo))))
+
+
+class migrate_video(import_video):
+
+    """ subclass with slimmer init to act as helper
+    for migration code
+    """
+
+    def __init__(self, bcobj, cmsobj, ):
+        self.bcobj = bcobj
+        self.cmsobj = cmsobj
+        self.folder = self.cmsobj.__parent__
 
 
 BC_IMG_KEYS = {
