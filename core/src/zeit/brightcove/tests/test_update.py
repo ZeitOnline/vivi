@@ -212,7 +212,6 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # importing the video has created an image group "next to it" for its still image
-        # and has assigned it as its thumbnail
         assert self.repository['video']['2017-05']['myvid'].cms_video_still == self.repository['video']['2017-05']['myvid-still']
         self.assertEqual(
             True,
