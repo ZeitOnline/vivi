@@ -48,32 +48,6 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             zope.traversing.browser.interfaces.IAbsoluteURL)()
         self.assertEqual(url, 'http://thumbnailurl')
 
-    def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
-        factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = next(factory)
-        playlist.thumbnail = 'http://thumbnailurl'
-        next(factory)
-        self.browser.open('http://localhost/++skin++vivi/repository/pls/')
-        self.browser.follow_redirects = False
-        self.browser.open('@@thumbnail')
-        self.assertEqual('http://thumbnailurl',
-                         self.browser.headers.get('location'))
-
-    def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
-        factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = next(factory)
-        playlist.thumbnail = 'http://thumbnailurl'
-        playlist = next(factory)
-
-        request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-        thumbnail_view = zope.component.getMultiAdapter(
-            (playlist, request), name='thumbnail')
-        url = zope.component.getMultiAdapter(
-            (thumbnail_view, request),
-            zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, 'http://thumbnailurl')
-
 
 class TestStill(zeit.content.video.testing.BrowserTestCase):
 

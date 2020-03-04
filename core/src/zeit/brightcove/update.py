@@ -16,69 +16,7 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-class import_video(object):
-    """Updates the CMS state to the given BC state, by exactly one of:
-    deleting the CMS object, retracting deactivated objects, adding a new CMS
-    object or updating the existing CMS object.
-
-    This is a class only to better organize the code.
-    """
-
-    cms_class = zeit.content.video.video.Video
-
-    def __init__(self, bcobj):
-        log.debug('Import for video %s', bcobj.uniqueId)
-        self.bcobj = bcobj
-        self.cmsobj = zeit.cms.interfaces.ICMSContent(
-            self.bcobj.uniqueId, None)
-        log.debug('CMS object resolved: %r', self.cmsobj)
-        success = (self.delete() or self.add() or self.update())
-        if not success:
-            log.warning('Not processed: %s', self.bcobj.uniqueId)
-
-    def delete(self):
-        if not isinstance(self.bcobj, DeletedVideo):
-            return False
-        elif self.cmsobj is None:
-            # Deleted in BC and no CMS object: we're done.
-            return True
-        log.info('Deleting %s', self.bcobj)
-        if IPublishInfo(self.cmsobj).published:
-            IPublish(self.cmsobj).retract(background=False)
-        del self.bcobj.__parent__[self.bcobj.id]
-        return True
-
-    def add(self):
-        if self.cmsobj is not None or self.bcobj.skip_import:
-            return False
-        self._add()
-        if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
-        return True
-
-    def _add(self):
-        log.info('Adding %s', self.bcobj)
-        folder = self.bcobj.__parent__
-        cmsobj = self.cms_class()
-        self.bcobj.apply_to_cms(cmsobj)
-        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
-        # preserved.
-        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
-        folder[self.bcobj.id] = cmsobj
-        download_teaser_image(folder, self.bcobj.data, 'still')
-        download_teaser_image(folder, self.bcobj.data, 'thumbnail')
-        self.cmsobj = folder[self.bcobj.id]
-
-    def update(self):
-        if self.bcobj.skip_import:
-            return True
-        self._update()
-        if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
-        else:
-            log.info('Deactivating %s', self.bcobj)
-            if IPublishInfo(self.cmsobj).published:
-                IPublish(self.cmsobj).retract(background=False)
+class import_base(object):
 
     def _update(self):
         log.info('Updating %s', self.bcobj)
@@ -99,6 +37,89 @@ class import_video(object):
                     zope.lifecycleevent.ObjectModifiedEvent(
                         co, zope.lifecycleevent.Attributes(
                             IVideo, *list(IVideo))))
+
+
+class import_video(import_base):
+    """Updates the CMS state to the given BC state, by exactly one of:
+    deleting the CMS object, retracting deactivated objects, adding a new CMS
+    object or updating the existing CMS object.
+
+    This is a class only to better organize the code.
+    """
+
+    cms_class = zeit.content.video.video.Video
+
+    def __init__(self, bcobj):
+        log.debug('Import for video %s', bcobj.uniqueId)
+        self.bcobj = bcobj
+        self.folder = self.bcobj.__parent__
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(
+            self.bcobj.uniqueId, None)
+        log.debug('CMS object resolved: %r', self.cmsobj)
+        success = (self.delete() or self.add() or self.update())
+        if not success:
+            log.warning('Not processed: %s', self.bcobj.uniqueId)
+
+    def delete(self):
+        if not isinstance(self.bcobj, DeletedVideo):
+            return False
+        elif self.cmsobj is None:
+            # Deleted in BC and no CMS object: we're done.
+            return True
+        log.info('Deleting %s', self.bcobj)
+        if IPublishInfo(self.cmsobj).published:
+            IPublish(self.cmsobj).retract(background=False)
+        del self.bcobj.__parent__[self.bcobj.id]
+        return True
+
+    def _publish(self):
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(background=False)
+            if self.cmsobj.cms_thumbnail is not None:
+                IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
+            if self.cmsobj.cms_video_still is not None:
+                IPublish(self.cmsobj.cms_video_still).publish(background=False)
+
+    def add(self):
+        if self.cmsobj is not None or self.bcobj.skip_import:
+            return False
+        self._add()
+        self._publish()
+        return True
+
+    def _add(self):
+        log.info('Adding %s', self.bcobj)
+        cmsobj = self.cms_class()
+        self.bcobj.apply_to_cms(cmsobj)
+        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
+        # preserved.
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
+        self.cmsobj = cmsobj
+        self._handle_images()
+        self._commit()
+
+    def _handle_images(self):
+        cms_video_still = download_teaser_image(
+            self.folder, self.bcobj.data, 'still')
+        self.cmsobj.cms_video_still = cms_video_still
+        cms_thumbnail = download_teaser_image(
+            self.folder, self.bcobj.data, 'thumbnail')
+        self.cmsobj.cms_thumbnail = cms_thumbnail
+
+    def _commit(self):
+        self.folder[self.bcobj.id] = self.cmsobj
+        self.cmsobj = self.folder[self.bcobj.id]
+
+    def update(self):
+        if self.bcobj.skip_import:
+            return True
+        self._update()
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(background=False)
+        else:
+            log.info('Deactivating %s', self.bcobj)
+            if IPublishInfo(self.cmsobj).published:
+                IPublish(self.cmsobj).retract(background=False)
 
 
 BC_IMG_KEYS = {
@@ -143,7 +164,7 @@ def publish_on_checkin(context, event):
         zeit.cms.workflow.interfaces.IPublish(context).publish()
 
 
-class import_playlist(import_video):
+class import_playlist(import_base):
     # Inheriting from import_video is only mechanical, so we can reuse
     # _add() and _update(), we actually don't have anything else in common.
 
@@ -173,6 +194,17 @@ class import_playlist(import_video):
             return False
         self._update()
         IPublish(self.cmsobj).publish(background=False)
+
+    def _add(self):
+        log.info('Adding %s', self.bcobj)
+        folder = self.bcobj.__parent__
+        cmsobj = self.cms_class()
+        self.bcobj.apply_to_cms(cmsobj)
+        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
+        # preserved.
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
+        folder[self.bcobj.id] = cmsobj
+        self.cmsobj = folder[self.bcobj.id]
 
     @classmethod
     def generate_actions(cls):

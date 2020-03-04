@@ -1,6 +1,11 @@
 from datetime import datetime
+from os import path
 from zeit.brightcove.update import import_video, import_playlist
 from zeit.cms.interfaces import ICMSContent
+import pkg_resources
+import zeit.content.image.testing
+import shutil
+
 import mock
 import pytz
 import transaction
@@ -172,6 +177,46 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual(('William Shakespeare',), video.authors)
+
+
+class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportVideoTest):
+    def setUp(self):
+        super(TestDownloadTeasers, self).setUp()
+        image_dir = pkg_resources.resource_filename(
+            "zeit.content.image.browser", "testdata"
+        )
+        shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
+
+    def test_download_teaser_image__thumbnail_success(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = self.create_video()
+        bc.data['images']['thumbnail']['src'] = src
+        import_video(bc)
+        # importing the video has created an image group "next to it" for its thumbnail
+        # and has assigned it as its thumbnail
+        assert self.repository['video']['2017-05']['myvid'].cms_thumbnail == self.repository['video']['2017-05']['myvid-thumbnail']
+        # the video has been published
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid')).published)
+        # and so has the thumbnail
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail')).published)
+
+    def test_download_teaser_image__still_success(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = self.create_video()
+        bc.data['images']['poster']['src'] = src
+        import_video(bc)
+        # importing the video has created an image group "next to it" for its still image
+        assert self.repository['video']['2017-05']['myvid'].cms_video_still == self.repository['video']['2017-05']['myvid-still']
+        self.assertEqual(
+            True,
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')).published)
 
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(
