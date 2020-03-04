@@ -72,10 +72,10 @@ class import_video(object):
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         self.cmsobj = cmsobj
-        self._handle_teasers()
+        self._handle_images()
         self._commit()
 
-    def _handle_teasers(self):
+    def _handle_images(self):
         cms_video_still = download_teaser_image(
             self.folder, self.bcobj.data, 'still')
         self.cmsobj.cms_video_still = cms_video_still
