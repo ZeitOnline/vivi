@@ -119,18 +119,6 @@ class import_video(object):
                             IVideo, *list(IVideo))))
 
 
-class migrate_video(import_video):
-
-    """ subclass with slimmer init to act as helper
-    for migration code
-    """
-
-    def __init__(self, bcobj, cmsobj, ):
-        self.bcobj = bcobj
-        self.cmsobj = cmsobj
-        self.folder = self.cmsobj.__parent__
-
-
 BC_IMG_KEYS = {
     'still': 'poster',
     'thumbnail': 'thumbnail'
