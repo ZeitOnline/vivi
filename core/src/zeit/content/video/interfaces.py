@@ -13,15 +13,6 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
 
     """
 
-    thumbnail = zope.schema.URI(
-        title=_('URI of the thumbnail'),
-        required=False,
-        readonly=True)
-
-    cms_thumbnail = zope.schema.Choice(
-        source=zeit.content.image.interfaces.imageSource,
-        required=False)
-
     id_prefix = zope.schema.TextLine(
         title=_('Id prefix'),
         required=True,
@@ -56,6 +47,15 @@ class IVideo(IVideoContent):
         required=False,
         readonly=True,
         default=None)
+
+    thumbnail = zope.schema.URI(
+        title=_('URI of the thumbnail'),
+        required=False,
+        readonly=True)
+
+    cms_thumbnail = zope.schema.Choice(
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
 
     video_still = zope.schema.URI(
         title=_('URI of the still image'),
