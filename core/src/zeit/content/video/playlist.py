@@ -18,11 +18,6 @@ class Playlist(zeit.cms.content.metadata.CommonMetadata):
     default_template = pkg_resources.resource_string(
         __name__, 'playlist-template.xml').decode('utf-8')
 
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.video.interfaces.IPlaylist,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('thumbnail',))
-
     videos = zeit.cms.content.reference.MultiResource(
         '.body.videos.video', 'related')
 
