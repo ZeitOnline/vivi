@@ -16,7 +16,30 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-class import_video(object):
+class import_base(object):
+
+    def _update(self):
+        log.info('Updating %s', self.bcobj)
+        # We overwrite last_semantic_change with the BC value.
+        with zeit.cms.checkout.helper.checked_out(
+                self.cmsobj, semantic_change=None, events=False) as co:
+            # Don't send events here, a full checkout/checkin cycle is done
+            # during publish anyway, directly below (and so we don't publish
+            # twice due to the publish_on_checkin handler).
+            if co is None:
+                log.warning('Could not checkout %s', self.cmsobj)
+            else:
+                self.bcobj.apply_to_cms(co)
+                # This is a bit coarse, but it would be quite fiddly to
+                # determine which attributes really have changed, and probably
+                # not worth the effort anyway.
+                zope.event.notify(
+                    zope.lifecycleevent.ObjectModifiedEvent(
+                        co, zope.lifecycleevent.Attributes(
+                            IVideo, *list(IVideo))))
+
+
+class import_video(import_base):
     """Updates the CMS state to the given BC state, by exactly one of:
     deleting the CMS object, retracting deactivated objects, adding a new CMS
     object or updating the existing CMS object.
@@ -49,13 +72,6 @@ class import_video(object):
         del self.bcobj.__parent__[self.bcobj.id]
         return True
 
-    def add(self):
-        if self.cmsobj is not None or self.bcobj.skip_import:
-            return False
-        self._add()
-        self._publish()
-        return True
-
     def _publish(self):
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(background=False)
@@ -63,6 +79,13 @@ class import_video(object):
                 IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
             if self.cmsobj.cms_video_still is not None:
                 IPublish(self.cmsobj.cms_video_still).publish(background=False)
+
+    def add(self):
+        if self.cmsobj is not None or self.bcobj.skip_import:
+            return False
+        self._add()
+        self._publish()
+        return True
 
     def _add(self):
         log.info('Adding %s', self.bcobj)
@@ -97,26 +120,6 @@ class import_video(object):
             log.info('Deactivating %s', self.bcobj)
             if IPublishInfo(self.cmsobj).published:
                 IPublish(self.cmsobj).retract(background=False)
-
-    def _update(self):
-        log.info('Updating %s', self.bcobj)
-        # We overwrite last_semantic_change with the BC value.
-        with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=None, events=False) as co:
-            # Don't send events here, a full checkout/checkin cycle is done
-            # during publish anyway, directly below (and so we don't publish
-            # twice due to the publish_on_checkin handler).
-            if co is None:
-                log.warning('Could not checkout %s', self.cmsobj)
-            else:
-                self.bcobj.apply_to_cms(co)
-                # This is a bit coarse, but it would be quite fiddly to
-                # determine which attributes really have changed, and probably
-                # not worth the effort anyway.
-                zope.event.notify(
-                    zope.lifecycleevent.ObjectModifiedEvent(
-                        co, zope.lifecycleevent.Attributes(
-                            IVideo, *list(IVideo))))
 
 
 BC_IMG_KEYS = {
@@ -161,7 +164,7 @@ def publish_on_checkin(context, event):
         zeit.cms.workflow.interfaces.IPublish(context).publish()
 
 
-class import_playlist(import_video):
+class import_playlist(import_base):
     # Inheriting from import_video is only mechanical, so we can reuse
     # _add() and _update(), we actually don't have anything else in common.
 
@@ -172,7 +175,6 @@ class import_playlist(import_video):
         self.bcobj = bcobj
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
-        self.folder = self.cmsobj.__parent__
         log.debug('CMS object resolved: %r', self.cmsobj)
         success = self.add() or self.update()
         if not success:
@@ -192,6 +194,17 @@ class import_playlist(import_video):
             return False
         self._update()
         IPublish(self.cmsobj).publish(background=False)
+
+    def _add(self):
+        log.info('Adding %s', self.bcobj)
+        folder = self.bcobj.__parent__
+        cmsobj = self.cms_class()
+        self.bcobj.apply_to_cms(cmsobj)
+        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
+        # preserved.
+        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
+        folder[self.bcobj.id] = cmsobj
+        self.cmsobj = folder[self.bcobj.id]
 
     @classmethod
     def generate_actions(cls):
