@@ -5,13 +5,14 @@ vivi.core changes
 4.26.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PY3: Fix text/bytes handling in zeit.connector.filesystem
 
 
 4.26.1 (2020-03-04)
 -------------------
 
 - BUG-1205: Revert bugfix 4.25.15, it causes a different misbehaviour
+
 - ZON-5635: Add teaser images for videos as CMS content
 
 

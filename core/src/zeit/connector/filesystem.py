@@ -304,10 +304,10 @@ class Connector(object):
         tags = xml.xpath('//head/rankedTags')
         if tags:
             value = (
-                '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-                '/CMS/tagging">')
+                u'<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+                u'/CMS/tagging">')
             value += lxml.etree.tostring(tags[0], encoding='unicode')
-            value += '</tag:rankedTags>'
+            value += u'</tag:rankedTags>'
             properties[(
                 'keywords',
                 'http://namespaces.zeit.de/CMS/tagging')] = value
