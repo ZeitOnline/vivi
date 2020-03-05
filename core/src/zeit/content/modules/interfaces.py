@@ -4,6 +4,7 @@ import collections
 import grokcore.component as grok
 import six
 import zeit.cms.content.sources
+import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
@@ -196,3 +197,19 @@ class IMail(zeit.edit.interfaces.IBlock):
         default=False)
 
     body = zope.interface.Attribute('Email body')
+
+
+class IRecipeList(zeit.edit.interfaces.IBlock):
+
+    name = zope.schema.TextLine(
+        title=_('Title'),
+        required=False)
+
+    # ingredients = zope.schema.Tuple(
+    #     title=_("Ingredients"),
+    #     value_type=zeit.cms.content.interfaces.ReferenceField(
+    #         source=zeit.cms.content.interfaces.authorSource),
+    #     default=(),
+    #     required=False),
+    # ingredients.value_type.setTaggedValue(
+    #     'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
