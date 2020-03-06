@@ -37,7 +37,7 @@ class ISEO(zope.interface.Interface):
         required=False)
 
     cook_meta_robots = zope.schema.Text(
-        title=_('Meta robots cook'),
+        title=_('Meta cook robots'),
         required=False)
 
     hide_timestamp = zope.schema.Bool(
