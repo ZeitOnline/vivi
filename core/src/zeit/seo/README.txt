@@ -31,6 +31,7 @@ Fill out the form:
 >>> browser.getControl('HTML description').value = 'HTML description'
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl('Meta robots').value = 'noindex'
+>>> browser.getControl('Meta cook robots').value = 'noindex'
 >>> browser.getControl('Keyword entity type').displayValue = ['free']
 >>> browser.getControl('Disable intext links').click()
 >>> browser.getControl('Apply').click()
@@ -45,6 +46,7 @@ Verify the source:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-cook-meta-robots">noindex</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-hide-timestamp">no</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="seo-disable-intext-links">yes</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="seo-keyword-entity-type">free</attribute>
@@ -86,6 +88,7 @@ Let's set the title and description:
 
 >>> seo.html_title = u'Special title'
 >>> seo.html_description = u'Very special description'
+>>> seo.cook_meta_robots = u'Cook meta robots value'
 
 The properties are now set at `content`:
 
@@ -95,3 +98,5 @@ u'Special title'
 >>> properties[(u'html-meta-description',
 ...             u'http://namespaces.zeit.de/CMS/document')]
 u'Very special description'
+>>> properties[(u'html-cook-meta-robots', u'http://namespaces.zeit.de/CMS/document')]
+u'Cook meta robots value'
