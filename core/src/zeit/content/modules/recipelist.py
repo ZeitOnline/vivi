@@ -9,3 +9,7 @@ class RecipeList(zeit.edit.block.Element):
     @cachedproperty
     def name(self):
         return "moep"
+
+    @cachedproperty
+    def ingredients(self):
+        return ()

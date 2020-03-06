@@ -454,3 +454,11 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'newsletter.{0}'.format(self.context.__name__)
+
+
+class EditRecipeList(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    undo_description = _('edit recipe list')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.modules.interfaces.IRecipeList)

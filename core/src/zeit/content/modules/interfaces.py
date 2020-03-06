@@ -205,11 +205,11 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         title=_('Title'),
         required=False)
 
-    # ingredients = zope.schema.Tuple(
-    #     title=_("Ingredients"),
-    #     value_type=zeit.cms.content.interfaces.ReferenceField(
-    #         source=zeit.cms.content.interfaces.authorSource),
-    #     default=(),
-    #     required=False),
-    # ingredients.value_type.setTaggedValue(
-    #     'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
+    ingredients = zope.schema.Tuple(
+        title=_("Ingredients"),
+        value_type=zeit.cms.content.interfaces.ReferenceField(
+            source=zeit.cms.content.interfaces.authorSource),
+        default=(),
+        required=False),
+    ingredients.value_type.setTaggedValue(
+        'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
