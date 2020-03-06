@@ -90,6 +90,10 @@ class IAuthor(zope.interface.Interface,
     external = zope.schema.Bool(
         title=_(u'External?'))
 
+    is_author = zope.schema.Bool(
+        title=_(u'ist Autor'),
+        default=True)
+
     cook = zope.schema.Bool(
         title=_(u'Koch'))
 
