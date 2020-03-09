@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.26.2 (unreleased)
+4.26.2 (2020-03-09)
 -------------------
 
 - BUG-1207: Don't try to write DAV cache in webhook notify job
