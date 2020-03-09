@@ -104,10 +104,12 @@ class import_video(import_base):
             return
         cms_video_still = download_teaser_image(
             self.folder, self.bcobj.data, 'still')
-        self.cmsobj.cms_video_still = cms_video_still
+        if self.cmsobj.cms_video_still is None:
+            self.cmsobj.cms_video_still = cms_video_still
         cms_thumbnail = download_teaser_image(
             self.folder, self.bcobj.data, 'thumbnail')
-        self.cmsobj.cms_thumbnail = cms_thumbnail
+        if self.cmsobj.cms_thumbnail is None:
+            self.cmsobj.cms_thumbnail = cms_thumbnail
 
     def _commit(self):
         self.folder[self.bcobj.id] = self.cmsobj
