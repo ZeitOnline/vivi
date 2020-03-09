@@ -48,6 +48,7 @@ def create_local_image(filename, path='browser/testdata/'):
         __name__, '%s%s' % (path, filename))
     fh.write(open(file_name, 'rb').read())
     fh.close()
+    image.__name__ = filename
     return image
 
 

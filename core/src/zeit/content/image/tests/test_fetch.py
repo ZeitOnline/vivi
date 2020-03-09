@@ -24,6 +24,7 @@ class TestImageServing(zeit.content.image.testing.StaticBrowserTestCase):
             "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
         )
         assert local_image.mimeType == "image/jpeg"
+        assert local_image.__name__ == "opernball.jpg"
 
     def test_fetch_remote_image_fail(self):
         local_image = image.get_remote_image(

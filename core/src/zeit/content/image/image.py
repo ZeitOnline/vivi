@@ -1,3 +1,5 @@
+import os
+import urlparse
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import lxml.objectify
@@ -172,6 +174,7 @@ def get_remote_image(url, timeout=2):
     if not response.ok:
         return
     image = LocalImage()
+    image.__name__ = os.path.basename(urlparse.urlsplit(url).path)
     with image.open('w') as fh:
         first_chunk = True
         for chunk in response.iter_content(DOWNLOAD_CHUNK_SIZE):
