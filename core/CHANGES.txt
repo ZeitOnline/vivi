@@ -5,6 +5,8 @@ vivi.core changes
 4.26.2 (unreleased)
 -------------------
 
+- BUG-1207: Don't try to write DAV cache in webhook notify job
+
 - PY3: Fix text/bytes handling in zeit.connector.filesystem
 
 
