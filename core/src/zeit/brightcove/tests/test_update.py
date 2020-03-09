@@ -243,6 +243,18 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
             "thumbnail")
         assert new.stamped == 'this'
 
+    def test_update_teaser_image_still_success(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = self.create_video()
+        bc.data['images']['poster']['src'] = src
+        imported = import_video(bc)
+        assert imported.cmsobj.cms_video_still.master_image == 'opernball.jpg'
+        new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
+        bc.data['images']['poster']['src'] = new_src
+        # importing it again triggers update:
+        reimported = import_video(bc)
+        assert reimported.cmsobj.cms_video_still.master_image == 'obama-clinton-120x120.jpg'
+
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 

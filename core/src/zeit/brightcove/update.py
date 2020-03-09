@@ -117,6 +117,7 @@ class import_video(import_base):
         if self.bcobj.skip_import:
             return True
         self._update()
+        self._handle_images()
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(background=False)
         else:
@@ -133,8 +134,6 @@ BC_IMG_KEYS = {
 
 def download_teaser_image(folder, bcdata, ttype='still'):
     name = '%s-%s' % (bcdata['id'], ttype)
-    if name in folder:
-        return folder[name]
     try:
         image = zeit.content.image.image.get_remote_image(
             bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
