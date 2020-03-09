@@ -5,7 +5,8 @@ vivi.core changes
 4.26.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5635: Put importing video images behind feature toggle
+  ``video_import_images``
 
 
 4.26.2 (2020-03-09)

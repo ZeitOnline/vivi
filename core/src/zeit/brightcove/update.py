@@ -1,4 +1,5 @@
 from zeit.brightcove.convert import DeletedVideo
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
 import gocept.runner
@@ -99,6 +100,8 @@ class import_video(import_base):
         self._commit()
 
     def _handle_images(self):
+        if not FEATURE_TOGGLES.find('video_import_images'):
+            return
         cms_video_still = download_teaser_image(
             self.folder, self.bcobj.data, 'still')
         self.cmsobj.cms_video_still = cms_video_still
