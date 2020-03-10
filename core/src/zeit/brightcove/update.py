@@ -74,12 +74,21 @@ class import_video(import_base):
         return True
 
     def _publish(self):
+
+        def publish(obj):
+            if obj is None:
+                log.info('Got None to publish')
+                return
+            if not IPublishInfo(obj).published:
+                log.info('Publishing %s' % obj)
+                IPublish(obj).publish(background=False)
+            else:
+                log.info('%s already published' % obj)
+
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
-            if self.cmsobj.cms_thumbnail is not None:
-                IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
-            if self.cmsobj.cms_video_still is not None:
-                IPublish(self.cmsobj.cms_video_still).publish(background=False)
+            publish(self.cmsobj)
+            publish(self.cmsobj.cms_video_still)
+            publish(self.cmsobj.cms_thumbnail)
 
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:
