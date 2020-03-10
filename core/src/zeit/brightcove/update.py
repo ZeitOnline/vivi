@@ -100,6 +100,12 @@ class import_video(import_base):
         self._commit()
 
     def _handle_images(self):
+        # since we cannot readily distinguish whether the image has changed
+        # on BC side we *always* update the (master) image of the image group
+        # but we only set the reference *to* that imagegroup if there isn't
+        # already one in place.
+        # this allows manual overrides by the editors to take prioty during
+        # subsequent updates.
         if not FEATURE_TOGGLES.find('video_import_images'):
             return
         cms_video_still = download_teaser_image(
