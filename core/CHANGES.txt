@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.26.4 (unreleased)
+4.26.4 (2020-03-11)
 -------------------
 
 - ZON-5635: Handle updates from Brightcove for teaser images
