@@ -677,6 +677,10 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).id
         id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).id
+        call_args = elasticsearch.search.call_args[0][0]
+        call_args['query']['bool']['must_not'][1]['ids']['values'].sort()
+        sorted_ids = [id1, id2]
+        sorted_ids.sort()
 
         self.assertEqual({'query': {'bool': {'filter': [
             {'match': {'foo': u'äää'}},
@@ -684,7 +688,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-            {'ids': {'values': [id1, id2]}},
+            {'ids': {'values': sorted_ids}},
         ]}}}, elasticsearch.search.call_args[0][0])
 
         # since `AutomaticArea.values()` is cached on the transaction boundary
