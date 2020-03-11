@@ -210,6 +210,6 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         value_type=zeit.cms.content.interfaces.ReferenceField(
             source=zeit.cms.content.interfaces.authorSource),
         default=(),
-        required=False),
+        required=False)
     ingredients.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
