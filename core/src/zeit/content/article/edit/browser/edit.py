@@ -463,3 +463,12 @@ class EditRecipeList(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.IRecipeList).omit(
             *list(zeit.edit.interfaces.IBlock))
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditRecipeList, self).setUpWidgets(*args, **kw)
+        self.widgets['ingredients'].add_type = zeit.content.article.edit.interfaces.IAuthor
+        self.widgets['ingredients'].display_list_below_buttons = True
+
+    @property
+    def prefix(self):
+        return 'ingredients.{0}'.format(self.context.__name__)
