@@ -74,12 +74,21 @@ class import_video(import_base):
         return True
 
     def _publish(self):
+
+        def publish(obj):
+            if obj is None:
+                log.info('Got None to publish')
+                return
+            if not IPublishInfo(obj).published:
+                log.info('Publishing %s' % obj)
+                IPublish(obj).publish(background=False)
+            else:
+                log.info('%s already published' % obj)
+
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
-            if self.cmsobj.cms_thumbnail is not None:
-                IPublish(self.cmsobj.cms_thumbnail).publish(background=False)
-            if self.cmsobj.cms_video_still is not None:
-                IPublish(self.cmsobj.cms_video_still).publish(background=False)
+            publish(self.cmsobj)
+            publish(self.cmsobj.cms_video_still)
+            publish(self.cmsobj.cms_thumbnail)
 
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:
@@ -100,14 +109,22 @@ class import_video(import_base):
         self._commit()
 
     def _handle_images(self):
+        # since we cannot readily distinguish whether the image has changed
+        # on BC side we *always* update the (master) image of the image group
+        # but we only set the reference *to* that imagegroup if there isn't
+        # already one in place.
+        # this allows manual overrides by the editors to take prioty during
+        # subsequent updates.
         if not FEATURE_TOGGLES.find('video_import_images'):
             return
         cms_video_still = download_teaser_image(
             self.folder, self.bcobj.data, 'still')
-        self.cmsobj.cms_video_still = cms_video_still
+        if self.cmsobj.cms_video_still is None:
+            self.cmsobj.cms_video_still = cms_video_still
         cms_thumbnail = download_teaser_image(
             self.folder, self.bcobj.data, 'thumbnail')
-        self.cmsobj.cms_thumbnail = cms_thumbnail
+        if self.cmsobj.cms_thumbnail is None:
+            self.cmsobj.cms_thumbnail = cms_thumbnail
 
     def _commit(self):
         self.folder[self.bcobj.id] = self.cmsobj
@@ -117,6 +134,7 @@ class import_video(import_base):
         if self.bcobj.skip_import:
             return True
         self._update()
+        self._handle_images()
         if self.bcobj.state == 'ACTIVE':
             IPublish(self.cmsobj).publish(background=False)
         else:
@@ -133,8 +151,6 @@ BC_IMG_KEYS = {
 
 def download_teaser_image(folder, bcdata, ttype='still'):
     name = '%s-%s' % (bcdata['id'], ttype)
-    if name in folder:
-        return folder[name]
     try:
         image = zeit.content.image.image.get_remote_image(
             bcdata['images'][BC_IMG_KEYS[ttype]]['src'])

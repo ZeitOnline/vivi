@@ -328,9 +328,17 @@ def playlist_location(bcobj):
 
 
 def image_group_from_image(where, name, image):
+    # takes a local image, creates an image group with that
+    # image as master
+    # it then adds the imagegroup the `where` folder and
+    # adds the image into the image group
+    # it then returns the imagegroup from the repository
     group = zeit.content.image.imagegroup.ImageGroup()
     if image is not None:
-        image_name = 'master.' + image.format
+        if image.__name__ is None:
+            image_name = 'master.' + image.format
+        else:
+            image_name = image.__name__
         group.master_images = (('desktop', image_name),)
     where[name] = group
     if image is not None:
