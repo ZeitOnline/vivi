@@ -461,4 +461,5 @@ class EditRecipeList(zeit.edit.browser.form.InlineForm):
     legend = ''
     undo_description = _('edit recipe list')
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.modules.interfaces.IRecipeList)
+        zeit.content.modules.interfaces.IRecipeList).omit(
+            *list(zeit.edit.interfaces.IBlock))
