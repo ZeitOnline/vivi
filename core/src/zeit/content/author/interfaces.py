@@ -94,8 +94,8 @@ class IAuthor(zope.interface.Interface,
         title=_(u'ist Autor'),
         default=True)
 
-    cook = zope.schema.Bool(
-        title=_(u'Koch'))
+    is_cook = zope.schema.Bool(
+        title=_(u'ist Koch'))
 
     enable_followpush = zope.schema.Bool(
         title=_(u'Enable followpush?'))

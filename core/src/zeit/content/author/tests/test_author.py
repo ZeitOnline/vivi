@@ -89,16 +89,16 @@ class OthersTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_provides_dict_access_to_xml_nodes(self):
         author = zeit.content.author.author.Author()
-        author.cook = True
-        self.assertTrue(author.cook)
+        author.is_cook = True
+        self.assertTrue(author.is_cook)
         self.assertEllipsis(
-            '...<cook>true</cook>...',
+            '...<is_cook>true</is_cook>...',
             zeit.cms.testing.xmltotext(author.xml))
 
-        author.cook = False
-        self.assertFalse(author.cook)
+        author.is_cook = False
+        self.assertFalse(author.is_cook)
         self.assertEllipsis(
-            '...<cook>false</cook>...',
+            '...<is_cook>false</is_cook>...',
             zeit.cms.testing.xmltotext(author.xml))
 
         author.is_author = True
