@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Mar 12 10:30:38 2020\n"
+"POT-Creation-Date: Thu Mar 12 14:18:46 2020\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2777,11 +2777,11 @@ msgid "External?"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:94
-msgid "ist Autor"
+msgid "is author"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:98
-msgid "ist Koch"
+msgid "is cook"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:101
