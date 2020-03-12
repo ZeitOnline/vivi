@@ -5,7 +5,7 @@ vivi.core changes
 4.26.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-33: Add cook ability  to authors.
 
 
 4.26.4 (2020-03-11)
