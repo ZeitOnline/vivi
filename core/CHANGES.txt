@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.27.0 (unreleased)
+4.27.0 (2020-03-16)
 -------------------
 
 - MAINT: Use JWT for our "SSO" cookie
