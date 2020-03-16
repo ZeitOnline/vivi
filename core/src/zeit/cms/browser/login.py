@@ -127,7 +127,7 @@ def set_cookie_headers(name, value):
         # zope.testbrowser does not understand "Domain=localhost", sigh.
         domains = [None]
     return cookie_helper.get_headers(
-        value, domains=domains, max_age=EXPIRE_ON_BROSWER_CLOSE)
+        value, domains=domains, max_age=EXPIRE_ON_BROWSER_CLOSE)
 
 
 class SimpleSerializer(object):
@@ -145,4 +145,4 @@ class SimpleSerializer(object):
 
 
 SIMPLE_SERIALIZER = SimpleSerializer()
-EXPIRE_ON_BROSWER_CLOSE = None
+EXPIRE_ON_BROWSER_CLOSE = None
