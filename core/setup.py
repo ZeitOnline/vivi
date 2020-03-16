@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.26.6.dev0',
+    version='4.27.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -25,6 +25,8 @@ setup(
         'BTrees',
         'Jinja2',
         'Pillow',
+        'PyJWT',
+        'cryptography',  # so pyjwt can offer RSA
         'ZODB',
         'beautifulsoup4',
         'bugsnag',

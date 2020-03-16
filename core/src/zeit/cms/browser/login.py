@@ -1,7 +1,7 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
-import base64
-import json
+import jwt
 import six
+import time
 import webob.cookies
 import zeit.cms.browser.resources
 import zope.app.appsetup.product
@@ -87,9 +87,6 @@ class SSOLogin(object):
       logged in user" permission). The SSO cookie is named like the permission,
       e.g. `vivi_sso_ticket_zope.View`, and set for all of zeit.de. It expires
       on browser close, so there is no need for any explicit logout.
-    * Note that the cookie currently does not contain any meaningful value, so
-      clients need only be concerned with its presence. (We don't need to worry
-      about spoofing, since this is strictly a company-interal mechanism.)
     """
 
     def __call__(self):
@@ -97,17 +94,20 @@ class SSOLogin(object):
         if not self.request.interaction.checkPermission(
                 permission, self.context):
             raise zope.security.interfaces.Unauthorized(permission)
-        # XXX We'd want to use a signed JWT as the value, just like
-        # zeit.accounts does, but our currently only client (haproxy of TMS)
-        # cannot evaluate that, so there's not much point right now.
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         principal = self.request.principal
+        private_key = open(config['sso-private-key-file']).read()
         headers = set_cookie_headers(
             config['sso-cookie-name-prefix'] + permission,
-            base64.b64encode(json.dumps({
-                'id': principal.id, 'name': principal.title,
-                'email': principal.description}
-            ).encode('utf-8')).decode('ascii'))
+            jwt.encode({
+                'id': principal.id,
+                'name': principal.title,
+                'email': principal.description,
+                # XXX Once TMS haproxy learns to validate JWT, use a single
+                # cookie with all permissions (or probably roles) instead.
+                'permissions': [permission],
+                'exp': int(time.time()) + int(config['sso-expiration']),
+            }, private_key, config['sso-algorithm']).decode('ascii'))
         for key, value in headers:
             self.request.response.setHeader(key, value)
         url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
