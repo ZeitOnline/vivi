@@ -87,7 +87,7 @@ class NoBlockLayout(object):
         area = zeit.content.cp.interfaces.IArea(self.block, None)
         raise ValueError(
             'Teaser layout "%s" is not configured for area "%s".\n'
-            '  (module:%s, area:%s).' % (
+            '  (module:%s, area:%s). Is a default layout set for the area?' % (
                 self.block.xml.get('module'),
                 getattr(area, 'kind', '<unknown>'),
                 self.block.__name__,
