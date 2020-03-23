@@ -2,10 +2,10 @@ vivi.core changes
 =================
 
 
-4.27.1 (unreleased)
+4.28.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5488: Provide IConsentInfo also for z.c.article.IRawXML
 
 
 4.27.0 (2020-03-16)
