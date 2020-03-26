@@ -246,5 +246,8 @@ setup(
             'zc_table=zeit.cms.browser.resources:zc_table',
             'zc_datetimewidget=zeit.cms.browser.resources:zc_datetimewidget',
         ],
+        'pytest11': [
+            'zeit_pytest=zeit.pytest'
+        ],
     }
 )

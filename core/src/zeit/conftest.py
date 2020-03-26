@@ -1,12 +1,6 @@
 import os
 
 
-def pytest_addoption(parser):
-    parser.addoption(
-        '--visible', action='store_true',
-        default=False, help='Show browser when running tests')
-
-
 def pytest_configure(config):
     os.environ.setdefault('GOCEPT_WEBDRIVER_BROWSER', 'firefox')
 
