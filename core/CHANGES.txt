@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.29.0 (unreleased)
+4.29.0 (2020-03-27)
 -------------------
 
 - ZON-5447: Generalize vendor source API to access all config attributes
