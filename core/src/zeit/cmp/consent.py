@@ -9,7 +9,8 @@ class ConsentInfoBase(object):
     @property
     def thirdparty_vendors_cmp_ids(self):
         return tuple(
-            VENDOR_SOURCE(self).cmp_id(x) for x in self.thirdparty_vendors)
+            VENDOR_SOURCE(self).attributes(x).get('cmp')
+            for x in self.thirdparty_vendors)
 
 
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
