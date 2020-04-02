@@ -1,3 +1,5 @@
+import lxml
+import six
 import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -35,3 +37,21 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('raw', div.xml.tag)
         self.assertEllipsis(
             '<raw...>\n\n</raw>', zeit.cms.testing.xmltotext(div.xml))
+
+    def test_stores_consent_info_in_xml(self):
+        article = zeit.content.article.article.Article()
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, 'raw')
+        module = factory()
+        info = zeit.cmp.interfaces.IConsentInfo(module)
+        info.has_thirdparty = True
+        info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        self.assertEqual(True, info.has_thirdparty)
+        self.assertEqual(
+            ('Twitter', 'Facebook'), info.thirdparty_vendors)
+        self.assertEllipsis(
+            '<...has_thirdparty="yes"'
+            ' thirdparty_vendors="Twitter;Facebook"...',
+            lxml.etree.tostring(module.xml, encoding=six.text_type))

@@ -102,6 +102,11 @@
     />
 
   <permission
+    id="zeit.ViewPreview"
+    title="View Preview"
+    />
+
+  <permission
     id="zeit.content.cp.Retract"
     title="Retract centerpages"
     />

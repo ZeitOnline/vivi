@@ -33,10 +33,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         u'</author>')
 
     for name in [
-        'is_author',
         'biography',
         'display_name',
-        'cook',
         'cook_biography',
         'email',
         'sso_connect',
@@ -50,6 +48,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
+        'is_author',
+        'is_cook',
         'lastname',
         'occupation',
         'show_letterbox_link',

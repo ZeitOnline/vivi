@@ -2,10 +2,41 @@ vivi.core changes
 =================
 
 
-4.26.5 (unreleased)
+4.29.2 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.29.1 (2020-04-02)
+-------------------
+
+- OPS-1192: Replace stdlib cookie parser with webob,
+  so it doesn't break on non-ASCII characters
+
+
+4.29.0 (2020-03-27)
+-------------------
+
+- ZON-5447: Generalize vendor source API to access all config attributes
+
+
+4.28.0 (2020-03-23)
+-------------------
+
+- ZON-5488: Provide IConsentInfo also for z.c.article.IRawXML
+
+
+4.27.0 (2020-03-16)
+-------------------
+
+- MAINT: Use JWT for our "SSO" cookie
+
+
+4.26.5 (2020-03-12)
+-------------------
+
+- WOMA-33: Add cook ability  to authors.
 
 
 4.26.4 (2020-03-11)
