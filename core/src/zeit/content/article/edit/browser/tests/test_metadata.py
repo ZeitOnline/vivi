@@ -30,6 +30,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
         s._find('id=options-b.year').clear()
+        s.waitForElementNotPresent('css=.field.dirty')
         s.type('id=options-b.year', '2010')
         s.keyPress('id=options-b.volume', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
