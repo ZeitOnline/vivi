@@ -1,0 +1,12 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.cms" file="ftesting.zcml" />
+  <!-- We provide the actual implementation to the mocks registered
+       by zeit.cms.tagging. -->
+  <includeOverrides package="zeit.cms.recipe" />
+
+</configure>
