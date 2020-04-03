@@ -1,4 +1,3 @@
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.content.modules.interfaces
 import zope.interface
 
@@ -6,10 +5,9 @@ import zope.interface
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
 class RecipeList(zeit.edit.block.Element):
 
-    @cachedproperty
-    def name(self):
-        return "moep"
+    name = zeit.cms.content.property.ObjectPathProperty(
+        '.name', zeit.content.modules.interfaces.IRecipeList['name'])
 
-    @cachedproperty
-    def ingredients(self):
-        return ()
+    ingredients = zeit.cms.content.property.ObjectPathProperty(
+        '.ingredients',
+        zeit.content.modules.interfaces.IRecipeList['ingredients'])
