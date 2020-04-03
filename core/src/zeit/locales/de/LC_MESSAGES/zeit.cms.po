@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
 "POT-Creation-Date: Thu Mar 12 14:18:46 2020\n"
-"PO-Revision-Date: 2020-03-12 14:19+0100\n"
+"PO-Revision-Date: 2020-04-03 11:25+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:15
 #: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:132
@@ -143,7 +143,7 @@ msgstr "Studiengang"
 
 #: zeit/cmp/interfaces.py:36
 msgid "Contains thirdparty code"
-msgstr "Externe Inhalte in diesem Embed verarbeiten personenbezogene Daten"
+msgstr "Dieses Embed enthält externe Inhalte"
 
 #: zeit/cmp/interfaces.py:41
 msgid "Vendors"
