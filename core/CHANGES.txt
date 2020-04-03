@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.29.2 (unreleased)
+4.29.2 (2020-04-03)
 -------------------
 
 - MAINT: Update wording of IConsentInfo.thirdparty_vendors (via @holger)
