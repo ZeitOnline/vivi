@@ -68,8 +68,10 @@ class TestPublish(
             s = self.selenium
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
+            # XXX: Once we switched over to python 3 completely, we can specify
+            # the error message again as FileNotFoundError.
             s.assertText(
-                'css=li.error', 'Error during publish/retract: OSError*')
+                'css=li.error', 'Error during publish/retract: *Error*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 

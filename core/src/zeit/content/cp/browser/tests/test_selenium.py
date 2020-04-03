@@ -471,10 +471,12 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             s.click('xpath=//a[contains(., "Publish anyway")]')
             s.waitForPageToLoad()
             s.waitForElementPresent('css=li.error')
+            # XXX: Once we switched over to python 3 completely, we can specify
+            # the error as FileNotFoundError.
             s.verifyText(
                 'css=li.error',
                 'Publishing\n'
-                'HandleAfterAbort: Error during publish/retract: OSError*')
+                'HandleAfterAbort: Error during publish/retract: *Error*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
 
