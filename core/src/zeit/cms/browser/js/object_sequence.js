@@ -48,7 +48,16 @@ zeit.cms.ObjectSequenceWidget = zeit.cms.AutocompleteWidgetMixin.extend({
         self.cache_object_details = cache_object_details;
 
         self.initialize_autocomplete();
-        self.initialize();
+        try {
+            // XXX
+            // There might be cases when an objectsequence widget is placed
+            // inside of editable-body, which is a non-iterable droppable. This
+            // leads in some cases to iteration errors, which are not mitigated
+            // easily, without wrapping lots of duct tape around...
+            self.initialize();
+        } catch(e) {
+            console.warn(e.message);
+        }
         // XXX Need to unregister those events
         MochiKit.Signal.connect(
             self.element, 'onclick', self, self.handleClick);
