@@ -485,6 +485,8 @@ cms_product_config = """\
   source-api-mapping product=zeit.cms.content.sources.ProductSource
   # We just need a dummy XML file
   checkin-webhook-config file://{base}/content/access.xml
+
+  ingredients-url file://{base}/recipe/tests/fixtures/ingredients.xml
 </product-config>
 """.format(
     base=pkg_resources.resource_filename(__name__, ''))
