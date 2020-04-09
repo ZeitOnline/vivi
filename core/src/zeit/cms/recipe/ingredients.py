@@ -4,7 +4,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import six
-import urllib2
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.recipe.interfaces
@@ -62,7 +61,7 @@ class Ingredients(grok.GlobalUtility):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         url = config.get('ingredients-url')
         log.info('Loading ingredients from %s', url)
-        data = urllib2.urlopen(url)
+        data = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(data)
 
     def _load(self):
