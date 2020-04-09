@@ -4,6 +4,7 @@ import collections
 import grokcore.component as grok
 import six
 import zeit.cms.content.sources
+import zeit.cms.recipe.ingredients
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
