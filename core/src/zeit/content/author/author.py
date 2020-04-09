@@ -35,6 +35,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     for name in [
         'biography',
         'display_name',
+        'cook_biography',
         'email',
         'sso_connect',
         'ssoid',
@@ -47,6 +48,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
+        'is_author',
+        'is_cook',
         'lastname',
         'occupation',
         'show_letterbox_link',
@@ -62,6 +65,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'twitter',
         'vgwortcode',
         'vgwortid',
+        'website',
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 

@@ -103,6 +103,10 @@
     />
   <grant
     role="zeit.Editor"
+    permission="zeit.ViewPreview"
+    />
+  <grant
+    role="zeit.Editor"
     permission="zeit.brightcove.video.Edit"
     />
 

@@ -230,7 +230,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         repository = self.repository()
         local_image = zeit.content.image.testing.create_local_image('opernball.jpg')
         group = convert.image_group_from_image(repository, 'group', local_image)
-        assert group.master_image is not None
+        assert group.master_image == 'opernball.jpg'
 
     def test_image_group_from_none(self):
         repository = self.repository()

@@ -26,7 +26,7 @@ class Base(zeit.push.browser.form.SocialBase,
         'commentsPremoderate', 'related', 'channels', 'lead_candidate',
         'video_still_copyright', 'has_advertisement',
         # remaining:
-        '__name__',
+        '__name__', 'cms_thumbnail', 'cms_video_still',
         'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'authorships')
 
@@ -50,7 +50,7 @@ class Base(zeit.push.browser.form.SocialBase,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Teaser elements'),
-            ('related',),
+            ('related', 'cms_thumbnail', 'cms_video_still'),
             css_class='wide-widgets column-left'),
         gocept.form.grouped.RemainingFields(
             '', css_class='column-left'),

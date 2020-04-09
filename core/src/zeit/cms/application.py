@@ -16,9 +16,11 @@ import sys
 import webob
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
+import zope.app.publication.interfaces
 import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
+import zope.publisher.browser
 import zope.security.checker
 
 
@@ -201,3 +203,25 @@ ZConfig.datatypes.stock_datatypes["string"] = six.ensure_text
 if sys.version_info < (3,):
     # Upstream has `lambda x: x` which is not _quite_ correct.
     fanstatic.compat.as_bytestring = six.ensure_binary
+
+
+class BrowserRequest(zope.publisher.browser.BrowserRequest):
+
+    def _parseCookies(self, text, result=None):
+        """Upstream uses python stdlib SimpleCookie, which returns a completely
+        empty result when one cookie contains a non-ASCII character.
+        """
+        if result is None:
+            result = {}
+        cookies = webob.cookies.RequestCookies({'HTTP_COOKIE': text})
+        result.update(cookies)
+        return result
+
+    @classmethod
+    def factory(cls):
+        return cls
+
+
+grok.global_utility(
+    BrowserRequest.factory,
+    zope.app.publication.interfaces.IBrowserRequestFactory)

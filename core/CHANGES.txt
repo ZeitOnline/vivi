@@ -2,16 +2,75 @@ vivi.core changes
 =================
 
 
-4.26.2 (unreleased)
+4.29.3 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.29.2 (2020-04-03)
+-------------------
+
+- MAINT: Update wording of IConsentInfo.thirdparty_vendors (via @holger)
+
+
+4.29.1 (2020-04-02)
+-------------------
+
+- OPS-1192: Replace stdlib cookie parser with webob,
+  so it doesn't break on non-ASCII characters
+
+
+4.29.0 (2020-03-27)
+-------------------
+
+- ZON-5447: Generalize vendor source API to access all config attributes
+
+
+4.28.0 (2020-03-23)
+-------------------
+
+- ZON-5488: Provide IConsentInfo also for z.c.article.IRawXML
+
+
+4.27.0 (2020-03-16)
+-------------------
+
+- MAINT: Use JWT for our "SSO" cookie
+
+
+4.26.5 (2020-03-12)
+-------------------
+
+- WOMA-33: Add cook ability  to authors.
+
+
+4.26.4 (2020-03-11)
+-------------------
+
+- ZON-5635: Handle updates from Brightcove for teaser images
+
+
+4.26.3 (2020-03-09)
+-------------------
+
+- ZON-5635: Put importing video images behind feature toggle
+  ``video_import_images``
+
+
+4.26.2 (2020-03-09)
+-------------------
+
+- BUG-1207: Don't try to write DAV cache in webhook notify job
+
+- PY3: Fix text/bytes handling in zeit.connector.filesystem
 
 
 4.26.1 (2020-03-04)
 -------------------
 
 - BUG-1205: Revert bugfix 4.25.15, it causes a different misbehaviour
+
 - ZON-5635: Add teaser images for videos as CMS content
 
 

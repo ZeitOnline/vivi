@@ -243,6 +243,37 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
             "thumbnail")
         assert new.stamped == 'this'
 
+    def test_update_teaser_image_still_success(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = self.create_video()
+        bc.data['images']['poster']['src'] = src
+        imported = import_video(bc)
+        assert imported.cmsobj.cms_video_still.master_image == 'opernball.jpg'
+        new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
+        bc.data['images']['poster']['src'] = new_src
+        # importing it again triggers update:
+        reimported = import_video(bc)
+        assert reimported.cmsobj.cms_video_still.master_image == 'obama-clinton-120x120.jpg'
+
+    def test_update_teaser_image_preserves_override(self):
+        from zeit.content.image.testing import create_image_group_with_master_image
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        # video is created via BC import
+        bc = self.create_video()
+        bc.data['images']['poster']['src'] = src
+        import_video(bc)
+        # editor replaces automatically created video still with custom imagegroup
+        self.repository['foo-video_still'] = create_image_group_with_master_image()
+        self.repository['video']['2017-05']['myvid'].cms_video_still = self.repository['foo-video_still']
+        assert self.repository['video']['2017-05']['myvid'].cms_video_still.master_image == 'master-image.jpg'
+        # now an update from brightcove still updates the automatically created image group:
+        new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
+        bc.data['images']['poster']['src'] = new_src
+        reimported = import_video(bc)
+        assert self.repository['video']['2017-05']['myvid-still'].master_image == 'obama-clinton-120x120.jpg'
+        # but it does not change the reference of the video to the custom imagegroup
+        assert reimported.cmsobj.cms_video_still.master_image == 'master-image.jpg'
+
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 

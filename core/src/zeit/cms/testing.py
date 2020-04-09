@@ -478,12 +478,16 @@ cms_product_config = """\
 
   sso-cookie-name-prefix my_sso_
   sso-cookie-domain
+  sso-expiration 300
+  sso-algorithm RS256
+  sso-private-key-file {base}/tests/sso-private.pem
 
   source-api-mapping product=zeit.cms.content.sources.ProductSource
   # We just need a dummy XML file
   checkin-webhook-config file://{base}/content/access.xml
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
+""".format(
+    base=pkg_resources.resource_filename(__name__, ''))
 
 
 CONFIG_LAYER = ProductConfigLayer(cms_product_config)
