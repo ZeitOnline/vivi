@@ -212,5 +212,3 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
             source=zeit.cms.recipe.ingredients.ingredientsSource),
         default=(),
         required=False)
-    ingredients.value_type.setTaggedValue(
-        'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
