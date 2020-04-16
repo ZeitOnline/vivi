@@ -466,7 +466,8 @@ class EditRecipeList(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(EditRecipeList, self).setUpWidgets(*args, **kw)
-        self.widgets['ingredients'].add_type = zeit.content.article.edit.interfaces.IAuthor
+        self.widgets['ingredients'].add_type = (
+            zeit.content.article.edit.interfaces.IRecipeList)
         self.widgets['ingredients'].display_list_below_buttons = True
 
     @property
