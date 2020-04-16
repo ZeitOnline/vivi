@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import gocept.lxml.objectify
 import grokcore.component as grok
@@ -57,6 +58,7 @@ class Ingredients(grok.GlobalUtility):
         result = self.data.get(id)
         return result if result else None
 
+    @CONFIG_CACHE.cache_on_arguments()
     def _fetch(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         url = config.get('ingredients-url')
@@ -64,6 +66,7 @@ class Ingredients(grok.GlobalUtility):
         data = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(data)
 
+    @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
         xml = self._fetch()
         ingredients = collections.OrderedDict()
