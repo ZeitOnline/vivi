@@ -55,18 +55,23 @@ class ReportableContentSource(grok.GlobalUtility):
     def mark_done(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = datetime.datetime.now(pytz.UTC)
-        zeit.retresco.update.index(content)
+        self._update_tms(content)
 
     def mark_error(self, content, message):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_error = message
-        zeit.retresco.update.index(content)
+        self._update_tms(content)
 
     def mark_todo(self, content):
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = None
         info.reported_error = None
-        zeit.retresco.update.index(content)
+        self._update_tms(content)
+
+    def _update_tms(self, content):
+        errors = zeit.retresco.update.index(content)
+        if errors:
+            raise errors[0]
 
     @property
     def config(self):
