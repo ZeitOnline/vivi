@@ -36,6 +36,8 @@ class Honorar(object):
         data['anlageAccount'] = 'vivi.%s' % principal.id
         # 1=nat. Person, 2=jur. Person, 3=Pseudonym, 4=anonym/Buchhaltung
         data['typ'] = '1'
+        # Bypass HDok's duplicate detection, since we already perform that.
+        data['anlage'] = 'setzen'
         result = self._request('GET /layouts/leer/records/1', params={
             'script': 'restNeuAutor',
             'script.param': b64encode(json.dumps(data))
