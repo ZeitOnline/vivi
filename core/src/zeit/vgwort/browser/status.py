@@ -61,5 +61,5 @@ class Retry(zeit.cms.browser.view.Base):
             return 405, 'Only POST supported'
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)
-        source.mark_todo(self.context)
+        source.mark_todo(zope.security.proxy.getObject(self.context))
         return self.redirect(self.url('vgwort.html'))

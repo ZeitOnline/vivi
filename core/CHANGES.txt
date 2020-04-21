@@ -5,7 +5,7 @@ vivi.core changes
 4.29.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1234: Handle security properly in "re-report to vgwort" view
 
 
 4.29.2 (2020-04-03)
