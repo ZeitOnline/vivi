@@ -27,6 +27,7 @@ import pkg_resources
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
+import pyramid_dogpile_cache2
 import pytest
 import re
 import selenium.webdriver
@@ -234,10 +235,20 @@ class MockWorkflowLayer(plone.testing.Layer):
 MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
 
 
+class CacheLayer(plone.testing.Layer):
+
+    def testTearDown(self):
+        pyramid_dogpile_cache2.clear()
+
+
+DOGPILE_CACHE_LAYER = CacheLayer()
+
+
 class ZopeLayer(plone.testing.Layer):
 
     defaultBases = (
         CELERY_EAGER_LAYER,
+        DOGPILE_CACHE_LAYER,
         MOCK_CONNECTOR_LAYER,
         MOCK_WORKFLOW_LAYER,
     )
