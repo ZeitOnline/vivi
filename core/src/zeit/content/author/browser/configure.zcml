@@ -106,6 +106,14 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="*"
+    name="zeit.content.author.dispatch"
+    class=".honorar.DispatchAdd"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.AddContent"
+    />
+
   <gocept:pagelet
     for="*"
     name="zeit.content.author.lookup"

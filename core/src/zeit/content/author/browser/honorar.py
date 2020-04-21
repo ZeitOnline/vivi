@@ -1,6 +1,8 @@
 from six.moves.urllib.parse import urlencode
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.author import Author
+from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import json
@@ -18,17 +20,6 @@ class ILookup(zope.interface.Interface):
     firstname = zope.schema.TextLine(title=_('Firstname'))
     lastname = zope.schema.TextLine(title=_('Lastname'))
     confirmed_duplicate = zope.schema.Bool(title=_('Add duplicate author'))
-
-
-@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
-class DuplicateAuthorWarning(Exception):
-
-    def doc(self):
-        return _(
-            u'An author with the given name already exists. '
-            u'If you\'d like to create another author with the same '
-            u'name anyway, check "Add duplicate author" '
-            u'and save the form again.')
 
 
 class LookupForm(zeit.cms.browser.form.FormBase,
@@ -141,3 +132,13 @@ class Lookup(zeit.cms.browser.view.Base):
         lastname = parts[-1]
         return self._form_parameters({
             'vorname': firstname, 'nachname': lastname})
+
+
+class DispatchAdd(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        if FEATURE_TOGGLES.find('author_lookup_in_hdok'):
+            view = 'zeit.content.author.lookup'
+        else:
+            view = 'zeit.content.author.add_contextfree'
+        self.redirect(self.url(view))
