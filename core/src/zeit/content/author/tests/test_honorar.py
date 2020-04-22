@@ -54,7 +54,7 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
         self.http.response_body = self.EMPTY_SEARCH_RESULT
         self.assertEqual([], self.api.search('foo'))
         request = json.loads(self.http.requests[0]['body'])
-        self.assertEqual('foo', request['query'][0]['nameGesamt'])
+        self.assertEqual('foo', request['query'][0]['nameGesamtSuchtext'])
 
     def test_create_b64encodes_parameters(self):
         self.http.response_body = self.CREATE_RESULT

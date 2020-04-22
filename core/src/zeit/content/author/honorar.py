@@ -21,7 +21,7 @@ class Honorar(object):
     def search(self, query, count=10):
         result = self._request('POST /layouts/RESTautorenStamm/_find', json={
             'query': [
-                {'nameGesamt': query},
+                {'nameGesamtSuchtext': query},
                 {'typ': '4', 'omit': 'true'},
                 {'status': '>=50', 'omit': 'true'},
             ],
