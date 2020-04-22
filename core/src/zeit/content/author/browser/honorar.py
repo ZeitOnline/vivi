@@ -117,8 +117,18 @@ class Lookup(zeit.cms.browser.view.Base):
         'nachname': 'lastname',
         'titel': 'title',
     }
+    PEN_NAMES = {
+        'kuenstlervorname': 'vorname',
+        'kuenstlernachname': 'nachname',
+    }
 
     def _form_parameters(self, row):
+        # Hurray special cases
+        for pen, real in self.PEN_NAMES.items():
+            penname = row.get(pen)
+            if penname:
+                row[real] = penname
+
         return urlencode({
             'form.' + self.FORM_FIELDS[key]: value.encode('utf-8')
             for key, value in row.items()

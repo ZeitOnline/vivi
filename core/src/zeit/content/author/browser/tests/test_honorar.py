@@ -74,3 +74,22 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
             <label for="form.vgwortid">...
             <div class="widget">9876</div>...
             """, b.contents)
+
+    def test_pen_name_has_priority(self):
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        api.search.return_value = [
+            {'gcid': '1234', 'vorname': 'Secret', 'nachname': 'Identity',
+             'kuenstlervorname': 'William', 'nachname': 'Shakespeare'},
+            {'gcid': '2345', 'vorname': 'Random', 'nachname': 'Filler'},
+        ]
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/@@zeit.content.author.lookup')
+        b.getControl('Firstname').value = 'foo'
+        b.getControl('Lastname').value = 'bar'
+        b.getControl('Look up author').click()
+        b.getControl(name='selection').displayValue = ['William Shakespeare']
+        b.getControl(name='action-import').click()
+        self.assertEqual('William', b.getControl('Firstname').value)
+        self.assertEqual('Shakespeare', b.getControl('Lastname').value)
+        self.assertEqual('1234', b.getControl('Honorar ID').value)
