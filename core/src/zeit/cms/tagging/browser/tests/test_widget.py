@@ -69,6 +69,9 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(InputWidgetUI, self).setUp()
         self.patches = gocept.testing.mock.Patches()
@@ -84,7 +87,6 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium
-        s.windowMaximize()
         s.type('name=form.year', '2011')
         s.select('name=form.ressort', 'label=Deutschland')
         s.type('name=form.title', 'Test')
@@ -120,7 +122,8 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
-        s.clickAndWait('name=form.actions.apply')
+        s.click('name=form.actions.apply')
+        s.waitForTextPresent('t2')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
 
@@ -142,7 +145,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
                 'zeit.cms.tagging.browser.widget.UpdateTags.json') as mocked:
             self.open_content()
             s = self.selenium
-            s.click('update_tags')
+            s.click('name=update_tags')
             s.pause(100)
             self.assertTrue(mocked.called)
 
@@ -152,7 +155,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.waitForNotVisible('css=.message')
         s.click('jquery=li:contains(t1) .delete')
-        s.click('update_tags')
+        s.click('name=update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.waitForTextPresent('t1')

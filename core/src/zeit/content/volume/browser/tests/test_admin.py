@@ -136,12 +136,10 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         s.waitForElementPresent('css=ol#worklist')
         s.waitForElementPresent('css=li.busy[action=start_job]')
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
+        s.waitForLocation('*/ausgabe')  # wait for reload
         s.assertElementNotPresent('id=publish.errors')
-        s.waitForPageToLoad()
         s.click('css=li.workflow')
-        # XXX Not stored yet, ZON-4157
-        # s.assertText(
-        # 'css=.fieldname-logs .widget', '*Collective Publication*')
+        s.assertText('css=.fieldname-logs .widget', '*Collective Publication*')
 
     def test_multi_publish_errors_are_logged_on_volume(self):
         s = self.selenium

@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import transaction
 import unittest
 import zeit.cms.checkout.interfaces
@@ -116,16 +117,17 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             ['(nothing selected)', 'Large', 'Float'],
             s.getSelectOptions(mode_select))
         s.select(mode_select, 'label=Large')
-        s.type(link_input, '\t')
+        s.keyPress(link_input, Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
 
+        s.pause(500)
         s.waitForElementPresent(variant_select)
         self.assertEqual(
             ['(nothing selected)', u'Breit', u'Original', u'Square 1:1',
              'Templates Only', 'Header: Von A nach B'],
             s.getSelectOptions(variant_select))
         s.select(variant_select, 'label=Original')
-        s.type(link_input, '\t')
+        s.keyPress(link_input, Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
 
         # Re-open the page and verify that the data is still there
@@ -311,7 +313,9 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             ['(nothing selected)', 'small', 'with info', 'large', 'double'],
             s.getSelectOptions(select))
         s.select(select, 'label=large')
-        s.type(select, '\t')
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  select.replace('css=', ''))
+        s.keyPress(select, Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')

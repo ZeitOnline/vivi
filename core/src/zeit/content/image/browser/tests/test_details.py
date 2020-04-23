@@ -16,7 +16,7 @@ class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
         s = self.selenium
         self.open('/repository/2006/DSC00109_2.JPG/@@wrap?view=object-details')
         s.assertNotVisible('css=.picture_information')
-        self.eval('window.jQuery(document).trigger_fragment_ready();')
+        self.execute('window.jQuery(document).trigger_fragment_ready();')
         s.click('css=.toggle_infos')
         s.waitForVisible('css=.picture_information')
 

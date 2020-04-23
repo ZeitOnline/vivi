@@ -120,6 +120,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         self.create_content_and_fill_clipboard()
         self.create_two_groups()
         s = self.selenium
+        s.setWindowSize(self.window_width, 700)
 
         group1 = 'css=div.type-group'
         group2 = 'css=div.type-group + div.type-group'

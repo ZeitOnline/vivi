@@ -13,7 +13,7 @@ class MDBImport(zeit.content.image.testing.SeleniumTestCase):
     def test_prefills_form_fields(self):
         s = self.selenium
         s.open('/repository/@@zeit.content.image.imagegroup.Add')
-        self.eval(
+        self.execute(
             'document.getElementById("form.mdb_blob").widget.retrieve("4711")')
         s.waitForValue('name=form.caption', 'Testbilder Honorar')
         s.assertValue('name=form.copyright.combination_02', 'Peter Schwalbach')

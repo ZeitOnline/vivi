@@ -10,7 +10,7 @@ class JavascriptTest(zeit.addcentral.testing.SeleniumTestCase):
 
         # provoke validation error
         s.waitForElementPresent('sidebar.form.type_')
-        s.click('sidebar.form.actions.add')
+        s.click('name=sidebar.form.actions.add')
         s.waitForElementPresent('xpath=//ul[@class="errors"]')
 
         # successful submit
@@ -18,7 +18,7 @@ class JavascriptTest(zeit.addcentral.testing.SeleniumTestCase):
         s.select('sidebar.form.ressort', 'International')
         s.waitForElementPresent('xpath=//option[text() = "Meinung"]')
         s.select('sidebar.form.sub_ressort', 'Meinung')
-        s.click('sidebar.form.actions.add')
+        s.click('name=sidebar.form.actions.add')
         s.waitForLocation(
             '*/international/meinung/*-*/@@zeit.content.image.imagegroup.Add*')
 
@@ -28,7 +28,7 @@ class JavascriptTest(zeit.addcentral.testing.SeleniumTestCase):
 
         # but selecting something else should take preference
         s.select('sidebar.form.type_', 'Folder')
-        s.click('sidebar.form.actions.add')
+        s.click('name=sidebar.form.actions.add')
         s.waitForLocation(
             '*/international/meinung/*-*/@@zeit.cms.repository.folder.Add*')
 

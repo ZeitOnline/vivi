@@ -38,58 +38,33 @@ case $COMMAND in
 
         bin/ci setup-batou
 
-        rm -f report.xml cobertura.xml
+        rm -f report*.xml cobertura.xml
         cd $DEPLOYMENT/work/source
-        rm -f report.xml coverage.xml .coverage
+        rm -f report*.xml coverage.xml .coverage
+
+        export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
         set +e
         shift
         $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'not selenium' \
-            --cov=. --cov-report=html --cov-report=xml --junitxml=report.xml "$@"
+            --cov=. --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
-        cp $DEPLOYMENT/work/source/report.xml $WORKSPACE
+        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'selenium' \
+            --cov=. --junitxml=report_selenium.xml \
+            --cov-append --cov-report=html --cov-report=xml \
+            --reruns=3 --reruns-delay=1 "$@"
+        SELENIUM_RESULT=$?
+        if [ "$TEST_RESULT" = "0" ]; then
+            TEST_RESULT=$SELENIUM_RESULT
+        fi
+
+        cp $DEPLOYMENT/work/source/report*.xml $WORKSPACE
         if [ -f $DEPLOYMENT/work/source/coverage.xml ]; then
             # github pr coverage plugin has hardcoded filenames, sigh.
             mv $DEPLOYMENT/work/source/coverage.xml $WORKSPACE/cobertura.xml
         fi
         cp -R $DEPLOYMENT/work/source/coverage-report $WORKSPACE
-
-        exit $TEST_RESULT
-    ;;
-    test-selenium*)
-        if [ "$COMMAND" = "test-app-py3" ]; then
-           PY3="py3"
-        fi
-        cd $WORKSPACE
-
-        bin/ci setup-batou
-
-        rm -f report.xml cobertura.xml
-        cd $DEPLOYMENT/work/source
-        rm -f report.xml coverage.xml .coverage
-
-        echo "Preparing and starting window manager"
-        echo "session.screen0.allowRemoteActions: true" >> ${WORKSPACE}/fluxbox.init
-        fluxbox 2>/dev/null -log /dev/null -rc ${WORKSPACE}/fluxbox.init &
-
-        export GOCEPT_WEBDRIVER_REMOTE=False
-        export GOCEPT_WEBDRIVER_BROWSER=firefox
-        export GOCEPT_WEBDRIVER_FF_BINARY=/opt/firefox-34/firefox
-        export GOCEPT_SELENIUM_JUNIT_ATTACH=True
-
-        set +e
-        # Run selenium tests with rerunfailures and exclusions
-        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar \
-            --cov=. --cov-report=html --cov-report=xml \
-            --junitxml=report.xml --reruns=3 -m selenium -k \
-            "not (test_teaser_supertitle_is_copied_to_article_supertitle or test_change_metadata_and_text_then_revert_undoes_both_changes or test_checkin_button_is_disabled_while_validation_errors_present or test_validation_errors_are_removed_from_checkin_form_on_change or test_moving_teaser_from_n_to_n_does_not_change_layout or test_reloads_overflow_area or test_AMP_is_disabled_after_choosing_non_free_access or test_FBIA_is_disabled_after_choosing_non_free_access or test_publish_failure_should_be_displayed or test_publish_should_show_error_message or test_source_not_removed_when_not_dropped_to_cp)"
-        TEST_RESULT=$?
-        cp $DEPLOYMENT/work/source/report.xml $WORKSPACE
-
-        echo "Tests done, stopping window manager for clean Xvfb shutdown"
-        fluxbox-remote quit
-        rm ${WORKSPACE}/fluxbox.init
 
         exit $TEST_RESULT
     ;;

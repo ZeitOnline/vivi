@@ -10,7 +10,7 @@ class HTMLConvertTest(
         self.add_article()
 
     def convert(self):
-        self.eval(
+        self.execute(
             "window.zeit.content.article.html.to_xml("
             "window.jQuery('.editable')[0])")
 

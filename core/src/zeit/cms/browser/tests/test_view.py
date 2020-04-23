@@ -43,5 +43,5 @@ class FragmentReady(zeit.cms.testing.SeleniumTestCase):
             '/@@/zeit.cms.browser.tests.fixtures/fragmentready.html')
 
     def test_event_is_fired_on_document_and_contains_actual_dom_element(self):
-        self.eval('window.jQuery("#example").trigger_fragment_ready();')
+        self.execute('window.jQuery("#example").trigger_fragment_ready();')
         self.assertEqual('example', self.eval('zeit.cms.event_target'))
