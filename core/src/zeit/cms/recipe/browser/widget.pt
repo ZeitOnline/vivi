@@ -1,0 +1,20 @@
+<div class="keyword-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id string:${view/name}.wrapper">
+
+<input
+  type="hidden"
+  tal:attributes="name string:${view/name};
+                  id string:${view/name};
+                  value view/_getFormValue;"
+  />
+
+<ol tal:attributes="id string:${view/name}.list">
+  <!-- data will be inserted here by javascript -->
+</ol>
+
+</div>
+<script tal:content="string:
+  new zeit.cms.recipe.Widget('${view/name}');
+">
+</script>

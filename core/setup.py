@@ -220,6 +220,7 @@ setup(
             'zeit_cms_content=zeit.cms.content.browser.resources:lib',
             'zeit_cms_workingcopy=zeit.cms.workingcopy.browser.resources:lib',
             'zeit_cms_tagging=zeit.cms.tagging.browser.resources:lib',
+            'zeit_cms_recipe=zeit.cms.recipe.browser.resources:lib',
             'zeit_cms_clipboard=zeit.cms.clipboard.browser.resources:lib',
 
             'zeit_content_article=zeit.content.article.edit'
