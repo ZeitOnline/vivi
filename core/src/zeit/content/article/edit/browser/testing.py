@@ -107,4 +107,5 @@ class EditorHelper(object):
 
 class EditorTestCase(zeit.content.article.testing.SeleniumTestCase,
                      EditorHelper):
-    pass
+    window_width = 1600
+    window_height = 1000

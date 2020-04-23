@@ -8,7 +8,7 @@ class DroppableRegistration(zeit.edit.testing.SeleniumTestCase):
         self.open(
             '/@@/zeit.edit.browser.tests.fixtures/content-drop/editor.html')
         self.wait_for_condition('!zeit.edit.editor.busy')
-        self.eval("""\
+        self.execute("""\
 zeit.edit.drop.Droppable.prototype.drop = function(){
     zeit.edit.dropped = true;
 };
@@ -41,7 +41,8 @@ class DragIntegration(zeit.edit.testing.SeleniumTestCase):
         s.mouseDown(draggable)
         s.mouseMoveAt(draggable, '10,10')
         s.assertElementPresent('css=.landing-zone.droppable-active')
-        self.eval('zeit.edit.editor.reload("cp-content-inner", "contents");')
+        self.execute(
+            'zeit.edit.editor.reload("cp-content-inner", "contents");')
         self.wait_for_condition('!zeit.edit.editor.busy')
         s.waitForElementPresent('css=.landing-zone.droppable-active')
         s.mouseUp(draggable)

@@ -87,11 +87,11 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.assertNotChecked('id=search-type-file')
         s.assertNotChecked('id=search-type-collection')
         s.assertNotChecked('id=search-type-image')
-        self.eval("zeit.find._search.set_types(['file', 'image'])")
+        self.execute("zeit.find._search.set_types(['file', 'image'])")
         s.assertChecked('id=search-type-file')
         s.assertNotChecked('id=search-type-collection')
         s.assertChecked('id=search-type-image')
-        self.eval("zeit.find._search.set_types(['file', 'collection'])")
+        self.execute("zeit.find._search.set_types(['file', 'collection'])")
         s.assertChecked('id=search-type-file')
         s.assertChecked('id=search-type-collection')
         s.assertNotChecked('id=search-type-image')
@@ -99,5 +99,5 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
     def test_activate_objectbrowser_accepts_types(self):
         s = self.selenium
         s.assertNotChecked('id=search-type-file')
-        self.eval("zeit.cms.activate_objectbrowser(['file'])")
+        self.execute("zeit.cms.activate_objectbrowser(['file'])")
         s.assertChecked('id=search-type-file')

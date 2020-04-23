@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
@@ -95,8 +96,9 @@ class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=#edit-form-metadata .fold-link')
         s.waitForVisible('css=#form-metadata-access select')
         s.select('css=#form-metadata-access select', 'label=abopflichtig')
-        s.type('css=#form-metadata-access select', '\t')
+        s.keyPress('css=#form-metadata-access select', Keys.TAB)
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
+        s.pause(500)
         s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
         self.assertEqual(False, s.isEditable(r'css=#social\.is_amp'))
 
@@ -117,7 +119,7 @@ class SocialFBIATest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=#edit-form-metadata .fold-link')
         s.waitForVisible('css=#form-metadata-access select')
         s.select('css=#form-metadata-access select', 'label=abopflichtig')
-        s.type('css=#form-metadata-access select', '\t')
+        s.keyPress('css=#form-metadata-access select', Keys.TAB)
         s.waitForElementNotPresent('css=#form-metadata-access .dirty')
         s.waitForElementPresent(
             'css=.fieldname-is_instant_article .checkboxdisabled')

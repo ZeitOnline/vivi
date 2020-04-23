@@ -1,4 +1,3 @@
-import gocept.httpserverlayer.wsgi
 import gocept.httpserverlayer.static
 import gocept.selenium
 import os.path
@@ -29,13 +28,13 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(
     name='HTTPStaticLayer',
     bases=(HTTP_LAYER,))
 
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))

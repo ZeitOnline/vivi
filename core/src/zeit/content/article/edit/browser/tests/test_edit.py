@@ -202,7 +202,8 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 class='title'>blubbel</h4>")
         s.assertElementPresent('css=.block.type-p h4.title')
-        self.eval('window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute(
+            'window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('css=.block.type-p h4.title')
 
     @unittest.skip('Triggering keyup does not work')
@@ -210,7 +211,8 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 style='display: inline'>blubbel</h4>")
         s.assertElementPresent('jquery=.block.type-p h4[style]')
-        self.eval('window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute(
+            'window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('jquery=.block.type-p h4[style]')
 
     def test_consequent_paragraphs_should_be_editable_together(self):
@@ -238,7 +240,7 @@ class TestTextEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -262,12 +264,6 @@ class TestTextEditing(
         time.sleep(0.25)
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
-
-    def test_create_paragraph_should_be_hidden_while_editing(self):
-        s = self.selenium
-        s.waitForElementPresent('css=.create-paragraph')
-        s.click('css=.create-paragraph')
-        s.waitForElementNotPresent('css=.create-paragraph')
 
     @unittest.skip('wait for gocept.selenium to implement element positions '
                    'and for webdriver to allow clicking inside a paragraph')
@@ -349,9 +345,11 @@ class TestEditingMultipleParagraphs(
 class TestLinkEditing(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(TestLinkEditing, self).setUp()
-        self.selenium.windowMaximize()
         self.add_article()
 
     def select_text(self):
@@ -359,7 +357,7 @@ class TestLinkEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -372,7 +370,7 @@ class TestLinkEditing(
         self.create(
             '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
                 additional, href))
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
@@ -509,7 +507,8 @@ class TestLinkEditing(
         click(s, 'xpath=//a[@href="insert_link"]')
         # We need to scroll the inner "frame" to top, otherwise dragging will
         # get confused:
-        self.eval("document.getElementById('cp-content-inner').scrollTop = 0;")
+        self.execute(
+            "document.getElementById('cp-content-inner').scrollTop = 0;")
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/testcontent"]', 'css=.link_input')
         s.assertValue('css=.link_input input[name=href]',
@@ -628,7 +627,7 @@ class TestLinkEditing(
         self.create('<p>I want to link <b>some bold text</b></p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.eval("""(function() {
+        self.execute("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -720,7 +719,8 @@ class TestDivision(
         self.create_division()
         s = self.selenium
         s.waitForElementPresent('css=.type-division textarea')
-        s.type('css=.type-division textarea', 'Division teaser\t')
+        s.type('css=.type-division textarea', 'Division teaser')
+        s.keyPress('css=.type-division textarea', Keys.TAB)
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
@@ -790,7 +790,7 @@ class AutoSaveIntegration(
         super(AutoSaveIntegration, self).setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
-        self.eval(
+        self.execute(
             "zeit.content.article.Editable.prototype.autosave_interval = 0.2;")
 
     def assert_paragraphs(self, *contents):
@@ -817,14 +817,14 @@ class DirtySaveVersusPersistTests(
         super(DirtySaveVersusPersistTests, self).setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
-        self.eval(
+        self.execute(
             "zeit.content.article.Editable.prototype.persist = function () { "
             "  zeit.edit.persist_called = true; }")
 
     def save(self):
         # Override self.save() as the superclass expects that save is working
         # properly but as we mocked persist it doesn't.
-        self.eval('%s.save()' % self.get_js_editable())
+        self.execute('%s.save()' % self.get_js_editable())
 
     def test_does_not_save_on_server_if_not_dirty(self):
         self.create('<p>foo</p><p>bar</p>')

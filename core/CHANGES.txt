@@ -5,7 +5,7 @@ vivi.core changes
 4.29.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5728: Upgrade to selenium-3.x with geckodriver
 
 
 4.29.2 (2020-04-03)

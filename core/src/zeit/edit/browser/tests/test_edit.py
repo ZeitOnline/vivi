@@ -18,12 +18,12 @@ class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
             '/@@/zeit.edit.browser.tests.fixtures/scroll-position/editor.html')
         self.wait_for_condition('!zeit.edit.editor.busy')
 
-        self.eval('document.getElementById("marker").scrollIntoView()')
+        self.execute('document.getElementById("marker").scrollIntoView()')
         # thanks to
         # <http://www.snook.ca/archives/javascript/offsets_scrolling_overflow/>
         before = self.eval(
             'document.getElementById("cp-content-inner").scrollTop')
-        self.eval(
+        self.execute(
             'window.MochiKit.Signal.signal('
             'zeit.edit.editor, "reload", "myblock", "empty.html")')
         self.wait_for_condition('!zeit.edit.editor.busy')

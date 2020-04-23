@@ -12,7 +12,6 @@ import copy
 import datetime
 import doctest
 import gocept.httpserverlayer.custom
-import gocept.httpserverlayer.wsgi
 import gocept.jslint
 import gocept.selenium
 import gocept.testing.assertion
@@ -30,10 +29,13 @@ import plone.testing.zca
 import plone.testing.zodb
 import pytest
 import re
+import selenium.webdriver
 import six
 import sys
+import threading
 import transaction
 import unittest
+import waitress.server
 import webtest.lint
 import xml.sax.saxutils
 import zeit.cms.application
@@ -65,6 +67,7 @@ class LoggingLayer(plone.testing.Layer):
         logging.getLogger('zeit.cms.repository').setLevel(logging.INFO)
         logging.getLogger('selenium').setLevel(logging.INFO)
         logging.getLogger('bugsnag').setLevel(logging.FATAL)
+        logging.getLogger('waitress').setLevel(logging.ERROR)
 
 
 LOGGING_LAYER = LoggingLayer()
@@ -494,10 +497,87 @@ CONFIG_LAYER = ProductConfigLayer(cms_product_config)
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
+
+
+# Layer API modelled after gocept.httpserverlayer.wsgi
+class WSGIServerLayer(plone.testing.Layer):
+
+    port = 0  # choose automatically
+
+    def __init__(self, *args, **kw):
+        super(WSGIServerLayer, self).__init__(*args, **kw)
+        self.wsgi_app = None
+
+    @property
+    def wsgi_app(self):
+        return self.get('wsgi_app', self._wsgi_app)
+
+    @wsgi_app.setter
+    def wsgi_app(self, value):
+        self._wsgi_app = value
+
+    @property
+    def host(self):
+        return os.environ.get('GOCEPT_HTTP_APP_HOST', 'localhost')
+
+    def setUp(self):
+        self['httpd'] = waitress.server.create_server(
+            self.wsgi_app, host=self.host, port=0, ipv6=False,
+            clear_untrusted_proxy_headers=True)
+
+        if isinstance(self['httpd'], waitress.server.MultiSocketServer):
+            self['http_host'] = self['httpd'].effective_listen[0][0]
+            self['http_port'] = self['httpd'].effective_listen[0][1]
+        else:
+            self['http_host'] = self['httpd'].effective_host
+            self['http_port'] = self['httpd'].effective_port
+        self['http_address'] = '%s:%s' % (self['http_host'], self['http_port'])
+
+        self['httpd_thread'] = threading.Thread(target=self['httpd'].run)
+        self['httpd_thread'].daemon = True
+        self['httpd_thread'].start()
+
+    def tearDown(self):
+        self['httpd'].close()
+
+        self['httpd_thread'].join(5)
+        if self['httpd_thread'].is_alive():
+            raise RuntimeError('WSGI server could not be shut down')
+
+        del self['httpd']
+        del self['httpd_thread']
+
+        del self['http_host']
+        del self['http_port']
+        del self['http_address']
+
+
+HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
+
+
+class WebdriverLayer(gocept.selenium.WebdriverLayer):
+
+    # copy&paste from superclass to customize the ff binary, and to note that
+    # chrome indeed does support non-headless now.
+    def _start_selenium(self):
+        if self._browser == 'firefox':
+            options = selenium.webdriver.FirefoxOptions()
+            if self.headless:
+                options.add_argument('-headless')
+            options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+            self['seleniumrc'] = selenium.webdriver.Firefox(
+                firefox_profile=self.profile, options=options)
+
+        if self._browser == 'chrome':
+            options = selenium.webdriver.ChromeOptions()
+            if self.headless:
+                options.add_argument('--headless')
+            self['seleniumrc'] = selenium.webdriver.Chrome(
+                options=options,
+                service_args=['--log-path=chromedriver.log'])
+
+
+WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
@@ -688,7 +768,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.original_width = self.selenium.getEval('window.outerWidth')
         self.original_height = self.selenium.getEval('window.outerHeight')
         self.selenium.setWindowSize(self.window_width, self.window_height)
-        self.eval('window.localStorage.clear()')
+        self.execute('window.localStorage.clear()')
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
@@ -722,9 +802,11 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         var zeit = window.zeit;
     """
 
+    def execute(self, text):
+        return self.selenium.selenium.execute_script(self.js_globals + text)
+
     def eval(self, text):
-        return self.selenium.selenium.execute_script(
-            self.js_globals + 'return ' + text)
+        return self.execute('return ' + text)
 
     def wait_for_condition(self, text):
         self.selenium.waitForCondition(self.js_globals + """\

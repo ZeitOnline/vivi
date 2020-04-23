@@ -1,5 +1,4 @@
 # coding: utf-8
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
 import zeit.cms.testing
@@ -45,9 +44,9 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(CELERY_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
