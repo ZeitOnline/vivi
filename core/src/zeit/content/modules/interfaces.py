@@ -208,7 +208,7 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
 
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
-        value_type=zeit.cms.content.interfaces.ReferenceField(
+        value_type=zope.schema.Choice(
             source=zeit.cms.recipe.ingredients.ingredientsSource),
         default=(),
         required=False)

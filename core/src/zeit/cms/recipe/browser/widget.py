@@ -1,4 +1,5 @@
 from collections import namedtuple
+import json
 import grokcore.component as grok
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -12,6 +13,7 @@ import zope.formlib.source
 import zope.formlib.widget
 import zope.lifecycleevent
 import zope.schema.interfaces
+from zeit.content.article.edit.recipelist import Ingredient
 
 
 class Widget(grok.MultiAdapter,
@@ -45,6 +47,15 @@ class Widget(grok.MultiAdapter,
     @property
     def uuid(self):
         return zeit.cms.content.interfaces.IUUID(self.context.context).id
+
+    def _toFormValue(self, value):
+        return json.dumps([{
+            'id': x.id,
+            'amount': x.amount} for x in value or ()])
+
+    def _toFieldValue(self, value):
+        data = json.loads(value)
+        return tuple([Ingredient(x['id'], x['amount'] for x in data))
 
 
 class DisplayWidget(grok.MultiAdapter,
