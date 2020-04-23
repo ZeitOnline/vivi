@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.29.3 (unreleased)
+4.30.0 (unreleased)
 -------------------
 
 - ZON-5728: Upgrade to selenium-3.x with geckodriver
