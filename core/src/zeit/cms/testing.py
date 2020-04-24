@@ -562,6 +562,8 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
     def _start_selenium(self):
         if self._browser == 'firefox':
             options = selenium.webdriver.FirefoxOptions()
+            # The default 'info' is still way too verbose
+            options.log.level = 'error'
             if self.headless:
                 options.add_argument('-headless')
             options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
