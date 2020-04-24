@@ -6,6 +6,7 @@ from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import json
+import six
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.content.author.interfaces
@@ -130,7 +131,8 @@ class Lookup(zeit.cms.browser.view.Base):
                 row[real] = penname
 
         return urlencode({
-            'form.' + self.FORM_FIELDS[key]: value.encode('utf-8')
+            'form.' + self.FORM_FIELDS[key]: six.text_type(
+                value).encode('utf-8')
             for key, value in row.items()
             if value and key in self.FORM_FIELDS
         })
