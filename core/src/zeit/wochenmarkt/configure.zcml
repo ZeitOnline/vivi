@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
@@ -6,12 +5,12 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
-  <grok:grok package="." exclude="json xmlrpc" />
+  <grok:grok package="." exclude="browser" />
 
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zeit.cms.recipe.search"
+    name="zeit.wochenmarkt.search"
     class=".ingredients.IngredientsSearch"
     permission="zope.View"/>
 

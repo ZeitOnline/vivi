@@ -5,10 +5,10 @@ import grokcore.component as grok
 import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
-import zeit.cms.recipe.ingredients
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
+import zeit.wochenmarkt.ingredients
 import zope.app.appsetup.product
 import zope.schema
 
@@ -209,6 +209,6 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
         value_type=zope.schema.Choice(
-            source=zeit.cms.recipe.ingredients.ingredientsSource),
+            source=zeit.wochenmarkt.ingredients.ingredientsSource),
         default=(),
         required=False)

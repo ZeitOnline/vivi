@@ -3,12 +3,11 @@
 
 var nbsp = ' ';
 
-zeit.cms.declare_namespace('zeit.cms.recipe');
+zeit.cms.declare_namespace('zeit.wochenmarkt');
 
-zeit.cms.recipe.Widget = gocept.Class.extend({
+zeit.wochenmarkt.Widget = gocept.Class.extend({
 
     construct: function(id) {
-        debugger;
         var self = this;
         self.id = id;
         self.element = document.getElementById(id + '.wrapper');
@@ -20,6 +19,7 @@ zeit.cms.recipe.Widget = gocept.Class.extend({
     },
 
     _initialize_autocomplete: function() {
+        try {
         var self = this;
         $(self.autocomplete).autocomplete({
             source: self.autocomplete.getAttribute('cms:autocomplete-source'),
@@ -36,6 +36,9 @@ zeit.cms.recipe.Widget = gocept.Class.extend({
             },
             appendTo: self.element
         });
+        } catch(e) {
+            console.log(e);
+        }
     },
 
     _initialize_sortable: function() {
@@ -68,9 +71,9 @@ zeit.cms.recipe.Widget = gocept.Class.extend({
         var result = [];
         $('> li', self.list).each(function(i, el) {
             el = $(el);
-            result.push({code: el.attr('cms:uniqueId'),
-                         label: el.text(),
-                         pinned: Boolean(el.find('.pinned').length)});
+            result.push({id: el.attr('cms:uniqueId'),
+                         amount: '1'
+            });
         });
         return result;
     },
@@ -105,6 +108,12 @@ zeit.cms.recipe.Widget = gocept.Class.extend({
         } else {
             $(self.list).prepend(item);
         }
+    },
+
+    _sync_json_widget_value: function() {
+        var self = this;
+        $(self.data).val(JSON.stringify(self.to_json()));
+        $(self.list).css('width', $(self.list).width() + 'px');
     }
 
 });

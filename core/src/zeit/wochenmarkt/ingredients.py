@@ -7,7 +7,7 @@ import lxml.etree
 import six
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
-import zeit.cms.recipe.interfaces
+import zeit.wochenmarkt.interfaces
 import zope.component
 import zope.component.hooks
 import zc.sourcefactory.contextual
@@ -34,7 +34,7 @@ class Ingredient(object):
         self.__name__ = self.name
 
 
-@grok.implementer(zeit.cms.recipe.interfaces.IIngredients)
+@grok.implementer(zeit.wochenmarkt.interfaces.IIngredients)
 class Ingredients(grok.GlobalUtility):
     """Search for ingredients in ingredients source"""
 
@@ -83,12 +83,12 @@ class Ingredients(grok.GlobalUtility):
 class IngredientsSource(
         zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
-    check_interfaces = zeit.cms.recipe.interfaces.IIngredients
+    check_interfaces = zeit.wochenmarkt.interfaces.IIngredients
     name = 'ingredients'
-    addform = 'zeit.cms.recipe.add_contextfree'
+    addform = 'zeit.wochenmarkt.add_contextfree'
 
     @zope.interface.implementer(
-        zeit.cms.recipe.interfaces.IIngredientsSource,
+        zeit.wochenmarkt.interfaces.IIngredientsSource,
         zeit.cms.content.contentsource.IAutocompleteSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
 
@@ -101,7 +101,7 @@ class IngredientsSource(
             return True
 
     def search(self, term):
-        from zeit.cms.recipe.interfaces import IIngredients  # circular import
+        from zeit.wochenmarkt.interfaces import IIngredients  # circular import
         ingredients = zope.component.getUtility(IIngredients)
         return ingredients.search(term)
 
@@ -122,7 +122,7 @@ class IngredientsSearch(zeit.cms.browser.view.JSON):
 
 
 @grok.adapter(
-    zeit.cms.recipe.interfaces.IIngredientsSource,
+    zeit.wochenmarkt.interfaces.IIngredientsSource,
     zeit.cms.browser.interfaces.ICMSLayer)
 @grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
 def IngredientsSearchURL(context, request):

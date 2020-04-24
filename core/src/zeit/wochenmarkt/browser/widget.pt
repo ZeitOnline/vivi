@@ -13,8 +13,15 @@
   <!-- data will be inserted here by javascript -->
 </ol>
 
+<input
+ type="text" name="add_tag" placeholder="Type to find keywords ..."
+ i18n:attributes="placeholder"
+ tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
+                 id string:${view/name}.add"
+ />
+
 </div>
 <script tal:content="string:
-  new zeit.cms.recipe.Widget('${view/name}');
+  new zeit.wochenmarkt.Widget('${view/name}');
 ">
 </script>

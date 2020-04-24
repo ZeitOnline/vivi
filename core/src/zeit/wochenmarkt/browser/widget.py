@@ -4,7 +4,7 @@ import grokcore.component as grok
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
-import zeit.cms.recipe.interfaces
+import zeit.wochenmarkt.interfaces
 import zope.app.appsetup.appsetup
 import zope.app.pagetemplate
 import zope.component.hooks
@@ -13,7 +13,7 @@ import zope.formlib.source
 import zope.formlib.widget
 import zope.lifecycleevent
 import zope.schema.interfaces
-from zeit.content.article.edit.recipelist import Ingredient
+from zeit.content.modules.recipelist import Ingredient
 
 
 class Widget(grok.MultiAdapter,
@@ -25,14 +25,13 @@ class Widget(grok.MultiAdapter,
 
     grok.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.recipe.interfaces.IIngredientsSource,
+        zeit.wochenmarkt.interfaces.IIngredientsSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grok.provides(zope.formlib.interfaces.IInputWidget)
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
     def __init__(self, context, source, request):
-        __import__("pdb").set_trace()
         super(Widget, self).__init__(context, request)
         self.source = source
 
@@ -42,7 +41,7 @@ class Widget(grok.MultiAdapter,
     @property
     def autocomplete_source_url(self):
         return self.url(
-            zope.component.hooks.getSite(), '@@find_ingredients')
+            zope.component.hooks.getSite(), '@@ingredients_find')
 
     @property
     def uuid(self):
@@ -55,7 +54,7 @@ class Widget(grok.MultiAdapter,
 
     def _toFieldValue(self, value):
         data = json.loads(value)
-        return tuple([Ingredient(x['id'], x['amount'] for x in data))
+        return tuple([Ingredient(x['id'], x['amount']) for x in data])
 
 
 class DisplayWidget(grok.MultiAdapter,
@@ -63,7 +62,7 @@ class DisplayWidget(grok.MultiAdapter,
 
     grok.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.recipe.interfaces.IIngredientsSource,
+        zeit.wochenmarkt.interfaces.IIngredientsSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grok.provides(zope.formlib.interfaces.IDisplayWidget)
 
@@ -71,7 +70,6 @@ class DisplayWidget(grok.MultiAdapter,
     # recipe_highling_css_class = 'with-topic-page'
 
     def __init__(self, field, source, request):
-        __import__("pdb").set_trace()
         super(DisplayWidget, self).__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),

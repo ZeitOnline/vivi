@@ -221,7 +221,6 @@ setup(
             'zeit_cms_content=zeit.cms.content.browser.resources:lib',
             'zeit_cms_workingcopy=zeit.cms.workingcopy.browser.resources:lib',
             'zeit_cms_tagging=zeit.cms.tagging.browser.resources:lib',
-            'zeit_cms_recipe=zeit.cms.recipe.browser.resources:lib',
             'zeit_cms_clipboard=zeit.cms.clipboard.browser.resources:lib',
 
             'zeit_content_article=zeit.content.article.edit'
@@ -242,6 +241,7 @@ setup(
             'zeit_imp=zeit.imp.browser.resources:lib',
             'zeit_newsletter=zeit.newsletter.browser.resources:lib',
             'zeit_push=zeit.push.browser.resources:lib',
+            'zeit_wochenmarkt=zeit.wochenmarkt.browser.resources:lib',
             'zeit_seo=zeit.seo.browser.resources:lib',
             'zeit_workflow=zeit.workflow.browser.resources:lib',
             'zeit_wysiwyg=zeit.wysiwyg.browser.resources:lib',
