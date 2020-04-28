@@ -5,7 +5,7 @@ vivi.core changes
 4.30.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1234: Ignore `DeleteProperty` in tms reindex
 
 
 4.30.1 (2020-04-27)
