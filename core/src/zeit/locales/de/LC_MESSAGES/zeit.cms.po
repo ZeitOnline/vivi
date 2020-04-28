@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
 "POT-Creation-Date: Thu Mar 12 14:18:46 2020\n"
-"PO-Revision-Date: 2020-04-03 11:25+0200\n"
+"PO-Revision-Date: 2020-04-28 11:27+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "Language: de\n"
@@ -2228,7 +2228,7 @@ msgstr "Seitenumbruch"
 
 #: zeit/content/article/edit/embed.py:18
 msgid "Embed block"
-msgstr "Social-Media-Embed"
+msgstr "Easy-Embed"
 
 #: zeit/content/article/edit/interfaces.py:77
 msgid "Paragraph-Text"
@@ -3766,8 +3766,8 @@ msgstr "URL"
 #: zeit/content/modules/interfaces.py:65
 msgid "Add URL"
 msgstr ""
-"Füge hier die URL eines Twitter-, Instagram-, Youtube-, Facebook- oder Vimeo-"
-"Posts ein."
+"Füge hier die URL eines Twitter-, Instagram-, Youtube-, Datawrapper-, "
+"Facebook- oder Vimeo-Posts ein."
 
 #: zeit/content/modules/interfaces.py:136
 msgid "Newsletter Signup"
