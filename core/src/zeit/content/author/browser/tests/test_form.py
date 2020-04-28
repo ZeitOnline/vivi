@@ -62,8 +62,8 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
             <div class="widget">9876</div>...
             """, b.contents)
 
-    def add_william(self, vgwort_id='12345'):
-        b = self.browser
+    def add_william(self, browser=None, vgwort_id='12345'):
+        b = self.browser if browser is None else browser
         b.getControl('Firstname').value = 'William'
         b.getControl('Lastname').value = 'Shakespeare'
         b.getControl('VG-Wort ID').value = vgwort_id
@@ -78,14 +78,15 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
 
     def test_add_form(self):
-        b = self.browser
-        self.open('/repository/online/2007/01')
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('producer', 'producerpw')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])
         b.getControl('File name').value = 'william_shakespeare'
         b.getControl('Email address').value = 'wil.i.am@shakespeare.name'
-        self.add_william()
+        self.add_william(b)
         b.getLink('Checkin').click()
         self.assertEllipsis("""...
             <label for="form.firstname">...
@@ -157,26 +158,28 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
             '..."testcontent" has been checked in...', b.contents)
 
     def test_invalid_vgwortcode_shows_error_message(self):
-        b = self.browser
-        self.open('/repository/online/2007/01')
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('producer', 'producerpw')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])
         b.getControl('File name').value = 'william_shakespeare'
         b.getControl('Email address').value = 'wil.i.am@shakespeare.name'
         b.getControl('VG-Wort Code').value = '4711'
-        self.add_william()
+        self.add_william(b)
         self.assertEllipsis(
             '...Code contains invalid characters...', b.contents)
 
     def test_stores_biography_questions(self):
-        b = self.browser
-        self.open('/repository/online/2007/01')
+        b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        b.login('producer', 'producerpw')
+        b.open('http://localhost/++skin++vivi/repository/online/2007/01')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Author']
         b.open(menu.value[0])
         b.getControl('File name').value = 'william_shakespeare'
-        self.add_william()
+        self.add_william(b)
         b.getControl('Das treibt mich an').value = 'answer'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)

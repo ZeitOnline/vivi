@@ -13,7 +13,7 @@
     class=".form.AddForm"
     name="zeit.content.author.Add"
     menu="zeit-add-menu" title="Author"
-    permission="zeit.AddContent"
+    permission="zeit.content.author.Add"
     />
 
   <browser:page

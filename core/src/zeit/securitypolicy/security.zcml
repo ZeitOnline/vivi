@@ -185,6 +185,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.content.author.Add"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.content.text.AddEmbed"
     />
 
