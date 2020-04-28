@@ -92,7 +92,10 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     def image_group(self):
         # BBB Deprecated in favor of a separate images adapter
         return zeit.content.image.interfaces.IImages(self).image
-
+    
+    is_author = zeit.cms.content.dav.DAVProperty(
+        zeit.content.author.interfaces.IAuthor['is_author'],
+        zeit.cms.interfaces.PRINT_NAMESPACE, 'is_author', use_default=True)
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 
