@@ -58,7 +58,7 @@ class Elasticsearch(object):
             if include_payload:
                 raise ValueError(
                     'Cannot include payload with specified source: %s' %
-                    query['_source'])
+                    (query['_source'],))
         else:
             query['_source'] = ['url', 'doc_type', 'doc_id']
             if include_payload:
