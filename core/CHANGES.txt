@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.30.3 (unreleased)
+4.30.3 (2020-04-28)
 -------------------
 
 - ZON-5869: Update social embed wording
