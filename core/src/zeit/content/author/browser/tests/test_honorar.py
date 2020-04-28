@@ -93,3 +93,24 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         self.assertEqual('William', b.getControl('Firstname').value)
         self.assertEqual('Shakespeare', b.getControl('Lastname').value)
         self.assertEqual('1234', b.getControl('Honorar ID').value)
+
+    def test_checks_for_existing_honorar_id(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi'
+               '/@@zeit.content.author.add_contextfree')
+        b.getControl('Firstname').value = 'William'
+        b.getControl('Lastname').value = 'Shakespeare'
+        b.getControl('VG-Wort ID').value = '12345'
+        b.getControl('Honorar ID').value = '12345'
+        b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
+        with mock.patch('zeit.find.search.Elasticsearch.search') as search:
+            search.return_value = zeit.cms.interfaces.Result([{
+                'url': '/author/foo',
+                'payload': {'xml': {'honorar_id': 12345}}
+            }])
+            search.return_value.hits = 1
+            b.getControl(name='form.actions.add').click()
+        self.assertEllipsis(
+            '...Author with honorar ID 12345...'
+            'redirect_to?unique_id=http://xml.zeit.de/author/foo...',
+            b.contents)

@@ -84,6 +84,15 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
             {'term': {'payload.xml.lastname': lastname}},
         ]}}}).hits)
 
+    @classmethod
+    def find_by_honorar_id(cls, honorar_id):
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        result = elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': 'author'}},
+            {'term': {'payload.xml.honorar_id': honorar_id}},
+        ]}}, '_source': ['url', 'payload.xml']})
+        return None if not result.hits else result[0]
+
     @property
     def bio_questions(self):
         return zeit.content.author.interfaces.IBiographyQuestions(self)
