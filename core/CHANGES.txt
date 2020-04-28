@@ -5,7 +5,7 @@ vivi.core changes
 4.30.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- IR-73: Look up author in HDok before creating it in vivi
 
 
 4.30.3 (2020-04-28)
