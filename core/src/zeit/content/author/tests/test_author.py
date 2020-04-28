@@ -101,18 +101,6 @@ class OthersTest(zeit.content.author.testing.FunctionalTestCase):
             '...<is_cook>false</is_cook>...',
             zeit.cms.testing.xmltotext(author.xml))
 
-        author.is_author = True
-        self.assertTrue(author.is_author)
-        self.assertEllipsis(
-            '...<is_author>true</is_author>...',
-            zeit.cms.testing.xmltotext(author.xml))
-
-        author.is_author = False
-        self.assertFalse(author.is_author)
-        self.assertEllipsis(
-            '...<is_author>false</is_author>...',
-            zeit.cms.testing.xmltotext(author.xml))
-
         author.website = 'www.testeroni.com'
         self.assertEqual('www.testeroni.com', author.website)
         self.assertEllipsis(
@@ -226,3 +214,4 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
                     co, Attributes(ICommonMetadata, 'email')))
                 self.assertEqual(67890, co.ssoid)
                 self.assertEqual(12345, self.repository['author'].ssoid)
+
