@@ -33,7 +33,8 @@
   <include package="zeit.wysiwyg.browser" />
 
   <include package="zeit.content.author" />
-  <include package="zeit.content.author.browser" />
+  <includeOverrides package="zeit.content.author" file="mock.zcml" />
+
   <include package="zeit.content.volume" />
   <include package="zeit.content.volume.browser" />
 

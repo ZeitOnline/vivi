@@ -20,13 +20,11 @@ NONZERO = 3
 class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_author_exists(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        Author = zeit.content.author.author.Author
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         with mock.patch.object(elastic, 'search') as search:
             search.return_value = zeit.cms.interfaces.Result([])
-            self.assertFalse(author.exists)
+            self.assertFalse(Author.exists('William', 'Shakespeare'))
             search.assert_called_with({'query': {'bool': {'filter': [
                 {'term': {'doc_type': 'author'}},
                 {'term': {'payload.xml.firstname': 'William'}},
@@ -34,7 +32,7 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
             ]}}})
 
             search.return_value.hits = NONZERO
-            self.assertTrue(author.exists)
+            self.assertTrue(Author.exists('William', 'Shakespeare'))
 
 
 class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):

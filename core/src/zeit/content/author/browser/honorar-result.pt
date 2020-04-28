@@ -1,0 +1,25 @@
+<tal:block i18n:domain="zeit.cms">
+  <form method="POST" tal:attributes="action request/URL">
+      <fieldset><legend i18n:translate="">Create author</legend>
+      <p i18n:translate="">Found author in honorar system</p>
+
+      <input type="hidden" name="result_parameters" tal:attributes="value view/result_parameters" />
+      <input type="hidden" name="q" tal:attributes="value request/form/q" />
+
+      <label tal:repeat="author view/results">
+        <input type="radio" name="selection"
+               tal:attributes="
+                     value author/index;
+                     checked python:(author['index'] == 0) and 'checked' or ''" />
+        <tal:x replace="string:${author/vorname} ${author/nachname}"/>
+        <br/>
+      </label>
+
+    <p>
+      <input type="submit" name="action-import" value="Import author" i18n:attributes="value" />
+      <input type="submit" name="action-create" value="Create new author" i18n:attributes="value" />
+    </p>
+
+    </fieldset>
+  </form>
+</tal:block>

@@ -75,14 +75,23 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
-    @property
-    def exists(self):
+    @classmethod
+    def exists(cls, firstname, lastname):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         return bool(elastic.search({'query': {'bool': {'filter': [
             {'term': {'doc_type': 'author'}},
-            {'term': {'payload.xml.firstname': self.firstname}},
-            {'term': {'payload.xml.lastname': self.lastname}},
+            {'term': {'payload.xml.firstname': firstname}},
+            {'term': {'payload.xml.lastname': lastname}},
         ]}}}).hits)
+
+    @classmethod
+    def find_by_honorar_id(cls, honorar_id):
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        result = elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': 'author'}},
+            {'term': {'payload.xml.honorar_id': honorar_id}},
+        ]}}, '_source': ['url', 'payload.xml']})
+        return None if not result.hits else result[0]
 
     @property
     def bio_questions(self):
@@ -100,7 +109,7 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
     title = _('Author')
-    addform = 'zeit.content.author.add_contextfree'
+    addform = 'zeit.content.author.dispatch'
 
 
 @zope.component.adapter(zeit.content.author.interfaces.IAuthor)
@@ -195,6 +204,20 @@ def update_freetext_on_add(context, event):
     if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
         return
     update_author_freetext(context)
+
+
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def create_honorar_entry(context, event):
+    if context.honorar_id:
+        return
+    api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
+    context.honorar_id = api.create({
+        'vorname': context.firstname,
+        'nachname': context.lastname,
+        'anlageAssetId': context.uniqueId,
+    })
 
 
 class Dependencies(zeit.workflow.dependency.DependencyBase):
