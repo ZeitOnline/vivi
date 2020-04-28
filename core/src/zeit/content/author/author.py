@@ -95,7 +95,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     
     is_author = zeit.cms.content.dav.DAVProperty(
         zeit.content.author.interfaces.IAuthor['is_author'],
-        zeit.cms.interfaces.PRINT_NAMESPACE, 'is_author', use_default=True)
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'is_author', use_default=True)
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 
