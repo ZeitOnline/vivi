@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.30.4 (unreleased)
+4.31.0 (2020-04-29)
 -------------------
 
 - IR-73: Look up author in HDok before creating it in vivi
