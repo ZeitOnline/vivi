@@ -1,4 +1,4 @@
-<div class="keyword-widget" id="id" tal:attributes="id view/name">
+<div class="ingredients-widget" id="id" tal:attributes="id view/name">
 <ol id="id" tal:attributes="id view/name">
     <li tal:repeat="item view/items">
         <a tal:condition="item/link"

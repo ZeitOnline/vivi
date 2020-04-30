@@ -2005,3 +2005,10 @@
 .type-article form[action$="@@edit-rawtext"] .fieldname-help .widget {
     margin-bottom: 1em;
 }
+
+
+/* Recipes */
+
+.inline-form .fieldname-ingredients {
+    margin-top: 5.5em;
+}

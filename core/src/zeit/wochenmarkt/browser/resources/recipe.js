@@ -125,7 +125,6 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
     _sync_json_widget_value: function() {
         var self = this;
         $(self.data).val(JSON.stringify(self.to_json()));
-        $(self.list).css('width', $(self.list).width() + 'px');
     }
 
 });
