@@ -14,12 +14,14 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         self.list = document.getElementById(id + '.list');
         self.data = document.getElementById(id);
         self.autocomplete = document.getElementById(id + '.add');
+        self.populate_ingredients($.parseJSON($(self.data).val()));
+        MochiKit.Signal.connect(
+            id + '.wrapper', 'onclick', self, self.handle_click);
         self._initialize_autocomplete();
         self._initialize_sortable();
     },
 
     _initialize_autocomplete: function() {
-        try {
         var self = this;
         $(self.autocomplete).autocomplete({
             source: self.autocomplete.getAttribute('cms:autocomplete-source'),
@@ -29,16 +31,17 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
                 return false;
             },
             select: function(event, ui) {
-                self.add(ui.item.value, ui.item.label, /*pinned=*/true,
-                         /*position=*/'start');
+                self.add(
+                    ui.item.value, ui.item.label,
+                    0, /*amount*/
+                    '', /*unit*/
+                    'start' /*position=*/
+                );
                 $(self.autocomplete).val('');
                 return false;
             },
             appendTo: self.element
         });
-        } catch(e) {
-            console.log(e);
-        }
     },
 
     _initialize_sortable: function() {
@@ -71,8 +74,11 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         var result = [];
         $('> li', self.list).each(function(i, el) {
             el = $(el);
-            result.push({id: el.attr('cms:uniqueId'),
-                         amount: '1'
+            result.push({
+                code: el.attr('cms:uniqueId'),
+                label: el.text(),
+                amount: el.attr('data-amount'),
+                unit: el.attr('data-unit')
             });
         });
         return result;
@@ -85,22 +91,20 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label, pinned, position) {
+    add: function(code, label, amount, unit, position) {
         var self = this;
-        self._add(code, label, pinned, position);
+        self._add(code, label, amount, unit, position);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label, pinned, position) {
+    _add: function(code, label, amount, unit, position) {
         var self = this;
         if (isUndefined(position)) {
             position = 'end';
         }
-        var pinned = pinned ? 'pinned' : 'toggle-pin';
         var item = LI(
-            {'cms:uniqueId': code},
+            {'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
-            SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
             A({}, label)
         );
         if (position === 'end') {
@@ -108,6 +112,14 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         } else {
             $(self.list).prepend(item);
         }
+    },
+
+    populate_ingredients: function(tags) {
+        var self = this;
+        $.each(tags, function(i, tag) {
+            self._add(tag.code, tag.label, tag.amount, tag.unit);
+        });
+        self._sync_json_widget_value();
     },
 
     _sync_json_widget_value: function() {

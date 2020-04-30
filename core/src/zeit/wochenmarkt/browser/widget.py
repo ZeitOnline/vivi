@@ -49,12 +49,21 @@ class Widget(grok.MultiAdapter,
 
     def _toFormValue(self, value):
         return json.dumps([{
-            'id': x.id,
-            'amount': x.amount} for x in value or ()])
+            'code': x.code,
+            'label': x.label,
+            'amount': x.amount,
+            'unit': x.unit
+        } for x in value or ()])
 
     def _toFieldValue(self, value):
         data = json.loads(value)
-        return tuple([Ingredient(x['id'], x['amount']) for x in data])
+        return tuple([
+            Ingredient(
+                x['code'],
+                x['label'],
+                x['amount'],
+                x['unit']
+            ) for x in data])
 
 
 class DisplayWidget(grok.MultiAdapter,
