@@ -1,3 +1,4 @@
+import collections
 from lxml.objectify import E
 import zeit.content.modules.interfaces
 import zope.interface
@@ -34,7 +35,7 @@ class RecipeList(zeit.edit.block.Element):
     def ingredients(self, value):
         for node in self.xml.xpath('./ingredient'):
             node.getparent().remove(node)
-            pass
+        value = self._remove_duplicates(value)
         for item in value:
             self.xml.append(
                 E.ingredient(
@@ -42,3 +43,10 @@ class RecipeList(zeit.edit.block.Element):
                     label=item.label,
                     amount=item.amount,
                     unit=item.unit))
+
+    def _remove_duplicates(self, ingredients):
+        result = collections.OrderedDict()
+        for ingredient in ingredients:
+            if ingredient.code not in result:
+                result[ingredient.code] = ingredient
+        return result.values()
