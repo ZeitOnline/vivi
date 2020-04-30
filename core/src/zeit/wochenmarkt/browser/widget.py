@@ -49,20 +49,15 @@ class Widget(grok.MultiAdapter,
 
     def _toFormValue(self, value):
         return json.dumps([{
-            'code': x.code,
-            'label': x.label,
-            'amount': x.amount,
-            'unit': x.unit
+            'code': x.code, 'label': x.label,
+            'amount': x.amount, 'unit': x.unit
         } for x in value or ()])
 
     def _toFieldValue(self, value):
         data = json.loads(value)
         return tuple([
             Ingredient(
-                x['code'],
-                x['label'],
-                x['amount'],
-                x['unit']
+                x['code'], x['label'], x['amount'], x['unit']
             ) for x in data])
 
 
@@ -76,7 +71,6 @@ class DisplayWidget(grok.MultiAdapter,
     grok.provides(zope.formlib.interfaces.IDisplayWidget)
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('display-recipe.pt')
-    # recipe_highling_css_class = 'with-topic-page'
 
     def __init__(self, field, source, request):
         super(DisplayWidget, self).__init__(
