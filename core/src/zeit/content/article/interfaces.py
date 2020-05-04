@@ -1,9 +1,8 @@
-from zeit.content.article.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
-import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zope.schema
 
@@ -41,11 +40,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     artbox_thema = zope.schema.Bool(
         title=_('First related as box'),
         default=False,
-        required=False)
-
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.source.centerPageSource,
         required=False)
 
     genre = zope.schema.Choice(
@@ -128,6 +122,7 @@ class ArticleSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'article'
     check_interfaces = (IArticle,)
+
 
 articleSource = ArticleSource()
 

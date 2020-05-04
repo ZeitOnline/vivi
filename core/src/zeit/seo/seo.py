@@ -10,10 +10,9 @@ import zeit.cms.content.dav
 import zeit.seo.interfaces
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.seo.interfaces.ISEO)
 class SEO(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.seo.interfaces.ISEO)
 
     html_title = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['html_title'],
@@ -38,6 +37,10 @@ class SEO(object):
     keyword_entity_type = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['keyword_entity_type'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'seo-keyword-entity-type')
+
+    cook_meta_robots = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['cook_meta_robots'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-cook-meta-robots')
 
     def __init__(self, context):
         self.context = context

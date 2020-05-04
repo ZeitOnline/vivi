@@ -21,9 +21,9 @@ Mock a connector:
 ...     def lock(self, obj_id, principal_id, until):
 ...         if obj_id == 'alreadylocked':
 ...             raise zeit.connector.interfaces.LockingError(obj_id)
-...         print "Locking %s for %s until %s" % (obj_id, principal_id, until)
+...         print("Locking %s for %s until %s" % (obj_id, principal_id, until))
 ...     def unlock(self, id):
-...         print "Unlocking", id
+...         print("Unlocking %s" % id)
 ...     def __getitem__(self, key):
 ...         mod = 'justnow'
 ...         if key == 'doesnotexist':
@@ -44,8 +44,8 @@ Create a fake content object:
 
 
 >>> import zeit.cms.interfaces
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     uniqueId = 'foo'
 
 LockStorage
@@ -143,7 +143,7 @@ We *really* got the one from zope.app.locking:
 >>> try:
 ...     lock_storage.setLock(content, info)
 ... except Exception, e:
-...     print e.__module__
+...     print(e.__module__)
 zope.app.locking.interfaces
 
 Note that it is not possible to create locks for resources which do not exist:

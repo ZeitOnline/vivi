@@ -28,6 +28,7 @@ class Traverser(grok.Adapter):
                 self.context).traverse(name, furtherPath)
 
 
+@zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class PublishTraverser(object):
     """
     Register like this::
@@ -44,8 +45,6 @@ class PublishTraverser(object):
         provides="z3c.traverser.interfaces.ITraverserPlugin"
         />
     """
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
     def __init__(self, context, request):
         self.context = context

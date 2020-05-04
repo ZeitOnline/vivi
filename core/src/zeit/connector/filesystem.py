@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from io import BytesIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import ast
@@ -9,7 +9,8 @@ import lxml.etree
 import magic
 import os
 import os.path
-import urlparse
+import six
+import six.moves.urllib.parse
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -22,15 +23,13 @@ ID_NAMESPACE = u'http://xml.zeit.de/'
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector(object):
     """Connect to the CMS backend in read-only mode.
 
     The current implementation does *not* talk to the CMS backend but to
     a data store in the filesystem, the path to which needs to be configured.
-
     """
-
-    zope.interface.implements(zeit.connector.interfaces.IConnector)
 
     resource_class = zeit.connector.resource.CachedResource
     canonicalize_directories = True
@@ -69,7 +68,7 @@ class Connector(object):
 
         result = []
         for name in sorted(names):
-            child_id = unicode(
+            child_id = six.text_type(
                 self._get_cannonical_id(self._make_id(path + (name, ))))
             result.append((name, child_id))
         self.child_name_cache[id] = result
@@ -82,8 +81,9 @@ class Connector(object):
         if os.path.isdir(absolute_path):
             for name in os.listdir(absolute_path):
                 try:
-                    name = name.decode('utf-8')
-                except:
+                    if isinstance(name, six.binary_type):
+                        name = name.decode('utf-8')
+                except Exception:
                     continue
                 names.add(name)
         for x in names.copy():
@@ -126,24 +126,24 @@ class Connector(object):
         path = self._path(id)
         name = path[-1] if path else ''
         return self.resource_class(
-            unicode(id), name, type,
+            six.text_type(id), name, type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
             content_type=self._get_content_type(id))
 
     def _get_body(self, id):
         try:
-            return StringIO(self.body_cache[id])
+            return BytesIO(self.body_cache[id])
         except KeyError:
             pass
         try:
             f = self._get_file(id)
             data = f.read()
             f.close()
-        except:
-            data = ''
+        except Exception:
+            data = b''
         self.body_cache[id] = data
-        return StringIO(data)
+        return BytesIO(six.ensure_binary(data))
 
     def _get_content_type(self, id):
         properties = self._get_properties(id)
@@ -244,7 +244,7 @@ class Connector(object):
         filename = self._absolute_path(self._path(id))
         __traceback_info__ = (id, filename)
         try:
-            return file(filename, 'rb')
+            return open(filename, 'rb')
         except IOError:
             if os.path.isdir(filename):
                 raise ValueError(
@@ -255,14 +255,14 @@ class Connector(object):
         filename = self._absolute_path(self._path(id)) + '.meta'
         __traceback_info__ = (id, filename)
         try:
-            return file(filename, 'rb')
+            return open(filename, 'rb')
         except IOError:
             if not id.endswith('.meta'):
                 return self._get_file(id)
-            return StringIO('')
+            return BytesIO(b'')
 
     def _make_id(self, path):
-        return urlparse.urljoin(ID_NAMESPACE, '/'.join(
+        return six.moves.urllib.parse.urljoin(ID_NAMESPACE, '/'.join(
             element for element in path if element))
 
     def _get_properties(self, id):
@@ -304,10 +304,10 @@ class Connector(object):
         tags = xml.xpath('//head/rankedTags')
         if tags:
             value = (
-                '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-                '/CMS/tagging">')
-            value += lxml.etree.tostring(tags[0])
-            value += '</tag:rankedTags>'
+                u'<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+                u'/CMS/tagging">')
+            value += lxml.etree.tostring(tags[0], encoding='unicode')
+            value += u'</tag:rankedTags>'
             properties[(
                 'keywords',
                 'http://namespaces.zeit.de/CMS/tagging')] = value

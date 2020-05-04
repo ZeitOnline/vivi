@@ -111,8 +111,8 @@ class CharlimitTest(zeit.cms.testing.ZeitCmsTestCase):
             foo = zope.schema.TextLine()
             foo.setTaggedValue('zeit.cms.charlimit', 70)
 
+        @zope.interface.implementer(Schema)
         class Context(object):
-            zope.interface.implements(Schema)
             foo = "bar"
 
         form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())
@@ -126,8 +126,8 @@ class CharlimitTest(zeit.cms.testing.ZeitCmsTestCase):
         class Schema(zope.interface.Interface):
             foo = zope.schema.TextLine(max_length=70)
 
+        @zope.interface.implementer(Schema)
         class Context(object):
-            zope.interface.implements(Schema)
             foo = "bar"
 
         form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())

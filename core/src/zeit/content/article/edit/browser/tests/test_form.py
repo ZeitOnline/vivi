@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.article import Article
@@ -110,7 +111,7 @@ class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('id=editor-forms-heading')
         s.waitForText('id=editor-forms-heading', '*International*')
         s.select('id=metadata-a.ressort', 'Deutschland')
-        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
+        s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForText('id=editor-forms-heading', '*Deutschland*')
 
@@ -157,7 +158,7 @@ class FilenameTest(zeit.content.article.testing.BrowserTestCase):
         b.open('@@edit.form.new-filename?show_form=1')
         b.getControl('New file name').value = 'Somalia'
         b.getControl('Apply').click()
-        self.assertEllipsis('..."Somalia" already exists...', b.contents)
+        self.assertEllipsis('...Somalia...already exists...', b.contents)
 
 
 @unittest.skip('Channels need special permission, and selenium breaks when'
@@ -178,7 +179,7 @@ class ChannelSelector(
         s.click('css=input[@name="channel-selector.channels.add"]')
         s.waitForElementPresent('css=#edit-form-channel select')
         s.select('css=#edit-form-channel select', 'Deutschland')
-        s.type('css=#edit-form-channel select', '\t')  # Trigger blur for form.
+        s.keyPress('css=#edit-form-channel select', Keys.TAB)  # Trigger blur
         s.click('css=input[@name="channel-selector.channels.remove"]')
         s.waitForElementNotPresent('css=#edit-form-channel select')
         s.refresh()

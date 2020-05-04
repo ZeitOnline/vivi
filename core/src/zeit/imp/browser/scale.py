@@ -1,10 +1,7 @@
+from io import BytesIO
 import PIL.Image
-import PIL.ImageDraw
 import PIL.ImageColor
-import StringIO
-import calendar
-import zope.datetime
-import zope.dublincore.interfaces
+import PIL.ImageDraw
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.imp.mask
@@ -34,7 +31,7 @@ class ScaledImage(zeit.cms.browser.view.Base):
         cropper.downsample_filter = PIL.Image.NEAREST
         parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
-        f = StringIO.StringIO()
+        f = BytesIO()
         pil_image.save(f, image.format)
         self.request.response.setHeader(
             'Cache-Control', 'public,max-age=3600')

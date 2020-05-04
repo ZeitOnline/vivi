@@ -1,9 +1,12 @@
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
+import base64
 import json
+import jwt
+import pkg_resources
 import plone.testing
-import urllib
-import urllib2
+import six.moves.urllib.error
+import six.moves.urllib.parse
 import zeit.cms.generation.install
 import zeit.cms.testing
 import zope.authentication.interfaces
@@ -56,6 +59,7 @@ class LoginFormLayer(plone.testing.Layer):
             del root['principals']
         del self['principalfolder']
 
+
 LOGINFORM_LAYER = LoginFormLayer()
 
 
@@ -105,6 +109,12 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Password').value = 'userpw'
         b.getControl('Log in').click()
 
+    def jwt_decode(self, value):
+        return jwt.decode(
+            value.encode('ascii'),
+            pkg_resources.resource_string('zeit.cms.tests', 'sso-public.pem'),
+            algorithms='RS256')
+
     def test_unauthenticated_redirects_to_loginform(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/sso-login')
@@ -128,14 +138,14 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/online/2008/26', b.url)
         cookie = b.cookies.getinfo('my_sso_zope.View')
         self.assertEqual(None, cookie['expires'])
-        data = json.loads(cookie['value'].decode('base64'))
+        data = self.jwt_decode(cookie['value'])
         self.assertEqual('principal.user', data['id'])
 
     def test_url_parameter_redirects_all_the_way_back_after_login(self):
         b = self.browser
         target = 'http://localhost/++skin++vivi/repository/2016'
         b.open('http://localhost/++skin++vivi/sso-login?url=' +
-               urllib.quote_plus(target))
+               six.moves.urllib.parse.quote_plus(target))
         b.getControl('Username').value = 'user'
         b.getControl('Password').value = 'userpw'
         b.getControl('Log in').click()
@@ -151,13 +161,13 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi'
                '/sso-login?permission=zeit.cms.admin.View')
         cookie = b.cookies.getinfo('my_sso_zeit.cms.admin.View')
-        data = json.loads(cookie['value'].decode('base64'))
+        data = self.jwt_decode(cookie['value'])
         self.assertEqual('principal.user', data['id'])
 
     def test_user_without_required_permission_shows_unauthorized(self):
         self.login()
         b = self.browser
-        with self.assertRaises(urllib2.HTTPError) as info:
+        with self.assertRaises(six.moves.urllib.error.HTTPError) as info:
             b.open('http://localhost/++skin++vivi'
                    '/sso-login?permission=zeit.cms.admin.View')
             self.assertEqual(403, info.exception.status)

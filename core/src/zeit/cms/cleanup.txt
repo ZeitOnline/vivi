@@ -1,6 +1,9 @@
 Cleaning up
 ===========
 
+exc_info
+--------
+
 In the CMS there are a lot of objects created during a request. This makes it
 quite harmful to keep the request object for much longer than the request
 lasts.
@@ -21,10 +24,12 @@ ValueError: 1
 
 
 >>> import sys
->>> sys.exc_info()
-(<...exceptions.ValueError...>,
- ...ValueError...,
- <traceback object at 0x...>)
+>>> if sys.version_info < (3,):
+...     check = (sys.exc_info() != (None, None, None))
+... else:
+...     check = True
+>>> check
+True
 
 
 >>> import zope.app.publication.interfaces
@@ -38,6 +43,9 @@ The exc_info is empty now:
 (None, None, None)
 
 
+Interaction
+-----------
+
 Another place where the request object stay referenced is zope.security where
 the previous interaction is kept. Since we don't need this, we also remove it
 after the request.
@@ -49,8 +57,11 @@ after the request.
 >>> zope.security.management.thread_local.previous_interaction
 Traceback (most recent call last):
     ...
-AttributeError: 'thread._local' object has no attribute 'previous_interaction'
+AttributeError: ... has no attribute 'previous_interaction'
 
+
+Garbage Collection
+------------------
 
 Also, since we're creating so many objects, we let the garbace collection come
 more often:

@@ -172,13 +172,12 @@ class API(object):
         return json.dumps(result)
 
 
+@zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 class DummyContent(object):
     """Helper so we don't have to resolve ICMSContent, since ILockStorage uses a
     ICMSContent-based API, even though it only uses the uniqueId (to pass it to
     IConnector).
     """
-
-    zope.interface.implements(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, uniqueId):
         self.uniqueId = uniqueId

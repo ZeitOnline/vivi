@@ -28,7 +28,7 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
         s.select('sidebar.form.type_', 'Daily Newsletter')
 
         with mock.patch('datetime.datetime', dt):
-            s.clickAndWait('sidebar.form.actions.add')
+            s.clickAndWait('name=sidebar.form.actions.add')
             s.waitForLocation('*/workingcopy/zope.user/29-1/@@edit.html')
 
 

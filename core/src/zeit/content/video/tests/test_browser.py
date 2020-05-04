@@ -1,11 +1,9 @@
 import plone.testing
-import urllib2
 import zeit.cms.browser.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
 import zeit.push.interfaces
 import zeit.push.testing
-import zope.component
 import zope.component
 import zope.publisher.browser
 
@@ -21,8 +19,8 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        factory.next()
+        next(factory)
+        next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@thumbnail')
@@ -38,39 +36,13 @@ class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
             'video_still': None,
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()
+        next(factory)
+        video = next(factory)
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
         thumbnail_view = zope.component.getMultiAdapter(
             (video, request), name='thumbnail')
-        url = zope.component.getMultiAdapter(
-            (thumbnail_view, request),
-            zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, 'http://thumbnailurl')
-
-    def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
-        factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = factory.next()
-        playlist.thumbnail = 'http://thumbnailurl'
-        factory.next()
-        self.browser.open('http://localhost/++skin++vivi/repository/pls/')
-        self.browser.follow_redirects = False
-        self.browser.open('@@thumbnail')
-        self.assertEqual('http://thumbnailurl',
-                         self.browser.headers.get('location'))
-
-    def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
-        factory = zeit.content.video.testing.playlist_factory(self)
-        playlist = factory.next()
-        playlist.thumbnail = 'http://thumbnailurl'
-        playlist = factory.next()
-
-        request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-        thumbnail_view = zope.component.getMultiAdapter(
-            (playlist, request), name='thumbnail')
         url = zope.component.getMultiAdapter(
             (thumbnail_view, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)()
@@ -88,8 +60,8 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             'thumbnail': None,
             'video_still': 'http://stillurl',
         }
-        factory.next()
-        factory.next()
+        next(factory)
+        next(factory)
         self.browser.open('http://localhost/++skin++vivi/repository/video/')
         self.browser.follow_redirects = False
         self.browser.open('@@preview')
@@ -105,8 +77,8 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             'video_still': 'http://stillurl',
         }
         factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        video = factory.next()
+        next(factory)
+        video = next(factory)
 
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
@@ -146,10 +118,10 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
 
     def test_push_to_social_media_is_done_on_publish(self):
         factory = zeit.content.video.testing.video_factory(self)
-        video = factory.next()
+        video = next(factory)
         video.title = u'My video'
         video.ressort = u'Deutschland'
-        video = factory.next()
+        video = next(factory)
         browser = self.browser
         browser.open('http://localhost/++skin++vivi/repository/video')
         browser.getLink('Checkout').click()
@@ -159,7 +131,7 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
         self.assertIn('Updated on', browser.contents)
         browser.getLink('Checkin').click()
         self.assertIn('"video" has been checked in.', browser.contents)
-        zeit.cms.workflow.interfaces.IPublish(video).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(

@@ -6,6 +6,7 @@ import jinja2
 import lxml.etree
 import mock
 import pkg_resources
+import six
 import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
@@ -156,7 +157,8 @@ class TestDynamicFolder(
 </test>""")
             self.assertIn(
                 '<body>xanten dynamicfolder</body>',
-                lxml.etree.tostring(self.folder['xanten'].xml))
+                lxml.etree.tostring(
+                    self.folder['xanten'].xml, encoding=six.text_type))
 
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not
@@ -207,11 +209,13 @@ class TestDynamicFolder(
             info.published, '%s still published' % content.uniqueId)
 
     def test_publishes_folder_with_config_and_template(self):
-        zeit.cms.workflow.interfaces.IPublish(self.folder).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(
+            self.folder).publish(background=False)
         self.assert_published(self.folder)
         self.assert_published(self.folder.config_file)
         self.assert_published(self.folder.content_template_file)
-        zeit.cms.workflow.interfaces.IPublish(self.folder).retract(async=False)
+        zeit.cms.workflow.interfaces.IPublish(
+            self.folder).retract(background=False)
         self.assert_not_published(self.folder)
         self.assert_not_published(self.folder.config_file)
         self.assert_not_published(self.folder.content_template_file)

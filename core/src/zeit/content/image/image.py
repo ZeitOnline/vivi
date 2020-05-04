@@ -1,7 +1,10 @@
+import os
+import six.moves.urllib.parse
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import lxml.objectify
 import magic
+import requests
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -58,21 +61,19 @@ class BaseImage(object):
         return subtype.upper()
 
 
-class RepositoryImage(BaseImage,
-                      zeit.cms.repository.file.RepositoryFile):
+@zope.interface.implementer_only(
+    zeit.content.image.interfaces.IImage,
+    zope.container.interfaces.IContained)
+class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
+    pass
 
-    zope.interface.implementsOnly(
-        zeit.content.image.interfaces.IImage,
-        zope.container.interfaces.IContained)
 
-
-class LocalImage(BaseImage,
-                 zeit.cms.repository.file.LocalFile):
-
-    zope.interface.implementsOnly(
-        zeit.content.image.interfaces.IImage,
-        zeit.cms.workingcopy.interfaces.ILocalContent,
-        zope.container.interfaces.IContained)
+@zope.interface.implementer_only(
+    zeit.content.image.interfaces.IImage,
+    zeit.cms.workingcopy.interfaces.ILocalContent,
+    zope.container.interfaces.IContained)
+class LocalImage(BaseImage, zeit.cms.repository.file.LocalFile):
+    pass
 
 
 class TemporaryImage(LocalImage):
@@ -141,10 +142,10 @@ class ImageType(zeit.cms.type.TypeDeclaration):
         return content.mimeType
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
 class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
 
     target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
 
     def update_with_context(self, entry, workflow):
         super(XMLReferenceUpdater, self).update_with_context(entry, workflow)
@@ -158,3 +159,29 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
             parent_workflow = self.target_iface(parent)
             super(XMLReferenceUpdater, self).update_with_context(
                 entry, parent_workflow)
+
+
+KiB = 1024
+DOWNLOAD_CHUNK_SIZE = 2 * KiB
+
+
+def get_remote_image(url, timeout=2):
+
+    try:
+        response = requests.get(url, stream=True, timeout=timeout)
+    except Exception:
+        return
+    if not response.ok:
+        return
+    image = LocalImage()
+    image.__name__ = os.path.basename(
+        six.moves.urllib.parse.urlsplit(url).path)
+    with image.open('w') as fh:
+        first_chunk = True
+        for chunk in response.iter_content(DOWNLOAD_CHUNK_SIZE):
+            # Too small means something is not right with this download
+            if first_chunk:
+                first_chunk = False
+                assert len(chunk) > DOWNLOAD_CHUNK_SIZE / 2
+            fh.write(chunk)
+    return image

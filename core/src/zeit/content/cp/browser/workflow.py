@@ -17,13 +17,12 @@ def is_published_and_has_permission(form, action):
                 'zeit.content.cp.Retract', form.context))
 
 
+@zope.component.adapter(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.browser.interfaces.ICMSLayer)
 class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
     # same as zeit.workflow.browser.form.ContentWorkflow, except for the
     # fields: we use ITimeBasedPublishing instead of IContentWorkflow
-
-    zope.component.adapts(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.browser.interfaces.ICMSLayer)
 
     field_groups = (
         gocept.form.grouped.Fields(

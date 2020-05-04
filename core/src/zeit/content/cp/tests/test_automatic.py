@@ -82,9 +82,10 @@ class AutomaticAreaElasticsearchTest(
         leader = result[0]
         self.assertEqual('buttons', leader.layout.id)
         self.assertEqual('leader', self.area.values()[0].layout.id)
-        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
-            zeit.content.cp.interfaces.IRenderedXML(self.area),
-            pretty_print=True))
+        self.assertEllipsis(
+            '...module="buttons"...',
+            zeit.cms.testing.xmltotext(
+                zeit.content.cp.interfaces.IRenderedXML(self.area)))
 
     def test_leader_block_takes_everything_if_area_configured(self):
         self.repository['normal'] = ExampleContentType()
@@ -111,7 +112,7 @@ class AutomaticAreaElasticsearchTest(
 <region...>
   <container...type="teaser"...>
     <block...href="http://xml.zeit.de/testcontent"...""",
-            lxml.etree.tostring(xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(xml))
 
     def test_cms_content_iter_returns_filled_in_blocks(self):
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
@@ -676,6 +677,10 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).id
         id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).id
+        call_args = elasticsearch.search.call_args[0][0]
+        call_args['query']['bool']['must_not'][1]['ids']['values'].sort()
+        sorted_ids = [id1, id2]
+        sorted_ids.sort()
 
         self.assertEqual({'query': {'bool': {'filter': [
             {'match': {'foo': u'äää'}},
@@ -683,7 +688,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-            {'ids': {'values': [id1, id2]}},
+            {'ids': {'values': sorted_ids}},
         ]}}}, elasticsearch.search.call_args[0][0])
 
         # since `AutomaticArea.values()` is cached on the transaction boundary

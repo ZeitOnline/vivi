@@ -13,10 +13,9 @@ import zope.security.proxy
 PIL.ImageFile.MAXBLOCK = 50000000
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
+@zope.interface.implementer(zeit.imp.interfaces.ICropper)
 class Cropper(object):
-
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
-    zope.interface.implements(zeit.imp.interfaces.ICropper)
 
     filter_map = {
         'color': PIL.ImageEnhance.Color,

@@ -36,7 +36,7 @@ True
 
 >>> repository.get('2006')
 <zeit.cms.repository.folder.Folder...>
->>> print repository.get('2005')
+>>> print(repository.get('2005'))
 None
 >>> repository.get('2005', 'default')
 'default'
@@ -62,7 +62,7 @@ Constructing objects sends an event. Create a handler to test this:
 
 >>> import zeit.cms.interfaces
 >>> def after_construct(object, event):
-...     print "Constructing", object.uniqueId
+...     print("Constructing %s" % object.uniqueId)
 ...     site_manager.unregisterHandler(
 ...         after_construct,
 ...         (zeit.cms.interfaces.ICMSContent,
@@ -161,17 +161,17 @@ u"I'm a shiny new object."
 
 The content does not have a unique id yet:
 
->>> print content.uniqueId
+>>> print(content.uniqueId)
 None
 
 Adding sends an event. Register an event handler for IBeforeObjectAddedEvent
 
 >>> def before_added(object, event):
-...     print "Before add:", object
+...     print("Before add: %s" % object)
 >>> def added(object, event):
-...     print type(event).__name__, object
-...     print '    Old:', event.oldParent, event.oldName
-...     print '    New:', event.newParent, event.newName
+...     print('%s %s' % (type(event).__name__, object))
+...     print('    Old: %s %s' % (event.oldParent, event.oldName))
+...     print('    New: %s %s' % (event.newParent, event.newName))
 >>> site_manager = zope.component.getSiteManager()
 >>> site_manager.registerHandler(
 ...     before_added,
@@ -249,7 +249,7 @@ Deleting objects sends an event:
 
 >>> import zeit.cms.interfaces
 >>> def after_remove(object, event):
-...     print "Deleting", object.uniqueId
+...     print("Deleting %s" % object.uniqueId)
 ...     site_manager.unregisterHandler(
 ...         after_remove,
 ...         (zeit.cms.interfaces.ICMSContent,
@@ -371,12 +371,12 @@ A TypeError is raised if anything but a string is passed:
 >>> repository.getContent(None)
 Traceback (most recent call last):
     ...
-TypeError: unique_id: string expected, got <type 'NoneType'>
+TypeError: unique_id: string expected, got ...NoneType...
 
 >>> repository.getContent(123)
 Traceback (most recent call last):
     ...
-TypeError: unique_id: string expected, got <type 'int'>
+TypeError: unique_id: string expected, got ...int...
 
 
 A ValueError is raised if the unique_id doesn't start with the configured

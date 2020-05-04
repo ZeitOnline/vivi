@@ -1,10 +1,11 @@
 # coding: utf-8
 from __future__ import absolute_import
+import gocept.httpserverlayer.static
 import mock
 import plone.testing
 import transaction
 import zeit.cms.testing
-import zeit.workflow.testing
+import zeit.content.video.testing
 
 
 product_config = """\
@@ -40,16 +41,18 @@ class MockAPILayer(plone.testing.Layer):
         self.cmsapi_patch.stop()
         self.playbackapi_patch.stop()
 
+
 MOCK_API_LAYER = MockAPILayer()
-
-
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
     patches={'zeit.cms': {'task-queue-brightcove': 'brightcove'}},
-    bases=(zeit.workflow.testing.CONFIG_LAYER,))
+    bases=(zeit.content.video.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, MOCK_API_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(
+    name='HTTPStaticLayer',
+    bases=(WSGI_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -60,6 +63,11 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = WSGI_LAYER
+
+
+class StaticBrowserTestCase(FunctionalTestCase):
+
+    layer = HTTP_STATIC_LAYER
 
 
 def update_repository(root):

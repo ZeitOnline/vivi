@@ -45,10 +45,10 @@ Try this for some fields. Integer goes first:
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('5')
 5
->>> converter.fromProperty('text')  #doctest: +IGNORE_EXCEPTION_DETAIL
+>>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-InvalidIntLiteral: invalid literal for int() with base 10: 'text'
+InvalidIntLiteral: invalid literal for int...
 
 
 The other way round is handled by the toProperty method:
@@ -74,7 +74,7 @@ Floats are also supported:
 >>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-InvalidFloatLiteral: could not convert string to float: text
+InvalidFloatLiteral: could not convert string to float...
 
 Convert float to property. Doesn't fail for integers of course:
 
@@ -137,8 +137,9 @@ For choices wich iterable sources tokenize the value before storing it to the
 dav. There is a standard tokenizer for bool. So create a choice which allows
 True and False:
 
->>> class BoolSource(list):
-...     zope.interface.implements(zope.schema.interfaces.IIterableSource)
+>>> @zope.interface.implementer(zope.schema.interfaces.IIterableSource)
+... class BoolSource(list):
+...     pass
 >>> field = zope.schema.Choice(source=BoolSource([True, False]))
 >>> converter = get_converter(field)
 >>> converter.fromProperty('yes')
@@ -177,9 +178,9 @@ Invalid Values
 The `DAVProperty` takes care of invalid values and logs them. Prepare the
 logger:
 
->>> import StringIO
+>>> from six import StringIO
 >>> import logging
->>> log = StringIO.StringIO()
+>>> log = StringIO()
 >>> logging.root.addHandler(logging.StreamHandler(log))
 
 Create a dav property and set an invalid value:
@@ -198,7 +199,7 @@ When we try to get the data we'll get the default value (None):
 
 >>> dav_prop.__get__(testcontent, object) is None
 True
->>> print log.getvalue()
+>>> print(log.getvalue())
 Could not parse DAV property value u'f\xfcblas' for ExampleContentType.myname at
 http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
 Using default None instead.
@@ -209,8 +210,8 @@ Token adapter
 
 For content objects there is also a token adapter:
 
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     uniqueId = u'my-unique-id'
 >>> content = Content()
 >>> zeit.cms.content.interfaces.IDAVToken(content)
@@ -381,7 +382,7 @@ DateTime(2007, 5, 25, 13, 24, 0, tzinfo=Timezone('UTC'))
 
 When the date is invalid, a ValueError is raised:
 
->>> print converter.fromProperty('asdf')
+>>> print(converter.fromProperty('asdf'))
 Traceback (most recent call last):
     ...
 ParserError: Invalid date string: asdf
@@ -420,10 +421,10 @@ datetime.date(2007, 5, 25)
 
 Invalid dates raise a ValueError:
 
->>> converter.fromProperty("1.1.07")  # doctest: +IGNORE_EXCEPTION_DETAIL
+>>> converter.fromProperty("1.1.07")
 Traceback (most recent call last):
     ...
-ValueError: time data did not match format:  data=1.1.07  fmt=%Y-%m-%d
+ValueError: time data...not match format...
 
 
 The date is written in iso format:
@@ -487,8 +488,8 @@ List, Set and FrozenSet as field:
 ...     default=set())
 >>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
->>> result
-set([..., ...])
+>>> type(result).__name__
+'set'
 >>> sorted(result)
 [u'Klaus Kleber', u'Peter Buhr']
 
@@ -497,8 +498,8 @@ set([..., ...])
 ...     default=frozenset())
 >>> converter = get_converter(field)
 >>> result = converter.fromProperty('Peter Buhr;Klaus Kleber')
->>> result
-frozenset([..., ...])
+>>> type(result).__name__
+'frozenset'
 >>> sorted(result)
 [u'Klaus Kleber', u'Peter Buhr']
 
@@ -513,9 +514,10 @@ There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 ...     value_type=zope.schema.Dict())
 >>> converter = get_converter(field)
 >>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
->>> type(value)
-<type 'unicode'>
->>> print value
+>>> import six
+>>> type(value) == six.text_type
+True
+>>> print(value)
 <pickle>
   <tuple>
     <dictionary>
@@ -556,7 +558,7 @@ As it is generic it basically works for all other fields as well:
 >>> field = zope.schema.List(
 ...     value_type=zope.schema.Int())
 >>> converter = get_converter(field)
->>> print converter.toProperty([4, 2, 55, 2])
+>>> print(converter.toProperty([4, 2, 55, 2]))
 <pickle>
   <list>
     <int>4</int>
@@ -583,7 +585,7 @@ If the xml pickle is invalid an ValueError is raised:
 >>> converter.fromProperty(u'5')
 Traceback (most recent call last):
     ...
-ValueError: Start tag expected, '<' not found, line 1, column 1 (line 1)
+ValueError: Start tag expected...
 
 >>> converter.fromProperty(u'<int>5</int>')
 Traceback (most recent call last):
@@ -602,11 +604,10 @@ Let's create a little content class:
 >>> import zope.interface
 >>> import zeit.cms.interfaces
 >>> from zeit.cms.content.dav import DAVProperty
->>> class Content(object):
-...     zope.interface.implements(zeit.cms.interfaces.ICMSContent)
+>>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
+... class Content(object):
 ...     properties = zeit.connector.resource.WebDAVProperties()
 ...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
-...
 >>> def contentDavProps(context):
 ...     return context.properties
 >>> site_manager = zope.component.getSiteManager()
@@ -619,13 +620,13 @@ When properties change an IDAVPropertyChangedEvent is issued. Register a
 subscriber:
 
 >>> def print_change(object, event):
-...     print "Event:", event
-...     print "    Object:", object
-...     print "    Old:", event.old_value
-...     print "    New:", event.new_value
-...     print "    NS:", event.property_namespace
-...     print "    Name:", event.property_name
-...     print "    Field:", event.field
+...     print("Event: %s" % event)
+...     print("    Object: %s" % object)
+...     print("    Old: %s" % event.old_value)
+...     print("    New: %s" % event.new_value)
+...     print("    NS: %s" % event.property_namespace)
+...     print("    Name: %s" % event.property_name)
+...     print("    Field: %s" % event.field)
 ...
 >>> site_manager.registerHandler(
 ...     print_change,
@@ -635,7 +636,7 @@ subscriber:
 As the properties dictionary is empty, we'll get the title's default value from
 the field:
 
->>> print content.title
+>>> print(content.title)
 None
 
 Setting the title will fill the properties dictionary with the name and

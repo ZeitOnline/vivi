@@ -24,8 +24,7 @@ True
 True
 
 
->>> import lxml.etree
->>> print lxml.etree.tostring(link.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(link.xml))
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body/>
@@ -43,7 +42,7 @@ Does the blog source matching work?
 >>> link.blog.name
 u'Testblog'
 
->>> print lxml.etree.tostring(link.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(link.xml))
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
@@ -69,7 +68,7 @@ Create a channel and insert the link:
 >>> feed.insert(0, link)
 
 
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -91,7 +90,7 @@ channel:
 
 >>> link.target = None
 >>> feed.updateMetadata(link)
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -123,7 +122,7 @@ representation of that object's related content includes the target URL:
 
 >>> related.related = (link,)
 >>> import lxml.etree
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <...
 <references>
   <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
@@ -139,7 +138,7 @@ rel=nofollow support
 
 >>> link.nofollow = True
 >>> related.related = (link,)
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <...
 <references>
   <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"

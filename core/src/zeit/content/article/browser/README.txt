@@ -15,7 +15,7 @@ The metadata preview shows the most important data in list views:
 
 >>> browser.open('http://localhost:8080/++skin++cms/repository/online'
 ...              '/2007/01/Somalia/metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="context-actions">...
@@ -34,7 +34,7 @@ Make sure we have a "view" link:
 We have to publish another url to see if articles are listed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
 ...
@@ -68,15 +68,15 @@ arbitrary url and add an article then:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Article']
 >>> url = menu.value[0]
->>> print url
+>>> print(url)
 http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add
 >>> browser.open(url)
 
 The article is created and checked out automatically. The editor is open:
 
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp – Edit
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp/@@edit.html
 
 
@@ -88,7 +88,7 @@ so the user is nuged to put an image there (or explicitly decide they don't
 want one):
 
 >>> browser.getLink('Source').click()
->>> print browser.getControl('Source').value.replace('\r\n', '\n')
+>>> print(browser.getControl('Source').value.replace('\r\n', '\n'))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   ...
   <body>

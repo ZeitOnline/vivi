@@ -26,13 +26,10 @@ Set up a site and caching:
 >>> from zope.traversing.interfaces import IContainmentRoot
 >>> from zope.component.interfaces import ISite
 >>>
->>> class Site(object):
-...     zope.interface.implements(
-...         ISite, IContainmentRoot, IAttributeAnnotatable)
-...
+>>> @zope.interface.implementer(ISite, IContainmentRoot, IAttributeAnnotatable)
+... class Site(object):
 ...     def getSiteManager(self):
 ...         return zope.component.getGlobalSiteManager()
-...
 >>> site = Site()
 >>> old_site = zope.component.hooks.getSite()
 >>> zope.component.hooks.setSite(site)

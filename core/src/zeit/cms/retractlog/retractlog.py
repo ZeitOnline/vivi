@@ -1,4 +1,3 @@
-import grokcore.component as grok
 import persistent
 import zope.container.btree
 import zope.container.contained
@@ -10,17 +9,15 @@ import zeit.cms.workflow.interfaces
 import zope.component
 
 
+@zope.interface.implementer(zeit.cms.retractlog.interfaces.IRetractLog)
 class RetractLog(zope.container.btree.BTreeContainer):
     """Insert retract jobs for multiple ICMSContent objects."""
 
-    zope.interface.implements(zeit.cms.retractlog.interfaces.IRetractLog)
 
-
+@zope.interface.implementer(zeit.cms.retractlog.interfaces.IJob)
 class Job(zope.container.contained.Contained,
           persistent.Persistent):
     """A list of ICMSContent URLs, which were or will be retracted."""
-
-    zope.interface.implements(zeit.cms.retractlog.interfaces.IJob)
 
     def __init__(self):
         super(Job, self).__init__()

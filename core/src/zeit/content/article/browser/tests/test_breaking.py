@@ -1,6 +1,5 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import lxml.etree
 import mock
 import transaction
@@ -61,7 +60,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
                 article).is_breaking)
         self.assertEllipsis(
             '...<attribute...name="is_breaking">yes</attribute>...',
-            lxml.etree.tostring(article.xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(article.xml))
 
     def test_sets_amp(self):
         self.create_breakingnews()
@@ -181,7 +180,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
             'http://xml.zeit.de/online/2007/01/Somalia'
             '</article_id></xml>')
         self.repository['banner'] = banner_config
-        IPublish(self.repository['banner']).publish(async=False)
+        IPublish(self.repository['banner']).publish(background=False)
 
         # Make Somalia breaking news, so the retract section is shown.
         article = ICMSContent(

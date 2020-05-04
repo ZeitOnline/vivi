@@ -1,10 +1,9 @@
 import cgi
-
-import zope.interface
-import zope.traversing.browser
-
+import six
 import zc.table.column
 import zc.table.interfaces
+import zope.interface
+import zope.traversing.browser
 
 
 class LinkColumn(zc.table.column.GetterColumn):
@@ -36,7 +35,7 @@ class LinkColumn(zc.table.column.GetterColumn):
 
         # Get the same display as if a normal column.
         content = cgi.escape(
-            unicode(super(LinkColumn, self).renderCell(item, formatter)))
+            six.text_type(super(LinkColumn, self).renderCell(item, formatter)))
 
         # Try to get a URL, if we can't then ignore setting up a link.
         try:

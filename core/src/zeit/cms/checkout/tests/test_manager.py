@@ -18,10 +18,10 @@ class IContent(zeit.cms.interfaces.ICMSContent):
     pass
 
 
+@zope.interface.implementer(
+    IContent, zope.annotation.interfaces.IAttributeAnnotatable)
 class Content(object):
 
-    zope.interface.implements(
-        IContent, zope.annotation.interfaces.IAttributeAnnotatable)
     uniqueId = u'testcontent://'
     __name__ = u'karlheinz'
 
@@ -155,8 +155,9 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
         changed = lsc.last_semantic_change
 
         manager = ICheckinManager(self.checked_out)
-        self.assertRaisesRegexp(
-            CheckinCheckoutError, '.*provoked veto.*', manager.checkin)
+        with self.assertRaises(CheckinCheckoutError) as e:
+            manager.checkin()
+            self.assertIn('provoked veto', str(e.exception))
 
         self.assertEqual(1, len(self.workingcopy))
 

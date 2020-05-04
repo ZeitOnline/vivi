@@ -1,12 +1,14 @@
-from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
+from functools import reduce
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
 import collections
 import gocept.lxml.objectify
 import logging
 import operator
 import os
 import pyramid_dogpile_cache2
-import urllib2
+import six
+import six.moves.urllib.request
 import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
@@ -42,7 +44,7 @@ class CachedXMLBase(object):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = urllib2.urlopen(url)
+        request = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
 
@@ -53,7 +55,7 @@ class ShortCachedXMLBase(CachedXMLBase):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = urllib2.urlopen(url)
+        request = six.moves.urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
 
@@ -61,7 +63,7 @@ class SimpleXMLSourceBase(CachedXMLBase):
 
     def getValues(self):
         xml = self._get_tree()
-        return [unicode(x).strip() for x in xml.iterchildren('*')]
+        return [six.text_type(x).strip() for x in xml.iterchildren('*')]
 
 
 class XMLSource(
@@ -76,7 +78,7 @@ class XMLSource(
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [unicode(node.get(self.attribute))
+        return [six.text_type(node.get(self.attribute))
                 for node in tree.iterchildren('*')
                 if self.isAvailable(node, context)]
 
@@ -102,7 +104,7 @@ class XMLSource(
         return value
 
     def _get_title_for(self, node):
-        return unicode(node.text).strip()
+        return six.text_type(node.text).strip()
 
 
 def parse_available_interface_list(text):
@@ -157,9 +159,8 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
 
 class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
 
+    @zope.interface.implementer(IObjectSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        zope.interface.implements(IObjectSource)
 
         def find(self, id):
             return self.factory.find(self.context, id)
@@ -251,7 +252,7 @@ class RessortSource(XMLSource):
     title_xpath = '/ressorts/ressort'
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
 
 class MasterSlaveSource(XMLSource):
@@ -267,7 +268,8 @@ class MasterSlaveSource(XMLSource):
         slave_nodes = reduce(
             operator.add, [
                 node.findall(self.slave_tag) for node in master_nodes])
-        result = set([unicode(node.get(self.attribute)) for node in slave_nodes
+        result = set([six.text_type(node.get(self.attribute))
+                      for node in slave_nodes
                       if self.isAvailable(node, context)])
         return result
 
@@ -290,7 +292,7 @@ class MasterSlaveSource(XMLSource):
                     master=xml.sax.saxutils.quoteattr(master_value),
                     value=xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return unicode(self._get_title_for(nodes[0]))
+            return six.text_type(self._get_title_for(nodes[0]))
         return value
 
     def _get_master_nodes(self, context):
@@ -315,7 +317,7 @@ class MasterSlaveSource(XMLSource):
         return nodes
 
     def _get_master_value(self, context):
-        if isinstance(context, unicode):
+        if isinstance(context, six.text_type):
             return context
         if zeit.cms.interfaces.ICMSContent.providedBy(context):
             return None
@@ -340,7 +342,7 @@ class SubRessortSource(MasterSlaveSource):
         return zeit.cms.content.interfaces.ICommonMetadata
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
 
 class ChannelSource(XMLSource):
@@ -350,7 +352,7 @@ class ChannelSource(XMLSource):
     title_xpath = '/ressorts/ressort'
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
 
 class SubChannelSource(MasterSlaveSource):
@@ -381,7 +383,7 @@ class SubChannelSource(MasterSlaveSource):
         return all_nodes
 
     def _get_title_for(self, node):
-        return unicode(node['title'])
+        return six.text_type(node['title'])
 
 
 class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
@@ -416,12 +418,13 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
             # Changes are discarded between tests, as they call dogpile clear()
             setattr(self._get_tree(), name, kw['value'])
 
+
 FEATURE_TOGGLES = FeatureToggleSource()(None)
 
 
 def unicode_or_none(value):
     if value:
-        return unicode(value)
+        return six.text_type(value)
 
 
 class Serie(AllowedBase):
@@ -461,7 +464,7 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
             name = node.get('serienname') or node.text
             if not name:
                 continue
-            serienname = unicode(name).strip()
+            serienname = six.text_type(name).strip()
             result[serienname] = Serie(
                 serienname,
                 unicode_or_none(node.get('title')),
@@ -515,8 +518,8 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
         result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
             product = Product(
-                unicode(node.get('id')),
-                unicode(node.text.strip()),
+                six.text_type(node.get('id')),
+                six.text_type(node.text.strip()),
                 unicode_or_none(node.get('vgwortcode')),
                 unicode_or_none(node.get('href')),
                 unicode_or_none(node.get('target')),
@@ -549,6 +552,7 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
         for product in main_products:
             product.dependent_products = dependent_products[product.id]
 
+
 PRODUCT_SOURCE = ProductSource()
 
 
@@ -566,13 +570,13 @@ class CMSContentTypeSource(
         try:
             return value.getTaggedValue('zeit.cms.title')
         except KeyError:
-            return unicode(value)
+            return six.text_type(value)
 
     def getToken(self, context, value):
         try:
             return value.getTaggedValue('zeit.cms.type')
         except KeyError:
-            return unicode(value)
+            return six.text_type(value)
 
     def isAvailable(self, value, context):
         return True
@@ -644,6 +648,7 @@ class AccessSource(XMLSource):
                 '//type[@id = "{}"]/@c1_id'.format(value))[0]
         except IndexError:
             return None
+
 
 ACCESS_SOURCE = AccessSource()
 

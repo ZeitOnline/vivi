@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
@@ -10,6 +9,7 @@ import lxml.objectify
 import mock
 import pytz
 import requests_mock
+import six
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -51,14 +51,16 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             '<cover href="http://xml.zeit.de/imagegroup/" id="ipad" '
             'product_id="ZEI"/>'
             '</covers>',
-            lxml.etree.tostring(self.volume.xml.covers))
+            lxml.etree.tostring(
+                self.volume.xml.covers, encoding=six.text_type))
 
     def test_deletes_existing_node_if_value_is_None(self):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
         self.volume.set_cover('ipad', 'ZEI', None)
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
-            lxml.etree.tostring(self.volume.xml.covers))
+            lxml.etree.tostring(
+                self.volume.xml.covers, encoding=six.text_type))
 
     def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):
         with self.assertRaises(ValueError):
@@ -199,10 +201,10 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
-        zeit.cms.workflow.interfaces.IPublish(volume).publish(async=False)
+        zeit.cms.workflow.interfaces.IPublish(volume).publish(background=False)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
-        zeit.cms.workflow.interfaces.IPublish(volume).retract(async=False)
+        zeit.cms.workflow.interfaces.IPublish(volume).retract(background=False)
         self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['imagegroup']).published)
 
@@ -353,7 +355,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/2019/01/foobar', 5, 0.1],  # both
             ['web..trekk|www.zeit.de/2019/01/baz', 1, 0.01]     # None of above
         ]
-        with self.webtrekk(webtrekk_data) as m:
+        with self.webtrekk(webtrekk_data):
             res = zeit.content.volume.volume.\
                 _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual({'/2019/01/foo',
@@ -367,7 +369,7 @@ class TestWebtrekkQuery(TestVolumeQueries):
             ['web..trekk|www.zeit.de/magazin/2019/01/bar', 10, 0.2],
             ['web..trekk|www.zeit.de/2019/02/bar', 10, 0.2]
         ]
-        with self.webtrekk(webtrekk_data) as m:
+        with self.webtrekk(webtrekk_data):
             res = zeit.content.volume.volume.\
                 _find_performing_articles_via_webtrekk(self.volume)
             self.assertEqual({'/2019/01/foo', '/magazin/2019/01/bar'},

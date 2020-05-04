@@ -81,7 +81,7 @@ class CMSAPI(unittest.TestCase):
             ]
             result = api.get_all_playlists()
             self.assertEqual(
-                [{'id': 1}, {'id': 2}, {'id': 3}, {'id': 4}], result)
+                [{'id': 1}, {'id': 2}, {'id': 3}, {'id': 4}], list(result))
             self.assertEqual(
                 0, request.call_args_list[1][1]['params']['offset'])
             self.assertEqual(

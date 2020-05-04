@@ -1,6 +1,6 @@
 from ..timebased import TimeBasedWorkflow
-from StringIO import StringIO
 from datetime import datetime, timedelta
+from six import StringIO
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
@@ -22,10 +22,10 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             self):
         workflow = TimeBasedWorkflow(
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'))
-        async = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
+        asynch = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
         with mock.patch(
                 'celery_longterm_scheduler.Task.apply_async') as apply_async, \
-                mock.patch(async, new=True):
+                mock.patch(asynch, new=True):
             workflow.add_job(
                 zeit.workflow.publish.PUBLISH_TASK,
                 datetime.now(pytz.UTC) + timedelta(1))
@@ -214,7 +214,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
     def test_released_to__in_past_retracts_instantly(self):
         zeit.cms.workflow.interfaces.IPublish(
-            self.content).publish(async=False)
+            self.content).publish(background=False)
         transaction.commit()
 
         retract_on = datetime.now(pytz.UTC) + timedelta(seconds=-1)
@@ -234,7 +234,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
 
     def test_released_to__in_future_is_retracted_later(self):
         zeit.cms.workflow.interfaces.IPublish(
-            self.content).publish(async=False)
+            self.content).publish(background=False)
         transaction.commit()
 
         retract_on = datetime.now(pytz.UTC) + timedelta(seconds=1.5)

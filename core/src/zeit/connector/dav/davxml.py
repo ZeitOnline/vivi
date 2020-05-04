@@ -25,7 +25,7 @@ class DavXmlDoc:
     def parse(self, method, arg):
         try:
             self.doc = method(arg)
-        except lxml.etree.XMLSyntaxError, e:
+        except lxml.etree.XMLSyntaxError as e:
             raise zeit.connector.dav.interfaces.DavXmlParseError(
                 e.error_log.filter_levels(
                     lxml.etree.ErrorLevels.FATAL))

@@ -1,4 +1,4 @@
-from zeit.seo.i18n import MessageFactory as _
+from zeit.cms.i18n import MessageFactory as _
 import collections
 import zc.sourcefactory.basic
 import zope.interface
@@ -34,6 +34,10 @@ class ISEO(zope.interface.Interface):
 
     meta_robots = zope.schema.Text(
         title=_('Meta robots'),
+        required=False)
+
+    cook_meta_robots = zope.schema.Text(
+        title=_('Meta cook robots'),
         required=False)
 
     hide_timestamp = zope.schema.Bool(

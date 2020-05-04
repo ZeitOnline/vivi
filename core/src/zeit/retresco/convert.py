@@ -1,6 +1,7 @@
 from datetime import datetime
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
+from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
 import grokcore.component as grok
 import logging
@@ -9,6 +10,7 @@ import lxml.etree
 import os.path
 import pytz
 import re
+import sys
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -108,7 +110,8 @@ class CMSContent(Converter):
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
             'body': lxml.etree.tostring(
-                zeit.retresco.interfaces.IBody(self.context)),
+                zeit.retresco.interfaces.IBody(self.context),
+                encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
         return result
@@ -141,14 +144,14 @@ class CMSContent(Converter):
                         zeit.cms.content.interfaces.IDAVPropertyConverter)
                     pyval = davconverter.fromProperty(value)
                     value = converter.toProperty(pyval)
-                except Exception, e:
+                except Exception as e:
                     log.warning(
                         'Could not parse DAV property value %r for '
                         '%s.%s at %s [%s: %r]. Using default %r instead.' % (
                             value, ns, name, self.context.uniqueId,
                             e.__class__.__name__, e.args, field.default))
                     value = field.default
-            if value is None or value == '':
+            if value is None or value is DeleteProperty or value == '':
                 # DAVProperty.__set__ has None -> DeleteProperty.
                 # Also, elasticsearch rejects '' in date fields.
                 continue
@@ -466,7 +469,10 @@ class Volume(Converter):
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
-        instance = super(Converter, cls).__new__(cls, None)
+        if sys.version_info < (3,):
+            instance = super(Converter, cls).__new__(cls, None)
+        else:
+            instance = super(Converter, cls).__new__(cls)
         instance.context = context
         instance.content = context
         return instance

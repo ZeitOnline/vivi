@@ -7,19 +7,18 @@ import zope.publisher.browser
 import zope.security.interfaces
 
 
+@zope.component.adapter(zope.security.interfaces.IPrincipal)
+@zope.interface.implementer(zeit.cms.browser.interfaces.ITreeState)
 class TreeState(BTrees.OOBTree.OOBTree):
-
-    zope.component.adapts(zope.security.interfaces.IPrincipal)
-    zope.interface.implements(zeit.cms.browser.interfaces.ITreeState)
+    pass
 
 
 treeStateFactory = zope.annotation.factory(TreeState)
 
 
+@zope.interface.implementer(zeit.cms.browser.interfaces.ITree)
 class Tree(zope.publisher.browser.BrowserView):
     """Abstract base class for rendering trees."""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.ITree)
 
     # Subclasses need to define root and a key for the treestate
     root = None

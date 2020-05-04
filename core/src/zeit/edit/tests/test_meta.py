@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import grokcore.component.testing
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -11,7 +11,7 @@ class IExampleElement(zeit.edit.interfaces.IElement):
     pass
 
 
-@grokcore.component.implementer(IExampleElement)
+@grok.implementer(IExampleElement)
 class ExampleElement(zeit.edit.block.SimpleElement):
 
     area = zope.interface.Interface

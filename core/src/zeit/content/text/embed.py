@@ -1,22 +1,22 @@
 from __future__ import unicode_literals  # for eval() since IDAVToken is fussy
 from zeit.cms.i18n import MessageFactory as _
-import collections  # make available to eval()
+import collections  # noqa make available to eval()
 import logging
+import six
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.text
 import zope.interface
-import zope.schema  # make available to eval()
+import zope.schema  # noqa make available to eval()
 
 
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.content.text.interfaces.IEmbed)
 class Embed(zeit.content.text.text.Text):
-
-    zope.interface.implements(zeit.content.text.interfaces.IEmbed)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IEmbed,
@@ -53,7 +53,7 @@ class Embed(zeit.content.text.text.Text):
                 invalid.append(name)
                 continue
             if not field.title:
-                field.title = unicode(name).title()
+                field.title = six.text_type(name).title()
             field.__name__ = name
             # Slight circular dependency
             field.interface = zeit.content.modules.interfaces.IEmbedParameters

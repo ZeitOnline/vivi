@@ -103,6 +103,10 @@
     />
   <grant
     role="zeit.Editor"
+    permission="zeit.ViewPreview"
+    />
+  <grant
+    role="zeit.Editor"
     permission="zeit.brightcove.video.Edit"
     />
 
@@ -178,6 +182,10 @@
   <grant
     role="zeit.Producer"
     permission="zeit.vgwort.RetryReport"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.author.Add"
     />
   <grant
     role="zeit.Producer"

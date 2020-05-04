@@ -1,7 +1,8 @@
 import gocept.testing.mock
-import lxml.etree
 import mock
+import six
 import unittest
+import zeit.cms.testing
 import zeit.content.article.testing
 import zope.schema
 
@@ -84,7 +85,8 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             [child.tag for child in body.xml.division.iterchildren()])
         self.assertEqual(
             [u'I have no division', u'Only paras'],
-            [unicode(child) for child in body.xml.division.iterchildren()])
+            [six.text_type(child) for child
+             in body.xml.division.iterchildren()])
 
     def test_adding_to_articles_without_division_should_migrate(self):
         import lxml.objectify
@@ -169,7 +171,7 @@ class TestCleaner(unittest.TestCase):
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
         self.assertNotIn(
-            'namespaces.zeit.de/CMS/cp', lxml.etree.tostring(art.xml))
+            'namespaces.zeit.de/CMS/cp', zeit.cms.testing.xmltotext(art.xml))
 
 
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):

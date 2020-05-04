@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-from collections import defaultdict
-from ordereddict import OrderedDict
+from collections import defaultdict, OrderedDict
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import mock
-import plone.testing.zca
 import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources
@@ -112,14 +110,14 @@ Anderer\r
         article_element = lxml.etree.fromstring(article_xml)
         t = Toc(mock.Mock(), mock.Mock())
         entry = t._create_toc_element(article_element)
-        assert sys.maxint == entry.get('page')
+        assert sys.maxsize == entry.get('page')
 
     def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
         toc_data = {
             'Die Zeit': {
                 'Politik':
                     [
-                        {'page': sys.maxint, 'title': 'title2'},
+                        {'page': sys.maxsize, 'title': 'title2'},
                         {'page': 1, 'title': 'title1'}
                     ]
             }
@@ -127,7 +125,7 @@ Anderer\r
         toc_data = OrderedDict(toc_data)
         t = Toc(mock.Mock(), mock.Mock())
         result = t._sort_toc_data(toc_data)
-        assert sys.maxint == result.get('Die Zeit').get('Politik')[-1].get(
+        assert sys.maxsize == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
 
     def test_article_excluder_excludes_blacklisted_property_values(self):
@@ -213,7 +211,8 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/repository/'
                    '2015/01/ausgabe/@@toc.csv')
-            self.assertEqual('text/csv', b.headers['content-type'])
+            self.assertIn(b.headers['content-type'],
+                          ('text/csv', 'text/csv;charset=utf-8'))
             self.assertEqual('attachment; '
                              'filename="table_of_content_2015_01.csv"',
                              b.headers['content-disposition'])

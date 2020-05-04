@@ -92,12 +92,12 @@ class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(None, self.variants['square'].ratio)
 
     def test_max_width_retrieves_value_from_max_size(self):
-        self.assertEqual(sys.maxint, self.variants['square'].max_width)
+        self.assertEqual(sys.maxsize, self.variants['square'].max_width)
         self.group.variants = {'square': {'max_size': '100x200'}}
         self.assertEqual(100, self.variants['square'].max_width)
 
     def test_max_height_retrieves_value_from_max_size(self):
-        self.assertEqual(sys.maxint, self.variants['square'].max_height)
+        self.assertEqual(sys.maxsize, self.variants['square'].max_height)
         self.group.variants = {'square': {'max_size': '100x200'}}
         self.assertEqual(200, self.variants['square'].max_height)
 

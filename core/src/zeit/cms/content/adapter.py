@@ -61,7 +61,7 @@ def xml_source(context):
     null_parser = lxml.etree.XMLParser(target=NullTarget())
     try:
         lxml.etree.fromstring(serialized, parser=null_parser)
-    except:
+    except Exception:
         logger.error('Serializing %s yielded invalid XML:\n%s',
                      context.uniqueId, serialized)
         raise

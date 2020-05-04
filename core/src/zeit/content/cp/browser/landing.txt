@@ -44,7 +44,7 @@ Drop testcontent on the landing zone:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
   <div ...class="...block type-teaser...
 
@@ -70,7 +70,7 @@ There is another landing zone after the created block now:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
   <div ...class="...block type-teaser...
   <div ...class="...block type-teaser...
@@ -97,7 +97,7 @@ area on 2+ blocks):
   u'name': u'added',
   u'when': u'after-reload'}]
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
   <div ...class="...block type-teaser...
   <div ...class="...block type-teaser...
@@ -111,5 +111,5 @@ reported:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
->>> print browser.contents
+>>> print(browser.contents)
 <...The object "http://xml.zeit.de/holla" does not exist...

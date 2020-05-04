@@ -1,6 +1,5 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import os
 import pkg_resources
@@ -63,17 +62,16 @@ class WorkflowScriptsLayer(plone.testing.Layer):
         self._tempfiles.append(destination)
         return destination.name
 
+
 SCRIPTS_LAYER = WorkflowScriptsLayer()
-
-
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(CELERY_LAYER,))
 
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
@@ -94,6 +92,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
 
 
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
 
@@ -104,9 +103,6 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     mechanism to display validation errors during publish.
 
     """
-
-    zope.interface.implements(
-        zeit.cms.workflow.interfaces.IPublishInfo)
 
     def __init__(self, context, message, can_publish):
         self.context = context

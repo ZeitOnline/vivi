@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import datetime
 import mock
 import transaction
@@ -74,7 +75,8 @@ class CheckinSelenium(
         fold = 'css=#edit-form-filename .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        s.type('new-filename.rename_to', 'asdf\t')
+        s.type('new-filename.rename_to', 'asdf')
+        s.keyPress('new-filename.rename_to', Keys.TAB)
         s.waitForElementNotPresent(error)
 
     def test_checkin_button_is_disabled_while_validation_errors_present(self):
@@ -87,13 +89,15 @@ class CheckinSelenium(
         fold = 'css=#edit-form-metadata .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        s.type('article-content-head.title', 'mytitle\t')
+        s.type('article-content-head.title', 'mytitle')
+        s.keyPress('article-content-head.title', Keys.TAB)
         input_ressort = 'metadata-a.ressort'
         s.select(input_ressort, 'label=International')
-        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
+        s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
 
         s.click('css=#edit-form-filename .fold-link')
-        s.type('new-filename.rename_to', 'asdf\t')
+        s.type('new-filename.rename_to', 'asdf')
+        s.keyPress('new-filename.rename_to', Keys.TAB)
         s.click('css=#edit-form-keywords .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#edit-form-keywords.folded')
         self.add_keyword_by_autocomplete('testtag', form_prefix='keywords')

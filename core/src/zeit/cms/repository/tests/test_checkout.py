@@ -8,14 +8,14 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
         import zeit.cms.interfaces
         import zope.interface
 
+        @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
         class Content(object):
-            zope.interface.implements(zeit.cms.interfaces.ICMSContent)
             uniqueId = 'testcontent://'
 
         content = Content()
         try:
             ILocalContent(content)
-        except TypeError, e:
+        except TypeError as e:
             self.assertEqual('Could not adapt', e.args[0])
         else:
             self.fail('TypeError not raised')
@@ -28,7 +28,7 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
         del content.__parent__[content.__name__]
         try:
             ILocalContent(content)
-        except TypeError, e:
+        except TypeError as e:
             self.assertEqual('Could not adapt', e.args[0])
         else:
             self.fail('TypeError not raised')

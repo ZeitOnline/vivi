@@ -7,11 +7,10 @@ import zope.component
 import zope.container.contained
 
 
+@zope.interface.implementer(zeit.brightcove.interfaces.IRepository)
 class Repository(persistent.Persistent,
                  zope.container.contained.Contained):
     # Stub so the generation can remove the objects properly
-
-    zope.interface.implements(zeit.brightcove.interfaces.IRepository)
 
     def __init__(self):
         self._data = BTrees.family32.OO.BTree()
@@ -41,6 +40,7 @@ class Repository(persistent.Persistent,
 class Content(persistent.Persistent, zope.container.contained.Contained):
     # Stub so the generation can remove the objects properly
     pass
+
 
 Video = Playlist = Content
 

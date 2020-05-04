@@ -13,7 +13,7 @@ Add a raw xml:
 >>> menu.displayValue = ['Raw XML']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title>... Add Raw XML </title>
     ...
@@ -25,14 +25,14 @@ Add a raw xml:
 
 We're now at the edit page:
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title>... Edit Raw XML </title>
     ...
 
 In the edited documents panel we see the title of the object and its icon:
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <li class="draggable-content type-rawxml">
       <img src="...IRawXML-zmi_icon.png"...
@@ -40,7 +40,7 @@ In the edited documents panel we see the title of the object and its icon:
 
 The xml is pretty printed:
 
->>> print browser.getControl('XML').value
+>>> print(browser.getControl('XML').value)
 <block>
   <feed/>
 </block>
@@ -54,7 +54,7 @@ There is an edit tab:
 After checking in we see the read/only view:
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title>... View Raw XML </title>
     ...
@@ -62,13 +62,13 @@ After checking in we see the read/only view:
       <span class="nt">&lt;feed/&gt;</span>
         <span class="nt">&lt;/block&gt;</span>
 ...
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/repository/rawxml/@@view.html
 
 There is also a default view:
 
 >>> browser.open('http://localhost/++skin++cms/repository/rawxml')
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 This is raw feed foo – View Raw XML
 
 Let's syndicate. Add a channel to the targets first:
@@ -82,7 +82,7 @@ Let's syndicate. Add a channel to the targets first:
 ...     name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> checkbox.value = True
 >>> browser.getControl('Syndicate').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <div id="messages" class="haveMessages">
       <ul>

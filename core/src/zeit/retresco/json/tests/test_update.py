@@ -1,6 +1,6 @@
+from six.moves.urllib.error import HTTPError
 import json
 import mock
-import urllib2
 import zeit.cms.interfaces
 import zeit.retresco.testing
 
@@ -13,19 +13,19 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
 
     def test_endpoint_avoids_get(self):
         b = self.browser
-        with self.assertRaisesRegexp(urllib2.HTTPError,
-                                     'HTTP Error 405: Method Not Allowed'):
+        with self.assertRaises(HTTPError) as e:
             b.open('http://localhost/@@update_keywords')
+            self.assertIn('HTTP Error 405', str(e.exception))
 
     def test_endpoint_rejects_post_without_doc_ids(self):
         b = self.browser
-        with self.assertRaisesRegexp(urllib2.HTTPError,
-                                     'HTTP Error 400: Bad Request'):
+        with self.assertRaises(HTTPError) as e:
             b.post('http://localhost/@@update_keywords', '')
-        with self.assertRaisesRegexp(urllib2.HTTPError,
-                                     'HTTP Error 400: Bad Request'):
+            self.assertIn('HTTP Error 400', str(e.exception))
+        with self.assertRaises(HTTPError) as e:
             b.post('http://localhost/@@update_keywords',
                    '{"foo" : "bar"}', 'application/x-javascript')
+            self.assertIn('HTTP Error 400', str(e.exception))
 
     def test_endpoint_calls_enrich_and_publish(self):
         b = self.browser
@@ -36,7 +36,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
                    '"{urn:uuid:0da8cb59-1a72-4ae2-bbe2-006e6b1ff621}"]}',
                    'application/x-javascript')
             self.assertEqual({'message': 'OK'}, json.loads(b.contents))
-            self.assertEqual('200 Ok', b.headers.getheader('status'))
+            self.assertEqual('200 Ok', b.headers.get('status'))
             self.assertEqual(2, index.call_count)
             self.assertEqual(
                 zeit.cms.interfaces.ICMSContent(
@@ -58,5 +58,5 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
                '{"doc_ids" : ['
                '"{urn:uuid:9cb93717-2467-4af5-9521-25110e1a7ed8}"]}',
                'application/x-javascript')
-        self.assertEqual('200 Ok', b.headers.getheader('status'))
+        self.assertEqual('200 Ok', b.headers.get('status'))
         self.assertEqual((tag.code,), tagger.disabled)

@@ -25,7 +25,7 @@ We also need a principal permission manager:
 ...         self.context = context
 ...
 ...     def grantPermissionToPrincipal(self, permission, principal):
-...         print "Granting %s to %s" % (permission, principal)
+...         print("Granting %s to %s" % (permission, principal))
 ...
 >>> import zope.securitypolicy.interfaces
 >>> site_manager.registerAdapter(
@@ -40,7 +40,7 @@ And we need a principal role manager:
 ...         self.context = context
 ...
 ...     def assignRoleToPrincipal(self, role, principal):
-...         print "Assigning role %s to %s" % (role, principal)
+...         print("Assigning role %s to %s" % (role, principal))
 ...
 >>> site_manager.registerAdapter(
 ...   PRM, (zope.interface.Interface, ),
@@ -69,7 +69,7 @@ Assigning role zeit.Owner to hans
 During adaptaion the Workingcopy object was automatically be added to the
 location:
 
->>> print list(location.keys())
+>>> print(list(location.keys()))
 [u'hans']
 >>> location[u'hans'] is workingcopy
 True
@@ -98,7 +98,7 @@ Assigning role zeit.Owner to kurt
 <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy.__name__
 u'kurt'
->>> print sorted(location.keys())
+>>> print(sorted(location.keys()))
 [u'hans', u'kurt']
 >>> zope.security.management.endInteraction()
 

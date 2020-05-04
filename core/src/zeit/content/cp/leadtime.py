@@ -12,9 +12,8 @@ import zope.app.locking.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.content.cp.interfaces.ILeadTime)
 class LeadTime(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.content.cp.interfaces.ILeadTime)
 
     start = zeit.cms.content.dav.DAVProperty(
         zeit.content.cp.interfaces.ILeadTime['start'],
@@ -26,9 +25,8 @@ class LeadTime(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE)
 
 
+@zope.interface.implementer(zeit.content.cp.interfaces.ILeadTimeWorklist)
 class LeadTimeWorklist(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.content.cp.interfaces.ILeadTimeWorklist)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.cp.interfaces.ILeadTimeWorklist,

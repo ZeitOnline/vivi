@@ -54,7 +54,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_unchanged_provides_does_not_store_property(self):
         self.repository['foo'] = self.content
         properties = zeit.connector.interfaces.IWebDAVProperties(self.content)
-        self.assertEquals(
+        self.assertEqual(
             zeit.connector.interfaces.DeleteProperty,
             properties[('provides', 'http://namespaces.zeit.de/CMS/meta')])
 
@@ -85,7 +85,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_file(self):
         f = zeit.cms.repository.file.LocalFile()
-        f.open('w').write('data')
+        f.open('w').write(b'data')
         zope.interface.alsoProvides(f, ITestInterface)
         self.repository['foo'] = f
         f = self.repository['foo']
@@ -103,7 +103,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_restore_returns_provides_with_correct_class(self):
         f_local = zeit.cms.repository.file.LocalFile()
-        f_local.open('w').write('blub')
+        f_local.open('w').write(b'blub')
         zope.interface.alsoProvides(f_local, ITestInterface)
         self.repository['file'] = f_local
         f_remote = self.repository['file']
@@ -113,7 +113,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
         event = zeit.cms.repository.interfaces.AfterObjectConstructedEvent(
             f_remote, resource)
         zeit.cms.type.restore_provided_interfaces_from_dav(f_remote, event)
-        self.assertEquals(f_remote.__class__, f_remote.__provides__._cls)
+        self.assertEqual(f_remote.__class__, f_remote.__provides__._cls)
 
 
 class StoreProvidedInterfacesIntegration(zeit.cms.testing.ZeitCmsTestCase):

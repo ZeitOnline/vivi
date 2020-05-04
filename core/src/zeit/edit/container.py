@@ -1,7 +1,8 @@
-import UserDict
+import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
+import six
 import uuid
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -15,11 +16,10 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
-class Base(UserDict.DictMixin,
-           zeit.edit.block.Element,
-           zope.container.contained.Contained):
-
-    zope.interface.implements(zeit.edit.interfaces.IContainer)
+@zope.interface.implementer(zeit.edit.interfaces.IContainer)
+class Base(zeit.edit.block.Element,
+           zope.container.contained.Contained,
+           collections.MutableMapping):
 
     def __init__(self, context, xml):
         self.xml = xml
@@ -53,7 +53,7 @@ class Base(UserDict.DictMixin,
             pass
         else:
             try:
-                return self.values()[position]
+                return list(self.values())[position]
             except IndexError:
                 raise KeyError(key)
 
@@ -79,10 +79,19 @@ class Base(UserDict.DictMixin,
             name=element_type)
 
     def __iter__(self):
-        return (unicode(k) for k in self._get_keys(self.xml))
+        return (six.text_type(k) for k in self._get_keys(self.xml))
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError()
 
     def keys(self):
         return list(iter(self))
+
+    def values(self):
+        return [self[x] for x in self]
 
     def slice(self, start, end):
         result = []

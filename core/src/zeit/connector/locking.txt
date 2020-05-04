@@ -8,12 +8,12 @@ Simple case
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
->>> import StringIO
+>>> from io import BytesIO
 >>> import zeit.connector.resource
 >>> id = 'http://xml.zeit.de/%s/lt1' % TESTFOLDER()
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
-...     StringIO.StringIO('Pop goes the weasel!'),
+...     BytesIO(b'Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
 >>> connector.lock(res.id, 'zope.user', until=None)
@@ -99,7 +99,7 @@ Lock the resoruce under the hood; we get a useful error:
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'
 
@@ -114,7 +114,7 @@ Edge case 2.1: With existing resource:
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'
 >>> del connector[res.id]
@@ -146,7 +146,7 @@ Edge case 2.3: PROPATCH
 >>> connector.changeProperties(res.id, {('foo', 'bar'): 'baz'})
 Traceback (most recent call last):
     ...
-DAVLockedError: (423, 'Locked',
+zeit.connector.dav.interfaces.DAVLockedError: (423, 'Locked',
     u'http://.../cms/testing.../edge2.3',
     '<!DOCTYPE...
 
@@ -200,7 +200,7 @@ Edge case 4: We think the resource is locked but it is by somebody else
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
 >>> connector.unlock(res.id)
 u'opaquelocktoken:...'
 >>> connector.add(res)
@@ -213,7 +213,7 @@ Edge case 5: Null resouce locks
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector[res.id].data
-<cStringIO.StringI object at 0x...>
+<...BytesIO object at 0x...>
 >>> connector.unlock(res.id)
 u'opaquelocktoken:...'
 
@@ -285,9 +285,8 @@ ours. To make this happen, we register an IAuthentication utility:
 >>> import zope.authentication.interfaces
 >>> class Principal(object):
 ...     pass
->>> class Auth(object):
-...     zope.interface.implements(
-...         zope.authentication.interfaces.IAuthentication)
+>>> @zope.interface.implementer(zope.authentication.interfaces.IAuthentication)
+... class Auth(object):
 ...     def getPrincipal(self, id):
 ...         if id == 'internal':
 ...             p = Principal()

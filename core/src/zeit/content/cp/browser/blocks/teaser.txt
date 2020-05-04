@@ -21,7 +21,7 @@ teasers in the lead area:
 ...  'lead/@@landing-zone-drop'
 ...  '?uniqueId=http://xml.zeit.de/testcontent&order=top')
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div ...
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
@@ -50,7 +50,7 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
 >>> url = '%s?uniqueId=http://xml.zeit.de/c1' % (drop_url,)
 >>> browser.open(url)
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div ...
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
@@ -91,7 +91,7 @@ The teaser block can be edited:
 
 >>> browser.getLink('Edit teaser list').click()
 >>> lightbox_url = browser.url
->>> print browser.contents
+>>> print(browser.contents)
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
       cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-<GUID>">
@@ -144,7 +144,7 @@ updateOrder view:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(lightbox_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
     <li ... cms:uniqueid="http://xml.zeit.de/testcontent">
         ...
@@ -170,7 +170,7 @@ Delete the second entry:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(lightbox_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
       cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-<GUID>">
@@ -186,7 +186,7 @@ True
 The cp contents also has changed of course:
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div ...
 <div...class="...block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
@@ -232,9 +232,10 @@ Then we need to create a test 'article' to be included in this CenterPage:
 True
 
 XXX work around https://github.com/zopefoundation/zope.testbrowser/issues/78
+>>> import six
 >>> def click_link(browser, text):
-...    browser._response.body = browser._response.body.replace('<div ', '<div xmlns:cms="http://namespaces.gocept.com/zeit-cms" ', 1)
-...    browser.open(browser.xpath(u'//a[contains(., "%s")]/@href' % text.decode('utf-8'))[0])
+...    browser._response.body = browser._response.body.replace(b'<div ', b'<div xmlns:cms="http://namespaces.gocept.com/zeit-cms" ', 1)
+...    browser.open(browser.xpath(u'//a[contains(., "%s")]/@href' % six.ensure_text(text))[0])
 
 
 The layout can be selected at the edit box:
@@ -248,7 +249,7 @@ It is marked in the edit box now:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()
->>> print browser.contents
+>>> print(browser.contents)
 <div...
 <a...class="leader selected"...>...Großer Teaser mit Bild und Teaserliste...
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
@@ -277,7 +278,7 @@ to the test-content:
 The 450x200 image is used now:
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
   <img src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw" />
   <div class="teaser-list">
@@ -295,7 +296,7 @@ When the image is not an image group, it will be just used:
 >>> browser.getLink('Edit block properties', index=0).click()
 >>> click_link(browser, 'Großer Teaser')
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div ... class="teaser-contents action-content-droppable leader"...>
   <img src="http://localhost/++skin++cms/repository/image-group/obama-clinton-120x120.jpg/@@raw" />
   <div class="teaser-list">

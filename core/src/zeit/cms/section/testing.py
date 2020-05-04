@@ -24,6 +24,7 @@ class SectionLayer(plone.testing.Layer):
             zope.interface.alsoProvides(example, IExampleSection)
             repository['example'] = example
 
+
 SECTION_LAYER = SectionLayer()
 
 

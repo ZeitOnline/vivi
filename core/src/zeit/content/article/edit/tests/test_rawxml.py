@@ -1,5 +1,7 @@
-import lxml.etree
+import lxml
+import six
 import unittest
+import zeit.cms.testing
 import zeit.content.article.testing
 import zope.schema
 
@@ -10,10 +12,9 @@ class RawXMLTest(unittest.TestCase):
         from zeit.content.article.edit.interfaces import IRawXML
         import lxml.objectify
         field = IRawXML['xml']
-        self.assertRaisesRegexp(
-            zope.schema.ValidationError,
-            'The root element must be <raw>',
-            lambda: field.validate(lxml.objectify.E.foo()))
+        with self.assertRaises(zope.schema.ValidationError) as e:
+            field.validate(lxml.objectify.E.foo())
+            self.assertIn('The root element must be <raw>', str(e.exception))
         field.validate(lxml.objectify.E.raw())
 
 
@@ -35,5 +36,22 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
             zeit.content.article.edit.interfaces.IRawXML.providedBy(div))
         self.assertEqual('raw', div.xml.tag)
         self.assertEllipsis(
-            '<raw...>\n\n</raw>',
-            lxml.etree.tostring(div.xml, pretty_print=True))
+            '<raw...>\n\n</raw>', zeit.cms.testing.xmltotext(div.xml))
+
+    def test_stores_consent_info_in_xml(self):
+        article = zeit.content.article.article.Article()
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, 'raw')
+        module = factory()
+        info = zeit.cmp.interfaces.IConsentInfo(module)
+        info.has_thirdparty = True
+        info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        self.assertEqual(True, info.has_thirdparty)
+        self.assertEqual(
+            ('Twitter', 'Facebook'), info.thirdparty_vendors)
+        self.assertEllipsis(
+            '<...has_thirdparty="yes"'
+            ' thirdparty_vendors="Twitter;Facebook"...',
+            lxml.etree.tostring(module.xml, encoding=six.text_type))

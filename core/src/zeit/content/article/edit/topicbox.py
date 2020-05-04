@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import itertools
+from six.moves import filter
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import itertools
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -55,17 +56,16 @@ class Topicbox(zeit.content.article.edit.block.Block):
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
             return itertools.islice(
-                itertools.ifilter(lambda x: x != parent_article,
-                                  zeit.edit.interfaces.IElementReferences(
-                                      self.referenced_cp)),
+                filter(lambda x: x != parent_article,
+                       zeit.edit.interfaces.IElementReferences(
+                           self.referenced_cp)),
                 len(self._reference_properties))
         return (content for content in self._reference_properties if content)
 
 
+@zope.component.adapter(zeit.content.article.edit.interfaces.ITopicbox)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class TopicboxImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.article.edit.interfaces.ITopicbox)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image', 'image')
 

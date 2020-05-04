@@ -1,5 +1,7 @@
 # coding: utf8
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 import gocept.form.grouped
 import re
 import transaction
@@ -92,18 +94,6 @@ class IDuplicateConfirmation(zope.interface.Interface):
     confirmed_duplicate = zope.schema.Bool(title=_('Add duplicate author'))
 
 
-class DuplicateAuthorWarning(Exception):
-
-    zope.interface.implements(zope.formlib.interfaces.IWidgetInputError)
-
-    def doc(self):
-        return _(
-            u'An author with the given name already exists. '
-            u'If you\'d like to create another author with the same '
-            u'name anyway, check "Add duplicate author" '
-            u'and save the form again.')
-
-
 class AddContextfree(zeit.cms.browser.form.AddForm):
     """Adds a new author.
 
@@ -116,9 +106,15 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     form_fields = (FormBase._form_fields.omit(*EditForm.omit_fields) +
                    zope.formlib.form.FormFields(IDuplicateConfirmation))
     factory = zeit.content.author.author.Author
-    next_view = 'view.html'
+    checkout = False
+
+    field_groups = FormBase.field_groups
 
     need_confirmation_checkbox = False
+
+    duplicate_honorar_id = zope.app.pagetemplate.ViewPageTemplateFile(
+        'honorar-duplicate.pt')
+    _duplicate_result = None
 
     def _validate_folder_name(self, folder_name):
         # Get rid of umlauts
@@ -144,7 +140,9 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         return self.new_object
 
     def ask_before_adding_author_twice(self, author):
-        if self.confirmed_duplicate or not author.exists:
+        if (FEATURE_TOGGLES.find('author_lookup_in_hdok') or
+                self.confirmed_duplicate or
+                not author.exists(author.firstname, author.lastname)):
             return False
         transaction.doom()
         self.need_confirmation_checkbox = True
@@ -153,13 +151,29 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         self.form_reset = False
         return True
 
+    def prevent_duplicate_honorar_id(self, author):
+        if (not FEATURE_TOGGLES.find('author_lookup_in_hdok') or
+                not author.honorar_id):
+            return False
+        exists = author.find_by_honorar_id(author.honorar_id)
+        if exists is None:
+            return False
+        payload = exists.get('payload', {}).get('xml', {})
+        data = {
+            'uniqueId': zeit.cms.interfaces.ID_NAMESPACE[:-1] + exists['url']
+        }
+        for key in ['firstname', 'lastname', 'honorar_id']:
+            data[key] = payload.get(key)
+        self._duplicate_result = self.duplicate_honorar_id(author=data)
+        return True
+
     def add(self, object):
         if self.ask_before_adding_author_twice(object):
             return
-        container = self.create_folder(object)
-        container['index'] = object
-        self._created_object = container['index']
-        self._finished_add = True
+        if self.prevent_duplicate_honorar_id(object):
+            return
+        super(AddContextfree, self).add(
+            object, self.create_folder(object), 'index')
 
     def create_folder(self, object):
         path = self.author_folder + [object.lastname[0].upper()]
@@ -184,6 +198,8 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     def update(self):
         super(AddContextfree, self).update()
+        if self._duplicate_result is not None:
+            self.form_result = self._duplicate_result
         if not self.need_confirmation_checkbox:
             self.form_fields = self.form_fields.omit('confirmed_duplicate')
             self.setUpWidgets()

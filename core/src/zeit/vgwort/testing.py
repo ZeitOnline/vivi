@@ -38,6 +38,13 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
+TMS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-tms.zcml', bases=(
+        CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
+TMS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(TMS_ZCML_LAYER,))
+TMS_WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(TMS_ZOPE_LAYER,))
+
+
 class XMLRPCLayer(plone.testing.Layer):
 
     defaultBases = (WSGI_LAYER,)
@@ -48,6 +55,7 @@ class XMLRPCLayer(plone.testing.Layer):
         token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(
             x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
+
 
 XMLRPC_LAYER = XMLRPCLayer()
 
@@ -79,14 +87,13 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
             zeit.vgwort.interfaces.IMessageService)
         try:
             service.call('qualityControl')
-        except Exception as e:
+        except Exception:
             self.skipTest('vgwort test system is down')
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
+@zope.interface.implementer(zope.index.text.interfaces.ISearchableText)
 class SearchableText(object):
-
-    zope.component.adapts(zeit.cms.content.interfaces.ICommonMetadata)
-    zope.interface.implements(zope.index.text.interfaces.ISearchableText)
 
     def __init__(self, context):
         self.context = context

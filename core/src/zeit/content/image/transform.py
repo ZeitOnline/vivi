@@ -10,10 +10,9 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.component.adapter(zeit.content.image.interfaces.IImage)
+@zope.interface.implementer(zeit.content.image.interfaces.ITransform)
 class ImageTransform(object):
-
-    zope.interface.implements(zeit.content.image.interfaces.ITransform)
-    zope.component.adapts(zeit.content.image.interfaces.IImage)
 
     MAXIMUM_IMAGE_SIZE = 5000
 
@@ -38,12 +37,14 @@ class ImageTransform(object):
 
         orig_width, orig_height = self.image.size
 
+        # width and height need to be int rather than float,
+        # so we use // instead of / as division operator.
         if width is None:
-            width = orig_width * height / orig_height
+            width = orig_width * height // orig_height
         elif height is None:
-            height = orig_height * width / orig_width
+            height = orig_height * width // orig_width
 
-        image = self.image.resize((width, height), filter)
+        image = self.image.resize((int(width), int(height)), filter)
         return self._construct_image(image)
 
     def create_variant_image(

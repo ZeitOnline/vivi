@@ -9,10 +9,9 @@ import zope.interface
 import zope.location
 
 
+@zope.component.adapter(zope.location.interfaces.ISite)
+@zope.interface.implementer(zeit.cms.settings.interfaces.IGlobalSettings)
 class GlobalSettings(persistent.Persistent):
-
-    zope.interface.implements(zeit.cms.settings.interfaces.IGlobalSettings)
-    zope.component.adapts(zope.location.interfaces.ISite)
 
     default_year = 2008
     default_volume = 26

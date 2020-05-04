@@ -1,9 +1,16 @@
 from setuptools import setup, find_packages
+import sys
+
+
+if sys.version_info < (3,):
+    guppy = ['guppy']
+else:
+    guppy = ['guppy3']
 
 
 setup(
     name='vivi.core',
-    version='4.25.4.dev0',
+    version='4.31.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -18,9 +25,12 @@ setup(
         'BTrees',
         'Jinja2',
         'Pillow',
+        'PyJWT',
+        'cryptography',  # so pyjwt can offer RSA
         'ZODB',
         'beautifulsoup4',
         'bugsnag',
+        'collective.monkeypatcher',
         'elasticsearch >=2.0.0, <3.0.0',
         'fb',
         'filemagic',
@@ -40,13 +50,11 @@ setup(
         'pytz',
         'requests',
         'setuptools',
-        'sprout',
         'transaction',
         'tweepy',
         'urbanairship >= 1.0',
         'webob',
         'werkzeug',
-        'xmldiff',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
         'z3c.traverser',  # XXX Should be [ui], but is entrenched
         'zc.form',  # Should be [ui], but it also contains schema fields
@@ -58,6 +66,7 @@ setup(
         'zope.annotation',
         'zope.app.appsetup',
         'zope.app.file',
+        'zope.app.folder',
         'zope.app.keyreference',
         'zope.app.locking',
         'zope.app.security',
@@ -87,7 +96,7 @@ setup(
         'zope.xmlpickle',
     ],
     extras_require={
-        'ui': [
+        'ui': guppy + [
             'Pygments',
             'ZConfig',
             'celery >= 4.0',
@@ -98,7 +107,6 @@ setup(
             'fanstatic',
             'gocept.fckeditor[fanstatic]',
             'gocept.pagelet',
-            'guppy',
             'js.backbone',
             'js.cropper',
             'js.handlebars',
@@ -127,10 +135,8 @@ setup(
             'zope.app.dependable',
             'zope.app.error',
             'zope.app.exception',
-            'zope.app.folder',
             'zope.app.form>=3.6.0',
             'zope.app.generations',
-            'zope.app.interface',
             'zope.app.http',
             'zope.app.localpermission',
             'zope.app.pagetemplate',
@@ -144,7 +150,6 @@ setup(
             'zope.app.securitypolicy',
             'zope.app.tree',
             'zope.app.wsgi',
-            'zope.app.zapi',  # undeclared by z3c.menu.simple
             'zope.app.zopeappgenerations',
             'zope.authentication',
             'zope.browser',
@@ -172,8 +177,10 @@ setup(
             'plone.testing[zca,zodb]',
             'pytest',
             'requests-mock',
+            'waitress',
             'webtest',
             'xlrd',
+            'xmldiff',
             'zope.app.wsgi',
             'zope.configuration',
             'zope.error',
@@ -240,6 +247,9 @@ setup(
 
             'zc_table=zeit.cms.browser.resources:zc_table',
             'zc_datetimewidget=zeit.cms.browser.resources:zc_datetimewidget',
+        ],
+        'pytest11': [
+            'zeit_pytest=zeit.pytest'
         ],
     }
 )

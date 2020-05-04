@@ -1,11 +1,11 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ITeaserBlock
-import json
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
+import six
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
@@ -18,13 +18,12 @@ import zope.container.interfaces
 import zope.interface
 
 
+@zope.component.adapter(
+    zeit.content.cp.interfaces.IBody,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.content.cp.interfaces.IRegion)
 class Region(zeit.content.cp.blocks.block.VisibleMixin,
              zeit.edit.container.Base):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IRegion)
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IBody,
-        gocept.lxml.interfaces.IObjectified)
 
     _find_item = lxml.etree.XPath(
         './*[@area = $name or @cms:__name__ = $name]',
@@ -82,13 +81,12 @@ class ReferencedCpFallbackProperty(
         return value
 
 
+@zope.component.adapter(
+    zeit.content.cp.interfaces.IRegion,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.content.cp.interfaces.IArea)
 class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IArea)
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IRegion,
-        gocept.lxml.interfaces.IObjectified)
 
     type = 'area'
 
@@ -419,7 +417,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             operator = condition.get('operator')
             if not operator:  # BBB
                 operator = 'eq'
-            value = self._converter(typ).fromProperty(unicode(condition))
+            value = self._converter(typ).fromProperty(six.text_type(condition))
             field = zeit.content.cp.interfaces.IArea[
                 'query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):

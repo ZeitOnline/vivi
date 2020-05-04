@@ -11,10 +11,9 @@ import zope.interface
 MIN_DATE = datetime.min.replace(tzinfo=pytz.UTC)
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IModified)
 class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.cms.workflow.interfaces.IModified)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IModified,

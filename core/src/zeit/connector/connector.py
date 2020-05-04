@@ -1,16 +1,17 @@
 """Connect to the CMS backend."""
 
-import cStringIO
+from io import BytesIO
 import datetime
 import gocept.cache.property
 import gocept.lxml.objectify
-import httplib
 import logging
 import pytz
 import re
+import six
+import six.moves.http_client
+import six.moves.urllib.parse
 import sys
 import threading
-import urlparse
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
@@ -54,7 +55,7 @@ class DAVUnexpectedResultError(zeit.connector.dav.interfaces.DAVError):
     """Exception raised on unexpected HTTP return code."""
 
 
-_max_timeout_days = ((sys.maxint - 1) / 86400) - 1
+_max_timeout_days = ((sys.maxsize - 1) / 86400) - 1
 
 
 def _abs2timeout(time):
@@ -70,19 +71,18 @@ def _abs2timeout(time):
     return max(d.days * 86400 + d.seconds + int(d.microseconds / 1000000.0), 1)
 
 
-class CannonicalId(unicode):
+class CannonicalId(six.text_type):
     """A canonical id."""
 
     def __repr__(self):
         return '<CannonicalId %s>' % super(CannonicalId, self).__repr__()
 
 
+@zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector(object):
     """Connect to the CMS backend.
        WebDAV implementation based on pydavclient
     """
-
-    zope.interface.implements(zeit.connector.interfaces.ICachingConnector)
 
     long_name = u'DAV connector'
 
@@ -106,7 +106,7 @@ class Connector(object):
         """Create a new connection."""
         logger.debug('New connection')
         url = self._roots[root]
-        (scheme, netloc) = urlparse.urlsplit(url)[0:2]
+        (scheme, netloc) = six.moves.urllib.parse.urlsplit(url)[0:2]
         try:  # grmblmmblpython
             host, port = netloc.split(':', 1)
             port = int(port)
@@ -135,8 +135,10 @@ class Connector(object):
         properties = self._get_resource_properties(id)
         r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
-            dav_type = properties.get(('resourcetype', 'DAV:'))
-            content_type = properties.get(('getcontenttype', 'DAV:'), '')
+            dav_type = six.ensure_text(
+                properties.get(('resourcetype', 'DAV:'), ''))
+            content_type = six.ensure_text(
+                properties.get(('getcontenttype', 'DAV:'), ''))
             __traceback_info__ = (id, dav_type, content_type)
             if dav_type and 'collection' in dav_type:
                 r_type = 'collection'
@@ -180,7 +182,7 @@ class Connector(object):
         for path, response in dav_result._result.responses.items():
             # response_id will be the canonical id, i.e. collections end with a
             # slash (/)
-            response_id = self._loc2id(urlparse.urljoin(
+            response_id = self._loc2id(six.moves.urllib.parse.urljoin(
                 self._roots['default'], path))
             properties = response.get_all_properties()
             cached_properties = dict(cache.get(response_id, {}))
@@ -192,10 +194,11 @@ class Connector(object):
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return
-        id = self._loc2id(urlparse.urljoin(self._roots['default'],
-                                           dav_response.path))
+        id = self._loc2id(six.moves.urllib.parse.urljoin(
+            self._roots['default'], dav_response.path))
         child_ids = self.child_name_cache[id] = [
-            self._loc2id(urlparse.urljoin(self._roots['default'], path))
+            self._loc2id(six.moves.urllib.parse.urljoin(
+                self._roots['default'], path))
             for path in dav_response.get_child_names()]
         return child_ids
 
@@ -216,7 +219,7 @@ class Connector(object):
                     assert not additional_data, additional_data
         if data is None:
             # The resource does not have a body but only properties.
-            data = cStringIO.StringIO('')
+            data = BytesIO(b'')
         return data
 
     def __getitem__(self, id):
@@ -228,9 +231,10 @@ class Connector(object):
                 ('getcontenttype', 'DAV:'))
         except (zeit.connector.dav.interfaces.DAVNotFoundError,
                 zeit.connector.dav.interfaces.DAVBadRequestError):
-            raise KeyError("The resource %r does not exist." % unicode(id))
+            raise KeyError(
+                "The resource %r does not exist." % six.text_type(id))
         return zeit.connector.resource.CachedResource(
-            unicode(id), self._id_splitlast(id)[1].rstrip('/'),
+            six.text_type(id), self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
@@ -322,13 +326,14 @@ class Connector(object):
             self._add_collection(new_id)
             self.changeProperties(new_id, source.properties)
             for name, child_id in self.listCollection(old_id):
-                self._copy_or_move(method_name, exception,
-                                   child_id, urlparse.urljoin(new_id, name))
+                self._copy_or_move(
+                    method_name, exception,
+                    child_id, six.moves.urllib.parse.urljoin(new_id, name))
             if method_name == 'move':
                 del self[old_id]
         else:
             token = self._get_my_locktoken(old_id)
-            response = method(old_loc, new_loc, locktoken=token)
+            method(old_loc, new_loc, locktoken=token)
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
@@ -347,8 +352,8 @@ class Connector(object):
         ...                          'http://foo.bar/a/b/d')
         False
         """
-        path1 = urlparse.urlsplit(id1)[2].split('/')
-        path2 = urlparse.urlsplit(id2)[2].split('/')
+        path1 = six.moves.urllib.parse.urlsplit(id1)[2].split('/')
+        path2 = six.moves.urllib.parse.urlsplit(id2)[2].split('/')
         return (len(path2) <= len(path1) and path2 == path1[:len(path2)])
 
     def changeProperties(self, id, properties, locktoken=None):
@@ -451,13 +456,15 @@ class Connector(object):
         # Collect "result" vars as bindings "into" expression:
         for at in attrlist:
             expr = at.bind(zeit.connector.search.SearchSymbol('_')) & expr
+        expr = expr._render()
 
-        logger.debug('Searching for %s' % (expr._render(),))
+        logger.debug('Searching for %s' % expr)
+        if isinstance(expr, six.text_type):
+            expr = expr.encode('utf8')
         conn = self.get_connection('search')
-
         response = conn.search(
             self._roots.get('search', self._roots['default']),
-            body=expr._render())
+            body=expr)
         davres = zeit.connector.dav.davresource.DAVResult(response)
         if davres.has_errors():
             raise zeit.connector.dav.interfaces.DAVError(
@@ -465,7 +472,8 @@ class Connector(object):
         for url, resp in davres.responses.items():
             try:
                 id = self._loc2id(
-                    urlparse.urljoin(self._roots['default'], url))
+                    six.moves.urllib.parse.urljoin(
+                        self._roots['default'], url))
             except ValueError:
                 # Search returns documents which are outside the root, ignore
                 continue
@@ -524,7 +532,6 @@ class Connector(object):
             # only lock for files
             if not self._check_dav_resource(id):
                 self._add_collection(id)
-            davres = self._get_dav_resource(id, ensure='collection')
 
         if autolock:
             locktoken = self.lock(id, "AUTOLOCK",
@@ -582,36 +589,30 @@ class Connector(object):
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
            Issue a head request and return not None when found.
-           (Actually return the ETag, but don't rely on that yet)
         """
         url = self._id2loc(id)
         hresp = zeit.connector.dav.davresource.DAVResource(
             url, conn=self.get_connection()).head()
         if not hresp:
-            return None  # FIXME throw exception?
+            return False
         hresp.read()
         st = int(hresp.status)
-        if st == httplib.OK:
-            return hresp.getheader('ETag', 'Unspecified ETag')
-        elif st == httplib.NOT_FOUND:
-            return None
+        if st == six.moves.http_client.OK:
+            return True
+        elif st == six.moves.http_client.NOT_FOUND:
+            return False
         else:
             raise DAVUnexpectedResultError(
                 'Unexpected result code for %s: %d' % (url, st))
 
-    def _get_dav_resource(self, id, ensure=None):
-        """returns resource corresponding to <id>, which see [8],
-        <ensure> may be 'file' or 'collection'"""
+    def _get_dav_resource(self, id):
+        """returns resource corresponding to <id>"""
         url = self._id2loc(id)
         # NOTE: We tacitly assume that URIs ending with '/' MUST
         # be collections. This ain't strictly right, but is sufficient.
-        wantcoll = (ensure == 'collection' or url.endswith('/'))
-        if wantcoll:
+        if url.endswith('/'):
             klass = zeit.connector.dav.davresource.DAVCollection
-        elif ensure == 'file':
-            klass = zeit.connector.dav.davresource.DAVFile
         else:
-            # This one to disappear when [14] fixed
             klass = zeit.connector.dav.davresource.DAVResource
         return klass(url, conn=self.get_connection())
 
@@ -630,7 +631,7 @@ class Connector(object):
             pass
         else:
             try:
-                davlock['owner'] = unicode(lockinfo_node['{DAV:}owner'])
+                davlock['owner'] = six.text_type(lockinfo_node['{DAV:}owner'])
             except AttributeError:
                 davlock['owner'] = None
             # We get timeout in "Second-1337" format. Extract, add to ref time
@@ -640,7 +641,7 @@ class Connector(object):
             elif timeout == 'Infinity':
                 timeout = TIME_ETERNITY
             else:
-                m = re.match("second-(\d+)", unicode(timeout), re.I)
+                m = re.match(r'second-(\d+)', six.text_type(timeout), re.I)
                 if m is None:
                     # Better too much than not enough
                     timeout = TIME_ETERNITY
@@ -654,7 +655,7 @@ class Connector(object):
                         seconds=int(m.group(1)))
                 davlock['timeout'] = timeout
 
-            davlock['locktoken'] = unicode(lockinfo_node.locktoken.href)
+            davlock['locktoken'] = six.text_type(lockinfo_node.locktoken.href)
         return davlock
 
     @staticmethod
@@ -678,7 +679,7 @@ class Connector(object):
                 davres.update(depth=1)
         except zeit.connector.dav.interfaces.DAVNotFoundError:
             exists = False
-        except zeit.connector.dav.interfaces.DAVRedirectError, e:
+        except zeit.connector.dav.interfaces.DAVRedirectError as e:
             exists = False
             new_location = e.response.getheader('location')
             if new_location:
@@ -700,7 +701,7 @@ class Connector(object):
             self._remove_from_caches(parent, [self.property_cache])
         else:
             if exists and id not in children:
-                children.insert(unicode(id))
+                children.insert(six.text_type(id))
             elif not exists and id in children:
                 children.remove(id)
             try:

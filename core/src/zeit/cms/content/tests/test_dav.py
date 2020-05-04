@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import grokcore.component.testing
 import unittest
 import zeit.cms.content.dav
@@ -24,7 +24,7 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
             'http://xml.zeit.de/testcontent')
 
     def test_adapter_grokking(self):
-        @grokcore.component.implementer(ITestInterface)
+        @grok.implementer(ITestInterface)
         class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
             pass
 
@@ -39,7 +39,7 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
         self.assertFalse(isinstance(adapter, Adapter))
         self.assertTrue(isinstance(zope.security.proxy.removeSecurityProxy(
             adapter), Adapter))
-        self.assertEquals(self.content, adapter.__parent__)
+        self.assertEqual(self.content, adapter.__parent__)
         # Unregister adapter so we don't leak it
         self.assertTrue(
             zope.component.getSiteManager().unregisterAdapter(

@@ -17,10 +17,9 @@ import zope.interface
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 
 
+@zope.interface.implementer(zeit.workflow.interfaces.ITimeBasedPublishing)
 class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Timebased workflow."""
-
-    zope.interface.implements(zeit.workflow.interfaces.ITimeBasedPublishing)
 
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[

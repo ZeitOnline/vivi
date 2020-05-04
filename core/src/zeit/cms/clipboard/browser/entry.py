@@ -28,9 +28,8 @@ class AjaxDeleteEntry(object):
         return tree()
 
 
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class EntryListRepresentation(object):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     __name__ = None
 
@@ -49,10 +48,8 @@ class EntryListRepresentation(object):
             name='absolute_url')
 
 
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class InvalidReferenceListRepresentation(object):
-
-    zope.interface.implements(
-        zeit.cms.browser.interfaces.IListRepresentation)
 
     author = None
     ressort = None

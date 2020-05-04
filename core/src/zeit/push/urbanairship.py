@@ -10,13 +10,15 @@ import mock
 import pkg_resources
 import pytz
 import re
+import six
+import six.moves.urllib.parse
 import sys
 import urbanairship
-import urlparse
-import zeit.content.article.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.article.interfaces
 import zeit.content.image.interfaces
+import zeit.content.image.image
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -27,10 +29,9 @@ import zope.lifecycleevent.interfaces
 log = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection(object):
     """Class to send push notifications to mobile devices via urbanairship."""
-
-    zope.interface.implements(zeit.push.interfaces.IPushNotifier)
 
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret,
@@ -86,8 +87,8 @@ class Connection(object):
         try:
             for ua_push_object in to_push:
                 self.push(ua_push_object)
-        except:
-            path = urlparse.urlparse(link).path
+        except Exception:
+            path = six.moves.urllib.parse.urlparse(link).path
             info = sys.exc_info()
             bugsnag.notify(
                 info[2], traceback=info[2], context=path, severity='error',
@@ -103,7 +104,7 @@ class Connection(object):
                 'Semantic error during push to Urban Airship with payload %s',
                 push.payload, exc_info=True)
             raise zeit.push.interfaces.WebServiceError('Unauthorized')
-        except urbanairship.common.AirshipFailure, e:
+        except urbanairship.common.AirshipFailure as e:
             log.error(
                 'Technical error during push to Urban Airship with payload %s',
                 push.payload, exc_info=True)
@@ -149,11 +150,12 @@ class Message(zeit.push.message.Message):
         return result['messages']
 
     def find_template(self, name):
-        template = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.find(name)
+        source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE
+        template = source.find(name)
         if template is None:
             raise KeyError(
                 'Could not find template %r in %s' % (
-                    name, source.template_folder.uniqueId))
+                    name, source.folder.uniqueId))
         return template
 
     @property
@@ -184,8 +186,9 @@ class Message(zeit.push.message.Message):
 
     @property
     def app_link(self):
-        parts = urlparse.urlparse(self.url)
-        path = urlparse.urlunparse(['', ''] + list(parts[2:])).lstrip('/')
+        parts = six.moves.urllib.parse.urlparse(self.url)
+        path = six.moves.urllib.parse.urlunparse(
+            ['', ''] + list(parts[2:])).lstrip('/')
         return u'%s://%s' % (self.APP_IDENTIFIER, path)
 
     @property
@@ -194,12 +197,13 @@ class Message(zeit.push.message.Message):
 
     def log_success(self):
         super(Message, self).log_success()
-        influxdb = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='influxdb')
-        influxdb.send(self.text, self.url, **self.config)
-        grafana = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='grafana')
-        grafana.send(self.text, self.url, **self.config)
+        try:
+            grafana = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='grafana')
+            grafana.send(self.text, self.url, **self.config)
+        except Exception:
+            log.warning(
+                'Error in log_success for %s', self.url, exc_info=True)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
@@ -216,7 +220,7 @@ def from_product_config():
 
 
 def json_escape(value):
-    if isinstance(value, basestring):
+    if isinstance(value, six.string_types):
         return value.replace('"', r'\"')
     else:
         return value
@@ -231,7 +235,7 @@ def print_payload_documentation():
 
     class PayloadDocumentation(Connection):
         def push(self, data):
-            print json_dump_sphinx(data.payload)
+            print(json_dump_sphinx(data.payload))
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
         'ios_application_key', 'ios_master_secret', 'web_application_key',
@@ -250,7 +254,7 @@ def print_payload_documentation():
         lambda x: {},
         (type(article),), zeit.connector.interfaces.IWebDAVReadProperties)
     zope.component.provideAdapter(zeit.push.message.default_push_url)
-    image = zeit.content.image.image.Image()
+    image = zeit.content.image.image.LocalImage()
     image.uniqueId = 'http://xml.zeit.de/my-image'
     imageref = mock.Mock()
     imageref.image = image
@@ -271,7 +275,7 @@ def print_payload_documentation():
     template_text = pkg_resources.resource_string(
         __name__, 'tests/fixtures/payloadtemplate.json')
 
-    print """\
+    print("""\
 Um ein neues Pushtemplate zu erstellen muss unter
 http://vivi.zeit.de/repository/data/urbanairship-templates eine neue
 Textdatei angelegt werden. In dieser Textdatei kann dann mit der `Jinja2
@@ -280,18 +284,18 @@ werden, dass an Urbanairship beim veröffentlichen einer Pushnachricht
 gesendet wird. Dafür muss das entsprechende Template in dem
 Artikeldialog ausgewählt werden. In dem Template können sowohl auf
 eine Reihe von Feldern des Artikels als auch auf die Konfiguration der
-Pushnachricht zugegriffen werden::\n"""
+Pushnachricht zugegriffen werden::\n""")
     vars = message.template_variables
     vars['article'] = {x: '...' for x in zope.schema.getFieldNames(
         zeit.content.article.interfaces.IArticle)}
-    print json_dump_sphinx(vars)
+    print(json_dump_sphinx(vars))
 
-    print ("\nIm Folgenden nun ein Beispiel wie ein solches Template"
-           " funktioniert. Nutzt man das Template::\n")
-    print re.sub('^', '    ', template_text, flags=re.MULTILINE)
-    print "\nmit der push-Konfiguration::\n"
-    print json_dump_sphinx(message.config)
-    print "\nwerden folgende Payloads an Urbanairship versandt::\n"
+    print("\nIm Folgenden nun ein Beispiel wie ein solches Template"
+          " funktioniert. Nutzt man das Template::\n")
+    print(re.sub('^', '    ', template_text, flags=re.MULTILINE))
+    print("\nmit der push-Konfiguration::\n")
+    print(json_dump_sphinx(message.config))
+    print("\nwerden folgende Payloads an Urbanairship versandt::\n")
     template = zeit.content.text.jinja.JinjaTemplate()
     template.text = template_text
     message.find_template = lambda x: template

@@ -13,10 +13,9 @@ def cropper_for_gallery(context):
     return zeit.imp.interfaces.ICropper(context.image)
 
 
+@zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
+@zope.interface.implementer(zeit.imp.interfaces.IStorer)
 class GalleryStorer(object):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-    zope.interface.implements(zeit.imp.interfaces.IStorer)
 
     def __init__(self, context):
         self.context = context

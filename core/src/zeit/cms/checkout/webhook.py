@@ -1,11 +1,12 @@
-from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import collections
 import grokcore.component as grok
 import logging
 import requests
+import transaction
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -54,6 +55,8 @@ def notify_webhook(self, uniqueId, url):
         hook(content)
     except TechnicalError as e:
         raise self.retry(countdown=e.countdown)
+    # Don't even think about trying to write to DAV cache, to avoid conflicts.
+    transaction.abort()
 
 
 class Hook(object):

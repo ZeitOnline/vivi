@@ -1,9 +1,9 @@
 # coding: utf8
-import lxml.etree
-import mock
+import lxml.objectify
 import transaction
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.testing
 import zeit.edit.interfaces
 import zeit.edit.testing
 import zeit.edit.undo
@@ -44,7 +44,7 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
         self.undo.revert(self.undo.history[0]['tid'])
         transaction.commit()
         content = self.workingcopy['testcontent']
-        self.assertIn('<testtype>', lxml.etree.tostring(content.xml))
+        self.assertIn('<testtype>', zeit.cms.testing.xmltotext(content.xml))
 
     def test_reverts_change_in_dav_property(self):
         self.content.year = 2010
@@ -73,8 +73,9 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
         # the checkout is the first transaction ever, there is no state before
         # that
         history = self.content._p_jar.db().history(self.content._p_oid, 20)
-        with self.assertRaisesRegexp(ValueError, 'No state.*found'):
+        with self.assertRaises(ValueError) as e:
             self.undo.revert(history[-1]['tid'])
+            self.assertIn('No state', str(e.exception))
 
     def test_history_should_decode_undo_message(self):
         self.content.year = 2012

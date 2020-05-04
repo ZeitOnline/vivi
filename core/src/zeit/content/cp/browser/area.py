@@ -104,7 +104,7 @@ class DynamicCombinationWidget(
         missing_value = field.missing_value
         if value is not missing_value:
             try:
-                len_value = len(value)
+                len(value)
             except (TypeError, AttributeError):
                 value = missing_value
             # patched
@@ -113,7 +113,7 @@ class DynamicCombinationWidget(
             #         value = missing_value
         if value is not missing_value:
             hasInput = self.hasInput()
-            for w, v in map(None, self.widgets, value):
+            for w, v in map(lambda *args: args, self.widgets, value):
                 if not hasInput or v != w.context.missing_value:
                     w.setRenderedValue(v)
         for w in self.widgets:
@@ -138,7 +138,7 @@ class DynamicCombinationWidget(
         for w in widgets:
             try:
                 val = w.getInputValue()
-            except zope.formlib.interfaces.WidgetInputError, e:
+            except zope.formlib.interfaces.WidgetInputError as e:
                 if isinstance(getattr(e, 'errors'),
                               zope.schema.interfaces.RequiredMissing):
                     required_errors.append((w, e))

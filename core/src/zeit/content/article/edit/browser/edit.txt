@@ -13,8 +13,8 @@ UnorderedList
 
 Open editor:
 
->>> from zeit.cms.testing import Browser
->>> browser = Browser(layer['wsgi_app'])
+>>> import zeit.cms.testing
+>>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
 ...              '/2007/01/Somalia/@@checkout')
@@ -34,7 +34,7 @@ Add ul and let it render:
 >>> import transaction
 >>> transaction.commit()
 >>> browser.open('@@contents')
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <div ...class="block type-ul...
     <ul><li...>eins</li><li...>zwei</li></ul>
@@ -53,7 +53,7 @@ Add ol and let it render:
 >>> article._p_changed = True
 >>> transaction.commit()
 >>> browser.open('@@contents')
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <div ...class="block type-ol...
     <ol><li...>eins</li><li...>zwei</li></ol>
@@ -68,7 +68,7 @@ Intertitle
 >>> article._p_changed = True
 >>> transaction.commit()
 >>> browser.open('@@contents')
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <div ...class="block type-intertitle...
     <h3...>A B C</h3>
@@ -82,7 +82,7 @@ On checkin all the funky __name__ attributes are removed. Before checkin there
 are __name__ attributes:
 
 >>> import lxml.etree
->>> print lxml.etree.tostring(article.xml, pretty_print=True),
+>>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>...
      <division ... ns0:__name__="id-b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
      ...
@@ -96,8 +96,8 @@ After checkin they're gone:
 >>> zeit.cms.testing.set_site()
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
->>> xml = lxml.etree.tostring(article.xml, pretty_print=True)
->>> print xml,
+>>> xml = zeit.cms.testing.xmltotext(article.xml)
+>>> print(xml)
 <article>...
     <division ...type="page">...
 >>> '__name__' in xml

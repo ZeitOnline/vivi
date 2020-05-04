@@ -41,10 +41,10 @@ We now will add objects to the feed. Let's create some fake object:
 
 >>> import zope.annotation.interfaces
 >>> import zope.interface
->>> class Article(object):
-...     zope.interface.implements(
-...         zeit.cms.interfaces.ICMSContent,
-...         zope.annotation.interfaces.IAttributeAnnotatable)
+>>> @zope.interface.implementer(
+...     zeit.cms.interfaces.ICMSContent,
+...     zope.annotation.interfaces.IAttributeAnnotatable)
+... class Article(object):
 ...     def __init__(self, id=None):
 ...         self.uniqueId = id
 
@@ -150,7 +150,7 @@ Error Cases
 It is not possible to add objects to a feed which do not have a uniqueId:
 
 >>> article = Article()
->>> print article.uniqueId
+>>> print(article.uniqueId)
 None 
 >>> feed.insert(0, article)
 Traceback (most recent call last):
@@ -180,12 +180,12 @@ Creating Feeds From Resources
 
 Feeds are cms content. So we also need to create them from resources:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> from zeit.cms.connector import Resource
 >>> from zeit.cms.syndication.feed import FeedType
 >>> resource = Resource(
 ...    '/wirtschaft', 'wirtschaft', 'feed', 
-...     StringIO.StringIO('''\
+...     BytesIO(b'''\
 ...     <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...       <container>
 ...         <block href="/2006/siemens" />
@@ -319,15 +319,14 @@ The layout can be big:
 >>> feed.getMetadata(third).big_layout = True
 >>> feed.getMetadata(third).big_layout
 True
->>> import lxml.etree
->>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" layout="big"/>
 
 When the layout is not big, the attribute is removed:
 
 >>> feed.getMetadata(third).big_layout = False
->>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false"/>
 
@@ -341,14 +340,14 @@ Relateds can be marked as hidden:
 >>> feed.getMetadata(third).hidden_relateds
 True
 >>> import lxml.etree
->>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" hidden_relateds="true"/>
 
 The default is that they're shown though:
 
 >>> feed.getMetadata(third).hidden_relateds = False
->>> print lxml.etree.tostring(feed.getMetadata(third).xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(feed.getMetadata(third).xml))
 <block ...
     href="third" ...pinned="false" hp_hide="false" hidden_relateds="false"/>
 
@@ -364,7 +363,7 @@ in it:
 >>> feed.title = 'Politik'
 >>> article = Article('art1')
 >>> feed.insert(0, article)
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Politik</title>
@@ -398,7 +397,7 @@ Provide the interface:
 Insert the article to the feed:
 
 >>> feed.insert(0, art2)
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Politik</title>
@@ -423,7 +422,7 @@ changes:
 >>> art2.supertitle = 'Fronkroisch'
 >>> art2.teaserSupertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
->>> print feed.xml_source
+>>> print(feed.xml_source)
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"...>
   <title>Politik</title>
   <container>

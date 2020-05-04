@@ -6,13 +6,13 @@ import zeit.cms.browser.listing
 import zeit.cms.interfaces
 
 
+@zope.component.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class CMSContentListRepresentation(
         zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing unknown content resources"""
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     @property
     def title(self):

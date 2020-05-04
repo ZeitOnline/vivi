@@ -1,27 +1,26 @@
-from ConfigParser import ConfigParser
+from six.moves.configparser import ConfigParser
 import ZConfig
-import ast
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
-import fnmatch
 import grokcore.component as grok
-import grokcore.component.zcml
 import logging.config
-import martian
 import os
 import pendulum
 import pkg_resources
 import pyramid_dogpile_cache2
 import re
+import six
 import sys
 import webob
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
+import zope.app.publication.interfaces
 import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
+import zope.publisher.browser
 import zope.security.checker
 
 
@@ -123,7 +122,8 @@ def zope_shell():
     if len(sys.argv) > 2:
         sys.argv[:] = sys.argv[2:]
         globs['__file__'] = sys.argv[0]
-        execfile(sys.argv[0], globs)
+        exec(compile(open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'),
+             globs)
         sys.exit()
     else:
         zope.component.hooks.setSite(globs['root'])
@@ -194,31 +194,34 @@ def bugsnag_filter(global_conf, **local_conf):
     return bugsnag_filter
 
 
-try:
-    import fluent.handler
-except ImportError:
-    pass  # soft dependency
-else:
-    class FluentRecordFormatter(fluent.handler.FluentRecordFormatter):
-        """Work around the fact that `logging.fileConfig` (which most clients
-        use) is not based on `logging.dictConfig` and thus is less expressive,
-        especially concerning Formatter instantiation: it only supports a
-        (string) `format=` parameter, and nothing else. Since
-        FluentRecordFormatter needs a dict, we call literal_eval so it works.
-        """
-
-        def __init__(self, fmt=None, datefmt=None, **kw):
-            if isinstance(fmt, basestring) and fmt.strip().startswith('{'):
-                fmt = ast.literal_eval(fmt)
-            super(FluentRecordFormatter, self).__init__(fmt, **kw)
-
-
 # Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
 # (Actually the old behaviour probably was to rely on the py2 str laxness, but
 # all we really want is utf-8, so that's alright.)
-def maybe_encode(value):
-    if isinstance(value, unicode):
-        value = value.encode('utf-8')
-    return value
+ZConfig.datatypes.stock_datatypes["string"] = six.ensure_text
 
-ZConfig.datatypes.stock_datatypes["string"] = maybe_encode
+
+if sys.version_info < (3,):
+    # Upstream has `lambda x: x` which is not _quite_ correct.
+    fanstatic.compat.as_bytestring = six.ensure_binary
+
+
+class BrowserRequest(zope.publisher.browser.BrowserRequest):
+
+    def _parseCookies(self, text, result=None):
+        """Upstream uses python stdlib SimpleCookie, which returns a completely
+        empty result when one cookie contains a non-ASCII character.
+        """
+        if result is None:
+            result = {}
+        cookies = webob.cookies.RequestCookies({'HTTP_COOKIE': text})
+        result.update(cookies)
+        return result
+
+    @classmethod
+    def factory(cls):
+        return cls
+
+
+grok.global_utility(
+    BrowserRequest.factory,
+    zope.app.publication.interfaces.IBrowserRequestFactory)

@@ -24,11 +24,11 @@ applicable(is_block and content)
 error_if(True)
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
         self.teaser.insert(0, zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent'))
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_content_glob_is_empty_for_non_content_blocks(self):
         r = Rule("""
@@ -37,7 +37,7 @@ error_unless(content == [])
 """)
         area = self.cp['informatives'].create_item('xml')
         s = r.apply(area, IRuleGlobs(area))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_cp_type_glob(self):
         r = Rule("""
@@ -45,10 +45,10 @@ applicable(cp_type == 'homepage')
 error_if(True)
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
         self.cp.type = u'homepage'
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_feature_is_a_region(self):
         r = Rule("""
@@ -56,7 +56,7 @@ applicable(is_region)
 error_if(True)
 """)
         s = r.apply(self.cp['feature'], IRuleGlobs(self.cp['feature']))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_area_is_not_a_region(self):
         area = self.cp['feature'].create_item('area')
@@ -65,7 +65,7 @@ applicable(is_region)
 error_if(True)
 """)
         s = r.apply(area, IRuleGlobs(area))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_centerpage_glob(self):
         r = Rule("""
@@ -73,10 +73,10 @@ applicable(is_block)
 error_if(centerpage.title == 'foo')
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
         self.cp.title = u'foo'
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_all_modules_glob(self):
         r = Rule("""
@@ -84,10 +84,10 @@ applicable(is_block)
 error_if(len(list(all_modules)) == 2)
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
         self.cp['lead'].create_item('teaser')
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
-        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):

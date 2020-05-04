@@ -1,6 +1,5 @@
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.edit.header import HEADER_NAME
-from zope.schema.interfaces import SchemaNotFullyImplemented
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree

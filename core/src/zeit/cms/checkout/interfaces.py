@@ -173,19 +173,18 @@ class EventBase(zope.interface.interfaces.ObjectEvent):
         self.publishing = publishing
 
 
+@zope.interface.implementer(IBeforeCheckoutEvent)
 class BeforeCheckoutEvent(EventBase):
+    pass
 
-    zope.interface.implements(IBeforeCheckoutEvent)
 
-
+@zope.interface.implementer(IAfterCheckoutEvent)
 class AfterCheckoutEvent(EventBase):
+    pass
 
-    zope.interface.implements(IAfterCheckoutEvent)
 
-
+@zope.interface.implementer(IValidateCheckinEvent)
 class ValidateCheckinEvent(EventBase):
-
-    zope.interface.implements(IValidateCheckinEvent)
 
     def __init__(self, *args, **kw):
         super(ValidateCheckinEvent, self).__init__(*args, **kw)
@@ -197,21 +196,21 @@ class ValidateCheckinEvent(EventBase):
         self.vetoed = message
 
 
+@zope.interface.implementer(IBeforeCheckinEvent)
 class BeforeCheckinEvent(EventBase):
+    pass
 
-    zope.interface.implements(IBeforeCheckinEvent)
 
-
+@zope.interface.implementer(IAfterCheckinEvent)
 class AfterCheckinEvent(EventBase):
+    pass
 
-    zope.interface.implements(IAfterCheckinEvent)
 
-
+@zope.interface.implementer(IBeforeDeleteEvent)
 class BeforeDeleteEvent(EventBase):
+    pass
 
-    zope.interface.implements(IBeforeDeleteEvent)
 
-
+@zope.interface.implementer(IAfterDeleteEvent)
 class AfterDeleteEvent(EventBase):
-
-    zope.interface.implements(IAfterDeleteEvent)
+    pass

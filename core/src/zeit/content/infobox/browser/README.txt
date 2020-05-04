@@ -43,7 +43,7 @@ We're now at the edit form:
 
 Make sure the infobox is listed in the workingcopy panel:
 
->>> print browser.contents
+>>> print(browser.contents)
 <...
     <li class="draggable-content type-infobox">
       <img src="...zmi_icon.png"...
@@ -58,7 +58,7 @@ Let's add another text entry:
 >>> browser.getControl(name='form.contents.1..combination_01').value = (
 ...     '<p>Pruefen Sie, ob in Ihrer Renteninformation alle</p>')
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title> Altersvorsorge – Edit infobox </title>
     ...Updated on...
@@ -67,7 +67,7 @@ Let's add another text entry:
 Let's check it in:
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
     ...
@@ -88,7 +88,7 @@ Make sure there is a metadata preview:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/'
 ...     'infobox/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">
     ...
@@ -99,7 +99,7 @@ Make sure an infobox has a default view:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/infobox')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
     ...

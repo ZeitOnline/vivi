@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 
 
@@ -9,11 +10,12 @@ class HeaderModules(zeit.content.article.edit.browser.testing.EditorTestCase):
         # Select header that allows header module
         s.click('css=#edit-form-misc .edit-bar .fold-link')
         s.select('id=options-template.template', 'Kolumne')
-        s.type('id=options-template.header_layout', '\t')
+        s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.waitForSelectedValue('id=options-template.header_layout', '')
         s.select('id=options-template.header_layout', 'Standard')
-        s.type('id=options-template.header_layout', '\t')
+        s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.pause(500)
+        s.click('css=#edit-form-misc .edit-bar .fold-link')
 
         block = 'quiz'
         # copy&paste from self.create_block()

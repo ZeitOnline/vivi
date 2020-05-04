@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
-from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import mock
 import zeit.content.article.interfaces

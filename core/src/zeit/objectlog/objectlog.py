@@ -15,10 +15,9 @@ import zope.security.management
 logger = logging.getLogger(__name__)
 
 
+@zope.interface.implementer(zeit.objectlog.interfaces.IObjectLog)
 class ObjectLog(persistent.Persistent):
     """Object log."""
-
-    zope.interface.implements(zeit.objectlog.interfaces.IObjectLog)
 
     def __init__(self):
         # Map object to an object time line
@@ -76,9 +75,8 @@ class ObjectLog(persistent.Persistent):
             del self._object_log[key]
 
 
+@zope.interface.implementer(zeit.objectlog.interfaces.ILogEntry)
 class LogEntry(persistent.Persistent):
-
-    zope.interface.implements(zeit.objectlog.interfaces.ILogEntry)
 
     def __init__(self, object, message, mapping, timestamp):
         self.time = timestamp or datetime.datetime.now(pytz.UTC)
@@ -97,10 +95,9 @@ class LogEntry(persistent.Persistent):
         return self.object_reference()
 
 
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(zeit.objectlog.interfaces.ILog)
 class Log(object):
-
-    zope.component.adapts(zope.interface.Interface)
-    zope.interface.implements(zeit.objectlog.interfaces.ILog)
 
     def __init__(self, context):
         self.context = context

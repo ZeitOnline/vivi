@@ -36,7 +36,7 @@ LinkNotFoundError
 Check the document out by clicking on the link:
 
 >>> checkout.click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
     <li class="message">"rauchen-verbessert-die-welt" has been checked out.</li>
@@ -63,7 +63,7 @@ The checkin link also indicates the ``came_from`` view:
 >>> browser.getLink('Checkin').click()
 >>> browser.url
 'http://localhost/++skin++cms/repository/online/2007/01/rauchen-verbessert-die-welt/@@view.html'
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version...
 <!DOCTYPE ...
     <li class="message">"rauchen-verbessert-die-welt" has been checked in.</li>
@@ -81,7 +81,7 @@ The checkin default action does not update the "last semantic change" setting:
 >>> sc = zeit.cms.content.interfaces.ISemanticChange(
 ...     repository['online']['2007']['01']['rauchen-verbessert-die-welt'])
 >>> last_change = sc.last_semantic_change
->>> print last_change
+>>> print(last_change)
 None
 
 
@@ -113,12 +113,17 @@ Since the foobar view doesn't actually exist we'll get an error:
 
 >>> browser.open(browser.url)
 >>> browser.handleErrors = False
->>> browser.getLink('Checkout').click()
+>>> import traceback
+>>> try:
+...     browser.getLink('Checkout').click()
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-    name: u'@@foobar.html'
+...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+   name: u'@@foobar.html'
 
 Clean up the adpater:
 
@@ -147,12 +152,16 @@ an error because the foobar view still doesn't exist:
 >>> browser.open(
 ...  'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...  'rauchen-verbessert-die-welt/@@view.html')
->>> browser.getLink('Checkin').click()
+>>> try:
+...    browser.getLink('Checkin').click()
+... except Exception:
+...    tb = traceback.format_exc()
+... else:
+...    tb = ''
+>>> print(tb)
 Traceback (most recent call last):
-    ...
-NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-    name: u'@@foobar.html'
+...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+   name: u'@@foobar.html'
 
 Clean up the adapter:
 
@@ -192,5 +201,5 @@ checked-out object:
 ...     '2007/01/Somalia/@@checkout')
 >>> browser.open('http://localhost/++skin++cms/repository/online/'
 ...     '2007/01/Somalia/@@checkout')
->>> print browser.url
+>>> print(browser.url)
 http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@view.html

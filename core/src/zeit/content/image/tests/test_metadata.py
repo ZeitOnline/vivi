@@ -1,7 +1,6 @@
 from zeit.cms.content.interfaces import IXMLReference
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.image.interfaces import IImageMetadata
-import lxml.etree
 import zeit.content.image.testing
 import zeit.content.image.metadata
 import zope.component
@@ -25,7 +24,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
   <copyright py:pytype="str" link="http://example.com"
         rel="nofollow">Foo</copyright>
 </image>
-""", lxml.etree.tostring(ref, pretty_print=True))
+""", zeit.cms.testing.xmltotext(ref))
 
     def test_related_reference_to_image_does_not_overwrite_href(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')

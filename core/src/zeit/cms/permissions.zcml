@@ -102,6 +102,11 @@
     />
 
   <permission
+    id="zeit.ViewPreview"
+    title="View Preview"
+    />
+
+  <permission
     id="zeit.content.cp.Retract"
     title="Retract centerpages"
     />
@@ -124,6 +129,11 @@
   <permission
     id="zeit.cms.admin.EditSemantic"
     title="Edit semantic change and date of last semantic publish"
+    />
+
+  <permission
+    id="zeit.content.author.Add"
+    title="Add Author objects"
     />
 
   <permission

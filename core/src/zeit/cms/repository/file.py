@@ -12,11 +12,11 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.cms.repository.interfaces.IFile,
+    zeit.cms.interfaces.IAsset)
 class RepositoryFile(zeit.cms.repository.repository.ContentBase):
     """A file in the repository."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IFile,
-                              zeit.cms.interfaces.IAsset)
 
     def __init__(self, uniqueId, mimeType):
         super(RepositoryFile, self).__init__()
@@ -43,10 +43,9 @@ class RepositoryFile(zeit.cms.repository.repository.ContentBase):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 
+@zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 class LocalFile(persistent.Persistent, RepositoryFile):
     """A file which also stores local data."""
-
-    zope.interface.implements(zeit.cms.workingcopy.interfaces.ILocalContent)
 
     local_data = None
 

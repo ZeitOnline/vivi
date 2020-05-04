@@ -3,9 +3,8 @@ import zeit.connector.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 class WebDAVProperties(persistent.mapping.PersistentMapping):
-
-    zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
 
     def __repr__(self):
         return object.__repr__(self)
@@ -16,7 +15,7 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
     def __init__(self, adict=None):
         super(ReadOnlyWebDAVProperties, self).__init__()
         if adict is not None:
-            super(ReadOnlyWebDAVProperties, self).update(adict)
+            self.data.update(adict)
 
     def __delitem__(self, *args, **kwargs):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
@@ -40,10 +39,9 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
         raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IResource)
 class Resource(object):
     """Represents a resource in the webdav."""
-
-    zope.interface.implements(zeit.connector.interfaces.IResource)
 
     def __init__(self, id, name, type, data, properties=None, contentType=''):
         self.id = id
@@ -56,10 +54,9 @@ class Resource(object):
         self.contentType = contentType
 
 
+@zope.interface.implementer(zeit.connector.interfaces.IResource)
 class CachedResource(object):
     """Represents a resource in the webdav."""
-
-    zope.interface.implements(zeit.connector.interfaces.IResource)
 
     def __init__(self, id, name, type_name, property_getter, body_getter,
                  content_type):

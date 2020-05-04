@@ -12,10 +12,9 @@ NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
 KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
+@zope.interface.implementer(zeit.cms.tagging.interfaces.ITagger)
 class DummyTagger(object):
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITagger)
 
     def __init__(self, context):
         self.context = context
@@ -82,9 +81,8 @@ class DummyTagger(object):
     pinned = {}
 
 
+@zope.interface.implementer(zeit.cms.tagging.interfaces.IWhitelist)
 class DummyWhitelist(object):
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
     tags = {
         'testtag': 'Testtag',
@@ -144,10 +142,9 @@ class FakeTags(collections.OrderedDict):
         return node
 
 
+@zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
 class FakeTag(object):
     """Fake implementation of ITag for tests."""
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
 
     def __init__(self, code, label):
         self.label = label
@@ -159,7 +156,7 @@ class FakeTag(object):
     @property
     def uniqueId(self):
         return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape'))
+                self.code.encode('unicode_escape').decode('ascii'))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

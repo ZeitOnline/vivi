@@ -1,6 +1,5 @@
 # coding: utf8
 from selenium.webdriver.common.keys import Keys
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import unittest
 import zeit.cms.testing
@@ -10,9 +9,9 @@ import zeit.imp.tests
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(zeit.imp.tests.ZOPE_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
@@ -140,7 +139,7 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         # s.comment('Nothing happens when the crop button is clicked.')
-        s.click('crop')
+        s.click('id=imp-action-crop')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
     def test_crop(self):
@@ -149,7 +148,7 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=label.cropped')
         s.dragAndDrop('id=imp-mask', '-30,-100')
         self.click_label(u"450×200")
-        s.click('crop')
+        s.click('id=imp-action-crop')
         # s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
         # s.comment('The label is marked as "cropped"')
@@ -165,19 +164,22 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=label.cropped')
         self.click_label(u"140×140")
         s.clickAt('id=imp-zoom-slider', '500,0')
+        s.setWindowSize(self.window_width, 1000)
         s.dragAndDrop('id=imp-mask', '+500,+500')
         s.clickAt('id=imp-zoom-slider', '1,0')
-        s.click('crop')
+        s.click('id=imp-action-crop')
         s.verifyAlert('Das Bild ist nicht*')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
+    @unittest.skip(
+        'selenium3 does not support dragging beyond the window boundaries')
     def test_drag_outside_mask_snaps_to_mask(self):
         # As it snaps to the mask we can crop the image and no alert is
         # generated.
         s = self.selenium
         self.click_label(u"450×200")
         s.dragAndDrop('id=imp-mask', '+1000,+1000')
-        s.click('crop')
+        s.click('id=imp-action-crop')
         s.waitForElementPresent('css=#imp-image-bar > div')
 
     def test_zoom_slider_has_minimum_of_mask_size(self):
@@ -230,8 +232,9 @@ class SeleniumMaskTests(Selenium):
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         for i in range(3):
-            s.type('mask-h', Keys.BACKSPACE)
-        s.type('mask-h', '280\n')
+            s.keyPress('mask-h', Keys.BACKSPACE)
+        s.type('name=mask-h', '280')
+        s.keyPress('mask-h', Keys.RETURN)
         s.verifyEval('window.document.imp.mask_dimensions.h', '280')
 
     def test_input_field_up_arrow_once_increases_by_1(self):
@@ -250,10 +253,7 @@ class SeleniumMaskTests(Selenium):
         s = self.selenium
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
-        s.keyDown('mask-h', key_code)
-        # XXX selenium.webdriver implements both keyDown and keyUp as
-        # "sendKeys", which results in two presses, sigh.
-        # s.keyUp('mask-h', key_code)
+        s.keyPress('mask-h', key_code)
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
 
     @unittest.skip('python webdriver bindings cannot hold down keys')
@@ -421,11 +421,9 @@ class FilterTests(Selenium):
     def test_brightness_slider(self):
         self.verify_slider('brightness')
 
-    @unittest.skip('No idea why this slider does not move on click')
     def test_contrast_slider(self):
         self.verify_slider('contrast')
 
-    @unittest.skip('No idea why this slider does not move on click')
     def test_color_slider(self):
         self.verify_slider('color')
 
@@ -436,10 +434,13 @@ class FilterTests(Selenium):
         s = self.selenium
         selector = 'css=*[id="filter.%s"] .uislider' % name
         s.waitForElementPresent(selector)
+        self.eval(
+            'document.querySelector(\'%s\').scrollIntoView()' %
+            selector.replace('css=', ''))
 
         # Clicking 0 yields 0.75 as value and changes the image url
         image_url = s.getEval('window.document.imp.image.src')
-        s.clickAt(selector, '1,0')
+        s.clickAt(selector, '1,5')
         s.verifyValue('filter.%s.input' % name, '-100')
         s.verifyEval(
             "window.document.imp.crop_arguments['filter.%s']" % name, '0.75')
@@ -447,7 +448,7 @@ class FilterTests(Selenium):
             "window.document.imp.image.src == '%s'" % image_url, 'false')
 
         # Clicking > 0 increases the value:
-        s.clickAt(selector, '100,0')
+        s.clickAt(selector, '100,5')
         s.verifyEval(
             "new Number(window.document.getElementById("
             "   'filter.%s.input').value) > -100" % name,
@@ -457,7 +458,7 @@ class FilterTests(Selenium):
             'true')
 
         # clicking reset sets the slider back to 0 (filter becomes 1 then)
-        s.click('reset')
+        s.click('id=imp-action-reset')
         s.verifyEval(
             "window.document.imp.crop_arguments['filter.%s']" % name, '1')
 

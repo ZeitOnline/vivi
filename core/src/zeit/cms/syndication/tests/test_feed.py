@@ -1,5 +1,4 @@
 from zeit.cms.checkout.helper import checked_out
-import lxml.etree
 import lxml.objectify
 import mock
 import zeit.cms.content.interfaces
@@ -25,7 +24,7 @@ class MoveReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertFalse(lookup().find.called)
         self.assertIn(
             'http://xml.zeit.de/changed',
-            lxml.etree.tostring(feed.xml, pretty_print=True))
+            zeit.cms.testing.xmltotext(feed.xml))
 
 
 class FakeEntryTest(zeit.cms.testing.ZeitCmsTestCase):

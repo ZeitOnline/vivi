@@ -1,18 +1,19 @@
+from zeit.cms.i18n import MessageFactory as _
 import datetime
+import grokcore.component as grok
 import itertools
 import logging
-import requests
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
 import lxml.objectify
+import requests
+import six
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.cp.interfaces
-import zeit.content.volume.interfaces
-import zeit.content.portraitbox.interfaces
 import zeit.content.infobox.interfaces
+import zeit.content.portraitbox.interfaces
+import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.search
@@ -25,11 +26,10 @@ log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 
 
+@zope.interface.implementer(
+    zeit.content.volume.interfaces.IVolume,
+    zeit.cms.interfaces.IAsset)
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(
-        zeit.content.volume.interfaces.IVolume,
-        zeit.cms.interfaces.IAsset)
 
     default_template = u"""\
         <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -76,7 +76,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if text is None:
             config = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.content.volume')
-            text = config['default-teaser-text'].decode('utf-8')
+            text = config['default-teaser-text']
         return self.fill_template(text)
 
     @teaserText.setter
@@ -111,7 +111,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         return self._find_in_order(self.date_digital_published, None, 'asc')
 
     def _find_in_order(self, start, end, sort):
-        if len(filter(None, [start, end])) != 1:
+        if len([x for x in [start, end] if x]) != 1:
             return None
         # Since `sort` is passed in accordingly, and we exclude ourselves,
         # the first result (if any) is always the one we want.
@@ -146,7 +146,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if not result:
             return None
         return zeit.cms.interfaces.ICMSContent(
-            UNIQUEID_PREFIX + iter(result).next()['url'], None)
+            UNIQUEID_PREFIX + next(iter(result))['url'], None)
 
     def get_cover(self, cover_id, product_id=None, use_fallback=True):
         if product_id is None and use_fallback:
@@ -247,7 +247,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:
-                    co.access = unicode(access_to)
+                    co.access = six.text_type(access_to)
                     zope.lifecycleevent.modified(
                         co, zope.lifecycleevent.Attributes(
                             zeit.cms.content.interfaces.ICommonMetadata,

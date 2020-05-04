@@ -45,6 +45,7 @@ class IAuthor(zope.interface.Interface,
     facebook = zope.schema.TextLine(title=_('Facebook handle'), required=False)
     instagram = zope.schema.TextLine(
         title=_('Instagram handle'), required=False)
+    website = zope.schema.TextLine(title=_('Website handle'), required=False)
 
     vgwortid = zope.schema.Int(
         title=_('VG-Wort ID'),
@@ -89,6 +90,13 @@ class IAuthor(zope.interface.Interface,
     external = zope.schema.Bool(
         title=_(u'External?'))
 
+    is_author = zope.schema.Bool(
+        title=_(u'is author'),
+        default=True)
+
+    is_cook = zope.schema.Bool(
+        title=_(u'is cook'))
+
     enable_followpush = zope.schema.Bool(
         title=_(u'Enable followpush?'))
 
@@ -100,6 +108,9 @@ class IAuthor(zope.interface.Interface,
 
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)
+
+    cook_biography = zope.schema.Text(
+        title=_('Short Cook Biography'), required=False)
 
     bio_questions = zope.interface.Attribute('Our IBiographyQuestions dict')
 
@@ -209,3 +220,13 @@ class IAuthorBioReference(zeit.cms.content.interfaces.IReference):
     biography = zope.schema.Text(
         title=_('Biography'),
         required=False)
+
+
+class IHonorar(zope.interface.Interface):
+    """Connection to the honorar system (HDok)."""
+
+    def search(substring):
+        pass
+
+    def create(data):
+        pass

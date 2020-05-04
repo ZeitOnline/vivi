@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from StringIO import StringIO
+from six import StringIO
 import json
 import mock
 import pkg_resources
@@ -9,7 +9,6 @@ import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.link.testing
-import zeit.content.volume.testing
 import zeit.find.testing
 import zope.app.appsetup.product
 
@@ -44,7 +43,7 @@ CONFIG_LAYER = ProductConfigLayer(product_config, bases=(
     HTTP_LAYER,
     zeit.content.article.testing.CONFIG_LAYER,
     zeit.content.link.testing.CONFIG_LAYER,
-    zeit.content.volume.testing.CONFIG_LAYER))
+    zeit.find.testing.CONFIG_LAYER))
 
 
 class ElasticsearchMockLayer(plone.testing.Layer):

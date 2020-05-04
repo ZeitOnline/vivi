@@ -6,9 +6,8 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
-
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
 
     @property
     def children(self):
@@ -23,7 +22,7 @@ def is_region(context):
     return True
 
 
-@glob(zope.interface.Interface)
+@glob(zope.interface.Interface)  # noqa
 def is_region(context):
     return False
 
@@ -33,7 +32,7 @@ def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
-@glob(zope.interface.Interface)
+@glob(zope.interface.Interface)  # noqa
 def region(context):
     return None
 
@@ -43,7 +42,7 @@ def layout(context):
     return context.layout.id
 
 
-@glob(zope.interface.Interface)
+@glob(zope.interface.Interface)  # noqa
 def layout(context):
     return None
 

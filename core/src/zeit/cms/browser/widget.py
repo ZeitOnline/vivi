@@ -4,8 +4,8 @@ import docutils.core
 import grokcore.component as grok
 import json
 import pypandoc
+import six.moves.urllib.parse
 import time
-import urlparse
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
@@ -54,7 +54,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
                 _("The object could not be found."))
         try:
             self.context.validate(content)
-        except zope.schema.ValidationError, e:
+        except zope.schema.ValidationError as e:
             self._error = zope.app.form.interfaces.WidgetInputError(
                 self.context.__name__, self.label, e)
             raise self._error
@@ -461,7 +461,8 @@ class ReferenceSequenceWidget(ObjectSequenceWidget):
 
 def resolve_reference(unique_id, field, source, request):
     if not field.context.uniqueId:  # Support AddForms
-        params = urlparse.parse_qs(urlparse.urlparse(unique_id).query)
+        params = six.moves.urllib.parse.parse_qs(
+            six.moves.urllib.parse.urlparse(unique_id).query)
         if 'target' in params:
             unique_id = params['target'][0]
 
@@ -563,7 +564,7 @@ def rst2html(text):
 
 def html2rst(text):
     try:
-        return pypandoc.convert(text, to='rst', format='html')
+        return pypandoc.convert_text(text, to='rst', format='html')
     except OSError:
         return text
 
@@ -663,6 +664,8 @@ def empty_toFieldValue(self, input):
     if input == [u'']:
         input = None
     return orig_toFieldValue(self, input)
+
+
 orig_toFieldValue = zope.formlib.itemswidgets.MultiDataHelper._toFieldValue
 zope.formlib.itemswidgets.MultiDataHelper._toFieldValue = empty_toFieldValue
 

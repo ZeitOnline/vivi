@@ -1,4 +1,3 @@
-import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
 import pkg_resources
@@ -65,6 +64,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
             self['elasticsearch'])
         del self['elasticsearch']
 
+
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
@@ -78,12 +78,13 @@ class CPTemplateLayer(plone.testing.Layer):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
             new=pkg_resources.resource_string(
-                __name__, './tests/fixtures/cp-template.xml'))
+                __name__, './tests/fixtures/cp-template.xml').decode('utf-8'))
         self['cp-template-patch'].start()
 
     def tearDown(self):
         self['cp-template-patch'].stop()
         del self['cp-template-patch']
+
 
 CP_TEMPLATE_LAYER = CPTemplateLayer()
 
@@ -98,7 +99,7 @@ checker = zeit.cms.testing.OutputChecker([
         '<GUID>'),
     (re.compile('[0-9a-f]{32}'), '<MD5>'),
     (re.compile('[0-9]{4}-[0-9]{2}-[0-9]{2}[T ][0-9]{2}:[0-9]{2}:[0-9]{2}'
-                '(\.[0-9]+)?(\+[0-9]{2}:[0-9]{2})?'), '<ISO DATE>'),
+                r'(\.[0-9]+)?(\+[0-9]{2}:[0-9]{2})?'), '<ISO DATE>'),
     (re.compile('[A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} [0-9]{4} '
                 '[0-9]{2}:[0-9]{2}:[0-9]{2} [+-][0-9]{4}'), '<RFC822 DATE>'),
 ])
@@ -137,9 +138,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
@@ -155,12 +156,11 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
     skin = 'vivi'
 
+    window_width = 1600
+    window_height = 1000
+
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
-        # We need a certain min width/height which is given on larger screens.
-        # For smaller screens the default window is too small. Maximizing the
-        # test window is large enough.
-        self.selenium.windowMaximize()
 
     def get_module(self, area, text):
         return ('xpath=//div'
@@ -239,13 +239,16 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
         self.create_teaserlist()
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser', '10,10')
-        s.waitForTextPresent('c3 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c3 teaser"]')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser', '10,10')
-        s.waitForTextPresent('c2 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser', '10,10')
-        s.waitForTextPresent('c1 teaser')
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c1 teaser"]')

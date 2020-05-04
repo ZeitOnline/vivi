@@ -1,18 +1,15 @@
-import StringIO
+from io import BytesIO
 import ZODB.blob
 import contextlib
 import docker
-import os
 import pkg_resources
 import plone.testing
 import pytest
-import re
 import requests
+import six
 import socket
 import threading
-import time
 import transaction
-import urlparse
 import zc.queue.tests
 import zeit.cms.testing
 import zeit.connector.connector
@@ -62,7 +59,7 @@ class DAVServerLayer(plone.testing.Layer):
                 pass
             else:
                 return
-        raise TimeoutError('%s did not start up' % url)
+        raise RuntimeError('%s did not start up' % url)
 
     def testTearDown(self):
         transaction.abort()
@@ -131,10 +128,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
+        if not isinstance(body, six.binary_type):
+            body = body.encode('utf-8')
         rid = 'http://xml.zeit.de/%s/%s' % (self.testfolder, name)
         return zeit.connector.resource.Resource(
             rid, name, 'testing',
-            StringIO.StringIO(body),
+            BytesIO(body),
             properties=properties,
             contentType=contentType)
 
@@ -173,7 +172,7 @@ def FunctionalDocFileSuite(*paths, **kw):
 def mark_doctest_suite(suite, mark):
     # Imitate pytest magic, see _pytest.python.transfer_markers
     for test in suite:
-        func = test.runTest.im_func
+        func = test.runTest.__func__
         mark(func)
         test.runTest = func.__get__(test)
 
@@ -186,7 +185,7 @@ def get_storage(blob_dir):
 
 def print_tree(connector, base):
     """Helper to print a tree."""
-    print '\n'.join(list_tree(connector, base))
+    print('\n'.join(list_tree(connector, base)))
 
 
 def list_tree(connector, base, level=0):
@@ -204,7 +203,7 @@ def list_tree(connector, base, level=0):
 
 def mkdir(connector, id):
     res = zeit.connector.resource.Resource(
-        id, None, 'folder', StringIO.StringIO(''),
+        id, None, 'folder', BytesIO(b''),
         contentType='httpd/unix-directory')
     connector.add(res)
 
@@ -218,7 +217,7 @@ def create_folder_structure(connector, testfolder):
     def add_file(id):
         id = u'http://xml.zeit.de/%s/%s' % (testfolder, id)
         res = zeit.connector.resource.Resource(
-            id, None, 'text', StringIO.StringIO('Pop.'),
+            id, None, 'text', BytesIO(b'Pop.'),
             contentType='text/plain')
         connector.add(res)
 

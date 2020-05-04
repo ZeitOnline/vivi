@@ -1,4 +1,3 @@
-from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.interfaces

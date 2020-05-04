@@ -14,12 +14,10 @@ import zeit.cms.workingcopy.interfaces
 import zeit.cms.repository.interfaces
 
 
+@zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)
+@zope.interface.implementer(zeit.cms.repository.interfaces.IUserPreferences)
 class UserPreferences(persistent.Persistent,
                       zope.container.contained.Contained):
-
-    zope.interface.implements(
-        zeit.cms.repository.interfaces.IUserPreferences)
-    zope.component.adapts(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 
     default_shown_containers = (
         'http://xml.zeit.de/repository/2007',

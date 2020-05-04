@@ -1,5 +1,6 @@
 # coding: utf8
 import contextlib
+import six
 import zeit.content.article.testing
 
 
@@ -29,8 +30,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
 </image>
-        """.format(image_uid=image_uid), lxml.etree.tostring(
-            image.xml, pretty_print=True))
+        """.format(image_uid=image_uid), zeit.cms.testing.xmltotext(
+            image.xml))
 
     def test_setting_image_to_none_removes_href(self):
         from zeit.content.article.edit.image import Image
@@ -44,7 +45,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_image_article(self, content):
         from zeit.connector.resource import Resource
-        import StringIO
+        from io import BytesIO
         import zeit.cms.checkout.interfaces
         import zeit.cms.interfaces
         import zeit.connector.interfaces
@@ -62,7 +63,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             zeit.connector.interfaces.IConnector)
         connector.add(Resource(
             'http://xml.zeit.de/article', 'article', 'article',
-            StringIO.StringIO(article_xml)))
+            BytesIO(six.ensure_binary(article_xml))))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
         return zeit.cms.checkout.interfaces.ICheckoutManager(

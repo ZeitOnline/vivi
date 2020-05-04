@@ -1,4 +1,4 @@
-import grokcore.component
+import grokcore.component as grok
 import pendulum
 import zeit.cms.content.dav
 import zeit.cms.repository.interfaces
@@ -6,11 +6,10 @@ import zeit.cms.workingcopy.interfaces
 import zope.dublincore.interfaces
 
 
+@grok.implementer(zope.dublincore.interfaces.IDCTimes)
 class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grokcore.component.context(
-        zeit.cms.repository.interfaces.IRepositoryContent)
-    grokcore.component.implements(zope.dublincore.interfaces.IDCTimes)
+    grok.context(zeit.cms.repository.interfaces.IRepositoryContent)
 
     created = zeit.cms.content.dav.DAVProperty(
         zope.dublincore.interfaces.IDCTimes['created'],
@@ -24,7 +23,7 @@ class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 class LocalDCTimes(RepositoryDCTimes):
 
-    grokcore.component.context(zeit.cms.workingcopy.interfaces.ILocalContent)
+    grok.context(zeit.cms.workingcopy.interfaces.ILocalContent)
 
     @property
     def modified(self):

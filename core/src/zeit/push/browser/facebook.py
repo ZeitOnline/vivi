@@ -2,8 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import fb
 import gocept.form.grouped
 import requests
-import urllib
-import urlparse
+import six.moves.urllib.parse
 import zeit.cms.browser.menu
 import zope.app.appsetup.product
 import zope.formlib.form
@@ -36,11 +35,12 @@ class TokenForm(zeit.cms.browser.form.FormBase,
 
         # Step 1: Get user token. <https://developers.facebook.com
         # /docs/facebook-login/manually-build-a-login-flow#login>
-        url = 'https://www.facebook.com/dialog/oauth?' + urllib.urlencode({
-            'client_id': data['app_id'],
-            'redirect_uri': data['redirect_uri'],
-            'scope': 'manage_pages,publish_pages',
-        })
+        url = ('https://www.facebook.com/dialog/oauth?' +
+               six.moves.urllib.parse.urlencode({
+                   'client_id': data['app_id'],
+                   'redirect_uri': data['redirect_uri'],
+                   'scope': 'manage_pages,publish_pages',
+               }))
         self.request.response.redirect(url, trusted=True)
 
 
@@ -55,7 +55,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # /docs/facebook-login/manually-build-a-login-flow#confirm>
         r = requests.get(
             'https://graph.facebook.com/oauth/access_token?' +
-            urllib.urlencode({
+            six.moves.urllib.parse.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'redirect_uri': self.settings['redirect_uri'],
@@ -63,7 +63,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             }))
         if 'error' in r.text:
             raise ValueError(r.text)
-        result = urlparse.parse_qs(r.text)
+        result = six.moves.urllib.parse.parse_qs(r.text)
         short_lived_user_token = result['access_token'][0]
 
         # Step 2: Exchange for long-lived token.
@@ -71,7 +71,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # /docs/facebook-login/access-tokens/#extending>
         r = requests.get(
             'https://graph.facebook.com/oauth/access_token?' +
-            urllib.urlencode({
+            six.moves.urllib.parse.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'grant_type': 'fb_exchange_token',
@@ -79,7 +79,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             }))
         if 'error' in r.text:
             raise ValueError(r.text)
-        result = urlparse.parse_qs(r.text)
+        result = six.moves.urllib.parse.parse_qs(r.text)
         long_lived_user_token = result['access_token'][0]
 
         # Step 3. Retrieve page access token. <https://developers.facebook.com

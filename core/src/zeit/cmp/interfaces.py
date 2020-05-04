@@ -14,16 +14,16 @@ class VendorSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        def cmp_id(self, value):
-            return self.factory.cmp_id(self.context, value)
+        def attributes(self, value):
+            return self.factory.attributes(self.context, value)
 
-    def cmp_id(self, context, value):
+    def attributes(self, context, value):
         tree = self._get_tree()
         nodes = tree.xpath('%s[@%s=%s]' % (
                            self.title_xpath,
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
-        return nodes[0].get('cmp') if nodes else None
+        return nodes[0].attrib if nodes else {}
 
 
 VENDOR_SOURCE = VendorSource()

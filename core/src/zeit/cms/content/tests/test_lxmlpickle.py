@@ -17,4 +17,4 @@ class XMLPickleException(zeit.cms.testing.ZeitCmsTestCase):
             co.uniqueId
             self.assertEllipsis(
                 '<error>...value for attribute eiscaf...</error>',
-                lxml.etree.tostring(co.xml, pretty_print=True))
+                zeit.cms.testing.xmltotext(co.xml))

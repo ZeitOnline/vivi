@@ -189,9 +189,8 @@ class IOrderUpdatedEvent(zope.container.interfaces.IContainerModifiedEvent):
     old_order = zope.interface.Attribute('List of keys of the previous order')
 
 
+@zope.interface.implementer(IOrderUpdatedEvent)
 class OrderUpdatedEvent(zope.container.contained.ContainerModifiedEvent):
-
-    zope.interface.implements(IOrderUpdatedEvent)
 
     def __init__(self, context, *old_order):
         super(OrderUpdatedEvent, self).__init__(context)

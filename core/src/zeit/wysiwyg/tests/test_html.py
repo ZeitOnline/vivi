@@ -1,5 +1,5 @@
+from six import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
-import StringIO
 import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
@@ -52,8 +52,7 @@ class VideoExpiresTest(zeit.wysiwyg.testing.FunctionalTestCase):
 class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def test_empty_hrefs_should_not_break_conversion(self):
-        source = """\
-<?xml version='1.0' encoding='UTF-8'?>
+        source = u"""\
 <article>
   <body>
     <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
@@ -61,7 +60,7 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
 </article>
 """
         article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
-            xml_source=StringIO.StringIO(source))
+            xml_source=StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(
             article.xml['body'],
@@ -73,13 +72,10 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
   <div class="format">large</div>
 </div>
 """)
-        self.assertEqual("""\
-<article>
-  <body>
-    <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
-  </body>
-</article>
-""", lxml.etree.tostring(article.xml, pretty_print=True))
+        self.assertEqual(
+            {'href': '', 'href2': '',
+             'expires': '2011-01-03T06:00:00+01:00', 'format': 'large'},
+            article.xml.body.video.attrib)
 
 
 class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
@@ -87,9 +83,9 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
     def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
         source = '<article><body></body></article>'
         article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
-            xml_source=StringIO.StringIO(source))
+            xml_source=StringIO(source))
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
-            lxml.etree.tostring(article.xml))
+            lxml.etree.tostring(article.xml, encoding='unicode'))

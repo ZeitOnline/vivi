@@ -10,18 +10,13 @@ import zeit.content.video.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.video.interfaces.IPlaylist,
+    zeit.cms.interfaces.IAsset)
 class Playlist(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zeit.content.video.interfaces.IPlaylist,
-                              zeit.cms.interfaces.IAsset)
-
-    default_template = pkg_resources.resource_string(__name__,
-                                                     'playlist-template.xml')
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.video.interfaces.IPlaylist,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('thumbnail',))
+    default_template = pkg_resources.resource_string(
+        __name__, 'playlist-template.xml').decode('utf-8')
 
     videos = zeit.cms.content.reference.MultiResource(
         '.body.videos.video', 'related')

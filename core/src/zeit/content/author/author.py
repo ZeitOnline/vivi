@@ -2,11 +2,12 @@ from requests.exceptions import RequestException
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
-import UserDict
+import collections
 import grokcore.component as grok
 import lxml.objectify
 import requests
-import urllib
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -22,10 +23,10 @@ import zope.interface
 import zope.security.proxy
 
 
+@zope.interface.implementer(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    zope.interface.implements(zeit.content.author.interfaces.IAuthor,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
@@ -34,6 +35,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     for name in [
         'biography',
         'display_name',
+        'cook_biography',
         'email',
         'sso_connect',
         'ssoid',
@@ -46,6 +48,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
+        'is_cook',
         'lastname',
         'occupation',
         'show_letterbox_link',
@@ -61,6 +64,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'twitter',
         'vgwortcode',
         'vgwortid',
+        'website',
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 
@@ -70,14 +74,26 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
-    @property
-    def exists(self):
+    is_author = zeit.cms.content.property.ObjectPathProperty(
+        '.is_author', use_default=True)
+
+    @classmethod
+    def exists(cls, firstname, lastname):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         return bool(elastic.search({'query': {'bool': {'filter': [
             {'term': {'doc_type': 'author'}},
-            {'term': {'payload.xml.firstname': self.firstname}},
-            {'term': {'payload.xml.lastname': self.lastname}},
+            {'term': {'payload.xml.firstname': firstname}},
+            {'term': {'payload.xml.lastname': lastname}},
         ]}}}).hits)
+
+    @classmethod
+    def find_by_honorar_id(cls, honorar_id):
+        elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        result = elastic.search({'query': {'bool': {'filter': [
+            {'term': {'doc_type': 'author'}},
+            {'term': {'payload.xml.honorar_id': honorar_id}},
+        ]}}, '_source': ['url', 'payload.xml']})
+        return None if not result.hits else result[0]
 
     @property
     def bio_questions(self):
@@ -95,13 +111,12 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
     title = _('Author')
-    addform = 'zeit.content.author.add_contextfree'
+    addform = 'zeit.content.author.dispatch'
 
 
+@zope.component.adapter(zeit.content.author.interfaces.IAuthor)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.cms.related.related.RelatedBase):
-
-    zope.component.adapts(zeit.content.author.interfaces.IAuthor)
-    zope.interface.implements(zeit.content.image.interfaces.IImages)
 
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
@@ -151,7 +166,7 @@ def update_ssoid(context, event):
 def request_acs(email):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.author')
-    url = config['sso-api-url'] + '/users/' + urllib.quote(
+    url = config['sso-api-url'] + '/users/' + six.moves.urllib.parse.quote(
         email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
     try:
@@ -193,6 +208,20 @@ def update_freetext_on_add(context, event):
     update_author_freetext(context)
 
 
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def create_honorar_entry(context, event):
+    if context.honorar_id:
+        return
+    api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
+    context.honorar_id = api.create({
+        'vorname': context.firstname,
+        'nachname': context.lastname,
+        'anlageAssetId': context.uniqueId,
+    })
+
+
 class Dependencies(zeit.workflow.dependency.DependencyBase):
     """When content is published, make sure that all author objects
     referenced by it are also available to the published content.
@@ -231,7 +260,7 @@ def author_location(type_, adder):
 @grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
         grok.Adapter,
-        UserDict.DictMixin,
+        collections.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
 
     grok.context(zeit.content.author.interfaces.IAuthor)
@@ -245,7 +274,7 @@ class BiographyQuestions(
     def __getitem__(self, key):
         node = self.xml.xpath('//question[@id="%s"]' % key)
         return Question(
-            key, self.title(key), unicode(node[0]) if node else None)
+            key, self.title(key), six.text_type(node[0]) if node else None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//question[@id="%s"]' % key)
@@ -259,6 +288,15 @@ class BiographyQuestions(
 
     def keys(self):
         return list(zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self))
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, key):
+        raise NotImplementedError()
 
     def title(self, key):
         return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
@@ -276,9 +314,8 @@ class BiographyQuestions(
         self[key] = value
 
 
+@zope.interface.implementer(zeit.content.author.interfaces.IQuestion)
 class Question(object):
-
-    zope.interface.implements(zeit.content.author.interfaces.IQuestion)
 
     def __init__(self, id, title, answer):
         self.id = id

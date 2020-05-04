@@ -13,10 +13,10 @@ Setup
 >>> zeit.cms.testing.set_site()
 
 >>> def eventHandler(context, event):
-...     print 'Event:', event
+...     print('Event: %s' % event)
 ...     for target in event.targets:
-...         print '    Target:', target.uniqueId
-...     print '    Content:', context.uniqueId
+...         print('    Target: %s' % target.uniqueId)
+...     print('    Content: %s' % context.uniqueId)
 ...
 >>> import zope.component
 >>> from zeit.cms.interfaces import ICMSContent

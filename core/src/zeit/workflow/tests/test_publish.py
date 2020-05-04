@@ -1,5 +1,5 @@
-from StringIO import StringIO
 from datetime import datetime
+from six import StringIO
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
@@ -32,7 +32,7 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
         zope.security.management.endInteraction()
         with zeit.cms.testing.interaction('zope.producer'):
             with self.assertRaises(Exception) as info:
-                IPublish(article).publish(async=False)
+                IPublish(article).publish(background=False)
             self.assertIn('LockingError', str(info.exception))
         self.assertEqual(False, IPublishInfo(article).published)
 
@@ -51,11 +51,9 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
         return None
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.workflow.interfaces.IPublicationDependencies)
 class RelatedDependency(object):
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
 
     def __init__(self, context):
         self.context = context
@@ -110,7 +108,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
 
     def publish(self, content):
         IPublishInfo(content).urgent = True
-        IPublish(content).publish(async=False)
+        IPublish(content).publish(background=False)
 
     def test_should_not_publish_more_dependencies_than_the_limit_breadth(self):
         content = self.repository['testcontent']
@@ -146,9 +144,9 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         info.urgent = True
         publish = IPublish(article)
         self.assertFalse(info.published)
-        publish.publish(async=False)
+        publish.publish(background=False)
         self.assertTrue(info.published)
-        publish.retract(async=False)
+        publish.retract(background=False)
         self.assertFalse(info.published)
 
         logs = reversed(zeit.objectlog.interfaces.ILog(article).logs)
@@ -160,7 +158,8 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(article)
         info.urgent = True
-        IPublish(article).publish_multiple([article.uniqueId], async=False)
+        IPublish(article).publish_multiple(
+            [article.uniqueId], background=False)
         self.assertTrue(info.published)
 
 
@@ -261,6 +260,7 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
+    error = "Error during publish/retract: ScriptError: ('', 1)"
 
     def setUp(self):
         super(PublishErrorEndToEndTest, self).setUp()
@@ -287,10 +287,10 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+        self.assertEqual(self.error,
                          str(err.exception))
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping)
              for m in get_object_log(content)])
 
@@ -311,13 +311,13 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual("Error during publish/retract: ScriptError: ('', 1)",
+        self.assertEqual(self.error,
                          str(err.exception))
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
         self.assertIn(
-            "Error during publish/retract: ScriptError: ('', 1)",
+            self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
 
 
@@ -334,7 +334,8 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-            IPublish(self.repository).publish_multiple([c1, c2], async=False)
+            IPublish(self.repository).publish_multiple(
+                [c1, c2], background=False)
             script.assert_called_with(['work/online/2007/01/Somalia',
                                        'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
@@ -343,7 +344,8 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         with mock.patch(
                 'zeit.workflow.publish.RetractTask'
                 '.call_retract_script') as script:
-            IPublish(self.repository).retract_multiple([c1, c2], async=False)
+            IPublish(self.repository).retract_multiple(
+                [c1, c2], background=False)
             script.assert_called_with(['work/online/2007/01/Somalia',
                                        'work/online/2007/01/eta-zapatero'])
         self.assertFalse(IPublishInfo(c1).published)
@@ -353,7 +355,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         with mock.patch('zeit.workflow.publish.MultiPublishTask.run') as run:
             IPublish(self.repository).publish_multiple([
                 self.repository['testcontent'],
-                'http://xml.zeit.de/online/2007/01/Somalia'], async=False)
+                'http://xml.zeit.de/online/2007/01/Somalia'], background=False)
             ids = run.call_args[0][0]
             self.assertEqual([
                 'http://xml.zeit.de/testcontent',
@@ -363,7 +365,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         with mock.patch(
                 'zeit.workflow.publish.PublishTask'
                 '.call_publish_script') as script:
-            IPublish(self.repository).publish_multiple([], async=False)
+            IPublish(self.repository).publish_multiple([], background=False)
             self.assertFalse(script.called)
 
     def test_error_in_one_item_continues_with_other_items(self):
@@ -386,7 +388,8 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
              zeit.cms.workflow.interfaces.IPublishedEvent))
 
         with self.assertRaises(RuntimeError):
-            IPublish(self.repository).publish_multiple([c1, c2], async=False)
+            IPublish(self.repository).publish_multiple(
+                [c1, c2], background=False)
 
         # PublishedEvent still happens for c2, even though c1 raised
         self.assertIn(c2.uniqueId, calls)

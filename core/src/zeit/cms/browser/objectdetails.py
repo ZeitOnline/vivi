@@ -10,9 +10,9 @@ import zope.dublincore.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(zope.annotation.interfaces.IAttributeAnnotatable)
 class NoMetadata(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zope.annotation.interfaces.IAttributeAnnotatable)
     default_template = '<empty/>'
 
 
@@ -132,13 +132,13 @@ class Details(zeit.cms.browser.view.Base):
     def display_metadata_short(self):
         lsc = zeit.cms.content.interfaces.ISemanticChange(
             self.context).last_semantic_change
-        return filter(None, [
+        return [x for x in [
             lsc and lsc.strftime('%d.%m.%Y'),
             self.common_metadata.ressort,
             self.author,
             self.volume,
             self.hits,
-        ])
+        ] if x]
 
     @property
     def type_declaration(self):

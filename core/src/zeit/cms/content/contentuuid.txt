@@ -68,8 +68,7 @@ True
 
 The XML content will contain the unique id:
 
->>> import lxml.etree
->>> print lxml.etree.tostring(checked_in.xml, pretty_print=True),
+>>> print(zeit.cms.testing.xmltotext(checked_in.xml))
 <testtype>
   <head>
     ...
@@ -110,7 +109,7 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a
 >>> logging.root.removeHandler(handler)
 
 
->>> print content.uniqueId
+>>> print(content.uniqueId)
 http://xml.zeit.de/online/2007/01/Somalia
 
 When the search returns a value, but the object isn't there anymore ...

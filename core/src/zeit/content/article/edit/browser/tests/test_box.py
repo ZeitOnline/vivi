@@ -35,7 +35,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(group.uniqueId, b.getControl(name='form.image').value)
 
     @unittest.skipUnless(
-        check_output('pandoc --version', shell=True).startswith('pandoc 1'),
+        check_output('pandoc --version', shell=True).startswith(b'pandoc 1'),
         'pandoc not available')
     def test_teaser_text_field_markdown_is_stored_correctly(self):
         self.get_article(with_empty_block=True)

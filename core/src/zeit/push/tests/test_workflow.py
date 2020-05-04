@@ -2,9 +2,9 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.push.interfaces import IPushMessages
-import lxml.etree
 import mock
 import zeit.cms.content.interfaces
+import zeit.cms.testing
 import zeit.push.testing
 import zope.component
 
@@ -26,8 +26,7 @@ class PushServiceProperties(zeit.push.testing.TestCase):
         push = IPushMessages(content)
         self.assertEqual([{'type': 'mypush'}], push.message_config)
         # These DAV properties are not serialized to XML.
-        self.assertNotIn('mypush', lxml.etree.tostring(
-            content.xml, pretty_print=True))
+        self.assertNotIn('mypush', zeit.cms.testing.xmltotext(content.xml))
 
 
 class SendingNotifications(zeit.push.testing.TestCase):

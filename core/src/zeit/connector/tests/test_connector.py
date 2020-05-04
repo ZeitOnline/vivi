@@ -1,6 +1,6 @@
 # coding: utf8
+from io import BytesIO
 from zeit.connector.testing import copy_inherited_functions
-import StringIO
 import mock
 import transaction
 import unittest
@@ -17,13 +17,13 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Paff'),
+            BytesIO(b'Paff'),
             contentType='text/plain')
-        self.assertEquals('Paff', self.connector[rid].data.read())
+        self.assertEqual(b'Paff', self.connector[rid].data.read())
 
     def test_copy(self):
         import zeit.connector.resource
@@ -31,11 +31,11 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
     def test_move(self):
         import zeit.connector.resource
@@ -43,11 +43,11 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         new_rid = rid + u'-renamed'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
 
 class TestEscaping(zeit.connector.testing.ConnectorTest):
@@ -57,10 +57,10 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
         rid = 'http://xml.zeit.de/%s/foo#bar' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         resource = self.connector[rid]
-        self.assertEquals('Pop.', resource.data.read())
+        self.assertEqual(b'Pop.', resource.data.read())
 
 
 class ConflictDetectionBase(object):
@@ -83,18 +83,18 @@ class ConflictDetectionBase(object):
         self.assertRaises(
             zeit.connector.dav.interfaces.PreconditionFailedError,
             self.connector.add, self.r_a)
-        self.assertEquals(
+        self.assertEqual(
             (None, None, False),
             self.connector.locked(self.r_a.id))
 
     def test_implicit_override(self):
         del self.r_a.properties[('getetag', 'DAV:')]
         self.connector.add(self.r_a)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_explicit_override(self):
         self.connector.add(self.r_a, verify_etag=False)
-        self.assertEquals('Pop.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Pop.', self.connector[self.r_a.id].data.read())
 
     def test_adding_with_etag_fails(self):
         r = self.get_resource('cannot-be-added', '*Puff*')
@@ -104,19 +104,19 @@ class ConflictDetectionBase(object):
             self.connector.add, r)
 
     def test_no_conflict_with_same_content(self):
-        self.r_a.data = StringIO.StringIO('Bang.')
+        self.r_a.data = BytesIO(b'Bang.')
         self.connector.add(self.r_a)
-        self.assertEquals('Bang.', self.connector[self.r_a.id].data.read())
+        self.assertEqual(b'Bang.', self.connector[self.r_a.id].data.read())
 
 
 class TestConflictDetectionReal(
-    ConflictDetectionBase, zeit.connector.testing.ConnectorTest):
+        ConflictDetectionBase, zeit.connector.testing.ConnectorTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
 
 class TestConflictDetectionMock(
-    ConflictDetectionBase, zeit.connector.testing.MockTest):
+        ConflictDetectionBase, zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
@@ -159,14 +159,14 @@ class MoveConflictDetectionBase(object):
 
 
 class TestMoveConflictDetectionReal(
-    MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
+        MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
     """Test move conflict with real connector and real DAV."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())
 
 
 class TestMoveConflictDetectionMock(
-    MoveConflictDetectionBase, zeit.connector.testing.MockTest):
+        MoveConflictDetectionBase, zeit.connector.testing.MockTest):
     """Test move conflict with mock connector."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())
@@ -179,14 +179,14 @@ class TestResource(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/%s/aresource' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain',
             properties={('foo', 'bar'): 'baz'})
         res = self.connector[rid]
-        self.assertEquals('baz', res.properties[('foo', 'bar')])
+        self.assertEqual('baz', res.properties[('foo', 'bar')])
         self.connector.changeProperties(
             rid, {('foo', 'bar'): 'changed'})
-        self.assertEquals('changed', res.properties[('foo', 'bar')])
+        self.assertEqual('changed', res.properties[('foo', 'bar')])
 
 
 class TestConnectorCache(zeit.connector.testing.ConnectorTest):
@@ -197,7 +197,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         self.rid = 'http://xml.zeit.de/%s/cache_test' % self.testfolder
         self.connector[self.rid] = zeit.connector.resource.Resource(
             self.rid, None, 'text',
-            StringIO.StringIO('Pop.'),
+            BytesIO(b'Pop.'),
             contentType='text/plain')
         list(self.connector.listCollection(
             'http://xml.zeit.de/%s/' % self.testfolder))
@@ -214,7 +214,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         del self.connector[self.rid]
         children = self.connector.child_name_cache[
             'http://xml.zeit.de/%s/' % self.testfolder]
-        self.assertEquals([], list(children))
+        self.assertEqual([], list(children))
 
     def test_cache_time_is_not_stored_on_dav(self):
         key = ('cached-time', 'INTERNAL')
@@ -252,7 +252,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         key = zope.security.proxy.ProxyFactory(key)
         self.connector.property_cache['id'] = {key: 'baz'}
         self.assertTrue(isinstance(
-            self.connector.property_cache['id'].keys()[0],
+            list(self.connector.property_cache['id'].keys())[0],
             zeit.connector.cache.WebDAVPropertyKey))
 
     @unittest.expectedFailure
@@ -344,7 +344,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
     def test_move_collection_moves_all_members(self):
         coll = zeit.connector.resource.Resource(
             'http://xml.zeit.de/%s/foo' % self.testfolder,
-            'foo', 'collection', StringIO.StringIO(''))
+            'foo', 'collection', BytesIO(b''))
         self.connector.add(coll)
         res = self.get_resource('foo/one', 'body')
         self.connector.add(res)
@@ -370,7 +370,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
         with mock.patch('zeit.connector.dav.davresource.DAVResult') as dav:
             dav.has_errors.return_value = True
             self.assertRaises(
-                DAVError, lambda: result.next())
+                DAVError, lambda: next(result))
 
     def test_should_convert_unicode(self):
         from zeit.connector.search import SearchVar
@@ -382,7 +382,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
             # StopIteration will be raised. This is okay as the test should
             # only assert that the unicode search var is correctly rendered
             # and sent to the server.
-            result.next()
+            next(result)
         except StopIteration:
             pass
 

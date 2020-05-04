@@ -92,12 +92,12 @@ class Tree(zeit.cms.browser.tree.Tree):
         return url + '/@@ajax-delete-entry'
 
 
+@zope.component.adapter(
+    zeit.cms.clipboard.interfaces.IClipboard,
+    zope.publisher.interfaces.IPublicationRequest)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ClipboardListRepresentation(
         zeit.cms.browser.listing.BaseListRepresentation):
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(zeit.cms.clipboard.interfaces.IClipboard,
-                          zope.publisher.interfaces.IPublicationRequest)
 
     author = subtitle = byline = ressort = volume = page = year = None
 

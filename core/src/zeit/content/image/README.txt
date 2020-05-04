@@ -15,7 +15,6 @@ Image
 
 Test the image xml reference:
 
->>> import lxml.etree
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
 >>> repository = zope.component.getUtility(
@@ -24,7 +23,7 @@ Test the image xml reference:
 >>> ref = zope.component.getAdapter(
 ...     image,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG"
   type="JPG"...>
   <bu xsi:nil="true"/>
@@ -106,7 +105,7 @@ Reference the image via XML:
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu xsi:nil="true"/>
 </image>
@@ -123,7 +122,7 @@ Set metadata:
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">Caption</bu>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -143,7 +142,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
   <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
@@ -159,7 +158,7 @@ Set the link:
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com" rel="nofollow"...>
   <bu py:pytype="str">5 &lt; 7</bu>
@@ -176,12 +175,12 @@ in x140 is used:
 
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('foo')
+>>> _ = image.open('w').write(b'foo')
 >>> group['title-120x140.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="gif"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
@@ -195,12 +194,12 @@ one is used:
 >>> del group['title-120x140.gif']
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('bar')
+>>> _ = image.open('w').write(b'bar')
 >>> group['title-120x120.gif'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
@@ -213,12 +212,12 @@ Images whose names have no extension at all will be ignored:
 
 >>> image = zeit.content.image.image.LocalImage()
 >>> image.contentType = 'image/jpeg'
->>> image.open('w').write('blubs')
+>>> _ = image.open('w').write(b'blubs')
 >>> group['title-120x140'] = image
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>
@@ -233,7 +232,7 @@ If there is no image in the image group the ``type`` will be an empty string:
 >>> ref = zope.component.getAdapter(
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
->>> print lxml.etree.tostring(ref, pretty_print=True),
+>>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type=""...
     href="http://www.asdf.com"...>
   <bu py:pytype="str">5 &lt; 7</bu>

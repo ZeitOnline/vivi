@@ -6,10 +6,9 @@ import zope.copypastemove
 import zope.lifecycleevent
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
 class CMSObjectMover(zope.copypastemove.ObjectMover):
     """Objectmover for ICMSContent."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
     def moveTo(self, target, new_name=None):
         obj = self.context
@@ -24,9 +23,8 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
         return new_name
 
 
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
 class CMSObjectCopier(zope.copypastemove.ObjectCopier):
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
     def copyTo(self, target, new_name=None):
         obj = self.context

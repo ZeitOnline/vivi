@@ -85,7 +85,7 @@ or there are no more ghosts.
 Check out objects until we have 7 in the working copy:
 
 >>> for name in collection.keys()[1:]:
-...     print name 
+...     print(name)
 ...     content = collection[name]
 ...     manager = ICheckoutManager(content)
 ...     co = manager.checkout()
@@ -103,14 +103,14 @@ Create a little helper function to easily see what is a ghost and what not:
 
 >>> import zeit.cms.clipboard.interfaces
 >>> def list_workingcopy():
-...     print len(workingcopy), "entries"
+...     print("%s entries" % len(workingcopy))
 ...     for name in workingcopy:
 ...         if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
 ...             workingcopy[name]):
-...             print "Ghost  :", 
+...             typ = "Ghost  : " 
 ...         else:
-...             print "Content:",
-...         print name
+...             typ = "Content: "
+...         print(typ + name)
 
 
 >>> list_workingcopy()

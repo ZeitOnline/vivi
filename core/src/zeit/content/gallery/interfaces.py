@@ -17,9 +17,9 @@ class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
     """A source for gallery folders."""
 
 
+@zope.interface.implementer_only(IGalleryFolderSource)
 class GalleryFolderSource(zeit.cms.content.contentsource.FolderSource):
 
-    zope.interface.implementsOnly(IGalleryFolderSource)
     name = u'gallery-folders'
 
 

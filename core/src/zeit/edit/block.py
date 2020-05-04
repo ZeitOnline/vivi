@@ -1,9 +1,8 @@
-from xmldiff.main import diff_trees
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import sys
-import urlparse
+import six
+import six.moves.urllib.parse
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
@@ -11,15 +10,13 @@ import zope.interface
 import zope.traversing.api
 
 
+@zope.component.adapter(
+    zeit.edit.interfaces.IContainer,
+    gocept.lxml.interfaces.IObjectified)
+@zope.interface.implementer(zeit.edit.interfaces.IElement)
 class Element(zope.container.contained.Contained,
               zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
-
-    zope.interface.implements(zeit.edit.interfaces.IElement)
-
-    zope.component.adapts(
-        zeit.edit.interfaces.IContainer,
-        gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
         self.xml = xml
@@ -34,8 +31,7 @@ class Element(zope.container.contained.Contained,
 
         self_xml = zope.security.proxy.getObject(self.xml)
         other_xml = zope.security.proxy.getObject(other.xml)
-        differences = diff_trees(self_xml, other_xml)
-        return not differences
+        return xml_tree_equal(self_xml, other_xml)
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -59,7 +55,7 @@ class Element(zope.container.contained.Contained,
 
     @property
     def uniqueId(self):
-        parent = self.__parent__.uniqueId
+        parent = getattr(self.__parent__, 'uniqueId', '')
         if not parent.startswith(zeit.edit.interfaces.BLOCK_NAMESPACE):
             return '%s%s#%s' % (
                 zeit.edit.interfaces.BLOCK_NAMESPACE, parent, self.__name__)
@@ -75,17 +71,36 @@ class Element(zope.container.contained.Contained,
     def __repr__(self):
         try:
             uniqueId = self.uniqueId.encode('ascii', 'replace')
-        except:
+        except Exception:
             uniqueId = '(unknown)'
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, uniqueId)
 
 
+def xml_tree_equal(a, b):
+    for prop in ['tag', 'attrib', 'text', 'tail']:
+        a_val = getattr(a, prop)
+        b_val = getattr(b, prop)
+        if a_val != b_val:
+            return False
+
+    a_children = a.getchildren()
+    b_children = b.getchildren()
+    if len(a_children) != len(b_children):
+        return False
+
+    for a_child, b_child in zip(a_children, b_children):
+        if not xml_tree_equal(a_child, b_child):
+            return False
+
+    return True
+
+
 @grok.adapter(
-    basestring, name='http://block.vivi.zeit.de/')
+    six.string_types[0], name='http://block.vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def resolve_block_id(context):
-    parts = urlparse.urlparse(context)
+    parts = six.moves.urllib.parse.urlparse(context)
     assert parts.path.startswith('/')
     path = parts.path[1:]
     content = zeit.cms.cmscontent.resolve_wc_or_repository(path)
@@ -103,11 +118,11 @@ def area_for_element(context):
     return zeit.edit.interfaces.IArea(context.__parent__, None)
 
 
+@grok.implementer(zeit.edit.interfaces.IElementFactory)
 class ElementFactory(object):
     """Base class for element factories."""
 
     grok.baseclass()
-    zope.interface.implements(zeit.edit.interfaces.IElementFactory)
 
     produces = NotImplemented
     element_type = NotImplemented  # Deduced from produces by grokker
@@ -139,7 +154,8 @@ class ElementFactory(object):
 
         """
         element = zope.component.getSiteManager().adapters.lookup(
-            map(zope.interface.providedBy, (self.context, self.get_xml())),
+            list(map(zope.interface.providedBy,
+                     (self.context, self.get_xml()))),
             zeit.edit.interfaces.IElement,
             name=self.element_type)
         return getattr(element, 'grokcore.component.directive.provides', None)
@@ -162,8 +178,8 @@ class TypeOnAttributeElementFactory(ElementFactory):
         return self.element_type
 
 
+@zope.interface.implementer(zeit.edit.interfaces.IUnknownBlock)
 class UnknownBlock(SimpleElement):
 
-    zope.interface.implements(zeit.edit.interfaces.IUnknownBlock)
     area = zeit.edit.interfaces.IArea
     type = '__unknown__'

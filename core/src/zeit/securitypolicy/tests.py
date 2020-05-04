@@ -1,8 +1,8 @@
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
+import six.moves.urllib.parse
 import unittest
-import urllib
 import xlrd
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
@@ -49,6 +49,7 @@ class SecurityPolicyLayer(plone.testing.Layer):
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
+
 LAYER = SecurityPolicyLayer()
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
@@ -84,7 +85,7 @@ class SecurityPolicyXLSSheetCase(object):
     def runTest(self):
         for skin, path, form, expected in self.cases:
             if skin.strip() == 'python:':
-                test = self  # needed by the eval() call below
+                test = self  # noqa needed by the eval() call below
                 site = zope.component.hooks.getSite()
                 zope.component.hooks.setSite(self.getRootFolder())
                 try:
@@ -98,13 +99,14 @@ class SecurityPolicyXLSSheetCase(object):
 
             if form:
                 self.browser.post(
+                    path_with_skin,
                     # XXX pass variables in explicitly
-                    path_with_skin, urllib.urlencode(eval(form)))
+                    six.moves.urllib.parse.urlencode(eval(form)))
             else:
                 self.browser.open(path_with_skin)
 
             status, msg = self.browser.headers['Status'].split(' ', 1)
-            self.assertEquals(
+            self.assertEqual(
                 (int(status) < 400), expected,
                 '%s: %s (expected <400: %s)\n%s' % (
                     path.encode('utf8'), status, bool(expected),
@@ -130,14 +132,14 @@ def test_suite():
     username_row = 1
     username_column_start = 3
 
-    for expected_column in xrange(username_column_start, sheet.ncols):
+    for expected_column in range(username_column_start, sheet.ncols):
         username = sheet.cell_value(username_row, expected_column)
         if not username:
             continue
 
         cases = []
         start_row = None
-        for row in xrange(2, sheet.nrows):
+        for row in range(2, sheet.nrows):
             if start_row is None:
                 start_row = row
             skin = sheet.cell_value(row, 0)

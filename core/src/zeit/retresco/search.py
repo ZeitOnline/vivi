@@ -30,10 +30,9 @@ def TransportWithConnection(connection_class):
     return factory
 
 
+@zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
 class Elasticsearch(object):
     """Search via Elasticsearch."""
-
-    zope.interface.implements(zeit.retresco.interfaces.IElasticsearch)
 
     def __init__(self, url, index, connection_class=Connection):
         self.client = elasticsearch.Elasticsearch(
@@ -59,7 +58,7 @@ class Elasticsearch(object):
             if include_payload:
                 raise ValueError(
                     'Cannot include payload with specified source: %s' %
-                    query['_source'])
+                    (query['_source'],))
         else:
             query['_source'] = ['url', 'doc_type', 'doc_id']
             if include_payload:

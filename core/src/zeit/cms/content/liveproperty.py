@@ -1,6 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-import UserDict
+from zeit.connector.interfaces import DeleteProperty
+import collections
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
@@ -9,13 +10,11 @@ import zope.interface
 import zope.security.interfaces
 
 
-class LiveProperties(object, UserDict.DictMixin):
+@zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+@zope.interface.provider(zeit.cms.content.interfaces.ILivePropertyManager)
+class LiveProperties(collections.MutableMapping):
     """Webdav properties which are updated upon change."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-    zope.interface.implements(zeit.connector.interfaces.IWebDAVProperties)
-    zope.interface.classProvides(
-        zeit.cms.content.interfaces.ILivePropertyManager)
 
     live_properties = dict()
 
@@ -31,6 +30,12 @@ class LiveProperties(object, UserDict.DictMixin):
     def keys(self):
         return self.resource.properties.keys()
 
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
     def __contains__(self, key):
         return key in self.resource.properties
 
@@ -41,6 +46,9 @@ class LiveProperties(object, UserDict.DictMixin):
             # Only call DAV when there actually is a change
             self.connector.changeProperties(
                 self.context.uniqueId, {key: value})
+
+    def __delitem__(self, key):
+        self[key] = DeleteProperty
 
     @property
     def resource(self):

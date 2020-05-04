@@ -4,7 +4,6 @@ import mock
 import pytz
 import unittest
 import zeit.content.article.testing
-import zope.lifecycleevent
 
 
 class VideoTest(unittest.TestCase):
@@ -40,7 +39,7 @@ class VideoTest(unittest.TestCase):
         video.xml.set('href', 'testid')
         with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
             video_ob = video.video
-            self.assertEquals(icc.return_value, video_ob)
+            self.assertEqual(icc.return_value, video_ob)
             icc.assert_called_with('testid', None)
 
     def test_unset_video_should_return_none(self):

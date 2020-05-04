@@ -23,10 +23,9 @@ gallery:
 >>> import zeit.content.image.image
 >>> image = zeit.content.image.image.LocalImage()
 >>> import os.path
->>> filename = os.path.join(os.path.dirname(__file__),
-...                         'browser', 'testdata', '01.jpg')
-...     test_data = open(filename, 'rb').read()
->>> image.open('w').write(open(filename).read())
+>>> filename = os.path.join(os.path.dirname(__file__), 'browser', 'testdata', '01.jpg')
+>>> test_data = open(filename, 'rb').read()
+>>> _ = image.open('w').write(open(filename, 'rb').read())
 >>> folder['01.jpg'] = image
 >>> image = folder['01.jpg']
 
@@ -50,8 +49,8 @@ False
 When we publish the gallery now, the image is also published:
 
 >>> import logging
->>> import StringIO
->>> logfile = StringIO.StringIO()
+>>> from six import StringIO
+>>> logfile = StringIO()
 >>> log_handler = logging.StreamHandler(logfile)
 >>> logging.root.addHandler(log_handler)
 >>> loggers = [None, 'zeit']
@@ -73,7 +72,7 @@ True
 
 The publis script also got all the folders and files:
 
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
@@ -89,8 +88,8 @@ Done http://xml.zeit.de/online/gallery (...s)
 
 On retract the folder is also retracted:
 
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> tid = publish.retract()
 >>> image_info.published
 False
@@ -99,7 +98,7 @@ False
 
 Note that the script gets the reverse order for removing:
 
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/gallery
 ...retract.sh:
@@ -125,13 +124,13 @@ Delete the folder and try to publish:
 >>> import transaction
 >>> del repository['image-folder']
 >>> transaction.commit()
->>> logfile.seek(0)
->>> logfile.truncate()
+>>> _ = logfile.seek(0)
+>>> _ = logfile.truncate()
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
 >>> tid = publish.publish()
 >>> gallery_info.published
 True
->>> print logfile.getvalue(),
+>>> print(logfile.getvalue())
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:

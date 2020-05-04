@@ -65,12 +65,12 @@ knowing it:
 
 Let's see how this works with files:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> import zeit.connector.resource
 >>> id = 'http://xml.zeit.de/%s/lt1' % TESTFOLDER()
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
-...     StringIO.StringIO('Pop goes the weasel!'),
+...     BytesIO(b'Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
 >>> res.id = 'http://xml.zeit.de/%s/lt2' % TESTFOLDER()

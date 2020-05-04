@@ -1,4 +1,4 @@
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 import json
 import requests
 import zeit.cms.redirect.interfaces
@@ -6,9 +6,8 @@ import zope.app.appsetup.product
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)
 class Lookup(object):
-
-    zope.interface.implements(zeit.cms.redirect.interfaces.ILookup)
 
     def __init__(self, url):
         self.url = url

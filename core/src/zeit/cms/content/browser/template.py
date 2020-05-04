@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import z3c.menu.simple.menu
 import zc.table.column
 import zc.table.table
 import zeit.cms.browser.column
@@ -127,11 +126,10 @@ def TemplateChooserSchema(source_name):
     return ITemplateChooserSchema
 
 
+@zope.component.adapter(zope.publisher.interfaces.browser.IBrowserPage)
+@zope.interface.implementer(
+    zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
 class TemplateWidgetSetup(object):
-
-    zope.component.adapts(zope.publisher.interfaces.browser.IBrowserPage)
-    zope.interface.implements(
-        zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
 
     def __init__(self, context):
         self.context = context

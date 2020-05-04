@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+import six
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.interfaces
@@ -9,10 +10,10 @@ import zeit.content.infobox.interfaces
 import zope.interface
 
 
+@zope.interface.implementer(
+    zeit.content.infobox.interfaces.IInfobox,
+    zeit.cms.interfaces.IAsset)
 class Infobox(zeit.cms.content.metadata.CommonMetadata):
-
-    zope.interface.implements(zeit.content.infobox.interfaces.IInfobox,
-                              zeit.cms.interfaces.IAsset)
 
     default_template = (
         u'<container layout="artbox" label="info" '
@@ -35,7 +36,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
                     lxml.objectify.E.p(text_node.text,
                                        *text_node.getchildren()))
             text = self.html_converter.to_html(text_node)
-            result.append((unicode(node['title']),
+            result.append((six.text_type(node['title']),
                            text))
         return tuple(result)
 
@@ -45,8 +46,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
             self.xml.remove(node)
         for title, text in value:
             text_node = lxml.objectify.E.text()
-            html = self.html_converter.from_html(text_node, text)
-
+            self.html_converter.from_html(text_node, text)
             self.xml.append(lxml.objectify.E.block(
                 lxml.objectify.E.title(title),
                 text_node))

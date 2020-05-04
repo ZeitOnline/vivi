@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -40,13 +39,13 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
         super(AuthorshipsProperty, self).__set__(instance, items)
 
 
+@zope.interface.implementer(
+    zeit.content.video.interfaces.IVideo,
+    zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zeit.content.video.interfaces.IVideo,
-                              zeit.cms.interfaces.IAsset)
-
-    default_template = pkg_resources.resource_string(__name__,
-                                                     'video-template.xml')
+    default_template = pkg_resources.resource_string(
+        __name__, 'video-template.xml').decode('utf-8')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
@@ -80,9 +79,15 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     def thumbnail(self):
         return self._player_data['thumbnail']
 
+    cms_thumbnail = zeit.cms.content.reference.SingleResource(
+        '.body.thumbnail', "image")
+
     @property
     def video_still(self):
         return self._player_data['video_still']
+
+    cms_video_still = zeit.cms.content.reference.SingleResource(
+        '.body.video_still', "image")
 
     @cachedproperty
     def _player_data(self):
@@ -110,8 +115,9 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
 
 
+@zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)
 class VideoRendition():
-    zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
+
     frame_width = 0
     url = None
     video_duration = 0
@@ -124,30 +130,6 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = zeit.cms.type.SKIP_ADD
     factory = Video
     type = 'video'
-
-
-@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-class VideoXMLReferenceUpdater(grok.Adapter):
-
-    grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('brightcove-image')
-
-    def update(self, node, suppress_errors=False):
-        still_node = node.find('video-still')
-        if still_node is not None:
-            node.remove(still_node)
-        if self.context.video_still:
-            node.append(getattr(lxml.objectify.E, 'video-still')(
-                src=self.context.video_still))
-
-        thumbnail_node = node.find('thumbnail')
-        if thumbnail_node is not None:
-            node.remove(thumbnail_node)
-        if self.context.thumbnail:
-            node.append(lxml.objectify.E.thumbnail(
-                src=self.context.thumbnail))
-
-        node.set('type', 'video')
 
 
 class Dependencies(zeit.workflow.dependency.DependencyBase):

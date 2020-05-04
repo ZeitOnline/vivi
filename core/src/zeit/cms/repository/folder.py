@@ -7,10 +7,9 @@ import zeit.cms.util
 import zope.interface
 
 
+@zope.interface.implementer(zeit.cms.repository.interfaces.IFolder)
 class Folder(zeit.cms.repository.repository.Container):
     """The Folder structures content in the repository."""
-
-    zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
 
 
 class FolderType(zeit.cms.type.TypeDeclaration):
@@ -37,13 +36,5 @@ class FolderType(zeit.cms.type.TypeDeclaration):
 @zope.component.adapter(zeit.cms.repository.interfaces.IFolder)
 def folder_sort_key(context):
     weight = -5  # folders first
-
-    if context.__name__ == 'online':
-        # online first
-        weight = -6
-    try:
-        key = -int(context.__name__)
-    except ValueError:
-        key = context.__name__.lower()
-
+    key = context.__name__.lower()
     return (weight, key)

@@ -1,8 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-from zope.i18nmessageid import ZopeMessageFactory as _zope
-import datetime
 import gocept.form.grouped
-import pytz
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zope.container.interfaces
@@ -230,11 +227,12 @@ class AddFormBase(object):
     def handle_add(self, action, data):
         self.createAndAdd(data)
 
-    def add(self, object, container=None):
+    def add(self, object, container=None, name=None):
         if container is None:
             container = self.context
-        chooser = zope.container.interfaces.INameChooser(container)
-        name = chooser.chooseName(self.suggestName(object), object)
+        if name is None:
+            chooser = zope.container.interfaces.INameChooser(container)
+            name = chooser.chooseName(self.suggestName(object), object)
         container[name] = object
         object = container[name]
 

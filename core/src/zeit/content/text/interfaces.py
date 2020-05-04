@@ -47,7 +47,7 @@ class IText(zeit.cms.repository.interfaces.IDAVContent):
         if data.text:
             try:
                 data.text.encode(data.encoding)
-            except UnicodeEncodeError, e:
+            except UnicodeEncodeError as e:
                 raise CannotEncode(data.text, data.encoding, e)
 
         return True
@@ -110,5 +110,6 @@ class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'zeit.content.text.embed'
     check_interfaces = (IText, IEmbed)
+
 
 embedSource = EmbedSource()

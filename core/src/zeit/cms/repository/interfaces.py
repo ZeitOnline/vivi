@@ -12,10 +12,9 @@ class IBeforeObjectAddEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent before an object will be added to the repository."""
 
 
+@zope.interface.implementer(IBeforeObjectAddEvent)
 class BeforeObjectAddEvent(zope.interface.interfaces.ObjectEvent):
     """An event sent before an object will be added to the repository."""
-
-    zope.interface.implements(IBeforeObjectAddEvent)
 
 
 class IAfterObjectConstructedEvent(zope.interface.interfaces.IObjectEvent):
@@ -25,10 +24,9 @@ class IAfterObjectConstructedEvent(zope.interface.interfaces.IObjectEvent):
         'IResource the object was constructed from')
 
 
+@zope.interface.implementer(IAfterObjectConstructedEvent)
 class AfterObjectConstructedEvent(zope.interface.interfaces.ObjectEvent):
     """An event sent after an ICMSContent is constructed from a resource."""
-
-    zope.interface.implements(IAfterObjectConstructedEvent)
 
     def __init__(self, obj, resource):
         self.object = obj
@@ -39,10 +37,9 @@ class IBeforeObjectRemovedEvent(zope.lifecycleevent.IObjectRemovedEvent):
     """An event sent after an ICMSContent is removed from a resource."""
 
 
+@zope.interface.implementer(IBeforeObjectRemovedEvent)
 class BeforeObjectRemovedEvent(zope.lifecycleevent.ObjectRemovedEvent):
     """An event sent after an ICMSContent is removed from a resource."""
-
-    zope.interface.implements(IBeforeObjectRemovedEvent)
 
 
 class ConflictError(Exception):
@@ -222,6 +219,6 @@ class IObjectReloadedEvent(zope.interface.interfaces.IObjectEvent):
     """
 
 
+@zope.interface.implementer(IObjectReloadedEvent)
 class ObjectReloadedEvent(zope.interface.interfaces.ObjectEvent):
-
-    zope.interface.implements(IObjectReloadedEvent)
+    pass

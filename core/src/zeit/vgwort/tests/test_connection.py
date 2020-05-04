@@ -1,6 +1,7 @@
 import gocept.httpserverlayer.custom
 import mock
 import pkg_resources
+import six
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -62,8 +63,8 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         try:
             self.service.new_document(content)
-        except zeit.vgwort.interfaces.WebServiceError, e:
-            self.assertIn('Shakespeare', unicode(e))
+        except zeit.vgwort.interfaces.WebServiceError as e:
+            self.assertIn('Shakespeare', six.text_type(e))
         else:
             self.fail('WebServiceError should have been raised.')
 
@@ -138,8 +139,8 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.send_response(200)
         self.end_headers()
         wsdl = pkg_resources.resource_string(__name__, 'pixelService.wsdl')
-        wsdl = wsdl.replace('__PORT__', str(HTTP_LAYER['http_port']))
-        self.wfile.write(wsdl)
+        wsdl = wsdl.decode().replace('__PORT__', str(HTTP_LAYER['http_port']))
+        self.wfile.write(wsdl.encode())
 
     def do_POST(self):
         self.send_response(500)
@@ -215,7 +216,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
-        self.assertEqual('1234abc', authors[-1].code)
+        self.assertEqual('1234abc', authors[-1].code__1)
 
     def test_agencies_are_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()
@@ -223,7 +224,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author.vgwortcode = 'dpaid'
         self.repository['author'] = author
         author = self.repository['author']
-        content = self.get_content([], product=None)
+        content = self.get_content([])
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.agencies = [author]
         content = self.repository['testcontent']
@@ -232,7 +233,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(1, len(authors))
-        self.assertEqual('dpaid', authors[0].code)
+        self.assertEqual('dpaid', authors[0].code__1)
 
     def test_author_code_should_be_passed_instead_of_name(self):
         author = zeit.content.author.author.Author()
@@ -248,7 +249,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
-        self.assertEqual('codecodecode', authors[0].code)
+        self.assertEqual('codecodecode', authors[0].code__1)
 
     def test_author_name_should_be_passed(self):
         author = zeit.content.author.author.Author()
@@ -287,7 +288,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(1, len(authors))
-        self.assertEqual('code', authors[0].code)
+        self.assertEqual('code', authors[0].code__1)
 
     def test_url_should_point_to_www_zeit_de(self):
         content = self.get_content([])

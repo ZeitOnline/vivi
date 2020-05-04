@@ -1320,14 +1320,6 @@
   margin-left:0px;
 }
 
-.type-article form[action$="edit.form.misc-layout"] div.label {
-  margin-bottom:3px;
-}
-
-.type-article form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
-  padding:0em;
-}
-
 .type-article label[for^="workflow-quality-assurance"] ~ span.required {
   left: 430px;
   position:absolute;
@@ -1342,33 +1334,6 @@
 .type-article #edit-form-misc form[action$="edit.form.options-a"] .fieldtype-checkbox {
   float: left;
   padding-top: 25px;
-}
-
-.type-article #options-layout\.layout {
-  margin-bottom: 0;
-  width: 432px;
-}
-
-.type-article #options-layout\.layout > ul {
-  margin-top: 0
-}
-
-.type-article #options-layout\.layout .landing-zone.visible {
-  margin-bottom: 0;
-  margin-top: 0;
-  padding-bottom: 2px;
-  padding-top: 2px;
-}
-
-.type-article #options-layout\.layout .object-details {
-  padding-bottom: 1em;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-.type-article #options-layout\.layout a[rel="remove"] {
-  right: 0;
-  top: -10px;
 }
 
 .type-article #edit-form-status .fieldtype-checkbox,
@@ -1401,10 +1366,6 @@
 .type-article #options-b\.year,
 .type-article #options-b\.volume {
   width: 85px;
-}
-
-.type-article #form-options-layout .field {
-  margin-bottom: 1px;
 }
 
 .type-article #article-content-main-image\.main_image .object-details{

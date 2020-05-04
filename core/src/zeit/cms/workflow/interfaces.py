@@ -129,7 +129,7 @@ def publish_priority_default(context):
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 
-    def publish(priority=None, async=True, **kw):
+    def publish(priority=None, background=True, **kw):
         """Publish object.
 
         Before the object is published a BeforePublishEvent is issued.
@@ -138,12 +138,12 @@ class IPublish(zope.interface.Interface):
 
         Publishing usually happens asynchronously. PRIORITY_LOW will perform
         the publish task in a separate, single-threaded Queue.
-        Pass async=False if you want to execute publishing synchronously.
+        Pass background=False if you want to execute publishing synchronously.
 
         `kw` is passed through to the underlying celery task.
         """
 
-    def retract(priority=None, async=True, **kw):
+    def retract(priority=None, background=True, **kw):
         """Retract an object.
 
         Before the object is published a BeforeRetractEvent is issued.
@@ -151,7 +151,7 @@ class IPublish(zope.interface.Interface):
 
         """
 
-    def publish_multiple(objects, priority=PRIORITY_LOW, async=True):
+    def publish_multiple(objects, priority=PRIORITY_LOW, background=True):
         """Publish multiple objects in one transaction, given as a list of
         either ICMSContent or uniqueIds.
 
@@ -159,7 +159,7 @@ class IPublish(zope.interface.Interface):
         but it doesn't make sense to introduce another extension point yet.)
         """
 
-    def retract_multiple(objects, priority=PRIORITY_LOW, async=True):
+    def retract_multiple(objects, priority=PRIORITY_LOW, background=True):
         """Retract multiple objects in one transaction, given as a list of
         either ICMSContent or uniqueIds.
         """
@@ -193,34 +193,29 @@ class IRetractedEvent(IWithMasterObjectEvent):
     """Issued after an object has been retracted."""
 
 
+@zope.interface.implementer(IWithMasterObjectEvent)
 class WithMasterObjectEvent(zope.interface.interfaces.ObjectEvent):
-
-    zope.interface.implements(IWithMasterObjectEvent)
 
     def __init__(self, obj, master):
         super(WithMasterObjectEvent, self).__init__(obj)
         self.master = master
 
 
+@zope.interface.implementer(IBeforePublishEvent)
 class BeforePublishEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
-    zope.interface.implements(IBeforePublishEvent)
 
-
+@zope.interface.implementer(IPublishedEvent)
 class PublishedEvent(WithMasterObjectEvent):
     """Issued when an object was published."""
 
-    zope.interface.implements(IPublishedEvent)
 
-
+@zope.interface.implementer(IBeforeRetractEvent)
 class BeforeRetractEvent(WithMasterObjectEvent):
     """Issued before an object is published."""
 
-    zope.interface.implements(IBeforeRetractEvent)
 
-
+@zope.interface.implementer(IRetractedEvent)
 class RetractedEvent(WithMasterObjectEvent):
     """Issued after an object has been retracted."""
-
-    zope.interface.implements(IRetractedEvent)

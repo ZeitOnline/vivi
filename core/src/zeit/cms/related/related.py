@@ -10,10 +10,9 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
-
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLRepresentation)
-    zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
 
     def __init__(self, context):
         self.context = context
@@ -24,10 +23,9 @@ class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
         self.__parent__ = context
 
 
+@zope.interface.implementer(zeit.cms.related.interfaces.IRelatedContent)
 class RelatedContent(RelatedBase):
     """Adapter which stores related content in xml."""
-
-    zope.interface.implements(zeit.cms.related.interfaces.IRelatedContent)
 
     related = zeit.cms.content.reference.MultiResource(
         '.head.references.reference', 'related')

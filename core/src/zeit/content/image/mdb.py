@@ -1,4 +1,4 @@
-from StringIO import StringIO
+from six import StringIO
 import base64
 import lxml.etree
 import os.path
@@ -6,6 +6,7 @@ import pendulum
 import pkg_resources
 import re
 import requests
+import six
 import zeit.content.image.interfaces
 import zope.interface
 
@@ -16,9 +17,8 @@ XML_TAGS = re.compile('</?[^>]*>')
 FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
 
+@zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 class MDB(object):
-
-    zope.interface.implements(zeit.content.image.interfaces.IMDB)
 
     def __init__(self, url, username, password):
         self.url = url
@@ -98,8 +98,8 @@ class FakeMDB(MDB):
             filename = 'mdb-meta.xml'
         return requests_mock.create_response(
             requests.Request(url='http://example.invalid'),
-            text=pkg_resources.resource_string(
-                __name__, 'tests/fixtures/%s' % filename))
+            text=six.ensure_text(pkg_resources.resource_string(
+                __name__, 'tests/fixtures/%s' % filename)))
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)

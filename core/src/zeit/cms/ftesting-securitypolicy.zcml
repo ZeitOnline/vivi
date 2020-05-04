@@ -165,6 +165,10 @@
     />
   <grant
     principal="zope.producer"
+    permission="zeit.content.author.Add"
+    />
+  <grant
+    principal="zope.producer"
     permission="zeit.content.text.AddEmbed"
     />
 

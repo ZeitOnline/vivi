@@ -25,7 +25,7 @@ lead area:
 A new block with an XML <container> element is created:
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <...<span class="nt">&lt;container</span>...
 
 Editing the XML
@@ -36,18 +36,18 @@ You can edit the XML content by clicking the Edit button:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()
 >>> xml = browser.getControl(name="form.xml").value
->>> print xml
+>>> print(xml)
 <container...  cp:type="xml"...>
  <raw>
 <BLANKLINE>
  </raw>
 </container>
->>> print update_xml('\r\n\r\n', '<foo/>')
+>>> print(update_xml('\r\n\r\n', '<foo/>'))
 <...
 <div class="summary">Updated on...
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <div class="pygments"><pre><span></span><span class="nt">&lt;container</span>
 ...
@@ -61,32 +61,32 @@ There are three contraints defined, which must match.
 
 First, the root element must be a <container>:
 
->>> print update_xml('container', 'bar')
+>>> print(update_xml('container', 'bar'))
 <...
 <span class="error">The root element must be &lt;container&gt;.</span>...
 
 Second, the <container> element must have a cp:type:
 
->>> print update_xml('cp:type', 'cp:bar')
+>>> print(update_xml('cp:type', 'cp:bar'))
 <...
-<span class="error">cp:type must be 'xml'.</span>...
+<span class="error">cp:type must be ...xml...
 
 And, last but not least, the <container> must have a name:
 
->>> print update_xml('cp:__name__', 'cp:bar')
+>>> print(update_xml('cp:__name__', 'cp:bar'))
 <...
 <span class="error">No or empty cp:__name__ attribute.</span>...
 
 Broken markup is sanitized:
 
->>> print update_xml(
+>>> print(update_xml(
 ...     '<foo/>',
-...     '<foo/><a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">')
+...     '<foo/><a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">'))
 <...
 <div class="summary">Updated on...
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <...
 ...<span class="nt">&lt;foo/&gt;</span>...
 ...<span class="nt">&lt;a</span>...

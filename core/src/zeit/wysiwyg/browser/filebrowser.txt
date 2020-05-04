@@ -15,12 +15,12 @@ the information as arguments instead of having views on objects :/
 
 List the folders and files in /
 
->>> import urllib
->>> browser.open(base_url % (urllib.urlencode(
+>>> from six.moves.urllib.parse import urlencode
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
@@ -35,11 +35,11 @@ List the folders and files in /
 
 Descent to the repository:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/repository/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/repository/"
@@ -60,11 +60,11 @@ Descent to the repository:
 
 Let's descent from the root into the clipboard:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
@@ -97,11 +97,11 @@ something in there:
 
 Let's have a look how the clipboard looks now:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/"
@@ -116,11 +116,11 @@ Let's have a look how the clipboard looks now:
 
 Our clip is listed! Decent:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/zeit.cms.clipboard.clipboard.Clipboard/New Clip'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/zeit.cms.clipboard.clipboard.Clipboard/New Clip"
@@ -149,19 +149,16 @@ when it exists. Currently it doesn't exist. We saw that above. Create it:
 
 The root listing contains it now:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/" url="http://localhost"/>
   <Folders>
-    <Folder name="bilder" title="bilder"/>
-    <Folder name="repository" title="repository"/>
-    <Folder name="zeit.cms.clipboard.clipboard.Clipboard"
-            title="Clipboard"/>
+    ...<Folder name="bilder" title="bilder"/>...
   </Folders>
   <Files>
   </Files>
@@ -169,11 +166,11 @@ The root listing contains it now:
 
 List it:
 
->>> browser.open(base_url % (urllib.urlencode(
+>>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',
 ...          CurrentFolder='/bilder/'))))
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0" encoding="UTF-8"?>
 <Connector command="GetFoldersAndFiles" resourceType="File">
   <CurrentFolder path="/bilder/" url="http://localhost"/>

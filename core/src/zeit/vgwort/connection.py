@@ -1,10 +1,13 @@
 import logging
+import operator
 import requests
 import requests.auth
+import six.moves.urllib.parse
 import threading
-import urlparse
 import zeep
 import zeep.exceptions
+import zeep.xsd.elements
+import zeep.xsd.elements.indicators
 import zeit.content.author.interfaces
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
@@ -49,7 +52,7 @@ class VGWortWebService(object):
 
     @property
     def wsdl(self):
-        return urlparse.urljoin(self.base_url, self.service_path)
+        return six.moves.urllib.parse.urljoin(self.base_url, self.service_path)
 
     def call(self, method_name, *args, **kw):
         with self.lock:
@@ -79,9 +82,8 @@ class VGWortWebService(object):
         return cls(**kw)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class PixelService(VGWortWebService):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
 
     service_path = '/services/1.0/pixelService.wsdl'
     namespace = 'http://vgwort.de/1.0/PixelService/xsd'
@@ -92,9 +94,8 @@ class PixelService(VGWortWebService):
             yield (pixel.publicIdentificationId, pixel.privateIdentificationId)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MessageService(VGWortWebService):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
     service_path = '/services/1.1/messageService.wsdl'
     namespace = 'http://vgwort.de/1.1/MessageService/xsd'
@@ -117,7 +118,7 @@ class MessageService(VGWortWebService):
                 try:
                     if author.vgwortcode:
                         authors.append(
-                            self.create('Involved', code=author.vgwortcode))
+                            self.create('Involved', code__1=author.vgwortcode))
                     elif (author.firstname and author.lastname and
                             author.firstname.strip() and
                             author.lastname.strip()):
@@ -147,14 +148,15 @@ class MessageService(VGWortWebService):
             try:
                 if not author.vgwortcode:
                     continue
-                authors.append(self.create('Involved', code=author.vgwortcode))
+                authors.append(
+                    self.create('Involved', code__1=author.vgwortcode))
             except AttributeError:
                 log.warning('Ignoring agencies for %s', content, exc_info=True)
-
         # BBB for articles created by zeit.newsimport before `agencies` existed
-        if content.product and content.product.vgwortcode:
+        if (not content.agencies and content.product and
+                content.product.vgwortcode):
             authors.append(self.create(
-                'Involved', code=content.product.vgwortcode))
+                'Involved', code__1=content.product.vgwortcode))
 
         if not authors:
             raise zeit.vgwort.interfaces.WebServiceError(
@@ -165,7 +167,7 @@ class MessageService(VGWortWebService):
             'MessageText', lyric=False, shorttext=content.title[:100],
             text=self.create('Text', plainText=u'\n'.join(
                 searchable.getSearchableText()
-            ).encode('utf-8').encode('base64')))
+            ).encode('utf-8')))
 
         public_url = content.uniqueId.replace(
             'http://xml.zeit.de', 'http://www.zeit.de') + '/komplettansicht'
@@ -190,22 +192,21 @@ def service_factory(TYPE):
         list(zope.interface.implementedBy(TYPE))[0])(factory)
     return factory
 
+
 real_pixel_service = service_factory(PixelService)
 real_message_service = service_factory(MessageService)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class MockPixelService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IPixelService)
 
     def order_pixels(self, amount):
         for i in range(amount):
             yield ('public-%s' % i, 'private-%s' % i)
 
 
+@zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MockMessageService(object):
-
-    zope.interface.implements(zeit.vgwort.interfaces.IMessageService)
 
     def __init__(self):
         self.reset()
@@ -218,3 +219,45 @@ class MockMessageService(object):
         if self.error:
             raise self.error('Provoked error')
         self.calls.append(content)
+
+
+def _find_element_to_render(self, value):
+    """copy&paste from upstream to fix
+    <https://github.com/mvantellingen/python-zeep/issues/1047>
+    """
+    matches = []
+    for name, element in self.elements_nested:
+        if isinstance(element, zeep.xsd.elements.Element):
+            element_name = None
+            if name in value:  # PATCHED
+                element_name = name
+            elif element.name in value:
+                element_name = element.name
+            if element_name:
+                try:
+                    choice_value = value[element_name]
+                except KeyError:
+                    choice_value = value
+
+                if choice_value is not None:
+                    matches.append((1, element, choice_value))
+        else:
+            if name is not None:
+                try:
+                    choice_value = value[name]
+                except (KeyError, TypeError):
+                    choice_value = value
+            else:
+                choice_value = value
+
+            score = element.accept(choice_value)
+            if score:
+                matches.append((score, element, choice_value))
+
+    if matches:
+        matches = sorted(matches, key=operator.itemgetter(0), reverse=True)
+        return matches[0][1:]
+
+
+zeep.xsd.elements.indicators.Choice._find_element_to_render = (
+    _find_element_to_render)

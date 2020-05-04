@@ -16,6 +16,8 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')
+        del self.cp['feature']['lead']
+        del self.cp['feature']['informatives']
         self.area = self.cp['feature'].create_item('area')
         self.area.referenced_cp = self.repository['cp_with_teaser']
         self.area.count = 1
@@ -47,7 +49,8 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=.block.type-auto-teaser .edit-link')
         sel.waitForElementPresent('css=.lightbox')
         sel.click('css=.two-side-by-side')
-        sel.waitForElementPresent('css=.teaser-contents.two-side-by-side')
+        sel.waitForElementPresent(
+            'css=.teaser-contents.two-side-by-side .teaser-list')
         sel.assertTextPresent(self.auto_teaser_title)
 
     @unittest.skip('Since visible is not part of the form anymore,'
@@ -70,10 +73,11 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
     def test_adding_block_by_hand_removes_automatic_block_to_keep_count(self):
         auto_teaser_selector = 'css=#{} .block.type-auto-teaser'.format(
             self.area.__name__)
-        teaser_selector = 'css=#{} .block.type-teaser'.format(self.area.__name__)
-
+        teaser_selector = 'css=#{} .block.type-teaser'.format(
+            self.area.__name__)
         self.selenium.waitForCssCount(auto_teaser_selector, 1)
         self.selenium.waitForCssCount(teaser_selector, 0)
+        self.selenium.waitForTextPresent(self.auto_teaser_title)
         self.create_block('teaser', self.area.__name__)
         self.selenium.waitForCssCount(auto_teaser_selector, 0)
         self.selenium.waitForCssCount(teaser_selector, 1)

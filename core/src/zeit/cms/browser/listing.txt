@@ -48,7 +48,7 @@ adapter will be shown in listings. Right now there is no access counter, so
 we just get an empty column:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -87,7 +87,7 @@ total hits:
 Now we have 42 / 31415 accesses:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -112,7 +112,7 @@ When there are no hits today the rendering is different:
 
 >>> AccessCounter.hits = None
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -135,7 +135,7 @@ When we have only hits from today, those are also displayed as total hits:
 >>> AccessCounter.hits = 543
 >>> AccessCounter.total_hits = None
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -172,7 +172,7 @@ Let's indicate a published object:
 >>> uid = 'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 >>> zeit.cms.workflow.mock._published[uid] = True
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -201,7 +201,7 @@ When we have local modifications the we get the third indicator. Let's try some
 We don't know when the object was published. Assume it's fresh:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -228,7 +228,7 @@ With a publication date *after* the modifcation date it is also fresh:
 >>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
 ...     2007, 12, 6, 13, 00, tzinfo=pytz.UTC)
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -249,7 +249,7 @@ With a publication time *before* the modifaction time it is not fresh:
 >>> zeit.cms.workflow.mock._publish_times[uid] = datetime.datetime(
 ...     2007, 12, 6, 11, 00, tzinfo=pytz.UTC)
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -271,7 +271,7 @@ modification time.
 
 >>> connector._properties[uid][('getlastmodified', 'DAV:')] = None
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <tbody>
   <tr class="odd">
@@ -295,7 +295,7 @@ The title of the listing is "Directory listing"
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
     <title> 01 – Directory listing </title>
     ...

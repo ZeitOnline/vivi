@@ -55,7 +55,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def test_template_content_is_transformed_to_ua_payload(self):
         with mock.patch('zeit.push.urbanairship.datetime') as mock_datetime:
             mock_datetime.now.return_value = (
-                datetime(2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
+                datetime(2014, 7, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
                 self.api.send('any', 'any', message=self.message)
                 self.assertEqual(2, push.call_count)

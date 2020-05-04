@@ -28,6 +28,8 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  fold.replace('css=', ''))
 
     def test_recensions_should_be_listed(self):
         self.create_recension()
@@ -43,7 +45,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('css=span.recensionaction a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.year', '2001')
-        s.click('css=#lightbox\.form #form\.actions\.apply')
+        s.click(r'css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForElementPresent('css=span.year')
         s.waitForText('css=span.year', '2001')
@@ -56,7 +58,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('name=form.authors.add')
         s.waitForElementPresent('form.authors.1.')
         s.type('form.authors.1.', 'Lord Byron')
-        s.click('css=#lightbox\.form #form\.actions\.apply')
+        s.click(r'css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForText('css=span.authors', '*Byron*')
 
@@ -66,6 +68,8 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
+        self.eval('document.querySelector("%s").scrollIntoView()' %
+                  fold.replace('css=', ''))
         s.click('jquery=#recensions a:contains(Add new)')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.authors.0.', 'Lord Byron')

@@ -34,7 +34,7 @@ Adding blocks works by drag and drop. We simulate this here.
 In the informatives area is a landing zone to create a block:
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"
@@ -55,10 +55,10 @@ information about the created block:
  {u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
   u'name': u'added',
   u'when': u'after-reload'}]
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Length: ...
-Content-Type: text/json
+Content-Type: text/json...
 ...
 
 >>> created_block_id = result['signals'][1]['args'][0]
@@ -67,7 +67,7 @@ The block is contained in the contents. A landing zone to create blocks *after*
 it, is rendered too:
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
 <div class="landing-zone action-content-droppable action-cp-module-droppable..."
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"
@@ -89,7 +89,7 @@ Add another block after the just created block now:
 ...     created_block_id)
 
 >>> browser.open(contents_url)
->>> print browser.contents
+>>> print(browser.contents)
 <div...
 <div class="landing-zone action-content-droppable action-cp-module-droppable..."
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"

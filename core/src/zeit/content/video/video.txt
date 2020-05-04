@@ -18,7 +18,7 @@ Videos have a view:
 >>> browser.handleErrors = False
 >>> browser.open(
 ...     'http://localhost/++skin++vivi/repository/online/video')
->>> print browser.contents
+>>> print(browser.contents)
 <...
           <span>Title</span>
           ...
@@ -30,7 +30,7 @@ Videos can be checked out:
 
 
 >>> browser.getLink('Checkout').click()
->>> print browser.contents
+>>> print(browser.contents)
 <..."video" has been checked out...
 
 Videos can be edited:
@@ -41,11 +41,11 @@ Videos can be edited:
 >>> browser.getControl(name='form.keywords').value = (
 ...     '[{"code": "tag://testtag", "pinned": false}]')
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...Updated on...
 
 Videos can be checked in:
 
 >>> browser.getLink('Checkin').click()
->>> print browser.contents
+>>> print(browser.contents)
 <..."video" has been checked in...

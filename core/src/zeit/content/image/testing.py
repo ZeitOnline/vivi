@@ -1,4 +1,4 @@
-import gocept.httpserverlayer.wsgi
+import gocept.httpserverlayer.static
 import gocept.selenium
 import os.path
 import pkg_resources
@@ -28,9 +28,13 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
-HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = gocept.selenium.WebdriverLayer(
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(
+    name='HTTPStaticLayer',
+    bases=(HTTP_LAYER,))
+
+WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
@@ -43,6 +47,7 @@ def create_local_image(filename, path='browser/testdata/'):
         __name__, '%s%s' % (path, filename))
     fh.write(open(file_name, 'rb').read())
     fh.close()
+    image.__name__ = filename
     return image
 
 
@@ -68,7 +73,7 @@ def create_image_group_with_master_image(file_name=None):
         try:
             fh = zeit.cms.interfaces.ICMSContent(file_name).open()
         except TypeError:
-            fh = open(file_name)
+            fh = open(file_name, 'rb')
     extension = os.path.splitext(file_name)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
@@ -88,6 +93,11 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = WSGI_LAYER
+
+
+class StaticBrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = HTTP_STATIC_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):

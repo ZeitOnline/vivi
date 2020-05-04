@@ -12,7 +12,8 @@ gc.set_threshold(700, 10, 5)
 
 @zope.component.adapter(zope.app.publication.interfaces.IEndRequestEvent)
 def clean_exc_info(event):
-    sys.exc_clear()
+    if sys.version_info < (3,):
+        sys.exc_clear()
 
 
 @zope.component.adapter(zope.app.publication.interfaces.IEndRequestEvent)

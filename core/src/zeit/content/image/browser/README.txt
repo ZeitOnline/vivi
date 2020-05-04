@@ -14,7 +14,7 @@ Listing
 There is an image in the repository. Get the listing:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   ...<span class="URL">http://localhost/.../DSC00109_2.JPG</span>...
 
@@ -23,7 +23,7 @@ Now we get the metadata preview:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">
       ...
@@ -86,7 +86,7 @@ Fill out some values:
 >>> import os
 >>> test_file = os.path.join(
 ...     os.path.dirname(__file__), 'testdata', 'opernball.jpg')
->>> test_data = file(test_file, 'rb')
+>>> test_data = open(test_file, 'rb')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl('Image title').value = 'Opernball'
@@ -115,7 +115,7 @@ Let's verify get the right file data back from the image:
 
 >>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...            'DSC00109_2.JPG/@@raw')
->>> test_data.seek(0)
+>>> _ = test_data.seek(0)
 >>> image.contents == test_data.read()
 True
 >>> test_data.close()
@@ -129,7 +129,7 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="image-metadata">
@@ -150,14 +150,14 @@ When editing an image and not uploading a new image the old image is kept:
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl(name='form.title').value = 'Opernball in Wien'
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml...
     ...Updated on ...
 
 Make sure the image is not changed by looking at the image view:
 
 >>> browser.getLink('View').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
   <title>
     Opernball in Wien – View image
@@ -199,7 +199,7 @@ Try the drag pane:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@drag-pane.html')
->>> print browser.contents
+>>> print(browser.contents)
   <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">Opernball</div>
   <div class="UniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</div>
@@ -223,7 +223,7 @@ The image file is required:
 ...     'ZEIT ONLINE')
 
 >>> browser.getControl(name='form.actions.add').click()
->>> print browser.contents
+>>> print(browser.contents)
 <...
 <label for="form.blob">
   <span>Upload new image</span>
@@ -266,7 +266,7 @@ The zeit.content.image package provides an image browser for IFolder:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
 >>> browser.getLink('Images').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> 2006 – Images </title>
@@ -319,7 +319,7 @@ Lets create an image group:
 >>> menu.displayValue = ['Image group']
 >>> url = menu.value[0]
 >>> browser.open(menu.value[0])
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 2006 – Add image group
 
 There must not be the "references" field on the add form:
@@ -329,7 +329,7 @@ False
 >>> def set_file_data(name, field):
 ...     test_file = os.path.join(
 ...         os.path.dirname(__file__), 'testdata', name)
-...     test_data = file(test_file, 'rb')
+...     test_data = open(test_file, 'rb')
 ...     file_control = browser.getControl(name='form.' + field)
 ...     file_control.add_file(test_data, 'image/jpeg', name)
 
@@ -350,7 +350,7 @@ done directly in the repository:
 >>> hampshire_url = browser.url
 >>> hampshire_url
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 New Hampshire – Image group
 
 
@@ -398,7 +398,7 @@ And another one:
 Let's have a look at the file list:
 
 >>> browser.getLink('File list').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> New Hampshire – Image group </title>
@@ -464,7 +464,7 @@ in the workingcopy)
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/new-hampshire-2/@@edit.html'
 
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> New Hampshire – Edit image group </title>
@@ -487,7 +487,7 @@ LinkNotFoundError
 But an edit tab:
 
 >>> browser.getLink('Metadata').click()
->>> print browser.title.strip()
+>>> print(browser.title.strip())
 New Hampshire – Edit image group
 
 Make sure we have a metadata preview for local image groups:
@@ -495,7 +495,7 @@ Make sure we have a metadata preview for local image groups:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'new-hampshire-2/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
 <div class="context-views">
     ...
@@ -511,7 +511,7 @@ Checkin again:
 Check the metadata view, to verify we have actually changed the alt text:
 
 >>> browser.getLink('Metadata').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml version="1.0"?>
 <!DOCTYPE html ...
     <title> New Hampshire – Image group metadata </title>
@@ -523,7 +523,7 @@ Make sure we have a metadata preview for repository image groups:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/2006/'
 ...     'new-hampshire/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
 <div class="context-views">
     ...
@@ -542,7 +542,7 @@ Make sure we have a metadata preview for repository image groups:
 Make sure the image group view doesn't break when there is some other object
 than an image in the image group:
 
->>> import StringIO
+>>> from io import BytesIO
 >>> import zope.component
 >>> import zeit.connector.interfaces
 >>> import zeit.connector.resource
@@ -550,13 +550,13 @@ than an image in the image group:
 ...     zeit.connector.interfaces.IConnector)
 >>> connector.add(zeit.connector.resource.Resource(
 ...     'http://xml.zeit.de/2006/new-hampshire/foo',
-...     'foo', 'strage-type', StringIO.StringIO('data')))
+...     'foo', 'strage-type', BytesIO(b'data')))
 >>> import transaction
 >>> transaction.commit()
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/new-hampshire')
 >>> browser.getLink('File list').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <td>
       new-hampshire-450x200.jpg
@@ -566,7 +566,7 @@ than an image in the image group:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/2006/'
 ...     'new-hampshire/@@metadata_preview')
->>> print browser.contents
+>>> print(browser.contents)
  <div class="contextViewsAndActions">
 <div class="context-views">
     ...
@@ -579,7 +579,7 @@ The image group has a special drag pane which shows all the images:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/'
 ...     'repository/2006/new-hampshire/@@drag-pane.html')
->>> print browser.contents
+>>> print(browser.contents)
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
@@ -594,14 +594,14 @@ break):
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/2006/new-hampshire/'
 ...     '@@get_object_browser')
->>> print browser.contents
+>>> print(browser.contents)
  <h1>http://xml.zeit.de/2006/new-hampshire/</h1>
  ...
 
 Image groups also have a thumbnail:
 
 >>> browser.open('@@thumbnail')
->>> print browser.headers
+>>> print(browser.headers)
 Status: 200 Ok
 Content-Length: ...
 Content-Type: image/jpeg
@@ -619,11 +619,11 @@ read it):
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image (single)']
 >>> browser.open(menu.value[0])
->>> test_data = StringIO.StringIO('392-392938r82r')
+>>> test_data = BytesIO(b'392-392938r82r')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'corrupt.jpg')
 >>> browser.getControl(name='form.actions.add').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     ...The uploaded image could not be identified...
 
@@ -636,7 +636,7 @@ Images are sent with correct-type, length and last-modified headers:
 
 >>> image.open(
 ...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw')
->>> print image.headers
+>>> print(image.headers)
 Status: 200 Ok
 Content-Length: ...
 Content-Type: image/jpeg

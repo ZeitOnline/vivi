@@ -21,8 +21,7 @@ Instantiate and verify the inital xml:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content.__parent__ = repository
 
->>> import lxml.etree
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body/>
@@ -45,7 +44,7 @@ Now that was pretty boring. Add a title and year (from common metadata):
 
 >>> content.title = u'gocept'
 >>> content.year = 2008
->>> print lxml.etree.tostring(content.xml, pretty_print=True)
+>>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2008</attribute>
@@ -87,7 +86,7 @@ Browser tests
 Make sure we have a default view:
 
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <title> testcontent – View </title>
     ... 
@@ -108,7 +107,7 @@ which is invalid though:
 >>> browser.getControl('Ressort').displayOptions
 ['(nothing selected)', 'Deutschland', ...]
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <div id="messages" class="haveMessages">
       <ul>
@@ -128,7 +127,7 @@ which is invalid though:
 >>> browser.getControl(name='form.authors.0.').value = 'ich'
 >>> browser.getControl('Copyright').value = 'ich'
 >>> browser.getControl('Apply').click()
->>> print browser.contents
+>>> print(browser.contents)
 <?xml ...
     <div id="messages" class="haveMessages">
       <ul>
