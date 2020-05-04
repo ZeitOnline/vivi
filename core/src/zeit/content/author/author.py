@@ -48,7 +48,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
-        'is_author',
         'is_cook',
         'lastname',
         'occupation',
@@ -74,6 +73,9 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
+
+    is_author = zeit.cms.content.property.ObjectPathProperty(
+        '.is_author', use_default=True)
 
     @classmethod
     def exists(cls, firstname, lastname):
