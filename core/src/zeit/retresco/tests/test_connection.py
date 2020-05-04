@@ -111,27 +111,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         result = tms.get_article_body(self.repository['testcontent'])
         self.assertEqual('<body>lorem ipsum</body>', result)
 
-    def test_get_topicpage_documents_pagination(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        with mock.patch.object(tms, '_request') as request:
-            request.return_value = {'num_found': 0, 'docs': []}
-            # Default values
-            tms.get_topicpage_documents('tms-id')
-            self.assertEqual(1, request.call_args[1]['params']['page'])
-            self.assertEqual(25, request.call_args[1]['params']['rows'])
-            # Passes through rows
-            tms.get_topicpage_documents('tms-id', 0, 7)
-            self.assertEqual(1, request.call_args[1]['params']['page'])
-            self.assertEqual(7, request.call_args[1]['params']['rows'])
-            # Calculates page from start
-            tms.get_topicpage_documents('tms-id', 5, 5)
-            self.assertEqual(2, request.call_args[1]['params']['page'])
-            tms.get_topicpage_documents('tms-id', 10, 5)
-            self.assertEqual(3, request.call_args[1]['params']['page'])
-            # Does not break on rows=0
-            tms.get_topicpage_documents('tms-id', 0, 0)
-            self.assertEqual(1, request.call_args[1]['params']['page'])
-
     def test_get_topicpages_pagination(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, '_request') as request:
