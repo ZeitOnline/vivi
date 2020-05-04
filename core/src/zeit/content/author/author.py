@@ -48,6 +48,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
+        'is_author',
         'is_cook',
         'lastname',
         'occupation',
