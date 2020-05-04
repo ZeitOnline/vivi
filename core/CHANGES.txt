@@ -5,7 +5,7 @@ vivi.core changes
 4.31.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- IR-51: Volume table of contents
 
 
 4.31.0 (2020-04-29)
