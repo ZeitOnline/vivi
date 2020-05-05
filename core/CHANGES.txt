@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.31.2 (unreleased)
+4.31.2 (2020-05-05)
 -------------------
 
 - WOMA-68: Set IAuthor.is_author use_default=True
