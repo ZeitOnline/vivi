@@ -249,7 +249,7 @@ setup(
             'zc_datetimewidget=zeit.cms.browser.resources:zc_datetimewidget',
         ],
         'pytest11': [
-            'zeit_pytest=zeit.pytest'
+            'zeit_vivi=zeit.pytest'
         ],
     }
 )

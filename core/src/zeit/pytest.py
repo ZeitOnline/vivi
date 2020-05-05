@@ -2,9 +2,16 @@
 # <https://docs.pytest.org/en/latest/writing_plugins.html>
 # "Note that pytest does not find conftest.py files in deeper nested sub
 # directories at tool startup" -- which is where we need addoption to run.
+import six
 
 
 def pytest_addoption(parser):
-    parser.addoption(
-        '--visible', action='store_true',
-        default=False, help='Show browser when running tests')
+    try:
+        parser.addoption(
+            '--visible', action='store_true',
+            default=False, help='Show browser when running tests')
+    except ValueError as e:
+        if 'already added' in six.text_type(e):
+            pass
+        else:
+            raise

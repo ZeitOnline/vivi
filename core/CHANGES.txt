@@ -5,7 +5,8 @@ vivi.core changes
 4.31.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Don't break when running test in zeit.web, when pytest option
+  `--visible` will be added by both vivi.core and zeit.web
 
 
 4.31.2 (2020-05-05)
