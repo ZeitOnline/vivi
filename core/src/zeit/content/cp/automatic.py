@@ -384,12 +384,12 @@ class TMSContentQuery(ContentQuery):
     def __call__(self):
         result = []
         cache = centerpage_cache(self.context, 'tms_topic_queries')
-        rows = self._teaser_count + 5           # total teasers + some spares
-        key = (self.topicpage, self.filter_id, self.start)
+        rows = self._teaser_count + 5  # total teasers + some spares
+        start = self.start
+        key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            start = self.start
             response, hits = self._get_documents(start=start, rows=rows)
             cache[key] = response, start, hits
         while len(result) < self.rows:
