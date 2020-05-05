@@ -382,16 +382,23 @@ class TMSContentQuery(ContentQuery):
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
-        result = []
+        result, _ = self._fetch(self.start)
+        return result
+
+    def _fetch(self, start):
+        """Extension point for zeit.web to do pagination and de-duping."""
+
         cache = centerpage_cache(self.context, 'tms_topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
-        start = self.start
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
         else:
             response, hits = self._get_documents(start=start, rows=rows)
             cache[key] = response, start, hits
+
+        result = []
+        dupes = 0
         while len(result) < self.rows:
             try:
                 item = next(response)
@@ -403,11 +410,16 @@ class TMSContentQuery(ContentQuery):
                     item = next(response)
                 except StopIteration:
                     break                       # results are exhausted
+
             content = self._resolve(item)
-            if content is not None and (not self.context.hide_dupes or
-                                        content not in self.existing_teasers):
+            if content is None:
+                continue
+            if self.context.hide_dupes and content in self.existing_teasers:
+                dupes += 1
+            else:
                 result.append(content)
-        return result
+
+        return result, dupes
 
     def _get_documents(self, **kw):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)

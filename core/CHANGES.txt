@@ -2,10 +2,10 @@ vivi.core changes
 =================
 
 
-4.31.4 (unreleased)
+4.32.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-4945: Provide TMSContentQuery._fetch() extension point for zeit.web
 
 
 4.31.3 (2020-05-05)
