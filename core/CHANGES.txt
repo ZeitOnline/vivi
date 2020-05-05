@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.31.3 (unreleased)
+4.31.3 (2020-05-05)
 -------------------
 
 - MAINT: Don't break when running test in zeit.web, when pytest option
