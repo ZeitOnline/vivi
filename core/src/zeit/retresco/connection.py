@@ -86,7 +86,7 @@ class TMS(object):
         return result
 
     def get_topicpage_documents(self, id, start=0, rows=25, filter=None):
-        params = {'page': int(start / max(rows, 1)) + 1, 'rows': rows}
+        params = {'start': start, 'rows': rows}
         if filter is not None:
             params['filter'] = filter
         response = self._request(
