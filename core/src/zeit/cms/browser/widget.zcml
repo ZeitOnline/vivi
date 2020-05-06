@@ -286,4 +286,12 @@
       permission="zope.Public"
       />
 
+  <adapter
+      for=".manual.LinkField
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory=".manual.LinkWidget"
+      permission="zope.Public"
+      />
+
 </configure>

@@ -468,6 +468,7 @@ cms_product_config = """\
   source-channels file://{base}/content/ressorts.xml
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
+  source-manual file://{base}/content/manual.xml
 
   config-retractlog file://{base}/retractlog/retractlog.xml
 

@@ -5,7 +5,7 @@ vivi.core changes
 4.32.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5869: Add manual link to article embed form
 
 
 4.32.1 (2020-05-06)
