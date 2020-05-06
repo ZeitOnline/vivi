@@ -15,15 +15,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
 "POT-Creation-Date: Mon May  4 10:47:05 2020\n"
-"PO-Revision-Date: 2020-05-04 10:47+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2020-05-06 08:40+0200\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:15
 #: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:132
@@ -2658,7 +2658,7 @@ msgstr "Autor hinzufügen"
 msgid "Found author in honorar system"
 msgstr ""
 "In der zentralen Autoren-Datenbank von ZEIT und ZEIT ONLINE gibt es bereits "
-"einen Autor mit diesem Namen."
+"mind. einen Autor mit diesem Namen."
 
 #: zeit/content/author/browser/honorar-result.pt:19
 msgid "Import author"
