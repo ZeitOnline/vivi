@@ -42,7 +42,7 @@ class Honorar(object):
             'script': 'restNeuAutor',
             'script.param': b64encode(json.dumps(data))
         })
-        return result['response']['scriptResult']
+        return result['response']['scriptResult']['gcid']
 
     def _request(self, request, retries=0, **kw):
         if retries > 1:
