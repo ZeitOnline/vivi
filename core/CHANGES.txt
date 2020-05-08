@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.32.2 (unreleased)
+4.32.2 (2020-05-08)
 -------------------
 
 - BUG-1238: Fix volume zplus webtrekk query
