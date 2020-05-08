@@ -19,6 +19,7 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
             id + '.wrapper', 'onclick', self, self.handle_click);
         self._initialize_autocomplete();
         self._initialize_sortable();
+        self.element.addEventListener("change", function() { self.update_entry(self.data) } );
     },
 
     _initialize_autocomplete: function() {
@@ -55,6 +56,9 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
                 $(self.data).trigger('change');
             }
         });
+        self.list.querySelectorAll('.ingredient__amount').forEach(function(i) {
+            i.value = i.parentNode.getAttribute('data-amount');
+        });
     },
 
     handle_click: function(event) {
@@ -84,6 +88,17 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         return result;
     },
 
+    update_entry: function(data) {
+        const id = event.target.parentElement.getAttribute('cms:uniqueid');
+        let ingredients = JSON.parse(data.value);
+        ingredients.forEach(function(i) {
+            if (i.code === id) {
+                i.amount = event.target.value;
+            };
+        });
+        data.value = JSON.stringify(ingredients);
+    },
+
     delete: function(event) {
         var self = this;
         $(event.target()).closest('li').remove();
@@ -105,7 +120,8 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         var item = LI(
             {'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
-            A({}, label)
+            A({}, label),
+            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount'}),
         );
         if (position === 'end') {
             $(self.list).append(item);
