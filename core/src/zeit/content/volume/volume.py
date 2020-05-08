@@ -404,7 +404,7 @@ def _find_performing_articles_via_webtrekk(volume):
     """
     api_date_format = '%Y-%m-%d %H:%M:%S'
     cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)'
-    order_metric_name = u'Anzahl Bestellungen \u2013\xa0Zplus (Seitenbasis)'
+    order_metric_name = u'Anzahl Bestellungen mit Seitenbezug'
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.volume')
     info = zeit.cms.workflow.interfaces.IPublishInfo(volume)
