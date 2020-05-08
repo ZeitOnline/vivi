@@ -3,7 +3,7 @@ import zope.schema
 
 
 class IIngredients(zope.interface.Interface):
-    """Maker interface for ingredients."""
+    """Marker interface for ingredients."""
 
     def search(term):
         """Return a list of ingredients whose names contain the given term."""

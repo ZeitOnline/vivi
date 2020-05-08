@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <ingredients>
   <chicken>
-    <ingredient id="brathaenchen">Brathähnchen</ingredient>
+    <ingredient id="brathaehnchen">Brathähnchen</ingredient>
     <ingredient id="chicken-nuggets">Chicken Nuggets</ingredient>
   </chicken>
   <fish>
