@@ -1,5 +1,7 @@
 .tocListing > thead > tr > th:nth-last-child(2),
-.tocListing > tbody > tr > td:nth-last-child(2) {
+.tocListing > thead > tr > th:nth-last-child(3),
+.tocListing > tbody > tr > td:nth-last-child(2),
+.tocListing > tbody > tr > td:nth-last-child(3) {
    display: none;
 }
 

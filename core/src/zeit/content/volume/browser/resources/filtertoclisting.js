@@ -32,7 +32,7 @@ function filterTocListingTable() {
     // The current filter datas
     var filterData = {
         contenttype: getTrimedElementById('filter_content_typ'),
-        publish: getTrimedElementById('filter_availibility'),
+        access: getTrimedElementById('filter_availibility'),
         urgent: filterIsCheked('filter_is_urgent'),
         optimized: filterIsCheked('filter_is_optimized'),
         ressort: getTrimedElementById('filter_ressort'),
@@ -47,8 +47,8 @@ function filterTocListingTable() {
         var curRowData = {
             contenttype: getTdValue(row.querySelector('td:nth-child(1) img'),
             'alt'),
-            publish: getTdValue(row.querySelector('.workflow-column > span'),
-            'title'),
+            access: getTdValue(row.querySelector('td:nth-child(13)'),
+            'innerText'),
             urgent: getTdValue(row.querySelector('td:nth-child(9)'),
             'innerText'),
             optimized: getTdValue(row.querySelector('td:nth-child(10)'),
@@ -154,7 +154,6 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
     Array.from(filterValues).sort().forEach(function(filterValue) {
         var opt = document.createElement('option');
         opt.text = filterValue;
-
         filterSelectForm.appendChild(opt);
     });
 }
@@ -200,17 +199,14 @@ jQuery(document).ready(function() {
     // insert the filter values of the three dropdown menus
     setFilterValues(
         '#topcontent table tr td:nth-child(1) img',
-        'filter_content_typ',
-        'alt');
+        'filter_content_typ', 'alt');
 
     setFilterValues(
-        '.workflow-column > span',
-        'filter_availibility',
-        'title');
+        '#topcontent table tr td:nth-child(13)',
+        'filter_availibility', 'innerText');
 
     setFilterValues(
         '#topcontent table tr td:nth-child(8)',
-        'filter_ressort',
-        'innerText');
+        'filter_ressort', 'innerText');
     //////////////////////////////////////////////////////////
 });

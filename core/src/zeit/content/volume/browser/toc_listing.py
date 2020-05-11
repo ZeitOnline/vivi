@@ -39,5 +39,9 @@ class TocListing(zeit.cms.browser.listing.Listing):
             _('Teaserimage'),
             name='teaserimage',
             getter=lambda t, c: t.teaserimage is not None),) +
+        (zeit.cms.browser.listing.GetterColumn(
+            _('Access'),
+            name='access',
+            getter=lambda t, c: t.access),) +
         zeit.cms.browser.listing.Listing.columns[10:]
     )

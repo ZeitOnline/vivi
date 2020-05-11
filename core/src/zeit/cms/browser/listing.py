@@ -110,6 +110,10 @@ class CommonListRepresentation(BaseListRepresentation):
         return self.context.year
 
     @zope.cachedescriptors.property.Lazy
+    def access(self):
+        return self.context.access
+
+    @zope.cachedescriptors.property.Lazy
     def workflow(self):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
 
