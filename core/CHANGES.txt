@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.32.4 (unreleased)
+4.32.4 (2020-05-11)
 -------------------
 
 - IR-51: Translate filter values
