@@ -35,10 +35,11 @@
       <span i18n:translate="">Supertitle available</span>
       <input type="checkbox" id="filter_has_supertitle"/>
     </span>
-
+</div>
+<div>
     <span class="toclisting_container">
-      <span id="numberOfVisibleRows"></span>
-      <strong i18n:translate="">toc rows</strong>
+        <span id="numberOfVisibleRows"></span>
+        <strong i18n:translate="">toc rows</strong>
     </span>
 </div>
 <form name="containerContentsForm" method="get"
