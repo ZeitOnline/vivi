@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed May  6 12:58:29 2020\n"
-"PO-Revision-Date: 2020-05-06 13:03+0200\n"
+"POT-Creation-Date: Mon May 11 11:48:09 2020\n"
+"PO-Revision-Date: 2020-05-11 11:50+0200\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:15
 #: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py2.7.egg/zope/app/component/browser/configure.zcml:132
@@ -197,6 +197,7 @@ msgstr "Zuerst veröffentlicht am"
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/volume/browser/toc-listing.pt:49
 #: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
@@ -349,8 +350,8 @@ msgstr "Treffer"
 
 #: zeit/cms/browser/listing.py:311 zeit/cms/content/interfaces.py:84
 #: zeit/cms/content/interfaces.py:691 zeit/content/cp/interfaces.py:350
-#: zeit/content/volume/browser/toc_listing.py:22
-#: zeit/content/volume/browser/toc_listing.py:35
+#: zeit/content/volume/browser/toc-listing.pt:25
+#: zeit/content/volume/browser/toc_listing.py:26
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -1737,6 +1738,7 @@ msgstr "Animation"
 #: zeit/content/dynamicfolder/browser/folder.py:20
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/volume/browser/configure.zcml:18
 #: zeit/magazin/browser/configure.zcml:46
 #: zeit/magazin/browser/configure.zcml:74
 #: zeit/magazin/browser/configure.zcml:100
@@ -1748,6 +1750,7 @@ msgstr "Metadaten bearbeiten"
 #: zeit/content/cp/browser/configure.zcml:53
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/volume/browser/configure.zcml:73
 msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
@@ -2419,7 +2422,7 @@ msgstr "Episoden-ID"
 #: zeit/content/cp/interfaces.py:460 zeit/content/cp/interfaces.py:679
 #: zeit/content/infobox/interfaces.py:13
 #: zeit/content/video/browser/object-details-body.pt:20
-#: zeit/content/volume/browser/toc_listing.py:30
+#: zeit/content/volume/browser/toc_listing.py:21
 msgid "Supertitle"
 msgstr "Spitzmarke"
 
@@ -4029,6 +4032,12 @@ msgstr "Video-Playlist anzeigen"
 msgid "Publish content of this volume"
 msgstr "Gesamte Ausgabe veröffentlichen"
 
+#: zeit/content/volume/browser/configure.zcml:64
+#: zeit/content/volume/browser/configure.zcml:119
+#: zeit/content/volume/browser/toc.py:90
+msgid "Table of Content"
+msgstr "Inhaltsverzeichnis"
+
 #: zeit/content/volume/browser/form.py:21
 msgid "A volume with the given name already exists."
 msgstr "Eine solche Ausgabe gibt es bereits."
@@ -4053,47 +4062,43 @@ msgstr "Sammelveröffentlichung"
 msgid "edit volume teaser text"
 msgstr "Teaser-Text bearbeiten"
 
-#: zeit/content/volume/browser/toc.py:90
-msgid "Table of Content"
-msgstr "Inhaltsverzeichnis"
-
-#: zeit/content/volume/browser/toc_listing.py:16
-msgid "Teaser image available"
-msgstr "Teaserbild vorhanden"
-
-#: zeit/content/volume/browser/toc_listing.py:17
-msgid "Supertitle available"
-msgstr "Spitzmarke vorhanden"
-
-#: zeit/content/volume/browser/toc_listing.py:18
-msgid "Content-Typ"
+#: zeit/content/volume/browser/toc-listing.pt:5
+msgid "Filter Content-Type"
 msgstr "Content-Typ"
 
-#: zeit/content/volume/browser/toc_listing.py:19
+#: zeit/content/volume/browser/toc-listing.pt:10
 msgid "Availability"
 msgstr "Verfügbarkeit"
 
-#: zeit/content/volume/browser/toc_listing.py:20
+#: zeit/content/volume/browser/toc-listing.pt:15
 msgid "is urgent"
-msgstr "ist eilig"
+msgstr "eilig"
 
-#: zeit/content/volume/browser/toc_listing.py:21
+#: zeit/content/volume/browser/toc-listing.pt:20
 msgid "is SEO optimized"
-msgstr "ist SEO optimiert"
+msgstr "SEO-optimiert"
 
-#: zeit/content/volume/browser/toc_listing.py:23
-msgid "rows"
+#: zeit/content/volume/browser/toc-listing.pt:30
+msgid "Teaser image available"
+msgstr "Mit Teaserbild"
+
+#: zeit/content/volume/browser/toc-listing.pt:35
+msgid "Supertitle available"
+msgstr "Mit Spitzmarke"
+
+#: zeit/content/volume/browser/toc-listing.pt:41
+msgid "toc rows"
 msgstr "Reihen"
 
-#: zeit/content/volume/browser/toc_listing.py:39 zeit/workflow/interfaces.py:66
+#: zeit/content/volume/browser/toc_listing.py:30 zeit/workflow/interfaces.py:66
 msgid "Urgent"
 msgstr "eilig"
 
-#: zeit/content/volume/browser/toc_listing.py:43 zeit/workflow/interfaces.py:61
+#: zeit/content/volume/browser/toc_listing.py:34 zeit/workflow/interfaces.py:61
 msgid "status-seo-optimized"
 msgstr "optimiert (SEO)"
 
-#: zeit/content/volume/browser/toc_listing.py:48
+#: zeit/content/volume/browser/toc_listing.py:39
 msgid "Teaserimage"
 msgstr "Teaserbild"
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed May  6 12:58:29 2020\n"
+"POT-Creation-Date: Mon May 11 11:48:09 2020\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -209,6 +209,7 @@ msgstr ""
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/volume/browser/toc-listing.pt:49
 #: zeit/edit/browser/inlineform.pt:16
 #: zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
@@ -385,8 +386,8 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:84
 #: zeit/cms/content/interfaces.py:691
 #: zeit/content/cp/interfaces.py:350
-#: zeit/content/volume/browser/toc_listing.py:22
-#: zeit/content/volume/browser/toc_listing.py:35
+#: zeit/content/volume/browser/toc-listing.pt:25
+#: zeit/content/volume/browser/toc_listing.py:26
 msgid "Ressort"
 msgstr ""
 
@@ -1773,6 +1774,7 @@ msgstr ""
 #: zeit/content/dynamicfolder/browser/folder.py:20
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/volume/browser/configure.zcml:18
 #: zeit/magazin/browser/configure.zcml:46
 #: zeit/magazin/browser/configure.zcml:74
 #: zeit/magazin/browser/configure.zcml:100
@@ -1784,6 +1786,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:53
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/volume/browser/configure.zcml:73
 msgid "View metadata"
 msgstr ""
 
@@ -2473,7 +2476,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:679
 #: zeit/content/infobox/interfaces.py:13
 #: zeit/content/video/browser/object-details-body.pt:20
-#: zeit/content/volume/browser/toc_listing.py:30
+#: zeit/content/volume/browser/toc_listing.py:21
 msgid "Supertitle"
 msgstr ""
 
@@ -4087,6 +4090,12 @@ msgstr ""
 msgid "Publish content of this volume"
 msgstr ""
 
+#: zeit/content/volume/browser/configure.zcml:64
+#: zeit/content/volume/browser/configure.zcml:119
+#: zeit/content/volume/browser/toc.py:90
+msgid "Table of Content"
+msgstr ""
+
 #: zeit/content/volume/browser/form.py:21
 msgid "A volume with the given name already exists."
 msgstr ""
@@ -4111,49 +4120,45 @@ msgstr ""
 msgid "edit volume teaser text"
 msgstr ""
 
-#: zeit/content/volume/browser/toc.py:90
-msgid "Table of Content"
+#: zeit/content/volume/browser/toc-listing.pt:5
+msgid "Filter Content-Type"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:16
-msgid "Teaser image available"
-msgstr ""
-
-#: zeit/content/volume/browser/toc_listing.py:17
-msgid "Supertitle available"
-msgstr ""
-
-#: zeit/content/volume/browser/toc_listing.py:18
-msgid "Content-Typ"
-msgstr ""
-
-#: zeit/content/volume/browser/toc_listing.py:19
+#: zeit/content/volume/browser/toc-listing.pt:10
 msgid "Availability"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:20
+#: zeit/content/volume/browser/toc-listing.pt:15
 msgid "is urgent"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:21
+#: zeit/content/volume/browser/toc-listing.pt:20
 msgid "is SEO optimized"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:23
-msgid "rows"
+#: zeit/content/volume/browser/toc-listing.pt:30
+msgid "Teaser image available"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:39
+#: zeit/content/volume/browser/toc-listing.pt:35
+msgid "Supertitle available"
+msgstr ""
+
+#: zeit/content/volume/browser/toc-listing.pt:41
+msgid "toc rows"
+msgstr ""
+
+#: zeit/content/volume/browser/toc_listing.py:30
 #: zeit/workflow/interfaces.py:66
 msgid "Urgent"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:43
+#: zeit/content/volume/browser/toc_listing.py:34
 #: zeit/workflow/interfaces.py:61
 msgid "status-seo-optimized"
 msgstr ""
 
-#: zeit/content/volume/browser/toc_listing.py:48
+#: zeit/content/volume/browser/toc_listing.py:39
 msgid "Teaserimage"
 msgstr ""
 
