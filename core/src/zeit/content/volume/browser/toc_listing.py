@@ -16,12 +16,12 @@ class TocListing(zeit.cms.browser.listing.Listing):
     css_class = 'contentListing hasMetadata tocListing'
 
     columns = (
-        zeit.cms.browser.listing.Listing.columns[0:5] +
+        zeit.cms.browser.listing.Listing.columns[0:4] +
         (zeit.cms.browser.listing.GetterColumn(
             _('Supertitle'),
             name='supertitle',
             getter=lambda t, c: t.supertitle),) +
-        zeit.cms.browser.listing.Listing.columns[5:6] +
+        zeit.cms.browser.listing.Listing.columns[4:6] +
         (zeit.cms.browser.listing.GetterColumn(
             _('Ressort'),
             name='ressort',
