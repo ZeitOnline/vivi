@@ -60,6 +60,7 @@
  zeit.cms.declare_namespace('zeit.content.volume');
  zeit.content.volume.TRANSLATIONS = {};
  zeit.content.volume.TRANSLATIONS['filter_access'] = ${view/access_values};
+ zeit.content.volume.TRANSLATIONS['filter_content_typ'] = ${view/type_values};
 "></script>
 
 </tal:block>

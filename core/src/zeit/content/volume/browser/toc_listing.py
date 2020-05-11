@@ -6,6 +6,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zope.browser.interfaces
 import zope.component
+import zope.i18n
 
 
 class CheckColumn(zeit.cms.browser.listing.GetterColumn):
@@ -36,10 +37,10 @@ class TocListing(zeit.cms.browser.listing.Listing):
             _('Urgent'),
             name='urgent',
             getter=lambda t, c: t.workflow.urgent),
-            CheckColumn(
-                _('status-seo-optimized'),
-                name='seo-optimized',
-                getter=lambda t, c: t.workflow.seo_optimized),) +
+         CheckColumn(
+             _('status-seo-optimized'),
+             name='seo-optimized',
+             getter=lambda t, c: t.workflow.seo_optimized),) +
         zeit.cms.browser.listing.Listing.columns[9:10] +
         (CheckColumn(
             _('Teaserimage'),
@@ -48,7 +49,11 @@ class TocListing(zeit.cms.browser.listing.Listing):
         (zeit.cms.browser.listing.GetterColumn(
             _('Access'),
             name='access',
-            getter=lambda t, c: t.access),) +
+            getter=lambda t, c: t.access),
+         zeit.cms.browser.listing.GetterColumn(
+            _('Type'),
+            name='content_type',
+            getter=lambda t, c: t.type),) +
         zeit.cms.browser.listing.Listing.columns[10:]
     )
 
@@ -59,7 +64,7 @@ class TocListing(zeit.cms.browser.listing.Listing):
         for value in source:
             term = terms.getTerm(value)
             key = term.token if use_token else value
-            result[key] = term.title
+            result[key] = zope.i18n.translate(term.title, context=self.request)
         return json.dumps(result)
 
     @cachedproperty
@@ -67,3 +72,9 @@ class TocListing(zeit.cms.browser.listing.Listing):
         return self._source_values(
             zeit.cms.content.interfaces.ICommonMetadata['access'].source(
                 self.context), use_token=False)
+
+    @cachedproperty
+    def type_values(self):
+        return self._source_values(
+            zeit.cms.content.sources.CMSContentTypeSource()(None),
+            use_token=True)

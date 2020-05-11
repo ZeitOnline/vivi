@@ -209,8 +209,8 @@ jQuery(document).ready(function() {
 
     // insert the filter values of the three dropdown menus
     setFilterValues(
-        '#topcontent table tr td:nth-child(1) img',
-        'filter_content_typ', 'alt');
+        '#topcontent table tr td:nth-child(14)',
+        'filter_content_typ', 'innerText');
 
     setFilterValues(
         '#topcontent table tr td:nth-child(13)',
