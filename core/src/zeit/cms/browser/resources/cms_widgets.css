@@ -780,3 +780,8 @@ a.button.addbullet:hover {
     padding-top: 1em;
     padding-bottom: 1em;
 }
+
+.manual-link {
+    background: url("./icons/icons_sprites.png") no-repeat scroll 1px -1920px transparent;
+    padding-left: 20px;
+}

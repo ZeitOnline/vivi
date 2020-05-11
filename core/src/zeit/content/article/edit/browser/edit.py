@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import json
+import zeit.cms.browser.manual
 import zeit.cms.browser.widget
 import zeit.cms.interfaces
 import zeit.content.article.edit.header
@@ -246,7 +247,9 @@ class EditRawText(
         return 'rawtext.{0}'.format(self.context.__name__)
 
 
-class EditEmbed(zeit.edit.browser.form.InlineForm):
+class EditEmbed(
+        zeit.cms.browser.manual.FormMixin,
+        zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
