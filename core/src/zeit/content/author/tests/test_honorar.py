@@ -23,8 +23,8 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
 
     layer = LAYER
     EMPTY_SEARCH_RESULT = json.dumps({'response': {'data': ''}})
-    CREATE_RESULT = json.dumps({'response': {'scriptResult': {
-        'anlage': 'ok', 'gcid': 'myid'}}})
+    CREATE_RESULT = json.dumps({'response': {
+        'scriptResult': json.dumps({'anlage': 'ok', 'gcid': 'myid'})}})
 
     def setUp(self):
         super(HDokIntegration, self).setUp()

@@ -7,6 +7,8 @@ vivi.core changes
 
 - IR-51: Translate filter values
 
+- MAINT: Update to changed hdok create API yet again
+
 
 4.32.3 (2020-05-11)
 -------------------

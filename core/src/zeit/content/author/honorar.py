@@ -42,7 +42,11 @@ class Honorar(object):
             'script': 'restNeuAutor',
             'script.param': b64encode(json.dumps(data))
         })
-        return result['response']['scriptResult']['gcid']
+        try:
+            data = json.loads(result['response']['scriptResult'])
+            return data['gcid']
+        except Exception:
+            raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
     def _request(self, request, retries=0, **kw):
         if retries > 1:
