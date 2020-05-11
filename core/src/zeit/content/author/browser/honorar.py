@@ -68,15 +68,8 @@ class Lookup(zeit.cms.browser.view.Base):
         return func()
 
     def GET(self):
-        count = len(self.results)
-        if count == 0:
-            params = self.create_parameters
-        elif count == 1:
-            params = self.results[0]['form_parameters']
-        else:
-            params = None
-        if params:
-            self.redirect_to_addform(params)
+        if not self.results:
+            self.redirect_to_addform(self.create_parameters)
             return
 
         # Render template to display selection
