@@ -13,15 +13,6 @@ class CheckColumn(zeit.cms.browser.listing.GetterColumn):
 
 class TocListing(zeit.cms.browser.listing.Listing):
 
-    teaser_image_available = _('Teaser image available')
-    supertitle_available = _('Supertitle available')
-    contenttype = _('Content-Typ')
-    availability = _('Availability')
-    is_urgent = _('is urgent')
-    is_seo_optimized = _('is SEO optimized')
-    ressort = _('Ressort')
-    rows = _('rows')
-
     css_class = 'contentListing hasMetadata tocListing'
 
     columns = (
