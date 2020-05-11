@@ -56,4 +56,10 @@
   </div>
   <div id="bottomcontent"></div>
 </form>
+<script type="text/javascript" tal:content="string:
+ zeit.cms.declare_namespace('zeit.content.volume');
+ zeit.content.volume.TRANSLATIONS = {};
+ zeit.content.volume.TRANSLATIONS['filter_access'] = ${view/access_values};
+"></script>
+
 </tal:block>

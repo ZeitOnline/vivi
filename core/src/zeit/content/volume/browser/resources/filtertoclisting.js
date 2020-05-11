@@ -145,16 +145,27 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
     }
 
     tableValues.forEach(function(tableValue) {
-        var val = tableValue[valueAttr];
+        var val = tableValue[valueAttr].trim();
         filterValues.add(val);
     });
 
     filterValues.add('');
 
+    var translations =  zeit.content.volume.TRANSLATIONS[filter_id];
     Array.from(filterValues).sort().forEach(function(filterValue) {
-        var opt = document.createElement('option');
-        opt.text = filterValue;
-        filterSelectForm.appendChild(opt);
+        var title = filterValue;
+        if (translations !== undefined) {
+            title = translations[filterValue];
+        }
+        if (filterValue === '') {
+            title = '';
+        }
+        if (title !== undefined) {
+          var opt = document.createElement('option');
+          opt.setAttribute('value', filterValue);
+          opt.text = title;
+          filterSelectForm.appendChild(opt);
+        }
     });
 }
 
