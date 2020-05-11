@@ -7,8 +7,8 @@
     </span>
 
     <span class="toclisting_container">
-      <span i18n:translate="">Availability</span>
-      <select id="filter_availibility"></select>
+      <span i18n:translate="">Access</span>
+      <select id="filter_access"></select>
     </span>
 
     <span class="toclisting_container">

@@ -32,7 +32,7 @@ function filterTocListingTable() {
     // The current filter datas
     var filterData = {
         contenttype: getTrimedElementById('filter_content_typ'),
-        access: getTrimedElementById('filter_availibility'),
+        access: getTrimedElementById('filter_access'),
         urgent: filterIsCheked('filter_is_urgent'),
         optimized: filterIsCheked('filter_is_optimized'),
         ressort: getTrimedElementById('filter_ressort'),
@@ -162,7 +162,7 @@ function setFilterValues(td_query_selector, filter_id, valueAttr) {
  * Register filter change events
  */
 function registerFilterChangeEvents() {
-    ['filter_content_typ', 'filter_availibility', 'filter_is_urgent',
+    ['filter_content_typ', 'filter_access', 'filter_is_urgent',
     'filter_is_optimized', 'filter_ressort', 'filter_has_supertitle',
     'filter_has_teaser_img'].map(function(el) {
         var filterElement = document.getElementById(el);
@@ -203,7 +203,7 @@ jQuery(document).ready(function() {
 
     setFilterValues(
         '#topcontent table tr td:nth-child(13)',
-        'filter_availibility', 'innerText');
+        'filter_access', 'innerText');
 
     setFilterValues(
         '#topcontent table tr td:nth-child(8)',
