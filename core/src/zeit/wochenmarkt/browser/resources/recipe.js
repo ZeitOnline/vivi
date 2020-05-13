@@ -34,8 +34,8 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
             select: function(event, ui) {
                 self.add(
                     ui.item.value, ui.item.label,
-                    0, /*amount*/
-                    '', /*unit*/
+                    '', /*amount*/
+                    'Stück', /*unit*/
                     'start' /*position=*/
                 );
                 $(self.autocomplete).val('');
@@ -56,8 +56,9 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
                 $(self.data).trigger('change');
             }
         });
-        self.list.querySelectorAll('.ingredient__amount').forEach(function(i) {
-            i.value = i.parentNode.getAttribute('data-amount');
+        self.list.querySelectorAll('[data-name = "ingredient__item"]').forEach(function(i) {
+            i.querySelector('input').value = i.getAttribute('data-amount');
+            i.querySelector('select').value = i.getAttribute('data-unit');
         });
     },
 
@@ -80,7 +81,7 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
             el = $(el);
             result.push({
                 code: el.attr('cms:uniqueId'),
-                label: el.text(),
+                label: el.contents().get(1).text,
                 amount: el.attr('data-amount'),
                 unit: el.attr('data-unit')
             });
@@ -118,11 +119,16 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
             position = 'end';
         }
         var item = LI(
-            {'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit},
+            {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-name': 'ingredient__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
-            A({}, label),
-            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount'}),
+            A({'class': 'ingredient__label'}, label),
+            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount'}),
         );
+        let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
+        ['Stück', 'kg', 'g', 'l', 'ml'].forEach(function(i) {
+            select.appendChild(OPTION({}, i));
+        });
+        item.appendChild(select);
         if (position === 'end') {
             $(self.list).append(item);
         } else {
