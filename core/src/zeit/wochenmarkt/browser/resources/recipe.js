@@ -90,12 +90,19 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
     },
 
     update_entry: function(data) {
-        const id = event.target.parentElement.getAttribute('cms:uniqueid');
+        const parent_el = event.target.parentElement;
+        const id = parent_el.getAttribute('cms:uniqueid');
         let ingredients = JSON.parse(data.value);
         ingredients.forEach(function(i) {
             if (i.code === id) {
-                i.amount = event.target.value;
-            };
+                const val = event.target.value;
+                if (event.target.getAttribute('data-id') === 'amount' && isNaN(parseInt(val))) {
+                    event.target.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
+                } else {
+                    i[event.target.getAttribute('data-id')] = val;
+                    event.target.style.background = 'linear-gradient(0deg, #FFF, #CFD)';
+                }
+            }
         });
         data.value = JSON.stringify(ingredients);
     },
