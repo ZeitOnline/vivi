@@ -767,6 +767,25 @@ a.button.configure_search:hover {
   border-width: 1px 0px 0px 0px;
 }
 
+.ingredients-widget .ingredient__item {
+  height: 3em;
+}
+
+.ingredient__label {
+  display: inline-block;
+  min-width: 10em;
+}
+
+.field .ingredient__amount {
+  width: 3em;
+}
+
+.field .ingredient__unit {
+  margin-left: 1em;
+  vertical-align: baseline;
+  width: 5em;
+}
+
 .rst-preview {
     white-space: pre-wrap;
 }
