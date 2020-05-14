@@ -27,6 +27,22 @@ class RecipeList(zeit.edit.block.Element):
     name = zeit.cms.content.property.ObjectPathProperty(
         '.name', zeit.content.modules.interfaces.IRecipeList['name'])
 
+    complexity = zeit.cms.content.property.ObjectPathProperty(
+        '.complexity',
+        zeit.content.modules.interfaces.IRecipeList['complexity'])
+
+    time = zeit.cms.content.property.ObjectPathProperty(
+        '.time',
+        zeit.content.modules.interfaces.IRecipeList['time'])
+
+    servings = zeit.cms.content.property.ObjectPathProperty(
+        '.servings',
+        zeit.content.modules.interfaces.IRecipeList['servings'])
+
+    searchable_title = zeit.cms.content.property.ObjectPathProperty(
+        '.searchable_title',
+        zeit.content.modules.interfaces.IRecipeList['searchable_title'])
+
     @property
     def ingredients(self):
         return [Ingredient.from_xml(x) for x in self.xml.xpath('./ingredient')]

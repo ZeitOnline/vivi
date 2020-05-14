@@ -200,10 +200,42 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
+class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.modules'
+    config_url = 'recipe-metadata-source'
+
+    def __init__(self, xpath):
+        super(RecipeMetadataSource, self).__init__()
+        self.xpath = xpath
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [six.text_type(node) for node in tree.xpath(self.xpath)]
+
+
 class IRecipeList(zeit.edit.interfaces.IBlock):
 
     name = zope.schema.TextLine(
         title=_('Title'),
+        required=False)
+
+    searchable_title = zope.schema.Bool(
+        title=_('Appears in recipe search?'),
+        default=False)
+
+    complexity = zope.schema.Choice(
+        title=_("Complexity"),
+        source=RecipeMetadataSource("*//complexity"),
+        required=True)
+
+    time = zope.schema.Choice(
+        title=_("Time"),
+        source=RecipeMetadataSource("*//time"),
+        required=True)
+
+    servings = zope.schema.TextLine(
+        title=_('Servings'),
         required=False)
 
     ingredients = zope.schema.Tuple(
