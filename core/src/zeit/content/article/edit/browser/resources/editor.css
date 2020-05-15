@@ -2029,3 +2029,14 @@
 #edit-form-article-content .type-recipelist .fieldname-servings input {
   width: 3em !important;
 }
+
+/* Dirty hacks to prevent the whole line of widgets to wrap abominable on error */
+#edit-form-article-content .type-recipelist .fieldname-servings div.error {
+  position: absolute;
+  margin-top: -3em;
+  margin-left: -5em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-servings div.empty {
+  left: auto;
+}
