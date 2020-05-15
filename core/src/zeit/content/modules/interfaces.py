@@ -200,6 +200,17 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
+def validate_servings(value):
+    try:
+        if int(value) <= 0:
+            raise ValueError
+    except ValueError:
+        raise zeit.cms.interfaces.ValidationError(
+            _('Servings must be a positive number or empty.'))
+    else:
+        return True
+
+
 class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.modules'
@@ -236,7 +247,8 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
 
     servings = zope.schema.TextLine(
         title=_('Servings'),
-        required=False)
+        required=False,
+        constraint=validate_servings)
 
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
