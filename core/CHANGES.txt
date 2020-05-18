@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.32.6 (unreleased)
+4.32.6 (2020-05-18)
 -------------------
 
 - ZON-5886: Make FluentRecordFormatter py3-compatible
