@@ -5,7 +5,7 @@ vivi.core changes
 4.32.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PY3: Fix text/bytes handling in DAV property parsing
 
 
 4.32.6 (2020-05-18)

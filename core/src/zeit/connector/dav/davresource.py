@@ -119,7 +119,7 @@ class DAVPropstat:
                 if pvalue and pvalue.startswith(XML_PREFIX_MARKER):
                     pvalue = pvalue[len(XML_PREFIX_MARKER):]
             else:
-                pvalue = lxml.etree.tostring(prop)
+                pvalue = lxml.etree.tostring(prop, encoding='unicode')
             if pvalue is None:
                 pvalue = u''
             self.properties[pkey] = pvalue
@@ -446,7 +446,7 @@ class DAVResource(object):
         response = result.get_response(self.path)
         props = response.get_all_properties()
         ret = props.get(propname, None)
-        return six.ensure_text(ret)
+        return ret
 
     def get_all_properties(self):
         r = self._result.get_response(self.path)
