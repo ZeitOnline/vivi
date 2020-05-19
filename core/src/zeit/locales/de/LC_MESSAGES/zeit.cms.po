@@ -862,10 +862,6 @@ msgstr "Kommentare prämoderieren"
 msgid "Comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: zeit/cms/content/interfaces.py:227
-msgid "Use Comments APIv2"
-msgstr "zeit.comment verwenden"
-
 #: zeit/cms/content/interfaces.py:232
 msgid "Show commentthread"
 msgstr "Kommentare anzeigen"
