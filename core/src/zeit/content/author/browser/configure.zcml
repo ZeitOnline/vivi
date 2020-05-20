@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:grok="http://namespaces.zope.org/grok"
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
@@ -12,7 +13,7 @@
     class=".form.AddForm"
     name="zeit.content.author.Add"
     menu="zeit-add-menu" title="Author"
-    permission="zeit.AddContent"
+    permission="zeit.content.author.Add"
     />
 
   <browser:page
@@ -103,6 +104,31 @@
     name="edit.html"
     class=".reference.Edit"
     permission="zope.View"
+    />
+
+  <browser:page
+    for="*"
+    name="zeit.content.author.dispatch"
+    class=".honorar.DispatchAdd"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.AddContent"
+    />
+
+  <gocept:pagelet
+    for="*"
+    name="zeit.content.author.lookup"
+    class=".honorar.LookupForm"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.AddContent"
+    />
+
+  <gocept:pagelet
+    for="*"
+    name="zeit.content.author.do_lookup"
+    class=".honorar.Lookup"
+    template="honorar-result.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.AddContent"
     />
 
 </configure>

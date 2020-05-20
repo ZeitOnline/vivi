@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.30.1.dev0',
+    version='4.32.8.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -250,7 +250,7 @@ setup(
             'zc_datetimewidget=zeit.cms.browser.resources:zc_datetimewidget',
         ],
         'pytest11': [
-            'zeit_pytest=zeit.pytest'
+            'zeit_vivi=zeit.pytest'
         ],
     }
 )

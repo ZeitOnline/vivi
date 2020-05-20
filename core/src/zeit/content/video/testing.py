@@ -2,15 +2,14 @@ import mock
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing
-import zeit.find.testing
 import zeit.push.testing
 import zope.component
 import zope.interface
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
-    zeit.find.testing.CONFIG_LAYER,
-    zeit.push.testing.CONFIG_LAYER))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(
+    zeit.push.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))

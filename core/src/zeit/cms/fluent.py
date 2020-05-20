@@ -15,8 +15,9 @@ else:
         FluentRecordFormatter needs a dict, we call literal_eval so it works.
         """
 
-        def __init__(self, fmt=None, datefmt=None, **kw):
+        def __init__(self, fmt=None, datefmt=None, style='%', **kw):
             if (isinstance(fmt, six.string_types) and
                     fmt.strip().startswith('{')):
                 fmt = ast.literal_eval(fmt)
-            super(FluentRecordFormatter, self).__init__(fmt, **kw)
+            super(FluentRecordFormatter, self).__init__(
+                fmt, datefmt, style, **kw)

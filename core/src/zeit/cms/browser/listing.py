@@ -80,11 +80,21 @@ class CommonListRepresentation(BaseListRepresentation):
         return self.context.subtitle
 
     @zope.cachedescriptors.property.Lazy
+    def supertitle(self):
+        return self.context.supertitle
+
+    @zope.cachedescriptors.property.Lazy
     def byline(self):
         return self.context.byline
 
     @zope.cachedescriptors.property.Lazy
     def ressort(self):
+        return self.context.ressort
+
+    @zope.cachedescriptors.property.Lazy
+    def printRessort(self):
+        if self.context.printRessort:
+            return self.context.printRessort
         return self.context.ressort
 
     @zope.cachedescriptors.property.Lazy
@@ -98,6 +108,20 @@ class CommonListRepresentation(BaseListRepresentation):
     @zope.cachedescriptors.property.Lazy
     def year(self):
         return self.context.year
+
+    @zope.cachedescriptors.property.Lazy
+    def access(self):
+        return self.context.access
+
+    @zope.cachedescriptors.property.Lazy
+    def workflow(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+    @zope.cachedescriptors.property.Lazy
+    def teaserimage(self):
+        import zeit.content.image.interfaces
+        return zeit.content.image.interfaces.IImages(
+            self.context).image
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):

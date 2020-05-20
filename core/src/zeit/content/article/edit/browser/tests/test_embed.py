@@ -26,6 +26,15 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis('...Unsupported embed domain...', b.contents)
 
+    def test_shows_manual_link(self):
+        self.get_article(with_empty_block=True)
+        b = self.browser
+        b.open(
+            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        self.assertEllipsis(
+            '...href="http://example.com/embed">Manual-Link</a>...',
+            b.contents)
+
 
 class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 

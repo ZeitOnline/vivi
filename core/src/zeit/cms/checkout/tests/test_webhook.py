@@ -45,17 +45,23 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_calls_post_with_uniqueId_for_configured_urls(self):
         with checked_out(self.repository['testcontent']):
             pass
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+        request = requests[0]
+        del request['headers']
         self.assertEqual(
-            [{'body': '["http://xml.zeit.de/testcontent"]',
-              'path': '/', 'verb': 'POST'}],
-            self.layer['request_handler'].requests)
+            {'body': '["http://xml.zeit.de/testcontent"]',
+             'path': '/', 'verb': 'POST'}, request)
 
     def test_calls_hook_when_adding_new_object_to_repository(self):
         self.repository['testcontent2'] = ExampleContentType()
+        requests = self.layer['request_handler'].requests
+        self.assertEqual(1, len(requests))
+        request = requests[0]
+        del request['headers']
         self.assertEqual(
-            [{'body': '["http://xml.zeit.de/testcontent2"]',
-              'path': '/', 'verb': 'POST'}],
-            self.layer['request_handler'].requests)
+            {'body': '["http://xml.zeit.de/testcontent2"]',
+             'path': '/', 'verb': 'POST'}, request)
 
     def test_does_not_call_hook_when_exclude_matches(self):
         self.config = """<webhooks>

@@ -1,6 +1,7 @@
 from datetime import datetime
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
+from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
 import grokcore.component as grok
 import logging
@@ -150,7 +151,7 @@ class CMSContent(Converter):
                             value, ns, name, self.context.uniqueId,
                             e.__class__.__name__, e.args, field.default))
                     value = field.default
-            if value is None or value == '':
+            if value is None or value is DeleteProperty or value == '':
                 # DAVProperty.__set__ has None -> DeleteProperty.
                 # Also, elasticsearch rejects '' in date fields.
                 continue

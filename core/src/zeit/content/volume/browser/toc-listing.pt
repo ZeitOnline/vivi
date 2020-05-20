@@ -1,0 +1,66 @@
+<tal:block i18n:domain="zeit.cms">
+<div id="tableFilter">Filter: <input name="tableFilter" type="text" value="" /></div>
+<div id="tocListingFilter">
+    <span class="toclisting_container">
+      <span i18n:translate="">Filter Content-Type</span>
+      <select id="filter_content_typ"></select>
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">Access</span>
+      <select id="filter_access"></select>
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">is urgent</span>
+      <input type="checkbox" id="filter_is_urgent" />
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">is SEO optimized</span>
+      <input type="checkbox" id="filter_is_optimized"/>
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">Ressort</span>
+      <select id="filter_ressort"></select>
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">Teaser image available</span>
+      <input type="checkbox" id="filter_has_teaser_img"/>
+    </span>
+
+    <span class="toclisting_container">
+      <span i18n:translate="">Supertitle available</span>
+      <input type="checkbox" id="filter_has_supertitle"/>
+    </span>
+</div>
+<div>
+    <span class="toclisting_container">
+        <span id="numberOfVisibleRows"></span>
+        <strong i18n:translate="">toc rows</strong>
+    </span>
+</div>
+<form name="containerContentsForm" method="get"
+      action="" id="folderActionForm">
+  <div id="topcontent" class="toc_topcontent">
+      <table tal:replace="structure view/contentTable"/>
+
+      <span class="Info"
+        tal:condition="not:view/content"
+        tal:content="view/no_content_message"
+        i18n:translate="">
+      There are no objects in this folder.
+    </span>
+  </div>
+  <div id="bottomcontent"></div>
+</form>
+<script type="text/javascript" tal:content="string:
+ zeit.cms.declare_namespace('zeit.content.volume');
+ zeit.content.volume.TRANSLATIONS = {};
+ zeit.content.volume.TRANSLATIONS['filter_access'] = ${view/access_values};
+ zeit.content.volume.TRANSLATIONS['filter_content_typ'] = ${view/type_values};
+"></script>
+
+</tal:block>

@@ -1,0 +1,11 @@
+<html i18n:domain="zeit.cms" metal:use-macro="context/@@standard_macros/view">
+    <metal:body fill-slot="body">
+        <div>
+            <h3 i18n:translate="">Author exists</h3>
+            <p i18n:translate="">Author with honorar ID <tal:x i18n:name="honorar_id" replace="options/author/honorar_id"/> already exists:</p>
+            <ul><li><a tal:attributes="href string:${request/getApplicationURL}/@@redirect_to?unique_id=${options/author/uniqueId}"
+                  tal:content="string:${options/author/firstname} ${options/author/lastname}"/>
+            </li></ul>
+        </div>
+    </metal:body>
+</html>

@@ -1,0 +1,3 @@
+<tal:block i18n:domain="zeit.cms">
+<a class="manual-link" target="_blank" tal:attributes="href view/href" i18n:translate="">Manual-Link</a>
+</tal:block>

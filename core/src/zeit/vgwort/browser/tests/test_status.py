@@ -7,6 +7,7 @@ import zeit.vgwort.testing
 
 class RetryReport(zeit.vgwort.testing.BrowserTestCase):
 
+    layer = zeit.vgwort.testing.TMS_WSGI_LAYER
     login_as = 'producer:producerpw'
 
     def test_resets_report_properties(self):

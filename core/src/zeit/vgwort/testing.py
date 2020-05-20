@@ -38,6 +38,13 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
+TMS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting-tms.zcml', bases=(
+        CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
+TMS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(TMS_ZCML_LAYER,))
+TMS_WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(TMS_ZOPE_LAYER,))
+
+
 class XMLRPCLayer(plone.testing.Layer):
 
     defaultBases = (WSGI_LAYER,)

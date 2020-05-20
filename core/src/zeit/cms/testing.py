@@ -27,6 +27,7 @@ import pkg_resources
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
+import pyramid_dogpile_cache2
 import pytest
 import re
 import selenium.webdriver
@@ -234,10 +235,20 @@ class MockWorkflowLayer(plone.testing.Layer):
 MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
 
 
+class CacheLayer(plone.testing.Layer):
+
+    def testTearDown(self):
+        pyramid_dogpile_cache2.clear()
+
+
+DOGPILE_CACHE_LAYER = CacheLayer()
+
+
 class ZopeLayer(plone.testing.Layer):
 
     defaultBases = (
         CELERY_EAGER_LAYER,
+        DOGPILE_CACHE_LAYER,
         MOCK_CONNECTOR_LAYER,
         MOCK_WORKFLOW_LAYER,
     )
@@ -406,6 +417,7 @@ def celery_ping():
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     response_code = 200
+    response_headers = {}
     response_body = '{}'
 
     def do_GET(self):
@@ -413,21 +425,20 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.requests.append(dict(
             verb=self.command,
             path=self.path,
+            headers=self.headers,
             body=self.rfile.read(length).decode('utf-8') if length else None,
         ))
-        if isinstance(self.response_code, int):
-            status = self.response_code
-        else:
-            status = self.response_code.pop(0)
-        if isinstance(self.response_body, six.string_types):
-            body = self.response_body
-        else:
-            body = self.response_body.pop(0)
-        if isinstance(body, six.text_type):
-            body = body.encode('utf-8')
-        self.send_response(status)
+        self.send_response(self._next('response_code'))
+        for key, value in self._next('response_headers').items():
+            self.send_header(key, value)
         self.end_headers()
-        self.wfile.write(body)
+        self.wfile.write(six.ensure_binary(self._next('response_body')))
+
+    def _next(self, name):
+        result = getattr(self, name)
+        if isinstance(result, list):
+            result = result.pop(0)
+        return result
 
     do_POST = do_GET
     do_PUT = do_GET
@@ -439,6 +450,7 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
     def testSetUp(self):
         super(HTTPLayer, self).testSetUp()
         self['request_handler'].requests = []
+        self['request_handler'].response_headers = {}
         self['request_handler'].response_body = '{}'
         self['request_handler'].response_code = 200
 
@@ -456,6 +468,7 @@ cms_product_config = """\
   source-channels file://{base}/content/ressorts.xml
   source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
+  source-manual file://{base}/content/manual.xml
 
   config-retractlog file://{base}/retractlog/retractlog.xml
 
@@ -563,6 +576,8 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
     def _start_selenium(self):
         if self._browser == 'firefox':
             options = selenium.webdriver.FirefoxOptions()
+            # The default 'info' is still way too verbose
+            options.log.level = 'error'
             if self.headless:
                 options.add_argument('-headless')
             options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')

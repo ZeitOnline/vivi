@@ -85,7 +85,8 @@ class IAuthor(zope.interface.Interface,
 
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
-        source=StatusSource())
+        source=StatusSource(),
+        required=False)
 
     external = zope.schema.Bool(
         title=_(u'External?'))
@@ -220,3 +221,13 @@ class IAuthorBioReference(zeit.cms.content.interfaces.IReference):
     biography = zope.schema.Text(
         title=_('Biography'),
         required=False)
+
+
+class IHonorar(zope.interface.Interface):
+    """Connection to the honorar system (HDok)."""
+
+    def search(substring):
+        pass
+
+    def create(data):
+        pass
