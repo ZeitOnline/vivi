@@ -227,7 +227,7 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
 
 class IRecipeList(zeit.edit.interfaces.IBlock):
 
-    name = zope.schema.TextLine(
+    title = zope.schema.TextLine(
         title=_('Title'),
         required=False)
 
