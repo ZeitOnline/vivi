@@ -2031,12 +2031,16 @@
 }
 
 /* Dirty hacks to prevent the whole line of widgets to wrap abominable on error */
+#edit-form-article-content .type-recipelist .fieldname-complexity div.error,
+#edit-form-article-content .type-recipelist .fieldname-time div.error,
 #edit-form-article-content .type-recipelist .fieldname-servings div.error {
   position: absolute;
   margin-top: -3em;
   margin-left: -5em;
 }
 
+#edit-form-article-content .type-recipelist .fieldname-complexity div.empty,
+#edit-form-article-content .type-recipelist .fieldname-time div.empty,
 #edit-form-article-content .type-recipelist .fieldname-servings div.empty {
   left: auto;
 }
