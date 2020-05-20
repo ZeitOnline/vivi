@@ -39,8 +39,8 @@ class RecipeList(zeit.edit.block.Element):
         '.servings',
         zeit.content.modules.interfaces.IRecipeList['servings'])
 
-    searchable_title = zeit.cms.content.property.ObjectPathProperty(
-        '.searchable_title',
+    searchable_title = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.name', 'searchable_title',
         zeit.content.modules.interfaces.IRecipeList['searchable_title'])
 
     @property
