@@ -24,4 +24,11 @@
     <require like_class="zeit.cmp.consent.ConsentInfo" />
   </class>
 
+  <class class=".recipelist.Ingredient">
+    <require
+      attributes="code label amount unit"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>

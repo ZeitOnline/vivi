@@ -11,7 +11,7 @@
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zeit.wochenmarkt.search"
-    class=".ingredients.IngredientsSearch"
+    class=".browser.ingredients.IngredientsSearch"
     permission="zope.View"/>
 
 </configure>
