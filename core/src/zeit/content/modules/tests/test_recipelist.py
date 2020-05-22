@@ -13,6 +13,6 @@ class RecipeListTest(zeit.content.modules.testing.FunctionalTestCase):
         self.module = zeit.content.modules.recipelist.RecipeList(
             self.context, lxml.objectify.XML('<container/>'))
 
-    def test_name_should_be_stored_in_xml(self):
+    def test_title_should_be_stored_in_xml(self):
         self.module.title = 'banana'
         self.assertEqual(self.module.xml.xpath('//title'), ['banana'])

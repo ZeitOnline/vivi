@@ -17,3 +17,18 @@ class IIngredients(zope.interface.Interface):
 
 class IIngredientsSource(zope.schema.interfaces.IIterableSource):
     """Available ingredients."""
+
+
+class IIngredient(zope.interface.Interface):
+    """An ingredient item in a list of IIngredients as part of
+    IIngredientSource.
+    """
+
+    code = zope.schema.TextLine(
+        title=u'Internal ingredient id')
+
+    name = zope.schema.TextLine(
+        title=u'User visible name of ingredient')
+
+    category = zope.schema.TextLine(
+        title=u'The kind of category this ingredient belongs to')

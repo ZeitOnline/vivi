@@ -23,13 +23,14 @@ xpath_functions = lxml.etree.FunctionNamespace('zeit.ingredients')
 xpath_functions['lower'] = xpath_lowercase
 
 
+@grok.implementer(zeit.wochenmarkt.interfaces.IIngredient)
 class Ingredient(object):
 
-    def __init__(self, id, name, category):
-        self.id = id
+    def __init__(self, code, name, category):
+        self.code = code
         self.name = name
         self.category = category
-        self.__name__ = self.name
+        self.__name__ = self.code
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredients)

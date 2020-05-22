@@ -14,7 +14,7 @@
 </ol>
 
 <input
- type="text" name="add_tag" placeholder="Type to find ingredients ..."
+ type="text" name="add_ingredient" placeholder="Type to find ingredients ..."
  i18n:attributes="placeholder"
  tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
                  id string:${view/name}.add"

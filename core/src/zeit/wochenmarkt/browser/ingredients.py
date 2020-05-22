@@ -19,7 +19,7 @@ class IngredientsSearch(zeit.cms.browser.view.JSON):
             tags = ingredientsSource.factory.search(term)
         else:
             tags = []
-        return [dict(label=x.name, value=x.id)
+        return [dict(label=x.name, value=x.code)
                 for x in tags]
 
 

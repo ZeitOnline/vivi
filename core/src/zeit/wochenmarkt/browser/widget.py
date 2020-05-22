@@ -1,4 +1,3 @@
-from collections import namedtuple
 import json
 import grokcore.component as grok
 import zeit.cms.browser.interfaces
@@ -59,42 +58,3 @@ class Widget(grok.MultiAdapter,
             Ingredient(
                 x['code'], x['label'], x['amount'], x['unit']
             ) for x in data])
-
-
-class DisplayWidget(grok.MultiAdapter,
-                    zope.formlib.itemswidgets.ItemsWidgetBase):
-
-    grok.adapts(
-        zope.schema.interfaces.ITuple,
-        zeit.wochenmarkt.interfaces.IIngredientsSource,
-        zeit.cms.browser.interfaces.ICMSLayer)
-    grok.provides(zope.formlib.interfaces.IDisplayWidget)
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile('display-recipe.pt')
-
-    def __init__(self, field, source, request):
-        super(DisplayWidget, self).__init__(
-            field,
-            zope.formlib.source.IterableSourceVocabulary(source, request),
-            request)
-        tagger = zeit.cms.tagging.interfaces.ITagger(self.context.context)
-        try:
-            self.tags_with_topicpages = tagger.links
-        except Exception:
-            self.tags_with_topicpages = {}
-
-    def __call__(self):
-        return self.template()
-
-    def _text(self, item):
-        return self.textForValue(self.vocabulary.getTerm(item))
-
-    def items(self):
-        items = []
-        Tag = namedtuple('Tag', ['text', 'link', 'css_class'])
-        for item in self._getFormValue():
-            text = self._text(item)
-            link = self.tags_with_topicpages.get(item.uniqueId)
-            css_class = self.tag_highling_css_class if link else ''
-            items.append(Tag(text, link, css_class))
-        return items
