@@ -96,7 +96,8 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         ingredients.forEach(function(i) {
             if (i.code === id) {
                 const val = event.target.value;
-                if (event.target.getAttribute('data-id') === 'amount' && isNaN(parseInt(val))) {
+                // amount either needs to be a number or empty.
+                if (event.target.getAttribute('data-id') === 'amount' && (isNaN(Number(val)) && val !== '')) {
                     event.target.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
                 } else {
                     i[event.target.getAttribute('data-id')] = val;

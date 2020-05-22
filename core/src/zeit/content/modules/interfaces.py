@@ -238,12 +238,12 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     complexity = zope.schema.Choice(
         title=_("Complexity"),
         source=RecipeMetadataSource("*//complexity"),
-        required=True)
+        required=False)
 
     time = zope.schema.Choice(
         title=_("Time"),
         source=RecipeMetadataSource("*//time"),
-        required=True)
+        required=False)
 
     servings = zope.schema.TextLine(
         title=_('Servings'),
