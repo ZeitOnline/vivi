@@ -651,6 +651,27 @@
     permission="zope.View"
     />
 
+   <!-- recipelist -->
+
+   <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRecipeList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-recipelist"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IRecipeList"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-recipelist"
+    class=".edit.EditRecipeList"
+    permission="zope.View"
+    />
+
   <!-- division -->
 
   <browser:viewlet

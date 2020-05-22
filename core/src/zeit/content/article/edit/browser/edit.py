@@ -457,3 +457,22 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'newsletter.{0}'.format(self.context.__name__)
+
+
+class EditRecipeList(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    undo_description = _('edit recipe list')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.modules.interfaces.IRecipeList).omit(
+            *list(zeit.edit.interfaces.IBlock))
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditRecipeList, self).setUpWidgets(*args, **kw)
+        self.widgets['ingredients'].add_type = (
+            zeit.content.article.edit.interfaces.IRecipeList)
+        self.widgets['ingredients'].display_list_below_buttons = True
+
+    @property
+    def prefix(self):
+        return 'ingredients.{0}'.format(self.context.__name__)
