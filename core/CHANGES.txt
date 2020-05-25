@@ -5,7 +5,7 @@ vivi.core changes
 4.32.10 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- PY3: Make workflow timing logging work under py3
 
 
 4.32.9 (2020-05-25)
