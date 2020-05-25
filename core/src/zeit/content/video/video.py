@@ -72,7 +72,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     def highest_rendition_url(self):
         if not self.renditions:
             return None
-        high = sorted(self.renditions, key=lambda r: r.frame_width).pop()
+        renditions = [r for r in self.renditions if r.frame_width]
+        high = sorted(renditions, key=lambda r: r.frame_width).pop()
         return getattr(high, 'url', '')
 
     @property
