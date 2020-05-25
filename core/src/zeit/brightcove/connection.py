@@ -220,6 +220,8 @@ class PlaybackAPI(object):
             if not vr.url:
                 continue
             vr.frame_width = item.get('width')
+            if not vr.frame_width:
+                continue
             vr.video_duration = item.get('duration')
             data['renditions'].append(vr)
         return data
