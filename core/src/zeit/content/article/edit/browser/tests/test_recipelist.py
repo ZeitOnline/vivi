@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import zeit.content.article.edit.browser.testing
 
 
@@ -65,7 +66,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=ul.ui-autocomplete li')
 
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 1)
-        s.assertText('css=a.ingredient__label', 'Brathähnchen')
+        s.assertText('css=a.ingredient__label', u'Brathähnchen')
         s.assertElementPresent('css=input.ingredient__amount')
         s.assertElementPresent('css=select.ingredient__unit')
         s.assertElementPresent('css=li.ingredient__item span.delete')
