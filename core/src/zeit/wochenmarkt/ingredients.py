@@ -26,10 +26,16 @@ xpath_functions['lower'] = xpath_lowercase
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredient)
 class Ingredient(object):
 
-    def __init__(self, code, name, category):
+    def __init__(self, code, **kwargs):
         self.code = code
-        self.name = name
-        self.category = category
+        self.name = kwargs.get('name')
+        self.category = kwargs.get('category')
+        self.qwords = kwargs.get(
+            'qwords').split(',') if kwargs.get('qwords') else None
+        self.qwords_category = (kwargs.get('qwords_category').split(',')
+            if kwargs.get('qwords_category') else None)
+        self.singular = kwargs.get('singular')
+        self.plural = kwargs.get('plural')
         self.__name__ = self.code
 
 
@@ -73,8 +79,12 @@ class Ingredients(grok.GlobalUtility):
         for ingredient_node in xml.xpath('//ingredient'):
             ingredient = Ingredient(
                 ingredient_node.get('id'),
-                six.text_type(ingredient_node).strip(),
-                category=ingredient_node.getparent().tag)
+                name=six.text_type(ingredient_node).strip(),
+                category=ingredient_node.getparent().tag,
+                qwords=ingredient_node.get('q'),
+                qwords_category=ingredient_node.getparent().get('q'),
+                singular=ingredient_node.get('singular'),
+                plural=ingredient_node.get('plural'))
             ingredients[ingredient_node.get('id')] = ingredient
         log.info('Ingredients loaded.')
         return ingredients

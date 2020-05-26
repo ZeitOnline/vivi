@@ -14,12 +14,18 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
         basmati = dict(ingredients.items()).get('basmatireis')
         assert 'Basmatireis' == basmati.name
         assert 'other' == basmati.category
+        assert ['Reis', 'Basmati'] == basmati.qwords
+        assert basmati.qwords_category is None
+        assert 'Basmatireis' == basmati.singular
+        assert 'Basmatireis' == basmati.plural
 
     def test_ingredient_should_be_found_by_id(self):
         calamari = zope.component.getUtility(
             zeit.wochenmarkt.interfaces.IIngredients).get('calamari')
         assert 'Calamari' == calamari.name
         assert 'fish' == calamari.category
+        assert ['Tintenfisch', 'Kalamar'] == calamari.qwords
+        assert ['Fisch', ' Meeresfrüchte'] == calamari.qwords_category
 
     def test_ingredients_should_be_found_by_category(self):
         meat_ingredients = zope.component.getUtility(
