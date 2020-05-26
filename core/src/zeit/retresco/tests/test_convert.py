@@ -295,6 +295,25 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'teaser': 'DSC00109_2.JPG',
         }, data)
 
+    def test_converts_recipe_attributes(self):
+        recipe = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        with checked_out(recipe):
+            pass
+        data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
+        payload = {
+            'search': [
+                'Grillwurst:ingredient', 'Wurst:ingredient',
+                u'Hühnchen:ingredient', u'Hähnchen:ingredient',
+                'Hahn:ingredient', 'Tomate:ingredient', 'Tomaten:ingredient',
+                u'Wurst-Hähnchen:name', 'Wurstiges:category',
+                'Pastagerichte:category'],
+            'names': [u'Wurst-Hähnchen'],
+            'categories': ['Wurstiges', 'Pastagerichte'],
+            'ingredients': ['bratwurst', 'brathaenchen', 'gries',
+                'tomate', 'gurke']}
+        self.assertEqual(payload, data['payload']['recipe'])
+
     def test_converts_imagegroup(self):
         group = zeit.content.image.testing.create_image_group()
         with checked_out(group) as co:

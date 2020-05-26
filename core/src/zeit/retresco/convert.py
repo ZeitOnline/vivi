@@ -103,17 +103,64 @@ class CMSContent(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
+        body = zeit.retresco.interfaces.IBody(self.context)
         result = {
             'doc_id': zeit.cms.content.interfaces.IUUID(self.context).id,
             'url': self.context.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
-            'body': lxml.etree.tostring(
-                zeit.retresco.interfaces.IBody(self.context),
-                encoding='unicode'),
+            'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
+        categories = []
+        if body.xpath('//categories'):
+            categories = body.xpath('//categories/category/@label')
+            result['payload'].update({'recipe': {'categories': categories}})
+        if body.xpath('//recipelist'):
+            ingredients = body.xpath('//recipelist/ingredient/@code')
+            search_list = []
+            for id in ingredients:
+                try:
+                    qwords = zope.component.getUtility(
+                        zeit.wochenmarkt.interfaces.IIngredients).get(
+                            id).qwords
+                    if qwords and len(qwords) >= 1:
+                        qwords = [x + ':ingredient' for x in qwords]
+                        search_list = search_list + qwords
+
+                    qwords_category = zope.component.getUtility(
+                        zeit.wochenmarkt.interfaces.IIngredients).get(
+                            id).qwords_category
+                    if qwords_category and len(qwords_category) >= 1:
+                        qwords_category = [
+                            x + ':ingredient' for x in qwords_category]
+                        search_list = search_list + qwords_category
+                except AttributeError, zope.component.ComponentLookupError:
+                    pass
+
+            names = body.xpath(
+                '//recipelist/name[@searchable_title="True"]/text()')
+            if names and len(names) >= 1:
+                # TODO: recipelist names should not be written to ES index,
+                # a toggle must be added or comment the following line
+                search_list = search_list + [x + ':name' for x in names]
+
+            title = body.xpath('//title/text()')
+            if title and len(title) == 1 and title != '':
+                search_title = title[0] + ':title'
+                search_list = search_list + search_title
+
+            if len(categories) >= 1:
+                search_list = search_list + [
+                    x + ':category' for x in categories]
+
+            result['payload'].update({
+                'recipe': {
+                    'search': search_list,
+                    'ingredients': ingredients,
+                    'categories': categories,
+                    'names': names}})
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
