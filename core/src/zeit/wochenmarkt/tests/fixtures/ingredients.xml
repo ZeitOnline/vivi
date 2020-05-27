@@ -13,7 +13,7 @@
     <ingredient id="bratwurst" q="Grillwurst,Wurst" singular="Bratwurst" plural="Bratwürste" />
   </meat>
   <other>
-    <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudel" plural="Bandnudeln" />
+    <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudeln" plural="Bandnudeln" />
     <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" />
   </other>
   <spices>
