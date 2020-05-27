@@ -122,6 +122,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         # Should not accept letters
         s.type('css=input.ingredient__amount', 'oans')
+        s.waitForVisible('css=input.ingredient__amount')  # Prevent flapping
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
         s.waitForVisible('css=input.ingredient__amount')
@@ -130,6 +131,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         # Should accept empty value
         s.clear('css=input.ingredient__amount')
+        s.waitForVisible('css=input.ingredient__amount')  # Prevent flapping
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
         s.waitForVisible('css=input.ingredient__amount')
