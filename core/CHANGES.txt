@@ -5,7 +5,7 @@ vivi.core changes
 4.32.12 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- MAINT: Log hdok create calls
 
 
 4.32.11 (2020-05-27)

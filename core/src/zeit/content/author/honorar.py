@@ -1,6 +1,7 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import json
+import logging
 import pkg_resources
 import requests
 import requests.exceptions
@@ -8,6 +9,9 @@ import requests.utils
 import zeit.content.author.interfaces
 import zope.interface
 import zope.security.management
+
+
+log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
@@ -31,6 +35,7 @@ class Honorar(object):
         return [x['fieldData'] for x in result['response']['data']]
 
     def create(self, data):
+        log.info('Creating %s', data)
         interaction = zope.security.management.getInteraction()
         principal = interaction.participations[0].principal
         data['anlageAccount'] = 'vivi.%s' % principal.id
