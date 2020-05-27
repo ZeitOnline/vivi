@@ -240,7 +240,7 @@
     name="edit.form.metadata-access"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="30"
+    weight="25"
     />
 
   <browser:page
