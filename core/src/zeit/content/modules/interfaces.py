@@ -3,10 +3,12 @@ from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import grokcore.component as grok
 import six
+import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.edit.interfaces
+import zeit.wochenmarkt.ingredients
 import zope.app.appsetup.product
 import zope.schema
 
@@ -196,3 +198,61 @@ class IMail(zeit.edit.interfaces.IBlock):
         default=False)
 
     body = zope.interface.Attribute('Email body')
+
+
+def validate_servings(value):
+    try:
+        if int(value) <= 0:
+            raise ValueError
+    except ValueError:
+        raise zeit.cms.interfaces.ValidationError(
+            _('Servings must be a positive number or empty.'))
+    else:
+        return True
+
+
+class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.modules'
+    config_url = 'recipe-metadata-source'
+
+    def __init__(self, xpath):
+        super(RecipeMetadataSource, self).__init__()
+        self.xpath = xpath
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [six.text_type(node) for node in tree.xpath(self.xpath)]
+
+
+class IRecipeList(zeit.edit.interfaces.IBlock):
+
+    title = zope.schema.TextLine(
+        title=_('Title'),
+        required=False)
+
+    searchable_title = zope.schema.Bool(
+        title=_('Appears in recipe search?'),
+        default=False)
+
+    complexity = zope.schema.Choice(
+        title=_("Complexity"),
+        source=RecipeMetadataSource("*//complexity"),
+        required=False)
+
+    time = zope.schema.Choice(
+        title=_("Time"),
+        source=RecipeMetadataSource("*//time"),
+        required=False)
+
+    servings = zope.schema.TextLine(
+        title=_('Servings'),
+        required=False,
+        constraint=validate_servings)
+
+    ingredients = zope.schema.Tuple(
+        title=_("Ingredients"),
+        value_type=zope.schema.Choice(
+            source=zeit.wochenmarkt.ingredients.ingredientsSource),
+        default=(),
+        required=False)

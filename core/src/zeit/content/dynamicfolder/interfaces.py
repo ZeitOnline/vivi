@@ -12,7 +12,7 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.dynamicfolder'
 
 
 class IVirtualContent(zope.interface.Interface):
-    """Maker interface for virtual content objects not present in DAV."""
+    """Marker interface for virtual content objects not present in DAV."""
 
 
 class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):

@@ -11,6 +11,7 @@ product_config = """\
   subject-source file://{base}/tests/fixtures/mail-subjects.xml
   embed-provider-source file://{base}/tests/fixtures/embed-providers.xml
   newsletter-source file://{base}/tests/fixtures/newsletter.xml
+  recipe-metadata-source file://{base}/tests/fixtures/recipe-metadata.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, '.'))
 

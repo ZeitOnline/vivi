@@ -317,6 +317,17 @@
       />
   </class>
 
+  <class class=".recipelist.RecipeList">
+    <require
+      interface=".interfaces.IRecipeList"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRecipeList"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".topicbox.Topicbox">
     <require
       interface=".interfaces.ITopicbox"

@@ -597,3 +597,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
     pass
+
+
+class IRecipeList(zeit.content.modules.interfaces.IRecipeList):
+    pass

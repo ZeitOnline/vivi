@@ -73,6 +73,7 @@
   right: 0;
   bottom: 0;
   top: 2.2em;
+  overflow: auto;
   background: #EEF3F7;
 }
 

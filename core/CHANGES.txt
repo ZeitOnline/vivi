@@ -5,6 +5,7 @@ vivi.core changes
 4.32.12 (unreleased)
 --------------------
 
+- WOMA-65: Introduce module: recipe list
 - MAINT: Log hdok create calls
 
 
