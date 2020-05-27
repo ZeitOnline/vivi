@@ -1,35 +1,35 @@
 <?xml version="1.0" ?>
 <ingredients>
-  <chicken>
-    <ingredient id="brathaehnchen">Brathähnchen</ingredient>
-    <ingredient id="chicken-nuggets">Chicken Nuggets</ingredient>
+  <chicken q="Hahn">
+    <ingredient id="brathaehnchen" q="Hühnchen,Hähnchen" singular="Brathähnchen" plural="Brathähnchen" />
+    <ingredient id="chicken-nuggets" q="Hühnchen,Hähnchen" singular="Chicken Nugget" plural="Chicken Nuggets" />
   </chicken>
-  <fish>
-    <ingredient id="calamari">Calamari</ingredient>
-    <ingredient id="crevetten">Crevetten</ingredient>
+  <fish q="Fisch, Meeresfrüchte">
+    <ingredient id="calamari" q="Tintenfisch,Kalamar" singular="Calamari" plural="Calamari" />
+    <ingredient id="crevetten" q="Krevetten,Garnelen,Garnele" singular="Crevette" plural="Crevetten" />
   </fish>
   <meat>
-    <ingredient id="bratenfond">Bratenfond</ingredient>
-    <ingredient id="bratwurst">Bratwurst</ingredient>
+    <ingredient id="bratenfond" q="Kraftbrühe,Fond" singular="Bratenfond" plural="Bratenfond" />
+    <ingredient id="bratwurst" q="Grillwurst,Wurst" singular="Bratwurst" plural="Bratwürste" />
   </meat>
   <other>
-    <ingredient id="bandnudeln">Bandnudeln</ingredient>
-    <ingredient id="basmatireis">Basmatireis</ingredient>
+    <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudel" plural="Bandnudeln" />
+    <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" />
   </other>
   <spices>
-    <ingredient id="muskatnuss">Muskatnuss</ingredient>
-    <ingredient id="natron">Natron</ingredient>
+    <ingredient id="muskatnuss" q="" singular="Muskatnuss,Muskat" plural="Muskatnüsse" />
+    <ingredient id="natron" q="" singular="Natron" plural="Natron" />
   </spices>
   <vegetables>
-    <ingredient id="gurke">Gurke</ingredient>
-    <ingredient id="tomate">Tomate</ingredient>
+    <ingredient id="gurke" q="" singular="Gurke" plural="Gurken" />
+    <ingredient id="tomate" q="Tomate,Tomaten" singular="Tomate" plural="Tomaten" />
   </vegetables>
   <poultry>
-    <ingredient id="haenchenkeule">Hähnchenkeule</ingredient>
-    <ingredient id="truthahnbrust">Truthahnbrust</ingredient>
+    <ingredient id="haenchenkeule" q="Hühnchen,Hähnchen" singular="Hänchenkeule" plural="Hänchenkeulen" />
+    <ingredient id="truthahnbrust" q="Truthahn,Pute" singular="Truthahnbrust" plural="Truthahnbrüste" />
   </poultry>
   <fruits>
-    <ingredient id="physalis">Physalis</ingredient>
-    <ingredient id="pomeranze">Pomeranze</ingredient>
+    <ingredient id="physalis" q="Physalis" singular="Physalis" plural="Physalis" />
+    <ingredient id="pomeranze" q="Bitterorange,Pomeranze" singular="Pomeranze" plural="Pomeranzen" />
   </fruits>
 </ingredients>
