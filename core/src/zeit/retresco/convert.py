@@ -115,7 +115,7 @@ class CMSContent(Converter):
         result['payload'] = self.collect_dav_properties()
         categories = []
         if body.xpath('//categories'):
-            categories = body.xpath('//categories/category/@label')
+            categories = body.xpath('//categories/category/@code')
             result['payload'].update({'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')

@@ -306,10 +306,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'Grillwurst:ingredient', 'Wurst:ingredient',
                 u'Hühnchen:ingredient', u'Hähnchen:ingredient',
                 'Hahn:ingredient', 'Tomate:ingredient', 'Tomaten:ingredient',
-                u'Wurst-Hähnchen:name', 'Wurstiges:category',
-                'Pastagerichte:category'],
+                u'Wurst-Hähnchen:name', 'wurstiges:category',
+                'pastagerichte:category'],
             'names': [u'Wurst-Hähnchen'],
-            'categories': ['Wurstiges', 'Pastagerichte'],
+            'categories': ['wurstiges', 'pastagerichte'],
             'ingredients': ['bratwurst', 'brathaenchen', 'gries',
                 'tomate', 'gurke']}
         self.assertEqual(payload, data['payload']['recipe'])

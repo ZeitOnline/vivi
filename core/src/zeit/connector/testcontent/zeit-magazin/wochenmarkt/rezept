@@ -22,8 +22,8 @@
       <tag type="keyword" py:pytype="str">kochen</tag>
     </rankedTags>
     <categories>
-      <category label="Wurstiges"/>
-      <category label="Pastagerichte"/>
+      <category code="wurstiges" label="Wurstiges" />
+      <category code="pastagerichte" label="Pastagerichte"/>
     </categories>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="access">abo</attribute>
