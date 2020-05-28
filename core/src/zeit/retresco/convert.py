@@ -114,8 +114,10 @@ class CMSContent(Converter):
         }
         result['payload'] = self.collect_dav_properties()
         categories = []
+        category_labels = []
         if body.xpath('//categories'):
             categories = body.xpath('//categories/category/@code')
+            category_labels = body.xpath('//categories/category/@label')
             result['payload'].update({'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
@@ -151,9 +153,9 @@ class CMSContent(Converter):
                 search_title = title[0] + ':title'
                 search_list = search_list + search_title
 
-            if len(categories) >= 1:
+            if len(category_labels) >= 1:
                 search_list = search_list + [
-                    x + ':category' for x in categories]
+                    x + ':category' for x in category_labels]
 
             result['payload'].update({
                 'recipe': {

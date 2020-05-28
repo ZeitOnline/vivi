@@ -123,7 +123,7 @@ pürieren.</p>
       <recipelist>
         <name searchable_title="True">Wurst-Hähnchen</name>
         <ingredient amount="500" code="bratwurst" label="Bratwurst" unit="g"/>
-        <ingredient amount="200" code="brathaenchen" label="Brathähnchen" unit="g"/>
+        <ingredient amount="200" code="brathaehnchen" label="Brathähnchen" unit="g"/>
       </recipelist>
       <recipelist>
         <name searchable_title="False">Tomaten-Grieß</name>
