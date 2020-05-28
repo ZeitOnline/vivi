@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.32.8.dev0',
+    version='4.32.12.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -242,6 +242,7 @@ setup(
             'zeit_newsletter=zeit.newsletter.browser.resources:lib',
             'zeit_push=zeit.push.browser.resources:lib',
             'zeit_seo=zeit.seo.browser.resources:lib',
+            'zeit_wochenmarkt=zeit.wochenmarkt.browser.resources:lib',
             'zeit_workflow=zeit.workflow.browser.resources:lib',
             'zeit_wysiwyg=zeit.wysiwyg.browser.resources:lib',
 

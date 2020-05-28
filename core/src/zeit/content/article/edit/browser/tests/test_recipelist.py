@@ -117,14 +117,14 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
         # Give it some time to exchange widget with new value
-        s.waitForVisible('css=input.ingredient__amount')
+        s.waitForCssCount('css=.dirty', 0)
         s.assertAttribute('css=input.ingredient__amount@value', '2')
 
         # Should not accept letters
         s.type('css=input.ingredient__amount', 'oans')
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
-        s.waitForVisible('css=input.ingredient__amount')
+        s.waitForCssCount('css=.dirty', 0)
         # Fallback to previous value
         s.assertAttribute('css=input.ingredient__amount@value', '2')
 
@@ -132,7 +132,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.clear('css=input.ingredient__amount')
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
-        s.waitForVisible('css=input.ingredient__amount')
+        s.waitForCssCount('css=.dirty', 0)
         s.assertAttribute('css=input.ingredient__amount@value', '')
 
     def test_ingredient_should_store_values_as_json(self):
@@ -149,6 +149,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.type('css=input.ingredient__amount', '2')
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
+        s.waitForCssCount('css=.dirty', 0)
         s.assertAttribute(
             'css=.ingredients-widget input@value',
             '[{"code":"brathaehnchen","label":"Brathähnchen",'

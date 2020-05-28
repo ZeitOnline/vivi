@@ -99,9 +99,11 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
                 // amount either needs to be a number or empty.
                 if (event.target.getAttribute('data-id') === 'amount' && (isNaN(Number(val)) && val !== '')) {
                     event.target.style.background = 'linear-gradient(0deg, #FFF, #FDD)';
+                    event.target.classList.add('dirty');
                 } else {
                     i[event.target.getAttribute('data-id')] = val;
                     event.target.style.background = 'linear-gradient(0deg, #FFF, #CFD)';
+                    event.target.classList.add('dirty');
                 }
             }
         });

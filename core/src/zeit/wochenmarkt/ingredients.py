@@ -50,7 +50,7 @@ class Ingredients(grok.GlobalUtility):
     def search(self, term):
         xml = self._fetch()
         nodes = xml.xpath(
-            '//ingredient[contains(zeit:lower(text()), "%s")]' %
+            '//ingredient[contains(zeit:lower(@singular), "%s")]' %
             term.lower(), namespaces={'zeit': 'zeit.ingredients'})
         return [self.get(x.get('id')) for x in nodes]
 
@@ -79,7 +79,7 @@ class Ingredients(grok.GlobalUtility):
         for ingredient_node in xml.xpath('//ingredient'):
             ingredient = Ingredient(
                 ingredient_node.get('id'),
-                name=six.text_type(ingredient_node).strip(),
+                name=six.text_type(ingredient_node.get('singular')).strip(),
                 category=ingredient_node.getparent().tag,
                 qwords=ingredient_node.get('q'),
                 qwords_category=ingredient_node.getparent().get('q'),
