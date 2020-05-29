@@ -138,7 +138,9 @@ class CMSContent(Converter):
                         qwords_category = [
                             x + ':ingredient' for x in qwords_category]
                         search_list = search_list + qwords_category
-                except AttributeError, zope.component.ComponentLookupError:
+                except AttributeError:
+                    pass
+                except zope.component.ComponentLookupError:
                     pass
 
             names = body.xpath(
