@@ -21,10 +21,10 @@
       <tag type="keyword" py:pytype="str">Mahlzeit</tag>
       <tag type="keyword" py:pytype="str">kochen</tag>
     </rankedTags>
-    <categories>
+    <recipe_categories>
       <category code="wurstiges" label="Wurstiges" />
       <category code="pastagerichte" label="Pastagerichte"/>
-    </categories>
+    </recipe_categories>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="access">abo</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
