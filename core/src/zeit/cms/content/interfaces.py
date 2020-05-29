@@ -6,6 +6,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.wochenmarkt.sources
 import zope.container.interfaces
 import zope.interface
 import zope.interface.common.sequence
@@ -148,6 +149,13 @@ class ICommonMetadata(zope.interface.Interface):
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
         default=())
+
+    recipe_categories = zope.schema.Tuple(
+        title=_("Recipe Categories"),
+        value_type=zope.schema.Choice(
+            source=zeit.wochenmarkt.sources.RecipeCategoriesSource()),
+        default=(),
+        required=False)
 
     serie = zope.schema.Choice(
         title=_("Serie"),

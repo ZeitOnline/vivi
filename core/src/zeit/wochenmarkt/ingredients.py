@@ -53,8 +53,8 @@ class Ingredients(grok.GlobalUtility):
             ingredient for ingredient in self.search(term)
             if ingredient.category == category]
 
-    def get(self, id):
-        result = self.data.get(id)
+    def get(self, code):
+        result = self.data.get(code)
         return result if result else None
 
     @CONFIG_CACHE.cache_on_arguments()

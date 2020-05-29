@@ -29,7 +29,7 @@ class RecipeCategory(object):
 
     def __init__(self, code, name):
         self.code = code
-        self.label = name
+        self.name = name
         self.__name__ = self.code
 
     @classmethod
@@ -41,26 +41,28 @@ class RecipeCategories(object):
     """Property which stores recipe categories in DAV."""
 
     def __get__(self, instance, class_):
-        return [RecipeCategory.from_xml(x) for x in (
-                instance.xml.xpath('./recipe_categories/category'))]
+        return tuple(RecipeCategory.from_xml(x) for x in (
+                instance.xml.xpath('./head/recipe_categories/category')))
 
     def __set__(self, instance, value):
-        for node in instance.xml.xpath('./recipe_categories'):
-            node.getparent().remove(node)
+        recipe_categories = instance.xml.xpath('./head/recipe_categories')
+        if len(recipe_categories) != 0:
+            instance.xml.head.remove(recipe_categories[0])
         value = self._remove_duplicates(value)
-        el = E.recipe_categories()
-        for item in value:
-            el.append(
-                E.category(
-                    code=item.code,
-                    label=item.label))
-        instance.xml.append(el)
+        if len(value) > 0:
+            el = E.recipe_categories()
+            for item in value:
+                el.append(
+                    E.category(
+                        code=item.code,
+                        label=item.name))
+            instance.xml.head.append(el)
 
-    def _remove_duplicates(self, ingredients):
+    def _remove_duplicates(self, categories):
         result = collections.OrderedDict()
-        for ingredient in ingredients:
-            if ingredient.code not in result:
-                result[ingredient.code] = ingredient
+        for category in categories:
+            if category.code not in result:
+                result[category.code] = category
         return result.values()
 
 

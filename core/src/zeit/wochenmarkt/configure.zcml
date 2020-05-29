@@ -16,7 +16,7 @@
 
   <class class=".categories.RecipeCategory">
     <require
-      attributes="code label"
+      attributes="code name"
       permission="zope.View"
       />
   </class>

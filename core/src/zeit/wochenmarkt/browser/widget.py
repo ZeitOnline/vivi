@@ -1,5 +1,5 @@
 from zeit.content.modules.recipelist import Ingredient
-from zeit.wochenmarkt.browser.categories import RecipeCategory
+from zeit.wochenmarkt.categories import RecipeCategory
 import json
 import grokcore.component as grok
 import zeit.cms.browser.interfaces
@@ -98,7 +98,7 @@ class RecipeCategoriesWidget(
 
     def _toFormValue(self, value):
         return json.dumps([{
-            'code': x.code, 'label': x.label
+            'code': x.code, 'label': x.name
         } for x in value or ()])
 
     def _toFieldValue(self, value):

@@ -460,6 +460,20 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('overscrolling')
 
 
+class RecipeFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Recipe Metadata')
+
+
+class RecipeCategories(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'recipe-categories'
+    undo_description = _('edit recipe categories')
+    css_class = 'recipe-categories'
+    form_fields = FormFields(IArticle).select('recipe_categories')
+
+
 class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Run in channel')

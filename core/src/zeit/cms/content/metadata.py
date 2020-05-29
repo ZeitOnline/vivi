@@ -7,6 +7,7 @@ import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
+import zeit.wochenmarkt.categories
 import zope.interface
 
 
@@ -54,6 +55,8 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         '.head.agency', xml_reference_name='related')
 
     keywords = zeit.cms.tagging.tag.Tags()
+
+    recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
     title = zeit.cms.content.property.ObjectPathProperty(
         '.body.title', ICommonMetadata['title'])

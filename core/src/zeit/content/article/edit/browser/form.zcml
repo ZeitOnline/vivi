@@ -632,6 +632,39 @@
     permission="zope.View"
     />
 
+  <!-- Recipes -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="recipe"
+    class=".form.RecipeFormGroup"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.RecipeFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.recipe-categories"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.recipe-categories"
+    class=".form.RecipeCategories"
+    permission="zope.View"
+    />
+  
+
   <!-- Channels -->
 
   <browser:viewlet

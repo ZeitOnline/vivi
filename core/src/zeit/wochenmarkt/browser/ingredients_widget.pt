@@ -22,6 +22,6 @@
 
 </div>
 <script tal:content="string:
-  new zeit.wochenmarkt.Widget('${view/name}');
+  new zeit.wochenmarkt.IngredientsWidget('${view/name}');
 ">
 </script>

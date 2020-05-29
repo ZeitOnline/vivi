@@ -11,17 +11,6 @@ import zope.component.hooks
 log = logging.getLogger(__name__)
 
 
-class RecipeCategory(object):
-
-    def __init__(self, code, label):
-        self.code = code
-        self.label = label
-
-    @classmethod
-    def from_xml(cls, node):
-        return cls(node.get('code'), node.get('label'))
-
-
 class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
 
     def json(self):
@@ -30,7 +19,7 @@ class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
             categories = recipeCategoriesSource.factory.search(term)
         else:
             categories = []
-        return [dict(label=x.label, value=x.code)
+        return [dict(label=x.name, value=x.code)
                 for x in categories]
 
 
