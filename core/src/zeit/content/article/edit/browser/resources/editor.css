@@ -1028,6 +1028,7 @@
   width: 30em;
 }
 
+.type-article #recipe-categories\.recipe_categories\.list,
 .type-article #keywords\.keywords\.list {
   width: 30em !important;
 }
