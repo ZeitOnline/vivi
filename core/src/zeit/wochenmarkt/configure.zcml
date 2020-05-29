@@ -14,4 +14,11 @@
     class=".browser.ingredients.IngredientsSearch"
     permission="zope.View"/>
 
+  <class class=".categories.RecipeCategory">
+    <require
+      attributes="code label"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>
