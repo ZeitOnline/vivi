@@ -8,8 +8,6 @@ import six
 import zeit.wochenmarkt.interfaces
 import zope.component
 import zope.component.hooks
-import zc.sourcefactory.contextual
-import zc.sourcefactory.source
 
 
 log = logging.getLogger(__name__)
@@ -33,8 +31,8 @@ class Ingredient(object):
         self.__name__ = self.code
 
 
-@grok.implementer(zeit.wochenmarkt.interfaces.IIngredients)
-class Ingredients(grok.GlobalUtility):
+@grok.implementer(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+class IngredientsWhitelist(grok.GlobalUtility):
     """Search for ingredients in ingredients source"""
 
     @property
@@ -78,32 +76,3 @@ class Ingredients(grok.GlobalUtility):
             ingredients[ingredient_node.get('id')] = ingredient
         log.info('Ingredients loaded.')
         return ingredients
-
-
-class IngredientsSource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
-    check_interfaces = zeit.wochenmarkt.interfaces.IIngredients
-    name = 'ingredients'
-    addform = 'zeit.wochenmarkt.add_contextfree'
-
-    @zope.interface.implementer(
-        zeit.wochenmarkt.interfaces.IIngredientsSource,
-        zeit.cms.content.contentsource.IAutocompleteSource)
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        def get_check_types(self):
-            """IAutocompleteSource, but not applicable for us"""
-            return []
-
-        def __contains__(self, value):
-            # We do not want to ask the whitelist again.
-            return True
-
-    def search(self, term):
-        from zeit.wochenmarkt.interfaces import IIngredients  # circular import
-        ingredients = zope.component.getUtility(IIngredients)
-        return ingredients.search(term)
-
-
-ingredientsSource = IngredientsSource()

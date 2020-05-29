@@ -255,9 +255,9 @@ zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
             position = 'end';
         }
         var item = LI(
-            {'class': 'category__item', 'cms:uniqueId': code, 'data-name': 'category__item'},
+            {'class': 'recipe-category__item', 'cms:uniqueId': code, 'data-name': 'recipe-category__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
-            A({'class': 'category__label'}, label),
+            A({'class': 'recipe-category__label'}, label),
         );
         if (position === 'end') {
             $(self.list).append(item);

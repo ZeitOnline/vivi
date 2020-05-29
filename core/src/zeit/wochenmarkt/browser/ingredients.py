@@ -1,4 +1,4 @@
-from zeit.wochenmarkt.ingredients import ingredientsSource
+from zeit.wochenmarkt.sources import ingredientsSource
 import grokcore.component as grok
 import logging
 import zeit.cms.browser.interfaces

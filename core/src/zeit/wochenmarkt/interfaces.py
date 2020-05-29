@@ -30,8 +30,10 @@ class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):
     """Available categories."""
 
 
-class IIngredients(zope.interface.Interface):
-    """Marker interface for ingredients."""
+class IIngredientsWhitelist(zope.interface.Interface):
+    """The whitelist contains all selectable ingredeints providing
+    `IIngredient`.
+    """
 
     def search(term):
         """Return a list of ingredients whose names contain the given term."""

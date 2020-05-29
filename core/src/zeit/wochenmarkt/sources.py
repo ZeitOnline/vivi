@@ -34,3 +34,32 @@ class RecipeCategoriesSource(
 
 
 recipeCategoriesSource = RecipeCategoriesSource()
+
+
+class IngredientsSource(
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    check_interfaces = zeit.wochenmarkt.interfaces.IIngredientsWhitelist
+    name = 'ingredients'
+    addform = 'zeit.wochenmarkt.add_contextfree'
+
+    @zope.interface.implementer(
+        zeit.wochenmarkt.interfaces.IIngredientsSource,
+        zeit.cms.content.contentsource.IAutocompleteSource)
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def get_check_types(self):
+            """IAutocompleteSource, but not applicable for us"""
+            return []
+
+        def __contains__(self, value):
+            # We do not want to ask the whitelist again.
+            return True
+
+    def search(self, term):
+        from zeit.wochenmarkt.interfaces import IIngredientsWhitelist
+        ingredients = zope.component.getUtility(IIngredientsWhitelist)
+        return ingredients.search(term)
+
+
+ingredientsSource = IngredientsSource()

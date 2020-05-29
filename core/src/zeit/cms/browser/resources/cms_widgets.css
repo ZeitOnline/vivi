@@ -694,7 +694,7 @@ a.button.configure_search:hover {
   color: #fff;
 }
 
-.categories-widget input[name="add_category"],
+.recipe-categories-widget input[name="add_category"],
 .ingredients-widget input[name="add_ingredient"],
 .keyword-widget input[name="add_tag"] {
     margin-top: 1em;
@@ -702,7 +702,7 @@ a.button.configure_search:hover {
     width: 360px;
 }
 
-.categories-widget ol,
+.recipe-categories-widget ol,
 .ingredients-widget ol,
 .keyword-widget ol {
     list-style: none;
@@ -710,13 +710,13 @@ a.button.configure_search:hover {
     border-top: 1px solid #dddddd;
 }
 
-.categories-widget ol,
+.recipe-categories-widget ol,
 .ingredients-widget ol {
     margin-right: 1em;
     width: auto;
 }
 
-.categories-widget ol li,
+.recipe-categories-widget ol li,
 .ingredients-widget ol li,
 .keyword-widget ol li {
     clear: both;
@@ -729,7 +729,7 @@ a.button.configure_search:hover {
     cursor: move;
 }
 
-.categories-widget .icon,
+.recipe-categories-widget .icon,
 .ingredients-widget .icon,
 .keyword-widget .icon {
     display: block;
@@ -743,13 +743,13 @@ a.button.configure_search:hover {
     cursor: pointer;
 }
 
-.categories-widget .delete,
+.recipe-categories-widget .delete,
 .ingredients-widget .delete,
 .keyword-widget .delete {
     background-position: 1px -418px;
 }
 
-.categories-widget .delete:hover,
+.recipe-categories-widget .delete:hover,
 .ingredients-widget .delete:hover,
 .keyword-widget .delete:hover {
     background-position: 1px -448px;

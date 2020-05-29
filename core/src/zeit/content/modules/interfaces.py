@@ -253,6 +253,6 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
         value_type=zope.schema.Choice(
-            source=zeit.wochenmarkt.ingredients.ingredientsSource),
+            source=zeit.wochenmarkt.sources.ingredientsSource),
         default=(),
         required=False)
