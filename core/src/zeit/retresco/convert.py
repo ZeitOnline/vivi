@@ -152,8 +152,8 @@ class CMSContent(Converter):
 
             title = body.xpath('//title/text()')
             if title and len(title) == 1 and title != '':
-                search_title = title[0] + ':title'
-                search_list = search_list + search_title
+                title[0] + ':title'
+                search_list = search_list + title
 
             if len(category_labels) >= 1:
                 search_list = search_list + [
