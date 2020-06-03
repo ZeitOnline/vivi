@@ -1,3 +1,4 @@
+from collections import namedtuple
 from zeit.content.modules.recipelist import Ingredient
 from zeit.wochenmarkt.categories import RecipeCategory
 import json
@@ -105,3 +106,33 @@ class RecipeCategoriesWidget(
         data = json.loads(value)
         return tuple([
             RecipeCategory(x['code'], x['label']) for x in data])
+
+
+class DisplayWidget(grok.MultiAdapter,
+                    zope.formlib.itemswidgets.ItemsWidgetBase):
+
+    grok.adapts(
+        zope.schema.interfaces.ITuple,
+        zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
+        zeit.cms.browser.interfaces.ICMSLayer)
+    grok.provides(zope.formlib.interfaces.IDisplayWidget)
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'display-recipe-categories.pt')
+
+    def __init__(self, field, source, request):
+        super(DisplayWidget, self).__init__(
+            field,
+            zope.formlib.source.IterableSourceVocabulary(source, request),
+            request)
+
+    def __call__(self):
+        return self.template()
+
+    def items(self):
+        items = []
+        RecipeCategory = namedtuple('RecipeCategory', ['text'])
+        for item in self._getFormValue():
+            text = self.textForValue(self.vocabulary.getTerm(item))
+            items.append(RecipeCategory(text))
+        return items

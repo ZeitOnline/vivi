@@ -32,6 +32,12 @@ class RecipeCategoriesSource(
         categories = zope.component.getUtility(IRecipeCategoriesWhitelist)
         return categories.search(term)
 
+    def getTitle(self, context, value):
+        return value.name
+
+    def getToken(self, context, value):
+        return value.code
+
 
 recipeCategoriesSource = RecipeCategoriesSource()
 
