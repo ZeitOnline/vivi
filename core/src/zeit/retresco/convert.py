@@ -143,12 +143,20 @@ class CMSContent(Converter):
                 except zope.component.ComponentLookupError:
                     pass
 
-            names = body.xpath(
+            titles = body.xpath(
                 '//recipelist/title[@searchable="True"]/text()')
-            if names and len(names) >= 1:
+            if titles and len(titles) >= 1:
                 # TODO: recipelist names should not be written to ES index,
                 # a toggle must be added or comment the following line
-                search_list = search_list + [x + ':name' for x in names]
+                search_list = search_list + [
+                    x + ':recipe_title' for x in titles]
+
+            complexities = body.xpath(
+                '//recipelist/complexity/text()')
+            servings = body.xpath(
+                '//recipelist/servings/text()')
+            times = body.xpath(
+                '//recipelist/time/text()')
 
             title = body.xpath('//title/text()')
             if title and len(title) == 1 and title != '':
@@ -164,7 +172,10 @@ class CMSContent(Converter):
                     'search': search_list,
                     'ingredients': ingredients,
                     'categories': categories,
-                    'names': names}})
+                    'titles': titles,
+                    'complexities': complexities,
+                    'servings': servings,
+                    'times': times}})
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)

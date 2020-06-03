@@ -122,11 +122,17 @@ pürieren.</p>
       </rawtext>
       <recipelist>
         <title searchable="True">Wurst-Hähnchen</title>
+        <complexity>ambitioniert</complexity>
+        <time>über 60 Minuten</time>
+        <servings>6</servings>
         <ingredient amount="500" code="bratwurst" label="Bratwurst" unit="g"/>
         <ingredient amount="200" code="brathaehnchen" label="Brathähnchen" unit="g"/>
       </recipelist>
       <recipelist>
         <title searchable="False">Tomaten-Grieß</title>
+        <complexity>einfach</complexity>
+        <time>unter 30 Minuten</time>
+        <servings>2</servings>
         <ingredient amount="500" code="gries" label="Gries" unit="g"/>
         <ingredient amount="200" code="tomate" label="Tomate" unit="g"/>
         <ingredient amount="200" code="gurke" label="Gurke" unit="g"/>
