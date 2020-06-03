@@ -8,6 +8,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article
 import zeit.content.article.edit.citation
+import zeit.content.article.edit.citation_comment
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces

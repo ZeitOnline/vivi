@@ -317,6 +317,14 @@ class CitationLayoutSource(AvailableBlockLayoutSource):
 CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 
 
+class CitationCommentLayoutSource(AvailableBlockLayoutSource):
+
+    config_url = 'citation-comment-layout-source'
+
+
+CITATIONCOMMENT_LAYOUT_SOURCE = CitationCommentLayoutSource()
+
+
 class BoxLayoutSource(AvailableBlockLayoutSource):
 
     # If we want to check if the box is of a certain type (like infobox)
@@ -345,6 +353,22 @@ class ICitation(zeit.edit.interfaces.IBlock):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=CITATION_LAYOUT_SOURCE,
+        default=u'default',
+        required=False)
+
+
+class ICitationComment(zeit.edit.interfaces.IBlock):
+
+    text = zope.schema.Text(
+        title=_('Citation Comment'))
+
+    url = zope.schema.URI(
+        title=_('URL'),
+        required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=CITATIONCOMMENT_LAYOUT_SOURCE,
         default=u'default',
         required=False)
 
