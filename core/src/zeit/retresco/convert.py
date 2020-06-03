@@ -144,7 +144,7 @@ class CMSContent(Converter):
                     pass
 
             names = body.xpath(
-                '//recipelist/name[@searchable_title="True"]/text()')
+                '//recipelist/title[@searchable="True"]/text()')
             if names and len(names) >= 1:
                 # TODO: recipelist names should not be written to ES index,
                 # a toggle must be added or comment the following line

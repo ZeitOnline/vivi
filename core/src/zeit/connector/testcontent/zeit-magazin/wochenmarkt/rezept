@@ -121,12 +121,12 @@ pürieren.</p>
         <text_reference type="intern" href="http://xml.zeit.de/embed/newsletter-signup/mailjet/rezepte-newsletter-signup" publication-date="" expires=""/>
       </rawtext>
       <recipelist>
-        <name searchable_title="True">Wurst-Hähnchen</name>
+        <title searchable="True">Wurst-Hähnchen</title>
         <ingredient amount="500" code="bratwurst" label="Bratwurst" unit="g"/>
         <ingredient amount="200" code="brathaehnchen" label="Brathähnchen" unit="g"/>
       </recipelist>
       <recipelist>
-        <name searchable_title="False">Tomaten-Grieß</name>
+        <title searchable="False">Tomaten-Grieß</title>
         <ingredient amount="500" code="gries" label="Gries" unit="g"/>
         <ingredient amount="200" code="tomate" label="Tomate" unit="g"/>
         <ingredient amount="200" code="gurke" label="Gurke" unit="g"/>
