@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5861: Remove `commentsAPIv2` property from `ICommonMetadata`
 
+- BUG-1216: Allow referencing gallery objects in article topicbox module
+
 
 4.33.0 (2020-05-29)
 -------------------

@@ -536,6 +536,7 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
         self.allow_cp = allow_cp
         self._allowed_interfaces = (
             zeit.content.article.interfaces.IArticle,
+            zeit.content.gallery.interfaces.IGallery,
             zeit.content.link.interfaces.ILink)
 
     @property
