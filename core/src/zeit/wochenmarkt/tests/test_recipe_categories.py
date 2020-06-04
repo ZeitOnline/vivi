@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-
-import zope.component
+import lxml.etree
+import six
+import zeit.content.article.article
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
+import zope.component
 
 
-class TestCategories(zeit.wochenmarkt.testing.FunctionalTestCase):
-    """Testing ..ingredients.Categories"""
+class TestRecipeCategoriesWhitelist(
+        zeit.wochenmarkt.testing.FunctionalTestCase):
 
     def test_category_should_be_found_through_xml(self):
         categories = zope.component.getUtility(
@@ -27,3 +29,54 @@ class TestCategories(zeit.wochenmarkt.testing.FunctionalTestCase):
         for item in result:
             names.append(item.name)
         assert u'Barbecue' in names
+
+
+class TestRecipeCategories(
+        zeit.wochenmarkt.testing.FunctionalTestCase,
+        zeit.wochenmarkt.testing.RecipeCategoriesHelper):
+
+    def get_content(self):
+        from zeit.wochenmarkt.categories import RecipeCategories
+        from lxml import objectify
+
+        class Content(object):
+            categories = RecipeCategories()
+            xml = objectify.fromstring('<article><head/></article>')
+        return Content()
+
+    def test_set_should_add_new_categories(self):
+        categories = self.setup_categories('summer', 'pizza')
+        summer = categories['summer']
+        pizza = categories['pizza']
+        content = self.get_content()
+        content.categories = [summer, pizza]
+        result = content.categories
+        self.assertEqual(['summer', 'pizza'], [x.code for x in result])
+
+    def test_set_should_add_duplicate_values_only_once(self):
+        categories = self.setup_categories('summer')
+        summer = categories['summer']
+        content = self.get_content()
+        content.categories = [summer, summer]
+        result = content.categories
+        self.assertEqual(['summer'], [x.code for x in result])
+
+    def test_set_should_write_categories_to_xml_head(self):
+        categories = self.setup_categories('summer')
+        summer = categories['summer']
+        content = self.get_content()
+        content.categories = [summer]
+        self.assertEllipsis(
+            '<recipe_categories...><category code="summer" label="_summer"...',
+            lxml.etree.tostring(
+                content.xml.head.recipe_categories,
+                encoding=six.text_type))
+
+    def test_removing_all_categories_should_leave_no_trace(self):
+        categories = self.setup_categories('summer')
+        summer = categories['summer']
+        content = self.get_content()
+        content.categories = [summer]
+        self.assertEqual(1, len(content.xml.xpath('//recipe_categories')))
+        content.categories = []
+        self.assertEqual(0, len(content.xml.xpath('//recipe_categories')))
