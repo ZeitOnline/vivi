@@ -157,10 +157,9 @@ class CMSContent(Converter):
                 '//recipelist/servings/text()')
             times = body.xpath(
                 '//recipelist/time/text()')
-
-            title = body.xpath('//title/text()')
+            title = body.xpath('title/text()')
             if title and len(title) == 1 and title != '':
-                title[0] + ':title'
+                title[0] = title[0] + ':title'
                 search_list = search_list + title
 
             if len(category_labels) >= 1:
