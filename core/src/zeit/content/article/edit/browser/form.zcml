@@ -299,7 +299,7 @@
     name="teaser"
     class=".form.TeaserForms"
     permission="zope.View"
-    weight="20"
+    weight="25"
     />
 
   <browser:viewlet
@@ -388,7 +388,7 @@
     name="article-content"
     class=".form.ArticleContentForms"
     permission="zope.View"
-    weight="30"
+    weight="40"
     />
 
   <browser:viewlet
@@ -642,7 +642,7 @@
     name="channel"
     class=".form.ChannelFormGroup"
     permission="zope.View"
-    weight="20"
+    weight="30"
     />
 
   <browser:viewlet
@@ -693,7 +693,7 @@
     name="storystream"
     class=".form.StorystreamFormGroup"
     permission="zope.View"
-    weight="20"
+    weight="35"
     />
 
   <browser:viewlet
