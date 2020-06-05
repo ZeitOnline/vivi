@@ -128,7 +128,7 @@ class CMSContent(Converter):
                         zeit.wochenmarkt.interfaces.IIngredients).get(
                             id).qwords
                     if qwords and len(qwords) >= 1:
-                        qwords = [x + ':ingredient' for x in qwords]
+                        qwords = [x.strip() + ':ingredient' for x in qwords]
                         search_list = search_list + qwords
 
                     qwords_category = zope.component.getUtility(
@@ -136,7 +136,7 @@ class CMSContent(Converter):
                             id).qwords_category
                     if qwords_category and len(qwords_category) >= 1:
                         qwords_category = [
-                            x + ':ingredient' for x in qwords_category]
+                            x.strip() + ':ingredient' for x in qwords_category]
                         search_list = search_list + qwords_category
                 except AttributeError:
                     pass
@@ -149,7 +149,7 @@ class CMSContent(Converter):
                 # TODO: recipelist names should not be written to ES index,
                 # a toggle must be added or comment the following line
                 search_list = search_list + [
-                    x + ':recipe_title' for x in titles]
+                    x.strip() + ':recipe_title' for x in titles]
 
             complexities = body.xpath(
                 '//recipelist/complexity/text()')
@@ -159,12 +159,12 @@ class CMSContent(Converter):
                 '//recipelist/time/text()')
             title = body.xpath('title/text()')
             if title and len(title) == 1 and title != '':
-                title[0] = title[0] + ':title'
+                title[0] = title[0].strip() + ':title'
                 search_list = search_list + title
 
             if len(category_labels) >= 1:
                 search_list = search_list + [
-                    x + ':category' for x in category_labels]
+                    x.strip() + ':category' for x in category_labels]
 
             result['payload'].update({
                 'recipe': {
