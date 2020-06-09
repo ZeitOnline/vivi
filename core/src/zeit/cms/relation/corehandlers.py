@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import grokcore.component as grok
 import logging
 import zeit.cms.celery
@@ -15,6 +16,8 @@ log = logging.getLogger(__name__)
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_index_on_checkin(context, event):
+    if not FEATURE_TOGGLES.find('reference_index'):
+        return
     if getattr(event, 'publishing', False):
         return
     relations = zope.component.getUtility(
@@ -28,6 +31,8 @@ def update_index_on_checkin(context, event):
 def update_index_on_add(context, event):
     if not zeit.cms.repository.interfaces.ICollection.providedBy(
             context.__parent__):
+        return
+    if not FEATURE_TOGGLES.find('reference_index'):
         return
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)

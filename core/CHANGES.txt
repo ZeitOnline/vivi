@@ -5,7 +5,7 @@ vivi.core changes
 4.33.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1214: No longer update zeit.cms.relation "who references whom" index
 
 
 4.33.2 (2020-06-04)
