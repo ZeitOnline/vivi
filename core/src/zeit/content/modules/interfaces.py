@@ -235,7 +235,7 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         title=_('Subheading'),
         required=False)
 
-    searchable_title = zope.schema.Bool(
+    searchable_subheading = zope.schema.Bool(
         title=_('Appears in recipe search?'),
         default=False)
 

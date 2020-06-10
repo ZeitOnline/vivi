@@ -31,6 +31,12 @@ class RecipeList(zeit.edit.block.Element):
         '.subheading', zeit.content.modules.interfaces.IRecipeList[
             'subheading'])
 
+    searchable_subheading = (
+        zeit.cms.content.property.ObjectPathAttributeProperty(
+            '.subheading', 'searchable',
+            zeit.content.modules.interfaces.IRecipeList[
+                'searchable_subheading']))
+
     complexity = zeit.cms.content.property.ObjectPathProperty(
         '.complexity',
         zeit.content.modules.interfaces.IRecipeList['complexity'])
@@ -42,10 +48,6 @@ class RecipeList(zeit.edit.block.Element):
     servings = zeit.cms.content.property.ObjectPathProperty(
         '.servings',
         zeit.content.modules.interfaces.IRecipeList['servings'])
-
-    searchable_title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.title', 'searchable',
-        zeit.content.modules.interfaces.IRecipeList['searchable_title'])
 
     @property
     def ingredients(self):
