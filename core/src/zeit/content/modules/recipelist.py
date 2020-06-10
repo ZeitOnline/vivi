@@ -27,6 +27,10 @@ class RecipeList(zeit.edit.block.Element):
     title = zeit.cms.content.property.ObjectPathProperty(
         '.title', zeit.content.modules.interfaces.IRecipeList['title'])
 
+    subheading = zeit.cms.content.property.ObjectPathProperty(
+        '.subheading', zeit.content.modules.interfaces.IRecipeList[
+            'subheading'])
+
     complexity = zeit.cms.content.property.ObjectPathProperty(
         '.complexity',
         zeit.content.modules.interfaces.IRecipeList['complexity'])
