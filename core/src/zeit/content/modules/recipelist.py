@@ -24,6 +24,12 @@ class Ingredient(object):
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
 class RecipeList(zeit.edit.block.Element):
 
+    merge_with_previous = (
+        zeit.cms.content.property.ObjectPathProperty(
+            '.merge_with_previous',
+            zeit.content.modules.interfaces.IRecipeList[
+                'merge_with_previous']))
+
     title = zeit.cms.content.property.ObjectPathProperty(
         '.title', zeit.content.modules.interfaces.IRecipeList['title'])
 
