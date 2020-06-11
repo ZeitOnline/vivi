@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jun 11 13:50:02 2020\n"
+"POT-Creation-Date: Thu Jun 11 14:15:26 2020\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -355,7 +355,6 @@ msgstr ""
 #: zeit/content/gallery/interfaces.py:91
 #: zeit/content/infobox/interfaces.py:20
 #: zeit/content/modules/interfaces.py:173
-#: zeit/content/modules/interfaces.py:231
 #: zeit/content/rawxml/interfaces.py:14
 #: zeit/content/text/interfaces.py:80
 #: zeit/content/video/browser/object-details-body.pt:24
@@ -3932,23 +3931,35 @@ msgstr ""
 msgid "Servings must be a positive number or empty."
 msgstr ""
 
+#: zeit/content/modules/interfaces.py:231
+msgid "Merge with previous recipe list module"
+msgstr ""
+
 #: zeit/content/modules/interfaces.py:235
-msgid "Appears in recipe search?"
+msgid "Recipe name"
 msgstr ""
 
 #: zeit/content/modules/interfaces.py:239
+msgid "Subheading"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:243
+msgid "Appears in recipe search?"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:247
 msgid "Complexity"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:244
+#: zeit/content/modules/interfaces.py:252
 msgid "Time"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:249
+#: zeit/content/modules/interfaces.py:257
 msgid "Servings"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:254
+#: zeit/content/modules/interfaces.py:262
 msgid "Ingredients"
 msgstr ""
 

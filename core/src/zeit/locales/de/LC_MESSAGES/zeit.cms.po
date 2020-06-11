@@ -14,15 +14,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jun 11 13:50:02 2020\n"
-"PO-Revision-Date: 2020-06-11 13:53+0200\n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
-"Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
+"POT-Creation-Date: Thu Jun 11 14:15:26 2020\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: zope/app/locales/extract.py\n"
 "X-Generator: Poedit 2.3\n"
 
 #: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
@@ -325,8 +324,7 @@ msgstr "Autor"
 #: zeit/content/cp/interfaces.py:182 zeit/content/cp/interfaces.py:464
 #: zeit/content/cp/interfaces.py:682 zeit/content/gallery/interfaces.py:91
 #: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:173
-#: zeit/content/modules/interfaces.py:231 zeit/content/rawxml/interfaces.py:14
-#: zeit/content/text/interfaces.py:80
+#: zeit/content/rawxml/interfaces.py:14 zeit/content/text/interfaces.py:80
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
 msgid "Title"
@@ -3876,23 +3874,35 @@ msgstr "Emailadresse als Pflichtfeld?"
 msgid "Servings must be a positive number or empty."
 msgstr "Portionen müssen eine Zahl oder leer sein."
 
+#: zeit/content/modules/interfaces.py:231
+msgid "Merge with previous recipe list module"
+msgstr "Mit vorheriger Rezeptliste zusammenführen"
+
 #: zeit/content/modules/interfaces.py:235
-msgid "Appears in recipe search?"
-msgstr "Titel in Suche anzeigen?"
+msgid "Recipe name"
+msgstr "Rezeptname"
 
 #: zeit/content/modules/interfaces.py:239
+msgid "Subheading"
+msgstr "Zwischenüberschrift"
+
+#: zeit/content/modules/interfaces.py:243
+msgid "Appears in recipe search?"
+msgstr "Zwischenüberschrift in Suche anzeigen?"
+
+#: zeit/content/modules/interfaces.py:247
 msgid "Complexity"
 msgstr "Komplexität"
 
-#: zeit/content/modules/interfaces.py:244
+#: zeit/content/modules/interfaces.py:252
 msgid "Time"
 msgstr "Dauer"
 
-#: zeit/content/modules/interfaces.py:249
+#: zeit/content/modules/interfaces.py:257
 msgid "Servings"
 msgstr "Portionen"
 
-#: zeit/content/modules/interfaces.py:254
+#: zeit/content/modules/interfaces.py:262
 msgid "Ingredients"
 msgstr "Zutaten"
 

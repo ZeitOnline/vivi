@@ -133,7 +133,7 @@ class TagTestHelpers(object):
         name, ns = dav_key = zeit.retresco.tagger.KEYWORD_PROPERTY
         dav[dav_key] = """<ns:rankedTags xmlns:ns="{ns}">
         <rankedTags>{0}</rankedTags></ns:rankedTags>""".format(
-            xml, ns=ns, tag=name)
+            xml, ns=ns)
 
 
 def create_testcontent():

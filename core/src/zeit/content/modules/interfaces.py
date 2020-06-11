@@ -227,11 +227,19 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
 
 class IRecipeList(zeit.edit.interfaces.IBlock):
 
+    merge_with_previous = zope.schema.Bool(
+        title=_('Merge with previous recipe list module'),
+        default=False)
+
     title = zope.schema.TextLine(
-        title=_('Title'),
+        title=_('Recipe name'),
         required=False)
 
-    searchable_title = zope.schema.Bool(
+    subheading = zope.schema.TextLine(
+        title=_('Subheading'),
+        required=False)
+
+    searchable_subheading = zope.schema.Bool(
         title=_('Appears in recipe search?'),
         default=False)
 
