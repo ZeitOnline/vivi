@@ -2010,6 +2010,11 @@
 
 /* Recipes */
 
+.type-article #form-recipe-categories .field {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
 #edit-form-article-content .type-recipelist .fieldname-name {
   width: auto !important;
 }
