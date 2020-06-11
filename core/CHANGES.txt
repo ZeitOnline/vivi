@@ -5,7 +5,7 @@ vivi.core changes
 4.33.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-66: Add recipe categories to articles
 
 
 4.33.3 (2020-06-09)
