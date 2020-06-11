@@ -7,7 +7,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_recipe_categories_should_be_organizable(self):
         s = self.selenium
         self.add_article()
-        s.click('css=#edit-form-recipe')
+        s.click('css=#edit-form-metadata')
         s.waitForElementPresent('//input[@name="add_recipe_category"]')
 
         # Add first category
