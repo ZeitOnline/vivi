@@ -6,6 +6,10 @@ import zope.security.proxy
 
 class VariantSerializeMixin(object):
 
+    def render(self, data=None):
+        self.request.response.setHeader('Content-Type', 'application/json')
+        return json.dumps(data)
+
     def serialize_variant(self, variant):
         data = {}
         for field in zeit.content.image.interfaces.IVariant:
@@ -41,7 +45,7 @@ class VariantList(
         VariantSerializeMixin):
 
     def __call__(self):
-        return json.dumps(
+        return self.render(
             [self.serialize_variant(x) for x in self.context.values()
              if not x.is_default])
 
@@ -52,7 +56,7 @@ class VariantDetail(
 
     def GET(self):
         data = self.serialize_variant(self.context)
-        return json.dumps(data)
+        return self.render(data)
 
     def PUT(self):
         body = json.loads(self.request.bodyStream.read(
@@ -63,7 +67,7 @@ class VariantDetail(
         data = zope.security.proxy.getObject(group.variants)
         data[self.context.id] = self.deserialize_variant(body)
         group.variants = data
-        return b''
+        return self.render()
 
     def DELETE(self):
         group = zeit.content.image.interfaces.IImageGroup(self.context)
@@ -74,7 +78,7 @@ class VariantDetail(
         data = zope.security.proxy.getObject(group.variants)
         del data[self.context.id]
         group.variants = data
-        return b''
+        return self.render()
 
 
 class Editor(object):

@@ -30,10 +30,7 @@ case $COMMAND in
 
         ./batou deploy jenkins
     ;;
-    test-app*)
-        if [ "$COMMAND" = "test-app-py3" ]; then
-           PY3="py3"
-        fi
+    test-app)
         cd $WORKSPACE
 
         bin/ci setup-batou
@@ -46,11 +43,11 @@ case $COMMAND in
 
         set +e
         shift
-        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'not selenium' \
+        $DEPLOYMENT/bin/test -v -p no:sugar -m 'not selenium' \
             --cov=. --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
-        $DEPLOYMENT/bin/test $PY3 -v -p no:sugar -m 'selenium' \
+        $DEPLOYMENT/bin/test -v -p no:sugar -m 'selenium' \
             --cov=. --junitxml=report_selenium.xml \
             --cov-append --cov-report=html --cov-report=xml \
             --reruns=3 --reruns-delay=1 "$@"

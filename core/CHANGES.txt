@@ -2,8 +2,34 @@ vivi.core changes
 =================
 
 
-4.32.12 (unreleased)
---------------------
+4.33.4 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+4.33.3 (2020-06-09)
+-------------------
+
+- OPS-1214: No longer update zeit.cms.relation "who references whom" index
+
+
+4.33.2 (2020-06-04)
+-------------------
+
+- MAINT: Sort teaser formgroup below options in article editor
+
+
+4.33.1 (2020-06-04)
+-------------------
+
+- ZON-5861: Remove `commentsAPIv2` property from `ICommonMetadata`
+
+- BUG-1216: Allow referencing gallery objects in article topicbox module
+
+
+4.33.0 (2020-05-29)
+-------------------
 
 - WOMA-65: Introduce module: recipe list
 - MAINT: Log hdok create calls
