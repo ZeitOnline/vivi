@@ -12,12 +12,14 @@ hinzugefügt werden.
 
 Rezept-Kategorien
 -----------------
-TODO
-
-
-Allgemeine Informationen
-------------------------
-TODO
+Rezepte können Rezeptkategorien zugeordnet werden.
+Diese Kategorien werden in ``data/categories.xml`` gepflegt und stehen als
+``zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist`` zur Verfügung.
+Um Rezepten Kategorien zuweisen zu können, muss zunächst ein gültiges Genre
+gemäss
+``zeit.content.article.edit.browser.form.RecipeCategories.recipe_categories``
+ausgewählt werden. Anschließend wird das Kategorien-Widget eingeblendet. Darüber
+lassen sich Kategorien dem Rezeptartikel hinzufügen, sortieren und löschen.
 
 
 Rezeptlisten
@@ -55,3 +57,7 @@ Seiten geschrieben bzw. ausgelesen.
 Siehe:
 core/src/zeit/wochenmarkt/browser/widget.py
 core/src/zeit/content/modules/recipelist.py
+
+Es besteht darüber hinaus die Möglichkeit Rezeptlisten zu verknüpfen. Vivi
+stellt allerdings nur eine Checkbox am Modul zur Verfügung, das eigentliche
+Verknüpfen geschieht im Friedbert.
