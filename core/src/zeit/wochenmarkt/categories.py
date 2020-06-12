@@ -41,8 +41,9 @@ class RecipeCategories(object):
     """Property which stores recipe categories in DAV."""
 
     def __get__(self, instance, class_):
-        return tuple(RecipeCategory.from_xml(x) for x in (
-                instance.xml.xpath('./head/recipe_categories/category')))
+        if instance is not None:
+            return tuple(RecipeCategory.from_xml(x) for x in (
+                    instance.xml.xpath('./head/recipe_categories/category')))
 
     def __set__(self, instance, value):
         recipe_categories = instance.xml.xpath('./head/recipe_categories')
