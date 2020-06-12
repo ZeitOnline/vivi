@@ -31,7 +31,13 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_recipe_categories_should_be_organizable(self):
         s = self.selenium
         self.add_article()
-        s.click('css=#edit-form-metadata')
+        s.click('id=edit-form-metadata')
+        s.click('id=metadata-genre.genre')
+        s.click('//option[@value="ad481072a560c999a9044b43f26ced28"]')
+        # XXX This is tricky, but we somehow need to lose focus on the whole
+        # widget and blur does not work this time. Maybe there is another way?
+        s.clickAt('id=metadata-genre.genre', '-20,0')
+
         s.waitForElementPresent('//input[@name="add_recipe_category"]')
 
         # Add first category
