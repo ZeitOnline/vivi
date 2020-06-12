@@ -73,12 +73,12 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
             s.getCssCount('css=li.recipe-category__item'), 2)  # not 3
 
         # Reorder ingredients
-        s.dragAndDrop('css=li.recipe-category__item', '0,50')
+        s.dragAndDrop('css=li.recipe-category__item', '0,40')
         s.waitForVisible('css=li.recipe-category__item')
         s.assertText(
             '//li[@class="recipe-category__item"][1]'
             '/a[@class="recipe-category__label"]',
-            'Pizza')
+            'Hülsenfrüchte')
 
         # Delete ingredient
         s.click('css=li.recipe-category__item span.delete')
