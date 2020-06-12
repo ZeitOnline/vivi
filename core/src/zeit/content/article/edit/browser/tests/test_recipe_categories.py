@@ -65,12 +65,16 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         # We need to trigger a save event to get rid of duplicates, but somehow
         # blur does not work in this test, so we just type enter instead...
         s.type('//input[@name="add_recipe_category"]', '\n')
-        s.waitForCssCount('css=.busy', 0)
+        s.clickAt('id=metadata-genre.genre', '-20,0')
+        s.waitForCssCount('css=li.recipe-category__item', 2)  # XXX for jenkins
+        # This is quite obvious, given we just waited for the result, but I
+        # think it's more clean to test our expectation with an assert.
         self.assertEqual(
             s.getCssCount('css=li.recipe-category__item'), 2)  # not 3
 
         # Reorder ingredients
         s.dragAndDrop('css=li.recipe-category__item', '0,50')
+        s.waitForVisible('css=li.recipe-category__item')
         s.assertText(
             '//li[@class="recipe-category__item"][1]'
             '/a[@class="recipe-category__label"]',
