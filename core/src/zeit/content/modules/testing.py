@@ -35,7 +35,7 @@ class IngredientsHelper(object):
 
     def get_ingredient(self, code):
         ingredient = zeit.content.modules.recipelist.Ingredient(
-            code=code, label='_'+code, amount='2', unit='g')
+            code=code, label='_' + code, amount='2', unit='g')
         return ingredient
 
     def setup_ingredients(self, *codes):

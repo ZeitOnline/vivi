@@ -28,7 +28,7 @@ class RecipeCategoriesHelper(object):
 
     def get_category(self, code):
         category = zeit.wochenmarkt.categories.RecipeCategory(
-            code=code, name='_'+code)
+            code=code, name='_' + code)
         return category
 
     def setup_categories(self, *codes):
