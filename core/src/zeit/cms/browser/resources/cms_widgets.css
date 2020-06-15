@@ -694,18 +694,26 @@ a.button.configure_search:hover {
   color: #fff;
 }
 
+.ingredients-widget input[name="add_ingredient"],
 .keyword-widget input[name="add_tag"] {
     margin-top: 1em;
     margin-bottom: 1em;
     width: 360px;
 }
 
+.ingredients-widget ol,
 .keyword-widget ol {
     list-style: none;
     padding-left: 0;
     border-top: 1px solid #dddddd;
 }
 
+.ingredients-widget ol {
+    margin-right: 1em;
+    width: auto;
+}
+
+.ingredients-widget ol li,
 .keyword-widget ol li {
     clear: both;
     cursor: default;
@@ -717,6 +725,7 @@ a.button.configure_search:hover {
     cursor: move;
 }
 
+.ingredients-widget .icon,
 .keyword-widget .icon {
     display: block;
     float: right;
@@ -729,10 +738,12 @@ a.button.configure_search:hover {
     cursor: pointer;
 }
 
+.ingredients-widget .delete,
 .keyword-widget .delete {
     background-position: 1px -418px;
 }
 
+.ingredients-widget .delete:hover,
 .keyword-widget .delete:hover {
     background-position: 1px -448px;
 }
@@ -749,10 +760,30 @@ a.button.configure_search:hover {
     font-weight: bold;
 }
 
+.ingredients-widget li.ui-menu-item,
 .keyword-widget li.ui-menu-item {
   border-color: #e4e4e4;
   border-style: solid;
   border-width: 1px 0px 0px 0px;
+}
+
+.ingredients-widget .ingredient__item {
+  height: 3em;
+}
+
+.ingredient__label {
+  display: inline-block;
+  min-width: 10em;
+}
+
+.field .ingredient__amount {
+  width: 3em;
+}
+
+.field .ingredient__unit {
+  margin-left: 1em;
+  vertical-align: baseline;
+  width: 5em;
 }
 
 .rst-preview {

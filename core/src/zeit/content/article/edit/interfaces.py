@@ -560,6 +560,7 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
         self.allow_cp = allow_cp
         self._allowed_interfaces = (
             zeit.content.article.interfaces.IArticle,
+            zeit.content.gallery.interfaces.IGallery,
             zeit.content.link.interfaces.ILink)
 
     @property
@@ -620,4 +621,8 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
+    pass
+
+
+class IRecipeList(zeit.content.modules.interfaces.IRecipeList):
     pass

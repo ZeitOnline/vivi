@@ -273,7 +273,7 @@ def print_payload_documentation():
         'title': u'Message title'}
 
     template_text = pkg_resources.resource_string(
-        __name__, 'tests/fixtures/payloadtemplate.json')
+        __name__, 'tests/fixtures/payloadtemplate.json').decode('utf-8')
 
     print("""\
 Um ein neues Pushtemplate zu erstellen muss unter

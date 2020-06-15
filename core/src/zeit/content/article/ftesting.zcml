@@ -41,4 +41,9 @@
 
   <include package="zeit.push" file="testing.zcml" />
 
+  <include package="zeit.find.browser" />
+
+  <include package="zeit.wochenmarkt" />
+  <include package="zeit.wochenmarkt.browser" />
+
 </configure>

@@ -2005,3 +2005,52 @@
 .type-article form[action$="@@edit-rawtext"] .fieldname-help .widget {
     margin-bottom: 1em;
 }
+
+
+/* Recipes */
+
+#edit-form-article-content .type-recipelist .fieldname-merge_with_previous {
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-title,
+#edit-form-article-content .type-recipelist .fieldname-subheading {
+  width: auto !important;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-complexity,
+#edit-form-article-content .type-recipelist .fieldname-time,
+#edit-form-article-content .type-recipelist .fieldname-servings {
+  margin-top: 1em;
+  display: inline-block;
+  width: auto !important;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-searchable_subheading {
+  float: left;
+  margin-top: 1em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-servings input {
+  width: 3em !important;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-servings input {
+  width: 3em !important;
+}
+
+/* Dirty hacks to prevent the whole line of widgets to wrap abominable on error */
+#edit-form-article-content .type-recipelist .fieldname-complexity div.error,
+#edit-form-article-content .type-recipelist .fieldname-time div.error,
+#edit-form-article-content .type-recipelist .fieldname-servings div.error {
+  position: absolute;
+  margin-top: -3em;
+  margin-left: -5em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-complexity div.empty,
+#edit-form-article-content .type-recipelist .fieldname-time div.empty,
+#edit-form-article-content .type-recipelist .fieldname-servings div.empty {
+  left: auto;
+}

@@ -2,10 +2,75 @@ vivi.core changes
 =================
 
 
-4.32.6 (unreleased)
+4.33.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-103: Add checkbox to instruct merging multiple recipe list modules
+
+- WOMA-104: Add subheading to recipe list
+
+
+4.33.3 (2020-06-09)
+-------------------
+
+- OPS-1214: No longer update zeit.cms.relation "who references whom" index
+
+
+4.33.2 (2020-06-04)
+-------------------
+
+- MAINT: Sort teaser formgroup below options in article editor
+
+
+4.33.1 (2020-06-04)
+-------------------
+
+- ZON-5861: Remove `commentsAPIv2` property from `ICommonMetadata`
+
+- BUG-1216: Allow referencing gallery objects in article topicbox module
+
+
+4.33.0 (2020-05-29)
+-------------------
+
+- WOMA-65: Introduce module: recipe list
+- MAINT: Log hdok create calls
+
+
+4.32.11 (2020-05-27)
+--------------------
+
+- MAINT: Sort access above authors in article form
+
+
+4.32.10 (2020-05-25)
+--------------------
+
+- PY3: Make workflow timing logging work under py3
+
+
+4.32.9 (2020-05-25)
+-------------------
+
+- FIX: Just filter frame-less renditions completely
+
+
+4.32.8 (2020-05-25)
+-------------------
+
+- PY3: Be defensive about brightcove renditions without frame size
+
+
+4.32.7 (2020-05-19)
+-------------------
+
+- PY3: Fix text/bytes handling in DAV property parsing
+
+
+4.32.6 (2020-05-18)
+-------------------
+
+- ZON-5886: Make FluentRecordFormatter py3-compatible
 
 
 4.32.5 (2020-05-11)

@@ -1,0 +1,27 @@
+<div class="ingredients-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id string:${view/name}.wrapper">
+
+<input
+  type="hidden"
+  tal:attributes="name string:${view/name};
+                  id string:${view/name};
+                  value view/_getFormValue;"
+  />
+
+<ol tal:attributes="id string:${view/name}.list">
+  <!-- data will be inserted here by javascript -->
+</ol>
+
+<input
+ type="text" name="add_ingredient" placeholder="Type to find ingredients ..."
+ i18n:attributes="placeholder"
+ tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
+                 id string:${view/name}.add"
+ />
+
+</div>
+<script tal:content="string:
+  new zeit.wochenmarkt.Widget('${view/name}');
+">
+</script>

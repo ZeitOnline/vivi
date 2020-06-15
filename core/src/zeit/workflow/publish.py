@@ -170,8 +170,10 @@ class PublishRetractTask(object):
             return result
         finally:
             timer.mark('Done %s' % ids_str)
-            timer_logger.debug(
-                'Timings:\n%s' % (six.text_type(timer).encode('utf8'),))
+            timings = six.text_type(timer)
+            if six.PY2:
+                timings = timings.encode('utf-8')
+            timer_logger.debug('Timings:\n%s' % timings)
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -575,6 +577,9 @@ class Timer(threading.local):
         for diff, total, message in self.get_timings():
             result.append(u'%2.4f %2.4f %s' % (diff, total, message))
         return u'\n'.join(result)
+
+    if six.PY3:
+        __str__ = __unicode__
 
 
 timer = Timer()

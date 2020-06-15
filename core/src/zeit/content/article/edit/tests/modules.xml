@@ -20,6 +20,7 @@
   <module id="quiz">Quiz</module>
   <module id="raw">Embed Code</module>
   <module id="rawtext">Embed-Link</module>
+  <module id="recipelist">Rezeptliste</module>
   <module id="studycourse">Studiengang-Orientierungsangebot</module>
   <module id="topicbox">Themenbox</module>
   <module id="video">Video</module>
