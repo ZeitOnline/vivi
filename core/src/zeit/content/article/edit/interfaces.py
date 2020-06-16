@@ -319,7 +319,7 @@ CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 
 class CitationCommentLayoutSource(AvailableBlockLayoutSource):
 
-    config_url = 'citation-comment-layout-source'
+    config_url = 'citation-layout-source'
 
 
 CITATIONCOMMENT_LAYOUT_SOURCE = CitationCommentLayoutSource()
