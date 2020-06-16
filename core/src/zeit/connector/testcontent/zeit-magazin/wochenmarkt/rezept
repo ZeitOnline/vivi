@@ -121,7 +121,8 @@ pürieren.</p>
         <text_reference type="intern" href="http://xml.zeit.de/embed/newsletter-signup/mailjet/rezepte-newsletter-signup" publication-date="" expires=""/>
       </rawtext>
       <recipelist>
-        <title searchable="True">Wurst-Hähnchen</title>
+        <title>Wurst-Hähnchen</title>
+        <subheading searchable="True">Die leckere Fleisch-Kombi</subheading>
         <complexity>ambitioniert</complexity>
         <time>über 60 Minuten</time>
         <servings>6</servings>
@@ -129,7 +130,8 @@ pürieren.</p>
         <ingredient amount="200" code="brathaehnchen" label="Brathähnchen" unit="g"/>
       </recipelist>
       <recipelist>
-        <title searchable="False">Tomaten-Grieß</title>
+        <title>Tomaten-Grieß</title>
+        <subheading searchable="False">Für die Soße</subheading>
         <complexity>einfach</complexity>
         <time>unter 30 Minuten</time>
         <servings>2</servings>

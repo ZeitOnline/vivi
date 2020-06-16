@@ -144,12 +144,16 @@ class CMSContent(Converter):
                     pass
 
             titles = body.xpath(
-                '//recipelist/title[@searchable="True"]/text()')
+                '//recipelist/title/text()')
             if titles and len(titles) >= 1:
-                # TODO: recipelist names should not be written to ES index,
-                # a toggle must be added or comment the following line
                 search_list = search_list + [
                     x.strip() + ':recipe_title' for x in titles]
+
+            subheadings = body.xpath(
+                '//recipelist/subheading[@searchable="True"]/text()')
+            if subheadings and len(subheadings) >= 1:
+                search_list = search_list + [
+                    x.strip() + ':subheading' for x in subheadings]
 
             complexities = body.xpath(
                 '//recipelist/complexity/text()')
@@ -157,10 +161,10 @@ class CMSContent(Converter):
                 '//recipelist/servings/text()')
             times = body.xpath(
                 '//recipelist/time/text()')
-            title = body.xpath('title/text()')
-            if title and len(title) == 1 and title != '':
-                title[0] = title[0].strip() + ':title'
-                search_list = search_list + title
+            doctitle = body.xpath('title/text()')
+            if doctitle and len(doctitle) == 1 and doctitle != '':
+                doctitle[0] = doctitle[0].strip() + ':title'
+                search_list = search_list + doctitle
 
             if len(category_labels) >= 1:
                 search_list = search_list + [
@@ -172,6 +176,7 @@ class CMSContent(Converter):
                     'ingredients': ingredients,
                     'categories': categories,
                     'titles': titles,
+                    'subheadings': subheadings,
                     'complexities': complexities,
                     'servings': servings,
                     'times': times}})
