@@ -295,6 +295,9 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit metadata')
     form_fields = FormFields(IArticle).select('genre')
 
+    def _success_handler(self):
+        self.signal('reload-inline-form', 'recipe-categories')
+
 
 class MetadataNL(zeit.edit.browser.form.InlineForm):
 
@@ -458,6 +461,23 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
     form_fields = FormFields(ICommonMetadata).select('overscrolling')
+
+
+class RecipeCategories(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'recipe-categories'
+    undo_description = _('edit recipe categories')
+    css_class = 'recipe-categories'
+    form_fields = FormFields(IArticle).select('recipe_categories')
+    recipe_genres = ['rezept', 'rezept-vorstellung']
+
+    def render(self):
+        if IArticle(self.context).genre in RecipeCategories.recipe_genres:
+            return super(RecipeCategories, self).render()
+        # Need to preserve the id for js to still be able to perform
+        # reload-inline-form after it has been cleared once.
+        return '<fieldset id="form-recipe-categories" />'
 
 
 class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):

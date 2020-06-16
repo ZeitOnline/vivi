@@ -5,6 +5,8 @@ vivi.core changes
 4.33.4 (unreleased)
 -------------------
 
+- WOMA-66: Add recipe categories to articles
+
 - WOMA-103: Add checkbox to instruct merging multiple recipe list modules
 
 - WOMA-104: Add subheading to recipe list

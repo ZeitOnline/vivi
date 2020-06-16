@@ -17,6 +17,9 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         object())
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
+    recipe_categories = zeit.cms.content.interfaces.ICommonMetadata[
+        'recipe_categories'].bind(object())
+
     body = zope.interface.Attribute('Convenience access to IEditableBody')
     header = zope.interface.Attribute('Convenience access to IHeaderArea')
 

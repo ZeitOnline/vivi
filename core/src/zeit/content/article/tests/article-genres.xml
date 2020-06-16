@@ -9,4 +9,5 @@
 <genre name="kommentar">Kommentar</genre>
 <genre name="leserartikel">Leserartikel</genre>
 <genre name="gastbeitrag">Gastbeitrag</genre>
+<genre name="rezept">Rezept</genre>
 </article-genres>

@@ -1,4 +1,4 @@
-<div class="ingredients-widget"
+<div class="recipe-categories-widget"
   i18n:domain="zeit.cms"
   tal:attributes="id string:${view/name}.wrapper">
 
@@ -14,7 +14,7 @@
 </ol>
 
 <input
- type="text" name="add_ingredient" placeholder="Type to find ingredients ..."
+ type="text" name="add_recipe_category" placeholder="Type to find recipe categories ..."
  i18n:attributes="placeholder"
  tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
                  id string:${view/name}.add"
@@ -22,6 +22,6 @@
 
 </div>
 <script tal:content="string:
-  new zeit.wochenmarkt.Widget('${view/name}');
+  new zeit.wochenmarkt.RecipeCategoriesWidget('${view/name}');
 ">
 </script>
