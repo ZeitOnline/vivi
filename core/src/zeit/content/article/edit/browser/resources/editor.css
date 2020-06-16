@@ -2009,7 +2009,13 @@
 
 /* Recipes */
 
-#edit-form-article-content .type-recipelist .fieldname-name {
+#edit-form-article-content .type-recipelist .fieldname-merge_with_previous {
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-title,
+#edit-form-article-content .type-recipelist .fieldname-subheading {
   width: auto !important;
 }
 
@@ -2021,9 +2027,13 @@
   width: auto !important;
 }
 
-#edit-form-article-content .type-recipelist .fieldname-searchable_title {
+#edit-form-article-content .type-recipelist .fieldname-searchable_subheading {
   float: left;
   margin-top: 1em;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-servings input {
+  width: 3em !important;
 }
 
 #edit-form-article-content .type-recipelist .fieldname-servings input {

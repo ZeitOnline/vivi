@@ -23,6 +23,12 @@ class Honorar(object):
         self.password = password
 
     def search(self, query, count=10):
+        """Searches HDok for authors whose combined/normalized first/lastname
+        match the `query` string.
+
+        Returns a list of dicts with keys
+        gcid, vorname, nachname, titel (and some others)
+        """
         result = self._request('POST /layouts/RESTautorenStamm/_find', json={
             'query': [
                 {'nameGesamtSuchtext': query},
@@ -35,6 +41,9 @@ class Honorar(object):
         return [x['fieldData'] for x in result['response']['data']]
 
     def create(self, data):
+        """Creates author in HDok. `data` must be a dict with the keys
+        vorname, nachname, anlageAssetId.
+        """
         log.info('Creating %s', data)
         interaction = zope.security.management.getInteraction()
         principal = interaction.participations[0].principal

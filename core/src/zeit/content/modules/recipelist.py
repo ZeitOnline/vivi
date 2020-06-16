@@ -24,8 +24,24 @@ class Ingredient(object):
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
 class RecipeList(zeit.edit.block.Element):
 
+    merge_with_previous = (
+        zeit.cms.content.property.ObjectPathProperty(
+            '.merge_with_previous',
+            zeit.content.modules.interfaces.IRecipeList[
+                'merge_with_previous']))
+
     title = zeit.cms.content.property.ObjectPathProperty(
         '.title', zeit.content.modules.interfaces.IRecipeList['title'])
+
+    subheading = zeit.cms.content.property.ObjectPathProperty(
+        '.subheading', zeit.content.modules.interfaces.IRecipeList[
+            'subheading'])
+
+    searchable_subheading = (
+        zeit.cms.content.property.ObjectPathAttributeProperty(
+            '.subheading', 'searchable',
+            zeit.content.modules.interfaces.IRecipeList[
+                'searchable_subheading']))
 
     complexity = zeit.cms.content.property.ObjectPathProperty(
         '.complexity',
@@ -38,10 +54,6 @@ class RecipeList(zeit.edit.block.Element):
     servings = zeit.cms.content.property.ObjectPathProperty(
         '.servings',
         zeit.content.modules.interfaces.IRecipeList['servings'])
-
-    searchable_title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.title', 'searchable',
-        zeit.content.modules.interfaces.IRecipeList['searchable_title'])
 
     @property
     def ingredients(self):
