@@ -283,6 +283,7 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
 
     product_configuration = 'zeit.content.cp'
     config_url = 'cp-automatic-feed-source'
+    default_filename = 'cp-automatic-feeds.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):

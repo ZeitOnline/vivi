@@ -11,6 +11,8 @@ vivi.core changes
 
 - WOMA-104: Add subheading to recipe list
 
+- STO-49: Support setting a default filename for source config files
+
 
 4.33.3 (2020-06-09)
 -------------------

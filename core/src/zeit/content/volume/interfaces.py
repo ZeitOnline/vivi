@@ -144,6 +144,7 @@ class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.volume'
     config_url = 'volume-cover-source'
+    default_filename = 'volume-covers.xml'
     attribute = 'id'
 
 
@@ -154,6 +155,7 @@ class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.content.volume'
     config_url = 'access-control-config'
+    default_filename = 'volume_access_configuration.xml'
 
     @property
     def min_cr(self):

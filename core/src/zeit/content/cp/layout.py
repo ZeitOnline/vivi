@@ -126,6 +126,7 @@ class TeaserBlockLayoutSource(
 
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
+    default_filename = 'cp-layouts.xml'
     attribute = 'id'
 
     @CONFIG_CACHE.cache_on_arguments()
@@ -161,6 +162,7 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'region-config-source'
+    default_filename = 'cp-regions.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -187,6 +189,7 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'area-config-source'
+    default_filename = 'cp-areas.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -209,6 +212,7 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'module-config-source'
+    default_filename = 'cp-modules.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):

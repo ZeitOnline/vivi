@@ -7,6 +7,7 @@ class CPTypeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'cp-types-url'
+    default_filename = 'cp-types.xml'
     attribute = 'name'
 
 
@@ -14,6 +15,7 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'cp-extra-url'
+    default_filename = 'cp-extras.xml'
     attribute = 'id'
 
     def isAvailable(self, node, context):
