@@ -36,7 +36,6 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
                     ui.item.value, ui.item.label,
                     '', /*amount*/
                     'Stück', /*unit*/
-                    'start' /*position=*/
                 );
                 $(self.autocomplete).val('');
                 return false;
@@ -117,17 +116,14 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label, amount, unit, position) {
+    add: function(code, label, amount, unit) {
         var self = this;
-        self._add(code, label, amount, unit, position);
+        self._add(code, label, amount, unit);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label, amount, unit, position) {
+    _add: function(code, label, amount, unit) {
         var self = this;
-        if (isUndefined(position)) {
-            position = 'end';
-        }
         var item = LI(
             {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-name': 'ingredient__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
@@ -139,11 +135,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             select.appendChild(OPTION({}, i));
         });
         item.appendChild(select);
-        if (position === 'end') {
-            $(self.list).append(item);
-        } else {
-            $(self.list).prepend(item);
-        }
+        $(self.list).append(item);
     },
 
     populate_ingredients: function(tags) {
@@ -243,27 +235,20 @@ zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label, position) {
+    add: function(code, label) {
         var self = this;
-        self._add(code, label, position);
+        self._add(code, label);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label, position) {
+    _add: function(code, label) {
         var self = this;
-        if (isUndefined(position)) {
-            position = 'end';
-        }
         var item = LI(
             {'class': 'recipe-category__item', 'cms:uniqueId': code, 'data-name': 'recipe-category__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             A({'class': 'recipe-category__label'}, label),
         );
-        if (position === 'end') {
-            $(self.list).append(item);
-        } else {
-            $(self.list).prepend(item);
-        }
+        $(self.list).append(item);
     },
 
     populate_categories: function(tags) {

@@ -77,7 +77,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=ul.ui-autocomplete li')
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)
         s.assertText(
-            '//li[@class="ingredient__item"][1]/a[@class="ingredient__label"]',
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
             'Bandnudeln')
 
         # Duplicates should be prevented
@@ -93,7 +93,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.dragAndDrop('css=li.ingredient__item', '0,50')
         s.waitForVisible('css=li.ingredient__item')
         s.assertText(
-            '//li[@class="ingredient__item"][1]/a[@class="ingredient__label"]',
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
             'Brathähnchen')
 
         # Delete ingredient
