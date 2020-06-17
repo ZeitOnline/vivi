@@ -9,6 +9,9 @@ vivi.core changes
 
 - WOMA-104: Add subheading to recipe list
 
+- WOMA-85: Extract recipe attributes and write it to destination fields in
+  ElasticSearch
+
 
 4.33.3 (2020-06-09)
 -------------------
