@@ -117,10 +117,12 @@ class CMSContent(Converter):
         category_labels = []
         if body.xpath('//recipe_categories'):
             categories = body.xpath('//recipe_categories/category/@code')
+            categories.sort() if len(categories) >= 1 else []
             category_labels = body.xpath('//recipe_categories/category/@label')
             result['payload'].update({'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
+            ingredients.sort() if len(ingredients) >= 1 else []
             search_list = []
             for id in ingredients:
                 try:
@@ -144,29 +146,32 @@ class CMSContent(Converter):
             titles = body.xpath(
                 '//recipelist/title/text()')
             if titles and len(titles) >= 1:
+                titles.sort()
                 search_list = search_list + [
                     x.strip() + ':recipe_title' for x in titles]
 
             subheadings = body.xpath(
                 '//recipelist/subheading[@searchable="True"]/text()')
             if subheadings and len(subheadings) >= 1:
+                subheadings.sort()
                 search_list = search_list + [
                     x.strip() + ':subheading' for x in subheadings]
 
-            complexities = body.xpath(
-                '//recipelist/complexity/text()')
-            servings = body.xpath(
-                '//recipelist/servings/text()')
-            times = body.xpath(
-                '//recipelist/time/text()')
+            complexities = body.xpath('//recipelist/complexity/text()')
+            complexities.sort() if len(complexities) >= 1 else []
+            servings = body.xpath('//recipelist/servings/text()')
+            servings.sort() if len(servings) >= 1 else []
+            times = body.xpath('//recipelist/time/text()')
+            times.sort() if len(times) >= 1 else []
             doctitles = body.xpath('title/text()')
             if doctitles and len(doctitles) == 1 and doctitles != '':
                 doctitles[0] = doctitles[0].strip() + ':title'
                 search_list = search_list + doctitles
-
             if len(category_labels) >= 1:
                 search_list = search_list + [
                     x.strip() + ':category' for x in category_labels]
+            if len(search_list) >= 1:
+                search_list.sort()
 
             result['payload'].update({
                 'recipe': {

@@ -302,21 +302,22 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         data = zeit.retresco.interfaces.ITMSRepresentation(recipe)()
         payload = {
             'search': [
-                'Grillwurst:ingredient', 'Wurst:ingredient',
-                u'Hühnchen:ingredient', u'Hähnchen:ingredient',
-                'Hahn:ingredient', 'Tomate:ingredient', 'Tomaten:ingredient',
-                u'Wurst-Hähnchen:recipe_title', 'Tomaten-Grieß:recipe_title',
                 'Die leckere Fleisch-Kombi:subheading',
-                'Vier Rezepte für eine Herdplatte:title', 'Wurstiges:category',
-                'Pastagerichte:category'],
+                'Grillwurst:ingredient', 'Hahn:ingredient',
+                'Hähnchen:ingredient', 'Hühnchen:ingredient',
+                'Pastagerichte:category', 'Tomate:ingredient',
+                'Tomaten-Grieß:recipe_title', 'Tomaten:ingredient',
+                'Vier Rezepte für eine Herdplatte:title',
+                'Wurst-Hähnchen:recipe_title', 'Wurst:ingredient',
+                'Wurstiges:category'],
             'subheadings': ['Die leckere Fleisch-Kombi'],
-            'titles': [u'Wurst-Hähnchen', 'Tomaten-Grieß'],
-            'categories': ['wurstiges', 'pastagerichte'],
+            'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
+            'categories': ['pastagerichte', 'wurstiges'],
             'complexities': ['ambitioniert', 'einfach'],
-            'servings': ['6', '2'],
-            'times': ['über 60 Minuten', 'unter 30 Minuten'],
-            'ingredients': ['bratwurst', 'brathaehnchen', 'gries',
-                'tomate', 'gurke']}
+            'servings': [ '2', '6'],
+            'times': ['unter 30 Minuten', 'über 60 Minuten'],
+            'ingredients': ['brathaehnchen', 'bratwurst', 'gries',  'gurke',
+                'tomate']}
         self.assertEqual(payload, data['payload']['recipe'])
 
     def test_converts_imagegroup(self):
