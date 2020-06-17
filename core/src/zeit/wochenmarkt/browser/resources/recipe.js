@@ -132,7 +132,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-name': 'ingredient__item'},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             A({'class': 'ingredient__label'}, label),
-            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount'}),
+            INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'}),
         );
         let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
         ['Stück', 'kg', 'g', 'l', 'ml'].forEach(function(i) {
