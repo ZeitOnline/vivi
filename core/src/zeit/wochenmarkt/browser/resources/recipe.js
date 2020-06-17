@@ -26,7 +26,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         var self = this;
         $(self.autocomplete).autocomplete({
             source: self.autocomplete.getAttribute('cms:autocomplete-source'),
-            minLength: 3,
+            minLength: 2,
             focus: function(event, ui) {
                 $(self.autocomplete).val(ui.item.label);
                 return false;
@@ -174,7 +174,7 @@ zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
         var self = this;
         $(self.autocomplete).autocomplete({
             source: self.autocomplete.getAttribute('cms:autocomplete-source'),
-            minLength: 3,
+            minLength: 2,
             focus: function(event, ui) {
                 $(self.autocomplete).val(ui.item.label);
                 return false;
