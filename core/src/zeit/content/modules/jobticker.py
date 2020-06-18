@@ -42,6 +42,7 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
 
     product_configuration = 'zeit.content.modules'
     config_url = 'jobticker-source'
+    default_filename = 'jobboxticker.xml'
 
     def __init__(self, content_iface):
         self.content_iface = content_iface

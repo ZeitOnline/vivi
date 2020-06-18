@@ -17,6 +17,7 @@ def unicode_or_none(value):
 class BlogSource(zeit.cms.content.sources.SimpleContextualXMLSource):
     product_configuration = 'zeit.content.link'
     config_url = 'source-blogs'
+    default_filename = 'link-blogs.xml'
 
     def getValues(self, context):
         tree = self._get_tree()

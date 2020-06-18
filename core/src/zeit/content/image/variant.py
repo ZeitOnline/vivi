@@ -174,6 +174,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
     config_url = 'variant-source'
+    default_filename = 'image-variants.xml'
 
     def getTitle(self, context, value):
         return value.id
