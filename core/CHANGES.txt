@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.33.5 (unreleased)
+4.33.5 (2020-06-18)
 -------------------
 
 - MAINT: Remove unused imports
