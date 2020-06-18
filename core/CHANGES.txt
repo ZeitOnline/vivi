@@ -29,6 +29,9 @@ vivi.core changes
 
 - WOMA-104: Add subheading to recipe list
 
+- WOMA-85: Extract recipe attributes and write it to destination fields in
+  ElasticSearch
+
 - STO-49: Support setting a default filename for source config files
 
 
@@ -851,7 +854,7 @@ vivi.core changes
 4.5.5 (2019-07-08)
 ------------------
 
-- FIX: Fix volume title listing breaking with non ascii char 
+- FIX: Fix volume title listing breaking with non ascii char
 
 
 4.5.4 (2019-07-05)
