@@ -127,14 +127,14 @@ class CMSContent(Converter):
             for id in ingredients:
                 try:
                     qwords = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredients).get(
+                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
                             id).qwords
                     if qwords and len(qwords) >= 1:
                         qwords = [x.strip() + ':ingredient' for x in qwords]
                         search_list = search_list + qwords
 
                     qwords_category = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredients).get(
+                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
                             id).qwords_category
                     if qwords_category and len(qwords_category) >= 1:
                         qwords_category = [
