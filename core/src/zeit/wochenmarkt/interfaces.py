@@ -2,8 +2,38 @@ import zope.interface
 import zope.schema
 
 
-class IIngredients(zope.interface.Interface):
-    """Marker interface for ingredients."""
+class IRecipeCategoriesWhitelist(zope.interface.Interface):
+    """The whitelist contains all selectable recipe categories providing
+    `IRecipeCategory`.
+    """
+
+    def search(term):
+        """Return a list of categories whose names contain the given term."""
+
+    def get(id):
+        """Return the category for the given id."""
+
+
+class IRecipeCategory(zope.interface.Interface):
+    """A recipe category item in a list of IRecipeCategories as part of
+    IRecipeCategorySource.
+    """
+
+    code = zope.schema.TextLine(
+        title=u'Internal recipe category id')
+
+    name = zope.schema.TextLine(
+        title=u'User visible name of recipe category')
+
+
+class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):
+    """Available categories."""
+
+
+class IIngredientsWhitelist(zope.interface.Interface):
+    """The whitelist contains all selectable ingredeints providing
+    `IIngredient`.
+    """
 
     def search(term):
         """Return a list of ingredients whose names contain the given term."""

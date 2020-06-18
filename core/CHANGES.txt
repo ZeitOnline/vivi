@@ -2,8 +2,22 @@ vivi.core changes
 =================
 
 
-4.33.4 (unreleased)
+4.33.6 (unreleased)
 -------------------
+
+- Nothing changed yet.
+
+
+4.33.5 (2020-06-18)
+-------------------
+
+- MAINT: Remove unused imports
+
+
+4.33.4 (2020-06-17)
+-------------------
+
+- WOMA-66: Add recipe categories to articles
 
 - WOMA-103: Add checkbox to instruct merging multiple recipe list modules
 

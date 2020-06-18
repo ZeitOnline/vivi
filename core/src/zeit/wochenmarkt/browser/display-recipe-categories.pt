@@ -1,0 +1,6 @@
+<div class="recipe-categories-widget" id="id" tal:attributes="id view/name">
+<ol id="id" tal:attributes="id view/name">
+    <li tal:repeat="item view/items" tal:content="item/text">
+    </li>
+</ol>
+</div>
