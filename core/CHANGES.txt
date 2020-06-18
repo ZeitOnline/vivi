@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.33.6 (unreleased)
+4.34.0 (2020-06-18)
 -------------------
 
 - STO-49: Support setting a default filename for source config files
