@@ -6,8 +6,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import six
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
 import zeit.wochenmarkt.interfaces
 import zope.component
 import zope.component.hooks
