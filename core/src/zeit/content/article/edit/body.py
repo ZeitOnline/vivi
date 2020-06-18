@@ -148,6 +148,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'module-source'
+    default_filename = 'article-modules.xml'
     attribute = 'id'
 
 

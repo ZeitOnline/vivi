@@ -2,10 +2,16 @@ vivi.core changes
 =================
 
 
-4.33.6 (unreleased)
+4.34.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.34.0 (2020-06-18)
+-------------------
+
+- STO-49: Support setting a default filename for source config files
 
 
 4.33.5 (2020-06-18)
@@ -25,6 +31,8 @@ vivi.core changes
 
 - WOMA-85: Extract recipe attributes and write it to destination fields in
   ElasticSearch
+
+- STO-49: Support setting a default filename for source config files
 
 
 4.33.3 (2020-06-09)
@@ -846,7 +854,7 @@ vivi.core changes
 4.5.5 (2019-07-08)
 ------------------
 
-- FIX: Fix volume title listing breaking with non ascii char 
+- FIX: Fix volume title listing breaking with non ascii char
 
 
 4.5.4 (2019-07-05)
