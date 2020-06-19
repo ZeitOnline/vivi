@@ -6,6 +6,7 @@ import zeit.cms.testing
 import zeit.content.modules
 import zeit.content.text.text
 import zeit.wochenmarkt.ingredients
+import zeit.wochenmarkt.testing
 
 
 product_config = """\
@@ -19,8 +20,9 @@ product_config = """\
 """.format(base=pkg_resources.resource_filename(__name__, '.'))
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cmp.testing.CONFIG_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
+        zeit.cmp.testing.CONFIG_LAYER,
+        zeit.wochenmarkt.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
