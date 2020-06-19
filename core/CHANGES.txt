@@ -5,7 +5,7 @@ vivi.core changes
 4.34.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-114: Read ingredient name from whitelist instead of article xml
 
 
 4.34.3 (2020-06-24)

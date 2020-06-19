@@ -15,6 +15,7 @@
   <other>
     <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudeln" plural="Bandnudeln" />
     <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" />
+    <ingredient id="milk" q="Milch" singular="Milch" plural="Milch" />
   </other>
   <spices>
     <ingredient id="muskatnuss" q="" singular="Muskatnuss,Muskat" plural="Muskatnüsse" />
@@ -29,6 +30,7 @@
     <ingredient id="truthahnbrust" q="Truthahn,Pute" singular="Truthahnbrust" plural="Truthahnbrüste" />
   </poultry>
   <fruits>
+    <ingredient id="banana" q="Banane" singular="Banane" plural="Bananen" />
     <ingredient id="physalis" q="Physalis" singular="Physalis" plural="Physalis" />
     <ingredient id="pomeranze" q="Bitterorange,Pomeranze" singular="Pomeranze" plural="Pomeranzen" />
   </fruits>
