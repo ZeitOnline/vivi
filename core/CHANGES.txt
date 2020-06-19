@@ -5,7 +5,7 @@ vivi.core changes
 4.34.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Move browser imports from zeit.wochenmarkt to zeit.wochenmarkt.browser
 
 
 4.34.0 (2020-06-18)
