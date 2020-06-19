@@ -7,6 +7,8 @@ vivi.core changes
 
 - MAINT: Read ingredient name from property instead of parsing the xml
 
+- MAINT: Move browser imports from zeit.wochenmarkt to zeit.wochenmarkt.browser
+
 
 4.34.0 (2020-06-18)
 -------------------
