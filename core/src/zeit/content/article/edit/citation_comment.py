@@ -11,9 +11,6 @@ class CitationComment(zeit.content.article.edit.block.Block):
 
     text = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'text', zeit.content.article.edit.interfaces.ICitationComment['text'])
-    #attribution = zeit.cms.content.property.ObjectPathAttributeProperty(
-    #    '.', 'attribution',
-    #    zeit.content.article.edit.interfaces.ICitationComment['attribution'])
     url = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'url')
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout',
