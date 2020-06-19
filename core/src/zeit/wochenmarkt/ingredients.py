@@ -41,10 +41,24 @@ class IngredientsWhitelist(grok.GlobalUtility):
 
     def search(self, term):
         xml = self._fetch()
-        nodes = xml.xpath(
-            '//ingredient[contains(zeit:lower(@singular), "%s")]' %
-            term.lower(), namespaces={'zeit': 'zeit.ingredients'})
-        return [self.get(x.get('id')) for x in nodes]
+        # Get ingredients that match the term exactly, e.g. ei -> ei.
+        exact_matches = xml.xpath(
+            ('//ingredient[zeit:lower(@singular) = "{0}"]').format(
+                term.lower()), namespaces={'zeit': 'zeit.ingredients'})
+
+        # Get ingredients that contain the search term, e.g. ei -> brei, eis
+        # and sort them alphabetically.
+        fuzzy_matches = xml.xpath(
+            ('//ingredient[contains(zeit:lower(@singular), "{0}")'
+             'and zeit:lower(@singular) != "{0}"]').format(
+                 term.lower()), namespaces={'zeit': 'zeit.ingredients'})
+        fuzzy_matches = sorted(
+            fuzzy_matches, key=lambda x: x.get('singular').lower())
+
+        # Put exact matches to the top of the resultset.
+        matches = exact_matches + fuzzy_matches
+
+        return [self.get(x.get('id')) for x in matches]
 
     def category(self, category, term=''):
         return [

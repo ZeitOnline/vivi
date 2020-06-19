@@ -29,7 +29,7 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
     def test_autocomplete_should_be_available_for_ingredients(self):
         result = zope.component.getUtility(
             zeit.wochenmarkt.interfaces.IIngredientsWhitelist).search('B')
-        assert 6 == len(result)
+        assert 7 == len(result)
         names = []
         for item in result:
             names.append(item.name)
@@ -41,3 +41,9 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
                 'chicken', 'B')
         assert 1 == len(chicken)
         assert u'Brathähnchen' == chicken[0].name
+
+    def test_ingredients_should_be_sorted_with_exact_match_leading(self):
+        result = zope.component.getUtility(
+            zeit.wochenmarkt.interfaces.IIngredientsWhitelist).search('ei')
+        assert ['Ei', 'Basmatireis', 'Brei', 'Eis'] == (
+            [r.name for r in result])

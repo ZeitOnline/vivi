@@ -61,7 +61,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add first ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
@@ -107,7 +107,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
@@ -142,7 +142,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
