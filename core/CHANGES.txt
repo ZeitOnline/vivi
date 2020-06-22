@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.34.1 (unreleased)
+4.34.1 (2020-06-22)
 -------------------
 
 - BUG-1247: Fix toc listing content type filter
