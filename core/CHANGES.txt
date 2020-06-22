@@ -5,6 +5,8 @@ vivi.core changes
 4.34.1 (unreleased)
 -------------------
 
+- BUG-1247: Fix toc listing content type filter
+
 - MAINT: Move browser imports from zeit.wochenmarkt to zeit.wochenmarkt.browser
 
 
