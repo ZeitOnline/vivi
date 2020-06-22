@@ -171,7 +171,27 @@ class ZCMLLayer(plone.testing.Layer):
         # zope.configuration.xmlconfig.file(self.config_file, context=context)
         # context.execute_actions()
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
+        self.assert_non_browser_modules_have_no_browser_zcml()
         zope.app.appsetup.config(self.config_file)
+
+    def assert_non_browser_modules_have_no_browser_zcml(self):
+        # Caveat emptor: This whole method is a bunch of heuristics, but
+        # hopefully they are useful.
+        for browser in ['browser', 'json', 'xmlrpc']:
+            if '.' + browser in self.__module__:
+                return
+
+        configure_zcml = os.path.dirname(self.config_file) + '/configure.zcml'
+        if not os.path.exists(configure_zcml):
+            return  # be defensive
+
+        zcml = open(configure_zcml).read().splitlines()
+        for directive in ['namespaces.zope.org/browser', 'gocept:pagelet']:
+            for i, line in enumerate(zcml):
+                if directive in line:
+                    raise AssertionError(
+                        'Browser-specific directive found in %s\n'
+                        '    %s: %s' % (configure_zcml, i, line))
 
     def tearDown(self):
         plone.testing.zca.popGlobalRegistry()
