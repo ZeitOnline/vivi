@@ -5,7 +5,7 @@ vivi.core changes
 4.34.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- STO-49: Use default filename mechanics for z.c.cp.TopicpageFilterSource as well
 
 
 4.34.1 (2020-06-22)
