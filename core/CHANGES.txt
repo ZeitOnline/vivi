@@ -5,7 +5,7 @@ vivi.core changes
 4.34.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Derive WOMA whitelists from z.c.c.sources.CachedXMLBase
 
 
 4.34.2 (2020-06-23)
