@@ -67,7 +67,7 @@ class TestRecipeCategories(
         content = self.get_content()
         content.categories = [summer]
         self.assertEllipsis(
-            '<recipe_categories...><category code="summer" label="_summer"...',
+            '<recipe_categories...><category code="summer"/>...',
             lxml.etree.tostring(
                 content.xml.head.recipe_categories,
                 encoding=six.text_type))

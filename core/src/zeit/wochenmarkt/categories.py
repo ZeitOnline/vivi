@@ -6,6 +6,7 @@ import logging
 import lxml.etree
 import six
 import zeit.wochenmarkt.interfaces
+import zope.interface
 
 
 log = logging.getLogger(__name__)
@@ -29,7 +30,11 @@ class RecipeCategory(object):
 
     @classmethod
     def from_xml(cls, node):
-        return cls(node.get('code'), node.get('label'))
+        code = node.get('code')
+        name = zope.component.getUtility(
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get(
+                code).name
+        return cls(code, name)
 
 
 class RecipeCategories(object):
@@ -48,10 +53,7 @@ class RecipeCategories(object):
         if len(value) > 0:
             el = E.recipe_categories()
             for item in value:
-                el.append(
-                    E.category(
-                        code=item.code,
-                        label=item.name))
+                el.append(E.category(code=item.code))
             instance.xml.head.append(el)
 
     def _remove_duplicates(self, categories):
