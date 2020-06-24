@@ -10,7 +10,7 @@ else:
 
 setup(
     name='vivi.core',
-    version='4.34.1.dev0',
+    version='4.34.4.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
