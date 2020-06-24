@@ -1,6 +1,5 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
   i18n_domain="zeit.cms">
 
