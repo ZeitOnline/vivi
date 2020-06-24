@@ -31,7 +31,7 @@ class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):
 
 
 class IIngredientsWhitelist(zope.interface.Interface):
-    """The whitelist contains all selectable ingredeints providing
+    """The whitelist contains all selectable ingredients providing
     `IIngredient`.
     """
 
