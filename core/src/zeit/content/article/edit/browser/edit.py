@@ -476,3 +476,16 @@ class EditRecipeList(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'ingredients.{0}'.format(self.context.__name__)
+
+
+class EditIngredientDice(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IIngredientDice).omit(
+            *list(zeit.edit.interfaces.IBlock))
+    undo_description = _('edit ingredientdice block')
+
+    @property
+    def prefix(self):
+        return 'ingredientdice.{0}'.format(self.context.__name__)
