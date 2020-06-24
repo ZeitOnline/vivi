@@ -611,6 +611,7 @@ class IRecipeList(zeit.content.modules.interfaces.IRecipeList):
 
 class IIngredientDice(zeit.edit.interfaces.IBlock):
     """A simple block without any customisation.
-    If something like article-extras would exist this should be one."""
+    If something like article-extras would exist this should be one.
+    """
 
     pass
