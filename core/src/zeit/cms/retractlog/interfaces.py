@@ -39,6 +39,7 @@ class RetractLogConfig(zeit.cms.content.sources.CachedXMLBase):
 
     product_configuration = 'zeit.cms'
     config_url = 'config-retractlog'
+    default_filename = 'retractlog.xml'
 
     @property
     def limit(self):

@@ -178,6 +178,7 @@ class BiographyQuestionSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.author'
     config_url = 'biography-questions'
+    default_filename = 'author-biography-questions.xml'
     attribute = 'id'
 
 
@@ -198,6 +199,7 @@ class RoleSource(zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.author'
     config_url = 'roles'
+    default_filename = 'author-roles.xml'
 
 
 ROLE_SOURCE = RoleSource()

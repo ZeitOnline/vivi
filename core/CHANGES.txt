@@ -2,12 +2,57 @@ vivi.core changes
 =================
 
 
-4.33.4 (unreleased)
+4.34.4 (unreleased)
 -------------------
+
+- Nothing changed yet.
+
+
+4.34.3 (2020-06-24)
+-------------------
+
+- MAINT: Derive WOMA whitelists from z.c.c.sources.CachedXMLBase
+
+
+4.34.2 (2020-06-23)
+-------------------
+
+- STO-49: Use default filename mechanics for z.c.cp.TopicpageFilterSource as well
+
+
+4.34.1 (2020-06-22)
+-------------------
+
+- BUG-1247: Fix toc listing content type filter
+
+- MAINT: Move browser imports from zeit.wochenmarkt to zeit.wochenmarkt.browser
+
+
+4.34.0 (2020-06-18)
+-------------------
+
+- STO-49: Support setting a default filename for source config files
+
+
+4.33.5 (2020-06-18)
+-------------------
+
+- MAINT: Remove unused imports
+
+
+4.33.4 (2020-06-17)
+-------------------
+
+- WOMA-66: Add recipe categories to articles
 
 - WOMA-103: Add checkbox to instruct merging multiple recipe list modules
 
 - WOMA-104: Add subheading to recipe list
+
+- WOMA-85: Extract recipe attributes and write it to destination fields in
+  ElasticSearch
+
+- STO-49: Support setting a default filename for source config files
 
 
 4.33.3 (2020-06-09)
@@ -829,7 +874,7 @@ vivi.core changes
 4.5.5 (2019-07-08)
 ------------------
 
-- FIX: Fix volume title listing breaking with non ascii char 
+- FIX: Fix volume title listing breaking with non ascii char
 
 
 4.5.4 (2019-07-05)

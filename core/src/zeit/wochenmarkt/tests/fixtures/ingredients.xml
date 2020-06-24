@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <ingredients>
   <chicken q="Hahn">
-    <ingredient id="brathaehnchen" q="Hühnchen,Hähnchen" singular="Brathähnchen" plural="Brathähnchen" />
+    <ingredient id="brathaehnchen" q="Hühnchen, Hähnchen" singular="Brathähnchen" plural="Brathähnchen" />
     <ingredient id="chicken-nuggets" q="Hühnchen,Hähnchen" singular="Chicken Nugget" plural="Chicken Nuggets" />
   </chicken>
   <fish q="Fisch, Meeresfrüchte">

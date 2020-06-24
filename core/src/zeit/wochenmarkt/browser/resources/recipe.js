@@ -5,7 +5,7 @@ var nbsp = ' ';
 
 zeit.cms.declare_namespace('zeit.wochenmarkt');
 
-zeit.wochenmarkt.Widget = gocept.Class.extend({
+zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
     construct: function(id) {
         var self = this;
@@ -150,6 +150,126 @@ zeit.wochenmarkt.Widget = gocept.Class.extend({
         var self = this;
         $.each(tags, function(i, tag) {
             self._add(tag.code, tag.label, tag.amount, tag.unit);
+        });
+        self._sync_json_widget_value();
+    },
+
+    _sync_json_widget_value: function() {
+        var self = this;
+        $(self.data).val(JSON.stringify(self.to_json()));
+    }
+
+});
+
+
+zeit.wochenmarkt.RecipeCategoriesWidget = gocept.Class.extend({
+
+    construct: function(id) {
+        var self = this;
+        self.id = id;
+        self.element = document.getElementById(id + '.wrapper');
+        self.list = document.getElementById(id + '.list');
+        self.data = document.getElementById(id);
+        self.autocomplete = document.getElementById(id + '.add');
+        self.populate_categories($.parseJSON($(self.data).val()));
+        MochiKit.Signal.connect(
+            id + '.wrapper', 'onclick', self, self.handle_click);
+        self._initialize_autocomplete();
+        self._initialize_sortable();
+    },
+
+    _initialize_autocomplete: function() {
+        var self = this;
+        $(self.autocomplete).autocomplete({
+            source: self.autocomplete.getAttribute('cms:autocomplete-source'),
+            minLength: 3,
+            focus: function(event, ui) {
+                $(self.autocomplete).val(ui.item.label);
+                return false;
+            },
+            select: function(event, ui) {
+                self.add(
+                    ui.item.value, ui.item.label,
+                );
+                $(self.autocomplete).val('');
+                return false;
+            },
+            appendTo: self.element
+        });
+    },
+
+    _initialize_sortable: function() {
+        var self = this;
+        $(self.list).sortable({
+            items: '> li',
+            axis: 'y',
+            scroll: false,
+            update: function(event, ui) {
+                self._sync_json_widget_value();
+                $(self.data).trigger('change');
+            }
+        });
+    },
+
+    handle_click: function(event) {
+        var self = this;
+        var method = event.target().getAttribute('cms:call');
+        if (isNull(method)) {
+            return;
+        }
+
+        method = self[method];
+        method.call(self, event);
+        event.stop();
+    },
+
+    to_json: function() {
+        var self = this;
+        var result = [];
+        $('> li', self.list).each(function(i, el) {
+            el = $(el);
+            result.push({
+                code: el.attr('cms:uniqueId'),
+                label: el.contents().get(1).text,
+            });
+        });
+        return result;
+    },
+
+    delete: function(event) {
+        var self = this;
+        $(event.target()).closest('li').remove();
+        self._sync_json_widget_value();
+        $(self.data).trigger('change');
+    },
+
+    add: function(code, label, position) {
+        var self = this;
+        self._add(code, label, position);
+        self._sync_json_widget_value();
+    },
+
+    _add: function(code, label, position) {
+        var self = this;
+        if (isUndefined(position)) {
+            position = 'end';
+        }
+        var item = LI(
+            {'class': 'recipe-category__item', 'cms:uniqueId': code, 'data-name': 'recipe-category__item'},
+            SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
+            A({'class': 'recipe-category__label'}, label),
+        );
+        if (position === 'end') {
+            $(self.list).append(item);
+        } else {
+            $(self.list).prepend(item);
+        }
+    },
+
+    populate_categories: function(tags) {
+        var self = this;
+        $.each(tags, function(i, tag) {
+            self._add(tag.code, tag.label);
         });
         self._sync_json_widget_value();
     },

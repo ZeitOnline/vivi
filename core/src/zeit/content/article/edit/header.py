@@ -96,6 +96,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'header-module-source'
+    default_filename = 'article-header-modules.xml'
     attribute = 'id'
 
     # For consistency with the zeit.content.cp config files.

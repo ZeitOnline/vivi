@@ -34,6 +34,7 @@ class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
     config_url = 'copyright-company-source'
+    default_filename = 'image-copyright-company.xml'
 
     def getValues(self, context):
         tree = self._get_tree()
@@ -192,6 +193,7 @@ class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
     config_url = 'display-type-source'
+    default_filename = 'image-display-types.xml'
     attribute = 'id'
 
 
@@ -199,6 +201,7 @@ class ViewportSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.image'
     config_url = 'viewport-source'
+    default_filename = 'image-viewports.xml'
     attribute = 'id'
 
 

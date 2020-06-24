@@ -12,6 +12,7 @@ class LinkSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.cms'
     config_url = 'source-manual'
+    default_filename = 'vivi-handbuch.xml'
     attribute = 'id'
 
 

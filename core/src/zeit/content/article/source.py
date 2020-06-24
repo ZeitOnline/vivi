@@ -9,12 +9,14 @@ class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'book-recension-categories'
+    default_filename = 'article-recension-categories.xml'
 
 
 class GenreSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'genre-url'
+    default_filename = 'article-genres.xml'
     attribute = 'name'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
@@ -39,6 +41,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'template-source'
+    default_filename = 'article-templates.xml'
     attribute = 'name'
     title_xpath = '/templates/template'
 
@@ -124,6 +127,7 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
 
     product_configuration = ArticleTemplateSource.product_configuration
     config_url = ArticleTemplateSource.config_url
+    default_filename = ArticleTemplateSource.default_filename
     attribute = 'name'
     slave_tag = 'header'
     master_node_xpath = '/templates/template'
@@ -143,6 +147,7 @@ class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-display-mode-source'
+    default_filename = 'article-image-display-modes.xml'
     attribute = 'id'
     title_xpath = '/display-modes/display-mode'
 
@@ -159,6 +164,7 @@ class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'legacy-display-mode-source'
+    default_filename = 'article-legacy-display-modes.xml'
 
     def getValues(self, context):
         tree = self._get_tree()
@@ -173,6 +179,7 @@ class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-variant-name-source'
+    default_filename = 'article-image-variant-names.xml'
     attribute = 'id'
     title_xpath = '/variant-names/variant-name'
 
@@ -231,6 +238,7 @@ class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'legacy-variant-name-source'
+    default_filename = 'article-legacy-variant-names.xml'
 
     def getValues(self, context):
         tree = self._get_tree()
