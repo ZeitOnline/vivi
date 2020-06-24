@@ -4,7 +4,6 @@ import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
-import six
 import zeit.wochenmarkt.interfaces
 import zope.interface
 
@@ -81,7 +80,7 @@ class RecipeCategoriesWhitelist(
     def search(self, term):
         xml = self._get_tree()
         nodes = xml.xpath(
-            '//category[contains(zeit:lower(text()), "%s")]' %
+            '//category[contains(zeit:lower(@name), "%s")]' %
             term.lower(), namespaces={'zeit': 'zeit.categories'})
         return [self.get(x.get('id')) for x in nodes]
 
