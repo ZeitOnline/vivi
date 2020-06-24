@@ -323,6 +323,7 @@ CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 class CitationCommentLayoutSource(AvailableBlockLayoutSource):
 
     config_url = 'citation-layout-source'
+    default_filename = 'article-citation-layouts.xml'
 
 
 CITATIONCOMMENT_LAYOUT_SOURCE = CitationCommentLayoutSource()
