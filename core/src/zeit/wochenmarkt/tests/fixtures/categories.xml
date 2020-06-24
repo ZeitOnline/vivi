@@ -2,8 +2,7 @@
 <categories>
     <category id="huelsenfruechte" name="Hülsenfrüchte"/>
     <category id="pizza" name="Pizza"/>
-    <category id="spring_summer" name="spring/summer"/>
-    <category id="autum_winter" name=">autum/winter"/>
+    <category id="summer" name="Sommer"/>
     <category id="barbecue" name="Barbecue"/>
     <category id="salat" name="Salat"/>
     <category id="bowl" name="Bowl"/>
