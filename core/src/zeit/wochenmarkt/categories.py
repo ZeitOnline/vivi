@@ -1,14 +1,11 @@
 from lxml.objectify import E
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
 import lxml.etree
 import six
 import zeit.wochenmarkt.interfaces
-import zope.component
-import zope.component.hooks
 
 
 log = logging.getLogger(__name__)
@@ -66,15 +63,21 @@ class RecipeCategories(object):
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
-class RecipeCategoriesWhitelist(grok.GlobalUtility):
+class RecipeCategoriesWhitelist(
+        grok.GlobalUtility,
+        zeit.cms.content.sources.CachedXMLBase):
     """Search for categories in categories source"""
+
+    product_configuration = 'zeit.wochenmarkt'
+    config_url = 'categories-url'
+    default_filename = 'categories.xml'
 
     @property
     def data(self):
         return self._load()
 
     def search(self, term):
-        xml = self._fetch()
+        xml = self._get_tree()
         nodes = xml.xpath(
             '//category[contains(zeit:lower(text()), "%s")]' %
             term.lower(), namespaces={'zeit': 'zeit.categories'})
@@ -85,17 +88,8 @@ class RecipeCategoriesWhitelist(grok.GlobalUtility):
         return result if result else None
 
     @CONFIG_CACHE.cache_on_arguments()
-    def _fetch(self):
-        ns = 'zeit.wochenmarkt'
-        config = zope.app.appsetup.product.getProductConfiguration(ns)
-        url = config.get('categories-url')
-        log.info('Loading categories from %s', url)
-        data = six.moves.urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(data)
-
-    @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
-        xml = self._fetch()
+        xml = self._get_tree()
         categories = collections.OrderedDict()
         for category_node in xml.xpath('//category'):
             category = RecipeCategory(
