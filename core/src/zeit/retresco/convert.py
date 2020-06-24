@@ -118,27 +118,27 @@ class CMSContent(Converter):
         if body.xpath('//recipe_categories'):
             categories = body.xpath('//recipe_categories/category/@code')
             categories.sort() if len(categories) >= 1 else []
-            for id in categories:
+            for code in categories:
                 mod = zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
-                label = zope.component.getUtility(mod).get(id).name
+                label = zope.component.getUtility(mod).get(code).name
                 category_labels.append(label)
             result['payload'].update({'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
             ingredients.sort() if len(ingredients) >= 1 else []
             search_list = []
-            for id in ingredients:
+            for code in ingredients:
                 try:
                     qwords = zope.component.getUtility(
                         zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            id).qwords
+                            code).qwords
                     if qwords and len(qwords) >= 1:
                         qwords = [x.strip() + ':ingredient' for x in qwords]
                         search_list = search_list + qwords
 
                     qwords_category = zope.component.getUtility(
                         zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            id).qwords_category
+                            code).qwords_category
                     if qwords_category and len(qwords_category) >= 1:
                         qwords_category = [
                             x.strip() + ':ingredient' for x in qwords_category]
