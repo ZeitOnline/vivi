@@ -704,5 +704,5 @@ class DataSetEnvironment(zope.formlib.textwidgets.TextWidget):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.article')
     key = 'zeit-comments-api-url'
-    if isinstance(key, dict) and key in config:
+    if isinstance(config, dict) and key in config:
         extra = 'data-environment={}'.format(config['zeit-comments-api-url'])
