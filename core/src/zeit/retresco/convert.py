@@ -3,6 +3,7 @@ from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
+from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
 import grokcore.component as grok
 import logging
 import lxml.builder
@@ -119,10 +120,14 @@ class CMSContent(Converter):
             categories = body.xpath('//recipe_categories/category/@code')
             categories.sort() if len(categories) >= 1 else []
             for code in categories:
-                mod = zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
-                label = zope.component.getUtility(mod).get(code).name
-                category_labels.append(label)
-            result['payload'].update({'recipe': {'categories': categories}})
+                try:
+                    mod = IRecipeCategoriesWhitelist
+                    label = zope.component.getUtility(mod).get(code).name
+                    category_labels.append(label)
+                except AttributeError:
+                    continue
+                result['payload'].update(
+                    {'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
             ingredients.sort() if len(ingredients) >= 1 else []

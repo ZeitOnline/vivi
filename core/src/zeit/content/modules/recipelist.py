@@ -16,8 +16,13 @@ class Ingredient(object):
     @classmethod
     def from_xml(cls, node):
         code = node.get('code')
-        name = zope.component.getUtility(
-            zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(code).name
+        try:
+            name = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
+                    code).name
+        except AttributeError:
+            # Take care of insufficient whitelist data e.g. missing entries.
+            return None
         return cls(
             code,
             name,
@@ -61,7 +66,9 @@ class RecipeList(zeit.edit.block.Element):
 
     @property
     def ingredients(self):
-        return [Ingredient.from_xml(x) for x in self.xml.xpath('./ingredient')]
+        ingredients = [Ingredient.from_xml(x) for x in self.xml.xpath(
+            './ingredient')]
+        return [i for i in ingredients if i is not None]
 
     @ingredients.setter
     def ingredients(self, value):

@@ -30,9 +30,13 @@ class RecipeCategory(object):
     @classmethod
     def from_xml(cls, node):
         code = node.get('code')
-        name = zope.component.getUtility(
-            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get(
-                code).name
+        try:
+            name = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get(
+                    code).name
+        except AttributeError:
+            # Take care of insufficient whitelist data e.g. missing entries.
+            return None
         return cls(code, name)
 
 
@@ -41,8 +45,9 @@ class RecipeCategories(object):
 
     def __get__(self, instance, class_):
         if instance is not None:
-            return tuple(RecipeCategory.from_xml(x) for x in (
-                instance.xml.xpath('./head/recipe_categories/category')))
+            categories = [RecipeCategory.from_xml(x) for x in (
+                instance.xml.xpath('./head/recipe_categories/category'))]
+            return tuple(c for c in categories if c is not None)
 
     def __set__(self, instance, value):
         recipe_categories = instance.xml.xpath('./head/recipe_categories')
