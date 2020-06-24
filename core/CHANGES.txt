@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.34.3 (unreleased)
+4.34.3 (2020-06-24)
 -------------------
 
 - MAINT: Derive WOMA whitelists from z.c.c.sources.CachedXMLBase
