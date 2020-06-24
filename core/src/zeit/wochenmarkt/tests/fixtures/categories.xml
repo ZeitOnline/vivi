@@ -1,9 +1,12 @@
 <?xml version="1.0" ?>
 <categories>
-    <category id="huelsenfruechte">Hülsenfrüchte</category>
-    <category id="pizza">Pizza</category>
-    <category id="summer">Sommer</category>
-    <category id="barbecue">Barbecue</category>
-    <category id="salat">Salat</category>
-    <category id="bowl">Bowl</category>
+    <category id="huelsenfruechte" name="Hülsenfrüchte"/>
+    <category id="pizza" name="Pizza"/>
+    <category id="spring_summer" name="spring/summer"/>
+    <category id="autum_winter" name=">autum/winter"/>
+    <category id="barbecue" name="Barbecue"/>
+    <category id="salat" name="Salat"/>
+    <category id="bowl" name="Bowl"/>
+    <category id="pastagerichte" name="Pastagerichte"/>
+    <category id="wurstiges" name="Wurstiges"/>
 </categories>

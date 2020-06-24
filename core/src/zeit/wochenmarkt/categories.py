@@ -96,7 +96,7 @@ class RecipeCategoriesWhitelist(
         for category_node in xml.xpath('//category'):
             category = RecipeCategory(
                 category_node.get('id'),
-                six.text_type(category_node).strip())
+                category_node.get('name'))
             categories[category_node.get('id')] = category
         log.info('categories loaded.')
         return categories

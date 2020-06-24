@@ -118,7 +118,10 @@ class CMSContent(Converter):
         if body.xpath('//recipe_categories'):
             categories = body.xpath('//recipe_categories/category/@code')
             categories.sort() if len(categories) >= 1 else []
-            category_labels = body.xpath('//recipe_categories/category/@label')
+            for id in categories:
+                mod = zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+                label = zope.component.getUtility(mod).get(id).name
+                category_labels.append(label)
             result['payload'].update({'recipe': {'categories': categories}})
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
