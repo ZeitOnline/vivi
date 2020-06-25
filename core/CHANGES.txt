@@ -5,7 +5,8 @@ vivi.core changes
 4.35.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Ensure we don't use browser-specific directives in
+  non-browser ZCML files
 
 
 4.35.0 (2020-06-25)
@@ -15,9 +16,6 @@ vivi.core changes
   instead of article xml
 
 - WOMA-108: Add ingredientdice article module
-
-- MAINT: Ensure we don't use browser-specific directives in
-  non-browser ZCML files
 
 
 4.34.3 (2020-06-24)
