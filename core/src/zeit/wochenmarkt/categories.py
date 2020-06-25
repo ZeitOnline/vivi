@@ -1,14 +1,11 @@
 from lxml.objectify import E
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
 import lxml.etree
-import six
 import zeit.wochenmarkt.interfaces
-import zope.component
-import zope.component.hooks
+import zope.interface
 
 
 log = logging.getLogger(__name__)
@@ -32,7 +29,15 @@ class RecipeCategory(object):
 
     @classmethod
     def from_xml(cls, node):
-        return cls(node.get('code'), node.get('label'))
+        code = node.get('code')
+        try:
+            name = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get(
+                    code).name
+        except AttributeError:
+            # Take care of insufficient whitelist data e.g. missing entries.
+            return None
+        return cls(code, name)
 
 
 class RecipeCategories(object):
@@ -40,8 +45,9 @@ class RecipeCategories(object):
 
     def __get__(self, instance, class_):
         if instance is not None:
-            return tuple(RecipeCategory.from_xml(x) for x in (
-                instance.xml.xpath('./head/recipe_categories/category')))
+            categories = [RecipeCategory.from_xml(x) for x in (
+                instance.xml.xpath('./head/recipe_categories/category'))]
+            return tuple(c for c in categories if c is not None)
 
     def __set__(self, instance, value):
         recipe_categories = instance.xml.xpath('./head/recipe_categories')
@@ -51,10 +57,7 @@ class RecipeCategories(object):
         if len(value) > 0:
             el = E.recipe_categories()
             for item in value:
-                el.append(
-                    E.category(
-                        code=item.code,
-                        label=item.name))
+                el.append(E.category(code=item.code))
             instance.xml.head.append(el)
 
     def _remove_duplicates(self, categories):
@@ -66,17 +69,23 @@ class RecipeCategories(object):
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
-class RecipeCategoriesWhitelist(grok.GlobalUtility):
+class RecipeCategoriesWhitelist(
+        grok.GlobalUtility,
+        zeit.cms.content.sources.CachedXMLBase):
     """Search for categories in categories source"""
+
+    product_configuration = 'zeit.wochenmarkt'
+    config_url = 'categories-url'
+    default_filename = 'categories.xml'
 
     @property
     def data(self):
         return self._load()
 
     def search(self, term):
-        xml = self._fetch()
+        xml = self._get_tree()
         nodes = xml.xpath(
-            '//category[contains(zeit:lower(text()), "%s")]' %
+            '//category[contains(zeit:lower(@name), "%s")]' %
             term.lower(), namespaces={'zeit': 'zeit.categories'})
         return [self.get(x.get('id')) for x in nodes]
 
@@ -85,22 +94,13 @@ class RecipeCategoriesWhitelist(grok.GlobalUtility):
         return result if result else None
 
     @CONFIG_CACHE.cache_on_arguments()
-    def _fetch(self):
-        ns = 'zeit.wochenmarkt'
-        config = zope.app.appsetup.product.getProductConfiguration(ns)
-        url = config.get('categories-url')
-        log.info('Loading categories from %s', url)
-        data = six.moves.urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(data)
-
-    @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
-        xml = self._fetch()
+        xml = self._get_tree()
         categories = collections.OrderedDict()
         for category_node in xml.xpath('//category'):
             category = RecipeCategory(
                 category_node.get('id'),
-                six.text_type(category_node).strip())
+                category_node.get('name'))
             categories[category_node.get('id')] = category
         log.info('categories loaded.')
         return categories

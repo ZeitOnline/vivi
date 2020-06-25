@@ -9,6 +9,7 @@
   <module id="gallery">Bildergalerie</module>
   <module id="image">Bild</module>
   <module id="infobox">Infobox</module>
+  <module id="ingredientdice">Zutatenwürfel</module>
   <module id="jobboxticker">Jobticker Modul</module>
   <module id="liveblog">Liveblog</module>
   <module id="mail">Mail-Formular</module>

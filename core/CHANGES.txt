@@ -2,7 +2,28 @@ vivi.core changes
 =================
 
 
-4.34.1 (unreleased)
+4.34.4 (unreleased)
+-------------------
+
+- WOMA-114: Read ingredient and category names from whitelist
+  instead of article xml
+
+- WOMA-108: Add ingredientdice article module
+
+
+4.34.3 (2020-06-24)
+-------------------
+
+- MAINT: Derive WOMA whitelists from z.c.c.sources.CachedXMLBase
+
+
+4.34.2 (2020-06-23)
+-------------------
+
+- STO-49: Use default filename mechanics for z.c.cp.TopicpageFilterSource as well
+
+
+4.34.1 (2020-06-22)
 -------------------
 
 - BUG-1247: Fix toc listing content type filter

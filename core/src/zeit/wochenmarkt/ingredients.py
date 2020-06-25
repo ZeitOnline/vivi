@@ -1,13 +1,10 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
 import lxml.etree
 import six
 import zeit.wochenmarkt.interfaces
-import zope.component
-import zope.component.hooks
 
 
 log = logging.getLogger(__name__)
@@ -39,15 +36,21 @@ class Ingredient(object):
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
-class IngredientsWhitelist(grok.GlobalUtility):
+class IngredientsWhitelist(
+        grok.GlobalUtility,
+        zeit.cms.content.sources.CachedXMLBase):
     """Search for ingredients in ingredients source"""
+
+    product_configuration = 'zeit.wochenmarkt'
+    config_url = 'ingredients-url'
+    default_filename = 'ingredients.xml'
 
     @property
     def data(self):
         return self._load()
 
     def search(self, term):
-        xml = self._fetch()
+        xml = self._get_tree()
         nodes = xml.xpath(
             '//ingredient[contains(zeit:lower(@singular), "%s")]' %
             term.lower(), namespaces={'zeit': 'zeit.ingredients'})
@@ -63,17 +66,8 @@ class IngredientsWhitelist(grok.GlobalUtility):
         return result if result else None
 
     @CONFIG_CACHE.cache_on_arguments()
-    def _fetch(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.wochenmarkt')
-        url = config.get('ingredients-url')
-        log.info('Loading ingredients from %s', url)
-        data = six.moves.urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(data)
-
-    @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
-        xml = self._fetch()
+        xml = self._get_tree()
         ingredients = collections.OrderedDict()
         for ingredient_node in xml.xpath('//ingredient'):
             ingredient = Ingredient(

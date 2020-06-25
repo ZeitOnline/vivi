@@ -35,7 +35,7 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
     def test_autocomplete_should_be_available_for_ingredients(self):
         result = zope.component.getUtility(
             zeit.wochenmarkt.interfaces.IIngredientsWhitelist).search('B')
-        assert 6 == len(result)
+        assert 7 == len(result)
         names = []
         for item in result:
             names.append(item.name)
