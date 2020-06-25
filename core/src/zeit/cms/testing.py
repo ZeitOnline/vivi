@@ -181,6 +181,10 @@ class ZCMLLayer(plone.testing.Layer):
             if '.' + browser in self.__module__:
                 return
 
+        if self.__module__.startswith('zeit.addcentral'):
+            # XXX This is a historical edge case.
+            return
+
         configure_zcml = os.path.dirname(self.config_file) + '/configure.zcml'
         if not os.path.exists(configure_zcml):
             return  # be defensive
