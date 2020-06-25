@@ -4,6 +4,7 @@ import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
+import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
 import zope.interface
 
