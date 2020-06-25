@@ -114,11 +114,16 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
+
         categories = []
         category_labels = []
+        search_list = []
+
         if body.xpath('//recipe_categories'):
             categories = body.xpath('//recipe_categories/category/@code')
             categories.sort() if len(categories) >= 1 else []
+            result['payload'].update({'recipe': {'categories': categories}})
+
             for code in categories:
                 try:
                     mod = IRecipeCategoriesWhitelist
@@ -126,12 +131,13 @@ class CMSContent(Converter):
                     category_labels.append(label)
                 except AttributeError:
                     continue
-                result['payload'].update(
-                    {'recipe': {'categories': categories}})
+            if len(category_labels) >= 1:
+                search_list = search_list + [
+                x.strip() + ':category' for x in category_labels]
+
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
             ingredients.sort() if len(ingredients) >= 1 else []
-            search_list = []
             for code in ingredients:
                 try:
                     qwords = zope.component.getUtility(
@@ -149,7 +155,7 @@ class CMSContent(Converter):
                             x.strip() + ':ingredient' for x in qwords_category]
                         search_list = search_list + qwords_category
                 except (AttributeError, zope.component.ComponentLookupError):
-                    pass
+                    continue
 
             titles = body.xpath(
                 '//recipelist/title/text()')
@@ -171,13 +177,12 @@ class CMSContent(Converter):
             servings.sort() if len(servings) >= 1 else []
             times = body.xpath('//recipelist/time/text()')
             times.sort() if len(times) >= 1 else []
+
             doctitles = body.xpath('title/text()')
             if doctitles and len(doctitles) == 1 and doctitles != '':
                 doctitles[0] = doctitles[0].strip() + ':title'
                 search_list = search_list + doctitles
-            if len(category_labels) >= 1:
-                search_list = search_list + [
-                    x.strip() + ':category' for x in category_labels]
+
             if len(search_list) >= 1:
                 search_list.sort()
 
