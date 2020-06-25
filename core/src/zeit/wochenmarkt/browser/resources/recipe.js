@@ -35,7 +35,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
                 self.add(
                     ui.item.value, ui.item.label,
                     '', /*amount*/
-                    'Stück', /*unit*/
+                    '', /*unit*/
                 );
                 $(self.autocomplete).val('');
                 return false;
@@ -131,7 +131,8 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'}),
         );
         let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
-        ['Stück', 'kg', 'g', 'l', 'ml'].forEach(function(i) {
+        const valid_units = ['', 'Stück', 'kg', 'g', 'l', 'ml', 'Prise', 'EL', 'TL', 'Tasse', 'Päckchen', 'Schuss', 'Messerspitze']
+        valid_units.forEach(function(i) {
             select.appendChild(OPTION({}, i));
         });
         item.appendChild(select);
