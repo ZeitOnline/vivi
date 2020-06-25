@@ -3,6 +3,7 @@ from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
+from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
 import grokcore.component as grok
 import logging
 import lxml.builder
@@ -113,35 +114,48 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
+
         categories = []
         category_labels = []
+        search_list = []
+
         if body.xpath('//recipe_categories'):
             categories = body.xpath('//recipe_categories/category/@code')
             categories.sort() if len(categories) >= 1 else []
-            category_labels = body.xpath('//recipe_categories/category/@label')
             result['payload'].update({'recipe': {'categories': categories}})
+
+            for code in categories:
+                try:
+                    mod = IRecipeCategoriesWhitelist
+                    label = zope.component.getUtility(mod).get(code).name
+                    category_labels.append(label)
+                except AttributeError:
+                    continue
+            if len(category_labels) >= 1:
+                search_list = search_list + [
+                    x.strip() + ':category' for x in category_labels]
+
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
             ingredients.sort() if len(ingredients) >= 1 else []
-            search_list = []
-            for id in ingredients:
+            for code in ingredients:
                 try:
                     qwords = zope.component.getUtility(
                         zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            id).qwords
+                            code).qwords
                     if qwords and len(qwords) >= 1:
                         qwords = [x.strip() + ':ingredient' for x in qwords]
                         search_list = search_list + qwords
 
                     qwords_category = zope.component.getUtility(
                         zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            id).qwords_category
+                            code).qwords_category
                     if qwords_category and len(qwords_category) >= 1:
                         qwords_category = [
                             x.strip() + ':ingredient' for x in qwords_category]
                         search_list = search_list + qwords_category
                 except (AttributeError, zope.component.ComponentLookupError):
-                    pass
+                    continue
 
             titles = body.xpath(
                 '//recipelist/title/text()')
@@ -163,13 +177,12 @@ class CMSContent(Converter):
             servings.sort() if len(servings) >= 1 else []
             times = body.xpath('//recipelist/time/text()')
             times.sort() if len(times) >= 1 else []
+
             doctitles = body.xpath('title/text()')
             if doctitles and len(doctitles) == 1 and doctitles != '':
                 doctitles[0] = doctitles[0].strip() + ':title'
                 search_list = search_list + doctitles
-            if len(category_labels) >= 1:
-                search_list = search_list + [
-                    x.strip() + ':category' for x in category_labels]
+
             if len(search_list) >= 1:
                 search_list.sort()
 

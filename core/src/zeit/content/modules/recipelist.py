@@ -1,6 +1,7 @@
-import collections
 from lxml.objectify import E
+import collections
 import zeit.content.modules.interfaces
+import zeit.wochenmarkt.interfaces
 import zope.interface
 
 
@@ -14,9 +15,17 @@ class Ingredient(object):
 
     @classmethod
     def from_xml(cls, node):
+        code = node.get('code')
+        try:
+            name = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
+                    code).name
+        except AttributeError:
+            # Take care of insufficient whitelist data e.g. missing entries.
+            return None
         return cls(
-            node.get('code'),
-            node.get('label'),
+            code,
+            name,
             node.get('amount'),
             node.get('unit'))
 
@@ -57,7 +66,9 @@ class RecipeList(zeit.edit.block.Element):
 
     @property
     def ingredients(self):
-        return [Ingredient.from_xml(x) for x in self.xml.xpath('./ingredient')]
+        ingredients = [Ingredient.from_xml(x) for x in self.xml.xpath(
+            './ingredient')]
+        return [i for i in ingredients if i is not None]
 
     @ingredients.setter
     def ingredients(self, value):
@@ -68,7 +79,6 @@ class RecipeList(zeit.edit.block.Element):
             self.xml.append(
                 E.ingredient(
                     code=item.code,
-                    label=item.label,
                     amount=item.amount,
                     unit=item.unit))
 

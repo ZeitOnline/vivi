@@ -67,7 +67,7 @@ class TestRecipeCategories(
         content = self.get_content()
         content.categories = [summer]
         self.assertEllipsis(
-            '<recipe_categories...><category code="summer" label="_summer"...',
+            '<recipe_categories...><category code="summer"/>...',
             lxml.etree.tostring(
                 content.xml.head.recipe_categories,
                 encoding=six.text_type))
@@ -80,3 +80,12 @@ class TestRecipeCategories(
         self.assertEqual(1, len(content.xml.xpath('//recipe_categories')))
         content.categories = []
         self.assertEqual(0, len(content.xml.xpath('//recipe_categories')))
+
+    def test_unavailable_categories_should_just_be_skipped(self):
+        categories = self.setup_categories('servomotoren', 'pizza')
+        servomotoren = categories['servomotoren']
+        pizza = categories['pizza']
+        content = self.get_content()
+        content.categories = [servomotoren, pizza]
+        result = content.categories
+        self.assertEqual(['pizza'], [x.code for x in result])
