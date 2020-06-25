@@ -51,16 +51,20 @@ class IngredientsWhitelist(
 
     def search(self, term):
         xml = self._get_tree()
-        # Get ingredients that match the term exactly, e.g. ei -> ei.
+        # Get ingredients that start with the term, e.g. ei -> ei, eigelb and
+        # sort alphabethically
         exact_matches = xml.xpath(
-            ('//ingredient[zeit:lower(@singular) = "{0}"]').format(
+            ('//ingredient[starts-with('
+             'zeit:lower(@singular), "{0}")]').format(
                 term.lower()), namespaces={'zeit': 'zeit.ingredients'})
+        exact_matches = sorted(
+            exact_matches, key=lambda x: x.get('singular').lower())
 
-        # Get ingredients that contain the search term, e.g. ei -> brei, eis
-        # and sort them alphabetically.
+        # Get ingredients that contain the search term as part of a an
+        # ingredient, e.g. ei -> brei, eis and sort alphabetically
         fuzzy_matches = xml.xpath(
             ('//ingredient[contains(zeit:lower(@singular), "{0}")'
-             'and zeit:lower(@singular) != "{0}"]').format(
+             'and not(starts-with(zeit:lower(@singular), "{0}"))]').format(
                  term.lower()), namespaces={'zeit': 'zeit.ingredients'})
         fuzzy_matches = sorted(
             fuzzy_matches, key=lambda x: x.get('singular').lower())
