@@ -5,7 +5,8 @@ vivi.core changes
 4.35.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Ensure we don't use browser-specific directives in
+  non-browser ZCML files
 
 
 4.35.0 (2020-06-25)
