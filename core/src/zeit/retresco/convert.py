@@ -133,7 +133,7 @@ class CMSContent(Converter):
                     continue
             if len(category_labels) >= 1:
                 search_list = search_list + [
-                x.strip() + ':category' for x in category_labels]
+                    x.strip() + ':category' for x in category_labels]
 
         if body.xpath('//recipelist'):
             ingredients = body.xpath('//recipelist/ingredient/@code')
