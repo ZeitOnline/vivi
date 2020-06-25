@@ -10,6 +10,8 @@ vivi.core changes
 
 - WOMA-108: Add ingredientdice article module
 
+- WOMA-99: Polish recipelist module
+
 
 4.34.3 (2020-06-24)
 -------------------
