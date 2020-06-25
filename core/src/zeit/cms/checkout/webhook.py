@@ -120,6 +120,7 @@ class Hook(object):
 class HookSource(zeit.cms.content.sources.SimpleXMLSource):
 
     config_url = 'checkin-webhook-config'
+    default_filename = 'checkin-webhooks.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):

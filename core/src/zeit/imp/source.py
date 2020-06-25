@@ -12,6 +12,7 @@ class ScaleSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.imp'
     config_url = 'scale-source'
+    default_filename = 'scales.xml'
 
     def getValues(self, context):
         xml = self._get_tree()
@@ -34,6 +35,7 @@ class ColorSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.imp'
     config_url = 'color-source'
+    default_filename = 'imp-colors.xml'
 
     def getValues(self, context):
         xml = self._get_tree()

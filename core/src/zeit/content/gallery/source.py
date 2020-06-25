@@ -7,6 +7,7 @@ class GalleryTypeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.gallery'
     config_url = 'gallery-types-url'
+    default_filename = 'gallery-types.xml'
     attribute = 'name'
 
 

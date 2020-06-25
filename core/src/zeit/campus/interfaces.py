@@ -89,6 +89,7 @@ class StudyCourseSource(
 
     product_configuration = 'zeit.campus'
     config_url = 'article-stoa-source'
+    default_filename = 'article-stoa.xml'
     attribute = 'id'
 
     @CONFIG_CACHE.cache_on_arguments()

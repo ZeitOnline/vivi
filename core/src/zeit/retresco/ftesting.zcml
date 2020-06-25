@@ -27,6 +27,7 @@
   <include package="zeit.find" file="ftesting.zcml" />
   <include package="zeit.seo" file="ftesting.zcml" />
   <include package="zeit.push" file="testing.zcml" />
+  <include package="zeit.wochenmarkt" file="ftesting.zcml" />
 
   <principal
     id="zope.index"
