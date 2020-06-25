@@ -5,6 +5,9 @@ vivi.core changes
 4.34.4 (unreleased)
 -------------------
 
+- WOMA-114: Read ingredient and category names from whitelist
+  instead of article xml
+
 - WOMA-108: Add ingredientdice article module
 
 
