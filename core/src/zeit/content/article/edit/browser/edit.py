@@ -1,4 +1,3 @@
-from zeit.cms.browser.widget import DataSetEnvironment
 from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.browser.manual
@@ -282,7 +281,8 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitationComment).omit(
             *list(zeit.edit.interfaces.IBlock))
-    form_fields['url'].custom_widget = DataSetEnvironment
+    form_fields['url'].custom_widget = \
+            zeit.cms.browser.widget.DataSetEnvironment
     undo_description = _('edit comment citation block')
 
     @property
