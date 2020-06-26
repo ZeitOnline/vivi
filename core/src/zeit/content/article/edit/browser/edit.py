@@ -282,7 +282,7 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
         zeit.content.article.edit.interfaces.ICitationComment).omit(
             *list(zeit.edit.interfaces.IBlock))
     form_fields['url'].custom_widget = \
-            zeit.cms.browser.widget.DataSetEnvironment
+        zeit.cms.browser.widget.DataSetEnvironment
     undo_description = _('edit comment citation block')
 
     @property
