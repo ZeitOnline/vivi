@@ -7,11 +7,11 @@
 
   <grok:grok package="." exclude="browser" />
 
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zeit.wochenmarkt.search"
-    class=".browser.ingredients.IngredientsSearch"
-    permission="zope.View"/>
+  <class class=".categories.RecipeCategory">
+    <require
+      attributes="code name"
+      permission="zope.View"
+      />
+  </class>
 
 </configure>

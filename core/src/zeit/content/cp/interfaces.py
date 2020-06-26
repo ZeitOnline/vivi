@@ -283,6 +283,7 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
 
     product_configuration = 'zeit.content.cp'
     config_url = 'cp-automatic-feed-source'
+    default_filename = 'cp-automatic-feeds.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -376,14 +377,26 @@ class QuerySortOrderSource(SimpleDictSource):
     ))
 
 
-class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
+                            zeit.cms.content.sources.CachedXMLBase):
 
     COMMENT = re.compile(r'\s*//')
 
-    @CONFIG_CACHE.cache_on_arguments()
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    default_filename = 'topicpage-filters.json'
+
     def json_data(self):
-        url = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.cp').get('topicpage-filter-source')
+        result = collections.OrderedDict()
+        for row in self._get_tree():
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
         try:
             data = []
             for line in six.moves.urllib.request.urlopen(url):
@@ -392,18 +405,11 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory):
                     continue
                 data.append(line)
             data = '\n'.join(data)
-            data = json.loads(data)
+            return json.loads(data)
         except Exception:
             log.warning(
                 'TopicpageFilterSource could not parse %s', url, exc_info=True)
             return {}
-        result = collections.OrderedDict()
-        for row in data:
-            if len(row) != 1:
-                continue
-            key = list(row.keys())[0]
-            result[key] = row[key]
-        return result
 
     def getValues(self):
         return self.json_data().keys()

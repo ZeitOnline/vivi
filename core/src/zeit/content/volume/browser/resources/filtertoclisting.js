@@ -45,8 +45,8 @@ function filterTocListingTable() {
 
     contentTableRows.forEach(function(row) {
         var curRowData = {
-            contenttype: getTdValue(row.querySelector('td:nth-child(1) img'),
-            'alt'),
+            contenttype: getTdValue(row.querySelector('td:nth-child(14)'),
+            'innerText'),
             access: getTdValue(row.querySelector('td:nth-child(13)'),
             'innerText'),
             urgent: getTdValue(row.querySelector('td:nth-child(9)'),

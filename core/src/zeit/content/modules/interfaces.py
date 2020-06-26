@@ -41,6 +41,7 @@ class EmbedProviderSource(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.modules'
     config_url = 'embed-provider-source'
+    default_filename = 'embed-providers.xml'
 
 
 EMBED_PROVIDER_SOURCE = EmbedProviderSource()
@@ -109,6 +110,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
 
     product_configuration = 'zeit.content.modules'
     config_url = 'newsletter-source'
+    default_filename = 'newsletter.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -161,6 +163,7 @@ class SubjectSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.modules'
     config_url = 'subject-source'
+    default_filename = 'mail-subjects.xml'
     attribute = 'id'
 
 
@@ -215,6 +218,7 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.modules'
     config_url = 'recipe-metadata-source'
+    default_filename = 'recipe-metadata.xml'
 
     def __init__(self, xpath):
         super(RecipeMetadataSource, self).__init__()
@@ -261,6 +265,6 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
         value_type=zope.schema.Choice(
-            source=zeit.wochenmarkt.ingredients.ingredientsSource),
+            source=zeit.wochenmarkt.sources.ingredientsSource),
         default=(),
         required=False)

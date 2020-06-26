@@ -1,4 +1,4 @@
-from zeit.wochenmarkt.sources import ingredientsSource
+from zeit.wochenmarkt.sources import recipeCategoriesSource
 import grokcore.component as grok
 import logging
 import zeit.cms.browser.interfaces
@@ -11,24 +11,24 @@ import zope.component.hooks
 log = logging.getLogger(__name__)
 
 
-class IngredientsSearch(zeit.cms.browser.view.JSON):
+class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
 
     def json(self):
         term = self.request.form.get('term')
         if term:
-            tags = ingredientsSource.factory.search(term)
+            categories = recipeCategoriesSource.factory.search(term)
         else:
-            tags = []
+            categories = []
         return [dict(label=x.name, value=x.code)
-                for x in tags]
+                for x in categories]
 
 
 @grok.adapter(
-    zeit.wochenmarkt.interfaces.IIngredientsSource,
+    zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
     zeit.cms.browser.interfaces.ICMSLayer)
 @grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
-def IngredientsSearchURL(context, request):
+def CategoriesSearchURL(context, request):
     base = zope.traversing.browser.absoluteURL(
         zope.component.hooks.getSite(), request)
     return (
-        base + '/@@ingredients_find')
+        base + '/@@recipe_categories_find')

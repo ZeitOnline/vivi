@@ -11,6 +11,7 @@ class VendorSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.cmp'
     config_url = 'vendors'
+    default_filename = 'cmp-vendors.xml'
     attribute = 'id'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):

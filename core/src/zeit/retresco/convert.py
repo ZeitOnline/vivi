@@ -103,17 +103,86 @@ class CMSContent(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
+        body = zeit.retresco.interfaces.IBody(self.context)
         result = {
             'doc_id': zeit.cms.content.interfaces.IUUID(self.context).id,
             'url': self.context.uniqueId.replace(
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
-            'body': lxml.etree.tostring(
-                zeit.retresco.interfaces.IBody(self.context),
-                encoding='unicode'),
+            'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
+        categories = []
+        category_labels = []
+        if body.xpath('//recipe_categories'):
+            categories = body.xpath('//recipe_categories/category/@code')
+            categories.sort() if len(categories) >= 1 else []
+            category_labels = body.xpath('//recipe_categories/category/@label')
+            result['payload'].update({'recipe': {'categories': categories}})
+        if body.xpath('//recipelist'):
+            ingredients = body.xpath('//recipelist/ingredient/@code')
+            ingredients.sort() if len(ingredients) >= 1 else []
+            search_list = []
+            for id in ingredients:
+                try:
+                    qwords = zope.component.getUtility(
+                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
+                            id).qwords
+                    if qwords and len(qwords) >= 1:
+                        qwords = [x.strip() + ':ingredient' for x in qwords]
+                        search_list = search_list + qwords
+
+                    qwords_category = zope.component.getUtility(
+                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
+                            id).qwords_category
+                    if qwords_category and len(qwords_category) >= 1:
+                        qwords_category = [
+                            x.strip() + ':ingredient' for x in qwords_category]
+                        search_list = search_list + qwords_category
+                except (AttributeError, zope.component.ComponentLookupError):
+                    pass
+
+            titles = body.xpath(
+                '//recipelist/title/text()')
+            if titles and len(titles) >= 1:
+                titles.sort()
+                search_list = search_list + [
+                    x.strip() + ':recipe_title' for x in titles]
+
+            subheadings = body.xpath(
+                '//recipelist/subheading[@searchable="True"]/text()')
+            if subheadings and len(subheadings) >= 1:
+                subheadings.sort()
+                search_list = search_list + [
+                    x.strip() + ':subheading' for x in subheadings]
+
+            complexities = body.xpath('//recipelist/complexity/text()')
+            complexities.sort() if len(complexities) >= 1 else []
+            servings = body.xpath('//recipelist/servings/text()')
+            servings.sort() if len(servings) >= 1 else []
+            times = body.xpath('//recipelist/time/text()')
+            times.sort() if len(times) >= 1 else []
+            doctitles = body.xpath('title/text()')
+            if doctitles and len(doctitles) == 1 and doctitles != '':
+                doctitles[0] = doctitles[0].strip() + ':title'
+                search_list = search_list + doctitles
+            if len(category_labels) >= 1:
+                search_list = search_list + [
+                    x.strip() + ':category' for x in category_labels]
+            if len(search_list) >= 1:
+                search_list.sort()
+
+            result['payload'].update({
+                'recipe': {
+                    'search': search_list,
+                    'ingredients': ingredients,
+                    'categories': categories,
+                    'titles': titles,
+                    'subheadings': subheadings,
+                    'complexities': complexities,
+                    'servings': servings,
+                    'times': times}})
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)

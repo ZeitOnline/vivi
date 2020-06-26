@@ -33,11 +33,19 @@ class CachedXMLBase(object):
 
     product_configuration = 'zeit.cms'
     config_url = NotImplemented
+    default_filename = NotImplemented
 
     def _get_tree(self):
-        cms_config = zope.app.appsetup.product.getProductConfiguration(
-            self.product_configuration)
-        url = cms_config[self.config_url]
+        config = zope.app.appsetup.product.getProductConfiguration(
+            self.product_configuration) or {}
+        try:
+            url = config[self.config_url]
+        except KeyError:
+            if self.default_filename is NotImplemented:
+                raise
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.cms')
+            url = '%s/%s' % (config['config-base-url'], self.default_filename)
         return self._get_tree_from_url(url)
 
     @CONFIG_CACHE.cache_on_arguments()
@@ -248,6 +256,7 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
 class RessortSource(XMLSource):
 
     config_url = 'source-ressorts'
+    default_filename = 'ressorts.xml'
     attribute = 'name'
     title_xpath = '/ressorts/ressort'
 
@@ -329,8 +338,9 @@ class MasterSlaveSource(XMLSource):
 
 class SubRessortSource(MasterSlaveSource):
 
-    config_url = 'source-ressorts'
-    attribute = 'name'
+    config_url = RessortSource.config_url
+    default_filename = RessortSource.default_filename
+    attribute = RessortSource.attribute
     slave_tag = 'subnavigation'
     master_node_xpath = '/ressorts/ressort'
     master_value_key = 'ressort'
@@ -348,6 +358,7 @@ class SubRessortSource(MasterSlaveSource):
 class ChannelSource(XMLSource):
 
     config_url = 'source-channels'
+    default_filename = 'channels.xml'
     attribute = 'name'
     title_xpath = '/ressorts/ressort'
 
@@ -358,6 +369,7 @@ class ChannelSource(XMLSource):
 class SubChannelSource(MasterSlaveSource):
 
     config_url = ChannelSource.config_url
+    default_filename = ChannelSource.default_filename
     attribute = ChannelSource.attribute
     slave_tag = 'subnavigation'
     master_node_xpath = '/ressorts/ressort'
@@ -391,6 +403,7 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
 
     product_configuration = 'zeit.cms'
     config_url = 'feature-toggle-source'
+    default_filename = 'vivi-feature-toggle.xml'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
 
@@ -455,6 +468,7 @@ class Serie(AllowedBase):
 class SerieSource(ObjectSource, SimpleContextualXMLSource):
 
     config_url = 'source-serie'
+    default_filename = 'series.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -511,6 +525,7 @@ class Product(AllowedBase):
 class ProductSource(ObjectSource, SimpleContextualXMLSource):
 
     config_url = 'source-products'
+    default_filename = 'products.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -626,6 +641,7 @@ class StorystreamReference(AllowedBase):
 class StorystreamSource(ObjectSource, XMLSource):
 
     config_url = 'source-storystreams'
+    default_filename = 'storystreams.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -640,6 +656,7 @@ class StorystreamSource(ObjectSource, XMLSource):
 class AccessSource(XMLSource):
 
     config_url = 'source-access'
+    default_filename = 'access.xml'
     attribute = 'id'
 
     def translate_to_c1(self, value):
@@ -657,6 +674,7 @@ class PrintRessortSource(XMLSource):
 
     product_configuration = 'zeit.cms'
     config_url = 'source-printressorts'
+    default_filename = 'print-ressorts.xml'
     attribute = 'id'
 
 

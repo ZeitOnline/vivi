@@ -112,6 +112,7 @@ class VideoLayoutSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'video-layout-source'
+    default_filename = 'article-video-layouts.xml'
     attribute = 'id'
 
 
@@ -204,6 +205,7 @@ class InfoboxLayoutSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'infobox-layout-source'
+    default_filename = 'article-infobox-layouts.xml'
     attribute = 'id'
 
 
@@ -312,6 +314,7 @@ class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
 class CitationLayoutSource(AvailableBlockLayoutSource):
 
     config_url = 'citation-layout-source'
+    default_filename = 'article-citation-layouts.xml'
 
 
 CITATION_LAYOUT_SOURCE = CitationLayoutSource()
@@ -320,6 +323,7 @@ CITATION_LAYOUT_SOURCE = CitationLayoutSource()
 class CitationCommentLayoutSource(AvailableBlockLayoutSource):
 
     config_url = 'citation-layout-source'
+    default_filename = 'article-citation-layouts.xml'
 
 
 CITATIONCOMMENT_LAYOUT_SOURCE = CitationCommentLayoutSource()
@@ -332,6 +336,7 @@ class BoxLayoutSource(AvailableBlockLayoutSource):
     # and maybe get rid of the superclass
 
     config_url = 'box-layout-source'
+    default_filename = 'article-box-layouts.xml'
 
 
 BOX_LAYOUT_SOURCE = BoxLayoutSource()
@@ -520,6 +525,7 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
 
     product_configuration = 'zeit.content.article'
     config_url = 'puzzleforms-source'
+    default_filename = 'puzzleforms.xml'
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):

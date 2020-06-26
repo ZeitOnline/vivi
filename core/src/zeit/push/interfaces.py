@@ -262,6 +262,7 @@ class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.push'
     config_url = 'mobile-buttons'
+    default_filename = 'push-mobile-buttons.xml'
     attribute = 'id'
 
 
