@@ -18,10 +18,12 @@ class RecipeListTest(
 
     def get_content(self):
         from zeit.content.modules.recipelist import RecipeList
+        from lxml import objectify
 
         class Content(object):
-            recipe_list = RecipeList()
-        return Content()
+            xml = objectify.fromstring('<recipelist/>')
+            recipe_list = RecipeList(self.context, xml)
+        return Content().recipe_list
 
     def test_title_should_be_stored_in_xml(self):
         self.module.title = 'banana'
@@ -48,8 +50,7 @@ class RecipeListTest(
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
         self.assertEllipsis(
-            '<ingredient... amount="2" code="banana" '
-            'label="_banana" unit="g"/>',
+            '<ingredient... amount="2" code="banana" unit="g"/>',
             lxml.etree.tostring(
                 self.module.xml.ingredient,
                 encoding=six.text_type))
@@ -61,3 +62,12 @@ class RecipeListTest(
         self.assertEqual(1, len(self.module.xml.xpath('//ingredient')))
         self.module.ingredients = []
         self.assertEqual(0, len(self.module.xml.xpath('//ingredient')))
+
+    def test_unavailable_ingredients_should_just_be_skipped(self):
+        categories = self.setup_ingredients('moepelspeck', 'banana')
+        moepelspeck = categories['moepelspeck']
+        banana = categories['banana']
+        content = self.get_content()
+        content.ingredients = [moepelspeck, banana]
+        result = content.ingredients
+        self.assertEqual(['banana'], [x.code for x in result])

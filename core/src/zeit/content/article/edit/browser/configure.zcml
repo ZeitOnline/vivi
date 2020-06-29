@@ -671,6 +671,27 @@
     permission="zope.View"
     />
 
+  <!-- ingredientdice -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IIngredientDice"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-ingredientdice"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IIngredientDice"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-ingredientdice"
+    class=".edit.EditIngredientDice"
+    permission="zope.View"
+    />
+
    <!-- recipelist -->
 
    <browser:viewlet
@@ -794,6 +815,10 @@
   </class>
 
   <class class="..newslettersignup.NewsletterSignup">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..ingredientdice.IngredientDice">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
