@@ -2,7 +2,9 @@
     $( document ).bind( 'fragment-ready', function( event ) {
         var target = event.__target;
 
-        if ( !target.closest( '.block.type-citation_comment' ) ) {
+        // target could be window or document, not implementing Element.closest()
+        // use optional chaining - it's 2020
+        if ( !target?.closest?.( '.block.type-citation_comment' ) ) {
             return;
         }
 
