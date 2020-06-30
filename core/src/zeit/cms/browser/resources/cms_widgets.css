@@ -787,6 +787,10 @@ a.button.configure_search:hover {
   width: 3em;
 }
 
+.field .ingredient__amount::placeholder {
+  font-size: 12px;
+}
+
 .field .ingredient__unit {
   margin-left: 1em;
   vertical-align: baseline;
