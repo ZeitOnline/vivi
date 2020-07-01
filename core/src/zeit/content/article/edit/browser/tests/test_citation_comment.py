@@ -30,5 +30,5 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
                            '.field.fieldname-text')
         s.assertElementPresent('css=.block.type-citation_comment .inline-form '
                                '.field.fieldname-url '
-                               'input[data-environment='
+                               'input[data-comments-api-url='
                                '"https://comments.staging.zeit.de"]')

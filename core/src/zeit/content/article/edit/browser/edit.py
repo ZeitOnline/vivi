@@ -287,7 +287,7 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
             super(EditCitationComment, self).setUpWidgets(*args, **kw)
             config = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.content.article')
-            self.widgets['url'].extra = 'data-environment={}'.format(
+            self.widgets['url'].extra = 'data-comments-api-url={}'.format(
                 config['zeit-comments-api-url'])
 
     @property

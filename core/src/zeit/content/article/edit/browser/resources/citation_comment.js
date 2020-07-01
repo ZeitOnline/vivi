@@ -17,7 +17,7 @@
         element.addEventListener( 'input', function() {
             var textareaId = this.name.replace( /url$/, 'text' );
             var textarea = this.form.elements[ textareaId ];
-            var environment = this.dataset.environment;
+            var commentsApiUrl = this.dataset.commentsApiUrl;
             var cid = null;
 
             if ( !this.value ) {
@@ -38,8 +38,8 @@
                 console.error( error );
             }
 
-            if ( environment && cid && textarea ) {
-                var url = `${environment}/comments?id=eq.${cid}`;
+            if (commentsApiUrl  && cid && textarea ) {
+                var url = `${commentsApiUrl}/comments?id=eq.${cid}`;
 
                 fetch( url ).then( function( response ) {
                     return response.json();
@@ -50,7 +50,7 @@
                         throw new Error( 'Empty result' );
                     }
                 }).catch( function( error ) {
-                    textarea.value = `FEHLER: Kommentar konnte nicht geladen werden!\n${environment} nicht erreichbar?\nFalsche Kommentar ID? (${cid})`;
+                    textarea.value = `FEHLER: Kommentar konnte nicht geladen werden!\n${commentsApiUrl} nicht erreichbar?\nFalsche Kommentar ID? (${cid})`;
                 });
             }
         });
