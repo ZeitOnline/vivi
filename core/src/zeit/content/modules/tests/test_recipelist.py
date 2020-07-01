@@ -1,3 +1,5 @@
+from zeit.cms.interfaces import ValidationError
+from zeit.content.modules.interfaces import validate_servings
 import lxml.objectify
 import mock
 import six
@@ -71,3 +73,21 @@ class RecipeListTest(
         content.ingredients = [moepelspeck, banana]
         result = content.ingredients
         self.assertEqual(['banana'], [x.code for x in result])
+
+    def test_servings_should_be_validated(self):
+        assert validate_servings('1') is True
+        assert validate_servings('1-2') is True
+        assert validate_servings('10-12') is True
+
+        with self.assertRaises(ValidationError):
+            validate_servings('')
+        with self.assertRaises(ValidationError):
+            validate_servings('0')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-')
+        with self.assertRaises(ValidationError):
+            validate_servings('-2')
+        with self.assertRaises(ValidationError):
+            validate_servings('a')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-a')

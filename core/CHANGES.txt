@@ -7,6 +7,8 @@ vivi.core changes
 
 - WOMA-4: Add defaults for ingredient amount and unit.
 
+- WOMA-116: Validate servings to allow a portion range
+
 
 4.35.1 (2020-06-30)
 -------------------
