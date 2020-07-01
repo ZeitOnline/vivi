@@ -153,4 +153,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertAttribute(
             'css=.ingredients-widget input@value',
             '[{"code":"brathaehnchen","label":"Brathähnchen",'
-            '"amount":"2","unit":""}]')
+            '"amount":"2","unit":"","details":""}]')

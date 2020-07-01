@@ -50,7 +50,8 @@ class RecipeListTest(
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
         self.assertEllipsis(
-            '<ingredient... amount="2" code="banana" unit="g"/>',
+            '<ingredient... amount="2" code="banana" '
+            'details="sautiert" unit="g"/>',
             lxml.etree.tostring(
                 self.module.xml.ingredient,
                 encoding=six.text_type))

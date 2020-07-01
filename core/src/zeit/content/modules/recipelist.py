@@ -7,11 +7,12 @@ import zope.interface
 
 class Ingredient(object):
 
-    def __init__(self, code, label, amount, unit):
+    def __init__(self, code, label, amount, unit, details):
         self.code = code
         self.label = label
         self.amount = amount
         self.unit = unit
+        self.details = details
 
     @classmethod
     def from_xml(cls, node):
@@ -27,7 +28,8 @@ class Ingredient(object):
             code,
             name,
             node.get('amount'),
-            node.get('unit'))
+            node.get('unit'),
+            node.get('details'))
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
@@ -80,7 +82,8 @@ class RecipeList(zeit.edit.block.Element):
                 E.ingredient(
                     code=item.code,
                     amount=item.amount if hasattr(item, 'amount') else '',
-                    unit=item.unit if hasattr(item, 'unit') else ''))
+                    unit=item.unit if hasattr(item, 'unit') else '',
+                    details=item.details if hasattr(item, 'details') else ''))
 
     def _remove_duplicates(self, ingredients):
         result = collections.OrderedDict()
