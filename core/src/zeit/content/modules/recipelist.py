@@ -79,8 +79,8 @@ class RecipeList(zeit.edit.block.Element):
             self.xml.append(
                 E.ingredient(
                     code=item.code,
-                    amount=item.amount,
-                    unit=item.unit))
+                    amount=item.amount if hasattr(item, 'amount') else '',
+                    unit=item.unit if hasattr(item, 'unit') else ''))
 
     def _remove_duplicates(self, ingredients):
         result = collections.OrderedDict()

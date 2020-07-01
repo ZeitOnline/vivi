@@ -17,7 +17,7 @@ class RecipeListTest(
         b.getControl('Servings').value = 4
         b.getControl('Apply').click()
         self.assertNotEllipsis(
-            '...Servings must be a positive number or empty...',
+            '...<span class="error">...',
             b.contents)
 
         # Should accept an empty value
@@ -25,7 +25,7 @@ class RecipeListTest(
         b.getControl('Servings').value = ''
         b.getControl('Apply').click()
         self.assertNotEllipsis(
-            '...Servings must be a positive number or empty...',
+            '...<span class="error">...',
             b.contents)
 
         # Should NOT accept zero
@@ -33,7 +33,7 @@ class RecipeListTest(
         b.getControl('Servings').value = 0
         b.getControl('Apply').click()
         self.assertEllipsis(
-            '...Servings must be a positive number or empty...',
+            '...Value is too small...',
             b.contents)
 
         # Should NOT accept a string
@@ -41,7 +41,7 @@ class RecipeListTest(
         b.getControl('Servings').value = 'notanumber'
         b.getControl('Apply').click()
         self.assertEllipsis(
-            '...Servings must be a positive number or empty...',
+            '...Invalid integer data...',
             b.contents)
 
 
@@ -61,7 +61,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add first ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
@@ -77,7 +77,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=ul.ui-autocomplete li')
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)
         s.assertText(
-            '//li[@class="ingredient__item"][1]/a[@class="ingredient__label"]',
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
             'Bandnudeln')
 
         # Duplicates should be prevented
@@ -93,7 +93,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.dragAndDrop('css=li.ingredient__item', '0,50')
         s.waitForVisible('css=li.ingredient__item')
         s.assertText(
-            '//li[@class="ingredient__item"][1]/a[@class="ingredient__label"]',
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
             'Brathähnchen')
 
         # Delete ingredient
@@ -107,7 +107,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
@@ -142,7 +142,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//input[@name="add_ingredient"]')
 
         # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brat')
+        s.type('//input[@name="add_ingredient"]', 'Brath')
         s.waitForVisible('css=ul.ui-autocomplete li')
         s.click('css=ul.ui-autocomplete li')
 
@@ -153,4 +153,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertAttribute(
             'css=.ingredients-widget input@value',
             '[{"code":"brathaehnchen","label":"Brathähnchen",'
-            '"amount":"2","unit":"Stück"}]')
+            '"amount":"2","unit":""}]')

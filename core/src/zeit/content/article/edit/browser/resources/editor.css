@@ -2053,6 +2053,7 @@
   position: absolute;
   margin-top: -3em;
   margin-left: -5em;
+  display: block;
 }
 
 #edit-form-article-content .type-recipelist .fieldname-complexity div.empty,

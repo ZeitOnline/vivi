@@ -822,6 +822,10 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <class class="..recipelist.RecipeList">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
   <browser:page
     for="*"
     name="double-quote-characters"
