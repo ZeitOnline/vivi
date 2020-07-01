@@ -284,11 +284,11 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit comment citation block')
 
     def setUpWidgets(self, *args, **kw):
-            super(EditCitationComment, self).setUpWidgets(*args, **kw)
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.content.article')
-            self.widgets['url'].extra = 'data-comments-api-url={}'.format(
-                config['zeit-comments-api-url'])
+        super(EditCitationComment, self).setUpWidgets(*args, **kw)
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.article')
+        self.widgets['url'].extra = 'data-comments-api-url={}'.format(
+            config['zeit-comments-api-url'])
 
     @property
     def prefix(self):

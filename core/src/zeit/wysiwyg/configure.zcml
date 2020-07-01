@@ -7,7 +7,6 @@
   <adapter factory=".html.InlineElementAppendParagraph"
            name="InlineElementAppendParagraph" />
   <adapter factory=".html.CitationStep" name="CitationStep" />
-  <adapter factory=".html.CitationCommentStep" name="CitationCommentStep" />
   <adapter factory=".html.DropEmptyStep" name="DropEmptyStep" />
   <adapter factory=".html.GalleryStep" name="GalleryStep" />
   <adapter factory=".html.ImageStep" name="ImageStep" />
