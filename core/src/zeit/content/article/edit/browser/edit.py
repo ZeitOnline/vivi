@@ -281,9 +281,14 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitationComment).omit(
             *list(zeit.edit.interfaces.IBlock))
-    form_fields['url'].custom_widget = \
-        zeit.cms.browser.widget.DataSetEnvironment
     undo_description = _('edit comment citation block')
+
+    def setUpWidgets(self, *args, **kw):
+            super(EditCitationComment, self).setUpWidgets(*args, **kw)
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.content.article')
+            self.widgets['url'].extra = 'data-environment={}'.format(
+                config['zeit-comments-api-url'])
 
     @property
     def prefix(self):

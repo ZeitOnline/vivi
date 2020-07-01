@@ -698,15 +698,3 @@ def TupleSequenceWidget(field, source, request):
     ignored = None
     return zope.formlib.sequencewidget.TupleSequenceWidget(
         field, ignored, request)
-
-
-class DataSetEnvironment(zope.formlib.textwidgets.TextWidget):
-
-    def __init__(self, context, request):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.article')
-        key = 'zeit-comments-api-url'
-        if isinstance(config, dict) and key in config:
-            super(DataSetEnvironment, self).__init__(context, request)
-            self.extra = \
-                'data-environment={}'.format(config['zeit-comments-api-url'])
