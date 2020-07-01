@@ -7,6 +7,10 @@ zeit.cms.declare_namespace('zeit.wochenmarkt');
 
 zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
+    // XXX These should better be placed in a config file and handed through
+    // another hidden input field.
+    VALID_UNITS: ['', 'Stück', 'kg', 'g', 'l', 'ml', 'cl', 'Prise', 'EL', 'TL', 'Tasse', 'Päckchen', 'Schuss', 'Messerspitze', 'Bund', 'etwas', 'Blätter', 'Scheiben', 'Dose', 'Messerspitze', 'Stängel', 'Handvoll', 'Schote', 'Stange', 'Glas', 'Kopf', 'Kugel', 'Knolle', 'Zehe'],
+
     construct: function(id) {
         var self = this;
         self.id = id;
@@ -135,8 +139,8 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
         // Add unit
         let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
-        const valid_units = ['', 'Stück', 'kg', 'g', 'l', 'ml', 'Prise', 'EL', 'TL', 'Tasse', 'Päckchen', 'Schuss', 'Messerspitze']
-        valid_units.forEach(function(i) {
+
+        self.VALID_UNITS.forEach(function(i) {
             select.appendChild(OPTION({}, i));
         });
         item.appendChild(select);
