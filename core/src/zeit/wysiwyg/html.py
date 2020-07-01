@@ -805,35 +805,6 @@ class CitationStep(ConversionStep):
         return new_node
 
 
-class CitationCommentStep(ConversionStep):
-
-    attributes = ['text', 'text2',
-                  'attribution', 'attribution2',
-                  'url', 'url2',
-                  'layout']
-
-    xpath_xml = './/citation_comment'
-    xpath_html = './/*[contains(@class, "citation_comment")]'
-
-    def to_html(self, node):
-        children = []
-        for name in self.attributes:
-            children.append(lxml.builder.E.div(
-                node.get(name) or ' ', **{'class': name}))
-        new_node = lxml.builder.E.div(
-            *children, **{'class': 'inline-element citation_comment'})
-        return new_node
-
-    def to_xml(self, node):
-        values = {}
-        for name in self.attributes:
-            value = node.xpath('*[@class="%s"]' % name)[0].text
-            if value and value.strip():
-                values[name] = value.strip()
-        new_node = lxml.builder.E.citation_comment(**values)
-        return new_node
-
-
 class InlineElementAppendParagraph(ConversionStep):
     """Add an empty paragraph after each inline element.
 
