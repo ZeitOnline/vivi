@@ -306,6 +306,17 @@
       />
   </class>
 
+  <class class=".ingredientdice.IngredientDice">
+    <require
+      interface=".interfaces.IIngredientDice"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IIngredientDice"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".mail.Mail">
     <require
       interface=".interfaces.IMail"
