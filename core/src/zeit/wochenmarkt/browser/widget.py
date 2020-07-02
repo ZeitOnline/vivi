@@ -53,14 +53,15 @@ class IngredientsWidget(
     def _toFormValue(self, value):
         return json.dumps([{
             'code': x.code, 'label': x.label,
-            'amount': x.amount, 'unit': x.unit
+            'amount': x.amount, 'unit': x.unit,
+            'details': x.details
         } for x in value or ()])
 
     def _toFieldValue(self, value):
         data = json.loads(value)
         return tuple([
             Ingredient(
-                x['code'], x['label'], x['amount'], x['unit']
+                x['code'], x['label'], x['amount'], x['unit'], x['details']
             ) for x in data])
 
 
