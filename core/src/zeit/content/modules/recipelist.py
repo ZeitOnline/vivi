@@ -1,6 +1,8 @@
 from lxml.objectify import E
 import collections
+import zeit.cms.content.property
 import zeit.content.modules.interfaces
+import zeit.edit.block
 import zeit.wochenmarkt.interfaces
 import zope.interface
 
@@ -27,9 +29,9 @@ class Ingredient(object):
         return cls(
             code,
             name,
-            node.get('amount'),
-            node.get('unit'),
-            node.get('details'))
+            node.get('amount', ''),
+            node.get('unit', ''),
+            node.get('details', ''))
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)

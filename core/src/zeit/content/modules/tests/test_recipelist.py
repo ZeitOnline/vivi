@@ -1,3 +1,4 @@
+from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
 import mock
 import six
@@ -72,3 +73,10 @@ class RecipeListTest(
         content.ingredients = [moepelspeck, banana]
         result = content.ingredients
         self.assertEqual(['banana'], [x.code for x in result])
+
+    def test_missing_xml_attributes_should_have_empty_string_as_default(self):
+        node = lxml.objectify.XML(
+            '<ingredient code="banana" amount="1" unit="kg"/>')
+        ingredient = Ingredient(None, None, None, None, None).from_xml(node)
+        assert ingredient.code == 'banana'
+        assert ingredient.details == ''  # not provided as xml attribute
