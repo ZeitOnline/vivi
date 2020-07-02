@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import grokcore.component as grok
+import re
 import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -218,6 +219,22 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
         return [six.text_type(node) for node in tree.xpath(self.xpath)]
 
 
+# Servings are valid if all of these are satisfied:
+# <num> is a number > 0
+# format is: <num> or <num>-<num>
+VALID_SERVINGS = re.compile(r'^[1-9]\d*(-\d+)?$')
+
+
+def validate_servings(value):
+    if VALID_SERVINGS.match(value) is not None:
+        v = value.split('-')
+        # In case it's a range, the second value must be higher.
+        if len(v) == 1 or v[0] < v[1]:
+            return True
+    raise zeit.cms.interfaces.ValidationError(
+        _('Value must be number or range.'))
+
+
 class IRecipeList(zeit.edit.interfaces.IBlock):
 
     merge_with_previous = zope.schema.Bool(
@@ -246,10 +263,10 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         source=RecipeMetadataSource("*//time"),
         required=False)
 
-    servings = zope.schema.Int(
+    servings = zope.schema.TextLine(
         title=_('Servings'),
         required=False,
-        min=1)
+        constraint=validate_servings)
 
     ingredients = zope.schema.Tuple(
         title=_("Ingredients"),
