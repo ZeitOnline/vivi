@@ -90,7 +90,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)  # not 3
 
         # Reorder ingredients
-        s.dragAndDrop('css=li.ingredient__item', '0,50')
+        s.dragAndDrop('css=.ingredient__label', '0,50')
         s.waitForVisible('css=li.ingredient__item')
         s.assertText(
             '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
@@ -153,4 +153,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertAttribute(
             'css=.ingredients-widget input@value',
             '[{"code":"brathaehnchen","label":"Brathähnchen",'
-            '"amount":"2","unit":""}]')
+            '"amount":"2","unit":"","details":""}]')

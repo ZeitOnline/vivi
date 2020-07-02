@@ -7,6 +7,10 @@ vivi.core changes
 
 - WOMA-4: Add defaults for ingredient amount and unit.
 
+- WOMA-115: Add free text details to ingredients in recipelist
+
+- WOMA-120: Add new values to ingredient unit list
+
 
 4.35.1 (2020-06-30)
 -------------------

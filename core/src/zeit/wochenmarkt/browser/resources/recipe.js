@@ -7,6 +7,10 @@ zeit.cms.declare_namespace('zeit.wochenmarkt');
 
 zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
+    // XXX These should better be placed in a config file and handed through
+    // another hidden input field.
+    VALID_UNITS: ['', 'Stück', 'kg', 'g', 'l', 'ml', 'cl', 'Prise', 'EL', 'TL', 'Tasse', 'Päckchen', 'Schuss', 'Messerspitze', 'Bund', 'etwas', 'Blätter', 'Scheiben', 'Dose', 'Messerspitze', 'Stängel', 'Handvoll', 'Schote', 'Stange', 'Glas', 'Kopf', 'Kugel', 'Knolle', 'Zehe'],
+
     construct: function(id) {
         var self = this;
         self.id = id;
@@ -36,6 +40,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
                     ui.item.value, ui.item.label,
                     '', /*amount*/
                     '', /*unit*/
+                    '', /*details*/
                 );
                 $(self.autocomplete).val('');
                 return false;
@@ -56,8 +61,9 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             }
         });
         self.list.querySelectorAll('[data-name = "ingredient__item"]').forEach(function(i) {
-            i.querySelector('input').value = i.getAttribute('data-amount');
-            i.querySelector('select').value = i.getAttribute('data-unit');
+            i.querySelector('.ingredient__amount').value = i.getAttribute('data-amount');
+            i.querySelector('.ingredient__unit').value = i.getAttribute('data-unit');
+            i.querySelector('.ingredient__details').value = i.getAttribute('data-details');
         });
     },
 
@@ -80,9 +86,10 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             el = $(el);
             result.push({
                 code: el.attr('cms:uniqueId'),
-                label: el.contents().get(1).text,
+                label: el.contents().get(0).text,
                 amount: el.attr('data-amount'),
-                unit: el.attr('data-unit')
+                unit: el.attr('data-unit'),
+                details: el.attr('data-details')
             });
         });
         return result;
@@ -116,33 +123,48 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label, amount, unit) {
+    add: function(code, label, amount, unit, details) {
         var self = this;
-        self._add(code, label, amount, unit);
+        self._add(code, label, amount, unit, details);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label, amount, unit) {
+    _add: function(code, label, amount, unit, details) {
         var self = this;
         var item = LI(
-            {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-name': 'ingredient__item'},
-            SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
+            {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-details': details, 'data-name': 'ingredient__item'},
             A({'class': 'ingredient__label'}, label),
             INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'}),
         );
+
+        // Add unit
         let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
-        const valid_units = ['', 'Stück', 'kg', 'g', 'l', 'ml', 'Prise', 'EL', 'TL', 'Tasse', 'Päckchen', 'Schuss', 'Messerspitze']
-        valid_units.forEach(function(i) {
+
+        self.VALID_UNITS.forEach(function(i) {
             select.appendChild(OPTION({}, i));
         });
         item.appendChild(select);
+
+        // Add details
+        const details_input = INPUT({'id': self.id + '.ingredient__details', 'class': 'ingredient__details', 'data-id': 'details', 'size': 1, 'placeholder': 'weitere Angaben'});
+        item.appendChild(details_input);
+
+        // Delete button
+        item.appendChild(
+            SPAN({'class': 'icon delete', 'cms:call': 'delete'}));
+
         $(self.list).append(item);
     },
 
-    populate_ingredients: function(tags) {
+    populate_ingredients: function(ingredients) {
         var self = this;
-        $.each(tags, function(i, tag) {
-            self._add(tag.code, tag.label, tag.amount, tag.unit);
+        $.each(ingredients, function(i, ingredient) {
+            self._add(
+                ingredient.code,
+                ingredient.label,
+                ingredient.amount,
+                ingredient.unit,
+                ingredient.details);
         });
         self._sync_json_widget_value();
     },
