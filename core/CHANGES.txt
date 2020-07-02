@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.35.2 (unreleased)
+4.35.2 (2020-07-02)
 -------------------
 
 - WOMA-4: Add defaults for ingredient amount and unit.
