@@ -226,10 +226,13 @@ VALID_SERVINGS = re.compile(r'^[1-9]\d*(-\d+)?$')
 
 
 def validate_servings(value):
-    if VALID_SERVINGS.match(value) is None:
-        raise zeit.cms.interfaces.ValidationError(
-            _('Value must be number or range.'))
-    return True
+    if VALID_SERVINGS.match(value) is not None:
+        v = value.split('-')
+        # In case it's a range, the second value must be higher.
+        if len(v) == 1 or v[0] < v[1]:
+            return True
+    raise zeit.cms.interfaces.ValidationError(
+        _('Value must be number or range.'))
 
 
 class IRecipeList(zeit.edit.interfaces.IBlock):

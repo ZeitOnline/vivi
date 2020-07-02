@@ -84,6 +84,10 @@ class RecipeListTest(
         with self.assertRaises(ValidationError):
             validate_servings('0')
         with self.assertRaises(ValidationError):
+            validate_servings('1-2-3')
+        with self.assertRaises(ValidationError):
+            validate_servings('5-3')  # must not decrease
+        with self.assertRaises(ValidationError):
             validate_servings('1-')
         with self.assertRaises(ValidationError):
             validate_servings('-2')
