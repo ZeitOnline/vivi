@@ -21,9 +21,12 @@ class Ingredient(object):
     def from_xml(cls, node):
         code = node.get('code')
         try:
-            name = zope.component.getUtility(
+            ingredient = zope.component.getUtility(
                 zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                    code).name
+                    code)
+            # These attributes have to be available:
+            name = ingredient.name  # This also represents the singular.
+            plural = ingredient.plural
         except AttributeError:
             # Take care of insufficient whitelist data e.g. missing entries.
             return None
