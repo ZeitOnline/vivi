@@ -77,6 +77,6 @@ class RecipeListTest(
     def test_missing_xml_attributes_should_have_empty_string_as_default(self):
         node = lxml.objectify.XML(
             '<ingredient code="banana" amount="1" unit="kg"/>')
-        ingredient = Ingredient(None, None, None, None, None).from_xml(node)
+        ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute

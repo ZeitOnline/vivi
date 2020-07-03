@@ -61,7 +61,10 @@ class IngredientsWidget(
         data = json.loads(value)
         return tuple([
             Ingredient(
-                x['code'], x['label'], x['amount'], x['unit'], x['details']
+                x['code'], x['label'],
+                amount=x['amount'],
+                unit=x['unit'],
+                details=x['details']
             ) for x in data])
 
 
