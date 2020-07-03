@@ -2,10 +2,10 @@ vivi.core changes
 =================
 
 
-4.35.4 (unreleased)
+4.36.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5643: Quote users comments in article
 
 
 4.35.3 (2020-07-02)
