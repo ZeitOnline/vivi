@@ -44,6 +44,7 @@ Resource('html.js', depends=[
 
 Resource('strftime.js')
 Resource('jsuri.js')
+Resource('citation_comment.js')
 
 
 # XXX zeit.content.article needs zeit.workflow to function,
