@@ -15,6 +15,7 @@ import zope.component
 
 product_config = """
 <product-config zeit.content.article>
+  zeit-comments-api-url https://comments.staging.zeit.de
   book-recension-categories file://{base}/tests/recension_categories.xml
   genre-url file://{base}/tests/article-genres.xml
   image-display-mode-source file://{base}/edit/tests/image-display-modes.xml

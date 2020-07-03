@@ -2,10 +2,22 @@ vivi.core changes
 =================
 
 
-4.35.3 (unreleased)
+4.36.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.36.0 (2020-07-03)
+-------------------
+
+- ZON-5643: Quote users comments in article
+
+
+4.35.3 (2020-07-02)
+-------------------
+
+- WOMA-116: Validate servings to allow a portion range
 
 
 4.35.2 (2020-07-02)

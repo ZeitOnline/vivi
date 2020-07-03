@@ -211,6 +211,17 @@
       />
   </class>
 
+  <class class=".citation_comment.CitationComment">
+    <require
+      interface=".interfaces.ICitationComment"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ICitationComment"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".puzzleform.PuzzleForm">
     <require
       interface=".interfaces.IPuzzleForm"

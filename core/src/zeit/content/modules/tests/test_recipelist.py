@@ -1,3 +1,5 @@
+from zeit.cms.interfaces import ValidationError
+from zeit.content.modules.interfaces import validate_servings
 from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
 import mock
@@ -83,6 +85,28 @@ class RecipeListTest(
         content.ingredients = [physalis, banana]
         result = content.ingredients
         self.assertEqual(['banana'], [x.code for x in result])
+
+    def test_servings_should_be_validated(self):
+        assert validate_servings('1') is True
+        assert validate_servings('1-2') is True
+        assert validate_servings('10-12') is True
+
+        with self.assertRaises(ValidationError):
+            validate_servings('')
+        with self.assertRaises(ValidationError):
+            validate_servings('0')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-2-3')
+        with self.assertRaises(ValidationError):
+            validate_servings('5-3')  # must not decrease
+        with self.assertRaises(ValidationError):
+            validate_servings('1-')
+        with self.assertRaises(ValidationError):
+            validate_servings('-2')
+        with self.assertRaises(ValidationError):
+            validate_servings('a')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-a')
 
     def test_ingredients_should_receive_properties_from_whitelist(self):
         node = lxml.objectify.XML(

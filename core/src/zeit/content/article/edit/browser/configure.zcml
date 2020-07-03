@@ -421,6 +421,26 @@
     permission="zope.View"
     />
 
+  <!-- citation Comment -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ICitationComment"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-citation-comment"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ICitationComment"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-citation-comment"
+    class=".edit.EditCitationComment"
+    permission="zope.View"
+    />
+
   <!-- puzzle form -->
 
   <browser:viewlet
@@ -747,6 +767,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..citation_comment.CitationComment">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

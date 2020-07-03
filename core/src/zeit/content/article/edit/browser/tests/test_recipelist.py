@@ -33,7 +33,7 @@ class RecipeListTest(
         b.getControl('Servings').value = 0
         b.getControl('Apply').click()
         self.assertEllipsis(
-            '...Value is too small...',
+            '...Value must be number or range...',
             b.contents)
 
         # Should NOT accept a string
@@ -41,7 +41,7 @@ class RecipeListTest(
         b.getControl('Servings').value = 'notanumber'
         b.getControl('Apply').click()
         self.assertEllipsis(
-            '...Invalid integer data...',
+            '...Value must be number or range...',
             b.contents)
 
 
