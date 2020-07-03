@@ -35,9 +35,13 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 class IngredientsHelper(object):
     """Mixin for tests which need some ingredients infrastrucutre."""
 
-    def get_ingredient(self, code):
+    def get_ingredient(self, code, **kwargs):
+        amount = kwargs.get('amount', '2')
+        unit = kwargs.get('unit', 'g')
+        details = kwargs.get('details', 'sautiert')
         ingredient = zeit.content.modules.recipelist.Ingredient(
-            code=code, label='_' + code, amount='2', unit='g')
+            code=code, label='_' + code, amount=amount,
+            unit=unit, details=details)
         return ingredient
 
     def setup_ingredients(self, *codes):

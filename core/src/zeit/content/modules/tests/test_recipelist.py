@@ -1,3 +1,6 @@
+from zeit.cms.interfaces import ValidationError
+from zeit.content.modules.interfaces import validate_servings
+from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
 import mock
 import six
@@ -50,7 +53,8 @@ class RecipeListTest(
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
         self.assertEllipsis(
-            '<ingredient... amount="2" code="banana" unit="g"/>',
+            '<ingredient... amount="2" code="banana" '
+            'details="sautiert" unit="g"/>',
             lxml.etree.tostring(
                 self.module.xml.ingredient,
                 encoding=six.text_type))
@@ -71,3 +75,32 @@ class RecipeListTest(
         content.ingredients = [moepelspeck, banana]
         result = content.ingredients
         self.assertEqual(['banana'], [x.code for x in result])
+
+    def test_servings_should_be_validated(self):
+        assert validate_servings('1') is True
+        assert validate_servings('1-2') is True
+        assert validate_servings('10-12') is True
+
+        with self.assertRaises(ValidationError):
+            validate_servings('')
+        with self.assertRaises(ValidationError):
+            validate_servings('0')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-2-3')
+        with self.assertRaises(ValidationError):
+            validate_servings('5-3')  # must not decrease
+        with self.assertRaises(ValidationError):
+            validate_servings('1-')
+        with self.assertRaises(ValidationError):
+            validate_servings('-2')
+        with self.assertRaises(ValidationError):
+            validate_servings('a')
+        with self.assertRaises(ValidationError):
+            validate_servings('1-a')
+
+    def test_missing_xml_attributes_should_have_empty_string_as_default(self):
+        node = lxml.objectify.XML(
+            '<ingredient code="banana" amount="1" unit="kg"/>')
+        ingredient = Ingredient(None, None, None, None, None).from_xml(node)
+        assert ingredient.code == 'banana'
+        assert ingredient.details == ''  # not provided as xml attribute
