@@ -144,7 +144,7 @@ class BodyTraverser(grok.Adapter):
             self.context).traverse(name, furtherPath)
 
 
-class ModuleSource(zeit.cms.content.sources.XMLSource):
+class ModuleSource(zeit.content.article.edit.interfaces.BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'module-source'
