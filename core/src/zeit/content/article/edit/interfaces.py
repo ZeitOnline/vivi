@@ -298,17 +298,12 @@ class IEmbed(zeit.content.modules.interfaces.IEmbed):
     pass
 
 
-class AvailableBlockLayoutSource(zeit.cms.content.sources.XMLSource):
+class AvailableBlockLayoutSource(BodyAwareXMLSource):
     """
     Superclass for articleblocklayouts, which can be defined via XML
     """
     product_configuration = 'zeit.content.article'
     attribute = 'id'
-
-    def isAvailable(self, node, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(AvailableBlockLayoutSource,
-                     self).isAvailable(node, article)
 
 
 class CitationLayoutSource(AvailableBlockLayoutSource):
