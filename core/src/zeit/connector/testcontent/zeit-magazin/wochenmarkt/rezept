@@ -126,8 +126,9 @@ pürieren.</p>
         <complexity>ambitioniert</complexity>
         <time>über 60 Minuten</time>
         <servings>6</servings>
-        <ingredient amount="500" code="bratwurst" label="Bratwurst" unit="g"/>
-        <ingredient amount="200" code="brathaehnchen" label="Brathähnchen" unit="g"/>
+        <ingredient amount="500" code="bratwurst" unit="g"/>
+        <ingredient amount="200" code="brathaehnchen" unit="g"/>
+        <ingredient amount="200" code="chicken-nuggets" unit="g"/>
       </recipelist>
       <recipelist>
         <title>Tomaten-Grieß</title>
@@ -135,9 +136,9 @@ pürieren.</p>
         <complexity>einfach</complexity>
         <time>unter 30 Minuten</time>
         <servings>2</servings>
-        <ingredient amount="500" code="gries" label="Gries" unit="g"/>
-        <ingredient amount="200" code="tomate" label="Tomate" unit="g"/>
-        <ingredient amount="200" code="gurke" label="Gurke" unit="g"/>
+        <ingredient amount="500" code="gries" unit="g"/>
+        <ingredient amount="200" code="tomate" unit="g"/>
+        <ingredient amount="200" code="gurke" unit="g"/>
       </recipelist>
       <p>
 Für die Füllung Zwetschgenmus mit Rum, Zimt und Zucker glattrühren.

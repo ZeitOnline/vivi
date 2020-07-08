@@ -188,14 +188,14 @@ class CMSContent(Converter):
 
             result['payload'].update({
                 'recipe': {
-                    'search': search_list,
-                    'ingredients': ingredients,
-                    'categories': categories,
-                    'titles': titles,
-                    'subheadings': subheadings,
-                    'complexities': complexities,
-                    'servings': servings,
-                    'times': times}})
+                    'search': list(dict.fromkeys(search_list)),
+                    'ingredients': list(dict.fromkeys(ingredients)),
+                    'categories': list(dict.fromkeys(categories)),
+                    'titles': list(dict.fromkeys(titles)),
+                    'subheadings': list(dict.fromkeys(subheadings)),
+                    'complexities': list(dict.fromkeys(complexities)),
+                    'servings': list(dict.fromkeys(servings)),
+                    'times': list(dict.fromkeys(times))}})
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
