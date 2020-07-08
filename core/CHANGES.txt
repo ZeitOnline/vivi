@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.36.2 (unreleased)
+4.36.2 (2020-07-08)
 -------------------
 
 - WOMA-126: Remove duplicates in recipe from ES payload.
