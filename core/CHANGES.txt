@@ -7,6 +7,8 @@ vivi.core changes
 
 - WOMA-126: Remove duplicates in recipe from ES payload.
 
+- WOMA-130: Use ids for ingredient units
+
 
 4.36.1 (2020-07-07)
 -------------------
