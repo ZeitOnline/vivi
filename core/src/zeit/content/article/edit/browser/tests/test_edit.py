@@ -669,6 +669,9 @@ class TestFolding(
     def test_citation_should_be_foldable(self):
         self.assert_foldable('citation')
 
+    def test_citation_comment_should_be_foldable(self):
+        self.assert_foldable('citation_comment')
+
     def test_infobox_should_be_foldable(self):
         self.assert_foldable('infobox')
 

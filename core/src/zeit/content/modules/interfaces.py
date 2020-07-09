@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import grokcore.component as grok
+import re
 import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -203,17 +204,6 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
-def validate_servings(value):
-    try:
-        if int(value) <= 0:
-            raise ValueError
-    except ValueError:
-        raise zeit.cms.interfaces.ValidationError(
-            _('Servings must be a positive number or empty.'))
-    else:
-        return True
-
-
 class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.modules'
@@ -227,6 +217,22 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
     def getValues(self, context):
         tree = self._get_tree()
         return [six.text_type(node) for node in tree.xpath(self.xpath)]
+
+
+# Servings are valid if all of these are satisfied:
+# <num> is a number > 0
+# format is: <num> or <num>-<num>
+VALID_SERVINGS = re.compile(r'^[1-9]\d*(-\d+)?$')
+
+
+def validate_servings(value):
+    if VALID_SERVINGS.match(value) is not None:
+        v = value.split('-')
+        # In case it's a range, the second value must be higher.
+        if len(v) == 1 or v[0] < v[1]:
+            return True
+    raise zeit.cms.interfaces.ValidationError(
+        _('Value must be number or range.'))
 
 
 class IRecipeList(zeit.edit.interfaces.IBlock):

@@ -2,11 +2,41 @@ vivi.core changes
 =================
 
 
-4.35.1 (unreleased)
+4.36.1 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+4.36.0 (2020-07-03)
+-------------------
+
+- ZON-5643: Quote users comments in article
+
+
+4.35.3 (2020-07-02)
+-------------------
+
+- WOMA-116: Validate servings to allow a portion range
+
+
+4.35.2 (2020-07-02)
+-------------------
+
+- WOMA-4: Add defaults for ingredient amount and unit.
+
+- WOMA-115: Add free text details to ingredients in recipelist
+
+- WOMA-120: Add new values to ingredient unit list
+
+
+4.35.1 (2020-06-30)
 -------------------
 
 - MAINT: Ensure we don't use browser-specific directives in
   non-browser ZCML files
+
+- WOMA-99: Polish recipelist module
 
 
 4.35.0 (2020-06-25)

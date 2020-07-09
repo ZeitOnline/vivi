@@ -13,6 +13,9 @@
     <ingredient id="bratwurst" q="Grillwurst,Wurst" singular="Bratwurst" plural="Bratwürste" />
   </meat>
   <other>
+    <ingredient id="ei" q="Ei" singular="Ei" plural="Eier" />
+    <ingredient id="eis" q="Eis" singular="Eis" plural="Eis" />
+    <ingredient id="brei" q="Brei" singular="Brei" plural="Breie" />
     <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudeln" plural="Bandnudeln" />
     <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" />
     <ingredient id="milk" q="Milch" singular="Milch" plural="Milch" />

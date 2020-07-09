@@ -2052,7 +2052,8 @@
 #edit-form-article-content .type-recipelist .fieldname-servings div.error {
   position: absolute;
   margin-top: -3em;
-  margin-left: -5em;
+  margin-left: -15em;
+  display: block;
 }
 
 #edit-form-article-content .type-recipelist .fieldname-complexity div.empty,

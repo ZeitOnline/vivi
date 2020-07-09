@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jun 24 10:41:27 2020\n"
+"POT-Creation-Date: Wed Jul  1 16:45:15 2020\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:879
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /Users/hennes/work/vivi-deployment/work/_/Users/hennes/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/hoshi/projects/vivi-deployment/work/_/home/hoshi/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -354,7 +354,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:688
 #: zeit/content/gallery/interfaces.py:91
 #: zeit/content/infobox/interfaces.py:20
-#: zeit/content/modules/interfaces.py:176
+#: zeit/content/modules/interfaces.py:177
 #: zeit/content/rawxml/interfaces.py:14
 #: zeit/content/text/interfaces.py:80
 #: zeit/content/video/browser/object-details-body.pt:24
@@ -872,7 +872,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:191
 #: zeit/content/article/edit/interfaces.py:419
-#: zeit/content/modules/interfaces.py:180
+#: zeit/content/modules/interfaces.py:181
 msgid "Subtitle"
 msgstr ""
 
@@ -3485,7 +3485,7 @@ msgid "Choose a background color"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:930
-#: zeit/content/modules/interfaces.py:80
+#: zeit/content/modules/interfaces.py:81
 msgid "Jobbox Ticker"
 msgstr ""
 
@@ -3880,94 +3880,94 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:19
+#: zeit/content/modules/interfaces.py:20
 msgid "Raw text reference"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:24
+#: zeit/content/modules/interfaces.py:25
 msgid "Raw text"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:62
+#: zeit/content/modules/interfaces.py:63
 msgid "Unsupported embed domain"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:67
+#: zeit/content/modules/interfaces.py:68
 msgid "Embed URL"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:68
+#: zeit/content/modules/interfaces.py:69
 msgid "Add URL"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:140
+#: zeit/content/modules/interfaces.py:141
 msgid "Newsletter Signup"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:147
+#: zeit/content/modules/interfaces.py:148
 msgid "Quiz id"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:149
+#: zeit/content/modules/interfaces.py:150
 msgid "Enable adreload"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:158
+#: zeit/content/modules/interfaces.py:159
 msgid "Email address must contain @."
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:184
+#: zeit/content/modules/interfaces.py:185
 msgid "Recipient"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:188
-#: zeit/content/modules/interfaces.py:193
+#: zeit/content/modules/interfaces.py:189
+#: zeit/content/modules/interfaces.py:194
 #: zeit/newsletter/interfaces.py:25
 #: zeit/newsletter/interfaces.py:75
 msgid "Subject"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:197
+#: zeit/content/modules/interfaces.py:198
 msgid "Success message"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:200
+#: zeit/content/modules/interfaces.py:201
 msgid "Email required?"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:212
-msgid "Servings must be a positive number or empty."
+#: zeit/content/modules/interfaces.py:231
+msgid "Value must be number or range."
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:235
+#: zeit/content/modules/interfaces.py:238
 msgid "Merge with previous recipe list module"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:239
+#: zeit/content/modules/interfaces.py:242
 msgid "Recipe name"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:243
+#: zeit/content/modules/interfaces.py:246
 msgid "Subheading"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:247
+#: zeit/content/modules/interfaces.py:250
 msgid "Appears in recipe search?"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:251
+#: zeit/content/modules/interfaces.py:254
 msgid "Complexity"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:256
+#: zeit/content/modules/interfaces.py:259
 msgid "Time"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:261
+#: zeit/content/modules/interfaces.py:264
 msgid "Servings"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:266
+#: zeit/content/modules/interfaces.py:269
 msgid "Ingredients"
 msgstr ""
 
@@ -4680,12 +4680,12 @@ msgid "Standard metadata"
 msgstr ""
 
 #: zeit/seo/browser/form.py:30
-#: zeit/seo/configure.zcml:11
+#: zeit/seo/configure.zcml:10
 msgid "Edit SEO data"
 msgstr ""
 
 #: zeit/seo/browser/form.py:35
-#: zeit/seo/configure.zcml:7
+#: zeit/seo/configure.zcml:6
 msgid "View SEO data"
 msgstr ""
 

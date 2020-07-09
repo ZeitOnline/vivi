@@ -775,10 +775,12 @@ a.button.configure_search:hover {
 }
 
 .ingredients-widget .ingredient__item {
+  display: flex;
   height: 3em;
 }
 
 .ingredient__label {
+  align-self: center;
   display: inline-block;
   min-width: 10em;
 }
@@ -787,10 +789,19 @@ a.button.configure_search:hover {
   width: 3em;
 }
 
+.field .ingredient__amount::placeholder {
+  font-size: 12px;
+}
+
 .field .ingredient__unit {
+  align-self: center;
   margin-left: 1em;
-  vertical-align: baseline;
   width: 5em;
+}
+
+.field .ingredient__details {
+  flex: 1 1 auto;
+  margin-left: 1em;
 }
 
 .rst-preview {
