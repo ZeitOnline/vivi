@@ -2,10 +2,27 @@ vivi.core changes
 =================
 
 
-4.36.1 (unreleased)
+4.36.3 (unreleased)
 -------------------
 
+
 - WOMA-96: Don't change access for non performing articles in channel 'wochenmarkt'
+
+- FIX: Remove optional chaining for better browser support
+
+
+4.36.2 (2020-07-08)
+-------------------
+
+- WOMA-126: Remove duplicates in recipe from ES payload.
+
+- WOMA-130: Use ids for ingredient units
+
+
+4.36.1 (2020-07-07)
+-------------------
+
+- FIX: Make `available` work for article modules
 
 
 4.36.0 (2020-07-03)

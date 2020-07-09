@@ -316,8 +316,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'complexities': ['ambitioniert', 'einfach'],
             'servings': [ '2', '6'],
             'times': ['unter 30 Minuten', 'über 60 Minuten'],
-            'ingredients': ['brathaehnchen', 'bratwurst', 'gries',  'gurke',
-                'tomate']}
+            'ingredients': ['brathaehnchen', 'bratwurst', 'chicken-nuggets',
+                'gries',  'gurke', 'tomate']}
         self.assertEqual(payload, data['payload']['recipe'])
 
     def test_converts_imagegroup(self):
