@@ -211,7 +211,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 'term': {
                     'payload.document.channels': 'zeit-magazin wochenmarkt'
                 }
-            }}}
+            }}},
         ]
 
         result = elastic.search({'query': {'bool': {
