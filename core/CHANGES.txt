@@ -5,7 +5,7 @@ vivi.core changes
 4.36.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-96: Don't change access for non performing articles in channel 'wochenmarkt'
 
 
 4.36.0 (2020-07-03)
