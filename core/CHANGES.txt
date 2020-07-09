@@ -5,7 +5,7 @@ vivi.core changes
 4.36.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Remove optional chaining for better browser support
 
 
 4.36.2 (2020-07-08)

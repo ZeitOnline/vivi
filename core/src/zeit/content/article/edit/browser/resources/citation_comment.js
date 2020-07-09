@@ -3,8 +3,7 @@
         var target = event.__target;
 
         // beware of target being window or document, not implementing Element.closest()
-        // use optional chaining - it's 2020
-        if ( !target?.closest?.( '.block.type-citation_comment' ) ) {
+        if ( !target || !target.closest || !target.closest( '.block.type-citation_comment' ) ) {
             return;
         }
 
