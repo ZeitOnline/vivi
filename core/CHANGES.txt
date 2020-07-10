@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.36.3 (unreleased)
+4.36.3 (2020-07-10)
 -------------------
 
 - WOMA-96: Don't change access for non performing articles in channel 'wochenmarkt'
