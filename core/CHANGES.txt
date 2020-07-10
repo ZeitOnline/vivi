@@ -5,6 +5,9 @@ vivi.core changes
 4.36.3 (unreleased)
 -------------------
 
+
+- WOMA-96: Don't change access for non performing articles in channel 'wochenmarkt'
+
 - FIX: Remove optional chaining for better browser support
 
 
