@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import copy
 import grokcore.component as grok
 import six
@@ -10,7 +10,7 @@ import zope.schema
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariants)
-class Variants(grok.Adapter, collections.Mapping):
+class Variants(grok.Adapter, collections.abc.Mapping):
 
     grok.context(zeit.content.image.interfaces.IImageGroup)
 

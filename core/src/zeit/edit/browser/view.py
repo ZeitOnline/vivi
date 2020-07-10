@@ -206,7 +206,7 @@ class ErrorPreventingViewletManager(
             error_msg = _(
                 "There was an error rendering ${name}: ${exc_type} ${exc_msg}",
                 mapping=mapping)
-            log.warn('There was an error rendering %s at %s' % (
+            log.warning('There was an error rendering %s at %s' % (
                 mapping['name'], self.request.getURL()), exc_info=True)
             return self.wrapper.format(
                 error_msg=xml.sax.saxutils.escape(zope.i18n.translate(
