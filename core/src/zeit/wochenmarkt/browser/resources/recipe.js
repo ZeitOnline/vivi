@@ -10,7 +10,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
     // XXX WOMA-130: Currently these ids are rendered as is in vivi frontend.
     // They will be translated into proper strings at a later date during the
     // development of WOMA-112, providing a configuration file for all units.
-    VALID_UNITS: ['', 'stueck', 'kg', 'g', 'l', 'ml', 'cl', 'prise', 'el', 'tl', 'tasse', 'paeckchen', 'schuss', 'messerspitze', 'bund', 'etwas', 'blaetter', 'scheiben', 'dose', 'messerspitze', 'staengel', 'handvoll', 'schote', 'stange', 'glas', 'kopf', 'kugel', 'knolle', 'zehe', 'spritzer', 'tropfen', 'becher'],
+    VALID_UNITS: ['', 'stueck', 'kg', 'g', 'l', 'ml', 'cl', 'prise', 'el', 'tl', 'tasse', 'paeckchen', 'schuss', 'messerspitze', 'bund', 'etwas', 'blaetter', 'scheiben', 'dose', 'messerspitze', 'staengel', 'handvoll', 'zweig', 'schote', 'stange', 'glas', 'kopf', 'kugel', 'knolle', 'zehe', 'spritzer', 'tropfen', 'becher'],
 
     construct: function(id) {
         var self = this;
