@@ -47,7 +47,7 @@ class SimpleElementGrokker(martian.ClassGrokker):
 
     def execute(self, context, config, **kw):
         for_ = (context.area, gocept.lxml.interfaces.IObjectified)
-        provides = zope.interface.implementedBy(context).declared[0]
+        provides = list(zope.interface.implementedBy(context))[0]
 
         config.action(
             discriminator=('adapter', for_, provides, context.type),

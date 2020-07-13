@@ -312,7 +312,7 @@ class FakeRenameInfo(grok.Adapter):
     previous_uniqueIds = ()
 
 
-@grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
+@zope.interface.implementer_only(zeit.connector.interfaces.IWebDAVProperties)
 class FakeWebDAVProperties(grok.Adapter, dict):
 
     grok.context(FakeEntry)

@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import cgi
+import html
 import logging
 import six
 import zc.table.column
@@ -129,10 +129,10 @@ class FeedView(object):
         def _url_formatter(value, item, formatter):
             if not value:
                 value = item.__name__
-            return u'<a href="%s">%s</a>' % (item.url, cgi.escape(value))
+            return u'<a href="%s">%s</a>' % (item.url, html.escape(value))
 
         def _escape(value, item, formatter):
-            return cgi.escape(six.text_type(value))
+            return html.escape(six.text_type(value))
 
         return (
             zc.table.column.GetterColumn(
