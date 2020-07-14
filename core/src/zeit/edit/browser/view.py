@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import cgi
+import html
 import json
 import logging
 import pkg_resources
@@ -117,7 +117,7 @@ def validate(context):
     if validator.status:
         css_class = 'validation-%s' % validator.status
         messages = '\n'.join(validator.messages)
-        messages = cgi.escape(messages)
+        messages = html.escape(messages)
     else:
         css_class = ''
         messages = ''
