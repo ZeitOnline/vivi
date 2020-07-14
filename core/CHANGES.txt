@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.36.5 (unreleased)
+4.36.5 (2020-07-14)
 -------------------
 
 - FIX: Handle zope.interface now inheriting getTaggedValues(),
