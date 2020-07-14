@@ -251,6 +251,7 @@ IBreakingNews.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
 IBreakingNews.setTaggedValue(
     'zeit.cms.title', _('Add breaking news'))
+IBreakingNews.setTaggedValue('zeit.cms.type', None)
 
 
 class IErrorPage(IArticle):

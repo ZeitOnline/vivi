@@ -582,16 +582,10 @@ class CMSContentTypeSource(
         }
 
     def getTitle(self, context, value):
-        try:
-            return value.getTaggedValue('zeit.cms.title')
-        except KeyError:
-            return six.text_type(value)
+        return value.queryTaggedValue('zeit.cms.title') or six.text_type(value)
 
     def getToken(self, context, value):
-        try:
-            return value.getTaggedValue('zeit.cms.type')
-        except KeyError:
-            return six.text_type(value)
+        return value.queryTaggedValue('zeit.cms.type') or six.text_type(value)
 
     def isAvailable(self, value, context):
         return True
