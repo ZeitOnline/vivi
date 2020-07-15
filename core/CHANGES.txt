@@ -5,7 +5,7 @@ vivi.core changes
 4.36.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-136_2: Update list of ingredient units
 
 
 4.36.5 (2020-07-14)
