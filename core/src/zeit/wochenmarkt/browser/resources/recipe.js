@@ -1,16 +1,30 @@
 (function($) {
 "use strict";
 
-var nbsp = ' ';
+/*
+ * Fetch units through xhr. We want to do this only once during form load, thus
+ * it is defined globally here instead of being part of IngredientsWidget, which
+ * is reinitialized every time a change to the recipe list has been made.
+ */
+let units;
+setup_units();
+
+function setup_units() {
+    const source = zeit.cms.locked_xhr(
+        application_url + '/@@source?name=zeit.content.modules.interfaces.RecipeUnitsSource');
+    source.addCallback(function(result) {
+        units = JSON.parse(result.response)
+        return result;
+    });
+    source.addErrback(function(error) {
+        zeit.cms.log_error(error);
+        return error;
+    });
+}
 
 zeit.cms.declare_namespace('zeit.wochenmarkt');
 
 zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
-
-    // XXX WOMA-130: Currently these ids are rendered as is in vivi frontend.
-    // They will be translated into proper strings at a later date during the
-    // development of WOMA-112, providing a configuration file for all units.
-    VALID_UNITS: ['', 'stueck', 'kg', 'g', 'l', 'ml', 'cl', 'prise', 'el', 'tl', 'tasse', 'paeckchen', 'schuss', 'messerspitze', 'bund', 'etwas', 'blaetter', 'scheiben', 'dose', 'messerspitze', 'staengel', 'handvoll', 'zweig', 'schote', 'stange', 'glas', 'kopf', 'kugel', 'knolle', 'zehe', 'spritzer', 'tropfen', 'becher', 'einige'],
 
     construct: function(id) {
         var self = this;
@@ -140,10 +154,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
         // Add unit
         let select = SELECT({'class': 'ingredient__unit', 'data-id': 'unit'});
-
-        self.VALID_UNITS.forEach(function(i) {
-            select.appendChild(OPTION({}, i));
-        });
+        self._add_units(select, unit);
         item.appendChild(select);
 
         // Add details
@@ -155,6 +166,13 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}));
 
         $(self.list).append(item);
+    },
+
+    _add_units: function(element, value) {
+        units.forEach(function(u) {
+            element.appendChild(OPTION({'value': u.id}, u.title));
+        });
+        element.value = value;
     },
 
     populate_ingredients: function(ingredients) {
