@@ -7,6 +7,8 @@
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.content.modules" />
+  <include package="zeit.content.modules.browser" />
+
   <include package="zeit.content.text" />
   <include package="zeit.wochenmarkt" />
 
