@@ -29,7 +29,7 @@ class Honorar(object):
         Returns a list of dicts with keys
         gcid, vorname, nachname, titel (and some others)
         """
-        result = self._request('POST /layouts/RESTautorenStamm/_find', json={
+        result = self._request('POST /hdok/layouts/RESTautorenStamm/_find', json={
             'query': [
                 {'nameGesamtSuchtext': query},
                 {'typ': '4', 'omit': 'true'},
@@ -52,7 +52,7 @@ class Honorar(object):
         data['typ'] = '1'
         # Bypass HDok's duplicate detection, since we already perform that.
         data['anlage'] = 'setzen'
-        result = self._request('GET /layouts/leer/records/1', params={
+        result = self._request('GET /hdok/layouts/leer/records/1', params={
             'script': 'restNeuAutor',
             'script.param': b64encode(json.dumps(data))
         })
