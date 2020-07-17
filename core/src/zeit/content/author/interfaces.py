@@ -233,3 +233,6 @@ class IHonorar(zope.interface.Interface):
 
     def create(data):
         pass
+
+    def invalid_gcids(timestamp):
+        pass

@@ -62,6 +62,23 @@ class Honorar(object):
         except Exception:
             raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
+    def invalid_gcids(self, timestamp):
+        query = '''
+            {{"query": [
+                {{
+                    "geloeschtGCID": "*",
+                    "ts": ">={timestamp}"
+                }}
+            ],
+            "limit": "1000000",
+            "offset": "1"
+        }}'''
+        timestamp = (datetime.datetime.today() -
+                     datetime.timedelta(days=days)).strftime(
+                     '%m/%d/%Y %H:%M:%S')
+        data = query.format(timestamp=timestamp)
+        result = self._request('POST /blacklist.fmp13/layouts/blacklist/_find', json=query)
+
     def _request(self, request, retries=0, **kw):
         if retries > 1:
             raise ValueError('Request %s failed' % request)
