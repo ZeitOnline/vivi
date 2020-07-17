@@ -65,8 +65,8 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getLink('Checkin').click()
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2010/02/ausgabe')
-        cover = '...<cover href="http://xml.zeit.de/imagegroup/" ' \
-                'id="landscape" product_id="ZMLB"/>...'
+        cover = '...<cover id="landscape" product_id="ZMLB" ' \
+                'href="http://xml.zeit.de/imagegroup/"/>...'
         self.assertEllipsis(cover, zeit.cms.testing.xmltotext(volume.xml))
 
     def test_displays_warning_if_volume_with_same_name_already_exists(self):
