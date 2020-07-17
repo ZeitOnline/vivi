@@ -1,5 +1,4 @@
 from lxml.objectify import E
-import collections
 import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -78,7 +77,6 @@ class RecipeList(zeit.edit.block.Element):
     def ingredients(self, value):
         for node in self.xml.xpath('./ingredient'):
             node.getparent().remove(node)
-        value = self._remove_duplicates(value)
         for item in value:
             self.xml.append(
                 E.ingredient(
@@ -86,10 +84,3 @@ class RecipeList(zeit.edit.block.Element):
                     amount=item.amount if hasattr(item, 'amount') else '',
                     unit=item.unit if hasattr(item, 'unit') else '',
                     details=item.details if hasattr(item, 'details') else ''))
-
-    def _remove_duplicates(self, ingredients):
-        result = collections.OrderedDict()
-        for ingredient in ingredients:
-            if ingredient.code not in result:
-                result[ingredient.code] = ingredient
-        return result.values()

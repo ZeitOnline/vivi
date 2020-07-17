@@ -40,11 +40,11 @@ class RecipeListTest(
         self.assertEqual(['banana', 'milk'], (
             [x.code for x in self.module.ingredients]))
 
-    def test_set_should_add_duplicate_values_only_once(self):
+    def test_set_should_allow_duplicate_ingredients(self):
         ingredients = self.setup_ingredients('banana')
         banana = ingredients['banana']
         self.module.ingredients = [banana, banana]
-        self.assertEqual(['banana'], (
+        self.assertEqual(['banana', 'banana'], (
             [x.code for x in self.module.ingredients]))
 
     def test_set_should_write_ingredients_to_xml_head(self):
