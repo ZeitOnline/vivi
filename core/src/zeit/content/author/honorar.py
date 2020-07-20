@@ -78,7 +78,16 @@ class Honorar(object):
                      datetime.timedelta(days=days_ago)).strftime(
                      '%m/%d/%Y %H:%M:%S')
         data = query.format(timestamp=timestamp)
-        result = self._request('POST /blacklist.fmp13/layouts/blacklist/_find', json=query)
+        return self._request('POST /blacklist.fmp12/layouts/blacklist/_find', json={
+        'query': [
+                {
+                    'geloeschtGCID': '*'
+                }
+            ],
+            'limit': '1000000',
+            'offset': '1'
+        })
+
 
     def _request(self, request, retries=0, **kw):
         if retries > 1:
