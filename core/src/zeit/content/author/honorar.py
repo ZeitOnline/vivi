@@ -1,6 +1,7 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import json
+import datetime
 import logging
 import pkg_resources
 import requests
@@ -94,11 +95,13 @@ class Honorar(object):
 
         verb, path = request.split(' ')
         auth_token = self.auth_token()
+        url = self.url
         if 'blacklist' in path:
             auth_token = self.auth_token_invalid_gcids()
+            url = self.url_invalid_gcids
         method = getattr(requests, verb.lower())
         try:
-            r = method(self.url + path, headers={
+            r = method(url + path, headers={
                 'Authorization': 'Bearer %s' % auth_token,
                 'User-Agent': requests.utils.default_user_agent(
                     'zeit.content.author-%s/python-requests' % (
