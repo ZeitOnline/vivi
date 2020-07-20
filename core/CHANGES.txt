@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.36.6 (unreleased)
+4.36.6 (2020-07-20)
 -------------------
 
 - WOMA-136_2: Update list of ingredient units
