@@ -31,15 +31,17 @@ class Honorar(object):
         Returns a list of dicts with keys
         gcid, vorname, nachname, titel (and some others)
         """
-        result = self._request('POST /hdok/layouts/RESTautorenStamm/_find', json={
-            'query': [
-                {'nameGesamtSuchtext': query},
-                {'typ': '4', 'omit': 'true'},
-                {'status': '>=50', 'omit': 'true'},
-            ],
-            'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
-            'limit': str(count),
-        })
+        result = self._request('POST /hdok/layouts/RESTautorenStamm/_find',
+                               json={
+                                   'query': [
+                                       {'nameGesamtSuchtext': query},
+                                       {'typ': '4', 'omit': 'true'},
+                                       {'status': '>=50', 'omit': 'true'},
+                                   ],
+                                   'sort': [{'fieldName': 'nameGesamt',
+                                             'sortOrder': 'ascend'}],
+                                   'limit': str(count),
+                               })
         return [x['fieldData'] for x in result['response']['data']]
 
     def create(self, data):
@@ -65,29 +67,20 @@ class Honorar(object):
             raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
     def invalid_gcids(self, days_ago):
-        query = '''{{"query": [
-                {{
-                    "geloeschtGCID": "*",
-                    "ts": ">={timestamp}"
-                }}
-            ],
-            "limit": "1000000",
-            "offset": "1"
-        }}'''
-        timestamp = (datetime.datetime.today() -
-                     datetime.timedelta(days=days_ago)).strftime(
-                     '%m/%d/%Y %H:%M:%S')
-        data = query.format(timestamp=timestamp)
-        return self._request('POST /blacklist.fmp12/layouts/blacklist/_find', json={
-        'query': [
-                {
-                    'geloeschtGCID': '*'
-                }
-            ],
-            'limit': '1000000',
-            'offset': '1'
-        })
-
+        timestamp = '>=' + (datetime.datetime.today() -
+                            datetime.timedelta(days=days_ago)).strftime(
+                                '%m/%d/%Y %H:%M:%S')
+        return self._request('POST /blacklist.fmp12/layouts/blacklist/_find',
+                             json={
+                                 'query': [
+                                     {
+                                         'geloeschtGCID': '*',
+                                         'ts': timestamp
+                                     }
+                                 ],
+                                 'limit': '1000000',
+                                 'offset': '1'
+                             })
 
     def _request(self, request, retries=0, **kw):
         if retries > 1:
@@ -137,7 +130,6 @@ class Honorar(object):
                           headers={'Content-Type': 'application/json'})
         r.raise_for_status()
         return r.headers.get('X-FM-Data-Access-Token')
-
 
     @CONFIG_CACHE.cache_on_arguments()
     def auth_token_invalid_gcids(self):

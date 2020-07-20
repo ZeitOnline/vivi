@@ -29,7 +29,8 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(HDokIntegration, self).setUp()
         self.api = zeit.content.author.honorar.Honorar(
-            'http://localhost:%s' % self.layer['http_port'], 'user', 'pass')
+            'http://localhost:%s' % self.layer['http_port'],
+            'fake-invalid-url', 'user', 'pass')
         self.auth_token_patch = mock.patch.object(self.api, 'auth_token')
         token = self.auth_token_patch.start()
         token.return_value = 'token'
