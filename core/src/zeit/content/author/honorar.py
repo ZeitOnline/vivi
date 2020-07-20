@@ -1,6 +1,7 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import json
+import datetime
 import logging
 import pkg_resources
 import requests
@@ -62,9 +63,8 @@ class Honorar(object):
         except Exception:
             raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
-    def invalid_gcids(self, timestamp):
-        query = '''
-            {{"query": [
+    def invalid_gcids(self, days_ago):
+        query = '''{{"query": [
                 {{
                     "geloeschtGCID": "*",
                     "ts": ">={timestamp}"
@@ -74,7 +74,7 @@ class Honorar(object):
             "offset": "1"
         }}'''
         timestamp = (datetime.datetime.today() -
-                     datetime.timedelta(days=days)).strftime(
+                     datetime.timedelta(days=days_ago)).strftime(
                      '%m/%d/%Y %H:%M:%S')
         data = query.format(timestamp=timestamp)
         result = self._request('POST /blacklist.fmp13/layouts/blacklist/_find', json=query)
