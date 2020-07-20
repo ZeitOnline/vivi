@@ -1,7 +1,6 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import json
-import datetime
 import logging
 import pkg_resources
 import requests
