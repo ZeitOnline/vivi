@@ -18,8 +18,9 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 class Honorar(object):
 
-    def __init__(self, url, username, password):
+    def __init__(self, url, url_invalid_gcids, username, password):
         self.url = url
+        self.url_invalid_gcids = url_invalid_gcids
         self.username = username
         self.password = password
 
@@ -84,10 +85,13 @@ class Honorar(object):
             raise ValueError('Request %s failed' % request)
 
         verb, path = request.split(' ')
+        auth_token = self.auth_token()
+        if 'blacklist' in path:
+            auth_token = self.auth_token_invalid_gcids()
         method = getattr(requests, verb.lower())
         try:
             r = method(self.url + path, headers={
-                'Authorization': 'Bearer %s' % self.auth_token(),
+                'Authorization': 'Bearer %s' % auth_token,
                 'User-Agent': requests.utils.default_user_agent(
                     'zeit.content.author-%s/python-requests' % (
                         pkg_resources.get_distribution('vivi.core').version))
@@ -117,7 +121,16 @@ class Honorar(object):
 
     @CONFIG_CACHE.cache_on_arguments()
     def auth_token(self):
-        r = requests.post(self.url + '/sessions',
+        r = requests.post(self.url + '/hdok.fmp12/sessions',
+                          auth=(self.username, self.password),
+                          headers={'Content-Type': 'application/json'})
+        r.raise_for_status()
+        return r.headers.get('X-FM-Data-Access-Token')
+
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def auth_token_invalid_gcids(self):
+        r = requests.post(self.url_invalid_gcids + '/blacklist.fmp12/sessions',
                           auth=(self.username, self.password),
                           headers={'Content-Type': 'application/json'})
         r.raise_for_status()
@@ -134,6 +147,7 @@ def from_product_config():
         'zeit.content.author')
     return Honorar(
         config['honorar-url'],
+        config['honorar-url-invalid-gcids'],
         config['honorar-username'],
         config['honorar-password'])
 
