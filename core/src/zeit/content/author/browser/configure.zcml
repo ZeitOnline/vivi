@@ -66,6 +66,18 @@
     file="author.png"
     />
 
+  <browser:viewlet
+    for="zeit.content.author.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class="zeit.cms.repository.browser.menu.Delete"
+    permission="zeit.content.author.Delete"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    weight="500"
+    />
+
   <browser:page
     for="..interfaces.IAuthorReference"
     name="object-details"
