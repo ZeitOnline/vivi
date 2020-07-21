@@ -122,6 +122,11 @@
     />
 
   <permission
+    id="zeit.content.author.Delete"
+    title="Delete author objects"
+    />
+
+  <permission
     id="zeit.cms.admin.View"
     title="View admin tab"
     />

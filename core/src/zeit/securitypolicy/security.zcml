@@ -113,6 +113,10 @@
   <!-- Producer grants -->
   <grant
     role="zeit.Producer"
+    permission="zeit.content.author.Delete"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.RenameFolder"
     />
   <grant
