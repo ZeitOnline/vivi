@@ -77,6 +77,18 @@
     lightbox="@@delete.html"
     weight="500"
     />
+<!--
+  <configure package="zeit.cms.repository.browser">
+  <browser:page
+    for="zeit.content.author.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
+    class=".delete.DeleteContent"
+    template=".pt"
+    permission="zeit.content.author.Delete"
+    />
+  </configure>
+-->
 
   <browser:page
     for="..interfaces.IAuthorReference"
